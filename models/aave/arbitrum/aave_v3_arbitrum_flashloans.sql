@@ -1,7 +1,9 @@
 {{ config(
-    schema = 'aave_v3_arbitrum'
+    tags = ['dunesql']
+    , schema = 'aave_v3_arbitrum'
     , alias = alias('flashloans')
     , materialized = 'incremental'
+    , partition_by = ['block_month']
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['tx_hash', 'evt_index']
@@ -23,9 +25,9 @@ WITH flashloans AS (
     , flash.evt_tx_hash AS tx_hash
     , flash.evt_index
     , CAST(flash.premium AS double) AS fee
-    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN '{{weth_address}}' ELSE flash.asset END AS currency_contract
-    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol
-    , CASE WHEN flash.asset='{{aave_mock_address}}' THEN 18 ELSE erc20.decimals END AS currency_decimals
+    , CASE WHEN flash.asset= {{aave_mock_address}} THEN {{weth_address}} ELSE flash.asset END AS currency_contract
+    , CASE WHEN flash.asset= {{aave_mock_address}} THEN 'ETH' ELSE erc20.symbol END AS currency_symbol
+    , CASE WHEN flash.asset= {{aave_mock_address}} THEN 18 ELSE erc20.decimals END AS currency_decimals
     , flash.target AS recipient
     , flash.contract_address
     FROM {{ source('aave_v3_arbitrum','L2Pool_evt_FlashLoan') }} flash
@@ -33,13 +35,14 @@ WITH flashloans AS (
         ON flash.asset = erc20.contract_address
     WHERE CAST(flash.amount AS double) > 0
         {% if is_incremental() %}
-        AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND flash.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     )
     
 SELECT 'arbitrum'                                                       AS blockchain
      , 'Aave'                                                           AS project
      , '3'                                                              AS version
+     , CAST(date_trunc('Month', flash.block_time) as date)              AS block_month
      , flash.block_time
      , flash.block_number
      , flash.amount_raw / POWER(10, flash.currency_decimals)            AS amount

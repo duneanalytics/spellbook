@@ -118,12 +118,12 @@ SELECT
   cast(NULL as varbinary) as aggregator_address,
   cast(NULL as varbinary) as tx_from,
   cast(NULL as varbinary) as tx_to,
-  2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as platform_fee_amount_raw,
+  cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
   CAST(2 AS DOUBLE) as platform_fee_percentage,
   CAST (abs(element_at(post_balances,12) - element_at(pre_balances,12)) + abs(element_at(post_balances,13) - element_at(pre_balances,13))
-    + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS DOUBLE) as royalty_fee_amount_raw,
+    + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS uint256) as royalty_fee_amount_raw,
   abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9) + abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
     + abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9) + abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9) + abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)
     as royalty_fee_amount,
