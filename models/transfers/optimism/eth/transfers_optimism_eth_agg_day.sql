@@ -22,6 +22,6 @@ FROM
 {{ ref('transfers_optimism_eth_tfers') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE tr.block_time >= date_trunc('day', now() - interval '7' Day)
+WHERE tr.block_time >= date_trunc('day', now() - interval '3' Day)
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5, 6 

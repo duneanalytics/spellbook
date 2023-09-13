@@ -121,7 +121,7 @@ erc20_eth_transfers  as (
             array[evt_index] as trace_address, 
             evt_block_time as block_time,
             to as wallet_address, 
-            contract_address as token_address,
+            0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address,
             CAST(value as double) as amount_raw
         FROM 
             (
@@ -157,7 +157,7 @@ erc20_eth_transfers  as (
             array[evt_index] as trace_address, 
             evt_block_time as block_time,
             "from" as wallet_address, 
-            contract_address as token_address,
+            0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address,
             -CAST(value as double) as amount_raw
         FROM 
             (
