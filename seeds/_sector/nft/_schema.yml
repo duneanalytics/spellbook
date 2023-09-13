@@ -53,6 +53,19 @@ seeds:
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
 
+  - name: blur_seaport_ethereum_base_trades_seed
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
   - name: blur_v2_ethereum_base_trades_seed
     config:
       tags: dunesql
