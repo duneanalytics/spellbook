@@ -11,6 +11,7 @@ models:
     description: >
         Quix v2 trades on Optimism
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -260,6 +261,7 @@ models:
     description: >
         Quix v3 trades on Optimism
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -330,6 +332,7 @@ models:
     description: >
         Quix v1 trades on Optimism
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -400,6 +403,7 @@ models:
     description: >
         Quix v4 trades on Optimism
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -470,6 +474,7 @@ models:
     description: >
         Quix v4 trades on Optimism
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -542,6 +547,7 @@ models:
     description: >
         Quix Seaport events on Optimism
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
