@@ -25,5 +25,3 @@ macros:
         description: "Valid base58 string"
   - name: get_balancer_link
     description: "Returns a link to access a specific pool on the Balancer app, based on its blockchain and address"
-  - name: get_chain_explorer_link
-    description: "Returns a link to access a specific address on its explorer, based on its blockchain and address"
