@@ -1,5 +1,7 @@
 {{ config(
-      alias = alias('flashloans')
+        tags=['dunesql']
+      , alias = alias('flashloans')
+      , partition_by = ['block_month']
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -14,6 +16,7 @@
 SELECT 'ethereum' AS blockchain
     , 'Euler' AS project
     , 1 AS version
+    , CAST(date_trunc('Month', b.evt_block_time) as date) as block_month
     , b.evt_block_time AS block_time
     , b.evt_block_number AS block_number
     , b.amount/POWER(10, 18) AS amount
@@ -33,7 +36,7 @@ SELECT 'ethereum' AS blockchain
         AND r.amount = b.amount
         AND r.evt_index > b.evt_index
         {% if is_incremental() %}
-        AND r.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND r.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} tok ON tok.contract_address=b.underlying
     LEFT JOIN {{ source('prices','usd') }} pu
@@ -41,8 +44,8 @@ SELECT 'ethereum' AS blockchain
         AND pu.contract_address = b.underlying
         AND pu.minute = date_trunc('minute', b.evt_block_time)
         {% if is_incremental() %}
-        AND pu.minute >= date_trunc("day", now() - interval '1 week')
+        AND pu.minute >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     {% if is_incremental() %}
-    WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE b.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}

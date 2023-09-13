@@ -19,7 +19,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -33,6 +32,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -88,57 +90,9 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-
-  - name: dex_trades_migration_beta
-    meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
-      sector: dex
-      contributors: jeff-dude
-    config:
-      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
-    description: >
-      DEX trades on all chains across all contracts and versions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
 
   - name: dex_aggregator_trades
     meta:
@@ -181,7 +135,8 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - *trace_address
+      - &trace_address
+        name: trace_address
       - *evt_index
 
   - name: dex_prices

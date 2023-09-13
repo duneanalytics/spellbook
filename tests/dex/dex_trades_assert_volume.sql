@@ -4,7 +4,7 @@ with volume as (
         , blockchain
         , sum(amount_usd) volume
     from {{ ref('dex_trades') }}
-    where block_time >= now() - interval '7 days'
+    where block_time >= now() - interval '7' day
     group by 1,2
 )
 
