@@ -751,7 +751,7 @@ WITH dao_wallet AS (
         ON mints.usr = dao_wallet.wallet_address
     LEFT JOIN interest_accruals_1 AS frobs
             ON mints.call_tx_hash = frobs.hash
-            AND mints.wad = frobs.dart
+            AND mints.wad = CAST(frobs.dart AS UINT256)
     WHERE mints.call_success
         AND frobs.hash IS NULL --filtering out draws from psm that happened in the same tx as expenses
         -- {% if is_incremental() %}
