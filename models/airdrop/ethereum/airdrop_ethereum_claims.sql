@@ -40,17 +40,13 @@
     , ref('tokenfy_ethereum_airdrop_claims')
     , ref('component_ethereum_airdrop_claims')
     , ref('forefront_ethereum_airdrop_claims')
+    , ref('paraswap_ethereum_airdrop_claims') 
+    , ref('safe_ethereum_airdrop_claims')
+    , ref('gearbox_ethereum_airdrop_claims')
+    , ref('thales_ethereum_airdrop_claims')
+    , ref('value_defi_ethereum_airdrop_claims')
+    , ref('alchemydao_ethereum_airdrop_claims')
 ] %}
-
-    {#
-    -- these models rely on dex_prices to run, so can't migrate yet, will be added back after dex_prices migration
-    -- , ref('paraswap_ethereum_airdrop_claims') 
-    -- , ref('safe_ethereum_airdrop_claims')
-    -- , ref('gearbox_ethereum_airdrop_claims')
-    -- , ref('thales_ethereum_airdrop_claims')
-    -- , ref('value_defi_ethereum_airdrop_claims')
-    -- , ref('alchemydao_ethereum_airdrop_claims')
-    #}
 
 SELECT *
 FROM (
