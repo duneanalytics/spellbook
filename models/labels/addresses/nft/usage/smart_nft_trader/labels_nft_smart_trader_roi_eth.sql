@@ -1,10 +1,13 @@
-{{config(alias = alias('nft_smart_trader_roi_eth'))}}
+{{config(
+    tags=['dunesql']
+    , alias = alias('nft_smart_trader_roi_eth')
+)}}
 
 with  
 
 aggregated_wallet_trading_stats AS (
     select * 
-    from {{ref('nft_ethereum_wallet_metrics')}}
+    from {{ ref('nft_ethereum_wallet_metrics') }}
     where trades_count >= 10
         and unique_collections_traded >= 3
         and spent_eth >= 1
