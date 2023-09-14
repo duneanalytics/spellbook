@@ -20,7 +20,7 @@ time_seq AS (
 
 days AS (
     SELECT 
-        time.time AS day 
+        time.time AS block_day 
     FROM time_seq
     CROSS JOIN unnest(time) AS time(time)
 ),
@@ -41,7 +41,8 @@ daily_balances as (
 
 SELECT
     b.blockchain,
-    d.day,
+    cast(date_trunc('month', d.block_day) as date) as block_month,
+    d.block_day,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -52,12 +53,12 @@ FROM
 daily_balances b
 INNER JOIN 
 days d 
-    ON b.day <= d.day 
-    AND d.day < b.next_day
+    ON b.day <= d.block_day 
+    AND d.block_day < b.next_day
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND d.day = p.minute
+    AND d.block_day = p.minute
     AND p.blockchain = 'polygon'
 -- Removes likely non-compliant tokens due to negative balances
 LEFT JOIN 
