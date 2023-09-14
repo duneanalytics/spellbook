@@ -19,7 +19,7 @@ years as (
 ),
 
 hours as (
-    select date_add('hour', s.n, y.year) as hour
+    select date_add('hour', s.n, y.year) as block_hour
     from years y
       cross join unnest(sequence(0, 9000)) s(n)
     where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
@@ -41,7 +41,8 @@ hourly_balances as (
 
 SELECT
     b.blockchain,
-    d.hour,
+    cast(date_trunc('month', d.block_hour) as date) as block_month,
+    d.block_hour,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -52,12 +53,12 @@ FROM
 hourly_balances b
 INNER JOIN 
 hours d 
-    ON b.hour <= d.hour 
-    AND d.hour < b.next_hour
+    ON b.hour <= d.block_hour 
+    AND d.block_hour < b.next_hour
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND d.hour = p.minute
+    AND d.block_hour = p.minute
     AND p.blockchain = 'polygon'
 -- Removes likely non-compliant tokens due to negative balances
 LEFT JOIN 

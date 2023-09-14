@@ -437,3 +437,4 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month

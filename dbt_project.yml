@@ -487,6 +487,8 @@ models:
         +schema: balances_ethereum
       celo:
         +schema: balances_celo
+      bnb:
+        +schema: balances_bnb
       polygon:
         +schema: balances_polygon
 

@@ -144,6 +144,7 @@ models:
       - name: project
       - name: version
       - name: block_time
+      - name: block_month
       - name: block_number
       - name: amount
       - name: amount_usd
@@ -154,6 +155,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
   - name: balancer_bpt_prices
     meta:
