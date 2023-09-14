@@ -1294,9 +1294,6 @@ models:
       ethereum:
         +schema: pooltogether_ethereum
 
-    method_ids:
-      +schema: method_ids
-
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:
