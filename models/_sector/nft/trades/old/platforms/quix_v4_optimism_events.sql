@@ -127,44 +127,45 @@ with events_raw as (
       and erc20.evt_block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
-,fill_missing_op_price as (
-    -- op price missing from prices.usd 2022-06-06
-    select
-      date_trunc('day', block_time) as block_date
-      ,symbol
-      ,contract_address
-      ,avg(amount_usd/token_amount) as price
-    from (
-        select
-            block_time,
-            amount_usd,
-            token_bought_amount as token_amount,
-            token_bought_address as contract_address,
-            token_bought_symbol as symbol
-        from {{ ref('uniswap_optimism_trades') }}
-        where
-            token_bought_address = 0x4200000000000000000000000000000000000042
-            {% if is_incremental() %}
-            and block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-
-        union all
-
-        select
-            block_time,
-            amount_usd,
-            token_sold_amount as token_amount,
-            token_sold_address as contract_address,
-            token_sold_symbol as symbol
-        from {{ ref('uniswap_optimism_trades') }}
-        where
-            token_bought_address = 0x4200000000000000000000000000000000000042
-            {% if is_incremental() %}
-            and block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-    ) as x
-    group by 1, 2, 3
-)
+-- Not using this anymore as it provided incorrect prices
+--,fill_missing_op_price as (
+--    -- op price missing from prices.usd 2022-06-06
+--    select
+--      date_trunc('day', block_time) as block_date
+--      ,symbol
+--      ,contract_address
+--      ,avg(amount_usd/token_amount) as price
+--    from (
+--        select
+--            block_time,
+--            amount_usd,
+--            token_bought_amount as token_amount,
+--            token_bought_address as contract_address,
+--            token_bought_symbol as symbol
+--        from {{ ref('uniswap_optimism_trades') }}
+--        where
+--            token_bought_address = 0x4200000000000000000000000000000000000042
+--            {% if is_incremental() %}
+--            and block_time >= date_trunc('day', now() - interval '7' day)
+--            {% endif %}
+--
+--        union all
+--
+--        select
+--            block_time,
+--            amount_usd,
+--            token_sold_amount as token_amount,
+--            token_sold_address as contract_address,
+--            token_sold_symbol as symbol
+--        from {{ ref('uniswap_optimism_trades') }}
+--        where
+--            token_bought_address = 0x4200000000000000000000000000000000000042
+--            {% if is_incremental() %}
+--            and block_time >= date_trunc('day', now() - interval '7' day)
+--            {% endif %}
+--    ) as x
+--    group by 1, 2, 3
+--)
 ,erc20_transfer as (
     select
       erc20.evt_block_time
@@ -195,7 +196,7 @@ with events_raw as (
         ,er.block_time
         ,er.token_id
         ,n.name as collection
-        ,er.amount_raw / power(10, t1.decimals) * coalesce(p1.price, fop.price) as amount_usd
+        ,(er.amount_raw / power(10, t1.decimals)) * p1.price as amount_usd
         ,case
         when erct2.evt_tx_hash is not null then 'erc721'
         when erc1155.evt_tx_hash is not null then 'erc1155'
@@ -232,11 +233,11 @@ with events_raw as (
         ,tx.to as tx_to
         ,cast((2.5*(er.amount_raw)/100)as uint256) as platform_fee_amount_raw
         ,2.5*((er.amount_raw / power(10,t1.decimals)))/100 AS platform_fee_amount
-        ,2.5*((er.amount_raw / power(10,t1.decimals)* coalesce(p1.price, fop.price)))/100 AS platform_fee_amount_usd
+        ,2.5*(((er.amount_raw / power(10,t1.decimals))* p1.price))/100 AS platform_fee_amount_usd
         ,CAST(2.5 AS DOUBLE) AS platform_fee_percentage
         ,CAST(tr.value as uint256) as royalty_fee_amount_raw
         ,tr.value / power(10, t1.decimals) as royalty_fee_amount
-        ,tr.value / power(10, t1.decimals) * coalesce(p1.price, fop.price) as royalty_fee_amount_usd
+        ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
         ,(tr.value / cast(er.amount_raw * 100 as double)) as royalty_fee_percentage
         ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
         ,case when tr.value is not null
@@ -311,9 +312,6 @@ with events_raw as (
         {% if not is_incremental() %}
         and p1.minute >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-    left join fill_missing_op_price as fop
-    on fop.contract_address = erc20.contract_address
-    and fop.block_date = date_trunc('day', er.block_time)
     left join transfers as tr
         on tr.tx_hash = er.tx_hash
         and tr.block_number = er.block_number
