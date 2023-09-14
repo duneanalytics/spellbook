@@ -24,4 +24,4 @@ macros:
         type: column name or expression
         description: "Valid base58 string"
   - name: get_balancer_link
-    description: "Returns a link to access a specific pool on the Balancer app, based on its blockchain and address"
+    description: "Returns a link to access a specific pool on the Balancer app, based on its blockchain and pool ID"
