@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('tx_hash_labels_early_investment_ethereum'),
+        tags=['dunesql']
     )
 }}
 
@@ -41,15 +42,15 @@ with
  )
 
 select
-  "ethereum" as blockchain,
+  'ethereum' as blockchain,
   concat(tx_hash, evt_index, project, version) as tx_hash_key,
-  "Early investment" AS name,
-  "tx_hash" AS category,
-  "gentrexha" AS contributor,
-  "query" AS source,
-  timestamp('2023-02-23') as created_at,
+  'Early investment' AS name,
+  'tx_hash' AS category,
+  'gentrexha' AS contributor,
+  'query' AS source,
+  TIMESTAMP '2023-02-23' as created_at,
   now() as updated_at,
-  "early_investment" as model_name,
-  "usage" as label_type
+  'early_investment' as model_name,
+  'usage' as label_type
 from
   early_investment_trades
