@@ -1,4 +1,6 @@
 {{ config(
+    tags = ['dunesql'],
+    schema = 'nft_ethereum',
     alias = alias('wallet_pnl'),
     materialized='incremental',
     file_format = 'delta',
@@ -20,7 +22,7 @@ WITH weekly_unique_wallet_address as
     FROM 
         {{ ref('nft_trades') }}
     WHERE 
-        block_time >= date_trunc("day", now() - interval '1 week')
+        block_time >= date_trunc('day', now() - interval '7' Day)
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
@@ -35,7 +37,7 @@ WITH weekly_unique_wallet_address as
     FROM 
         {{ ref('nft_trades') }}
     WHERE 
-        block_time >= date_trunc("day", now() - interval '1 week')
+        block_time >= date_trunc('day', now() - interval '7' Day)
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL

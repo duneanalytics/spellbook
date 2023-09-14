@@ -1,7 +1,9 @@
 {{ config(
-     alias = alias('top_sales'),
-     materialized='table',
-     post_hook='{{ expose_spells(\'["ethereum"]\',
+    tags = ['dunesql'],
+    schema = 'nft_ethereum',
+    alias = alias('top_sales'),
+    materialized='table',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                  "sector",
                                  "nft",
                                  \'["Henrystats"]\') }}'
