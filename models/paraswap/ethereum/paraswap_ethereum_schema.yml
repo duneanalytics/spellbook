@@ -23,6 +23,9 @@ models:
       - &block_time
         name: block_time
         description: "Block time of transaction"
+      - &block_month
+        name: block_month
+        description: "Block month of transaction"
       - &block_number
         name: block_number
         description: "Block number of transaction"

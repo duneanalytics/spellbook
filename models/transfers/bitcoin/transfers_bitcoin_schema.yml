@@ -23,7 +23,7 @@ models:
       - name: index
       - &blockchain
         name: blockchain
-        description: "Chai name"
+        description: "Chain name"
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
@@ -36,7 +36,10 @@ models:
       - &amount_raw
         name: amount_raw
         description: "The number of Satoshis attached to this input or output"
-      
+      - &amount_transfer_usd
+        name: amount_transfer_usd
+        description: Amount of the transfer by usd
+
   - name: transfers_bitcoin_satoshi_agg_day
     meta:
       blockchain: bitcoin
@@ -58,6 +61,7 @@ models:
         description: "UTC event block time truncated to the day mark."
       - *wallet_address
       - *amount_raw
+      - *amount_transfer_usd
 
     
   
@@ -75,8 +79,8 @@ models:
       - *day
       - *wallet_address
       - *amount_raw
+      - *amount_transfer_usd
       - name: last_updated
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-  
