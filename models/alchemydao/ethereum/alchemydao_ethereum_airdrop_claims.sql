@@ -1,10 +1,10 @@
 {{
     config(
+        tags=['dunesql', 'static'],
         schema = 'alchemydao_ethereum',
         alias = alias('airdrop_claims'),
         materialized = 'table',
         file_format = 'delta',
-        tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -13,7 +13,7 @@
     )
 }}
 
-{% set alch_token_address = '0x0000a1c00009a619684135b824ba02f7fbf3a572' %}
+{% set alch_token_address = 0x0000a1c00009a619684135b824ba02f7fbf3a572 %}
 
 WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
@@ -33,7 +33,7 @@ SELECT 'ethereum' AS blockchain
 , t.account AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, t.amount AS amount_raw
 , CAST(t.amount/POWER(10, 18) AS double) AS amount_original
 , CASE WHEN t.evt_block_time >= (SELECT min_hour FROM more_prices) AND t.evt_block_time <= (SELECT max_hour FROM more_prices) THEN CAST(pu.median_price*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time < (SELECT min_hour FROM more_prices) THEN CAST((SELECT min_price FROM more_prices)*t.amount/POWER(10, 18) AS double)

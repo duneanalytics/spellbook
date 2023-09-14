@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['dunesql'],
         schema = 'velodrome_ethereum',
         alias = alias('airdrop_claims'),
         materialized = 'incremental',
@@ -33,7 +34,7 @@ SELECT 'optimism' AS blockchain
 , t.to AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, CAST(t.amount AS DECIMAL(38,0)) AS amount_raw
+, t.amount AS amount_raw
 , CAST(t.amount/POWER(10, 18) AS double) AS amount_original
 , CASE WHEN t.evt_block_time >= (SELECT min_hour FROM price_bounds) AND t.evt_block_time <= (SELECT max_hour FROM price_bounds) THEN CAST(pu.median_price*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time < (SELECT min_hour FROM price_bounds) THEN CAST((SELECT min_price FROM price_bounds)*t.amount/POWER(10, 18) AS double)
@@ -47,8 +48,8 @@ LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'optimism'
     AND pu.contract_address='{{velo_token_address}}'
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
-    AND pu.hour >= date_trunc("day", now() - interval '1 week')
+    AND pu.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
