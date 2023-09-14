@@ -146,6 +146,7 @@ SELECT nftt.blockchain
 , nftt.tx_to
 , nftt.block_time
 , date_trunc('day', nftt.block_time) AS block_date
+, date_trunc('month', nftt.block_time) AS block_month
 , nftt.block_number
 , nftt.tx_hash
 , nftt.unique_trade_id
