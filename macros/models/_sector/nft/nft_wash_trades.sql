@@ -1,4 +1,4 @@
-{% macro nft_wash_trades(blockchain) %}
+{% macro nft_wash_trades(blockchain, first_funded_by) %}
 {%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
 
@@ -91,7 +91,7 @@ WITH filter_1 AS (
     , filter_funding_buyer.first_funded_by AS buyer_first_funded_by
     , filter_funding_seller.first_funded_by AS seller_first_funded_by
     FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('addresses_events_{{blockchain}}_first_funded_by') }} filter_funding_buyer
+    INNER JOIN {{ first_funded_by }} filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
@@ -99,7 +99,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_funding_buyer.block_time >= date_trunc("day", NOW() - interval '7' day)
         {% endif %}
-    INNER JOIN {{ ref('addresses_events_{{blockchain}}_first_funded_by') }} filter_funding_seller
+    INNER JOIN {{ first_funded_by }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
@@ -120,7 +120,7 @@ WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS flashloan
     FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='{{blockchain}}'
+    INNER JOIN {{ ref('dex_flashloans') }} ON df.blockchain='{{blockchain}}'
         AND df.block_time=nftt.block_time
         AND df.tx_hash=nftt.tx_hash
     WHERE nftt.blockchain='{{blockchain}}'

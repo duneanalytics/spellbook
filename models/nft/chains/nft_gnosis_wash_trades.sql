@@ -12,5 +12,7 @@
 }}
 
 {{nft_wash_trades(
-    blockchain='gnosis'
+    blockchain='gnosis',
+    first_funded_by= ref('addresses_events_gnosis_first_funded_by')
+
 )}}

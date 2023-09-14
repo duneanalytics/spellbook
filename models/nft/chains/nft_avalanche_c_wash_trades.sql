@@ -12,5 +12,6 @@
 }}
 
 {{nft_wash_trades(
-    blockchain='avalanche_c'
+    blockchain='avalanche_c',
+    first_funded_by= ref('addresses_events_avalanche_c_first_funded_by')
 )}}

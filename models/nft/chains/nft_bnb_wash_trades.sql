@@ -12,5 +12,6 @@
 }}
 
 {{nft_wash_trades(
-    blockchain='bnb'
+    blockchain='bnb',
+    first_funded_by= ref('addresses_events_bnb_first_funded_by')
 )}}
