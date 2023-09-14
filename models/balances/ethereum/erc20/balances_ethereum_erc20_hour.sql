@@ -10,36 +10,40 @@
 }}
 
 with
+
+-- credits @tomfutago - https://dune.com/queries/2988360
+
 years as (
-  select year
-  from (
-    values (
-      sequence(timestamp '2015-01-01', cast(date_trunc('year', now()) as timestamp), interval '1' year)
-    )
-  ) s(year_array)
-  cross join unnest(year_array) as d(year)
+    select year
+    from (
+        values (
+            sequence(timestamp '2015-01-01', cast(date_trunc('year', now()) as timestamp), interval '1' year)
+          )
+    ) s(year_array)
+    cross join unnest(year_array) as d(year)
 ),
 _hours as (
-  select date_add('hour', s.n, y.year) as hour
-  from years y
-  cross join unnest(sequence(1, 9000)) s(n)
-  where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
+    select date_add('hour', s.n, y.year) as hour
+    from years y
+    cross join unnest(sequence(1, 9000)) s(n)
+    where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
 ),
 hours as (
   select hour from _hours
   where hour < localtimestamp
   order by 1
 ),
+
 hourly_balances as (
-  SELECT
-  wallet_address,
-  token_address,
-  amount_raw,
-  amount,
-  hour,
-  symbol,
-  lead(hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
-  FROM {{ ref('transfers_ethereum_erc20_rolling_hour') }}
+    SELECT
+        wallet_address,
+        token_address,
+        amount_raw,
+        amount,
+        hour,
+        symbol,
+        lead(hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
+    FROM {{ ref('transfers_ethereum_erc20_rolling_hour') }}
 )
 
 SELECT

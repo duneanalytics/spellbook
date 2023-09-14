@@ -7,31 +7,36 @@
                                             \'["soispoke","dot2dotseurat"]\') }}'
         )
 }}
-
 with
-    days as (
-      select
-          "day"
-      from
-          unnest (
-              sequence(
-                  cast('2015-01-01' as date),
-                  current_date,
-                  interval '1' day
-              )
-          ) as _u ("day")
-    )
 
-, daily_balances as
- (SELECT
-    wallet_address,
-    token_address,
-    amount_raw,
-    amount,
-    day,
-    symbol,
-    lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
-    FROM {{ ref('transfers_ethereum_erc20_rolling_day') }})
+time_seq AS (
+    SELECT 
+        sequence(
+        CAST('2015-01-01' as timestamp),
+        date_trunc('day', cast(now() as timestamp)),
+        interval '1' day
+        ) AS time 
+),
+
+days AS (
+    SELECT 
+        time.time AS day 
+    FROM time_seq
+    CROSS JOIN unnest(time) AS time(time)
+),
+
+daily_balances as (
+    SELECT
+        wallet_address,
+        token_address,
+        amount_raw,
+        amount,
+        day,
+        symbol,
+        lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
+    FROM
+        {{ ref('transfers_ethereum_erc20_rolling_day') }}
+)
 
 SELECT
     'ethereum' as blockchain,
