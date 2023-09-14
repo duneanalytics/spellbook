@@ -642,7 +642,7 @@ WITH dao_wallet AS (
          , call_block_time ts
          , call_tx_hash    hash
          , dart
-         , NULL AS         rate
+         , CAST(NULL AS INT256) AS rate
          , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_frob') }}
     WHERE call_success
@@ -657,7 +657,7 @@ WITH dao_wallet AS (
             , call_block_time ts
             , call_tx_hash hash
             , dart
-            , 0.0 AS rate
+            , INT256 '0' AS rate
             , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_grab') }}
     WHERE call_success
@@ -671,7 +671,7 @@ WITH dao_wallet AS (
     SELECT i AS ilk
             , call_block_time ts
             , call_tx_hash hash
-            , NULL AS dart
+            , CAST(NULL AS INT256) AS dart
             , rate
             , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_fold') }}
@@ -981,7 +981,7 @@ WITH dao_wallet AS (
     SELECT i AS ilk
             , call_block_time ts
             , call_tx_hash hash
-            , NULL AS dart
+            , CAST(NULL AS INT256) AS dart
             , rate
     FROM {{ source('maker_ethereum', 'vat_call_fold') }}
     WHERE call_success
