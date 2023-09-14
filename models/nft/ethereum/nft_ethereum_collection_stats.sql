@@ -133,7 +133,7 @@ prof_data as
 
 SELECT 
     CAST(date_trunc('month', d.day) as date) as block_month, 
-    d.day, as block_date, 
+    d.day as block_date, 
     d.nft_contract_address, 
     COALESCE(prof.currency_volume, 0) as volume_eth,
     COALESCE(prof.trades, 0) as trades, 
