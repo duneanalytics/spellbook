@@ -156,12 +156,40 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
+ - name: blur_seaport_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     project: blur
+     contributors: [ '0xRob', 'hildobby', 'pandajackson42']
+   config:
+     tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
+   description: "Blur base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('blur_seaport_ethereum_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
+
  - name: blur_v2_ethereum_base_trades
    meta:
      blockchain: ethereum
      sector: nft
      project: blur
-     contributors: ['hildobby']
+     contributors: ['0xRob', 'hildobby']
    config:
      tags: [ 'ethereum', 'nft', 'trades', 'blur' ]
    description: "Blur v2 base trades"
