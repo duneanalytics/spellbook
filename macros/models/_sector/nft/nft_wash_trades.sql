@@ -9,6 +9,7 @@ WITH filter_1 AS (
     WHERE nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer=nftt.seller
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
@@ -25,6 +26,8 @@ WITH filter_1 AS (
         AND filter_baf.token_id=nftt.token_id
         AND nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
+        AND filter_baf.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         AND filter_baf.block_time >= date_trunc('day', NOW() - interval '7' day)
@@ -47,6 +50,8 @@ WITH filter_1 AS (
         AND nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
         AND 0x29469395eaf6f95920e59f858042f0e28d98a20b NOT IN (nftt.buyer, nftt.seller)
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
+        AND filter_bought_3x.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         AND filter_bought_3x.block_time >= date_trunc('day', NOW() - interval '7' day)
@@ -68,6 +73,8 @@ WITH filter_1 AS (
         AND filter_sold_3x.token_standard IN ('{{token_standard_name}}' || '721', '{{token_standard_name}}' || '20')
         AND nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
+        AND filter_sold_3x.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         AND filter_sold_3x.block_time >= date_trunc('day', NOW() - interval '7' day)
@@ -103,6 +110,8 @@ WITH filter_1 AS (
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer IS NOT NULL
         AND nftt.seller IS NOT NULL
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
+        AND filter_funding_seller.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         AND filter_funding_seller.block_time >= date_trunc('day', NOW() - interval '7' day)
@@ -118,6 +127,7 @@ WITH filter_1 AS (
         AND df.tx_hash=nftt.tx_hash
         AND nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
+        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
@@ -184,6 +194,7 @@ LEFT JOIN filter_4 ON nftt.unique_trade_id=filter_4.unique_trade_id
 LEFT JOIN filter_5 ON nftt.unique_trade_id=filter_5.unique_trade_id
 WHERE nftt.blockchain='{{blockchain}}'
     AND nftt.unique_trade_id IS NOT NULL
+    AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
     {% if is_incremental() %}
     AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
     {% endif %}
