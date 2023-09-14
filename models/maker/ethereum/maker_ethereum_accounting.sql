@@ -347,7 +347,8 @@ WITH dao_wallet AS (
     FROM team_dai_burns_preunioned
 )
 , psm_yield_trxns AS (
-    SELECT call_tx_hash
+    SELECT DISTINCT
+        call_tx_hash
         , CASE WHEN usr = 0xf2e7a5b83525c3017383deed19bb05fe34a62c27
             THEN 'PSM-GUSD-A'
         END AS ilk
@@ -357,8 +358,8 @@ WITH dao_wallet AS (
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
-    GROUP BY call_tx_hash
-        , ilk
+    --     GROUP BY call_tx_hash
+    --         , ilk
 )
 , psm_yield_preunioned AS (
     SELECT vat.call_block_time           ts
