@@ -14,7 +14,7 @@ select
   cast(false as boolean) as approval_for_all,
   contract_address,
   tokenId as token_id,
-  boolean 'true' as approved,
+  cast(true as boolean) as approved,
   approved as operator,
   evt_tx_hash as tx_hash,
   evt_index
@@ -51,7 +51,7 @@ select
   evt_block_time as block_time,
   date_trunc('day', evt_block_time) as block_date,
   evt_block_number as block_number,
-  owner as address,
+  cast(null as varbinary) as address,
   '{{token_standard_1155}}' as token_standard,
   cast(true as boolean) as approval_for_all,
   contract_address,
