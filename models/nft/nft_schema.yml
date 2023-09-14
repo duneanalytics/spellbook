@@ -363,7 +363,7 @@ models:
       - name: token_standard
         tests:
           - accepted_values:
-              values: ['erc721', 'erc1155']
+              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
       - name: approval_for_all
         description: "Was this an ApprovalForAll or a simple Approval?"
       - name: contract_address
