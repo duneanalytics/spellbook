@@ -525,7 +525,7 @@ WITH dao_wallet AS (
         , SUM(dart)/1e18 AS value
     FROM {{ source('maker_ethereum', 'vat_call_grab') }}
     WHERE call_success
-    AND dart+0 > 0
+    AND dart > INT256 '0'
     GROUP BY 1, 2, 3
 )
 , d3m_revenues AS (
@@ -646,7 +646,7 @@ WITH dao_wallet AS (
          , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_frob') }}
     WHERE call_success
-      AND dart <> 0.0
+      AND dart != INT256 '0'
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -661,7 +661,7 @@ WITH dao_wallet AS (
             , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_grab') }}
     WHERE call_success
-      AND dart <> 0.0
+      AND dart != INT256 '0'
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -676,7 +676,7 @@ WITH dao_wallet AS (
             , call_trace_address
     FROM {{ source('maker_ethereum', 'vat_call_fold') }}
     WHERE call_success
-      AND rate <> 0.0
+      AND rate != INT256 '0'
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -728,7 +728,7 @@ WITH dao_wallet AS (
       AND suck.v IN (0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
                 , 0x2cc583c0aacdac9e23cb601fda8f1a0c56cdcb71
                 , 0xa4c22f0e25c6630b2017979acf1f865e94695c4b)
-      AND suck.rad+0 <> 0
+      AND suck.rad != UINT256 '0'
     --   {% if is_incremental() %}
     --   AND suck.call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
