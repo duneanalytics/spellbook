@@ -60,7 +60,7 @@ WITH trades AS (
     FROM trades dt
     INNER JOIN {{transactions}} tx ON tx.block_time=dt.block_time
         AND tx.hash=dt.tx_hash
-        AND vblock_date >= date_trunc('day', now() - interval '3' day)
+        AND tx.block_date >= date_trunc('day', now() - interval '3' day)
         {% if is_incremental() %}
         AND tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
