@@ -1107,20 +1107,20 @@ WITH dao_wallet AS (
     SELECT evt_block_time       ts
         , evt_tx_hash hash
         , value         AS      expense --positive expense which is a reduction in equity
-        , `to`          AS      address
+        , "to"          AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
-    WHERE `from` = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
-    AND `to` <> 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb --one transaction both to and from pause proxy, ignoring this one
+    WHERE "from" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+    AND "to" <> 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb --one transaction both to and from pause proxy, ignoring this one
     
     UNION ALL
     
     SELECT evt_block_time       ts
         , evt_tx_hash hash
         , -value        AS      expense --negative expense, increase in equity
-        , `from`        AS      address
+        , "from"        AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
-    WHERE `to` = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
-    AND `from` NOT IN (0x8ee7d9235e01e6b42345120b5d270bdb763624c7
+    WHERE "to" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
+    AND "from" NOT IN (0x8ee7d9235e01e6b42345120b5d270bdb763624c7
                        , 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb) --filtering out initial transfers in; also one transaction both to and from pause proxy, ignoring this one
 ), pause_proxy_mkr_trxns_preunion AS
 (
