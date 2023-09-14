@@ -8,7 +8,12 @@ SELECT
 , MIN(et.block_number) AS block_number
 , MIN_BY(et.tx_hash, et.block_number) AS tx_hash
 FROM {{ source( blockchain , 'traces') }} et
-WHERE et.success
+{% if is_incremental() %}
+LEFT JOIN {{this}} ffb ON et.to = ffb.address WHERE ffb.address IS NULL
+{% else %}
+WHERE 1 = 1
+{% endif %}
+AND et.success
 AND (et.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR et.call_type IS NULL)
 AND CAST(et.value AS double) > 0
 {% if is_incremental() %}
