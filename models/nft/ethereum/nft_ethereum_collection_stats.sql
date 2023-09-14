@@ -19,7 +19,7 @@ WITH src_data as
     SELECT 
         nft_contract_address
         , block_time
-        , date_trunc('day', block_time) as block_date
+        , CAST(date_trunc('day', block_time) as date) as block_date
         , currency_symbol
         , amount_original
         , amount_usd
@@ -56,7 +56,7 @@ time_seq AS (
                 ) as time
             {% else %}
                 sequence(
-                    to_date(first_trade_date),
+                    first_trade_date,
                     date_trunc('day', cast(now() as timestamp)),
                     interval '1' day
                 ) as time
@@ -133,7 +133,7 @@ prof_data as
 
 SELECT 
     CAST(date_trunc('month', d.day) as date) as block_month, 
-    CAST(d.day as date) as block_date, 
+    d.day, as block_date, 
     d.nft_contract_address, 
     COALESCE(prof.currency_volume, 0) as volume_eth,
     COALESCE(prof.trades, 0) as trades, 
