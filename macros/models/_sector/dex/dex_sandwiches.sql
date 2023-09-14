@@ -32,28 +32,28 @@ WITH trades AS (
     )
 
 , trades_with_index AS (
-    SELECT blockchain
-    , project
-    , version
-    , block_time
-    , token_sold_address
-    , token_bought_address
-    , token_sold_symbol
-    , token_bought_symbol
-    , maker
-    , taker
-    , tx_hash
-    , tx_from
-    , tx_to
-    , project_contract_address
-    , evt_index
-    , evt_indices
-    , token_pair
-    , token_sold_amount_raw
-    , token_bought_amount_raw
-    , token_sold_amount
-    , token_bought_amount
-    , amount_usd
+    SELECT dt.blockchain
+    , dt.project
+    , dt.version
+    , dt.block_time
+    , dt.token_sold_address
+    , dt.token_bought_address
+    , dt.token_sold_symbol
+    , dt.token_bought_symbol
+    , dt.maker
+    , dt.taker
+    , dt.tx_hash
+    , dt.tx_from
+    , dt.tx_to
+    , dt.project_contract_address
+    , dt.evt_index
+    , dt.evt_indices
+    , dt.token_pair
+    , dt.token_sold_amount_raw
+    , dt.token_bought_amount_raw
+    , dt.token_sold_amount
+    , dt.token_bought_amount
+    , dt.amount_usd
     , tx.block_number
     , tx.index
     FROM trades dt
