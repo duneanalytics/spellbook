@@ -51,7 +51,7 @@ select
   evt_block_time as block_time,
   cast(date_trunc('day', evt_block_time) as date) as block_date,
   evt_block_number as block_number,
-  cast(null as varbinary) as address,
+  account as address,
   '{{token_standard_1155}}' as token_standard,
   cast(true as boolean) as approval_for_all,
   contract_address,
