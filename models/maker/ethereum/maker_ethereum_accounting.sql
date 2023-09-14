@@ -358,8 +358,6 @@ WITH dao_wallet AS (
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
-    --     GROUP BY call_tx_hash
-    --         , ilk
 )
 , psm_yield_preunioned AS (
     SELECT vat.call_block_time           ts
@@ -396,7 +394,8 @@ WITH dao_wallet AS (
     FROM psm_yield_preunioned
 )
 , rwa_yield_trxns AS (
-    SELECT call_tx_hash
+    SELECT DISTINCT
+        call_tx_hash
         , CASE WHEN usr = 0x6c6d4be2223b5d202263515351034861dd9afdb6 THEN 'RWA009-A'
             WHEN usr = 0xef1b095f700be471981aae025f92b03091c3ad47 THEN 'RWA007-A'
             WHEN usr = 0x71ec6d5ee95b12062139311ca1fe8fd698cbe0cf THEN 'RWA014-A'
@@ -407,8 +406,6 @@ WITH dao_wallet AS (
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
-    GROUP BY call_tx_hash
-        , ilk
 )
 , rwa_yield_preunioned AS (
     SELECT vat.call_block_time           ts
