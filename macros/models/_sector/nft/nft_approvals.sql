@@ -7,7 +7,7 @@
 select
   '{{blockchain}}' as blockchain,
   evt_block_time as block_time,
-  date_trunc('day', evt_block_time) as block_date,
+  cast(date_trunc('day', evt_block_time) as date) as block_date,
   evt_block_number as block_number,
   owner as address,
   '{{token_standard_721}}' as token_standard,
@@ -28,7 +28,7 @@ union all
 select
   '{{blockchain}}' as blockchain,
   evt_block_time as block_time,
-  date_trunc('day', evt_block_time) as block_date,
+  cast(date_trunc('day', evt_block_time) as date) as block_date,
   evt_block_number as block_number,
   owner as address,
   '{{token_standard_721}}' as token_standard,
@@ -49,7 +49,7 @@ union all
 select
   '{{blockchain}}' as blockchain,
   evt_block_time as block_time,
-  date_trunc('day', evt_block_time) as block_date,
+  cast(date_trunc('day', evt_block_time) as date) as block_date,
   evt_block_number as block_number,
   cast(null as varbinary) as address,
   '{{token_standard_1155}}' as token_standard,
