@@ -1462,13 +1462,13 @@ WITH dao_wallet AS (
 ), cumulative_sums AS
 (
     SELECT with_prices.*
-        , SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_token_value
-        , SUM(dai_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_dai_value
-        , SUM(eth_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_eth_value
-        , m2m_levels.price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS dai_value_if_converted_all_once
-        , m2m_levels.price/with_prices.eth_price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS eth_value_if_converted_all_once
-        , m2m_levels.price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) - SUM(dai_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) AS dai_m2m
-        , m2m_levels.price/with_prices.eth_price * SUM(value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) - SUM(eth_value) OVER (PARTITION BY LEFT(code,1), with_prices.token ORDER BY with_prices.ts) eth_m2m
+        , SUM(value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_token_value
+        , SUM(dai_value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_dai_value
+        , SUM(eth_value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) AS cumulative_ale_eth_value
+        , m2m_levels.price * SUM(value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) AS dai_value_if_converted_all_once
+        , m2m_levels.price/with_prices.eth_price * SUM(value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) AS eth_value_if_converted_all_once
+        , m2m_levels.price * SUM(value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) - SUM(dai_value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) AS dai_m2m
+        , m2m_levels.price/with_prices.eth_price * SUM(value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) - SUM(eth_value) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), with_prices.token ORDER BY with_prices.ts) eth_m2m
     FROM with_prices
     LEFT JOIN m2m_levels
     ON with_prices.token = m2m_levels.token
@@ -1476,8 +1476,8 @@ WITH dao_wallet AS (
 ), incremental_m2m AS
 (
     SELECT *
-        , dai_m2m - COALESCE(LAG(dai_m2m) OVER (PARTITION BY LEFT(code,1), token ORDER BY ts), 0) AS incremental_dai_m2m
-        , eth_m2m - COALESCE(LAG(eth_m2m) OVER (PARTITION BY LEFT(code,1), token ORDER BY ts), 0) AS incremental_eth_m2m
+        , dai_m2m - COALESCE(LAG(dai_m2m) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), token ORDER BY ts), 0) AS incremental_dai_m2m
+        , eth_m2m - COALESCE(LAG(eth_m2m) OVER (PARTITION BY SUBSTR(CAST(code AS VARCHAR), 1, 1), token ORDER BY ts), 0) AS incremental_eth_m2m
     FROM cumulative_sums
     WHERE cumulative_ale_token_value > 0
     AND SUBSTR(CAST(code AS VARCHAR), -4) = '9999'
