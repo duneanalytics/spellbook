@@ -1,7 +1,7 @@
 WITH test_data AS
 (
     SELECT
-        TIMESTAMP block_date as block_date
+        CAST(block_date as TIMESTAMP) as block_date
         ,nft_contract_address
         ,volume_eth
         ,price_p5_eth
