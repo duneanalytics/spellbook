@@ -12,5 +12,8 @@ select
     row_number() over (partition by wallet_address order by day desc) as recency_index,
     sum(amount_raw) over (
         partition by wallet_address order by day
-    ) as amount_raw
+    ) as amount_raw,
+    sum(amount_transfer_usd) over (
+        partition by wallet_address order by day
+    ) as amount_transfer_usd
 from {{ ref('transfers_bitcoin_satoshi_agg_day') }}
