@@ -1513,5 +1513,4 @@ WITH dao_wallet AS (
 SELECT *
 FROM final
 WHERE ( COALESCE(value, 0) <> 0 OR dai_value <> 0 OR eth_value <> 0 )
-AND ts <= (SELECT MAX(ts) + INTERVAL 59 SECONDS FROM eth_prices) --excludes blocks for which we can't price in eth yet (last 30 min or so). 59 second interval is to accomodate the entire minute. Might have to be more restrictive even in the spell depending on how execution works
-;
+AND ts <= (SELECT MAX(ts) + INTERVAL '59' SECOND FROM eth_prices) --excludes blocks for which we can't price in eth yet (last 30 min or so). 59 second interval is to accomodate the entire minute. Might have to be more restrictive even in the spell depending on how execution works
