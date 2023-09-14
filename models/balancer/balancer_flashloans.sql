@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
         alias = alias('flashloans'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis"]\',
                                 "project",
@@ -23,6 +24,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_time,
         amount,
         amount_usd,
@@ -38,4 +40,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

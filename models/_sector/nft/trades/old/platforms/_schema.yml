@@ -143,6 +143,8 @@ models:
       tags: ['polygon','aavegotchi','events']
     description: >
         Aavegotchi events on Polygon
+    tests:
+      - check_columns_nft_old_events
 
   - name: element_avalanche_c_events
     meta:
@@ -153,6 +155,8 @@ models:
       tags: [ 'avalanche_c','element','events' ]
     description: >
       Element events on Avalanche
+    tests:
+      - check_columns_nft_old_events
 
   - name: element_bnb_events
     meta:
@@ -163,6 +167,8 @@ models:
       tags: [ 'bnb','element','events' ]
     description: >
       Element events on BNB
+    tests:
+      - check_columns_nft_old_events
 
   - name: nftearth_optimism_events
     meta:
@@ -174,6 +180,7 @@ models:
     description: >
       NFTEarth Seaport events on Optimism.
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -193,6 +200,8 @@ models:
       tags: [ 'polygon','oneplanet','events','springzh' ]
     description: >
       OnePlanet events on Polygon
+    tests:
+      - check_columns_nft_old_events
 
   - name: pancakeswap_bnb_nft_events
     meta:
@@ -204,6 +213,7 @@ models:
     description: >
       Pancakeswap nft events on BNB smart chain
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

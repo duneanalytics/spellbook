@@ -203,6 +203,7 @@ models:
     description: >
         Opensea events on Arbitrum, from Seaport v1.0
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -299,6 +300,7 @@ models:
     description: >
         Opensea events on Arbitrum, from Seaport v1.4, v1.5
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
