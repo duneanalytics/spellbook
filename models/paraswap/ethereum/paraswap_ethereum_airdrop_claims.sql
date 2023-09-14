@@ -14,7 +14,7 @@
     )
 }}
 
-{% set psp_token_address = '0xcafe001067cdef266afb7eb5a286dcfd277f3de5' %}
+{% set psp_token_address = 0xcafe001067cdef266afb7eb5a286dcfd277f3de5 %}
 
 WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
@@ -23,7 +23,7 @@ WITH more_prices AS (
     , MAX_BY(median_price, hour) AS max_price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='{{psp_token_address}}'
+    AND contract_address={{psp_token_address}}
     )
 
 SELECT 'ethereum' AS blockchain
@@ -45,14 +45,14 @@ SELECT 'ethereum' AS blockchain
 , t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='{{psp_token_address}}'
+    AND pu.contract_address={{psp_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-WHERE t.contract_address = '{{psp_token_address}}'
-AND t."from" = '0x090e53c44e8a9b6b1bca800e881455b921aec420'
-AND t.evt_block_time > '2021-11-15'
+WHERE t.contract_address = {{psp_token_address}}
+AND t."from" = 0x090e53c44e8a9b6b1bca800e881455b921aec420
+AND t.evt_block_time > TIMESTAMP '2021-11-15'
 {% if is_incremental() %}
 AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

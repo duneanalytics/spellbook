@@ -44,6 +44,6 @@ SELECT 'ethereum' AS blockchain
 , t.evt_index
 FROM {{ source('alchemydao_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='{{alch_token_address}}'
+    AND pu.contract_address={{alch_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-03-28' AND '2021-04-19'

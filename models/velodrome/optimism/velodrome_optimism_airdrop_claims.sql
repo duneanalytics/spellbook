@@ -14,7 +14,7 @@
     )
 }}
 
-{% set velo_token_address = '0x3c8b650257cfb5f272f799f5e2b4e65093a11a05' %}
+{% set velo_token_address = 0x3c8b650257cfb5f272f799f5e2b4e65093a11a05 %}
 
 WITH price_bounds AS (
     SELECT MIN(hour) AS min_hour
@@ -23,7 +23,7 @@ WITH price_bounds AS (
     , MAX_BY(median_price, hour) AS max_price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'optimism'
-    AND contract_address='{{velo_token_address}}'
+    AND contract_address={{velo_token_address}}
     )
 
 SELECT 'optimism' AS blockchain
@@ -40,12 +40,12 @@ SELECT 'optimism' AS blockchain
     WHEN t.evt_block_time < (SELECT min_hour FROM price_bounds) THEN CAST((SELECT min_price FROM price_bounds)*t.amount/POWER(10, 18) AS double)
     WHEN t.evt_block_time > (SELECT max_hour FROM price_bounds) THEN CAST((SELECT max_price FROM price_bounds)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
-, '{{velo_token_address}}' AS token_address
+, {{velo_token_address}} AS token_address
 , 'VELO' AS token_symbol
 , t.evt_index
 FROM {{ source('velodrome_optimism', 'MerkleClaim_evt_Claim') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'optimism'
-    AND pu.contract_address='{{velo_token_address}}'
+    AND pu.contract_address={{velo_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
     AND pu.hour >= date_trunc('day', now() - interval '7' day)

@@ -13,7 +13,7 @@
     )
 }}
 
-{% set vusd_token_address = '0x3479b0acf875405d7853f44142fe06470a40f6cc' %}
+{% set vusd_token_address = 0x3479b0acf875405d7853f44142fe06470a40f6cc %}
 
 WITH more_prices AS (
     SELECT MIN(hour) AS min_hour
@@ -22,7 +22,7 @@ WITH more_prices AS (
     , MAX_BY(median_price, hour) AS max_price
     FROM {{ ref('dex_prices') }}
     WHERE blockchain = 'ethereum'
-    AND contract_address='{{vusd_token_address}}'
+    AND contract_address={{vusd_token_address}}
     )
 
 SELECT 'ethereum' AS blockchain
@@ -44,6 +44,6 @@ SELECT 'ethereum' AS blockchain
 , t.evt_index
 FROM {{ source('value_defi_ethereum', 'MerkleDistributor_evt_Claimed') }} t
 LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
-    AND pu.contract_address='{{vusd_token_address}}'
+    AND pu.contract_address={{vusd_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN '2021-01-19' AND '2021-09-26'
