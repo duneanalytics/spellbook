@@ -142,21 +142,21 @@ WITH dao_wallet AS (
     --PSMs not listed will be assumed non-yield-bearing
     --Any ilk listed in here must have complete history (a row with null as the begin month/yr and a row with null as the end month/year, can be same row)
     values
-        ('PSM-GUSD-A',CAST(NULL as date),CAST('2022-10-31' as date),13410,CAST(NULL AS NUMERIC(38)),CAST(NULL AS NUMERIC(38))), --could make rate 0 as well.
+        ('PSM-GUSD-A',CAST(NULL as date),CAST('2022-10-31' as date),13410,NULL,NULL), --could make rate 0 as well.
         ('PSM-GUSD-A',CAST('2022-11-01' as date),CAST(NULL as date),13411,31180,0.0125),
-        ('RWA001-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA002-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA003-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA004-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA005-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA006-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA007-A',CAST(NULL as date),CAST(NULL as date),12320,31172,CAST(NULL AS NUMERIC(38))),
-        ('RWA008-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA009-A',CAST(NULL as date),CAST(NULL as date),12310,31170,CAST(NULL AS NUMERIC(38))),
-        ('RWA014-A',CAST(NULL as date),CAST(NULL as date),13411,31180,CAST(NULL AS NUMERIC(38))),
-	    ('RWA015-A',CAST(NULL as date),CAST(NULL as date),12320,31172,CAST(NULL AS NUMERIC(38))),
-        ('UNIV2DAIUSDC-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38))), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
-        ('UNIV2DAIUSDT-A',CAST(NULL as date),CAST(NULL as date),11140,31140,CAST(NULL AS NUMERIC(38)))
+        ('RWA001-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA002-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA003-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA004-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA005-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA006-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA007-A',CAST(NULL as date),CAST(NULL as date),12320,31172,NULL),
+        ('RWA008-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA009-A',CAST(NULL as date),CAST(NULL as date),12310,31170,NULL),
+        ('RWA014-A',CAST(NULL as date),CAST(NULL as date),13411,31180,NULL),
+	    ('RWA015-A',CAST(NULL as date),CAST(NULL as date),12320,31172,NULL),
+        ('UNIV2DAIUSDC-A',CAST(NULL as date),CAST(NULL as date),11140,31140,NULL), --need to list all UNIV2% LP that are stable LPs, all else assumed volatile
+        ('UNIV2DAIUSDT-A',CAST(NULL as date),CAST(NULL as date),11140,31140,NULL)
 )
 , ilk_list_labeled AS
 (
@@ -186,11 +186,11 @@ WITH dao_wallet AS (
         WHEN ilk LIKE 'UNIV2%' THEN 31141
         WHEN ilk LIKE 'DIRECT%' THEN 31160
         WHEN ilk LIKE 'RWA%' THEN 31170 --default rwa into off-chain private credit in case an RWA is not manually listed
-        WHEN ilk LIKE 'PSM%' THEN CAST(NULL AS NUMERIC(38)) --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
+        WHEN ilk LIKE 'PSM%' THEN NULL --defaulting PSMS to non-yielding; exceptions should be listed in manual entry table
         WHEN ilk IN ('USDC-A','USDC-B', 'USDT-A', 'TUSD-A','GUSD-A','PAXUSD-A') THEN 31190
         ELSE 31150 --other crypto loans category. all other categories are accounted for in the above logic. SAI included here
         END AS equity_code
-    , CAST(NULL AS NUMERIC(38)) AS apr
+    , NULL AS apr
     FROM ilk_list
     WHERE ilk NOT IN (SELECT ilk FROM ilk_list_manual_input)
     AND ilk <> 'TELEPORT-FW-A' --Need to look into how to handle teleport and potentially update. Ignoring for now.
