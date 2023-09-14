@@ -1480,7 +1480,7 @@ WITH dao_wallet AS (
         , eth_m2m - COALESCE(LAG(eth_m2m) OVER (PARTITION BY LEFT(code,1), token ORDER BY ts), 0) AS incremental_eth_m2m
     FROM cumulative_sums
     WHERE cumulative_ale_token_value > 0
-    AND RIGHT(code,4) = 9999
+    AND SUBSTR(CAST(code AS VARCHAR), -4) = '9999'
 ), final AS
 (
     SELECT code
@@ -1494,7 +1494,7 @@ WITH dao_wallet AS (
         , CASE WHEN descriptor = 'MKR Vest Creates/Yanks' THEN 0 ELSE eth_value END AS eth_value
         , DATE(ts) AS dt
     FROM with_prices
-    WHERE RIGHT(code,4) <> 9999
+    WHERE SUBSTR(CAST(code AS VARCHAR), -4) <> '9999'
     
     UNION ALL
     
