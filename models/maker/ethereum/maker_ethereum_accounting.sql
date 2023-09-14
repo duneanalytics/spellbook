@@ -256,14 +256,14 @@ WITH dao_wallet AS (
 
 , contracts AS (
     SELECT 'FlapFlop' AS contract_type
-        , data AS contract_address
+        , data_binary AS contract_address
     FROM {{ source('maker_ethereum','vow_call_file') }}
-    WHERE LEFT(data, 2) = '0x'
+    WHERE data_binary is not NULL
         AND call_success
         -- {% if is_incremental() %}
         -- AND call_block_time >= date_trunc("day", now() - interval '1 week')
         -- {% endif %}
-    GROUP BY data
+    GROUP BY data_binary
 
     UNION ALL
 
