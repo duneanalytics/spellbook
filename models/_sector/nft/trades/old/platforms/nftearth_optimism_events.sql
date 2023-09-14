@@ -27,6 +27,8 @@ WITH fee_wallets as (
      ,native_token_symbol = 'ETH'
      ,start_date = '2023-01-31'
      ,seaport_fork_address = '0x0f9b80fc3c8b9123d0aef43df58ebdbc034a8901'
+     ,project = 'nftearth'
+     ,version = 'v1'
     )
   }}
 )
