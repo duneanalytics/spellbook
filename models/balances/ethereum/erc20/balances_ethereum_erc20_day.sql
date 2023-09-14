@@ -20,7 +20,7 @@ time_seq AS (
 
 days AS (
     SELECT 
-        time.time AS day 
+        time.time AS block_day 
     FROM time_seq
     CROSS JOIN unnest(time) AS time(time)
 ),
@@ -31,16 +31,16 @@ daily_balances as (
         token_address,
         amount_raw,
         amount,
-        day,
+        block_day,
         symbol,
-        lead(day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
+        lead(block_day, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY block_day) AS next_day
     FROM
         {{ ref('transfers_ethereum_erc20_rolling_day') }}
 )
 
 SELECT
     'ethereum' as blockchain,
-    d.day,
+    d.block_day,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -48,10 +48,10 @@ SELECT
     b.amount * p.price as amount_usd,
     b.symbol
 FROM daily_balances b
-INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
+INNER JOIN days d ON b.block_day <= d.block_day AND d.block_day < b.next_day
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND d.day = p.minute
+    AND d.block_day = p.minute
     AND p.blockchain = 'ethereum'
 -- Removes rebase tokens from balances
 LEFT JOIN {{ ref('tokens_ethereum_rebase') }}  as r

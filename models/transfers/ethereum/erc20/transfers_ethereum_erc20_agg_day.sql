@@ -10,7 +10,7 @@
 
 select
     'ethereum' as blockchain,
-    date_trunc('day', tr.evt_block_time) as day,
+    date_trunc('day', tr.evt_block_time) as block_day,
     tr.wallet_address,
     tr.token_address,
     t.symbol,

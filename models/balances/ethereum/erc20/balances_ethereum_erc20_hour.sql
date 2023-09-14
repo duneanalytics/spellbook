@@ -23,14 +23,14 @@ years as (
     cross join unnest(year_array) as d(year)
 ),
 _hours as (
-    select date_add('hour', s.n, y.year) as hour
+    select date_add('hour', s.n, y.year) as block_hour
     from years y
     cross join unnest(sequence(1, 9000)) s(n)
     where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
 ),
 hours as (
-  select hour from _hours
-  where hour < localtimestamp
+  select block_hour from _hours
+  where block_hour < localtimestamp
   order by 1
 ),
 
@@ -40,16 +40,16 @@ hourly_balances as (
         token_address,
         amount_raw,
         amount,
-        hour,
+        block_hour,
         symbol,
-        lead(hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
+        lead(block_hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY block_hour) AS next_hour
     FROM {{ ref('transfers_ethereum_erc20_rolling_hour') }}
 )
 
 SELECT
     'ethereum' as blockchain,
-    h.hour,
-    TRY_CAST(date_trunc('DAY', h.hour) AS date) as day,
+    h.block_hour,
+    TRY_CAST(date_trunc('DAY', h.block_hour) AS date) as block_day,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -57,10 +57,10 @@ SELECT
     b.amount * p.price as amount_usd,
     b.symbol
 FROM hourly_balances b
-INNER JOIN hours h ON b.hour <= h.hour AND h.hour < b.next_hour
+INNER JOIN hours h ON b.block_hour <= h.block_hour AND h.block_hour < b.next_hour
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND h.hour = p.minute
+    AND h.block_hour = p.minute
     AND p.blockchain = 'ethereum'
 -- Removes rebase tokens from balances
 LEFT JOIN {{ ref('tokens_ethereum_rebase') }}  as r
