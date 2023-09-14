@@ -704,7 +704,7 @@ WITH dao_wallet AS (
     FROM interest_accruals_3
     LEFT JOIN ilk_list_labeled
         ON interest_accruals_3.ilk = ilk_list_labeled.ilk
-        AND interest_accruals_3.ts BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        AND interest_accruals_3.ts BETWEEN COALESCE(ilk_list_labeled.begin_dt, TIMESTAMP '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, TIMESTAMP '2222-12-31') --if null, ensure its not restrictive
     GROUP BY 1,2,3,5
 
     UNION ALL
@@ -717,7 +717,7 @@ WITH dao_wallet AS (
     FROM interest_accruals_3
     LEFT JOIN ilk_list_labeled
         ON interest_accruals_3.ilk = ilk_list_labeled.ilk
-        AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        AND CAST(interest_accruals_3.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, TIMESTAMP '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, TIMESTAMP '2222-12-31') --if null, ensure its not restrictive
     GROUP BY 1,2,3,5
 )
 , opex_suck_hashes AS (
@@ -1009,7 +1009,7 @@ WITH dao_wallet AS (
     FROM loan_actions_2
     LEFT JOIN ilk_list_labeled
         ON loan_actions_2.ilk = ilk_list_labeled.ilk
-        AND CAST(loan_actions_2.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, '2222-12-31') --if null, ensure its not restrictive
+        AND CAST(loan_actions_2.ts AS DATE) BETWEEN COALESCE(ilk_list_labeled.begin_dt, TIMESTAMP '2000-01-01') AND COALESCE(ilk_list_labeled.end_dt, TIMESTAMP '2222-12-31') --if null, ensure its not restrictive
     --WHERE COALESCE(dart+0,0) <> 0  --this would prob work now but query works just fine without
     GROUP BY 1,2,3,5
     HAVING SUM(dart*rate)/POW(10,45) <> 0
@@ -1163,7 +1163,7 @@ WITH dao_wallet AS (
     WHERE blockchain = 'ethereum'
     AND EXTRACT(HOUR FROM minute) = 23
     AND EXTRACT(MINUTE from minute) = 59
-    AND minute >= '2019-11-01'
+    AND minute >= TIMESTAMP '2019-11-01'
 ), token_prices AS
 (
     SELECT minute AS ts
@@ -1180,11 +1180,11 @@ WITH dao_wallet AS (
     ) tokens 
     ON p.contract_address = tokens.price_address
     WHERE blockchain = 'ethereum'
-    AND minute >= '2019-11-01'
+    AND minute >= TIMESTAMP '2019-11-01'
     
     UNION ALL
     
-    SELECT '2021-11-09 00:02' AS ts, 'ENS' AS token, 44.3 AS price --ENS price history doesn't go back far enough, so manually inputting the first value from 2021-12-17 00:00
+    SELECT TIMESTAMP '2021-11-09 00:02' AS ts, 'ENS' AS token, 44.3 AS price --ENS price history doesn't go back far enough, so manually inputting the first value from 2021-12-17 00:00
 ), eth_prices AS
 (
     SELECT * FROM token_prices WHERE token = 'ETH'
