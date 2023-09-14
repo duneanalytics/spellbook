@@ -26,7 +26,7 @@ WITH weekly_unique_wallet_address as
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
-        AND number_of_items = 1
+        AND CAST(number_of_items as DOUBLE) = 1
         AND buyer != seller 
     
     UNION 
@@ -41,7 +41,7 @@ WITH weekly_unique_wallet_address as
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
-        AND number_of_items = 1
+        AND CAST(number_of_items as DOUBLE) = 1
         AND buyer != seller 
 )
 , trades as
@@ -64,7 +64,7 @@ WITH weekly_unique_wallet_address as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND CAST(src.number_of_items as DOUBLE) = 1
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
@@ -89,7 +89,7 @@ WITH weekly_unique_wallet_address as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND CAST(src.number_of_items as DOUBLE) = 1
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
@@ -145,7 +145,7 @@ WITH trades as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND CAST(src.number_of_items as DOUBLE) = 1
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
@@ -166,7 +166,7 @@ WITH trades as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND CAST(src.number_of_items as DOUBLE) = 1
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
