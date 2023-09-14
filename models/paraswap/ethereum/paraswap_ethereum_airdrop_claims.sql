@@ -31,7 +31,7 @@ SELECT 'ethereum' AS blockchain
 , t.evt_block_number AS block_number
 , 'Paraswap' AS project
 , 'Paraswap Airdrop' AS airdrop_identifier
-, from AS recipient
+, "from" AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
 , CAST(t.value AS DECIMAL(38,0)) AS amount_raw
@@ -51,7 +51,7 @@ LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 WHERE t.contract_address = '{{psp_token_address}}'
-AND t.from = '0x090e53c44e8a9b6b1bca800e881455b921aec420'
+AND t."from" = '0x090e53c44e8a9b6b1bca800e881455b921aec420'
 AND t.evt_block_time > '2021-11-15'
 {% if is_incremental() %}
 AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
