@@ -363,10 +363,10 @@ WITH dao_wallet AS (
 , psm_yield_preunioned AS (
     SELECT vat.call_block_time           ts
          , vat.call_tx_hash              hash
-         , ilk
+         , tx.ilk
          , SUM(vat.rad / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
-    JOIN psm_yield_trxns tx
+    INNER JOIN psm_yield_trxns tx
         ON vat.call_tx_hash = tx.call_tx_hash
     WHERE vat.dst = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND vat.call_success
