@@ -155,9 +155,7 @@ models:
             - blockchain
             - contract_address
     columns:
-      - &day
-        name: day
-        description: "Used for Partitioning"
+      - *block_month
       - &hour
         name: hour
         description: "hour corresponding to the prices data"
