@@ -42,7 +42,7 @@ FROM (
         WHERE
             amount_usd > 0
             {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '1 week')
+            AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         UNION ALL
         SELECT
@@ -56,7 +56,7 @@ FROM (
         WHERE
             amount_usd > 0
             {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '1 week')
+            AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
     ) subquery
 ) most_recent
