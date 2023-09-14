@@ -1,4 +1,5 @@
 {% macro nft_wash_trades(blockchain, first_funded_by) %}
+{%- set token_standard_name = 'bep' if blockchain == 'bnb' else 'erc' -%}
 {%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 
 WITH filter_1 AS (
@@ -42,7 +43,7 @@ WITH filter_1 AS (
         ON filter_bought_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_bought_3x.token_id=nftt.token_id
         AND filter_bought_3x.buyer=nftt.buyer
-        AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
+        AND filter_bought_3x.token_standard IN ('{{token_standard_name}}' || '721', '{{token_standard_name}}' || '20')
         AND nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
         AND 0x29469395eaf6f95920e59f858042f0e28d98a20b NOT IN (nftt.buyer, nftt.seller)
@@ -64,7 +65,7 @@ WITH filter_1 AS (
         ON filter_sold_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_sold_3x.token_id=nftt.token_id
         AND filter_sold_3x.seller=nftt.seller
-        AND filter_sold_3x.token_standard IN ('erc721', 'erc20')
+        AND filter_sold_3x.token_standard IN ('{{token_standard_name}}' || '721', '{{token_standard_name}}' || '20')
         AND nftt.blockchain='{{blockchain}}'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
