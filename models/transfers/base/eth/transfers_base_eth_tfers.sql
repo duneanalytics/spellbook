@@ -52,39 +52,51 @@ eth_transfers  as (
         {% endif %}
 ),
 
- --ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
-erc20_eth_transfers  as (
-        SELECT 
-            'deposits' as transfer_type, 
-            evt_tx_hash as tx_hash,
-            array[evt_index] as trace_address, 
-            evt_block_time as block_time,
-            to as wallet_address, 
-            contract_address as token_address,
-            CAST(value as double) as amount_raw
-        FROM 
-        {{ source('erc20_base', 'evt_transfer') }}
-        WHERE contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
-        {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
+eth_deposits_events as (
+    SELECT 
+        'deposits' as transfer_type, 
+        evt_tx_hash as tx_hash, 
+        evt_block_time as block_time, 
+        to as wallet_address, 
+        DENSE_RANK() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index ASC) as tx_rank
+    FROM 
+    {{ source('bridgebase_ethereum', 'OptimismPortal_evt_TransactionDeposited') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
+), 
 
-        UNION ALL 
+eth_deposits_traces as (
+    SELECT 
+        tx_hash, 
+        value, 
+        trace_address,
+        DENSE_RANK() OVER (PARTITION BY tx_hash ORDER BY tx_index ASC) as tx_rank 
+    FROM 
+    {{ source('ethereum', 'traces') }}
+    WHERE to = 0x49048044d57e1c92a77f79988d21fa8faf74e97e
+    AND CAST(value as DOUBLE) > 0 
+    {% if is_incremental() %}
+    AND block_time >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
+), 
 
-        SELECT 
-            'withdrawals' as transfer_type, 
-            evt_tx_hash as tx_hash,
-            array[evt_index] as trace_address, 
-            evt_block_time as block_time,
-            "from" as wallet_address, 
-            contract_address as token_address,
-            -CAST(value as double) as amount_raw
-        FROM 
-        {{ source('erc20_base', 'evt_transfer') }}
-        WHERE contract_address = 0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000
-        {% if is_incremental() %}
-            AND evt_block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
+-- eth deposits do not show in traces 
+eth_deposits as (
+    SELECT 
+        ee.transfer_type, 
+        ee.tx_hash, 
+        et.trace_address, 
+        ee.block_time, 
+        ee.wallet_address, 
+        0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000 as token_address, 
+        CAST(et.value as double) as amount_raw 
+    FROM 
+    eth_deposits_events ee 
+    INNER JOIN 
+    eth_deposits_traces et 
+        ON ee.tx_hash = et.tx_hash
+        AND ee.tx_rank = et.tx_rank 
 ),
 
 gas_fee as (
@@ -130,7 +142,7 @@ SELECT
     token_address, 
     amount_raw
 FROM 
-erc20_eth_transfers
+eth_deposits
 
 UNION ALL 
 
