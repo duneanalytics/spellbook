@@ -622,7 +622,7 @@ WITH curated_list AS (
       ,(0x645487828d5769c20365fdb8786a5e2b734d785c, 'Altitude Bridge')
       ,(0x01cf911dd46f90290bf5f93d0ef34237df7df1b6, 'Hedgey Finance')
       ,(0x320bcb681ce7023edfe48ade9cf5bf67a11bcd36, 'Hedgey Finance')
-      ,(0xf537880c505bfa7cda6c8c49d7efa53d45b52d40, 'Binance Exchange')
+      ,(0xf537880c505bfa7cda6c8c49d7efa53d45b52d40, 'Binance')
       ,(0x91f23057ee6e2d1e1ba00a7c1d71ba1a0b2c3113, 'Alongside Crypto Market Index')
       ,(0xe3f641ad659249a020e2af63c3f9abd6cffb668b, 'Alta Finance')
       ,(0x5afae3d2b0dcee1833bb947fac15d4f2d2d5d523, 'Ax Protocol')
@@ -649,11 +649,8 @@ GROUP BY 1,2
 
 -- Enforce consistent project name mapping to contracts_optimism_project_name_mappings.sql
 SELECT list.creator_address,
-  (CASE
-    WHEN lower(list.contract_project) = lower(mapping.dune_name) THEN mapping.mapped_name
-    ELSE list.contract_project
-  END) AS contract_project
+  Coalesce(mapping.mapped_name, list.contract_project) AS contract_project
   FROM filtered_list list
   LEFT JOIN {{ ref('contracts_optimism_project_name_mappings') }} mapping
-  ON lower(list.contract_project) = lower(mapping.dune_name)
+  ON Lower(list.contract_project) = Lower(mapping.dune_name)
   
