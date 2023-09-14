@@ -120,7 +120,7 @@ WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS flashloan
     FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('dex_flashloans') }} ON df.blockchain='{{blockchain}}'
+    INNER JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='{{blockchain}}'
         AND df.block_time=nftt.block_time
         AND df.tx_hash=nftt.tx_hash
     WHERE nftt.blockchain='{{blockchain}}'
