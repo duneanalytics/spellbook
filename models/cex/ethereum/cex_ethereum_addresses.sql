@@ -319,6 +319,7 @@ FROM (VALUES
     , ('ethereum', 0xb302bfe9c246c6e150af70b1caaa5e3df60dac05, 'Gemini', 'Gemini 5', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x8d6f396d210d385033b348bcae9e4f9ea4e045bd, 'Gemini', 'Gemini 6', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xd69b0089d9ca950640f5dc9931a41a5965f00303, 'Gemini', 'Gemini 7', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x183b1Ffb0Aa9213b9335AdFAd82E47bfb02f8d24, 'Gemini', 'Gemini 8', 'hildobby', date '2023-09-05')
     , ('ethereum', 0xdd51f01d9fc0fd084c1a4737bbfa5becb6ced9bc, 'Gemini', 'Gemini Deployer', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini Deployer 2', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x07ee55aa48bb72dcc6e9d78256648910de513eca, 'Gemini', 'Gemini Contract 1', 'hildobby', date '2023-08-31')
@@ -441,6 +442,13 @@ FROM (VALUES
     -- CoinEx
     , ('ethereum', 0xb9ee1e551f538a464e8f8c41e9904498505b49b0, 'CoinEx', 'CoinEx 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xb9ee1e551f538a464e8f8c41e9904498505b49b0
     , ('ethereum', 0x33ddd548fe3a082d753e5fe721a26e1ab43e3598, 'CoinEx', 'CoinEx 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x33ddd548fe3a082d753e5fe721a26e1ab43e3598
+    , ('ethereum', 0x601a63c50448477310fedb826ed0295499baf623, 'CoinEx', 'CoinEx 3', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0xd782e53a49d564f5fce4ba99555dd25d16d02a75, 'CoinEx', 'CoinEx 4', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0x90f86774e792e91cf81b2ff9f341efca649343a6, 'CoinEx', 'CoinEx 5', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0x53eb3ea47643e87e8f25dd997a37b3b5260e7336, 'CoinEx', 'CoinEx 6', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0x5cf44f2cb65af7d56b30719312ecd13151a0470b, 'CoinEx', 'CoinEx Deposit Funder', 'sankinyue', date '2023-09-13') -- https://etherscan.io/address/0x5cf44f2cb65af7d56b30719312ecd13151a0470b
+    , ('ethereum', 0x1e450c2a1870a52606edd37ac0bf593dca9c1c3f, 'CoinEx', 'CoinEx Deposit Funder 2', 'sankinyue', date '2023-09-13') -- https://etherscan.io/address/0x1e450c2a1870a52606edd37ac0bf593dca9c1c3f
+    , ('ethereum', 0xf54635836862aad6e255e9b4fe49275fa5047e5d, 'CoinEx', 'CoinEx Multisig', 'sankinyue', date '2023-09-13') -- https://etherscan.io/address/0xf54635836862aad6e255e9b4fe49275fa5047e5d
     -- CoinExchange
     , ('ethereum', 0x4b01721f0244e7c5b5f63c20942850e447f5a5ee, 'CoinExchange', 'CoinExchange 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x4b01721f0244e7c5b5f63c20942850e447f5a5ee
     -- AscendEX (formerly BitMax), Source: https://etherscan.io/accounts/label/ascendex

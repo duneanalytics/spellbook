@@ -204,6 +204,7 @@ models:
     description: >
         OpenSea v1 trades on Ethereum
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -270,6 +271,7 @@ models:
     description: >
         OpenSea V3 events on Ethereum
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -368,6 +370,7 @@ models:
     description: >
         OpenSea V4 events on Ethereum
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
