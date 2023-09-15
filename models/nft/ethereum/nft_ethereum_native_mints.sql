@@ -14,7 +14,7 @@
 
 WITH namespaces AS (
     SELECT address
-    , FIRST(namespace) AS namespace
+    , min_by(namespace, created_at) AS namespace
 	FROM {{ source('ethereum','contracts') }}
 	GROUP BY address
 	)
@@ -111,12 +111,12 @@ LEFT JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
     AND anti_txs.tx_hash=nft_mints.tx_hash
     AND anti_txs.tx_hash IS NULL 
 {% endif %}
-WHERE nft_mints.from= 0x0000000000000000000000000000000000000000
+WHERE nft_mints."from"= 0x0000000000000000000000000000000000000000
 AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
 {% if is_incremental() %}
 AND nft_mints.block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}
 GROUP BY nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
-, nft_mints.amount, nft_mints.from, nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
-, nft_mints.tx_hash, etxs.from, ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
+, nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
+, nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
 , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, et.success
