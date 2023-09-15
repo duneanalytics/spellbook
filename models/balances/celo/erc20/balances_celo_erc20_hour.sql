@@ -3,7 +3,6 @@
         tags = ['dunesql'],
         schema = 'balances_celo',
         alias = alias('erc20_hour'),
-        --unique_key = ['block_hour', 'wallet_address', 'token_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "balances",
