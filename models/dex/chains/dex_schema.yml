@@ -14,6 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -103,6 +104,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -144,6 +146,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -185,6 +188,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -226,6 +230,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -267,6 +272,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -308,6 +314,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -349,6 +356,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
@@ -390,6 +398,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
+            - tx_hash
             - project_contract_address
             - evt_indices
     columns: 
