@@ -103,41 +103,29 @@ FROM (
 )
 
 , pools_per_dates as (
-  select dates.day, pool, pool_name, blockchain, 
-  project, fee, main_token, main_token_symbol,
-  paired_token, paired_token_symbol, rate
+  select    dates.day, pool, rate
   from dates
-  join (select distinct pool, pool_name, blockchain, project, 
-  fee, main_token, main_token_symbol, paired_token, paired_token_symbol from pools) on 1=1
+  join (select distinct pool from pools) on 1=1
   left join wsteth_rate on dates.day = wsteth_rate.day
 )
 
-, pools_with_volumes as ( 
-SELECT d.pool_name, d.pool, d.blockchain, d.project, d.fee, 
-d.day as time, d.main_token, d.main_token_symbol, d.paired_token, d.paired_token_symbol, 
-case when d.main_token_symbol = 'stETH' then main_token_reserve* rate else main_token_reserve end as main_token_reserve, 
-paired_token_reserve, main_token_usd_reserve, paired_token_usd_reserve, 0 as trading_volume
+
+SELECT     l.pool_name, 
+           l.pool, 
+           l.blockchain, 
+           l.project, 
+           l.fee, 
+           d.day as time, 
+           l.main_token, 
+           l.main_token_symbol,
+           l.paired_token, 
+           l.paired_token_symbol, 
+           case when l.main_token_symbol = 'stETH' then l.main_token_reserve* rate else l.main_token_reserve end as main_token_reserve, 
+           l.paired_token_reserve,
+           l.main_token_usd_reserve, 
+           l.paired_token_usd_reserve, 
+           coalesce(vol.trading_volume, 0) as trading_volume
 FROM pools_per_dates d
 LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time) and d.pool = l.pool
+LEFT JOIN pools AS vol on d.day = DATE_TRUNC('day', vol.time)  and d.pool = vol.pool
 WHERE l.pool is not null  
-
-union all
-
-SELECT d.pool_name, d.pool, d.blockchain, d.project, d.fee, 
-d.day as time, d.main_token, d.main_token_symbol, d.paired_token, d.paired_token_symbol, 
-0 as main_token_reserve, 0 as paired_token_reserve, 0 as main_token_usd_reserve, 0 as paired_token_usd_reserve, trading_volume
-FROM pools_per_dates d
-LEFT JOIN pools AS l on d.day = DATE_TRUNC('day', l.time)
-WHERE l.pool is not null  
-)
-
-
-select pool_name, pool, blockchain, project, fee, 
-time, main_token, main_token_symbol, paired_token, paired_token_symbol, 
-sum(main_token_reserve) as main_token_reserve, 
-sum(paired_token_reserve) as paired_token_reserve,
-sum(main_token_usd_reserve) as main_token_usd_reserve, 
-sum(paired_token_usd_reserve) as paired_token_usd_reserve, 
-sum(trading_volume) as trading_volume
-from pools_with_volumes
-group by 1,2,3,4,5,6,7,8,9,10
