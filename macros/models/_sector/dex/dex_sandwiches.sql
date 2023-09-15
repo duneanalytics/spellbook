@@ -89,6 +89,7 @@ SELECT distinct s1.blockchain
 , s1.token_bought_amount_raw
 , s1.token_sold_amount
 , s1.token_bought_amount
+, CASE WHEN s1.index>s2.index THEN 'frontrun' ELSE 'backrun' END AS sandwich_side
 FROM trades_with_index s1
 INNER JOIN trades_with_index s2 ON s1.block_number=s2.block_number
     AND s1.project=s2.project
