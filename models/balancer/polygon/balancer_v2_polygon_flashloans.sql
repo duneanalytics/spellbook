@@ -1,5 +1,7 @@
 {{ config(
-      schema = 'balancer_v2_polygon'
+    tags=['dunesql']
+      , partition_by = ['block_month']
+      , schema = 'balancer_v2_polygon'
       , alias = alias('flashloans')
       , materialized = 'incremental'
       , file_format = 'delta'
@@ -26,13 +28,14 @@ WITH flashloans AS (
     FROM {{ source('balancer_v2_polygon','Vault_evt_FlashLoan') }} f
     LEFT JOIN {{ ref('tokens_polygon_erc20') }} erc20 ON f.token = erc20.contract_address
         {% if is_incremental() %}
-        WHERE f.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     )
 
 SELECT 'polygon' AS blockchain
 , 'Balancer' AS project
 , '2' AS version
+, CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount

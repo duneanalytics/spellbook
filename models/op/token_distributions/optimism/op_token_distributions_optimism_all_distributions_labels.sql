@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('all_distributions_labels'),
+    tags = ['dunesql'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",
@@ -38,4 +39,10 @@ WITH all_labels AS (
     WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }})
 )
 
-SELECT * FROM all_labels
+SELECT 
+    cast(address as varbinary) as address
+    ,label
+    ,proposal_name
+    ,address_descriptor
+    ,project_name
+FROM all_labels

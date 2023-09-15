@@ -6,7 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'type', 'evt_index', 'wallet_address'],
+        unique_key = ['tx_hash', 'transfer_type', 'evt_index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",
@@ -17,7 +17,7 @@
 with
     sent_transfers as (
         select
-            'sent' as type,
+            'sent' as transfer_type,
             to as wallet_address,
             contract_address as token_address,
             evt_block_time as block_time,
@@ -35,7 +35,7 @@ with
     
     received_transfers as (
         select
-            'received' as type,
+            'received' as transfer_type,
             "from" as wallet_address,
             contract_address as token_address,
             evt_block_time as block_time,
@@ -93,10 +93,10 @@ with
     )
     */
     
-select 'celo' as blockchain, type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
+select 'celo' as blockchain, transfer_type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
 from sent_transfers
 union
-select 'celo' as blockchain, type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
+select 'celo' as blockchain, transfer_type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
 from received_transfers
 
 /*

@@ -161,6 +161,7 @@ FROM
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),
     ('get-get-protocol', 'ethereum', 'GET', 0x8a854288a5976036a725879164ca3e91d30c6a1b, 18),
+    ('gho-gho', 'ethereum', 'GHO', 0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f, 18),
     ('gno-gnosis', 'ethereum', 'GNO', 0x6810e776880c02933d47db1b9fc05908e5386b96, 18),
     ('gnt-golem', 'ethereum', 'GNT', 0xa74476443119a942de498590fe1f2454d7d4ac0d, 18),
     ('govi-govi', 'ethereum', 'GOVI', 0xeeaa40b28a2d1b0b08f6f97bb1dd4b75316c6107, 18),
@@ -1619,7 +1620,8 @@ FROM
     ('r-r-stablecoin', 'ethereum', 'R', 0x183015a9ba6ff60230fdeadc3f43b3d788b13e21, 18),
     ('gnx-genaro-network', 'ethereum', 'GNX', 0x6ec8a24cabdc339a06a172f8223ea557055adaa5, 9),
     ('pndc-pond-coin', 'ethereum', 'PNDC', 0x423f4e6138e475d85cf7ea071ac92097ed631eea, 18),
-    ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18)
+    ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
+    ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1638,5 +1640,5 @@ where contract_address not in (
     ,0x090185f2135308bad17527004364ebcc2d37e5f6   -- SPELL
     ,0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f   -- SDT
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
-    ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
+    ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW 
 )

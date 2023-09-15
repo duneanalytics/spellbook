@@ -143,6 +143,28 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
+    'imx' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND (
+            t."from" = 0x9B7f7d0d23d4CAce5A3157752D0D4e4bf25E927e -- Operator, StateUpdate poster
+            AND t.to = 0x5FDCCA53617f4d2b9134B29090C87D01058e27e9 -- StateUpdate proxy contract
+            AND cast(t.data as varchar) LIKE '0x538f9406%'
+      )
+      AND t.block_time >= timestamp '2021-03-24' -- mainnet launch date
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
     'zksync lite' AS name,
     t.block_number,
     t.hash,
