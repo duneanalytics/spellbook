@@ -632,6 +632,7 @@ WITH curated_list AS (
       ,(0x048c6bad48c51436764ed1fdb3c9d1c25d2c0ada, 'Bolide Finance')
       ,(0x615b5313a927571343f9355225e555cf7688d5e1, 'Cartesi')
       ,(0x9bccd51ee5cf97791e39544827ef675cd81171b8, 'Circle')
+      ,(0xf44e40882f3536edfea032530213c7fcf146b269, 'YFX Protocol')
 
   ) as temp_table (creator_address, contract_project)
 )
