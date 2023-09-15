@@ -391,7 +391,6 @@ FROM (VALUES
     -- Bitso
     , ('ethereum', 0x58b704065b7aff3ed351052f8560019e05925023, 'Bitso', 'Bitso 1', 'hildobby', date '2023-09-12')
     , ('ethereum', 0x29d5527caa78f1946a409fa6acaf14a0a4a0274b, 'Bitso', 'Bitso 2', 'hildobby', date '2023-09-12')
-    , ('ethereum', 0x58b704065b7aff3ed351052f8560019e05925023, 'Bitso', 'Bitso 3', 'hildobby', date '2023-09-12')
     -- Bitstamp, Source: https://etherscan.io/accounts/label/bitstamp
     , ('ethereum', 0x00bdb5699745f5b860228c8f939abf1b9ae374ed, 'Bitstamp', 'Bitstamp 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x1522900b6dafac587d499a862861c0869be6e428, 'Bitstamp', 'Bitstamp 2', 'hildobby', date '2022-08-28')
@@ -466,9 +465,6 @@ FROM (VALUES
     , ('ethereum', 0xa8ee70f68fffaae3cb8475112409adb9282f3246, 'Oobit', 'Oobit 4', 'hildobby', date '2023-09-12')
     -- RenrenBit
     , ('ethereum', 0x28c9386ebab8d52ead4a327e6423316435b2d4fc, 'RenrenBit', 'RenrenBit', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x28c9386ebab8d52ead4a327e6423316435b2d4fc
-    -- Exmo
-    , ('ethereum', 0x1fd6267f0d86f62d88172b998390afee2a1f54b6, 'Exmo', 'Exmo 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x1fd6267f0d86f62d88172b998390afee2a1f54b6
-    , ('ethereum', 0xd7b9a9b2f665849c4071ad5af77d8c76aa30fb32, 'Exmo', 'Exmo 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xd7b9a9b2f665849c4071ad5af77d8c76aa30fb32
     -- Remitano, Source: https://etherscan.io/accounts/label/remitano
     , ('ethereum', 0xb8cf411b956b3f9013c1d0ac8c909b086218207c, 'Remitano', 'Remitano 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x2819c144d5946404c0516b6f817a960db37d4929, 'Remitano', 'Remitano 2', 'hildobby', date '2022-08-28')
@@ -857,8 +853,7 @@ FROM (VALUES
     -- Phemex, source: https://phemex.com/proof-of-reserves
     , ('ethereum', 0xf7d13c7dbec85ff86ee815f6dcbb3dedac78ca49, 'Phemex', 'Phemex 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0x50be13b54f3eebbe415d20250598d81280e56772, 'Phemex', 'Phemex 2', 'hildobby', date '2023-09-12')
-    , ('ethereum', 0x50be13b54f3eebbe415d20250598d81280e56772, 'Phemex', 'Phemex 3', 'hildobby', date '2023-09-12')
-    , ('ethereum', 0x35d2d03607b9155b42cf673102fe58251ac4f644, 'Phemex', 'Phemex 4', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x35d2d03607b9155b42cf673102fe58251ac4f644, 'Phemex', 'Phemex 3', 'hildobby', date '2023-09-12')
     -- Cake DeFi, source: https://cakedefi.com/transparency
     , ('ethereum', 0x94fa70d079d76279e1815ce403e9b985bccc82ac, 'Cake DeFi', 'Cake DeFi 1', 'hildobby', date '2023-04-06')
     -- EXMO
