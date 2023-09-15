@@ -1,11 +1,10 @@
 {{ 
     config(
         tags = ['dunesql'],
+        schema = 'balances_celo',
         alias = alias('erc20_noncompliant'),
-        post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "balances",
-                                    \'["tomfutago"]\') }}'
+        materialized = 'table',
+        file_format = 'delta'
     )
 }}
 
