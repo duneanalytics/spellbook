@@ -12,7 +12,7 @@
 
 {% 
     set blockchains = [
-        'arbitrum',
+        'arbitrum', 
         'avalanche_c',
         'base',
         'bnb',
