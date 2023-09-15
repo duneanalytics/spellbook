@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['erc20_legacy'],
-        alias = alias('noncompliant', legacy_model=True)
+        tags = ['legacy'],
+        alias = alias('erc20_noncompliant', legacy_model=True)
         )
 }}
 
