@@ -1,7 +1,0 @@
-version: 2
-
-sources: 
-  - name: bridgebase_ethereum
-    tables:
-      - name: OptimismPortal_evt_TransactionDeposited
-        loaded_at_field: evt_block_time

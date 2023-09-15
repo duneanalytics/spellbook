@@ -42,6 +42,9 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+      - &block_month
+        name: block_month
+        description: "UTC event block time truncated to the month mark."
 
   - name: transfers_base_erc20_agg_hour
     meta:
@@ -59,6 +62,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - *block_month
       - &hour
         name: hour
         description: "UTC event block time truncated to the hour mark."
@@ -88,6 +92,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - *block_month
       - &day
         name: day
         description: "UTC event block time truncated to the day mark."

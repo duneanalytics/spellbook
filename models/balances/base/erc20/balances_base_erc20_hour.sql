@@ -21,7 +21,7 @@ time_seq AS (
 
 hours AS (
     SELECT 
-        time.time AS hour
+        time.time AS block_hour
     FROM time_seq
     CROSS JOIN unnest(time) AS time(time)
 ),
@@ -42,7 +42,8 @@ hourly_balances as (
 
 SELECT
     b.blockchain,
-    d.hour,
+    CAST(date_trunc('month', d.block_hour) as date) as block_month,
+    d.block_hour,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -58,7 +59,7 @@ hours d
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND d.hour = p.minute
+    AND d.block_hour = p.minute
     AND p.blockchain = 'base'
 -- Removes likely non-compliant tokens due to negative balances
 LEFT JOIN 

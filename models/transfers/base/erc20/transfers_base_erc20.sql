@@ -2,6 +2,7 @@
     tags=['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
+    partition_by = ['block_month'],
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
     alias = alias('erc20'),
@@ -24,7 +25,7 @@ erc20_transfers  as (
         FROM 
         {{ source('erc20_base', 'evt_transfer') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 
         UNION ALL 
@@ -40,7 +41,7 @@ erc20_transfers  as (
         FROM 
         {{ source('erc20_base', 'evt_transfer') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 ),
 
@@ -59,7 +60,7 @@ weth_events as (
         WHERE contract_address = 0x4200000000000000000000000000000000000006
         AND topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c --deposit
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND block_time >= date_trunc('day', now() - interval '3' day)
         {% endif %}
 
         UNION ALL 
@@ -77,7 +78,7 @@ weth_events as (
         WHERE contract_address = 0x4200000000000000000000000000000000000006
         AND topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 --deposit
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND block_time >= date_trunc('day', now() - interval '3' day)
         {% endif %}
 )
 
@@ -87,6 +88,7 @@ SELECT
     evt_tx_hash, 
     evt_index,
     evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
@@ -101,6 +103,7 @@ SELECT
     evt_tx_hash, 
     evt_index,
     evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
