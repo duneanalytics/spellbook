@@ -4,7 +4,7 @@
         alias = alias('fusion_resolvers'),
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key = ['resolver_address', 'last_changing'],
+        unique_key = ['resolver_address', 'last_changed_at'],
         tags = ['dunesql']
     )
 }}
@@ -44,7 +44,7 @@ with
                 when 0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9 then 'Registered'
                 when 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc then 'Unregistered'
             end, block_time) as resolver_status
-            , max(block_time) as last_changing
+            , max(block_time) as last_changed_at
         from {{ source('ethereum', 'logs') }}
         where
             contract_address = 0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77 -- WhitelistRegistry
@@ -61,7 +61,7 @@ select
       resolver_address
     , if(resolver_name = '', '0x' || lower(to_hex(substr(resolver_address, 1, 2))) || '..' || lower(to_hex(substr(resolver_address, 19))), coalesce(resolver_name, 'UNSPECIFIED')) as resolver_name
     , resolver_status
-    , last_changing
+    , last_changed_at
     , kyc
 from registerations
 left join names using(resolver_address)

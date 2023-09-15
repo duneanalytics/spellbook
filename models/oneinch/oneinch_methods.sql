@@ -79,7 +79,7 @@ select
     , contract_id
     , contract_name
     , blockchain
-    , created
+    , created as created_at
     , creator
     
     -- methods

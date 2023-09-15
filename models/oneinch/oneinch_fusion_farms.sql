@@ -55,7 +55,7 @@ with
     , farm_tokens as (
         select
             contract_address as farm_address
-            , block_time as farm_created
+            , block_time as farm_created_at
             , substr(data, 45, 20) as default_token
             , tx_hash
         from {{ source('ethereum', 'logs') }}
@@ -90,12 +90,12 @@ select
       resolver_address
     , resolver_name
     , resolver_status
-    , last_changing
+    , last_changed_at
     , kyc
     , resolver_register_delegatee
     , farm_address
     , farm_ownership_transferred
-    , farm_created
+    , farm_created_at
     , default_token as farm_default_token
     , coalesce(distributor, 0x) as distributor
     , if(set_up = last_set_up, 'Current', if(set_up <> last_set_up, 'Legacy', 'No')) as distributor_status
