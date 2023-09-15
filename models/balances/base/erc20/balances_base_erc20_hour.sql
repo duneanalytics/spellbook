@@ -54,8 +54,8 @@ FROM
 hourly_balances b
 INNER JOIN 
 hours d 
-    ON b.hour <= d.hour 
-    AND d.hour < b.next_hour
+    ON b.hour <= d.block_hour 
+    AND d.block_hour < b.next_hour
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
