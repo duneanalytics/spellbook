@@ -124,14 +124,14 @@ WITH dao_wallet AS (
 )
 , hashless_trxns AS (
     SELECT CAST('2022-11-01 00:00' AS TIMESTAMP)                  AS ts,
-           'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash,
+           cast(null as varbinary) AS hash, -- 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding'
            13410                                                  AS code,
            -222632234.27                                          AS value,
            'DAI'                                                  AS token,
            'PSM-GUSD-A'                                           AS ilk
     UNION ALL
     SELECT CAST('2022-11-01 00:00' AS TIMESTAMP)                  AS ts,
-           'noHash:movingGusdPSMBalanceFromNonYieldingToYielding' AS hash,
+           cast(null as varbinary) AS hash, -- 'noHash:movingGusdPSMBalanceFromNonYieldingToYielding'
            13411                                                  AS code,
            222632234.27                                           AS value,
            'DAI'                                                  AS token,
@@ -1417,7 +1417,7 @@ WITH dao_wallet AS (
         UNION ALL
 
         SELECT ts
-            , 'noHash:dailyMarkToMarket' AS hash
+            , cast(NULL as varbinary) AS hash -- 'noHash:dailyMarkToMarket'
             , 19999 AS code
             , 0 AS value
             , token
@@ -1428,7 +1428,7 @@ WITH dao_wallet AS (
         UNION ALL
 
         SELECT ts
-            , 'noHash:dailyMarkToMarket' AS hash
+            , cast(NULL as varbinary) AS hash -- 'noHash:dailyMarkToMarket'
             , 29999 AS code
             , 0 AS value
             , token
@@ -1439,7 +1439,7 @@ WITH dao_wallet AS (
         UNION ALL
 
         SELECT ts
-            , 'noHash:dailyMarkToMarket' AS hash
+            , cast(NULL as varbinary) AS hash -- 'noHash:dailyMarkToMarket'
             , 39999 AS code
             , 0 AS value
             , token
