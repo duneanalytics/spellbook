@@ -2,6 +2,7 @@
 {{ config(
         schema = 'oneplanet',
         alias = alias('trades'),
+        tags = ['dunesql'],
         materialized = 'view',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
@@ -11,4 +12,4 @@
 
 SELECT *
 FROM {{ ref('nft_trades') }}
-WHERE project = "oneplanet"
+WHERE project = 'oneplanet'
