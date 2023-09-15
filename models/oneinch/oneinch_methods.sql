@@ -92,5 +92,5 @@ select
 
 from {{ ref('oneinch_exchange_contracts') }}
 join methods using(contract_id)
-left join {{ source('abi', 'signatures') }} as signatures on signatures.id = methods.selector
+left join {{ ref('signatures') }} as signatures on signatures.id = methods.selector
 order by created, method
