@@ -1,0 +1,35 @@
+version: 2
+
+seeds:
+  - name: dex_offers_seed
+    config:
+      tags: dunesql
+      column_types:
+        block_date: date
+        version: varchar
+        sell_amount_raw: uint256
+        buy_amount_raw: uint256
+        sold_amount_raw: uint256
+        bought_amount_raw: uint256
+        l1_gas_price: bigint
+        l1_gas_used: bigint
+        maker: varbinary
+        sell_token_address: varbinary
+        buy_token_address: varbinary
+        project_contract_address: varbinary
+        tx_hash: varbinary
+        tx_from: varbinary
+        tx_to: varbinary
+        sell_amount: double
+        buy_amount: double
+        sold_amount: double
+        bought_amount: double
+        sell_amount_usd: double
+        buy_amount_usd: double
+        sold_amount_usd: double
+        bought_amount_usd: double
+        gas_price: uint256
+        gas_used: bigint
+        txn_cost_eth: double
+        eth_price: double
+        txn_cost_usd: double
