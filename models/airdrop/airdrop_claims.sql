@@ -50,3 +50,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
+
