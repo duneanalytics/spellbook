@@ -6,9 +6,9 @@ models:
       blockchain: celo
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['balances', 'celo', 'erc20', 'hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+      tags: ['balances', 'celo', 'erc20', 'hour', 'tomfutago']
     description: >
         Hourly token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20
@@ -48,41 +48,15 @@ models:
       - &amount_usd
         name: amount_usd
         description: "Amount of ERC20 token held in USD if we have it"
-      - &recency_index
-        name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-
-  - name: balances_celo_erc20_hour_helper
-    meta:
-      blockchain: celo
-      sector: balances
-      project: erc20
-      contributors: tomfutago
-    config:
-      tags: ['balances', 'celo', 'erc20', 'hour', 'helper', 'tomfutago']
-    description: >
-        Helper table with hourly history filled for ERC20 Celo tokens per wallet and contract address pair.
-        Added to aid in incremental build performance. Depends on transfers_celo_erc20_rolling_hour.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - wallet_address
-            - token_address
-    columns:
-      - *wallet_address
-      - *token_address
-      - *block_month
-      - *block_hour
 
   - name: balances_celo_erc20_day
     meta:
       blockchain: celo
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['balances', 'celo', 'erc20', 'day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+      tags: ['balances', 'celo', 'erc20', 'day', 'tomfutago']
     description: >
         Daily token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20.
@@ -104,16 +78,15 @@ models:
       - *amount_raw
       - *amount
       - *amount_usd
-      - *recency_index
 
   - name: balances_celo_erc20_latest
     meta:
       blockchain: celo
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['balances', 'celo', 'erc20', 'latest', 'soispoke', 'dot2dotseurat', 'tomfutago']
+      tags: ['balances', 'celo', 'erc20', 'latest', 'tomfutago']
     description: >
         Latest token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20.
@@ -139,7 +112,7 @@ models:
       blockchain: celo
       sector: balances
       project: erc20
-      contributors: dot2dotseurat, tomfutago
+      contributors: tomfutago
     config:
       tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily']
     description: >
