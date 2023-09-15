@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        alias = alias('agg_day'),
+        alias = alias('er20_agg_day'),
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',
