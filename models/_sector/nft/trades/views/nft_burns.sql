@@ -1,6 +1,7 @@
 {{ config(
         schema = 'nft',
         alias = alias('burns'),
+        tags = ['dunesql'],
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
                                     "sector",
@@ -11,4 +12,4 @@
 
 SELECT *
 FROM {{ ref('nft_events_old') }}
-WHERE evt_type = "Burn"
+WHERE evt_type = 'Burn'

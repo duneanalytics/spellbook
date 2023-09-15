@@ -1,5 +1,6 @@
 {{ config(
     schema = 'balancer',
+    tags = ['dunesql'],
     alias = alias('gauge_mappings'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
