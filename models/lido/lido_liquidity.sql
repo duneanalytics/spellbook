@@ -103,29 +103,41 @@ FROM (
 )
 
 , pools_per_dates as (
-  select dates.day, pool,rate
+  select dates.day, pool, pool_name, blockchain, 
+  project, fee, main_token, main_token_symbol,
+  paired_token, paired_token_symbol, rate
   from dates
-  join (select distinct pool from pools) on 1=1
+  join (select distinct pool, pool_name, blockchain, project, 
+  fee, main_token, main_token_symbol, paired_token, paired_token_symbol from pools) on 1=1
   left join wsteth_rate on dates.day = wsteth_rate.day
 )
 
-
-SELECT pool_name, 
-           l.pool, 
-           blockchain, 
-           project, 
-           fee, 
-           d.day as time, 
-           main_token, 
-           main_token_symbol,
-           paired_token, 
-           paired_token_symbol, 
-           case when main_token_symbol = 'stETH' then main_token_reserve* rate else main_token_reserve end as main_token_reserve, 
-           paired_token_reserve,
-           main_token_usd_reserve, 
-           paired_token_usd_reserve, 
-           trading_volume
+, pools_with_volumes as ( 
+SELECT d.pool_name, d.pool, d.blockchain, d.project, d.fee, 
+d.day as time, d.main_token, d.main_token_symbol, d.paired_token, d.paired_token_symbol, 
+case when d.main_token_symbol = 'stETH' then main_token_reserve* rate else main_token_reserve end as main_token_reserve, 
+paired_token_reserve, main_token_usd_reserve, paired_token_usd_reserve, 0 as trading_volume
 FROM pools_per_dates d
 LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time) and d.pool = l.pool
-WHERE l.pool is not null
-;
+WHERE l.pool is not null  
+
+union all
+
+SELECT d.pool_name, d.pool, d.blockchain, d.project, d.fee, 
+d.day as time, d.main_token, d.main_token_symbol, d.paired_token, d.paired_token_symbol, 
+0 as main_token_reserve, 0 as paired_token_reserve, 0 as main_token_usd_reserve, 0 as paired_token_usd_reserve, trading_volume
+FROM pools_per_dates d
+LEFT JOIN pools AS l on d.day = DATE_TRUNC('day', l.time)
+WHERE l.pool is not null  
+)
+
+
+select pool_name, pool, blockchain, project, fee, 
+time, main_token, main_token_symbol, paired_token, paired_token_symbol, 
+sum(main_token_reserve) as main_token_reserve, 
+sum(paired_token_reserve) as paired_token_reserve,
+sum(main_token_usd_reserve) as main_token_usd_reserve, 
+sum(paired_token_usd_reserve) as paired_token_usd_reserve, 
+sum(trading_volume) as trading_volume
+from pools_with_volumes
+group by 1,2,3,4,5,6,7,8,9,10
