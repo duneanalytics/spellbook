@@ -11,7 +11,7 @@
 
 select
     tr.blockchain,
-    date_trunc('hour', tr.evt_block_time) as block_hour,
+    date_trunc('hour', tr.evt_block_time) as hour,
     block_month,
     tr.wallet_address,
     tr.token_address,
