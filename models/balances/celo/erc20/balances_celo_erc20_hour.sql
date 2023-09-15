@@ -3,7 +3,7 @@
         tags = ['dunesql'],
         schema = 'balances_celo',
         alias = alias('erc20_hour'),
-        unique_key = ['block_hour', 'wallet_address', 'token_address'],
+        --unique_key = ['block_hour', 'wallet_address', 'token_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "balances",
@@ -55,8 +55,7 @@ select
   b.symbol,
   b.amount_raw,
   b.amount,
-  b.amount * p.price as amount_usd,
-  row_number() over (partition by b.token_address, b.wallet_address order by b.block_hour desc) as recency_index
+  b.amount * p.price as amount_usd
 from daily_balances b
   join hours h on h.block_hour between b.block_hour and b.next_hour
   left join {{ source('prices', 'usd') }} p

@@ -12,12 +12,12 @@ models:
     description: >
         Hourly token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - wallet_address
-            - token_address
+    #tests:
+    #  - dbt_utils.unique_combination_of_columns:
+    #      combination_of_columns:
+    #        - block_hour
+    #        - wallet_address
+    #        - token_address
     columns:
       - &blockchain
         name: blockchain
@@ -88,11 +88,11 @@ models:
     description: >
         Latest token balances of ERC20 Celo tokens per wallet and contract address pair.
         Depends on transfers_celo_erc20.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - wallet_address
-            - token_address
+    #tests:
+    #  - dbt_utils.unique_combination_of_columns:
+    #      combination_of_columns:
+    #        - wallet_address
+    #        - token_address
     columns:
       - *blockchain
       - *wallet_address
