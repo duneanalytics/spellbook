@@ -143,6 +143,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *block_month
       - name: pool
         description: "DEX pool smart contract address"
         tests:

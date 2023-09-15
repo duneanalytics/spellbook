@@ -172,6 +172,7 @@ models:
       - name: blockchain
       - name: project
       - name: version
+      - name: block_month
       - name: block_time
       - name: block_number
       - name: amount
