@@ -14,7 +14,7 @@
 with
 
 days as (
-    select day
+    select day as block_day
     from (
           values (
             sequence(timestamp '2020-04-22', cast(date_trunc('day', now()) as timestamp), interval '1' day)
