@@ -1049,7 +1049,7 @@ WITH dao_wallet AS (
         , create_mkr_vests_raw._bgn
         , create_mkr_vests_raw._tau
         , create_mkr_vests_raw.total_mkr
-        , CASE WHEN from_unixtime(yanks_raw._end) > yanks_raw.ts THEN from_unixtime(yanks_raw._end) ELSE yanks_raw.ts END AS end_time
+        , CASE WHEN from_unixtime(cast(yanks_raw._end as double)) > yanks_raw.ts THEN from_unixtime(cast(yanks_raw._end as double)) ELSE yanks_raw.ts END AS end_time
     FROM yanks_raw
     LEFT JOIN create_mkr_vests_raw
     ON yanks_raw._id = create_mkr_vests_raw.output_id
@@ -1058,7 +1058,7 @@ WITH dao_wallet AS (
     SELECT ts
         , hash
         , _id
-        , from_unixtime(_bgn)   AS begin_time
+        , from_unixtime(cast(_bgn as double))   AS begin_time
         , end_time
         , _tau
         , total_mkr             AS original_total_mkr
