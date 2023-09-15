@@ -448,7 +448,7 @@ WITH dao_wallet AS (
 , liquidation_revenues AS (
     SELECT call_block_time           ts
          , call_tx_hash              hash
-         , SUM(CAST(rad as INT256) / POW(10, 45)) AS value
+         , SUM(CAST(rad as bigint) / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE dst = 0xa950524441892a31ebddf91d3ceefa04bf454466                -- vow
       AND call_success
@@ -508,7 +508,7 @@ WITH dao_wallet AS (
          , CASE
                WHEN src = 0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a THEN 'DIRECT-AAVEV2-DAI'
                WHEN src = 0x621fe4fde2617ea8ffade08d0ff5a862ad287ec2 THEN 'DIRECT-COMPV2-DAI' END AS ilk
-         , SUM(CAST(rad as INT256)) / POW(10, 45)                                                                   AS value
+         , SUM(CAST(rad as bigint)) / POW(10, 45)                                                                   AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE call_success
       AND src IN (0xa13c0c8eb109f5a13c6c90fc26afb23beb3fb04a
@@ -552,7 +552,7 @@ WITH dao_wallet AS (
     SELECT call_block_time           ts
          , call_tx_hash              hash
          , ilk
-         , SUM(CAST(rad as INT256)) / POW(10, 45) AS value
+         , SUM(CAST(rad as bigint)) / POW(10, 45) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
     INNER JOIN psms
         ON vat.src = psms.psm_address
@@ -615,7 +615,7 @@ WITH dao_wallet AS (
 , mkr_burns_preunioned AS (
     SELECT call_block_time           ts
          , call_tx_hash              hash
-         , SUM(CAST(rad as INT256) / POW(10, 45)) AS value
+         , SUM(CAST(rad as bigint) / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }}
     WHERE src = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- vow
       AND call_success
@@ -779,7 +779,7 @@ WITH dao_wallet AS (
     SELECT call_block_time            ts
          , call_tx_hash               hash
          , 31610                   AS code
-         , -SUM(CAST(rad as INT256)) / POW(10, 45) AS value --reduced equity
+         , -SUM(CAST(rad as bigint)) / POW(10, 45) AS value --reduced equity
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND v = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7 -- Pot
@@ -794,7 +794,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
             , call_tx_hash hash
             , 21110 AS code
-            , SUM(CAST(rad as INT256))/POW(10, 45) AS value --increased liability
+            , SUM(CAST(rad as bigint))/POW(10, 45) AS value --increased liability
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND v = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7 -- Pot
@@ -808,7 +808,7 @@ WITH dao_wallet AS (
     SELECT call_block_time            ts
          , call_tx_hash               hash
          , 31520                   AS code
-         , -SUM(CAST(rad as INT256)) / POW(10, 45) AS value --reduced equity
+         , -SUM(CAST(rad as bigint)) / POW(10, 45) AS value --reduced equity
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND v NOT IN (0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
@@ -826,7 +826,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
             , call_tx_hash hash
             , 21120 AS code
-            , SUM(CAST(rad as INT256))/POW(10, 45) AS value --increased liability
+            , SUM(CAST(rad as bigint))/POW(10, 45) AS value --increased liability
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE u = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND v NOT IN (0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
@@ -843,7 +843,7 @@ WITH dao_wallet AS (
     SELECT call_block_time           ts
          , call_tx_hash              hash
          , 31510                  AS code
-         , SUM(CAST(rad as INT256)) / POW(10, 45) AS value --increased equity
+         , SUM(CAST(rad as bigint)) / POW(10, 45) AS value --increased equity
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE v = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND call_success
@@ -857,7 +857,7 @@ WITH dao_wallet AS (
     SELECT call_block_time ts
             , call_tx_hash hash
             , 21120 AS code
-            , -SUM(CAST(rad as INT256))/POW(10, 45) AS value --decreased liability
+            , -SUM(CAST(rad as bigint))/POW(10, 45) AS value --decreased liability
     FROM {{ source('maker_ethereum', 'vat_call_suck') }}
     WHERE v = 0xa950524441892a31ebddf91d3ceefa04bf454466 -- Vow
       AND call_success
@@ -869,7 +869,7 @@ WITH dao_wallet AS (
 , dsr_flows_preunioned AS (
     SELECT call_block_time       ts
          , call_tx_hash          hash
-         , -CAST(rad as INT256) / POW(10, 45) AS dsr_flow
+         , -CAST(rad as bigint) / POW(10, 45) AS dsr_flow
     FROM {{ source('maker_ethereum', 'vat_call_move') }} m
     WHERE call_success
       AND src = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
@@ -881,7 +881,7 @@ WITH dao_wallet AS (
 
     SELECT call_block_time ts
             , call_tx_hash hash
-            , CAST(rad as INT256)/POW(10, 45) AS dsr_flow
+            , CAST(rad as bigint)/POW(10, 45) AS dsr_flow
     FROM {{ source('maker_ethereum', 'vat_call_move') }} m
     WHERE call_success
       AND dst = 0x197e90f9fad81970ba7976f33cbd77088e5d7cf7
@@ -1107,7 +1107,7 @@ WITH dao_wallet AS (
 (
     SELECT evt_block_time       ts
         , evt_tx_hash hash
-        , cast(value as INT256)         AS      expense --positive expense which is a reduction in equity
+        , cast(value as bigint)         AS      expense --positive expense which is a reduction in equity
         , "to"          AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
     WHERE "from" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
@@ -1117,7 +1117,7 @@ WITH dao_wallet AS (
 
     SELECT evt_block_time       ts
         , evt_tx_hash hash
-        , -cast(value as INT256)        AS      expense --negative expense, increase in equity
+        , -cast(value as bigint)        AS      expense --negative expense, increase in equity
         , "from"        AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
     WHERE "to" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
