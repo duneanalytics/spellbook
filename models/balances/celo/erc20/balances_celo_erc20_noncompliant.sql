@@ -8,8 +8,6 @@
     )
 }}
 
-select token_address
-from {{ ref('transfers_celo_erc20_rolling_hour') }}
-where recency_index = 1
-group by 1
-having sum(amount) < -0.001
+select DISTINCT token_address
+from {{ ref('transfers_celo_erc20_rolling_day') }}
+WHERE round(amount/power(10, 18), 6) < -0.001
