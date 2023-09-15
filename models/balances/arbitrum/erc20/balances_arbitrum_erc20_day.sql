@@ -28,13 +28,13 @@ days AS (
 daily_balances as (
     SELECT
         blockchain, 
-        block_day, 
+        day, 
         wallet_address, 
         token_address, 
         amount_raw,
         amount,
         symbol,
-        LEAD(block_day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY block_day) AS next_day
+        LEAD(day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
     FROM 
     {{ ref('transfers_arbitrum_erc20_rolling_day') }}
 )
@@ -53,7 +53,7 @@ FROM
 daily_balances b
 INNER JOIN 
 days d 
-    ON b.block_day <= d.block_day 
+    ON b.day <= d.block_day 
     AND d.block_day < b.next_day
 LEFT JOIN 
 {{ source('prices', 'usd') }} p

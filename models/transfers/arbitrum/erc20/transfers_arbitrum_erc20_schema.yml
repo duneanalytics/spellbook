@@ -113,7 +113,7 @@ models:
       tags: ['transfers', 'arbitrum', 'erc20', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
-      - *block_hour
+      - *hour
       - *wallet_address
       - *token_address
       - *symbol
@@ -137,7 +137,7 @@ models:
       tags: ['transfers', 'arbitrum', 'erc20', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
-      - *block_hour
+      - *day
       - *wallet_address
       - *token_address
       - *symbol
