@@ -1,10 +1,11 @@
 {{ config(
+    tags = ['dunesql'],
     alias = alias('mints'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id', 'blockchain'],
+    unique_key = ['project', 'tx_hash', 'buyer', 'nft_contract_address', 'token_id', 'number_of_items', 'currency_contract', 'evt_index', 'blockchain'],
     post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon"]\',
                     "sector",
                     "nft",
@@ -33,7 +34,8 @@ WITH project_mints as
             blockchain,
             project,
             version,
-            date_trunc('day', block_time)  as block_date,
+            CAST(date_trunc('day', block_time) as date)  as block_date,
+            CAST(date_trunc('month', block_time) as date)  as block_month,
             block_time,
             token_id,
             collection,
@@ -59,9 +61,9 @@ WITH project_mints as
             tx_to,
             unique_trade_id
         FROM {{ project_mint }}
-        WHERE evt_type = "Mint"
+        WHERE evt_type = 'Mint'
         {% if is_incremental() %}
-        AND block_time >= date_trunc("day", now() - interval '1 week')
+        AND block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -79,7 +81,8 @@ WITH project_mints as
             blockchain,
             project,
             version,
-            date_trunc('day', block_time)  as block_date,
+            CAST(date_trunc('day', block_time) as date)  as block_date,
+            CAST(date_trunc('month', block_time) as date)  as block_month,
             block_time,
             token_id,
             collection,
@@ -116,7 +119,7 @@ WITH project_mints as
             AND n.tx_hash = p.p_tx_hash
         WHERE p.p_tx_hash is null
             {% if is_incremental() %}
-            AND n.block_time >= date_trunc("day", now() - interval '1 week')
+            AND n.block_time >= date_trunc('day', now() - interval '7' Day)
             {% endif %}
         {% if not loop.last %}
         UNION ALL
