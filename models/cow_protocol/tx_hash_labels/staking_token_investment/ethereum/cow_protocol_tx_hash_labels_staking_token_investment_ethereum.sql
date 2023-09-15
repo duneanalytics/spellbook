@@ -45,7 +45,7 @@ with
 
 select
   'ethereum' as blockchain,
-  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
   'Staking token investment' AS name,
   'tx_hash' AS category,
   'gentrexha' AS contributor,
