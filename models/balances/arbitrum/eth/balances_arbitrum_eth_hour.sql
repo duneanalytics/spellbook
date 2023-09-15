@@ -26,7 +26,7 @@ hours as (
 hourly_balances as (
     SELECT 
         blockchain, 
-        cast(date_trunc('month', d.block_hour) as date) as block_month,
+        cast(date_trunc('month', block_hour) as date) as block_month,
         block_hour, 
         wallet_address, 
         token_address, 
@@ -40,6 +40,7 @@ hourly_balances as (
 
 SELECT
     b.blockchain,
+    cast(date_trunc('month', d.block_hour) as date) as block_month,
     d.block_hour,
     b.wallet_address,
     b.token_address,
