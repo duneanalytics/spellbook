@@ -22,21 +22,21 @@ with
             , contract_id
         from (values
             
-            -- template for parsed
-            -- method // project protocol // ethereum example: ...
-              (0x01, 'T', 0x00, 'method'
-                , map_from_entries(array[
-			          ('wallet'             , map_from_entries(array[('source', 'tx-from'       ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
-			        , ('src_token'          , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
-			        , ('dst_token'          , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
-			        , ('src_amount'         , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
-			        , ('dst_result_amount'  , map_from_entries(array[('source', 'trace-output'  ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
-			        , ('min_return_amount'  , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
-			    ]), array[0x0000])
+            -- -- template for parsed
+            -- -- method // project protocol // ethereum example: ...
+            --   (0x01, 'T', 0x00, 'method'
+            --     , map_from_entries(array[
+			--           ('wallet'             , map_from_entries(array[('source', 'tx-from'       ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
+			--         , ('src_token'          , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
+			--         , ('dst_token'          , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
+			--         , ('src_amount'         , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
+			--         , ('dst_result_amount'  , map_from_entries(array[('source', 'trace-output'  ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
+			--         , ('min_return_amount'  , map_from_entries(array[('source', 'trace-input'   ), ('start', cast(0 as varchar)), ('flag', '0x'), ('instance', '1'), ('offset', cast(0 as varchar))]))
+			--     ]), array[0x0000])
 			    
-			-- template pure
-			-- method // project protocol // ethereum example: ...
-            , (0x02, 'T', 0x00, 'method', map_from_entries(array[('wallet', map_from_entries(array[('source', 'tx-from'), ('start', cast(0 as varchar)), ('flag', ''), ('instance', ''), ('offset', cast(0 as varchar))]))]), array[0x0000])
+			-- -- template pure
+			-- -- method // project protocol // ethereum example: ...
+            -- , (0x02, 'T', 0x00, 'method', map_from_entries(array[('wallet', map_from_entries(array[('source', 'tx-from'), ('start', cast(0 as varchar)), ('flag', ''), ('instance', ''), ('offset', cast(0 as varchar))]))]), array[0x0000])
             
 			-- parsed methods
 			
