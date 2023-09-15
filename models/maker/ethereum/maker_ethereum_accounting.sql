@@ -195,8 +195,9 @@ WITH dao_wallet AS (
     WHERE ilk NOT IN (SELECT ilk FROM ilk_list_manual_input)
     AND ilk <> 'TELEPORT-FW-A' --Need to look into how to handle teleport and potentially update. Ignoring for now.
 )
-, chart_of_accounts (code, primary_label, secondary_label, account_label, category_label, subcategory_label) AS (
-    values
+, chart_of_accounts AS (
+    SELECT code, primary_label, secondary_label, account_label, category_label, subcategory_label
+    FROM (VALUES
     (11110, 'Assets', 'Collateralized Lending', 'Crypto-Loans', 'ETH', 'ETH'),
     (11120, 'Assets', 'Collateralized Lending', 'Crypto-Loans', 'BTC', 'BTC'),
     (11130, 'Assets', 'Collateralized Lending', 'Crypto-Loans', 'WSTETH', 'WSTETH'),
@@ -250,6 +251,7 @@ WITH dao_wallet AS (
     (33110, 'Equity', 'Reserved MKR Surplus', 'MKR Token Expenses', 'Vested MKR Token Expenses', 'Vested MKR Token Expenses'),
     (34110, 'Equity', 'Reserved MKR Surplus', 'MKR Contra Equity', 'MKR Contra Equity', 'MKR Contra Equity'),
     (39999, 'Equity', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token', 'Currency Translation to Presentation Token')
+    ) AS t(code, primary_label, secondary_label, account_label, category_label, subcategory_label)
 )
 
 -- ********** Calculation Tables ***********
@@ -1191,7 +1193,7 @@ WITH dao_wallet AS (
     SELECT * FROM token_prices WHERE token = 'ETH'
 ), with_prices AS
 (
-    SELECT coa.code
+    SELECT code
     , unioned.ts
     , unioned.hash
     , unioned.value
