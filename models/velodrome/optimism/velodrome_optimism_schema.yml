@@ -160,6 +160,7 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_month
       - &block_number
         name: block_number
         description: "Block number of transaction"
