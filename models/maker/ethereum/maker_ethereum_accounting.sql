@@ -1105,7 +1105,7 @@ WITH dao_wallet AS (
 (
     SELECT evt_block_time       ts
         , evt_tx_hash hash
-        , value         AS      expense --positive expense which is a reduction in equity
+        , cast(value as INT256)         AS      expense --positive expense which is a reduction in equity
         , "to"          AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
     WHERE "from" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
@@ -1115,7 +1115,7 @@ WITH dao_wallet AS (
 
     SELECT evt_block_time       ts
         , evt_tx_hash hash
-        , -value        AS      expense --negative expense, increase in equity
+        , -cast(value as INT256)        AS      expense --negative expense, increase in equity
         , "from"        AS      address
     FROM {{ source('maker_ethereum', 'mkr_evt_transfer') }}
     WHERE "to" = 0xbe8e3e3618f7474f8cb1d074a26affef007e98fb
@@ -1211,7 +1211,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'Returned Workforce Expenses' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM team_dai_burns
 
         UNION ALL
@@ -1222,7 +1222,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'Liquidation Revenues/Expenses' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM liquidation
 
         UNION ALL
@@ -1244,7 +1244,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'MKR Mints' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM mkr_mints
 
         UNION ALL
@@ -1255,7 +1255,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'MKR Burns' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM mkr_burns
 
         UNION ALL
@@ -1277,7 +1277,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'OpEx' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM opex
 
         UNION ALL
@@ -1288,7 +1288,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'DSR Expenses' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM dsr_expenses
 
         UNION ALL
@@ -1299,7 +1299,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'Other Sin Outflows' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM other_sin_outflows
 
         UNION ALL
@@ -1310,7 +1310,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'Sin Inflows' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM sin_inflows
 
         UNION ALL
@@ -1321,7 +1321,7 @@ WITH dao_wallet AS (
             , value
             , 'DAI' AS token
             , 'DSR Flows' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM dsr_flows
 
         UNION ALL
@@ -1332,7 +1332,7 @@ WITH dao_wallet AS (
             , value
             , token
             , 'Treasury Flows' AS descriptor
-            , CAST(NULL as string) AS ilk
+            , CAST(NULL as varchar) AS ilk
         FROM treasury_flows
 
         UNION ALL
