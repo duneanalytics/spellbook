@@ -406,6 +406,8 @@ WITH raw_token_list AS (
     ,(0x28b42698caf46b4b012cf38b6c75867e0762186d, 'UNIDX', 18, 'underlying')
     ,(0x9dabae7274d28a45f0b65bf8ed201a5731492ca0, 'msUSD', 18, 'underlying')
     ,(0x8901cb2e82cc95c01e42206f8d1f417fe53e7af0, 'YFX', 18, 'receipt')
+    ,(0x385719545Ef34d457A88e723504544A53F0Ad9BC, 'MMY', 18, 'underlying')
+    ,(0x33bCa143d9b41322479E8d26072a00a352404721, 'msOP', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
