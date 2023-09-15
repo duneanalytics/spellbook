@@ -20,7 +20,7 @@ time_seq AS (
 
 days AS (
     SELECT 
-        time.time AS day 
+        time.time AS block_day 
     FROM time_seq
     CROSS JOIN unnest(time) AS time(time)
 ),
@@ -28,20 +28,21 @@ days AS (
 daily_balances as (
     SELECT
         blockchain, 
-        day, 
+        block_day, 
         wallet_address, 
         token_address, 
         amount_raw,
         amount,
         symbol,
-        LEAD(day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY day) AS next_day
+        LEAD(block_day, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY block_day) AS next_day
     FROM 
     {{ ref('transfers_arbitrum_eth_rolling_day') }}
 )
 
 SELECT
     b.blockchain,
-    d.day,
+    cast(date_trunc('month', d.block_day) as date) as block_month,
+    d.block_day,
     b.wallet_address,
     b.token_address,
     b.amount_raw,
@@ -52,10 +53,10 @@ FROM
 daily_balances b
 INNER JOIN 
 days d 
-    ON b.day <= d.day 
-    AND d.day < b.next_day
+    ON b.block_day <= d.block_day 
+    AND d.block_day < b.next_day
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
-    AND d.day = p.minute
+    AND d.block_day = p.minute
     AND p.blockchain = 'arbitrum'
