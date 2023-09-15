@@ -19,7 +19,7 @@ WITH namespaces AS (
 	GROUP BY address
 	)
 
-, nfts_per_tx AS (
+, nfts_per_tx_tmp AS (
     SELECT tx_hash
     , sum(amount) AS nfts_minted_in_tx
     FROM {{ ref('nft_ethereum_transfers') }}
@@ -28,6 +28,14 @@ WITH namespaces AS (
     {% endif %}
     GROUP BY tx_hash
     )
+
+, nfts_per_tx as (
+    SELECT 
+        tx_hash
+        , case when nfts_minted_in_tx = UINT256 '0' THEN UINT256 '1' ELSE nfts_minted_in_tx END as nfts_minted_in_tx
+    FROM 
+    nfts_per_tx_tmp
+)
 
 SELECT distinct 'ethereum' AS blockchain
 , COALESCE(ec.namespace, 'Unknown') AS project
