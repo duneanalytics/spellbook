@@ -350,98 +350,88 @@ models:
       - name: contract_address
       - name: block_month
 
-
   - name: dex_sandwiches
-    meta:
+    meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'sandwiches', 'crosschain']
+      tags: ['dex', 'mev', 'sandwiches']
     description: >
-      DEX MEV Sandwich Attacks across all chains
+      DEX MEV Sandwich Trades across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - frontrun_tx_hash
-            - frontrun_index
-            - sandwiched_pool
-            - frontrun_taker
-            - currency_address
-            - ratio_traded_token
-    columns:
+            - tx_hash
+            - project_contract_address
+            - evt_indices
+    columns: 
       - *blockchain
       - *project
       - *version
       - *block_time
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - *block_number
-      - &profit_percentage_of_initial
-        name: profit_percentage_of_initial
-        description: "Profit percentage of MEV target token"
-      - &ratio_traded_token
-        name: ratio_traded_token
-        description: "Ratio of bought to sold tokens for the traded token"
-      - &profit_amount_raw
-        name: profit_amount_raw
-        description: "Profit amount in raw units"
-      - &profit_amount
-        name: profit_amount
-        description: "Profit amount in original units"
-      - &currency_address
-        name: currency_address
-        description: "Currency address"
-      - &currency_symbol
-        name: currency_symbol
-        description: "Currency symbol"
-      - &profit_traded_currency_amount_raw
-        name: profit_traded_currency_amount_raw
-        description: "Profit of traded currency amount in raw units"
-      - &profit_traded_currency_amount
-        name: profit_traded_currency_amount
-        description: "Profit of traded currency amount in original units"
-      - &traded_currency_address
-        name: traded_currency_address
-        description: "Traded currency address"
-      - &traded_currency_symbol
-        name: traded_currency_symbol
-        description: "Traded currency symbol"
-      - &frontrun_taker
-        name: frontrun_taker
-        description: "Frontrun taker"
-      - &frontrun_tx_from
-        name: frontrun_tx_from
-        description: "Frontrun tx from"
-      - &backrun_taker
-        name: backrun_taker
-        description: "Backrun taker"
-      - &backrun_tx_from
-        name: backrun_tx_from
-        description: "Backrun tx from"
-      - &frontrun_index
-        name: frontrun_index
-        description: "Frontrun transaction index"
-      - &backrun_index
-        name: backrun_index
-        description: "Frontrun transaction index"
-      - &sandwiched_pool
-        name: sandwiched_pool
-        description: "Sandwiched DEX pool"
-      - &frontrun_tx_hash
-        name: frontrun_tx_hash
-        description: "Frontrun transaction hash"
-      - &backrun_tx_hash
-        name: backrun_tx_hash
-        description: "Backrun transaction hash"
-      - &amount_trades_between
-        name: amount_trades_between
-        description: "Amount of trades between frontrun and backrun"
-      - &gas_price
-        name: gas_price
-        description: "Gas price"
-      - &frontrun_tx_fee
-        name: frontrun_tx_fee
-        description: "Frontrun transaction fee"
-      - &backrun_tx_fee
-        name: backrun_tx_fee
-        description: "Backrun transaction fee"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &evt_indices
+        name: evt_indices
+        description: "Indices of the corresponding trade events"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &index
+        name: index
+        description: "Index of the transaction in block"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &sandwich_side
+        name: sandwich_side
+        description: "Side of the sandwich trade"
+        tests:
+          - accepted_values:
+              values: ['frontrun', 'backrun']
