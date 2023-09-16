@@ -140,6 +140,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -185,6 +186,7 @@ models:
       - *token_symbol
       - *contract_name
       - *creator_address
+      - *deployer_address
       - *created_time
       - *contract_creator_if_factory
       - *is_self_destruct
@@ -230,6 +232,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_addressv
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -275,6 +278,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -320,6 +324,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -365,6 +370,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -410,6 +416,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -455,6 +462,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -500,6 +508,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -545,6 +554,7 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
+  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
