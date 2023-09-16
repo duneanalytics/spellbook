@@ -60,7 +60,7 @@ transfer_raw as (
   
   select
     'gas fee' as transfer_type, 
-    tx_hash,
+    hash as tx_hash,
     array[index] as trace_address,
     block_time,
     "from" as wallet_address,
