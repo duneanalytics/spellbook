@@ -2,7 +2,7 @@
 
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
-{% set max_levels = 5 %}
+{% set max_levels = 3 %}
 -- set column names to loop through
 {% set cols = [
      "trace_creator_address"
