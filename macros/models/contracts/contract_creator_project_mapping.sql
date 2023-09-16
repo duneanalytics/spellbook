@@ -568,10 +568,10 @@ WHERE contract_order = 1
         on c.contract_address = t_raw.contract_address
         AND c.created_block_number <= t_raw.min_block_number
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  ORDER BY map_rank ASC NULLS LAST --order we pick
   ) a
   where contract_address is not NULL 
   group by 1,2
-  ORDER BY map_rank ASC NULLS LAST --order we pick
 )
 
 
