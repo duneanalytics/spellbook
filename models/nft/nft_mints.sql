@@ -59,7 +59,7 @@ WITH project_mints as
             block_number,
             tx_from,
             tx_to,
-            unique_trade_id
+            evt_index
         FROM {{ project_mint }}
         WHERE evt_type = 'Mint'
         {% if is_incremental() %}
@@ -106,7 +106,7 @@ WITH project_mints as
             block_number,
             tx_from,
             tx_to,
-            unique_trade_id
+            evt_index
         FROM {{ native_mint }} as n
         LEFT JOIN
             (
