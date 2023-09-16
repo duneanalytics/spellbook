@@ -18,7 +18,7 @@ with namespaces as (
         ,coalesce(contract_project, contract_name, token_symbol) as namespace
 	from {{ ref('contracts_optimism_contract_mapping') }}
 )
-, nfts_per_tx as (
+, nfts_per_tx_tmp as (
     select
         tx_hash
         ,sum(amount) as nfts_minted_in_tx
@@ -27,6 +27,14 @@ with namespaces as (
         where block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     group by 1
+)
+
+, nfts_per_tx as (
+    select 
+        tx_hash
+        , case when nfts_minted_in_tx = UINT256 '0' THEN UINT256 '1' ELSE nfts_minted_in_tx END as nfts_minted_in_tx
+    FROM 
+    nfts_per_tx_tmp
 )
 select
     'optimism' as blockchain
