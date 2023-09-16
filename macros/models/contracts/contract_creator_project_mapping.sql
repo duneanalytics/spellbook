@@ -479,7 +479,7 @@ WHERE contract_order = 1
     ,c.trace_creator_address
     ,c.contract_address
     ,c.contract_project
-    ,t.symbol as token_symbol
+    ,t_mapped.symbol as token_symbol
     ,c.contract_name
     ,c.creator_address
     ,c.deployer_address
