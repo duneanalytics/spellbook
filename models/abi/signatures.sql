@@ -34,7 +34,7 @@ WITH
             SELECT
                 abi,
                 created_at,
-                id,
+                coalesce(try(from_hex(id)), cast(id as varbinary)) as id,
                 signature,
                 type,
                 concat(cast(id as varchar), signature, type) as unique_signature_id
