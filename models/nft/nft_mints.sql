@@ -21,7 +21,6 @@
 
 {% set project_mints = [
  ref('nftb_bnb_events')
-,ref('magiceden_solana_events')
 ,ref('opensea_v1_ethereum_events')
 ,ref('stealcam_arbitrum_events')
 ] %}
@@ -59,7 +58,7 @@ WITH project_mints as
             block_number,
             tx_from,
             tx_to,
-            CASE WHEN project = 'magiceden' THEN CAST(0 as BIGINT) ELSE evt_index END as evt_index
+            evt_index
         FROM {{ project_mint }}
         WHERE evt_type = 'Mint'
         {% if is_incremental() %}
@@ -70,6 +69,45 @@ WITH project_mints as
         {% endif %}
         {% endfor %}
     )
+
+    UNION ALL 
+
+    SELECT 
+            blockchain,
+            project,
+            version,
+            CAST(date_trunc('day', block_time) as date)  as block_date,
+            CAST(date_trunc('month', block_time) as date)  as block_month,
+            block_time,
+            token_id,
+            collection,
+            amount_usd,
+            token_standard,
+            trade_type,
+            number_of_items,
+            trade_category,
+            evt_type,
+            seller,
+            buyer,
+            amount_original,
+            amount_raw,
+            currency_symbol,
+            currency_contract,
+            nft_contract_address,
+            project_contract_address,
+            aggregator_name,
+            aggregator_address,
+            tx_hash,
+            block_number,
+            tx_from,
+            tx_to,
+            CAST(0 as BIGINT) as evt_index
+        FROM 
+        {{ ref('magiceden_solana_events') }}
+        WHERE evt_type = 'Mint'
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
 )
 , native_mints AS
 (
