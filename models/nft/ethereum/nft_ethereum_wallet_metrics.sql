@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('wallet_metrics'),
     materialized='table',
     file_format = 'delta',
@@ -20,64 +21,64 @@ nft_trades_no_wash as
 
 --- adding in mints because a mint can be interpreted as a buy for $0 or gas fees 
 nft_trades_no_wash_w_mints as (
-select cast(aggregator_address as string)       as aggregator_address,
-       cast(aggregator_name as string)          as aggregator_name,
-       cast(amount_original as double)          as amount_original,
-       cast(amount_raw as decimal(38, 0))       as amount_raw,
-       cast(amount_usd as double)               as amount_usd,
-       cast(block_number as double)             as block_number,
-       cast(block_time as timestamp)            as block_time,
-       cast(blockchain as string)               as blockchain,
-       cast(buyer as string)                    as buyer,
-       cast(collection as string)               as collection,
-       cast(currency_contract as string)        as currency_contract,
-       cast(currency_symbol as string)          as currency_symbol,
-       cast(evt_type as string)                 as evt_type,
-       cast(nft_contract_address as string)     as nft_contract_address,
-       cast(number_of_items as decimal(38, 0))  as number_of_items,
-       cast(project as string)                  as project,
-       cast(project_contract_address as string) as project_contract_address,
-       cast(seller as string)                   as seller,
-       cast(token_id as string)                 as token_id,
-       cast(token_standard as string)           as token_standard,
-       cast(trade_category as string)           as trade_category,
-       cast(trade_type as string)               as trade_type,
-       cast(tx_from as string)                  as tx_from,
-       cast(tx_hash as string)                  as tx_hash,
-       cast(tx_to as string)                    as tx_to,
-       cast(unique_trade_id as string)          as unique_trade_id,
-       cast(version as string)                  as version
+select aggregator_address,
+       aggregator_name,
+       amount_original,
+       amount_raw,
+       amount_usd,
+       block_number,
+       block_time,
+       blockchain,
+       buyer,
+       collection,
+       currency_contract,
+       currency_symbol,
+       evt_type,
+       nft_contract_address,
+       number_of_items,
+       project,
+       project_contract_address,
+       seller,
+       token_id,
+       token_standard,
+       trade_category,
+       trade_type,
+       tx_from,
+       tx_hash,
+       tx_to,
+       unique_trade_id,
+       version
 from nft_trades_no_wash
 
 UNION ALL
 
-select cast(aggregator_address as string)       as aggregator_address,
-       cast(aggregator_name as string)          as aggregator_name,
-       cast(amount_original as double)          as amount_original,
-       cast(amount_raw as decimal(38, 0))       as amount_raw,
-       cast(amount_usd as double)               as amount_usd,
-       cast(block_number as double)             as block_number,
-       cast(block_time as timestamp)            as block_time,
-       cast(blockchain as string)               as blockchain,
-       cast(buyer as string)                    as buyer,
-       cast(collection as string)               as collection,
-       cast(currency_contract as string)        as currency_contract,
-       cast(currency_symbol as string)          as currency_symbol,
-       cast(evt_type as string)                 as evt_type,
-       cast(nft_contract_address as string)     as nft_contract_address,
-       cast(number_of_items as decimal(38, 0))  as number_of_items,
-       cast(project as string)                  as project,
-       cast(project_contract_address as string) as project_contract_address,
-       cast(seller as string)                   as seller,
-       cast(token_id as string)                 as token_id,
-       cast(token_standard as string)           as token_standard,
-       cast(trade_category as string)           as trade_category,
-       cast(trade_type as string)               as trade_type,
-       cast(tx_from as string)                  as tx_from,
-       cast(tx_hash as string)                  as tx_hash,
-       cast(tx_to as string)                    as tx_to,
-       cast(unique_trade_id as string)          as unique_trade_id,
-       cast(version as string)                  as version
+select aggregator_address,
+       aggregator_name,
+       amount_original,
+       amount_raw,
+       amount_usd,
+       block_number,
+       block_time,
+       blockchain,
+       buyer,
+       collection,
+       currency_contract,
+       currency_symbol,
+       evt_type,
+       nft_contract_address,
+       number_of_items,
+       project,
+       project_contract_address,
+       seller,
+       token_id,
+       token_standard,
+       trade_category,
+       trade_type,
+       tx_from,
+       tx_hash,
+       tx_to,
+       unique_trade_id,
+       version
 from {{ref('nft_mints')}}
 )
 ,
@@ -103,7 +104,7 @@ buys_and_sells_nft_trades_no_wash_w_mints as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL
 
     UNION ALL
@@ -127,7 +128,7 @@ buys_and_sells_nft_trades_no_wash_w_mints as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller
-        AND src.number_of_items = 1
+        AND src.number_of_items = UNIT256 '1'
         AND src.amount_original IS NOT NULL
 ),
 ----- FLOOR PRICES -------
