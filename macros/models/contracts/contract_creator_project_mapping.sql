@@ -472,7 +472,13 @@ WHERE contract_order = 1
 )
 
 ,get_contracts as (
-  select *
+  --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
+  select
+    blockchain
+    ,contract_address
+    {% for col in cols %}
+    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
+    {% endfor %}
   FROM (
   select 
     c.blockchain
@@ -563,23 +569,31 @@ WHERE contract_order = 1
         AND c.created_block_number <= t_raw.min_block_number
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   ) a
-  ORDER BY map_rank ASC NULLS LAST --order we pick
-)
-,cleanup as (
---grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
-  select
-    blockchain
-    ,contract_address
-    {% for col in cols %}
-    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
-    {% endfor %}
-  from get_contracts
   where contract_address is not NULL 
   group by 1,2
+  ORDER BY map_rank ASC NULLS LAST --order we pick
 )
 
 
-, updated_data AS (
+SELECT u.*,
+
+  {% if is_incremental() %}
+  CASE WHEN
+    th.contract_address IS NULL -- did not exist
+    -- check if a major field was updated
+    OR u.contract_project<>th.contract_project
+    OR u.token_symbol<>th.token_symbol
+    OR u.contract_name<>u.contract_name
+    OR u.creator_address<>u.creator_address
+    OR u.code_deploy_rank_by_chain<>u.code_deploy_rank_by_chain
+    OR th.token_standard<>u.token_standard
+  THEN 1 ELSE 0 END
+  {% else -%}
+  1
+  {% endif %}
+  AS is_updated_in_last_run
+
+FROM (
   SELECT
     created_month,
     blockchain,
@@ -644,33 +658,13 @@ WHERE contract_order = 1
       ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
       ,CASE WHEN c.top_level_tx_method_id in (SELECT method_id FROM {{ ref('evm_smart_account_method_ids') }}) THEN 1 ELSE 0 END AS is_smart_wallet_deployed
       ,CASE WHEN c.trace_creator_address in (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN 1 ELSE 0 END AS is_deterministic_deployer_deployed
-    from cleanup as c 
+    from get_contracts as c 
     left join {{ ref('contracts_project_name_mappings') }} as dnm -- fix names for decoded contracts
       on lower(c.contract_project) = lower(dnm.dune_name)
     left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
       on c.contract_address = co.contract_address
   ) f
-)
-
-SELECT u.*,
-
-  {% if is_incremental() %}
-  CASE WHEN
-    th.contract_address IS NULL -- did not exist
-    -- check if a major field was updated
-    OR u.contract_project<>th.contract_project
-    OR u.token_symbol<>th.token_symbol
-    OR u.contract_name<>u.contract_name
-    OR u.creator_address<>u.creator_address
-    OR u.code_deploy_rank_by_chain<>u.code_deploy_rank_by_chain
-    OR th.token_standard<>u.token_standard
-  THEN 1 ELSE 0 END
-  {% else -%}
-  1
-  {% endif %}
-  AS is_updated_in_last_run
-
-FROM updated_data u
+) u
 {% if is_incremental() %}
 left join {{this}} th -- see if this was updated or not
   ON th.contract_address = u.contract_address
