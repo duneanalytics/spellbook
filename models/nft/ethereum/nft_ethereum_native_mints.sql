@@ -97,6 +97,8 @@ LEFT JOIN {{ source('prices','usd') }} pu_eth ON pu_eth.blockchain='ethereum'
     {% endif %}
 LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc20s ON erc20s.evt_block_time=nft_mints.block_time
     AND erc20s."from"=nft_mints.to
+    AND erc20s.evt_tx_hash = nft_mints.tx_hash 
+    AND (et.value IS NULL OR CAST(et.value as double) = 0)
     {% if is_incremental() %}
     AND  erc20s.evt_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
