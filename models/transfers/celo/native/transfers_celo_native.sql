@@ -43,7 +43,7 @@ transfer_raw as (
     tx_hash,
     trace_address, 
     block_time,
-    to as wallet_address, 
+    "from" as wallet_address, 
     -1 * cast(value as double) as amount_raw
   from {{ source('celo', 'traces') }}
   --where call_type = 'call'
@@ -77,7 +77,7 @@ transfer_raw as (
    'transfer received' as transfer_type,
     evt_tx_hash as tx_hash,
     array[evt_index] as trace_address,
-    block_time,
+    evt_block_time as block_time,
     to as wallet_address,
     cast(value as double) as amount_raw
   from {{ source('erc20_celo', 'evt_transfer') }}
@@ -92,7 +92,7 @@ transfer_raw as (
    'transfer sent' as transfer_type,
     evt_tx_hash as tx_hash,
     array[evt_index] as trace_address,
-    block_time,
+    evt_block_time as block_time,
     "from" as wallet_address,
     -1 * cast(value as double) as amount_raw
   from {{ source('erc20_celo', 'evt_transfer') }}
