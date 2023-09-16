@@ -5,7 +5,7 @@ with
       count(*) as ctn,
       'hi_im_a_dummy' as dummy
     from
-      ethereum.logs
+      {{ source('ethereum', 'logs') }}
     where
       1 = 1
 	  -- contract = ENS
