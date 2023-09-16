@@ -1,0 +1,148 @@
+version: 2
+
+models:
+  - name: transfers_celo_native
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: celo
+      contributors: tomfutago
+    config:
+      tags: ['transfers', 'celo', 'native']
+    description: "native transfers on celo. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transfer_type
+            - wallet_address
+            - tx_hash
+            - trace_address
+            - block_time
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type needed for unique test"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &trace_address
+        name: trace_address
+        description: "Trace index"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of celo token held *before* taking into account token decimals"
+
+  - name: transfers_celo_native_agg_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: celo
+      contributors: tomfutago
+    config:
+      tags: ['transfers', 'celo', 'native', 'agg_hour', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark."
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - &symbol
+        name: symbol
+        description: "celo token symbol"
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Raw amount of celo token held *after* taking into account token decimals"
+
+  - name: transfers_celo_native_agg_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: celo
+      contributors: tomfutago
+    config:
+      tags: ['transfers', 'celo', 'native', 'agg_day', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark."
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+
+  - name: transfers_celo_native_rolling_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: celo
+      contributors: tomfutago
+    description: "celo Token Transfers on celo per hour."
+    config:
+      tags: ['transfers', 'celo', 'native', 'rolling_hour', 'tomfutago']
+    columns:
+      - *blockchain
+      - *block_hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when table was last updated"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_celo_native_rolling_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: celo
+      contributors: tomfutago
+    description: "celo Token Transfers on celo per day."
+    config:
+      tags: ['transfers', 'celo', 'native', 'rolling_day', 'tomfutago']
+    columns:
+      - *blockchain
+      - *block_day
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *last_updated
+      - *recency_index
