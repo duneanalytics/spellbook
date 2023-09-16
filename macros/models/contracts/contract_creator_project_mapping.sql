@@ -194,7 +194,7 @@ SELECT *
     {% endif %} -- incremental filter
 
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
 ) y 
 --Don't run the same contract twice (i.e. incremental and existing)
 WHERE contract_order = 1
