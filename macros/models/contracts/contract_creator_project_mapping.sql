@@ -501,47 +501,7 @@ WHERE contract_order = 1
     ,c.top_level_tx_method_id
 
     ,c.code_bytelength
-    ,COALESCE(t.token_standard, c.token_standard,
-    -- to be replaced with all tokens table
-      CASE 
-      WHEN EXISTS (SELECT 1
-                        FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
-                        WHERE c.contract_address = r.contract_address
-                        AND r.evt_block_time >= c.created_time
-                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                        AND r.evt_block_time > NOW() - interval '7' day
-                        {% endif %}
-                        group by 1
-                        ) THEN 'erc1155'
-      WHEN EXISTS (SELECT 1
-                        FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
-                        WHERE c.contract_address = r.contract_address
-                        AND r.evt_block_time >= c.created_time
-                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                        AND r.evt_block_time > NOW() - interval '7' day
-                        {% endif %}
-                        group by 1
-                        ) THEN 'erc1155'
-      WHEN EXISTS (SELECT 1
-                        FROM {{source('erc721_' + chain, 'evt_transfer')}} r
-                        WHERE c.contract_address = r.contract_address
-                        AND r.evt_block_time >= c.created_time
-                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                        AND r.evt_block_time > NOW() - interval '7' day
-                        {% endif %}
-                        group by 1
-                        ) THEN 'erc721'
-      WHEN EXISTS (SELECT 1
-                        FROM {{source('erc20_' + chain, 'evt_transfer')}} r
-                        WHERE c.contract_address = r.contract_address
-                        AND r.evt_block_time >= c.created_time
-                        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-                        AND r.evt_block_time > NOW() - interval '7' day
-                        {% endif %}
-                        group by 1
-                        ) THEN 'erc20'
-      ELSE NULL END
-      ) AS token_standard
+    ,COALESCE(t_mapped.token_standard, t_raw.token_standard, c.token_standard) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
@@ -559,9 +519,48 @@ WHERE contract_order = 1
         from {{ ref('tokens_nft') }} as t
         WHERE t.blockchain = '{{chain}}'
         group by 1, 2, 3, 4
-      ) as t 
-    on c.contract_address = t.contract_address
-    AND c.blockchain = t.blockchain
+      ) as t_mapped
+    on c.contract_address = t_mapped.contract_address
+    AND c.blockchain = t_mapped.blockchain
+  left join ( --ideally, we have an 'all tokens spell' to read from (pending Dune team?)
+          SELECT contract_address, MIN(min_block_number) AS min_block_number, concat_ws(', ', ARRAY_AGG(DISTINCT token_standard) ) AS token_standard
+          FROM (
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
+            FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
+            WHERE 1=1
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+            AND r.evt_block_time > NOW() - interval '7' day
+            {% endif %}
+            group by 1
+          UNION ALL
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
+            FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
+            WHERE 1=1
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+            AND r.evt_block_time > NOW() - interval '7' day
+            {% endif %}
+            group by 1
+          UNION ALL
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc721' as token_standard
+            FROM {{source('erc721_' + chain, 'evt_transfer')}} r
+            WHERE 1=1
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+            AND r.evt_block_time > NOW() - interval '7' day
+            {% endif %}
+            group by 1
+          UNION ALL
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
+            FROM {{source('erc20_' + chain, 'evt_transfer')}} r
+            WHERE 1=1
+            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+            AND r.evt_block_time > NOW() - interval '7' day
+            {% endif %}
+            group by 1
+          ) ts 
+          GROUP BY 1
+        ) as t_raw
+        on c.contract_address = t_raw.contract_address
+        AND c.created_block_number <= t_raw.min_block_number
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   ) a
   ORDER BY map_rank ASC NULLS LAST --order we pick
