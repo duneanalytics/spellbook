@@ -291,6 +291,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
   - name: balancer_v2_arbitrum_bpt_prices
     meta:

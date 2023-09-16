@@ -22,9 +22,15 @@ models:
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
       - name: amount_raw
-        description: "The number of Satoshis in the wallets"
+        description: "The number of Satoshis in the wallet"
       - name: amount
-        description: "The number of Bitcoins in the wallets"
+        description: "The number of Bitcoins in the wallet"
+      - name: price_btc
+        description: "Price of btc at day"
+      - name: profit
+        description: "Profit by USD of the wallet"
       - &amount_usd
         name: amount_usd
-        description: "Amount of Bitcoin held in USD if we have it"
+        description: "USD balance of the wallet"
+      - name: total_asset
+        description: "Total asset by USD of the wallet"

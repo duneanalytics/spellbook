@@ -507,3 +507,26 @@ models:
         description: "Codebase used"
       - name: data_availability
         description:  "Chain where proofs are submitted to"
+
+  - name: evms_non_app_method_ids
+    meta:
+      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo
+      project: method_ids
+      contributors: msilb7
+    config:
+      tags: ['method_ids','methods','function','signature']
+    description: >
+        A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - method_id
+    columns:
+      - *blockchain
+      - &method_id 
+        name: method_id
+        description: "Method ID (first 4 bytes of calldata), in '0x....' format"
+      - &method_descriptor 
+        name: method_descriptor
+        description: "Manual descriptor of the method ID, which should help explan why it is considered a 'non-app' method."  
