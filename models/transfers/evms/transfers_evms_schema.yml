@@ -1,0 +1,91 @@
+version: 2
+
+models:
+  - name: transfers_evms_erc20
+    meta:
+      blockchain: evms
+      sector: transfers
+      project: erc20
+      contributors: longnhbkhn
+    config:
+      tags: ["transfers", "evms", "erc20"]
+    description: "Transfer erc20 in Evms"
+    columns:
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates)"
+      - &blockchain
+        name: blockchain
+        description: "Chain name"
+      - &token_address
+        name: token_address
+        description: "Contract address"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &symbol
+        name: symbol
+        description: "ERC20 token symbol"
+      - name: block_time
+        description: The block time
+      - &amount_raw
+        name: amount_raw
+        description: "The number of Wei"
+      - &amount
+        name: amount
+        description: "The number of Token"
+      - &amount_transfer_usd
+        name: amount_transfer_usd
+        description: Amount of the transfer by usd
+
+  - name: transfers_evms_erc20_agg_day
+    meta:
+      blockchain: evms
+      sector: transfers
+      project: erc20
+      contributors: longnhbkhn
+    description: "Transfer erc20 aggregate in Evm by day"
+    config:
+      tags: ['transfers', 'evms', 'erc20', 'agg_day', 'longnhbkhn']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+            - token_address
+            - blockchain
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark."
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *amount_transfer_usd
+
+    
+  
+  - name: transfers_evms_erc20_rolling_day
+    meta:
+      blockchain: evms
+      sector: transfers
+      project: erc20
+      contributors: longnhbkhn
+    description: "Number token was hold by wallet"
+    config:
+      tags: ['transfers', 'emvs', 'erc20', 'rolling_day', 'longnhbkhn']
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *amount_transfer_usd
+      - name: last_updated
+        description: "UTC timestamp when table was last updated"
+      - name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"

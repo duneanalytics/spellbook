@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: balances_evms_erc20_day
+    meta:
+      blockchain: evms
+      sector: balances
+      project: erc20
+      contributors: longnhbkhn
+    config:
+      tags: ['balances', 'evms', 'erc20', 'day', 'longnhbkhn']
+    description: >
+        Daily token balances of erc20 evms per wallets
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Chai name"
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address"
+      - &symbol
+        name: symbol
+        description: "ERC20 token symbol"
+      - name: amount_raw
+        description: "The number of erc20s in the wallet"
+      - name: amount
+        description: "The number of evmss in the wallet"
+      - name: price_token
+        description: "Price of token at day"
+      - name: profit
+        description: "Profit by USD of the wallet"
+      - &amount_usd
+        name: amount_usd
+        description: "USD balance of the wallet"
+      - name: total_asset
+        description: "Total asset by USD of the wallet"
