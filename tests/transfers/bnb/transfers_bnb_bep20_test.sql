@@ -3,7 +3,7 @@
 with test_data as (
     select count(*) as total
     from {{ ref('transfers_bnb_bep20') }}
-    where evt_block_time between '2023-01-01' and '2023-02-01'
+    where evt_block_time between TIMESTAMP '2023-01-01' and TIMESTAMP '2023-02-01'
 ),
 
 test_result as (
