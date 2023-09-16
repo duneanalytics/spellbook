@@ -61,9 +61,9 @@ transfer_raw as (
   select
     'gas fee' as transfer_type, 
     tx_hash,
-    array[index] as trace_address, 
+    array[index] as trace_address,
     block_time,
-    "from" as wallet_address, 
+    "from" as wallet_address,
     -1 * cast(gas_price as double) * cast(gas_used as double) as amount_raw
   from {{ source('celo', 'transactions') }}
   where success = true
@@ -75,10 +75,10 @@ transfer_raw as (
   
   select
    'transfer received' as transfer_type,
-    tx_hash,
-    trace_address, 
+    evt_tx_hash as tx_hash,
+    array[evt_index] as trace_address,
     block_time,
-    to as wallet_address, 
+    to as wallet_address,
     cast(value as double) as amount_raw
   from {{ source('erc20_celo', 'evt_transfer') }}
   where contract_address = 0x471ece3750da237f93b8e339c536989b8978a438 -- CELO native asset
@@ -90,10 +90,10 @@ transfer_raw as (
   
   select
    'transfer sent' as transfer_type,
-    tx_hash,
-    trace_address, 
+    evt_tx_hash as tx_hash,
+    array[evt_index] as trace_address,
     block_time,
-    "from" as wallet_address, 
+    "from" as wallet_address,
     -1 * cast(value as double) as amount_raw
   from {{ source('erc20_celo', 'evt_transfer') }}
   where contract_address = 0x471ece3750da237f93b8e339c536989b8978a438 -- CELO native asset
