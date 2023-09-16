@@ -80,7 +80,7 @@ transfer_raw as (
     block_time,
     to as wallet_address, 
     cast(value as double) as amount_raw
-  from {{ source('erc20_celo', 'evt_Transfer') }}
+  from {{ source('erc20_celo', 'evt_transfer') }}
   where contract_address = 0x471ece3750da237f93b8e339c536989b8978a438 -- CELO native asset
     {% if is_incremental() %}
     and evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -95,7 +95,7 @@ transfer_raw as (
     block_time,
     "from" as wallet_address, 
     -1 * cast(value as double) as amount_raw
-  from {{ source('erc20_celo', 'evt_Transfer') }}
+  from {{ source('erc20_celo', 'evt_transfer') }}
   where contract_address = 0x471ece3750da237f93b8e339c536989b8978a438 -- CELO native asset
     {% if is_incremental() %}
     and evt_block_time >= date_trunc('day', now() - interval '7' day)
