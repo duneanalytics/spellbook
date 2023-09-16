@@ -10,6 +10,7 @@
     ,"token_symbol"
     ,"contract_name"
     ,"creator_address"
+    ,"deployer_address"
     ,"created_time"
     ,"created_block_number"
     ,"is_self_destruct"
@@ -36,7 +37,9 @@ SELECT *
   select 
     blockchain
     ,trace_creator_address -- get the original contract creator address
-    ,creator_address
+    ,creator_address --top level creator, where we iterate up through factories
+    ,COALESCE(deployer_address --if already mapped, pull deployer. else this is the intermediate creator
+            , creator_address) as deployer_address -- deployer from the trace - does not iterate up
     ,contract_address
 
     ,created_time
@@ -74,6 +77,7 @@ SELECT *
               WHEN aa.contract_project = 'ERC4337' THEN bytearray_substring(t.data, 145,20) --smart wallet sender
               ELSE ct."from"
             END as creator_address
+            ,CAST(NULL AS varbinary) as deployer_address -- deployer from the trace - does not iterate up
             ,ct.address as contract_address
             ,ct.block_time as created_time
             ,ct.block_number as created_block_number
@@ -130,6 +134,7 @@ SELECT *
       t.blockchain
       ,t.trace_creator_address
       ,t.creator_address
+      ,t.deployer_address
       ,t.contract_address
       ,t.created_time
       ,t.created_block_number
@@ -195,29 +200,6 @@ SELECT *
 WHERE contract_order = 1
 )
 
-,tokens as (
-  select
-    e.blockchain
-    ,e.contract_address
-    ,e.symbol
-    ,'erc20' as token_standard
-
-  FROM {{ ref('tokens_erc20')}} e --note: This doesn't yet contain all ERC20 tokens
-  WHERE e.blockchain = '{{chain}}'
-  GROUP BY 1,2,3,4
-
-  UNION ALL
-
-  select 
-    t.blockchain
-    ,t.contract_address
-    ,t.name as symbol
-    , standard AS token_standard
-  from {{ ref('tokens_nft') }} as t
-  WHERE t.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4
-)
-
 -- starting from 0 
 -- u = next level up contract (i.e. the factory)
 -- b = base-level contract
@@ -231,6 +213,7 @@ WHERE contract_order = 1
         THEN b.created_tx_from --when deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
       END as creator_address -- get the highest-level creator we know of
+      ,b.deployer_address
       ,b.contract_address
       -- store the raw created data
       ,b.created_time
@@ -325,8 +308,9 @@ WHERE contract_order = 1
     f.blockchain
     ,f.trace_creator_address
     ,f.creator_address
+    ,f.deployer_address
     ,f.contract_address
-    ,coalesce(cc.contract_project, cctr.contract_project) as contract_project 
+    ,coalesce(cc.contract_project, ccd.contract_project, cctr.contract_project) as contract_project 
     ,f.created_time
     ,f.creation_tx_hash
     ,f.created_block_number
@@ -352,8 +336,13 @@ WHERE contract_order = 1
   ) f
   left join {{ ref('contracts_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
+  left join {{ ref('contracts_contract_creator_address_list') }} as ccd
+    on f.trace_creator_address = ccd.creator_address
+    AND cc.creator_address IS NULL
   left join {{ ref('contracts_contract_creator_address_list') }} as cctr
-    on f.trace_creator_address = cctr.creator_address
+    on f.deployer_address = cctr.creator_address
+    AND ccd.creator_address IS NULL
+  
   LEFT JOIN code_ranks cr --code ranks for new contracts
     ON cr.blockchain = f.blockchain
     AND cr.contract_address = f.contract_address
@@ -367,6 +356,7 @@ WHERE contract_order = 1
     cc.blockchain
     ,cc.trace_creator_address
     ,cc.creator_address
+    ,cc.deployer_address
     ,cc.contract_address
     ,coalesce(cc.contract_project, oc.namespace) as contract_project 
     ,oc.name as contract_name 
@@ -394,7 +384,7 @@ WHERE contract_order = 1
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
   
   union all
   -- missing contracts
@@ -402,6 +392,7 @@ WHERE contract_order = 1
     '{{chain}}' AS blockchain
     ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
     ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
+    ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS deployer_address
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
@@ -444,6 +435,7 @@ WHERE contract_order = 1
       blockchain
       ,trace_creator_address
       ,creator_address
+      ,creator_address AS deployer_address
       ,contract_address
       ,contract_project
       ,contract_name
@@ -490,6 +482,7 @@ WHERE contract_order = 1
     ,t.symbol as token_symbol
     ,c.contract_name
     ,c.creator_address
+    ,c.deployer_address
     ,c.created_time 
     ,c.is_self_destruct
 
@@ -518,6 +511,7 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
+                        group by 1
                         ) THEN 'erc1155'
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
@@ -526,6 +520,7 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
+                        group by 1
                         ) THEN 'erc1155'
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc721_' + chain, 'evt_transfer')}} r
@@ -534,6 +529,7 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
+                        group by 1
                         ) THEN 'erc721'
       WHEN EXISTS (SELECT 1
                         FROM {{source('erc20_' + chain, 'evt_transfer')}} r
@@ -542,6 +538,7 @@ WHERE contract_order = 1
                         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
                         AND r.evt_block_time > NOW() - interval '7' day
                         {% endif %}
+                        group by 1
                         ) THEN 'erc20'
       ELSE NULL END
       ) AS token_standard
@@ -550,10 +547,22 @@ WHERE contract_order = 1
     ,MIN(c.map_rank) AS map_rank
 
   from combine as c 
-  left join tokens as t 
+  left join (
+        select
+          e.blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
+        FROM {{ ref('tokens_erc20')}} e --note: This doesn't yet contain all ERC20 tokens
+        WHERE e.blockchain = '{{chain}}'
+        GROUP BY 1,2,3,4
+      UNION ALL
+        select 
+          t.blockchain ,t.contract_address ,t.name as symbol, standard AS token_standard
+        from {{ ref('tokens_nft') }} as t
+        WHERE t.blockchain = '{{chain}}'
+        group by 1, 2, 3, 4
+      ) as t 
     on c.contract_address = t.contract_address
     AND c.blockchain = t.blockchain
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   ) a
   ORDER BY map_rank ASC NULLS LAST --order we pick
 )
@@ -582,7 +591,7 @@ WHERE contract_order = 1
       AS contract_project
     --
   , token_symbol
-  , contract_name, creator_address, created_time
+  , contract_name, creator_address, deployer_address, created_time
   , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
   , created_tx_to, created_tx_method_id, created_tx_index
   , top_level_time, top_level_tx_hash, top_level_block_number
@@ -611,7 +620,8 @@ WHERE contract_order = 1
       ) as varchar) as contract_project
       ,c.token_symbol
       ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
-      ,coalesce(c.creator_address, CAST(NULL AS varbinary) ) as creator_address
+      ,c.creator_address
+      ,c.deployer_address
       ,c.created_time
       ,coalesce(c.is_self_destruct, false) as is_self_destruct
       ,c.creation_tx_hash
