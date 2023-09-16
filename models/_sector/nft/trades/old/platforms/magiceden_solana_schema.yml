@@ -95,6 +95,3 @@ models:
         tests:
           - unique
           - not_null
-      - &evt_index
-        name: evt_index
-        description:  "Every tx_hash in the magic eden events table is unique event so adding a null value for the event index so we can use downstream in nft.mints"

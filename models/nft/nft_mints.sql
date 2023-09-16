@@ -59,7 +59,7 @@ WITH project_mints as
             block_number,
             tx_from,
             tx_to,
-            evt_index
+            CASE WHEN project = 'magiceden' THEN CAST(0 as BIGINT) ELSE evt_index END as evt_index
         FROM {{ project_mint }}
         WHERE evt_type = 'Mint'
         {% if is_incremental() %}
