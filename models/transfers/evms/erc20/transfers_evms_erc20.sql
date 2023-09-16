@@ -1,4 +1,5 @@
-{{ config(tags=['dunesql'], materialized='view', alias = alias('erc20')
+{{ config(tags=['dunesql'], schema = 'transfers_evms'
+        , materialized='view', alias = alias('erc20')
         , post_hook='{{ expose_spells(\'["evms"]\',
                                     "sector",
                                     "transfers",
