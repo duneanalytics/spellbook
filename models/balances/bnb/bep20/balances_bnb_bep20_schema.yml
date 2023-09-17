@@ -40,8 +40,7 @@ models:
       - &symbol
         name: symbol
         description: "Token symbol"
-      - &price_token
-        name: price_token
+      - name: price_token
         description: "Price of token at hour"
       - &profit
         name: profit
@@ -73,7 +72,8 @@ models:
       - *amount
       - *amount_usd
       - *symbol
-      - *price_token
+      - name: price_token
+        description: "Price of token at day"
       - *profit
       - *total_asset
 
