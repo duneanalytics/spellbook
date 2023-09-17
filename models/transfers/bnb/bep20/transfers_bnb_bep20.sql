@@ -127,8 +127,8 @@ SELECT t.blockchain,
     t.wallet_address,
     t.token_address,
     t.amount_raw,
-    -1 * t.amount_raw / power(10, t.decimals) * p.price as amount_transfer_usd
+    -1 * t.amount_raw / power(10, p.decimals) * p.price as amount_transfer_usd
 FROM all_transfer t
 LEFT JOIN prices p
-    ON date_trunc('minute', t.block_time) = p.minute
+    ON date_trunc('minute', t.evt_block_time) = p.minute
     AND t.token_address = p.contract_address
