@@ -15,7 +15,7 @@ SELECT
     rh.amount,
     rh.amount * p.price as amount_usd,
     rh.symbol,
-    rh.price_token,
+    p.price as price_token,
     rh.profit,
     rh.total_asset,
     rh.last_updated
