@@ -7,7 +7,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'transfer_type', 'evt_index', 'wallet_address'],
+        unique_key = ['transfer_type', 'wallet_address', 'tx_hash', 'trace_address', 'block_time'],
         post_hook = '{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",
