@@ -18,3 +18,5 @@ UNION ALL
 SELECT address, entity, entity_unique_name, category FROM {{ ref('staking_ethereum_entities_coinbase') }}
 UNION ALL
 SELECT address, entity, entity_unique_name, category FROM {{ ref('staking_ethereum_entities_binance') }}
+UNION ALL
+SELECT address, entity, entity_unique_name, category FROM {{ ref('staking_ethereum_entities_darma_capital') }}
