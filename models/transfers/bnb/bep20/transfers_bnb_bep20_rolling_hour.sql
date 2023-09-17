@@ -13,6 +13,6 @@
             ROW_NUMBER() OVER (PARTITION BY token_address, wallet_address ORDER BY hour DESC) as recency_index,
             SUM(amount_raw) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount_raw, 
             SUM(amount) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount,
-            SUM(amount_transfer_usd) OVER (PARTITION BY token_address, wallet_address ORDER BY day) as amount_transfer_usd
+            SUM(amount_transfer_usd) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount_transfer_usd
         FROM 
         {{ ref('transfers_bnb_bep20_agg_hour') }}
