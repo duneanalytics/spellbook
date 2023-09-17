@@ -42,7 +42,7 @@ models:
         description: "Token symbol"
       - &price_token
         name: price_token
-        description: "Price of token at day"
+        description: "Price of token at hour"
       - &profit
         name: profit
         description: "Profit by USD of the wallet"
