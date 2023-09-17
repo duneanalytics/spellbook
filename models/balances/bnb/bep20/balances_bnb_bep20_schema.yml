@@ -10,7 +10,7 @@ models:
     config:
       tags: ['balances', 'bnb', 'bep20', 'hour', 'Henrystats']
     description: >
-        Hourly token balances of bep20 bnb tokens per wallet and contract address pair.
+        Hourly token balances and profit of bep20 bnb tokens per wallet and contract address pair.
         Depends on bep20_bnb_transfers
     columns:
       - &blockchain
