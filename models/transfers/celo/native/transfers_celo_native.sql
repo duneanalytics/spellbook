@@ -26,8 +26,8 @@ transfer_raw as (
     to as wallet_address, 
     cast(value as double) as amount_raw
   from {{ source('celo', 'traces') }}
-  --where call_type = 'call'
-  where (call_type not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
+  where coalesce(call_type, 'call') = 'call'
+  --where (call_type not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
     and success = true
     and tx_success = true
     and cast(value as double) > 0
@@ -46,8 +46,8 @@ transfer_raw as (
     "from" as wallet_address, 
     -1 * cast(value as double) as amount_raw
   from {{ source('celo', 'traces') }}
-  --where call_type = 'call'
-  where (call_type not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
+  where coalesce(call_type, 'call') = 'call'
+  --where (call_type not in ('delegatecall', 'callcode', 'staticcall') or call_type is null)
     and success = true
     and tx_success = true
     and cast(value as double) > 0
@@ -66,7 +66,7 @@ transfer_raw as (
     "from" as wallet_address,
     -1 * cast(gas_price as double) * cast(gas_used as double) as amount_raw
   from {{ source('celo', 'transactions') }}
-  where success = true
+  where 1=1
     {% if is_incremental() %}
     and block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
