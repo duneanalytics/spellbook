@@ -122,7 +122,7 @@ SELECT t.blockchain,
     t.transfer_type,
     t.evt_tx_hash,
     t.evt_index,
-    t.evt_block_time
+    t.evt_block_time,
     t.block_month,
     t.wallet_address,
     t.token_address,
