@@ -33,6 +33,7 @@ hourly_balances as (
         token_address, 
         amount_raw,
         amount,
+        amount_transfer_usd,
         symbol,
         LEAD(hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
     FROM 
@@ -48,7 +49,10 @@ SELECT
     b.amount_raw,
     b.amount,
     b.amount * p.price as amount_usd,
-    b.symbol
+    b.symbol,
+    p.price as price_token,
+    b.amount_transfer_usd as profit,
+    b.amount * p.price + b.amount_transfer_usd as total_asset
 FROM 
 hourly_balances b
 INNER JOIN 

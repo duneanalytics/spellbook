@@ -77,30 +77,58 @@ wbnb_events as (
         WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 )
-SELECT
-    'bnb' as blockchain, 
-    transfer_type,
-    evt_tx_hash, 
-    evt_index,
-    evt_block_time,
-    CAST(date_trunc('month', evt_block_time) as date) as block_month,
-    wallet_address, 
-    token_address, 
-    amount_raw
-FROM 
-erc20_transfers
 
-UNION ALL 
+, prices as (
+    SELECT * 
+    
+    FROM {{ source('prices', 'usd') }}
+    WHERE blockchain = 'bnb'
+    {% if is_incremental() %}
+        AND minute >= date_trunc('day', now() - interval '3' day)
+    {% endif %}
+)
 
-SELECT 
-    'bnb' as blockchain, 
-    transfer_type,
-    evt_tx_hash, 
-    evt_index,
-    evt_block_time,
-    CAST(date_trunc('month', evt_block_time) as date) as block_month,
-    wallet_address, 
-    token_address, 
-    amount_raw
-FROM 
-wbnb_events
+, all_transfer as (
+    SELECT
+        'bnb' as blockchain, 
+        transfer_type,
+        evt_tx_hash, 
+        evt_index,
+        evt_block_time,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month,
+        wallet_address, 
+        token_address, 
+        amount_raw
+    FROM 
+    erc20_transfers
+
+    UNION ALL 
+
+    SELECT 
+        'bnb' as blockchain, 
+        transfer_type,
+        evt_tx_hash, 
+        evt_index,
+        evt_block_time,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month,
+        wallet_address, 
+        token_address, 
+        amount_raw
+    FROM 
+    wbnb_events
+)
+
+SELECT t.blockchain,
+    t.transfer_type,
+    t.evt_tx_hash,
+    t.evt_index,
+    t.evt_block_time
+    t.block_month,
+    t.wallet_address,
+    t.token_address,
+    t.amount_raw,
+    -1 * t.amount_raw / power(10, t.decimals) * p.price as amount_transfer_usd
+FROM all_transfer t
+LEFT JOIN prices p
+    ON date_trunc('minute', t.block_time) = p.minute
+    AND t.token_address = p.contract_address

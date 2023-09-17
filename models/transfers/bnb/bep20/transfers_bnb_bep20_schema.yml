@@ -45,7 +45,10 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw amount of bep20 token held *before* taking into account token decimals"
-
+      - &amount_transfer_usd
+        name: amount_transfer_usd
+        description: "The amount of USD the wallet spends or collects when transferring"
+  
   - name: transfers_bnb_bep20_agg_hour
     meta:
       blockchain: bnb
@@ -75,6 +78,7 @@ models:
       - &amount
         name: amount
         description: "Raw amount of bep20 token held *after* taking into account token decimals"
+      - *amount_transfer_usd
 
   - name: transfers_bnb_bep20_agg_day
     meta:
@@ -101,6 +105,7 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+      - *amount_transfer_usd
 
   - name: transfers_bnb_bep20_rolling_hour
     meta:
@@ -119,6 +124,7 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+      - *amount_transfer_usd
       - &updated_at
         name: updated_at
         description: "UTC timestamp when table was last updated"
@@ -143,5 +149,6 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+      - *amount_transfer_usd
       - *updated_at
       - *recency_index

@@ -15,6 +15,9 @@ SELECT
     rh.amount,
     rh.amount * p.price as amount_usd,
     rh.symbol,
+    rh.price_token,
+    rh.profit,
+    rh.total_asset,
     rh.last_updated
 FROM 
 {{ ref('transfers_bnb_bep20_rolling_hour') }} rh

@@ -40,6 +40,15 @@ models:
       - &symbol
         name: symbol
         description: "Token symbol"
+      - &price_token
+        name: price_token
+        description: "Price of token at day"
+      - &profit
+        name: profit
+        description: "Profit by USD of the wallet"
+      - &total_asset
+        name: total_asset
+        description: "Total asset by USD of the wallet"
 
   - name: balances_bnb_bep20_day
     meta:
@@ -64,6 +73,9 @@ models:
       - *amount
       - *amount_usd
       - *symbol
+      - *price_token
+      - *profit
+      - *total_asset
 
 
   - name: balances_bnb_bep20_latest
@@ -88,6 +100,9 @@ models:
       - *amount
       - *amount_usd
       - *symbol
+      - *price_token
+      - *profit
+      - *total_asset
 
   - name: balances_bnb_bep20_noncompliant
     meta:

@@ -17,7 +17,8 @@ select
     tr.token_address,
     t.symbol,
     sum(tr.amount_raw) as amount_raw,
-    sum(tr.amount_raw / power(10, t.decimals)) as amount
+    sum(tr.amount_raw / power(10, t.decimals)) as amount,
+    sum(tr.amount_transfer_usd) as amount_transfer_usd
 FROM 
 {{ ref('transfers_bnb_bep20') }} tr
 LEFT JOIN 
