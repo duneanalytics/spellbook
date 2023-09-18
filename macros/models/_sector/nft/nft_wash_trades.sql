@@ -1,6 +1,5 @@
 {% macro nft_wash_trades(blockchain, first_funded_by) %}
 {%- set token_standard_name = 'bep' if blockchain == 'bnb' else 'erc' -%}
-{%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 
 WITH filter_1 AS (
     SELECT unique_trade_id
