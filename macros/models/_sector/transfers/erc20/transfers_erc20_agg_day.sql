@@ -1,13 +1,4 @@
-{{ config(
-        tags = ['dunesql'],
-        alias = alias('erc20_agg_day'),
-        partition_by = ['block_month'],
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key = ['day', 'wallet_address', 'token_address']
-        )
-}}
+{% macro transfers_erc20_agg_day(transfers_erc20, tokens_erc20) %}
 
 SELECT
     tr.blockchain,
@@ -19,11 +10,13 @@ SELECT
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, t.decimals)) as amount
 FROM 
-{{ ref('transfers_polygon_erc20') }} tr
+{{ transfers_erc20 }} tr
 LEFT JOIN 
-{{ ref('tokens_polygon_erc20') }} t on t.contract_address = tr.token_address
+{{ tokens_erc20 }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE tr.evt_block_time >= date_trunc('day', now() - interval '3' Day)
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5, 6
+
+{% endmacro %}
