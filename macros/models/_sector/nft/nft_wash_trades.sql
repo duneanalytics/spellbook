@@ -138,8 +138,8 @@ SELECT nftt.blockchain
 , nftt.tx_from
 , nftt.tx_to
 , nftt.block_time
-, date_trunc('day', nftt.block_time) AS block_date
-, date_trunc('month', nftt.block_time) AS block_month
+, CAST(date_trunc('day', nftt.block_time) AS date) AS block_date
+, CAST(date_trunc('month', nftt.block_time) AS date) AS block_month
 , nftt.block_number
 , nftt.tx_hash
 , nftt.unique_trade_id
