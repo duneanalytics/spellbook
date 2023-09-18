@@ -130,7 +130,7 @@ models:
         description: "UTC timestamp when table was last updated"
       - &recency_index
         name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance."
 
   - name: transfers_bnb_bep20_rolling_day
     meta:
