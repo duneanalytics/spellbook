@@ -2,7 +2,7 @@
 
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
-{% set max_levels = 4 %} --NOTE: This will make the "creator address" not accurate, if the levels are too low - pivot to use deployer_address
+{% set max_levels = 3 %} --NOTE: This will make the "creator address" not accurate, if the levels are too low - pivot to use deployer_address
 -- set column names to loop through
 {% set cols = [
      "trace_creator_address"
@@ -677,7 +677,6 @@ FROM (
   ) f
 ) u
 
-
 {% if is_incremental() %}
 left join {{this}} th -- see if this was updated or not
   ON th.contract_address = u.contract_address
@@ -685,6 +684,5 @@ left join {{this}} th -- see if this was updated or not
   AND th.created_block_number = u.created_block_number
   AND th.created_time = u.created_time
 {% endif %}
-
 
 {% endmacro %}
