@@ -38,7 +38,7 @@ select
     , last_changed_at
     , kyc
     , resolver_executor
-    , coalesce(blockchain, cast(id as varchar)) as blockchain
+    , coalesce(blockchain, cast(chain_id as varchar)) as blockchain
     , chain_id
     , executor_promotions
     , first_time
