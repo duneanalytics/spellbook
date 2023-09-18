@@ -1,12 +1,10 @@
 {% macro 
-    oneinch_ar_calls_transfers_macro(
+    oneinch_calls_transfers_macro(
         blockchain,
         project_start_date_str,
         wrapper_token_address
     ) 
 %}
-
-
 
 {% set project_start_date = "timestamp '" + project_start_date_str + "'" %} 
 {% set lookback_days = -7 %}
@@ -14,47 +12,61 @@
 {% set transfer_from_selector = '0x23b872dd' %}
 {% set selector = 'substr(input, 1, 4)' %}
 
-
-
 with
 
-calls as (
+methods as (
+    select blockchain, contract_address as call_to, selector as call_selector, protocol
+    from {{ ref('oneinch_methods') }}
+    where blockchain = {{ blockchain }} and project = '1inch' and main
+)
+
+, erc as (
+    select blockchain, contract_address, symbol, decimals
+    from {{ source('tokens', 'erc20') }}
+    where blockchain = {{ blockchain }}
+)
+
+, calls as (
     select 
-        tx_hash
-        , gr_traces.start
-        , gr_traces.caller
-        , gr_traces.call_to
+        blockchain
+        , tx_hash
+        , calls.start
+        , calls.call_from
+        , call_to
         , transactions.tx_from
         , transactions.tx_success
-        , gr_traces.call_success
-        , gr_traces.call_selector
-        , gr_traces.call_input
-        , gr_traces.call_output
+        , calls.call_success
+        , call_selector
+        , protocol
+        , calls.call_input
+        , calls.call_output
         , transactions.block_time
     from (
         select 
-            "from" as tx_from
+            {{ blockchain }} as blockchain
+            , "from" as tx_from
             , "hash" as tx_hash
             , success as tx_success
-            , block_time 
+            , block_time
         from {{ source(blockchain, 'transactions') }}
         where
-        {% if is_incremental() %}
-            block_time >= cast(date_add('day', {{ lookback_days }}, now()) as timestamp)
-        {% else %}
-            block_time >= {{ project_start_date }}
-        {% endif %}
+            {% if is_incremental() %}
+                block_time >= cast(date_add('day', {{ lookback_days }}, now()) as timestamp)
+            {% else %}
+                block_time >= {{ project_start_date }}
+            {% endif %}
     ) as transactions 
     join (
         select 
-            tx_hash
-            , min(trace_address) as start
-            , min_by("from", trace_address) as caller
-            , min_by(success, trace_address) as call_success
-            , min_by({{ selector }}, trace_address) as call_selector
-            , min_by(input, trace_address) as call_input
-            , min_by(output, trace_address) as call_output
-            , min_by("to", trace_address) call_to
+            {{ blockchain }} as blockchain
+            , tx_hash
+            , trace_address as start
+            , "from" as call_from
+            , success as call_success
+            , {{ selector }} as call_selector
+            , input as call_input
+            , output as call_output
+            , "to" as call_to
         from {{ source(blockchain, 'traces') }}
         where 
             {% if is_incremental() %}
@@ -62,19 +74,15 @@ calls as (
             {% else %}
                 block_time >= {{ project_start_date }}
             {% endif %}
-            and ("to", {{ selector }}) in (
-                select distinct contract_address, selector from {{ ref('oneinch_protocols') }}
-                where protocol = 'AR' and blockchain = '{{ blockchain }}' and main
-            )
+            and ("to", {{ selector }}) in (select call_to, call_selector from methods)
             and call_type = 'call'
-        group by tx_hash
-    ) gr_traces using(tx_hash)
+    ) as calls using(blockchain, tx_hash)
+    left join methods using(blockchain, call_to, call_selector)
 )
-
 
 , merged as (
     select 
-        '{{ blockchain }}' as blockchain
+        calls.blockchain
         , calls.block_time
         -- tx
         , calls.tx_hash
@@ -83,18 +91,23 @@ calls as (
         -- call
         , calls.call_success
         , calls.start as call_trace_address
-        , calls.caller
-        , calls.call_selector
+        , calls.call_from
         , calls.call_to
+        , calls.call_selector
+        , calls.protocol
         -- transfer
         , transfers.trace_address as transfer_trace_address
         , transfers.contract_address
         , transfers.amount
+        , transfers.symbol
+        , transfers.decimals
         , transfers.native_token
         , transfers.transfer_from
         , transfers.transfer_to
-        , if(transfers.trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address asc)) as rn_ta_asc 
-        , if(transfers.trace_address is not null, row_number() over(partition by calls.tx_hash order by transfers.trace_address desc)) as rn_ta_desc
+        , transfers.tranfer_top_level
+        , transfers.transfers_between_players
+        , rn_tta_asc
+        , rn_tta_desc
         -- ext
         , calls.call_output 
         , calls.call_input
@@ -102,42 +115,63 @@ calls as (
         , date(date_trunc('month', calls.block_time)) as block_month
     from calls
     left join (
+
         select 
-            tx_hash
-            , if(value > uint256 '0', {{ wrapper_token_address }}, "to") as contract_address
-            , if(value > uint256 '0', true, false) as native_token
-            , case {{ selector }}
-                when {{ transfer_selector }} then bytearray_to_uint256(substr(input, 37, 32))
-                when {{ transfer_from_selector }} then bytearray_to_uint256(substr(input, 69, 32))
-                else value
-            end as amount
-            , case
-                when {{ selector }} = {{ transfer_selector }} or value > uint256 '0' then "from"
-                when {{ selector }} = {{ transfer_from_selector }} then substr(input, 17, 20)
-            end as transfer_from
-            , case
-                when {{ selector }} = {{ transfer_selector }} then substr(input, 17, 20)
-                when {{ selector }} = {{ transfer_from_selector }} then substr(input, 49, 20)
-                when value > uint256 '0' then "to"
-            end as transfer_to
+            blockchain
+            , tx_hash
             , trace_address
-            , input
-            , success
-            , call_type
-        from {{ source(blockchain, 'traces') }}
-        where 
-            {% if is_incremental() %}
-                block_time >= date_add('day', {{ lookback_days }}, now())
-            {% else %}
-                block_time >= {{ project_start_date }}
-            {% endif %}
-            and ({{ selector }} in ({{ transfer_selector }}, {{ transfer_from_selector }}) or value > uint256 '0')
-            and tx_success
-            and success
+            , if(native_token, wrapped_native_token_address, contract_address) as contract_address
+            , native_token
+            , symbol
+            , decimals
+            , amount
+            , transfer_from
+            , transfer_to
+            -- transfers in token transfer
+            , not contains(transform(array_remove(trf, trace_address), x -> if(slice(trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as tranfer_top_level
+            , count(*) over(partition by blockchain, tx_hash, array_sort(array[transfer_from, transfer_to])) as transfers_between_players
+            , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
+            , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
+        from (
+            select 
+                {{ blockchain }} as blockchain
+                , tx_hash
+                , trace_address
+                , if(value > uint256 '0', 0xae, "to") as contract_address
+                , if(value > uint256 '0', true, false) as native_token
+                , case {{ selector }}
+                    when {{ transfer_selector }} then bytearray_to_uint256(substr(input, 37, 32))
+                    when {{ transfer_from_selector }} then bytearray_to_uint256(substr(input, 69, 32))
+                    else value
+                end as amount
+                , case
+                    when {{ selector }} = {{ transfer_selector }} or value > uint256 '0' then "from"
+                    when {{ selector }} = {{ transfer_from_selector }} then substr(input, 17, 20)
+                end as transfer_from
+                , case
+                    when {{ selector }} = {{ transfer_selector }} then substr(input, 17, 20)
+                    when {{ selector }} = {{ transfer_from_selector }} then substr(input, 49, 20)
+                    when value > uint256 '0' then "to"
+                end as transfer_to
+                , array_agg(if(value > uint256 '0', null, trace_address)) over(partition by tx_hash) as trf
+            from {{ source(blockchain, 'traces') }}
+            where
+                {% if is_incremental() %}
+                    block_time >= date_add('day', {{ lookback_days }}, now())
+                {% else %}
+                    block_time >= {{ project_start_date }}
+                {% endif %}
+                and ({{ selector }} in ({{ transfer_selector }}, {{ transfer_from_selector }}) or value > uint256 '0')
+                and call_type = 'call'
+                and tx_success
+                and success
+        )
+        left join {{ source('evms', 'info') }} using(blockchain)
+        left join erc using(blockchain, contract_address)
+        
     ) transfers on transfers.tx_hash = calls.tx_hash
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
 )
-
 
 select 
     *
@@ -147,8 +181,4 @@ select
     as unique_call_transfer_id
 from merged
 
-
-
 {% endmacro %}
-
-
