@@ -206,7 +206,7 @@ WHERE contract_order = 1
 -- b = base-level contract
 {% for i in range(max_levels) -%}
 
-{% if {{i}} == 0 %}
+{% if i == 0 %}
 with level0
 {% else %}
 ,level{{i}}
