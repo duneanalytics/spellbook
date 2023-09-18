@@ -32,7 +32,7 @@ token_fill_days as (
     cast(date_trunc('month', d.block_day) as date) as block_month,
     d.block_day
   from token_first_acquired tfa
-    join days d on tfa.first_block_day <= d.day
+    join days d on tfa.first_block_day <= d.block_day
 ),
 
 daily_balances as (

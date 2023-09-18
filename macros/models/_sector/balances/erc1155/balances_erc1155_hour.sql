@@ -43,7 +43,7 @@ token_fill_hours as (
       cast(date_trunc('month', h.block_hour) as date) as block_month,
       h.block_hour
     from token_first_acquired tfa
-      join hours h on tfa.first_block_hour <= h.hour
+      join hours h on tfa.first_block_hour <= h.block_hour
 ),
 
 daily_balances as (
