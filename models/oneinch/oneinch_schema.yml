@@ -54,15 +54,11 @@ models:
         name: last_changed_at
       - &kyc
         name: kyc
-      - &resolver_executor_not_null
+      - &resolver_executor
         name: resolver_executor
-        tests:
-          - not_null
       - *blockchain
-      - &chain_id_not_null
+      - &chain_id
         name: chain_id
-        tests:
-          - not_null
       - &executor_promotions
         name: executor_promotions
       - &first_time
@@ -73,6 +69,11 @@ models:
         name: tx_hash_example
       - &last_block_time
         name: last_block_time
+      - &resolver_executor_id
+        name: resolver_executor_id
+        tests:
+          - unique
+          - not_null
 
   - name: oneinch_protocols
     meta:
@@ -350,11 +351,6 @@ models:
       tags: ['oneinch', 'raw']
     description: >
         fusion farms
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - farm_address
-            - distributor
     columns:
       - *resolver_address_not_null
       - *resolver_name
@@ -381,6 +377,10 @@ models:
         name: distributor_status
       - &distributor_set_up
         name: distributor_set_up
+      - &unique_farm_distributor_set_up_id
+        name: unique_farm_distributor_set_up_id
+        tests:
+          - unique
 
   - name: oneinch_fusion_resolvers
     meta:

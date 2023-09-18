@@ -4,7 +4,7 @@
         alias = alias('fusion_farms'),
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key = ['farm_address', 'distributor'],
+        unique_key = ['unique_farm_distributor_set_up_id'],
         tags = ['dunesql']
     )
 }}
@@ -88,22 +88,27 @@ delegates as (
 )
 
 
-select
-      resolver_address
-    , resolver_name
-    , resolver_status
-    , last_changed_at
-    , kyc
-    , resolver_register_delegatee
-    , farm_address
-    , farm_ownership_transferred
-    , farm_created_at
-    , default_token as farm_default_token
-    , coalesce(distributor, 0x) as distributor
-    , if(set_up = last_set_up, 'Current', if(set_up <> last_set_up, 'Legacy', 'No')) as distributor_status
-    , set_up as distributor_set_up
-from {{ ref('oneinch_fusion_resolvers') }}
-left join delegates using(resolver_address)
-left join distributors using(farm_address)
-left join farm_tokens using(farm_address)
-order by resolver_status, resolver_name, resolver_address, set_up desc
+select 
+    *
+    , cast(farm_address as varchar)||cast(distributor as varchar)||cast(distributor_status as varchar)||coalesce(cast(farm_default_token as varchar), '')||coalesce(cast(distributor_set_up as varchar), '') as unique_farm_distributor_set_up_id
+from (
+    select
+        resolver_address
+        , resolver_name
+        , resolver_status
+        , last_changed_at
+        , kyc
+        , resolver_register_delegatee
+        , farm_address
+        , farm_ownership_transferred
+        , farm_created_at
+        , default_token as farm_default_token
+        , coalesce(distributor, 0x) as distributor
+        , if(set_up = last_set_up, 'Current', if(set_up <> last_set_up, 'Legacy', 'No')) as distributor_status
+        , set_up as distributor_set_up
+    from {{ ref('oneinch_fusion_resolvers') }}
+    left join delegates using(resolver_address)
+    left join distributors using(farm_address)
+    left join farm_tokens using(farm_address)
+    order by resolver_status, resolver_name, resolver_address, set_up desc
+)
