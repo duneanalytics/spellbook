@@ -1,4 +1,4 @@
-{% macro addresses_events_first_funded_by(blockchain, traces) %}
+{% macro addresses_events_first_funded_by(blockchain) %}
 
 SELECT 
 '{{blockchain}}' as blockchain
