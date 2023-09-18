@@ -1,5 +1,5 @@
 {% set blockchain = 'avalanche_c' %}
-{% set project_start_date_str = '2021-11-20' %}
+{% set project_start_date_str = '2023-11-20' %}
 
 
 
