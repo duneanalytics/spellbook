@@ -1,3 +1,4 @@
+-- TEMP TABLE, WILL BE REMOVED AS SOON AS WE MIGRATE DUNE QUERIES
 {{  
     config(
         schema = 'oneinch',
@@ -8,7 +9,6 @@
     )
 }}
 
--- TEMP TABLE, WILL BE REMOVED AS SOON AS WE MIGRATE DUNE QUERIES
 
 
 select * from {{ ref('oneinch_calls_transfers_amounts') }}

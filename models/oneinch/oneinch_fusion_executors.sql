@@ -11,25 +11,25 @@
 
 with
 
-    executors as (
-        select
-              "from" as resolver_address
-            , substr(input, 49, 20) as resolver_executor
-            , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as chain_id -- blockchain id
-            , count(*) as executor_promotions
-            , min(block_time) as first_time
-            , max(block_time) as last_time
-            , max(tx_hash) as tx_hash_example
-        from {{ source('ethereum', 'traces') }}
-        where
-            "to" = 0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77
-            and substr(input, 1, 4) = 0xf204bdb9 -- promote(chainId, promotee)
-            and block_time >= timestamp '2022-12-25'
-            and tx_success
-            and success
-            and call_type = 'call'
-        group by 1, 2, 3
-    )
+executors as (
+    select
+        "from" as resolver_address
+        , substr(input, 49, 20) as resolver_executor
+        , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as chain_id -- blockchain id
+        , count(*) as executor_promotions
+        , min(block_time) as first_time
+        , max(block_time) as last_time
+        , max(tx_hash) as tx_hash_example
+    from {{ source('ethereum', 'traces') }}
+    where
+        "to" = 0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77
+        and substr(input, 1, 4) = 0xf204bdb9 -- promote(chainId, promotee)
+        and block_time >= timestamp '2022-12-25'
+        and tx_success
+        and success
+        and call_type = 'call'
+    group by 1, 2, 3
+)
 
 select
       resolver_address
