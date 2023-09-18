@@ -542,8 +542,6 @@ models:
         +schema: addresses_events_optimism
       polygon:
         +schema: addresses_events_polygon
-      celo:
-        +schema: addresses_events_celo
     addresses_events_testnets:
       +schema: addresses_events_testnets
       goerli:
