@@ -1,4 +1,4 @@
-{% macro balances_erc721_hour(transfers_erc721_rolling_hour, balances_erc721_noncompliant, init_date) %}
+{% macro balances_erc1155_hour(transfers_erc1155_rolling_hour, init_date) %}
 
 with
 
@@ -26,7 +26,7 @@ token_first_acquired as (
       token_address,
       token_id,
       min(block_hour) as first_block_hour
-    from {{ transfers_erc721_rolling_hour }}
+    from {{ transfers_erc1155_rolling_hour }}
     where 1=1
       {% if is_incremental() %} -- this filter will only be applied on an incremental run
       and block_hour >= date_trunc('day', now() - interval '7' day)
@@ -56,10 +56,8 @@ daily_balances as (
       lead(t.block_hour, 1, now() + interval '1' hour) over ( -- now + 1 hour so that last hour..
         partition by t.token_address, t.wallet_address order by t.block_hour
       ) - interval '1' hour as next_hour -- .. becomes hour-1 so it covers 'between' hours excatly in the next query
-    from {{ transfers_erc721_rolling_hour }} t
-      left join {{ balances_erc721_noncompliant }} nc on t.token_address = nc.token_address
+    from {{ transfers_erc1155_rolling_hour }} t
     where 1=1
-      and nc.token_address is null
       {% if is_incremental() %} -- this filter will only be applied on an incremental run
       and t.block_hour >= date_trunc('day', now() - interval '7' day)
       {% endif %}
@@ -72,6 +70,7 @@ select
   fh.wallet_address,
   fh.token_address,
   db.token_id,
+  db.amount,
   nft_tokens.name as collection
 from token_fill_hours fh
   join daily_balances db on fh.wallet_address = db.wallet_address
@@ -80,6 +79,5 @@ from token_fill_hours fh
     and fh.block_hour between db.block_hour and db.next_hour
   left join {{ ref('tokens_nft') }} nft_tokens on db.token_address = nft_tokens.contract_address
     and fh.blockchain = nft_tokens.blockchain
-where db.amount = 1
 
 {% endmacro %}

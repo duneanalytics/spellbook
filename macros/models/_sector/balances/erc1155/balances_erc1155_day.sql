@@ -1,4 +1,4 @@
-{% macro balances_erc721_day(transfers_erc721_rolling_day, balances_erc721_noncompliant, init_date) %}
+{% macro balances_erc1155_day(transfers_erc1155_rolling_day, init_date) %}
 
 with
 
@@ -19,7 +19,7 @@ token_first_acquired as (
     token_address,
     token_id,
     min(block_day) as first_block_day
-  from {{ transfers_erc721_rolling_day }}
+  from {{ transfers_erc1155_rolling_day }}
   group by 1, 2, 3, 4
 ),
 
@@ -45,10 +45,8 @@ daily_balances as (
     lead(t.block_day, 1, now() + interval '1' day) over ( -- now + 1 day so that last day..
       partition by t.token_address, t.wallet_address order by t.block_day
     ) - interval '1' day as next_day -- .. becomes today's and -1 so it covers 'between' days excatly in the next query
-  from {{ transfers_erc721_rolling_day }} t
-    left join {{ balances_erc721_noncompliant }} nc on t.token_address = nc.token_address
+  from {{ transfers_erc1155_rolling_day }} t
   where 1=1
-    and nc.token_address is null
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
     and t.block_day >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -60,7 +58,8 @@ select
   fd.block_day,
   fd.wallet_address,
   fd.token_address,
-  fd.token_id,
+  db.token_id,
+  db.amount,
   nft_tokens.name as collection
 from token_fill_days fd
   join daily_balances db on fd.wallet_address = db.wallet_address
@@ -69,6 +68,5 @@ from token_fill_days fd
     and fd.block_day between db.block_day and db.next_day
   left join {{ ref('tokens_nft') }} nft_tokens on db.token_address = nft_tokens.contract_address
     and fd.blockchain = nft_tokens.blockchain
-where db.amount = 1
 
 {% endmacro %}
