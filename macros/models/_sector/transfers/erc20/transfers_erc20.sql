@@ -1,4 +1,4 @@
-{% macro transfers_erc20(blockchain, erc20_evt_transfer, wrapped_token_deposit, wrapped_token_withdrawal) %}
+{% macro transfers_erc20(blockchain, erc20_evt_transfer, wrapped_token_deposit=null, wrapped_token_withdrawal=null) %}
 
 WITH
 
@@ -33,9 +33,10 @@ erc20_transfers  as (
         {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
-),
+)
 
-wrapped_token_events as (
+{% if wrapped_token_deposit and wrapped_token_withdrawal %}
+, wrapped_token_events as (
         SELECT 
             'deposit' as transfer_type, 
             evt_tx_hash, 
@@ -66,6 +67,7 @@ wrapped_token_events as (
         WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 )
+{% endif %}
 
 SELECT
     '{{blockchain}}' as blockchain, 
@@ -80,6 +82,7 @@ SELECT
 FROM 
 erc20_transfers
 
+{% if wrapped_token_deposit and wrapped_token_withdrawal %}
 UNION ALL 
 
 SELECT 
@@ -94,5 +97,6 @@ SELECT
     amount_raw
 FROM 
 wrapped_token_events
+{% endif %}
 
 {% endmacro %}
