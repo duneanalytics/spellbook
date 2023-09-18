@@ -676,6 +676,7 @@ FROM (
       on c.contract_address = co.contract_address
   ) f
 ) u
+
 {% if is_incremental() %}
 left join {{this}} th -- see if this was updated or not
   ON th.contract_address = u.contract_address
