@@ -16,7 +16,7 @@ with
 methods as (
     select blockchain, contract_address as call_to, selector as call_selector, protocol
     from {{ ref('oneinch_methods') }}
-    where blockchain = {{ blockchain }} and project = '1inch' and main
+    where blockchain = '{{ blockchain }}' and project = '1inch' and main
 )
 
 , calls as (
@@ -36,7 +36,7 @@ methods as (
         , transactions.block_time
     from (
         select 
-            {{ blockchain }} as blockchain
+            '{{ blockchain }}' as blockchain
             , "from" as tx_from
             , "hash" as tx_hash
             , success as tx_success
@@ -51,7 +51,7 @@ methods as (
     ) as transactions 
     join (
         select 
-            {{ blockchain }} as blockchain
+            '{{ blockchain }}' as blockchain
             , tx_hash
             , trace_address as start
             , "from" as call_from
@@ -124,7 +124,7 @@ methods as (
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
         from (
             select 
-                {{ blockchain }} as blockchain
+                '{{ blockchain }}' as blockchain
                 , tx_hash
                 , trace_address
                 , if(value > uint256 '0', 0xae, "to") as contract_address

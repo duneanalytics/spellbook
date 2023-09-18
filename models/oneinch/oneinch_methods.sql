@@ -82,7 +82,7 @@ select
     , contract_id
     , contract_name
     , blockchain
-    , signatures.created_at
+    , ec.created_at as contract_created_at
     , creator
     
     -- methods
@@ -93,7 +93,7 @@ select
     , receiver
     , signature
 
-from {{ ref('oneinch_exchange_contracts') }}
+from {{ ref('oneinch_exchange_contracts') }} ec
 join methods using(contract_id)
 left join {{ ref('signatures') }} as signatures on signatures.id = methods.selector
-order by signatures.created_at, method
+order by ec.created_at, method

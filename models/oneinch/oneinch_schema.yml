@@ -425,7 +425,8 @@ models:
       - *contract_id_not_null
       - *contract_name
       - *blockchain_not_null
-      - *created_at
+      - &contract_created_at
+        name: contract_created_at
       - *creator
       - *selector_not_null
       - &protocol_not_null
