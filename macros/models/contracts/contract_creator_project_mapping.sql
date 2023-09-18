@@ -677,6 +677,7 @@ FROM (
   ) f
 ) u
 
+
 {% if is_incremental() %}
 left join {{this}} th -- see if this was updated or not
   ON th.contract_address = u.contract_address
@@ -684,5 +685,6 @@ left join {{this}} th -- see if this was updated or not
   AND th.created_block_number = u.created_block_number
   AND th.created_time = u.created_time
 {% endif %}
+
 
 {% endmacro %}
