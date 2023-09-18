@@ -1,6 +1,7 @@
 {{ 
     config(
         tags = ['dunesql'],
+        schema = 'transfers_celo',
         alias = alias('erc721'),
         partition_by = ['block_month'],
         materialized = 'incremental',

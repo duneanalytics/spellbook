@@ -1,6 +1,7 @@
 {{ 
     config(
         tags = ['dunesql'],
+        schema = 'transfers_celo',
         alias = alias('erc1155_rolling_hour'),
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
