@@ -70,7 +70,7 @@ methods as (
             and ("to", {{ selector }}) in (select call_to, call_selector from methods)
             and call_type = 'call'
     ) as calls using(blockchain, tx_hash)
-    left join methods using(blockchain, call_to, call_selector)
+    join methods using(blockchain, call_to, call_selector)
 )
 
 , merged as (
@@ -112,7 +112,7 @@ methods as (
             blockchain
             , tx_hash
             , trace_address
-            , if(native_token, wrapped_native_token_address, contract_address) as contract_address
+            , if(native_token, evms.wrapped_native_token_address, contract_address) as contract_address
             , native_token
             , amount
             , transfer_from
@@ -156,7 +156,7 @@ methods as (
                 and tx_success
                 and success
         )
-        left join {{ ref('evms_info') }} using(blockchain)
+        join {{ ref('evms_info') }} evms using(blockchain)
         
     ) transfers on transfers.tx_hash = calls.tx_hash
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
