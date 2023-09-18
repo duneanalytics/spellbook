@@ -137,8 +137,8 @@ other_income_txns AS (
         CAST(t.value AS DOUBLE) AS token_amount, 
         t.evt_tx_hash, 
         t.contract_address
-    FROM erc20_ethereum.evt_Transfer t
-    join lido_ethereum.steth_evt_Submitted s on t.evt_tx_hash = s.evt_tx_hash
+    FROM  {{source('erc20_ethereum','evt_transfer')}} t
+    join  {{source('lido_ethereum','steth_evt_Submitted')}} s on t.evt_tx_hash = s.evt_tx_hash
     WHERE t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
     AND t.to in (select address from multisigs_list where chain = 'Ethereum' and name ='Aragon')
     AND t."from" = 0x0000000000000000000000000000000000000000
