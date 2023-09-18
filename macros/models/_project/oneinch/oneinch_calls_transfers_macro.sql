@@ -1,8 +1,7 @@
 {% macro 
     oneinch_calls_transfers_macro(
         blockchain,
-        project_start_date_str,
-        wrapper_token_address
+        project_start_date_str
     ) 
 %}
 
@@ -18,12 +17,6 @@ methods as (
     select blockchain, contract_address as call_to, selector as call_selector, protocol
     from {{ ref('oneinch_methods') }}
     where blockchain = {{ blockchain }} and project = '1inch' and main
-)
-
-, erc as (
-    select blockchain, contract_address, symbol, decimals
-    from {{ source('tokens', 'erc20') }}
-    where blockchain = {{ blockchain }}
 )
 
 , calls as (
@@ -92,6 +85,7 @@ methods as (
         , calls.call_success
         , calls.start as call_trace_address
         , calls.call_from
+        , calls.call_from as caller -- TEMP COLUMN, WILL BE REMOVED AS SOON AS WE MIGRATE DUNE QUERIES
         , calls.call_to
         , calls.call_selector
         , calls.protocol
@@ -99,12 +93,10 @@ methods as (
         , transfers.trace_address as transfer_trace_address
         , transfers.contract_address
         , transfers.amount
-        , transfers.symbol
-        , transfers.decimals
         , transfers.native_token
         , transfers.transfer_from
         , transfers.transfer_to
-        , transfers.tranfer_top_level
+        , transfers.transfer_top_level
         , transfers.transfers_between_players
         , rn_tta_asc
         , rn_tta_desc
@@ -122,13 +114,11 @@ methods as (
             , trace_address
             , if(native_token, wrapped_native_token_address, contract_address) as contract_address
             , native_token
-            , symbol
-            , decimals
             , amount
             , transfer_from
             , transfer_to
             -- transfers in token transfer
-            , not contains(transform(array_remove(trf, trace_address), x -> if(slice(trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as tranfer_top_level
+            , not contains(transform(array_remove(trf, trace_address), x -> if(slice(trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
             , count(*) over(partition by blockchain, tx_hash, array_sort(array[transfer_from, transfer_to])) as transfers_between_players
             , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
@@ -166,8 +156,7 @@ methods as (
                 and tx_success
                 and success
         )
-        left join {{ source('evms', 'info') }} using(blockchain)
-        left join erc using(blockchain, contract_address)
+        left join {{ ref('evms_info') }} using(blockchain)
         
     ) transfers on transfers.tx_hash = calls.tx_hash
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 

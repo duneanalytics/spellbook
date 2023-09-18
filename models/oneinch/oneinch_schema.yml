@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -31,7 +31,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -78,7 +78,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -122,11 +122,11 @@ models:
       - &signature
         name: signature
 
-  - name: oneinch_ar_calls
+  - name: oneinch_calls
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, '']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -157,20 +157,56 @@ models:
           - not_null
       - &caller
         name: caller
+      - &call_from
+        name: call_from
       - &call_to
         name: call_to
       - &call_selector
         name: call_selector
+      - *protocol
       - &call_input
         name: call_input
       - &call_output
         name: call_output
 
-  - name: oneinch_ar_calls_transfers_amounts
+
+  - name: oneinch_ar_calls
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, '']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        calls all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - *blockchain_not_null
+      - *block_time
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_success
+      - *call_success
+      - *call_trace_address_not_null
+      - *caller
+      - *call_from
+      - *call_to
+      - *call_selector
+      - *protocol
+      - *call_input
+      - *call_output
+
+
+  - name: oneinch_calls_transfers_amounts
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -188,9 +224,11 @@ models:
       - *tx_success
       - *call_success
       - *call_trace_address_not_null
+      - *call_from
       - *caller
       - *call_to
       - *call_selector
+      - *protocol
       - &transfer_trace_address
         name: transfer_trace_address
       - *contract_address
@@ -202,10 +240,14 @@ models:
         name: transfer_from
       - &transfer_to
         name: transfer_to
-      - &rn_ta_asc
-        name: rn_ta_asc
-      - &rn_ta_desc
-        name: rn_ta_desc
+      - &transfer_top_level
+        name: transfer_top_level
+      - &transfers_between_players
+        name: transfers_between_players
+      - &rn_tta_asc
+        name: rn_tta_asc
+      - &rn_tta_desc
+        name: rn_tta_desc
       - *call_output
       - *call_input
       - &minute
@@ -220,11 +262,56 @@ models:
           - unique
           - not_null
 
+
+  - name: oneinch_ar_calls_transfers_amounts
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: [grkhr, Max-Morrow]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        calls transfer amounts all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - unique_call_transfer_id
+    columns:
+      - *blockchain_not_null
+      - *block_time
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_success
+      - *call_success
+      - *call_trace_address_not_null
+      - *call_from
+      - *caller
+      - *call_to
+      - *call_selector
+      - *protocol
+      - *transfer_trace_address
+      - *contract_address
+      - *amount
+      - *native_token
+      - *transfer_from
+      - *transfer_to
+      - *transfer_top_level
+      - *transfers_between_players
+      - *rn_tta_asc
+      - *rn_tta_desc
+      - *call_output
+      - *call_input
+      - *minute
+      - *block_month_not_null
+      - *unique_call_transfer_id
+
+
   - name: oneinch_exchange_contracts
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -258,7 +345,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -299,7 +386,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -321,7 +408,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr]
+      contributors: [grkhr, Max-Morrow]
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -341,7 +428,10 @@ models:
       - *created_at
       - *creator
       - *selector_not_null
-      - *protocol
+      - &protocol_not_null
+        name: protocol
+        tests:
+          - not_null
       - *main
       - *method
       - &receiver
