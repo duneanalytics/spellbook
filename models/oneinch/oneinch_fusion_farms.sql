@@ -107,7 +107,7 @@ from (
         , if(set_up = last_set_up, 'Current', if(set_up <> last_set_up, 'Legacy', 'No')) as distributor_status
         , set_up as distributor_set_up
     from {{ ref('oneinch_fusion_resolvers') }}
-    left join delegates using(resolver_address)
+    join delegates using(resolver_address)
     left join distributors using(farm_address)
     left join farm_tokens using(farm_address)
     order by resolver_status, resolver_name, resolver_address, set_up desc
