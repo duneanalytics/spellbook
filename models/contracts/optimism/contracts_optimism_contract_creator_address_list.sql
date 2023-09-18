@@ -617,11 +617,27 @@ WITH curated_list AS (
       ,(0x9aaa603cb8ce688cdb48ab132dd1b8ad7b5ade02, 'Bulls DAO')
       ,(0x9bbFB9919062C29a5eE15aCD93c9D7c3b14d31aa, 'AttestationStation')
       ,(0xC8D7d0BD61C5Ca5A493a229f6754Da5560F486ae, 'Magpie')
-      
+      ,(0x344a908d1a7b7d06b7ad7169c1db81fc9d496de9, 'zkLink')
+      ,(0xd0fe1538031f5647b1846d35b36f22e7317a1e35, 'Altitude Bridge')
+      ,(0x645487828d5769c20365fdb8786a5e2b734d785c, 'Altitude Bridge')
+      ,(0x01cf911dd46f90290bf5f93d0ef34237df7df1b6, 'Hedgey Finance')
+      ,(0x320bcb681ce7023edfe48ade9cf5bf67a11bcd36, 'Hedgey Finance')
+      ,(0xf537880c505bfa7cda6c8c49d7efa53d45b52d40, 'Binance')
+      ,(0x91f23057ee6e2d1e1ba00a7c1d71ba1a0b2c3113, 'Alongside Crypto Market Index')
+      ,(0xe3f641ad659249a020e2af63c3f9abd6cffb668b, 'Alta Finance')
+      ,(0x5afae3d2b0dcee1833bb947fac15d4f2d2d5d523, 'Ax Protocol')
+      ,(0xb28837949e7a3f1ac862036e8a0ae392c9ff9bb4, 'Axelar')
+      ,(0x38a93e70b0d8343657f802c1c3fdb06ac8f8fe99, 'AladdinDAO')
+      ,(0x4b785041d6a705d41f7578b13f93a7e315d2f8ff, 'Bankless DAO')
+      ,(0x048c6bad48c51436764ed1fdb3c9d1c25d2c0ada, 'Bolide Finance')
+      ,(0x615b5313a927571343f9355225e555cf7688d5e1, 'Cartesi')
+      ,(0x9bccd51ee5cf97791e39544827ef675cd81171b8, 'Circle')
+
   ) as temp_table (creator_address, contract_project)
 )
-SELECT 
-  creator_address, contract_project
+,filtered_list AS (
+  SELECT 
+    creator_address, contract_project
 --filter out creators that we never want to map
   FROM curated_list f
 WHERE f.creator_address NOT IN (
@@ -629,4 +645,12 @@ WHERE f.creator_address NOT IN (
 )
 
 GROUP BY 1,2
+)
 
+-- Enforce consistent project name mapping to contracts_optimism_project_name_mappings.sql
+SELECT list.creator_address,
+  Coalesce(mapping.mapped_name, list.contract_project) AS contract_project
+  FROM filtered_list list
+  LEFT JOIN {{ ref('contracts_optimism_project_name_mappings') }} mapping
+  ON Lower(list.contract_project) = Lower(mapping.dune_name)
+  
