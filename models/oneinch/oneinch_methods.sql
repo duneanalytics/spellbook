@@ -14,7 +14,6 @@
 with
         
 methods as (
-    
     select
         selector
         , protocol
