@@ -6,16 +6,14 @@
   )
 }}
 
-{% set _01node = '01Node' %}
-{% set alphachain = 'Alphachain' %}
-{% set easy2stake = 'Easy2Stake' %}
-{% set fiews = 'Fiews' %}
-{% set inotel = 'Inotel' %}
-{% set linkforest = 'LinkForest' %}
-{% set mycelium = 'Mycelium' %}
-{% set sdl = 'SDL' %}
-{% set simplyvc = 'SimplyVC' %}
-{% set piertwo = 'pierTwo' %}
+{% set _01node = '01node' %}
+{% set alphachain = 'alphachain' %}
+{% set easy2stake = 'easy2stake' %}
+{% set fiews = 'fiews' %}
+{% set inotel = 'inotel' %}
+{% set linkforest = 'linkforest' %}
+{% set piertwo = 'piertwo' %}
+{% set simplyvc = 'simplyvc' %}
 
 SELECT
    'bnb' AS blockchain,
@@ -34,11 +32,8 @@ FROM (VALUES
   ('{{inotel}}', 0xdd381028cfa5241284D23CE73ef7F0E3042d80F8),
   ('{{linkforest}}', 0x604410B182CDe4eCEB191Cfa2E0FD33224024c83),
   ('{{linkforest}}', 0x80C0EB96c401a441DF6D19ECd8e562b18C4E4E24),
-  ('{{mycelium}}', 0x60a764804dC2FaA78e06C1f09C1fc7236a3A7B9E),
-  ('{{mycelium}}', 0xDed3787602432bc12271C467Bb02138b0Ee79923),
-  ('{{sdl}}', 0xDed3787602432bc12271C467Bb02138b0Ee79923),
-  ('{{simplyvc}}', 0xBa61a9E217306315C239E73597d410e1bd469420),
-  ('{{simplyvc}}', 0x07ACeD52eeBbd1642799fb48bBEaD5Bc64616341),
   ('{{piertwo}}', 0xDed3787602432bc12271C467Bb02138b0Ee79923),
-  ('{{piertwo}}', 0x60a764804dC2FaA78e06C1f09C1fc7236a3A7B9E)
-) a (operator_name, Keeper_address)
+  ('{{piertwo}}', 0x60a764804dC2FaA78e06C1f09C1fc7236a3A7B9E),
+  ('{{simplyvc}}', 0xBa61a9E217306315C239E73597d410e1bd469420),
+  ('{{simplyvc}}', 0x07ACeD52eeBbd1642799fb48bBEaD5Bc64616341)
+) a (operator_name, keeper_address)

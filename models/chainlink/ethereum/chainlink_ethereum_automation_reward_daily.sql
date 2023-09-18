@@ -20,10 +20,7 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      price.symbol = 'LINK'
-      {% if is_incremental() %}
-        AND price.minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+      price.symbol = 'LINK'     
     GROUP BY
       1
     ORDER BY

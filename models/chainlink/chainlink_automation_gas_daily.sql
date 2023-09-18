@@ -2,7 +2,7 @@
   config(
     tags=['dunesql'],
     alias=alias('automation_gas_daily'),
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
                             "project",
                             "chainlink",
                             \'["linkpool_jon"]\') }}'
@@ -10,7 +10,11 @@
 }}
 
 {% set models = [
-  'chainlink_ethereum_automation_gas_daily'
+  'chainlink_ethereum_automation_gas_daily',
+  'chainlink_avalanche_c_automation_gas_daily',
+  'chainlink_bnb_automation_gas_daily',
+  'chainlink_fantom_automation_gas_daily',
+  'chainlink_polygon_automation_gas_daily'
 ] %}
 
 SELECT *

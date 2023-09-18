@@ -23,7 +23,8 @@ SELECT
   block_number,
   block_time,
   index,
-  tx_index
+  tx_index,
+  tx_from
 FROM
   {{ source('bnb', 'logs') }} logs
 WHERE

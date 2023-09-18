@@ -10,7 +10,7 @@
 {% set alphachain = 'alphachain' %}
 {% set anyblock = 'anyblock' %}
 {% set chainlayer = 'chainlayer' %}
-{% set cryptomanufaktur = 'cryptoManufaktur' %}
+{% set cryptomanufaktur = 'cryptomanufaktur' %}
 {% set dextrac = 'dextrac' %}
 {% set fiews = 'fiews' %}
 {% set inotel = 'inotel' %}
@@ -18,7 +18,7 @@
 {% set linkpool = 'linkpool' %}
 {% set linkriver = 'linkriver' %}
 {% set simplyvc = 'simplyvc' %}
-{% set snzpool = 'snzPool' %}
+{% set snzpool = 'snzpool' %}
 {% set syncnode = 'syncnode' %}
 
 SELECT
@@ -54,4 +54,4 @@ FROM (VALUES
   ('{{snzpool}}', 0x0Fd40853B3B8c7805158b862B76B35A2a27B596A),
   ('{{syncnode}}', 0xA6dBdafa187eDDc4D7A9D8E6B9A2D3F46ee30d24),
   ('{{syncnode}}', 0x86C5d9efB1377DbA0535Cf944Bd6F5736c4290cB)
-) a (operator_name, Keeper_address)
+) a (operator_name, keeper_address)

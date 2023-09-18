@@ -36,4 +36,4 @@ FROM (VALUES
   ('{{linkriver}}', 0x5F5fc989ea771E07dc01db04BeE543b9bab2D5E1),
   ('{{simplyvc}}', 0x648715137b75f40c9F8DC17701d0BEd43958771f),
   ('{{validationcapital}}', 0xDb1e4d2378B20E8bc933b134395279b0ddB8e682)
-) a (operator_name, Keeper_address)
+) a (operator_name, keeper_address)

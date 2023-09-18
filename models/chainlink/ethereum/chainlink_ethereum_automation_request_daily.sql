@@ -54,14 +54,16 @@ WITH
     FROM automation_request_daily_meta
   )
 SELECT 
-  blockchain,
+  automation_request_daily.blockchain,
   date_start,
   date_month,
   node_address,
+  operator_name,
   fulfilled_requests,
   reverted_requests,
   total_requests
 FROM
   automation_request_daily
+LEFT JOIN {{ ref('chainlink_ethereum_automation_meta') }} automation_meta ON automation_meta.keeper_address = automation_request_daily.node_address
 ORDER BY
   "date_start"

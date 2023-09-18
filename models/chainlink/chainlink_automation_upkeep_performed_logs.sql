@@ -2,15 +2,19 @@
   config(
     tags=['dunesql'],
     alias=alias('automation_upkeep_performed_logs'),
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
                             "project",
                             "chainlink",
-                            \'["linkpool_ryan"]\') }}'
+                            \'["linkpool_jon"]\') }}'
   )
 }}
 
 {% set models = [
-  'chainlink_ethereum_automation_upkeep_performed_logs'
+  'chainlink_ethereum_automation_upkeep_performed_logs',
+  'chainlink_avalanche_c_automation_upkeep_performed_logs',
+  'chainlink_bnb_automation_upkeep_performed_logs',
+  'chainlink_fantom_automation_upkeep_performed_logs',
+  'chainlink_polygon_automation_upkeep_performed_logs'
 ] %}
 
 SELECT *

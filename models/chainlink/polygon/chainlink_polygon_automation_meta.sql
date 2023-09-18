@@ -7,14 +7,12 @@
 }}
 
 {% set _01node = '01node' %}
-{% set mycelium = 'Mycelium' %}
-{% set cryptomanufaktur = 'cryptoManufaktur' %}
+{% set cryptomanufaktur = 'cryptomanufaktur' %}
 {% set fiews = 'fiews' %}
 {% set inotel = 'inotel' %}
 {% set linkforest = 'linkforest' %}
 {% set linkriver = 'linkriver' %}
-{% set piertwo = 'pierTwo' %}
-{% set sdl = 'sdl' %}
+{% set piertwo = 'piertwo' %}
 {% set simplyvc = 'simplyvc' %}
 {% set stakingfacilities = 'stakingfacilities' %}
 
@@ -25,8 +23,6 @@ SELECT
 FROM (VALUES
   ('{{_01node}}', 0xA7d87D93Fc879c5ec959EbdC4a058bC906be42EC),
   ('{{_01node}}', 0x8B544FcE2177A84FFDb42800e947747A6277f5Ab),
-  ('{{mycelium}}', 0x7a80bEaCcA09e2F3d8DDb7ABFdc975e1efB194d7),
-  ('{{mycelium}}', 0x93fa1481BF95C47a9c6F26B8e70a81C7A607934b),
   ('{{cryptomanufaktur}}', 0x27c143A6B7CfADB4686c1d06e45EaB79B53f82B6),
   ('{{cryptomanufaktur}}', 0xd9a31dc8347284a6BEa9598d49d8DAcbFD5774F1),
   ('{{fiews}}', 0x0c904E705943c4C1D8e56ba5062Fa005343F4bfd),
@@ -39,9 +35,8 @@ FROM (VALUES
   ('{{linkriver}}', 0x8ABe586e96745D4acA358bAe11e71F5A59434f47),
   ('{{piertwo}}', 0x93fa1481BF95C47a9c6F26B8e70a81C7A607934b),
   ('{{piertwo}}', 0x7a80bEaCcA09e2F3d8DDb7ABFdc975e1efB194d7),
-  ('{{sdl}}', 0x93fa1481BF95C47a9c6F26B8e70a81C7A607934b),
   ('{{simplyvc}}', 0x6c995b2abCbd72a4A35D80F9c5476f496Ee97bD1),
   ('{{simplyvc}}', 0x953731C84798d6F64c795da8973f565761A8964C),
   ('{{stakingfacilities}}', 0x19c67363742a485a7BE3DF520a889E5E3a73337A),
   ('{{stakingfacilities}}', 0xd1Be7FcE9C87F22E3715d257FCE92F7595018B67)
-) a (operator_name, Keeper_address)
+) a (operator_name, keeper_address)

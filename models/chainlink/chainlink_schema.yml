@@ -1011,12 +1011,23 @@ models:
 
   - name: chainlink_automation_fulfilled_transactions
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "fulfilled", "transactions", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "fulfilled",
+          "transactions",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Fulfilled Transactions
     tests:
@@ -1038,12 +1049,23 @@ models:
 
   - name: chainlink_automation_gas_daily
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "gas", "daily", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "gas",
+          "daily",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Gas Daily
     tests:
@@ -1067,13 +1089,24 @@ models:
 
   - name: chainlink_automation_upkeep_performed_logs
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
       tags:
-        ["chainlink", "automation", "upkeep", "performed", "logs", "ethereum"]
+        [
+          "chainlink",
+          "automation",
+          "upkeep",
+          "performed",
+          "logs",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Gas Submission Logs
     tests:
@@ -1103,12 +1136,23 @@ models:
 
   - name: chainlink_automation_request_daily
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "request", "daily", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "request",
+          "daily",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Request Daily
     tests:
@@ -1122,18 +1166,30 @@ models:
       - *date_start
       - *date_month
       - *node_address
+      - *operator_name
       - *fulfilled_requests
       - *reverted_requests
       - *total_requests
 
   - name: chainlink_automation_reverted_transactions
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "reverted", "transactions", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "reverted",
+          "transactions",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Reverted Transactions
     tests:
@@ -1155,12 +1211,23 @@ models:
 
   - name: chainlink_automation_reward_daily
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "reward", "daily", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "reward",
+          "daily",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Reward Daily
     tests:
@@ -1182,12 +1249,22 @@ models:
 
   - name: chainlink_automation_performed
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "performed", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "performed",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Performed
     columns:
@@ -1199,12 +1276,23 @@ models:
 
   - name: chainlink_automation_performed_daily
     meta:
-      blockchain: ["ethereum"]
+      blockchain: ["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "automation", "performed", "daily", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "performed",
+          "daily",
+          "ethereum",
+          "avalanche_c",
+          "bnb",
+          "fantom",
+          "polygon",
+        ]
     description: >
       Chainlink Automation Performed Daily
     tests:
