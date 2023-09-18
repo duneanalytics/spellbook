@@ -1,5 +1,5 @@
 {% set blockchain = 'fantom' %}
-{% set project_start_date_str = '2023-12-24' %}
+{% set project_start_date_str = '2021-12-24' %}
 
 
 
