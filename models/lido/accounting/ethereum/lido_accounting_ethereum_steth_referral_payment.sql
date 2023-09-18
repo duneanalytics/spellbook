@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('dai_referral_payment'),
+        alias = alias('steth_referral_payment'),
         tags = ['dunesql'], 
         partition_by = ['period'],
         materialized = 'table',
@@ -7,7 +7,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
+                                \'[""ppclunghe""]\') }}'
         )
 }}
 
@@ -16,14 +16,7 @@
 
 with tokens AS (
 select * from (values 
-    (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
-    (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84)  --stETH
 ) as tokens(address)),
 
 multisigs_list AS (
@@ -51,48 +44,50 @@ select * from (values
         
 ),
 
-intermediate_addresses AS (
-select * from  (values
-(0xe3224542066d3bbc02bc3d70b641be4bc6f40e36, 'Jumpgate(Solana)'),
-(0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon bridge'),
-(0xa3a7b6f88361f48403514059f1f16c8e78d60eec, 'Arbitrum bridge'),
-(0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism bridge'),
-(0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
-(0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
-(0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract')
-) as list(address, name)
-),
 
-dai_referral_payments_addr AS (
-    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
+steth_referral_payments_addr AS (
+    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
     WHERE
     (
-        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved')}})
         OR (
-            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved')}})
             AND 
-            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
+            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved')}})
         )
     ) 
-    UNION ALL
-    SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
+    
 ),
 
 
 
-dai_referral_payment_txns AS (
+referral_payment_txns AS (
     SELECT  evt_block_time,
             evt_tx_hash,  
             contract_address,
-            value
+            cast(value as double) as value
     FROM  {{source('erc20_ethereum','evt_transfer')}}
-    WHERE "from" = 0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c
+    WHERE "from" in (select address from multisigs_list where chain = 'Ethereum' and name = 'Aragon')
     AND to IN (
-        SELECT address FROM dai_referral_payments_addr
+        SELECT address FROM steth_referral_payments_addr
     )
-    AND evt_block_time >= CAST('2023-01-01 00:00' AS TIMESTAMP) 
-    AND contract_address = 0x6B175474E89094C44Da98b954EedeAC495271d0F
-    ORDER BY evt_block_time  
+    AND evt_block_time >= CAST('2023-08-01 00:00' AS TIMESTAMP) 
+    AND contract_address in (select address from tokens)
+
+    UNION ALL 
+
+    SELECT  evt_block_time,
+            evt_tx_hash,  
+            contract_address,
+            -cast(value as double)
+    FROM  {{source('erc20_ethereum','evt_transfer')}}
+    WHERE to in (select address from multisigs_list where chain = 'Ethereum' and name = 'Aragon')
+    AND "from" IN (
+        SELECT address FROM steth_referral_payments_addr
+    )
+    AND evt_block_time >= CAST('2023-08-01 00:00' AS TIMESTAMP) 
+    AND contract_address in (select address from tokens)
+    ORDER BY evt_block_time
 ) 
 
 
@@ -100,4 +95,4 @@ dai_referral_payment_txns AS (
             evt_tx_hash,  
             contract_address AS token,
             value AS amount_token
-    FROM dai_referral_payment_txns
+    FROM referral_payment_txns
