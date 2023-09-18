@@ -1,8 +1,6 @@
 {% macro nft_approvals(blockchain, erc721_approval, erc721_approval_all, erc1155_approval_all ) %}
 {%- set token_standard_721 = 'bep721' if blockchain == 'bnb' else 'erc721' -%}
 {%- set token_standard_1155 = 'bep1155' if blockchain == 'bnb' else 'erc1155' -%}
-{%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
-{%- set denormalized = True if blockchain in ['base'] else False -%}
 
 select
   '{{blockchain}}' as blockchain,
