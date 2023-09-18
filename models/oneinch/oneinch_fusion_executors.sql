@@ -15,7 +15,7 @@ with
         select
               "from" as resolver_address
             , substr(input, 49, 20) as resolver_executor
-            , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as id -- blockchain id
+            , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as chain_id -- blockchain id
             , count(*) as executor_promotions
             , min(block_time) as first_time
             , max(block_time) as last_time
@@ -39,12 +39,12 @@ select
     , kyc
     , resolver_executor
     , coalesce(blockchain, cast(id as varchar)) as blockchain
-    , id as chain_id
+    , chain_id
     , executor_promotions
     , first_time
     , last_time
     , tx_hash_example
 from {{ ref('oneinch_fusion_resolvers') }}
 left join executors using(resolver_address)
-left join {{ ref('evms_info') }} using(id)
+left join {{ ref('evms_info') }} using(chain_id)
 order by resolver_name, resolver_executor
