@@ -18,8 +18,8 @@
     transfers_erc20(
         blockchain = 'polygon',
         erc20_evt_transfer = source('erc20_polygon', 'evt_transfer'),
-        wrapped_token_deposit = {{ source('mahadao_polygon', 'wmatic_evt_deposit') }},
-        wrapped_token_withdrawal = {{ source('mahadao_polygon', 'wmatic_evt_withdrawal') }}
+        wrapped_token_deposit = source('mahadao_polygon', 'wmatic_evt_deposit'),
+        wrapped_token_withdrawal = source('mahadao_polygon', 'wmatic_evt_withdrawal')
     )
 }}
 
