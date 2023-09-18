@@ -25,6 +25,7 @@
 %}
 
 
+
 {% 
     set columns = [
         'blockchain',
@@ -53,8 +54,3 @@
         union all
     {% endif %}
 {% endfor %}
-
-
-
-
-

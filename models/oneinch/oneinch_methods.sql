@@ -82,7 +82,7 @@ select
     , contract_id
     , contract_name
     , blockchain
-    , created as created_at
+    , signatures.created_at
     , creator
     
     -- methods
@@ -96,4 +96,4 @@ select
 from {{ ref('oneinch_exchange_contracts') }}
 join methods using(contract_id)
 left join {{ ref('signatures') }} as signatures on signatures.id = methods.selector
-order by created, method
+order by signatures.created_at, method

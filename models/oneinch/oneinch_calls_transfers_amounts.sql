@@ -25,6 +25,7 @@
 %}
 
 
+
 {% for blockchain in blockchains %}
     select * from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
     where 
@@ -36,7 +37,3 @@
         union all
     {% endif %}
 {% endfor %}
-
-
-
-
