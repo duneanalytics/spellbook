@@ -36,7 +36,7 @@ executors as (
 
 select
     *
-    , cast(resolver_address as varchar)||cast(resolver_executor as varchar)||cast(chain_id as varchar) as resolver_executor_id
+    , cast(resolver_address as varchar)||coalesce(cast(resolver_executor as varchar), '')||coalesce(cast(chain_id as varchar), '') as resolver_executor_id
 from (
 select
       resolver_address
