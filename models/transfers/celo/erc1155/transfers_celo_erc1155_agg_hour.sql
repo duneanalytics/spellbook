@@ -14,17 +14,8 @@
     )
 }}
 
-select
-  'celo' as blockchain,
-  cast(date_trunc('month', tr.block_time) as date) as block_month,
-  date_trunc('hour', tr.block_time) as block_hour,
-  tr.wallet_address,
-  tr.token_address,
-  tr.token_id,
-  sum(tr.amount) as amount
-from {{ ref('transfers_celo_erc1155') }} tr
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-where tr.block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-group by 1, 2, 3, 4, 5, 6
+{{
+    transfers_erc1155_agg_hour(
+        transfers_erc1155 = ref('transfers_celo_erc1155')
+    )
+}}
