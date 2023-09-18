@@ -274,6 +274,8 @@ models:
         +schema: uniswap_bnb
       base:
         +schema: uniswap_base
+      celo:
+        +schema: uniswap_celo
 
     timeswap:
       +schema: timeswap
@@ -483,6 +485,10 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      bnb:
+        +schema: balances_bnb
+      polygon:
+        +schema: balances_polygon
 
     dodo:
       +schema: dodo
@@ -933,7 +939,9 @@ models:
       ethereum:
         +schema: pancakeswap_ethereum
       arbitrum:
-        +schema: pancakeswap_arbitrum  
+        +schema: pancakeswap_arbitrum
+      base:
+        +schema: pancakeswap_base 
 
     bancor:
       +schema: bancor
@@ -1040,6 +1048,8 @@ models:
         +schema: zeroex_arbitrum
       bnb:
         +schema: zeroex_bnb
+      celo:
+        +schema: zeroex_celo
 
 
     ampleforth:
@@ -1284,9 +1294,6 @@ models:
       ethereum:
         +schema: pooltogether_ethereum
 
-    method_ids:
-      +schema: method_ids
-
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:
@@ -1419,3 +1426,8 @@ models:
       +schema: worldcoin
       optimism:
         +schema: worldcoin_optimism
+    
+    aerodrome:
+      +schema: aerodrome
+      base:
+        +schema: aerodrome_base

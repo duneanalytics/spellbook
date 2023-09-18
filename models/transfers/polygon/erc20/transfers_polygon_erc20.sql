@@ -1,109 +1,106 @@
 {{ config(
-    alias = alias('erc20'),
+    tags=['dunesql'],
     materialized = 'incremental',
+    partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'],
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
+    alias = alias('erc20'),
     post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke"]\') }}'
+                                    \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke", "Henrystats"]\') }}'
     )
 }}
+WITH 
 
-with sent_transfers as (
-    select 'send'           as transfer_type,
-           evt_tx_hash,
-           evt_index,
-           to             as wallet_address,
-           contract_address as token_address,
-           evt_block_time,
-           value            as amount_raw
-    from
+erc20_transfers  as (
+        SELECT 
+            'receive' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
+            evt_block_time,
+            to as wallet_address, 
+            contract_address as token_address,
+            CAST(value as double) as amount_raw
+        FROM 
         {{ source('erc20_polygon', 'evt_transfer') }}
-    {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-),
-received_transfers as (
-    select 'receive'                          as transfer_type,
-           evt_tx_hash,
-           evt_index,
-           "from"                             as wallet_address,
-           contract_address                   as token_address,
-           evt_block_time,
-           '-' || CAST(value AS VARCHAR(100)) as amount_raw
-    from
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+
+        UNION ALL 
+
+        SELECT 
+            'send' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
+            evt_block_time,
+            "from" as wallet_address, 
+            contract_address as token_address,
+            -CAST(value as double) as amount_raw
+        FROM 
         {{ source('erc20_polygon', 'evt_transfer') }}
-    {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
 ),
-deposited_wmatic as (
-    select 'deposit'        as transfer_type,
-           evt_tx_hash,
-           evt_index,
-           dst              as wallet_address,
-           contract_address as token_address,
-           evt_block_time,
-           wad              as amount_raw
-    from
+
+wmatic_events as (
+        SELECT 
+            'deposit' as transfer_type, 
+            evt_tx_hash, 
+            evt_index, 
+            evt_block_time,
+            dst as wallet_address, 
+            contract_address as token_address, 
+            CAST(wad as double)as amount_raw
+        FROM 
         {{ source('mahadao_polygon', 'wmatic_evt_deposit') }}
-    {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
-),
-withdrawn_wmatic as (
-    select 'withdrawn'                      as transfer_type,
-           evt_tx_hash,
-           evt_index,
-           src                              as wallet_address,
-           contract_address                 as token_address,
-           evt_block_time,
-           '-' || CAST(wad AS VARCHAR(100)) as amount_raw
-    from
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+
+        UNION ALL 
+
+        SELECT 
+            'withdraw' as transfer_type, 
+            evt_tx_hash, 
+            evt_index, 
+            evt_block_time,
+            src as wallet_address, 
+            contract_address as token_address, 
+            -CAST(wad as double)as amount_raw
+        FROM 
         {{ source('mahadao_polygon', 'wmatic_evt_withdrawal') }}
-    {% if is_incremental() %}
-    where evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+        {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
 )
-    
-select transfer_type,
-       'polygon'                        as blockchain,
-       evt_tx_hash,
-       evt_index,
-       wallet_address,
-       token_address,
-       evt_block_time,
-       CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from sent_transfers
-union
-select transfer_type,
-       'polygon'                        as blockchain,
-       evt_tx_hash,
-       evt_index,
-       wallet_address,
-       token_address,
-       evt_block_time,
-       CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from received_transfers
-union
-select transfer_type,
-       'polygon'                        as blockchain,
-       evt_tx_hash,
-       evt_index,
-       wallet_address,
-       token_address,
-       evt_block_time,
-       CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from deposited_wmatic
-union
-select transfer_type,
-       'polygon'                        as blockchain,
-       evt_tx_hash,
-       evt_index,
-       wallet_address,
-       token_address,
-       evt_block_time,
-       CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from withdrawn_wmatic
+SELECT
+    'polygon' as blockchain, 
+    transfer_type,
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+erc20_transfers
+
+UNION ALL 
+
+SELECT 
+    'polygon' as blockchain, 
+    transfer_type,
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+wmatic_events
