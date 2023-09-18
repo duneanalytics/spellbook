@@ -21,7 +21,7 @@ methods as (
         , method
         , receiver
         , contract_id
-    from (
+    from ( 
         values
         
         -- templates
