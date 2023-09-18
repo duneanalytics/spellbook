@@ -21,7 +21,7 @@
         tx_hash
         FROM  {{source('ethereum','traces')}} 
         {% if is_incremental() %}
-        WHERE date_trunc('hour', block_time) >= date_trunc('hour', now() - interval '7 days')
+        WHERE date_trunc('hour', block_time) >= date_trunc('hour', now() - interval '1' day)
         {% else %}
         WHERE date_trunc('hour', block_time) >= cast('{{ project_start_date }}' as timestamp) 
         {% endif %}  
