@@ -677,6 +677,8 @@ WITH curated_list AS (
       ,(0x9a187663e454e99cafd40a2712606cc306e301b2, 'Aave')
       ,(0x8a598f5629d3e6a8747afbfd6b9b982a2d1078a1, 'Arrakis Finance')
       ,(0x22fe024ffec24631a625113bdf5e9f7d447c8ddf, 'Teahouse')
+      ,(0xC73Fc08C931Efe3FCE850C09278472e8a81c2e05, 'XEN Crypto')
+      ,(0x0Cf83143f0AB9D6e178fC7f141205ec2992266C8, 'CoinTool')
 
       
   ) as temp_table (creator_address, contract_project)
