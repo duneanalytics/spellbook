@@ -25,9 +25,9 @@ select
 , evt_index
 , evt_block_time
 , evt_block_number
-, messageId
-, returnData
-, sequenceNumber
+, messageId as message_id
+, returnData as return_data
+, sequenceNumber as sequence_number
 , state
 
 FROM {{ source('chainlink_ethereum', 'EVM2EVMOffRamp_evt_ExecutionStateChanged') }}
@@ -42,9 +42,9 @@ select
 , evt_index
 , evt_block_time
 , evt_block_number
-, messageId
-, returnData
-, sequenceNumber
+, messageId as message_id
+, returnData as return_data
+, sequenceNumber as sequence_number
 , state
 
 FROM {{ source('chainlink_ethereum', 'EVM2EVMOffRampOP_evt_ExecutionStateChanged') }}
@@ -59,9 +59,9 @@ select
 , evt_index
 , evt_block_time
 , evt_block_number
-, messageId
-, returnData
-, sequenceNumber
+, messageId as message_id
+, returnData as return_data
+, sequenceNumber as sequence_number
 , state
 
 FROM {{ source('chainlink_ethereum', 'EVM2EVMOffRampPOLYGON_evt_ExecutionStateChanged') }}

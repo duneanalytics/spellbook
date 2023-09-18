@@ -19,7 +19,7 @@
 select 
 'Polygon Mainnet' as origin
 , 'Ethereum Mainnet' as destination
-, cast(json_extract_scalar(message, '$.sourceChainSelector') as INT256) as sourceChainSelector
+, cast(json_extract_scalar(message, '$.sourceChainSelector') as INT256) as source_chain_selector
 , cast(json_extract_scalar(message, '$.sequenceNumber') as INT256)  as sequenceNumber
 , cast(json_extract_scalar(message, '$.feeTokenAmount') as INT256) as feeTokenAmount
 , cast(json_extract_scalar(message, '$.sender') as VARCHAR) as sender

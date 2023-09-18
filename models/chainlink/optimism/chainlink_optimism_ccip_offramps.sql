@@ -25,9 +25,9 @@ select
 , evt_index
 , evt_block_time
 , evt_block_number
-, messageId
-, returnData
-, sequenceNumber
+, messageId as message_id
+, returnData as return_data
+, sequenceNumber as sequence_number
 , state
 
 FROM {{ source('chainlink_optimism', 'EVM2EVMOffRampETH_evt_ExecutionStateChanged') }}

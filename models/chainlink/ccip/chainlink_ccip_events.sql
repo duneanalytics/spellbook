@@ -26,7 +26,7 @@ ref('chainlink_ethereum_ccip_offramps')
 
 
 WITH 
-onRamp_base as (
+onramp_base as (
 
 SELECT *
 FROM (
@@ -34,18 +34,18 @@ FROM (
     SELECT
         origin
         , destination
-        , sourceChainSelector
-        , sequenceNumber
-        , feeTokenAmount
+        , source_chain_selector
+        , sequence_number
+        , fee_token_amount
         , sender
         , receiver
         , nonce
-        , gasLimit
+        , gas_limit
         , strict
         , data
-        , tokenAmounts
-        , feeToken
-        , messageId
+        , token_amounts
+        , fee_token
+        , message_id
         , router
         , contract_address as origin_contract_address
         , evt_tx_hash as origin_evt_tx_hash
@@ -60,7 +60,7 @@ FROM (
     )
 )
 
-, offRamp_base as (
+, offramp_base as (
 
 SELECT *
 FROM (
@@ -73,9 +73,9 @@ FROM (
         , evt_index as destination_evt_index
         , evt_block_time as destination_evt_block_time
         , evt_block_number as destination_evt_block_number
-        , messageId
-        , returnData as destination_returnData
-        , sequenceNumber as destination_sequenceNumber
+        , message_id
+        , return_data as destination_return_data
+        , sequence_number as destination_sequence_number
         , state as destination_state
     FROM {{ offramps }}
     {% if not loop.last %}
@@ -88,18 +88,18 @@ FROM (
 SELECT 
     onramp.origin
     , onramp.destination
-    , onramp.feeTokenAmount
+    , onramp.fee_token_amount
     , onramp.sender
     , onramp.receiver
     , onramp.nonce
-    , onramp.gasLimit
+    , onramp.gas_limit
     , onramp.strict
     , onramp.data
-    , offramp.destination_returnData
-    , onramp.tokenAmounts
-    , onramp.feeToken
+    , offramp.destination_return_data
+    , onramp.token_amounts
+    , onramp.fee_token
     , offramp.destination_state
-    , onramp.messageId
+    , onramp.message_id
     , onramp.router
     , onramp.origin_contract_address
     , offramp.destination_contract_address
@@ -111,6 +111,6 @@ SELECT
     , offramp.destination_evt_index
     , onramp.origin_evt_block_number
     , offramp.destination_evt_block_number
-    , offramp.destination_sequenceNumber
-FROM onRamp_base as onramp
-LEFT JOIN  offRamp_base as offramp on cast(onramp.messageId as VARCHAR) = cast(offramp.messageId as VARCHAR)
+    , offramp.destination_sequence_number
+FROM onramp_base as onramp
+LEFT JOIN  offramp_base as offramp on cast(onramp.message_id as VARCHAR) = cast(offramp.message_id as VARCHAR)

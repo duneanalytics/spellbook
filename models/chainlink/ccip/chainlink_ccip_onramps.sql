@@ -23,18 +23,18 @@ FROM (
     SELECT
         origin
         , destination
-        , sourceChainSelector
-        , sequenceNumber
-        , feeTokenAmount
+        , source_chain_selector
+        , sequence_number
+        , fee_token_amount
         , sender
         , receiver
         , nonce
-        , gasLimit
+        , gas_limit
         , strict
         , data
-        , tokenAmounts
-        , feeToken
-        , messageId
+        , token_amounts
+        , fee_token
+        , message_id
         , router
         , contract_address
         , evt_tx_hash 

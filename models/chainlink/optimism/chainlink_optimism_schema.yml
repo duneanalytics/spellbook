@@ -148,7 +148,6 @@ models:
           combination_of_columns:
             - evt_index
             - evt_tx_hash
-            - message
     columns:
       - &contract_address
         name: contract_address
@@ -185,7 +184,6 @@ models:
           combination_of_columns:
             - evt_index
             - evt_tx_hash
-            - message
     columns:
       - *contract_address
       - *evt_tx_hash

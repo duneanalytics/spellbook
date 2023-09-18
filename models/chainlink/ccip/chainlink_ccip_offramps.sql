@@ -28,9 +28,9 @@ FROM (
         , evt_index
         , evt_block_time
         , evt_block_number
-        , messageId
-        , returnData
-        , sequenceNumber
+        , message_id
+        , return_data
+        , sequence_number
         , state
     FROM {{ offramps }}
     {% if not loop.last %}
