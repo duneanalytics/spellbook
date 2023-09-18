@@ -1,6 +1,7 @@
 {{ config(
         alias = alias('incentive_mappings'),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        tags = ['dunesql'],
+        post_hook='{{ expose_spells(\'["optimism","base"]\',
                                 "sector",
                                 "dex",
                                 \'["msilb7"]\') }}'
@@ -11,6 +12,7 @@
 {% set dex_inc_models = [
          ref('balancer_gauge_mappings')
         ,ref('velodrome_optimism_bribe_mappings')
+        ,ref('aerodrome_base_bribe_mappings')
 ] %}
 
 

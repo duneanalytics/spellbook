@@ -5,6 +5,7 @@ SELECT
     project,
     project_version as version,
     block_date,
+    block_month,
     block_time,
     nft_token_id as token_id,
     nft_collection as collection,
