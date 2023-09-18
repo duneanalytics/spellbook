@@ -1,4 +1,4 @@
-{% macro transfers_erc721(blockchain, erc20_evt_transfer, wrapped_token_deposit, wrapped_token_withdrawal) %}
+{% macro transfers_erc20(blockchain, erc20_evt_transfer, wrapped_token_deposit, wrapped_token_withdrawal) %}
 
 WITH
 
