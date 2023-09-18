@@ -2,7 +2,7 @@
 
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
-{% set max_levels = 3 %} --NOTE: This will make the "creator address" not accurate, if the levels are too low - pivot to use deployer_address
+{% set max_levels = 4 %} --NOTE: This will make the "creator address" not accurate, if the levels are too low - pivot to use deployer_address
 -- set column names to loop through
 {% set cols = [
      "trace_creator_address"
@@ -200,11 +200,18 @@ SELECT *
 WHERE contract_order = 1
 )
 
+, levels as (
 -- starting from 0 
 -- u = next level up contract (i.e. the factory)
 -- b = base-level contract
 {% for i in range(max_levels) -%}
-,level{{i}} as (
+
+{% if i == 0 %}
+with level0
+{% else %}
+,level{{i}}
+{% endif %}
+  as (
     select
       {{i}} as level 
       ,b.blockchain
@@ -268,6 +275,10 @@ WHERE contract_order = 1
 )
 {%- endfor %}
 
+SELECT * FROM level{{max_levels - 1}}
+
+)
+
 , code_ranks AS ( --generate code deploy rank without ranking over all prior contracts (except for initial builds)
   WITH new_contracts AS (
   SELECT
@@ -330,7 +341,7 @@ WHERE contract_order = 1
     ,f.code
     ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
   from (
-    SELECT * FROM level{{max_levels - 1}} WHERE to_iterate_creators = 1 --get mapped contracts
+    SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
     SELECT {{max_levels}} as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
   ) f
