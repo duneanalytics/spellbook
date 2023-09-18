@@ -205,7 +205,7 @@ with
             ]), created_at) as params
             , array_agg(namespace) as namespaces
             , array_agg(name) as names
-        from {{ source('evms', 'contracts') }}
+        from {{ ref('evms_contracts') }}
         join contracts using(blockchain, address)
         group by 1, 2
     )
@@ -217,14 +217,14 @@ with
             , address
             , contract_name
             , blockchain
-            , block_time as created
+            , block_time as created_at
             , creation_traces."from" as creator
             , tx_hash as creation_tx_hash
             , abi
             , params
             , namespaces
             , names
-        from {{ source('evms', 'creation_traces') }}
+        from {{ ref('evms_creation_traces') }}
         join contracts using(blockchain, address)
         left join descriptions using(blockchain, address)
 
@@ -236,7 +236,7 @@ select
     , substr(address, length(address) - 1) as contract_id
     , contract_name
     , blockchain
-    , created
+    , created_at
     , creator
     , creation_tx_hash
     , abi
@@ -244,4 +244,4 @@ select
     , namespaces
     , names
 from creations
-order by project, created
+order by project, created_at

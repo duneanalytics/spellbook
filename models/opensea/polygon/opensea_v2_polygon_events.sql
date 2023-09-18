@@ -31,7 +31,10 @@ WITH trades AS (
             else 'erc721' -- 138
        end AS token_standard,
       paymentTokenAddress AS currency_contract,
-      least(cast(json_extract_scalar(output_matchedFillResults,'$.left.makerFeePaid') as uint256), cast(json_extract_scalar(output_matchedFillResults,'$.right.takerFeePaid') as uint256)) AS amount_raw,
+      least(
+        coalesce(cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.left'),'$.makerFeePaid') as uint256), cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.right'),'$.takerFeePaid') as uint256))
+        ,coalesce(cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.right'),'$.takerFeePaid') as uint256), cast(json_extract_scalar(json_extract_scalar(output_matchedFillResults,'$.left'),'$.makerFeePaid') as uint256))
+        ) AS amount_raw,
       2.5 AS platform_fee,
       from_hex(json_extract_scalar(element_at(feeData,1),'$.recipient')) AS fee_recipient,
       case when length(json_extract_scalar(element_at(feeData,2),'$.recipient')) > 0 then 2.5 else 0 end AS royalty_fee
@@ -81,7 +84,7 @@ trade_amount_summary as (
         -- Some tx has no royalty fee: https://polygonscan.com/tx/0x7a583aa2ac9aa7b25fdf969ddc7e3a860f4565e4e48e83c2d5d513355dd952a5
         (case when row_count = 2 then fee_amount_raw_2 else fee_amount_raw_1 end) AS platform_fee_amount_raw,
         (case when row_count = 2 then receive_address else null end) AS royalty_fee_receive_address,
-        (case when row_count = 2 then fee_amount_raw_1 else null end) AS royalty_fee_amount_raw
+        (case when row_count = 2 then fee_amount_raw_1 else cast(0 as uint256) end) AS royalty_fee_amount_raw
     FROM trade_amount_grouped
 )
 

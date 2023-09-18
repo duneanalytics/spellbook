@@ -2,15 +2,20 @@
     config(
         schema = 'oneinch',
         alias = alias('fusion_resolvers'),
-        materialized = 'table',
+        materialized = 'incremental',
         file_format = 'delta',
-        unique_key = ['resolver_address'],
+        unique_key = ['resolver_address', 'last_changed_at'],
         tags = ['dunesql']
     )
 }}
 
+
+{% set project_start_date = "timestamp '2022-12-25'" %} 
+{% set lookback_days = -7 %}
+
+
 with
-    
+        
     names(resolver_address, resolver_name, kyc) as (values
           (0xf63392356a985ead50b767a3e97a253ff870e91a, '1inch Labs'     , true  )
         , (0xa260f8b7c8f37c2f1bc11b04c19902829de6ac8a, 'Arctic Bastion' , true  )
@@ -31,7 +36,7 @@ with
         , (0x7c7047337995c338c1682f12bc38d4e4108309bb, ''               , false )
         , (0x685018ea5c682c5e6d9e4116193f02018f306255, ''               , false )
     )
-    
+
     , registerations as (
         select
               substr(data, 13, 20) as resolver_address
@@ -39,12 +44,16 @@ with
                 when 0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9 then 'Registered'
                 when 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc then 'Unregistered'
             end, block_time) as resolver_status
-            , max(block_time) as last_changing
+            , max(block_time) as last_changed_at
         from {{ source('ethereum', 'logs') }}
         where
             contract_address = 0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77 -- WhitelistRegistry
             and topic0 in (0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9, 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc)
-            and block_time >= timestamp '2022-12-25'
+            {% if is_incremental() %}
+                and block_time >= cast(date_add('day', {{ lookback_days }}, now()) as timestamp)
+            {% else %}
+                and block_time >= {{ project_start_date }}
+            {% endif %}
         group by 1
     )
 
@@ -52,7 +61,7 @@ select
       resolver_address
     , if(resolver_name = '', '0x' || lower(to_hex(substr(resolver_address, 1, 2))) || '..' || lower(to_hex(substr(resolver_address, 19))), coalesce(resolver_name, 'UNSPECIFIED')) as resolver_name
     , resolver_status
-    , last_changing
+    , last_changed_at
     , kyc
 from registerations
 left join names using(resolver_address)

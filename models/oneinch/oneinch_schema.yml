@@ -42,17 +42,33 @@ models:
             - chain_id
             - resolver_executor
     columns:
-      - &resolver_address
+      - &resolver_address_not_null
         name: resolver_address
-      - &resolver_executor
-        name: resolver_executor
-      - *blockchain
-      - &chain_id
-        name: chain_id
+        tests:
+          - not_null
       - &resolver_name
         name: resolver_name
+      - &resolver_status
+        name: resolver_status
+      - &last_changed_at
+        name: last_changed_at
       - &kyc
         name: kyc
+      - &resolver_executor_not_null
+        name: resolver_executor
+        tests:
+          - not_null
+      - *blockchain
+      - &chain_id_not_null
+        name: chain_id
+        tests:
+          - not_null
+      - &executor_promotions
+        name: executor_promotions
+      - &first_time
+        name: first_time
+      - &last_time
+        name: last_time
       - &tx_hash_example
         name: tx_hash_example
       - &last_block_time
@@ -74,8 +90,10 @@ models:
             - blockchain
             - selector
     columns:
-      - &contract_id
+      - &contract_id_not_null
         name: contract_id
+        tests:
+          - not_null
       - &contract_address_not_null
         name: contract_address
         tests:
@@ -201,4 +219,140 @@ models:
         tests:
           - unique
           - not_null
+
+  - name: oneinch_exchange_contracts
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        exchange contracts
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - *project
+      - *contract_address_not_null
+      - *contract_id_not_null
+      - *contract_name
+      - *blockchain
+      - *created_at
+      - &creator
+        name: creator
+      - &creation_tx_hash
+        name: creation_tx_hash
+      - &abi
+        name: abi
+      - &params
+        name: params
+      - &namespaces
+        name: namespaces
+      - &names
+        name: names
+
+  - name: oneinch_fusion_farms
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        fusion farms
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - farm_address
+            - distributor
+    columns:
+      - *resolver_address_not_null
+      - *resolver_name
+      - *resolver_status
+      - *last_changed_at
+      - *kyc
+      - &resolver_register_delegatee
+        name: resolver_register_delegatee
+      - &farm_address_not_null
+        name: farm_address
+        tests:
+          - not_null
+      - &farm_ownership_transferred
+        name: farm_ownership_transferred
+      - &farm_created_at
+        name: farm_created_at
+      - &farm_default_token
+        name: farm_default_token
+      - &distributor_not_null
+        name: distributor
+        tests:
+          - not_null
+      - &distributor_status
+        name: distributor_status
+      - &distributor_set_up
+        name: distributor_set_up
+
+  - name: oneinch_fusion_resolvers
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        fusion resolvers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - resolver_address
+            - last_changed_at
+    columns:
+      - *resolver_address_not_null
+      - *resolver_name
+      - *resolver_status
+      - *last_changed_at
+      - *kyc
+
+
+  - name: oneinch_methods
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: [grkhr]
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        protocols methods
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+            - selector
+    columns:
+      - *project
+      - *contract_address_not_null
+      - *contract_id_not_null
+      - *contract_name
+      - *blockchain_not_null
+      - *created_at
+      - *creator
+      - *selector_not_null
+      - *protocol
+      - *main
+      - *method
+      - &receiver
+        name: receiver
+      - *signature
+
+
+
+
+
+
+
+
 

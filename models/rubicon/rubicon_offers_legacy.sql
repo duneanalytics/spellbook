@@ -11,7 +11,8 @@
 
 {% set rubi_models = [
 ref('rubicon_optimism_offers_legacy'),
-ref('rubicon_arbitrum_offers_legacy')
+ref('rubicon_arbitrum_offers_legacy'),
+ref('rubicon_base_offers_legacy')
 ] %}
 
 SELECT * 

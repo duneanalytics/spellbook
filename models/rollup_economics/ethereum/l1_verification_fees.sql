@@ -50,6 +50,25 @@ with verify_txns as (
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+
+    UNION ALL SELECT
+    'imx' AS name, -- not included here is the SHARP Verifier [0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60] as all Starkware chains share it together
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND t.to = 0x16BA0f221664A5189cf2C1a7AF0d3AbFc70aA295
+      AND cast(t.data as varchar) LIKE '0x504f7f6f%' -- Verify Availability Proof, imx committee
+      AND t.block_time >= timestamp '2021-03-24'
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 )
 
 ,block_basefees as (

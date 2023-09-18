@@ -23,7 +23,7 @@ calls as (
         tx_hash
         , gr_traces.start
         , gr_traces.caller
-        , gr.traces.call_to
+        , gr_traces.call_to
         , transactions.tx_from
         , transactions.tx_success
         , gr_traces.call_success

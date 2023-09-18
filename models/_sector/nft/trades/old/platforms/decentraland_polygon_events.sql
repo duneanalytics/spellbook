@@ -51,7 +51,7 @@ SELECT
     'Trade' AS evt_type,
     CAST(NULL AS varchar) AS collection,
     'Single Item Trade' as trade_type,
-    1 as number_of_items,
+    uint256 '1' as number_of_items,
     'buy' AS trade_category,
     src.buyer,
     src.seller,

@@ -4,7 +4,7 @@
         alias = alias('fusion_executors'),
         materialized = 'table',
         file_format = 'delta',
-        unique_key = ['resolver_executor', 'blockchain_id'],
+        unique_key = ['resolver_executor', 'chain_id'],
         tags = ['dunesql']
     )
 }}
@@ -35,16 +35,16 @@ select
       resolver_address
     , resolver_name
     , resolver_status
-    , last_changing
+    , last_changed_at
     , kyc
     , resolver_executor
     , coalesce(blockchain, cast(id as varchar)) as blockchain
-    , id as blockchain_id
+    , id as chain_id
     , executor_promotions
     , first_time
     , last_time
     , tx_hash_example
 from {{ ref('oneinch_fusion_resolvers') }}
 left join executors using(resolver_address)
-left join {{ ref('oneinch_blockchains') }} using(id)
+left join {{ ref('evms_info') }} using(id)
 order by resolver_name, resolver_executor

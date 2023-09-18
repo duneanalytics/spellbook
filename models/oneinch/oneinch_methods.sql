@@ -9,10 +9,9 @@
     )
 }}
 
-{% set filled = current_timestamp %}
 
 with
-    
+        
     methods as (
         
         select
@@ -26,9 +25,9 @@ with
             
             -- templates
             -- extra_offset: 0 / X / X*32
-              (0x00000001, 'AR', true, 'method', null, array[0x00])
-            , (0x00000002, 'AR', true, 'method', map_from_entries(array[('source', 'trace-input'), ('extra_flag', '0x'), ('extra_offset', '0'), ('start', '0')]), array[0x00])
-            , (0x00000003, 'AR', true, 'method', map_from_entries(array[('source', 'trace-input')]), array[0x00])
+            --   (0x00000001, 'AR', true, 'method', null, array[0x00])
+            -- , (0x00000002, 'AR', true, 'method', map_from_entries(array[('source', 'trace-input'), ('extra_flag', '0x'), ('extra_offset', '0'), ('start', '0')]), array[0x00])
+            -- , (0x00000003, 'AR', true, 'method', map_from_entries(array[('source', 'trace-input')]), array[0x00])
 
             -- methods
             , (0x261fc7ef, 'AR', true, 'aggregate', map_from_entries(array[('source', 'tx-from')]), array[0xad63, 0xb3bc, 0xae2f])
@@ -80,7 +79,7 @@ select
     , contract_id
     , contract_name
     , blockchain
-    , created
+    , created as created_at
     , creator
     
     -- methods
@@ -93,5 +92,5 @@ select
 
 from {{ ref('oneinch_exchange_contracts') }}
 join methods using(contract_id)
-left join {{ source('abi', 'signatures') }} as signatures on signatures.id = methods.selector
+left join {{ ref('signatures') }} as signatures on signatures.id = methods.selector
 order by created, method

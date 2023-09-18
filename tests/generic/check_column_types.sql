@@ -30,7 +30,6 @@
 
 {% test check_columns_nft_old_events(model) %}
     {%- set column_types = {
-        'block_date':'date',
         'block_time':'timestamp(3) with time zone',
         'block_number':'bigint',
         'tx_hash':'varbinary',
@@ -47,6 +46,8 @@
         'platform_fee_amount_raw':'uint256',
         'royalty_fee_amount_raw':'uint256',
         'royalty_fee_receive_address':'varbinary',
+        'royalty_fee_currency_symbol':'varchar',
+        'royalty_fee_percentage':'double',
         'unique_trade_id':'varchar'
     } -%}
    {{ check_column_types_macro(model,column_types) }}

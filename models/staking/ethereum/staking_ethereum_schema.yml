@@ -93,6 +93,29 @@ models:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
 
+  - name: staking_ethereum_entities_darma_capital
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: DARMA Capital's Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
   - name: staking_ethereum_entities
     meta:
       blockchain: ethereum
