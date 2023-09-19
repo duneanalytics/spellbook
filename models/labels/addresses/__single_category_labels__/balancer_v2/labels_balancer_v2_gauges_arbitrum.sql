@@ -6,7 +6,7 @@
                                     "labels",
                                     \'["jacektrocinski"]\') }}')}}
 
-SELECT
+SELECT distinct
     'arbitrum' AS blockchain,
     gauge.gauge AS address,
     'arb:' || pools.name AS name,
@@ -22,7 +22,7 @@ FROM
     LEFT JOIN {{ source('balancer_v2_arbitrum', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON gauge.recipient = streamer.streamer
     LEFT JOIN {{ ref('labels_balancer_v2_pools_arbitrum') }} pools ON pools.address = streamer.pool
 UNION ALL
-SELECT
+SELECT distinct
     'arbitrum' AS blockchain,
     gauge.gauge AS address,
     'arb:' || pools.name AS name,
