@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
         alias = alias('flashloans'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base"]\',
                                 "project",
                                 "balancer",
                                 \'["hildobby"]\') }}'
