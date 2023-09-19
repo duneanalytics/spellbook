@@ -30,10 +30,10 @@ WITH namespaces AS (
     )
 
 , nfts_per_tx as (
-    SELECT 
+    SELECT
         tx_hash
         , case when nfts_minted_in_tx = UINT256 '0' THEN UINT256 '1' ELSE nfts_minted_in_tx END as nfts_minted_in_tx
-    FROM 
+    FROM
     nfts_per_tx_tmp
 )
 
@@ -97,7 +97,7 @@ LEFT JOIN {{ source('prices','usd') }} pu_eth ON pu_eth.blockchain='ethereum'
     {% endif %}
 LEFT JOIN {{ source('erc20_ethereum','evt_transfer') }} erc20s ON erc20s.evt_block_time=nft_mints.block_time
     AND erc20s."from"=nft_mints.to
-    AND erc20s.evt_tx_hash = nft_mints.tx_hash 
+    AND erc20s.evt_tx_hash = nft_mints.tx_hash
     AND (et.value IS NULL OR CAST(et.value as double) = 0)
     {% if is_incremental() %}
     AND  erc20s.evt_block_time >= date_trunc('day', now() - interval '7' Day)
@@ -119,9 +119,11 @@ LEFT JOIN namespaces ec ON etxs.to=ec.address
 {% if is_incremental() %}
 LEFT JOIN {{this}} anti_txs ON anti_txs.block_time=nft_mints.block_time
     AND anti_txs.tx_hash=nft_mints.tx_hash
-    AND anti_txs.tx_hash IS NULL 
+WHERE anti_txs.tx_hash IS NULL
+{% else %}
+WHERE 1=1
 {% endif %}
-WHERE nft_mints."from"= 0x0000000000000000000000000000000000000000
+AND nft_mints."from"= 0x0000000000000000000000000000000000000000
 AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
 {% if is_incremental() %}
 AND nft_mints.block_time >= date_trunc('day', now() - interval '7' Day)
