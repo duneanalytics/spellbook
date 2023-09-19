@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'addresses_events_arbitrum'
+    schema = 'addresses_events_celo'
     , tags = ['dunesql']
     , alias = alias('first_funded_by')
     , materialized = 'incremental'
@@ -11,5 +11,5 @@
 
 
 {{addresses_events_first_funded_by(
-    blockchain='arbitrum'
+    blockchain='celo'
 )}}
