@@ -15,7 +15,7 @@
 {% set blockchain = 'ethereum' %}
 {% set project = 'aave' %}
 {% set dao_name = 'DAO: AAVE' %}
-{% set dao_address = 0xec568fffba86c094cf06b22134b23074dfe2252c %}
+{% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
 
 with cte_latest_block as (
 SELECT MAX(b.number) AS latest_block
@@ -49,7 +49,7 @@ SELECT DISTINCT
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     creator as proposer,
     pcr.id as proposal_id,
     csv.votes_for,
