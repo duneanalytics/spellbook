@@ -11,28 +11,28 @@
 WITH 
 
 margin as (
-    SELECT *, 'arbitrum' as blockchain FROM ref('tigris_arbitrum_positions_margin')
+    SELECT *, 'arbitrum' as blockchain FROM {{ ref('tigris_arbitrum_positions_margin') }}
 
     UNION ALL 
     
-    SELECT *, 'polygon' as blockchain FROM ref('tigris_polygon_positions_margin')
+    SELECT *, 'polygon' as blockchain FROM {{ ref('tigris_polygon_positions_margin') }}
 ),
 
 close_position_tmp as (
-    SELECT *, 'arbitrum' as blockchain FROM ref('tigris_arbitrum_events_close_position')
+    SELECT *, 'arbitrum' as blockchain FROM {{ ref('tigris_arbitrum_events_close_position') }}
     
     UNION ALL 
     
-    SELECT *, 'polygon' as blockchain FROM ref('tigris_polygon_events_close_position')
+    SELECT *, 'polygon' as blockchain FROM {{ ref('tigris_polygon_events_close_position') }}
 ),
 
 
 liquidate_position_tmp as (
-    SELECT *, 'arbitrum' as blockchain FROM ref('tigris_arbitrum_events_liquidate_position')
+    SELECT *, 'arbitrum' as blockchain FROM {{ ref('tigris_arbitrum_events_liquidate_position') }}
     
     UNION ALL 
     
-    SELECT *, 'polygon' as blockchain FROM ref('tigris_polygon_events_liquidate_position')
+    SELECT *, 'polygon' as blockchain FROM {{ ref('tigris_polygon_events_liquidate_position') }}
 ),
 
 last_margin as (
@@ -139,7 +139,7 @@ close_liquidate as (
     SELECT 
         * 
     FROM 
-    ref('tigris_trades')
+    {{ ref('tigris_trades') }}
     WHERE trade_type IN ('close_position', 'liquidate_position')
 ),
 
