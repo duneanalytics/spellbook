@@ -96,7 +96,8 @@ methods as (
         , transfers.native_token
         , transfers.transfer_from
         , transfers.transfer_to
-        , transfers.transfer_top_level
+        -- , transfers.transfer_top_level
+        , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
         , transfers.transfers_between_players
         , rn_tta_asc
         , rn_tta_desc
@@ -118,10 +119,11 @@ methods as (
             , transfer_from
             , transfer_to
             -- transfers in token transfer 
-            , not contains(transform(array_remove(trf, trace_address), x -> if(slice(trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
+            -- , not contains(transform(array_remove(trf, trace_address), x -> if(slice(trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
             -- , count(*) over(partition by blockchain, tx_hash, array_sort(array[transfer_from, transfer_to])) as transfers_between_players
             -- , 1 as transfer_top_level
             , 1 as transfers_between_players  
+            , trf
             , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
         from (
