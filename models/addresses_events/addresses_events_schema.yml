@@ -3,10 +3,10 @@ version: 2
 models:
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo
       sector: addresses_events
       project: addresses
-      contributors: hildobby
+      contributors: hildobby, Henrystats
     config:
       tags: ['table', 'funded', 'addresses_events', 'mainnets']
     description: "Table showing who first funded each address in its native asset on every chain"

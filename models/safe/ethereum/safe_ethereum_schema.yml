@@ -157,6 +157,7 @@ models:
       - *blockchain
       - *block_time
       - *block_number
+      - *block_month
       - &project
         name: project
         description: "Project name"

@@ -74,5 +74,5 @@ sources:
             name: token1
             description: "The second of the two tokens in the pool"
 
-      - name: UniswapV3Pool_evt_Flash
+      - name: Pair_evt_Flash
         loaded_at_field: evt_block_time
