@@ -26,6 +26,7 @@ cte_support as (SELECT
         voter as voter,
         CASE WHEN support = false THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
         CASE WHEN support = true THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
+        0 AS votes_abstain,
         id
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }}
 GROUP BY support, id, voter),
@@ -34,7 +35,8 @@ cte_sum_votes as (
 SELECT COUNT(DISTINCT voter) as number_of_voters,
        SUM(votes_for) as votes_for, 
        SUM(votes_against) as votes_against, 
-       SUM(votes_for) + SUM(votes_against) as votes_total,
+       SUM(votes_abstain) as votes_abstain, 
+       SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
        id
 from cte_support
 GROUP BY id)
@@ -61,9 +63,9 @@ SELECT DISTINCT
     CASE 
          WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN (SELECT latest_block FROM cte_latest_block) <= pcr.startBlock THEN 'Pending'
-         WHEN (SELECT latest_block FROM cte_latest_block) <= pcr.endBlock THEN 'Active'
-         WHEN pqu.id is not null and now() > pqu.evt_block_time and now() < CAST(CAST(pqu.executionTime AS numeric) AS TIMESTAMP) THEN 'Queued'
+         WHEN (SELECT CAST(latest_block AS UINT256) FROM cte_latest_block) <= pcr.startBlock THEN 'Pending'
+         WHEN (SELECT CAST(latest_block AS UINT256) FROM cte_latest_block) <= pcr.endBlock THEN 'Active'
+         WHEN pqu.id is not null and now() > pqu.evt_block_time and now() < from_unixtime(cast(pqu.executionTime as double)) THEN 'Queued'
          ELSE 'Defeated' END AS status,
     cast(NULL as VARCHAR) as description
 FROM  {{ source('aave_ethereum', 'AaveGovernanceV2_evt_ProposalCreated') }} pcr
