@@ -55,7 +55,7 @@ state_with_gaps AS (
     SELECT events.block_number
            , events.pool
            , events.token
-           , CAST(events.denorm AS double) AS denorm,
+           , CAST(events.denorm AS uint256) AS denorm,
     LEAD(events.block_number, 1, 99999999) OVER (PARTITION BY events.pool, events.token ORDER BY events.block_number) AS next_block_number
     FROM events
 ),
