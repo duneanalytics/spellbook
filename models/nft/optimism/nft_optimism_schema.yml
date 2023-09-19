@@ -215,6 +215,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+            - token_id
+            - number_of_items
     columns:
       - name: blockchain
         description: "Blockchain"

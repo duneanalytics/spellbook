@@ -4,7 +4,7 @@
         partition_by = ['block_month'],
 		file_format = 'delta',
 		incremental_strategy = 'merge',
-        unique_key = ['tx_hash','evt_index'],
+        unique_key = ['tx_hash','evt_index','token_id','number_of_items'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "nft",
