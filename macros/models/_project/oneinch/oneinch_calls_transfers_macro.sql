@@ -166,6 +166,8 @@ methods as (
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
 )
 
+{% if blockchain == 'bnb' %}
+
 select 
     *
     , cast(tx_hash as varchar)||'--'||
@@ -173,5 +175,11 @@ select
         array_join(coalesce(transfer_trace_address, array[-1]), '_')
     as unique_call_transfer_id
 from merged
+
+{% else %}
+
+select 1
+    
+{% endif %}
 
 {% endmacro %}
