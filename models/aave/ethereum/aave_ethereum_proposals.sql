@@ -49,7 +49,7 @@ SELECT DISTINCT
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     creator as proposer,
     pcr.id as proposal_id,
     csv.votes_for,
