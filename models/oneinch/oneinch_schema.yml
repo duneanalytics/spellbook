@@ -41,6 +41,7 @@ models:
           combination_of_columns:
             - chain_id
             - resolver_executor
+            - resolver_address
     columns:
       - &resolver_address_not_null
         name: resolver_address
@@ -54,11 +55,15 @@ models:
         name: last_changed_at
       - &kyc
         name: kyc
-      - &resolver_executor
+      - &resolver_executor_not_null
         name: resolver_executor
+        tests:
+          - not_null
       - *blockchain
-      - &chain_id
+      - &chain_id_not_null
         name: chain_id
+        tests:
+          - not_null
       - &executor_promotions
         name: executor_promotions
       - &first_time
@@ -69,11 +74,7 @@ models:
         name: tx_hash_example
       - &last_block_time
         name: last_block_time
-      - &resolver_executor_id
-        name: resolver_executor_id
-        tests:
-          - unique
-          - not_null
+
 
   - name: oneinch_protocols
     meta:
