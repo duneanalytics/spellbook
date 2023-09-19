@@ -128,4 +128,3 @@ SELECT
     provider,
     ((bias - slope * (end_timestamp - block_timestamp)) * weight) AS vote 
 FROM running_votes
-;
