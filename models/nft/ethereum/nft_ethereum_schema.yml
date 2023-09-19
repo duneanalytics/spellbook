@@ -30,13 +30,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - project
             - tx_hash
-            - buyer
-            - nft_contract_address
-            - token_id
-            - number_of_items
-            - currency_contract
             - evt_index
     columns:
       - name: blockchain
@@ -164,7 +158,7 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
-  
+
   - name: nft_ethereum_approvals
     meta:
       blockchain: ethereum
@@ -350,7 +344,7 @@ models:
     config:
       tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'roi', 'profit', 'loss', 'win', 'spend', 'gain']
     description: >
-        This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades. 
+        This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades.
     columns:
       - name: wallet
         description: "NFT trader's wallet address"
@@ -376,29 +370,29 @@ models:
         description: "Percent of sales that had breakeven profit"
       - name: spent_eth
         description: "Amount of ETH spent on NFTs (not including gas)"
-      - name: spent_eth_realized 
+      - name: spent_eth_realized
         description: "Amount of ETH spent on NFTs that were later sold"
-      - name: spent_eth_unrealized 
+      - name: spent_eth_unrealized
         description: "Amount of ETH spent on NFTs that have not been sold yet"
-      - name: gained_eth 
+      - name: gained_eth
         description: "Amount of ETH gained from NFTs sold or appreication of currently held NFTs based on floor price"
-      - name: gained_eth_realized 
+      - name: gained_eth_realized
         description: "Amount of ETH gained from NFTs sold"
-      - name: gained_eth_unrealized 
+      - name: gained_eth_unrealized
         description: "Amount of ETH gained from appreication of currently held NFTs based on floor price"
-      - name: roi_eth 
+      - name: roi_eth
         description: "Percent ETH ROI from appreciation+sales over buy amount (range 0-1)"
-      - name: roi_eth_realized 
+      - name: roi_eth_realized
         description: "Percent ETH ROI from sales over buy amount on those sales (range 0-1)"
-      - name: roi_eth_unrealized 
+      - name: roi_eth_unrealized
         description: "Percent ETH ROI from appreciation over buy amount on unsold NFTs (range 0-1)"
-      - name: eth_profit 
+      - name: eth_profit
         description: "Total of realized + unrealized profit from NFTs (i.e. (sale_price-buy_price) for sold nfts + (current_floor_price - buy_price) for unsold NFTs)"
-      - name: eth_profit_realized 
+      - name: eth_profit_realized
         description: " Total of realized profit (in ETH) from sale of NFTs"
-      - name: eth_profit_unrealized 
+      - name: eth_profit_unrealized
         description: "Total of unrealized profit (in ETH) from sale of NFTs"
-      - name: avg_win_size 
+      - name: avg_win_size
         description: "Average size of profit from protitable NFT trades"
       - name: avg_loss_size
         description: "Average size of loss from protitable NFT trades"

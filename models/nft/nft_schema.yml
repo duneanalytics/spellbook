@@ -28,15 +28,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - project
             - tx_hash
-            - buyer
-            - nft_contract_address
-            - token_id
-            - number_of_items
-            - currency_contract
             - evt_index
-            - blockchain
     columns:
       - &blockchain
         name: blockchain

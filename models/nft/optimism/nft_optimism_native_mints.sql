@@ -4,7 +4,7 @@
         partition_by = ['block_month'],
 		file_format = 'delta',
 		incremental_strategy = 'merge',
-        unique_key = ['project', 'tx_hash', 'buyer', 'nft_contract_address', 'token_id', 'number_of_items', 'currency_contract', 'evt_index'],
+        unique_key = ['tx_hash','evt_index'],
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "nft",
@@ -30,10 +30,10 @@ with namespaces as (
 )
 
 , nfts_per_tx as (
-    select 
+    select
         tx_hash
         , case when nfts_minted_in_tx = UINT256 '0' THEN UINT256 '1' ELSE nfts_minted_in_tx END as nfts_minted_in_tx
-    FROM 
+    FROM
     nfts_per_tx_tmp
 )
 select
@@ -104,7 +104,7 @@ left join {{ source('prices','usd') }} as pu_eth
 left join {{ source('erc20_ethereum','evt_transfer') }} as erc20s
     on erc20s.evt_block_time=nft_mints.block_time
     and erc20s."from"=nft_mints.to
-    AND erc20s.evt_tx_hash = nft_mints.tx_hash 
+    AND erc20s.evt_tx_hash = nft_mints.tx_hash
     AND (tr.value_decimal IS NULL OR CAST(tr.value_decimal as double) = 0)
     {% if is_incremental() %}
     and erc20s.evt_block_time >= date_trunc('day', now() - interval '7' Day)
