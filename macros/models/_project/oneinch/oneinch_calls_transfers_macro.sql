@@ -117,7 +117,7 @@ methods as (
             , amount
             , transfer_from
             , transfer_to
-            -- transfers in token transfer
+            -- transfers in token transfer 
             , not contains(transform(array_remove(trf, trace_address), x -> if(slice(trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
             -- , count(*) over(partition by blockchain, tx_hash, array_sort(array[transfer_from, transfer_to])) as transfers_between_players
             -- , 1 as transfer_top_level
