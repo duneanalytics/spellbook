@@ -127,7 +127,7 @@ models:
       - *amount_transfer_usd
       - &updated_at
         name: updated_at
-        description: "UTC timestamp when table was last updated"
+        description: "UTC timestamp when table was last updated."
       - &recency_index
         name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance."
