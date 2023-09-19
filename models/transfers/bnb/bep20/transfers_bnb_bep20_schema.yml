@@ -23,7 +23,7 @@ models:
         description: "Blockchain"
       - &transfer_type
         name: transfer_type
-        description: "Transfer type needed for unique test"
+        description: "Transfer type needed for unique test."
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
