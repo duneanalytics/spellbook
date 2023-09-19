@@ -4,8 +4,8 @@
   )
 }}
 
-{% set aave_mock_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
-{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set aave_mock_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee %}
+{% set weth_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 %}
 
 SELECT
       version,
@@ -86,4 +86,3 @@ LEFT JOIN {{ source('prices','usd') }} p
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
     AND CAST(p.contract_address AS VARCHAR(100)) = borrow.token
     AND p.blockchain = 'ethereum'    
-;

@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'aave_v2_ethereum'
+    tags = ['dunesql']
+    , schema = 'aave_v2_ethereum'
     , alias = alias('supply')
   )
 }}
@@ -67,4 +68,3 @@ LEFT JOIN {{ source('prices','usd') }} p
     ON p.minute = date_trunc('minute', deposit.evt_block_time) 
     AND CAST(p.contract_address AS VARCHAR(100)) = deposit.token 
     AND p.blockchain = 'ethereum'
-;
