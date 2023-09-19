@@ -39,9 +39,9 @@ SELECT
     p.contract_address as token_address, 
     vc.votingPower/1e18 * p.price as votes_value_usd,
     vc.voter as voter_address,
-    CASE WHEN vc.support = 0 THEN 'against'
-         WHEN vc.support = 1 THEN 'for'
-         WHEN vc.support = 2 THEN 'abstain'
+    CASE WHEN vc.support = false THEN 'against'
+         WHEN vc.support = true THEN 'for'
+         {# WHEN vc.support = 2 THEN 'abstain' #}
          END AS support,
     cast(NULL as VARCHAR) as reason
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }} vc
