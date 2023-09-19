@@ -1,5 +1,5 @@
 {{config(
-        tags=['prod_exclude', 'dunesql'],
+        tags=['dunesql'],
         alias = alias('balancer_v2_gauges_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
