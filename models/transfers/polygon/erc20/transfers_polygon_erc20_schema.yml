@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: transfers_polygon_erc20
+    meta:
+      blockchain: polygon
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tschubotz, hosuke, Henrystats
+    config:
+      tags: ['transfers', 'polygon', 'erc20']
+    description: "ERC20 Token Transfers on polygon. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transfer_type
+            - wallet_address
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type needed for unique test"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Event transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+
+  - name: transfers_polygon_erc20_agg_hour
+    meta:
+      blockchain: polygon
+      sector: transfers
+      project: erc20
+      contributors: Henrystats
+    config:
+      tags: ['transfers', 'polygon', 'erc20', 'agg_hour', 'Henrystats']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "UTC event block time truncated to the hour mark."
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - &symbol
+        name: symbol
+        description: "ERC20 token symbol"
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+
+  - name: transfers_polygon_erc20_agg_day
+    meta:
+      blockchain: polygon
+      sector: transfers
+      project: erc20
+      contributors: Henrystats
+    config:
+      tags: ['transfers', 'polygon', 'erc20', 'agg_day', 'Henrystats']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark."
+      - *block_month 
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+
+  - name: transfers_polygon_erc20_rolling_hour
+    meta:
+      blockchain: polygon
+      sector: transfers
+      project: erc20
+      contributors: Henrystats
+    description: "ERC20 Token Transfers on polygon per hour."
+    config:
+      tags: ['transfers', 'polygon', 'erc20', 'rolling_hour', 'Henrystats']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - &updated_at
+        name: updated_at
+        description: "UTC timestamp when table was last updated"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_polygon_erc20_rolling_day
+    meta:
+      blockchain: polygon
+      sector: transfers
+      project: erc20
+      contributors: Henrystats
+    description: "ERC20 Token Transfers on polygon per day."
+    config:
+      tags: ['transfers', 'polygon', 'erc20', 'rolling_day', 'Henrystats']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *updated_at
+      - *recency_index

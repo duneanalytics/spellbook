@@ -27,6 +27,7 @@ WITH fee_wallets as (
      ,native_token_symbol = 'ETH'
      ,start_date = '2022-07-29'
      ,seaport_fork_address = '0x998ef16ea4111094eb5ee72fc2c6f4e6e8647666'
+     ,project = 'quix'
     )
   }}
 )

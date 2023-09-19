@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: fungible_transfers
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, base
+      sector: fungible
+      contributors: hildobby
+    config:
+      tags: ['fungible', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'base', 'transfers']
+    description: >
+        Native and ERC20 transfers
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount
+        description: "Amount"
+      - name: usd_price
+        description: "Price in USD"
+      - name: usd_amount
+        description: "Amount in USD"
+      - name: contract_address
+        description: "Fungible contract address"
+      - name: symbol
+        description: "Symbol of fungible token"
+      - name: decimals
+        description: "The number of decimals of the fungible token"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20', 'bep20']
+        description: "Token standard"
+      - name: tx_from
+        description: "Address that initiated the transaction"
+      - name: from
+        description: "Address that sent the token(s)"
+      - name: to
+        description: "Address that received the token(s)"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
