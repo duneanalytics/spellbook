@@ -26,7 +26,6 @@ cte_support as (SELECT
         voter as voter,
         CASE WHEN support = false THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
         CASE WHEN support = true THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
-        {# CASE WHEN support = 2 THEN sum(votingPower/1e18) ELSE 0 END AS votes_abstain, #}
         id
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }}
 GROUP BY support, id, voter),
@@ -35,8 +34,7 @@ cte_sum_votes as (
 SELECT COUNT(DISTINCT voter) as number_of_voters,
        SUM(votes_for) as votes_for, 
        SUM(votes_against) as votes_against, 
-       SUM(votes_abstain) as votes_abstain, 
-       SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
+       SUM(votes_for) + SUM(votes_against) as votes_total,
        id
 from cte_support
 GROUP BY id)
