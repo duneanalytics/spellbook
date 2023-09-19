@@ -149,7 +149,7 @@ SELECT
   instructions,
   signatures,
   log_messages,
-  UINT256 '0' as evt_index
+  BIGINT '0' as evt_index
 FROM me_txs
 LEFT JOIN {{ source('prices', 'usd') }} AS p
   ON p.minute = date_trunc('minute', block_time)
