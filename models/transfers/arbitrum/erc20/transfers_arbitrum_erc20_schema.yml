@@ -62,7 +62,7 @@ models:
             - token_address
     columns:
       - *blockchain
-      - &hour
+      - &block_hour
         name: hour
         description: "UTC event block time truncated to the hour mark."
       - *wallet_address
@@ -92,7 +92,7 @@ models:
             - token_address
     columns:
       - *blockchain
-      - &day
+      - &block_day
         name: day
         description: "UTC event block time truncated to the day mark."
       - *wallet_address
@@ -113,7 +113,7 @@ models:
       tags: ['transfers', 'arbitrum', 'erc20', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
-      - *hour
+      - *block_hour
       - *wallet_address
       - *token_address
       - *symbol
@@ -137,7 +137,7 @@ models:
       tags: ['transfers', 'arbitrum', 'erc20', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
-      - *day
+      - *block_day
       - *wallet_address
       - *token_address
       - *symbol

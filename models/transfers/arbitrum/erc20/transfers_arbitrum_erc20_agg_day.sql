@@ -5,13 +5,13 @@
         partition_by = ['block_month'],
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['day', 'wallet_address', 'token_address']
+        unique_key = ['block_day', 'wallet_address', 'token_address']
         )
 }}
 
 select
     tr.blockchain,
-    date_trunc('day', tr.evt_block_time) as day,
+    date_trunc('day', tr.evt_block_time) as block_day,
     block_month,
     tr.wallet_address,
     tr.token_address,

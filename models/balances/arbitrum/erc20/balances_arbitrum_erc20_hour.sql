@@ -28,13 +28,13 @@ hours as (
 hourly_balances as (
     SELECT 
         blockchain, 
-        hour, 
+        block_hour, 
         wallet_address, 
         token_address, 
         amount_raw,
         amount,
         symbol,
-        LEAD(hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
+        LEAD(block_hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY block_hour) AS next_hour
     FROM 
     {{ ref('transfers_arbitrum_erc20_rolling_hour') }}
 )
@@ -53,7 +53,7 @@ FROM
 hourly_balances b
 INNER JOIN 
 hours d 
-    ON b.hour <= d.block_hour 
+    ON b.block_hour <= d.block_hour 
     AND d.block_hour < b.next_hour
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
