@@ -25,8 +25,8 @@ SELECT
     '2' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN borrowRateMode = '1' THEN 'stable'
-        WHEN borrowRateMode = '2' THEN 'variable'
+        WHEN borrowRateMode = UINT256 '1' THEN 'stable'
+        WHEN borrowRateMode = UINT256 '2' THEN 'variable'
     END AS loan_type,
     reserve AS token,
     user AS borrower, 

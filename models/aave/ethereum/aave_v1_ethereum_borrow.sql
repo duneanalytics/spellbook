@@ -28,8 +28,8 @@ SELECT
     '1' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN _borrowRateMode = '1' THEN 'stable'
-        WHEN _borrowRateMode = '2' THEN 'variable'
+        WHEN _borrowRateMode = UINT256 '1' THEN 'stable'
+        WHEN _borrowRateMode = UINT256 '2' THEN 'variable'
     END AS loan_type,
     CASE
         WHEN _reserve = {{aave_mock_address}} THEN {{weth_address}} --Using WETH instead of Aave "mock" address
