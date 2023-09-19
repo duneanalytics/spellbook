@@ -1,11 +1,13 @@
 {{ config(
-	tags=['dunesql'],
-	alias = alias('trades_pnl'),
-    post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
-                                "project",
-                                "tigris",
-                                \'["Henrystats"]\') }}'
-	)
+    tags=['dunesql'],
+    schema = 'tigris_arbitrum',
+    alias = alias('trades_pnl'),
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
+    )
 }}
 
 WITH 
@@ -141,6 +143,9 @@ close_liquidate as (
     FROM 
     {{ ref('tigris_trades') }}
     WHERE trade_type IN ('close_position', 'liquidate_position')
+    {% if is_incremental() %}
+    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 ),
 
 close_liquidate_pnl as (
