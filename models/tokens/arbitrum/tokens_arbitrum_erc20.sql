@@ -176,4 +176,5 @@ FROM (VALUES
         ,(0x27d8de4c30ffde34e982482ae504fc7f23061f61, 'MMT', 18)
         ,(0x27e2209f4ceaebed97899ea2d8302dee690d3820, '$MUMU', 9)
         ,(0x93b346b6BC2548dA6A1E7d98E9a421B42541425b, 'LUSD', 18)
+        ,(0x53691596d1BCe8CEa565b84d4915e69e03d9C99d, 'ACX', 18)
      ) AS temp_table (contract_address, symbol, decimals)
