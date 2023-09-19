@@ -20,7 +20,7 @@ WITH base_locks AS (
         
         SELECT provider, CAST(null as UINT256) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
-        WHERE value = 0
+        WHERE CAST(value AS DOUBLE) = 0
     ),
     
     decorated_locks AS (
