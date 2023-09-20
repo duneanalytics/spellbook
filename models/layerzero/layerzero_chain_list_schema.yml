@@ -3,7 +3,7 @@ version: 2
 models:
  - name: layerzero_chain_list
    meta:
-     blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, optimism
+     blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, optimism, celo, base
      project: layerzero
      contributors: bennyfeng
    config:

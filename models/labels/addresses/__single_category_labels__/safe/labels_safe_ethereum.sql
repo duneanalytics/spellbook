@@ -1,4 +1,7 @@
-{{config(alias = alias('safe_ethereum'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('safe_ethereum')
+)}}
 
 SELECT
     'ethereum' as blockchain,
@@ -7,7 +10,7 @@ SELECT
     'safe' AS category,
     'soispoke' AS contributor,
     'query' AS source,
-    timestamp('2022-09-01') as created_at,
+    TIMESTAMP '2022-09-01'  as created_at,
     now() as updated_at,
     'safe_ethereum' AS model_name,
     'persona' AS label_type

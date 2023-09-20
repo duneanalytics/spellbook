@@ -1,14 +1,16 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('approvals'),
+        schema = 'nft',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'block_number','tx_hash','evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli"]\',
+        unique_key = ['blockchain', 'tx_hash', 'evt_index'],
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "celo", "base"]\',
                                     "sector",
                                     "nft",
-                                    \'["hildobby"]\') }}')
+                                    \'["hildobby", "tomfutago"]\') }}')
 }}
 
 {% set nft_models = [
@@ -21,6 +23,8 @@
 ,ref('nft_polygon_approvals')
 ,ref('nft_fantom_approvals')
 ,ref('nft_goerli_approvals')
+,ref('nft_celo_approvals')
+,ref('nft_base_approvals')
 ] %}
 
 SELECT *
@@ -37,6 +41,7 @@ FROM (
         , contract_address
         , token_id
         , approved
+        , operator
         , tx_hash
         --, tx_from
         --, tx_to
@@ -44,7 +49,7 @@ FROM (
     FROM {{ nft_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     UNION ALL
     {% endif %}

@@ -520,7 +520,7 @@ WITH curated_list AS (
       ,(0x3B52ad533687Ce908bA0485ac177C5fb42972962, 'Manifold')
       ,(0xB8cEF765721A6da910f14Be93e7684e9a3714123, 'Allo Protocol (Gitcoin)') --Gitcoin Grants Stack
       ,(0x123694886DBf5Ac94DDA07135349534536D14cAf, 'Threshold Network')
-      ,(0x956a5152D0f498dBA0c5966577bb44262F8F7078, 'OP AttestationStation')
+      ,(0x956a5152D0f498dBA0c5966577bb44262F8F7078, 'AttestationStation')
       ,(0x9c6373de60c2d3297b18a8f964618ac46e011b58, 'OP Citizens House')
       ,(0x1a5309f208f161a393e8b5a253de8ab894a67188, 'Bond Protocol')
       ,(0x07537D4360aF2489FC1Ca086EA9741c054d804de, 'Velodrome')
@@ -567,29 +567,90 @@ WITH curated_list AS (
       ,(0x890Bc5691E6011F580e264065d09a7a1A6902131, 'Synapse')
       ,(0x161D61e30284A33Ab1ed227beDcac6014877B3DE, 'Beefy Finance')
       ,(0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85, 'DeBank')
+      ,(0x86d26897267711ea4b173c8c124a0a73612001da, 'OpenSea')
+      ,(0xf60F3A45c7D4476019262FC1Ff6756Fc15042F13, 'KyberSwap')
+      ,(0x5401fe33559a355638b9b37c9640a04a182feff2, 'Gelato')
+      ,(0xC96495C314879586761d991a2B68ebeab12C03FE, 'Rubicon')
+      ,(0xe6ef45a2ef96791685cdee512f36f16ee85d891d, 'Aave')
+      ,(0x35E0C852FcB9534df65D03877c1238f8E59c53FE, 'Paraswap')
+      ,(0xf3d63166f0ca56c3c1a3508fce03ff0cf3fb691e, 'Reservoir')
+      ,(0x9098b50ee2d9e4c3c69928a691da3b192b4c9673, 'Aura')
+      ,(0x71F718D3e4d1449D1502A6A7595eb84eBcCB1683, 'Curve')
+      ,(0x383Ea12347E56932E08638767B8A2B3c18700493, 'Hundred Finance')
+      ,(0xB45cf380FF9A33c2bf7c41043530dc8Bb2e5295B, 'ChainX')
+      ,(0x4c276F7FF3893a68cc9A947544B32E9F1e6d9912, 'Nouns Builder')
+      ,(0x78357316239040e19fC823372cC179ca75e64b81, 'Pyth')
+      ,(0xC8834C1FcF0Df6623Fc8C8eD25064A4148D99388, 'Holonym')
+      ,(0xfC8d2f6d1937cd4CcAaD5c26FBB42a3dfc9dAc85, 'Gravita')
+      ,(0x96d55BD9c8C4706FED243c1e15825FF7854920fA, 'Worldcoin') --WorldID
+      ,(0x78d4BDEBc0B4140f01BAB63085F94A5a7A1294f2, 'Yearn')
+      ,(0x0B634A8D61b09820E9F72F79cdCBc8A4D0Aad26b, 'Yearn')
       ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Worldcoin')
-      
+      ,(0x5856d478832ff3a68c122388623c4ee027d0e65a, 'Mean Finance')
+      ,(0xAEDdC8B2aa5E331B53c22F1da8069c18d02eF6ac, 'Gitcoin')
+      ,(0x0e0be581b17684f849af6964d731fce0f7d366bd, 'CyberConnect')
+      ,(0x68108902de3a5031197a6eb3b74b3b033e8e8e4d, 'Gnosis Safe')
+      ,(0x433704c40f80cbff02e86fd36bc8bac5e31eb0c1, 'Pimlico')
+      ,(0x1ff1db6a9ee9df4c7fa1e7d91dfa5db0229ed3ee, 'Biconomy')
+      ,(0x5b555b6fc357434eb7ba572a87f3aca30ab5d272, 'Yearn')
+      ,(0x6de9109a2333845a15dde1f2f0c020b37421e1f5, 'Odos')
+      ,(0x6f24a47fc8ae5441eb47effc3665e70e69ac3f05, 'Axelar')
+      ,(0x10A06b6C715495Bf533B49bfD23CA267B83cFEB9, 'NiftyKit')
+      ,(0x55fb751f3022d56888fb3249002c1004579753c7, 'Mimic Finance')
+      ,(0x088b75daa0c202fb2d1f0583a6f235e4c8ed0163, 'PHISHING CONTRACT CREATOR')
+      ,(0x725e704b6933be9896c717f735e5a5edbfc7193f, 'Gyroscope')
+      ,(0x982486bd81ecc9ad0ce830f72b19dfd22fab07d5, 'Aave')
+      ,(0x79427367e9be16353336d230de3031d489b1b3c3, 'Gitcoin')
+      ,(0xa5110aff41981ef4d79f9290631af0cf3493f269, 'Balancer')
+      ,(0xa6722f19382f5e0377be6dd89a92ee236e048120, 'Zyberswap')
+      ,(0xab44ae5f00fc4d79ff6d61853ae9ea3f1c2457c7, 'HanChain')
+      ,(0xab630c7ff1b52e0cfe303bff70154a308b3b8d71, 'GoodNodes')
+      ,(0xb7cefe980d41f2f83d4272526b0a0f04617da96b, 'Kwenta')
+      ,(0xc5557771673109cab9d05358e1d280fab5225977, 'NFTs2me')
+      ,(0xe906b91103d216420f7ae13b29fde73ce9c206cd, 'CyberConnect')
+      ,(0xede8a407913a874dd7e3d5b731afca135d30375e, 'Synthetix')
+      ,(0xbda458dfc28021debd72060671fc350fa5cb39e5, 'deBridge')
+      ,(0xfd830dd9b446c9b880b32a03fb9a750aae4a68aa, 'deBridge')
+      ,(0x3d41487a3c5662ede90d0ee8854f3cc59e8d66ad, 'TangibleDAO')
+      ,(0x00b97496700288c1bceb90ecc04a40c4aeac8bb4, 'OmniSea')
+      ,(0x4b70c4308ea49d17fd946ddacd6884e8e1e18b56, 'Gitcoin Passport')
+      ,(0x9aaa603cb8ce688cdb48ab132dd1b8ad7b5ade02, 'Bulls DAO')
+      ,(0x9bbFB9919062C29a5eE15aCD93c9D7c3b14d31aa, 'AttestationStation')
+      ,(0xC8D7d0BD61C5Ca5A493a229f6754Da5560F486ae, 'Magpie')
+      ,(0x344a908d1a7b7d06b7ad7169c1db81fc9d496de9, 'zkLink')
+      ,(0xd0fe1538031f5647b1846d35b36f22e7317a1e35, 'Altitude Bridge')
+      ,(0x645487828d5769c20365fdb8786a5e2b734d785c, 'Altitude Bridge')
+      ,(0x01cf911dd46f90290bf5f93d0ef34237df7df1b6, 'Hedgey Finance')
+      ,(0x320bcb681ce7023edfe48ade9cf5bf67a11bcd36, 'Hedgey Finance')
+      ,(0xf537880c505bfa7cda6c8c49d7efa53d45b52d40, 'Binance')
+      ,(0x91f23057ee6e2d1e1ba00a7c1d71ba1a0b2c3113, 'Alongside Crypto Market Index')
+      ,(0xe3f641ad659249a020e2af63c3f9abd6cffb668b, 'Alta Finance')
+      ,(0x5afae3d2b0dcee1833bb947fac15d4f2d2d5d523, 'Ax Protocol')
+      ,(0xb28837949e7a3f1ac862036e8a0ae392c9ff9bb4, 'Axelar')
+      ,(0x38a93e70b0d8343657f802c1c3fdb06ac8f8fe99, 'AladdinDAO')
+      ,(0x4b785041d6a705d41f7578b13f93a7e315d2f8ff, 'Bankless DAO')
+      ,(0x048c6bad48c51436764ed1fdb3c9d1c25d2c0ada, 'Bolide Finance')
+      ,(0x615b5313a927571343f9355225e555cf7688d5e1, 'Cartesi')
+      ,(0x9bccd51ee5cf97791e39544827ef675cd81171b8, 'Circle')
+
   ) as temp_table (creator_address, contract_project)
 )
-
-, mapped_list AS (
-  SELECT
-    address AS creator_address, project_name AS contract_project
-    FROM {{ ref('addresses_optimism_grants_funding') }} pro
-)
-
-SELECT 
-  creator_address, contract_project
+,filtered_list AS (
+  SELECT 
+    creator_address, contract_project
 --filter out creators that we never want to map
-  FROM (
-    SELECT creator_address, contract_project FROM curated_list cl
-    UNION ALL
-    SELECT creator_address, contract_project FROM mapped_list ml
-      WHERE ml.creator_address NOT IN (SELECT creator_address FROM curated_list)
-    ) f
+  FROM curated_list f
 WHERE f.creator_address NOT IN (
    SELECT creator_address FROM {{ ref('contracts_optimism_deterministic_contract_creators') }}
 )
 
 GROUP BY 1,2
-;
+)
+
+-- Enforce consistent project name mapping to contracts_optimism_project_name_mappings.sql
+SELECT list.creator_address,
+  Coalesce(mapping.mapped_name, list.contract_project) AS contract_project
+  FROM filtered_list list
+  LEFT JOIN {{ ref('contracts_optimism_project_name_mappings') }} mapping
+  ON Lower(list.contract_project) = Lower(mapping.dune_name)
+  

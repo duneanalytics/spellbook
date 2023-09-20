@@ -58,7 +58,7 @@ select
     CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
 
-union
+union all
 
 select 
     transfer_type,

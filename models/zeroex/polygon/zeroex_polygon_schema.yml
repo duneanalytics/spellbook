@@ -16,7 +16,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_polygon_api_fills_sample')
           match_columns:
             - tx_hash
@@ -94,7 +94,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_polygon_nft_fills_sample')
           match_columns:
             - block_date
@@ -164,7 +164,7 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_polygon_api_fills_deduped_sample')
           match_columns:
             - tx_hash
@@ -220,7 +220,7 @@ models:
             - block_time
             - tx_hash
             - evt_index
-      - check_seed_legacy:
+      - check_seed:
           seed_file: ref('zeroex_polygon_native_fills_sample')
           match_columns:
             - tx_hash

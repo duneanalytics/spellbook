@@ -3,24 +3,27 @@ version: 2
 models:
   - name: uniswap_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, bnb, base, celo
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx
+      contributors: jeff-dude, masquot, soispoke, 0xBoxer, Henrystats, chrispearcx, wuligy, fomfutago
     config:
-      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb']
+      tags: ['ethereum', 'optimism', 'polygon', 'uniswap','trades', 'dex', 'jeff-dude','cross-chain', 'bnb', 'base', 'celo']
     description: >
         Uniswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -119,11 +122,11 @@ models:
 
   - name: uniswap_pools
     meta:
-      blockchain: ethereum, polygon, arbitrum
+      blockchain: ethereum, polygon, arbitrum, celo
       sector: dex
-      contributors: hildobby
+      contributors: hildobby, tomfutago
     config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'pools']
+      tags: ['ethereum', 'polygon', 'arbitrum', 'celo', 'pools']
     description: >
       Uniswap DEX pools
     tests:
@@ -152,11 +155,11 @@ models:
 
   - name: uniswap_flashloans
     meta:
-      blockchain: ethereum, bnb, arbitrum, optimism, polygon
+      blockchain: ethereum, bnb, arbitrum, optimism, polygon, celo
       sector: lending
-      contributors: hildobby
+      contributors: hildobby, tomfutago
     config:
-      tags: ['ethereum', 'bnb', 'arbitrum', 'optimism', 'polygon', 'flashloans']
+      tags: ['ethereum', 'bnb', 'arbitrum', 'optimism', 'polygon', 'celo', 'flashloans']
     description: >
       All Uniswap flashloans
     tests:
@@ -169,6 +172,7 @@ models:
       - name: blockchain
       - name: project
       - name: version
+      - name: block_month
       - name: block_time
       - name: block_number
       - name: amount
@@ -180,3 +184,4 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month

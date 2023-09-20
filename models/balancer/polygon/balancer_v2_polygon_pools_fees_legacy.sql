@@ -1,7 +1,7 @@
 {{
     config(
 	tags=['legacy'],
-	
+
         schema = 'balancer_v2_polygon',
         alias = alias('pools_fees', legacy_model=True),
         materialized = 'incremental',
@@ -16,7 +16,7 @@
 }}
 
 {% set event_signature = '0xa9ba3ffe0b6c366b81232caab38605a0699ad5398d6cce76f91ee809e322dafc' %}
-{% set project_start_date = '2021-06-19' %}
+{% set project_start_date = '2021-06-17' %}
 
 WITH registered_pools AS (
     SELECT DISTINCT
@@ -25,6 +25,7 @@ WITH registered_pools AS (
         {{ source ('balancer_v2_polygon', 'Vault_evt_PoolRegistered') }}
 )
 SELECT
+    'polygon' AS blockchain,
     logs.contract_address,
     logs.tx_hash,
     logs.tx_index,
@@ -43,4 +44,3 @@ WHERE logs.topic1 = '{{ event_signature }}'
     AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '1 week')
     {% endif %}
 ;
-

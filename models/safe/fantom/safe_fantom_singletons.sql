@@ -1,6 +1,7 @@
 {{ 
     config(
         materialized='table',
+        tags = ['dunesql'],
         alias = alias('singletons'),
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "project",

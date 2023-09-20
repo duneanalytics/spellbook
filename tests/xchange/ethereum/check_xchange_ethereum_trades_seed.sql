@@ -18,3 +18,4 @@ JOIN {{ ref('xchange_ethereum_trades_seed') }} test_data ON test_data.tx_hash = 
 select count(case when test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
 from unit_tests
 having count(case when test = false then 1 else null end) > count(*)*0.1
+
