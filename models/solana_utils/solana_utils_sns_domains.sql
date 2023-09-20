@@ -1,5 +1,6 @@
  {{
   config(
+        schema = 'solana_utils',
         alias = alias('sns_domains'),
         materialized='table',
         tags = ['dunesql'],

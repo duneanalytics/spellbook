@@ -1,5 +1,6 @@
  {{
   config(
+        schema = 'solana_utils',
         alias = alias('latest_balances'),
         materialized='table',
         tags = ['dunesql'],

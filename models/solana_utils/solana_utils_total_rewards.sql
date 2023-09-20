@@ -1,5 +1,6 @@
  {{
   config(
+        schema = 'solana_utils',
         alias = alias('total_rewards'),
         materialized='table',
         tags = ['dunesql'],
