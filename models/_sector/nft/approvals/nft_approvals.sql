@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         alias = alias('approvals'),
         schema = 'nft',
-        partition_by = ['block_date'],
+        partition_by = ['block_date', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -43,8 +43,6 @@ FROM (
         , approved
         , operator
         , tx_hash
-        --, tx_from
-        --, tx_to
         , evt_index
     FROM {{ nft_model }}
     {% if not loop.last %}

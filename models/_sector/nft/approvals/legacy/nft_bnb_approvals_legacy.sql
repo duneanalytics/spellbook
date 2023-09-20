@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+        schema = 'nft_bnb',
         alias = alias('approvals', legacy_model=True),
         partition_by=['block_date'],
         materialized='incremental',
@@ -10,7 +10,7 @@
 )
 }}
 
-SELECT 'avalanche_c' AS blockchain
+SELECT 'bnb' AS blockchain
 , app.evt_block_time AS block_time
 , date_trunc('day', app.evt_block_time) AS block_date
 , app.evt_block_number AS block_number
@@ -24,8 +24,8 @@ SELECT 'avalanche_c' AS blockchain
 --, et.from AS tx_from
 --, et.to AS tx_to
 , app.evt_index
-FROM {{ source('erc721_avalanche_c','evt_Approval') }} app
-/*INNER JOIN {{ source('avalanche_c', 'transactions') }} et ON et.block_number=app.evt_block_number
+FROM {{ source('erc721_bnb','evt_Approval') }} app
+/*INNER JOIN {{ source('bnb', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
@@ -36,7 +36,7 @@ WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 
 UNION ALL
 
-SELECT 'avalanche_c' AS blockchain
+SELECT 'bnb' AS blockchain
 , app.evt_block_time AS block_time
 , date_trunc('day', app.evt_block_time) AS block_date
 , app.evt_block_number AS block_number
@@ -50,8 +50,8 @@ SELECT 'avalanche_c' AS blockchain
 --, et.from AS tx_from
 --, et.to AS tx_to
 , app.evt_index
-FROM {{ source('erc721_avalanche_c','evt_ApprovalForAll') }} app
-/*INNER JOIN {{ source('avalanche_c', 'transactions') }} et ON et.block_number=app.evt_block_number
+FROM {{ source('erc721_bnb','evt_ApprovalForAll') }} app
+/*INNER JOIN {{ source('bnb', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
@@ -62,7 +62,7 @@ WHERE app.evt_block_time >= date_trunc("day", now() - interval '1 week')
 
 UNION ALL
 
-SELECT 'avalanche_c' AS blockchain
+SELECT 'bnb' AS blockchain
 , app.evt_block_time AS block_time
 , date_trunc('day', app.evt_block_time) AS block_date
 , app.evt_block_number AS block_number
@@ -76,8 +76,8 @@ SELECT 'avalanche_c' AS blockchain
 --, et.from AS tx_from
 --, et.to AS tx_to
 , app.evt_index
-FROM {{ source('erc1155_avalanche_c','evt_ApprovalForAll') }} app
-/*INNER JOIN {{ source('avalanche_c', 'transactions') }} et ON et.block_number=app.evt_block_number
+FROM {{ source('erc1155_bnb','evt_ApprovalForAll') }} app
+/*INNER JOIN {{ source('bnb', 'transactions') }} et ON et.block_number=app.evt_block_number
     AND et.hash=app.evt_tx_hash
     {% if is_incremental() %}
     AND et.block_time >= date_trunc("day", now() - interval '1 week')
