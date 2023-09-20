@@ -487,8 +487,6 @@ models:
         +schema: balances_ethereum
       arbitrum:
         +schema: balances_arbitrum
-      bnb:
-        +schema: balances_bnb
       polygon:
         +schema: balances_polygon
 
@@ -627,8 +625,6 @@ models:
         +schema: transfers_ethereum
       optimism:
         +schema: transfers_optimism
-      bnb:
-        +schema: transfers_bnb
       arbitrum:
         +schema: transfers_arbitrum
       polygon:

@@ -1,5 +1,6 @@
 {{ config(
         tags = ['legacy'],
+        schema = 'balances_bnb_bnb',
         alias = alias('bnb_day', legacy_model=True)
         )
 }}
