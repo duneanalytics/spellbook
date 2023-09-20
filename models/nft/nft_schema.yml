@@ -340,45 +340,40 @@ models:
 
   - name: nft_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, base
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, tomfutago
     config:
-      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'approvals']
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'base', 'approvals']
     description: >
         NFT approvals
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - block_number
             - tx_hash
             - evt_index
     columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: block_time
-        description: "UTC event block time"
-      - name: block_date
-        description: "UTC event block date"
-      - name: block_number
-        description: "Block number in which the transaction was executed"
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
       - name: address
         description: "Address for which NFTs were approved"
       - name: token_standard
         tests:
           - accepted_values:
-              values: ['erc721', 'erc1155']
+              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
       - name: approval_for_all
         description: "Was this an ApprovalForAll or a simple Approval?"
       - name: contract_address
         description: "Contract address"
-      - name: token_id
-        description: "NFT token ID"
+      - *token_id
       - name: approved
         description: "Approved"
-      - name: tx_hash
-        description: "Transaction hash"
+      - name: operator
+        description: "Operator address"
+      - *tx_hash
       # - name: tx_from
       #   description: "Address that initiated the transaction"
       # - name: tx_to

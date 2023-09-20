@@ -38,6 +38,7 @@ WITH
     ,'TradingV2_evt_MarginModified'
     ,'TradingV3_evt_MarginModified'
     ,'TradingV4_evt_MarginModified'
+    ,'TradingV5_evt_MarginModified'
 ] %}
 
 {% set remove_margin_v2_call_tables = [
@@ -45,6 +46,7 @@ WITH
     ,'TradingV2_call_removeMargin'
     ,'TradingV3_call_removeMargin'
     ,'TradingV4_call_removeMargin'
+    ,'TradingV5_call_removeMargin'
 ] %}
 
 {% set add_margin_v2_call_tables = [
@@ -52,6 +54,7 @@ WITH
     ,'TradingV2_call_addMargin'
     ,'TradingV3_call_addMargin'
     ,'TradingV4_call_addMargin'
+    ,'TradingV5_call_addMargin'
 ] %}
 
 modify_margin_events_v1 AS (
