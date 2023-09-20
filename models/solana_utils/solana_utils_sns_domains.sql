@@ -2,7 +2,7 @@
   config(
         alias = alias('sns_domains'),
         materialized='table',
-        tags = ['dunesql']
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
