@@ -166,7 +166,7 @@ methods as (
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
 )
 
-{% if blockchain in ['polygon'] %}
+{% if blockchain in ['polygon','bnb'] %}
 
 select 
     *
