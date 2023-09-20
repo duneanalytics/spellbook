@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         schema = 'transfers_bnb_bnb',
-        alias = alias('bnb_rolling_day'))
+        alias = alias('bnb_rolling_day')
 }}
 
         SELECT
