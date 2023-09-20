@@ -46,3 +46,103 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ETH token held *before* taking into account token decimals"
+
+  - name: transfers_ethereum_eth_agg_hour
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['transfers', 'ethereum', 'eth', 'agg_hour', 'Henrystats']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark."
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - &symbol
+        name: symbol
+        description: "ETH token symbol"
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Raw amount of ETH token held *after* taking into account token decimals"
+
+  - name: transfers_ethereum_eth_agg_day
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['transfers', 'ethereum', 'eth', 'agg_day', 'Henrystats']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark."
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+
+  - name: transfers_ethereum_eth_rolling_hour
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: eth
+      contributors: Henrystats
+    description: "ETH Token Transfers on ethereum per hour."
+    config:
+      tags: ['transfers', 'ethereum', 'eth', 'rolling_hour', 'Henrystats']
+    columns:
+      - *blockchain
+      - *block_hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - &updated_at
+        name: updated_at
+        description: "UTC timestamp when table was last updated"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_ethereum_eth_rolling_day
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: eth
+      contributors: Henrystats
+    description: "ETH Token Transfers on ethereum per day."
+    config:
+      tags: ['transfers', 'ethereum', 'eth', 'rolling_day', 'Henrystats']
+    columns:
+      - *blockchain
+      - *block_day
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *updated_at
+      - *recency_index

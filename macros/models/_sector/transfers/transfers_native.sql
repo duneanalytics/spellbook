@@ -17,6 +17,7 @@ native_transfers  as (
         AND success
         AND CAST(value as double) > 0
         AND to IS NOT NULL 
+        AND to != 0x0000000000000000000000000000000000000000
         {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
@@ -37,6 +38,7 @@ native_transfers  as (
         AND success
         AND CAST(value as double) > 0
         AND "from" IS NOT NULL 
+        AND "from" != 0x0000000000000000000000000000000000000000 
         {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
