@@ -1,12 +1,13 @@
 {% set blockchain = 'bnb' %}
 {% set project_start_date_str = '2021-02-18' %}
+{% set wrapper_token_address = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' %}
 
 
 
 {{ 
     config( 
         schema = 'oneinch_' + blockchain,
-        alias = alias('calls_transfers'),
+        alias = alias('ar_calls_transfers'),
         tags = ['dunesql'],
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -19,8 +20,9 @@
 
 
 {{ 
-    oneinch_calls_transfers_macro(
+    oneinch_ar_calls_transfers_macro(
         blockchain = blockchain,
-        project_start_date_str = project_start_date_str
+        project_start_date_str = project_start_date_str,
+        wrapper_token_address = wrapper_token_address
     )
 }}

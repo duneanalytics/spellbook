@@ -166,7 +166,6 @@ methods as (
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
 )
 
-{% if blockchain not in ['bnb'] %}
 
 select 
     *
@@ -175,11 +174,5 @@ select
         array_join(coalesce(transfer_trace_address, array[-1]), '_')
     as unique_call_transfer_id
 from merged
-
-{% else %}
-
-select 1 as test
-    
-{% endif %}
 
 {% endmacro %}

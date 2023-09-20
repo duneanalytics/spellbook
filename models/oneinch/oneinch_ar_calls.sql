@@ -1,4 +1,3 @@
--- TEMP TABLE, WILL BE REMOVED AS SOON AS WE MIGRATE DUNE QUERIES
 {{  
     config(
         schema = 'oneinch',
@@ -11,5 +10,45 @@
 
 
 
-select * from {{ ref('oneinch_calls') }}
-where protocol = 'AR'
+{% 
+    set blockchains = [
+        'arbitrum',
+        'avalanche_c',
+        'bnb',
+        'base',
+        'ethereum',
+        'fantom',
+        'gnosis',
+        'optimism',
+        'polygon'
+    ]
+%}
+
+
+{% 
+    set columns = [
+        'blockchain',
+        'block_time',
+        'tx_hash',
+        'tx_from',
+        'tx_success',
+        'call_success',
+        'call_trace_address',
+        'caller',
+        'call_selector',
+        'call_input',
+        'call_output'
+    ]
+%}
+
+
+
+{% for blockchain in blockchains %}
+    select {{ columns | join(', ') }} from {{ ref('oneinch_' + blockchain + '_ar_calls_transfers') }}
+    group by {{ columns | join(', ') }}
+    {% if not loop.last %}
+        union all
+    {% endif %}
+{% endfor %}
+
+
