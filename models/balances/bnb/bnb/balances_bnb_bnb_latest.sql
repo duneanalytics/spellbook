@@ -15,3 +15,4 @@
         transfers_rolling_hour = ref('transfers_bnb_bnb_rolling_hour')
     )
 }}
+
