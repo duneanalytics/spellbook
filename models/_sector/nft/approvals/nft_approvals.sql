@@ -47,10 +47,10 @@ FROM (
         , tx_hash
         , evt_index
     FROM {{ nft_model }}
-    {% if not loop.last %}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+    {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
