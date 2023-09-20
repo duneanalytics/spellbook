@@ -58,7 +58,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - hour
+            - block_hour
             - wallet_address
             - token_address
     columns:
@@ -88,7 +88,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - day
+            - block_day
             - wallet_address
             - token_address
     columns:
