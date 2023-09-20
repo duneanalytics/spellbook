@@ -1,5 +1,9 @@
 {{ config(tags=['dunesql'],
-        alias = alias('trades')
+        alias = alias('trades'),
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "mauve",
+                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago", "raphaelr]\') }}'
         )
 }}
 
