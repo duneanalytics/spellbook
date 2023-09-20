@@ -43,6 +43,6 @@ FROM
     ('ust-terrausd', 'solana', 'USTC', '9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i', 6),
     ('usdc-usd-coin', 'solana', 'USDC', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 6),
     ('usdt-tether', 'solana', 'USDT', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 6),
-    ("jitosol-jito-staked-sol", "solana", "JitoSOL", "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn", 9)
+    ('jitosol-jito-staked-sol', 'solana', 'JitoSOL', 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn', 9)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
