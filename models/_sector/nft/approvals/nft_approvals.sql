@@ -35,6 +35,7 @@ FROM (
         blockchain
         , block_time
         , block_date
+        , block_month
         , block_number
         , address
         , token_standard
