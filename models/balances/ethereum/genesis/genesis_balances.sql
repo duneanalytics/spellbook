@@ -9,7 +9,7 @@
 }}
 
 SELECT 
-	from_hex(address) as address,
+	from_hex(address) as address
 	,balance_raw
 	,balance_raw / power(10,18) as balance 
 FROM 
