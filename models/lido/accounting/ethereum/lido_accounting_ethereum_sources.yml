@@ -10,6 +10,8 @@ sources:
     tables:
       - name: AllowedRecipientsRegistry_evt_RecipientAdded
       - name: AllowedRecipientsRegistry_evt_RecipientRemoved
+      - name: AllowedRecipientsRegistry_RevShare_evt_RecipientAdded
+      - name: AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved
       - name: LegacyOracle_evt_PostTotalShares
       - name: steth_evt_FeeSet
       - name: steth_evt_FeeDistributionSet

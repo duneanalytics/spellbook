@@ -485,6 +485,8 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      arbitrum:
+        +schema: balances_arbitrum
       bnb:
         +schema: balances_bnb
       polygon:
