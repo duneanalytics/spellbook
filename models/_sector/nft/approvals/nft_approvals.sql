@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         alias = alias('approvals'),
         schema = 'nft',
-        partition_by = ['block_date', 'blockchain'],
+        partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
