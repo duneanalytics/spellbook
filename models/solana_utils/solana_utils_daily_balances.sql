@@ -25,6 +25,7 @@ WITH
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
+            AND balance_change > 0 --filter out transactions where no balance change occured, since this gives empty token balance rows and other things
             {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '1' day)
             {% endif %}
