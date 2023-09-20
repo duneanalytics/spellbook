@@ -1,6 +1,6 @@
 {% set blockchain = 'bnb' %}
 -- {% set project_start_date_str = '2021-02-18' %}
-{% set project_start_date_str = '2023-08-18' %}
+{% set project_start_date_str = '2022-08-18' %}
 
 
 
