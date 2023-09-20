@@ -21,7 +21,7 @@ years as (
 hours as (
     select date_add('hour', s.n, y.year) as block_hour
     from years y
-      cross join unnest(sequence(0, 9000)) s(n)
+      cross join unnest(sequence(1, 9000)) s(n)
     where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
 ),
 

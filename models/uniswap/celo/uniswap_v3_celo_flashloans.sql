@@ -23,7 +23,7 @@ WITH flashloans AS (
     , CASE WHEN f.amount0 = UINT256 '0' THEN erc20b.symbol ELSE erc20a.symbol END AS currency_symbol
     , CASE WHEN f.amount0 = UINT256 '0' THEN erc20b.decimals ELSE erc20a.decimals END AS currency_decimals
     , f.contract_address
-    FROM {{ source('uniswap_v3_celo','UniswapV3Pool_evt_Flash') }} f
+    FROM {{ source('uniswap_v3_celo','Pair_evt_Flash') }} f
         INNER JOIN {{ source('uniswap_v3_celo','UniswapV3Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
     LEFT JOIN {{ ref('tokens_celo_erc20') }} erc20a ON p.token0 = erc20a.contract_address
     LEFT JOIN {{ ref('tokens_celo_erc20') }} erc20b ON p.token1 = erc20b.contract_address
