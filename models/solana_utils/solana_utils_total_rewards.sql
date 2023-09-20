@@ -14,5 +14,5 @@ SELECT
 recipient
 , reward_type
 , sum(lamports/pow(10,9)) as rewards
-FROM {{ source('solana','account_activity') }}
+FROM {{ source('solana','rewards') }}
 GROUP BY 1,2
