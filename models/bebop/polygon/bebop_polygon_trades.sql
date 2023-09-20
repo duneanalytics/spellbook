@@ -36,7 +36,7 @@ bebop_raw_data AS (
     FROM
         (SELECT * FROM {{ source('bebop_v3_polygon', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
          UNION ALL
-         SELECT * FROM {{ source('bebop_v4_polygon', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}) evt
+         SELECT * FROM {{ source('bebop_v4_polygon', 'BebopSettlement_evt_AggregateOrderExecuted') }}) evt
     LEFT JOIN
         (SELECT
         call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
@@ -44,7 +44,7 @@ bebop_raw_data AS (
         UNION ALL
         SELECT
         call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
-        FROM {{ source('bebop_v4_polygon', 'BebopAggregationContract_call_SettleAggregateOrder') }}
+        FROM {{ source('bebop_v4_polygon', 'BebopSettlement_call_SettleAggregateOrder') }}
         UNION ALL
         SELECT
         call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
