@@ -1,6 +1,6 @@
  {{
   config(
-        alias = alias('latest_balances'),
+        alias = alias('total_rewards'),
         materialized='table',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
@@ -19,6 +19,7 @@ WITH
                   , token_balance_owner
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
+            WHERE sol_balance is not null OR (token_balance is not null AND token_mint_address is not null) --sometimes the daily balance has empty values for some reason.
       )
 
 SELECT 
