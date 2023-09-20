@@ -1,6 +1,6 @@
  {{
   config(
-        alias = alias('total_rewards'),
+        alias = alias('latest_balances'),
         materialized='table',
         tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["solana"]\',
