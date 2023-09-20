@@ -26,7 +26,8 @@ hardcoded_positions as ( -- harcoding the position contracts since there's no ev
             (0x40cde4820Ec2270511D36dB418a14A4AFf16276b, 0x09D74999e5315044956ad15D5F2Aeb8d393E85eD, 'v2.4', 'arbitrum'),
             (0x399214eE22bF068ff207adA462EC45046468B766, 0x09D74999e5315044956ad15D5F2Aeb8d393E85eD, 'v2.5', 'arbitrum'),
         -- v2 options contracts 
-            (0xc6d1ba6363ffe4fdda9ffbea8d91974de9775331, 0x09D74999e5315044956ad15D5F2Aeb8d393E85eD, 'v2.1', 'arbitrum')
+            (0xc6d1ba6363ffe4fdda9ffbea8d91974de9775331, 0x09D74999e5315044956ad15D5F2Aeb8d393E85eD, 'v2.1', 'arbitrum'),
+            (0x98125e58bc966894167c536652d7648f6beebf05, 0x09D74999e5315044956ad15D5F2Aeb8d393E85eD, 'v2.2', 'arbitrum')
         ) as temp_table (trading_contract, positions_contract, trading_contract_version, blockchain)
 )
 
