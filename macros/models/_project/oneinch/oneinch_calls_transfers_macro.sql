@@ -166,7 +166,7 @@ methods as (
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
 )
 
-{% if blockchain == 'bnb' %}
+{% if blockchain in ['bnb', 'ethereum'] %}
 
 select 
     *
