@@ -2,6 +2,7 @@
         tags = ['dunesql'],
         schema = 'transfers_bnb_bnb',
         alias = alias('bnb_rolling_hour')
+        ) 
 }}
 
         SELECT
