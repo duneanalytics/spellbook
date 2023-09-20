@@ -43,7 +43,7 @@ with transfers_sub_table as (
     group by day, wallet
 )
 , base_data as (
-    with all_days as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
+    with all_days as (select col as day from unnest(sequence(date('2017-06-23'), date(now()), interval '1' day)) as _u(col)) 
     , all_wallets as (select distinct wallet from punk_transfer_summary)
     
     select  day
