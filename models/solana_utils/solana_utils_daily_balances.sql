@@ -1,5 +1,6 @@
  {{
   config(
+        tags=['dunesql'],
         alias = alias('daily_balances'),
         materialized='incremental',
         file_format = 'delta',
