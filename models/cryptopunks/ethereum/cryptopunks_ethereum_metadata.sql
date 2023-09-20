@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('metadata'),
         unique_key='punk_id',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',

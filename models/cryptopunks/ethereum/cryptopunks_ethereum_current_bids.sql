@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('current_bids'),
         unique_key='punk_id',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
@@ -14,8 +15,8 @@ with combined_events_table as (
     from
     (    select  event_type
                 , bidder
-                , cast(NULL as varchar(5)) as transfer_from
-                , cast(NULL as varchar(5)) as transfer_to
+                , cast(NULL as varbinary) as transfer_from
+                , cast(NULL as varbinary) as transfer_to
                 , punk_id
                 , eth_amount
                 , evt_block_time
@@ -27,8 +28,8 @@ with combined_events_table as (
         union all
 
         select  'Transfer' as event_type
-                , cast(NULL as varchar(5)) as bidder
-                , from as transfer_from
+                , cast(NULL as varbinary) as bidder
+                , "from" as transfer_from
                 , to as transfer_to
                 , punk_id
                 , cast(NULL as double) as eth_amount
@@ -41,7 +42,7 @@ with combined_events_table as (
         union all
 
         select  trade_category as event_type
-                , cast(NULL as varchar(5)) as bidder
+                , cast(NULL as varbinary) as bidder
                 , seller as transfer_from
                 , buyer as transfer_to
                 , nft_token_id as punk_id
@@ -65,7 +66,7 @@ with combined_events_table as (
     select price
     from prices.usd
     where blockchain = 'ethereum'
-        and contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        and contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     order by minute desc limit 1
 )
 

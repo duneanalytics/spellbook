@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('owners_over_time'),
         unique_key='day',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
@@ -9,7 +10,7 @@
 }}
 
 with transfers_sub_table as (
-    select  from
+    select  "from"
             , to
             , evt_block_time
             , evt_block_time_week
@@ -21,7 +22,7 @@ with transfers_sub_table as (
 )
 , transfers as (    
     select  date_trunc('day',evt_block_time) as day 
-            , from as wallet
+            , "from" as wallet
             , count(*)*-1.0 as punk_balance
     from transfers_sub_table
     group by 1,2
@@ -63,4 +64,3 @@ select day
 from combined_table
 group by 1
 order by day desc
-;
