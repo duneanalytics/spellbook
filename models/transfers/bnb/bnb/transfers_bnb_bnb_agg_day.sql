@@ -10,7 +10,7 @@
         )
 }}
 
-select
+SELECT
     tr.blockchain,
     CAST(date_trunc('day', tr.block_time) as date) as block_day,
     block_month,
