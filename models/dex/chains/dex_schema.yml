@@ -16,7 +16,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - &blockchain
         name: blockchain
@@ -66,9 +66,6 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
-      - &evt_indices
-        name: evt_indices
-        description: "Indices of the corresponding trade events"
       - &trace_address
         name: trace_address
         description: "Trace address"
@@ -115,7 +112,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -133,7 +130,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -160,7 +156,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -178,7 +174,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -205,7 +200,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -223,7 +218,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -250,7 +244,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -268,7 +262,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -295,7 +288,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -313,7 +306,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -340,7 +332,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -358,7 +350,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -385,7 +376,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -403,7 +394,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index
@@ -430,7 +420,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -448,7 +438,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - *evt_indices
       - *trace_address
       - *token_pair
       - *index

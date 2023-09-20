@@ -365,7 +365,7 @@ models:
             - blockchain
             - tx_hash
             - project_contract_address
-            - evt_indices
+            - evt_index
     columns: 
       - *blockchain
       - *project
@@ -383,9 +383,6 @@ models:
       - *tx_from
       - *tx_to
       - *project_contract_address
-      - &evt_indices
-        name: evt_indices
-        description: "Indices of the corresponding trade events"
       - *trace_address
       - *token_pair
       - &index
