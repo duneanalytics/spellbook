@@ -124,3 +124,6 @@ models:
       - &balance
         name: balance
         description: "ETH balance of this address at genesis, in ETH"
+      - &legacy_block_time
+        name: legacy_block_time
+        description: "Block time of ethereum first ever transaction"

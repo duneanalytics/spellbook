@@ -9,7 +9,8 @@
 }}
 
 SELECT 
-	from_hex(address) as address
+	CAST('2015-08-07 03:30' as timestamp) as legacy_block_time
+	,from_hex(address) as address
 	,balance_raw
 	,balance_raw / power(10,18) as balance 
 FROM 
