@@ -24,6 +24,7 @@ WITH
     ,'TradingV2_evt_PositionLiquidated'
     ,'TradingV3_evt_PositionLiquidated'
     ,'TradingV4_evt_PositionLiquidated'
+    ,'TradingV5_evt_PositionLiquidated'
 ] %}
 
 liquidate_position_v1 AS (
