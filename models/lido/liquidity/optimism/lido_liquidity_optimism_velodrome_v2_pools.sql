@@ -30,7 +30,7 @@ where (token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
 , pool_fee as (
 select pool, max(cast(f1.output_0 as double)/100) as fee
 from {{source('velodrome_v2_optimism','PoolFactory_call_getFee')}} f1
-where  f1.call_block_time = (select max(f2.call_block_time) from velodrome_v2_optimism.PoolFactory_call_getFee f2 where f2.pool = f1.pool)
+where  f1.call_block_time = (select max(f2.call_block_time) from {{source('velodrome_v2_optimism','PoolFactory_call_getFee')}} f2 where f2.pool = f1.pool)
   and f1. pool in (select address from pools)
 group by 1
 )
