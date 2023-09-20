@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: mauve_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: mauve
+      contributors: jeff-dude, masquot, soispoke, raphaelr
+    config:
+      tags: ['ethereum','mauve', 'trades', 'dex', 'rwa', 'defi']
+    description: >
+        Mauve contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: ethereum
+          project: mauve
+          version: 1
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: mauve_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: jeff-dude, masquot, soispoke, raphaelr
+    config:
+      tags: ['ethereum', 'mauve', 'pools', 'dex', 'defi', 'rwa']
+    description: >
+      Mauve pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
