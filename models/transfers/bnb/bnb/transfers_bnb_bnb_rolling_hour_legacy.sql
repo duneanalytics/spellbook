@@ -1,5 +1,6 @@
 {{ config(
         tags = ['legacy'],
+        schema = 'transfers_bnb_bnb',
         alias = alias('bnb_rolling_hour', legacy_model=True)
         )
 }}

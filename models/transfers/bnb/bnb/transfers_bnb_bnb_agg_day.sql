@@ -1,17 +1,18 @@
 {{ config(
         tags = ['dunesql'],
+        schema = 'transfers_bnb_bnb',
         alias = alias('bnb_agg_day'),
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['day', 'wallet_address', 'token_address']
+        unique_key = ['block_day', 'wallet_address', 'token_address']
         )
 }}
 
 select
     tr.blockchain,
-    CAST(date_trunc('day', tr.block_time) as date) as day,
+    CAST(date_trunc('day', tr.block_time) as date) as block_day,
     block_month,
     tr.wallet_address,
     tr.token_address,

@@ -1,5 +1,6 @@
 {{ config(
     tags=['dunesql'],
+    schema = 'transfers_bnb_bnb',
     materialized = 'incremental',
     partition_by = ['block_month'],
     file_format = 'delta',
