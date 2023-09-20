@@ -1,5 +1,6 @@
 {{ config(
         tags = ['legacy'],
+        schema = 'balances_arbitrum_erc20',
         alias = alias('erc20_latest', legacy_model=True)
         )
 }}

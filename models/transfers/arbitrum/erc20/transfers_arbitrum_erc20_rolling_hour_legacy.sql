@@ -1,5 +1,6 @@
 {{ config(
         tags = ['legacy'],
+        schema = 'transfers_arbitrum_erc20',
         alias = alias('rolling_hour', legacy_model=True)
         )
 }}

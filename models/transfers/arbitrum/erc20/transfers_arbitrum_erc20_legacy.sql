@@ -1,5 +1,6 @@
 {{ config(
 	tags=['legacy'],
+    schema = 'transfers_arbitrum_erc20',
 	materialized='view', alias = alias('erc20', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
