@@ -651,6 +651,7 @@ WITH curated_list AS (
       ,(0x22fe024ffec24631a625113bdf5e9f7d447c8ddf, 'Teahouse')
       ,(0xC73Fc08C931Efe3FCE850C09278472e8a81c2e05, 'XEN Crypto')
       ,(0x0Cf83143f0AB9D6e178fC7f141205ec2992266C8, 'CoinTool')
+      ,(0x9f403140bc0574d7d36ea472b82daa1bbd4ef327, 'Layer Zero')
 
   ) as temp_table (creator_address, contract_project)
 )
