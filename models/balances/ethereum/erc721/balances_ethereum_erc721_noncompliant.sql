@@ -4,18 +4,17 @@
 }}
 
 WITH
-
-multiple_owners as (
-    select
+multiple_owners AS (
+    SELECT
         blockchain,
         token_address,
         tokenId,
-        count(wallet_address) as holder_count --should always be 1
-    from {{ ref('transfers_ethereum_erc721_rolling_day') }}
+        count(wallet_address) AS holder_count --should always be 1
+    FROM {{ ref('transfers_ethereum_erc721_rolling_day') }}
     WHERE recency_index = 1
     AND amount = 1
-    group by blockchain, token_address, tokenId
-    having count(wallet_address) > 1
+    GROUP BY blockchain, token_address, tokenId
+    HAVING count(wallet_address) > 1
 )
 
-select distinct token_address as token_address FROM multiple_owners
+SELECT DISTINCT token_address AS token_address FROM multiple_owners
