@@ -90,6 +90,15 @@ models:
       - &token_bought_amount
         name: token_bought_amount
         description: "Value of the token bought at time of execution in the original currency"
+      - &commonality
+        name: commonality
+        description: "Commonality between this tx and others from the same MEV bot (in same block)"
+      - &sandwiched_token
+        name: sandwiched_token
+        description: "Token that was sandwiched"
+      - &token_order
+        name: token_order
+        description: "Order of the token (to easily grup them later on)"
 
   - name: dex_arbitrum_sandwiches
     meta: 
@@ -132,6 +141,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_avalanche_c_sandwiches
     meta: 
@@ -174,6 +186,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_bnb_sandwiches
     meta: 
@@ -216,6 +231,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_fantom_sandwiches
     meta: 
@@ -258,6 +276,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_gnosis_sandwiches
     meta: 
@@ -300,6 +321,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_optimism_sandwiches
     meta: 
@@ -342,6 +366,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_polygon_sandwiches
     meta: 
@@ -384,6 +411,9 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
 
   - name: dex_base_sandwiches
     meta: 
@@ -426,3 +456,6 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *commonality
+      - *sandwiched_token
+      - *token_order
