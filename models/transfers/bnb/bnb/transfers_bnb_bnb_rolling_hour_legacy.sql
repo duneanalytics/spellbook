@@ -1,9 +1,9 @@
-{{ config(
-        tags = ['legacy'],
-        schema = 'transfers_bnb_bnb',
-        alias = alias('bnb_rolling_hour', legacy_model=True)
-        )
+{{ config( 
+  schema = 'transfers_bnb_bnb',
+  alias = alias('bnb_rolling_hour', legacy_model=True),
+  tags = ['legacy']
+  )
 }}
 
 SELECT 
-1 AS DUMMY 
+1 as dummy 
