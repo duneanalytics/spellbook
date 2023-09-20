@@ -1,5 +1,6 @@
 {{ config(
     alias = alias('foundation_wallet_approvals'),
+    tags = ['dunesql'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,7 +9,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7", "chuxin"]\') }}'
     )
 }}
 
@@ -23,26 +24,32 @@
 
 
 WITH project_labels AS (
-    SELECT * FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
+    SELECT 
+        address, 
+        project_name, 
+        label, 
+        address_descriptor 
+    FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
     WHERE label IS NOT NULL
+    GROUP BY 1, 2, 3, 4
 )
 
 
 SELECT
-DATE_TRUNC('day',evt_block_time) AS block_date,
-a.evt_block_time, a.evt_block_number, a.evt_tx_hash, a.evt_index,
-a.spender AS project_address, al.project_name,
+    CAST(DATE_TRUNC('day',evt_block_time) as date) AS block_date,
+    a.evt_block_time, a.evt_block_number, a.evt_tx_hash, a.evt_index,
+    a.spender AS project_address, al.project_name,
 
-t.`from` AS tx_from_address, t.to AS tx_to_address, 
+    t."from" AS tx_from_address, t.to AS tx_to_address, 
 
-cast(a.value as double)/cast(1e18 as double) AS op_approved_to_project
+    cast(a.value as double)/cast(1e18 as double) AS op_approved_to_project
 
 FROM {{ source('erc20_optimism', 'evt_Approval') }} a
     INNER JOIN {{ source('optimism', 'transactions') }} t
         ON t.hash = a.evt_tx_hash
         AND t.block_number = a.evt_block_number
         {% if is_incremental() %} 
-        AND t.block_time >= date_trunc('day', now() - interval '1 week')
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
         AND t.block_time >= cast( '{{approvals_start_date}}' as date )
         {% endif %}
@@ -51,10 +58,10 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
     LEFT JOIN project_labels al
         ON a.spender = al.address
 WHERE
-    a.contract_address = '{{op_token_address}}' --OP Token
+    a.contract_address = {{op_token_address}} --OP Token
     AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
     {% if is_incremental() %} 
-    AND a.evt_block_time >= date_trunc('day', now() - interval '1 week')
+    AND a.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     AND a.evt_block_time >= cast( '{{approvals_start_date}}' as date )
     {% endif %}

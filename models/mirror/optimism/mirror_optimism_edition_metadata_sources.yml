@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: mirror_optimism
+    description: "op mainnet decoded tables related to mirror contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: SignatureDropDeployer_call_deploy
+        loaded_at_field: call_block_time
+      - name: WritingEditionsFactory_call_createWithSignature
+        loaded_at_field: call_block_time

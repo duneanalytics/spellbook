@@ -128,13 +128,13 @@ SELECT alet.blockchain
 , alet.amount_raw/POWER(10, bnb_bep20_tokens.decimals)*prices.price AS amount_usd
 , alet.token_standard
 , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, CAST(alet.number_of_items AS DOUBLE) AS number_of_items
+, CAST(alet.number_of_items AS uint256) AS number_of_items
 , alet.trade_category
 , 'Trade' AS evt_type
 , alet.seller
 , alet.buyer
 , alet.amount_raw/POWER(10, bnb_bep20_tokens.decimals) AS amount_original
-, CAST(alet.amount_raw AS DOUBLE) AS amount_raw
+, CAST(alet.amount_raw AS uint256) AS amount_raw
 , COALESCE(alet.currency_symbol, bnb_bep20_tokens.symbol) AS currency_symbol
 , alet.currency_contract
 , alet.nft_contract_address
@@ -145,16 +145,16 @@ SELECT alet.blockchain
 , alet.block_number
 , bt."from" AS tx_from
 , bt.to AS tx_to
-, CAST(0 AS DOUBLE) AS platform_fee_amount_raw
+, CAST(0 AS uint256) AS platform_fee_amount_raw
 , CAST(0 AS DOUBLE) AS platform_fee_amount
 , CAST(0 AS DOUBLE) AS platform_fee_amount_usd
 , CAST(0 AS DOUBLE) AS platform_fee_percentage
-, CAST(0 AS DOUBLE) AS royalty_fee_amount_raw
+, CAST(0 AS uint256) AS royalty_fee_amount_raw
 , CAST(0 AS DOUBLE) AS royalty_fee_amount
 , CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
 , CAST(0 AS DOUBLE) AS royalty_fee_percentage
-, CAST('0' AS VARCHAR(5)) AS royalty_fee_receive_address
-, CAST('0' AS VARCHAR(5)) AS royalty_fee_currency_symbol
+, CAST('0' AS varbinary) AS royalty_fee_receive_address
+, CAST('0' AS VARCHAR) AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.token_id as varchar) AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='bnb'

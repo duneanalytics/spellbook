@@ -17,11 +17,12 @@ class TokenChecker:
                             "polygon": "matic-polygon",
                             "solana": "sol-solana",
                             "avalanche_c": "avax-avalanche",
-                            # "arbitrum": "",
+                            "arbitrum": "arb-arbitrum",
                             "gnosis": "gno-gnosis",
                             "optimism": "op-optimism",
                             "fantom": "ftm-fantom",
-                            "celo": "celo-celo"
+                            "celo": "celo-celo",
+                            "base": "base-base"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
