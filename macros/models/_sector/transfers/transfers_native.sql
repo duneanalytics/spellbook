@@ -87,7 +87,7 @@ genesis_balances as (
         legacy_block_time as block_time, 
         address as wallet_address, 
         {{native_token_address}} as token_address,
-        balance_raw as amount_raw
+        CAST(balance_raw as double) as amount_raw
     FROM 
     {{ genesis_balances }}
     {% if is_incremental() %}
