@@ -27,11 +27,11 @@ from
                 , date_trunc('week',a.evt_block_time) as evt_block_time_week
                 , a.evt_block_number
                 , a.evt_index
-                , case when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 11 then 675
-                        when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 27 then 675
-                        when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 25 then 2138
-                        when topic1 = 0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8 then bytearray_to_integer(data)
-                        else bytearray_to_integer(topic2) end as punk_id
+                , case when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 11 then UINT256 '675'
+                        when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 27 then UINT256 '675'
+                        when a.evt_tx_hash = 0x76d32b465ca332bbbe74f7a1834c6d354125f6950168c6123f8ab07440bc285e and a.evt_index = 25 then UINT256 '2138'
+                        when topic1 = 0x05af636b70da6819000c49f85b21fa82081c632069bb626f30932034099107d8 then cast(bytearray_to_integer(data) as UINT256)
+                        else cast(bytearray_to_integer(topic2) as UINT256) end as punk_id
                 , a.evt_tx_hash
         from {{ source('erc20_ethereum','evt_transfer') }} a
         inner join {{ source('ethereum','logs') }} b
@@ -56,7 +56,7 @@ from
                 , date_trunc('week',evt_block_time) as evt_block_time_week
                 , evt_block_number
                 , evt_index
-                , cast(punkIndex as int) as punk_id
+                , punkIndex as punk_id
                 , evt_tx_hash
         from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_Assign') }}
         {% if is_incremental() %} where evt_block_time >= date_trunc('day', now() - interval '7' day) {% endif %}
