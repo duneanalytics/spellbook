@@ -122,7 +122,7 @@ suicide_join_logs as (
         el.tx_index, 
         el.block_time, 
         bytearray_substring(el.data, 13, 20) as suicide_contract_address, 
-        bytearray_substring(el.data, 13, 20) as suicide_refund_address, 
+        bytearray_substring(el.data, 45, 20) as suicide_refund_address, 
         bytearray_to_uint256(bytearray_substring(el.data,65,32)) as amount_raw 
     FROM 
     {{ suicide_self_destruct }} el 
