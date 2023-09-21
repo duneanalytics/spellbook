@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
+        schema = 'nft_bnb',
         alias = alias('wash_trades', legacy_model=True),
         partition_by=['block_date'],
         materialized='incremental',
@@ -56,7 +56,7 @@ WITH filter_1 AS (
         ON filter_bought_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_bought_3x.token_id=nftt.token_id
         AND filter_bought_3x.buyer=nftt.buyer
-        AND filter_bought_3x.token_standard IN ('erc721', 'erc20')
+        AND filter_bought_3x.token_standard IN ('bep721', 'bep20')
         {% if is_incremental() %}
         AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
@@ -79,7 +79,7 @@ WITH filter_1 AS (
         ON filter_sold_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_sold_3x.token_id=nftt.token_id
         AND filter_sold_3x.seller=nftt.seller
-        AND filter_sold_3x.token_standard IN ('erc721', 'erc20')
+        AND filter_sold_3x.token_standard IN ('bep721', 'bep20')
         {% if is_incremental() %}
         AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
