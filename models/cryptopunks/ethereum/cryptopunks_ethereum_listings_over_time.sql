@@ -83,7 +83,7 @@ select day
         , sum(case when bool_fill_in = 'Active' then 1 else 0 end) as listed_count
 from
 (   select c.*
-            , last_value(listed_bool,true) over (partition by punk_id order by day asc) as bool_fill_in
+            , last_value(listed_bool) over (partition by punk_id order by day asc) as bool_fill_in
     from
     (   select a.day
                 , a.punk_id

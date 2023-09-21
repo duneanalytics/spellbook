@@ -90,8 +90,8 @@ from
             , min(price_fill_in) filter (where bool_fill_in = 'Active' and price_fill_in > 0) as floor_price_eth
     from
     (   select c.*
-                , last_value(listed_price,true) over (partition by punk_id order by day asc ) as price_fill_in
-                , last_value(listed_bool,true) over (partition by punk_id order by day asc ) as bool_fill_in
+                , last_value(listed_price) over (partition by punk_id order by day asc ) as price_fill_in
+                , last_value(listed_bool) over (partition by punk_id order by day asc ) as bool_fill_in
         from
         (   select a.day
                     , a.punk_id
@@ -106,7 +106,7 @@ from
 ) e
 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', e.day)
-    and p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    and p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     and p.blockchain = 'ethereum'
 
 order by day desc
