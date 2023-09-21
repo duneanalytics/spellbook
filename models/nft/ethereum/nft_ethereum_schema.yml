@@ -157,7 +157,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, tomfutago
     config:
       tags: ['nft', 'ethereum', 'approvals']
     description: >
@@ -165,7 +165,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_number
             - tx_hash
             - evt_index
     columns:
@@ -191,14 +190,13 @@ models:
         description: "NFT token ID"
       - name: approved
         description: "Approved"
+      - name: operator
+        description: "Operator address"
       - name: tx_hash
         description: "Transaction hash"
-      - name: tx_from
-        description: "Address that initiated the transaction"
-      - name: tx_to
-        description: "Address that the transaction points to"
       - name: evt_index
         description: "Event index"
+
 
   - name: nft_ethereum_aggregators_markers
     meta:

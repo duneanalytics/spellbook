@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('revenue'),
+        tags = ['dunesql'], 
         partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
@@ -16,9 +17,9 @@
 with 
 addresses AS (
 select * from (values
-(LOWER('0x3e40d73eb977dc6a537af587d48316fee66e9c8c'), 'Aragon'),
-(LOWER('0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5'),  'NO'),
-(LOWER('0x8B3f33234ABD88493c0Cd28De33D583B70beDe35'),  'InsuranceFund')
+(0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Aragon'),
+(0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5,  'NO'),
+(0x8B3f33234ABD88493c0Cd28De33D583B70beDe35,  'InsuranceFund')
 ) as list(address, name)
  ),
 
@@ -28,7 +29,7 @@ oracle_txns AS (
         (CAST(postTotalPooledEther AS DOUBLE)-CAST(preTotalPooledEther AS DOUBLE)) lido_rewards,
         evt_tx_hash
     FROM {{source('lido_ethereum','LegacyOracle_evt_PostTotalShares')}}
-    WHERE evt_block_time <= '2023-05-16 00:00' 
+    WHERE evt_block_time <= timestamp '2023-05-16 00:00' 
     ORDER BY 1 DESC
 ),
 
@@ -38,14 +39,14 @@ oraclev2_txns as (
     FROM (
     SELECT 
         o.evt_block_time as period,
-        case when t.to in  (select address from addresses where name = 'Aragon') then t.value else 0 end AS treasury_revenue,
-        case when t.to in  (select address from addresses where name = 'NO') then t.value else 0 end AS operators_revenue,
-        case when t.to in  (select address from addresses where name = 'InsuranceFund') then t.value else 0 end as insurance_revenue,
+        case when t.to in  (select address from addresses where name = 'Aragon') then cast(t.value as double) else 0 end AS treasury_revenue,
+        case when t.to in  (select address from addresses where name = 'NO') then cast(t.value as double) else 0 end AS operators_revenue,
+        case when t.to in  (select address from addresses where name = 'InsuranceFund') then cast(t.value as double) else 0 end as insurance_revenue,
         o.evt_tx_hash
     FROM {{source('lido_ethereum','AccountingOracle_evt_ProcessingStarted')}} o
     left join {{source('lido_ethereum','steth_evt_Transfer')}} t on o.evt_tx_hash = t.evt_tx_hash 
-            and t.`from` = '0x0000000000000000000000000000000000000000' 
-            and `to` in (select address from addresses)
+            and t."from" = 0x0000000000000000000000000000000000000000
+            and to in (select address from addresses)
     ) group by 1,5
 ),
 
@@ -72,7 +73,7 @@ protocol_fee_distribution AS (
     SELECT  
         oracle_txns.period AS period, 
         oracle_txns.evt_tx_hash,
-        LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84') AS token,
+        0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 AS token,
         lido_rewards AS total,
         protocol_fee.points AS protocol_fee,
         protocol_fee_distribution.insurance_points AS insurance_fee,
@@ -91,7 +92,7 @@ protocol_fee_distribution AS (
     SELECT  
         oracle_txns.period AS period, 
         oracle_txns.evt_tx_hash,
-        LOWER('0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84') AS token,
+        0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 AS token,
         oracle_txns.treasury_revenue + oracle_txns.operators_revenue + 	oracle_txns.insurance_revenue AS total,
         protocol_fee.points AS protocol_fee,
         protocol_fee_distribution.insurance_points AS insurance_fee,
