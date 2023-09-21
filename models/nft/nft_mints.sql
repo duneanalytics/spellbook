@@ -108,7 +108,7 @@ WITH project_mints as
         FROM {{ native_mint }} as n
         LEFT JOIN
             (
-                select
+                select distinct
                     block_number as p_block_number
                     , tx_hash as p_tx_hash
                 from project_mints
