@@ -30,6 +30,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
  - name: aave_v3_polygon_flashloans
    meta:
@@ -60,6 +61,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
  - name: aave_polygon_flashloans
    meta:
@@ -90,3 +92,4 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month

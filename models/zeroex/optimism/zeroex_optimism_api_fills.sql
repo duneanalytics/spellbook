@@ -37,7 +37,7 @@ WITH zeroex_tx AS (
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
                 0x4ef40d1bf0983899892946830abf99eca2dbc5ce,
                 -- exchange proxy
-                0xdef1c0ded9bec7f1a1670819833240f027b25eff
+                0xdef1abe32c034e558cdd535791643c58a13acc10
                 )
                 AND (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
@@ -48,7 +48,7 @@ WITH zeroex_tx AS (
                 AND block_time >= date_trunc('day', now() - interval '7' day) 
                 {% endif %}
                 {% if not is_incremental() %}
-                AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
+                AND block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
     group by tx_hash
@@ -96,7 +96,9 @@ v4_limit_fills_no_bridge AS (
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient in 
-                (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
+                (0x9b858be6e3047d88820f439b240deac2418a2551,
+                0x86003b044f70dac0abc80ac8957305b6370893ed,
+                0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
                 AS matcha_limit_order_flag 
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
 
@@ -162,7 +164,7 @@ ERC20BridgeTransfer AS (
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('optimism', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
+    WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
 
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '7' day)
@@ -193,7 +195,7 @@ NewBridgeFill AS (
             FALSE                                           AS matcha_limit_order_flag
     FROM {{ source('optimism' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
-    WHERE topic1 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
+    WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0xa3128d9b7cca7d5af29780a56abeec12b05a6740
 
         {% if is_incremental() %}

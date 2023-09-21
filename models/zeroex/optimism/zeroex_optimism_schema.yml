@@ -24,6 +24,8 @@ models:
           check_columns:
             - maker
             - taker
+            - taker_token
+            - taker_token_amount
     columns:
       - &tx_hash
         name: tx_hash
@@ -112,6 +114,8 @@ models:
           check_columns:
             - maker
             - taker
+            - taker_token
+            - taker_token_amount
     columns:
       - *blockchain
       - *block_date
