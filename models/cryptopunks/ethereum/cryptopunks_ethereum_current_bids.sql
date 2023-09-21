@@ -64,7 +64,7 @@ with combined_events_table as (
 )
 , latest_eth_price as (
     select price
-    from prices.usd
+    from {{ source('prices', 'usd') }}
     where blockchain = 'ethereum'
         and contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     order by minute desc limit 1
