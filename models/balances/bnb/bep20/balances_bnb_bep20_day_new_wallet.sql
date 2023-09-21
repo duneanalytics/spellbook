@@ -6,7 +6,7 @@
                                     "balances",
                                     \'["longnhbkhn"]\') }}'
         )
-
+}}
 with
   balances_token as (
     select
@@ -32,7 +32,7 @@ with
       wallet_address,
       token_address
   )
-  
+
 select
     b.wallet_address,
     b.token_address,
