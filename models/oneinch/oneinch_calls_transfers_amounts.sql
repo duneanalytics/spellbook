@@ -18,8 +18,7 @@
         'ethereum',
         'fantom',
         'gnosis',
-        'optimism',
-        'polygon'
+        'optimism'
     ]
 %}
 
