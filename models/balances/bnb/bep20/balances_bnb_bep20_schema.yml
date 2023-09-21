@@ -119,7 +119,6 @@ models:
         Daily token balances of bep20 bnb tokens per wallet and contract address pair.
         Depends on bep20_bnb_transfers.
     columns:
-      - *block_day
-      - *wallet_address
       - *token_address
-      - *amount
+      - name: volume_fluctuation_rate
+        description: "Rate of volume fluctuation"
