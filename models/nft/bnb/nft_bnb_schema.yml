@@ -87,6 +87,10 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
       - &token_id
         name: token_id
         description: "NFT Token ID"
@@ -128,7 +132,7 @@ models:
         description:  "Address that received the transaction"
       - name: unique_trade_id
         tests:
-          - is_unique_filtered_legacy
+          - is_unique_filtered
       - &buyer_first_funded_by
         name: buyer_first_funded_by
         description: "Which wallet first funded the buyer's wallet in ETH"
