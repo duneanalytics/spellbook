@@ -45,12 +45,11 @@ min_trade_date_per_address as
         2 
 ), 
 
-
 time_seq AS (
     SELECT 
             {% if is_incremental() %}
                 sequence(
-                    date_trunc('day', now() - interval '7' day),
+                    date_trunc('day', cast(now() as timestamp) - interval '7' day),
                     date_trunc('day', cast(now() as timestamp)),
                     interval '1' day
                 ) as time
