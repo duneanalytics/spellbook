@@ -44,7 +44,7 @@ SELECT DISTINCT
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     proposer,
     pcr.proposalId as proposal_id,
     csv.votes_for,
@@ -58,7 +58,7 @@ SELECT DISTINCT
     CASE 
          WHEN pex.proposalId is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.proposalId is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
+         WHEN pcr.startBlock < pcr.evt_block_number and pcr.evt_block_number < pcr.endBlock THEN 'Active'
          WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
          ELSE 'Defeated' END AS status,
     description
