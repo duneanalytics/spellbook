@@ -187,4 +187,5 @@ FROM (VALUES
         ,(0xB827710314A05BCBeE9180E11c2abE5823289422, 'ABI', 18)
         ,(0x78a0A62Fba6Fb21A83FE8a3433d44C73a4017A6f, 'OX', 18)
         ,(0x1A7383700eE220C5efC0Ffe5772Fbd490c8614B7, 'WFIRE', 18)
+        ,(0x53691596d1BCe8CEa565b84d4915e69e03d9C99d, 'ACX', 18)
      ) AS temp_table (contract_address, symbol, decimals)
