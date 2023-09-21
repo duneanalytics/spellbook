@@ -6,7 +6,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['day', 'wallet_address', 'token_address']
+        unique_key = ['block_day', 'wallet_address', 'token_address']
         )
 }}
 
