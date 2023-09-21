@@ -1,5 +1,6 @@
 {{ config(
         tags = ['dunesql'],
+        materialized='table',
         alias = alias('bep20_day_new_wallet'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
