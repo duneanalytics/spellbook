@@ -20,7 +20,7 @@
         transactions = source('ethereum', 'transactions'),
         native_token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         genesis_balances = ref('genesis_balances'),
-        suicide_self_destruct = source('ethereum', 'logs'),
+        staking_withdrawals = source('ethereum', 'withdrawals'),
         contract_creation_deposit = true
     )
 }}

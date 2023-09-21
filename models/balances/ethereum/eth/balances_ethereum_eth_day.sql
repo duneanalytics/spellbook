@@ -14,6 +14,7 @@
     balances_fungible_day(
         blockchain = 'ethereum',
         first_transaction_date = '2015-08-07',
-        transfers_rolling_day = ref('transfers_ethereum_eth_rolling_day')
+        transfers_rolling_day = ref('transfers_ethereum_eth_rolling_day'),
+        filter_suicide_contracts = ref('balances_ethereum_eth_suicide')
     )
 }}

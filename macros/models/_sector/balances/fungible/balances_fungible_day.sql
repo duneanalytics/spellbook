@@ -1,4 +1,4 @@
-{% macro balances_fungible_day(blockchain, transfers_rolling_day, first_transaction_date, balances_noncompliant=null, filter_mainnet_token=null ) %}
+{% macro balances_fungible_day(blockchain, transfers_rolling_day, first_transaction_date, balances_noncompliant=null, filter_mainnet_token=null, filter_suicide_contracts=null ) %}
 
 WITH 
 
@@ -58,9 +58,17 @@ LEFT JOIN
 LEFT JOIN {{ balances_noncompliant }} nc
     ON b.token_address = nc.token_address
 {% endif %}
+-- removes suicide contracts for native tokens balances
+{% if filter_suicide_contracts %}
+LEFT JOIN {{ filter_suicide_contracts }} fs 
+    ON b.token_address = fs.address
+{% endif %}
 WHERE 1 = 1 
 {% if balances_noncompliant %}
 AND nc.token_address IS NULL
+{% endif %}
+{% if filter_suicide_contracts %}
+AND fs.address IS NULL
 {% endif %}
 -- Removes mainnet token for chains which have erc20 transfer event for mainnet tokens (eg optimism)
 {% if filter_mainnet_token %}

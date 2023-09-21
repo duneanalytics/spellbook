@@ -88,3 +88,20 @@ models:
       - *amount
       - *amount_usd
       - *symbol
+
+  - name: balances_ethereum_eth_suicide
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'ethereum', 'eth', 'suicide', 'Henrystats']
+    description: >
+        Helper Model.
+        Used to filter suicide contracts with no traces event, check macros for detailed explanation.
+    columns:
+      - *block_month
+      - &address
+        name: address
+        description: "Refund address & suicide contract address"
