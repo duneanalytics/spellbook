@@ -14,7 +14,15 @@
 }}
 
 WITH 
-      updated_balances as (
+      tokens_accounts as (
+            SELECT 
+            distinct address
+            FROM {{ source('solana','account_activity') }}
+            WHERE tx_success
+            AND token_mint_address is not null
+      )
+      
+      , updated_balances as (
             SELECT
                   address 
                   , date_trunc('day', block_time) as day
@@ -25,6 +33,11 @@ WITH
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
+            AND (
+                  --if the address is a token_mint_account, then mint_address should not be null
+                  (address NOT in (select address from tokens_accounts))
+                  or (address in (select address from tokens_accounts) AND token_mint_address is not null)
+                  )
             {% if is_incremental() %}
             AND block_time >= date_trunc("day", now() - interval '1 day')
             {% endif %}
