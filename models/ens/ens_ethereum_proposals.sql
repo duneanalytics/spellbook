@@ -59,7 +59,7 @@ SELECT DISTINCT
          WHEN pex.proposalId is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.proposalId is not null and now() > pca.evt_block_time THEN 'Canceled'
          WHEN pcr.startBlock < cast(pcr.evt_block_number as uint256) and cast(pcr.evt_block_number as uint256) < pcr.endBlock THEN 'Active'
-         WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
+         WHEN now() > pqu.evt_block_time AND startBlock > cast(pcr.evt_block_number as uint256) THEN 'Queued'
          ELSE 'Defeated' END AS status,
     description
 FROM  {{ source('ethereumnameservice_ethereum', 'ENSGovernor_evt_ProposalCreated') }} pcr
