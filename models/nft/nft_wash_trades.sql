@@ -1,5 +1,6 @@
 {{ config(
         alias = alias('wash_trades'),
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon"]\',
                                     "sector",
                                     "nft",
