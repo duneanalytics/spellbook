@@ -25,7 +25,7 @@ WITH src AS
         blockchain = 'ethereum'
         AND currency_symbol IN ('ETH', 'WETH')
         AND amount_original IS NOT NULL
-        AND CAST(number_of_items as double) = 1
+        AND number_of_items = = UINT256 '1'
 )
 SELECT
     *

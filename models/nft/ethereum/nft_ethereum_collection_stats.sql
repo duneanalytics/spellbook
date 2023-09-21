@@ -26,7 +26,7 @@ WITH src_data as
     FROM 
         {{ ref('nft_trades') }} 
     WHERE blockchain = 'ethereum'
-        AND CAST(number_of_items as DOUBLE) = 1
+        AND number_of_items = UINT256 '1'
         AND tx_from != 0x0000000000000000000000000000000000000000
         AND amount_raw > UINT256 '0'
         {% if is_incremental() %}
