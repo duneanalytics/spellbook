@@ -1,4 +1,6 @@
-{{config(alias = alias('view_registries'),
+{{config(
+  tags=['dunesql'],
+  alias = alias('view_registries'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "ens",

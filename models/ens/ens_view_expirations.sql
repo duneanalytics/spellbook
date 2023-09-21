@@ -1,4 +1,6 @@
-{{config(alias = alias('view_expirations'),
+{{config(
+    tags=['dunesql'],
+    alias = alias('view_expirations'),
     post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                             "project",
                             "ens",

@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'ens_ethereum',
     alias = alias('proposals'),
     partition_by = ['block_date'],
