@@ -1,11 +1,11 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
+        schema = 'nft_optimism',
         alias = alias('wash_trades', legacy_model=True),
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["gnosis"]\',
+        post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}',
@@ -17,7 +17,7 @@ WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS same_buyer_seller
     FROM {{ ref('nft_trades_legacy') }} nftt
-    WHERE nftt.blockchain='gnosis'
+    WHERE nftt.blockchain='optimism'
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer=nftt.seller
         {% if is_incremental() %}
@@ -37,7 +37,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_baf.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='gnosis'
+    WHERE nftt.blockchain='optimism'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -60,7 +60,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='gnosis'
+    WHERE nftt.blockchain='optimism'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -83,7 +83,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='gnosis'
+    WHERE nftt.blockchain='optimism'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -102,7 +102,7 @@ WITH filter_1 AS (
     , filter_funding_buyer.first_funded_by AS buyer_first_funded_by
     , filter_funding_seller.first_funded_by AS seller_first_funded_by
     FROM {{ ref('nft_trades_legacy') }} nftt
-    INNER JOIN {{ ref('addresses_events_gnosis_first_funded_by_legacy') }} filter_funding_buyer
+    INNER JOIN {{ ref('addresses_events_optimism_first_funded_by_legacy') }} filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges_legacy') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex_legacy') }})
@@ -110,7 +110,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_funding_buyer.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    INNER JOIN {{ ref('addresses_events_gnosis_first_funded_by_legacy') }} filter_funding_seller
+    INNER JOIN {{ ref('addresses_events_optimism_first_funded_by_legacy') }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges_legacy') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex_legacy') }})
@@ -118,7 +118,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_funding_seller.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='gnosis'
+    WHERE nftt.blockchain='optimism'
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer IS NOT NULL
         AND nftt.seller IS NOT NULL
@@ -131,10 +131,10 @@ WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS flashloan
     FROM {{ ref('nft_trades_legacy') }} nftt
-    INNER JOIN {{ ref('dex_flashloans_legacy') }} df ON df.blockchain='gnosis'
+    INNER JOIN {{ ref('dex_flashloans_legacy') }} df ON df.blockchain='optimism'
         AND df.block_time=nftt.block_time
         AND df.tx_hash=nftt.tx_hash
-    WHERE nftt.blockchain='gnosis'
+    WHERE nftt.blockchain='optimism'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -199,7 +199,7 @@ LEFT JOIN filter_3_bought ON nftt.unique_trade_id=filter_3_bought.unique_trade_i
 LEFT JOIN filter_3_sold ON nftt.unique_trade_id=filter_3_sold.unique_trade_id
 LEFT JOIN filter_4 ON nftt.unique_trade_id=filter_4.unique_trade_id
 LEFT JOIN filter_5 ON nftt.unique_trade_id=filter_5.unique_trade_id
-WHERE nftt.blockchain='gnosis'
+WHERE nftt.blockchain='optimism'
     AND nftt.unique_trade_id IS NOT NULL
     {% if is_incremental() %}
     AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
