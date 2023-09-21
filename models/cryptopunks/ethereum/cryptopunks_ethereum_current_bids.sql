@@ -93,8 +93,8 @@ from
             , b2.min_punk_event_rank as most_recent_offer_accept
             , b4.min_punk_event_rank as most_recent_bid
             , b5.min_punk_event_rank as most_recent_withdraw
-            , array_join(collect_set(c1.transfer_to), ',') as buyers_post_bid
-            , array_join(collect_set(c2.transfer_to), ',') as transfers_post_bid
+            , array_join(ARRAY_AGG(c1.transfer_to), ',') as buyers_post_bid
+            , array_join(ARRAY_AGG(c2.transfer_to), ',') as transfers_post_bid
     from combined_events_table a
     left outer join min_event_per_punk b2 on b2.event_type = 'Offer Accepted' and b2.punk_id = a.punk_id
     left outer join min_event_per_punk b4 on b4.event_type = 'Bid Entered' and b4.punk_id = a.punk_id
