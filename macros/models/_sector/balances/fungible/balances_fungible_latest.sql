@@ -23,7 +23,7 @@ LEFT JOIN {{ balances_noncompliant }} nc
 -- removes suicide contracts for native tokens balances
 {% if filter_suicide_contracts %}
 LEFT JOIN {{ filter_suicide_contracts }} fs 
-    ON rh.token_address = fs.address
+    ON rh.wallet_address = fs.address
 {% endif %}
 WHERE rh.recency_index = 1
 {% if balances_noncompliant %}
