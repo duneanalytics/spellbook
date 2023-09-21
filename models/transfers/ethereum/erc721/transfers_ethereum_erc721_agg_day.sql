@@ -7,18 +7,18 @@
     tags=['dunesql'])
 }}
 
-select
-    'ethereum' as blockchain,
-    date_trunc('day', evt_block_time) as day,
+SELECT
+    'ethereum' AS blockchain,
+    date_trunc('day', evt_block_time) AS day,
     wallet_address,
     token_address,
     tokenId,
-    concat(cast(wallet_address as varchar), '-', to_iso8601(date_trunc('day', evt_block_time)), '-', CAST(token_address as varchar), '-', cast(tokenId as varchar)) as unique_transfer_id,
-    sum(amount) as amount
-from {{ ref('transfers_ethereum_erc721') }}
+    concat(cast(wallet_address AS varchar), '-', to_iso8601(date_trunc('day', evt_block_time)), '-', CAST(token_address AS varchar), '-', cast(tokenId AS varchar)) AS unique_transfer_id,
+    sum(amount) AS amount
+FROM {{ ref('transfers_ethereum_erc721') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where evt_block_time >= date_trunc('day', cast(now() as timestamp) - interval '7' day)
+WHERE evt_block_time >= date_trunc('day', cast(now() AS timestamp) - interval '7' day)
 {% endif %}
-group by 1,2,3,4,5,6
+GROUP BY 1,2,3,4,5,6
 -- having sum(amount) = 1 commenting this out as it seems to affect the rolling models
