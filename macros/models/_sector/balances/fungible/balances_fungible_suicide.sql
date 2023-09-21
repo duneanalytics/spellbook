@@ -1,4 +1,5 @@
 {% macro balances_fungible_suicide(blockchain) %}
+WITH
 
 suicide_creations as (
     SELECT 
