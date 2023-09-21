@@ -119,9 +119,7 @@ models:
         Daily token balances of bep20 bnb tokens per wallet and contract address pair.
         Depends on bep20_bnb_transfers.
     columns:
-      - &block_day
-        name: block_day
-        description: "UTC event block time truncated to the day mark"
+      - *block_day
       - *wallet_address
       - *token_address
       - *amount
