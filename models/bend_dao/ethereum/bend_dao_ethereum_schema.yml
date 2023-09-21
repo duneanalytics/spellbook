@@ -29,7 +29,7 @@ models:
             check_columns:
               - amount_original
               - evt_type
-              - address
+              - borrower
     columns:
       - &blockchain
         name: blockchain
