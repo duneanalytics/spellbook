@@ -42,7 +42,7 @@ sources:
           - &tick
             name: tick
 
-      - name: Factory_evt_PoolCreated
+      - name: MauveFactory_evt_PoolCreated
         loaded_at_field: evt_block_time
         description: "Events emitted when creating a pool"
         columns:

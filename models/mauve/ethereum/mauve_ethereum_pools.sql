@@ -23,7 +23,7 @@ SELECT 'ethereum' AS blockchain
 , evt_block_time AS creation_block_time
 , evt_block_number AS creation_block_number
 , contract_address
-FROM {{ source('mauve_ethereum', 'Factory_evt_PoolCreated') }}
+FROM {{ source('mauve_ethereum', 'MauveFactory_evt_PoolCreated') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}

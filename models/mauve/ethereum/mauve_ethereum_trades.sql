@@ -34,7 +34,7 @@ WITH dexs AS
         ,t.evt_index
     FROM
         {{ source('mauve_ethereum', 'MauvePool_evt_Swap') }} t
-    INNER JOIN {{ source('mauve_ethereum', 'Factory_evt_PoolCreated') }} f
+    INNER JOIN {{ source('mauve_ethereum', 'MauveFactory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
