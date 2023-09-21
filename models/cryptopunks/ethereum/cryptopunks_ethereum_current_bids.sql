@@ -112,10 +112,10 @@ where a.punk_id_tx_rank = most_recent_bid -- pull the most recent bid for each p
     and (   a.punk_id_tx_rank < most_recent_offer_accept -- bid accepted will reset bids
             or most_recent_offer_accept is null
         )
-    and (   buyers_post_bid not like concat('%', from_hex(a.bidder), '%') -- if bidder buys punk, their open bid is cancelled
+    and (   buyers_post_bid not like concat('%', cast(a.bidder as varchar), '%') -- if bidder buys punk, their open bid is cancelled
             or buyers_post_bid is null
         )
-    and (   transfers_post_bid not like concat('%', from_hex(a.bidder), '%') -- if bidder transferred punk, their open bid is cancelled
+    and (   transfers_post_bid not like concat('%', cast(a.bidder as varchar), '%') -- if bidder transferred punk, their open bid is cancelled
             or transfers_post_bid is null
         )
 
