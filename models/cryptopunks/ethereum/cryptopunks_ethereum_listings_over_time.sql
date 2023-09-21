@@ -50,7 +50,7 @@ with all_listing_events as (
 )
 , base_data as (
     with all_days as (select col as day from unnest(sequence(date('2017-06-23'), date(now()), interval '1' day)) as _u(col))
-    , all_punk_ids as (select explode(sequence(0, 9999, 1)) as punk_id)
+    , all_punk_ids as (select col as punk_id from unnest(sequence(0, 9999, 1)) as _u(col))
 
     select  day
             , punk_id

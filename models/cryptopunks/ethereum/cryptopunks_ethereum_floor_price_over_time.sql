@@ -49,8 +49,8 @@ with all_listing_events as (
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
 )
 , base_data as (
-    with all_days  as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
-    , all_punk_ids as (select explode(sequence(0, 9999, 1)) as punk_id)
+    with all_days as (select col as day from unnest(sequence(date('2017-06-23'), date(now()), interval '1' day)) as _u(col))
+    , all_punk_ids as (select col as punk_id from unnest(sequence(0, 9999, 1)) as _u(col))
 
     select  day
             , punk_id
