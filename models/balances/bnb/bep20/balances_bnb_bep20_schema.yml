@@ -106,3 +106,22 @@ models:
     columns:
       - name: token_address
         description: "Token Address for possibly non-compliant bep20 token"
+
+  - name: balances_bnb_bep20_day_new_wallet
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: bep20
+      contributors: longnhbkhn
+    config:
+      tags: ['balances', 'bnb', 'bep20', 'day', 'longnhbkhn']
+    description: >
+        Daily token balances of bep20 bnb tokens per wallet and contract address pair.
+        Depends on bep20_bnb_transfers.
+    columns:
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark"
+      - *wallet_address
+      - *token_address
+      - *amount
