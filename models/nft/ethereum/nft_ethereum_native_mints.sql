@@ -36,7 +36,53 @@ WITH namespaces AS (
     FROM
     nfts_per_tx_tmp
 )
-
+SELECT 
+blockchain
+, project
+, version
+, block_time
+, block_date
+, block_month
+, block_number
+, token_id
+, collection
+, token_standard
+, trade_type
+, number_of_items
+, trade_category
+, evt_type
+, seller
+, buyer
+, amount_raw
+, amount_original
+, amount_usd
+, currency_symbol
+, currency_contract
+, nft_contract_address
+, project_contract_address
+, aggregator_name
+, aggregator_address
+, tx_hash
+, tx_from
+, tx_to
+, platform_fee_amount_raw
+, platform_fee_amount
+, platform_fee_amount_usd
+, platform_fee_percentage
+, royalty_fee_receive_address
+, royalty_fee_currency_symbol
+, royalty_fee_amount_raw
+, royalty_fee_amount
+, royalty_fee_amount_usd
+, royalty_fee_percentage
+, evt_index
+FROM 
+(
+SELECT 
+    *, 
+    ROW_NUMBER() OVER (PARTITION BY tx_hash, evt_index, token_id, number_of_items ORDER BY amount_usd DESC NULLS LAST) as rank_index
+FROM 
+(
 SELECT distinct 'ethereum' AS blockchain
 , COALESCE(ec.namespace, 'Unknown') AS project
 , '' AS version
@@ -132,3 +178,6 @@ GROUP BY nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_m
 , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
 , nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
 , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, et.success
+) tmp 
+) tmp_2
+WHERE rank_index = 1 
