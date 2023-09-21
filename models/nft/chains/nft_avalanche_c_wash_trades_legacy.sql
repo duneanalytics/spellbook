@@ -1,9 +1,11 @@
 {{ config(
-        alias = alias('wash_trades'),
+	    tags=['legacy'],
+        schema = 'nft_avalanche_c',
+        alias = alias('wash_trades', legacy_model=True),
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}',
@@ -14,8 +16,8 @@
 WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS same_buyer_seller
-    FROM {{ ref('nft_trades') }} nftt
-    WHERE nftt.blockchain='optimism'
+    FROM {{ ref('nft_trades_legacy') }} nftt
+    WHERE nftt.blockchain='avalanche_c'
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer=nftt.seller
         {% if is_incremental() %}
@@ -26,8 +28,8 @@ WITH filter_1 AS (
 , filter_2 AS (
     SELECT nftt.unique_trade_id
     , true AS back_and_forth_trade
-    FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('nft_trades') }} filter_baf
+    FROM {{ ref('nft_trades_legacy') }} nftt
+    INNER JOIN {{ ref('nft_trades_legacy') }} filter_baf
         ON filter_baf.seller=nftt.buyer
         AND filter_baf.buyer=nftt.seller
         AND filter_baf.nft_contract_address=nftt.nft_contract_address
@@ -35,7 +37,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_baf.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='optimism'
+    WHERE nftt.blockchain='avalanche_c'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -49,8 +51,8 @@ WITH filter_1 AS (
         THEN true
         ELSE false
         END AS bought_3x
-    FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('nft_trades') }} filter_bought_3x
+    FROM {{ ref('nft_trades_legacy') }} nftt
+    INNER JOIN {{ ref('nft_trades_legacy') }} filter_bought_3x
         ON filter_bought_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_bought_3x.token_id=nftt.token_id
         AND filter_bought_3x.buyer=nftt.buyer
@@ -58,7 +60,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_bought_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='optimism'
+    WHERE nftt.blockchain='avalanche_c'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -72,8 +74,8 @@ WITH filter_1 AS (
         THEN true
         ELSE false
         END AS sold_3x
-    FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('nft_trades') }} filter_sold_3x
+    FROM {{ ref('nft_trades_legacy') }} nftt
+    INNER JOIN {{ ref('nft_trades_legacy') }} filter_sold_3x
         ON filter_sold_3x.nft_contract_address=nftt.nft_contract_address
         AND filter_sold_3x.token_id=nftt.token_id
         AND filter_sold_3x.seller=nftt.seller
@@ -81,7 +83,7 @@ WITH filter_1 AS (
         {% if is_incremental() %}
         AND filter_sold_3x.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='optimism'
+    WHERE nftt.blockchain='avalanche_c'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -99,24 +101,24 @@ WITH filter_1 AS (
         END AS first_funded_by_same_wallet
     , filter_funding_buyer.first_funded_by AS buyer_first_funded_by
     , filter_funding_seller.first_funded_by AS seller_first_funded_by
-    FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('addresses_events_optimism_first_funded_by') }} filter_funding_buyer
+    FROM {{ ref('nft_trades_legacy') }} nftt
+    INNER JOIN {{ ref('addresses_events_avalanche_c_first_funded_by_legacy') }} filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
-        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
-        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
-        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
+        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges_legacy') }})
+        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex_legacy') }})
+        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals_legacy') }})
         {% if is_incremental() %}
         AND filter_funding_buyer.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    INNER JOIN {{ ref('addresses_events_optimism_first_funded_by') }} filter_funding_seller
+    INNER JOIN {{ ref('addresses_events_avalanche_c_first_funded_by_legacy') }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
-        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges') }})
-        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex') }})
-        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals') }})
+        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_bridges_legacy') }})
+        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ ref('labels_cex_legacy') }})
+        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ ref('tornado_cash_withdrawals_legacy') }})
         {% if is_incremental() %}
         AND filter_funding_seller.block_time >= date_trunc("day", NOW() - interval '1 week')
         {% endif %}
-    WHERE nftt.blockchain='optimism'
+    WHERE nftt.blockchain='avalanche_c'
         AND nftt.unique_trade_id IS NOT NULL
         AND nftt.buyer IS NOT NULL
         AND nftt.seller IS NOT NULL
@@ -128,11 +130,11 @@ WITH filter_1 AS (
 , filter_5 AS (
     SELECT unique_trade_id
     , true AS flashloan
-    FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ ref('dex_flashloans') }} df ON df.blockchain='optimism'
+    FROM {{ ref('nft_trades_legacy') }} nftt
+    INNER JOIN {{ ref('dex_flashloans_legacy') }} df ON df.blockchain='avalanche_c'
         AND df.block_time=nftt.block_time
         AND df.tx_hash=nftt.tx_hash
-    WHERE nftt.blockchain='optimism'
+    WHERE nftt.blockchain='avalanche_c'
         AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
         AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
@@ -190,14 +192,14 @@ SELECT nftt.blockchain
     THEN true
     ELSE false
     END AS is_wash_trade
-FROM {{ ref('nft_trades') }} nftt
+FROM {{ ref('nft_trades_legacy') }} nftt
 LEFT JOIN filter_1 ON nftt.unique_trade_id=filter_1.unique_trade_id
 LEFT JOIN filter_2 ON nftt.unique_trade_id=filter_2.unique_trade_id
 LEFT JOIN filter_3_bought ON nftt.unique_trade_id=filter_3_bought.unique_trade_id
 LEFT JOIN filter_3_sold ON nftt.unique_trade_id=filter_3_sold.unique_trade_id
 LEFT JOIN filter_4 ON nftt.unique_trade_id=filter_4.unique_trade_id
 LEFT JOIN filter_5 ON nftt.unique_trade_id=filter_5.unique_trade_id
-WHERE nftt.blockchain='optimism'
+WHERE nftt.blockchain='avalanche_c'
     AND nftt.unique_trade_id IS NOT NULL
     {% if is_incremental() %}
     AND nftt.block_time >= date_trunc("day", NOW() - interval '1 week')
