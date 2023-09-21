@@ -140,7 +140,7 @@ simple_trades as (
 SELECT
   'ethereum' AS blockchain,
   'bebop' AS project,
-  '1' AS version,
+  '2' AS version,
   CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
   CAST(date_trunc('MONTH', t.block_time) AS date) AS block_month,
   t.block_time AS block_time,
