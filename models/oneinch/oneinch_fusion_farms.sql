@@ -4,11 +4,10 @@
         alias = alias('fusion_farms'),
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key = ['unique_farm_distributor_set_up_id'],
+        unique_key = ['resolver_address', 'farm_address'],
         tags = ['dunesql']
     )
 }}
-
 
 
 {% set project_start_date = "timestamp '2022-12-25'" %} 
@@ -22,7 +21,7 @@ delegates as (
     select *
     from (
         select
-            block_time as resolver_register_delegatee
+            block_time as resolver_register_delegatee_at
             , tx_hash as resolver_register_delegatee_tx_hash
             , substr(data, 13, 20) as resolver_address
         from {{ source('ethereum', 'logs') }}
@@ -38,7 +37,7 @@ delegates as (
     ) as registrations
     left join (
         select
-            block_time as farm_ownership_transferred
+            block_time as farm_ownership_transferred_at
             , tx_hash as farm_ownership_transferred_tx_hash
             , contract_address as farm_address
             , max_by(substr(topic2, 13, 20), index) as resolver_address
@@ -57,9 +56,9 @@ delegates as (
 , farm_tokens as (
     select
         contract_address as farm_address
-        , block_time as farm_created_at
-        , substr(data, 45, 20) as default_token
-        , tx_hash
+        , max(block_time) as farm_last_created_at
+        , max_by(substr(data, 45, 20), block_time) as farm_last_default_token
+        , max_by(tx_hash, block_time) as farm_last_creation_tx_hash
     from {{ source('ethereum', 'logs') }}
     where
         topic0 = 0x6bff9ddd187ef283e9c7726f406ab27bcc3719a41b6bee3585c7447183cffcec -- FarmCreated (token, reward)
@@ -68,14 +67,14 @@ delegates as (
         {% else %}
             and block_time >= {{ project_start_date }}
         {% endif %}
+    group by 1
 )
 
 , distributors as (
     select
         contract_address as farm_address
-        , block_time as set_up
-        , max_by(substr(data, 45, 20), index) as distributor
-        , max(block_time) over(partition by contract_address) as last_set_up
+        , max_by(substr(data, 45, 20), (block_time, index)) as farm_last_distributor
+        , max(block_time) as farm_last_distributor_set_up_at
     from {{ source('ethereum', 'logs') }}
     where
         topic0 = 0xa9f739537fc57540bed0a44e33e27baa63290d865cc15f0f16cf17d38c998a4d -- DistributorChanged
@@ -88,27 +87,21 @@ delegates as (
 )
 
 
-select 
-    *
-    , cast(farm_address as varchar)||cast(distributor as varchar)||cast(distributor_status as varchar)||coalesce(cast(farm_default_token as varchar), '')||coalesce(cast(distributor_set_up as varchar), '') as unique_farm_distributor_set_up_id
-from (
-    select
-        resolver_address
-        , resolver_name
-        , resolver_status
-        , last_changed_at
-        , kyc
-        , resolver_register_delegatee
-        , farm_address
-        , farm_ownership_transferred
-        , farm_created_at
-        , default_token as farm_default_token
-        , coalesce(distributor, 0x) as distributor
-        , if(set_up = last_set_up, 'Current', if(set_up <> last_set_up, 'Legacy', 'No')) as distributor_status
-        , set_up as distributor_set_up
-    from {{ ref('oneinch_fusion_resolvers') }}
-    join delegates using(resolver_address)
-    left join distributors using(farm_address)
-    left join farm_tokens using(farm_address)
-    order by resolver_status, resolver_name, resolver_address, set_up desc
-)
+select
+      resolver_address
+    , resolver_name
+    , resolver_status
+    , resolver_last_changed_at
+    , resolver_kyc
+    , resolver_register_delegatee_at
+    , farm_address
+    , farm_ownership_transferred_at
+    , farm_last_created_at
+    , farm_last_default_token
+    , farm_last_distributor
+    , farm_last_distributor_set_up_at
+from {{ ref('oneinch_fusion_resolvers') }}
+join delegates using(resolver_address)
+left join distributors using(farm_address)
+left join farm_tokens using(farm_address)
+order by resolver_status, resolver_name, resolver_address
