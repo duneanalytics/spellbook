@@ -107,7 +107,7 @@ staking_withdrawals as (
         block_time, 
         address as wallet_address,
         {{native_token_address}} as token_address,
-        CAST(amount as double) as amount_raw 
+        amount * 1e9 as amount_raw -- convert to 18 decimals 
     FROM 
     {{ staking_withdrawals }}
     {% if is_incremental() %}
