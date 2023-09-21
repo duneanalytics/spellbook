@@ -1,6 +1,6 @@
  {{
   config(
-	tags=['legacy'],
+	tags=['legacy', 'remove'],
 	
         alias = alias('daily_balances', legacy_model=True),
         materialized='incremental',
