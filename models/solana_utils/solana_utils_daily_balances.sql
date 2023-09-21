@@ -36,7 +36,7 @@ WITH
             AND (
                   --if the address is a token_mint_account, then mint_address should not be null
                   (address NOT in (select address from tokens_accounts))
-                  or (token_mint_address is null)
+                  or (address in (select address from tokens_accounts) AND token_mint_address is null)
                   )
             {% if is_incremental() %}
             AND block_time >= date_trunc('day', now() - interval '1' day)
