@@ -31,8 +31,13 @@ INNER JOIN trades_with_index s2 ON s1.block_number=s2.block_number
     AND s1.version=s2.version
     AND s1.tx_hash!=s2.tx_hash
     AND s1.project_contract_address=s2.project_contract_address
-    --AND s2.token_sold_amount BETWEEN s1.token_bought_amount*0.9 AND s1.token_bought_amount*1.1
-INNER JOIN {{transactions}} tx1 ON  dt.blockchain='ethereum'
+    AND s1.block_time >= date_trunc('day', now() - interval '3' day)
+    AND s2.block_time >= date_trunc('day', now() - interval '3' day)
+    {% if is_incremental() %}
+    AND s1.block_time >= date_trunc('day', now() - interval '7' day)
+    AND s2.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+INNER JOIN {{transactions}} tx1 ON dt.blockchain='ethereum'
     AND tx1.block_time=dt.block_time
     AND tx1.hash=s1.tx_hash
     AND tx1.block_time >= date_trunc('day', now() - interval '3' day)
