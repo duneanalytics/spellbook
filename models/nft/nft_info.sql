@@ -42,7 +42,6 @@ FROM (VALUES
     , ('flip', 'Flip', 'Aggregator', 'Flip_xyz')
     , ('tiny astro', 'Tiny Astro', 'Aggregator', 'tinyastroNFT')
     , ('gigamart', 'GigaMart', 'Aggregator', 'GigaMartNFT')
-    , ('nftinit', 'NFTInit', 'Aggregator', 'NFTinitcom')
     , ('nftrade', 'NFTrade', 'Direct', 'NFTradeOfficial')
     , ('quix', 'Quix', 'Direct', NULL)
     , ('bluesweep', 'bluesweep', 'Aggregator', 'bluesweep_xyz')
