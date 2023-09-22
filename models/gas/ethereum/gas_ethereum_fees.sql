@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('fees'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -14,7 +15,7 @@ SELECT
      block_number,
      block_time,
      txns.hash AS tx_hash,
-     txns.from AS tx_sender, 
+     txns."from" AS tx_sender, 
      txns.to AS tx_receiver,
      'ETH' as native_token_symbol,
      value/1e18 AS tx_amount_native,
@@ -48,15 +49,15 @@ SELECT
 FROM {{ source('ethereum','transactions') }} txns
 JOIN {{ source('ethereum','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
-AND block_time >= date_trunc("day", now() - interval '2 days')
-AND blocks.time >= date_trunc("day", now() - interval '2 days')
+AND block_time >= date_trunc('day', now() - interval '2' day)
+AND blocks.time >= date_trunc('day', now() - interval '2' day)
 {% endif %}
 LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
 AND p.blockchain = 'ethereum'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}
-AND p.minute >= date_trunc("day", now() - interval '2 days')
-WHERE block_time >= date_trunc("day", now() - interval '2 days')
-AND blocks.time >= date_trunc("day", now() - interval '2 days')
-AND p.minute >= date_trunc("day", now() - interval '2 days')
+AND p.minute >= date_trunc('day', now() - interval '2' day)
+WHERE block_time >= date_trunc('day', now() - interval '2' day)
+AND blocks.time >= date_trunc('day', now() - interval '2' day)
+AND p.minute >= date_trunc('day', now() - interval '2' day)
 {% endif %}
