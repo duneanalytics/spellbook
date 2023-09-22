@@ -105,3 +105,23 @@ models:
       - &address
         name: address
         description: "Refund address & suicide contract address"
+
+  - name: balances_ethereum_eth_miners
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: eth
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'ethereum', 'eth', 'miners', 'Henrystats']
+    description: >
+        Helper Model.
+        Used to filter miner addresses until we figure out block rewards, check macros for detailed explanation.
+    columns:
+      - *block_month
+      - &miner
+        name: miner
+        description: "Miner Address"
+      - &blocks_mined
+        name: blocks_mined
+        description: "Number of blocks mined by miner"

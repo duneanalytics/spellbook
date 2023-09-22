@@ -1,4 +1,4 @@
-{% macro balances_fungible_hour(blockchain, transfers_rolling_hour, first_transaction_date, is_more_than_year_ago, balances_noncompliant=null, filter_mainnet_token=null, filter_suicide_contracts=null ) %}
+{% macro balances_fungible_hour(blockchain, transfers_rolling_hour, first_transaction_date, is_more_than_year_ago, balances_noncompliant=null, filter_mainnet_token=null, filter_suicide_contracts=null, filter_miner_addresses=null ) %}
 
 WITH 
 
@@ -78,12 +78,20 @@ LEFT JOIN {{ balances_noncompliant }} nc
 LEFT JOIN {{ filter_suicide_contracts }} fs 
     ON b.wallet_address = fs.address
 {% endif %}
+-- removes miner addressses
+{% if filter_miner_addresses %}
+LEFT JOIN {{ filter_miner_addresses }} fm
+    ON b.wallet_address = fm.miner
+{% endif %}
 WHERE 1 = 1 
 {% if balances_noncompliant %}
 AND nc.token_address IS NULL
 {% endif %}
 {% if filter_suicide_contracts %}
 AND fs.address IS NULL
+{% endif %}
+{% if filter_miner_addresses %}
+AND fm.miner IS NULL
 {% endif %}
 -- Removes mainnet token for chains which have erc20 transfer event for mainnet tokens (eg optimism)
 {% if filter_mainnet_token %}

@@ -4,7 +4,7 @@
 {% if transfers_erc20 and tokens_erc20 %}
 SELECT
     tr.blockchain,
-    CAST(date_trunc('hour', tr.evt_block_time) as date) as block_hour,
+    date_trunc('hour', tr.evt_block_time) as block_hour,
     tr.block_month,
     tr.wallet_address,
     tr.token_address,
@@ -26,7 +26,7 @@ GROUP BY 1, 2, 3, 4, 5, 6
 {% if transfers_native and native_token_symbol %}
 SELECT
     tr.blockchain,
-    CAST(date_trunc('hour', tr.block_time) as date) as block_hour,
+    date_trunc('hour', tr.block_time) as block_hour,
     block_month,
     tr.wallet_address,
     tr.token_address,
