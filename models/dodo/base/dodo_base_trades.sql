@@ -1,21 +1,22 @@
 {{ config(
         tags = ['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
-                                "project",
-                                "dodo",
-                                \'["scoffie", "owen05"]\') }}'
+        partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+        post_hook='{{ expose_spells(\'["base"]\',
+                                    "project",
+                                    "dodo",
+                                    \'["owen05"]\') }}'
         )
 }}
 
 {% set dodo_models = [
-ref('dodo_pools_ethereum_trades')
-, ref('dodo_pools_bnb_trades')
-, ref('dodo_pools_polygon_trades')
-, ref('dodo_pools_arbitrum_trades')
-, ref('dodo_pools_optimism_trades')
-, ref('dodo_pools_base_trades')
+ref("dodo_pools_base_trades")
 ] %}
+
 
 SELECT *
 FROM (
@@ -45,6 +46,9 @@ FROM (
         tx_to,
         evt_index
     FROM {{ dex_model }}
+    {% if is_incremental() %}
+    WHERE block_date >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
