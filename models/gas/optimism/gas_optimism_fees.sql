@@ -36,10 +36,10 @@ SELECT
      l1_fee_scalar,
      (l1_gas_price * txns.gas_used)/1e18 as tx_fee_equivalent_on_l1_native,
      (l1_gas_price * txns.gas_used)/1e18 * p.price as tx_fee_equivalent_on_l1_usd,
-     (length( decode(unhex(substring(data,3)), 'US-ASCII') ) - length(replace(decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), ''))) as num_zero_bytes,
-     (length( replace(decode(unhex(substring(data,3)), 'US-ASCII'), chr(0), '')) ) as num_nonzero_bytes,
-     16 * (length( replace( decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), ''))) --16 * nonzero bytes
-     + 4 * ( length( decode(unhex(substring(data,3)), 'US-ASCII') ) - length(replace( decode(unhex(substring(data,3)), 'US-ASCII') , chr(0), '')) ) --4 * zero bytes
+     (length( decode(unhex(data), 'US-ASCII') ) - length(replace(decode(unhex(data), 'US-ASCII') , chr(0), ''))) as num_zero_bytes,
+     (length( replace(decode(unhex(data), 'US-ASCII'), chr(0), '')) ) as num_nonzero_bytes,
+     16 * (length( replace( decode(unhex(data), 'US-ASCII') , chr(0), ''))) --16 * nonzero bytes
+     + 4 * ( length( decode(unhex(data), 'US-ASCII') ) - length(replace( decode(unhex(data), 'US-ASCII') , chr(0), '')) ) --4 * zero bytes
      as calldata_gas,
      type as transaction_type,
      l1_fee/1e18 AS l1_data_fee_native,
