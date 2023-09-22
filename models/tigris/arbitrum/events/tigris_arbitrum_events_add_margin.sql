@@ -24,6 +24,7 @@ WITH
     ,'TradingV2_evt_AddToPosition'
     ,'TradingV3_evt_AddToPosition'
     , 'TradingV4_evt_AddToPosition'
+    , 'TradingV5_evt_AddToPosition'
 ] %}
 
 {% set add_margin_v1_call_tables = [
