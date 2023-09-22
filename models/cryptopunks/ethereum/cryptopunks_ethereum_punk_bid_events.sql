@@ -41,7 +41,7 @@ from
                 , fromAddress as bidder
                 , value/1e18 as eth_amount
                 , evt_block_time
-                , date_trunc('week',evt_block_time) as evt_block_time_week
+                , cast(date_trunc('week',evt_block_time) as date) as evt_block_time_week
                 , evt_block_number
                 , evt_index
                 , evt_tx_hash 
