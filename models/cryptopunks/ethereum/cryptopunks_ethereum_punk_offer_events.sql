@@ -29,7 +29,7 @@ from
                 else toAddress end as to
             , minValue/1e18 as eth_amount
             , a.evt_block_time
-            , date_trunc('week',a.evt_block_time) as evt_block_time_week
+            , cast(date_trunc('week',a.evt_block_time) as date) as evt_block_time_week
             , a.evt_block_number
             , a.evt_index
             , a.evt_tx_hash
@@ -51,7 +51,7 @@ from
                 , cast(NULL as varbinary) as to
                 , cast(NULL as double) as eth_amount
                 , a.evt_block_time
-                , date_trunc('week',a.evt_block_time) as evt_block_time_week
+                , cast(date_trunc('week',a.evt_block_time) as date) as evt_block_time_week
                 , a.evt_block_number
                 , a.evt_index
                 , a.evt_tx_hash
