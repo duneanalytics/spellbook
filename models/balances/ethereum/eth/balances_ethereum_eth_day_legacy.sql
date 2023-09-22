@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'balances_ethereum_eth',
+        schema = 'balances_ethereum',
         tags = ['legacy'],
         alias = alias('eth_day', legacy_model=True)
         )

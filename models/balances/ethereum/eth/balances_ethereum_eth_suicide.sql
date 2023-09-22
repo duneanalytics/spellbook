@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'balances_ethereum_eth',
+    schema = 'balances_ethereum',
     tags=['dunesql'],
     alias = alias('eth_suicide'),
     partition_by = ['block_month'],

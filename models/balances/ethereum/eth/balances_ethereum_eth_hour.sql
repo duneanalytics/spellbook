@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'balances_ethereum_eth',
+        schema = 'balances_ethereum',
         tags = ['dunesql'],
         alias = alias('eth_hour'),
         post_hook='{{ expose_spells(\'["ethereum"]\',

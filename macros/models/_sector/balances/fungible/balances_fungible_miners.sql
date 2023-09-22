@@ -2,7 +2,7 @@
 
 SELECT 
     COUNT(*) as blocks_mined,
-    CAST(date_trunc('month', "time") as date) as block_month
+    CAST(date_trunc('month', "time") as date) as block_month,
     miner 
 FROM 
 {{ source( blockchain , 'blocks') }}
