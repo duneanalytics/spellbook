@@ -59,3 +59,36 @@ models:
       - *token_balance_owner
       - *updated_at
 
+  - name: solana_utils_total_rewards
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','rewards']
+    description: >
+        get the total rewards paid out to each address
+    columns:
+      - &recipient 
+        name: recipient
+      - &reward_type 
+        name: reward_type
+      - &rewards
+        name: rewards
+
+  - name: solana_utils_sns_domains
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','sns','domains','bonfida']
+    description: >
+        get the latest favorite domain and owned domains for any address (using the bonfida solana name service)
+    columns:
+      - &owner 
+        name: owner
+      - &favorite_domain 
+        name: favorite_domain
+      - &owned_domains
+        name: owned_domains
+
+

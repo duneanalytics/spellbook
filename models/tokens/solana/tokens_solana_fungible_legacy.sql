@@ -1,6 +1,6 @@
 {{ config(
   alias = alias('fungible', legacy_model=True),
-  tags=['legacy', 'static'],
+  tags=['legacy', 'static', 'remove'],
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens",
@@ -12974,5 +12974,10 @@ FROM
   'BWXrrYFhT7bMHmNBFoQFWdsSgA3yXoAnMhDK6Fn1eSEn',
   'HADES',
   9
+),
+( 
+  '3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh',
+  'WBTC',
+  8
 )
 ) AS temp_table (token_mint_address, symbol, decimals)

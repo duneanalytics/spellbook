@@ -10,6 +10,13 @@ models:
       tags: ['nft', 'celo', 'transfers']
     description: >
         NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - contract_address
+            - token_id
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -43,7 +50,64 @@ models:
         description: "Address that executed the transaction"
       - name: tx_hash
         description: "Transaction hash"
-      - name: unique_transfer_id
+  
+  - name: nft_celo_approvals
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['nft', 'celo', 'approvals']
+    description: >
+        NFT approvals
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: address
+        description: "Address for which NFTs were approved"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155']
+      - name: approval_for_all
+        description: "Was this an ApprovalForAll or a simple Approval?"
+      - name: contract_address
+        description: "Contract address"
+      - name: token_id
+        description: "NFT token ID"
+      - name: approved
+        description: "Approved"
+      - name: operator
+        description: "Operator address"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+
+  - name: nft_celo_aggregators
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['nft', 'celo', 'aggregators']
+    description: >
+        NFT aggregators
+    columns:
+      - name: contract_address
+        description: "Aggregator project's contract address"
         tests:
           - unique
-        description: "Unique transfer ID"
+      - name: name
+        description: "Aggregator project's name"
