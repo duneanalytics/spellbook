@@ -23,7 +23,7 @@ with
         , from_utf8(bytearray_rtrim(substr(input, 5 + 2 * 32))) as name
         , tx_index                                              as index
         , tx_hash
-    from {{source('ethereum', 'transactions')}}
+    from {{source('ethereum', 'traces')}}
     where block_date >= date '2017-05-29'
         and block_number >= 3787060
         and to in (
