@@ -12975,5 +12975,10 @@ FROM
   'BWXrrYFhT7bMHmNBFoQFWdsSgA3yXoAnMhDK6Fn1eSEn',
   'HADES',
   9
+),
+( 
+  '3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh',
+  'WBTC',
+  8
 )
 ) AS temp_table (token_mint_address, symbol, decimals)
