@@ -252,3 +252,13 @@ sources:
         loaded_at_field: evt_block_time
       - name: TradingV5_evt_FeesDistributed
         loaded_at_field: evt_block_time
+      - name: Options_V2_evt_TradeClosed
+        loaded_at_field: evt_block_time
+      - name: Options_V2_evt_OptionsFeesDistributed
+        loaded_at_field: evt_block_time
+      - name: Options_V2_evt_OptionsLimitCancelled
+        loaded_at_field: evt_block_time
+      - name: Options_V2_evt_OptionsLimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: Options_V2_evt_TradeOpened
+        loaded_at_field: evt_block_time
