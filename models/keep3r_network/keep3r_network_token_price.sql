@@ -88,7 +88,7 @@ prices as (
 select
     label,
     blockchain,
-    tkn.token_address,
+    tkn.token_address as token_address,
     day,
     price
 from
