@@ -30,8 +30,7 @@ get_spell_balances as (
         bc.amount_raw as amount_raw_calls,
         bh.wallet_address,
         bc.block_time,
-        bc.tx_hash,
-        CONCAT(CAST(bh.block_hour as VARCHAR), CAST(bh.wallet_address as VARCHAR)) as filter_id 
+        bc.tx_hash
     FROM 
     {{ ref('balances_polygon_erc20_hour') }} bh 
     INNER JOIN 
@@ -45,7 +44,7 @@ hours_addresses as (
     SELECT 
         agg.block_hour, 
         agg.wallet_address, 
-        CONCAT(CAST(agg.block_hour as VARCHAR), CAST(agg.wallet_address as VARCHAR)) as filter_id 
+        gs.tx_hash 
     FROM 
     get_spell_balances gs 
     INNER JOIN 
@@ -60,7 +59,7 @@ filter_txns_after_calls as (
         * 
     FROM
     get_spell_balances
-    WHERE filter_id NOT IN (SELECT filter_id FROM hours_addresses)
+    WHERE tx_hash NOT IN (SELECT tx_hash FROM hours_addresses)
 ),
 
 test as (
