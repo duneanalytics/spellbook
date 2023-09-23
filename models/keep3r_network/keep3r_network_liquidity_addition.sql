@@ -1,6 +1,10 @@
 {{ config (
     tags=['dunesql']
     , alias = alias('etv_liquidity_addition')
+<<<<<<< HEAD
+=======
+    , unique_key = ['blockchain', 'block_time']
+>>>>>>> 2c873279 (feat: add liquidity addition and withdral queries)
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",
