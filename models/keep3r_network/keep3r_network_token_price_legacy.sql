@@ -1,6 +1,6 @@
 {{ config( 
   schema = 'keep3r_network',
-  alias = alias('etv_job_migration', legacy_model=True),
+  alias = alias('token_price', legacy_model=True),
   tags = ['legacy']
   )
 }}
