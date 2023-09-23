@@ -52,6 +52,7 @@ hours_addresses as (
     {{ ref('transfers_polygon_erc20_agg_hour') }}  agg 
         ON gs.wallet_address = agg.wallet_address
         AND gs.block_hour = agg.block_hour 
+    WHERE agg.token_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174
 ),
 
 filter_txns_after_calls as (
