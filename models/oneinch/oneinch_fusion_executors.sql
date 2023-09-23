@@ -48,4 +48,4 @@ select
 from {{ ref('oneinch_fusion_resolvers') }} as fr
 join executors on fr.address = executors.resolver_address
 left join {{ ref('evms_info') }} using(chain_id)
-order by name, resolver_executor
+order by fr.name, resolver_executor
