@@ -1620,7 +1620,8 @@ FROM
     ('gnx-genaro-network', 'ethereum', 'GNX', 0x6ec8a24cabdc339a06a172f8223ea557055adaa5, 9),
     ('pndc-pond-coin', 'ethereum', 'PNDC', 0x423f4e6138e475d85cf7ea071ac92097ed631eea, 18),
     ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
-    ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18)
+    ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18),
+    ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1639,6 +1640,5 @@ where contract_address not in (
     ,0x090185f2135308bad17527004364ebcc2d37e5f6   -- SPELL
     ,0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f   -- SDT
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
-    ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW 
-    ,0x6982508145454Ce325dDbE47a25d4ec3d2311933   -- PEPE
+    ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
 )
