@@ -381,3 +381,203 @@ models:
       - *operator_name
       - *token_amount
       - *usd_amount
+
+  - name: chainlink_optimism_fm_gas_daily
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "daily", "optimism"]
+    description: >
+      Chainlink FM Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_optimism_fm_gas_submission_logs
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "submission", "logs", "optimism"]
+    description: >
+      Chainlink FM Gas Transmission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_optimism_fm_fulfilled_transactions
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "fulfilled", "transactions", "optimism"]
+    description: >
+      Chainlink FM Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_optimism_fm_request_daily
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "request", "daily", "optimism"]
+    description: >
+      Chainlink FM Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_optimism_fm_reverted_transactions
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reverted", "transactions", "optimism"]
+    description: >
+      Chainlink FM Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_optimism_fm_reward_daily
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "daily", "optimism"]
+    description: >
+      Chainlink FM Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_optimism_fm_reward_evt_transfer
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "evt", "transfer", "optimism"]
+    description: >
+      Chainlink FM Reward Event Transfers
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_optimism_fm_reward_evt_transfer_daily
+    meta:
+      blockchain: optimism
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags:
+        ["chainlink", "fm", "reward", "evt", "transfer", "daily", "optimism"]
+    description: >
+      Chainlink FM Reward Event Transfers Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value

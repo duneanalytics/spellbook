@@ -195,7 +195,7 @@ select
     ,er.royalty_fee_amount_raw
     ,er.royalty_fee_amount_raw / power(10, t1.decimals) as royalty_fee_amount
     ,er.royalty_fee_amount_raw / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
-    ,er.royalty_fee_amount_raw / er.amount_raw * 100 as royalty_fee_percentage
+    ,er.royalty_fee_amount_raw / cast(er.amount_raw * 100 as double) as royalty_fee_percentage
     ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
     ,t1.symbol as royalty_fee_currency_symbol
     ,concat(cast(er.block_number as varchar),'-',cast(er.tx_hash as varchar),'-',cast(er.evt_index as varchar),'-', cast(er.sale_id as varchar)) as unique_trade_id
