@@ -41,7 +41,6 @@ models:
           combination_of_columns:
             - chain_id
             - resolver_executor
-            - resolver_address
     columns:
       - &resolver_address_not_null
         name: resolver_address
@@ -51,10 +50,10 @@ models:
         name: resolver_name
       - &resolver_status
         name: resolver_status
-      - &last_changed_at
-        name: last_changed_at
-      - &kyc
-        name: kyc
+      - &resolver_last_changed_at
+        name: resolver_last_changed_at
+      - &resolver_kyc
+        name: resolver_kyc
       - &resolver_executor_not_null
         name: resolver_executor
         tests:
@@ -66,14 +65,12 @@ models:
           - not_null
       - &executor_promotions
         name: executor_promotions
-      - &first_time
-        name: first_time
-      - &last_time
-        name: last_time
+      - &first_promoted_at
+        name: first_promoted_at
+      - &last_promoted_at
+        name: last_promoted_at
       - &tx_hash_example
         name: tx_hash_example
-      - &last_block_time
-        name: last_block_time
 
 
   - name: oneinch_protocols
@@ -352,36 +349,33 @@ models:
       tags: ['oneinch', 'raw']
     description: >
         fusion farms
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - resolver_address
+            - farm_address
     columns:
       - *resolver_address_not_null
       - *resolver_name
       - *resolver_status
-      - *last_changed_at
-      - *kyc
-      - &resolver_register_delegatee
-        name: resolver_register_delegatee
+      - *resolver_last_changed_at
+      - *resolver_kyc
+      - &resolver_registered_delegatee_at
+        name: resolver_registered_delegatee_at
       - &farm_address_not_null
         name: farm_address
         tests:
           - not_null
-      - &farm_ownership_transferred
-        name: farm_ownership_transferred
-      - &farm_created_at
-        name: farm_created_at
-      - &farm_default_token
-        name: farm_default_token
-      - &distributor_not_null
-        name: distributor
-        tests:
-          - not_null
-      - &distributor_status
-        name: distributor_status
-      - &distributor_set_up
-        name: distributor_set_up
-      - &unique_farm_distributor_set_up_id
-        name: unique_farm_distributor_set_up_id
-        tests:
-          - unique
+      - &farm_ownership_transferred_at
+        name: farm_ownership_transferred_at
+      - &farm_last_created_at
+        name: farm_last_created_at
+      - &farm_last_default_token
+        name: farm_last_default_token
+      - &farm_last_distributor
+        name: farm_last_distributor
+      - &farm_last_distributor_set_up_at
+        name: farm_last_distributor_set_up_at
 
   - name: oneinch_fusion_resolvers
     meta:
@@ -395,14 +389,23 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - resolver_address
+            - address
             - last_changed_at
     columns:
-      - *resolver_address_not_null
-      - *resolver_name
-      - *resolver_status
-      - *last_changed_at
-      - *kyc
+      - &address_not_null
+        name: address
+        tests:
+          - not_null
+      - &name
+        name: name
+      - &status
+        name: status
+      - &last_changed_at_not_null
+        name: last_changed_at
+        tests:
+          - not_null
+      - &kyc
+        name: kyc
 
 
   - name: oneinch_methods

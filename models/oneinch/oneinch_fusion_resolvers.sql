@@ -2,23 +2,24 @@
     config(
         schema = 'oneinch',
         alias = alias('fusion_resolvers'),
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
-        unique_key = ['resolver_address', 'last_changed_at'],
+        unique_key = ['address', 'last_changed_at'],
         tags = ['dunesql']
     )
 }}
 
 
+
 {% set project_start_date = "timestamp '2022-12-25'" %} 
-{% set lookback_days = -7 %}
+
 
 
 with
         
 names(
-    resolver_address
-    , resolver_name
+    address
+    , name
     , kyc
 ) as (
     values
@@ -34,7 +35,7 @@ names(
         , (0x12e5ceb5c14f3a1a9971da154f6530c1cf7274ac, 'Rosato LLC'     , true  )
         , (0xee230dd7519bc5d0c9899e8704ffdc80560e8509, 'Kinetex Labs'   , true  )
         , (0xaf3803348f4f1f527a8b6f611c30c8702bacd2af, 'Wintermute'     , true  )
-        , (0xdcdf16a03360d4971ca4c1fd9967a47125f3c995, 'Wintermute'     , true  )
+        , (0xdcdf16a03360d4971ca4c1fd9967a47125f3c995, 'Rizzolver'      , true  ) -- Wintermute
         , (0x05d18b713dab812c34edb48c76cd9c836d56752b, 'Propeller Swap' , true  )
         , (0x1113db6080ea2b9f92b2e9937ea712b3d730b3f1, 'Clipper'        , true  )
         , (0xa6219c7d74edeb12d74a3c664f7aaeb7d01ab902, ''               , false )
@@ -43,32 +44,32 @@ names(
         , (0x685018ea5c682c5e6d9e4116193f02018f306255, ''               , false )
 )
 
-, registerations as (
+, registrations as (
     select
-        substr(data, 13, 20) as resolver_address
-        , max_by(case topic0
-            when 0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9 then 'Registered'
-            when 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc then 'Unregistered'
-        end, block_time) as resolver_status
-        , max(block_time) as resolver_last_changed_at
+        substr(data, 13, 20) as address
+        , max_by(
+            case topic0
+                when 0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9 then 'Registered'
+                when 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc then 'Unregistered'
+            end
+            , block_time
+        ) as status
+        , max(block_time) as last_changed_at
     from {{ source('ethereum', 'logs') }}
     where
         contract_address in (0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77, 0xF55684BC536487394B423e70567413faB8e45E26) -- WhitelistRegistry
         and topic0 in (0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9, 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc)
-        {% if is_incremental() %}
-            and block_time >= cast(date_add('day', {{ lookback_days }}, now()) as timestamp)
-        {% else %}
-            and block_time >= {{ project_start_date }}
-        {% endif %}
+        and block_time >= {{ project_start_date }}
     group by 1
 )
 
+
 select
-      resolver_address
-    , if(resolver_name = '', '0x' || lower(to_hex(substr(resolver_address, 1, 2))) || '..' || lower(to_hex(substr(resolver_address, 19))), coalesce(resolver_name, 'UNSPECIFIED')) as resolver_name
-    , resolver_status
-    , resolver_last_changed_at
-    , resolver_kyc
-from registerations
-left join names using(resolver_address)
+      address
+    , if(name = '', '0x' || lower(to_hex(substr(address, 1, 2))) || '..' || lower(to_hex(substr(address, 19))), coalesce(name, 'UNSPECIFIED')) as name
+    , status
+    , last_changed_at
+    , kyc
+from registrations
+left join names using(address)
 order by 3, 2, 1
