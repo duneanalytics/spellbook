@@ -18,7 +18,7 @@ WITH dexs AS (
 
     SELECT
         evt_block_time AS block_time,
-        to AS taker,
+        account AS taker,
         CAST(NULL AS VARBINARY) AS maker,
         amountOut AS token_bought_amount_raw,
         amountIn AS token_sold_amount_raw,
