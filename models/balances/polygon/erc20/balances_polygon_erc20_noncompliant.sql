@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'balances_polygon_erc20',
         tags = ['dunesql'],
         alias = alias('erc20_noncompliant'),
         materialized ='table',
@@ -6,8 +7,9 @@
         )
 }}
 
-SELECT  
-    DISTINCT token_address
-FROM 
-{{ ref('transfers_polygon_erc20_rolling_day') }}
-WHERE round(amount/power(10, 18), 6) < -0.001
+
+{{
+    balances_fungible_noncompliant(
+        transfers_rolling_day = ref('transfers_polygon_erc20_rolling_day')
+    )
+}}
