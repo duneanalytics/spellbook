@@ -67,7 +67,7 @@ methods as (
             {% else %}
                 block_time >= {{ project_start_date }}
             {% endif %}
-            and ("to", {{ selector }}) in (select call_to, call_selector from methods)
+            and (coalesce("to", 0x), coalesce({{ selector }}, 0x)) in (select call_to, call_selector from methods)
             and call_type = 'call'
     ) as calls using(blockchain, tx_hash)
     join methods using(blockchain, call_to, call_selector)
@@ -96,7 +96,10 @@ methods as (
         , transfers.transfer_from
         , transfers.transfer_to
         , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
-        , count(*) over(partition by calls.blockchain, calls.tx_hash, array_sort(array[transfers.transfer_from, transfers.transfer_to])) as transfers_between_players
+        , if(
+            coalesce(transfers.transfer_from, transfers.transfer_to) is not null
+            , count(*) over(partition by calls.blockchain, calls.tx_hash, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
+        ) as transfers_between_players
         , rn_tta_asc
         , rn_tta_desc
         -- ext
