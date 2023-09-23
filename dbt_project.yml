@@ -315,6 +315,11 @@ models:
       bnb:
         +schema: nomiswap_bnb
 
+    opx_finance:
+      +schema: opx_finance
+      optimism:
+        +schema: opx_finance_optimism
+
     zodiac:
       +schema: zodiac
       ethereum:
