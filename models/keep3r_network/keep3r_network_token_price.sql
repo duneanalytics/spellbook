@@ -38,7 +38,6 @@ dex_price as (
         blockchain,
         date_trunc('day', hour) as day,
         avg(median_price) as price
-    from
     FROM {{ ref('dex_prices') }} prc --on prc.contract_address = tkn.token_address and prc.blockchain = prc.blockchain
     where
         hour >= timestamp '2021-10-10' -- month of $K3PR Mint
