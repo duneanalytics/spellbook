@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: circle_polygon
+    description: >
+      usdc on polygon contract
+    tables:
+      - name: UChildAdministrableERC20_call_balanceOf
+        loaded_at_field: call_block_time
