@@ -13,7 +13,7 @@ with
 
 executors as (
     select
-        "from" as address
+        "from" as resolver_address
         , substr(input, 49, 20) as resolver_executor
         , cast(bytearray_to_uint256(substr(input, 5, 32)) as double) as chain_id -- blockchain id
         , count(*) as executor_promotions
@@ -46,6 +46,6 @@ select
     , last_promoted_at
     , tx_hash_example
 from {{ ref('oneinch_fusion_resolvers') }} as fr
-join executors using(address)
+join executors on fr.address = executors.resolver_address
 left join {{ ref('evms_info') }} using(chain_id)
 order by name, resolver_executor
