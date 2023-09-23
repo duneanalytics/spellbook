@@ -167,14 +167,12 @@ methods as (
 )
 
 
-select 1 as rrr
-
--- select 
---     *
---     , cast(tx_hash as varchar)||'--'||
---         array_join(call_trace_address, '_')||'--'||
---         array_join(coalesce(transfer_trace_address, array[-1]), '_')
---     as unique_call_transfer_id
--- from merged
+select 
+    *
+    , cast(tx_hash as varchar)||'--'||
+        array_join(call_trace_address, '_')||'--'||
+        array_join(coalesce(transfer_trace_address, array[-1]), '_')
+    as unique_call_transfer_id
+from merged
 
 {% endmacro %}
