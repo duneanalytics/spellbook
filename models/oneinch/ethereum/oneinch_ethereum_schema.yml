@@ -1132,8 +1132,6 @@ models:
         name: call_trace_address
       - &call_from
         name: call_from
-      - &caller
-        name: caller
       - &call_to
         name: call_to
       - &call_selector
@@ -1197,7 +1195,8 @@ models:
       - *tx_success
       - *call_success
       - *call_trace_address
-      - *caller
+      - &caller
+        name: caller
       - *call_selector
       - *transfer_trace_address
       - *contract_address

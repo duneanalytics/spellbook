@@ -34,7 +34,6 @@
         'tx_success',
         'call_success',
         'call_trace_address',
-        'caller',
         'call_from',
         'call_to',
         'call_selector',
