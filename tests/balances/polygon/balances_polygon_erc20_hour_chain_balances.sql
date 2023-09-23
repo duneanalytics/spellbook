@@ -3,7 +3,7 @@ WITH
 get_calls_balances as ( 
     SELECT 
         account as wallet_address,
-        output_0 as amount_raw,
+        CAST(output_0 as double) as amount_raw,
         call_block_time as block_time,
         date_trunc('hour', call_block_time) as block_hour,
         call_block_number as block_number,
@@ -26,32 +26,40 @@ balances_calls as (
 get_spell_balances as (
     SELECT 
         bh.block_hour,  
-        bh.amount_raw_spell, 
-        bc.amount_raw_calls,
+        bh.amount_raw as amount_raw_spell, 
+        bc.amount_raw as amount_raw_calls,
         bh.wallet_address,
         bc.block_time,
-        bc.tx_hash
+        bc.tx_hash,
+        CONCAT(CAST(bh.block_hour as VARCHAR), CAST(bh.wallet_address as VARCHAR)) as filter_id 
     FROM 
     {{ ref('balances_polygon_erc20_hour') }} bh 
     INNER JOIN 
-    get_calls_balances bc 
+    balances_calls bc 
         ON bh.wallet_address = bc.wallet_address
         AND bh.block_hour = bc.block_hour
     WHERE bh.token_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174
 ),
 
-filter_txns_after_calls as (
+hours_addresses as (
     SELECT 
-        gs.*
+        agg.block_hour, 
+        agg.wallet_address, 
+        CONCAT(CAST(agg.block_hour as VARCHAR), CAST(agg.wallet_address as VARCHAR)) as filter_id 
     FROM 
     get_spell_balances gs 
-    LEFT JOIN 
-    {{ ref('transfers_polygon_erc20') }} er 
-        ON gs.wallet_address = er.wallet_address
-        AND gs.block_hour = date_trunc('hour', er.evt_block_time)
-        AND gs.block_time < er.evt_block_time
-    WHERE er.token_address = 0x2791bca1f2de4661ed88a30c99a7a9449aa84174
-    AND er.evt_block_time IS NULL 
+    INNER JOIN 
+    {{ ref('transfers_polygon_erc20_agg_hour') }}  agg 
+        ON gs.wallet_address = agg.wallet_address
+        AND gs.block_hour = agg.block_hour 
+),
+
+filter_txns_after_calls as (
+    SELECT
+        * 
+    FROM
+    get_spell_balances
+    WHERE filter_id NOT IN (SELECT filter_id FROM hours_addresses)
 ),
 
 test as (
