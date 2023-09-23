@@ -43,7 +43,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodo v1 sell
         SELECT
             s.evt_block_time AS block_time,
-            'DODO' AS project,
+            'dodo' AS project,
             '1' AS version,
             s.seller AS taker,
             CAST(NULL AS VARBINARY) AS maker,
@@ -68,7 +68,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodo v1 buy
         SELECT
             b.evt_block_time AS block_time,
-            'DODO' AS project,
+            'dodo' AS project,
             '1' AS version,
             b.buyer AS taker,
             CAST(NULL AS VARBINARY) AS maker,
@@ -93,7 +93,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dvm
         SELECT
             evt_block_time AS block_time,
-            'DODO' AS project,
+            'dodo' AS project,
             '2_dvm' AS version,
             trader AS taker,
             receiver AS maker,
@@ -116,7 +116,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dpp
         SELECT
             evt_block_time AS block_time,
-            'DODO' AS project,
+            'dodo' AS project,
             '2_dpp' AS version,
             trader AS taker,
             receiver AS maker,
@@ -139,7 +139,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
         -- dodov2 dsp
         SELECT
             evt_block_time AS block_time,
-            'DODO' AS project,
+            'dodo' AS project,
             '2_dsp' AS version,
             trader AS taker,
             receiver AS maker,
