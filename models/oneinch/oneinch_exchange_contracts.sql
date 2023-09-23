@@ -196,7 +196,7 @@ contracts as (
 
 , descriptions as (
     select
-            blockchain
+        blockchain
         , address
         , max_by(abi, created_at) as abi
         , max_by(map_from_entries(array[
@@ -215,7 +215,7 @@ contracts as (
 , creations as (
     
     select
-            project
+        project
         , address
         , contract_name
         , blockchain

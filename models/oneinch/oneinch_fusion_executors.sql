@@ -33,11 +33,11 @@ executors as (
 
 
 select
-      address as resolver_address
-    , name as resolver_name
-    , status as resolver_status
-    , last_changed_at as resolver_last_changed_at
-    , kyc as resolver_kyc
+    fr.address as resolver_address
+    , fr.name as resolver_name
+    , fr.status as resolver_status
+    , fr.last_changed_at as resolver_last_changed_at
+    , fr.kyc as resolver_kyc
     , resolver_executor
     , coalesce(blockchain, cast(chain_id as varchar)) as blockchain
     , chain_id
@@ -45,7 +45,7 @@ select
     , first_promoted_at
     , last_promoted_at
     , tx_hash_example
-from {{ ref('oneinch_fusion_resolvers') }}
+from {{ ref('oneinch_fusion_resolvers') }} as fr
 join executors using(address)
 left join {{ ref('evms_info') }} using(chain_id)
 order by name, resolver_executor
