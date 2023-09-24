@@ -8,19 +8,28 @@ models:
       project: openocean
       contributors: Henrystats
     config:
-      tags: ['openocean','trades', 'dex', 'aggregators', 'cross-chain', 'avalanche_c', 'fantom']
+      tags:
+        [
+          "openocean",
+          "trades",
+          "dex",
+          "aggregators",
+          "cross-chain",
+          "avalanche_c",
+          "fantom",
+        ]
     description: >
-        openocean aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
+      openocean aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -77,7 +86,7 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: "address of the trace within the call graph forest"
+        description: "Trace address of the transaction"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
