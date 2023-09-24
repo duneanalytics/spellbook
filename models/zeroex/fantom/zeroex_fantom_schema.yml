@@ -115,6 +115,8 @@ models:
           check_columns:
             - maker
             - taker
+            - maker_token
+            - taker_token
     columns:
       - *blockchain
       - *block_date
