@@ -28,7 +28,7 @@ with node_names as (
                 , call_block_time
                 , call_tx_hash 
             from 
-                ethereumnameservice_ethereum.DefaultReverseResolver_call_setName
+                {{source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName')}}
             where call_success
             -- {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -39,7 +39,7 @@ with node_names as (
                 , call_block_time
                 , call_tx_hash
             from
-                ethereumnameservice_ethereum.PublicResolver_v2_call_setName
+                {{source('ethereumnameservice_ethereum', 'PublicResolver_v2_call_setName')}}
             where call_success
             -- {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
