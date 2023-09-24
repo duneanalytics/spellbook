@@ -45,7 +45,7 @@ with node_names as (
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             union all
-            select newName as name
+            select name
                 , node
                 , call_block_time
                 , call_tx_hash
