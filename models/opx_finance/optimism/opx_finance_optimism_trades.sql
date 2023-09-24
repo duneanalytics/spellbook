@@ -12,7 +12,7 @@
     )
 }}
 
-{% set project_start_date = '2022-11-04' %}
+{% set project_start_date = '2022-11-04' %} -- Using MIN(evt_block_time) to get the project_start_date
 
 WITH dexs AS (
 
