@@ -74,4 +74,4 @@ SELECT
     * 
 FROM 
 test
-WHERE value_test = true
+WHERE value_test = false
