@@ -30,9 +30,9 @@ with node_names as (
             from 
                 {{source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName')}}
             where call_success
-            -- {% if is_incremental() %}
+            {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
-            -- {% endif %}
+            {% endif %}
             union all 
             select newName as name
                 , node
@@ -41,9 +41,20 @@ with node_names as (
             from
                 {{source('ethereumnameservice_ethereum', 'PublicResolver_v2_call_setName')}}
             where call_success
-            -- {% if is_incremental() %}
+            {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
-            -- {% endif %}
+            {% endif %}
+            union all
+            select newName as name
+                , node
+                , call_block_time
+                , call_tx_hash
+            from
+                {{source('ethereumnameservice_ethereum', 'PublicResolver_call_setName')}}
+            where call_success
+            {% if is_incremental() %}
+            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}            
         )
     ) foo
     where ordering = 1
