@@ -21,7 +21,7 @@ FROM
     ('eth-ethereum', 'ETH', 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 18),
     ('eth-ethereum', 'ETH', 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000,18),
     ('dai-dai', 'DAI', 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 18),
-    ('usdc-usd-coin', 'USDC', 0x7f5c764cbc14f9669b88837ca1490cca17c31607, 6),
+    ('usdc-usd-coin', 'USDC.e', 0x7f5c764cbc14f9669b88837ca1490cca17c31607, 6),
     ('usdt-tether', 'USDT', 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58, 6),
     ('wbtc-wrapped-bitcoin', 'WBTC', 0x68f180fcce6836688e9084f035309e29bf0a2095, 8),
     ('weth-weth', 'WETH', 0x4200000000000000000000000000000000000006,18),
@@ -114,6 +114,7 @@ FROM
     ('bomb-fbomb', 'fBOMB', 0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979,18),
     ('busd-binance-usd', 'BUSD', 0x9c9e5fd8bbc25984b178fdce6117defa39d2db39,18),
     ('cbeth-coinbase-wrapped-staked-eth', 'cbETH', 0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2,18),
-    ('grain-granary', 'GRAIN', 0xfD389Dc9533717239856190F42475d3f263a270d,18)
+    ('grain-granary', 'GRAIN', 0xfD389Dc9533717239856190F42475d3f263a270d,18),
+    ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6)
 
 ) as temp (token_id, symbol, contract_address, decimals)

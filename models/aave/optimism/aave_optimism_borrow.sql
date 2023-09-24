@@ -1,5 +1,6 @@
 {{ config(
-      alias = alias('borrow')
+      tags = ['dunesql']
+      , alias = alias('borrow')
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave",
