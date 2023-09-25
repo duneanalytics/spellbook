@@ -421,6 +421,7 @@ WITH raw_token_list AS (
     ,(0xaf3A6f67Af1624d3878A8d30b09FAe7915DcA2a0, 'EQB', 18, 'underlying')
     ,(0xc5d43a94e26fca47a9b21cf547ae4aa0268670e1, 'FPI', 18, 'underlying')
     ,(0xc871cCf95024eFa2CbcE69B5B775D2a1DcF49c1B, 'GROW', 18, 'underlying')
+    ,(0x9046D36440290FfDE54FE0DD84Db8b1CfEE9107B, 'YFI', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
