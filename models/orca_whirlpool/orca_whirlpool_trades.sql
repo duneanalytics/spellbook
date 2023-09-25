@@ -70,17 +70,17 @@ with
                 when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
                 else concat(tokenA_symbol, '-', tokenB_symbol)
             end as token_pair
-            , case when bytearray_substring(sp.call_data,43,1) = 0x01 then COALESCE(tokenB_symbol, tokenB) 
+            , case when bytearray_substring(sp.call_data,42,1) = 0x01 then COALESCE(tokenB_symbol, tokenB) 
                 else COALESCE(tokenA_symbol, tokenA)
                 end as token_bought_symbol 
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
-            , tr_2.amount/COALESCE(pow(10,case when bytearray_substring(sp.call_data,43,1) = 0x01 then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
-            , case when bytearray_substring(sp.call_data,43,1) = 0x01 then COALESCE(tokenA_symbol, tokenA)
+            , tr_2.amount/COALESCE(pow(10,case when bytearray_substring(sp.call_data,42,1) = 0x01 then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
+            , case when bytearray_substring(sp.call_data,42,1) = 0x01 then COALESCE(tokenA_symbol, tokenA)
                 else COALESCE(tokenB_symbol, tokenB)
                 end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
-            , tr_1.amount/COALESCE(pow(10,case when bytearray_substring(sp.call_data,43,1) = 0x01 then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
+            , tr_1.amount/COALESCE(pow(10,case when bytearray_substring(sp.call_data,42,1) = 0x01 then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
             , wp.fee_tier
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
@@ -88,16 +88,16 @@ with
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            , case when bytearray_substring(sp.call_data,43,1) = 0x01 then wp.tokenB
+            , case when bytearray_substring(sp.call_data,42,1) = 0x01 then wp.tokenB
                 else wp.tokenA
                 end as token_bought_mint_address
-            , case when bytearray_substring(sp.call_data,43,1) = 0x01 then wp.tokenA 
+            , case when bytearray_substring(sp.call_data,42,1) = 0x01 then wp.tokenA 
                 else wp.tokenB
                 end as token_sold_mint_address
-            , case when bytearray_substring(sp.call_data,43,1) = 0x01 then wp.tokenBVault
+            , case when bytearray_substring(sp.call_data,42,1) = 0x01 then wp.tokenBVault
                 else wp.tokenAVault
                 end as token_bought_vault
-            , case when bytearray_substring(sp.call_data,43,1) = 0x01 --sp.aToB = true, we don't have decoding right now for some instructions due to https://dune.com/queries/3048430/5070701
+            , case when bytearray_substring(sp.call_data,42,1) = 0x01 --sp.aToB = true, we don't have decoding right now for some instructions due to https://dune.com/queries/3048420/5070701
                 then wp.tokenAVault 
                 else wp.tokenBVault
                 end as token_sold_vault
@@ -127,6 +127,7 @@ with
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         WHERE 1=1
+            AND sp.call_tx_id = '2fovtipkrbgYeS4spR38EMESMBRHSMFJeEzYd6F3PWXpuc2QSXW2b2QhfW2RNmp1gUHeJMXtNUiwQz6ee1NEYtCH'
             {% if is_incremental() %}
             AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
