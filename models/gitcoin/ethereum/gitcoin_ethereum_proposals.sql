@@ -58,7 +58,7 @@ SELECT DISTINCT
     CASE 
          WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
+         WHEN pcr.startBlock < pcr.evt_block_number and pcr.evt_block_number < pcr.endBlock THEN 'Active'
          WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
          ELSE 'Defeated' END AS status,
     description as description
