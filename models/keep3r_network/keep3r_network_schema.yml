@@ -1,41 +1,8 @@
 version: 2
 
 models:
-<<<<<<< HEAD
   
   - name: keep3r_network_liquidity_addition
-=======
-  - name: keep3r_network_addLiquidityToJob
-    meta:
-      blockchain: ethereum, optimisim, polygon
-      project: keep3r_network
-      contributors: 0xr3x
-    
-    config:
-      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
-    description: "List of Keep3r network liquidity to jobs on ethereum, optimisim and polygon."
-    columns:
-    - &block_time
-      name: block_time
-      description: "UTC event block time"
-    - &amount
-      name: amount
-      description: "Amount of token for the job"
-    - &job
-      name: job
-      description: "The smart contract address that wishes an external entity to perform an action"
-    - &liquidity
-      name: liquidity
-      description: "The liquidity of the pool"
-    - &event
-      name: event
-      description: "Event type"
-    - &blockchain
-      name: blockchain
-      description: "Blockchain"
-
-  - name: keep3r_network_unbondLiquidityFromJob
->>>>>>> 07004c2e ("feat_keep3r")
     meta:
       blockchain: ethereum, optimisim, polygon
       project: keep3r_network
@@ -44,7 +11,6 @@ models:
     config:
       tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
     description: >
-<<<<<<< HEAD
       List of Keep3r network liquidity additions on ethereum, optimisim and polygon.
     columns:
       - name: evt_block_time,
@@ -157,13 +123,3 @@ models:
       - name: _rewardedAt,
       - name: blockchain, 
       - name: token
-=======
-      List of Keep3r network unbond liquidity to jobs on ethereum, optimisim and polygon.
-    columns:
-      - name: block_time
-      - name: amount
-      - name: job
-      - name: liquidity
-      - name: event
-      - name: blockchain
->>>>>>> 07004c2e ("feat_keep3r")
