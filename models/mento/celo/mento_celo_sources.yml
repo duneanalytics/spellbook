@@ -25,8 +25,7 @@ sources:
           - &evt_tx_hash
             name: evt_tx_hash
             description: "Primary key of the transaction"
-          - &stable
-            name: stable
+          - name: stable
             description: "cUSD token address"
           
       - name: ExchangeEUR_evt_StableTokenSet
@@ -38,8 +37,7 @@ sources:
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - *stable
-            name: stable
+          - name: stable
             description: "cEUR token address"
       
       - name: ExchangeBRL_evt_StableTokenSet
@@ -51,8 +49,7 @@ sources:
           - *evt_block_time
           - *evt_index
           - *evt_tx_hash
-          - *stable
-            name: stable
+          - name: stable
             description: "cREAL token address"
       
       - name: BiPoolManager_evt_ExchangeCreated
