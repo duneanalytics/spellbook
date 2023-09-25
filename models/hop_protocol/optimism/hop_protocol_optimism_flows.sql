@@ -24,7 +24,7 @@ SELECT
 , CAST(DATE_TRUNC('month',tf.block_time) as DATE) AS block_month
 , tf.block_number
 , tx_hash
-, '' as sender
+, CAST(NULL AS VARBINARY) as sender
 , recipient_address as receiver
 , erc.symbol AS token_symbol
 , bridged_token_amount_raw / POWER(10,erc.decimals) AS token_amount
@@ -56,7 +56,7 @@ FROM (
     ,ts.evt_tx_hash AS tx_hash
     , ts."amount" AS bridged_token_amount_raw
     , ts."bonderFee" AS bridged_fee_amount_raw
-    , '' as sender_address
+    , CAST(NULL AS VARBINARY) as sender_address
     , ts.recipient AS recipient_address
     ,'' AS trace_address
     ,ts.evt_index
@@ -78,7 +78,7 @@ FROM (
     ,tl.evt_tx_hash AS tx_hash
     , tl."amount" AS bridged_token_amount_raw
     , tl."relayerFee" AS bridged_fee_amount_raw
-    , '' as sender_address
+    , CAST(NULL AS VARBINARY) as sender_address
     , tl.recipient AS recipient_address
     ,'' AS trace_address
     ,tl.evt_index
@@ -100,7 +100,7 @@ FROM (
     ,wb.evt_tx_hash AS tx_hash
     , wb."amount" AS bridged_token_amount_raw
     , 0 AS bridged_fee_amount_raw
-    , '' as sender_address
+    , CAST(NULL AS VARBINARY) as sender_address
     , COALESCE(arb.recipient,poly.recipient,gno.recipient) AS recipient_address
     ,'' AS trace_address
     ,wb.evt_index
