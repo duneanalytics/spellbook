@@ -17,7 +17,7 @@
 
 {% set project_start_date = '2020-04-22' %}
 
-with dexs as (
+{% set dexs %}
   --Mento v1
   select
     t.evt_block_time as block_time,
@@ -43,8 +43,8 @@ with dexs as (
   {% endif %}
 
   -- TODO: add 2 other pairs
+{% endset %}
 
-)
 select distinct
   'celo' as blockchain,
   'mento' as project,
