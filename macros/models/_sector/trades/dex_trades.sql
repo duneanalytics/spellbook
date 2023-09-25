@@ -1,4 +1,4 @@
-{% macro dex_trades(blockchain, project, version, project_start_date, dex) %}
+{% macro dex_trades(blockchain, project, version, project_start_date, dex, transactions) %}
 
 select distinct
   '{{blockchain}}' as blockchain,
@@ -32,7 +32,7 @@ select distinct
   tx.to as tx_to,
   dex.evt_index
 from {{ dex }} dex
-  join {{ source('{{blockchain}}', 'transactions') }} tx on tx.hash = dex.tx_hash
+  join {{ transactions }} tx on tx.hash = dex.tx_hash
     {% if not is_incremental() %}
     and tx.block_time >= timestamp '{{project_start_date}}'
     {% endif %}

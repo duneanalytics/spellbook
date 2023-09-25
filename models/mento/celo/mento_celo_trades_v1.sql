@@ -18,9 +18,10 @@
 {{
   dex_trades(
     blockchain = 'celo',
-    project = '',
+    project = 'mento',
     version = '1',
     project_start_date = '2020-04-22',
-    dex = ref('mento_celo_trades_v1_dex')
+    dex = ref('mento_celo_trades_v1_dex'),
+    transactions = {{ source('celo', 'transactions') }}
   )
 }}
