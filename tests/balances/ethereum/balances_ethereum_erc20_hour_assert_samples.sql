@@ -6,14 +6,14 @@ with sampled_wallets as
      from {{ ref('balances_ethereum_erc20_hour') }} bal
      where wallet_address in (select distinct wallet_address from {{ ref('balances_ethereum_erc20_latest_entries') }})
      and symbol in ('USDT', 'LINK', 'DAI', 'USDC')
-     and bal.hour > '2022-05-04' and bal.hour < '2022-05-06'
+     and bal.block_hour > timestamp '2022-05-04' and bal.block_hour < timestamp '2022-05-06'
  )
 
 , unit_tests as
 (SELECT case when round(test_data.amount_raw/power(10, 22), 3) = round(token_balances.amount_raw/power(10, 22), 3) then True else False end as amount_raw_test
-FROM {{ ref('balances_ethereum_erc20_latest_entries') }} as test_data
-JOIN sampled_wallets as token_balances
-ON test_data."timestamp" = token_balances.block_hour
+FROM {{ ref('balances_ethereum_erc20_latest_entries') }} test_data
+INNER JOIN sampled_wallets token_balances
+ON test_data.timestamp = token_balances.block_hour
 AND test_data.wallet_address = token_balances.wallet_address
 AND test_data.token_address = token_balances.token_address)
 
