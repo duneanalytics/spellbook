@@ -30,8 +30,8 @@ WITH prices AS (
     dex_prices_1 AS (
        SELECT
             date_trunc('day', hour) AS day,
-           contract_address AS token,
-            percentile(median_price, 0.5) AS price,
+            contract_address AS token,
+            approx_percentile(median_price, 0.5) AS price,
             SUM(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         WHERE blockchain = 'ethereum'
