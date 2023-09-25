@@ -32,7 +32,7 @@ WITH prices AS (
             date_trunc('day', hour) AS day,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
-            SUM(sample_size) AS sample_size
+            SUM(sample_size) AS sample_size 
         FROM {{ ref('dex_prices') }}
         WHERE blockchain = 'ethereum'
         {% if is_incremental() %}
