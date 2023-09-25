@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'transfers_ethereum',
 	tags=['legacy'],
 	
         alias = alias('erc20_agg_hour', legacy_model=True),
