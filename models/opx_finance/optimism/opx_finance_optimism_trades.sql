@@ -32,7 +32,7 @@ WITH dexs AS (
         {{ source('opx_finance_optimism', 'Router_evt_Swap') }}
         
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 SELECT
