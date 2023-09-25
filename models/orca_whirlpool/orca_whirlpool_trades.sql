@@ -70,17 +70,17 @@ with
                 when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
                 else concat(tokenA_symbol, '-', tokenB_symbol)
             end as token_pair
-            , case when bytearray_substring(sp.data,43,1) = 0x01then COALESCE(tokenB_symbol, tokenB) 
+            , case when bytearray_substring(sp.data,43,1) = 0x01 then COALESCE(tokenB_symbol, tokenB) 
                 else COALESCE(tokenA_symbol, tokenA)
                 end as token_bought_symbol 
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
-            , tr_2.amount/COALESCE(pow(10,case when bytearray_substring(sp.data,43,1) = 0x01then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
-            , case when bytearray_substring(sp.data,43,1) = 0x01then COALESCE(tokenA_symbol, tokenA)
+            , tr_2.amount/COALESCE(pow(10,case when bytearray_substring(sp.data,43,1) = 0x01 then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
+            , case when bytearray_substring(sp.data,43,1) = 0x01 then COALESCE(tokenA_symbol, tokenA)
                 else COALESCE(tokenB_symbol, tokenB)
                 end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
-            , tr_1.amount/COALESCE(pow(10,case when bytearray_substring(sp.data,43,1) = 0x01then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
+            , tr_1.amount/COALESCE(pow(10,case when bytearray_substring(sp.data,43,1) = 0x01 then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
             , wp.fee_tier
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
@@ -88,13 +88,13 @@ with
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            , case when bytearray_substring(sp.data,43,1) = 0x01then wp.tokenB
+            , case when bytearray_substring(sp.data,43,1) = 0x01 then wp.tokenB
                 else wp.tokenA
                 end as token_bought_mint_address
-            , case when bytearray_substring(sp.data,43,1) = 0x01then wp.tokenA 
+            , case when bytearray_substring(sp.data,43,1) = 0x01 then wp.tokenA 
                 else wp.tokenB
                 end as token_sold_mint_address
-            , case when bytearray_substring(sp.data,43,1) = 0x01then wp.tokenBVault
+            , case when bytearray_substring(sp.data,43,1) = 0x01 then wp.tokenBVault
                 else wp.tokenAVault
                 end as token_bought_vault
             , case when bytearray_substring(sp.data,43,1) = 0x01 --sp.aToB = true, we don't have decoding right now for some instructions due to https://dune.com/queries/3048430/5070701
