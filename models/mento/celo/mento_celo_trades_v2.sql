@@ -2,7 +2,7 @@
     config(
         tags=['dunesql'],
         schema = 'mento_celo',
-        alias = alias('trades_v1'),
+        alias = alias('trades_v2'),
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

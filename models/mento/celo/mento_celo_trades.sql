@@ -11,7 +11,8 @@
 }}
 
 {% set dex_models = [
-  ref('mento_celo_trades_v1')
+  ref('mento_celo_trades_v1'),
+  ref('mento_celo_trades_v2')
 ] %}
 
 {% for dex_model in dex_models %}

@@ -2,7 +2,7 @@
     config(
         tags = ['legacy'],
         schema = 'mento_celo',
-        alias = alias('trades_v1', legacy_model=True)
+        alias = alias('trades_v2', legacy_model=True)
     )
 }}
 
