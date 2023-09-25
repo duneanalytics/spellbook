@@ -1,7 +1,6 @@
 {{ config (
     tags=['dunesql']
     , alias = alias('token_prices')
-    , unique_key = ['blockchain', 'block_time']
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",
