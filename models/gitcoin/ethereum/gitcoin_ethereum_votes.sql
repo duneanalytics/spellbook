@@ -26,7 +26,7 @@ GROUP BY proposalId)
 SELECT 
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
-    cast(NULL as string) as version,
+    cast(NULL as varchar) as version,
     vc.evt_block_time as block_time,
     date_trunc('DAY', vc.evt_block_time) AS block_date,
     vc.evt_tx_hash as tx_hash,
@@ -43,7 +43,7 @@ SELECT
          WHEN vc.support = 1 THEN 'for'
          WHEN vc.support = 2 THEN 'abstain'
          END AS support,
-    cast(NULL as string) as reason
+    cast(NULL as varchar) as reason
 FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
