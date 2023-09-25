@@ -81,8 +81,8 @@ WITH blur_v2_trades AS (
     {% endif %}
     )
 
-SELECT CAST(date_trunc('day', bt.block_time) AS date) AS block_date
-, bt.block_time
+SELECT
+  bt.block_time
 , bt.block_number
 , bt.tx_hash
 , bt.evt_index AS sub_tx_trade_id
