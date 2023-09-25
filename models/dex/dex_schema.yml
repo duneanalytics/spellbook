@@ -392,8 +392,8 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
-      - &sandwich_side
-        name: sandwich_side
+      - &sandwiched_token
+        name: sandwiched_token
         description: "Side of the sandwich trade"
         tests:
           - accepted_values:
