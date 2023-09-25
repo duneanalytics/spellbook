@@ -127,7 +127,6 @@ with
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         WHERE 1=1
-            AND sp.call_tx_id = '2fovtipkrbgYeS4spR38EMESMBRHSMFJeEzYd6F3PWXpuc2QSXW2b2QhfW2RNmp1gUHeJMXtNUiwQz6ee1NEYtCH'
             {% if is_incremental() %}
             AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
