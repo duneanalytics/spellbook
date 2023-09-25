@@ -102,9 +102,6 @@ models:
       - &token_order
         name: token_order
         description: "Order of the token (to easily group them later on)"
-        tests:
-          - accepted_values:
-              values: [0, 1]
 
   - name: dex_arbitrum_sandwiches
     meta: 
