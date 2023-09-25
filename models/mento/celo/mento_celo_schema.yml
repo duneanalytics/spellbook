@@ -182,6 +182,29 @@ models:
         name: evt_index
         description: "Index value of the transaction"
 
+  - name: mento_celo_trades_v1_dex
+    meta:
+      blockchain: celo
+      sector: dex
+      project: mento
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'mento', 'dex', 'trades']
+    description: >
+        Mento Protocol DEX V1 trades helper model
+    columns:
+      - *block_time
+      - *taker
+      - *maker
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
   - name: mento_celo_trades_v1
     meta:
       blockchain: celo
