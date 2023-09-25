@@ -1,65 +1,25 @@
-{{ config(materialized='view', alias = alias('erc20'),
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+{{ config(
+    schema = 'transfers_ethereum',
+    tags=['dunesql'],
+    materialized = 'incremental',
+    partition_by = ['block_month'],
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
+    alias = alias('erc20'),
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke","dot2dotseurat"]\') }}') }}
-
-with
-    sent_transfers as (
-        select
-            CAST('send' AS VARCHAR(4)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`to` AS VARCHAR(100)) as unique_transfer_id,
-            `to` as wallet_address,
-            contract_address as token_address,
-            evt_block_time,
-            value as amount_raw
-        from
-            {{ source('erc20_ethereum', 'evt_transfer') }}
+                                    \'["soispoke", "dot2dotseurat", "Henrystats"]\') }}'
     )
+}}
 
-    ,
-    received_transfers as (
-        select
-        CAST('receive' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`from` AS VARCHAR(100)) as unique_transfer_id,
-        `from` as wallet_address,
-        contract_address as token_address,
-        evt_block_time,
-        '-' || CAST(value AS VARCHAR(100)) as amount_raw
-        from
-            {{ source('erc20_ethereum', 'evt_transfer') }}
-    )
 
-    ,
-    deposited_weth as (
-        select
-            CAST('deposit' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(dst AS VARCHAR(100)) as unique_transfer_id,
-            dst as wallet_address,
-            contract_address as token_address,
-            evt_block_time,
-            wad as amount_raw
-        from
-            {{ source('zeroex_ethereum', 'weth9_evt_deposit') }}
+{{
+    transfers_erc20(
+        blockchain = 'ethereum',
+        erc20_evt_transfer = source('erc20_ethereum', 'evt_transfer'),
+        wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
+        wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal')
     )
-
-    ,
-    withdrawn_weth as (
-        select
-            CAST('withdrawn' AS VARCHAR(9)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(src AS VARCHAR(100)) as unique_transfer_id,
-            src as wallet_address,
-            contract_address as token_address,
-            evt_block_time,
-            '-' || CAST(wad AS VARCHAR(100)) as amount_raw
-        from
-            {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
-    )
-    
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from sent_transfers
-union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from received_transfers
-union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from deposited_weth
-union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from withdrawn_weth
+}}

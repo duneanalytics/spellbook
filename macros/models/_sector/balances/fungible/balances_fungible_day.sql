@@ -1,4 +1,4 @@
-{% macro balances_fungible_day(blockchain, transfers_rolling_day, first_transaction_date, balances_noncompliant=null, filter_mainnet_token=null ) %}
+{% macro balances_fungible_day(blockchain, transfers_rolling_day, first_transaction_date, balances_noncompliant=null, filter_mainnet_token=null, rebase_tokens=null ) %}
 
 WITH 
 
@@ -58,11 +58,18 @@ LEFT JOIN
 LEFT JOIN {{ balances_noncompliant }} nc
     ON b.token_address = nc.token_address
 {% endif %}
+{% if rebase_tokens %}
+LEFT JOIN {{ rebase_tokens }} rt
+    ON b.token_address = rt.contract_address
+{% endif %}
 WHERE 1 = 1 
 {% if balances_noncompliant %}
 AND nc.token_address IS NULL
 {% endif %}
 -- Removes mainnet token for chains which have erc20 transfer event for mainnet tokens (eg optimism)
+{% if rebase_tokens %}
+AND rt.contract_address IS NULL
+{% endif %}
 {% if filter_mainnet_token %}
 AND b.token_address != {{filter_mainnet_token}}
 {% endif %}

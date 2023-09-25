@@ -483,8 +483,6 @@ models:
 
     balances:
       +schema: balances
-      ethereum:
-        +schema: balances_ethereum
       arbitrum:
         +schema: balances_arbitrum
       bnb:
@@ -623,8 +621,6 @@ models:
 
     transfers:
       +schema: transfers
-      ethereum:
-        +schema: transfers_ethereum
       optimism:
         +schema: transfers_optimism
       bnb:
