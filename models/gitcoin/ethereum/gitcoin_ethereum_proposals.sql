@@ -20,7 +20,7 @@
 with cte_support as (SELECT 
         voter as voter,
         CASE WHEN support = FALSE THEN sum(votes/1e18) ELSE 0 END AS votes_against,
-        CASE WHEN support = FALSE THEN sum(votes/1e18) ELSE 0 END AS votes_for,
+        CASE WHEN support = TRUE THEN sum(votes/1e18) ELSE 0 END AS votes_for,
         0 AS votes_abstain,
         proposalId
 FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }}
