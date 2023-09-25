@@ -392,9 +392,21 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
-      - &sandwiched_token
-        name: sandwiched_token
-        description: "Side of the sandwich trade"
+      - &commonality
+        name: commonality
+        description: "Commonality between this tx and others from the same MEV bot (in same block)"
         tests:
           - accepted_values:
-              values: ['frontrun', 'backrun']
+              values: ['tx_from', 'taker']
+      - &sandwiched_token
+        name: sandwiched_token
+        description: "Token that was sandwiched"
+        tests:
+          - accepted_values:
+              values: ['token_bought', 'token_sold']
+      - &token_order
+        name: token_order
+        description: "Order of the token (to easily group them later on)"
+        tests:
+          - accepted_values:
+              values: [0, 1]

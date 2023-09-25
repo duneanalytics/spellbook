@@ -90,12 +90,21 @@ models:
       - &commonality
         name: commonality
         description: "Commonality between this tx and others from the same MEV bot (in same block)"
+        tests:
+          - accepted_values:
+              values: ['tx_from', 'taker']
       - &sandwiched_token
         name: sandwiched_token
         description: "Token that was sandwiched"
+        tests:
+          - accepted_values:
+              values: ['token_bought', 'token_sold']
       - &token_order
         name: token_order
-        description: "Order of the token (to easily grup them later on)"
+        description: "Order of the token (to easily group them later on)"
+        tests:
+          - accepted_values:
+              values: [0, 1]
 
   - name: dex_arbitrum_sandwiches
     meta: 
