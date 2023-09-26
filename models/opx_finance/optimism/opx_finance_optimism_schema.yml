@@ -1,15 +1,16 @@
 version: 2
 
 models:
-  - name: bebop_arbitrum_trades
+  - name: opx_finance_optimism_trades
     meta:
-      blockchain: arbitrum
+      blockchain: optimism
       sector: dex
-      project: bebop
-      contributors: alekss
+      project: opx_finance
+      contributors: kaiblade
     config:
-      tags: [ 'arbitrum','bebop','trades','dex' ]
-    description: Bebop contract trades on arbitrum - formatted for dex.trades
+      tags: ['optimism','opx_finance','trades','dex']
+    description: >
+        opx_finance contract trades on optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,18 +20,17 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: bebop
-          version: 2
+      - check_dex_seed:
+          blockchain: optimism
+          project: opx_finance
+          version: 1
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project
+      - &project 
         name: project
-        description: "Project name of the DEX"
+        description: "Project name of the DEX"  
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -88,15 +88,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: ""
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
-      - &trade_type
-        name: trade_type
-        description: "Trade classification (Multi-buy, Multi-sell or Simple-swap)"
