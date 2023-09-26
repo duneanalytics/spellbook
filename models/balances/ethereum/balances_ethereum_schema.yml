@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     config:
       tags: ['balances', 'ethereum', 'erc20', 'hour', 'soispoke', 'dot2dotseurat']
     description: >
@@ -16,12 +16,12 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+      - &block_month
+        name: block_month
+        description: "UTC event block time truncated to the month mark"
       - &block_hour
         name: block_hour
         description: "UTC event block time truncated to the hour mark"
-      - &block_day
-        name: block_day
-        description: "UTC event block time truncated to the day mark"
       - &wallet_address
         name: wallet_address
         description: "Address of the wallet holding this ERC20 token"
@@ -46,7 +46,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     config:
       tags: ['balances', 'ethereum', 'erc20', 'day', 'soispoke', 'dot2dotseurat']
     description: >
@@ -54,7 +54,10 @@ models:
         Depends on erc20_ethereum_transfers.
     columns:
       - *blockchain
-      - *block_day
+      - *block_month
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark"
       - *wallet_address
       - *token_address
       - *amount_raw
@@ -68,7 +71,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     config:
       tags: ['balances', 'ethereum', 'erc20', 'latest', 'soispoke', 'dot2dotseurat']
     description: >
@@ -92,7 +95,7 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: dot2dotseurat
+      contributors: dot2dotseurat, lajarre
     config:
       tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily']
     description: >

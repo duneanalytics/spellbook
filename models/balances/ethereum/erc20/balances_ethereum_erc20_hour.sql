@@ -9,64 +9,13 @@
         )
 }}
 
-with
-
--- credits @tomfutago - https://dune.com/queries/2988360
-
-years as (
-    select year
-    from (
-        values (
-            sequence(timestamp '2015-01-01', cast(date_trunc('year', now()) as timestamp), interval '1' year)
-          )
-    ) s(year_array)
-    cross join unnest(year_array) as d(year)
-),
-_hours as (
-    select date_add('hour', s.n, y.year) as block_hour
-    from years y
-    cross join unnest(sequence(1, 9000)) s(n)
-    where s.n <= date_diff('hour', y.year, y.year + interval '1' year)
-),
-hours as (
-  select block_hour from _hours
-  where block_hour < localtimestamp
-  order by 1
-),
-
-hourly_balances as (
-    SELECT
-        wallet_address,
-        token_address,
-        amount_raw,
-        amount,
-        block_hour,
-        symbol,
-        lead(block_hour, 1, now()) OVER (PARTITION BY token_address, wallet_address ORDER BY block_hour) AS next_hour
-    FROM {{ ref('transfers_ethereum_erc20_rolling_hour') }}
-)
-
-SELECT
-    'ethereum' as blockchain,
-    h.block_hour,
-    TRY_CAST(date_trunc('DAY', h.block_hour) AS date) as block_day,
-    b.wallet_address,
-    b.token_address,
-    b.amount_raw,
-    b.amount,
-    b.amount * p.price as amount_usd,
-    b.symbol
-FROM hourly_balances b
-INNER JOIN hours h ON b.block_hour <= h.block_hour AND h.block_hour < b.next_hour
-LEFT JOIN {{ source('prices', 'usd') }} p
-    ON p.contract_address = b.token_address
-    AND h.block_hour = p.minute
-    AND p.blockchain = 'ethereum'
--- Removes rebase tokens from balances
-LEFT JOIN {{ ref('tokens_ethereum_rebase') }}  as r
-    ON b.token_address = r.contract_address
--- Removes likely non-compliant tokens due to negative balances
-LEFT JOIN {{ ref('balances_ethereum_erc20_noncompliant') }}  as nc
-    ON b.token_address = nc.token_address
-WHERE r.contract_address is null
-and nc.token_address is null
+{{
+    balances_fungible_hour(
+        blockchain = 'ethereum',
+        first_transaction_date = '2015-01-01',
+        is_more_than_year_ago = true,
+        transfers_rolling_hour = ref('transfers_ethereum_erc20_rolling_hour'),
+        balances_noncompliant = ref('balances_ethereum_erc20_noncompliant'),
+        rebase_tokens= ref('tokens_ethereum_rebase')
+    )
+}}
