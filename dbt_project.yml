@@ -359,6 +359,8 @@ models:
         +schema: sushiswap_bnb
       base:
         +schema: sushiswap_base
+      celo:
+        +schema: sushiswap_celo
 
     zerion:
       +schema: zerion

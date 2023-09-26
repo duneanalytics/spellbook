@@ -1,16 +1,25 @@
 version: 2
 
 models:
-  - name: sushiswap_trades
+  - name: sushiswap_celo_trades
     meta:
-      blockchain: ethereum, fantom, avalanche_c, arbitrum, gnosis, polygon, bnb, base, celo
+      blockchain: celo
       sector: dex
       project: sushiswap
-      contributors: jeff-dude, masquot, soispoke, augustog, hosuke, Henrystats, chrispearcx, codingsh, wuligy, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['ethereum','sushiswap','trades', 'dex', 'jeff-dude','cross-chain']
+      tags: ['celo','sushiswap','trades','dex']
     description: >
-        Sushiswap trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        Sushiswap contract trades on celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: celo
+          project: sushiswap
+          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -20,7 +29,7 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
