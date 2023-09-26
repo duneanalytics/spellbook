@@ -386,7 +386,7 @@ models:
       - name: evt_index
         description: "Event index"
 
-  - name: nft_info
+  - name: nft_marketplaces_info
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
       sector: nft
