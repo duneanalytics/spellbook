@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+        schema = 'nft',
         alias = alias('approvals', legacy_model=True),
         partition_by = ['block_date'],
         materialized = 'incremental',
