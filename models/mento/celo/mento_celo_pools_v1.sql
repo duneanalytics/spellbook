@@ -1,10 +1,10 @@
 {{
-    config(
-        tags = ['dunesql', 'static'],
-        schema = 'mento_celo',
-        alias = alias('pools_v1'),
-        materialized = 'table'
-    )
+  config(
+    tags = ['dunesql', 'static'],
+    schema = 'mento_celo',
+    alias = alias('pools_v1'),
+    materialized = 'table'
+  )
 }}
 
 select

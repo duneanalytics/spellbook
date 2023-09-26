@@ -252,6 +252,29 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+  
+  - name: mento_celo_trades_v2_dex
+    meta:
+      blockchain: celo
+      sector: dex
+      project: mento
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'mento', 'dex', 'trades']
+    description: >
+        Mento Protocol DEX V2 trades helper model
+    columns:
+      - *block_time
+      - *taker
+      - *maker
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
 
   - name: mento_celo_trades_v2
     meta:

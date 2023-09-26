@@ -1,13 +1,13 @@
 {{
-    config(
-        tags = ['dunesql'],
-        schema = 'mento_celo',
-        alias = alias('pools_v2'),
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['contract_address', 'exchange_id', 'block_time_created', 'is_active']
-    )
+  config(
+    tags = ['dunesql'],
+    schema = 'mento_celo',
+    alias = alias('pools_v2'),
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['contract_address', 'exchange_id', 'block_time_created', 'is_active']
+  )
 }}
 
 select

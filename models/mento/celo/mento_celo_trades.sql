@@ -1,13 +1,13 @@
 {{
-    config(
-        tags = ['dunesql'],
-        schema = 'mento_celo',
-        alias = alias('trades'),
-        post_hook = '{{ expose_spells(\'["celo"]\',
-                                    "project",
-                                    "mento",
-                                    \'["tomfutago"]\') }}'
-    )
+  config(
+    tags = ['dunesql'],
+    schema = 'mento_celo',
+    alias = alias('trades'),
+    post_hook = '{{ expose_spells(\'["celo"]\',
+                                "project",
+                                "mento",
+                                \'["tomfutago"]\') }}'
+  )
 }}
 
 {% set dex_models = [
