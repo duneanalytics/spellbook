@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('floor_price_over_time'),
         unique_key='day',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
@@ -27,7 +28,7 @@ with all_listing_events as (
             , 'Punk Bought' as event_type
             , 'Punk Bought' as event_sub_type
             , cast(NULL as double) as listed_price
-            , cast(NULL as varchar(5)) as listing_offered_to
+            , cast(NULL as varbinary) as listing_offered_to
             , block_number as evt_block_number
             , sub_tx_trade_id as evt_index
             , block_time as evt_block_time
@@ -40,7 +41,7 @@ with all_listing_events as (
             , 'Punk Transfer' as event_type
             , 'Punk Transfer' as event_sub_type
             , cast(NULL as double) as listed_price
-            , cast(NULL as varchar(5)) as listing_offered_to
+            , cast(NULL as varbinary) as listing_offered_to
             , evt_block_number
             , evt_index
             , evt_block_time
@@ -48,8 +49,8 @@ with all_listing_events as (
     from {{ ref('cryptopunks_ethereum_punk_transfers') }}
 )
 , base_data as (
-    with all_days  as (select explode(sequence(to_date('2017-06-23'), to_date(now()), interval 1 day)) as day)
-    , all_punk_ids as (select explode(sequence(0, 9999, 1)) as punk_id)
+    with all_days as (select col as day from unnest(sequence(date('2017-06-23'), date(now()), interval '1' day)) as _u(col))
+    , all_punk_ids as (select cast(col as UINT256) as punk_id from unnest(sequence(0, 9999, 1)) as _u(col))
 
     select  day
             , punk_id
@@ -89,8 +90,8 @@ from
             , min(price_fill_in) filter (where bool_fill_in = 'Active' and price_fill_in > 0) as floor_price_eth
     from
     (   select c.*
-                , last_value(listed_price,true) over (partition by punk_id order by day asc ) as price_fill_in
-                , last_value(listed_bool,true) over (partition by punk_id order by day asc ) as bool_fill_in
+                , last_value(listed_price) over (partition by punk_id order by day asc ) as price_fill_in
+                , last_value(listed_bool) over (partition by punk_id order by day asc ) as bool_fill_in
         from
         (   select a.day
                     , a.punk_id
@@ -105,7 +106,7 @@ from
 ) e
 
 left join {{ source('prices', 'usd') }} p on p.minute = date_trunc('minute', e.day)
-    and p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    and p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     and p.blockchain = 'ethereum'
 
 order by day desc
