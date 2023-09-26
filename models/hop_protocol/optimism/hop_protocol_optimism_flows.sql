@@ -99,7 +99,7 @@ FROM (
     ,wb.evt_block_number AS block_number
     ,wb.evt_tx_hash AS tx_hash
     , wb."amount" AS bridged_token_amount_raw
-    , 0 AS bridged_fee_amount_raw
+    , UINT256 '0' AS bridged_fee_amount_raw
     , CAST(NULL AS VARBINARY) as sender_address
     , COALESCE(arb.recipient,poly.recipient,gno.recipient) AS recipient_address
     ,'' AS trace_address
