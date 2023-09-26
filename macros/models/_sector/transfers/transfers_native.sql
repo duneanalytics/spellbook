@@ -122,7 +122,7 @@ contract_creation_deposit as (
     SELECT 
         'contract_creation_deposit' as transfer_type, 
         tx_hash, 
-        array[tx_index] as trace_address,
+        trace_address,
         block_time, 
         address as wallet_address,
         {{native_token_address}} as token_address, 
@@ -142,7 +142,7 @@ contract_creation_deposit as (
     SELECT 
         'contract_creation_withdrawal' as transfer_type, 
         tx_hash, 
-        array[tx_index] as trace_address,
+        trace_address,
         block_time, 
         "from" as wallet_address,
         {{native_token_address}} as token_address, 
@@ -165,7 +165,7 @@ suicide_txns as (
     SELECT 
         'suicide_deposit' as transfer_type,
         et.tx_hash, 
-        array[et.tx_index] as trace_address, 
+        et.trace_address, 
         et.block_time,
         et.refund_address as wallet_address,
         {{native_token_address}} as token_address, 
@@ -190,7 +190,7 @@ suicide_txns as (
     SELECT 
         'suicide_withdrawal' as transfer_type,
         et.tx_hash, 
-        array[et.tx_index] as trace_address, 
+        et.trace_address, 
         et.block_time,
         et.address as wallet_address,
         {{native_token_address}} as token_address, 
