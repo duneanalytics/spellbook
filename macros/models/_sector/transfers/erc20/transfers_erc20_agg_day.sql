@@ -1,4 +1,4 @@
-{% macro transfers_erc20_agg_day(transfers_erc20, tokens_erc20) %}
+{% macro transfers_erc20_agg_day(transfers_erc20, tokens_erc20, unique_transfer_id=false) %}
 
 SELECT
     tr.blockchain,
@@ -9,6 +9,9 @@ SELECT
     t.symbol,
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, t.decimals)) as amount
+    {% if unique_transfer_id %}
+    , cast(tr.wallet_address as varchar) || '-' || cast(tr.token_address as varchar) || '-' || cast(date_trunc('day', tr.evt_block_time) as varchar) as unique_transfer_id
+    {% endif %}
 FROM 
 {{ transfers_erc20 }} tr
 LEFT JOIN 

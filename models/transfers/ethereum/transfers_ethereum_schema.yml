@@ -6,16 +6,24 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'soispoke', 'dot2dotseurat']
     description: "ERC20 Token Transfers on Ethereum. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transfer_type
+            - wallet_address
+            - evt_tx_hash
+            - evt_index
     columns:
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates)"
       - &blockchain
         name: blockchain
         description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type needed for unique test"
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
@@ -25,27 +33,48 @@ models:
       - &evt_block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Event transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+      - name: unique_transfer_id
+        description: "Unique transfer ID (used for testing for duplicates)"
+        tests:
+          - unique
 
   - name: transfers_ethereum_erc20_agg_hour
     meta:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
       description: "ERC20 Token Transfers on Ethereum hourly aggregates."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - wallet_address
+            - token_address
     columns:
       - *blockchain
-      - &hour
+      - &block_hour
         name: hour
         description: "UTC event block time truncated to the hour mark."
+      - *block_month
       - *wallet_address
       - *token_address
-      - name: symbol
+      - &symbol
+        name: symbol
         description: "ERC20 token symbol"
       - *amount_raw
       - name: amount
@@ -60,21 +89,26 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     description: "ERC20 Token Transfers on Ethereum per hour."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - wallet_address
+            - token_address
     columns:
       - *blockchain
-      - *hour
+      - *block_hour
       - *wallet_address
       - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
+      - *symbol
       - *amount_raw
       - name: amount
         description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: updated_at
+      - name: last_updated
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
@@ -84,19 +118,19 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     description: "ERC20 Token Transfers on Ethereum daily aggregates."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat']
     columns:
       - *blockchain
-      - &day
+      - &block_day
         name: day
         description: "UTC event block time truncated to the day mark."
+      - *block_month
       - *wallet_address
       - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
+      - *symbol
       - *amount_raw
       - name: amount
         description: "Raw amount of ERC20 token held *after* taking into account token decimals"
@@ -110,17 +144,16 @@ models:
       blockchain: ethereum
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, lajarre
     description: "ERC20 Token Transfers on Ethereum per day."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat']
     columns:
       - *blockchain
-      - *day
+      - *block_day
       - *wallet_address
       - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
+      - *symbol
       - *amount_raw
       - name: amount
         description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"

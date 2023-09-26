@@ -1,4 +1,4 @@
-{% macro transfers_erc20(blockchain, erc20_evt_transfer, wrapped_token_deposit=null, wrapped_token_withdrawal=null) %}
+{% macro transfers_erc20(blockchain, erc20_evt_transfer, wrapped_token_deposit=null, wrapped_token_withdrawal=null, unique_transfer_id=false) %}
 
 WITH
 
@@ -12,6 +12,9 @@ erc20_transfers  as (
             to as wallet_address, 
             contract_address as token_address,
             CAST(value as double) as amount_raw
+            {% if unique_transfer_id %}
+            , 'send-' || CAST(evt_tx_hash as VARCHAR) || '-' || CAST(evt_index AS VARCHAR) || '-' || CAST("to" AS VARCHAR) as unique_transfer_id
+            {% endif %}
         FROM 
         {{ erc20_evt_transfer }}
         {% if is_incremental() %}
@@ -28,6 +31,9 @@ erc20_transfers  as (
             "from" as wallet_address, 
             contract_address as token_address,
             -CAST(value as double) as amount_raw
+            {% if unique_transfer_id %}
+            , 'receive-' || CAST(evt_tx_hash as VARCHAR) || '-' || CAST(evt_index AS VARCHAR) || '-' || CAST("from" AS VARCHAR) as unique_transfer_id
+            {% endif %}
         FROM 
         {{ erc20_evt_transfer }}
         {% if is_incremental() %}
@@ -45,6 +51,9 @@ erc20_transfers  as (
             dst as wallet_address, 
             contract_address as token_address, 
             CAST(wad as double)as amount_raw
+            {% if unique_transfer_id %}
+            , 'deposit-' || CAST(evt_tx_hash AS VARCHAR) || '-' || CAST(evt_index AS VARCHAR) || '-' || CAST(dst AS VARCHAR) as unique_transfer_id
+            {% endif %}
         FROM 
         {{ wrapped_token_deposit }}
         {% if is_incremental() %}
@@ -61,6 +70,9 @@ erc20_transfers  as (
             src as wallet_address, 
             contract_address as token_address, 
             -CAST(wad as double)as amount_raw
+            {% if unique_transfer_id %}
+            , 'withdrawn-' || CAST(evt_tx_hash AS VARCHAR) || '-' || CAST(evt_index AS VARCHAR) || '-' || CAST(src AS VARCHAR) as unique_transfer_id
+            {% endif %}
         FROM 
         {{ wrapped_token_withdrawal }}
         {% if is_incremental() %}
@@ -79,6 +91,9 @@ SELECT
     wallet_address, 
     token_address, 
     amount_raw
+    {% if unique_transfer_id %}
+    , unique_transfer_id
+    {% endif %}
 FROM 
 erc20_transfers
 
@@ -95,6 +110,9 @@ SELECT
     wallet_address, 
     token_address, 
     amount_raw
+    {% if unique_transfer_id %}
+    , unique_transfer_id
+    {% endif %}
 FROM 
 wrapped_token_events
 {% endif %}
