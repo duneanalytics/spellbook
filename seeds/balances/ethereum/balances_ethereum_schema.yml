@@ -6,7 +6,6 @@ seeds:
     config:
       tags: dunesql
       column_types:
-        timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
         amount_raw: uint256
@@ -16,7 +15,6 @@ seeds:
     config:
       tags: dunesql
       column_types:
-        timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
         token_symbol: varchar
@@ -28,7 +26,6 @@ seeds:
     config:
       tags: dunesql
       column_types:
-        timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
         amount_raw: uint256
