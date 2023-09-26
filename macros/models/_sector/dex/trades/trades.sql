@@ -1,4 +1,4 @@
-{% macro dex_trades(blockchain, project, version, project_start_date, dex, transactions) %}
+{% macro trades(blockchain, project, version, project_start_date, dex, transactions) %}
 
 select distinct
   '{{blockchain}}' as blockchain,
