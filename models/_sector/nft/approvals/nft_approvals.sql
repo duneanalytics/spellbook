@@ -2,11 +2,12 @@
         tags = ['dunesql'],
         alias = alias('approvals'),
         schema = 'nft',
-        partition_by = ['block_date'],
+        partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash', 'evt_index'],
+        incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= date_trunc(\'day\', now() - interval \'7\' day)'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "celo", "base"]\',
                                     "sector",
                                     "nft",
@@ -34,6 +35,7 @@ FROM (
         blockchain
         , block_time
         , block_date
+        , block_month
         , block_number
         , address
         , token_standard
@@ -43,14 +45,12 @@ FROM (
         , approved
         , operator
         , tx_hash
-        --, tx_from
-        --, tx_to
         , evt_index
     FROM {{ nft_model }}
-    {% if not loop.last %}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+    {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}

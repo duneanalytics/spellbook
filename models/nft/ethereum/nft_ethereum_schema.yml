@@ -152,51 +152,6 @@ models:
         tests:
           - unique
         description: "Unique transfer ID"
-  
-  - name: nft_ethereum_approvals
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: hildobby, tomfutago
-    config:
-      tags: ['nft', 'ethereum', 'approvals']
-    description: >
-        NFT approvals
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: block_time
-        description: "UTC event block time"
-      - name: block_date
-        description: "UTC event block date"
-      - name: block_number
-        description: "Block number in which the transaction was executed"
-      - name: address
-        description: "Address for which NFTs were approved"
-      - name: token_standard
-        tests:
-          - accepted_values:
-              values: ['erc721', 'erc1155']
-      - name: approval_for_all
-        description: "Was this an ApprovalForAll or a simple Approval?"
-      - name: contract_address
-        description: "Contract address"
-      - name: token_id
-        description: "NFT token ID"
-      - name: approved
-        description: "Approved"
-      - name: operator
-        description: "Operator address"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: evt_index
-        description: "Event index"
-
 
   - name: nft_ethereum_aggregators_markers
     meta:
@@ -336,7 +291,7 @@ models:
     config:
       tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'roi', 'profit', 'loss', 'win', 'spend', 'gain']
     description: >
-        This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades. 
+        This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades.
     columns:
       - name: wallet
         description: "NFT trader's wallet address"
@@ -362,29 +317,29 @@ models:
         description: "Percent of sales that had breakeven profit"
       - name: spent_eth
         description: "Amount of ETH spent on NFTs (not including gas)"
-      - name: spent_eth_realized 
+      - name: spent_eth_realized
         description: "Amount of ETH spent on NFTs that were later sold"
-      - name: spent_eth_unrealized 
+      - name: spent_eth_unrealized
         description: "Amount of ETH spent on NFTs that have not been sold yet"
-      - name: gained_eth 
+      - name: gained_eth
         description: "Amount of ETH gained from NFTs sold or appreication of currently held NFTs based on floor price"
-      - name: gained_eth_realized 
+      - name: gained_eth_realized
         description: "Amount of ETH gained from NFTs sold"
-      - name: gained_eth_unrealized 
+      - name: gained_eth_unrealized
         description: "Amount of ETH gained from appreication of currently held NFTs based on floor price"
-      - name: roi_eth 
+      - name: roi_eth
         description: "Percent ETH ROI from appreciation+sales over buy amount (range 0-1)"
-      - name: roi_eth_realized 
+      - name: roi_eth_realized
         description: "Percent ETH ROI from sales over buy amount on those sales (range 0-1)"
-      - name: roi_eth_unrealized 
+      - name: roi_eth_unrealized
         description: "Percent ETH ROI from appreciation over buy amount on unsold NFTs (range 0-1)"
-      - name: eth_profit 
+      - name: eth_profit
         description: "Total of realized + unrealized profit from NFTs (i.e. (sale_price-buy_price) for sold nfts + (current_floor_price - buy_price) for unsold NFTs)"
-      - name: eth_profit_realized 
+      - name: eth_profit_realized
         description: " Total of realized profit (in ETH) from sale of NFTs"
-      - name: eth_profit_unrealized 
+      - name: eth_profit_unrealized
         description: "Total of unrealized profit (in ETH) from sale of NFTs"
-      - name: avg_win_size 
+      - name: avg_win_size
         description: "Average size of profit from protitable NFT trades"
       - name: avg_loss_size
         description: "Average size of loss from protitable NFT trades"
