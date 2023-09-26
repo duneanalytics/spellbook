@@ -87,7 +87,12 @@ jobs:
           [[ -z "$test" ]] && { echo "Success"; exit 0; } || { echo "Found active child models of removed models:"; echo "$test"; exit 1; }
 
       - name: dbt seed
+        if: ${{ !contains(github.event.pull_request.body,'CI:refresh-all-seeds') }}
         run: "dbt seed $PROFILE --select state:modified$TAG --exclude tag:prod_exclude tag:remove --state ."
+
+      - name: dbt seed @
+        if: ${{ contains(github.event.pull_request.body,'CI:refresh-all-seeds') }}
+        run: "dbt seed $PROFILE --select @state:modified$TAG --exclude tag:prod_exclude tag:remove --state ."
 
       - name: dbt run initial model(s)
         run: "dbt -x run $PROFILE --select state:modified$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
