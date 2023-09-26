@@ -83,7 +83,7 @@ FROM (
     ,'' AS trace_address
     ,tl.evt_index
     ,tl.contract_address AS project_contract_address
-    , '' AS transfer_id
+    , cast(null as varbinary) AS transfer_id
     , 1 AS source_chain_id
     , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     
