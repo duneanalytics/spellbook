@@ -1,9 +1,9 @@
 {{
     config(
         tags = ['dunesql'],
-        schema = 'nft_fantom',
+        schema = 'nft_bnb',
         alias = alias('approvals'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,9 +14,9 @@
 
 {{
     nft_approvals(
-        blockchain = 'fantom',
-        erc721_approval = source('erc721_fantom', 'evt_Approval'),
-        erc721_approval_all = source('erc721_fantom', 'evt_ApprovalForAll'),
-        erc1155_approval_all = source('erc1155_fantom', 'evt_ApprovalForAll')
+        blockchain = 'bnb',
+        erc721_approval = source('erc721_bnb', 'evt_Approval'),
+        erc721_approval_all = source('erc721_bnb', 'evt_ApprovalForAll'),
+        erc1155_approval_all = source('erc1155_bnb', 'evt_ApprovalForAll')
     )
 }}

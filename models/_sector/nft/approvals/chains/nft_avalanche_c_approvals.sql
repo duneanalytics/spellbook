@@ -1,9 +1,9 @@
 {{
     config(
         tags = ['dunesql'],
-        schema = 'nft_polygon',
+        schema = 'nft_avalanche_c',
         alias = alias('approvals'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,9 +14,9 @@
 
 {{
     nft_approvals(
-        blockchain = 'polygon',
-        erc721_approval = source('erc721_polygon', 'evt_Approval'),
-        erc721_approval_all = source('erc721_polygon', 'evt_ApprovalForAll'),
-        erc1155_approval_all = source('erc1155_polygon', 'evt_ApprovalForAll')
+        blockchain = 'avalanche_c',
+        erc721_approval = source('erc721_avalanche_c', 'evt_Approval'),
+        erc721_approval_all = source('erc721_avalanche_c', 'evt_ApprovalForAll'),
+        erc1155_approval_all = source('erc1155_avalanche_c', 'evt_ApprovalForAll')
     )
 }}

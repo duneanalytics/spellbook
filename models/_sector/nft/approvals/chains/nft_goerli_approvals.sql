@@ -1,9 +1,9 @@
 {{
     config(
         tags = ['dunesql'],
-        schema = 'nft_gnosis',
+        schema = 'nft_goerli',
         alias = alias('approvals'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,9 +14,9 @@
 
 {{
     nft_approvals(
-        blockchain = 'gnosis',
-        erc721_approval = source('erc721_gnosis', 'evt_Approval'),
-        erc721_approval_all = source('erc721_gnosis', 'evt_ApprovalForAll'),
-        erc1155_approval_all = source('erc1155_gnosis', 'evt_ApprovalForAll')
+        blockchain = 'goerli',
+        erc721_approval = source('erc721_goerli', 'evt_Approval'),
+        erc721_approval_all = source('erc721_goerli', 'evt_ApprovalForAll'),
+        erc1155_approval_all = source('erc1155_goerli', 'evt_ApprovalForAll')
     )
 }}

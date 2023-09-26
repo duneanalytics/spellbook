@@ -1,8 +1,8 @@
 {{
     config(
         tags = ['legacy'],
-        schema = 'nft_celo',
-        alias = alias('approvals', legacy_model=True)
+        schema = 'sushiswap_celo',
+        alias = alias('trades', legacy_model=True)
     )
 }}
 
