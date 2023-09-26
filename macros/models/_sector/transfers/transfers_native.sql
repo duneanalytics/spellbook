@@ -178,7 +178,7 @@ suicide_txns as (
         AND et.block_time = crd.block_time
         AND et.address = crd.wallet_address 
         AND crd.transfer_type = 'contract_creation_deposit'
-    WHERE et.type = = 'suicide'
+    WHERE et.type = 'suicide'
     AND et."from" = 0x0000000000000000000000000000000000000000
     AND et.value IS NULL 
     {% if is_incremental() %}
@@ -204,7 +204,7 @@ suicide_txns as (
         AND et.address = crd.wallet_address 
         AND et.to = et.address 
         AND crd.transfer_type = 'contract_creation_deposit'
-    WHERE et.type = = 'suicide'
+    WHERE et.type = 'suicide'
     AND et."from" = 0x0000000000000000000000000000000000000000
     AND et.value IS NULL 
     {% if is_incremental() %}
