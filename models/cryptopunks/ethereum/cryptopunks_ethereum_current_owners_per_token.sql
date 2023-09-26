@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('current_owners_per_token'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -16,5 +17,4 @@ from
         from  {{ ref('cryptopunks_ethereum_punk_transfers') }}
 ) a
 where punk_id_tx_rank = 1 
-order by cast(punk_id as int) asc
-;
+order by punk_id asc
