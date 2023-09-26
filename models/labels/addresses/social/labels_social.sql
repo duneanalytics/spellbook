@@ -23,7 +23,10 @@ FROM (
         blockchain,
         address,
         name,
-        case when category = 'ENS' then 'social' else category end as category,
+        case
+            when category = 'ENS' then 'social'
+            when category = 'DeBank' then 'social'
+        else category end as category,
         contributor,
         source,
         created_at,
