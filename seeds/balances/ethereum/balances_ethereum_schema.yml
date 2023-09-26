@@ -8,7 +8,7 @@ seeds:
       column_types:
         wallet_address: varbinary
         token_address: varbinary
-        amount_raw: uint256
+        amount_raw: double
 
   - name: balances_ethereum_erc20_specific_wallet
     description: Legacy values from Postgres for hourly token balances. Single wallet address.
@@ -18,7 +18,7 @@ seeds:
         wallet_address: varbinary
         token_address: varbinary
         token_symbol: varchar
-        amount_raw: uint256
+        amount_raw: double
         amount: double
 
   - name: balances_ethereum_erc20_daily_entries
@@ -28,4 +28,4 @@ seeds:
       column_types:
         wallet_address: varbinary
         token_address: varbinary
-        amount_raw: uint256
+        amount_raw: double
