@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('grant_round_dates')
-        , tags=['static']
+        , tags=['static', 'dunesql']
         )
 }}
 
