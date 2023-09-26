@@ -44,7 +44,7 @@ SELECT
 , tf.transfer_id
 , tf.evt_index
 , tf.trace_address
-, bytearray_substring(t.data,0,5) AS tx_method_id
+, bytearray_substring(t.data,1,4) AS tx_method_id
 
 FROM (
 
