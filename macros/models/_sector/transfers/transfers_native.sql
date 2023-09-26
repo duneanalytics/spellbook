@@ -1,4 +1,4 @@
-{% macro transfers_native(blockchain, traces, transactions, native_token_address, genesis_balances=null, native_erc_transfers=null, staking_withdrawals=null, contract_creation_deposit=null) %}
+{% macro transfers_native(blockchain, traces, transactions, native_token_address, genesis_balances=null, native_erc_transfers=null, staking_withdrawals=null, contract_creation_deposit=null, suicide_txns=null) %}
 
 WITH
 
@@ -136,6 +136,80 @@ contract_creation_deposit as (
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
+
+    UNION ALL
+
+    SELECT 
+        'contract_creation_withdrawal' as transfer_type, 
+        tx_hash, 
+        array[tx_index] as trace_address,
+        block_time, 
+        "from" as wallet_address,
+        {{native_token_address}} as token_address, 
+        -CAST(value as double) as amount_raw
+    FROM 
+    {{ traces }}
+    WHERE type = 'create'
+    AND success 
+    AND to IS NULL -- helpful filter
+    AND value > UINT256 '0'
+    {% if is_incremental() %}
+    AND block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+),
+{% endif %}
+
+{% if suicide_txns %}
+-- only included if contract creation deposits exist and suicide is in the same txn
+suicide_txns as (
+    SELECT 
+        'suicide_deposit' as transfer_type,
+        et.tx_hash, 
+        array[et.tx_index] as trace_address, 
+        et.block_time,
+        et.refund_address as wallet_address,
+        {{native_token_address}} as token_address, 
+        crd.amount_raw 
+    FROM 
+    {{ traces }} et 
+    INNER JOIN 
+    contract_creation_deposit crd 
+        ON et.tx_hash = crd.tx_hash
+        AND et.block_time = crd.block_time
+        AND et.address = crd.wallet_address 
+        AND crd.transfer_type = 'contract_creation_deposit'
+    WHERE et.type = = 'suicide'
+    AND et."from" = 0x0000000000000000000000000000000000000000
+    AND et.value IS NULL 
+    {% if is_incremental() %}
+    AND et.block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+
+    UNION ALL 
+
+    SELECT 
+        'suicide_withdrawal' as transfer_type,
+        et.tx_hash, 
+        array[et.tx_index] as trace_address, 
+        et.block_time,
+        et.address as wallet_address,
+        {{native_token_address}} as token_address, 
+        -crd.amount_raw as amount_raw
+    FROM 
+    {{ traces }} et 
+    INNER JOIN 
+    contract_creation_deposit crd 
+        ON et.tx_hash = crd.tx_hash
+        AND et.block_time = crd.block_time
+        AND et.address = crd.wallet_address 
+        AND et.to = et.address 
+        AND crd.transfer_type = 'contract_creation_deposit'
+    WHERE et.type = = 'suicide'
+    AND et."from" = 0x0000000000000000000000000000000000000000
+    AND et.value IS NULL 
+    {% if is_incremental() %}
+    AND et.block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
 ),
 {% endif %}
 
@@ -254,4 +328,21 @@ FROM
 contract_creation_deposit
 {% endif %}
 
+
+{% if suicide_txns %}
+UNION ALL 
+
+SELECT 
+    '{{blockchain}}' as blockchain, 
+    transfer_type,
+    tx_hash, 
+    trace_address,
+    block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+suicide_txns
+{% endif %}
 {% endmacro %}
