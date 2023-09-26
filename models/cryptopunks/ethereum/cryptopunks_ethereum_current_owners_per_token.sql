@@ -17,4 +17,4 @@ from
         from  {{ ref('cryptopunks_ethereum_punk_transfers') }}
 ) a
 where punk_id_tx_rank = 1 
-order by cast(punk_id as int) asc
+order by punk_id asc
