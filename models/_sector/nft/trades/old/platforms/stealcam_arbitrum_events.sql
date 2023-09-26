@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['unique_trade_id']
     )
 }}
 
@@ -30,7 +30,6 @@ SELECT 'arbitrum' AS blockchain
 , 'stealcam' AS project
 , 'v1' AS version
 , sc.evt_block_time AS block_time
-, date_trunc('day', sc.evt_block_time) AS block_date
 , sc.evt_block_number AS block_number
 , 'Single Item Trade' AS trade_type
 , 'Buy' AS trade_category
