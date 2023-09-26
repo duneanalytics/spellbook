@@ -67,7 +67,7 @@ FROM (
     
     FROM {{ source('hop_protocol_optimism', 'L2_OptimismBridge_evt_TransferSent') }} ts 
     {% if is_incremental() %}
-    WHERE evt_block_time >= (NOW() - interval '14 days')
+    WHERE evt_block_time >= (NOW() - interval '14' day)
     {% endif %}
 
     UNION ALL -- Deposits to Optimism from L1
@@ -89,7 +89,7 @@ FROM (
     
     FROM {{ source ('hop_protocol_optimism', 'L2_OptimismBridge_evt_TransferFromL1Completed') }} tl
     {% if is_incremental() %}
-    WHERE evt_block_time >= (NOW() - interval '14 days')
+    WHERE evt_block_time >= (NOW() - interval '14' day)
     {% endif %}
     
     UNION ALL -- Deposits to Optimism from Non-L1 Chains
@@ -116,25 +116,25 @@ FROM (
     , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     FROM {{ source ('hop_protocol_optimism', 'L2_OptimismBridge_evt_WithdrawalBonded') }} wb
         LEFT JOIN {{ source ('hop_protocol_arbitrum' ,'L2_ArbitrumBridge_evt_TransferSent') }} arb
-            ON arb.evt_block_time BETWEEN (wb.evt_block_time - interval '30 days') AND (wb.evt_block_time + interval '1 day') --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
+            ON arb.evt_block_time BETWEEN (wb.evt_block_time - interval '30' day) AND (wb.evt_block_time + interval '1' day) --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
             AND arb.transferId = wb.transferId
             {% if is_incremental() %}
-            AND arb.evt_block_time >= (NOW() - interval '45 days')
+            AND arb.evt_block_time >= (NOW() - interval '45' day)
               {% endif %}
         LEFT JOIN {{ source ('hop_protocol_polygon', 'L2_PolygonBridge_evt_TransferSent') }} poly
-            ON poly.evt_block_time BETWEEN (wb.evt_block_time - interval '30 days') AND (wb.evt_block_time + interval '1 day') --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
+            ON poly.evt_block_time BETWEEN (wb.evt_block_time - interval '30' day) AND (wb.evt_block_time + interval '1' day) --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
             AND poly.transferId = wb.transferId
             {% if is_incremental() %}
-            AND poly.evt_block_time >= (NOW() - interval '45 days')
+            AND poly.evt_block_time >= (NOW() - interval '45' day)
               {% endif %}
         LEFT JOIN {{ source ('hop_protocol_gnosis', 'L2_xDaiBridge_evt_TransferSent') }} gno
-            ON gno.evt_block_time BETWEEN (wb.evt_block_time - interval '30 days') AND (wb.evt_block_time + interval '1 day') --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
+            ON gno.evt_block_time BETWEEN (wb.evt_block_time - interval '30' day) AND (wb.evt_block_time + interval '1' day) --usually < ~20 mins, but extending longer for safety & OP blocktimestamp fix (used to have ~15 min delay)
             AND gno.transferId = wb.transferId
             {% if is_incremental() %}
-            AND gno.evt_block_time >= (NOW() - interval '45 days')
+            AND gno.evt_block_time >= (NOW() - interval '45' day)
               {% endif %}
     {% if is_incremental() %}
-    WHERE wb.evt_block_time >= (NOW() - interval '14 days')
+    WHERE wb.evt_block_time >= (NOW() - interval '14' day)
     {% endif %}
 
     ) tf
@@ -146,7 +146,7 @@ LEFT JOIN {{ source('optimism', 'transactions') }} t
         ON t.block_time = tf.block_time
         AND t.hash = tf.tx_hash
         {% if is_incremental() %}
-        AND t.block_time >= (NOW() - interval '14 days')
+        AND t.block_time >= (NOW() - interval '14' day)
         {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = hba.blockchain
@@ -157,7 +157,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND p.contract_address = hba."l2CanonicalToken"
     AND p.blockchain = hba.blockchain
     {% if is_incremental() %}
-    AND p.minute >= (NOW() - interval '14 days')
+    AND p.minute >= (NOW() - interval '14' day)
     {% endif %}
 
 LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
