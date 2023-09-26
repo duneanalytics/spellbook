@@ -1,4 +1,7 @@
-{{config(alias = alias('nft_traders_transactions'))}}
+{{config(
+    tags=['dunesql']
+    , alias = alias('nft_traders_transactions')
+)}}
 
 WITH nft_trades AS (
 SELECT
@@ -39,7 +42,7 @@ SELECT * FROM (
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,
-    timestamp('2022-08-24') as created_at,
+    TIMESTAMP '2022-08-24'  as created_at,
     now() as updated_at,
     'nft_traders_transactions' as model_name,
     'usage' as label_type

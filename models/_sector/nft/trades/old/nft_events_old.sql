@@ -1,7 +1,8 @@
 {{ config(
     schema = 'nft',
     alias = alias('events_old'),
-    partition_by = ['block_date'],
+    tags = ['dunesql'],
+    partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -17,13 +18,23 @@
 ,ref('fractal_polygon_events')
 ,ref('liquidifty_bnb_events')
 ,ref('liquidifty_ethereum_events')
-,ref('magiceden_solana_events')
 ,ref('magiceden_polygon_events')
+,ref('magiceden_solana_events')
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
 ,ref('nftrade_bnb_events')
 ,ref('oneplanet_polygon_events')
-,ref('opensea_events')
+,ref('opensea_v3_arbitrum_events')
+,ref('opensea_v4_arbitrum_events')
+,ref('opensea_v1_ethereum_events')
+,ref('opensea_v3_ethereum_events')
+,ref('opensea_v4_ethereum_events')
+,ref('opensea_v3_optimism_events')
+,ref('opensea_v4_optimism_events')
+,ref('opensea_v2_polygon_events')
+,ref('opensea_v3_polygon_events')
+,ref('opensea_v4_polygon_events')
+,ref('opensea_solana_events')
 ,ref('pancakeswap_bnb_nft_events')
 ,ref('quix_seaport_optimism_events')
 ,ref('quix_v1_optimism_events')
@@ -43,7 +54,8 @@
 ,ref('zonic_optimism_events')
 ,ref('decentraland_polygon_events')
 ] %}
-
+--missing still
+--
 
 SELECT *
 FROM (
@@ -52,7 +64,8 @@ FROM (
         blockchain,
         project,
         version,
-        date_trunc('day', block_time)  as block_date,
+        cast(date_trunc('day', block_time) as date) as block_date,
+        cast(date_trunc('month', block_time) as date) as block_month,
         block_time,
         token_id,
         collection,
@@ -90,7 +103,7 @@ FROM (
         row_number() over (partition by unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL

@@ -8,9 +8,9 @@ models:
       project: openocean_v2
       contributors: Henrystats
     config:
-      tags: ['fantom','openocean_v2','trades', 'openocean','dex']
+      tags: ['fantom', 'openocean_v2', 'trades', 'openocean', 'dex']
     description: >
-        openocean V2 contract trades on fantom
+      openocean V2 contract trades on fantom
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_aggregator_seed_legacy:
+      - check_dex_aggregator_seed:
           blockchain: fantom
           project: openocean
           version: 2
@@ -29,9 +29,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -91,7 +91,7 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: ""
+        description: "Trace address of the transaction"
       - &evt_index
         name: evt_index
         description: ""
@@ -103,13 +103,13 @@ models:
       project: openocean
       contributors: henrystats
     config:
-      tags: ['fantom','dex','trades', 'openocean']
+      tags: ["fantom", "dex", "trades", "openocean"]
     description: >
-        openocean trades on fantom across all contracts and versions. This table will load dex trades downstream.
+      openocean trades on fantom across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
-      - *version  
+      - *version
       - *block_date
       - *block_time
       - *token_bought_symbol
