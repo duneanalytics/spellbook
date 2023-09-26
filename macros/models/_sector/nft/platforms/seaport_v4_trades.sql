@@ -345,7 +345,7 @@ with source_ethereum_transactions as (
    from iv_base_pairs a
   where 1=1
     and eth_erc_idx > 0
-  group by 1,2,3,4
+  group by 1,2,3
   having count(distinct token_contract_address) = 1  -- some private sale trade has more that one currencies
 )
 ,iv_nfts as (
