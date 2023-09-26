@@ -84,7 +84,7 @@ FROM (
     ,tl.evt_index
     ,tl.contract_address AS project_contract_address
     , cast(null as varbinary) AS transfer_id
-    , 1 AS source_chain_id
+    , UINT256 '1' AS source_chain_id
     , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     
     FROM {{ source ('hop_protocol_optimism', 'L2_OptimismBridge_evt_TransferFromL1Completed') }} tl
