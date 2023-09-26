@@ -1,7 +1,7 @@
 {{
     config(
-        tags = ['legacy'],
-        schema = 'nft_base',
+        tags = ['legacy', 'remove'],
+        schema = 'nft_celo',
         alias = alias('approvals', legacy_model=True)
     )
 }}

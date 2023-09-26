@@ -1,9 +1,9 @@
 {{
     config(
         tags = ['dunesql'],
-        schema = 'nft_base',
+        schema = 'nft_optimism',
         alias = alias('approvals'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,9 +14,9 @@
 
 {{
     nft_approvals(
-        blockchain = 'base',
-        erc721_approval = source('erc721_base', 'evt_Approval'),
-        erc721_approval_all = source('erc721_base', 'evt_ApprovalForAll'),
-        erc1155_approval_all = source('erc1155_base', 'evt_ApprovalForAll')
+        blockchain = 'optimism',
+        erc721_approval = source('erc721_optimism', 'evt_Approval'),
+        erc721_approval_all = source('erc721_optimism', 'evt_ApprovalForAll'),
+        erc1155_approval_all = source('erc1155_optimism', 'evt_ApprovalForAll')
     )
 }}
