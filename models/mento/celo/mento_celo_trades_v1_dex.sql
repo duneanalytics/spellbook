@@ -13,7 +13,7 @@ select
   cast(null as varbinary) as maker,
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
-  null as amount_usd,
+  cast(null as double) as amount_usd,
   case
     when t.soldGold then 0x765DE816845861e75A25fCA122bb6898B8B1282a -- cUSD
     else 0x471EcE3750Da237f93B8E339c536989b8978a438                 -- CELO
