@@ -2,7 +2,7 @@
         tags=['dunesql'],
         alias = alias('listings_over_time'),
         unique_key='day',
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cryptopunks",
                                     \'["cat"]\') }}'
