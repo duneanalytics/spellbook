@@ -10,4 +10,4 @@ seeds:
          evt_type: varchar
          token_id: varchar
          amount_original: double
-         address: varbinary
+         borrower: varbinary
