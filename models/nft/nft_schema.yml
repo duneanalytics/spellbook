@@ -337,3 +337,26 @@ models:
       - &lien_id
         name: lien_id
         description:  "Unique loan id  "
+
+  - name: nft_marketplaces_info
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'info']
+    description: >
+        NFT marketplaces info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - codename
+    columns:
+      - name: codename
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: marketplace_type
+        description: "Type of marketplace"
+      - name: x_username
+        description: "Username on X"
