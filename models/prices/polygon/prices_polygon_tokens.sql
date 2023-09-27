@@ -40,7 +40,6 @@ FROM
     ('fud-fud', 'polygon', 'FUD', 0x403E967b044d4Be25170310157cB1A4Bf10bdD0f, 18),
     ('fomo-fomo', 'polygon', 'FOMO', 0x44A6e0BE76e1D9620A7F76588e4509fE4fa8E8C8, 18),
     ('alpha-alpha', 'polygon', 'ALPHA', 0x6a3E7C3c6EF65Ee26975b12293cA1AAD7e1dAeD2, 18),
-    ('kek-kek', 'polygon', 'KEK', 0x42E5E06EF5b90Fe15F853F59299Fc96259209c5C, 18),
     ('crv-curve-dao-token', 'polygon', 'CRV', 0x172370d5cd63279efa6d502dab29171933a610af, 18),
     ('mimatic-mimatic', 'polygon', 'MIMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1, 18),
     ('kom-kommunitas', 'polygon', 'KOM', 0xc004e2318722ea2b15499d6375905d75ee5390b8, 8),
