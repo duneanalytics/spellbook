@@ -2,7 +2,6 @@
     schema='lido_liquidity_arbitrum',
     alias = alias('uniswap_v3_pools'),
     tags = ['dunesql'], 
-    partition_by = ['time'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

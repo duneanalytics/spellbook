@@ -12,7 +12,8 @@
 
 WITH 
 {% set fees_distributed_v2_evt_tables = [
-    'options_evt_OptionsFeesDistributed'
+    'options_evt_OptionsFeesDistributed',
+    'Options_V2_evt_OptionsFeesDistributed'
 ] %}
 
 fees_v2 AS (
