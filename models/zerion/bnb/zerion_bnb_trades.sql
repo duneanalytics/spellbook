@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'zerion_bnb'
+    tags=['dunesql']
+    ,schema = 'zerion_bnb'
     ,alias = alias('trades')
     ,partition_by = ['block_date']
     ,materialized = 'incremental'

@@ -1,5 +1,6 @@
 {{ config(
-    tags=['dunesql'],
+    tags=['dunesql']
+    ,schema = 'zerion_avalanche_c'
     ,alias = alias('trades')
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
