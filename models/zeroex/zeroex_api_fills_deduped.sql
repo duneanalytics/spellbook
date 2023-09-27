@@ -1,8 +1,8 @@
 {{ config(
         tags=['dunesql']
-        ,schema = 'zeroex'
-        ,alias = alias('api_fills_deduped')
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
+        , schema = 'zeroex'
+        , alias = alias('api_fills_deduped')
+        , post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
