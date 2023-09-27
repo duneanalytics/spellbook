@@ -28,8 +28,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - unique_trade_id
-            - blockchain
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
     columns:
       - &blockchain
         name: blockchain
@@ -142,9 +144,12 @@ models:
       - &royalty_fee_percentage
         name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique trade ID"
+      - name: evt_index
+        description: "Event index"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
 
   - name: nft_wash_trades
     meta:
@@ -302,6 +307,9 @@ models:
       - *blockchain
       - *project
       - *version
+      - &lending_category
+        name: lending_category
+        description: "Type of loans offered by the project, usually either pool to borrower or peer to peer"
       - *block_time
       - &block_date
         name: block_date
@@ -311,9 +319,12 @@ models:
       - *amount_usd
       - *token_standard
       - *evt_type
-      - &address
-        name: address
-        description:  "Address repaying or borrowing"
+      - &borrower
+        name: borrower
+        description:  "Address that took the loan"
+      - &lender
+        name: lender
+        description:  "Address that faciliated the loan"
       - *amount_original
       - *amount_raw
       - &collateral_currency_symbol
