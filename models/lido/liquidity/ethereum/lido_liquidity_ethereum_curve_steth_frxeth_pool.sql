@@ -1,7 +1,6 @@
 {{ config(
     alias = alias('curve_steth_frxeth_pool'),
     tags = ['dunesql'], 
-    partition_by = ['time'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
