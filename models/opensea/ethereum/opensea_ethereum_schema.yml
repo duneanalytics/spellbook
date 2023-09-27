@@ -260,6 +260,7 @@ models:
       - *royalty_fee_receive_address
       - *royalty_fee_currency_symbol
       - *unique_trade_id
+      - *evt_index
 
   - name: opensea_v3_ethereum_events
     meta:
