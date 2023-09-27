@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'balances_arbitrum_erc20',
+        schema = 'balances_arbitrum',
         alias = alias('erc20_latest'),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",

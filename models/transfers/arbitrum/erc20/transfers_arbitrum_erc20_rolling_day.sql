@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'transfers_arbitrum_erc20',
+        schema = 'transfers_arbitrum',
         alias = alias('erc20_rolling_day'))
 }}
 

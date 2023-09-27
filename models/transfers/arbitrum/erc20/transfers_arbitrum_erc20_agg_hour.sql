@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'transfers_arbitrum_erc20',
+        schema = 'transfers_arbitrum',
         alias = alias('erc20_agg_hour'),
         materialized ='incremental',
         partition_by = ['block_month'],

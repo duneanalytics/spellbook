@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'balances_arbitrum_erc20',
+        schema = 'balances_arbitrum',
         alias = alias('erc20_noncompliant'),
         materialized ='table',
         file_format = 'delta'
