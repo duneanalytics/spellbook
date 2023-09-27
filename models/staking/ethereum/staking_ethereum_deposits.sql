@@ -14,14 +14,14 @@
 WITH deposit_events AS (
     SELECT d.evt_block_time AS block_time
     , d.evt_block_number AS block_number
-    , CAST(d.evt_index AS varchar) AS evt_index
+    , d.evt_index
     , d.evt_tx_hash AS tx_hash
     , from_big_endian_64(reverse(d.amount)) / POWER(10, 9) AS amount
     , d.contract_address
     , from_big_endian_64(reverse(d.index)) AS deposit_index
     , d.pubkey
     , d.signature
-    , CAST(substring(CAST(d.withdrawal_credentials AS varchar), 1, 4) AS varchar) AS withdrawal_credentials_type
+    , substring(CAST(d.withdrawal_credentials AS varchar), 1, 4) AS withdrawal_credentials_type
     , CASE WHEN substring(CAST(d.withdrawal_credentials AS varchar), 1, 4) = '0x01' THEN substr(d.withdrawal_credentials, -20)
         ELSE NULL
         END AS withdrawal_address
@@ -39,8 +39,8 @@ WITH deposit_events AS (
 , traces AS (
     SELECT t.block_number
     , t.tx_hash AS tx_hash
-    , t.value/POWER(10, 18) AS amount
-    , t.from AS depositor_address
+    , t.value / POWER(10, 18) AS amount
+    , t."from" AS depositor_address
     , ROW_NUMBER() OVER (PARTITION BY t.block_number, t.tx_hash, t.value ORDER BY t.trace_address) AS table_merging_traces_id
     FROM {{ source('ethereum', 'traces') }} t
     WHERE t.to = 0x00000000219ab540356cbb839cbe05303d7705fa
