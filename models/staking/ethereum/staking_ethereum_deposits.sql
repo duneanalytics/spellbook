@@ -63,7 +63,7 @@ SELECT d.block_time
 , ete.entity_unique_name AS depositor_entity_unique_name
 , ete.category AS depositor_entity_category
 , d.tx_hash
-, et.from AS tx_from
+, et."from" AS tx_from
 , d.deposit_index
 , d.pubkey
 , d.signature
