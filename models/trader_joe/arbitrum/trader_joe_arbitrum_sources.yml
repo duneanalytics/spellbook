@@ -1,7 +1,7 @@
 version: 2
 
 sources: 
-  - name: trader_joe_v2_arbitrum
+  - name: trader_joe_arbitrum
     description: "Arbitrum chain decoded tables related to Trader Joe contract"
     freshness:
       warn_after: { count: 12, period: hour }
