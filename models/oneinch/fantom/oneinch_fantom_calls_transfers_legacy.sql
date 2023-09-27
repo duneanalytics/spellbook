@@ -1,7 +1,7 @@
 {{ 
     config( 
-        schema = 'oneinch_polygon',
-        alias = alias('ar_calls_transfers', legacy_model=True),
+        schema = 'oneinch_fantom',
+        alias = alias('calls_transfers', legacy_model=True),
         tags = ['legacy']
     )
 }}

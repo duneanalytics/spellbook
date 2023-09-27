@@ -1,6 +1,6 @@
 {{ 
     config( 
-        schema = 'oneinch_avalanche_c',
+        schema = 'oneinch_base',
         alias = alias('ar_calls_transfers', legacy_model=True),
         tags = ['legacy']
     )

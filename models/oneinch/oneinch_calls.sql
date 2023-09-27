@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = alias('ar_calls'),
+        alias = alias('calls'),
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address'],
         tags = ['dunesql'],
@@ -12,9 +12,8 @@
 
 {% 
     set blockchains = [
-        'arbitrum',
+        'arbitrum', 
         'avalanche_c',
-        'bnb',
         'base',
         'ethereum',
         'fantom',
@@ -23,6 +22,7 @@
         'polygon'
     ]
 %}
+
 
 
 {% 
@@ -34,8 +34,10 @@
         'tx_success',
         'call_success',
         'call_trace_address',
-        'caller',
+        'call_from',
+        'call_to',
         'call_selector',
+        'protocol',
         'call_input',
         'call_output'
     ]
@@ -44,11 +46,9 @@
 
 
 {% for blockchain in blockchains %}
-    select {{ columns | join(', ') }} from {{ ref('oneinch_' + blockchain + '_ar_calls_transfers') }}
+    select {{ columns | join(', ') }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
     group by {{ columns | join(', ') }}
     {% if not loop.last %}
         union all
     {% endif %}
 {% endfor %}
-
-
