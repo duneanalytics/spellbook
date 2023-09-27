@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'balances_bnb_bnb',
+        schema = 'balances_bnb',
         alias = alias('bnb_day'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",

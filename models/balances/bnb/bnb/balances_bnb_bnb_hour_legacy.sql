@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        schema = 'balances_bnb_bnb',
+        schema = 'balances_bnb',
         alias = alias('bnb_hour', legacy_model=True)
         )
 }}

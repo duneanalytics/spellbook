@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'balances_bnb_bep20',
-        alias = alias('noncompliant'),
+        schema = 'balances_bnb',
+        alias = alias('bep20_noncompliant'),
         materialized ='table',
         file_format = 'delta'
         )

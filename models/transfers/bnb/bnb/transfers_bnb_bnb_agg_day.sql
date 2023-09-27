@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'transfers_bnb_bnb',
+        schema = 'transfers_bnb',
         alias = alias('bnb_agg_day'),
         partition_by = ['block_month'],
         materialized ='incremental',

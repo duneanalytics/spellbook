@@ -1,7 +1,7 @@
 {{ config(
         tags = ['legacy'],
-        schema = 'balances_bnb_bep20',
-        alias = alias('latest', legacy_model=True)
+        schema = 'balances_bnb',
+        alias = alias('bep20_latest', legacy_model=True)
         )
 }}
 

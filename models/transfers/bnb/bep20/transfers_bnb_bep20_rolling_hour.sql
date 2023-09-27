@@ -1,6 +1,6 @@
 {{ config(
         tags = ['dunesql'],
-        schema = 'transfers_bnb_bep20',
+        schema = 'transfers_bnb',
         alias = alias('bep20_rolling_hour'))
 }}
 

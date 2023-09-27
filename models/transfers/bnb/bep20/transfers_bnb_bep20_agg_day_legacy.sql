@@ -1,6 +1,6 @@
 {{ config(
         tags = ['legacy'],
-        schema = 'transfers_bnb_bep20',
+        schema = 'transfers_bnb',
         alias = alias('bep20_agg_day', legacy_model=True)
         )
 }}

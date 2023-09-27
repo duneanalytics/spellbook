@@ -1,5 +1,5 @@
 {{ config( 
-  schema = 'transfers_bnb_bnb',
+  schema = 'transfers_bnb',
   alias = alias('bnb_agg_day', legacy_model=True),
   tags = ['legacy']
   )
