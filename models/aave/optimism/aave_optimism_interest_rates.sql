@@ -1,5 +1,6 @@
 {{ config(
-      alias = alias('interest')
+      tags = ['dunesql']
+      , alias = alias('interest')
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave",
