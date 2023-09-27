@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['dunesql'],
     alias = alias('deposits'),
     materialized = 'incremental',
     file_format = 'delta',
@@ -44,7 +45,7 @@ WITH deposit_events AS (
     FROM {{ source('ethereum', 'traces') }} t
     WHERE t.to = 0x00000000219ab540356cbb839cbe05303d7705fa
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
-    AND CAST(t.value AS double) > 0
+    AND t.value > UINT256 '0'
     AND success
     {% if not is_incremental() %}
     AND t.block_time >= TIMESTAMP '2020-10-14'
