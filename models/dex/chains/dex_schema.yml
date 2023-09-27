@@ -1,0 +1,428 @@
+version: 2
+
+models:
+  - name: dex_ethereum_sandwiches
+    meta: 
+      blockchain: ethereum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'ethereum']
+    description: >
+      DEX MEV Sandwich Trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "the block number of the block that the offer was created in"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &trace_address
+        name: trace_address
+        description: "Trace address"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &index
+        name: index
+        description: "Index of the transaction in block"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
+  - name: dex_arbitrum_sandwiches
+    meta: 
+      blockchain: arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'arbitrum']
+    description: >
+      DEX MEV Sandwich Trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_avalanche_c_sandwiches
+    meta: 
+      blockchain: avalanche_c
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'avalanche_c']
+    description: >
+      DEX MEV Sandwich Trades on Avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_bnb_sandwiches
+    meta: 
+      blockchain: bnb
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'bnb']
+    description: >
+      DEX MEV Sandwich Trades on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_fantom_sandwiches
+    meta: 
+      blockchain: fantom
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'fantom']
+    description: >
+      DEX MEV Sandwich Trades on Fantom
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_gnosis_sandwiches
+    meta: 
+      blockchain: gnosis
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'gnosis']
+    description: >
+      DEX MEV Sandwich Trades on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_optimism_sandwiches
+    meta: 
+      blockchain: optimism
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'optimism']
+    description: >
+      DEX MEV Sandwich Trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_polygon_sandwiches
+    meta: 
+      blockchain: polygon
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'polygon']
+    description: >
+      DEX MEV Sandwich Trades on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
+
+  - name: dex_base_sandwiches
+    meta: 
+      blockchain: base
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'base']
+    description: >
+      DEX MEV Sandwich Trades on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *evt_index
