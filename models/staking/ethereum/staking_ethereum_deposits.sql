@@ -26,7 +26,7 @@ WITH deposit_events AS (
         ELSE NULL
         END AS withdrawal_address
     , d.withdrawal_credentials
-    , ROW_NUMBER() OVER (PARTITION BY d.evt_block_number, d.evt_tx_hash ORDER BY d.evt_index) AS table_merging_deposits_id
+    , ROW_NUMBER() OVER (PARTITION BY d.evt_block_number, d.evt_tx_hash, from_big_endian_64(reverse(d.amount)) ORDER BY d.evt_index) AS table_merging_deposits_id
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
     {% if not is_incremental() %}
     WHERE d.evt_block_time >= TIMESTAMP '2020-10-14'
@@ -41,7 +41,7 @@ WITH deposit_events AS (
     , t.tx_hash AS tx_hash
     , t.value/POWER(10, 18) AS amount
     , t.from AS depositor_address
-    , ROW_NUMBER() OVER (PARTITION BY t.block_number, t.tx_hash ORDER BY t.trace_address) AS table_merging_traces_id
+    , ROW_NUMBER() OVER (PARTITION BY t.block_number, t.tx_hash, t.value ORDER BY t.trace_address) AS table_merging_traces_id
     FROM {{ source('ethereum', 'traces') }} t
     WHERE t.to = 0x00000000219ab540356cbb839cbe05303d7705fa
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
