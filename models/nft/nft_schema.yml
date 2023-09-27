@@ -307,6 +307,9 @@ models:
       - *blockchain
       - *project
       - *version
+      - &lending_category
+        name: lending_category
+        description: "Type of loans offered by the project, usually either pool to borrower or peer to peer"
       - *block_time
       - &block_date
         name: block_date
@@ -316,9 +319,12 @@ models:
       - *amount_usd
       - *token_standard
       - *evt_type
-      - &address
-        name: address
-        description:  "Address repaying or borrowing"
+      - &borrower
+        name: borrower
+        description:  "Address that took the loan"
+      - &lender
+        name: lender
+        description:  "Address that faciliated the loan"
       - *amount_original
       - *amount_raw
       - &collateral_currency_symbol
