@@ -82,7 +82,7 @@ SELECT
   WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
        AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN 'Mint'
   ELSE 'Other' END as evt_type,
-  TRY_CAST(CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
+  Coalesce(TRY_CAST(CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
@@ -92,7 +92,7 @@ SELECT
        WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
          AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(element_at(me_instructions,7).account_arguments[10], element_at(me_instructions,6).account_arguments[10],
          element_at(me_instructions,5).account_arguments[10], element_at(element_at(me_instructions,3).account_arguments,8), element_at(element_at(me_instructions,2).account_arguments,11), element_at(element_at(me_instructions,1).account_arguments,11))
-       END as uint256) AS token_id,
+       END as uint256), UINT256 '0') AS token_id,
   cast(NULL as varchar) as collection,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
@@ -118,12 +118,12 @@ SELECT
   cast(NULL as varbinary) as aggregator_address,
   cast(NULL as varbinary) as tx_from,
   cast(NULL as varbinary) as tx_to,
-  2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as platform_fee_amount_raw,
+  cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
   CAST(2 AS DOUBLE) as platform_fee_percentage,
   CAST (abs(element_at(post_balances,12) - element_at(pre_balances,12)) + abs(element_at(post_balances,13) - element_at(pre_balances,13))
-    + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS DOUBLE) as royalty_fee_amount_raw,
+    + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS uint256) as royalty_fee_amount_raw,
   abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9) + abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
     + abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9) + abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9) + abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)
     as royalty_fee_amount,
@@ -148,7 +148,8 @@ SELECT
   id  as unique_trade_id,
   instructions,
   signatures,
-  log_messages
+  log_messages,
+  BIGINT '0' as evt_index
 FROM me_txs
 LEFT JOIN {{ source('prices', 'usd') }} AS p
   ON p.minute = date_trunc('minute', block_time)

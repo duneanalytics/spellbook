@@ -6,7 +6,7 @@
         tags = ['static', 'dunesql']
         )
 }}
-SELECT 
+SELECT
     token_id
     , blockchain
     , symbol
@@ -36,6 +36,7 @@ FROM
     ('wmatic-wrapped-matic-wormhole', 'polygon', 'WMATIC', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 18),
     ('link-chainlink', 'polygon', 'LINK', 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39, 18),
     ('ghst-aavegotchi', 'polygon', 'GHST', 0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7, 18),
+    ('gltr-gax-liquidity-token-reward', 'polygon', 'GLTR', 0x3801C3B3B5c98F88a9c9005966AA96aa440B9Afc, 18),
     ('crv-curve-dao-token', 'polygon', 'CRV', 0x172370d5cd63279efa6d502dab29171933a610af, 18),
     ('mimatic-mimatic', 'polygon', 'MIMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1, 18),
     ('kom-kommunitas', 'polygon', 'KOM', 0xc004e2318722ea2b15499d6375905d75ee5390b8, 8),

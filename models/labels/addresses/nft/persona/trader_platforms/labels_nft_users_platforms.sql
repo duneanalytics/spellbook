@@ -1,4 +1,7 @@
-{{config(alias = alias('nft_users_platforms'))}}
+{{config(
+    tags=['dunesql']
+    , alias = alias('nft_users_platforms')
+)}}
 
 WITH nft_trades AS (
 SELECT
@@ -17,11 +20,11 @@ FROM {{ ref('nft_trades') }}
 SELECT
     blockchain as blockchain,
     address,
-    array_join(collect_set(concat(upper(substring(project,1,1)),substring(project,2))), ', ') ||' User' as name,
+    array_join(ARRAY_AGG(DISTINCT concat(upper(substr(project,1,1)),substring(project,2))), ', ') ||' User' as name,
     'nft' AS category,
     'soispoke' AS contributor,
     'query' AS source,
-    timestamp('2022-09-03') as created_at,
+    TIMESTAMP '2022-09-03'  as created_at,
     now() as updated_at,
     'nft_users_platforms' as model_name,
     'persona' as label_type

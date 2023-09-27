@@ -274,6 +274,8 @@ models:
         +schema: uniswap_bnb
       base:
         +schema: uniswap_base
+      celo:
+        +schema: uniswap_celo
 
     timeswap:
       +schema: timeswap
@@ -312,6 +314,11 @@ models:
       +schema: nomiswap
       bnb:
         +schema: nomiswap_bnb
+
+    opx_finance:
+      +schema: opx_finance
+      optimism:
+        +schema: opx_finance_optimism
 
     zodiac:
       +schema: zodiac
@@ -357,6 +364,8 @@ models:
         +schema: sushiswap_bnb
       base:
         +schema: sushiswap_base
+      celo:
+        +schema: sushiswap_celo
 
     zerion:
       +schema: zerion
@@ -483,6 +492,12 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      arbitrum:
+        +schema: balances_arbitrum
+      bnb:
+        +schema: balances_bnb
+      polygon:
+        +schema: balances_polygon
 
     dodo:
       +schema: dodo
@@ -1288,9 +1303,6 @@ models:
       ethereum:
         +schema: pooltogether_ethereum
 
-    method_ids:
-      +schema: method_ids
-
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:
@@ -1423,3 +1435,8 @@ models:
       +schema: worldcoin
       optimism:
         +schema: worldcoin_optimism
+    
+    aerodrome:
+      +schema: aerodrome
+      base:
+        +schema: aerodrome_base
