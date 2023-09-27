@@ -1,4 +1,6 @@
 {{ config(
+        schema = 'zeroex',
+        tags=['dunesql'],
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb"]\',
                                 "project",
@@ -23,6 +25,7 @@ FROM (
       '0x API'  as project,
       '1' as version,
       block_date  as block_date,
+      block_month  as block_month,
       block_time  as block_time,
       maker_symbol as  token_bought_symbol, 
       taker_symbol  as  token_sold_symbol,

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: zeroex_api_fills 
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, celo, base
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993
     config:
@@ -27,6 +27,9 @@ models:
             - taker_symbol
             - maker_symbol
     columns:
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
       - &tx_hash
         name: tx_hash
         description: "Unique transaction hash value tied to each transaction on the DEX"
@@ -105,7 +108,7 @@ models:
 
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, celo
       sector: dex
       project: zeroex
       contributors: rantum, bakabhai993
@@ -134,6 +137,7 @@ models:
       - *block_number
       - *contract_address
       - *block_time
+      - *block_month
       - *block_date
       - *maker
       - *taker
@@ -162,7 +166,7 @@ models:
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993 
     config:
-      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fafntom', 'avalanche', 'bnb', '0x','dex_aggregator','dex','aggregator']
+      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'faftom', 'avalanche', 'bnb','bsae','celo', '0x','dex_aggregator','dex','aggregator']
     description: >
         0x aggreator swaps thru 0x 0x API
     columns:
@@ -175,6 +179,7 @@ models:
         description: "The version of the 0x API"
       - *block_date
       - *block_time
+      - *block_month
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol of the token bought by the taker"
@@ -222,7 +227,7 @@ models:
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993
     config:
-      tags: ['ethereum','polygon','0x','optimism','arbitrum','fantom','bnb','dex']
+      tags: ['ethereum','polygon','0x','optimism','arbitrum','fantom','bnb','dex','base','celo']
     description: >
         0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
     tests:
@@ -266,7 +271,7 @@ models:
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993 
     config:
-      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fantom', 'bnb', '0x','dex_aggregator','dex','aggregator']
+      tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fantom', 'bnb', '0x','base', 'celo', 'dex_aggregator','dex','aggregator']
     description: >
         0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
     tests:
@@ -280,6 +285,7 @@ models:
       - *project 
       - *version
       - *block_date
+      - *block_month
       - *block_time
       - *token_bought_symbol
       - *token_sold_symbol
