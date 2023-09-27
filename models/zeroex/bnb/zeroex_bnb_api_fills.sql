@@ -16,7 +16,9 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address, taker_token, maker_token 
+           max(affiliate_address) as affiliate_address,
+           taker_token,
+           maker_token
     FROM (
         SELECT
             v3.evt_tx_hash AS tx_hash,
@@ -46,14 +48,13 @@ WITH zeroex_tx AS (
         UNION ALL
 
         SELECT
-            tr.tx_hash,
-            MAX(CASE
+            tr.tx_hash AS tx_hash,
+            CASE
                 WHEN bytearray_position(INPUT, 0x869584cd ) <> 0
                     THEN SUBSTRING(INPUT FROM (bytearray_position(INPUT, 0x869584cd) + 16) FOR 20)
                 WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0
                     THEN SUBSTRING(INPUT FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16) FOR 20)
-                END
-                ) AS affiliate_address,
+            END AS affiliate_address,
             bytearray_substring(INPUT, 177, 20) AS taker_token,
             bytearray_substring(INPUT, 209, 20) AS maker_token                
         FROM {{ source('bnb', 'traces') }} tr
