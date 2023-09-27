@@ -344,45 +344,25 @@ models:
         name: lien_id
         description:  "Unique loan id  "
 
-  - name: nft_approvals
+  - name: nft_marketplaces_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, base
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
       sector: nft
-      contributors: hildobby, tomfutago
+      contributors: hildobby
     config:
-      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'base', 'approvals']
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'info']
     description: >
-        NFT approvals
+        NFT marketplaces info
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
+            - codename
     columns:
-      - *blockchain
-      - *block_time
-      - *block_date
-      - *block_number
-      - name: address
-        description: "Address for which NFTs were approved"
-      - name: token_standard
-        tests:
-          - accepted_values:
-              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
-      - name: approval_for_all
-        description: "Was this an ApprovalForAll or a simple Approval?"
-      - name: contract_address
-        description: "Contract address"
-      - *token_id
-      - name: approved
-        description: "Approved"
-      - name: operator
-        description: "Operator address"
-      - *tx_hash
-      # - name: tx_from
-      #   description: "Address that initiated the transaction"
-      # - name: tx_to
-      #   description: "Address that the transaction points to"
-      - name: evt_index
-        description: "Event index"
+      - name: codename
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: marketplace_type
+        description: "Type of marketplace"
+      - name: x_username
+        description: "Username on X"

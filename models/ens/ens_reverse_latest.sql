@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",
                             "ens",
-                            \'["0xRob"]\') }}'
+                            \'["0xRob", "0xr3x"]\') }}'
     )
 }}
 
@@ -17,16 +17,45 @@ with node_names as (
     select
     name,node,block_time,tx_hash
     from (
-        select case when _name = '0x0000000000000000000000000000000000000000' then null else _name end as name
+        select case when name = '0x0000000000000000000000000000000000000000' then null else name end as name
              , node
              , call_block_time                                                                         as block_time
              , call_tx_hash                                                                            as tx_hash
              , row_number() over (partition by node order by call_block_time desc)                     as ordering --in theory we should also order by tx_index here
-        from {{ source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName') }}
-        where call_success
-        {% if is_incremental() %}
-        AND call_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+        from (
+            select _name as name
+                , node
+                , call_block_time
+                , call_tx_hash 
+            from 
+                {{source('ethereumnameservice_ethereum', 'DefaultReverseResolver_call_setName')}}
+            where call_success
+            {% if is_incremental() %}
+            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}
+            union all 
+            select newName as name
+                , node
+                , call_block_time
+                , call_tx_hash
+            from
+                {{source('ethereumnameservice_ethereum', 'PublicResolver_v2_call_setName')}}
+            where call_success
+            {% if is_incremental() %}
+            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}
+            union all
+            select name
+                , node
+                , call_block_time
+                , call_tx_hash
+            from
+                {{source('ethereumnameservice_ethereum', 'PublicResolver_call_setName')}}
+            where call_success
+            {% if is_incremental() %}
+            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}            
+        )
     ) foo
     where ordering = 1
 )
