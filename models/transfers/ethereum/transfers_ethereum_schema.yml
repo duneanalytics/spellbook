@@ -93,12 +93,6 @@ models:
     description: "ERC20 Token Transfers on Ethereum per hour."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat']
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_day
-            - wallet_address
-            - token_address
     columns:
       - *blockchain
       - *block_hour
@@ -122,6 +116,12 @@ models:
     description: "ERC20 Token Transfers on Ethereum daily aggregates."
     config:
       tags: ['transfers', 'ethereum', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - wallet_address
+            - token_address
     columns:
       - *blockchain
       - &block_day
