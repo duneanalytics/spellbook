@@ -1,7 +1,7 @@
 {{ 
     config( 
-        schema = 'oneinch_optimism',
-        alias = alias('ar_calls_transfers', legacy_model=True),
+        schema = 'oneinch_gnosis',
+        alias = alias('calls_transfers', legacy_model=True),
         tags = ['legacy']
     )
 }}
