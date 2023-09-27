@@ -1,4 +1,6 @@
-{{config(alias = alias('balancer_v2_gauges_ethereum'),
+{{config(
+        tags=['dunesql'],
+        alias = alias('balancer_v2_gauges_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
@@ -11,7 +13,7 @@ SELECT
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
-    TIMESTAMP('2022-01-13') AS created_at,
+    TIMESTAMP '2022-01-13'  AS created_at,
     NOW() AS updated_at,
     'balancer_v2_gauges_ethereum' AS model_name,
     'identifier' AS label_type
@@ -26,12 +28,11 @@ SELECT
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
-    TIMESTAMP('2022-01-13') AS created_at,
+    TIMESTAMP '2022-01-13'  AS created_at,
     NOW() AS updated_at,
     'balancer_v2_gauges_ethereum' AS model_name,
     'identifier' AS label_type
 FROM
     {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_evt_GaugeCreated') }} evt
     INNER JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_call_create') }} call ON call.call_tx_hash = evt.evt_tx_hash
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = call.pool;
-
+    LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = call.pool

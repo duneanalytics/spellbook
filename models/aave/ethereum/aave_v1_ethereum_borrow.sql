@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'aave_v1_ethereum'
+    tags = ['dunesql'] 
+    , schema = 'aave_v1_ethereum'
     , alias = alias('borrow')
   )
 }}
@@ -16,8 +17,8 @@ SELECT
       borrower,
       repayer,
       liquidator,
-      amount / CAST(CONCAT('1e', CAST(erc20.decimals AS VARCHAR(100))) AS DOUBLE) AS amount,
-      (amount/ CAST(CONCAT('1e', CAST(p.decimals AS VARCHAR(1000))) AS DOUBLE)) * price AS usd_amount,
+      amount / power(10, erc20.decimals) AS amount,
+      (amount / power(10, p.decimals)) * price AS usd_amount,
       evt_tx_hash,
       evt_index,
       evt_block_time,
@@ -27,17 +28,17 @@ SELECT
     '1' AS version,
     'borrow' AS transaction_type,
     CASE 
-        WHEN CAST(_borrowRateMode AS VARCHAR(100)) = '1' THEN 'stable'
-        WHEN CAST(_borrowRateMode AS VARCHAR(100)) = '2' THEN 'variable'
+        WHEN _borrowRateMode = UINT256 '1' THEN 'stable'
+        WHEN _borrowRateMode = UINT256 '2' THEN 'variable'
     END AS loan_type,
     CASE
-        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE CAST(_reserve AS VARCHAR(100))
+        WHEN _reserve = {{aave_mock_address}} THEN {{weth_address}} --Using WETH instead of Aave "mock" address
+        ELSE _reserve
     END AS token,
-    CAST(_user AS VARCHAR(100)) AS borrower,
-    CAST(NULL AS VARCHAR(5)) AS repayer,
-    CAST(NULL AS VARCHAR(5)) AS liquidator,
-    CAST(_amount AS DECIMAL(38,0)) AS amount,
+    _user AS borrower,
+    CAST(NULL AS VARBINARY) AS repayer,
+    CAST(NULL AS VARBINARY) AS liquidator,
+    CAST(_amount AS DOUBLE) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -49,13 +50,13 @@ SELECT
     'repay' AS transaction_type,
     NULL AS loan_type,
     CASE
-        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE CAST(_reserve AS VARCHAR(100))
+        WHEN _reserve = {{aave_mock_address}} THEN {{weth_address}} --Using WETH instead of Aave "mock" address
+        ELSE _reserve
     END AS token,
-    CAST(_user AS VARCHAR(100)) AS borrower,
-    CAST(_repayer AS VARCHAR(100)) AS repayer,
-    CAST(NULL AS VARCHAR(5)) AS liquidator,
-    - CAST(_amountMinusFees AS DECIMAL(38,0)) AS amount,
+    _user AS borrower,
+    _repayer AS repayer,
+    CAST(NULL AS VARBINARY) AS liquidator,
+    - CAST(_amountMinusFees AS DOUBLE) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -67,13 +68,13 @@ SELECT
     'borrow_liquidation' AS transaction_type,
     NULL AS loan_type,
     CASE
-        WHEN CAST(_reserve AS VARCHAR(100)) = '{{aave_mock_address}}' THEN '{{weth_address}}' --Using WETH instead of Aave "mock" address
-        ELSE CAST(_reserve AS VARCHAR(100))
+        WHEN _reserve = {{aave_mock_address}} THEN {{weth_address}} --Using WETH instead of Aave "mock" address
+        ELSE _reserve
     END AS token,
-    CAST(_user AS VARCHAR(100)) AS borrower,
-    CAST(_liquidator AS VARCHAR(100)) AS repayer,
-    CAST(_liquidator AS VARCHAR(100)) AS liquidator,
-    - CAST(_purchaseAmount AS DECIMAL(38,0)) AS amount,
+    _user AS borrower,
+    _liquidator AS repayer,
+    _liquidator AS liquidator,
+    - CAST(_purchaseAmount AS DOUBLE) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -84,6 +85,5 @@ LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20
     ON borrow.token = erc20.contract_address
 LEFT JOIN {{ source('prices','usd') }} p 
     ON p.minute = date_trunc('minute', borrow.evt_block_time) 
-    AND CAST(p.contract_address AS VARCHAR(100)) = borrow.token
+    AND p.contract_address = borrow.token
     AND p.blockchain = 'ethereum'    
-;

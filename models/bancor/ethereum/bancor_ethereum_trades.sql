@@ -165,7 +165,7 @@ FROM {{ source('bancor3_ethereum', 'BancorNetwork_evt_TokensTraded') }} t
 
  SELECT
     'ethereum' AS blockchain,
-    'Bancor Network' AS project,
+    'bancor' AS project,
     version,
     TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,

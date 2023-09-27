@@ -33,10 +33,23 @@ bebop_raw_data AS (
         JSON_EXTRACT(ex."order", '$.maker_amounts') AS maker_amounts_json,
         json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.taker_tokens')), '$[0]')) as taker_length,
         json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.maker_tokens')), '$[0]')) as maker_length
-    FROM 
-    {{ source('bebop_v3_arbitrum', 'BebopAggregationContract_evt_AggregateOrderExecuted') }} evt
-    LEFT JOIN 
-    {{ source('bebop_v3_arbitrum', 'BebopAggregationContract_call_SettleAggregateOrder') }} ex
+    FROM
+        (SELECT * FROM {{ source('bebop_v3_arbitrum', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
+         UNION ALL
+         SELECT * FROM {{ source('bebop_v4_arbitrum', 'BebopSettlement_evt_AggregateOrderExecuted') }}) evt
+    LEFT JOIN
+        (SELECT
+        call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_v3_arbitrum', 'BebopAggregationContract_call_SettleAggregateOrder') }}
+        UNION ALL
+        SELECT
+        call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_v4_arbitrum', 'BebopSettlement_call_SettleAggregateOrder') }}
+        UNION ALL
+        SELECT
+        call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_v4_arbitrum', 'BebopSettlement_call_SettleAggregateOrderWithTakerPermits') }}
+        ) ex
         ON ex.call_tx_hash = evt.evt_tx_hash
     WHERE ex.call_success = TRUE
     {% if is_incremental() %}
@@ -127,7 +140,7 @@ simple_trades as (
 SELECT
   'arbitrum' AS blockchain,
   'bebop' AS project,
-  '1' AS version,
+  '2' AS version,
   CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
   CAST(date_trunc('MONTH', t.block_time) AS date) AS block_month,
   t.block_time AS block_time,

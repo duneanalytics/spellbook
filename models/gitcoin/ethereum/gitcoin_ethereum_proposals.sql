@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'gitcoin_ethereum',
     alias = alias('proposals'),
     partition_by = ['block_date'],
@@ -18,9 +19,9 @@
 
 with cte_support as (SELECT 
         voter as voter,
-        CASE WHEN support = 0 THEN sum(votes/1e18) ELSE 0 END AS votes_against,
-        CASE WHEN support = 1 THEN sum(votes/1e18) ELSE 0 END AS votes_for,
-        CASE WHEN support = 2 THEN sum(votes/1e18) ELSE 0 END AS votes_abstain,
+        CASE WHEN support = FALSE THEN sum(votes/1e18) ELSE 0 END AS votes_against,
+        CASE WHEN support = TRUE THEN sum(votes/1e18) ELSE 0 END AS votes_for,
+        0 AS votes_abstain,
         proposalId
 FROM {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_VoteCast') }}
 GROUP BY support, proposalId, voter),
@@ -38,12 +39,12 @@ GROUP BY proposalId)
 SELECT DISTINCT
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
-    cast(NULL as string) as version,
+    cast(NULL as varchar) as version,
     pcr.evt_block_time as created_at,
     date_trunc('DAY', pcr.evt_block_time) AS block_date,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     proposer,
     pcr.id as proposal_id,
     csv.votes_for,
@@ -57,8 +58,8 @@ SELECT DISTINCT
     CASE 
          WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
          WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
-         WHEN pcr.startBlock < pcr.evt_block_number < pcr.endBlock THEN 'Active'
-         WHEN now() > pqu.evt_block_time AND startBlock > pcr.evt_block_number THEN 'Queued'
+         WHEN pcr.startBlock <  cast(pcr.evt_block_number as uint256) and cast(pcr.evt_block_number as uint256) < pcr.endBlock THEN 'Active'
+         WHEN now() > pqu.evt_block_time AND startBlock > cast(pcr.evt_block_number as uint256) THEN 'Queued'
          ELSE 'Defeated' END AS status,
     description as description
 FROM  {{ source('gitcoin_ethereum', 'GovernorAlpha_evt_ProposalCreated') }} pcr

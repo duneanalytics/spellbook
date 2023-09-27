@@ -1,7 +1,9 @@
  {{
   config(
+        schema = 'solana_utils',
         alias = alias('latest_balances'),
         materialized='table',
+        tags = ['dunesql'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -19,6 +21,7 @@ WITH
                   , token_balance_owner
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
+            --comment to trigger job
       )
 
 SELECT 
