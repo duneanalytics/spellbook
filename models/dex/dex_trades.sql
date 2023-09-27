@@ -70,6 +70,7 @@
 ,ref('aerodrome_base_trades')
 ,ref('carbon_defi_ethereum_trades')
 ,ref('opx_finance_optimism_trades')
+,ref('mauve_trades')
 ] %}
 
 
@@ -133,5 +134,3 @@ FROM (
     {% endfor %}
 )
 WHERE duplicates_rank = 1
-
-
