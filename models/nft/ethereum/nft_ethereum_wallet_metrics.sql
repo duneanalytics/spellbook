@@ -46,7 +46,6 @@ select aggregator_address,
        tx_from,
        tx_hash,
        tx_to,
-       unique_trade_id,
        version
 from nft_trades_no_wash
 
@@ -77,7 +76,6 @@ select aggregator_address,
        tx_from,
        tx_hash,
        tx_to,
-       unique_trade_id,
        version
 from {{ref('nft_mints')}}
 )
