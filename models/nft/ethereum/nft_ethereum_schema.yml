@@ -27,7 +27,13 @@ models:
       tags: ['nft','ethereum']
     description: >
         NFT native (i.e., non-platform) mints
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -37,6 +43,10 @@ models:
         description: "Project version"
       - name: block_time
         description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
       - name: token_id
         description: "NFT Token ID"
       - name: collection
@@ -101,10 +111,8 @@ models:
         description:  "Royalty fee amount in USD"
       - name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
-      - name: unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
+      - name: evt_index
+        description: "Event index"
 
   - name: nft_ethereum_transfers
     meta:

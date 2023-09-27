@@ -28,8 +28,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - unique_trade_id
-            - blockchain
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
     columns:
       - &blockchain
         name: blockchain
@@ -142,9 +144,12 @@ models:
       - &royalty_fee_percentage
         name: royalty_fee_percentage
         description:  "Royalty fee in % of the amount paid for a given trade"
-      - &unique_trade_id
-        name: unique_trade_id
-        description:  "Unique trade ID"
+      - name: evt_index
+        description: "Event index"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
 
   - name: nft_wash_trades
     meta:
