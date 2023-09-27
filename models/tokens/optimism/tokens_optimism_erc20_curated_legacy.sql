@@ -395,6 +395,9 @@ WITH raw_token_list AS (
     ,('0xdC6fF44d5d932Cbd77B52E5612Ba0529DC6226F1', 'WLD', 18, 'underlying')
     ,('0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487', 'GRAI', 18, 'underlying')
     ,('0x50Bce64397C75488465253c0A034b8097FeA6578', 'HAN', 18, 'underlying')
+    ,('0x9560e827aF36c94D2Ac33a39bCE1Fe78631088Db', 'VELO', 18, 'underlying')
+    ,('0x1f514a61bcde34f94bc39731235690ab9da737f7', 'TAROT', 18, 'underlying')
+    ,('0x5976d4c3bcfc1c5f90ab1419d7f3ddf109cea35a', 'GNODE', 18, 'underlying')
     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
