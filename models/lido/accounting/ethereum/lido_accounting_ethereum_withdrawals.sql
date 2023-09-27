@@ -1,7 +1,6 @@
 {{ config(
         alias = alias('withdrawals'),
         tags = ['dunesql'], 
-        partition_by = ['day'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
