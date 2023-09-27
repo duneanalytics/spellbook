@@ -162,11 +162,11 @@ models:
         description: "Amount of ETH staked in trasaction"
       - name: depositor_address
         description: "Address of depositor"
-      - name: depositor_entity
+      - name: entity
         description: "Name of depositor if identified"
-      - name: depositor_entity_unique_name
+      - name: entity_unique_name
         description: "Unique name of depositor if identified"
-      - name: depositor_entity_category
+      - name: entity_category
         description: "Category of depositor if identified"
       - name: tx_hash
         description: "Transaction hash of deposit"

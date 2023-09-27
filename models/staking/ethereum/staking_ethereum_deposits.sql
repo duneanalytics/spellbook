@@ -59,9 +59,9 @@ SELECT d.block_time
 , d.block_number
 , d.amount AS amount_staked
 , ett.depositor_address
-, ete.entity AS depositor_entity
-, ete.entity_unique_name AS depositor_entity_unique_name
-, ete.category AS depositor_entity_category
+, ete.entity
+, ete.entity_unique_name
+, ete.category AS entity_category
 , d.tx_hash
 , et."from" AS tx_from
 , d.deposit_index
