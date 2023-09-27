@@ -20,6 +20,6 @@ LEFT JOIN
 -- this filter will only be applied on an incremental run
 WHERE tr.evt_block_time >= date_trunc('hour', now() - interval '3' Day)
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5, 6
+GROUP BY 1, 2, 3, 4, 5, 6{% if unique_transfer_id %}, 9{% endif %}
 
 {% endmacro %}
