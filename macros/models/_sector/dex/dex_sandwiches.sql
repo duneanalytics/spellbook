@@ -27,8 +27,8 @@ SELECT distinct s1.blockchain
 --, CASE WHEN s1.token_bought_address=s2.token_sold_address THEN 'token_sold' ELSE 'token_bought' END AS sandwiched_token
 --, CASE WHEN s1.token_bought_address<s1.token_sold_address THEN 0 ELSE 1 END AS token_order
 FROM {{ ref('dex_trades') }} s1
-INNER JOIN {{ ref('dex_trades') }} s2 ON s1.blockchain='ethereum'
-    AND s2.blockchain='ethereum'
+INNER JOIN {{ ref('dex_trades') }} s2 ON s1.blockchain='{{blockchain}}'
+    AND s2.blockchain='{{blockchain}}'
     AND s1.block_time=s2.block_time
     AND s1.project=s2.project
     AND s1.version=s2.version
