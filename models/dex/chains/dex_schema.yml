@@ -87,6 +87,9 @@ models:
       - &token_bought_amount
         name: token_bought_amount
         description: "Value of the token bought at time of execution in the original currency"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
 
   - name: dex_arbitrum_sandwiches
     meta: 
@@ -128,6 +131,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_avalanche_c_sandwiches
     meta: 
@@ -169,6 +173,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_bnb_sandwiches
     meta: 
@@ -210,6 +215,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_fantom_sandwiches
     meta: 
@@ -251,6 +257,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_gnosis_sandwiches
     meta: 
@@ -292,6 +299,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_optimism_sandwiches
     meta: 
@@ -333,6 +341,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_polygon_sandwiches
     meta: 
@@ -374,6 +383,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
 
   - name: dex_base_sandwiches
     meta: 
@@ -415,3 +425,4 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index

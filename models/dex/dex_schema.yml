@@ -392,3 +392,27 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *evt_index
+
+  - name: dex_info
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'info']
+    description: >
+        DEXs info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - codename
+    columns:
+      - name: codename
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: marketplace_type
+        description: "Type of marketplace"
+      - name: x_username
+        description: "Username on X"
