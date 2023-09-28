@@ -37,8 +37,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  AND cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  AND CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -82,8 +82,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  AND cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  AND CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -127,8 +127,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  AND cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  AND CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -172,8 +172,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  AND cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  AND CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}

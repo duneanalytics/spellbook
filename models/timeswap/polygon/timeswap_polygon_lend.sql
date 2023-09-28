@@ -20,8 +20,8 @@ SELECT
     l.call_block_time as time,
     CAST(get_json_object(l.param, '$.isToken') AS BOOLEAN) AS token_0,
     'lend' as transaction_type,
-    get_json_object(l.param, '$.maturity') AS maturity,
-    get_json_object(l.param, '$.strike') AS strike,
+    CAST(get_json_object(l.param, '$.maturity') AS UINT256) AS maturity,
+    CAST(get_json_object(l.param, '$.strike') AS UINT256) AS strike,
     i.pool_pair as pool_pair,
     i.chain as chain,
     tx."from" as user,
@@ -66,8 +66,8 @@ SELECT
     l.call_block_time as time,
     CAST(get_json_object(l.param, '$.isToken') AS BOOLEAN) AS token_0,
     'lend' as transaction_type,
-    get_json_object(l.param, '$.maturity') AS maturity,
-    get_json_object(l.param, '$.strike') AS strike,
+    CAST(get_json_object(l.param, '$.maturity') AS UINT256) AS maturity,
+    CAST(get_json_object(l.param, '$.strike') AS UINT256) AS strike,
     i.pool_pair as pool_pair,
     i.chain as chain,
     tx."from" as user,
@@ -131,8 +131,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_polygon_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  and cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  and CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -175,8 +175,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_polygon_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  and cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  and CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -222,8 +222,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_polygon_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  and cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  and CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -266,8 +266,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_polygon_pools') }} i
-  ON CAST(l.maturity as VARCHAR(100)) = i.maturity
-  and cast(l.strike as VARCHAR(100)) = i.strike
+  ON CAST(l.maturity as UINT256) = i.maturity
+  and CAST(l.strike as UINT256) = i.strike
 JOIN {{ source('polygon', 'transactions') }} tx
     on l.evt_tx_hash = tx.hash
     {% if is_incremental() %}
