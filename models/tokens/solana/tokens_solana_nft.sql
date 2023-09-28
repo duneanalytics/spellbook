@@ -1,7 +1,9 @@
 {{ config
-(
+(        
+  schema = 'tokens_solana_nft',
   alias = alias('nft'),
-  tags=['static','dunesql'],
+  tags = ['dunesql'],
+  materialized='table',
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens",
