@@ -52,6 +52,7 @@ models:
       - &reason
         name: reason
         description: "Optional onchain commments to explain votes"
+      - name: block_month
 
   - name: compound_v2_ethereum_proposals
     meta:
@@ -98,6 +99,7 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
+      - name: block_month
 
   - name: compound_v2_ethereum_ctokens
     meta:

@@ -1,7 +1,8 @@
 {{ config(
+    tags = ['dunesql'],
     schema = 'dydx_ethereum',
     alias = alias('votes'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -27,7 +28,8 @@ SELECT
     '{{project}}' as project,
     cast(NULL as string) as version,
     vc.evt_block_time as block_time,
-    date_trunc('DAY', vc.evt_block_time) AS block_date,
+    CAST(date_trunc('DAY', vc.evt_block_time) as date) AS block_date,
+    CAST(date_trunc('MONTH', vc.evt_block_time) as date) AS block_month,
     vc.evt_tx_hash as tx_hash,
     '{{dao_name}}' as dao_name,
     {{dao_address}} as dao_address,
@@ -45,6 +47,6 @@ SELECT
     cast(NULL as string) as reason
 FROM {{ source('dydx_protocol_ethereum', 'DydxGovernor_evt_VoteEmitted') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.id = csv.id
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', vc.evt_block_time)
     AND p.symbol = 'DYDX'
     AND p.blockchain ='ethereum'

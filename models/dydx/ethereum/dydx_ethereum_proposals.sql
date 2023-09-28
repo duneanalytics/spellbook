@@ -2,7 +2,7 @@
     tags = ['dunesql'],
     schema = 'dydx_ethereum',
     alias = alias('proposals'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -46,7 +46,8 @@ SELECT DISTINCT
     '{{project}}' as project,
     cast(NULL as string) as version,
     pcr.evt_block_time as created_at,
-    date_trunc('DAY', pcr.evt_block_time) AS block_date,
+    CAST(date_trunc('DAY', pcr.evt_block_time) as date) AS block_date,
+    CAST(date_trunc('MONTH', pcr.evt_block_time) as date) AS block_month,
     pcr.evt_tx_hash as tx_hash, -- Proposal Created tx hash
     '{{dao_name}}' as dao_name,
     {{dao_address}} as dao_address,
