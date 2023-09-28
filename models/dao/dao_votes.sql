@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['dunesql'],
         alias = alias('votes'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
