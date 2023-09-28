@@ -23,7 +23,7 @@ WITH
     SELECT
       output_pair AS pool_address,
       _nft AS nft_contract_address,
-      tx.from AS creator_address,
+      tx."from" AS creator_address,
       CASE
         WHEN _bondingCurve = {{linear_bonding_address}} THEN 'linear'
         WHEN _bondingCurve = {{exponential_bonding_address}} THEN 'exponential'
