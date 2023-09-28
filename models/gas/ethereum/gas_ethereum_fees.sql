@@ -28,10 +28,10 @@ SELECT
           WHEN type = 'AccessList' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) * p.price 
           WHEN type = 'DynamicFee' THEN ((cast(base_fee_per_gas as double)/1e18 + cast(priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))  * p.price 
           END AS tx_fee_usd,
-     ((base_fee_per_gas) * txns.gas_used)/1e18 AS burned_native, 
-     (((base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS burned_usd,
-     ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18 AS tx_savings_native,
-     (((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) * txns.gas_used)/1e18) * p.price AS tx_savings_usd,
+     base_fee_per_gas / 1e18 * txns.gas_used AS burned_native, 
+     base_fee_per_gas / 1e18 * txns.gas_used * p.price AS burned_usd,
+     (max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) / 1e18 * txns.gas_used AS tx_savings_native,
+     ((max_fee_per_gas - priority_fee_per_gas - base_fee_per_gas) /1e18 * txns.gas_used) * p.price AS tx_savings_usd,
      miner AS validator, -- or block_proposer since Proposer Builder Separation (PBS) happened ?
      max_fee_per_gas / 1e9 AS max_fee_gwei,
      max_fee_per_gas / 1e18 * p.price AS max_fee_usd,
@@ -43,7 +43,10 @@ SELECT
      gas_price / 1e18 * p.price AS gas_price_usd,
      txns.gas_used,
      txns.gas_limit,
-     txns.gas_used / txns.gas_limit * 100 AS gas_usage_percent,
+     CASE 
+        WHEN txns.gas_limit = 0 THEN NULL
+        WHEN txns.gas_limit != 0 THEN txns.gas_used / txns.gas_limit * 100
+     END AS gas_usage_percent,
      difficulty,
      type AS transaction_type
 FROM {{ source('ethereum','transactions') }} txns

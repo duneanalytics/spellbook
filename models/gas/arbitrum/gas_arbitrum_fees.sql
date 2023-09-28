@@ -20,8 +20,8 @@ SELECT
      'ETH' as native_token_symbol,
      value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,
-     (effective_gas_price * txns.gas_used)/1e18 as tx_fee_native, 
-     (effective_gas_price * txns.gas_used)/1e18 * p.price AS tx_fee_usd,
+     (effective_gas_price / 1e18) * txns.gas_used as tx_fee_native, 
+     (effective_gas_price / 1e18) * txns.gas_used * p.price AS tx_fee_usd,
      cast(NULL as double) AS burned_native, -- Not applicable for L2s
      cast(NULL as double) AS burned_usd, -- Not applicable for L2s
      cast(NULL as varbinary) as validator, -- Not applicable for L2s
@@ -31,7 +31,10 @@ SELECT
      txns.gas_price/1e18 * p.price as gas_price_bid_usd,
      txns.gas_used as gas_used,
      txns.gas_limit as gas_limit,
-     txns.gas_used / txns.gas_limit * 100 as gas_usage_percent,
+     CASE 
+        WHEN txns.gas_limit = 0 THEN NULL
+        WHEN txns.gas_limit != 0 THEN txns.gas_used / txns.gas_limit * 100
+     END AS gas_usage_percent,
      gas_used_for_l1 as l1_gas_used,
      type as transaction_type
 FROM {{ source('arbitrum','transactions') }} txns
