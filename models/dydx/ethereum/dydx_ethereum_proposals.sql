@@ -24,9 +24,8 @@ FROM {{ source('ethereum','blocks') }} b
 
 cte_support as (SELECT
         voter as voter,
-        CASE WHEN support = 0 THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
-        CASE WHEN support = 1 THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
-        CASE WHEN support = 2 THEN sum(votingPower/1e18) ELSE 0 END AS votes_abstain,
+        CASE WHEN support = false THEN sum(votingPower/1e18) ELSE UINT256 '0' END AS votes_against,
+        CASE WHEN support = true THEN sum(votingPower/1e18) ELSE UNIT256 '0' END AS votes_for,
         id
 FROM {{ source('dydx_protocol_ethereum', 'DydxGovernor_evt_VoteEmitted') }}
 GROUP BY support, id, voter),
@@ -35,8 +34,7 @@ cte_sum_votes as (
 SELECT COUNT(DISTINCT voter) as number_of_voters,
        SUM(votes_for) as votes_for,
        SUM(votes_against) as votes_against,
-       SUM(votes_abstain) as votes_abstain,
-       SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
+       SUM(votes_for) + SUM(votes_against) as votes_total,
        id
 from cte_support
 GROUP BY id)
@@ -44,7 +42,7 @@ GROUP BY id)
 SELECT DISTINCT
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
-    cast(NULL as string) as version,
+    cast(NULL as VARCHAR) as version,
     pcr.evt_block_time as created_at,
     CAST(date_trunc('DAY', pcr.evt_block_time) as date) AS block_date,
     CAST(date_trunc('MONTH', pcr.evt_block_time) as date) AS block_month,
@@ -55,7 +53,7 @@ SELECT DISTINCT
     pcr.id as proposal_id,
     csv.votes_for,
     csv.votes_against,
-    csv.votes_abstain,
+    CAST(NULL as UINT256) votes_abstain,
     csv.votes_total,
     csv.number_of_voters,
     csv.votes_total / 1e9 * 100 AS participation, -- Total votes / Total supply (1B for dYdX)
