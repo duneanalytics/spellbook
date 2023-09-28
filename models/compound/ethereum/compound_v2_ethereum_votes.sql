@@ -48,6 +48,6 @@ SELECT
     vc.reason
 FROM {{ source('compound_v2_ethereum', 'GovernorBravoDelegate_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', vc.evt_block_time)
     AND p.symbol = 'COMP'
     AND p.blockchain ='ethereum'
