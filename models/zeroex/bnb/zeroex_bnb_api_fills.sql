@@ -96,7 +96,7 @@ v2_fills_no_bridge AS (
             'Fill'                                                                     AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
-            (fills.feeRecipientAddress = '0x86003b044f70dac0abc80ac8957305b6370893ed') AS matcha_limit_order_flag
+            (fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed) AS matcha_limit_order_flag
     FROM {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} fills
     JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
     WHERE (bytearray_substring(makerAssetData, 1, 4) != 0xdc1600f3)
@@ -294,23 +294,20 @@ direct_PLP AS (
 ),
 uni_v2_swap as (
     SELECT
-        s.tx_hash tx_hash
-        , s.index evt_index
+        s.tx_hash
+        , s.index as evt_index
         , s.contract_address
-        , s.block_time, 
-        bytearray_substring(DATA, 283, 40) AS maker, 
-        '0xdef1c0ded9bec7f1a1670819833240f027b25eff' AS taker,
-        z.taker_token,
-        z.maker_token,
-        bytearray_to_uint256(bytearray_substring(DATA, 91, 40)) AS taker_token_amount_raw,
-        case when length(bytearray_to_uint256(bytearray_substring(DATA, 13, 20))) < length(bytearray_to_uint256(bytearray_substring(DATA, 109, 20))) 
-            then bytearray_to_uint256(bytearray_substring(DATA, 13, 20))
-            else bytearray_to_uint256(bytearray_substring(DATA, 109, 20))
-        end AS maker_token_amount_raw,
-        'direct_uniswapv2' AS TYPE,
-        z.affiliate_address AS affiliate_address,
-        TRUE AS swap_flag,
-        FALSE AS matcha_limit_order_flag
+        , s.block_time
+        , s.contract_address AS maker
+        , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
+        , z.taker_token
+        , z.maker_token
+        , greatest(bytearray_to_uint256(bytearray_substring(DATA, 45, 20)), bytearray_to_uint256(bytearray_substring(DATA, 13, 20))) AS taker_token_amount_raw
+        , greatest(bytearray_to_uint256(bytearray_substring(DATA, 77, 20)), bytearray_to_uint256(bytearray_substring(DATA, 109, 20))) AS maker_token_amount_raw
+        , 'direct_uniswapv2' AS TYPE
+        , z.affiliate_address AS affiliate_address
+        , TRUE AS swap_flag
+        , FALSE AS matcha_limit_order_flag
     FROM {{ source('bnb', 'logs') }} s
     JOIN zeroex_tx z on z.tx_hash = s.tx_hash 
     WHERE topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822 -- all the uni v2 swap event
