@@ -146,7 +146,7 @@ with
 , full_settings_backfilled as (
     select
      coalesce(new.pool_address,old.pool_address) as pool_address
-    ,coalesce(old.bonding_curve) as bonding_curve
+    ,old.bonding_curve as bonding_curve
     ,coalesce(new.pool_fee,old.pool_fee) as pool_fee
     ,coalesce(new.delta, old.delta) as delta
     ,coalesce(new.spot_price,old.spot_price) as spot_price
