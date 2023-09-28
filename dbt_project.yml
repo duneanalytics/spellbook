@@ -821,8 +821,6 @@ models:
 
     keep3r_network:
       +schema: keep3r_network
-      ethereum:
-        +schema: keep3r_network_ethereum
 
     airswap:
       +schema: airswap
