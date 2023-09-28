@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('fees'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,6 +12,7 @@
 SELECT 
      'ethereum' as blockchain,
      date_trunc('day', block_time) AS block_date,
+     CAST(date_trunc('month', block_time) AS DATE) AS block_month,
      block_number,
      block_time,
      txns.hash AS tx_hash,
