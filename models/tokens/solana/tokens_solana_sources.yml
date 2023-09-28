@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: mpl_token_metadata_solana
+    tables:
+      - name: mpl_token_metadata_call_Create
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_CreateMetadataAccount
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_CreateMetadataAccountV2
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_CreateMetadataAccountV3
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_CreateMasterEdition
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_CreateMasterEditionV3
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_Verify
+        loaded_at_field: call_block_time
