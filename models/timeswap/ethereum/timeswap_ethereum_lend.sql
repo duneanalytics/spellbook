@@ -25,15 +25,15 @@ SELECT
   tx."from" as user,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals)
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals)
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals)
+    END as UINT256
   ) as token_amount,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals) * p.price
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals) * p.price
+    END as UINT256
   ) as usd_amount
   FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
   JOIN {{ ref('timeswap_ethereum_pools') }} i ON CAST(l.maturity as VARCHAR(100)) = i.maturity and cast(l.strike as VARCHAR(100)) = i.strike
@@ -64,15 +64,15 @@ SELECT
   tx."from" as user,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals)
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals)
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals)
+    END as UINT256
   ) as token_amount,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals) * p.price
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals) * p.price
+    END as UINT256
   ) as usd_amount
 FROM {{ source('timeswap_ethereum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_ethereum_pools') }} i

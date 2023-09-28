@@ -25,15 +25,15 @@ SELECT
   tx."from" as user,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals)
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals)
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals)
+    END as UINT256
   ) as token_amount,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals) * p.price
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals) * p.price
+    END as UINT256
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
@@ -70,15 +70,15 @@ SELECT
   tx."from" as user,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals)
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals)
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals)
+    END as UINT256
   ) as token_amount,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals) * p.price
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals) * p.price
+    END as UINT256
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
@@ -115,15 +115,15 @@ SELECT
   tx."from" as user,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals)
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals)
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals)
+    END as UINT256
   ) as token_amount,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals) * p.price
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals) * p.price
+    END as UINT256
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
@@ -160,15 +160,15 @@ SELECT
   tx."from" as user,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals)
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals)
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals)
+    END as UINT256
   ) as token_amount,
   CAST(
     CASE
-      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS DOUBLE) / power(10,i.token0_decimals) * p.price
-      ELSE CAST(l.tokenAmount AS DOUBLE) / power(10,i.token1_decimals) * p.price
-    END as DOUBLE
+      WHEN CAST(l.isToken0 AS BOOLEAN) = true THEN CAST(l.tokenAmount AS UINT256) / power(10,i.token0_decimals) * p.price
+      ELSE CAST(l.tokenAmount AS UINT256) / power(10,i.token1_decimals) * p.price
+    END as UINT256
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal') }} l
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
