@@ -18,25 +18,25 @@
 SELECT
     b.call_tx_hash as transaction_hash,
     b.call_block_time as time,
-    CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) AS token_0,
+    CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) AS token_0,
     'borrow' as transaction_type,
-    get_json_object(b.param, '$.maturity') AS maturity,
-    get_json_object(b.param, '$.strike') AS strike,
+    JSON_EXTRACT_SCALAR(b.param, '$.maturity') AS maturity,
+    JSON_EXTRACT_SCALAR(b.param, '$.strike') AS strike,
     i.pool_pair as pool_pair,
     i.chain as chain,
     tx."from" as user,
     CAST(
         CASE
-            WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true
-            THEN CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals)
-            ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals)
+            WHEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) = true
+            THEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals)
+            ELSE CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals)
         END as UINT256
     ) as token_amount,
     CAST(
         CASE
-            WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true
-            THEN CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals) * p.price
-            ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals) * p.price
+            WHEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) = true
+            THEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals) * p.price
+            ELSE CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals) * p.price
         END as UINT256
     ) as usd_amount
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
@@ -50,7 +50,7 @@ SELECT
     ON p.symbol=i.token0_symbol
     and p.blockchain = 'polygon'
     and b.call_success = true
-    and CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true
+    and CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) = true
     AND p.minute = date_trunc('minute',b.call_block_time)
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
@@ -64,25 +64,25 @@ UNION
 SELECT
     b.call_tx_hash as transaction_hash,
     b.call_block_time as time,
-    CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) AS token_0,
+    CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) AS token_0,
     'borrow' as transaction_type,
-    get_json_object(b.param, '$.maturity') AS maturity,
-    get_json_object(b.param, '$.strike') AS strike,
+    JSON_EXTRACT_SCALAR(b.param, '$.maturity') AS maturity,
+    JSON_EXTRACT_SCALAR(b.param, '$.strike') AS strike,
     i.pool_pair as pool_pair,
     i.chain as chain,
     tx."from" as user,
     CAST(
         CASE
-            WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true
-            THEN CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals)
-            ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals)
+            WHEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) = true
+            THEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals)
+            ELSE CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals)
         END as UINT256
     ) as token_amount,
     CAST(
         CASE
-            WHEN CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = true
-            THEN CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals) * p.price
-            ELSE CAST(get_json_object(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals) * p.price
+            WHEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) = true
+            THEN CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token0_decimals) * p.price
+            ELSE CAST(JSON_EXTRACT_SCALAR(b.param, '$.tokenAmount') AS UINT256) / power(10,i.token1_decimals) * p.price
         END as UINT256
     ) as usd_amount
     FROM {{ source('timeswap_polygon', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal') }} b
@@ -96,7 +96,7 @@ SELECT
     ON p.symbol=i.token1_symbol
     and p.blockchain = 'polygon'
     and b.call_success = true
-    and CAST(get_json_object(b.param, '$.isToken') AS BOOLEAN) = false
+    and CAST(JSON_EXTRACT_SCALAR(b.param, '$.isToken') AS BOOLEAN) = false
     AND p.minute = date_trunc('minute',b.call_block_time)
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
