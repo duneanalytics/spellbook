@@ -126,7 +126,7 @@ buys_and_sells_nft_trades_no_wash_w_mints as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller
-        AND src.number_of_items = UNIT256 '1'
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL
 ),
 ----- FLOOR PRICES -------
