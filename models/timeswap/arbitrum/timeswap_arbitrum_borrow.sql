@@ -39,8 +39,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-    ON CAST(b.maturity as VARCHAR(100)) = i.maturity
-    AND cast(b.strike as VARCHAR(100)) = i.strike
+    ON CAST(b.maturity as UINT256) = i.maturity
+    AND cast(b.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -83,8 +83,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(b.maturity as VARCHAR(100)) = i.maturity
-  AND cast(b.strike as VARCHAR(100)) = i.strike
+  ON CAST(b.maturity as UINT256) = i.maturity
+  AND cast(b.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -130,8 +130,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(b.maturity as VARCHAR(100)) = i.maturity
-  AND cast(b.strike as VARCHAR(100)) = i.strike
+  ON CAST(b.maturity as UINT256) = i.maturity
+  AND cast(b.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
@@ -174,8 +174,8 @@ SELECT
   ) as usd_amount
 FROM {{ source('timeswap_arbitrum', 'TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal') }} b
 JOIN {{ ref('timeswap_arbitrum_pools') }} i
-  ON CAST(b.maturity as VARCHAR(100)) = i.maturity
-  AND cast(b.strike as VARCHAR(100)) = i.strike
+  ON CAST(b.maturity as UINT256) = i.maturity
+  AND cast(b.strike as UINT256) = i.strike
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
