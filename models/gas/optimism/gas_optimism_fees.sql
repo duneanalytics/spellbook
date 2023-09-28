@@ -37,8 +37,8 @@ SELECT
      l1_gas_price/1e18 * p.price as l1_gas_price_usd,
      l1_gas_used,
      l1_fee_scalar,
-     (l1_gas_price * txns.gas_used)/1e18 as tx_fee_equivalent_on_l1_native,
-     (l1_gas_price * txns.gas_used)/1e18 * p.price as tx_fee_equivalent_on_l1_usd,
+     (l1_gas_price/1e18 )* txns.gas_used as tx_fee_equivalent_on_l1_native,
+     (l1_gas_price/1e18 )* txns.gas_used * p.price as tx_fee_equivalent_on_l1_usd,
      (length(from_utf8(data)) - length(replace(from_utf8(data), chr(0), ''))) as num_zero_bytes, 
      bytearray_length(data) - (length(from_utf8(data)) - length(replace(from_utf8(data), chr(0), ''))) as num_nonzero_bytes,
      -- source: https://www.starburst.io/community/forum/t/count-zero-bytes-and-nonzero-bytes-in-a-bytestring-varbinary/261/2
