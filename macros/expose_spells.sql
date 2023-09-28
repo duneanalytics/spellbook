@@ -8,7 +8,7 @@
             'dune.data_explorer.category'='abstraction',
             'dune.data_explorer.abstraction.type'= '{{ spell_type }}', -- 'project' or 'sector'
             'dune.data_explorer.abstraction.name'= '{{ spell_name }}', -- 'aave' or 'uniswap'
-            'dune.data_explorer.contributors'= '{{ contributors }}',   -- e.g., ["soispoke","jeff_dude"]
+            'dune.data_explorer.contributors'= '{{ tojson(fromjson(contributors)) }}',   -- e.g., ["soispoke","jeff_dude"]
             'dune.vacuum' = '{"enabled":true}'
           )
     {%- else -%}
@@ -18,7 +18,7 @@
               'dune.data_explorer.category': 'abstraction',
               'dune.data_explorer.abstraction.type': spell_type,
               'dune.data_explorer.abstraction.name': spell_name,
-              'dune.data_explorer.contributors': contributors | as_text,
+              'dune.data_explorer.contributors': tojson(fromjson(contributors | as_text)),
               'dune.vacuum': '{"enabled":true}'
             } -%}
       {%- if model.config.materialized == "view" -%}
