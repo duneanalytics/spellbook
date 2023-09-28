@@ -8,6 +8,8 @@
     )
 }}
 
+
+
 -- last really updated 2023-08-04
 with 
 
@@ -65,7 +67,7 @@ routers(
         , ('ethereum', 'Uniswap', 'Router02', 'Router', 0x7a250d5630b4cf539739df2c5dacb4c659f2488d)
         , ('ethereum', 'Uniswap', 'Router01', 'Router', 0xf164fc0ec4e93095b804a4795bbe1e041497b92a)
         , ('ethereum', 'Uniswap', 'UniversalRouter', 'Router', 0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b)
-        , ('ethereum', 'Uniswap', 'UniswapX', 'Aggregator', 0xe80bf394d190851e215d5f67b67f8f5a52783f1e)
+        , ('ethereum', 'Uniswap', 'UniswapX', 'Aggregator', 0x6000da47483062a0d734ba3dc7576ce6a0b645c4)
         , ('ethereum', 'ZeroEx', 'ZeroExProxy', 'Aggregator', 0xe66b31678d6c16e9ebf358268a790b763c133750)
         , ('ethereum', 'ZeroEx', 'ExchangeProxy', 'Aggregator', 0xdef1c0ded9bec7f1a1670819833240f027b25eff)
         , ('ethereum', 'MetaMask', 'MetaMask', 'Aggregator of Aggregators', 0x881d40237659c251811cec9c364ef91dc08d300c)
