@@ -15,6 +15,7 @@
         'arbitrum',
         'avalanche_c',
         'bnb',
+        'base',
         'ethereum',
         'fantom',
         'gnosis',
