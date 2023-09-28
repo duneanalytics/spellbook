@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: solana_stake_actions
+    meta:
+      blockchain: solana
+      sector: staking
+      contributors: ilemi
+    config:
+      tags: ['solana', 'staking', 'actions']
+    description: Solana Stake11111 program actions
+    columns:
+      - name: stake
+        description: amount in stake moved
+      - name: action
+        description: delegate, withdraw, merge, or split stake
+      - name: source
+      - name: destination
+      - name: authority
+      - name: block_slot
+      - name: block_time
+      - name: outer_instruction_index
+      - name: inner_instruction_index
+      - name: tx_id
