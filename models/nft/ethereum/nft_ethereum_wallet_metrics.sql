@@ -243,9 +243,9 @@ all_trades_profit_and_unrealized_profit_w_floors as
         coalesce(sell_amount_eth, floors1.avg_floor_price, floors2.price_p5_eth, 0) + buy_amount_eth eth_profit
     FROM all_trades_profit_and_unrealized_profit b
     left join reservoir_floors_latest_avg floors1
-        on cast(floors1.contract as string) = cast(b.nft_contract_address as string)
+        on floors1.contract = b.nft_contract_address
     left join eth_collection_stats_latest_floor floors2
-        on cast(floors2.nft_contract_address as string) = cast(b.nft_contract_address as string)
+        on floors2.nft_contract_address = b.nft_contract_address
     CROSS JOIN lastest_eth_price_usd p),
 
 aggregated_wallet_trading_stats as (
