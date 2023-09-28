@@ -30,7 +30,7 @@ SELECT
     '{{project_version}}' as version,
     vc.evt_block_time as block_time,
     date_trunc('DAY', vc.evt_block_time) AS block_date,
-    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    CAST(date_trunc('month', vc.evt_block_time) as date) as block_month,
     vc.evt_tx_hash as tx_hash,
     '{{dao_name}}' as dao_name,
     {{dao_address}} as dao_address,
