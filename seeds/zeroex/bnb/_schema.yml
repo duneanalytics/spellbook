@@ -1,7 +1,7 @@
 version: 2
 
 seeds:
-  - name: zeroex_ethereum_api_fills_sample
+  - name: zeroex_bnb_api_fills_sample
     config:
       tags: dunesql
       column_types:
@@ -29,7 +29,7 @@ seeds:
         tx_from: varbinary
         tx_to: varbinary
 
-  - name: zeroex_ethereum_api_fills_deduped_sample
+  - name: zeroex_bnb_api_fills_deduped_sample
     config:
       tags: dunesql
       column_types:

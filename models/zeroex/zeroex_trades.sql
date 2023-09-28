@@ -1,6 +1,8 @@
 {{ config(
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb"]\',
+        tags=['dunesql']
+        ,schema = 'zeroex'
+        ,alias = alias('trades')
+        ,post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -11,7 +13,7 @@
 -- https://dune.com/queries/2329953
 
 {% set zeroex_models = [  
-ref('zeroex_api_fills_deduped')
+  ref('zeroex_api_fills_deduped')
 ] %}
 
 
@@ -51,4 +53,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
