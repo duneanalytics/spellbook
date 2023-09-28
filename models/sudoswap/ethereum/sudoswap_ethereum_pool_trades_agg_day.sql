@@ -1,6 +1,8 @@
 {{ config(
         alias = alias('pool_trades'),
         materialized = 'incremental',
+        schema = 'sudoswap_ethereum',
+        tags = ['dunesql'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_address'],
@@ -44,14 +46,14 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)
     {% if not is_incremental() %}
-    AND minute >= '{{project_start_date}}'
+    AND minute >= TIMESTAMP '{{project_start_date}}'
     {% else %}
-    AND minute >= date_trunc("day", now() - interval '1 week')
+    AND minute >= date_trunc('day', now() - interval '7' days)
     {% endif %}
 {% if not is_incremental() %}
-WHERE block_date >= '{{project_start_date}}'
+WHERE block_date >= TIMESTAMP '{{project_start_date}}'
 {% else %}
-WHERE block_date >= date_trunc("day", now() - interval '1 week')
+WHERE block_date >= date_trunc('day', now() - interval '7' days)
 {% endif %}
 GROUP BY 1,2
 ;

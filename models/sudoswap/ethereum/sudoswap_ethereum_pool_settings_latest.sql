@@ -1,5 +1,7 @@
 {{ config(
         alias = alias('pool_settings_latest'),
+        schema = 'sudoswap_ethereum',
+        tags = ['dunesql'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -29,12 +31,11 @@ with
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.block_time = evt.evt_block_time
             AND tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
-            AND tx.block_time >= '{{project_start_date}}'
-            AND evt.evt_block_time >= '{{project_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-            AND evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND evt.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% else %}
+            AND tx.block_time >= date_trunc('day', now() - interval '7' days)
+            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' days)
             {% endif %}
         ) foo
     WHERE ordering = 1
@@ -55,12 +56,11 @@ with
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.block_time = evt.evt_block_time
             AND tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
-            AND tx.block_time >= '{{project_start_date}}'
-            AND evt.evt_block_time >= '{{project_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-            AND evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND evt.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% else %}
+            AND tx.block_time >= date_trunc('day', now() - interval '7' days)
+            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' days)
             {% endif %}
         ) foo
     WHERE ordering = 1
@@ -81,12 +81,11 @@ with
             INNER JOIN {{ source('ethereum','transactions') }} tx ON tx.block_time = evt.evt_block_time
             AND tx.hash = evt.evt_tx_hash
             {% if not is_incremental() %}
-            AND tx.block_time >= '{{project_start_date}}'
-            AND evt.evt_block_time >= '{{project_start_date}}'
-            {% endif %}
-            {% if is_incremental() %}
-            AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-            AND evt.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND evt.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% else %}
+            AND tx.block_time >= date_trunc('day', now() - interval '7' days)
+            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' days)
             {% endif %}
         ) foo
     WHERE ordering = 1
@@ -115,7 +114,7 @@ with
     FROM
       {{ ref('sudoswap_ethereum_pool_creations') }}
     {% if is_incremental() %}
-    WHERE creation_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE creation_block_time >= date_trunc('day', now() - interval '7' days)
     {% endif %}
 )
 
