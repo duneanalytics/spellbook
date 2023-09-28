@@ -50,7 +50,7 @@ WITH
         {% if not is_incremental() %}
         AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
         {% else %}
-        AND tx.block_time >= date_trunc('day', now() - interval '7' days)
+        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     WHERE
       call_success

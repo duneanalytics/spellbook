@@ -48,11 +48,11 @@ ON usd.blockchain = null and usd.symbol = 'ETH'
     {% if not is_incremental() %}
     AND minute >= TIMESTAMP '{{project_start_date}}'
     {% else %}
-    AND minute >= date_trunc('day', now() - interval '7' days)
+    AND minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% if not is_incremental() %}
 WHERE block_date >= TIMESTAMP '{{project_start_date}}'
 {% else %}
-WHERE block_date >= date_trunc('day', now() - interval '7' days)
+WHERE block_date >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY 1,2

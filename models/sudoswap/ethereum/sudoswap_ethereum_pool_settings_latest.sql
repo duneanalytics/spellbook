@@ -34,8 +34,8 @@ with
             AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
             AND evt.evt_block_time >= TIMESTAMP '{{project_start_date}}'
             {% else %}
-            AND tx.block_time >= date_trunc('day', now() - interval '7' days)
-            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' days)
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         ) foo
     WHERE ordering = 1
@@ -59,8 +59,8 @@ with
             AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
             AND evt.evt_block_time >= TIMESTAMP '{{project_start_date}}'
             {% else %}
-            AND tx.block_time >= date_trunc('day', now() - interval '7' days)
-            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' days)
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         ) foo
     WHERE ordering = 1
@@ -84,8 +84,8 @@ with
             AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
             AND evt.evt_block_time >= TIMESTAMP '{{project_start_date}}'
             {% else %}
-            AND tx.block_time >= date_trunc('day', now() - interval '7' days)
-            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' days)
+            AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+            AND evt.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         ) foo
     WHERE ordering = 1
@@ -114,7 +114,7 @@ with
     FROM
       {{ ref('sudoswap_ethereum_pool_creations') }}
     {% if is_incremental() %}
-    WHERE creation_block_time >= date_trunc('day', now() - interval '7' days)
+    WHERE creation_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 

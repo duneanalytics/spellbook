@@ -36,7 +36,7 @@ WITH
     WHERE et.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE et.evt_block_time >= date_trunc('day', now() - interval '7' days)
+    WHERE et.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     GROUP BY
       1,2
@@ -67,7 +67,7 @@ WITH
           AND tr.block_time > TIMESTAMP '{{project_start_date}}'
           {% endif %}
           {% if is_incremental() %}
-          AND tr.block_time >= date_trunc('day', now() - interval '7' days)
+          AND tr.block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         GROUP BY
           1,2
@@ -92,7 +92,7 @@ WITH
           AND tr.block_time > TIMESTAMP '{{project_start_date}}'
           {% endif %}
           {% if is_incremental() %}
-          AND tr.block_time >= date_trunc('day', now() - interval '7' days)
+          AND tr.block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         GROUP BY
           1,2
