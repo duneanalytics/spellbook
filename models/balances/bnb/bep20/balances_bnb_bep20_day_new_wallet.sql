@@ -15,7 +15,7 @@ with
       token_address,
       min(block_day) as first_day
     from
-      {{ ref('balances_bnb_bep20_day') }
+      {{ ref('balances_bnb_bep20_day') }}
     group by
       wallet_address,
       token_address
