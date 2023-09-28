@@ -61,13 +61,14 @@ repays as (
         borrower,
         payer as repayer,
         cast(null as varbinary) as liquidator,
-        - repayAmount / decimals_mantissa as amount,
-        - repayAmount / decimals_mantissa * price as usd_amount,
+        - (repayAmount / decimals_mantissa) as amount,
+        - (repayAmount / decimals_mantissa) * price as usd_amount,
         evt_tx_hash,
         evt_index,
         evt_block_time,
         evt_block_number,
-        date_trunc('DAY', evt_block_time) as block_date
+        date_trunc('DAY', evt_block_time) as block_date,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_RepayBorrow') }}
         {% if is_incremental() %}
@@ -98,13 +99,14 @@ liquidations as (
         borrower,
         liquidator as repayer,
         liquidator,
-        - repayAmount / decimals_mantissa as amount,
-        - repayAmount / decimals_mantissa * price as usd_amount,
+        - (repayAmount / decimals_mantissa) as amount,
+        - (repayAmount / decimals_mantissa) * price as usd_amount,
         evt_tx_hash,
         evt_index,
         evt_block_time,
         evt_block_number,
-        date_trunc('DAY', evt_block_time) as block_date
+        date_trunc('DAY', evt_block_time) as block_date,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_LiquidateBorrow') }}
         {% if is_incremental() %}
