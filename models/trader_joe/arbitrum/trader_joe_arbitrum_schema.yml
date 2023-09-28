@@ -178,7 +178,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: trader_joe_arbitrum_trades_legacy
+  - name: trader_joe_trades_legacy
     meta:
       blockchain: arbitrum
       sector: dex
@@ -188,5 +188,3 @@ models:
       tags: ['arbitrum','dex','trades', 'trader_joe']
     description: >
         trader_joe trades on Arbitrum across all contracts and versions. This table will load dex trades downstream.
-    columns:
-      - *blockchain
