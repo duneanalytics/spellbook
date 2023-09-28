@@ -342,7 +342,7 @@ FROM
                 0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8,
                 18,
                 6,
-                CAST('476395313689313848848724450405' AS UNIT256),
+                CAST('476395313689313848848724450405' AS UINT256),
                 CAST('1691409600' AS UINT256),
                 'PTwstETH26JUN25-USDC',
                 'Arbitrum',
