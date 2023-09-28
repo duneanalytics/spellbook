@@ -2,7 +2,7 @@
         tags=['dunesql']
         , schema = 'zeroex'
         , alias = alias('api_fills_deduped')
-        , post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c"]\',
+        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
