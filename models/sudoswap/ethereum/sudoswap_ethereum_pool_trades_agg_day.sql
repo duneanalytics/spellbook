@@ -56,4 +56,3 @@ WHERE block_date >= TIMESTAMP '{{project_start_date}}'
 WHERE block_date >= date_trunc('day', now() - interval '7' days)
 {% endif %}
 GROUP BY 1,2
-;

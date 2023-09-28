@@ -156,7 +156,4 @@ with
     ON old.pool_address = new.pool_address
 )
 {% endif %}
-
-
 select * from full_settings_backfilled
-;
