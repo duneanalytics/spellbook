@@ -246,3 +246,39 @@ models:
       - *blockchain
       - *contract_address
       - *contract_name
+  
+  - name: contracts_daily_aggregated_usage
+    meta:
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      sector: contracts
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','contracts','predeploy','system']
+    description: >
+        A table containing mappings for predeploy system contracts
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - contract_address
+              - blockchain
+    columns:
+      - *blockchain
+      - &block_date
+        name: block_date
+        description: "Date of Onchain Activity"
+      - *contract_address
+      - &num_txs_called_trace
+        name: num_txs_called_trace
+        description: "Transactions where the contract was called in a trace"
+      - &num_tx_sender_addresses_called_trace
+        name: num_tx_sender_addresses_called_trace
+        description: "Transaction Senders of Transactions where the contract was called in a trace"
+      - &native_fees_txs_called_trace
+        name: native_fees_txs_called_trace
+        description: "Total Native Gas Fees in transactions where the contract was called in a trace"
+      - &num_trace_calls
+        name: num_trace_calls
+        description: "Internal Transactions (Traces) in transactions where the contract was called in a trace"
+      - &total_tx_gas_used_called_trace
+        name: total_tx_gas_used_called_trace
+        description: "Total Transaction gas used in transactions where the contract was called in a trace"
