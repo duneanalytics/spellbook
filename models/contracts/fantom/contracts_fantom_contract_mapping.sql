@@ -67,4 +67,3 @@ from (values (0xdef189deaef76e379df891899eb5a00a94cbc250, '0x Exchange', 'Aggreg
   (0x8ac868293d97761a1fed6d4a01e9ff17c5594aa3, 'Morpheus Swap', 'Dex'),
   (0x77e4b42c3d788735bc27ad7f494362b07ccd9f04, 'Morpheus Swap', 'Dex')
 ) as temp_table (contract_address,project_name,project_type)
-;
