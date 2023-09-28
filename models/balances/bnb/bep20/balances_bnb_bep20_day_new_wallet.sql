@@ -9,26 +9,13 @@
         )
 }}
 with
-  balances_token as (
-    select
-      token_address,
-      wallet_address,
-      block_day,
-      amount
-    from
-       {{ ref('balances_bnb_bep20_day') }}
-    where
-      block_day >= date_trunc('day', now() - interval '30' Day)
-  ),
   first_day_wallet as (
     select
       wallet_address,
       token_address,
       min(block_day) as first_day
     from
-      {{ ref('balances_bnb_bep20_day') }}
-    where
-      block_day >= date_trunc('day', now() - interval '45' Day)
+      {{ ref('balances_bnb_bep20_day') }
     group by
       wallet_address,
       token_address
@@ -38,44 +25,54 @@ with
         b.wallet_address,
         b.token_address,
         block_day,
-        amount
+        amount_raw ra
     from
-        balances_token b
+        {{ ref('balances_bnb_bep20_day') }} b
         inner join first_day_wallet f on b.wallet_address = f.wallet_address
         and b.token_address = f.token_address
         and f.first_day >= b.block_day - interval '14' Day
   ),
-  volumn_new_wallets as (
+  agg_new_wallets as (
     select
       block_day,
       token_address,
-      sum(amount) as volumn
+      sum(amount_raw) as volumn_new_wallets,
+      count(*) as number_new_wallets
     from
       balances_new_wallet
     group by
       block_day,
       token_address
   ),
-   avg_volume_new_wallets as (
-    select
+   token_holder as (
+    select block_day,
       token_address,
-      avg(volumn) FILTER(
-        where
-          block_day < date_trunc('day', now() - interval '7' Day)
-      ) as avg_volumn_before,
-      avg(volumn) FILTER(
-        where
-          block_day >= date_trunc('day', now() - interval '7' Day)
-      ) as avg_volumn_now
-    from
-      volumn_new_wallets
-    group by
-      token_address
-  )
+      count(*) as number_holder
+      from {{ ref('balances_bnb_bep20_day') }}
+      where amount_raw > 0
+      group by token_address, block_day
+
+   ),
+   agg_token as (
+    select n.block_day, n.token_address
+      n.volumn_new_wallets, n.number_new_wallets
+      h.number_holder
+      from token_holder h
+      left join agg_new_wallets n
+      on h.token_address = n.token_address
+      and h.block_day = n.block_day
+   )
 
 select
-    token_address,
-    avg_volumn_now / avg_volumn_before as volume_fluctuation_rate
+  d.block_day,
+  d.token_address,
+  d.number_holder,
+  d.number_new_wallets,
+  d.volumn_new_wallets / power(10, 18) as volumn_new_wallets,
+  p.price
 from
-    avg_volume_new_wallets
+  agg_token d
+  left join prices.usd p on d.block_day = p.minute
+  and p.contract_address = d.token_address
+  and p.blockchain = 'bnb'
 
