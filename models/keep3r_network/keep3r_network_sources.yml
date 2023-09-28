@@ -17,3 +17,23 @@ sources:
       - name: Keep3r_v2_evt_KeeperWork
       - name: Keep3r_evt_LiquidityCreditsReward
       - name: Keep3r_v2_evt_LiquidityCreditsReward
+
+  - name: keep3r_network_optimism
+    description: >
+      Decoded events for [keep3r.network] - Optimism .
+    tables:
+      - name: Keep3rSidechain_evt_LiquidityAddition
+      - name: Keep3rSidechain_evt_LiquidityWithdrawal
+      - name: Keep3rSidechain_evt_JobMigrationSuccessful
+      - name: Keep3rSidechain_evt_KeeperWork
+      - name: Keep3rSidechain_evt_LiquidityCreditsReward
+
+  - name: keep3r_network_polygon
+    description: >
+      Decoded events for [keep3r.network] - Poligon.
+    tables:
+      - name: Keep3rSidechain_evt_LiquidityAddition
+      - name: Keep3rSidechain_evt_LiquidityWithdrawal
+      - name: Keep3rSidechain_evt_JobMigrationSuccessful
+      - name: Keep3rSidechain_evt_KeeperWork
+      - name: Keep3rSidechain_evt_LiquidityCreditsReward
