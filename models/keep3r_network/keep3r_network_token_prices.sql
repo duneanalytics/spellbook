@@ -65,7 +65,7 @@ dex_trade as (
             blockchain,
             block_date as day,
             (amount_usd / token_bought_amount) as price
-        from dex.trades 
+        from {{ ref('dex_trades') }}
         where 
             token_bought_address in (select token_address from dex_tokens) 
             and block_date >= timestamp '2021-10-10'
