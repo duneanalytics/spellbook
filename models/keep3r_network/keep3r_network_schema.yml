@@ -1,0 +1,125 @@
+version: 2
+
+models:
+  
+  - name: keep3r_network_liquidity_addition
+    meta:
+      blockchain: ethereum, optimisim, polygon
+      project: keep3r_network
+      contributors: 0xr3x
+
+    config:
+      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
+    description: >
+      List of Keep3r network liquidity additions on ethereum, optimisim and polygon.
+    columns:
+      - name: evt_block_time,
+      - name: evt_tx_hash,
+      - name: evt_index,
+      - name: contract_address,
+      - name: _job,
+      - name: _liquidity,
+      - name: _amount,
+      - name: blockchain
+
+  - name: keep3r_network_liquidity_withdrawal
+    meta:
+      blockchain: ethereum, optimisim, polygon
+      project: keep3r_network
+      contributors: 0xr3x
+
+    config:
+      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
+    description: >
+      List of Keep3r network liquidity withdrawal on ethereum, optimisim and polygon.
+    columns:
+      - name: evt_block_time,
+      - name: evt_tx_hash,
+      - name: evt_index,
+      - name: contract_address,
+      - name: _job,
+      - name: _liquidity,
+      - name: _amount,
+      - name: blockchain
+
+  - name: keep3r_network_job_migration
+    meta:
+      blockchain: ethereum, optimisim, polygon
+      project: keep3r_network
+      contributors: 0xr3x
+
+    config:
+      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
+    description: >
+      List of Keep3r network job migration on ethereum, optimisim and polygon.
+    columns:
+      - name: evt_block_time,
+      - name: evt_tx_hash,
+      - name: evt_index,
+      - name: _fromJob,
+      - name: _toJob,
+      - name: contract_address,
+      - name: blockchain
+
+  - name: keep3r_network_token_prices
+    meta:
+      blockchain: ethereum, optimisim, polygon
+      project: keep3r_network
+      contributors: 0xr3x
+
+    config:
+      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
+    description: >
+      List of token prices used in Keep3r network on ethereum, optimisim and polygon.
+    columns:
+      - name: label,
+      - name: blockchain,
+      - name: token_address,
+      - name: day,
+      - name: price
+
+  - name: keep3r_network_keeper_work
+    meta:
+      blockchain: ethereum, optimisim, polygon
+      project: keep3r_network
+      contributors: 0xr3x
+
+    config:
+      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
+    description: >
+      List of work on Keep3r network for ethereum, optimisim and polygon.
+    columns:
+      - name: contract_address,
+      - name: evt_tx_hash,
+      - name: evt_index,
+      - name: evt_block_time,
+      - name: evt_block_number,
+      - name: _credit,
+      - name: _gasLeft,
+      - name: _job,
+      - name: _keeper,
+      - name: _payment,
+      - name: blockchain
+
+  - name: keep3r_network_liquidity_credits_reward
+    meta:
+      blockchain: ethereum, optimisim, polygon
+      project: keep3r_network
+      contributors: 0xr3x
+
+    config:
+      tags: ['ethereum', 'optimisim', 'polygon', 'liquidity', '0xr3x','cross-chain']
+    description: >
+      List of Keep3r network Liquidity Credits Reward on ethereum, optimisim and polygon.
+    columns:
+      - name: contract_address,
+      - name: evt_tx_hash,
+      - name: evt_index,
+      - name: evt_block_time,
+      - name: evt_block_number,
+      - name: _currentCredits,
+      - name: _job,
+      - name: _periodCredits,
+      - name: _rewardedAt,
+      - name: blockchain, 
+      - name: token
