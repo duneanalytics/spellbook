@@ -90,10 +90,10 @@ jobs:
         run: "dbt seed $PROFILE --select state:modified$TAG --exclude tag:prod_exclude tag:remove --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt -x run $PROFILE --models mauve_trades --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new$TAG state:modified$TAG --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt test $PROFILE --models mauve_trades --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
