@@ -392,6 +392,7 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - *amount_usd
       - *evt_index
 
   - name: dex_info
