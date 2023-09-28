@@ -25,7 +25,7 @@ with
         b.wallet_address,
         b.token_address,
         block_day,
-        amount_raw ra
+        amount_raw
     from
         {{ ref('balances_bnb_bep20_day') }} b
         inner join first_day_wallet f on b.wallet_address = f.wallet_address
@@ -54,8 +54,8 @@ with
 
    ),
    agg_token as (
-    select n.block_day, n.token_address
-      n.volumn_new_wallets, n.number_new_wallets
+    select n.block_day, n.token_address,
+      n.volumn_new_wallets, n.number_new_wallets,
       h.number_holder
       from token_holder h
       left join agg_new_wallets n
@@ -72,7 +72,7 @@ select
   p.price
 from
   agg_token d
-  left join prices.usd p on d.block_day = p.minute
+  left join {{ source('prices', 'usd') }} p on d.block_day = p.minute
   and p.contract_address = d.token_address
   and p.blockchain = 'bnb'
 
