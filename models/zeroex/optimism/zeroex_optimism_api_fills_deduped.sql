@@ -1,6 +1,6 @@
 {{  config(
-        schema = 'zeroex_optimism',
         tags=['dunesql'],
+        schema = 'zeroex_optimism',
         alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_month'],
