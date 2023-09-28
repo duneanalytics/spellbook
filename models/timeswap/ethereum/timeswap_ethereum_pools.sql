@@ -1,10 +1,11 @@
 {{ config(
-    alias = alias('pools'),
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    tags = ['static','dunesql']
+    ,alias = alias('pools')
+    ,unique_key = ['pool_pair', 'maturity', 'strike']
+    ,post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "timeswap",
-                                \'["raveena15, varunhawk19"]\') }}',
-    unique_key = ['pool_pair', 'maturity', 'strike']
+                                \'["raveena15, varunhawk19"]\') }}'
     )
 }}
 

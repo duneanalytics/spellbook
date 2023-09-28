@@ -1,10 +1,11 @@
 {{ config(
-    alias = alias('borrow'),
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['transaction_hash', 'pool_pair', 'maturity', 'strike'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    tags = ['dunesql']
+    ,alias = alias('borrow')
+    ,materialized = 'incremental'
+    ,file_format = 'delta'
+    ,incremental_strategy = 'merge'
+    ,unique_key = ['transaction_hash', 'pool_pair', 'maturity', 'strike']
+    ,post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "timeswap",
                                 \'["raveena15, varunhawk19"]\') }}'
@@ -23,7 +24,7 @@ SELECT
   b.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
-  tx.from as user,
+  tx."from" as user,
   CAST(
     CASE
       WHEN CAST(b.isToken0 AS BOOLEAN) = true THEN CAST(b.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -43,7 +44,7 @@ JOIN {{ ref('timeswap_arbitrum_pools') }} i
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token0_symbol
@@ -51,8 +52,8 @@ JOIN {{ source('prices', 'usd') }} p
   AND b.isToken0 = true
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
-  AND p.minute >= date_trunc("day", now() - interval '1 week')
-WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  AND p.minute >= date_trunc('day', now() - interval '7' day)
+WHERE b.evt_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
 
@@ -67,7 +68,7 @@ SELECT
   b.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
-  tx.from as user,
+  tx."from" as user,
   CAST(
     CASE
       WHEN CAST(b.isToken0 AS BOOLEAN) = true THEN CAST(b.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -87,7 +88,7 @@ JOIN {{ ref('timeswap_arbitrum_pools') }} i
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token1_symbol
@@ -95,8 +96,8 @@ JOIN {{ source('prices', 'usd') }} p
   AND b.isToken0 = false
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
-  AND p.minute >= date_trunc("day", now() - interval '1 week')
-WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  AND p.minute >= date_trunc('day', now() - interval '7' day)
+WHERE b.evt_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
 
@@ -114,7 +115,7 @@ SELECT
   b.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
-  tx.from as user,
+  tx."from" as user,
   CAST(
     CASE
       WHEN CAST(b.isToken0 AS BOOLEAN) = true THEN CAST(b.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -134,7 +135,7 @@ JOIN {{ ref('timeswap_arbitrum_pools') }} i
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token0_symbol
@@ -142,8 +143,8 @@ JOIN {{ source('prices', 'usd') }} p
   AND b.isToken0 = true
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
-  AND p.minute >= date_trunc("day", now() - interval '1 week')
-WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  AND p.minute >= date_trunc('day', now() - interval '7' day)
+WHERE b.evt_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
 
@@ -158,7 +159,7 @@ SELECT
   b.strike as strike,
   i.pool_pair as pool_pair,
   i.chain as chain,
-  tx.from as user,
+  tx."from" as user,
   CAST(
     CASE
       WHEN CAST(b.isToken0 AS BOOLEAN) = true THEN CAST(b.tokenAmount AS DOUBLE) / power(10,i.token0_decimals)
@@ -178,7 +179,7 @@ JOIN {{ ref('timeswap_arbitrum_pools') }} i
 JOIN {{ source('arbitrum', 'transactions') }} tx
     on b.evt_tx_hash = tx.hash
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 JOIN {{ source('prices', 'usd') }} p
   ON p.symbol=i.token1_symbol
@@ -186,8 +187,8 @@ JOIN {{ source('prices', 'usd') }} p
   AND b.isToken0 = false
   AND p.minute = date_trunc('minute',b.evt_block_time)
   {% if is_incremental() %}
-  AND p.minute >= date_trunc("day", now() - interval '1 week')
-WHERE b.evt_block_time >= date_trunc("day", now() - interval '1 week')
+  AND p.minute >= date_trunc('day', now() - interval '7' day)
+WHERE b.evt_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
 
 
