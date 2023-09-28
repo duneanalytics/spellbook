@@ -49,8 +49,7 @@ WITH
         AND tx.hash = cre.call_tx_hash
         {% if not is_incremental() %}
         AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
+        {% else %}
         AND tx.block_time >= date_trunc('day', now() - interval '7' days)
         {% endif %}
     WHERE
@@ -58,4 +57,3 @@ WITH
   )
 
 SELECT * FROM pool_creations
-;
