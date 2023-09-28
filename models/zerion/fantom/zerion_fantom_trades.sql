@@ -2,7 +2,6 @@
     tags=['dunesql']
     ,schema = 'zerion_fantom'
     ,alias = alias('trades')
-    ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
