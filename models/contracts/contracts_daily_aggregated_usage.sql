@@ -7,7 +7,8 @@
         file_format ='delta',
         incremental_strategy='merge',
         unique_key=['blockchain', 'contract_address', 'block_date'],
-        partition_by=['blockchain'],
+        partition_by=['blockchain', 'block_month'],
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
                                     "sector",
                                     "contracts",
@@ -16,7 +17,7 @@
 }}
 
 SELECT
-blockchain, block_date, contract_address
+blockchain, block_month, block_date, contract_address
     , COUNT(*) AS num_txs_called_trace
     , COUNT(DISTINCT tx_from) AS num_tx_sender_addresses_called_trace
     , SUM(eth_fee) AS eth_fees_txs_called_trace
@@ -26,6 +27,7 @@ blockchain, block_date, contract_address
 FROM (
     SELECT 
         r.blockchain,
+        date_trunc('month', r.block_time) as block_month,
         date_trunc('day', r.block_time) as block_date,
         ct.contract_address,
         t.hash, t."from" AS tx_from,
@@ -60,7 +62,7 @@ FROM (
                 {% endif %}
                 AND t.gas_price > 0
                 AND r.type ='call'
-        GROUP BY 1,2,3,4,5,6
+        GROUP BY 1,2,3,4,5,6,7
 
         ) a
-    GROUP BY 1,2,3
+    GROUP BY 1,2,3,4
