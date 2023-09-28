@@ -49,8 +49,8 @@ SELECT
      l1_fee/1e18 AS l1_data_fee_native,
      p.price * l1_fee/1e18 AS l1_data_fee_usd,
       --use gas price pre-Bedrock (no base fee)
-     (COALESCE(CAST(blocks.base_fee_per_gas AS UINT256),txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_native,
-     p.price * (COALESCE(CAST(blocks.base_fee_per_gas AS UINT256),txns.gas_price)*txns.gas_used)/1e18 AS l2_base_fee_usd,
+     (COALESCE(CAST(blocks.base_fee_per_gas AS UINT256),txns.gas_price)/1e18)*txns.gas_used AS l2_base_fee_native,
+     p.price * (COALESCE(CAST(blocks.base_fee_per_gas AS UINT256),txns.gas_price)/1e18)*txns.gas_used AS l2_base_fee_usd,
       --base_fee_per_gas was null pre-bedrock when there was no base fee
      case when (txns.gas_price = UINT256 '0') or (blocks.base_fee_per_gas IS NULL)then 0 else
         cast( (txns.gas_price-blocks.base_fee_per_gas/ 1e18)*txns.gas_used as double) 
