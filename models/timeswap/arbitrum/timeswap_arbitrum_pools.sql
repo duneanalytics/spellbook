@@ -3,7 +3,7 @@
     ,schema = 'timeswap_arbitrum'
     ,alias = alias('pools')
     ,unique_key = ['pool_pair', 'maturity', 'strike']
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    ,post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "timeswap",
                                 \'["raveena15, varunhawk19"]\') }}'

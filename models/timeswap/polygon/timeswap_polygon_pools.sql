@@ -3,7 +3,7 @@
     ,schema = 'timeswap_polygon'
     ,alias = alias('pools')
     ,unique_key = ['pool_pair', 'maturity', 'strike']
-    post_hook='{{ expose_spells(\'["polygon"]\',
+    ,post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "timeswap",
                                 \'["raveena15, varunhawk19"]\') }}'
