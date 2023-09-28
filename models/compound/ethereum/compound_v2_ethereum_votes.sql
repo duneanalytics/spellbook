@@ -41,8 +41,9 @@ SELECT
     p.contract_address as token_address, 
     vc.votes/1e18 * p.price as votes_value_usd,
     vc.voter as voter_address,
-    CASE WHEN vc.support = false THEN 'against'
-         WHEN vc.support = true THEN 'for'
+    CASE WHEN vc.support = 0 THEN 'against'
+         WHEN vc.support = 1 THEN 'for'
+         WHEN vc.support = 2 THEN 'abstain'
          END AS support,
     vc.reason
 FROM {{ source('compound_v2_ethereum', 'GovernorBravoDelegate_evt_VoteCast') }} vc

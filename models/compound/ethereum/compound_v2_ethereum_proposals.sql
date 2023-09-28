@@ -20,9 +20,9 @@
 
 with cte_support as (SELECT 
         voter as voter,
-        CASE WHEN support = false THEN sum(votes/1e18) ELSE 0 END AS votes_against,
-        CASE WHEN support = true THEN sum(votes/1e18) ELSE 0 END AS votes_for,
-        0 AS votes_abstain,
+        CASE WHEN support = 0 THEN sum(votes/1e18) ELSE 0 END AS votes_against,
+        CASE WHEN support = 1 THEN sum(votes/1e18) ELSE 0 END AS votes_for,
+        CASE WHEN support = 2 THEN sum(votes/1e18) ELSE 0 END AS votes_abstain,
         proposalId
 FROM {{ source('compound_v2_ethereum', 'GovernorBravoDelegate_evt_VoteCast') }}
 GROUP BY support, proposalId, voter),
@@ -31,8 +31,8 @@ cte_sum_votes as (
 SELECT COUNT(DISTINCT voter) as number_of_voters,
        SUM(votes_for) as votes_for, 
        SUM(votes_against) as votes_against, 
-       0 as votes_abstain, 
-       SUM(votes_for) + SUM(votes_against) + 0 as votes_total,
+       SUM(votes_abstain) as votes_abstain, 
+       SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
        proposalId
 from cte_support
 GROUP BY proposalId)
