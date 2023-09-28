@@ -1,7 +1,6 @@
 {{ config(
     alias = alias('pancakeswap_v3_pools'),
-    tags = ['dunesql'],             
-    partition_by = ['time'],
+    tags = ['dunesql'],        
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

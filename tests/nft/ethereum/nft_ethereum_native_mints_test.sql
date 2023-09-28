@@ -5,20 +5,20 @@ with
       count(*) as ctn,
       'hi_im_a_dummy' as dummy
     from
-      ethereum.logs
+      {{ source('ethereum', 'logs') }}
     where
       1 = 1
 	  -- contract = ENS
-      and contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'
+      and contract_address = 0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85
 	  -- event type = transfer
 	  -- (this only considers erc721, but that's ok as ENS uses erc721)
-      and topic1 = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
+      and topic0 = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef
 	  -- seller = null address
-      and topic2 = '0x0000000000000000000000000000000000000000000000000000000000000000'
-      and block_time < now() - interval '1 day' -- allow some head desync
+      and topic1 = 0x0000000000000000000000000000000000000000000000000000000000000000
+      and block_time < now() - interval '1' Day -- allow some head desync
 
 	  {% if is_incremental() %}
-	  and block_time >= date_trunc("day", now() - interval '1 week')
+	  and block_time >= date_trunc('day', now() - interval '7' Day)
 	  {% endif %}
   ),
   eth_native_mints_ctn as (
@@ -30,9 +30,9 @@ with
     where
       1 = 1
 	  -- ENS
-      and nft_contract_address = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'
+      and nft_contract_address = 0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85
 	   -- allow some head desync
-      and block_time < now() - interval '1 day'
+      and block_time < now() - interval '1' Day
   )
 select
   c1.*
