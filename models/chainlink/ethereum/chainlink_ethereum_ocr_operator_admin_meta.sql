@@ -53,9 +53,9 @@
 {% set orionmoney = 'Orion.Money' %}
 {% set p2porg = 'P2P.org' %}
 {% set paradigm = 'Paradigm Citadel' %}
+{% set piertwo = 'Pier Two' %}
 {% set prophet = 'Prophet' %}
 {% set rhino = 'RHINO' %}
-{% set securedatalinks = 'Secure Data Links' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set stakefish = 'stake.fish' %}
@@ -68,13 +68,13 @@
 {% set thenetworkfirm = 'The Network Firm' %}
 {% set tiingo = 'Tiingo' %}
 {% set validationcloud = 'Validation Cloud' %}
-{% set vulcan = 'Vulcan Link' %}
 {% set wetez = 'Wetez' %}
 {% set xbto = 'XBTO' %}
 {% set youbi = 'Youbi' %}
 {% set ztake = 'Ztake.org' %}
 
 SELECT admin_address, operator_name FROM (VALUES
+  (0x7A30E4B6307c0Db7AeF247A656b44d888B23a2DC, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0x89177B9c203bA0A9294aecf2f3806d98907bec6f, '{{tsystems}}'),
   (0xa5D0084A766203b463b3164DFc49D91509C12daB, '{{alphachain}}'),
@@ -132,9 +132,9 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xCDa423ee5A7A886eF113b181469581306fC8B607, '{{p2porg}}'),
   (0xB45A43e998286ab3Be4106b4c381f01dccE772a4, '{{p2porg}}'),
   (0xfb390441fF968F7569cd6F3CF01cb7214DFeed31, '{{paradigm}}'),
+  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{piertwo}}'),
   (0xBDB624CD1051F687f116bB0c642330B2aBdfcc06, '{{prophet}}'),
   (0xDA80050Ed4F50033949608208f79EE43Ab91dF55, '{{rhino}}'),
-  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{securedatalinks}}'),
   (0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf, '{{simplyvc}}'),
   (0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1, '{{snzpool}}'),
   (0x21F1dB6E4B5e1dF5c68bC1dfB58c28942Ed4737D, '{{stakefish}}'),
@@ -147,9 +147,9 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xC51D3470693BC049809A1c515606124c7C75908d, '{{syncnode}}'),
   (0x7c9998a91AEA813Ea8340b47B27259D74896d136, '{{thenetworkfirm}}'),
   (0xfAE26207ab74ee528214ee92f94427f8Cdbb6A32, '{{tiingo}}'),
+  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{validationcloud}}'),
   (0x183A96629fF566e7AA8AfA38980Cd037EB40A59A, '{{validationcloud}}'),
-  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{vulcan}}'),
-  (0x4E28977d71f148ae2c523e8Aa4b6F3071d81Add1, '{{vulcan}}'),
+  (0x4E28977d71f148ae2c523e8Aa4b6F3071d81Add1, '{{validationcloud}}'),
   (0x111f1B41f702c20707686769a4b7f25c56C533B2, '{{wetez}}'),
   (0x0b16EC1044F60F03B0e815f863bd4d27638cbD0A, '{{xbto}}'),
   (0x3331452b9D6f76E35951f3B8C5881D5801f08612, '{{youbi}}'),
