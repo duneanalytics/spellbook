@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: solana_stake_actions
+  - name: staking_solana_stake_actions
     meta:
       blockchain: solana
       sector: staking
