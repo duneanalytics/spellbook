@@ -92,9 +92,7 @@ with
     )
 
 SELECT
-    date_trunc('week',call_block_time) as week
-    , action
-    , (case when action = 'withdraw' then -1 else 1 end)*sum(stake) as stake
+    *
 FROM (
     SELECT * FROM delegate_and_merge
     UNION ALL
