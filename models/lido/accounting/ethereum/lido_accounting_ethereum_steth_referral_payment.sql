@@ -1,13 +1,12 @@
 {{ config(
         alias = alias('steth_referral_payment'),
         tags = ['dunesql'], 
-        partition_by = ['period'],
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'[""ppclunghe""]\') }}'
+                                \'["ppclunghe"]\') }}'
         )
 }}
 

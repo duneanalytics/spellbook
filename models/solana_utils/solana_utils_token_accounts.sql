@@ -1,5 +1,7 @@
  {{
   config(
+        schema = 'solana_utils',
+        tags = ['dunesql'],
         alias = alias('token_accounts'),
         materialized='incremental',
         file_format = 'delta',
@@ -20,7 +22,7 @@ WITH
             FROM {{ source('solana','account_activity') }}
             WHERE token_mint_address is not null
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
       )
       

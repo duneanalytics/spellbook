@@ -301,5 +301,6 @@ FROM
 ,(0xFC558443dDF413a16C0bE340137e145765D9ADB4, 'Nansen 2 Early Access')
 ,(0x11e76ab2e2c48e4a561ac96935399c8595619fa4, 'Optimism Superchain Builder NFT')
 ,(0x71c16e76756fdb527386291886fcd5495fd2b691, 'Xgirl')
+,(0xAF18644083151cf57F914CCCc23c42A1892C218e, 'XEN Torrent')
 
 ) as temp_table (contract_address, name)
