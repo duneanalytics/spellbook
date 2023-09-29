@@ -82,7 +82,7 @@ SELECT
   WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
        AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN 'Mint'
   ELSE 'Other' END as evt_type,
-  TRY_CAST(CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
+  Coalesce(TRY_CAST(CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
@@ -92,7 +92,7 @@ SELECT
        WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
          AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(element_at(me_instructions,7).account_arguments[10], element_at(me_instructions,6).account_arguments[10],
          element_at(me_instructions,5).account_arguments[10], element_at(element_at(me_instructions,3).account_arguments,8), element_at(element_at(me_instructions,2).account_arguments,11), element_at(element_at(me_instructions,1).account_arguments,11))
-       END as uint256) AS token_id,
+       END as uint256), UINT256 '0') AS token_id,
   cast(NULL as varchar) as collection,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
@@ -148,7 +148,8 @@ SELECT
   id  as unique_trade_id,
   instructions,
   signatures,
-  log_messages
+  log_messages,
+  BIGINT '0' as evt_index
 FROM me_txs
 LEFT JOIN {{ source('prices', 'usd') }} AS p
   ON p.minute = date_trunc('minute', block_time)
