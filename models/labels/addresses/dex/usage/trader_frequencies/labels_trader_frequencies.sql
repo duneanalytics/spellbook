@@ -1,10 +1,11 @@
 {{
     config(
+        tags=['dunesql'],
         alias = alias('trader_frequencies'),
         post_hook='{{ expose_spells(\'
-        ["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\', 
-        "sector", 
-        "labels", 
+        ["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
+        "sector",
+        "labels",
         \'["gentrexha", "Henrystats"]\') }}'
     )
 }}
@@ -24,7 +25,7 @@ with
     )
     group by taker, blockchain
     -- That have at least more than 1 trade
-    having datediff(max(block_date), min(block_date)) > 0
+    having date_diff('day', min(block_date), max(block_date)) > 0
  )
 
 select blockchain       AS blockchain,
@@ -36,12 +37,12 @@ select blockchain       AS blockchain,
            when trades_per_day >= 0.0027397260274 then 'Yearly Trader'
            else 'Sparse Trader'
            end                 AS name,
-       "dex"    AS category,
-       "gentrexha"             AS contributor,
-       "query"                 AS source,
-       timestamp('2022-12-14') AS created_at,
+       'dex'    AS category,
+       'gentrexha'             AS contributor,
+       'query'                 AS source,
+       timestamp '2022-12-14' AS created_at,
        now()                   AS updated_at,
-        "trader_frequencies" as model_name,
-        "usage" as label_type
+        'trader_frequencies' as model_name,
+        'usage' as label_type
 from trader_frequencies
 ;
