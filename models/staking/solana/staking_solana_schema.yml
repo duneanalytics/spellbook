@@ -15,7 +15,7 @@ models:
         tests:
           - not_null
       - name: action
-        description: delegate, withdraw, merge, or split stake
+        description: withdraw, merge, or split stake
       - name: source
         description: the account SOL was moved to
       - name: destination

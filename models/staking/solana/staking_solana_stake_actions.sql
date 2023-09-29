@@ -13,40 +13,21 @@
 }}
 
 with    
-    delegate_and_merge as (
+    merge as (
         SELECT 
             abs(aa.balance_change/pow(10,9)) as stake
-            , all.*
-        FROM (
-            SELECT
-                'delegate' as action
-                , account_configAccount as source
-                , account_stakeAccount as destination
-                , account_stakeAuthority as authority
-                , call_block_slot
-                , call_block_time
-                , call_outer_instruction_index
-                , call_inner_instruction_index
-                , call_tx_id
-            FROM {{ source('stake_program_solana', 'stake_call_DelegateStake') }}
-            
-            UNION ALL 
-            
-            SELECT
-                'merge' as action
-                , account_sourceStakeAccount as source
-                , account_destinationStakeAccount as destination
-                , account_stakeAuthority as authority
-                , call_block_slot
-                , call_block_time
-                , call_outer_instruction_index
-                , call_inner_instruction_index
-                , call_tx_id
+            , 'merge' as action
+            , account_sourceStakeAccount as source
+            , account_destinationStakeAccount as destination
+            , account_stakeAuthority as authority
+            , call_block_slot
+            , call_block_time
+            , call_outer_instruction_index
+            , call_inner_instruction_index
+            , call_tx_id
             FROM {{ source('stake_program_solana', 'stake_call_Merge') }}
-        ) all
-        --sometimes account_activity table falls behind, can lead to nulls
         LEFT JOIN {{ source('solana', 'account_activity') }} aa ON 1=1 
-            AND aa.address = all.destination
+            AND aa.address = all.source --the source table gets completely merged so this is safest to join on
             AND aa.block_slot = all.call_block_slot
             AND aa.tx_id = all.call_tx_id
             and aa.writable = true
@@ -97,7 +78,7 @@ SELECT
     , call_tx_id as tx_id
     , concat(call_tx_id,'-',source,'-',destination,'-',cast(stake as varchar),'-',authority,'-',cast(call_outer_instruction_index as varchar)) as unique_stake_action_id
 FROM (
-    SELECT * FROM delegate_and_merge
+    SELECT * FROM merge
     UNION ALL
     SELECT * FROM withdraw
     UNION ALL
