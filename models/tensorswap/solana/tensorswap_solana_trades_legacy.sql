@@ -2,12 +2,7 @@
     schema = 'tensorswap_solana',
     tags = ['legacy'],
     alias = alias('trades', legacy_model=True),
-    materialized = 'table',
-    file_format = 'delta',
-    post_hook='{{ expose_spells(\'["solana"]\',
-                                "sector",
-                                "tensorswap",
-                                \'["ilemi"]\') }}')
+)
 }}
 
 -- DUMMY TABLE, WILL BE REMOVED SOON
