@@ -31,4 +31,6 @@ FROM (VALUES
         , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'Optimistic Virtual Machine', 'ethereum')
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'ethereum')
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'goerli')
+        , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL)
+        , (8217, 'klaytn', 'Klaytn', 'Layer 1', NULL, 'KLAY', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://scope.klaytn.com/', timestamp '2019-06-25 13:41:14', NULL, NULL)
         ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability)

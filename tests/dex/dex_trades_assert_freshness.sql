@@ -47,6 +47,17 @@
      'blockchain': 'ethereum',
      'schema': 'bancornetwork_ethereum',
      'table_name': 'BancorNetwork_v10_evt_Conversion',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'opx_finance',
+    'blockchain': 'optimism',
+    'schema': 'opx_finance_optimism',
+    'table_name': 'Router_evt_Swap'},
+
+    {'project': 'mauve',
+     'blockchain': 'ethereum',
+     'schema': 'mauve_ethereum',
+     'table_name': 'MauvePool_evt_Swap',
      'time_column': 'evt_block_time'}
 ] %}
 
@@ -56,7 +67,7 @@ with delays as (
     SELECT
         project
         , blockchain
-        , int(now() - max(block_time))/3600 as age_of_last_record_hours
+        , date_diff('hour', max(block_time), now()) as age_of_last_record_hours
     from {{ ref('dex_trades') }}
     group by 1,2
 )
@@ -67,7 +78,7 @@ with delays as (
  select
         '{{ trade_source['project'] }}' as project
         , '{{ trade_source['blockchain'] }}' as blockchain
-        , int(now() - max({{ trade_source['time_column'] }}))/3600 as age_of_last_record_hours
+        , date_diff('hour', max({{ trade_source['time_column'] }}), now()) as age_of_last_record_hours
  from {{ source(trade_source['schema'],trade_source['table_name']) }}
  group by 1,2
 {% if not loop.last %}
