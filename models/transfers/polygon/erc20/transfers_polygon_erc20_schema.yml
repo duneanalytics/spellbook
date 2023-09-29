@@ -57,13 +57,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - hour
+            - block_hour
             - wallet_address
             - token_address
     columns:
       - *blockchain
-      - &hour
-        name: hour
+      - &block_hour
+        name: block_hour
         description: "UTC event block time truncated to the hour mark."
       - *block_month
       - *wallet_address
@@ -87,13 +87,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - day
+            - block_day
             - wallet_address
             - token_address
     columns:
       - *blockchain
-      - &day
-        name: day
+      - &block_day
+        name: block_day
         description: "UTC event block time truncated to the day mark."
       - *block_month 
       - *wallet_address
@@ -113,7 +113,7 @@ models:
       tags: ['transfers', 'polygon', 'erc20', 'rolling_hour', 'Henrystats']
     columns:
       - *blockchain
-      - *hour
+      - *block_hour
       - *wallet_address
       - *token_address
       - *symbol
@@ -137,7 +137,7 @@ models:
       tags: ['transfers', 'polygon', 'erc20', 'rolling_day', 'Henrystats']
     columns:
       - *blockchain
-      - *hour
+      - *block_day
       - *wallet_address
       - *token_address
       - *symbol

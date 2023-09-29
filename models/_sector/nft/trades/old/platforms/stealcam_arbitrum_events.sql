@@ -63,6 +63,7 @@ SELECT 'arbitrum' AS blockchain
 , CAST(pu.price*0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount_usd
 , CAST(coalesce(100*(0.45*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
+, sc.evt_index
 , 'arbitrum-stealcam-' || cast(sc.evt_tx_hash as varchar)|| '-' || cast(sc.evt_index as varchar) AS unique_trade_id
 FROM stealcam sc
 INNER JOIN {{ source('arbitrum', 'transactions') }} at ON at.block_number=sc.evt_block_number

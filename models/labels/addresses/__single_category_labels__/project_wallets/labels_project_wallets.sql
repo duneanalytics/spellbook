@@ -1,4 +1,6 @@
-{{config(alias = alias('project_wallets'),
+{{config(
+        tags=['dunesql'],
+        alias = alias('project_wallets'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",
@@ -13,7 +15,7 @@ SELECT
     'project wallet' AS category,
     'msilb7' AS contributor,
     'static' AS source,
-    timestamp('2023-01-28') as created_at,
+    TIMESTAMP '2023-01-28'  as created_at,
     NOW() AS updated_at,
     'project_wallets' AS model_name,
     'identifier' AS label_type
