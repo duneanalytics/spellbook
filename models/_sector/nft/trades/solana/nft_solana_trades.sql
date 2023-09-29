@@ -20,14 +20,11 @@
 ] %}
 
 
-SELECT *
-FROM (
-    {% for marketplace in solana_marketplaces %}
-    SELECT
-        *
-    FROM {{ marketplace }}
+{% for marketplace in solana_marketplaces %}
+SELECT
+    *
+FROM {{ marketplace }}
 
-    UNION ALL
+UNION ALL
 
-    {% endfor %}
-)
+{% endfor %}
