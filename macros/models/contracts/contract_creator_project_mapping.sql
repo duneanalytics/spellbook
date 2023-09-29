@@ -74,7 +74,10 @@ SELECT *
             ,ct."from" as trace_creator_address
             ,CASE WHEN ct."from" IN (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN t."from" --tx sender
               WHEN aa.contract_project = 'Gnosis Safe' THEN t.to --smart wallet
-              WHEN aa.contract_project = 'ERC4337' THEN bytearray_substring(t.data, 145,20) --smart wallet sender
+              WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
+                  CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
+                  ELSE bytearray_substring(t.data, 145,20) END
+                  )
               ELSE ct."from"
             END as creator_address
             ,CAST(NULL AS varbinary) as deployer_address -- deployer from the trace - does not iterate up
