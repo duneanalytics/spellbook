@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['unique_trade_id']
     )
 }}
 {% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
@@ -157,7 +157,6 @@ select
     'optimism' as blockchain
     ,'zonic' as project
     ,'v1' as version
-    ,try_cast(date_trunc('day', er.block_time) as date) as block_date
     ,er.block_time
     ,er.token_id
     ,n.name as collection
