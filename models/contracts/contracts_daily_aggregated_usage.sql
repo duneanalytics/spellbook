@@ -43,7 +43,7 @@ FROM (
                 ) AS tx_gas_used
 
     FROM {{ ref('evms_traces') }} r
-        INNER JOIN {{ ref('evms_creation_traces') }} ct
+        INNER JOIN {{ ref('evms_creation_traces') }} ct --ensure it's a contract
                 ON ct.blockchain = r.blockchain
                 AND ct.contract_address = r.to
         INNER JOIN {{ ref('evms_transactions') }} t
@@ -62,6 +62,7 @@ FROM (
                 {% endif %}
                 AND t.gas_price > 0
                 AND r.type ='call'
+                AND r.to IS NOT NULL
         GROUP BY 1,2,3,4,5,6,7
 
         ) a
