@@ -2,7 +2,7 @@
 
 SELECT
     tr.blockchain,
-    CAST(date_trunc('hour', tr.evt_block_time) as date) as block_hour,
+    date_trunc('hour', tr.evt_block_time) as block_hour,
     tr.block_month,
     tr.wallet_address,
     tr.token_address,

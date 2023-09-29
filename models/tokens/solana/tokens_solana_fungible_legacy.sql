@@ -1,6 +1,6 @@
 {{ config(
   alias = alias('fungible', legacy_model=True),
-  tags=['legacy', 'static'],
+  tags=['legacy', 'static', 'remove'],
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens",
