@@ -33,7 +33,7 @@ rollup_balance_changes as (
 )
 
 , day_series as (
-  SELECT explode(sequence(CAST('2022-06-06' as date), CAST(NOW() as date), interval '1 Day')) as date 
+  SELECT date from unnest(sequence(date('2022-06-06'), date(NOW()), interval '1' Day)) as _u(date)
 )
 
 , token_balances_filled as (
@@ -44,7 +44,8 @@ rollup_balance_changes as (
   from day_series d
   inner join token_balances b
         on d.date >= b.date
-        and d.date < coalesce(b.next_date,CAST(NOW() as date) + 1) -- if it's missing that means it's the last entry in the series
+        {# and d.date < coalesce(b.next_date,CAST(NOW() as date) + 1) -- if it's missing that means it's the last entry in the series #}
+        and d.date < coalesce(b.next_date,date(NOW())) -- if it's missing that means it's the last entry in the series
 )
 
 , token_addresses as (
