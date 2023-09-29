@@ -69,6 +69,7 @@ methods as (
         , (0xe5d7bde6, 'LOP', true, 'fillOrderTo', map_from_entries(array[('source', 'tx-from')]), array[0x0582])
         , (0xd365c695, 'LOP', true, 'fillOrderToWithPermit', map_from_entries(array[('source', 'tx-from')]), array[0x0582])
         , (0x6073cc20, 'LOP', true, 'fillOrderToWithPermit', map_from_entries(array[('source', 'tx-from')]), array[0xf2b9, 0x690f, 0x6362, 0x2828, 0x7187, 0x734f, 0xb594])
+        , (0x4a3a0e71, 'LOP', true, 'fillOrderWithPermit1', map_from_entries(array[('source', 'tx-from')]), array[0x0582])
     ) as methods(selector, protocol, main, method, receiver, contracts), unnest(contracts) as contracts(contract_id)
 )
 
