@@ -27,7 +27,7 @@ with
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Merge') }} m
         LEFT JOIN {{ source('solana', 'account_activity') }} aa ON 1=1 
-            AND aa.address = m.source --the source table gets completely merged so this is safest to join on
+            AND aa.address = m.account_sourceStakeAccount --the source table gets completely merged so this is safest to join on
             AND aa.block_slot = m.call_block_slot
             AND aa.tx_id = m.call_tx_id
             and aa.writable = true
