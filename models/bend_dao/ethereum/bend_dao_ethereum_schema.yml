@@ -29,7 +29,7 @@ models:
             check_columns:
               - amount_original
               - evt_type
-              - address
+              - borrower
     columns:
       - &blockchain
         name: blockchain
@@ -40,6 +40,9 @@ models:
       - &version
         name: version
         description: "Project version"
+      - &lending_category
+        name: lending_category
+        description: "Type of loans offered by the project, usually either pool to borrower or peer to peer"
       - &block_time
         name: block_time
         description: "UTC event block time"
@@ -64,9 +67,12 @@ models:
       - &evt_type
         name: evt_type
         description:  "Event type (Borrow, Repay)"
-      - &address
-        name: address
-        description:  "Address repaying or borrowing"
+      - &borrower
+        name: borrower
+        description:  "Address that took the loan"
+      - &lender
+        name: lender
+        description:  "Address that faciliated the loan"
       - &amount_original
         name: amount_original
         description:  "Traded amount in original currency"

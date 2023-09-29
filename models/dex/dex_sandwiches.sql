@@ -1,12 +1,13 @@
 {{ config(
-        tags=['prod_exclude'],
+        tags=['dunesql'],
+        schema='dex',
         alias = alias('sandwiches'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'sandwiched_pool', 'frontrun_tx_hash', 'frontrun_taker', 'frontrun_index', 'currency_address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon"]\',
+        unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -22,19 +23,19 @@
      , (ref('dex_gnosis_sandwiches'))
      , (ref('dex_optimism_sandwiches'))
      , (ref('dex_polygon_sandwiches'))
+     , (ref('dex_base_sandwiches'))
 ] %}
 
 SELECT *
 FROM (
         {% for sandwiches_model in sandwiches_models %}
-        SELECT
-        *
+        SELECT *
         FROM {{ sandwiches_model }}
-        {% if not loop.last %}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc("day", now() - interval '1 week')
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
+        {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-        );
+        )
