@@ -97,7 +97,7 @@ with
                 , coalesce(cast(buyerPrice as double), cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+10,8))) as double)) as buyerPrice
                 , coalesce(cast(tokenSize as double), cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+18,8))) as double)) as tokenSize
                 , cast(makerFeeBp as double) as makerFeeBp
-                , bytearray_to_bigint(bytearray_reverse(case when bytearray_substring(bytearray_substring(call_data,1+42,2),1) = 0xff 
+                , bytearray_to_bigint(bytearray_reverse(case when bytearray_substring(call_data,1+43,1) = 0xff --check second byte for 0xff
                     then rpad(bytearray_substring(call_data,1+42,2), 8, 0xff) else bytearray_substring(call_data,1+42,2) end)) as makerFeeRaw
                 , cast(takerFeeBp as double) as takerFeeBp
                 , cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+44,2))) as double) as takerFeeRaw
@@ -122,7 +122,7 @@ with
                     ) as buyerPrice
                 , 1 as tokenSize
                 , cast(json_value(args, 'strict $.MIP1ExecuteSaleV2Args.makerFeeBp') as double) as makerFeeBp
-                , bytearray_to_bigint(bytearray_reverse(case when bytearray_substring(bytearray_substring(call_data,1+16,2),1) = 0xff 
+                , bytearray_to_bigint(bytearray_reverse(case when bytearray_substring(call_data,1+17,1) = 0xff --check second byte for 0xff
                     then rpad(bytearray_substring(call_data,1+16,2), 8, 0xff) else bytearray_substring(call_data,1+16,2) end)) as makerFeeRaw
                 , cast(json_value(args, 'strict $.MIP1ExecuteSaleV2Args.takerFeeBp') as double) as takerFeeBp
                 , cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+18,2))) as double) as takerFeeRaw
@@ -147,7 +147,7 @@ with
                     ) as buyerPrice
                 , 1 as tokenSize
                 , cast(json_value(args, 'strict $.OCPExecuteSaleV2Args.makerFeeBp') as double) as makerFeeBp
-                , bytearray_to_bigint(bytearray_reverse(case when bytearray_substring(bytearray_substring(call_data,1+16,2),1) = 0xff 
+                , bytearray_to_bigint(bytearray_reverse(case when bytearray_substring(call_data,1+17,1),1) = 0xff --check second byte for 0xff
                     then rpad(bytearray_substring(call_data,1+16,2), 8, 0xff) else bytearray_substring(call_data,1+16,2) end)) as makerFeeRaw
                 , cast(json_value(args, 'strict $.OCPExecuteSaleV2Args.takerFeeBp') as double) as takerFeeBp
                 , cast(bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+18,2))) as double) as takerFeeRaw
