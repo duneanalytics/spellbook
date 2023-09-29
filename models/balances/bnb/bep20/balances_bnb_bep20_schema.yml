@@ -121,7 +121,6 @@ models:
     columns:
       - *block_day
       - *token_address
-      - name: number_holder
       - name: number_new_wallets
       - name: volumn_new_wallets
       - name: price
