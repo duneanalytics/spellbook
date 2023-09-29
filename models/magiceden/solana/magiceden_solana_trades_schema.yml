@@ -1,67 +1,112 @@
 version: 2
 
 models:
-  - name: mirror_optimism_edition_metadata
+  - name: magiceden_solana_trades
     meta:
-      blockchain: optimism
-      project: zora
-      contributors: [msilb7]
+      blockchain: solana
+      project: magiceden
+      contributors: [ilemi]
     config:
-      tags: ['optimism','zora','nft']
+      tags: ['magiceden','solana','nft']
     description: >
-       NFT editions minted on Zora on OP Mainnet
+       magiceden solana trades
     columns:
-      - &deployer_contract
-        name: deployer_contract
-      - &edition_address
-        name: edition_address
-        description: "Edition (token) Address"
-        tests:
-          - unique
-      - &created_tx_hash
-        name: created_tx_hash
-        description: "TX hash when created"
-      - &created_block_number
-        name: created_block_number
-        description: "Block Number when created"
-      - &created_block_time
-        name: created_block_time
-        description: "Block Time when created"
-      - &admin
-        name: admin
-      - &name
-        name: name
-      - &symbol
-        name: symbol
-      - &description
-        name: description
-      - &imageURI
-        name: imageURI
-      - &contentURI
-        name: contentURI
-      - &price
-        name: price
-      - &limit
-        name: limit
-      - &fundingRecipient
-        name: fundingRecipient
-      - &owner
-        name: owner
-      - &contractURI
-        name: contractURI
-      - &uri
-        name: uri
-      - &trustedForwarders
-        name: trustedForwarders
-      - &primarySaleRecipient
-        name: primarySaleRecipient
-      - &royaltyRecipient
-        name: royaltyRecipient
-      - &royalty_pct
-        name: royalty_pct
-      - &platformFee
-        name: platformFee
-      - &platformFeeRecipient
-        name: platformFeeRecipient
-      - &salt
-        name: salt
+     - &blockchain
+       name: blockchain
+       description: "Blockchain"
+     - &project
+       name: project
+       description: "Project"
+     - &version
+       name: version
+       description: "Project version"
+     - &block_time
+       name: block_time
+       description: "UTC event block time"
+     - name: block_date
+     - name: block_month
+     - name: token_name
+     - name: token_symbol
+     - name: trade_type
+     - name: number_of_items
+     - name: trade_category
+     - &seller
+       name: seller
+       description: "Seller wallet address"
+     - &buyer
+       name: buyer
+       description: "Buyer wallet address"
+     - &amount_usd
+       name: amount_usd
+       description: "USD value of the trade at time of execution"
+       tests:
+         - dbt_utils.accepted_range:
+             max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+     - &amount_original
+       name: amount_original
+       description: "Traded amount in original currency"
+     - &amount_raw
+       name: amount_raw
+       description: "Traded amount in original currency before decimals correction"
+     - &currency_symbol
+       name: currency_symbol
+       description: "Symbol of original currency used for payment"
+     - &currency_contract
+       name: currency_contract
+       description: "Contract address of original token used for payment, with ETH contract address swapped for WETH"
+     - &token_standard
+       name: token_standard
+       description: "Token standard"
+     - name: account_metadata
+     - name: account_masteredition
+     - name: account_mint
+     - name: verified_creator
+     - name: collection_mint
+     - name: project_program_id
+     - &aggregator_name
+       name: aggregator_name
+       description: "If the trade was performed via an aggregator, displays aggregator name"
+     - &aggregator_address
+       name: aggregator_address
+       description: "If the trade was performed via an aggregator, displays aggregator address"
+     - &tx_hash
+       name: tx_id
+       description: "Transaction hash"
+     - &block_number
+       name: block_slot
+       description: "Block slot in which the transaction was executed "
+     - name: tx_signer
+     - &taker_fee_amount_raw
+       name: taker_fee_amount_raw
+       description: "Raw numerical amount for taker fees"
+     - &taker_fee_amount
+       name: taker_fee_amount
+       description: "taker fee amount in original token currency (properly formatted in decimals)"
+     - &taker_fee_amount_usd
+       name: taker_fee_amount_usd
+       description: "taker fee amount in USD"
+     - &taker_fee_percentage
+       name: taker_fee_percentage
+       description: "taker fee in % of the amount paid for a given trade"
+     - &royalty_fee_currency_symbol
+       name: royalty_fee_currency_symbol
+       description: "Symbol of the token in which fees are paid out"
+     - &royalty_fee_amount_raw
+       name: royalty_fee_amount_raw
+       description: "Raw numerical amount for royalty fees"
+     - &royalty_fee_amount
+       name: royalty_fee_amount
+       description: "Royalty fee amount in original token currency (properly formatted in decimals)"
+     - &royalty_fee_amount_usd
+       name: royalty_fee_amount_usd
+       description: "Royalty fee amount in USD"
+     - &royalty_fee_percentage
+       name: royalty_fee_percentage
+       description: "Royalty fee in % of the amount paid for a given trade"
+     - &unique_trade_id
+       name: unique_trade_id
+       description: "Unique trade ID"
+     - name: creator_royalty_accounts
+     - name: instruction
+     - name: outer_instruction_index
+     - name: inner_instruction_index
