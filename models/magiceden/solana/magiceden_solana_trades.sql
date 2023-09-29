@@ -190,18 +190,17 @@ with
             , 'SOL' as currency_symbol
             , 'So11111111111111111111111111111111111111112' as currency_address
             , t.account_metadata --token id equivalent
-            , tk.account_masteredition 
-            , tk.account_mint
-            , tk.verified_creator
-            , tk.collection_mint
+            , tk.account_master_edition --token id equivalent
+            , tk.account_mint --token id equivalent
+            , tk.verified_creator --contract address equivalent
+            , tk.collection_mint --contract address equivalent
             , 'TSWAPaqyCSx2KABk68Shruf4rp7CxcNi8hAsbdwmHbN' as project_program_id
             , cast(null as varchar) as aggregator_name
             , cast(null as varchar) as aggregator_address
             , t.call_tx_id as tx_id
             , t.call_block_slot as block_slot
-            , t.call_tx_signer as tx_signer--need to make orca whirlpool also have a tx_signer column later
-            --taker fees = platform fees
-            , t.taker_fee as taker_fee_amount_raw
+            , t.call_tx_signer as tx_signer
+            , t.taker_fee as taker_fee_amount_raw --taker fees = platform fees
             , t.taker_fee/1e9 as taker_fee_amount
             , t.taker_fee/1e9 * sol_p.price as taker_fee_amount_usd
             , t.taker_fee/t.price as taker_fee_percentage
@@ -213,12 +212,12 @@ with
             , t.royalty/1e9 as royalty_fee_amount
             , t.royalty/1e9 * sol_p.price as royalty_fee_amount_usd
             , t.royalty/t.price as royalty_fee_percentage
-            , tk.creators_struct as creator_royalty_accounts
+            , tk.creators_struct
             , t.instruction
             , t.outer_instruction_index
             , t.inner_instruction_index
         FROM trades t
-        LEFT JOIN {{ ref('tokens_solana_nft') }} tk --put in spellbook
+        LEFT JOIN {{ ref('tokens_solana_nft') }} tk
             ON t.account_metadata = tk.account_metadata
         LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
     )

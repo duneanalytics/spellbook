@@ -14,10 +14,8 @@
 with 
     token_metadata as (
         SELECT
-            get_href(get_chain_explorer('solana') || '/tx/' || joined_m.call_tx_id, '🔗 tx') as tx
-            , joined_m.call_block_slot
-            , joined_m.account_mintAuthority
-            , joined_m.account_masterEdition
+            joined_m.account_mintAuthority as account_mint_authority
+            , joined_m.account_masterEdition as account_master_edition
             , joined_m.account_metadata
             , joined_m.account_mint
             , joined_m.version
@@ -33,6 +31,7 @@ with
             , json_query(args, 'strict $.creators') as creators_struct
             , joined_m.call_tx_id
             , joined_m.call_block_time
+            , joined_m.call_block_slot
             , COALESCE(v.call_block_time, joined_m.call_block_time) as verify_block_time
             , joined_m.call_tx_signer
             , row_number() over (partition by joined_m.account_metadata order by COALESCE(v.call_block_time, joined_m.call_block_time) desc) as recent_update

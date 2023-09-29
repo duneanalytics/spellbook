@@ -23,13 +23,23 @@ models:
      - &block_time
        name: block_time
        description: "UTC event block time"
-     - name: block_date
-     - name: block_month
-     - name: token_name
-     - name: token_symbol
-     - name: trade_type
-     - name: number_of_items
-     - name: trade_category
+     - &block_date 
+       name: block_date
+     - &block_month
+       name: block_month
+     - &token_name
+       name: token_name
+     - &token_symbol
+       name: token_symbol
+     - &trade_type
+       name: trade_type
+       description: "primary or secondary"
+     - &number_of_items
+       name: number_of_items
+       description: "Number of items traded"
+     - &trader_category
+       name: trade_category
+       description: "buy or sell"
      - &seller
        name: seller
        description: "Seller wallet address"
@@ -57,12 +67,24 @@ models:
      - &token_standard
        name: token_standard
        description: "Token standard"
-     - name: account_metadata
-     - name: account_masteredition
-     - name: account_mint
-     - name: verified_creator
-     - name: collection_mint
-     - name: project_program_id
+     - &account_metadata
+       name: account_metadata
+       description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"
+     - &account_master_edition
+       name: account_master_edition
+       description: "Master edition for the account. All NFTs have a master edition"
+     - &account_mint
+       name: account_mint
+       description: "Mint for the account. This is the token mint address from spl_token"
+     - &verified_creator
+       name: verified_creator
+       description: "This is the first creator in the creator_struct for the NFT. The first creator was originally used as the collection mint reference"
+     - &collection_mint
+       name: collection_mint
+       description: "This is the token mint address of the collection. This is the same for all NFTs in the collection"
+     - &project_program_id
+       name: project_program_id
+       description: "Program ID for the project"
      - &aggregator_name
        name: aggregator_name
        description: "If the trade was performed via an aggregator, displays aggregator name"
@@ -106,7 +128,15 @@ models:
      - &unique_trade_id
        name: unique_trade_id
        description: "Unique trade ID"
-     - name: creator_royalty_accounts
-     - name: instruction
-     - name: outer_instruction_index
-     - name: inner_instruction_index
+     - &creator_struct
+       name: creator_struct
+       description: "All creators and their royalty splits"
+     - &instruction
+       name: instruction
+       description: "name of the instruction called for the trade"
+     - &outer_instruction_index
+       name: outer_instruction_index
+       description: "outer index of instruction call"
+     - &inner_instruciton_index
+       name: inner_instruction_index
+       description: "inner index of instruction call"
