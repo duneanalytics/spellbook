@@ -20,7 +20,7 @@ contracts as (
         , contract_name
         , blockchain
     from (values
-          ('1inch'				, 0xe4c577bdec9ce0f6c54f2f82aed5b1913b71ae2f, 'exchangeV1'					, array['ethereum'])
+          ('1inch'				, 0xe4c577bdec9ce0f6c54f2f82aed5b1913b71ae2f, 'exchangeV1'					, array['ethereum']) 
         , ('1inch'				, 0x0000000006adbd7c01bc0738cdbfc3932600ad63, 'exchangeV2'					, array['ethereum'])
         , ('1inch'				, 0x0000000053d411becdb4a82d8603edc6d8b8b3bc, 'exchangeV3'					, array['ethereum'])
         , ('1inch'				, 0x000005edbbc1f258302add96b5e20d3442e5dd89, 'exchangeV4'					, array['ethereum'])
