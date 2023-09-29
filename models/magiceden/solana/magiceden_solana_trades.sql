@@ -6,7 +6,7 @@
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
-        ,unique_key = ['edition_address']
+        ,unique_key = ['unique_trade_id','block_slot']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "magiceden",
