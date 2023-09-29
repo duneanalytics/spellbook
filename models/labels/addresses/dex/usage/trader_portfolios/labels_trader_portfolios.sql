@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['dunesql'],
         alias = alias('trader_portfolios'),
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "labels", \'["gentrexha"]\') }}'
     )
