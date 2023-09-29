@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: magiceden_solana_trades
+  - name: tensorswap_solana_trades
     meta:
       blockchain: solana
-      project: magiceden
+      project: tensor
       contributors: [ilemi]
     config:
-      tags: ['magiceden','solana','nft']
+      tags: ['tensorswap','solana','nft']
     description: >
-       magiceden solana trades
+       tensorswap solana trades
     columns:
      - &blockchain
        name: blockchain

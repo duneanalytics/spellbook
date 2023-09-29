@@ -212,7 +212,6 @@ with
             , t.royalty/1e9 as royalty_fee_amount
             , t.royalty/1e9 * sol_p.price as royalty_fee_amount_usd
             , t.royalty/t.price as royalty_fee_percentage
-            , tk.creators_struct
             , t.instruction
             , t.outer_instruction_index
             , t.inner_instruction_index

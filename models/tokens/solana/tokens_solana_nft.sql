@@ -11,6 +11,7 @@
 )
 }}
 
+
 with 
     token_metadata as (
         SELECT
