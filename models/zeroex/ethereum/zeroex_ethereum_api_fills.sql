@@ -30,7 +30,7 @@ WITH zeroex_tx AS (
                 OR -- contains a bridge order
                 (
                     v3.feeRecipientAddress = 0x1000000000000000000000000000000000000011
-                    AND bytearray_substring(v3.makerAssetData, 1, 10) = 0xdc1600f3
+                    AND bytearray_substring(v3.makerAssetData, 1, 4) = 0xdc1600f3
                 )
             )
 
@@ -85,8 +85,8 @@ v3_fills_no_bridge AS (
             evt_block_time                                                             AS block_time,
             fills.makerAddress                                                         AS maker,
             fills.takerAddress                                                         AS taker,
-            bytearray_substring(fills.takerAssetData, 34, 40) AS taker_token,
-            bytearray_substring(fills.makerAssetData, 34, 40) AS maker_token,
+            bytearray_substring(fills.takerAssetData, 17, 20) AS taker_token,
+            bytearray_substring(fills.makerAssetData, 17, 20) AS maker_token,
             cast(fills.takerAssetFilledAmount  as int256) AS taker_token_amount_raw,
             cast(fills.makerAssetFilledAmount  as int256)AS maker_token_amount_raw,
             'Fill'                                                                     AS type,
@@ -95,7 +95,7 @@ v3_fills_no_bridge AS (
             (fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed) AS matcha_limit_order_flag
     FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
-    WHERE  (bytearray_substring(makerAssetData, 1, 10) <> 0xdc1600f3)
+    WHERE  (bytearray_substring(makerAssetData, 1, 4) <> 0xdc1600f3)
         AND (zeroex_tx.tx_hash IS NOT NULL
         OR fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed)
 
@@ -194,12 +194,12 @@ ERC20BridgeTransfer AS (
             INDEX                                   AS evt_index,
             logs.contract_address,
             block_time                              AS block_time,
-            bytearray_substring(DATA, 142, 20) AS maker,
-            bytearray_substring(DATA, 172, 20) AS taker,
-            bytearray_substring(DATA, 14, 20) AS taker_token,
+            bytearray_substring(DATA, 141, 20) AS maker,
+            bytearray_substring(DATA, 173, 20) AS taker,
+            bytearray_substring(DATA, 13, 20) AS taker_token,
             bytearray_substring(DATA, 45, 20) AS maker_token,
             bytearray_to_int256(bytearray_substring(DATA, 77, 20)) AS taker_token_amount_raw,
-            bytearray_to_int256(bytearray_substring(DATA, 110, 20)) AS maker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 109, 20)) AS maker_token_amount_raw,
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
@@ -226,8 +226,8 @@ BridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_int256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_int256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -254,8 +254,8 @@ NewBridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_int256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_int256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_int256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'NewBridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
