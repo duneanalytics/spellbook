@@ -125,7 +125,6 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
-, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , polygon_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, polygon_bep20_tokens.decimals)*prices.price AS amount_usd

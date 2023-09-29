@@ -148,7 +148,6 @@ SELECT
   'opensea' as project,
   'v1' as version,
   project_contract_address,
-  TRY_CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
   t.block_time,
   t.block_number,
   t.tx_hash,
