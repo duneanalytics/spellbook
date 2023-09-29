@@ -224,8 +224,7 @@ with
     )
 
 SELECT 
-get_href(get_chain_explorer('solana') || '/tx/' || tx_id, '🔗 tx') as tx
-, *
+*
 , concat(project,'-',cast(amount_original as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
 order by block_time asc
