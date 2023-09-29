@@ -97,11 +97,11 @@ SELECT
     , source
     , destination
     , authority
-    , block_slot
-    , block_time
-    , outer_instruction_index
-    , inner_instruction_index
-    , tx_id
+    , call_block_slot as block_slot
+    , call_block_time as block_time
+    , call_outer_instruction_index as outer_instruction_index
+    , call_inner_instruction_index as inner_instruction_index
+    , call_tx_id as tx_id
 FROM (
     SELECT * FROM delegate_and_merge
     UNION ALL
