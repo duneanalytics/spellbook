@@ -6,7 +6,7 @@
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
-        ,unique_key = ['unique_trade_id','block_slot']
+        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "magiceden",
@@ -226,6 +226,6 @@ with
 
 SELECT 
 *
-, concat(project,'-',cast(amount_original as varchar),'-',trade_category,'-',account_metadata,'-',tx_id) as unique_trade_id
+, concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(inner_instruction_index as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
 order by block_time asc

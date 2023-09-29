@@ -10,6 +10,15 @@ models:
       tags: ['magiceden','tensorswap','solana','nft']
     description: >
        nft solana trades
+    tests:
+     - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - trade_category
+            - outer_instruction_index
+            - inner_instruction_index
+            - account_metadata
+            - tx_id
     columns:
      - &blockchain
        name: blockchain
@@ -137,3 +146,6 @@ models:
      - &inner_instruciton_index
        name: inner_instruction_index
        description: "inner index of instruction call"
+     - &duplicates_rank
+       name: duplicates_rank
+       description: "check for duplicates on the unique parition"
