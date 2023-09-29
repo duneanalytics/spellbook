@@ -1,7 +1,8 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'compound_v2_ethereum',
     alias = alias('votes'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -29,9 +30,10 @@ SELECT
     '{{project_version}}' as version,
     vc.evt_block_time as block_time,
     date_trunc('DAY', vc.evt_block_time) AS block_date,
+    CAST(date_trunc('month', vc.evt_block_time) as date) as block_month,
     vc.evt_tx_hash as tx_hash,
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     vc.proposalId as proposal_id,
     vc.votes/1e18 as votes,
     (votes/1e18) * (100) / (csv.sum_votes) as votes_share,
@@ -46,6 +48,6 @@ SELECT
     vc.reason
 FROM {{ source('compound_v2_ethereum', 'GovernorBravoDelegate_evt_VoteCast') }} vc
 LEFT JOIN cte_sum_votes csv ON vc.proposalId = csv.proposalId
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', evt_block_time)
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', vc.evt_block_time)
     AND p.symbol = 'COMP'
     AND p.blockchain ='ethereum'
