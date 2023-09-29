@@ -1,6 +1,7 @@
 {{
     config(
-         tags = ['dunesql']
+        schema = 'magiceden_solana_trades'
+        , tags = ['dunesql']
         , alias = alias('trades')
         ,materialized = 'incremental'
         ,file_format = 'delta'
