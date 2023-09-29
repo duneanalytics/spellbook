@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['dunesql'],
         alias = alias('trader_age'),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                                     "sector",
@@ -10,7 +11,7 @@
 
 with trader_age as (
     select blockchain,
-           datediff(max(block_date), min(block_date)) as trader_age,
+           date_diff('day', min(block_date), max(block_date)) as trader_age,
            taker                                      as address
     from (
         select blockchain, taker, block_date
@@ -35,12 +36,11 @@ select blockchain,
            when trader_age > 7 then '1 week old DEX trader'
            else 'less than 1 week old DEX trader'
            end                 AS name,
-       "dex"                   AS category,
-       "gentrexha"             AS contributor,
-       "query"                 AS source,
-       timestamp('2022-12-15') AS created_at,
+       'dex'                   AS category,
+       'gentrexha'             AS contributor,
+       'query'                 AS source,
+       timestamp '2022-12-15' AS created_at,
        now()                   AS updated_at,
-       "trader_age"            AS model_name,
-       "usage"                 AS label_type
+       'trader_age'            AS model_name,
+       'usage'                 AS label_type
 from trader_age
-; 
