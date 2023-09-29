@@ -1,4 +1,6 @@
 {{ config(
+    schema = 'tokens_solana_nft',
+    tags = ['dunesql'],
     alias = alias('stake_actions'),
     materialized = 'incremental',
     file_format = 'delta',
