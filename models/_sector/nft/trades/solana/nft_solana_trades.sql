@@ -25,6 +25,7 @@ SELECT
     *
 FROM {{ marketplace }}
 
+{% if not loop.last %}
 UNION ALL
-
+{% endif %}
 {% endfor %}
