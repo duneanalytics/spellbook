@@ -103,7 +103,7 @@ SELECT
     , call_outer_instruction_index as outer_instruction_index
     , call_inner_instruction_index as inner_instruction_index
     , call_tx_id as tx_id
-    , concat(call_tx_id,'-',source,'-',destination,'-',cast(stake as varchar),'-',authority,'-',call_outer_instruction_index) as unique_stake_action_id
+    , concat(call_tx_id,'-',source,'-',destination,'-',cast(stake as varchar),'-',authority,'-',cast(call_outer_instruction_index as varchar)) as unique_stake_action_id
 FROM (
     SELECT * FROM delegate_and_merge
     UNION ALL
