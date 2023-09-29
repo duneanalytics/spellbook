@@ -49,6 +49,9 @@ models:
       - &evt_type
         name: evt_type
         description:  "Event type (Trade, Mint, Burn)"
+      - &evt_index
+        name: evt_index
+        description:  "Event Index"
       - &seller
         name: seller
         description:  "Seller wallet address"
