@@ -6,7 +6,7 @@
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
-        ,unique_key = ['project','trade_category','amount_raw','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
+        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "tensorswap",
@@ -186,7 +186,7 @@ with
             , t.account_seller as seller
             , t.current_price as amount_raw
             , t.current_price/1e9 as amount_original
-            -- , t.current_price/1e9 * sol_p.price as amount_usd
+            , t.current_price/1e9 * sol_p.price as amount_usd
             , 'SOL' as currency_symbol
             , 'So11111111111111111111111111111111111111112' as currency_address
             , t.account_metadata
@@ -203,28 +203,29 @@ with
             --taker fees = platform fees
             , t.tswap_fee as taker_fee_amount_raw
             , t.tswap_fee/1e9 as taker_fee_amount
-            -- , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
+            , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
             , t.tswap_fee/t.current_price as taker_fee_percentage
             , t.mm_fee as maker_fee_amount_raw
             , t.mm_fee/1e9 as maker_fee_amount
-            -- , t.mm_fee/1e9 * sol_p.price as maker_fee_amount_usd
+            , t.mm_fee/1e9 * sol_p.price as maker_fee_amount_usd
             , t.mm_fee/t.current_price as maker_fee_percentage
             , t.creators_fee as royalty_fee_amount_raw 
             , t.creators_fee/1e9 as royalty_fee_amount
-            -- , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd
+            , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd
             , t.creators_fee/t.current_price as royalty_fee_percentage
             , t.instruction
             , t.outer_instruction_index
-            , cast(t.inner_instruction_index as double) as inner_instruction_index
+            , coalesce(t.inner_instruction_index, 0) as inner_instruction_index
         FROM trades t
         LEFT JOIN {{ ref('tokens_solana_nft') }} tk
             ON t.account_metadata = tk.account_metadata
-        -- LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
+        LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
     )
 
 SELECT 
 *
-, concat(project,'-',trade_category,'-',cast(amount_raw as varchar),'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index, 0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
+, concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index,0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
-WHERE amount_original is not null --we have some truncated logs and missing decoding right now like 5DoPTZfA9UfSJYExLhvkMKmTtLXCjumH7dfUVY6gpLc7Bj99kg3Z7649eKgh1x5aARTbsMWPs1XEkwC3up4BByUv
+--we have some truncated logs and missing decoding right now like 5DoPTZfA9UfSJYExLhvkMKmTtLXCjumH7dfUVY6gpLc7Bj99kg3Z7649eKgh1x5aARTbsMWPs1XEkwC3up4BByUv
+WHERE amount_original is not null
 order by block_time asc

@@ -10,16 +10,15 @@ models:
       tags: ['magiceden','tensorswap','solana','nft']
     description: >
        nft solana trades
-    # tests:
-    #  - dbt_utils.unique_combination_of_columns:
-    #       combination_of_columns:
-    #         - project
-    #         - trade_category
-    #         - outer_instruction_index
-    #         - inner_instruction_index
-    #         - account_metadata
-    #         - tx_id
-    #         - amount_raw
+    tests:
+     - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - trade_category
+            - outer_instruction_index
+            - inner_instruction_index
+            - account_metadata
+            - tx_id
     columns:
      - &blockchain
        name: blockchain
