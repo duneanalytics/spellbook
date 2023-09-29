@@ -19,6 +19,7 @@ models:
             - inner_instruction_index
             - account_metadata
             - tx_id
+            - amount_raw
     columns:
      - &blockchain
        name: blockchain

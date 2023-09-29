@@ -6,7 +6,7 @@
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
-        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
+        ,unique_key = ['project','trade_category','amount_raw','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "tensorswap",
@@ -215,7 +215,7 @@ with
             , t.creators_fee/t.current_price as royalty_fee_percentage
             , t.instruction
             , t.outer_instruction_index
-            , t.inner_instruction_index
+            , cast(t.inner_instruction_index as double) as inner_instruction_index
         FROM trades t
         LEFT JOIN {{ ref('tokens_solana_nft') }} tk
             ON t.account_metadata = tk.account_metadata
@@ -224,7 +224,7 @@ with
 
 SELECT 
 *
-, concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(inner_instruction_index as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
+, concat(project,'-',trade_category,'-',cast(amount_raw as varchar),'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index, 0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
 WHERE amount_original is not null --we have some truncated logs and missing decoding right now like 5DoPTZfA9UfSJYExLhvkMKmTtLXCjumH7dfUVY6gpLc7Bj99kg3Z7649eKgh1x5aARTbsMWPs1XEkwC3up4BByUv
 order by block_time asc
