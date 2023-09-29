@@ -753,7 +753,7 @@ WITH dao_wallet AS (
         ON mints.usr = dao_wallet.wallet_address
     LEFT JOIN interest_accruals_1 AS frobs
             ON mints.call_tx_hash = frobs.hash
-            AND mints.wad = CAST(frobs.dart AS UINT256)
+            AND mints.wad = try_CAST(frobs.dart AS UINT256)
     WHERE mints.call_success
         AND frobs.hash IS NULL --filtering out draws from psm that happened in the same tx as expenses
         -- {% if is_incremental() %}
@@ -764,7 +764,7 @@ WITH dao_wallet AS (
     SELECT ts
          , hash
          , equity_code AS code
-         , -expense    AS value --reduced equity
+         , -cast(expense as double)    AS value --reduced equity
     FROM opex_preunion
 
     UNION ALL
