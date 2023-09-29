@@ -11,7 +11,7 @@
 
 with trader_age as (
     select blockchain,
-           datediff(max(block_date), min(block_date)) as trader_age,
+           date_diff('day', min(block_date), max(block_date)) as trader_age,
            taker                                      as address
     from (
         select blockchain, taker, block_date
@@ -44,4 +44,3 @@ select blockchain,
        'trader_age'            AS model_name,
        'usage'                 AS label_type
 from trader_age
-;
