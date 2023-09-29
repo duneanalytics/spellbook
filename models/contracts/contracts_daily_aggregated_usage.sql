@@ -46,7 +46,7 @@ FROM (
         INNER JOIN {{ ref('evms_creation_traces') }} ct
                 ON ct.blockchain = r.blockchain
                 AND ct.contract_address = r.to
-        INNER JOIN ref('evms_transactions') t
+        INNER JOIN {{ ref('evms_transactions') }} t
                 ON 1=1
                 AND t.blockchain = r.blockchain AND t.blockchain = ct.blockchain
                 AND t.block_number = r.block_number
