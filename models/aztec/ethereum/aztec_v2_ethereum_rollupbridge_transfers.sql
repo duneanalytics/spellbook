@@ -135,7 +135,7 @@ tfers_raw as (
             er.evt_index, 
             er.evt_block_time, 
             er.evt_block_number,
-            array[cast(null as bigint)] as trace_address 
+            CAST(NULL as array<bigint>) as trace_address 
         FROM 
         erc20_tfers er 
         
