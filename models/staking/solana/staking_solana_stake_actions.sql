@@ -100,6 +100,7 @@ FROM (
     UNION ALL
     SELECT * FROM split
 )
+where call_block_time >= now() - interval '7' day
 {% if is_incremental() %}
 WHERE block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
