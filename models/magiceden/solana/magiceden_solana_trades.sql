@@ -1,7 +1,7 @@
 {{
     config(
          tags = ['dunesql']
-        , alias = alias('magiceden_solana_trades')
+        , alias = alias('trades')
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
