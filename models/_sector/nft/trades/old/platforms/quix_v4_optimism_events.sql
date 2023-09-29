@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index']
+    unique_key = ['block_number', 'tx_hash', 'token_id', 'seller',  'evt_index']
     )
 }}
 {% set quix_fee_address_address = '0xec1557a67d4980c948cd473075293204f4d280fd' %}
@@ -131,7 +131,6 @@ with events_raw as (
 --,fill_missing_op_price as (
 --    -- op price missing from prices.usd 2022-06-06
 --    select
---      date_trunc('day', block_time) as block_date
 --      ,symbol
 --      ,contract_address
 --      ,avg(amount_usd/token_amount) as price
@@ -192,7 +191,6 @@ with events_raw as (
         'optimism' as blockchain
         ,'quix' as project
         ,'v4' as version
-        ,date_trunc('day', er.block_time) AS block_date
         ,er.block_time
         ,er.token_id
         ,n.name as collection
@@ -318,5 +316,5 @@ with events_raw as (
 )
 select
     *
-    ,concat(cast(block_date as varchar), cast(tx_hash as varchar), cast(token_id as varchar),cast(evt_index as varchar)) as unique_trade_id
+    ,concat(cast(tx_hash as varchar), cast(token_id as varchar),cast(evt_index as varchar)) as unique_trade_id
 from final

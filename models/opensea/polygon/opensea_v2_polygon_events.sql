@@ -93,7 +93,6 @@ SELECT
   'opensea' AS project,
   'v2' AS version,
   a.tx_hash,
-  date_trunc('day', a.block_time) AS block_date,
   a.block_time,
   a.block_number,
   CAST(a.amount_raw / power(10,erc20.decimals) * p.price AS double) AS amount_usd,
