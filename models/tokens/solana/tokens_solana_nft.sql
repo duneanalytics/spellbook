@@ -1,6 +1,6 @@
 {{ config
 (        
-  schema = 'tokens_solana_nft',
+  schema = 'tokens_solana',
   alias = alias('nft'),
   tags = ['dunesql'],
   materialized='table',
