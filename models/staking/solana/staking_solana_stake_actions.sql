@@ -25,11 +25,11 @@ with
             , call_outer_instruction_index
             , call_inner_instruction_index
             , call_tx_id
-            FROM {{ source('stake_program_solana', 'stake_call_Merge') }}
+        FROM {{ source('stake_program_solana', 'stake_call_Merge') }} m
         LEFT JOIN {{ source('solana', 'account_activity') }} aa ON 1=1 
-            AND aa.address = all.source --the source table gets completely merged so this is safest to join on
-            AND aa.block_slot = all.call_block_slot
-            AND aa.tx_id = all.call_tx_id
+            AND aa.address = m.source --the source table gets completely merged so this is safest to join on
+            AND aa.block_slot = m.call_block_slot
+            AND aa.tx_id = m.call_tx_id
             and aa.writable = true
             and aa.balance_change != 0
             and aa.tx_success
