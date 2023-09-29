@@ -85,7 +85,6 @@ FROM (
         , tx_to
         , trace_address
         , evt_index
-        , row_number() over (partition by tx_hash, trace_address, evt_index order by tx_hash) as duplicates_rank
     FROM {{ aggregator_model }}
     {% if is_incremental() %}
     WHERE block_date >= date_trunc('day', now() - interval '7' day)
@@ -95,4 +94,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-WHERE duplicates_rank = 1
