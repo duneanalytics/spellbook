@@ -9,7 +9,7 @@ sources:
     tables:
       - name: m2_call_executeSaleV2
         loaded_at_field: call_block_time
-      - name: m2_call_executeSaleV2
+      - name: m2_call_mip1ExecuteSaleV2
         loaded_at_field: call_block_time
         
       - name: m2_call_ocpExecuteSaleV2
