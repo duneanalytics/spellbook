@@ -8,6 +8,9 @@
                                 \'["ilemi"]\') }}')
 }}
 
+{# -- Enable once balances work again
+,ref('labels_trader_portfolios')
+#}
 {% set dex_models = [
  ref('labels_sandwich_attackers')
 ,ref('labels_dex_aggregator_traders')
@@ -21,7 +24,6 @@
 ,ref('labels_trader_age')
 ,ref('labels_trader_dex_diversity')
 ,ref('labels_trader_frequencies')
-,ref('labels_trader_portfolios')
 ] %}
 
 SELECT *
