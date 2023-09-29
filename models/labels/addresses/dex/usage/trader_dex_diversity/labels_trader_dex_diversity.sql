@@ -30,7 +30,7 @@ select
     'dex' AS category,
     'gentrexha' AS contributor,
     'query' AS source,
-    timestamp('2022-12-15') as created_at,
+    timestamp '2022-12-15' as created_at,
     now() as updated_at,
     'trader_dex_diversity' as model_name,
     'usage' as label_type
