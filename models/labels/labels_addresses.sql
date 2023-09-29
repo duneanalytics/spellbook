@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['dunesql'],
     alias = alias('addresses'),
     materialized = 'table',
     file_format = 'delta',
