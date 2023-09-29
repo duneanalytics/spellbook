@@ -26,8 +26,8 @@
 {% set linkforest = 'LinkForest' %}
 {% set linkpool = 'LinkPool' %}
 {% set linkriver = 'LinkRiver' %}
-{% set mycelium = 'Mycelium' %}
 {% set onchaintech = 'On-chain Tech' %}
+{% set piertwo = 'Pier Two' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set syncnode = 'SyncNode' %}
@@ -39,7 +39,9 @@
 SELECT node_address, operator_name FROM (VALUES
   (0x39D36fD647a933Fe51670c1eB6b0e6b8b4a69f07, '{{a01node}}'),
   (0xF133B7B7EEb70B1156e7ca6A76C4bbbf1fEE85De, '{{a01node}}'),
+  (0x54f177F25600144561610AE7214A6Bf9199217f7, '{{a01node}}'),
   (0x52bDfF084C524148cA4A44524EB88D2b995Ee7C5, '{{a01node}}'),
+  (0x561AeB24d224c0ea153ACE03a011DafE703468E6, '{{a01node}}'),
   (0x17721D492b7EFdcf7365e541EdEFDDE552A1360F, '{{alphachain}}'),
   (0xC2dC5B1836F7ad85B62ff8e22F0a766d3E07DAE6, '{{alphachain}}'),
   (0xed3A0ac63d7e48399D05d9a25925e8FCb0Cd98D0, '{{blockdaemon}}'),
@@ -74,11 +76,11 @@ SELECT node_address, operator_name FROM (VALUES
   (0x3B5398B508a26b43822456b0D3Ad78B649011dA6, '{{linkpool}}'),
   (0xEBbc95fB63ad3e0D66169297c029BCd8e86fdc71, '{{linkriver}}'),
   (0x05870Ef2194ea1dfa246Ff464AA53fDe8544a9A5, '{{linkriver}}'),
-  (0xB35F4988074F14dC1F1d27062346D6123F46A41B, '{{mycelium}}'),
-  (0xDC31322087d6B250C0264FEebF34F6F7BA6D5A21, '{{mycelium}}'),
-  (0x6D9df15c54B4654De0263e82Fd92C577FeD47e64, '{{mycelium}}'),
   (0xD46a5604CA9fEe830e291248701F616f53Bf174B, '{{onchaintech}}'),
   (0x3A86052b4926CB0aeCB5d155Ef2389243dB3c22c, '{{onchaintech}}'),
+  (0xB35F4988074F14dC1F1d27062346D6123F46A41B, '{{piertwo}}'),
+  (0xDC31322087d6B250C0264FEebF34F6F7BA6D5A21, '{{piertwo}}'),
+  (0x6D9df15c54B4654De0263e82Fd92C577FeD47e64, '{{piertwo}}'),
   (0xBF44AcA665062a696b2d4c72663CFefD87769A10, '{{simplyvc}}'),
   (0xaDb83Abbf7A8987AfB76DB33Ed2855A07f5497C7, '{{simplyvc}}'),
   (0x2f53d676770Cf2Ab6A094109132b70f9ab282C12, '{{simplyvc}}'),
