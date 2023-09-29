@@ -3,7 +3,7 @@
     tags = ['legacy'],
     alias = alias('stake_actions', legacy_model=True),
     materialized = 'table',
-    file_format = 'delta'
+    file_format = 'delta',
     post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
                                 "staking",
