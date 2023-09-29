@@ -160,7 +160,7 @@ methods as (
         join {{ ref('evms_info') }} evms using(blockchain)
         
     ) transfers on transfers.tx_hash = calls.tx_hash
-        and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
+        and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start and 1=1
 )
 
 
