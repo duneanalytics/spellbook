@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'tokens_solana_nft',
+    schema = 'staking_solana',
     tags = ['legacy'],
     alias = alias('stake_actions', legacy_model=True),
     materialized = 'table',

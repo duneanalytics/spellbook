@@ -15,8 +15,11 @@ models:
       - name: action
         description: delegate, withdraw, merge, or split stake
       - name: source
+        description: the account SOL was moved to
       - name: destination
+        description: the account SOL was moved from
       - name: authority
+        description: the account that owns the stake account
       - name: block_slot
       - name: block_time
       - name: outer_instruction_index
