@@ -52,7 +52,7 @@ select
   d.volumn_new_wallets / power(10, 18) as volumn_new_wallets,
   p.price
 from
-  agg_token d
+  agg_new_wallets d
   left join {{ source('prices', 'usd') }} p on d.block_day = p.minute
   and p.contract_address = d.token_address
   and p.blockchain = 'bnb'
