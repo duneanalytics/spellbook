@@ -18,4 +18,4 @@ tests as (
 )
 select *
 from tests
-where success is false
+where success = false
