@@ -44,6 +44,7 @@ with
                 , call_tx_id
             FROM {{ source('stake_program_solana', 'stake_call_Merge') }}
         ) all
+        --ideally we would join on destination for delegate and source for merge, but that join is too expensive right now. 
         LEFT JOIN {{ source('solana', 'account_activity') }} aa ON 1=1 
             AND aa.address = all.source
             AND aa.block_slot = all.call_block_slot
@@ -109,7 +110,8 @@ FROM (
     UNION ALL
     SELECT * FROM split
 )
-where call_block_time >= now() - interval '7' day
+where 1=1 
+AND call_block_time >= now() - interval '7' day
 {% if is_incremental() %}
-WHERE block_time >= date_trunc('day', now() - interval '7' day)
+and block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
