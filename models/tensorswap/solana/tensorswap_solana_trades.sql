@@ -84,7 +84,9 @@ with
             rl.event
             , coalesce(cast(rl.current_price as double), try(cast(json_value(config, 'strict $.startingPrice') as double))) as current_price
             , coalesce(cast(rl.tswap_fee as double), try(cast(json_value(config, 'strict $.startingPrice') as double))*0.014) as tswap_fee --taker fee is 1.4% right now.
-            , -1*coalesce(cast(rl.mm_fee as double), try(cast(json_value(config, 'strict $.startingPrice') as double))) as mm_fee --maker fee goes back to users
+            , -1*coalesce(cast(rl.mm_fee as double)
+                    , try(cast(json_value(config, 'strict $.startingPrice') as double)*try(cast(json_value(config, 'strict $.mmFeeBps') as double)/1e4))
+                    ) as mm_fee --maker fee goes back to users
             , cast(rl.creators_fee as double) as creators_fee --we will just be missing this if log is truncated.
             , trade.call_instruction_name as instruction
             , trade.trade_category
