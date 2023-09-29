@@ -48,4 +48,3 @@ select blockchain       AS blockchain,
         'trader_frequencies' as model_name,
         'usage' as label_type
 from trader_frequencies
-;
