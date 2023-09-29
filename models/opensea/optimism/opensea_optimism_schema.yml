@@ -13,7 +13,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - unique_trade_id
     columns:
       - &blockchain
@@ -206,7 +205,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - nft_contract_address
@@ -226,7 +224,6 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
-            - block_date
             - blockchain
             - project
             - version
@@ -303,7 +300,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - nft_contract_address
@@ -323,7 +319,6 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
-            - block_date
             - blockchain
             - project
             - version

@@ -1,6 +1,8 @@
 {{ config(
         alias = alias('pool_trades'),
         materialized = 'incremental',
+        schema = 'sudoswap_ethereum',
+        tags = ['dunesql'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_address'],
@@ -29,14 +31,14 @@ SELECT
     sum(platform_fee_amount_raw/1e18) AS platform_fee_volume_eth,
     sum(
       CASE
-        WHEN trade_category = 'Sell' THEN -1 * price_raw/1e18
-        ELSE (price_raw-platform_fee_amount_raw)/1e18
+        WHEN trade_category = 'Sell' THEN -1 * cast(price_raw as int256)/1e18
+        ELSE cast(price_raw-platform_fee_amount_raw as int256)/1e18
       END
     ) AS eth_change_trading,
     sum(
       CASE
-        WHEN trade_category = 'Sell' THEN nft_amount
-        ELSE -1 * nft_amount
+        WHEN trade_category = 'Sell' THEN cast(nft_amount as int256)
+        ELSE -1 * cast(nft_amount as int256)
       END
     ) AS nft_change_trading
 FROM {{ ref('sudoswap_ethereum_base_trades') }} t
@@ -44,14 +46,13 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)
     {% if not is_incremental() %}
-    AND minute >= '{{project_start_date}}'
+    AND minute >= TIMESTAMP '{{project_start_date}}'
     {% else %}
-    AND minute >= date_trunc("day", now() - interval '1 week')
+    AND minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% if not is_incremental() %}
-WHERE block_date >= '{{project_start_date}}'
+WHERE block_date >= TIMESTAMP '{{project_start_date}}'
 {% else %}
-WHERE block_date >= date_trunc("day", now() - interval '1 week')
+WHERE block_date >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY 1,2
-;

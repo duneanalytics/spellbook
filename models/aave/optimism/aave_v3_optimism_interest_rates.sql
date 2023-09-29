@@ -1,5 +1,6 @@
 {{ config(
-  schema = 'aave_v3_optimism'
+  tags = ['dunesql']
+  , schema = 'aave_v3_optimism'
   , materialized = 'incremental'
   , file_format = 'delta'
   , incremental_strategy = 'merge'
@@ -21,8 +22,8 @@ select
   avg(CAST(a.variableBorrowRate AS DOUBLE)) / 1e27 as variable_borrow_apy
 from {{ source('aave_v3_optimism', 'Pool_evt_ReserveDataUpdated') }} a
 left join {{ ref('tokens_optimism_erc20') }} t
-on CAST(a.reserve AS VARCHAR(100)) = t.contract_address
+on a.reserve = t.contract_address
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 group by 1,2,3
