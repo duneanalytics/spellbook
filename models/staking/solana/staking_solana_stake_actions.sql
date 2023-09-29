@@ -112,7 +112,6 @@ FROM (
     SELECT * FROM split
 )
 where 1=1 
-AND call_block_time >= now() - interval '1' day
 {% if is_incremental() %}
-and call_block_time >= date_trunc('day', now() - interval '1' day)
+and call_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
