@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'magiceden_solana_trades',
+    schema = 'tokens_solana_nft',
     tags = ['legacy'],
-    alias = alias('trades', legacy_model=True),
+    alias = alias('nft', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
-                                "magiceden",
+                                "tokens",
                                 \'["ilemi"]\') }}')
 }}
 
