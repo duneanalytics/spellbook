@@ -21,8 +21,6 @@ models:
             - broad_txn_type
             - spec_txn_type
             - to_protocol
-            - from_protocol
-            - bridge_address
             - trace_address
     columns:
         - &tx_from
