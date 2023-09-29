@@ -1,6 +1,7 @@
 {{ config(
-    alias = alias('pool_incentives_rates')
-    , partition_by = ['block_date']
+    tags=['dunesql']
+    , alias = alias('pool_incentives_rates')
+    , partition_by = ['block_month']
     , materialized = 'table'
     )
 }}
@@ -73,6 +74,7 @@ WITH last_block AS (
 
 , joined as (
         SELECT DATE_TRUNC('day', e.evt_block_time)                                                            AS block_date
+             , CAST(DATE_TRUNC('month', e.evt_block_time) AS DATE)                                            AS block_month
              , e.evt_block_number
              , e.evt_block_time
              , COALESCE(pu.contract_address, ru.contract_address)                                             AS contract_address
@@ -81,7 +83,7 @@ WITH last_block AS (
              , pu.pid
              , pu.lp_address
              , pu.alloc_points
-             , COALESCE(ru.tokens_per_second_raw, 0)                                                          AS tokens_per_second_raw
+             , COALESCE(ru.tokens_per_second_raw, UINT256 '0')                                                          AS tokens_per_second_raw
              , SUM(pu.alloc_points)
                    OVER (PARTITION BY e.evt_block_number, COALESCE(pu.contract_address, ru.contract_address)) AS total_alloc_points
         FROM events e
@@ -96,6 +98,7 @@ WITH last_block AS (
 
 
 SELECT block_date
+     , block_month
      , 'optimism'                                                                                      AS blockchain
      , evt_block_time
      , evt_block_number
