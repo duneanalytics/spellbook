@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'tokens_solana_nft',
+    schema = 'staking_solana',
     tags = ['dunesql'],
     alias = alias('stake_actions'),
     materialized = 'incremental',
