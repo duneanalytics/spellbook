@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'magiceden_solana_trades',
+    schema = 'magiceden_solana',
     tags = ['legacy'],
     alias = alias('trades', legacy_model=True),
     materialized = 'table',
