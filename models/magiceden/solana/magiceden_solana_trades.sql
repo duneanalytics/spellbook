@@ -223,6 +223,6 @@ with
 
 SELECT 
 *
-, concat(project,'-',cast(amount_original as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
+, concat(project,'-',cast(amount_original as varchar),'-',trade_category,'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
 order by block_time asc

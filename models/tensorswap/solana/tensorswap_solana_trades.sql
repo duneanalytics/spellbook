@@ -88,8 +88,6 @@ with
             , cast(rl.creators_fee as double) as creators_fee --we will just be missing this if log is truncated.
             , trade.call_instruction_name as instruction
             , trade.trade_category
-            , json_value(config, 'strict $.PoolConfig.poolType.PoolType') as poolType
-            , json_value(config, 'strict $.PoolConfig.curveType.CurveType') as curveType
             , trade.account_metadata
             , trade.account_buyer
             , trade.account_seller
@@ -226,6 +224,7 @@ with
 
 SELECT 
 *
-, concat(project,'-',cast(amount_original as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
+, concat(project,'-',cast(amount_original as varchar),'-',trade_category,'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
+WHERE amount_original is not null --we have some truncated logs and missing decoding right now like 5DoPTZfA9UfSJYExLhvkMKmTtLXCjumH7dfUVY6gpLc7Bj99kg3Z7649eKgh1x5aARTbsMWPs1XEkwC3up4BByUv
 order by block_time asc
