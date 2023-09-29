@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date','unique_trade_id']
+    unique_key = ['unique_trade_id']
     )
 }}
 
@@ -15,7 +15,6 @@ WITH me_txs AS (
     pre_balances,
     post_balances,
     block_slot,
-    cast(block_date as date) as block_date,
     block_time,
     account_keys,
     log_messages,
@@ -36,12 +35,12 @@ WITH me_txs AS (
     )
     AND success = true
     {% if not is_incremental() %}
-    AND block_date > TIMESTAMP '2022-01-05'
+    AND block_time > TIMESTAMP '2022-01-05'
     AND block_slot > 114980355
     {% endif %}
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND block_date >= date_trunc('day', now() - interval '7' day)
+    AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
 )
@@ -52,7 +51,6 @@ SELECT
   WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN 'launchpad_v3'
   END as version,
   from_base58(signatures[1]) as tx_hash,
-  block_date,
   block_time,
   CAST(block_slot AS BIGINT) as block_number,
   abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price AS amount_usd,
