@@ -12,6 +12,8 @@ models:
     columns:
       - name: stake
         description: amount in stake moved
+        tests:
+          - not_null
       - name: action
         description: delegate, withdraw, merge, or split stake
       - name: source

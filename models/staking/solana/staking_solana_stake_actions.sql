@@ -44,23 +44,15 @@ with
                 , call_tx_id
             FROM {{ source('stake_program_solana', 'stake_call_Merge') }}
         ) all
-        --ideally we would join on destination for delegate and source for merge, but that join is too expensive right now. 
+        --sometimes account_activity table falls behind, can lead to nulls
         LEFT JOIN {{ source('solana', 'account_activity') }} aa ON 1=1 
-            AND aa.address = all.source
+            AND aa.address = all.destination
             AND aa.block_slot = all.call_block_slot
             AND aa.tx_id = all.call_tx_id
             and aa.writable = true
             and aa.balance_change != 0
             and aa.tx_success
     )
-    
-    -- --NOT ACTIVATED YET BY FOUNDATION--
-    -- , redelegate as (
-    --     SELECT
-    --     *
-    --     FROM stake_program_solana.stake_call_Redelegate
-    --     limit 10
-    -- )
     
     , withdraw as (
         SELECT
