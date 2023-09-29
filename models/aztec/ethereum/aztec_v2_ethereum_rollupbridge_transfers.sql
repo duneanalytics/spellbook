@@ -135,7 +135,7 @@ tfers_raw as (
             er.evt_index, 
             er.evt_block_time, 
             er.evt_block_number,
-            array(cast(null as bigint)) as trace_address 
+            array[cast(null as bigint)] as trace_address 
         FROM 
         erc20_tfers er 
         
@@ -182,7 +182,7 @@ tfers_categorized as (
             CASE 
                 WHEN to_contract.contract_type = 'Bridge' THEN to_contract.contract_address
                 WHEN from_contract.contract_type = 'Bridge' THEN from_contract.contract_address
-                ELSE ''
+                ELSE CAST(NULL AS VARBINARY)
             END as bridge_address,
             CASE 
                 WHEN to_contract.contract_type = 'Bridge' THEN to_contract.protocol
