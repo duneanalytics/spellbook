@@ -68,7 +68,7 @@ SELECT
         outer_instruction_index,
         inner_instruction_index,
         unique_trade_id,
-        row_number() over (partition by unique_trade_id order by tx_hash) as duplicates_rank
+        row_number() over (partition by unique_trade_id order by tx_id) as duplicates_rank
 FROM {{ marketplace }}
 
 {% if not loop.last %}
