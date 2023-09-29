@@ -92,7 +92,16 @@ with
     )
 
 SELECT
-    *
+    stake
+    , action
+    , source
+    , destination
+    , authority
+    , block_slot
+    , block_time
+    , outer_instruction_index
+    , inner_instruction_index
+    , tx_id
 FROM (
     SELECT * FROM delegate_and_merge
     UNION ALL

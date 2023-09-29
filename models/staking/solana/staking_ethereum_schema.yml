@@ -17,8 +17,8 @@ models:
       - name: source
       - name: destination
       - name: authority
-      - name: call_block_slot
-      - name: call_block_time
-      - name: call_outer_instruction_index
-      - name: call_inner_instruction_index
-      - name: call_tx_id
+      - name: block_slot
+      - name: block_time
+      - name: outer_instruction_index
+      - name: inner_instruction_index
+      - name: tx_id
