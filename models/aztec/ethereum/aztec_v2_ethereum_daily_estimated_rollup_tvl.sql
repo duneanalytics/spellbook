@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'aztec_v2_ethereum',
     alias = alias('daily_estimated_rollup_tvl'),
     post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
@@ -59,7 +60,7 @@ rollup_balance_changes as (
         AVG(p.price) as price
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= '{{first_transfer_date}}'
+    WHERE p.minute >= TIMESTAMP '{{first_transfer_date}}'
     AND p.contract_address IN (SELECT token_address FROM token_addresses)
     AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
@@ -72,7 +73,7 @@ rollup_balance_changes as (
         1 as price_eth
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= '{{first_transfer_date}}'
+    WHERE p.minute >= TIMESTAMP '{{first_transfer_date}}'
     AND p.blockchain = 'ethereum'
     AND p.symbol = 'WETH'
     GROUP BY 1, 3 
@@ -100,9 +101,8 @@ rollup_balance_changes as (
     , b.balance * COALESCE(p.price_usd, bb.price) as tvl_usd
     , b.balance * COALESCE(p.price_eth, bb.price_eth) as tvl_eth
   FROM token_balances_filled b
-  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
-  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
+  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -- using this to get price for missing ETH token 
   
 )
 select * from token_tvls 
-;
