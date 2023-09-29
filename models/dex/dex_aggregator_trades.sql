@@ -19,9 +19,6 @@
 /********************************************************
 spells with issues, to be excluded in short term:
 -- ,ref('odos_trades') contains duplicates and not migrated to dunesql
-
-spells not yet migrated to dunesql
--- ,ref('zeroex_trades')
 ********************************************************/
 
 {% set dex_aggregator_models = [
@@ -33,6 +30,7 @@ spells not yet migrated to dunesql
     ,ref('yield_yak_avalanche_c_trades')
     ,ref('bebop_trades')
     ,ref('dodo_aggregator_trades')
+    ,ref('zeroex_trades')
 ] %}
 
 SELECT
