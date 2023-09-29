@@ -45,6 +45,7 @@ contracts as (
         , ('1inch'				, 0x1111111254fb6c44bac0bed2854e76f90643097d, 'AggregationRouterV4'			, array['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'fantom'])
         , ('1inch'				, 0x1111111254760f7ab3f16433eea9304126dcd199, 'AggregationRouterV4'			, array['optimism'])
         , ('1inch'				, 0x1111111254eeb25477b68fb85ed929f73a960582, 'AggregationRouterV5'			, array['ethereum', 'bnb', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'gnosis', 'fantom', 'base'])
+        , ('1inch'				, 0x11111112542d85b3ef69ae05771c2dccff4faa21 'AggregationRouterV6'			, array['ethereum', 'bnb', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'gnosis', 'fantom'])
         , ('AnySwap'			, 0x0cae51e1032e8461f4806e26332c030e34de3adb, 'AnyswapV3Router'				, array['arbitrum'])
         , ('AnySwap'			, 0x7782046601e7b9b05ca55a3899780ce6ee6b8b2b, 'AnyswapV6Router'				, array['ethereum'])
         , ('AnySwap'			, 0xb0731d50c681c45856bfc3f7539d5f61d4be81d8, ''							, array['avalanche_c'])
