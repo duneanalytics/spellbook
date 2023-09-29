@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_id', 'action','outer_instruction_index'],
+    unique_key = ['block_time', 'unique_stake_action_id'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
                                 "staking",
@@ -103,6 +103,7 @@ SELECT
     , call_outer_instruction_index as outer_instruction_index
     , call_inner_instruction_index as inner_instruction_index
     , call_tx_id as tx_id
+    , concat(call_tx_id,'-',source,'-',destination,'-',cast(stake as varchar),'-',authority,'-',call_outer_instruction_index) as unique_stake_action_id
 FROM (
     SELECT * FROM delegate_and_merge
     UNION ALL

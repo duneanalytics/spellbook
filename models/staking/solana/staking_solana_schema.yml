@@ -25,3 +25,4 @@ models:
       - name: outer_instruction_index
       - name: inner_instruction_index
       - name: tx_id
+      - name: unique_stake_action_id
