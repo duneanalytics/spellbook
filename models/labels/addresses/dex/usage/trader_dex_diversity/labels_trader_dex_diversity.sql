@@ -26,7 +26,7 @@ with
 select
     blockchain,
     address,
-    concat('Number of DEXs traded on: ', cast(dex_diversity as varchar) as name,
+    concat('Number of DEXs traded on: ', cast(dex_diversity as varchar)) as name,
     'dex' AS category,
     'gentrexha' AS contributor,
     'query' AS source,
