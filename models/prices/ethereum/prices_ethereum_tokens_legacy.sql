@@ -1612,7 +1612,6 @@ FROM
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', '0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5', 9),
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', '0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1', 18),
     ('weth-weth', 'ethereum', 'bpETH', '0x0000000000a39bb272e79075ade125fd351887ac', 18),
-    ('pepe-pepe1', 'ethereum', 'PEPE', '0x6982508145454Ce325dDbE47a25d4ec3d2311933', 18),   
     ('grain-granary','ethereum','GRAIN','0xf88baf18fab7e330fa0c4f83949e23f52fececce', 18),
     ('verse-verse-token', 'ethereum', 'VERSE', '0x249ca82617ec3dfb2589c4c17ab7ec9765350a18', 18),
     ('mc-merit-circle', 'ethereum', 'MC', '0x949d48eca67b17269629c7194f4b727d4ef9e5d6', 18),
