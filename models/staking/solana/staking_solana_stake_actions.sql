@@ -33,6 +33,11 @@ with
             and aa.writable = true
             and aa.balance_change != 0
             and aa.tx_success
+        where 1=1 
+        {% if is_incremental() %}
+        and m.call_block_time >= date_trunc('day', now() - interval '7' day)
+        and aa.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
     
     , withdraw as (
@@ -48,6 +53,10 @@ with
             , call_inner_instruction_index
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Withdraw') }}
+        where 1=1 
+        {% if is_incremental() %}
+        and call_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
     
     , split as (
@@ -63,6 +72,10 @@ with
             , call_inner_instruction_index
             , call_tx_id
         FROM {{ source('stake_program_solana', 'stake_call_Split') }}
+        where 1=1 
+        {% if is_incremental() %}
+        and call_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
 
 SELECT
