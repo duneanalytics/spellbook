@@ -1,5 +1,7 @@
 {{ config(
-        alias = alias('terraforms')
+        tags = ['static','dunesql']
+        ,schema = 'nft_ethereum_metadata'
+        ,alias = alias('terraforms')
         )
 }}
 
