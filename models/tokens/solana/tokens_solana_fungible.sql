@@ -18,9 +18,9 @@ with
         , account_mint
         , call_tx_id
         FROM (
-            SELECT call_data, account_mint, call_tx_id, call_block_time FROM spl_token_solana.spl_token_call_initializeMint
+            SELECT call_data, account_mint, call_tx_id, call_block_time FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint') }}
             UNION ALL 
-            SELECT call_data, account_mint, call_tx_id, call_block_time FROM spl_token_solana.spl_token_call_initializeMint2
+            SELECT call_data, account_mint, call_tx_id, call_block_time FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint2') }}
         )
         {% if is_incremental() %}
         where call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -46,7 +46,7 @@ with
                 , json_query(createMetadataAccountArgs, 'lax $.CreateMetadataAccountArgs.data.Data') as args
                 , account_metadata
                 , account_mint
-            FROM mpl_token_metadata_solana.mpl_token_metadata_call_CreateMetadataAccount
+            FROM  {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccount') }}
             UNION ALL 
             SELECT 
                 call_tx_id
@@ -57,7 +57,7 @@ with
                 , json_query(createMetadataAccountArgsV2, 'lax $.CreateMetadataAccountArgsV2.data.DataV2') as args
                 , account_metadata
                 , account_mint
-            FROM mpl_token_metadata_solana.mpl_token_metadata_call_CreateMetadataAccountV2
+            FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccountV2') }}
             UNION ALL 
             SELECT  
                 call_tx_id
@@ -68,12 +68,12 @@ with
                 , json_query(createMetadataAccountArgsV3, 'lax $.CreateMetadataAccountArgsV3.data.DataV2') as args
                 , account_metadata
                 , account_mint
-            FROM mpl_token_metadata_solana.mpl_token_metadata_call_CreateMetadataAccountV3
+            FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccountV3') }} 
         ) meta 
         LEFT JOIN (
-            SELECT account_mintAuthority, account_edition, account_metadata FROM mpl_token_metadata_solana.mpl_token_metadata_call_CreateMasterEdition
+            SELECT account_mintAuthority, account_edition, account_metadata FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMasterEdition') }} 
             UNION ALL
-            SELECT account_mintAuthority, account_edition, account_metadata FROM mpl_token_metadata_solana.mpl_token_metadata_call_CreateMasterEditionV3
+            SELECT account_mintAuthority, account_edition, account_metadata FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMasterEditionV3') }}
             ) master ON master.account_metadata = meta.account_metadata
         WHERE master.account_edition is null --we DON't want the NFTs
         {% if is_incremental() %}
