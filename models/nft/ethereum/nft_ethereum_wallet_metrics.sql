@@ -257,8 +257,14 @@ select wallet,
        sum(case when eth_profit_realized > 0 then 1 else 0 end)                              profitable_trades_count,
        --- 0 profit trades are also considered uprofitable
        sum(case when nft_was_sold = 1 and eth_profit_realized <= 0 then 1 else 0 end)        unprofitable_trades_count,
-       (sum(case when eth_profit_realized > 0 then 1 else 0 end) * 1.00 / sum(nft_was_sold)) win_percentage,
-       (sum(case when eth_profit_realized < 0 then 1 else 0 end) * 1.00 / sum(nft_was_sold)) loss_percentage,
+        CASE
+            WHEN sum(nft_was_sold) = 0 THEN NULL
+            ELSE (sum(case when eth_profit_realized > 0 then 1 else 0 end) * 1.00 / sum(nft_was_sold))
+        END AS win_percentage,
+        CASE
+            WHEN sum(nft_was_sold) = 0 THEN NULL
+            ELSE (sum(case when eth_profit_realized < 0 then 1 else 0 end) * 1.00 / sum(nft_was_sold))
+        END AS loss_percentage,
        (sum(case when nft_was_sold = 1 and eth_profit_realized = 0 then 1 else 0 end) * 1.00 /
         sum(nft_was_sold))                                                                   breakeven_percentage,
        sum(buy_amount_eth * -1)                                                              spent_eth,
