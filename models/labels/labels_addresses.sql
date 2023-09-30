@@ -77,4 +77,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
