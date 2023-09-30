@@ -9,13 +9,17 @@
         )
 }}
 with
+  balances_filter as (
+    select wallet_address, token_address, block_day, amount_raw from {{ ref('balances_bnb_bep20_day') }}
+    where block_day > date('2023-01-01')
+  ), 
   first_day_wallet as (
     select
       wallet_address,
       token_address,
       min(block_day) as first_day
     from
-      {{ ref('balances_bnb_bep20_day') }}
+      balances_filter
     group by
       wallet_address,
       token_address
@@ -27,7 +31,7 @@ with
         block_day,
         amount_raw
     from
-        {{ ref('balances_bnb_bep20_day') }} b
+        balances_filter b
         inner join first_day_wallet f on b.wallet_address = f.wallet_address
         and b.token_address = f.token_address
         and f.first_day >= b.block_day - interval '14' Day
@@ -43,6 +47,12 @@ with
     group by
       block_day,
       token_address
+  ),
+  price_filter as (
+    select contract_address, price, minute
+    from  {{ source('prices', 'usd') }}
+    where minute > date('2023-01-01')
+    and blockchain = 'bnb'
   )
 
 select
@@ -53,7 +63,6 @@ select
   p.price
 from
   agg_new_wallets d
-  left join {{ source('prices', 'usd') }} p on d.block_day = p.minute
+  left join price_filter p on d.block_day = p.minute
   and p.contract_address = d.token_address
-  and p.blockchain = 'bnb'
 
