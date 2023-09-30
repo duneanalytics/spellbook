@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'evt_index']
+    unique_key = ['tx_hash', 'evt_index']
     )
 }}
 
@@ -203,7 +203,6 @@ SELECT 'bnb' as blockchain
       ,'nftb' as project
       ,'v1' as version
       ,ae.block_time as block_time
-      ,date_trunc('day', ae.block_time) as block_date
       ,ae.block_number as block_number
       ,ae.token_id
       ,nft_token.name  as collection
