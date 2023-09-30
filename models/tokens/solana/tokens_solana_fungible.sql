@@ -111,5 +111,5 @@ FROM
   'SOL',
   'wrapped SOL',
   null
-),
+)
 ) AS temp_table (token_mint_address, decimals, symbol, name, token_uri)
