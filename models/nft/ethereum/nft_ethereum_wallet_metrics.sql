@@ -21,62 +21,62 @@ nft_trades_no_wash as
 
 --- adding in mints because a mint can be interpreted as a buy for $0 or gas fees 
 nft_trades_no_wash_w_mints as (
-select cast(aggregator_address as varchar)       as aggregator_address,
-       cast(aggregator_name as varchar)          as aggregator_name,
-       cast(amount_original as double)          as amount_original,
-       cast(amount_raw as UINT256)       as amount_raw,
-       cast(amount_usd as double)               as amount_usd,
-       cast(block_number as double)             as block_number,
-       cast(block_time as timestamp)            as block_time,
-       cast(blockchain as varchar)               as blockchain,
-       cast(buyer as varchar)                    as buyer,
-       cast(collection as varchar)               as collection,
-       cast(currency_contract as varchar)        as currency_contract,
-       cast(currency_symbol as varchar)          as currency_symbol,
-       cast(evt_type as varchar)                 as evt_type,
-       cast(nft_contract_address as varchar)     as nft_contract_address,
-       cast(number_of_items as UINT256)  as number_of_items,
-       cast(project as varchar)                  as project,
-       cast(project_contract_address as varchar) as project_contract_address,
-       cast(seller as varchar)                   as seller,
-       cast(token_id as varchar)                 as token_id,
-       cast(token_standard as varchar)           as token_standard,
-       cast(trade_category as varchar)           as trade_category,
-       cast(trade_type as varchar)               as trade_type,
-       cast(tx_from as varchar)                  as tx_from,
-       cast(tx_hash as varchar)                  as tx_hash,
-       cast(tx_to as varchar)                    as tx_to,
-       cast(version as varchar)                  as version
+select aggregator_address       as aggregator_address,
+       aggregator_name          as aggregator_name,
+       amount_original          as amount_original,
+       amount_raw,
+       amount_usd               as amount_usd,
+       block_number             as block_number,
+       block_time            as block_time,
+       blockchain               as blockchain,
+       buyer                    as buyer,
+       collection               as collection,
+       currency_contract        as currency_contract,
+       currency_symbol          as currency_symbol,
+       evt_type                 as evt_type,
+       nft_contract_address     as nft_contract_address,
+       number_of_items,
+       project                  as project,
+       project_contract_address as project_contract_address,
+       seller                   as seller,
+       token_id                 as token_id,
+       token_standard           as token_standard,
+       trade_category           as trade_category,
+       trade_type               as trade_type,
+       tx_from                  as tx_from,
+       tx_hash                  as tx_hash,
+       tx_to                    as tx_to,
+       version                  as version
 from nft_trades_no_wash
 
 UNION ALL
 
-select cast(aggregator_address as varchar)       as aggregator_address,
-       cast(aggregator_name as varchar)          as aggregator_name,
-       cast(amount_original as double)          as amount_original,
-       cast(amount_raw as UINT256)       as amount_raw,
-       cast(amount_usd as double)               as amount_usd,
-       cast(block_number as double)             as block_number,
-       cast(block_time as timestamp)            as block_time,
-       cast(blockchain as varchar)               as blockchain,
-       cast(buyer as varchar)                    as buyer,
-       cast(collection as varchar)               as collection,
-       cast(currency_contract as varchar)        as currency_contract,
-       cast(currency_symbol as varchar)          as currency_symbol,
-       cast(evt_type as varchar)                 as evt_type,
-       cast(nft_contract_address as varchar)     as nft_contract_address,
-       cast(number_of_items as UINT256)  as number_of_items,
-       cast(project as varchar)                  as project,
-       cast(project_contract_address as varchar) as project_contract_address,
-       cast(seller as varchar)                   as seller,
-       cast(token_id as varchar)                 as token_id,
-       cast(token_standard as varchar)           as token_standard,
-       cast(trade_category as varchar)           as trade_category,
-       cast(trade_type as varchar)               as trade_type,
-       cast(tx_from as varchar)                  as tx_from,
-       cast(tx_hash as varchar)                  as tx_hash,
-       cast(tx_to as varchar)                    as tx_to,
-       cast(version as varchar)                  as version
+select aggregator_address       as aggregator_address,
+       aggregator_name          as aggregator_name,
+       amount_original          as amount_original,
+       amount_raw,
+       amount_usd               as amount_usd,
+       block_number             as block_number,
+       block_time            as block_time,
+       blockchain               as blockchain,
+       buyer                    as buyer,
+       collection               as collection,
+       currency_contract        as currency_contract,
+       currency_symbol          as currency_symbol,
+       evt_type                 as evt_type,
+       nft_contract_address     as nft_contract_address,
+       number_of_items,
+       project                  as project,
+       project_contract_address as project_contract_address,
+       seller                   as seller,
+       token_id                 as token_id,
+       token_standard           as token_standard,
+       trade_category           as trade_category,
+       trade_type               as trade_type,
+       tx_from                  as tx_from,
+       tx_hash                  as tx_hash,
+       tx_to                    as tx_to,
+       version                  as version
 from {{ref('nft_mints')}}
 )
 ,
@@ -243,9 +243,9 @@ all_trades_profit_and_unrealized_profit_w_floors as
         coalesce(sell_amount_eth, floors1.avg_floor_price, floors2.price_p5_eth, 0) + buy_amount_eth eth_profit
     FROM all_trades_profit_and_unrealized_profit b
     left join reservoir_floors_latest_avg floors1
-        on cast(floors1.contract as varchar) = cast(b.nft_contract_address as varchar)
+        on floors1.contract = b.nft_contract_address
     left join eth_collection_stats_latest_floor floors2
-        on cast(floors2.nft_contract_address as varchar) = cast(b.nft_contract_address as varchar)
+        on floors2.nft_contract_address = b.nft_contract_address
     CROSS JOIN lastest_eth_price_usd p),
 
 aggregated_wallet_trading_stats as (
