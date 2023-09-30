@@ -273,11 +273,20 @@ select wallet,
        sum(sell_amount_eth_or_floor)                                                         gained_eth,
        sum(sell_amount_eth)                                                                  gained_eth_realized,
        sum(case when nft_was_sold = 0 then floor_eth else 0 end)                             gained_eth_unrealized,
-       ((sum(sell_amount_eth_or_floor) * 1.00 / sum(buy_amount_eth * -1)) - 1)               roi_eth,
-       ((sum(sell_amount_eth) * 1.00 / sum((case when nft_was_sold = 1 then buy_amount_eth else 0 end) * -1)) -
-        1)                                                                                   roi_eth_realized,
-       ((sum(floor_eth) * 1.00 / sum((case when nft_was_sold = 0 then buy_amount_eth else 0 end) * -1)) -
-        1)                                                                                   roi_eth_unrealized,
+        CASE
+            WHEN sum(buy_amount_eth * -1) = 0 THEN NULL
+            ELSE ((sum(sell_amount_eth_or_floor) * 1.00 / sum(buy_amount_eth * -1)) - 1)
+        END AS roi_eth,
+
+        CASE
+            WHEN sum((case when nft_was_sold = 1 then buy_amount_eth else 0 end) * -1) = 0 THEN NULL
+            ELSE ((sum(sell_amount_eth) * 1.00 / sum((case when nft_was_sold = 1 then buy_amount_eth else 0 end) * -1)) - 1)
+        END AS roi_eth_realized,
+
+        CASE
+            WHEN sum((case when nft_was_sold = 0 then buy_amount_eth else 0 end) * -1) = 0 THEN NULL
+            ELSE ((sum(floor_eth) * 1.00 / sum((case when nft_was_sold = 0 then buy_amount_eth else 0 end) * -1)) - 1)
+        END AS roi_eth_unrealized,
        sum(eth_profit)                                                                       eth_profit,
        sum(eth_profit_realized)                                                              eth_profit_realized,
        sum(eth_profit_unrealized)                                                            eth_profit_unrealized,
