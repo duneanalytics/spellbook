@@ -1,6 +1,6 @@
 {{
-    config(
-        alias = alias('tx_hash_labels_early_investment_ethereum'),
+        config(tags=['dunesql'],
+        alias = alias('tx_hash_labels_early_investment_ethereum')
     )
 }}
 
@@ -37,19 +37,19 @@ with
     ) t join project_starts p on t.token_bought_address = p.token_bought_address
     where
         -- <=30 days deemed to be considered an early investment.
-        date_diff(t.block_date, p.project_start) <= 30
+        date_diff('day', p.project_start, t.block_date) <= 30
  )
 
 select
-  "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
-  "Early investment" AS name,
-  "tx_hash" AS category,
-  "gentrexha" AS contributor,
-  "query" AS source,
-  timestamp('2023-02-23') as created_at,
+  'ethereum' as blockchain,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR), project, version) as tx_hash_key,
+  'Early investment' AS name,
+  'tx_hash' AS category,
+  'gentrexha' AS contributor,
+  'query' AS source,
+  TIMESTAMP '2023-02-23'  as created_at,
   now() as updated_at,
-  "early_investment" as model_name,
-  "usage" as label_type
+  'early_investment' as model_name,
+  'usage' as label_type
 from
   early_investment_trades
