@@ -265,8 +265,10 @@ select wallet,
             WHEN sum(nft_was_sold) = 0 THEN NULL
             ELSE (sum(case when eth_profit_realized < 0 then 1 else 0 end) * 1.00 / sum(nft_was_sold))
         END AS loss_percentage,
-       (sum(case when nft_was_sold = 1 and eth_profit_realized = 0 then 1 else 0 end) * 1.00 /
-        sum(nft_was_sold))                                                                   breakeven_percentage,
+        CASE
+            WHEN sum(nft_was_sold) = 0 THEN NULL
+            ELSE (sum(case when nft_was_sold = 1 and eth_profit_realized = 0 then 1 else 0 end) * 1.00 / sum(nft_was_sold))
+        END AS breakeven_percentage,
        sum(buy_amount_eth * -1)                                                              spent_eth,
        sum((case when nft_was_sold = 1 then buy_amount_eth else 0 end) * -1)                 spent_eth_realized,
        sum((case when nft_was_sold = 0 then buy_amount_eth else 0 end) * -1)                 spent_eth_unrealized,
