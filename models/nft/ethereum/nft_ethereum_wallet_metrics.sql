@@ -46,7 +46,6 @@ select cast(aggregator_address as varchar)       as aggregator_address,
        cast(tx_from as varchar)                  as tx_from,
        cast(tx_hash as varchar)                  as tx_hash,
        cast(tx_to as varchar)                    as tx_to,
-       cast(unique_trade_id as varchar)          as unique_trade_id,
        cast(version as varchar)                  as version
 from nft_trades_no_wash
 
@@ -77,7 +76,6 @@ select cast(aggregator_address as varchar)       as aggregator_address,
        cast(tx_from as varchar)                  as tx_from,
        cast(tx_hash as varchar)                  as tx_hash,
        cast(tx_to as varchar)                    as tx_to,
-       cast(unique_trade_id as varchar)          as unique_trade_id,
        cast(version as varchar)                  as version
 from {{ref('nft_mints')}}
 )
@@ -104,7 +102,7 @@ buys_and_sells_nft_trades_no_wash_w_mints as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL
 
     UNION ALL
@@ -128,7 +126,7 @@ buys_and_sells_nft_trades_no_wash_w_mints as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL
 ),
 ----- FLOOR PRICES -------
