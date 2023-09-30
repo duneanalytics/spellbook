@@ -58,10 +58,10 @@ FROM
             contract_address,
             user,
             recipient,
-            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.numTokens')  AS double) AS jfiat_token_amount,
-            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.collateralAmount') AS double)  AS collateral_token_amount,
-            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.exchangeAmount') AS double)  AS net_collateral_amount,
-            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.feeAmount') AS double)  AS fee_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.numTokens')  AS UINT256) AS jfiat_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.collateralAmount') AS UINT256)  AS collateral_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.exchangeAmount') AS UINT256)  AS net_collateral_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.feeAmount') AS UINT256)  AS fee_amount,
             evt_tx_hash,
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Minted') }}
@@ -79,10 +79,10 @@ FROM
             contract_address,
             user                                                  AS sender,
             recipient,
-            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.numTokens') AS double) AS jfiat_token_amount,
-            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.collateralAmount') AS double) AS collateral_token_amount,
-            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.exchangeAmount') AS double) AS net_collateral_amount,
-            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.feeAmount') AS double) AS fee_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.numTokens') AS UINT256) AS jfiat_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.collateralAmount') AS UINT256) AS collateral_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.exchangeAmount') AS UINT256) AS net_collateral_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.feeAmount') AS UINT256) AS fee_amount,
             evt_tx_hash,
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Redeemed') }}
