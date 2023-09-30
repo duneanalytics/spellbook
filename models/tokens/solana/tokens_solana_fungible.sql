@@ -24,7 +24,7 @@ with
         )
         {% if is_incremental() %}
         where call_block_time >= date_trunc('day', now() - interval '7' day)
-        {% else %}
+        {% endif %}
     )
     
     , metadata as (
