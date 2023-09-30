@@ -63,12 +63,12 @@
                 end as token_bought_symbol 
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
-            , tr_2.amount/COALESCE(pow(10,case when tk_1.token_mint_address = p.tokenA then p.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
+            , tr_2.amount/pow(10,COALESCE(case when tk_1.token_mint_address = p.tokenA then p.tokenB_decimals else tokenA_decimals end,9)) as token_bought_amount
             , case when tk_1.token_mint_address = p.tokenA  then COALESCE(tokenA_symbol, tokenA)
                 else COALESCE(tokenB_symbol, tokenB)
                 end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
-            , tr_1.amount/COALESCE(pow(10,case when tk_1.token_mint_address = p.tokenA then p.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
+            , tr_1.amount/pow(10,COALESCE(case when tk_1.token_mint_address = p.tokenA then p.tokenA_decimals else tokenB_decimals end,9)) as token_sold_amount
             , p.pool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
