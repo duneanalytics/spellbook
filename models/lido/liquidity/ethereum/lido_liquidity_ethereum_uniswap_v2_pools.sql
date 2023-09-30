@@ -14,9 +14,43 @@
 
 {% set project_start_date = '2020-12-19' %} 
 
-with  
+with dates as (
+    with day_seq as (select (sequence(cast('{{ project_start_date }}' as date), current_date, interval '1' day)) as day)
+select days.day
+from day_seq
+cross join unnest(day) as days(day)
+)
+ 
+
+, volumes as (
+select u.call_block_time as time,  
+cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth 
+from  {{source('lido_ethereum','WstETH_call_unwrap')}} u 
+where call_success = TRUE 
+union all
+select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth 
+from  {{source('lido_ethereum','WstETH_call_wrap')}} u
+where call_success = TRUE 
+)
+
+, wsteth_rate as (
+SELECT
+  day, rate as rate0, value_partition, first_value(rate) over (partition by value_partition order by day) as rate,
+  lead(day,1,date_trunc('day', now() + interval '1' day)) over(order by day) as next_day
   
-  pools AS (
+FROM (
+select day, rate,
+sum(case when rate is null then 0 else 1 end) over (order by day) as value_partition
+from (
+select  date_trunc('day', d.day) as day, 
+        case when  date_trunc('day', d.day) = date '{{ project_start_date }}' then 1 else sum(cast(steth as double))/sum(cast(wsteth as double)) end AS rate
+from dates  d
+left join volumes v on date_trunc('day', v.time)  = date_trunc('day', d.day) 
+group by 1
+))
+)
+ 
+ , pools AS (
     SELECT
       pair AS address,
       'ethereum' AS blockchain,
@@ -243,13 +277,14 @@ with
     case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then l.token1 else l.token0 end paired_token,
     case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then p1.symbol else p0.symbol end paired_token_symbol, 
     --it's right only for uni v2 stETH:ETH pool
-    case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then amount0/power(10, coalesce(p0.decimals, p1.decimals))  else amount1/power(10, coalesce(p1.decimals, p0.decimals))  end main_token_reserve,
+    case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then amount0/power(10, coalesce(p0.decimals, p1.decimals))/r.rate  else amount1/power(10, coalesce(p1.decimals, p0.decimals))/r.rate  end main_token_reserve,
     case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then amount1/power(10, p1.decimals)  else amount0/power(10, p0.decimals)  end paired_token_reserve,
     --it's right only for uni v2 stETH:ETH pool
     case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then coalesce(p0.price, p1.price) else coalesce(p1.price, p0.price) end as main_token_usd_price,
     case when l.token0 = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 then p1.price else p0.price end as paired_token_usd_price,
     volume as trading_volume
 from pool_liquidity l 
+left join wsteth_rate r on l.time >= r.day and l.time < r.next_day
 left join pools on l.pool = pools.address
 left join tokens t0 on l.token0 = t0.address
 left join tokens t1 on l.token1 = t1.address
