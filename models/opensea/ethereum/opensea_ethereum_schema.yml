@@ -13,7 +13,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - unique_trade_id
     columns:
       - &blockchain
@@ -25,9 +24,6 @@ models:
       - &version
         name: version
         description: "Project version"
-      - &block_date
-        name: block_date
-        description: "UTC event block date"
       - &block_time
         name: block_time
         description: "UTC event block time"
@@ -207,7 +203,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - unique_trade_id
       - check_seed:
           seed_file: ref('opensea_wyvern_trades_samples')
@@ -226,7 +221,6 @@ models:
       - *project
       - *version
       - *project_contract_address
-      - *block_date
       - *block_time
       - *block_number
       - *tx_hash
@@ -275,7 +269,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - nft_contract_address
@@ -295,7 +288,6 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
-            - block_date
             - blockchain
             - project
             - version
@@ -308,7 +300,6 @@ models:
       - *blockchain
       - *project
       - *version
-      - *block_date
       - *block_time
       - *token_id
       - *collection
@@ -374,7 +365,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - nft_contract_address
@@ -394,7 +384,6 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
-            - block_date
             - blockchain
             - project
             - version

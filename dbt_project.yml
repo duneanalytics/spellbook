@@ -405,9 +405,8 @@ models:
       optimism:
         +schema: opensea_optimism
 
-
-#    abi:
-#      +schema: abi
+    abi:
+      +schema: abi
 
     gas:
       +schema: gas
