@@ -7,7 +7,7 @@ models:
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'ethereum', 'contracts', 'addresses']
+      tags: ['evm', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on Ethereum."
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -41,9 +41,6 @@ models:
       - &creator_address
         name: creator_address
         description: "Highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
-      - &deployer_address
-        name: deployer_address
-        description: "Attribution to the mapped deployer address at the creation trace, handles for ~most deterministic deployers and smart wallet creations."
       - &created_time
         name: created_time
         description: "contract creation time"
@@ -107,13 +104,6 @@ models:
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
-      - &is_smart_wallet_deployed
-        name: is_smart_wallet_deployed
-        description: "Was the contract deployed by a smart wallet (i.e. Gnosis Safe, ERC4337 wallet)"
-      - &is_deterministic_deployer_deployed
-        name: is_deterministic_deployer_deployed
-        description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
-
       - &is_updated_on_last_run
         name: is_updated_on_last_run
         description: "Was this contract updated on the last run (used for incremental table building)"
@@ -140,7 +130,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -164,51 +153,50 @@ models:
   #     - *is_eoa_deployed
   #     - *is_updated_on_last_run
 
-  - name: contracts_base_contract_creator_project_mapping
-    meta:
-      blockchain: base
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on base."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-              
-    columns:
-      - *created_month
-      - *blockchain
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *deployer_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - *creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code
+  # - name: contracts_base_contract_creator_project_mapping
+  #   meta:
+  #     blockchain: base
+  #     sector: contracts
+  #     contributors: chuxin, msilb7
+  #   config:
+  #     tags: ['evm', 'contracts', 'addresses']
+  #   description: "Mapping of contracts to its creators and names on base."
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #             - contract_address
+  #             
+  #   columns:
+  #     - *created_month
+  #     - *blockchain
+  #     - *trace_creator_address
+  #     - *contract_address
+  #     - *contract_project
+  #     - *token_symbol
+  #     - *contract_name
+  #     - *creator_address
+  #     - *created_time
+  #     - *contract_creator_if_factory
+  #     - *is_self_destruct
+  #     - *creation_tx_hash
+  #     - *created_block_number
+  #     - *created_tx_from
+  #     - *created_tx_to
+  #     - *created_tx_method_id
+  #     - *created_tx_index
+  #     - *top_level_time
+  #     - *top_level_tx_hash
+  #     - *top_level_block_number
+  #     - *top_level_tx_from
+  #     - *top_level_tx_to
+  #     - *top_level_tx_method_id
+  #     - *code_bytelength
+  #     - *token_standard
+  #     - *code
       
-      - *code_deploy_rank_by_chain
-      - *is_eoa_deployed
-      - *is_updated_on_last_run
+  #     - *code_deploy_rank_by_chain
+  #     - *is_eoa_deployed
+  #     - *is_updated_on_last_run
 
   # - name: contracts_bnb_contract_creator_project_mapping
   #   meta:
@@ -232,7 +220,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_addressv
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -278,7 +265,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -324,7 +310,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -370,7 +355,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -416,7 +400,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -462,7 +445,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -508,7 +490,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
@@ -554,7 +535,6 @@ models:
   #     - *token_symbol
   #     - *contract_name
   #     - *creator_address
-  #     - *deployer_address
   #     - *created_time
   #     - *contract_creator_if_factory
   #     - *is_self_destruct
