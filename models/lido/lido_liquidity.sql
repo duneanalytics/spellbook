@@ -37,11 +37,12 @@
  ref('lido_liquidity_ethereum_kyberswap_v2_pools'),
  ref('lido_liquidity_ethereum_maverick_pools'),
  ref('lido_liquidity_ethereum_uniswap_v3_pools'),
- ref('lido_liquidity_ethereum_pancakeswap_v3_pools')
+ ref('lido_liquidity_ethereum_pancakeswap_v3_pools'),
+ ref('lido_liquidity_ethereum_uniswap_v2_pools')
  
 ] %}
 
-{% set project_start_date =  '2021-01-05'%} 
+{% set project_start_date =  '2020-12-15'%} 
 
 
 with  dates as (
