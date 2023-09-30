@@ -49,7 +49,7 @@
         SELECT 
             sp.call_block_time as block_time
             , 'lifinity' as project
-            , 1 as version
+            , 2 as version
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account
