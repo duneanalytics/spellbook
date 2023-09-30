@@ -78,7 +78,7 @@ with
         WHERE master.account_edition is null --we DON't want the NFTs
         {% if is_incremental() %}
         and meta.call_block_time >= date_trunc('day', now() - interval '7' day)
-        {% else %}
+        {% endif %}
     )
 
 SELECT
