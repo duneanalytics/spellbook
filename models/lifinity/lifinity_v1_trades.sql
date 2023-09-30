@@ -11,7 +11,7 @@
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "lifinity_v1",
+                                    "lifinity",
                                     \'["ilemi"]\') }}')
 }}
 
@@ -33,7 +33,7 @@
             , ip.account_arguments[2] as pool_id
             , ip.account_arguments[3] as pool_mint_id
             , ip.tx_id as init_tx
-        FROM {{ source('solana','instrucion_calls') }} ip
+        FROM {{ source('solana','instruction_calls') }} ip
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = mintA.token_mint_address
@@ -110,8 +110,8 @@
             {% else %}
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}'
             {% endif %}
-        --we want to get what token was transfered out first as this is the sold token.
-        LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_source
+        --we want to get what token was transfered out first as this is the sold token. THIS MUST BE THE DESTINATION account, the source account is commonly created/closed through swap legs.
+        LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
         WHERE 1=1
         {% if is_incremental() %}
         AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)

@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        schema = 'lifinity_v2',
+        schema = 'raydium_v3',
         alias = alias('trades'),
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -11,45 +11,36 @@
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "lifinity",
+                                    "raydium",
                                     \'["ilemi"]\') }}')
 }}
 
-{% set project_start_date = '2023-07-22' %} --grabbed program deployed at time (account created at)
+{% set project_start_date = '2022-08-17' %} --grabbed program deployed at time (account created at)
 
   , pools as (
-        -- we can get fees after they give us the right IDL for initializing the pool and updating configs
-        -- https://solscan.io/tx/DNXYzbhFnY9PwT4iwXNMpQq42kafcPaxSSgxsZ6XFLACvVNfpEfbJHG6VjPKevnH3aT4nwqPy4WFmQu4Y4NrY3e
+        -- come back for fees some other day
         SELECT 
             tkA.symbol as tokenA_symbol
             , tkA.decimals as tokenA_decimals
-            , mintA.token_mint_address as tokenA
-            , ip.account_arguments[4] as tokenAVault
+            , ip.account_tokenMint0 as tokenA
+            , ip.account_tokenVault0 as tokenAVault
             , tkB.symbol as tokenB_symbol
             , tkB.decimals as tokenB_decimals
-            , mintB.token_mint_address as tokenB
-            , ip.account_arguments[5] as tokenBVault
-            , ip.account_arguments[6] as fee_account
-            , ip.account_arguments[2] as pool_id
-            , ip.account_arguments[3] as pool_mint_id
-            , ip.tx_id as init_tx
-        FROM {{ source('solana','instruction_calls') }} ip
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = mintA.token_mint_address
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = mintB.token_mint_address
-        WHERE bytearray_substring(ip.data,1,8) = 0xafaf6d1f0d989bed
-        and executing_account = '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c'
-        and tx_success
-        and cardinality(account_arguments) >= 5 --filter out broken cases/inits for now
-        and block_time > TIMESTAMP '{{project_start_date}'
+            , ip.account_tokenMint1 as tokenB
+            , ip.account_tokenVault1 as tokenBVault
+            , ip.account_ammConfig as fee_account
+            , ip.account_poolState as pool_id
+            , ip.call_tx_id as init_tx
+        FROM {{ source('raydium_clmm_solana','amm_v3_call_createPool') }} ip
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMint0
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMint1
     )
     
     , all_swaps as (
         SELECT 
             sp.call_block_time as block_time
-            , 'lifinity' as project
-            , 2 as version
+            , 'raydium' as project
+            , 3 as version
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account
@@ -87,7 +78,7 @@
             , case when tk_1.token_mint_address = p.tokenA then p.tokenAVault 
                 else p.tokenBVault
                 end as token_sold_vault
-        FROM {{ source('lifinity_amm_v2_solana', 'lifinity_amm_v2_call_swap') }} sp
+        FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} sp
         INNER JOIN pools p
             ON sp.account_amm = p.pool_id --account 2
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
