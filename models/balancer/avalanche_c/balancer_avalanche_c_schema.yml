@@ -313,7 +313,37 @@ models:
       - name: block_number
       - name: swap_fee_percentage
 
-
+  - name: balancer_v2_avalanche_c_flashloans
+    meta:
+      blockchain: avalanche_c
+      sector: lending
+      contributors: hildobby, viniabussafi
+    config:
+      tags: ['avalanche_c', 'flashloans']
+    description: >
+      All Balancer v2 flashloans on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address
+      - name: block_month
 
 
 

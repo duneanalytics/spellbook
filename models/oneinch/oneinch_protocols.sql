@@ -4,7 +4,7 @@
         alias = alias('protocols'),
         materialized = 'table',
         file_format = 'delta',
-        unique_key = ['contract_address', 'blockchain'],
+        unique_key = ['contract_address', 'blockchain', 'selector'],
         tags = ['dunesql']
     )
 }}
@@ -15,6 +15,7 @@
     set blockchains = [
         'arbitrum',
         'avalanche_c',
+        'base',
         'bnb',
         'ethereum',
         'fantom',
@@ -45,7 +46,7 @@ contracts as (
             , (0x11111112542d85b3ef69ae05771c2dccff4faa26, 'AR-V3',  'Aggregation Router V3',   array['ethereum', 'bnb', 'polygon', 'arbitrum', 'optimism'])
             , (0x1111111254fb6c44bac0bed2854e76f90643097d, 'AR-V4',  'Aggregation Router V4',   array['ethereum', 'bnb', 'polygon', 'gnosis', 'arbitrum', 'avalanche_c', 'fantom'])
             , (0x1111111254760f7ab3f16433eea9304126dcd199, 'AR-V4',  'Aggregation Router V4',   array['optimism'])
-            , (0x1111111254eeb25477b68fb85ed929f73a960582, 'V5&V3',  'AR V5 & LOP V3',          array['ethereum', 'bnb', 'polygon', 'gnosis', 'arbitrum', 'avalanche_c', 'optimism', 'fantom'])
+            , (0x1111111254eeb25477b68fb85ed929f73a960582, 'V5&V3',  'AR V5 & LOP V3',          array['ethereum', 'bnb', 'polygon', 'gnosis', 'arbitrum', 'avalanche_c', 'optimism', 'fantom', 'base'])
 
             , (0x3ef51736315f52d568d6d2cf289419b9cfffe782, 'LOP-V1', 'Limit Order Protocol V1', array['ethereum'])
             , (0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb, 'LOP-V1', 'Limit Order Protocol V1', array['bnb'])
@@ -134,9 +135,9 @@ contracts as (
         , (0xa1251d75, 'AR-V3',  'AR',  3,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- unoswapWithPermit
 
         , (0x825caba1, 'AR-V4',  'AR',  4,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- cancelOrderRFQ
-        , (0xb0431182, 'AR-V4',  'AR',  4,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwap
-        , (0x9994dd15, 'AR-V4',  'AR',  4,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapTo
-        , (0xd6a92a5d, 'AR-V4',  'AR',  4,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwap ToWithPermit
+        , (0xb0431182, 'AR-V4',  'LOP', 4,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwap
+        , (0x9994dd15, 'AR-V4',  'LOP', 4,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapTo
+        , (0xd6a92a5d, 'AR-V4',  'LOP', 4,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapToWithPermit
         , (0x83197ef0, 'AR-V4',  'AR',  4,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- destroy
         , (0xd0a3b665, 'AR-V4',  'LOP', 2,  true,   map_from_entries(array[('offset_wallet', 113), ('offset_src_token', 0)])) -- fillOrderRFQ
         , (0xbaba5855, 'AR-V4',  'LOP', 2,  true,   map_from_entries(array[('offset_wallet', 113), ('offset_src_token', 0)])) -- fillOrderRFQTo
@@ -156,9 +157,9 @@ contracts as (
         , (0x2d9a56f6, 'V5&V3',  'LOP', 3,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- cancelOrder
         , (0x825caba1, 'V5&V3',  'LOP', 3,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- cancelOrderRFQ
         , (0xbddccd35, 'V5&V3',  'LOP', 3,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- cancelOrderRFQ
-        , (0x84bd6d29, 'V5&V3',  'AR',  5,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwap
-        , (0x093d4fa5, 'V5&V3',  'AR',  5,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapTo
-        , (0xc805a666, 'V5&V3',  'AR',  5,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapToWithPermit
+        , (0x84bd6d29, 'V5&V3',  'LOP', 5,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwap
+        , (0x093d4fa5, 'V5&V3',  'LOP', 5,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapTo
+        , (0xc805a666, 'V5&V3',  'LOP', 5,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- clipperSwapToWithPermit
         , (0x83197ef0, 'V5&V3',  'AR',  5,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- destroy
         , (0x62e238bb, 'V5&V3',  'LOP', 3,  true,   map_from_entries(array[('offset_wallet', 305), ('offset_src_token', 0)])) -- fillOrder
         , (0x3eca9c0a, 'V5&V3',  'LOP', 3,  true,   map_from_entries(array[('offset_wallet', 113), ('offset_src_token', 0)])) -- fillOrderRFQ
@@ -201,7 +202,7 @@ contracts as (
         , (0xbaba5855, 'LOP-V2', 'LOP', 2,  true,   map_from_entries(array[('offset_wallet', 113), ('offset_src_token', 0)])) -- fillOrderRFQTo
         , (0x4cc4a27b, 'LOP-V2', 'LOP', 2,  true,   map_from_entries(array[('offset_wallet', 113), ('offset_src_token', 0)])) -- fillOrderRFQToWithPermit
         , (0xb2610fe3, 'LOP-V2', 'LOP', 2,  true,   map_from_entries(array[('offset_wallet', 305), ('offset_src_token', 0)])) -- fillOrder To
-        , (0x6073cc20, 'LOP-V2', 'LOP', 2,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- fillOrderToWith Permit
+        , (0x6073cc20, 'LOP-V2', 'LOP', 2,  true,   map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- fillOrderToWithPermit
         , (0xc53a0292, 'LOP-V2', 'LOP', 2,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- increaseNonce
         , (0x7f29a59d, 'LOP-V2', 'LOP', 2,  false,  map_from_entries(array[('offset_wallet',   0), ('offset_src_token', 0)])) -- simulateCalls
 
