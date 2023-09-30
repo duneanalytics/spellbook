@@ -1,13 +1,12 @@
 {{ config(
-	tags=['legacy'],
-	
-    schema = 'gas_gnosis',
-    alias = alias('fees_traces', legacy_model=True),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'trace'],
+     tags=['legacy', 'prod_exclude', 'remove'],
+     schema = 'gas_gnosis',
+     alias = alias('fees_traces', legacy_model=True),
+     partition_by = ['block_date'],
+     materialized = 'incremental',
+     file_format = 'delta',
+     incremental_strategy = 'merge',
+     unique_key = ['tx_hash', 'trace'],
     )
 }}
 

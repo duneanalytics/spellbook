@@ -2,11 +2,10 @@
     schema = 'element_bnb',
     alias = alias('events'),
     tags = ['dunesql'],
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'unique_trade_id']
+    unique_key = ['unique_trade_id']
     )
 }}
 
@@ -122,7 +121,6 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
-, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , bnb_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, bnb_bep20_tokens.decimals)*prices.price AS amount_usd
