@@ -47,6 +47,7 @@
     , ref('component_ethereum_airdrop_claims_legacy')
     , ref('forefront_ethereum_airdrop_claims_legacy')
     , ref('alchemydao_ethereum_airdrop_claims_legacy')
+    , ref('arkham_ethereum_airdrop_claims_legacy')
 ] %}
 
 SELECT *
