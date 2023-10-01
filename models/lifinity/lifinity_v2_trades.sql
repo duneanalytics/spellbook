@@ -15,7 +15,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
-{% set project_start_date = '2023-07-22' %} --grabbed program deployed at time (account created at)
+{% set project_start_date = '2022-09-13' %} --grabbed program deployed at time (account created at)
 
 WITH 
     pools as (
@@ -165,4 +165,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-WHERE tb.block_time > now() - interval '7' day
+WHERE tb.block_time > now() - interval '30' day
