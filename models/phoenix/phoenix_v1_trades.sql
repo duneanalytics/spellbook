@@ -70,11 +70,14 @@
       ) AS tokenB_filled
     FROM
       {{ source('phoenix_v1_solana','phoenix_v1_call_Log')}} AS l
-    WHERE
-      bytearray_length (l.call_data) > 93
+    WHERE 1=1
+      --filter for 0 events
+      and bytearray_length (l.call_data) > 93
+      --instruction is swap
       and BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (BYTEARRAY_SUBSTRING (l.call_data, 3, 1))
       ) = 0
+      --filter for trade size > 0
       AND BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (
           BYTEARRAY_SUBSTRING (
@@ -84,6 +87,7 @@
           )
         )
       ) > 0
+      --filter for event FillSummary
       AND BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (
           BYTEARRAY_SUBSTRING (
