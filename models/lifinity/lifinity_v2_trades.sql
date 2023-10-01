@@ -117,7 +117,7 @@ WITH
         {% if is_incremental() %}
         AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND sp.block_time >= TIMESTAMP '{{project_start_date}}'
+        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
     
@@ -136,8 +136,8 @@ SELECT
     , tb.token_sold_amount
     , tb.token_sold_amount_raw
     , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-    , null as fee_tier
-    , null as fee_usd
+    , cast(null as double) as fee_tier
+    , cast(null as double) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
     , tb.token_sold_vault
