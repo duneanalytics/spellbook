@@ -49,7 +49,7 @@ with
       token_address
   ),
   price_filter as (
-    select contract_address, price, minute
+    select contract_address, price, minute, symbol, decimals
     from  {{ source('prices', 'usd') }}
     where minute > date('2023-01-01')
     and blockchain = 'bnb'
