@@ -55,10 +55,7 @@ models:
         description: "Contract name"
       - &creator_address
         name: creator_address
-        description: "Attribution to the highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
-      - &deployer_address
-        name: deployer_address
-        description: "Attribution to the mapped deployer address at the creation trace, handles for ~most deterministic deployers and smart wallet creations."
+        description: "Highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
       - &created_time
         name: created_time
         description: "contract creation time"
@@ -119,12 +116,6 @@ models:
       - &is_eoa_deployed
         name: is_eoa_deployed
         description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
-      - &is_smart_wallet_deployed
-        name: is_smart_wallet_deployed
-        description: "Was the contract deployed by a smart wallet (i.e. Gnosis Safe, ERC4337 wallet)"
-      - &is_deterministic_deployer_deployed
-        name: is_deterministic_deployer_deployed
-        description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
       
       - &is_updated_on_last_run
         name: is_updated_on_last_run
@@ -145,7 +136,6 @@ models:
       - *contract_project
       - *contract_name
       - *creator_address
-      - *deployer_address
       - *created_time
       - *is_self_destruct
       - *creation_tx_hash
