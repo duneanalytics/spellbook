@@ -187,9 +187,9 @@ with
             , t.trade_category
             , t.account_buyer as buyer
             , t.account_seller as seller
-            , t.price + t.taker_fee + t.maker_fee + t.royalty as amount_raw --magiceden does not include fees in the emitted price
-            , (t.price + t.taker_fee + t.maker_fee + t.royalty)/1e9 as amount_original
-            , (t.price + t.taker_fee + t.maker_fee + t.royalty)/1e9 * sol_p.price as amount_usd
+            , t.price + coalesce(t.taker_fee,0) + coalesce(t.maker_fee,0) + coalesce(t.royalty,0) as amount_raw --magiceden does not include fees in the emitted price
+            , (t.price + coalesce(t.taker_fee,0) + coalesce(t.maker_fee,0) + coalesce(t.royalty,0))/1e9 as amount_original
+            , (t.price + coalesce(t.taker_fee,0) + coalesce(t.maker_fee,0) + coalesce(t.royalty,0))/1e9 * sol_p.price as amount_usd
             , 'SOL' as currency_symbol
             , 'So11111111111111111111111111111111111111112' as currency_address
             , t.account_metadata --token id equivalent
