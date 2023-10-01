@@ -81,7 +81,7 @@
                 end as token_sold_vault
         FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} sp
         INNER JOIN pools p
-            ON sp.account_amm = p.pool_id --account 2
+            ON sp.account_poolState = p.pool_id --account 2
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
             ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
