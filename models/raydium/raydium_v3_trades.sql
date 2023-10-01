@@ -29,7 +29,7 @@
             , tkB.decimals as tokenB_decimals
             , ip.account_tokenMint1 as tokenB
             , ip.account_tokenVault1 as tokenBVault
-            , ip.account_ammConfig as fee_account
+            , ip.account_ammConfig as fee_tier
             , ip.account_poolState as pool_id
             , ip.call_tx_id as init_tx
         FROM {{ source('raydium_clmm_solana','amm_v3_call_createPool') }} ip
@@ -127,8 +127,8 @@ SELECT
     , tb.token_sold_amount
     , tb.token_sold_amount_raw
     , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-    , null as fee_tier
-    , null as fee_usd
+    , cast(null as double) as fee_tier
+    , cast(null as double) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
     , tb.token_sold_vault
