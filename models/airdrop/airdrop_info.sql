@@ -52,5 +52,5 @@ FROM (VALUES
     , ('paladin', 'Paladin', NULL, NULL, NULL, NULL, TRUE, 'Paladin_vote', '2021-11-03 20:08', '2022-02-01 13:51')
     , ('pooltogether', 'PoolTogether', NULL, NULL, NULL, NULL, TRUE, 'PoolTogether_', '2021-02-17 02:18', NULL)
     , ('diva', 'Diva', NULL, 106000000, NULL, 1000000000, TRUE, 'divastaking', NULL, NULL)
-    , ('arkham', 'Arkham', NULL, NULL, NULL, NULL, TRUE, 'ArkhamIntel', NULL, NULL)
+    , ('arkham', 'Arkham', NULL, NULL, NULL, NULL, TRUE, 'ArkhamIntel', '2023-06-27 19:00', NULL)
     ) AS temp_table (project, name, eligible_addresses, circulating_supply_on_drop, max_supply, airdropped_total, token_issued_by_protocol, x_username, airdrop_start, airdrop_end)
