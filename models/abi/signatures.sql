@@ -7,10 +7,10 @@
         incremental_strategy = 'merge',
         unique_key = ['created_at', 'unique_signature_id'],
         tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom","celo","base"]\',
                         "sector",
                         "abi",
-                        \'["ilemi"]\') }}'
+                        \'["ilemi","tomfutago"]\') }}'
         )
 }}
 
@@ -23,6 +23,8 @@
     ,source('bnb', 'signatures')
     ,source('gnosis', 'signatures')
     ,source('fantom', 'signatures')
+    ,source('celo', 'signatures')
+    ,source('base', 'signatures')
 ] %}
 
 WITH
@@ -32,7 +34,7 @@ WITH
             SELECT
                 abi,
                 created_at,
-                id,
+                coalesce(try(from_hex(id)), cast(id as varbinary)) as id,
                 signature,
                 type,
                 concat(cast(id as varchar), signature, type) as unique_signature_id
