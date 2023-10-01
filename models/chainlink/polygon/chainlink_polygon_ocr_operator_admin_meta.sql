@@ -24,15 +24,16 @@
 {% set linkpool = 'LinkPool' %}
 {% set linkriver = 'LinkRiver' %}
 {% set matrixedlink = 'Matrixed.Link' %}
-{% set mycelium = 'Mycelium' %}
 {% set newroad = 'Newroad Network' %}
+{% set piertwo = 'Pier Two' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set stakingfacilities = 'Staking Facilities' %}
-{% set vulcan = 'Vulcan Link' %}
+{% set validationcloud = 'Validation Cloud' %}
 {% set ztake = 'Ztake.org' %}
 
 SELECT admin_address, operator_name FROM (VALUES
+  (0xEcE9E7521451e2E8dEe06C1677CF36274585377f, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0xa5D0084A766203b463b3164DFc49D91509C12daB, '{{alphachain}}'),
   (0x6cDC3Efa3bAa392fAF3E5c1Ca802E15B6185E0e8, '{{bharvest}}'),
@@ -50,12 +51,12 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x4dc81f63CB356c1420D4620414f366794072A3a8, '{{matrixedlink}}'),
-  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{mycelium}}'),
   (0xAB35418fB9f8B13E3e6857c36A0769b9F94a87EC, '{{newroad}}'),
+  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{piertwo}}'),
   (0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf, '{{simplyvc}}'),
   (0x1f11134A80aEd1FF47E3ee97A4d3f978A0629669, '{{simplyvc}}'),
   (0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1, '{{snzpool}}'),
   (0x3D65be029c949F52cABa2d8E8270c098256697d9, '{{stakingfacilities}}'),
-  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{vulcan}}'),
+  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{validationcloud}}'),
   (0x0039F22efB07A647557C7C5d17854CFD6D489eF3, '{{ztake}}')
 ) AS tmp_node_meta(admin_address, operator_name)
