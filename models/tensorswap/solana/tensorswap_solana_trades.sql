@@ -200,15 +200,20 @@ with
             , t.call_tx_id as tx_id
             , t.call_block_slot as block_slot
             , t.call_tx_signer as tx_signer
-            --taker fees = platform fees
-            , t.tswap_fee as taker_fee_amount_raw
-            , t.tswap_fee/1e9 as taker_fee_amount
-            , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
-            , t.tswap_fee/coalesce(t.current_price,1) as taker_fee_percentage
-            , -1*(t.mm_fee + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
-            , -1*(t.mm_fee/1e9 + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price/1e9 else 0 end) as maker_fee_amount
-            , -1*(t.mm_fee/1e9 + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price/1e9 else 0 end) * sol_p.price as maker_fee_amount_usd
-            , -1*(t.mm_fee/coalesce(t.current_price,1) + 0.004) as maker_fee_percentage
+            --taker fees + maker fees = platform fees. Tensorswap implemented a 0.4% maker fee rebate on 8/22, that is paid out of taker fees.
+            , (t.tswap_fee - case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as taker_fee_amount_raw
+            , (t.tswap_fee - case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 as taker_fee_amount
+            , (t.tswap_fee - case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as taker_fee_amount_usd
+            , t.tswap_fee/coalesce(t.current_price,1) - + case when t.call_block_time > timestamp '2023-08-21' then 0.004 else 0 end as taker_fee_percentage
+            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
+            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 as maker_fee_amount
+            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as maker_fee_amount_usd
+            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004 else 0 end) as maker_fee_percentage
+            --amm fees
+            , t.mm_fee as amm_fee_amount_raw
+            , t.mm_fee/1e9 as amm_fee_amount
+            , t.mm_fee/1e9 * sol_p.price as amm_fee_amount_usd
+            , t.mm_fee/coalesce(t.current_price,1) as amm_fee_percentage
             , t.creators_fee as royalty_fee_amount_raw 
             , t.creators_fee/1e9 as royalty_fee_amount
             , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd

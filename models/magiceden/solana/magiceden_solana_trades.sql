@@ -215,6 +215,10 @@ with
             , t.royalty/1e9 as royalty_fee_amount
             , t.royalty/1e9 * sol_p.price as royalty_fee_amount_usd
             , t.royalty/coalesce(t.price,1) as royalty_fee_percentage
+            , cast(null as double) as amm_fee_amount_raw
+            , cast(null as double) as amm_fee_amount
+            , cast(null as double) as amm_fee_amount_usd
+            , cast(null as double) as amm_fee_percentage
             , t.instruction
             , t.outer_instruction_index
             , coalesce(t.inner_instruction_index,0) as inner_instruction_index
