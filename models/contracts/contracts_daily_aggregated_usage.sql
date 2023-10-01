@@ -30,12 +30,12 @@ FROM (
         date_trunc('month', r.block_time) as block_month,
         date_trunc('day', r.block_time) as block_date,
         ct.contract_address,
-        t.hash, t."from" AS tx_from,
-            COALESCE(t.l1_fee,0)/1e18
+        t.hash, t."from" AS tx_from
+        , AVG( COALESCE(t.l1_fee,0)/1e18
                 + (
                         t.gas_used/1e18
                         *COALESCE(t.effective_gas_price,t.gas_price)/1e18
-                 ) AS eth_fee
+                 ) ) AS eth_fee
         , COUNT(*) AS num_calls
         , SUM(r.gas_used) AS trace_gas_used
         , AVG(t.gas_used
@@ -63,7 +63,7 @@ FROM (
                 AND t.gas_price > 0
                 AND r.type ='call'
                 AND r.to IS NOT NULL
-        GROUP BY 1,2,3,4,5,6,7
+        GROUP BY 1,2,3,4,5,6
 
         ) a
     GROUP BY 1,2,3,4
