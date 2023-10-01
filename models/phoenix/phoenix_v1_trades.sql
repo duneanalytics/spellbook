@@ -178,7 +178,7 @@
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
         AND s.call_outer_instruction_index = l.call_outer_instruction_index
-        AND s.call_inner_instruction_index < COALESCE(l.call_inner_instruction_index,0) --only get swaps before the log call
+        AND COALESCE(s.call_inner_instruction_index, 0) <= COALESCE(l.call_inner_instruction_index,0) --only get swaps before the log call
     JOIN pools p ON l.market = p.pool_id
   )
   
