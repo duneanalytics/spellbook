@@ -201,10 +201,10 @@ with
             , t.call_block_slot as block_slot
             , t.call_tx_signer as tx_signer
             --taker fees + maker fees = platform fees. Tensorswap implemented a 0.4% maker fee rebate on 8/22, that is paid out of taker fees.
-            , (t.tswap_fee - case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as taker_fee_amount_raw
-            , (t.tswap_fee - case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 as taker_fee_amount
-            , (t.tswap_fee - case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as taker_fee_amount_usd
-            , t.tswap_fee/coalesce(t.current_price,1) - + case when t.call_block_time > timestamp '2023-08-21' then 0.004 else 0 end as taker_fee_percentage
+            , t.tswap_fee as taker_fee_amount_raw
+            , t.tswap_fee/1e9 as taker_fee_amount
+            , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
+            , t.tswap_fee/coalesce(t.current_price,1) as taker_fee_percentage
             , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
             , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 as maker_fee_amount
             , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as maker_fee_amount_usd
