@@ -43,7 +43,7 @@ WITH
         and executing_account = 'EewxydAPCCVuNEyrVN68PuSYdQ7wKn27V9Gjeoi8dy3S'
         and tx_success
         and cardinality(account_arguments) >= 5 --filter out broken cases/inits for now
-        and block_time > TIMESTAMP '{{project_start_date}'
+        and block_time > TIMESTAMP '{{project_start_date}}'
     )
     
     , all_swaps as (
@@ -99,7 +99,7 @@ WITH
             {% if is_incremental() %}
             AND tr_1.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
-            AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}'
+            AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 
             ON tr_2.call_tx_id = sp.call_tx_id 
@@ -109,7 +109,7 @@ WITH
             {% if is_incremental() %}
             AND tr_2.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
-            AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}'
+            AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         --we want to get what token was transfered out first as this is the sold token. THIS MUST BE THE DESTINATION account, the source account is commonly created/closed through swap legs.
         LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
@@ -117,7 +117,7 @@ WITH
         {% if is_incremental() %}
         AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND sp.block_time >= TIMESTAMP '{{project_start_date}'
+        AND sp.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
     
@@ -155,7 +155,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}'
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
@@ -163,6 +163,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}'
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 WHERE tb.block_time > now() - interval '7' day
