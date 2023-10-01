@@ -156,7 +156,6 @@ close_liquidate_pnl as (
             WHEN p.pnl > 0 THEN 1 ELSE 0 END as wins, 
         CASE 
             WHEN p.pnl <= 0 THEN 1 ELSE 0 END as losses
-        
     FROM 
     close_liquidate cl 
     LEFT JOIN 
