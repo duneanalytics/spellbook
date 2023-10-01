@@ -17,26 +17,7 @@
 
 {% set project_start_date = '2023-02-15' %} --grabbed program deployed at time (account created at)
 
-  , pools as (
-        -- come back for fees some other day
-        SELECT 
-            tkA.symbol as tokenA_symbol
-            , tkA.decimals as tokenA_decimals
-            , ip.account_tokenMint0 as tokenA
-            , ip.account_tokenVault0 as tokenAVault
-            , tkB.symbol as tokenB_symbol
-            , tkB.decimals as tokenB_decimals
-            , ip.account_tokenMint1 as tokenB
-            , ip.account_tokenVault1 as tokenBVault
-            , ip.account_ammConfig as fee_account
-            , ip.account_poolState as pool_id
-            , ip.call_tx_id as init_tx
-        FROM {{ source('raydium_clmm_solana','amm_v3_call_createPool') }} ip
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMint0
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMint1
-    )
-    WITH
-  --get pools first 
+  WITH
   pools as (
         SELECT 
             tkA.symbol as tokenA_symbol
