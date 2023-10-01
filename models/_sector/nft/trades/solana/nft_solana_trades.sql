@@ -4,16 +4,18 @@
         , tags = ['dunesql']
         , alias = alias('trades')
         , materialized = 'view'
-        -- ,file_format = 'delta'
-        -- ,incremental_strategy = 'merge'
-        -- ,partition_by = ['project','block_month']
-        -- ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "nft",
                                     \'["ilemi"]\') }}'
     )
 }}
+
+-- ,file_format = 'delta'
+-- ,incremental_strategy = 'merge'
+-- ,partition_by = ['project','block_month']
+-- ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
+
 
 {% set solana_marketplaces = [
     ref('magiceden_solana_trades')
