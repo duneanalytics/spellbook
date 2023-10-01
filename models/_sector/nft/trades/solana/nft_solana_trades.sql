@@ -3,11 +3,11 @@
         schema = 'nft_solana'
         , tags = ['dunesql']
         , alias = alias('trades')
-        ,materialized = 'incremental'
-        ,file_format = 'delta'
-        ,incremental_strategy = 'merge'
-        ,partition_by = ['project','block_month']
-        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
+        , materialized = 'view'
+        -- ,file_format = 'delta'
+        -- ,incremental_strategy = 'merge'
+        -- ,partition_by = ['project','block_month']
+        -- ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "nft",
