@@ -91,3 +91,7 @@ models:
         description: "Was the token issued by the protocol?"
       - name: x_username
         description: "Username on X"
+      - name: airdrop_start
+        description: "Airdrop claim start date"
+      - name: airdrop_end
+        description: "Airdrop claim end date"
