@@ -14,7 +14,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -26,7 +25,6 @@ models:
             project: quix
             version: v2
           match_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -158,16 +156,12 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - sub_type
             - sub_idx
     columns:
       - *block_time
-      - &block_date
-        name: block_date
-        description: "Block date in UTC"
       - *block_number
       - *tx_hash
       - *evt_index
@@ -264,7 +258,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -276,7 +269,6 @@ models:
             project: quix
             version: v3
           match_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -335,7 +327,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -347,7 +338,6 @@ models:
             project: quix
             version: v1
           match_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -406,7 +396,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -418,7 +407,6 @@ models:
             project: quix
             version: v4
           match_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -477,7 +465,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -489,7 +476,6 @@ models:
             project: quix
             version: v5
           match_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -550,7 +536,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - nft_contract_address
@@ -564,7 +549,6 @@ models:
             project: quix
             version: seaport
           match_columns:
-            - block_date
             - tx_hash
             - token_id
             - seller
@@ -576,7 +560,6 @@ models:
       - *blockchain
       - *project
       - *version
-      - *block_date
       - *block_time
       - *seller
       - *buyer

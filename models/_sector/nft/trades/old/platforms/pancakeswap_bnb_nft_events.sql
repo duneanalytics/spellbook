@@ -42,7 +42,6 @@ WITH events AS (
         events.project,
         events.version,
         events.block_time,
-        date_trunc('day', events.block_time) AS block_date,
         events.token_id,
         bnb_nft_tokens.name collection,
         events.amount_raw/POWER(10, bnb_bep20_tokens.decimals)*prices.price AS amount_usd,
