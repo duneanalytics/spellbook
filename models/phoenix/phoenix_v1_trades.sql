@@ -163,6 +163,7 @@
             else p.tokenBVault
             end as token_sold_vault
         , p.fee_tier
+        , row_number() over (partition by seq order by COALESCE(s.call_inner_instruction_index, 0) desc) as recent_swap -- this ties the log to only the most recent swap call
     FROM filtered_logs l
     LEFT JOIN (
         SELECT 
@@ -172,7 +173,8 @@
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
-        AND s.call_outer_instruction_index = l.call_outer_instruction_index --assumes only one phoenix swap per set of outer instructions per market
+        AND s.call_outer_instruction_index = l.call_outer_instruction_index
+        AND s.call_inner_instruction_index < COALESCE(l.call_inner_instruction_index,0) --only get swaps before the log call
     JOIN pools p ON l.market = p.pool_id
   )
   
@@ -220,4 +222,5 @@ LEFT JOIN {{ source('prices','usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-WHERE tb.block_time > now() - interval '7' day
+WHERE recent_swap = 1
+AND tb.block_time > now() - interval '7' day

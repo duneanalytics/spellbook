@@ -32,6 +32,8 @@
             , ip.account_ammConfig as fee_tier
             , ip.account_poolState as pool_id
             , ip.call_tx_id as init_tx
+            , ip.call_block_time as init_time
+            , row_number() over (partition by ip.account_poolState order by ip.call_block_time desc) as recent_init
         FROM {{ source('raydium_clmm_solana','amm_v3_call_createPool') }} ip
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMint0
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMint1
@@ -82,6 +84,7 @@
         FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} sp
         INNER JOIN pools p
             ON sp.account_poolState = p.pool_id --account 2
+            and p.recent_init = 1 --for some reason, some pools get created twice.
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
             ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
