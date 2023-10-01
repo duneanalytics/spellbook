@@ -17,7 +17,8 @@
 
 {% set project_start_date = '2023-07-22' %} --grabbed program deployed at time (account created at)
 
-  , pools as (
+WITH 
+    pools as (
         -- we can get fees after they give us the right IDL for initializing the pool and updating configs
         -- https://solscan.io/tx/DNXYzbhFnY9PwT4iwXNMpQq42kafcPaxSSgxsZ6XFLACvVNfpEfbJHG6VjPKevnH3aT4nwqPy4WFmQu4Y4NrY3e
         SELECT 

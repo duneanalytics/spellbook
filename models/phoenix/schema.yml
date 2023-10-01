@@ -4,7 +4,7 @@ models:
   - name: phoenix_v1_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
+      contributors: [ilemi, jarryx]
     config:
       tags: ['solana','dex']  
     description: >

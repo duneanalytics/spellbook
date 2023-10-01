@@ -12,7 +12,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "phoenix",
-                                    \'["ilemi"]\') }}')
+                                    \'["ilemi","jarryx"]\') }}')
 }}
 
 {% set project_start_date = '2023-02-15' %} --grabbed program deployed at time (account created at)

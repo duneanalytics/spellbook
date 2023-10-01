@@ -17,8 +17,9 @@
 
 {% set project_start_date = '2022-08-17' %} --grabbed program deployed at time (account created at)
 
-  , pools as (
-        -- come back for fees some other day
+  WITH
+    pools as (
+        -- come back for fees some other day after we can tie fee account
         SELECT 
             tkA.symbol as tokenA_symbol
             , tkA.decimals as tokenA_decimals
