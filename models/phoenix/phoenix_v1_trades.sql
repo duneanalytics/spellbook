@@ -49,7 +49,7 @@
         BYTEARRAY_REVERSE (BYTEARRAY_SUBSTRING (l.call_data, 4, 8))
       ) AS seq,
       TO_BASE58 ((BYTEARRAY_SUBSTRING (l.call_data, 28, 32))) AS market,
-      BYTEARRAY_TO_BIGINT (
+      cast(BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (
           BYTEARRAY_SUBSTRING (
             l.call_data,
@@ -57,9 +57,9 @@
             8
           )
         )
-      ) AS tokenA_filled,
+      ) as uint256) AS tokenA_filled,
       l.call_outer_instruction_index AS index,
-      BYTEARRAY_TO_BIGINT (
+      cast(BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (
           BYTEARRAY_SUBSTRING (
             l.call_data,
@@ -67,7 +67,7 @@
             8
           )
         )
-      ) AS tokenB_filled
+      ) as uint256) AS tokenB_filled
     FROM
       {{ source('phoenix_v1_solana','phoenix_v1_call_Log')}} AS l
     WHERE 1=1
