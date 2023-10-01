@@ -24,7 +24,6 @@
     , ref('lifinity_v2_trades')
 ] %}
 
-
 {% for dex in solana_dexes %}
 SELECT
       blockchain
