@@ -20,7 +20,7 @@ SELECT
 blockchain, block_month, block_date, contract_address
     , COUNT(*) AS num_txs_called_trace
     , COUNT(DISTINCT tx_from) AS num_tx_sender_addresses_called_trace
-    , SUM(eth_fee) AS eth_fees_txs_called_trace
+    , SUM(native_fee) AS native_fees_txs_called_trace
     , SUM(num_calls) AS num_trace_calls
     , SUM(tx_gas_used) AS total_tx_gas_used_called_trace
     
@@ -35,7 +35,7 @@ FROM (
                 + (
                         t.gas_used/1e18
                         *COALESCE(t.effective_gas_price,t.gas_price)/1e18
-                 ) ) AS eth_fee
+                 ) ) AS native_fee
         , COUNT(*) AS num_calls
         , SUM(r.gas_used) AS trace_gas_used
         , AVG(t.gas_used
