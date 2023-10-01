@@ -208,7 +208,7 @@ with
             , -1*(t.mm_fee + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
             , -1*(t.mm_fee/1e9 + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price/1e9 else 0 end) as maker_fee_amount
             , -1*(t.mm_fee/1e9 + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price/1e9 else 0 end) * sol_p.price as maker_fee_amount_usd
-            , t.mm_fee/coalesce(t.current_price,1) + 0.004 as maker_fee_percentage
+            , -1*(t.mm_fee/coalesce(t.current_price,1) + 0.004) as maker_fee_percentage
             , t.creators_fee as royalty_fee_amount_raw 
             , t.creators_fee/1e9 as royalty_fee_amount
             , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd
