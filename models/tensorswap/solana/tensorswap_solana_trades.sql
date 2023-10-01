@@ -84,7 +84,7 @@ with
             rl.event
             , coalesce(cast(rl.current_price as double), try(cast(json_value(config, 'strict $.startingPrice') as double))) as current_price
             , coalesce(cast(rl.tswap_fee as double), try(cast(json_value(config, 'strict $.startingPrice') as double))*0.014) as tswap_fee --taker fee is 1.4% right now.
-            , -1*coalesce(cast(rl.mm_fee as double)
+            , coalesce(cast(rl.mm_fee as double)
                     , try(cast(json_value(config, 'strict $.startingPrice') as double)*try(cast(json_value(config, 'strict $.mmFeeBps') as double)/1e4))
                     ) as mm_fee --maker fee goes back to users
             , cast(rl.creators_fee as double) as creators_fee --we will just be missing this if log is truncated.
@@ -103,7 +103,7 @@ with
             SELECT 
                 call_account_arguments[7] as account_metadata
                 , call_account_arguments[12] as account_buyer
-                , call_account_arguments[11] as account_seller
+                , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_seller
                 , config
                 , 'buy' as trade_category
                 , call_tx_id
@@ -119,7 +119,7 @@ with
             SELECT 
                 call_account_arguments[6] as account_metadata
                 , call_account_arguments[9] as account_buyer
-                , call_account_arguments[8] as account_seller
+                , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_seller
                 , null --no price fallback fyi. fix later with spl token join (too expensive for now)
                 , 'buy' as trade_category
                 , call_tx_id
@@ -134,8 +134,8 @@ with
             UNION ALL
             SELECT 
                 call_account_arguments[8] as account_metadata
-                , call_account_arguments[10] as account_buyer --pnft shared
-                , call_account_arguments[2] as account_seller --owner ata account
+                , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_buyer
+                , call_account_arguments[11] as account_seller --account_nftEscrow
                 , config
                 , 'sell' as trade_category
                 , call_tx_id
@@ -204,15 +204,15 @@ with
             , t.tswap_fee as taker_fee_amount_raw
             , t.tswap_fee/1e9 as taker_fee_amount
             , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
-            , t.tswap_fee/t.current_price as taker_fee_percentage
-            , t.mm_fee as maker_fee_amount_raw
-            , t.mm_fee/1e9 as maker_fee_amount
-            , t.mm_fee/1e9 * sol_p.price as maker_fee_amount_usd
-            , t.mm_fee/t.current_price as maker_fee_percentage
+            , t.tswap_fee/coalesce(t.current_price,1) as taker_fee_percentage
+            , -1*(t.mm_fee + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
+            , -1*(t.mm_fee/1e9 + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price/1e9 else 0 end) as maker_fee_amount
+            , -1*(t.mm_fee/1e9 + case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price/1e9 else 0 end) * sol_p.price as maker_fee_amount_usd
+            , t.mm_fee/coalesce(t.current_price,1) + 0.004 as maker_fee_percentage
             , t.creators_fee as royalty_fee_amount_raw 
             , t.creators_fee/1e9 as royalty_fee_amount
             , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd
-            , t.creators_fee/t.current_price as royalty_fee_percentage
+            , t.creators_fee/coalesce(t.current_price,1) as royalty_fee_percentage
             , t.instruction
             , t.outer_instruction_index
             , coalesce(t.inner_instruction_index, 0) as inner_instruction_index
