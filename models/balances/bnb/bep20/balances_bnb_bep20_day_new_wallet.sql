@@ -60,7 +60,8 @@ select
   d.token_address,
   d.number_new_wallets,
   d.volumn_new_wallets / power(10, 18) as volumn_new_wallets,
-  p.price
+  p.price,
+  p.symbol
 from
   agg_new_wallets d
   left join price_filter p on d.block_day = p.minute
