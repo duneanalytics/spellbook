@@ -39,7 +39,7 @@ FROM (
         , COUNT(*) AS num_calls
         , SUM(r.gas_used) AS trace_gas_used
         , AVG(t.gas_used
-                - CASE WHEN t.blockchain = 'arbitrum' THEN t.gas_used_for_l1 ELSE 0 END 
+                - CASE WHEN t.blockchain = 'arbitrum' THEN t.l1_gas_used ELSE 0 END 
                 ) AS tx_gas_used
 
     FROM {{ ref('evms_traces') }} r
