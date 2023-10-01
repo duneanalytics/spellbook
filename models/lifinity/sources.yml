@@ -17,11 +17,3 @@ sources:
     tables:
       - name: lifinity_amm_v2_call_swap
         loaded_at_field: call_block_time
-  - name: spl_token_solana
-    description: "spl_token decoded tables"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: spl_token_call_transfer
-        loaded_at_field: call_block_time
