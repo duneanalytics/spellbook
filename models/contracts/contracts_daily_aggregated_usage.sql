@@ -29,7 +29,7 @@ FROM (
         r.blockchain,
         date_trunc('month', r.block_time) as block_month,
         date_trunc('day', r.block_time) as block_date,
-        ct.contract_address,
+        ct.address as contract_address,
         t.hash, t."from" AS tx_from
         , AVG( COALESCE(t.l1_fee,0)/1e18
                 + (
