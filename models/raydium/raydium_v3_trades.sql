@@ -108,7 +108,7 @@
         {% if is_incremental() %}
         AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
-        AND sp.block_time >= TIMESTAMP '{{project_start_date}}'
+        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
     
