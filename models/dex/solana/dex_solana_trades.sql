@@ -3,17 +3,18 @@
         tags = ['dunesql'],
         schema = 'dex_solana',
         alias = alias('trades'),
-        -- partition_by = ['block_month'],
         materialized = 'view',
-        -- file_format = 'delta',
-        -- incremental_strategy = 'merge',
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
-        -- pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "dex",
                                     \'["ilemi"]\') }}')
 }}
+
+-- partition_by = ['block_month'],
+-- file_format = 'delta',
+-- incremental_strategy = 'merge',
+-- unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+-- pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
 
 {% set solana_dexes = [
     ref('orca_whirlpool_trades')
