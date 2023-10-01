@@ -3,9 +3,9 @@
         tags=['dunesql'],
         alias = alias('dex_pools'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\', 
-        "sector", 
-        "labels", 
-        \'["hildobby"]\') }}'
+                    "sector",
+                    "labels",
+                    \'["hildobby"]\') }}'
     )
 }}
 

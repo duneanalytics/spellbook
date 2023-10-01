@@ -195,3 +195,54 @@ models:
       - &trade_direction
         name: trade_direction
         description: "trade direction (long or short)"
+
+  - name: tigris_trades_pnl
+    meta:
+      blockchain: polygon, arbitrum
+      project: tigris
+      contributors: Henrystats
+    config:
+      tags: ['polygon', 'arbitrum', 'tigris', 'trades', 'perps', 'dex']
+    description: >
+        tigirstrades pnl on arbitrum & polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_block_time
+            - evt_tx_hash
+            - position_id 
+            - trade_type
+            - positions_contract
+            - protocol_version
+    columns:
+      - *blockchain
+      - *day
+      - *evt_block_time
+      - *evt_index
+      - *evt_tx_hash
+      - *position_id
+      - *price
+      - *new_margin
+      - *leverage
+      - *volume_usd 
+      - *margin_asset
+      - *pair
+      - *direction
+      - *referral
+      - *trader
+      - *margin_change
+      - *trade_type
+      - *version
+      - *project_contract_address
+      - *positions_contract
+      - *block_month
+      - *protocol_version
+      - &pnl
+        name: pnl
+        description: "profit and loss of trade"
+      - &wins
+        name: wins
+        description: "was trade a win?"
+      - &losses
+        name: losses
+        description: "was trade a loss?"
