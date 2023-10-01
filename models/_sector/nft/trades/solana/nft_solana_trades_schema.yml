@@ -134,6 +134,18 @@ models:
      - &royalty_fee_percentage
        name: royalty_fee_percentage
        description: "Royalty fee in % of the amount paid for a given trade"
+     - &amm_fee_amount_raw
+       name: amm_fee_amount_raw
+       description: "Raw numerical amount for amm fees"
+     - &amm_fee_amount
+       name: amm_fee_amount
+       description: "amm fee amount in original token currency (properly formatted in decimals)"
+     - &amm_fee_amount_usd
+       name: amm_fee_amount_usd
+       description: "amm fee amount in USD"
+     - &amm_fee_percentage
+       name: amm_fee_percentage
+       description: "amm fee in % of the amount paid for a given trade"
      - &unique_trade_id
        name: unique_trade_id
        description: "Unique trade ID"
