@@ -300,13 +300,13 @@ uni_v2_swap_raw as (
         , s.block_time
         , s.contract_address AS maker
         , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
-        , z.taker_token as token0
-        , z.maker_token as token1
+        , z.taker_token as token1
+        , z.maker_token as token0
         , bytearray_to_uint256(bytearray_substring(DATA, 13, 20)) as amount0In
         , bytearray_to_uint256(bytearray_substring(DATA, 45, 20)) as amount1In
         , bytearray_to_uint256(bytearray_substring(DATA, 77, 20)) as amount0Out
         , bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) as amount1Out
-        , 'direct_uniswapv2' AS TYPE
+        , 'direct_uniswapv2' AS type
         , z.affiliate_address AS affiliate_address
         , TRUE AS swap_flag
         , FALSE AS matcha_limit_order_flag
@@ -320,19 +320,41 @@ uni_v2_swap_raw as (
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
     
+),
+
+uni_v2_swap AS (
+    SELECT
+        raw.tx_hash,
+        raw.evt_index,
+        raw.contract_address,
+        raw.block_time,
+        raw.maker,
+        raw.taker,
+        amount0In,
+        amount0Out,
+        amount1In,
+        amount1Out,
+        CASE WHEN raw.amount0In > raw.amount0Out THEN raw.token0 ELSE raw.token1 END AS taker_token,
+        CASE WHEN raw.amount0In > raw.amount0Out THEN raw.token1 ELSE raw.token0 END AS maker_token,
+        CASE
+            WHEN raw.amount0In > raw.amount0Out THEN
+                CASE WHEN raw.amount0In >= raw.amount0Out THEN cast(raw.amount0In - raw.amount0Out as uint256) ELSE uint256 '0' END
+            ELSE
+                CASE WHEN raw.amount1In >= raw.amount1Out THEN cast(raw.amount1In - raw.amount1Out as uint256) ELSE uint256 '0' END
+        END AS taker_token_amount_raw,
+        CASE
+            WHEN raw.amount0In > raw.amount0Out THEN
+                CASE WHEN raw.amount1Out >= raw.amount1In THEN cast(raw.amount1Out - raw.amount1In as uint256) ELSE uint256 '0' END
+            ELSE
+                CASE WHEN raw.amount0Out >= raw.amount0In THEN cast(raw.amount0Out - raw.amount0In as uint256) ELSE uint256 '0' END
+        END AS maker_token_amount_raw,
+        raw.type,
+        raw.affiliate_address,
+        raw.swap_flag,
+        raw.matcha_limit_order_flag
+    FROM uni_v2_swap_raw raw
 )
-, uni_v2_swap as (
-    SELECT *
-        ,CASE WHEN amount0Out = UINT256 '0'
-            THEN amount1Out ELSE amount0Out
-        END AS maker_token_amount_raw
-        ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0'
-            THEN amount1In ELSE amount0In
-        END AS taker_token_amount_raw
-        ,token1 AS taker_token
-        ,token0 AS maker_token
-    FROM uni_v2_swap_raw
-)
+
 , uni_v2_pair_creation as (
     SELECT
         bytearray_substring(data,13,20) as pair,
@@ -350,26 +372,22 @@ uni_v2_swap_raw as (
    
 ) , 
 direct_uniswapv2 as (
-
-select s.tx_hash, 
-    s.evt_index,
-    s.contract_address,
-    s.block_time,
-    maker, 
-    taker,
-    takerToken taker_token,
-    makerToken maker_token,
-    taker_token_amount_raw,
-    maker_token_amount_raw,
-    type,
-    affiliate_address,
-    swap_flag,
-    matcha_limit_order_flag
-
-from uni_v2_swap s 
-
-join uni_v2_pair_creation creation on s.contract_address = creation.pair 
-where rnk = 1 
+    select s.tx_hash,
+        s.evt_index,
+        s.contract_address,
+        s.block_time,
+        maker,
+        taker,
+        CASE WHEN s.amount0In > s.amount0Out THEN takerToken ELSE makerToken END AS taker_token,
+        CASE WHEN s.amount0In > s.amount0Out THEN makerToken ELSE takerToken END AS maker_token,taker_token_amount_raw,
+        maker_token_amount_raw,
+        type,
+        affiliate_address,
+        swap_flag,
+        matcha_limit_order_flag
+    from uni_v2_swap s
+    join uni_v2_pair_creation creation on s.contract_address = creation.pair
+    where rnk = 1
 ),  
 
 all_tx AS (
