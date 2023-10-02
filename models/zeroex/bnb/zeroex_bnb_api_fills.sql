@@ -300,8 +300,8 @@ uni_v2_swap_raw as (
         , s.block_time
         , s.contract_address AS maker
         , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
-        , z.taker_token
-        , z.maker_token
+        , z.taker_token as token0
+        , z.maker_token as token1
         , bytearray_to_uint256(bytearray_substring(DATA, 13, 20)) as amount0In
         , bytearray_to_uint256(bytearray_substring(DATA, 45, 20)) as amount1In
         , bytearray_to_uint256(bytearray_substring(DATA, 77, 20)) as amount0Out
@@ -329,6 +329,12 @@ uni_v2_swap_raw as (
         ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0'
             THEN amount1In ELSE amount0In
         END AS taker_token_amount_raw
+        ,CASE WHEN amount0Out = UINT256 '0'
+            THEN token1 ELSE token0
+        END AS maker_token
+        ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0'
+            THEN token1 ELSE token0
+        END AS taker_token
     FROM uni_v2_swap_raw
 )
 , uni_v2_pair_creation as (
