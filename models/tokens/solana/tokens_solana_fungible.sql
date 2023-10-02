@@ -1,7 +1,7 @@
 {{ config
 (
   alias = alias('fungible'),
-  tags=['static','dunesql'],
+  tags=['dunesql'],
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens",
