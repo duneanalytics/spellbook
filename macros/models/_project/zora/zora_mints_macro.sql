@@ -23,15 +23,17 @@ WITH zora_mints AS (
         AND f.evt_tx_hash=s.evt_tx_hash
         AND f.success
         AND s.pricePerToken > CAST(0 AS UINT256)
+        AND 1=2 -- bricking join for testing
     LEFT JOIN {{erc721_zora_transfers}} t ON t.evt_block_number=s.evt_block_number
         AND t.evt_tx_hash=s.evt_tx_hash
         AND t.contract_address=s.contract_address
         AND t.tokenId=s.firstPurchasedTokenId+1
-    LEFT JOIN {{ source(blockchain, 'traces') }} traces ON traces.block_number=s.evt_block_number
+        AND 1=2 -- bricking join for testing
+    /*LEFT JOIN {{ source(blockchain, 'traces') }} traces ON traces.block_number=s.evt_block_number
         AND traces.tx_hash=s.evt_tx_hash
         AND traces."from"=s.evt_tx_hash
         AND traces.value > CAST(0 AS UINT256)
-        AND (traces.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR traces.call_type IS null)
+        AND (traces.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR traces.call_type IS null)*/
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
