@@ -1,7 +1,6 @@
 {{ config(
     tags=['dunesql']
     , alias = alias('pool_incentives_rates')
-    , partition_by = ['block_month']
     , materialized = 'table'
     )
 }}
@@ -74,7 +73,6 @@ WITH last_block AS (
 
 , joined as (
         SELECT DATE_TRUNC('day', e.evt_block_time)                                                            AS block_date
-             , CAST(DATE_TRUNC('month', e.evt_block_time) AS DATE)                                            AS block_month
              , e.evt_block_number
              , e.evt_block_time
              , COALESCE(pu.contract_address, ru.contract_address)                                             AS contract_address
@@ -98,7 +96,6 @@ WITH last_block AS (
 
 
 SELECT block_date
-     , block_month
      , 'optimism'                                                                                      AS blockchain
      , evt_block_time
      , evt_block_number
