@@ -226,7 +226,31 @@ seeds:
   - name: magiceden_solana_base_trades_seed
     config:
       tags: dunesql
+      column_types:
+        block_slot: uint256
+        tx_id: varchar
+        buyer: varchar
+        seller: varchar
+        outer_instruction_index: uint256
+        inner_instruction_index: uint256
+        account_mint: varchar
+        amount_raw: uint256
+        taker_fee_amount_raw: uint256
+        maker_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
 
   - name: tensorswap_solana_base_trades_seed
     config:
       tags: dunesql
+      column_types:
+        block_slot: uint256
+        tx_id: varchar
+        buyer: varchar
+        seller: varchar
+        outer_instruction_index: uint256
+        inner_instruction_index: uint256
+        account_mint: varchar
+        amount_raw: uint256
+        taker_fee_amount_raw: uint256
+        maker_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
