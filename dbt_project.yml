@@ -110,20 +110,6 @@ models:
 
     dex:
       +schema: dex
-      ethereum:
-        +schema: dex_ethereum
-      optimism:
-        +schema: dex_optimism
-      arbitrum:
-        +schema: dex_arbitrum
-      avalanche_c:
-        +schema: dex_avalanche_c
-      bnb:
-        +schema: dex_bnb
-      gnosis:
-        +schema: dex_gnosis
-      fantom:
-        +schema: dex_fantom
 
     airdrop:
       +schema: airdrop
@@ -274,6 +260,8 @@ models:
         +schema: uniswap_bnb
       base:
         +schema: uniswap_base
+      celo:
+        +schema: uniswap_celo
 
     timeswap:
       +schema: timeswap
@@ -312,6 +300,11 @@ models:
       +schema: nomiswap
       bnb:
         +schema: nomiswap_bnb
+
+    opx_finance:
+      +schema: opx_finance
+      optimism:
+        +schema: opx_finance_optimism
 
     zodiac:
       +schema: zodiac
@@ -357,6 +350,8 @@ models:
         +schema: sushiswap_bnb
       base:
         +schema: sushiswap_base
+      celo:
+        +schema: sushiswap_celo
 
     zerion:
       +schema: zerion
@@ -410,9 +405,8 @@ models:
       optimism:
         +schema: opensea_optimism
 
-
-#    abi:
-#      +schema: abi
+    abi:
+      +schema: abi
 
     gas:
       +schema: gas
@@ -483,6 +477,12 @@ models:
       +schema: balances
       ethereum:
         +schema: balances_ethereum
+      arbitrum:
+        +schema: balances_arbitrum
+      bnb:
+        +schema: balances_bnb
+      polygon:
+        +schema: balances_polygon
 
     dodo:
       +schema: dodo
@@ -820,8 +820,6 @@ models:
 
     keep3r_network:
       +schema: keep3r_network
-      ethereum:
-        +schema: keep3r_network_ethereum
 
     airswap:
       +schema: airswap
@@ -933,7 +931,9 @@ models:
       ethereum:
         +schema: pancakeswap_ethereum
       arbitrum:
-        +schema: pancakeswap_arbitrum  
+        +schema: pancakeswap_arbitrum
+      base:
+        +schema: pancakeswap_base 
 
     bancor:
       +schema: bancor
@@ -1040,6 +1040,8 @@ models:
         +schema: zeroex_arbitrum
       bnb:
         +schema: zeroex_bnb
+      celo:
+        +schema: zeroex_celo
 
 
     ampleforth:
@@ -1284,9 +1286,6 @@ models:
       ethereum:
         +schema: pooltogether_ethereum
 
-    method_ids:
-      +schema: method_ids
-
     coinbase_wallet_quests:
       +schema: coinbase_wallet_quests
       optimism:
@@ -1419,3 +1418,8 @@ models:
       +schema: worldcoin
       optimism:
         +schema: worldcoin_optimism
+    
+    aerodrome:
+      +schema: aerodrome
+      base:
+        +schema: aerodrome_base
