@@ -164,4 +164,5 @@ close_liquidate_pnl as (
         AND cl.evt_tx_hash = p.evt_tx_hash 
         AND cl.blockchain = p.blockchain
 )
+
 SELECT * FROM close_liquidate_pnl
