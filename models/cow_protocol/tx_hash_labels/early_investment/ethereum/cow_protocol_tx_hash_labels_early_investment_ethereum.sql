@@ -38,12 +38,12 @@ with
     ) t join project_starts p on t.token_bought_address = p.token_bought_address
     where
         -- <=30 days deemed to be considered an early investment.
-        date_diff(t.block_date, p.project_start) <= 30
+        date_diff('day', t.block_date, p.project_start) <= 30
  )
 
 select
   'ethereum' as blockchain,
-  concat(CAST(tx_hash AS VARCHAR), evt_index, project, version) as tx_hash_key,
+  concat(CAST(tx_hash AS VARCHAR), cast(evt_index as varchar), project, version) as tx_hash_key,
   'Early investment' AS name,
   'tx_hash' AS category,
   'gentrexha' AS contributor,

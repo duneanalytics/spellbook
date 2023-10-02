@@ -26,7 +26,7 @@ with
 
 select
   'ethereum' as blockchain,
-  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR), project, version) as tx_hash_key,
   'Stable to stable' AS name,
   'tx_hash' AS category,
   'gentrexha' AS contributor,
