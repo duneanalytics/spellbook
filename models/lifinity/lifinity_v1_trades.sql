@@ -88,6 +88,10 @@ WITH
             , case when tk_1.token_mint_address = p.tokenA then p.tokenAVault 
                 else p.tokenBVault
                 end as token_sold_vault
+            --swap out can be either 2nd or 3rd transfer, we need to filter for the first transfer out.
+            , tr_2.call_inner_instruction_index as transfer_out_index
+            , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index 
+                                order by COALESCE(tr_2.call_inner_instruction_index, 0) asc) as first_transfer_out
         FROM {{ source('lifinity_amm_solana', 'lifinity_amm_call_swap') }} sp
         INNER JOIN pools p
             ON sp.account_amm = p.pool_id --account 2
@@ -167,4 +171,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+WHERE first_transfer_out = 1
 -- WHERE tb.block_time > now() - interval '180' day
