@@ -122,6 +122,7 @@ models:
       - *block_day
       - *token_address
       - name: number_new_wallets
+        description: "Number of new wallets"
       - name: volumn_new_wallets
       - name: price
       - name: symbol
