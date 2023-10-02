@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+	    schema = 'nft_ethereum',
         alias = alias('native_mints', legacy_model=True),
 		materialized = 'incremental',
 		file_format = 'delta',

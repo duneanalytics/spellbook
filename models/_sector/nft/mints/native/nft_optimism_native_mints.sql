@@ -1,14 +1,12 @@
 {{ config(
         tags = ['dunesql'],
+        schema = 'nft_optimism',
         alias = alias('native_mints'),
         partition_by = ['block_month'],
 		file_format = 'delta',
 		incremental_strategy = 'merge',
-        unique_key = ['tx_hash','evt_index','token_id','number_of_items'],
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["chuxin"]\') }}')
+        unique_key = ['tx_hash','evt_index','token_id','number_of_items']
+        )
 }}
 {% set eth_address = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' %}
 
@@ -37,7 +35,7 @@ with namespaces as (
     nfts_per_tx_tmp
 )
 
-SELECT 
+SELECT
 blockchain
 , project
 , version
@@ -77,12 +75,12 @@ blockchain
 , royalty_fee_amount_usd
 , royalty_fee_percentage
 , evt_index
-FROM 
+FROM
 (
-SELECT 
-    *, 
+SELECT
+    *,
     ROW_NUMBER() OVER (PARTITION BY tx_hash, evt_index, token_id, number_of_items ORDER BY amount_usd DESC NULLS LAST) as rank_index
-FROM 
+FROM
 (
 select
     'optimism' as blockchain
@@ -181,6 +179,6 @@ where
     , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
     , nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
     , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, tr.tx_hash
-) tmp 
+) tmp
 ) tmp_2
-WHERE rank_index = 1 
+WHERE rank_index = 1
