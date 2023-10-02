@@ -46,12 +46,14 @@ FROM (
         INNER JOIN {{ ref('evms_creation_traces') }} ct --ensure it's a contract
                 ON ct.blockchain = r.blockchain
                 AND ct.address = r.to
+                AND r.block_time >= ct.block_time
         INNER JOIN {{ ref('evms_transactions') }} t
                 ON 1=1
                 AND t.blockchain = r.blockchain AND t.blockchain = ct.blockchain
                 AND t.block_number = r.block_number
                 AND t.block_time = r.block_time
                 AND t.hash = r.tx_hash
+                AND t.block_time >= ct.block_time
                 {% if is_incremental() %}
                 AND t.block_time >= NOW() - interval '7' day
                 {% endif %}
