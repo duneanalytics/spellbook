@@ -1,25 +1,30 @@
 {{
     config(
+        tags = ['dunesql'],
         alias = alias('vebal_votes'),
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
-                                    \'["markusbkoch", "mendesfabio", "stefenon"]\') }}'
+                                    \'["markusbkoch", "mendesfabio", "stefenon", "viniabussafi"]\') }}'
     )
 }}
 
-WITH calendar AS (
-        SELECT explode(sequence(to_date('2022-04-07'), CURRENT_DATE, interval 1 week)) AS start_date
+WITH weeks_seq AS (
+        SELECT sequence(CAST('2022-04-07' AS timestamp), cast(now() as timestamp), interval '7' day) as week
+    ),
+
+    calendar AS (
+        SELECT weeks.week AS start_date FROM weeks_seq CROSS JOIN unnest(week) as weeks(week)
     ),
     
     rounds_info AS (
         SELECT
             start_date,
-            unix_timestamp(start_date) AS start_timestamp,
-            date_add(start_date, 7) AS end_date,
-            unix_timestamp(date_add(start_date, 7)) AS end_timestamp,
+            to_unixtime(start_date) AS start_timestamp,
+            start_date + interval '7' day AS end_date,
+            to_unixtime(start_date + interval '7' day) AS end_timestamp,
             row_number() OVER (ORDER BY start_date) AS round_id
         FROM calendar
     ),
@@ -31,7 +36,7 @@ WITH calendar AS (
             d.block_number,
             v.user AS provider,
             gauge_addr AS gauge,
-            weight / 1e4 AS weight,
+            CAST(weight AS DOUBLE) / 1e4 AS weight,
             unlocked_at,
             slope,
             bias
@@ -111,7 +116,7 @@ WITH calendar AS (
         LEFT JOIN votes_with_gaps v
         ON v.round_id <= r.round_id
         AND r.round_id < v.next_round
-        AND r.end_timestamp <= v.unlocked_at
+        AND r.end_timestamp <= CAST(v.unlocked_at AS DOUBLE)
         ORDER BY provider, gauge, round_id
     )
     
@@ -123,4 +128,3 @@ SELECT
     provider,
     ((bias - slope * (end_timestamp - block_timestamp)) * weight) AS vote 
 FROM running_votes
-;
