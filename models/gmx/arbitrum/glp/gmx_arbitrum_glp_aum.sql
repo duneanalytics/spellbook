@@ -1,6 +1,6 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('glp_aum'),
-        partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -45,7 +45,7 @@ SELECT -- This query calculates the AUM of each component of GLP
     dai_available_assets * dai_current_price AS dai_aum
 FROM {{ref('gmx_arbitrum_glp_components')}}
 {% if is_incremental() %}
-WHERE minute >= date_trunc("day", now() - interval '1 day')
+WHERE minute >= date_trunc('day', now() - interval '1 day')
 {% endif %}
 {% if not is_incremental() %}
 WHERE minute >= '{{project_start_date}}'

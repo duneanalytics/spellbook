@@ -1,7 +1,7 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('glp_components'),
         materialized = 'incremental',
-        partition_by = ['block_date'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
@@ -17,10 +17,10 @@
 with minute as -- This CTE generates a series of minute values
          (
             {% if not is_incremental() %}
-            SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+            SELECT minute from unnest(sequence(TIMESTAMP '{{project_start_date}}',TIMESTAMP CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS _u(minute)
             {% endif %}
             {% if is_incremental() %}
-            SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+            SELECT minute from unnest(sequence(date_trunc('day', now() - interval '7' day), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS _u(minute)
             {% endif %}
          ),
      token as -- This CTE create tokens which in GLP pool on Avalanche
@@ -30,13 +30,13 @@ with minute as -- This CTE generates a series of minute values
                     decimals
              from (
                       values
-                          ('0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e', 'USDC', 6.0),
-                          ('0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 'WETH.e', 18.0),
-                          ('0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 'USDC.e', 6.0),
-                          ('0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7', 'WAVAX', 18.0),
-                          ('0x50b7545627a5162f82a992c33b87adc75187b218', 'WBTC.e', 8.0),
-                          ('0x130966628846bfd36ff31a822705796e8cb8c18d', 'MIM', 18.0),
-                          ('0x152b9d0fdc40c096757f570a51e494bd4b943e50', 'BTC.b', 8.0) )
+                          (0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e, 'USDC', 6.0),
+                          (0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab, 'WETH.e', 18.0),
+                          (0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664, 'USDC.e', 6.0),
+                          (0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7, 'WAVAX', 18.0),
+                          (0x50b7545627a5162f82a992c33b87adc75187b218, 'WBTC.e', 8.0),
+                          (0x130966628846bfd36ff31a822705796e8cb8c18d, 'MIM', 18.0),
+                          (0x152b9d0fdc40c096757f570a51e494bd4b943e50, 'BTC.b', 8.0) )
                       as t(token, symbol, decimals)
          ),
      minute_token as -- This CTE combine tokens and a series of minute values
@@ -54,10 +54,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_poolAmounts')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -75,10 +75,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_reservedAmounts')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -96,10 +96,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_guaranteedUsd')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -117,10 +117,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_getMaxPrice')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -138,10 +138,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_getMinPrice')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -160,10 +160,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_globalShortAveragePrices')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,
@@ -181,10 +181,10 @@ with minute as -- This CTE generates a series of minute values
                  FROM {{source('gmx_avalanche_c', 'Vault_call_globalShortSizes')}}
                  where call_success = true
                  {% if is_incremental() %}
-                 AND call_block_time >= date_trunc("day", now() - interval '1 week')
+                 AND call_block_time >= date_trunc('day', now() - interval '7' day)
                  {% endif %}
                  {% if not is_incremental() %}
-                 AND call_block_time >= '{{project_start_date}}'
+                 AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                  {% endif %}
              )
              select block_minute,

@@ -1,6 +1,6 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('glp_float'),
-        partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -20,10 +20,10 @@ WITH minute AS  -- This CTE generates a series of minute values
     FROM
         (
         {% if not is_incremental() %}
-        SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        SELECT minute from unnest(sequence(TIMESTAMP '{{project_start_date}}',TIMESTAMP CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS _u(minute) -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         {% endif %}
         {% if is_incremental() %}
-        SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
+        SELECT minute from unnest(sequence(date_trunc('day', now() - interval '7' day), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS _u(minute)
         {% endif %}
         )
     ),
@@ -54,7 +54,7 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
             WHERE evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
             UNION
@@ -67,7 +67,7 @@ glp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP co
             WHERE evt_block_time >= '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             ) a
         GROUP BY a.minute
@@ -97,7 +97,7 @@ FROM
         WHERE minute >= '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        WHERE minute >= date_trunc("day", now() - interval '1 week')
+        WHERE minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         ) b
         ON a.minute = b.minute
