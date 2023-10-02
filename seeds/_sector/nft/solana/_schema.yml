@@ -1,0 +1,10 @@
+version: 2
+
+seeds:
+  - name: magiceden_solana_trades_seed
+    config:
+      tags: dunesql
+
+  - name: tensorswap_solana_trades_seed
+    config:
+      tags: dunesql
