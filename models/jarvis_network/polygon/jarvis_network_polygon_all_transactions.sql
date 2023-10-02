@@ -59,7 +59,7 @@ FROM
             user,
             recipient,
             CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.numTokens')  AS UINT256) AS jfiat_token_amount,
-            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.collateralAmount') AS UINT256)  AS collateral_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.totalCollateral') AS UINT256)  AS collateral_token_amount,
             CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.exchangeAmount') AS UINT256)  AS net_collateral_amount,
             CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.feeAmount') AS UINT256)  AS fee_amount,
             evt_tx_hash,
