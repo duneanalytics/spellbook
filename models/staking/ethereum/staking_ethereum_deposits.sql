@@ -21,8 +21,8 @@ WITH deposit_events AS (
     , from_big_endian_64(reverse(d.index)) AS deposit_index
     , d.pubkey
     , d.signature
-    , substring(CAST(d.withdrawal_credentials AS varchar), 1, 4) AS withdrawal_credentials_type
-    , CASE WHEN substring(CAST(d.withdrawal_credentials AS varchar), 1, 4) = '0x01' THEN substr(d.withdrawal_credentials, -20)
+    , CASE WHEN bytearray_position(d.withdrawal_credentials, from_hex('0x01')) = 1 THEN from_hex('0x01') ELSE from_hex('0x00') END AS withdrawal_credentials_type
+    , CASE WHEN bytearray_position(d.withdrawal_credentials, from_hex('0x01')) = 1 THEN bytearray_substring(d.withdrawal_credentials, 13)
         ELSE NULL
         END AS withdrawal_address
     , d.withdrawal_credentials
