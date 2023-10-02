@@ -95,7 +95,7 @@ methods as (
         , transfers.native_token
         , transfers.transfer_from
         , transfers.transfer_to
-        , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
+        -- , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
         , if(
             coalesce(transfers.transfer_from, transfers.transfer_to) is not null
             , count(*) over(partition by calls.blockchain, calls.tx_hash, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
