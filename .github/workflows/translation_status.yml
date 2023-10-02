@@ -23,8 +23,8 @@ jobs:
       - name: Install Python dependencies
         run: "pip install requests"
       
-      - name: DBT compile to create prod manifest from main
-        run: "dbt parse --target-path . --profiles-dir $HOME/.dbt --profile dunesql"
+      - name: Create Manifest with dbt parse
+        run: "dbt parse --target-path ."
 
       - name: Upload translation status CSV to Dune
         env:
