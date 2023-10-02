@@ -222,3 +222,11 @@ seeds:
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
 
+  # solana seeds below here
+  - name: magiceden_solana_trades_seed
+    config:
+      tags: dunesql
+
+  - name: tensorswap_solana_trades_seed
+    config:
+      tags: dunesql
