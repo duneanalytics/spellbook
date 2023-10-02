@@ -658,9 +658,9 @@ WITH curated_list AS (
       ,(0x9E7a882fF45C4a5EcC9BAdbFbC775c3e68c62F32, 'Swapsicle') --WooStakingProxy
       ,(0x51150F973c2b0537642f5AE8911A49567598808f, 'Toros')
       ,(0x8cA573430Fd584065C080fF1d2eA1a8DfB259Ae8, 'Revest Finance')
-      ,(0x225114369fA6b133400A4BB86d08c62044387266, "HashDao Finance") 
-      ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, "Woo Network") --SuperChargerVault
-      ,(0x2C47d8232B11156dF8324f13F13C112770a98b80, "Interport Finance")
+      ,(0x225114369fA6b133400A4BB86d08c62044387266, 'HashDao Finance') 
+      ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, 'Woo Network') --SuperChargerVault
+      ,(0x2C47d8232B11156dF8324f13F13C112770a98b80, 'Interport Finance')
 
   ) as temp_table (creator_address, contract_project)
 )
