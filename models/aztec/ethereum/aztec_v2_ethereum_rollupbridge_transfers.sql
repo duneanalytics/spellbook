@@ -2,7 +2,6 @@
     tags=['dunesql'],
     schema = 'aztec_v2_ethereum',
     alias = alias('rollupbridge_transfers'),
-    partition_by = ['evt_block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -159,7 +158,6 @@ tfers_categorized as (
         SELECT 
             t.*, 
             date_trunc('day', t.evt_block_time) as evt_block_date,
-            cast(date_trunc('month', t.evt_block_time) as date) as evt_block_month,
             tk.symbol, 
             tk.decimals, 
             t.value / POW(10, coalesce(tk.decimals, 18)) as value_norm,
