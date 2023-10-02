@@ -174,7 +174,7 @@ with
     , raw_nft_trades as (
         SELECT
             'solana' as blockchain
-            , 'tensor' as project
+            , 'tensorswap' as project
             , 'v1' as version
             , t.call_block_time as block_time
             , tk.token_name

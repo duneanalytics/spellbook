@@ -66,6 +66,7 @@ with
     , trades as (
         SELECT
             case when account_buyer = call_tx_signer then 'buy' else 'sell' end as trade_category
+            --price should include all fees paid by user
             , buyerPrice 
                 + coalesce(coalesce(takerFeeBp,takerFeeRaw)/1e4*buyerPrice,0) 
                 --if maker fee is negative then it is paid out of taker fee. else it comes out of taker (user) wallet
@@ -74,7 +75,6 @@ with
                     else 0
                     end
                 + coalesce(rl.royalty,0) as price 
-                --price should include all fees.
             , makerFeeBp
             , takerFeeBp
             , makerFeeRaw
