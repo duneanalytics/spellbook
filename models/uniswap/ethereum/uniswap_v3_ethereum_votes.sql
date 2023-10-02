@@ -32,7 +32,7 @@ SELECT
     CAST(date_trunc('month', vc.evt_block_time) AS date) AS block_month,
     vc.evt_tx_hash as tx_hash,
     '{{dao_name}}' as dao_name,
-    '{{dao_address}}' as dao_address,
+    {{dao_address}} as dao_address,
     vc.proposalId as proposal_id,
     vc.votes/1e18 as votes,
     (votes/1e18) * (100) / (csv.sum_votes) as votes_share,
