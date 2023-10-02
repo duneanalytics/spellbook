@@ -76,7 +76,7 @@
             -- these are cast to varchar to unify column types, note this is only for displaying them in the test results
             cast(model_{{checked_column}} as varchar) as result_model,
             cast(seed_{{checked_column}} as varchar) as expected_seed,
-            (model_{{checked_column}} = seed_{{checked_column}}) as equality_check,
+            (model_{{checked_column}} IS NOT DISTINCT FROM seed_{{checked_column}}) as equality_check,
             {%- for column_name in seed_matching_columns %}
             seed_{{column_name}} as {{column_name}}{% if not loop.last %},{% endif %}
             {% endfor -%}

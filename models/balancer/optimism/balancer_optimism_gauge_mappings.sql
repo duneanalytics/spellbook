@@ -1,6 +1,7 @@
 {{
     config(
         schema = 'balancer_optimism',
+        tags = ['dunesql'],
         alias = alias('gauge_mappings'),
         materialized = 'incremental',
         file_format = 'delta',
@@ -21,14 +22,14 @@ SELECT distinct
 FROM (
 SELECT pool, gauge, evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index FROM {{ source ('balancer_optimism', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= NOW() - interval '1 week'
+WHERE evt_block_time >= NOW() - interval '7' day
 {% endif %}
 
 UNION ALL
 
 SELECT pool, gauge, evt_block_time, evt_block_number, contract_address, evt_tx_hash, evt_index FROM {{ source ('balancer_v2_optimism', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= NOW() - interval '1 week'
+WHERE evt_block_time >= NOW() - interval '7' day
 {% endif %}
 ) a
 LEFT JOIN {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} tw

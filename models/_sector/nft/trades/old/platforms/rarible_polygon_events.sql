@@ -74,7 +74,7 @@ WITH trades AS (
         p.call_block_number AS evt_block_number,
         p.call_tx_hash AS evt_tx_hash,
         p.contract_address,
-        CAST(null as integer) AS evt_index,
+        CAST(1 as integer) AS evt_index,
         'Trade' AS evt_type,
         t."from" AS buyer, --p.direct:nftData
         from_hex(json_extract_scalar(p.direct,'$.sellOrderMaker')) AS seller,
@@ -112,7 +112,7 @@ WITH trades AS (
         p.call_block_number AS evt_block_number,
         p.call_tx_hash AS evt_tx_hash,
         p.contract_address,
-        CAST(null as integer) AS evt_index,
+        CAST(1 as integer) AS evt_index,
         'Trade' AS evt_type,
         from_hex(json_extract_scalar(p.direct,'$.bidMaker')) AS buyer,
         t."from" AS seller,
@@ -205,7 +205,6 @@ SELECT
   'rarible' AS project,
   'v2' AS version,
   a.evt_tx_hash AS tx_hash,
-  date_trunc('day', a.evt_block_time) AS block_date,
   a.evt_block_time AS block_time,
   a.evt_block_number AS block_number,
   coalesce(s.amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS amount_usd,
@@ -236,8 +235,8 @@ SELECT
   CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) as double) AS royalty_fee_amount,
   CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
   CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
-  0x AS royalty_fee_receive_address,
-  0x AS royalty_fee_currency_symbol,
+  cast(null as varbinary) AS royalty_fee_receive_address,
+  cast(null as varchar) AS royalty_fee_currency_symbol,
   cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_index as varchar) AS unique_trade_id
 FROM trades a
 INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number

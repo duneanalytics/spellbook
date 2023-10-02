@@ -33,9 +33,9 @@ WITH blur_v2_trades AS (
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
-    
+
     UNION ALL
-    
+
     SELECT evt_tx_hash AS tx_hash
     , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price_raw
     , evt_block_time AS block_time
@@ -49,16 +49,16 @@ WITH blur_v2_trades AS (
     , bytearray_to_uint256(bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),1,11)) AS nft_token_id
     , bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),13,20) AS trader
     , CAST(bitwise_right_shift(makerFeeRecipientRate, 160) AS double)/10000 AS fee
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(makerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
+    , bytearray_substring(cast(makerFeeRecipientRate as varbinary),13,20) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721MakerFeePacked') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
-    
+
     UNION ALL
-    
+
     SELECT evt_tx_hash AS tx_hash
     , bytearray_to_uint256(bytearray_substring(cast(collectionPriceSide as varbinary),2,11)) AS price_raw
     , evt_block_time AS block_time
@@ -72,7 +72,7 @@ WITH blur_v2_trades AS (
     , bytearray_to_uint256(bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),1,11)) AS nft_token_id
     , bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),13,20) AS trader
     , CAST(bitwise_right_shift(takerFeeRecipientRate, 160) AS double)/10000 AS fee
-    , from_hex('0x' || LOWER("RIGHT"(CAST(to_hex(CAST(takerFeeRecipientRate AS varbinary)) AS varchar), 40))) AS royalty_fee_address
+    , bytearray_substring(cast(takerFeeRecipientRate as varbinary),13,20) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721TakerFeePacked') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
