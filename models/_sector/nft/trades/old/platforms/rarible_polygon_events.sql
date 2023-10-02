@@ -205,7 +205,6 @@ SELECT
   'rarible' AS project,
   'v2' AS version,
   a.evt_tx_hash AS tx_hash,
-  date_trunc('day', a.evt_block_time) AS block_date,
   a.evt_block_time AS block_time,
   a.evt_block_number AS block_number,
   coalesce(s.amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS amount_usd,

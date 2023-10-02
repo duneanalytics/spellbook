@@ -1,89 +1,11 @@
 version: 2
 
 models:
-#   - name: oneinch_bnb_calls_transfers
-#     meta:
-#       blockchain: ['bnb']
-#       sector: oneinch
-#       contributors: ['grkhr', 'Max-Morrow']
-#     config:
-#       tags: ['oneinch', 'raw']
-#     description: >
-#         oneinch bnb calls & transfers
-
-#     columns:
-#       - &blockchain
-#         name: blockchain
-#         tests:
-#           - not_null
-#       - &block_time
-#         name: block_time
-#       - &tx_hash
-#         name: tx_hash
-#         tests:
-#           - not_null
-#       - &tx_from
-#         name: tx_from
-#       - &tx_success
-#         name: tx_success
-#       - &call_success
-#         name: call_success
-#       - &call_trace_address
-#         name: call_trace_address
-#       - &call_from
-#         name: call_from
-#       - &caller
-#         name: caller
-#       - &call_to
-#         name: call_to
-#       - &call_selector
-#         name: call_selector
-#       - &protocol
-#         name: protocol
-#       - &transfer_trace_address
-#         name: transfer_trace_address
-#       - &contract_address
-#         name: contract_address
-#       - &amount
-#         name: amount
-#       - &native_token
-#         name: native_token
-#       - &transfer_from
-#         name: transfer_from
-#       - &transfer_to
-#         name: transfer_to
-#       - &transfer_top_level
-#         name: transfer_top_level
-#       - &transfers_between_players
-#         name: transfers_between_players
-#       - &rn_tta_asc
-#         name: rn_tta_asc
-#       - &rn_tta_desc
-#         name: rn_tta_desc
-#       - &call_output
-#         name: call_output
-#       - &call_input
-#         name: call_input
-#       - &minute
-#         name: minute
-#       - &block_month
-#         name: block_month
-#         tests:
-#           - not_null
-#       - &unique_call_transfer_id
-#         name: unique_call_transfer_id
-#         tests:
-#           - unique
-#           - not_null
-
-
-
-
-  - name: oneinch_bnb_ar_calls_transfers
+  - name: oneinch_bnb_calls_transfers
     meta:
       blockchain: ['bnb']
       sector: oneinch
-      contributors: ['grkhr']
+      contributors: ['grkhr', 'Max-Morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -108,10 +30,14 @@ models:
         name: call_success
       - &call_trace_address
         name: call_trace_address
-      - &caller
-        name: caller
+      - &call_from
+        name: call_from
+      - &call_to
+        name: call_to
       - &call_selector
         name: call_selector
+      - &protocol
+        name: protocol
       - &transfer_trace_address
         name: transfer_trace_address
       - &contract_address
@@ -124,10 +50,14 @@ models:
         name: transfer_from
       - &transfer_to
         name: transfer_to
-      - &rn_ta_asc
-        name: rn_ta_asc
-      - &rn_ta_desc
-        name: rn_ta_desc
+      - &transfer_top_level
+        name: transfer_top_level
+      - &transfers_between_players
+        name: transfers_between_players
+      - &rn_tta_asc
+        name: rn_tta_asc
+      - &rn_tta_desc
+        name: rn_tta_desc
       - &call_output
         name: call_output
       - &call_input
@@ -143,3 +73,41 @@ models:
         tests:
           - unique
           - not_null
+
+
+  - name: oneinch_bnb_ar_calls_transfers
+    meta:
+      blockchain: ['bnb']
+      sector: oneinch
+      contributors: ['grkhr']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        oneinch bnb calls & transfers
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *tx_hash
+      - *tx_from
+      - *tx_success
+      - *call_success
+      - *call_trace_address
+      - &caller
+        name: caller
+      - *call_selector
+      - *transfer_trace_address
+      - *contract_address
+      - *amount
+      - *native_token
+      - *transfer_from
+      - *transfer_to
+      - &rn_ta_asc
+        name: rn_ta_asc
+      - &rn_ta_desc
+        name: rn_ta_desc
+      - *call_output
+      - *call_input
+      - *minute
+      - *block_month
+      - *unique_call_transfer_id

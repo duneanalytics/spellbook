@@ -18,7 +18,7 @@
 {% set fiews = 'Fiews' %}
 {% set inotel = 'Inotel' %}
 {% set linkpool = 'LinkPool' %}
-{% set securedatalinks = 'Secure Data Links' %}
+{% set piertwo = 'Pier Two' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set ztake = 'Ztake.org' %}
@@ -26,6 +26,7 @@
 SELECT node_address, operator_name FROM (VALUES
   (0x4FB3376d5bF6AD8947FCf737A2C7e793CC245fDa, '{{a01node}}'),
   (0xb5f0EfcB8a426ffAc5F92BbE6fCd6b4255b4E1aa, '{{a01node}}'),
+  (0x274C2FB716155e2E2a537a08205D4938199Fb32e, '{{a01node}}'),
   (0x3036c926cCc3096beCF584E7523A1a57fdebba77, '{{blockdaemon}}'),
   (0x577b17c9A02B7A360e0cf945D623D6C1ace6074c, '{{blockdaemon}}'),
   (0xE769724C9295458b026875ff964aCCb964B13D50, '{{chainlayer}}'),
@@ -40,8 +41,8 @@ SELECT node_address, operator_name FROM (VALUES
   (0x2607E6F021922A5483D64935F87e15EA797FE8d4, '{{inotel}}'),
   (0x11eB6a69A56DF3a89b99c4b1484691Af4AB0c508, '{{linkpool}}'),
   (0x6D04B8dB14B5a891f9aA1e32C093584815291551, '{{linkpool}}'),
-  (0xFc7C442154C04C31203e2b94B96fd57C44ac003D, '{{securedatalinks}}'),
-  (0x82e2dE20848E58CDDfea53Ad56cAB0471AE8BDcF, '{{securedatalinks}}'),
+  (0x82e2dE20848E58CDDfea53Ad56cAB0471AE8BDcF, '{{piertwo}}'),
+  (0xFc7C442154C04C31203e2b94B96fd57C44ac003D, '{{piertwo}}'),
   (0xC8a9A5b3517071f582b50b18633E522F6F4f38f5, '{{simplyvc}}'),
   (0x12d61a95CF55e18D267C2F1AA67d8e42ae1368f8, '{{simplyvc}}'),
   (0x9d3A9b7cadc14dA9cB57E9e9E83eD13ea1D36d40, '{{snzpool}}'),
