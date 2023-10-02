@@ -13,14 +13,15 @@
     )
 }}
 
-{%- set project_start_date = '2023-04-27' %}
+{%- set project_start_date = '2023-08-25' %}
 
 SELECT 
     ae.blockchain, 
     ae.project, 
     ae.version, 
+    'Pool to Borrower' as lending_category,
     ae.block_date, 
-    CAST(date_trunc('month', ae.block_date) as date) as block_month, 
+    ae.block_month, 
     ae.evt_block_time as block_time, 
     ae.evt_block_number as block_number, 
     ae.nft_token_id as token_id, 
@@ -28,7 +29,8 @@ SELECT
     ae.lien_amount * p.price as amount_usd, 
     ae.nft_token_standard as token_standard, 
     ae.evt_type, 
-    ae.borrower as address, 
+    ae.borrower, 
+    ae.contract_address as lender,
     ae.lien_amount as amount_original, 
     ae.lien_amount_raw as amount_raw,
     ae.lien_symbol as collateral_currency_symbol,
@@ -46,7 +48,7 @@ INNER JOIN
 {{ source('ethereum', 'transactions') }} et
     ON ae.evt_tx_hash = et.hash
     {% if not is_incremental() %}
-    AND et.block_time >= DATE '{{project_start_date}}'
+    AND et.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND et.block_time >= date_trunc('day', now() - interval '7' Day)
@@ -57,7 +59,7 @@ LEFT JOIN
     AND p.contract_address = ae.lien_token
     AND p.blockchain = 'ethereum'
     {% if not is_incremental() %}
-    AND p.minute >= DATE '{{project_start_date}}'
+    AND p.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' Day)

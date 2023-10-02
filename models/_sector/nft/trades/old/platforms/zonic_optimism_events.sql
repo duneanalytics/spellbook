@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['unique_trade_id']
     )
 }}
 {% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
@@ -157,7 +157,6 @@ select
     'optimism' as blockchain
     ,'zonic' as project
     ,'v1' as version
-    ,try_cast(date_trunc('day', er.block_time) as date) as block_date
     ,er.block_time
     ,er.token_id
     ,n.name as collection
@@ -195,7 +194,7 @@ select
     ,er.royalty_fee_amount_raw
     ,er.royalty_fee_amount_raw / power(10, t1.decimals) as royalty_fee_amount
     ,er.royalty_fee_amount_raw / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
-    ,er.royalty_fee_amount_raw / er.amount_raw * 100 as royalty_fee_percentage
+    ,er.royalty_fee_amount_raw / cast(er.amount_raw * 100 as double) as royalty_fee_percentage
     ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
     ,t1.symbol as royalty_fee_currency_symbol
     ,concat(cast(er.block_number as varchar),'-',cast(er.tx_hash as varchar),'-',cast(er.evt_index as varchar),'-', cast(er.sale_id as varchar)) as unique_trade_id

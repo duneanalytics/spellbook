@@ -1,4 +1,6 @@
-{{config(alias = alias('balancer_v2_gauges'),
+{{config(
+        tags=['dunesql'],
+        alias = alias('balancer_v2_gauges'),
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon"]\',
                                     "sector",
                                     "labels",
@@ -31,4 +33,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
