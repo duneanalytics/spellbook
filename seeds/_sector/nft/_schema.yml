@@ -235,9 +235,9 @@ seeds:
         inner_instruction_index: uint256
         account_mint: varchar
         amount_raw: uint256
-        taker_fee_amount_raw: int256
-        maker_fee_amount_raw: int256
-        royalty_fee_amount_raw: int256
+        taker_fee_amount_raw: double
+        maker_fee_amount_raw: double
+        royalty_fee_amount_raw: double
 
   - name: tensorswap_solana_base_trades_seed
     config:
@@ -251,6 +251,6 @@ seeds:
         inner_instruction_index: uint256
         account_mint: varchar
         amount_raw: uint256
-        taker_fee_amount_raw: int256
-        maker_fee_amount_raw: int256
-        royalty_fee_amount_raw: int256
+        taker_fee_amount_raw: double
+        maker_fee_amount_raw: double
+        royalty_fee_amount_raw: double
