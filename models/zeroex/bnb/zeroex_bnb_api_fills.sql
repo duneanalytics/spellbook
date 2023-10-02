@@ -292,7 +292,7 @@ direct_PLP AS (
     {% endif %}
 
 ),
-uni_v2_swap as (
+uni_v2_swap_raw as (
     SELECT
         s.tx_hash
         , s.index as evt_index
@@ -302,8 +302,10 @@ uni_v2_swap as (
         , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
         , z.taker_token
         , z.maker_token
-        , greatest(bytearray_to_uint256(bytearray_substring(DATA, 45, 20)), bytearray_to_uint256(bytearray_substring(DATA, 13, 20))) AS maker_token_amount_raw
-        , greatest(bytearray_to_uint256(bytearray_substring(DATA, 77, 20)), bytearray_to_uint256(bytearray_substring(DATA, 109, 20))) AS taker_token_amount_raw
+        , bytearray_to_uint256(bytearray_substring(DATA, 13, 20)) as amount0In
+        , bytearray_to_uint256(bytearray_substring(DATA, 45, 20)) as amount1In
+        , bytearray_to_uint256(bytearray_substring(DATA, 77, 20)) as amount0Out
+        , bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) as amount1Out
         , 'direct_uniswapv2' AS TYPE
         , z.affiliate_address AS affiliate_address
         , TRUE AS swap_flag
@@ -317,9 +319,18 @@ uni_v2_swap as (
         {% else %}
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
-         
     
-)  
+)
+, uni_v2_swap as (
+    SELECT *
+        ,CASE WHEN amount0Out = UINT256 '0'
+            THEN amount1Out ELSE amount0Out
+        END AS taker_token_amount_raw
+        ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0'
+            THEN amount1In ELSE amount0In
+        END AS maker_token_amount_raw
+    FROM uni_v2_swap_raw
+)
 , uni_v2_pair_creation as (
     SELECT
         bytearray_substring(data,13,20) as pair,
