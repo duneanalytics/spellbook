@@ -33003,4 +33003,5 @@ FROM (VALUES
         ,('0x5c1f75a804fab88fb7053ff653ef8bc02b36da97', 'Schrödinger', 18)
         ,('0x1297c059a6f4f169ecd2e6fe8b8df91795beb710', 'shart', 9)
         ,('0xd63afe6d90c8ccb0e648a31e167194cac5b0ca02', 'дегенерация', 9)
+        ,('0x8c1BEd5b9a0928467c9B1341Da1D7BD5e10b6549', 'LsETH', 18)
      ) AS temp_table (contract_address, symbol, decimals)
