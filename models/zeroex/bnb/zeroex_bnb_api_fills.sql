@@ -331,10 +331,10 @@ uni_v2_swap_raw as (
         END AS taker_token_amount_raw
         ,CASE WHEN amount0Out = UINT256 '0'
             THEN token1 ELSE token0
-        END AS maker_token
+        END AS taker_token
         ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0'
             THEN token1 ELSE token0
-        END AS taker_token
+        END AS maker_token
     FROM uni_v2_swap_raw
 )
 , uni_v2_pair_creation as (
