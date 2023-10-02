@@ -60,6 +60,7 @@ WITH zora_mints AS (
     LEFT JOIN {{erc1155_royalties}} r ON r.contract_address=s.contract_address
         AND JSON_EXTRACT_SCALAR(r.configuration, '$.royaltyRecipient') != '0x0000000000000000000000000000000000000000'
         AND r.evt_block_number < s.evt_block_number
+        AND 1=2
     {% if is_incremental() %}
     WHERE s.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
