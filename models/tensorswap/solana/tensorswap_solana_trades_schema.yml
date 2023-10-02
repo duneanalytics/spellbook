@@ -31,7 +31,8 @@ models:
             - seller
             - account_mint
             - amount_raw
-            - platform_fee_amount_raw
+            - taker_fee_amount_raw
+            - maker_fee_amount_raw
             - royalty_fee_amount_raw
     columns:
      - &blockchain
