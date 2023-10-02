@@ -26,10 +26,11 @@
 {% set prophet = 'Prophet' %}
 {% set syncnode = 'SyncNode' %}
 {% set tiingo = 'Tiingo' %}
-{% set vulcan = 'Vulcan Link' %}
+{% set validationcloud = 'Validation Cloud' %}
 
 SELECT node_address, operator_name FROM (VALUES
   (0x09285FBb87B75FBA9400683233C0BC1DE53afCa8, '{{a01node}}'),
+  (0x139a1fD7230E215346cd583f48d87aedc4276B45, '{{a01node}}'),
   (0xCC4c922db2EF8c911F37E73c03B632DD1585Ad0E, '{{chainlayer}}'),
   (0xB2ffBb538558196e5Db351b33B647eFe654a9647, '{{cryptomanufaktur}}'),
   (0xF3C4a8041c62146350C83d593D4ecccD3C1D8F86, '{{dextrac}}'),
@@ -45,5 +46,5 @@ SELECT node_address, operator_name FROM (VALUES
   (0x8A8530344e4ABd4C4C34E4DB68BA88C8Bea69254, '{{prophet}}'),
   (0x7dAeEC3B738C130ea78d4EaBDCE3b791c44555db, '{{syncnode}}'),
   (0x991340a2A87db4397339e913E7bBdc1847b61414, '{{tiingo}}'),
-  (0xC87DD1D817018102B313514E497293E8878795d8, '{{vulcan}}')
+  (0xC87DD1D817018102B313514E497293E8878795d8, '{{validationcloud}}')
 ) AS tmp_node_meta(node_address, operator_name)
