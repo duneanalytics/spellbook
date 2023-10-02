@@ -20,7 +20,6 @@ models:
             - evt_index
             - broad_txn_type
             - spec_txn_type
-            - to_protocol
             - trace_address
     columns:
         - &tx_from
