@@ -15,8 +15,9 @@
 WITH fills_with_tx_fill_number
 AS
 (
-    SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
-           , *
+    SELECT
+        row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
+        , *
     FROM {{ ref('zeroex_bnb_api_fills') }}
     WHERE 1=1
     AND swap_flag = true
