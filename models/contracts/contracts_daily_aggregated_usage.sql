@@ -65,6 +65,7 @@ FROM (
                 AND t.gas_price > 0
                 AND r.type ='call'
                 AND r.to IS NOT NULL
+                AND t.to IS NOT NULL
         GROUP BY 1,2,3,4,5,6
 
         ) a
