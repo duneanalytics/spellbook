@@ -32,7 +32,7 @@ def get_tables_from_manifest(manifest_path):
                 untranslated_count += 1
             table_csv_str += row
 
-    print(f"{legacy_count} legacy, {dune_count} dunesql, and {untranslated_count} models found")
+    print(f"{legacy_count} legacy, {dune_count} dunesql, and {untranslated_count} untranslated models found")
     return table_csv_str
 
 def upload_csv(table_csv, target):
