@@ -1,15 +1,13 @@
 {{ config(
         tags = ['dunesql'],
+        schema = 'nft_ethereum',
         alias = alias('native_mints'),
         partition_by = ['block_month'],
 		materialized = 'incremental',
 		file_format = 'delta',
 		incremental_strategy = 'merge',
-        unique_key = ['tx_hash','evt_index','token_id','number_of_items'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["umer_h_adil", "hildobby"]\') }}')
+        unique_key = ['tx_hash','evt_index','token_id','number_of_items']
+        )
 }}
 
 WITH namespaces AS (
@@ -36,7 +34,7 @@ WITH namespaces AS (
     FROM
     nfts_per_tx_tmp
 )
-SELECT 
+SELECT
 blockchain
 , project
 , version
@@ -76,12 +74,12 @@ blockchain
 , royalty_fee_amount_usd
 , royalty_fee_percentage
 , evt_index
-FROM 
+FROM
 (
-SELECT 
-    *, 
+SELECT
+    *,
     ROW_NUMBER() OVER (PARTITION BY tx_hash, evt_index, token_id, number_of_items ORDER BY amount_usd DESC NULLS LAST) as rank_index
-FROM 
+FROM
 (
 SELECT distinct 'ethereum' AS blockchain
 , COALESCE(ec.namespace, 'Unknown') AS project
@@ -178,6 +176,6 @@ GROUP BY nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_m
 , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
 , nft_mints.tx_hash, etxs."from", ec.namespace, tok.name, pu_erc20s.decimals, pu_eth.price, pu_erc20s.price
 , agg.name, agg.contract_address, nft_count.nfts_minted_in_tx, pu_erc20s.symbol, erc20s.contract_address, et.success
-) tmp 
+) tmp
 ) tmp_2
-WHERE rank_index = 1 
+WHERE rank_index = 1
