@@ -33333,3 +33333,4 @@ FROM (VALUES
         ,(0x1fcc18a3a6e3a1cf0911a00b11462b6ae910bebc, 'SAFER', 9)
         ,(0x75e7bc2160fff94cf2149b4ecd0baadd92b0a33c, 'MRSDODO', 9)
      ) AS temp_table (contract_address, symbol, decimals)
+     
