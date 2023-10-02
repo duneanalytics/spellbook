@@ -2,6 +2,10 @@
 (
   alias = alias('fungible'),
   tags=['dunesql'],
+  materialized = 'incremental',
+  file_format = 'delta',
+  incremental_strategy = 'merge',
+  unique_key = ['token_mint_address'],
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens",
