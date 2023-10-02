@@ -24,7 +24,7 @@ jobs:
         run: "pip install requests"
       
       - name: DBT compile to create prod manifest from main
-        run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql --select tag:legacy tag:dunesql"
+        run: "dbt parse --target-path . --profiles-dir $HOME/.dbt --profile dunesql"
 
       - name: Upload translation status CSV to Dune
         env:
