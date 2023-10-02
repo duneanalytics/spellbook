@@ -658,7 +658,7 @@ WITH curated_list AS (
       ,(0xA113d3B08df49D442fA1c0b47A82Ad95aD19c0Fb, 'Woo Network') --WooStakingProxy
       ,(0x51150F973c2b0537642f5AE8911A49567598808f, 'Toros')
       ,(0x5fD7D0d6b91CC4787Bcb86ca47e0Bd4ea0346d34, 'Aevo')
-      ,(0x71a15Ac12ee91BF7c83D08506f3a3588143898B5, "Llama Pay") 
+      ,(0x0aa8aa45B1EB8CCdd2c742E7db796B0a589b86b5, "Llama Pay") 
       ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, "Woo Network") --SuperChargerVault
       ,(0x91dfd5A51e7c00604e8b2521E678Dd8444Ea56c9, "Llama Pay")
 
