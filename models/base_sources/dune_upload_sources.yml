@@ -8,4 +8,4 @@ sources:
       - name: op_stack_chain_metadata
       - name: op_airdrop1_addresses_detailed_list
       - name: op_airdrop2_addresses_detailed_list
-      - name: op_airdrop3_addresses_detailed_list
+      - name: op_airdrop_3_addresses_detailed_list
