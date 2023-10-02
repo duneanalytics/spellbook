@@ -324,7 +324,7 @@ uni_v2_swap as (
     SELECT
         bytearray_substring(data,13,20) as pair,
         bytearray_substring(topic2, 13, 20) AS makerToken,
-        bytearray_substring(topic3, 13, 20) AS takerToken,
+        bytearray_substring(topic1, 13, 20) AS takerToken,
         rank() over (partition by bytearray_substring(data,13,20) order by block_time asc) rnk
     FROM {{ source('bnb', 'logs') }} creation
     WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event
