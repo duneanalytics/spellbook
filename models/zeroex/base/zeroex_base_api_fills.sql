@@ -37,7 +37,7 @@ WITH zeroex_tx AS (
         FROM {{ source('base', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
-                0x61935cbdd02287b511119ddb11aeb42f1593b7ef, 
+                0xdef1c0ded9bec7f1a1670819833240f027b25eff, 
                 -- forwarder addresses
                 0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5,
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
