@@ -9,7 +9,7 @@
                                     \'["hildobby"]\') }}')
 }}
 
-SELECT codename, name, marketplace_type, x_username
+SELECT project, name, marketplace_type, x_username
 FROM (VALUES
     ('opensea', 'OpenSea', 'Direct', 'opensea')
     , ('cryptopunks', 'CryptoPunks', 'Direct', 'cryptopunksnfts')
@@ -63,4 +63,4 @@ FROM (VALUES
     , ('stealcam', 'Stealcam', 'Direct', 'trystealcam')
     , ('collectionswap', 'Collectionswap', 'Direct', 'collectionswap')
     , ('decentraland', 'Decentraland', 'Direct', 'decentraland')
-    ) AS temp_table (codename, name, marketplace_type, x_username)
+    ) AS temp_table (project, name, marketplace_type, x_username)
