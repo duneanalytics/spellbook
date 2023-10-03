@@ -18,7 +18,7 @@ WITH
       tokens_accounts as (
             SELECT
             distinct address
-            FROM {{ ref('solana_utils','token_accounts') }}
+            FROM {{ ref('solana_utils_token_accounts') }}
       )
       , updated_balances as (
             SELECT
