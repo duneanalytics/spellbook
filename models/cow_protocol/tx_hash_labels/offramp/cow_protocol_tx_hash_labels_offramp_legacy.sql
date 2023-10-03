@@ -1,7 +1,7 @@
 {{
     config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
         alias = alias('tx_hash_labels_offramp', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}'
     )

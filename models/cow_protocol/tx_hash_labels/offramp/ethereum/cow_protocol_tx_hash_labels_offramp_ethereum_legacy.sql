@@ -1,7 +1,7 @@
 {{
     config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
         alias = alias('tx_hash_labels_offramp_ethereum', legacy_model=True),
     )
 }}
