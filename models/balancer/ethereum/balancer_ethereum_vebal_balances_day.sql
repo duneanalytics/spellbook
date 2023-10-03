@@ -1,11 +1,12 @@
 {{
     config(
         schema="balancer_ethereum",
+        tags = ['dunesql'],
         alias = alias('vebal_balances_day'),
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
-                                    \'["markusbkoch", "mendesfabio", "stefenon"]\') }}'
+                                    \'["markusbkoch", "mendesfabio", "stefenon", "viniabussafi"]\') }}'
     )
 }}
 
@@ -17,9 +18,9 @@ WITH base_locks AS (
         
         UNION ALL
         
-        SELECT provider, cast(null as numeric(38)) AS locked_at, locktime AS unlocked_at, ts AS updated_at
+        SELECT provider, CAST(null as UINT256) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
-        WHERE value = 0
+        WHERE CAST(value AS DOUBLE) = 0
     ),
     
     decorated_locks AS (
@@ -42,18 +43,18 @@ WITH base_locks AS (
         SELECT
             provider,
             date_trunc('day', evt_block_time) AS day,
-            SUM(value/1e18) AS delta_bpt
+            SUM(CAST(value AS DOUBLE))/1e18 AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
-        GROUP BY provider, day
+        GROUP BY 1, 2
     ),
     
     withdrawals AS (
         SELECT 
             provider,
             date_trunc('day', evt_block_time) AS day,
-            -SUM(value/1e18) AS delta_bpt
+            -SUM(CAST(value AS DOUBLE))/1e18 AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Withdraw') }}
-        GROUP BY provider, day
+        GROUP BY 1, 2
     ),
     
     bpt_locked_balance AS (
@@ -63,13 +64,16 @@ WITH base_locks AS (
             UNION ALL
             SELECT * FROM withdrawals
         ) union_all
-        GROUP BY provider, day
+        GROUP BY 2, 1
     ),
     
-    calendar AS (
-        SELECT 
-          explode(sequence(MIN(day), CURRENT_DATE, interval 1 day)) AS day
+    days_seq AS (
+        SELECT sequence(CAST(MIN(day) AS TIMESTAMP), CAST(now() AS TIMESTAMP), interval '1' day) as day
         FROM bpt_locked_balance
+    ),
+
+    calendar AS (
+        SELECT days.day FROM days_seq CROSS JOIN unnest(day) as days(day)
     ),
     
     cumulative_balances AS (
@@ -111,15 +115,15 @@ WITH base_locks AS (
             GREATEST(
                 COALESCE(
                     bpt_balance *
-                    (lock_period / (365*86400)) *
-                    ((unlocked_at - (unix_timestamp(b.day)+86400)) / lock_period)
+                    (CAST(lock_period AS DOUBLE) / CAST(365*86400 AS DOUBLE)) *
+                    ((CAST(unlocked_at AS DOUBLE) - (to_unixtime(b.day)+86400)) / CAST(lock_period AS DOUBLE))
                     , 0),
                 0
              ) AS vebal_balance
         FROM running_balances b
         LEFT JOIN locks_info l
         ON l.provider = b.provider
-        AND l.updated_at <= unix_timestamp(b.day) + 86400
+        AND l.updated_at <= CAST(to_unixtime(b.day) + 86400 AS UINT256)
     ),
     
     max_updated_at AS (
