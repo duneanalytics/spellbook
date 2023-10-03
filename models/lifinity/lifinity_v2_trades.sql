@@ -172,4 +172,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 WHERE first_transfer_out = 1
--- WHERE tb.block_time > now() - interval '180' day

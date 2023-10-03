@@ -10,11 +10,6 @@
                                     \'["ilemi"]\') }}')
 }}
 
--- partition_by = ['block_month'],
--- file_format = 'delta',
--- incremental_strategy = 'merge',
--- unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
-
 {% set solana_dexes = [
     ref('orca_whirlpool_trades')
     , ref('raydium_v3_trades')
