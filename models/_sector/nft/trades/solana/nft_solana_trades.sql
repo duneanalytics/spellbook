@@ -41,7 +41,6 @@ SELECT
         account_master_edition,
         account_mint,
         verified_creator,
-        collection_mint,
         project_program_id,
         aggregator_name,
         aggregator_address,
