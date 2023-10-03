@@ -1,8 +1,7 @@
 {{ config(
-    tags = ['dunesql'], 
+    tags = ['dunesql'],
     schema = 'aave_ethereum',
     alias = alias('votes'),
-    partition_by = ['block_date'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -17,13 +16,13 @@
 {% set dao_name = 'DAO: AAVE' %}
 {% set dao_address = '0xec568fffba86c094cf06b22134b23074dfe2252c' %}
 
-WITH cte_sum_votes as 
-(SELECT sum(votingPower/1e18) as sum_votes, 
+WITH cte_sum_votes as
+(SELECT sum(votingPower/1e18) as sum_votes,
         id
 FROM {{ source('aave_ethereum', 'AaveGovernanceV2_evt_VoteEmitted') }}
 GROUP BY id)
 
-SELECT 
+SELECT
     '{{blockchain}}' as blockchain,
     '{{project}}' as project,
     cast(NULL as VARCHAR) as version,
@@ -36,7 +35,7 @@ SELECT
     vc.votingPower/1e18 as votes,
     (votingPower/1e18) * (100) / (csv.sum_votes) as votes_share,
     p.symbol as token_symbol,
-    p.contract_address as token_address, 
+    p.contract_address as token_address,
     vc.votingPower/1e18 * p.price as votes_value_usd,
     vc.voter as voter_address,
     CASE WHEN vc.support = false THEN 'against'
