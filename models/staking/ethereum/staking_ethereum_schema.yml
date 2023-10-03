@@ -182,7 +182,7 @@ models:
         description: "Withdrawal credentials type"
         tests:
           - accepted_values:
-              values: ['0x00', '0x01']
+              values: [0x00, 0x01]
       - name: withdrawal_address
         description: "Defined withdrawal address"
       - name: withdrawal_credentials
