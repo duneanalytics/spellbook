@@ -100,7 +100,7 @@ FROM(
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('t.evt_block_time')}}
         {% endif %}
         {% if spark_mode == True %}
         {# This deduplicates rows. Double check if this is correct or not #}
