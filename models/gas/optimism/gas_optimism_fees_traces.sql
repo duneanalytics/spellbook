@@ -51,7 +51,7 @@ WITH traces AS (
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS bigint) AS gas_used_original
-          , -gas_used AS gas_used_trace
+          , -(gas_used) AS gas_used_trace
           , block_time
           , block_number
           , CAST(NULL AS varbinary) AS input
