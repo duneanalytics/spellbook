@@ -37,7 +37,7 @@ WITH
                   or (address in (select address from tokens_accounts) AND token_mint_address is not null)
                   )
             {% if is_incremental() %}
-            AND incremental_predicate('block_time')
+            AND {{incremental_predicate('block_time')}}
             {% endif %}
       )
 
