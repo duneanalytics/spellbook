@@ -2,7 +2,6 @@
     tags=['dunesql'],
     schema = 'dydx_ethereum',
     alias = alias('proposals'),
-    partition_by = ['block_month'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
