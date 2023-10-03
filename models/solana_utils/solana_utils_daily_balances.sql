@@ -6,6 +6,7 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('block_time')],
         unique_key = ['token_mint_address', 'address','day'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
