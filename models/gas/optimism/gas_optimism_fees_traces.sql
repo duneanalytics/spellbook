@@ -14,7 +14,7 @@ WITH traces AS (
      SELECT traces.block_time
      , traces.block_number
      , traces.tx_hash
-     , MAX(traces.from) AS trace_from
+     , MAX(traces."from") AS trace_from
      , MAX(traces.to) AS trace_to
      , traces.trace
      , MAX(traces.input) AS trace_input
@@ -75,7 +75,7 @@ SELECT 'optimism' AS blockchain
 , traces.tx_hash
 , traces.trace_from
 , traces.trace_to
-, txs.from AS tx_from
+, txs."from" AS tx_from
 , txs.to AS tx_to
 , traces.trace
 , traces.trace_method
