@@ -33,6 +33,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
+                {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -41,6 +42,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
+                {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -49,12 +51,10 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
+                {{incremental_predicate('call_block_time')}}
             ) LEFT JOIN unnest(call_log_messages) as log_messages(logs) ON True
             WHERE logs LIKE '%Program log:%royalty%price%seller_expiry%' --must log these fields. hopefully no other programs out there log them hahaha
             AND try(json_parse(split(logs, ' ')[3])) is not null --valid hex
-            -- --QA
-            -- AND call_tx_id = '4RrNYCNkJCLjvj4unGgo6owJeEg5qxWZJLYnfyiJgFVypashPaJFVgQRivEvcxeEt3xrQUiUM9bm7VP76XtPenxw'
-            -- AND call_block_slot = 219668172
         )
         
         SELECT
@@ -117,6 +117,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
+            {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT
                 call_instruction_name
@@ -142,6 +143,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
+            {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT 
                 call_instruction_name
@@ -167,17 +169,12 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
+            {{incremental_predicate('call_block_time')}}
         ) trade
         --this shortcut ONLY works if you know that a log is only emitted ONCE per call.
         LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
             AND trade.call_block_slot = rl.call_block_slot
             AND trade.call_order = rl.log_order 
-        {% if is_incremental() %}
-        WHERE trade.call_block_time >= NOW() - interval '7' day
-        {% endif %}
-        -- --QA
-        -- WHERE trade.call_tx_id = '4RrNYCNkJCLjvj4unGgo6owJeEg5qxWZJLYnfyiJgFVypashPaJFVgQRivEvcxeEt3xrQUiUM9bm7VP76XtPenxw'
-        -- AND trade.call_block_slot = 219668172
     )
     
     , raw_nft_trades as (
@@ -185,8 +182,6 @@ with
             'solana' as blockchain
             , 'magiceden' as project
             , 'v2' as version
-            , date_trunc('day', t.call_block_time) as block_date
-            , date_trunc('month', t.call_block_time) as block_month
             , t.call_block_time as block_time
             , tk.token_name
             , tk.token_symbol
@@ -204,7 +199,6 @@ with
             , tk.account_master_edition --token id equivalent
             , tk.account_mint --token id equivalent
             , tk.verified_creator --contract address equivalent
-            , tk.collection_mint --contract address equivalent
             , 'TSWAPaqyCSx2KABk68Shruf4rp7CxcNi8hAsbdwmHbN' as project_program_id
             , cast(null as varchar) as aggregator_name
             , cast(null as varchar) as aggregator_address
@@ -240,4 +234,3 @@ SELECT
 *
 , concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index, 0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
-order by block_time asc

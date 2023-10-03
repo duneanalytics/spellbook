@@ -11,12 +11,6 @@
     )
 }}
 
--- ,file_format = 'delta'
--- ,incremental_strategy = 'merge'
--- ,partition_by = ['project','block_month']
--- ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
-
-
 {% set solana_marketplaces = [
     ref('magiceden_solana_trades')
     , ref('tensorswap_solana_trades')
@@ -73,8 +67,7 @@ SELECT
         instruction,
         outer_instruction_index,
         inner_instruction_index,
-        unique_trade_id,
-        row_number() over (partition by unique_trade_id order by tx_id) as duplicates_rank
+        unique_trade_id
 FROM {{ marketplace }}
 
 {% if not loop.last %}

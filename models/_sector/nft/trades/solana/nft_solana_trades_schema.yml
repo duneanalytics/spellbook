@@ -88,9 +88,6 @@ models:
      - &verified_creator
        name: verified_creator
        description: "This is the first creator in the creator_struct for the NFT. The first creator was originally used as the collection mint reference"
-     - &collection_mint
-       name: collection_mint
-       description: "This is the token mint address of the collection. This is the same for all NFTs in the collection"
      - &project_program_id
        name: project_program_id
        description: "Program ID for the project"
@@ -158,6 +155,3 @@ models:
      - &inner_instruciton_index
        name: inner_instruction_index
        description: "inner index of instruction call"
-     - &duplicates_rank
-       name: duplicates_rank
-       description: "check for duplicates on the unique parition"

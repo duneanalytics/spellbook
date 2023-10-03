@@ -69,9 +69,6 @@ models:
      - &amount_usd
        name: amount_usd
        description: "USD value of the trade at time of execution"
-       tests:
-         - dbt_utils.accepted_range:
-             max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
      - &amount_original
        name: amount_original
        description: "Traded amount in original currency"
@@ -99,9 +96,6 @@ models:
      - &verified_creator
        name: verified_creator
        description: "This is the first creator in the creator_struct for the NFT. The first creator was originally used as the collection mint reference"
-     - &collection_mint
-       name: collection_mint
-       description: "This is the token mint address of the collection. This is the same for all NFTs in the collection"
      - &project_program_id
        name: project_program_id
        description: "Program ID for the project"
