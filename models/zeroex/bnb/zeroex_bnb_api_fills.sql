@@ -1,5 +1,5 @@
 {{  config(
-        tags=['dunesql'],
+        tags=['dunesql', 'prod_exclude'],
         alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_month'],
