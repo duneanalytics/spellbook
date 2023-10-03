@@ -13,9 +13,9 @@
 SELECT 
         lower(blockchain) AS blockchain,
         blockchain_name,
-        cast(chain_id as int) AS chain_id,
+        chain_id,
         cast(start_date AS date) AS start_date,
-        cast(is_superchain AS INT) AS is_superchain
+        is_superchain
 
 FROM(values
 
