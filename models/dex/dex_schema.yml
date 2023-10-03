@@ -406,9 +406,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - codename
+            - project
     columns:
-      - name: codename
+      - name: project
         description: "Marketplace codename"
       - name: name
         description: "Marketplace capitalised name"
