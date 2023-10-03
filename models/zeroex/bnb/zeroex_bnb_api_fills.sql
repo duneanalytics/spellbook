@@ -249,7 +249,7 @@ NewBridgeFill AS (
             bytearray_substring(DATA, 13, 20) AS maker,
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
-            bytearray_substring(DATA, 74, 20) AS maker_token,
+            bytearray_substring(DATA, 77, 20) AS maker_token,
             bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
             bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'NewBridgeFill' AS type,
