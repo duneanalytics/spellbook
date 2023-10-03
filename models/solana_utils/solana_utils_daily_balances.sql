@@ -18,11 +18,8 @@ WITH
       tokens_accounts as (
             SELECT
             distinct address
-            FROM {{ ref('solana','account_activity') }}
-            WHERE tx_success
-            AND token_mint_address is not null
+            FROM {{ ref('solana_utils','token') }}
       )
-
       , updated_balances as (
             SELECT
                   address
