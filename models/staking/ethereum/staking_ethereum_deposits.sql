@@ -16,9 +16,9 @@ WITH deposit_events AS (
     , d.evt_block_number AS block_number
     , d.evt_index
     , d.evt_tx_hash AS tx_hash
-    , from_big_endian_64(reverse(d.amount)) / POWER(10, 9) AS amount
+    , bytearray_to_bigint(reverse(d.amount))/1e9 AS amount
     , d.contract_address
-    , from_big_endian_64(reverse(d.index)) AS deposit_index
+    , bytearray_to_bigint(reverse(d.index)) AS deposit_index
     , d.pubkey
     , d.signature
     , CASE WHEN bytearray_position(d.withdrawal_credentials, from_hex('0x01')) = 1 THEN from_hex('0x01') ELSE from_hex('0x00') END AS withdrawal_credentials_type
