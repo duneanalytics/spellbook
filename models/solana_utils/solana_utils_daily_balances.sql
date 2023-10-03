@@ -14,26 +14,26 @@
                                     \'["ilemi"]\') }}')
 }}
 
-WITH 
+WITH
       tokens_accounts as (
-            SELECT 
+            SELECT
             distinct address
-            FROM {{ source('solana','account_activity') }}
+            FROM {{ ref('solana','account_activity') }}
             WHERE tx_success
             AND token_mint_address is not null
       )
-      
+
       , updated_balances as (
             SELECT
-                  address 
+                  address
                   , date_trunc('day', block_time) as day
                   , token_mint_address
-                  , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol 
+                  , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol
                   , post_token_balance as token_balance --tokens are already correct decimals in this table
                   , token_balance_owner
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
-            WHERE tx_success 
+            WHERE tx_success
             AND (
                   --if the address is a token_mint_account, then mint_address should not be null
                   (address NOT in (select address from tokens_accounts))
@@ -44,13 +44,13 @@ WITH
             {% endif %}
       )
 
-SELECT 
+SELECT
       day
       , address
       , sol_balance
       , token_mint_address
       , token_balance
       , token_balance_owner
-      , now() as updated_at 
+      , now() as updated_at
 FROM updated_balances
 WHERE latest_balance = 1
