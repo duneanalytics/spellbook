@@ -205,10 +205,10 @@ with
             , t.tswap_fee/1e9 as taker_fee_amount
             , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
             , case when t.tswap_fee = 0 then 0 else t.tswap_fee/t.current_price end as taker_fee_percentage
-            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
-            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 as maker_fee_amount
-            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as maker_fee_amount_usd
-            , -1*(case when t.call_block_time > timestamp '2023-08-21' then 0.004 else 0 end) as maker_fee_percentage
+            , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
+            , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004*t.current_price else 0 end)/1e9 as maker_fee_amount
+            , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as maker_fee_amount_usd
+            , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004 else 0 end) as maker_fee_percentage
             --amm fees
             , t.mm_fee as amm_fee_amount_raw
             , t.mm_fee/1e9 as amm_fee_amount
