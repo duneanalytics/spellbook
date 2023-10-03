@@ -33,7 +33,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_buyNft') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -42,7 +42,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_buySingleListing') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -51,7 +51,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTokenPool') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -60,7 +60,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTradePool') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
             ) LEFT JOIN unnest(call_log_messages) as log_messages(logs) ON True
             WHERE logs LIKE '%Program data:%'
             AND try(from_base64(split(logs, ' ')[3])) is not null --valid hex
@@ -119,7 +119,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_buyNft') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT 
                 call_account_arguments[6] as account_metadata
@@ -136,7 +136,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_buySingleListing') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT 
                 call_account_arguments[8] as account_metadata
@@ -153,7 +153,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTokenPool') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT 
                 call_account_arguments[8] as account_metadata
@@ -170,7 +170,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTradePool') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
         ) trade
         --this shortcut ONLY works if you know that a log is only emitted ONCE per call.
         LEFT JOIN logs rl ON trade.call_tx_id = rl.call_tx_id

@@ -33,7 +33,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -42,7 +42,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
                 UNION ALL 
                 SELECT
                     call_tx_id
@@ -51,7 +51,7 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
-                {{incremental_predicate('call_block_time')}}
+                WHERE {{incremental_predicate('call_block_time')}}
             ) LEFT JOIN unnest(call_log_messages) as log_messages(logs) ON True
             WHERE logs LIKE '%Program log:%royalty%price%seller_expiry%' --must log these fields. hopefully no other programs out there log them hahaha
             AND try(json_parse(split(logs, ' ')[3])) is not null --valid hex
@@ -117,7 +117,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT
                 call_instruction_name
@@ -143,7 +143,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
             UNION ALL
             SELECT 
                 call_instruction_name
@@ -169,7 +169,7 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
-            {{incremental_predicate('call_block_time')}}
+            WHERE {{incremental_predicate('call_block_time')}}
         ) trade
         --this shortcut ONLY works if you know that a log is only emitted ONCE per call.
         LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
