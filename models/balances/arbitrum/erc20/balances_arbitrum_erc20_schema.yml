@@ -102,3 +102,24 @@ models:
     columns:
       - name: token_address
         description: "Token Address for possibly non-compliant erc20 token"
+
+  - name: balances_arbitrum_erc20_day_new_wallet
+    meta:
+      blockchain: arb
+      sector: balances
+      project: erc20
+      contributors: longnhbkhn
+    config:
+      tags: ['balances', 'arbitrum', 'erc20', 'day', 'longnhbkhn']
+    description: >
+        Daily token balances of erc20 arbitrum tokens per new wallet and contract address pair.
+        Depends on erc20_arbitrum_transfers.
+    columns:
+      - *block_day
+      - *token_address
+      - name: number_new_wallets
+        description: "Number of new wallets"
+      - name: volumn_new_wallets
+      - name: price
+      - name: symbol
+      - name: decimals
