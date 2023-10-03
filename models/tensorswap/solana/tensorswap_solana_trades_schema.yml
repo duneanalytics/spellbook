@@ -160,6 +160,6 @@ models:
      - &outer_instruction_index
        name: outer_instruction_index
        description: "outer index of instruction call"
-     - &inner_instruciton_index
+     - &inner_instruction_index
        name: inner_instruction_index
        description: "inner index of instruction call"
