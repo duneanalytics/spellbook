@@ -19,7 +19,7 @@
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/2834419
+-- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822 
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
@@ -43,7 +43,7 @@ WITH zeroex_tx AS (
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
                 0x4ef40d1bf0983899892946830abf99eca2dbc5ce, 
                 -- exchange proxy
-                0xdef1c0ded9bec7f1a1670819833240f027b25eff
+                0xdef189deaef76e379df891899eb5a00a94cbc250
                 )
                 AND (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
