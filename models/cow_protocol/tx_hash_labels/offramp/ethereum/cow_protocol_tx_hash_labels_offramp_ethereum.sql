@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('tx_hash_labels_offramp_ethereum'),
+        tags=['dunesql']
     )
 }}
 
@@ -24,15 +25,15 @@ with
  )
 
 select
-  "ethereum" as blockchain,
-  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
-  "Offramp to stable" AS name,
-  "tx_hash" AS category,
-  "gentrexha" AS contributor,
-  "query" AS source,
-  CAST('2023-02-21' AS TIMESTAMP) as created_at,
+  'ethereum' as blockchain,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR), project, version) as tx_hash_key,
+  'Offramp to stable' AS name,
+  'tx_hash' AS category,
+  'gentrexha' AS contributor,
+  'query' AS source,
+  TIMESTAMP '2023-02-21' as created_at,
   now() as updated_at,
-  "offramp" as model_name,
-  "usage" as label_type
+  'offramp' as model_name,
+  'usage' as label_type
 from
   offramp_trades
