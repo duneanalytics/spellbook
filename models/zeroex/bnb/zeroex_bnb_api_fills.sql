@@ -302,7 +302,7 @@ uni_v2_swap as (
         , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
         , z.taker_token
         , z.maker_token
-        , (bytearray_to_uint256(bytearray_substring(DATA, 45, 20))) AS taker_token_amount_raw,
+        , (bytearray_to_uint256(bytearray_substring(DATA, 45, 20))) AS taker_token_amount_raw
         , (bytearray_to_uint256(bytearray_substring(DATA, 77, 20))) AS maker_token_amount_raw
         , 'direct_uniswapv2' AS TYPE
         , z.affiliate_address AS affiliate_address
