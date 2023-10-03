@@ -39,7 +39,7 @@ WITH
                   or (address in (select address from tokens_accounts) AND token_mint_address is not null)
                   )
             {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '1' day)
+            AND incremental_predicate('block_time')
             {% endif %}
       )
 
