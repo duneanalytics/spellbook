@@ -1,4 +1,4 @@
-{{ config( alias = alias('rebase'), tags=['static'])}}
+{{ config( alias = alias('rebase'), tags=['static', 'dunesql'])}}
 
 SELECT contract_address, symbol, decimals 
 FROM (VALUES
