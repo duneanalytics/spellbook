@@ -58,7 +58,7 @@ FROM (
     , ts."bonderFee" AS bridged_fee_amount_raw
     , CAST(NULL AS VARBINARY) as sender_address
     , ts.recipient AS recipient_address
-    ,'' AS trace_address
+    ,CAST(ARRAY[-1] as array<bigint>) AS trace_address
     ,ts.evt_index
     ,ts.contract_address AS project_contract_address
     , ts."transferId" AS transfer_id
@@ -80,10 +80,10 @@ FROM (
     , tl."relayerFee" AS bridged_fee_amount_raw
     , CAST(NULL AS VARBINARY) as sender_address
     , tl.recipient AS recipient_address
-    ,'' AS trace_address
+    ,CAST(ARRAY[-1] as array<bigint>) AS trace_address
     ,tl.evt_index
     ,tl.contract_address AS project_contract_address
-    , 0x AS transfer_id
+    , CAST(NULL AS VARBINARY) AS transfer_id
     , UINT256 '1' AS source_chain_id
     , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     
@@ -102,7 +102,7 @@ FROM (
     , UINT256 '0' AS bridged_fee_amount_raw
     , CAST(NULL AS VARBINARY) as sender_address
     , COALESCE(arb.recipient,poly.recipient,gno.recipient) AS recipient_address
-    ,'' AS trace_address
+    ,CAST(ARRAY[-1] as array<bigint>) AS trace_address
     ,wb.evt_index
     ,wb.contract_address AS project_contract_address
     , wb.transferId AS transfer_id
