@@ -392,6 +392,8 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
+      - name: amount_usd
+        description: "USD value of the trade at time of execution"
       - *evt_index
 
   - name: dex_info
