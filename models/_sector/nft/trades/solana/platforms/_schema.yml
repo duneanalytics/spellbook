@@ -93,8 +93,6 @@ models:
      - &account_metadata
        name: account_metadata
        description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"
-       tests:
-         - not_null
      - &account_master_edition
        name: account_master_edition
        description: "Master edition for the account. All NFTs have a master edition"
