@@ -15,7 +15,7 @@ erc20_transfers  as (
         FROM
         {{ erc20_evt_transfer }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 
         UNION ALL
@@ -31,7 +31,7 @@ erc20_transfers  as (
         FROM
         {{ erc20_evt_transfer }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 
@@ -48,7 +48,7 @@ erc20_transfers  as (
         FROM
         {{ wrapped_token_deposit }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 
         UNION ALL
@@ -64,7 +64,7 @@ erc20_transfers  as (
         FROM
         {{ wrapped_token_withdrawal }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 {% endif %}
