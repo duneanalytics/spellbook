@@ -60,7 +60,7 @@ SELECT
     , t.price/1e9 * sol_p.price as amount_usd
     , 'SOL' as currency_symbol
     , 'So11111111111111111111111111111111111111112' as currency_address
-    , t.account_merkleTree --token id equivalent
+    , t.account_merkleTree as account_merkle_tree  --token id equivalent
     , cast(t.leaf_id as bigint) as leaf_id --token id equivalent
     , cast(null as varchar) as account_metadata
     , cast(null as varchar) as account_master_edition
@@ -93,4 +93,5 @@ SELECT
     , t.outer_instruction_index
     , t.inner_instruction_index
 FROM cnft_base t
+left join {{ ref('tokens_solana_nft') }} tk on tk.account_merkle_tree = t.account_merkleTree and tk.leaf_id = t.leaf_id
 LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.block_time) --get sol_price
