@@ -1,8 +1,8 @@
 {{ config(
-	tags=['legacy'],
-        alias = alias('blocks', legacy_model=True),
+        tags = ['dunesql'],
+        alias = alias('transfers'),
         unique_key=['blockchain', 'number'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -19,7 +19,7 @@
      , ('optimism', source('optimism', 'blocks'))
      , ('arbitrum', source('arbitrum', 'blocks'))
      , ('celo', source('celo', 'blocks'))
-     , ('goerli', source('goerli', 'blocks'))
+     , ('base', source('base', 'blocks'))
 ] %}
 
 SELECT *
