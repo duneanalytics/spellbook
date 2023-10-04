@@ -255,7 +255,6 @@ with
 
 SELECT
 *
-, concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index,0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
 --we have some truncated logs and missing decoding right now like 5DoPTZfA9UfSJYExLhvkMKmTtLXCjumH7dfUVY6gpLc7Bj99kg3Z7649eKgh1x5aARTbsMWPs1XEkwC3up4BByUv
 WHERE amount_original is not null

@@ -91,6 +91,5 @@ SELECT
     , t.instruction
     , t.outer_instruction_index
     , t.inner_instruction_index
-    , concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index,0) as varchar),'-',account_merkle_tree,'-',cast(leaf_id as varchar),'-',tx_id) as unique_trade_id
 FROM cnft_base t
 LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.block_time) --get sol_price

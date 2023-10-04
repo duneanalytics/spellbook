@@ -247,5 +247,4 @@ with
 
 SELECT
 *
-, concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index, 0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades
