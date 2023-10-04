@@ -19,7 +19,7 @@ select
     ,contract_address as project_contract_address     -- the drop contract
     ,evt_index as sub_tx_id
 from {{evt_Minted}}
-{% if is_incremental %}
+{% if is_incremental() %}
 where evt_block_time > date_trunc('day', now() - interval '1' day)
 {% endif %}
 {% endmacro %}
