@@ -48,6 +48,12 @@ models:
         description: "address of the person making the referral"
       - name:  referee_address
         description: "address of the person being referred"
+      - name: is_referral
+        description: "whether or not the a referral was made (and payed out)"
+        tests:
+          - accepted_values:
+              values: [ true, false ]
+              quote: false
       - name:  currency_contract
         description: "contract address of the currency"
       - name:  reward_amount_raw

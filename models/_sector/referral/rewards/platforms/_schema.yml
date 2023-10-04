@@ -57,6 +57,13 @@ models:
         description: "id to distinguish multiple rewards in 1 transaction. Often the event index"
         tests:
           - not_null
+      - &is_referral
+        name: is_referral
+        description: "whether or not the a referral was made (and payed out)"
+        tests:
+          - accepted_values:
+              values: [ true, false ]
+              quote: false
 
   - name: zora_base_rewards
     tests:
@@ -75,6 +82,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: zora_optimism_rewards
     tests:
@@ -93,6 +101,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: rabbithole_arbitrum_rewards
     tests:
@@ -111,6 +120,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: rabbithole_base_rewards
     tests:
@@ -129,6 +139,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: rabbithole_optimism_rewards
     tests:
@@ -147,6 +158,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: rabbithole_polygon_rewards
     tests:
@@ -165,6 +177,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: soundxyz_ethereum_rewards
     tests:
@@ -183,6 +196,7 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
 
   - name: soundxyz_optimism_rewards
     tests:
@@ -201,3 +215,4 @@ models:
       - *reward_amount_raw
       - *reward_amount_usd
       - *sub_tx_id
+      - *is_referral
