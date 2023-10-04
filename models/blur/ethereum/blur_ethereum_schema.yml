@@ -110,4 +110,7 @@ models:
         name: borrower
         description: "Borrower"
       - *tx_hash
+      - &tx_index
+        name: tx_index
+        description: "Transaction index in block"
       - *evt_index

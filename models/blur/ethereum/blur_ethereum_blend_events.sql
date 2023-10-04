@@ -150,10 +150,13 @@ SELECT a.block_time
     END AS borrower
 , a.offer_hash
 , a.tx_hash
+, txs.index AS tx_index
 , a.evt_index
 FROM all_events a
 INNER JOIN (SELECT distinct lien_id, token_id FROM offer_taken) USING (lien_id)
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=collection
+LEFT JOIN {{ source('ethereum', 'transactions') }} txs ON ON txs.block_number=a.block_number
+    AND txs.hash=a.tx_hash
+LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=a.collection
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
     AND pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     AND pu.minute=date_trunc('minute', a.block_time)
