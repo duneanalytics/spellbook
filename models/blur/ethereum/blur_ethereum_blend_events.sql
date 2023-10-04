@@ -118,7 +118,7 @@ WITH offer_taken AS (
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , lienId AS lien_id
-    , 'Sold' AS event
+    , 'Sell' AS event
     , collection
     , 0 AS amount
     , 0 AS apy_rate
