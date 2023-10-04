@@ -1,7 +1,8 @@
 {{
   config(
+    tags=['dunesql'],
     alias = alias('all_transactions'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -18,6 +19,7 @@
 SELECT  'polygon'                                             AS blockchain,
         evt_block_time,
         try_cast(date_trunc('DAY', evt_block_time) as date)   AS block_date,
+        cast(date_trunc('month', evt_block_time) as date)   AS block_month,
         action,
         user,
         recipient,
@@ -56,18 +58,18 @@ FROM
             contract_address,
             user,
             recipient,
-            mintvalues:numTokens                                  AS jfiat_token_amount,
-            mintvalues:totalCollateral                            AS collateral_token_amount,
-            mintvalues:exchangeAmount                             AS net_collateral_amount,
-            mintvalues:feeAmount                                  AS fee_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.numTokens')  AS UINT256) AS jfiat_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.totalCollateral') AS UINT256)  AS collateral_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.exchangeAmount') AS UINT256)  AS net_collateral_amount,
+            CAST(JSON_EXTRACT_SCALAR(mintvalues,'$.feeAmount') AS UINT256)  AS fee_amount,
             evt_tx_hash,
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Minted') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 
     UNION ALL
@@ -77,18 +79,18 @@ FROM
             contract_address,
             user                                                  AS sender,
             recipient,
-            redeemvalues:numTokens                                AS jfiat_token_amount,
-            redeemvalues:collateralAmount                         AS collateral_token_amount,
-            redeemvalues:exchangeAmount                           AS net_collateral_amount,
-            redeemvalues:feeAmount                                AS fee_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.numTokens') AS UINT256) AS jfiat_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.collateralAmount') AS UINT256) AS collateral_token_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.exchangeAmount') AS UINT256) AS net_collateral_amount,
+            CAST(JSON_EXTRACT_SCALAR(redeemvalues,'$.feeAmount') AS UINT256) AS fee_amount,
             evt_tx_hash,
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumMultiLpLiquidityPool_evt_Redeemed') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 
     UNION ALL
@@ -106,10 +108,10 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Mint') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 
     UNION ALL
@@ -127,10 +129,10 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Redeem') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
 
     UNION ALL
@@ -148,10 +150,10 @@ FROM
             evt_index
     FROM {{ source('jarvis_network_polygon','SynthereumPoolOnChainPriceFeed_evt_Exchange') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{ project_start_date }}'
+    WHERE evt_block_time >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
   ) x
   INNER JOIN {{ ref('jarvis_network_polygon_jfiat_address_mapping') }}    am
@@ -163,10 +165,9 @@ FROM
       AND cm.jfiat_collateral_symbol = pu.symbol
       AND date_trunc('minute',x.evt_block_time) = pu.minute
       {% if not is_incremental() %}
-      AND pu.minute >= '{{project_start_date}}'
+      AND pu.minute >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       {% if is_incremental() %}
-      AND pu.minute >= date_trunc("day", now() - interval '1 week')
+      AND pu.minute >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 ) p
-;
