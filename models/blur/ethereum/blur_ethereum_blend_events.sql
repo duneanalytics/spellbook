@@ -154,7 +154,7 @@ SELECT a.block_time
 , a.evt_index
 FROM all_events a
 INNER JOIN (SELECT distinct lien_id, token_id FROM offer_taken) USING (lien_id)
-LEFT JOIN {{ source('ethereum', 'transactions') }} txs ON ON txs.block_number=a.block_number
+LEFT JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=a.block_number
     AND txs.hash=a.tx_hash
 LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=a.collection
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
