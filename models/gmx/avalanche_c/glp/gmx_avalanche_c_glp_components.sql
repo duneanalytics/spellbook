@@ -20,7 +20,7 @@ with minute as -- This CTE generates a series of minute values
             SELECT minute from unnest(sequence(TIMESTAMP '{{project_start_date}}', TIMESTAMP now(), INTERVAL '1' minute)) AS _u(minute)
             {% endif %}
             {% if is_incremental() %}
-            SELECT minute from unnest(sequence(date(date_trunc('day', now() - interval '7' day)), date(now()), INTERVAL '1' minute)) AS _u(minute)
+            SELECT minute from unnest(sequence(date(TIMESTAMP date_trunc('day', now() - interval '7' day)), TIMESTAMP now(), INTERVAL '1' minute)) AS _u(minute)
             {% endif %}
          ),
      token as -- This CTE create tokens which in GLP pool on Avalanche
