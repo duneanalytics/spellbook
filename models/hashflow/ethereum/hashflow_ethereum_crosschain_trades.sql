@@ -1,7 +1,7 @@
 {{
     config(
-        alias = alias('cross_chain_trades')
-        ,partition_by = ['block_date']
+        tags=['dunesql']
+        ,alias = alias('cross_chain_trades')
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
         ,file_format = 'delta'
@@ -34,7 +34,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_ethereum', 'Pool_evt_LzTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         
         UNION
@@ -58,7 +58,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_ethereum', 'Pool_evt_XChainTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 
@@ -69,8 +69,8 @@ SELECT
     ,erc20b.symbol                                                           AS token_sold_symbol
     ,cross_chain_trades.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
     ,cross_chain_trades.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount
-    ,CAST(cross_chain_trades.token_bought_amount_raw AS DECIMAL(38,0))       AS token_bought_amount_raw
-    ,CAST(cross_chain_trades.token_sold_amount_raw AS DECIMAL(38,0))         AS token_sold_amount_raw
+    ,cross_chain_trades.token_bought_amount_raw                              AS token_bought_amount_raw
+    ,cross_chain_trades.token_sold_amount_raw                                AS token_sold_amount_raw
     ,coalesce(
             cross_chain_trades.amount_usd
         , (cross_chain_trades.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -93,13 +93,13 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = cross_chain_trades.token_bought_address
     AND p_bought.blockchain = 'ethereum'
     {% if is_incremental() %}
-        AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+        AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_sold.contract_address = cross_chain_trades.token_sold_address
     AND p_sold.blockchain = 'ethereum'
     {% if is_incremental() %}
-        AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+        AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     
