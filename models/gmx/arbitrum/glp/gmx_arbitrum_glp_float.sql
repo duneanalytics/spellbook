@@ -20,7 +20,7 @@ WITH minute AS  -- This CTE generates a series of minute values
     FROM
         (
         {% if not is_incremental() %}
-        SELECT minute from unnest(sequence(date('{{project_start_date}}'), date(now()), INTERVAL '1' minute)) AS _u(minute) -- 2021-08-31 08:13 is the timestamp of the first vault transaction
+        SELECT minute from unnest(sequence(date(TIMESTAMP '{{project_start_date}}'), date(now()), INTERVAL '1' minute)) AS _u(minute) -- 2021-08-31 08:13 is the timestamp of the first vault transaction
         {% endif %}
         {% if is_incremental() %}
         SELECT minute from unnest(sequence(date(date_trunc('day', now() - interval '7' day)), date(now()), INTERVAL '1' minute)) AS _u(minute)
