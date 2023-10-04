@@ -14,11 +14,11 @@
     )
 }}
 
-with 
+with
     logs as (
         with nested_logs as (
-            SELECT 
-                distinct 
+            SELECT
+                distinct
                 call_tx_id
                 , call_block_slot
                 , call_outer_instruction_index
@@ -33,8 +33,10 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_buyNft') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
-                UNION ALL 
+                {% endif %}
+                UNION ALL
                 SELECT
                     call_tx_id
                     , call_block_slot
@@ -42,8 +44,10 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_buySingleListing') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
-                UNION ALL 
+                {% endif %}
+                UNION ALL
                 SELECT
                     call_tx_id
                     , call_block_slot
@@ -51,8 +55,10 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTokenPool') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
-                UNION ALL 
+                {% endif %}
+                UNION ALL
                 SELECT
                     call_tx_id
                     , call_block_slot
@@ -60,13 +66,15 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTradePool') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
+                {% endif %}
             ) LEFT JOIN unnest(call_log_messages) as log_messages(logs) ON True
             WHERE logs LIKE '%Program data:%'
             AND try(from_base64(split(logs, ' ')[3])) is not null --valid hex
             AND bytearray_substring(from_base64(split(logs, ' ')[3]), 1, 8) = 0x62d0783c5d2013b4 --BuySellEvent
         )
-        
+
         SELECT
             'BuySellEvent' as event
             , bytearray_substring(hex_data, 1, 8) as discriminator
@@ -82,7 +90,7 @@ with
             , logs
         FROM nested_logs
     )
-    
+
     , trades as (
         SELECT
             rl.event
@@ -104,7 +112,7 @@ with
             , trade.call_tx_id
             , trade.call_tx_signer
         FROM (
-            SELECT 
+            SELECT
                 call_account_arguments[7] as account_metadata
                 , call_account_arguments[12] as account_buyer
                 , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_seller
@@ -119,9 +127,11 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_buyNft') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
             UNION ALL
-            SELECT 
+            SELECT
                 call_account_arguments[6] as account_metadata
                 , call_account_arguments[9] as account_buyer
                 , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_seller
@@ -136,9 +146,11 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_buySingleListing') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
             UNION ALL
-            SELECT 
+            SELECT
                 call_account_arguments[8] as account_metadata
                 , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_buyer
                 , call_account_arguments[11] as account_seller --account_nftEscrow
@@ -153,9 +165,11 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTokenPool') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
             UNION ALL
-            SELECT 
+            SELECT
                 call_account_arguments[8] as account_metadata
                 , call_account_arguments[1] as account_buyer --shared
                 , call_account_arguments[11] as account_seller --pnftshared
@@ -170,15 +184,17 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('tensorswap_v1_solana','tensorswap_call_sellNftTradePool') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
         ) trade
         --this shortcut ONLY works if you know that a log is only emitted ONCE per call.
         LEFT JOIN logs rl ON trade.call_tx_id = rl.call_tx_id
             AND trade.call_block_slot = rl.call_block_slot
-            AND trade.call_order = rl.log_order 
+            AND trade.call_order = rl.log_order
         WHERE 1=1
     )
-    
+
     , raw_nft_trades as (
         SELECT
             'solana' as blockchain
@@ -198,7 +214,7 @@ with
             , 'SOL' as currency_symbol
             , 'So11111111111111111111111111111111111111112' as currency_address
             , t.account_metadata
-            , tk.account_master_edition 
+            , tk.account_master_edition
             , tk.account_mint
             , tk.verified_creator
             , 'TSWAPaqyCSx2KABk68Shruf4rp7CxcNi8hAsbdwmHbN' as project_program_id
@@ -221,7 +237,7 @@ with
             , t.mm_fee/1e9 as amm_fee_amount
             , t.mm_fee/1e9 * sol_p.price as amm_fee_amount_usd
             , case when t.mm_fee = 0 then 0 else t.mm_fee/t.current_price end as amm_fee_percentage
-            , t.creators_fee as royalty_fee_amount_raw 
+            , t.creators_fee as royalty_fee_amount_raw
             , t.creators_fee/1e9 as royalty_fee_amount
             , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd
             , case when t.creators_fee = 0 then 0 else t.creators_fee/t.current_price end as royalty_fee_percentage
@@ -234,7 +250,7 @@ with
         LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
     )
 
-SELECT 
+SELECT
 *
 , concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index,0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades

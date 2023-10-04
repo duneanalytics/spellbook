@@ -221,36 +221,3 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
-
-  # solana seeds below here
-  - name: magiceden_solana_base_trades_seed
-    config:
-      tags: dunesql
-      column_types:
-        block_slot: bigint
-        tx_id: varchar
-        buyer: varchar
-        seller: varchar
-        outer_instruction_index: int
-        inner_instruction_index: int
-        account_mint: varchar
-        amount_raw: double
-        taker_fee_amount_raw: double
-        maker_fee_amount_raw: double
-        royalty_fee_amount_raw: double
-
-  - name: tensorswap_solana_base_trades_seed
-    config:
-      tags: dunesql
-      column_types:
-        block_slot: bigint
-        tx_id: varchar
-        buyer: varchar
-        seller: varchar
-        outer_instruction_index: int
-        inner_instruction_index: int
-        account_mint: varchar
-        amount_raw: double
-        taker_fee_amount_raw: double
-        maker_fee_amount_raw: double
-        royalty_fee_amount_raw: double

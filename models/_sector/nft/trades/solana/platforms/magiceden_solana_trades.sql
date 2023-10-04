@@ -14,11 +14,11 @@
     )
 }}
 
-with 
+with
     royalty_logs as (
         with nested_logs as (
-            SELECT 
-                distinct 
+            SELECT
+                distinct
                 call_tx_id
                 , call_block_slot
                 , call_outer_instruction_index
@@ -33,8 +33,10 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
-                UNION ALL 
+                {% endif %}
+                UNION ALL
                 SELECT
                     call_tx_id
                     , call_block_slot
@@ -42,8 +44,10 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
-                UNION ALL 
+                {% endif %}
+                UNION ALL
                 SELECT
                     call_tx_id
                     , call_block_slot
@@ -51,36 +55,38 @@ with
                     , call_inner_instruction_index
                     , call_log_messages
                 FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
+                {% if is_incremental() %}
                 WHERE {{incremental_predicate('call_block_time')}}
+                {% endif %}
             ) LEFT JOIN unnest(call_log_messages) as log_messages(logs) ON True
             WHERE logs LIKE '%Program log:%royalty%price%seller_expiry%' --must log these fields. hopefully no other programs out there log them hahaha
             AND try(json_parse(split(logs, ' ')[3])) is not null --valid hex
         )
-        
+
         SELECT
         *
         , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as log_order
         FROM nested_logs
     )
-    
+
     , trades as (
         SELECT
             case when account_buyer = call_tx_signer then 'buy' else 'sell' end as trade_category
             --price should include all fees paid by user
-            , buyerPrice 
-                + coalesce(coalesce(takerFeeBp,takerFeeRaw)/1e4*buyerPrice,0) 
+            , buyerPrice
+                + coalesce(coalesce(takerFeeBp,takerFeeRaw)/1e4*buyerPrice,0)
                 --if maker fee is negative then it is paid out of taker fee. else it comes out of taker (user) wallet
-                + case when coalesce(coalesce(makerFeeBp,makerFeeRaw)/1e4*buyerPrice,0) > 0 
-                    then coalesce(coalesce(makerFeeBp,makerFeeRaw)/1e4*buyerPrice,0) 
+                + case when coalesce(coalesce(makerFeeBp,makerFeeRaw)/1e4*buyerPrice,0) > 0
+                    then coalesce(coalesce(makerFeeBp,makerFeeRaw)/1e4*buyerPrice,0)
                     else 0
                     end
-                + coalesce(rl.royalty,0) as price 
+                + coalesce(rl.royalty,0) as price
             , makerFeeBp
             , takerFeeBp
             , makerFeeRaw
             , takerFeeRaw
             , coalesce(makerFeeBp,makerFeeRaw)/1e4*buyerPrice as maker_fee
-            , coalesce(takerFeeBp,takerFeeRaw)/1e4*buyerPrice as taker_fee 
+            , coalesce(takerFeeBp,takerFeeRaw)/1e4*buyerPrice as taker_fee
             , tokenSize as token_size
             , rl.royalty --we will just be missing this if log is truncated.
             , trade.call_instruction_name as instruction
@@ -95,7 +101,7 @@ with
             , trade.call_tx_id
             , trade.call_tx_signer
         FROM (
-            SELECT 
+            SELECT
                 call_instruction_name
                 , account_buyer
                 , account_seller
@@ -117,7 +123,9 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
             UNION ALL
             SELECT
                 call_instruction_name
@@ -143,9 +151,11 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
             UNION ALL
-            SELECT 
+            SELECT
                 call_instruction_name
                 , account_buyer
                 , account_seller
@@ -169,14 +179,16 @@ with
                 , call_tx_signer
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
+            {% if is_incremental() %}
             WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
         ) trade
         --this shortcut ONLY works if you know that a log is only emitted ONCE per call.
         LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
             AND trade.call_block_slot = rl.call_block_slot
-            AND trade.call_order = rl.log_order 
+            AND trade.call_order = rl.log_order
     )
-    
+
     , raw_nft_trades as (
         SELECT
             'solana' as blockchain
@@ -217,7 +229,7 @@ with
             , cast(null as double) as amm_fee_amount
             , cast(null as double) as amm_fee_amount_usd
             , cast(null as double) as amm_fee_percentage
-            , t.royalty as royalty_fee_amount_raw 
+            , t.royalty as royalty_fee_amount_raw
             , t.royalty/1e9 as royalty_fee_amount
             , t.royalty/1e9 * sol_p.price as royalty_fee_amount_usd
             , case when t.royalty = 0 then 0 else t.royalty/t.price end as royalty_fee_percentage
@@ -230,7 +242,7 @@ with
         LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
     )
 
-SELECT 
+SELECT
 *
 , concat(project,'-',trade_category,'-',cast(outer_instruction_index as varchar),'-',cast(coalesce(inner_instruction_index, 0) as varchar),'-',account_metadata,'-',tx_id) as unique_trade_id
 FROM raw_nft_trades

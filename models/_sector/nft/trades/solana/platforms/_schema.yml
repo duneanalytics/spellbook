@@ -20,7 +20,7 @@ models:
             - account_metadata
             - tx_id
      - check_seed:
-         seed_file: ref('magiceden_solana_base_trades_seed')
+         seed_file: ref('magiceden_solana_trades_seed')
          match_columns:
            - block_slot
            - tx_id
@@ -87,6 +87,8 @@ models:
      - &account_metadata
        name: account_metadata
        description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"
+       tests:
+         - not_null
      - &account_master_edition
        name: account_master_edition
        description: "Master edition for the account. All NFTs have a master edition"
@@ -111,7 +113,8 @@ models:
      - &block_number
        name: block_slot
        description: "Block slot in which the transaction was executed "
-     - name: tx_signer
+     - &tx_signer
+       name: tx_signer
      - &taker_fee_amount_raw
        name: taker_fee_amount_raw
        description: "Raw numerical amount for taker fees"
@@ -160,6 +163,89 @@ models:
      - &outer_instruction_index
        name: outer_instruction_index
        description: "outer index of instruction call"
+       tests:
+         - not_null
      - &inner_instruction_index
        name: inner_instruction_index
        description: "inner index of instruction call"
+       tests:
+         - not_null
+
+  - name: tensorswap_solana_trades
+    meta:
+      blockchain: solana
+      project: tensor
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'tensorswap','solana','nft' ]
+    description: >
+      tensorswap solana trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - trade_category
+            - outer_instruction_index
+            - inner_instruction_index
+            - account_metadata
+            - tx_id
+      - check_seed:
+          seed_file: ref('tensorswap_solana_trades_seed')
+          match_columns:
+            - block_slot
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+          check_columns:
+            - buyer
+            - seller
+            - account_mint
+            - amount_raw
+            - taker_fee_amount_raw
+            - maker_fee_amount_raw
+            - royalty_fee_amount_raw
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_name
+      - *token_symbol
+      - *trade_type
+      - *number_of_items
+      - *trader_category
+      - *seller
+      - *buyer
+      - *amount_usd
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *token_standard
+      - *account_metadata
+      - *account_master_edition
+      - *account_mint
+      - *verified_creator
+      - *project_program_id
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_signer
+      - *taker_fee_amount_raw
+      - *taker_fee_amount
+      - *taker_fee_amount_usd
+      - *taker_fee_percentage
+      - *royalty_fee_currency_symbol
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *amm_fee_amount_raw
+      - *amm_fee_amount
+      - *amm_fee_amount_usd
+      - *amm_fee_percentage
+      - *unique_trade_id
+      - *instruction
+      - *outer_instruction_index
+      - *inner_instruction_index
