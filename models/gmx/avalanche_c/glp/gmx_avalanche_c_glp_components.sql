@@ -210,13 +210,13 @@ with minute as -- This CTE generates a series of minute values
                          m.token,
                          m.symbol,
                          m.decimals,
-                         last(pm.amount, true) OVER (partition by m.token order by m.minute)  as pool_amount,
-                         last(rm.amount, true) OVER (partition by m.token order by m.minute)  as reserved_amount,
-                         last(gu.amount, true) OVER (partition by m.token order by m.minute)  as guaranteed_usd,
-                         last(mxp.price, true) OVER (partition by m.token order by m.minute)  as max_price,
-                         last(mnp.price, true) OVER (partition by m.token order by m.minute)  as min_price,
-                         last(gsap.price, true) OVER (partition by m.token order by m.minute) as global_short_average_price,
-                         last(gss.amount, true) OVER (partition by m.token order by m.minute) as global_short_size
+                         FIRST_VALUE(pm.amount) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as pool_amount,
+                         FIRST_VALUE(rm.amount) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as reserved_amount,
+                         FIRST_VALUE(gu.amount) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as guaranteed_usd,
+                         FIRST_VALUE(mxp.price) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as max_price,
+                         FIRST_VALUE(mnp.price) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as min_price,
+                         FIRST_VALUE(gsap.price) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as global_short_average_price,
+                         FIRST_VALUE(gss.amount) OVER (PARTITION BY m.token ORDER BY m.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) as global_short_size
                   from minute_token as m
                            left join pool_amount as pm on m.minute = pm.block_minute and m.token = pm.token
                            left join rsv_amount as rm on m.minute = rm.block_minute and m.token = rm.token
