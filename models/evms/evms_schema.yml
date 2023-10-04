@@ -559,9 +559,9 @@ models:
         name: num_user_txs_per_day
       - &num_success_user_txs_per_day
         name: num_success_user_txs_per_day
-      - &l2_num_attr_deposit_txs_per_day --op configured
+      - &l2_num_attr_deposit_txs_per_day
         name: l2_num_attr_deposit_txs_per_day
-      - &l2_num_user_deposit_txs_per_day --op configured
+      - &l2_num_user_deposit_txs_per_day
         name: l2_num_user_deposit_txs_per_day
       - &num_user_addresses_per_day
         name: num_user_addresses_per_day
@@ -590,11 +590,11 @@ models:
       - &gas_used
         name: gas_used
 
-      - &avg_gas_price_gwei --if not free
+      - &avg_gas_price_gwei
         name: avg_gas_price_gwei
-      - &avg_base_fee_gwei --if not free
+      - &avg_base_fee_gwei
         name: avg_base_fee_gwei
-      - &avg_l1_gas_price_on_l2_gwei --if not free
+      - &avg_l1_gas_price_on_l2_gwei
         name: avg_l1_gas_price_on_l2_gwei
   
       - &calldata_bytes_per_day
