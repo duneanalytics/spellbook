@@ -11,6 +11,8 @@ select
     ,r.version
     ,r.block_number
     ,r.block_time
+    ,cast(date_trunc('day',r.block_time) as date) as block_date
+    ,cast(date_trunc('month',r.block_time) as date) as block_month
     ,r.tx_hash
     ,r.category
     ,r.referrer_address
