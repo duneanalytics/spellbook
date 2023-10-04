@@ -1,8 +1,9 @@
 {{ 
     config(
         materialized='incremental',
+        tags = ['dunesql'],
         alias = alias('eth_transfers'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
         file_format ='delta',
@@ -10,7 +11,7 @@
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "safe",
-                                    \'["tschubotz"]\') }}'
+                                    \'["tschubotz", "hosuke"]\') }}'
     ) 
 }}
 
@@ -19,22 +20,23 @@
 select 
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
+    CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
-    -et.value as amount_raw,
+    -CAST(et.value AS INT256) as amount_raw,
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('arbitrum', 'traces') }} et
-inner join {{ ref('safe_arbitrum_safes') }} s on et.from = s.address
-    and et.from != et.to -- exclude calls to self to guarantee unique key property
+inner join {{ ref('safe_arbitrum_safes') }} s on et."from" = s.address
+    and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
-    and et.value > '0' -- value is of type string. exclude 0 value traces
+    and et.value > UINT256 '0' -- et.value is uint256 type
 {% if not is_incremental() %}
-where et.block_time > '{{project_start_date}}' -- for initial query optimisation
+where et.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-where et.block_time > date_trunc("day", now() - interval '10 days')
+where et.block_time > date_trunc('day', now() - interval '10' day)
 {% endif %}
         
 union all
@@ -42,20 +44,21 @@ union all
 select 
     s.address, 
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
+    CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
-    et.value as amount_raw,
+    CAST(et.value AS INT256) as amount_raw,
     et.tx_hash,
     array_join(et.trace_address, ',') as trace_address
 from {{ source('arbitrum', 'traces') }} et
 inner join {{ ref('safe_arbitrum_safes') }} s on et.to = s.address
-    and et.from != et.to -- exclude calls to self to guarantee unique key property
+    and et."from" != et.to -- exclude calls to self to guarantee unique key property
     and et.success = true
     and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
-    and et.value > '0' -- value is of type string. exclude 0 value traces
+    and et.value > UINT256 '0' -- et.value is uint256 type
 {% if not is_incremental() %}
-where et.block_time > '{{project_start_date}}' -- for initial query optimisation
+where et.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-where et.block_time > date_trunc("day", now() - interval '10 days')
+where et.block_time > date_trunc('day', now() - interval '10' day)
 {% endif %}

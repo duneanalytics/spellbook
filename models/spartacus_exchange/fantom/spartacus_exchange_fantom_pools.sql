@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('pools'),
     materialized = 'incremental',
     file_format = 'delta',
@@ -11,17 +12,17 @@
     )
 }}
 
-SELECT 'fantom'             AS blockchain
-     , 'spartacus_exchange' AS project
-     , '1'                  AS version
-     , pair                 AS pool
-     , 0.2                  AS fee
+SELECT 'fantom'                 AS blockchain
+     , 'spartacus_exchange'     AS project
+     , '1'                      AS version
+     , pair                     AS pool
+     , CAST(0.2 as decimal)     AS fee
      , token0
      , token1
-     , evt_block_time       AS creation_block_time
-     , evt_block_number     AS creation_block_number
+     , evt_block_time           AS creation_block_time
+     , evt_block_number         AS creation_block_number
      , contract_address
 FROM {{ source('spartacus_exchange_fantom', 'BaseV1Factory_evt_PairCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}

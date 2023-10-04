@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['unique_trade_id']
 )}}
 
 {% set nft_start_date = '2022-01-04' %}
@@ -37,7 +37,6 @@ SELECT
     'polygon' as blockchain,
     'decentraland' as project,
     'v1' as version,
-    date_trunc('day', src.evt_block_time) AS block_date,
     src.evt_block_time AS block_time,
     src.evt_block_number AS block_number,
     src.price_converted * p.price as amount_usd,
@@ -51,7 +50,7 @@ SELECT
     'Trade' AS evt_type,
     CAST(NULL AS varchar) AS collection,
     'Single Item Trade' as trade_type,
-    1 as number_of_items,
+    uint256 '1' as number_of_items,
     'buy' AS trade_category,
     src.buyer,
     src.seller,

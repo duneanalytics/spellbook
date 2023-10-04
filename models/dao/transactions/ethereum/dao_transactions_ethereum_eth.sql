@@ -22,7 +22,7 @@ dao_tmp as (
         FROM 
         {{ ref('dao_addresses_ethereum') }}
         WHERE dao_wallet_address IS NOT NULL
-        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead)
+        AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead, 0x)
 ), 
 
 transactions as (
@@ -34,7 +34,7 @@ transactions as (
             "to" as dao_wallet_address, 
             'tx_in' as tx_type, 
             tx_index,
-            COALESCE("from", CAST(NULL as VARBINARY)) as address_interacted_with,
+            COALESCE("from", 0x) as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -59,7 +59,7 @@ transactions as (
             "from" as dao_wallet_address, 
             'tx_out' as tx_type,
             tx_index,
-            COALESCE("to", CAST(NULL as VARBINARY)) as address_interacted_with,
+            COALESCE("to", 0x) as address_interacted_with,
             trace_address
         FROM 
         {{ source('ethereum', 'traces') }}
@@ -111,8 +111,8 @@ LEFT JOIN
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 {#
--- LEFT JOIN
--- {{ ref('dex_prices') }} dp
+-- LEFT JOIN 
+-- {{ ref('dex_prices') }} dp 
 --     ON dp.hour = date_trunc('hour', t.block_time)
 --     AND dp.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
 --     AND dp.blockchain = 'ethereum'
@@ -121,5 +121,3 @@ LEFT JOIN
 --     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
 --     {% endif %}
 #}
-
-

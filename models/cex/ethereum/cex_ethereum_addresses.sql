@@ -45,6 +45,7 @@ FROM (VALUES
     , ('ethereum', 0x2f7e209e0f5f645c7612d7610193fe268f118b28, 'Binance', 'Binance 34', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xd9d93951896b4ef97d251334ef2a0e39f6f6d7d7, 'Binance', 'Binance 35', 'hildobby', date '2022-08-28')
     --, ('ethereum', 0xf35a6bd6e0459a4b53a27862c51a2a7292b383d1, 'Binance', 'Binance 36', 'soispoke', date '2022-11-14')
+    , ('ethereum', 0x19184ab45c40c2920b0e0e31413b9434abd243ed, 'Binance', 'Binance 39', 'hildobby', date '2023-08-31')
     , ('ethereum', 0x294b9b133ca7bc8ed2cdd03ba661a4c6d3a834d9, 'Binance', 'Binance 41', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x5d7f34372fa8708e09689d400a613eee67f75543, 'Binance', 'Binance 42', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x8b99f3660622e21f2910ecca7fbe51d654a1517d, 'Binance', 'Binance Charity', 'hildobby', date '2022-08-28')
@@ -52,6 +53,7 @@ FROM (VALUES
     , ('ethereum', 0xc365c3315cf926351ccaf13fa7d19c8c4058c8e1, 'Binance', 'Binance Pool', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x4fabb145d64652a948d72533023f6e7a623c7c53, 'Binance', 'Binance USD', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x2f47a1c2db4a3b78cda44eade915c3b19107ddcc, 'Binance', 'Binance Eth2 Depositor', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xbdd75a97c29294ff805fb2fee65abd99492b32a8, 'Binance', 'Binance Eth2 Depositor 2', 'hildobby', date '2023-08-31')
     , ('ethereum', 0xb3f923eabaf178fc1bd8e13902fc5c61d3ddef5b, 'Binance', 'Wintermute Binance Deposit', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x47ac0fb4F2d84898e4d9e7b4dab3c24507a6d503, 'Binance', 'Binance: Stablecoin Proof of Assets', 'soispoke', date '2022-11-14')
     , ('ethereum', 0x9be89d2a4cd102d8fecc6bf9da793be995c22541, 'Binance', 'Binance: ETH and ERC20 tokens Proof of Assets', 'soispoke', date '2022-11-14')
@@ -60,6 +62,9 @@ FROM (VALUES
     , ('ethereum', 0x61189da79177950a7272c88c6058b96d4bcd6be2, 'Binance US', 'Binance US 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x34ea4138580435b5a521e460035edb19df1938c1, 'Binance US', 'Binance US 2', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xf60c2ea62edbfe808163751dd0d8693dcb30019c, 'Binance US', 'Binance US 3', 'hildobby', date '2023-04-06')
+    , ('ethereum', 0x9430801ebaf509ad49202aabc5f5bc6fd8a3daf8, 'Binance', 'Binance Deposit Funder', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x8f80c66c70cbc52009babb04c1cadf9b40109289, 'Binance', 'Binance Deposit Funder 2', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x15ece0d7de25436bcfcf3d62a9085ddc7838aee9, 'Binance', 'Binance Deposit Funder 3', 'hildobby', date '2023-08-31')
     -- Bybit, Source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bybit_address.txt
     , ('ethereum', 0x1db92e2eebc8e0c075a02bea49a2935bcd2dfcf4, 'Bybit', 'Bybit 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xa7a93fd0a276fc1c0197a5b5623ed117786eed06, 'Bybit', 'Bybit 2', 'hildobby', date '2023-04-06')
@@ -83,6 +88,12 @@ FROM (VALUES
     , ('ethereum', 0x25eaff5b179f209cf186b1cdcbfa463a69df4c45, 'FTX', 'FTX (formerly Blockfolio)', 'hildobby', date '2022-08-28')
     -- FTX US, Source: https://etherscan.io/accounts/label/ftx
     , ('ethereum', 0x7abe0ce388281d2acf297cb089caef3819b13448, 'FTX US', 'FTX US', 'hildobby', date '2022-08-28')
+    -- Blockchain.com
+    , ('ethereum', 0x52749d8c2f70f7ea6343054b7a04fb16337e5f58, 'Blockchain.com', 'Blockchain.com 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xc88f7666330b4b511358b7742dc2a3234710e7b1, 'Blockchain.com', 'Blockchain.com 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xa00e2a7652248abeb209398227dae413e9479e52, 'Blockchain.com', 'Blockchain.com 3', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x23f4569002a5a07f0ecf688142eeb6bcd883eef8, 'Blockchain.com', 'Blockchain.com 4', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x46e0813dcb480517e3e73449761bdc596e424a79, 'Blockchain.com', 'Blockchain.com 5', 'hildobby', date '2023-09-12')
     -- Coinbase, Source: https://etherscan.io/accounts/label/coinbase
     , ('ethereum', 0x71660c4005ba85c37ccec55d0c4493e66fe775d3, 'Coinbase', 'Coinbase 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x503828976d22510aad0201ac7ec88293211d23da, 'Coinbase', 'Coinbase 2', 'hildobby', date '2022-08-28')
@@ -101,7 +112,14 @@ FROM (VALUES
     , ('ethereum', 0xa090e606e30bd747d4e6245a1517ebe430f0057e, 'Coinbase', 'Coinbase Miscellaneous', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xf6874c88757721a02f47592140905c4336dfbc61, 'Coinbase', 'Coinbase Commerce', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x881d4032abe4188e2237efcd27ab435e81fc6bb1, 'Coinbase', 'Coinbase Commerce 2', 'hildobby', date '2022-08-28')
-    -- OKX, Source: https://etherscan.io/accounts/label/okex
+    , ('ethereum', 0x6c8dd0e9cc58c07429e065178d88444b60e60b80, 'Coinbase', 'Coinbase Commerce Fee', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xbc8ec259e3026ae0d87bc442d034d6882ce4a35c, 'Coinbase', 'Coinbase Commerce Fee 2', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x02d24cab4f2c3bf6e6eb07ea07e45f96baccffe7, 'Coinbase', 'Coinbase Commerce Fee 3', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xce352e98934499be70f641353f16a47d9e1e3abd, 'Coinbase', 'Coinbase Commerce Fee 4', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x90e18a6920985dbacc3d76cf27a3f2131923c720, 'Coinbase', 'Coinbase Commerce Fee 5', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x4b23d52eff7c67f5992c2ab6d3f69b13a6a33561, 'Coinbase', 'Coinbase Commerce Fee 6', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xbe3c68821d585cf1552214897a1c091014b1eb0a, 'Coinbase', 'Coinbase Account Blacklister', 'hildobby', date '2023-08-31')
+    -- OKX, Source: https://etherscan.io/accounts/label/okx
     , ('ethereum', 0x6cc5f688a315f3dc28a7781717a9a798a59fda7b, 'OKX', 'OKX', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x236f9f97e0e62388479bf9e5ba4889e46b0273c3, 'OKX', 'OKX 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xa7efae728d2936e78bda97dc267687568dd593f3, 'OKX', 'OKX 3', 'hildobby', date '2022-08-28')
@@ -122,6 +140,11 @@ FROM (VALUES
     , ('ethereum', 0x5c52cc7c96bde8594e5b77d5b76d042cb5fae5f2, 'OKX', 'OKX 18', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xe9172daf64b05b26eb18f07ac8d6d723acb48f99, 'OKX', 'OKX 19', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x7eb6c83ab7d8d9b8618c0ed973cbef71d1921ef2, 'OKX', 'OKX 20', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX', 'OKX DEX Aggregation Router', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xc5a93444cc4da6efb9e6fc6e5d3cb55a53b52396, 'OKX', 'OKX Deposit Funder', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x24c654f6b143dc5cae3c02fbb527ca63aa555dbc, 'OKX', 'OKX Deposit Funder 2', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x89fd00b8d2dcee0f40d8699970115bb861241a54, 'OKX', 'OKX Deposit Funder 3', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xaad8ad7dfa05bc354e011890dd61636842c2cb96, 'OKX', 'OKX Deposit Funder 4', 'hildobby', date '2023-08-31')
     -- Huobi, Source: https://etherscan.io/accounts/label/huobi
     , ('ethereum', 0xab5c66752a9e8167967685f1450532fb96d5d24f, 'Huobi', 'Huobi 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x6748f50f686bfbca6fe8ad62b22228b87f31ff2b, 'Huobi', 'Huobi 2', 'hildobby', date '2022-08-28')
@@ -143,7 +166,7 @@ FROM (VALUES
     , ('ethereum', 0x229b5c097f9b35009ca1321ad2034d4b3d5070f6, 'Huobi', 'Huobi 18', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xd8a83b72377476d0a66683cde20a8aad0b628713, 'Huobi', 'Huobi 19', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x90e9ddd9d8d5ae4e3763d0cf856c97594dea7325, 'Huobi', 'Huobi 20', 'hildobby', date '2022-08-28')
-    , ('ethereum', 0x18916e1a2933cb349145a280473a5de8eb6630cb, 'Huobi', 'Huobi 21', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x30741289523c2e4d2a62c7d6722686d14e723851, 'Huobi', 'Huobi 21', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x6f48a3e70f0251d1e83a989e62aaa2281a6d5380, 'Huobi', 'Huobi 22', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xf056f435ba0cc4fcd2f1b17e3766549ffc404b94, 'Huobi', 'Huobi 23', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x137ad9c4777e1d36e4b605e745e8f37b2b62e9c5, 'Huobi', 'Huobi 24', 'hildobby', date '2022-08-28')
@@ -152,7 +175,7 @@ FROM (VALUES
     , ('ethereum', 0x0577a79cfc63bbc0df38833ff4c4a3bf2095b404, 'Huobi', 'Huobi 27', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x0c6c34cdd915845376fb5407e0895196c9dd4eec, 'Huobi', 'Huobi 28', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x794d28ac31bcb136294761a556b68d2634094153, 'Huobi', 'Huobi 29', 'hildobby', date '2022-08-28')
-    , ('ethereum', 0xfd54078badd5653571726c3370afb127351a6f26, 'Huobi', 'Huobi 30', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x34189c75cbb13bdb4f5953cda6c3045cfca84a9e, 'Huobi', 'Huobi 30', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xb4cd0386d2db86f30c1a11c2b8c4f4185c1dade9, 'Huobi', 'Huobi 31', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x4d77a1144dc74f26838b69391a6d3b1e403d0990, 'Huobi', 'Huobi 32', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x28ffe35688ffffd0659aee2e34778b0ae4e193ad, 'Huobi', 'Huobi 33', 'hildobby', date '2022-08-28')
@@ -163,6 +186,8 @@ FROM (VALUES
     , ('ethereum', 0x49517ca7b7a50f592886d4c74175f4c07d460a70, 'Huobi', 'Huobi 38', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x58c2cb4a6bee98c309215d0d2a38d7f8aa71211c, 'Huobi', 'Huobi 39', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x39d9f4640b98189540a9c0edcfa95c5e657706aa, 'Huobi', 'Huobi 40', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xe3c274d2e2180afd89eda4d25320cff08aadb680, 'Huobi', 'Huobi 41', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x99fe5d6383289cdd56e54fc0baf7f67c957a8888, 'Huobi', 'Huobi 42', 'hildobby', date '2023-09-09')
     , ('ethereum', 0x1d1e10e8c66b67692f4c002c0cb334de5d485e41, 'Huobi', 'Huobi Old Address 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x1b93129f05cc2e840135aab154223c75097b69bf, 'Huobi', 'Huobi Old Address 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xeb6d43fe241fb2320b5a3c9be9cdfd4dd8226451, 'Huobi', 'Huobi Old Address 3', 'hildobby', date '2022-08-28')
@@ -198,13 +223,31 @@ FROM (VALUES
     , ('ethereum', 0xecd8b3877d8e7cd0739de18a5b545bc0b3538566, 'Huobi', 'Huobi Old Address 33', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xef54f559b5e3b55b783c7bc59850f83514b6149c, 'Huobi', 'Huobi Old Address 34', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x9d6d492bd500da5b33cf95a5d610a73360fcaaa0, 'Huobi', 'Huobi Mining Pool', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xfd54078badd5653571726c3370afb127351a6f26, 'Huobi', 'Huobi Deposit Funder', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x18916e1a2933cb349145a280473a5de8eb6630cb, 'Huobi', 'Huobi Deposit Funder 2', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xdb0e89a9b003a28a4055ef772e345e8089987bfd, 'Huobi', 'Huobi Deposit Funder 3', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xf0458aaaf6d49192d3b4711960635d5fa2114e71, 'Huobi', 'Huobi Deposit Funder 4', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x07ef60deca209ea0f3f3f08c1ad21a6db5ef9d33, 'Huobi', 'Huobi Deposit Funder 5', 'hildobby', date '2023-08-31')
+    -- LBank
+    , ('ethereum', 0x356dc48d74f107cfbfd61790b0808cda6a0d364f, 'LBank', 'LBank 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xc06e0513a150a021104fdcdd20ce362fa593ba1f, 'LBank', 'LBank 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x120051a72966950b8ce12eb5496b5d1eeec1541b, 'LBank', 'LBank 3', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xe5a8b35eaa3c14e0a6514f800825e1e6687bf23e, 'LBank', 'LBank 4', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x124d9bf2fecbc16b54ec4accdb14d44c2144f012, 'LBank', 'LBank 5', 'hildobby', date '2023-09-12')
+    -- https://twitter.com/ArkhamIntel/status/1696931898117800322?s=20
+    , ('ethereum', 0x40b38765696e3d5d8d9d834d8aad4bb6e418e489, 'Robinhood', 'Robinhood', 'hildobby', date '2023-08-31')
+    -- CoinList, Source: https://etherscan.io/accounts/label/coinlist
+    , ('ethereum', 0xd1669ac6044269b59fa12c5822439f609ca54f41, 'CoinList', 'CoinList 1', 'hildobby', date '2023-09-08')
+    , ('ethereum', 0x8d1f2ebfaccf1136db76fdd1b86f1dede2d23852, 'CoinList', 'CoinList 2', 'hildobby', date '2023-09-08')
+    , ('ethereum', 0xd2c82f2e5fa236e114a81173e375a73664610998, 'CoinList', 'CoinList 3', 'hildobby', date '2023-09-08')
     -- Gate.io, Source: https://etherscan.io/accounts/label/gate-io
     , ('ethereum', 0x0d0707963952f2fba59dd06f2b425ace40b492fe, 'Gate.io', 'Gate.io 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x7793cd85c11a924478d358d49b05b37e91b5810f, 'Gate.io', 'Gate.io 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x1c4b70a3968436b9a0a9cf5205c787eb81bb558c, 'Gate.io', 'Gate.io 3', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x234ee9e35f8e9749a002fc42970d570db716453b, 'Gate.io', 'Gate.io 4', 'web3_data', date '2023-02-07')
     , ('ethereum', 0xc882b111a75c0c657fc507c04fbfcd2cc984f071, 'Gate.io', 'Gate.io 5', 'web3_data', date '2023-02-07')
-    , ('ethereum', 0x6596da8b65995d5feacff8c2936f0b7a2051b0d0, 'Gate.io', 'Gate.io: Deposit Funde', 'web3_data', date '2023-02-07')
+    , ('ethereum', 0x05EE546c1a62f90D7aCBfFd6d846c9C54C7cF94c, 'Gate.io', 'Gate.io 6', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x6596da8b65995d5feacff8c2936f0b7a2051b0d0, 'Gate.io', 'Gate.io: Deposit Funder', 'web3_data', date '2023-02-07')
     , ('ethereum', 0xd793281182a0e3e023116004778f45c29fc14f19, 'Gate.io', 'Gate.io: Contract', 'web3_data', date '2023-02-07')
     -- Kraken, Source: https://etherscan.io/accounts/label/kraken
     , ('ethereum', 0x2910543af39aba0cd09dbb2d50200b3e800a63d2, 'Kraken', 'Kraken 1', 'hildobby', date '2022-08-28')
@@ -264,6 +307,7 @@ FROM (VALUES
     , ('ethereum', 0xe6a421f24d330967a3af2f4cdb5c34067e7e4d75, 'Bitget', 'Bitget 11', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xe80623a9d41f2f05780d9cd9cea0f797fd53062a, 'Bitget', 'Bitget 12', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xf646d9b7d20babe204a89235774248ba18086dae, 'Bitget', 'Bitget 13', 'hildobby', date '2023-04-06')
+    , ('ethereum', 0xf4b51b14b9ee30dc37ec970b50a486f37686e2a8, 'Bitget', 'Bitget: Cold Storage', 'hildobby', date '2023-09-09')
     -- KuCoin, Source: https://etherscan.io/accounts/label/kucoin
     , ('ethereum', 0x2b5634c42055806a59e9107ed44d43c426e58258, 'KuCoin', 'KuCoin 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x689c56aef474df92d44a1b70850f808488f9769c, 'KuCoin', 'KuCoin 2', 'hildobby', date '2022-08-28')
@@ -280,6 +324,9 @@ FROM (VALUES
     , ('ethereum', 0xd89350284c7732163765b23338f2ff27449e0bf5, 'KuCoin', 'KuCoin 13', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x88bd4d3e2997371bceefe8d9386c6b5b4de60346, 'KuCoin', 'KuCoin 14', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xb8e6d31e7b212b2b7250ee9c26c56cebbfbe6b23, 'KuCoin', 'KuCoin 15', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xe66845fd840fc7e489bcb61241fff5b7fc5f1f0e, 'KuCoin', 'KuCoin 16', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x061f7937b7b2bc7596539959804f86538b6368dc, 'KuCoin', 'KuCoin Deposit Funder', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x2602669a92fccf44e5319ff51b0f453aab9db021, 'KuCoin', 'KuCoin Deposit Funder 2', 'hildobby', date '2023-08-31')
     -- Crypto.com, Source: https://etherscan.io/accounts/label/crypto-com
     , ('ethereum', 0x6262998ced04146fa42253a5c0af90ca02dfd2a3, 'Crypto.com', 'Crypto.com 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x46340b20830761efd32832a74d7169b29feb9758, 'Crypto.com', 'Crypto.com 2', 'hildobby', date '2022-08-28')
@@ -294,6 +341,10 @@ FROM (VALUES
     , ('ethereum', 0xb302bfe9c246c6e150af70b1caaa5e3df60dac05, 'Gemini', 'Gemini 5', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x8d6f396d210d385033b348bcae9e4f9ea4e045bd, 'Gemini', 'Gemini 6', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xd69b0089d9ca950640f5dc9931a41a5965f00303, 'Gemini', 'Gemini 7', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x183b1Ffb0Aa9213b9335AdFAd82E47bfb02f8d24, 'Gemini', 'Gemini 8', 'hildobby', date '2023-09-05')
+    , ('ethereum', 0xdd51f01d9fc0fd084c1a4737bbfa5becb6ced9bc, 'Gemini', 'Gemini Deployer', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini Deployer 2', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x07ee55aa48bb72dcc6e9d78256648910de513eca, 'Gemini', 'Gemini Contract 1', 'hildobby', date '2023-08-31')
     -- BitMart, Source: https://etherscan.io/accounts/label/bitmart
     , ('ethereum', 0xe79eef9b9388a4ff70ed7ec5bccd5b928ebb8bd1, 'BitMart', 'BitMart 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7, 'BitMart', 'BitMart 2', 'hildobby', date '2022-08-28')
@@ -305,11 +356,21 @@ FROM (VALUES
     , ('ethereum', 0x390de26d772d2e2005c6d1d24afc902bae37a4bb, 'Upbit', 'Upbit 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xba826fec90cefdf6706858e5fbafcb27a290fbe0, 'Upbit', 'Upbit 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x5e032243d507c743b061ef021e2ec7fcc6d3ab89, 'Upbit', 'Upbit 3', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x1938a448d105d26c40a52a1bfe99b8ca7a745ad0, 'Upbit', 'Upbit 4', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x03747f06215b44e498831da019b27f53e483599f, 'Upbit', 'Upbit 5', 'hildobby', date '2023-09-09')
     , ('ethereum', 0xc9cf0ec93d764f5c9571fd12f764bae7fc87c84e, 'Upbit', 'Upbit Cold Wallet', 'hildobby', date '2022-08-28')
+    -- BlockFi, Source: https://etherscan.io/accounts/label/blockfi
+    , ('ethereum', 0x04046027549f739edfd5b2a78efdbaf0f0bf4514, 'BlockFi', 'BlockFi 1', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xa26a8e242a7470476df1dc11ded5dbc9fca610fa, 'BlockFi', 'BlockFi 2', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x2a549b4af9ec39b03142da6dc32221fc390b5533, 'BlockFi', 'BlockFi 3', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x3fda25f27211a138adf211f4c060f2149674be6d, 'BlockFi', 'BlockFi 4', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x808b4da0be6c9512e948521452227efc619bea52, 'BlockFi', 'BlockFi 5', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x530e0a6993ea99ffc96615af43f327225a5fe536, 'BlockFi', 'BlockFi 6', 'hildobby', date '2023-09-09')
     -- Bittrex, Source: https://etherscan.io/accounts/label/bittrex
     , ('ethereum', 0xfbb1b73c4f0bda4f67dca266ce6ef42f520fbb98, 'Bittrex', 'Bittrex 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xe94b04a0fed112f3664e45adb2b8915693dd5ff3, 'Bittrex', 'Bittrex 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x66f820a414680b5bcda5eeca5dea238543f42054, 'Bittrex', 'Bittrex 3', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xa3c1e324ca1ce40db73ed6026c4a177f099b5770, 'Bittrex', 'Bittrex Controller', 'hildobby', date '2023-08-31')
     -- Bithumb, Source: https://etherscan.io/accounts/label/bithumb
     , ('ethereum', 0x88d34944cf554e9cccf4a24292d891f620e9c94f, 'Bithumb', 'Bithumb 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x3052cd6bf951449a984fe4b5a38b46aef9455c8e, 'Bithumb', 'Bithumb 2', 'hildobby', date '2022-08-28')
@@ -327,6 +388,10 @@ FROM (VALUES
     , ('ethereum', 0x5521a68d4f8253fc44bfb1490249369b3e299a4a, 'Bithumb', 'Bithumb Old Address 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x8fa8af91c675452200e49b4683a33ca2e1a34e42, 'Bithumb', 'Bithumb Old Address 3', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x3b83cd1a8e516b6eb9f1af992e9354b15a6f9672, 'Bithumb', 'Bithumb Old Address 4', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x03599a2429871e6be1b154fb9c24691f9d301865, 'Bithumb', 'Bithumb Deposit Funder', 'hildobby', date '2023-08-31')
+    -- Bitso
+    , ('ethereum', 0x58b704065b7aff3ed351052f8560019e05925023, 'Bitso', 'Bitso 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x29d5527caa78f1946a409fa6acaf14a0a4a0274b, 'Bitso', 'Bitso 2', 'hildobby', date '2023-09-12')
     -- Bitstamp, Source: https://etherscan.io/accounts/label/bitstamp
     , ('ethereum', 0x00bdb5699745f5b860228c8f939abf1b9ae374ed, 'Bitstamp', 'Bitstamp 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x1522900b6dafac587d499a862861c0869be6e428, 'Bitstamp', 'Bitstamp 2', 'hildobby', date '2022-08-28')
@@ -335,6 +400,8 @@ FROM (VALUES
     , ('ethereum', 0x4c766def136f59f6494f0969b1355882080cf8e0, 'Bitstamp', 'Bitstamp 5', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xc5b611f502a0dcf6c3188fd494061ae29b2baa4f, 'Bitstamp', 'Bitstamp 6', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xfca70e67b3f93f679992cd36323eeb5a5370c8e4, 'Bitstamp', 'Bitstamp Old Address 1', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x964771f6df31eea2d927fa71d7bd78e81bcdce05, 'Bitstamp', 'Bitstamp Contract 1', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x538d72ded42a76a30f730292da939e0577f22f57, 'Bitstamp', 'Bitstamp Deployer', 'hildobby', date '2023-08-31')
     -- BitMEX, Source: https://etherscan.io/accounts/label/bitmex
     , ('ethereum', 0xeea81c4416d71cef071224611359f6f99a4c4294, 'BitMEX', 'BitMEX 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xfb8131c260749c7835a08ccbdb64728de432858e, 'BitMEX', 'BitMEX 2', 'hildobby', date '2022-08-28')
@@ -342,6 +409,13 @@ FROM (VALUES
     , ('ethereum', 0x9c67e141c0472115aa1b98bd0088418be68fd249, 'HitBTC', 'HitBTC 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x59a5208b32e627891c389ebafc644145224006e8, 'HitBTC', 'HitBTC 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xa12431d0b9db640034b0cdfceef9cce161e62be4, 'HitBTC', 'HitBTC 3', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x65e2c5175e2e618f48e70343b14c31b280e42d90, 'HitBTC', 'HitBTC 4', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xfdeda15e2922c5ed41fc1fdf36da2fb2623666b3, 'HitBTC', 'HitBTC Deposit Funder', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0xad68942a95fdd56594aa5cf862b358790e37834c, 'HitBTC', 'HitBTC Deposit Funder 2', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x0113a6b755fbad36b4249fd63002e2035e401143, 'HitBTC', 'HitBTC Deposit Funder 3', 'hildobby', date '2023-08-31')
+    -- BTSE
+    , ('ethereum', 0xbb4d1dc5c1abec4ea11166ec97e714862863ad1d, 'BTSE', 'BTSE 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x9036b1eb7630d9a45720fd80d05d46262f460529, 'BTSE', 'BTSE 2', 'hildobby', date '2023-09-12')
     -- Luno
     , ('ethereum', 0xaf1931c20ee0c11bea17a41bfbbad299b2763bc0, 'Luno', 'Luno 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xaf1931c20ee0c11bea17a41bfbbad299b2763bc0
     , ('ethereum', 0x416299aade6443e6f6e8ab67126e65a7f606eef5, 'Luno', 'Luno 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x416299aade6443e6f6e8ab67126e65a7f606eef5
@@ -350,6 +424,7 @@ FROM (VALUES
     , ('ethereum', 0x209c4784ab1e8183cf58ca33cb740efbf3fc18ef, 'Poloniex', 'Poloniex 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xb794f5ea0ba39494ce839613fffba74279579268, 'Poloniex', 'Poloniex 3', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xa910f92acdaf488fa6ef02174fb86208ad7722ba, 'Poloniex', 'Poloniex 4', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xb42b20ddbeabdc2a288be7ff847ff94fb48d2579, 'Poloniex', 'Poloniex: Deposit Funder', 'hildobby', date '2023-09-09')
     , ('ethereum', 0xaa9fa73dfe17ecaa2c89b39f0bb2779613c5fc3b, 'Poloniex', 'Poloniex BAT', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x2fa2bc2ce6a4f92952921a4caa46b3727d24a1ec, 'Poloniex', 'Poloniex BNT', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x31a2feb9b5d3b5f4e76c71d6c92fc46ebb3cb1c1, 'Poloniex', 'Poloniex CVC', 'hildobby', date '2022-08-28')
@@ -370,6 +445,8 @@ FROM (VALUES
     , ('ethereum', 0x39f6a6c85d39d5abad8a398310c52e7c374f2ba3, 'WhiteBIT', 'WhiteBIT 1', 'hildobby', date '2022-08-28')
     -- DigiFinex, Source: https://etherscan.io/accounts/label/digifinex
     , ('ethereum', 0xe17ee7b3c676701c66b395a35f0df4c2276a344e, 'DigiFinex', 'DigiFinex 1', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x3b73d7e1266e02a68185f5221a6718db04df6301, 'DigiFinex', 'DigiFinex Deployer 1', 'hildobby', date '2023-08-31')
+    , ('ethereum', 0x1b930c43526b09191a74175eaa47f2a650aeb73d, 'DigiFinex', 'DigiFinex Deployer 2', 'hildobby', date '2023-08-31')
     -- MEXC
     , ('ethereum', 0x75e89d5979e4f6fba9f97c104c2f0afb3f1dcb88, 'MEXC', 'MEXC 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x75e89d5979e4f6fba9f97c104c2f0afb3f1dcb88
     , ('ethereum', 0x0211f3cedbef3143223d3acf0e589747933e8527, 'MEXC', 'MEXC 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x0211f3cedbef3143223d3acf0e589747933e8527
@@ -382,14 +459,17 @@ FROM (VALUES
     , ('ethereum', 0xfb90501083a3b6af766c8da35d3dde01eb0d2a68, 'Paribu', 'Paribu 3', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xabc74170f3cb8ab352820c39cc1d1e05ce9e41d3, 'Paribu', 'Paribu 4', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x9acbb72cf67103a30333a32cd203459c6a9c3311, 'Paribu', 'Paribu 5', 'hildobby', date '2022-08-28')
+    -- Oobit
+    , ('ethereum', 0xf6be265fa72148dfb64106247d21bb15ce650e5e, 'Oobit', 'Oobit 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x65fb180c8bfaa811e9b2e3d2fa60ef27c15f8732, 'Oobit', 'Oobit 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xbf2ebf6c701068ccf046644315ff7417c879bd8a, 'Oobit', 'Oobit 3', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xa8ee70f68fffaae3cb8475112409adb9282f3246, 'Oobit', 'Oobit 4', 'hildobby', date '2023-09-12')
     -- RenrenBit
     , ('ethereum', 0x28c9386ebab8d52ead4a327e6423316435b2d4fc, 'RenrenBit', 'RenrenBit', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x28c9386ebab8d52ead4a327e6423316435b2d4fc
-    -- Exmo
-    , ('ethereum', 0x1fd6267f0d86f62d88172b998390afee2a1f54b6, 'Exmo', 'Exmo 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x1fd6267f0d86f62d88172b998390afee2a1f54b6
-    , ('ethereum', 0xd7b9a9b2f665849c4071ad5af77d8c76aa30fb32, 'Exmo', 'Exmo 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xd7b9a9b2f665849c4071ad5af77d8c76aa30fb32
     -- Remitano, Source: https://etherscan.io/accounts/label/remitano
     , ('ethereum', 0xb8cf411b956b3f9013c1d0ac8c909b086218207c, 'Remitano', 'Remitano 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x2819c144d5946404c0516b6f817a960db37d4929, 'Remitano', 'Remitano 2', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x8365efb25d0822aaf15ee1d314147b6a7831c403, 'Remitano', 'Remitano Deposit Funder', 'hildobby', date '2023-08-31')
     -- WEX Exchange 
     , ('ethereum', 0xb3aaaae47070264f3595c5032ee94b620a583a39, 'WEX Exchange', 'WEX Exchange 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xb3aaaae47070264f3595c5032ee94b620a583a39
     -- Peatio
@@ -403,17 +483,26 @@ FROM (VALUES
     -- CoinEx
     , ('ethereum', 0xb9ee1e551f538a464e8f8c41e9904498505b49b0, 'CoinEx', 'CoinEx 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xb9ee1e551f538a464e8f8c41e9904498505b49b0
     , ('ethereum', 0x33ddd548fe3a082d753e5fe721a26e1ab43e3598, 'CoinEx', 'CoinEx 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x33ddd548fe3a082d753e5fe721a26e1ab43e3598
+    , ('ethereum', 0x601a63c50448477310fedb826ed0295499baf623, 'CoinEx', 'CoinEx 3', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0xd782e53a49d564f5fce4ba99555dd25d16d02a75, 'CoinEx', 'CoinEx 4', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0x90f86774e792e91cf81b2ff9f341efca649343a6, 'CoinEx', 'CoinEx 5', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0x53eb3ea47643e87e8f25dd997a37b3b5260e7336, 'CoinEx', 'CoinEx 6', 'sankinyue', date '2023-09-13') -- https://www.coinex.com/en/reserve-proof
+    , ('ethereum', 0x5cf44f2cb65af7d56b30719312ecd13151a0470b, 'CoinEx', 'CoinEx Deposit Funder', 'sankinyue', date '2023-09-13') -- https://etherscan.io/address/0x5cf44f2cb65af7d56b30719312ecd13151a0470b
+    , ('ethereum', 0x1e450c2a1870a52606edd37ac0bf593dca9c1c3f, 'CoinEx', 'CoinEx Deposit Funder 2', 'sankinyue', date '2023-09-13') -- https://etherscan.io/address/0x1e450c2a1870a52606edd37ac0bf593dca9c1c3f
+    , ('ethereum', 0xf54635836862aad6e255e9b4fe49275fa5047e5d, 'CoinEx', 'CoinEx Multisig', 'sankinyue', date '2023-09-13') -- https://etherscan.io/address/0xf54635836862aad6e255e9b4fe49275fa5047e5d
     -- CoinExchange
     , ('ethereum', 0x4b01721f0244e7c5b5f63c20942850e447f5a5ee, 'CoinExchange', 'CoinExchange 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x4b01721f0244e7c5b5f63c20942850e447f5a5ee
     -- AscendEX (formerly BitMax), Source: https://etherscan.io/accounts/label/ascendex
     , ('ethereum', 0x03bdf69b1322d623836afbd27679a1c0afa067e9, 'AscendEX', 'AscendEX 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x4b1a99467a284cc690e3237bc69105956816f762, 'AscendEX', 'AscendEX 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x986a2fca9eda0e06fbf7839b89bfc006ee2a23dd, 'AscendEX', 'AscendEX 3', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x09344477fdc71748216a7b8bbe7f2013b893def8, 'AscendEX', 'AscendEX Deposit Funder', 'hildobby', date '2023-08-31')
     -- Liquid, Source: https://etherscan.io/accounts/label/liquid
     , ('ethereum', 0xedbb72e6b3cf66a792bff7faac5ea769fe810517, 'Liquid', 'Liquid 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xdf4b6fb700c428476bd3c02e6fa83e110741145b, 'Liquid', 'Liquid 2', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xdb2cad4f306b47c9b35541988c7656f1bb092e15, 'Liquid', 'Liquid 3', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x9cc2dce817093ceea82bb67a4cf43131fa354c06, 'Liquid', 'Liquid 4', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x41d5233f434d98b73f22ce664d48be06f4eb073f, 'Liquid', 'Qryptos 1', 'hildobby', date '2023-09-09')
     -- Tidex, Source: https://etherscan.io/accounts/label/tidex
     , ('ethereum', 0x3613ef1125a078ef96ffc898c4ec28d73c5b8c52, 'Tidex', 'Tidex 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x0a73573cf2903d2d8305b1ecb9e9730186a312ae, 'Tidex', 'Tidex 2', 'hildobby', date '2022-08-28')
@@ -433,6 +522,15 @@ FROM (VALUES
     , ('ethereum', 0xe8ed915e208b28c617d20f3f8ca8e11455933adf, 'ShapeShift', 'ShapeShift Poloniex Deposit', 'hildobby', date '2022-08-28')
     -- TopBTC, Source: https://etherscan.io/accounts/label/topbtc
     , ('ethereum', 0xb2cc3cdd53fc9a1aeaf3a68edeba2736238ddc5d, 'TopBTC', 'TopBTC 1', 'hildobby', date '2022-08-28')
+    -- BingX
+    , ('ethereum', 0x4597a8206978c5de22173432b2f0cb899eef9fa3, 'BingX', 'BingX 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xefa02443139f31e0336608e5a2f99d26784e4bfd, 'BingX', 'BingX 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x766182bfa8b8790d61c4d7e7912c1c3a6f42cef6, 'BingX', 'BingX 3', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xc4334a9af50c80a12c484de643149f6159bdd110, 'BingX', 'BingX 4', 'hildobby', date '2023-09-12')
+    -- QuadrigaCX
+    , ('ethereum', 0x027beefcbad782faf69fad12dee97ed894c68549, 'QuadrigaCX', 'QuadrigaCX 1', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xb6aac3b56ff818496b747ea57fcbe42a9aae6218, 'QuadrigaCX', 'QuadrigaCX 2', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x0ee4e2d09aec35bdf08083b649033ac0a41aa75e, 'QuadrigaCX', 'QuadrigaCX 3', 'hildobby', date '2023-09-09')
     -- Trade.io, Source: https://etherscan.io/accounts/label/trade-io
     , ('ethereum', 0x1119aaefb02bf12b84d28a5d8ea48ec3c90ef1db, 'Trade.io', 'Trade.io 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x58f75ddacffb183a30f69fe58a67a0d0985fce0f, 'Trade.io', 'Trade.io Wallet 1', 'hildobby', date '2022-08-28')
@@ -446,6 +544,7 @@ FROM (VALUES
     , ('ethereum', 0x77ab999d1e9f152156b4411e1f3e2a42dab8cd6d, 'Kuna.io', 'Kuna.io 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x77ab999d1e9f152156b4411e1f3e2a42dab8cd6d
     -- Bit-Z
     , ('ethereum', 0x4b729cf402cfcffd057e254924b32241aedc1795, 'Bit-Z', 'Bit-Z 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x4b729cf402cfcffd057e254924b32241aedc1795
+    , ('ethereum', 0x30146933a3a0babc74ec0b3403bec69281ba5914, 'Bit-Z', 'Bit-Z 2', 'hildobby', date '2023-09-09') -- https://etherscan.io/address/0x4b729cf402cfcffd057e254924b32241aedc1795
     -- Bitzlato 
     , ('ethereum', 0x00cdc153aa8894d08207719fe921fff964f28ba3, 'Bitzlato', 'Bitzlato 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x00cdc153aa8894d08207719fe921fff964f28ba3
     -- Cobinhood, Source: https://etherscan.io/accounts/label/cobinhood
@@ -454,15 +553,26 @@ FROM (VALUES
     , ('ethereum', 0x0bb9fc3ba7bcf6e5d6f6fc15123ff8d5f96cee00, 'Cobinhood', 'Cobinhood MultiSig', 'hildobby', date '2022-08-28')
     -- Cashierest
     , ('ethereum', 0x72bcfa6932feacd91cb2ea44b0731ed8ae04d0d3, 'Cashierest', 'Cashierest 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x72bcfa6932feacd91cb2ea44b0731ed8ae04d0d3
+    -- CoinEgg
+    , ('ethereum', 0x93f36930f94fbb5afc5fb506d3f7abb9179a4e4e, 'CoinEgg', 'CoinEgg 1', 'hildobby', date '2023-09-09')
     -- Bibox
     , ('ethereum', 0xf73c3c65bde10bf26c2e1763104e609a41702efe, 'Bibox', 'Bibox 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xf73c3c65bde10bf26c2e1763104e609a41702efe
     -- Coinhako, Source: https://etherscan.io/accounts/label/coinhako
     , ('ethereum', 0xd4bddf5e3d0435d7a6214a0b949c7bb58621f37c, 'Coinhako', 'Coinhako 1', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x1d1bd550197c7c0787b9ad0aea9c1cca66ee0e90, 'Coinhako', 'Coinhako 2', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xa193c943980a9340f306b3d59deb183dc501b35f, 'Coinhako', 'Coinhako 3', 'hildobby', date '2023-09-09')
     , ('ethereum', 0xf2d4766ad705e3a5c9ba5b0436b473085f82f82f, 'Coinhako', 'Coinhako Hot Wallet', 'hildobby', date '2022-08-28')
     -- Bitberry
     , ('ethereum', 0x6b59210ade46b62b25e82e95ab390a7ccadd4c3a, 'Bitberry', 'Bitberry 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x6b59210ade46b62b25e82e95ab390a7ccadd4c3a
+    -- Bitbank
+    , ('ethereum', 0x620a3e5cddd2748e111a11810757f419d10b1aac, 'Bitbank', 'Bitbank 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x3727cfcbd85390bb11b3ff421878123adb866be8, 'Bitbank', 'Bitbank 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xeb6c4be4b92a52e969f4bf405025d997703d5383, 'Bitbank', 'Bitbank 3', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xdbfc4549b325b6f00013a3861b87aab6696fdbee, 'Bitbank', 'Bitbank 4', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xf9225f3288f6cb0d0f80a5561e73102565e8bd8c, 'Bitbank', 'Bitbank 5', 'hildobby', date '2023-09-12')
     -- BigONE
     , ('ethereum', 0xa30d8157911ef23c46c0eb71889efe6a648a41f7, 'BigONE', 'BigONE 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xa30d8157911ef23c46c0eb71889efe6a648a41f7
+    , ('ethereum', 0x17bc58b788808dab201a9a90817ff3c168bf3d61, 'BigONE', 'BigONE 2', 'hildobby', date '2023-09-09') -- https://etherscan.io/address/0x0d0707963952f2fba59dd06f2b425ace40b492fe
     -- Allbit, Source: https://etherscan.io/accounts/label/allbit
     , ('ethereum', 0xdc1882f350b42ac9a23508996254b1915c78b204, 'Allbit', 'Allbit 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xff6b1cdfd2d3e37977d7938aa06b6d89d6675e27, 'Allbit', 'Allbit 2', 'hildobby', date '2022-08-28')
@@ -482,6 +592,8 @@ FROM (VALUES
     -- Bilaxy
     , ('ethereum', 0xf7793d27a1b76cdf14db7c83e82c772cf7c92910, 'Bilaxy', 'Bilaxy 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xf7793d27a1b76cdf14db7c83e82c772cf7c92910
     , ('ethereum', 0xcce8d59affdd93be338fc77fa0a298c2cb65da59, 'Bilaxy', 'Bilaxy 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xcce8d59affdd93be338fc77fa0a298c2cb65da59
+    , ('ethereum', 0xf22a4b9d9d1b20b44699e36a1e3903e78143f9da, 'Bilaxy', 'Bilaxy 3', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x9ba3560231e3e0ad7dde23106f5b98c72e30b468, 'Bilaxy', 'Bilaxy 4', 'hildobby', date '2023-09-09')
     -- Bity
     , ('ethereum', 0xfb9f7f41319157ac5c5dccae308a63a4337ad5d9, 'Bity', 'Bity', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xfb9f7f41319157ac5c5dccae308a63a4337ad5d9
     -- BW 
@@ -489,18 +601,28 @@ FROM (VALUES
     , ('ethereum', 0x73957709695e73fd175582105c44743cf0fb6f2f, 'BW', 'BW 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x73957709695e73fd175582105c44743cf0fb6f2f
     -- bitFlyer
     , ('ethereum', 0x111cff45948819988857bbf1966a0399e0d1141e, 'bitFlyer', 'bitFlyer 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x111cff45948819988857bbf1966a0399e0d1141e
+    , ('ethereum', 0xb01cb49fe0d6d6e47edf3a072d15dfe73155331c, 'bitFlyer', 'bitFlyer 2', 'hildobby', date '2023-09-09')
     -- Coinone
     , ('ethereum', 0x167a9333bf582556f35bd4d16a7e80e191aa6476, 'Coinone', 'Coinone 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x167a9333bf582556f35bd4d16a7e80e191aa6476
     -- Bitkub
-    , ('ethereum', 0xdb044b8298e04d442fdbe5ce01b8cc8f77130e33, 'Bitkub', 'Bitkub Hot Wallet 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xdb044b8298e04d442fdbe5ce01b8cc8f77130e33
-    , ('ethereum', 0x3d1d8a1d418220fd53c18744d44c182c46f47468, 'Bitkub', 'Bitkub Hot Wallet 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x3d1d8a1d418220fd53c18744d44c182c46f47468
-    , ('ethereum', 0x59e0cda5922efba00a57794faf09bf6252d64126, 'Bitkub', 'Bitkub Hot Wallet 3', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x59e0cda5922efba00a57794faf09bf6252d64126
-    , ('ethereum', 0x1579b5f6582c7a04f5ffeec683c13008c4b0a520, 'Bitkub', 'Bitkub Hot Wallet 4', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x1579b5f6582c7a04f5ffeec683c13008c4b0a520
+    , ('ethereum', 0xdb044b8298e04d442fdbe5ce01b8cc8f77130e33, 'Bitkub', 'Bitkub 1', 'hildobby', date '2023-09-12') -- https://etherscan.io/address/0xdb044b8298e04d442fdbe5ce01b8cc8f77130e33
+    , ('ethereum', 0x3d1d8a1d418220fd53c18744d44c182c46f47468, 'Bitkub', 'Bitkub 2', 'hildobby', date '2023-09-12') -- https://etherscan.io/address/0x3d1d8a1d418220fd53c18744d44c182c46f47468
+    , ('ethereum', 0x59e0cda5922efba00a57794faf09bf6252d64126, 'Bitkub', 'Bitkub 3', 'hildobby', date '2023-09-12') -- https://etherscan.io/address/0x59e0cda5922efba00a57794faf09bf6252d64126
+    , ('ethereum', 0x1579b5f6582c7a04f5ffeec683c13008c4b0a520, 'Bitkub', 'Bitkub 4', 'hildobby', date '2023-09-12') -- https://etherscan.io/address/0x1579b5f6582c7a04f5ffeec683c13008c4b0a520
+    , ('ethereum', 0xb9c764114c5619a95d7f232594e3b8dddf95b9cf, 'Bitkub', 'Bitkub 5', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xca7404eed62a6976afc335fe08044b04dbb7e97d, 'Bitkub', 'Bitkub 6', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x6254b927ecc25ddd233aaecd5296d746b1c006b4, 'Bitkub', 'Bitkub 7', 'hildobby', date '2023-09-12')
     -- Indodax
     , ('ethereum', 0x51836a753e344257b361519e948ffcaf5fb8d521, 'Indodax', 'Indodax 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x51836a753e344257b361519e948ffcaf5fb8d521
     , ('ethereum', 0x9cbadd5ce7e14742f70414a6dcbd4e7bb8712719, 'Indodax', 'Indodax 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x9cbadd5ce7e14742f70414a6dcbd4e7bb8712719
     -- MaiCoin
     , ('ethereum', 0x477b8d5ef7c2c42db84deb555419cd817c336b6f, 'MaiCoin', 'MaiCoin 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x477b8d5ef7c2c42db84deb555419cd817c336b6f
+    -- BitPro
+    , ('ethereum', 0x1dfeff70fbcc5949b29faf52196f0711e4915b2c, 'BitPro', 'BitPro 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x16905697103cd4ad6a22193b242941b62f660bbc, 'BitPro', 'BitPro 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xaa65cc699f9b0258064d952ad987269f7c9dbfad, 'BitPro', 'BitPro 3', 'hildobby', date '2023-09-12')
+    -- Joyso
+    , ('ethereum', 0x04f062809b244e37e7fdc21d9409469c989c2342, 'Joyso', 'Joyso 1', 'hildobby', date '2023-09-09')
     -- Bitfront
     , ('ethereum', 0xdf5021a4c1401f1125cd347e394d977630e17cf7, 'Bitfront', 'Bitfront 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xdf5021a4c1401f1125cd347e394d977630e17cf7
     -- Bit2C
@@ -539,6 +661,9 @@ FROM (VALUES
     , ('ethereum', 0xb709d82f0706476457ae6bad7c3534fbf424382c, 'Panda Exchange', 'Panda Exchange Hot Wallet 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xb709d82f0706476457ae6bad7c3534fbf424382c
     -- IDAX
     , ('ethereum', 0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7, 'IDAX', 'IDAX', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x3c11c3025ce387d76c2eddf1493ec55a8cc2a0f7
+    -- IDEX, Source: https://etherscan.io/accounts/label/IDEX
+    , ('ethereum', 0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08')
+    , ('ethereum', 0xa7a7899d944fe658c4b0a1803bab2f490bd3849e, 'IDEX', 'IDEX 2', 'hildobby', date '2023-09-08')
     -- FlataExchange
     , ('ethereum', 0x14301566b9669b672878d86ff0b1d18dd58054e9, 'FlataExchange', 'FlataExchange', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x14301566b9669b672878d86ff0b1d18dd58054e9
     -- XT.com Exchange
@@ -566,6 +691,9 @@ FROM (VALUES
     , ('ethereum', 0xcb243bf48fb443082fae7db47ec96cb120cd6801, 'CoinW', 'CoinW 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0xcb243bf48fb443082fae7db47ec96cb120cd6801
     , ('ethereum', 0x429bf8ec3330e02401d72beade86000d9a2e19eb, 'CoinW', 'CoinW 3', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x429bf8ec3330e02401d72beade86000d9a2e19eb
     , ('ethereum', 0x6f31d347457962c9811ff953742870ef5a755de3, 'CoinW', 'CoinW 4', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x6f31d347457962c9811ff953742870ef5a755de3
+    , ('ethereum', 0x2d6323cc438b96f0ae942280762cc507b5398563, 'CoinW', 'CoinW 5', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x639d9ba0f11ff73a25c0a26849d4d5a7175169b6, 'CoinW', 'CoinW 6', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xb840fe2b3fd8f75275240c671d6ec659e4c9a500, 'CoinW', 'CoinW 7', 'hildobby', date '2022-08-28')
     -- Cryptopia
     , ('ethereum', 0x5baeac0a0417a05733884852aa068b706967e790, 'Cryptopia', 'Cryptopia 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x5baeac0a0417a05733884852aa068b706967e790
     , ('ethereum', 0x2984581ece53a4390d1f568673cf693139c97049, 'Cryptopia', 'Cryptopia 2', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x2984581ece53a4390d1f568673cf693139c97049
@@ -584,6 +712,7 @@ FROM (VALUES
     , ('ethereum', 0xec293b9c56f06c8f71392269313d7e2da681d9ac, 'Hoo.com', 'Hoo.com 4', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x0093e5f2a850268c0ca3093c7ea53731296487eb, 'Hoo.com', 'Hoo.com 5', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x008932be50098089c6a075d35f4b5182ee549f8a, 'Hoo.com', 'Hoo.com 6', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x4d4ffb448194504242267585f0ea6f9de6a96de3, 'Hoo.com', 'Hoo.com Deposit Funder', 'hildobby', date '2023-08-31')
     -- Beldex
     , ('ethereum', 0x258b7b9a1ba92f47f5f4f5e733293477620a82cb, 'Beldex', 'Beldex 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x258b7b9a1ba92f47f5f4f5e733293477620a82cb
     -- SouthXchange
@@ -637,6 +766,15 @@ FROM (VALUES
     , ('ethereum', 0xd0808da05cc71a9f308d330bc9c5c81bbc26fc59, 'Coinswitch', 'Coinswitch 1', 'hildobby', date '2023-04-06')
     -- Eidoo, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
     , ('ethereum', 0xf1c525a488a848b58b95d79da48c21ce434290f7, 'Eidoo', 'Eidoo 1', 'hildobby', date '2023-04-06')
+    -- Coinstore
+    , ('ethereum', 0x20664cacdcfeb318c8e145a03c75e34bc2cc4a3b, 'Coinstore', 'Coinstore 1', 'hildobby', date '2023-09-12')
+    -- Coinsbit
+    , ('ethereum', 0x75987b9edb5463ce1a3a857e11671424600927a4, 'Coinsbit', 'Coinsbit 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x21dd5c13925407e5bcec3f27ab11a355a9dafbe3, 'Coinsbit', 'Coinsbit 2', 'hildobby', date '2023-09-12')
+    -- Dex-Trade
+    , ('ethereum', 0xbde577b9582aa0305f623b51f1b70c5a118b922a, 'Dex-Trade', 'Dex-Trade 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x881368e08cc5353e0188b2ca0401b5de35f319f4, 'Dex-Trade', 'Dex-Trade 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xd0acb9c61cd72e0f57b19268d70c73b77dbdd553, 'Dex-Trade', 'Dex-Trade 3', 'hildobby', date '2023-09-12')
     -- Eigen Fx, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
     , ('ethereum', 0x608f94df1c1d89ea13e5984d7bf107df137a6541, 'Eigen Fx', 'Eigen Fx 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xeb9ebf2c624ebee42e0853da6443ddc6c8020de7, 'Eigen Fx', 'Eigen Fx 2', 'hildobby', date '2023-04-06')
@@ -644,6 +782,10 @@ FROM (VALUES
     , ('ethereum', 0x8d76166c22658a144c0211d87abf152e6a2d9d95, 'Eterbase', 'Eterbase 1', 'hildobby', date '2023-04-06')
     -- Exchange A, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
     , ('ethereum', 0xd3808c5d48903be1490989f3fce2a2b3890e8eb6, 'Exchange A', 'Exchange A 1', 'hildobby', date '2023-04-06')
+    -- GOPAX
+    , ('ethereum', 0x2331f22f1701D79bf102a66672AB4293dB1bF72F, 'GOPAX', 'GOPAX 1', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x84c609976c73c38cdd36895cc998e1ac95734e4e, 'GOPAX', 'GOPAX 2', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xe3031C1BfaA7825813c562CbDCC69d96FCad2087, 'GOPAX', 'GOPAX: WBTC Merchant Address', 'hildobby', date '2023-09-09')
     -- Faa.st, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
     , ('ethereum', 0x94fe3ad91dacba8ec4b82f56ff7c122181f1535d, 'Faa.st', 'Faa.st 1', 'hildobby', date '2023-04-06')
     -- FCoin, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
@@ -675,6 +817,10 @@ FROM (VALUES
     -- TAGZ, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
     , ('ethereum', 0xea3a46bd1dbd0620d80037f70d0bf7c7dc5a837c, 'TAGZ', 'TAGZ 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xed8204345a0cf4639d2db61a4877128fe5cf7599, 'TAGZ', 'TAGZ 2', 'hildobby', date '2023-04-06')
+    -- DDEX
+    , ('ethereum', 0xe269e891a2ec8585a378882ffa531141205e92e9, 'DDEX', 'DDEX 1', 'hildobby', date '2023-09-09')
+    -- DEx.top
+    , ('ethereum', 0x7600977eb9effa627d6bd0da2e5be35e11566341, 'DEx.top', 'DEx.top 1', 'hildobby', date '2023-09-09')
     -- Tokocrypto, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
     , ('ethereum', 0x0068eb681ec52dbd9944517d785727310b494575, 'Tokocrypto', 'Tokocrypto 1', 'hildobby', date '2023-04-06')
     -- Vinex, source: https://github.com/dawsbot/evm-labels/blob/master/src/mainnet/exchange/all.csv
@@ -704,10 +850,26 @@ FROM (VALUES
     -- Firi, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/fire/index.js
     , ('ethereum', 0x66a0be112efe2cc3bc2f09fa2acaaf9f593b0265, 'Firi', 'Firi 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xa6f617f873684ed062c9df281145250b3e4ee2d2, 'Firi', 'Firi 2', 'hildobby', date '2023-04-06')
+    -- Anycoin Direct
+    , ('ethereum', 0x5b31bb52bdd7006ae57f9d9506c0ff995229b63c, 'Anycoin Direct', 'Anycoin Direct 1', 'hildobby', date '2023-09-09')
+    -- Cobo
+    , ('ethereum', 0xa9c7d31bb1879bff8be25ead2f59b310a52b7c5a, 'Cobo', 'Cobo 1', 'hildobby', date '2023-09-09')
+    -- Cryptonator
+    , ('ethereum', 0x4FED1fC4144c223aE3C1553be203cDFcbD38C581, 'Cryptonator', 'Cryptonator 1', 'hildobby', date '2023-09-09')
+    -- Freewallet
+    , ('ethereum', 0x7ed1e469fcb3ee19c0366d829e291451be638e59, 'Freewallet', 'Freewallet 1', 'hildobby', date '2023-09-09')
     -- Phemex, source: https://phemex.com/proof-of-reserves
     , ('ethereum', 0xf7d13c7dbec85ff86ee815f6dcbb3dedac78ca49, 'Phemex', 'Phemex 1', 'hildobby', date '2023-04-06')
+    , ('ethereum', 0x50be13b54f3eebbe415d20250598d81280e56772, 'Phemex', 'Phemex 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x35d2d03607b9155b42cf673102fe58251ac4f644, 'Phemex', 'Phemex 3', 'hildobby', date '2023-09-12')
     -- Cake DeFi, source: https://cakedefi.com/transparency
     , ('ethereum', 0x94fa70d079d76279e1815ce403e9b985bccc82ac, 'Cake DeFi', 'Cake DeFi 1', 'hildobby', date '2023-04-06')
+    -- EXMO
+    , ('ethereum', 0xd7b9a9b2f665849c4071ad5af77d8c76aa30fb32, 'EXMO', 'EXMO 1', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xc179fbddc946694d11185d4e15dbba5fd0adac0a, 'EXMO', 'EXMO 2', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xb36cbe7f95a39984384e6aa4068b02c1697ef80e, 'EXMO', 'EXMO 3', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0xfff52a282c215aed0c4c71786d85519bbcc86464, 'EXMO', 'EXMO 4', 'hildobby', date '2023-09-12')
+    , ('ethereum', 0x1fd6267f0d86f62d88172b998390afee2a1f54b6, 'EXMO', 'EXMO 5', 'hildobby', date '2023-09-12')
     -- MaskEX, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/maskex/index.js
     , ('ethereum', 0x09b1806df13062b5f653beda6998972cabcf7009, 'MaskEX', 'MaskEX 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0x0c78fd926a8fc9cfc682bdc6b411942d9c7edb7a, 'MaskEX', 'MaskEX 2', 'hildobby', date '2023-04-06')
@@ -731,11 +893,21 @@ FROM (VALUES
     , ('ethereum', 0x0ce92d3a15908b53371ff1afcae800f28142250c, 'MaskEX', 'MaskEX 20', 'hildobby', date '2023-04-06')
     , ('ethereum', 0x95ad8841376058a000F489196F05ecf176bEB8ac, 'MaskEX', 'MaskEX 21', 'hildobby', date '2023-04-06')
     , ('ethereum', 0x0B3c7bcE764E6f1B52443e30fcb4f34997A0674c, 'MaskEX', 'MaskEX 22', 'hildobby', date '2023-04-06')
+    -- Nexo, Source: https://etherscan.io/accounts/label/nexo
+    , ('ethereum', 0x00ee047a66d5cff27587a61559138c26b62f7ceb, 'Nexo', 'Nexo 1', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xffec0067f5a79cff07527f63d83dd5462ccf8ba4, 'Nexo', 'Nexo 2', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x0031e147a79c45f24319dc02ca860cb6142fcba1, 'Nexo', 'Nexo 3', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x7344e478574acbe6dac9de1077430139e17eec3d, 'Nexo', 'Nexo 4', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x9bdb521a97e95177bf252c253e256a60c3e14447, 'Nexo', 'Nexo: Corporate Treasury', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0x354e9fa5c6ee7e6092158a8c1b203ccac932d66d, 'Nexo', 'Nexo: Deposit Funder', 'hildobby', date '2023-09-09')
+    , ('ethereum', 0xed212a4a2e82d5ee0d62f70b5dee2f5ee0f10c5d, 'Nexo', 'Nexo: Deployer', 'hildobby', date '2023-09-09')
     -- WOO Network, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/woo-cex/index.js
     , ('ethereum', 0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df, 'WOO Network', 'WOO Network 1', 'hildobby', date '2023-04-07')
     , ('ethereum', 0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4, 'WOO Network', 'WOO Network 2', 'hildobby', date '2023-04-07')
     , ('ethereum', 0xE505Bf08C03cc0FA4e0FDFa2487E2c11085b3FD9, 'WOO Network', 'WOO Network 3', 'hildobby', date '2023-04-07')
     , ('ethereum', 0xea319fd75766f5180018f8e760f51c3d3c457496, 'WOO Network', 'WOO Network 4', 'hildobby', date '2023-04-07')
+    -- C-Patex
+    , ('ethereum', 0x4c8f52106d72da5e090bc08fb4d8063f3d591beb, 'C-Patex', 'C-Patex 1', 'hildobby', date '2023-09-12')
     -- Coinsquare, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/coinsquare/index.js
     , ('ethereum', 0x02fdc44Bf226E49DCecA4775Afaef3360e9C4EE9, 'Coinsquare', 'Coinsquare 1', 'hildobby', date '2023-04-07')
     , ('ethereum', 0x0fcFF154753e337983613889b69dd85Fe8a1a145, 'Coinsquare', 'Coinsquare 2', 'hildobby', date '2023-04-07')

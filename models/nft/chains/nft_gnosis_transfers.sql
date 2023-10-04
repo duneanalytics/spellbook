@@ -5,7 +5,9 @@
         partition_by=['block_month'],
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['unique_transfer_id']
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        unique_key = ['tx_hash', 'evt_index', 'token_id', 'amount']
 )
 }}
 

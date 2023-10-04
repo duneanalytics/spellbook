@@ -72,6 +72,9 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"
 
   - name: synthetix_spot_trades
     meta:
@@ -85,8 +88,9 @@ models:
         synthetix trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
-      - *project 
+      - *project
       - *version
+      - *block_month
       - *block_date
       - *block_time
       - &token_bought_symbol
@@ -131,7 +135,4 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - *evt_index

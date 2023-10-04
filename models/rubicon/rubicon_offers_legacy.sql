@@ -2,7 +2,7 @@
 	tags=['legacy'],
 	
         alias = alias('offers', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["optimism", "base"]\',
                                 "project",
                                 "rubicon",
                                 \'["denver"]\') }}'
@@ -10,7 +10,9 @@
 }}
 
 {% set rubi_models = [
-ref('rubicon_optimism_offers_legacy')
+ref('rubicon_optimism_offers_legacy'),
+ref('rubicon_arbitrum_offers_legacy'),
+ref('rubicon_base_offers_legacy')
 ] %}
 
 SELECT * 

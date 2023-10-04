@@ -13,7 +13,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - unique_trade_id
     columns:
       - &blockchain
@@ -203,7 +202,8 @@ models:
     description: >
         Opensea Wyvern trades on Polygon
     tests:
-      - check_seed_legacy:
+      - check_columns_nft_old_events
+      - check_seed:
           seed_file: ref('opensea_polygon_zeroex_trades_samples')
           filter:
             blockchain: polygon
@@ -216,7 +216,6 @@ models:
             - platform_fee_amount
             - royalty_fee_amount
           match_columns:
-            - block_date
             - blockchain
             - project
             - version
@@ -225,8 +224,10 @@ models:
             - token_id
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - unique_trade_id
+            - tx_hash
+            - evt_type
+            - evt_index
+            - token_id
     columns:
       - *project
       - *version
@@ -275,11 +276,16 @@ models:
     description: >
         Opensea events on Polygon, from Seaport v1.1
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
             blockchain: polygon
@@ -292,7 +298,6 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
-            - block_date
             - blockchain
             - project
             - version
@@ -366,11 +371,16 @@ models:
     description: >
         Opensea events on Polygon, from Seaport v1.4
     tests:
+      - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - unique_trade_id
-      - check_seed_legacy:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
           seed_file: ref('opensea_polygon_seaport_trades_samples')
           filter:
             blockchain: polygon
@@ -383,7 +393,6 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
-            - block_date
             - blockchain
             - project
             - version

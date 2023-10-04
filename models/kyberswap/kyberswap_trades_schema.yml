@@ -15,12 +15,15 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -75,9 +78,41 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+  - name: kyberswap_aggregator_trades
+    meta:
+      blockchain: avalanche_c, optimism, ethereum, arbitrum, bnb, polygon
+      sector: dex_aggregator
+      project: kyberswap
+      contributors: nhd98z
+    config:
+      tags:  ['arbitrum', 'avalanche_c', 'optimism', 'ethereum', 'bnb', 'polygon', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z']
+    description: >
+      Kyberswap Aggregator. This table will load dex_aggregator trades downstream.
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_month
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: tx_hash
+      - name: tx_from
+      - name: tx_to
+      - name: evt_index
+      - name: trace_address

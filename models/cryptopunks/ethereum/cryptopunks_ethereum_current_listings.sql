@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('current_listings'),
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -27,7 +28,7 @@ with all_listing_events as (
             , 'Punk Bought' as event_type
             , 'Punk Bought' as event_sub_type
             , cast(NULL as double) as listed_price
-            , cast(NULL as varchar(5)) as listing_offered_to
+            , cast(NULL as varbinary) as listing_offered_to
             , block_number as evt_block_number
             , sub_tx_trade_id as evt_index
             , block_time as evt_block_time
@@ -40,7 +41,7 @@ with all_listing_events as (
             , 'Punk Transfer' as event_type
             , 'Punk Transfer' as event_sub_type
             , cast(NULL as double) as listed_price
-            , cast(NULL as varchar(5)) as listing_offered_to
+            , cast(NULL as varbinary) as listing_offered_to
             , evt_block_number
             , evt_index
             , evt_block_time
@@ -51,7 +52,7 @@ with all_listing_events as (
     select price
     from {{ source('prices', 'usd') }}
     where blockchain = 'ethereum'
-        and contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+        and contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     order by minute desc limit 1
 )
 

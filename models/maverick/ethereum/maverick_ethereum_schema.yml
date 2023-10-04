@@ -36,6 +36,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -89,4 +92,5 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "Index of the corresponding trade event"
+

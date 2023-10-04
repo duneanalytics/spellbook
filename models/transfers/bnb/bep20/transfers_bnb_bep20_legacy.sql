@@ -53,15 +53,15 @@ with
         from
             {{ source('bnb_bnb', 'WBNB_evt_Withdrawal') }}
     )
-    
+
 select unique_transfer_id, 'bnb' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
-union
+union all
 select unique_transfer_id, 'bnb' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
-union
+union all
 select unique_transfer_id, 'bnb' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_bnb
-union
+union all
 select unique_transfer_id, 'bnb' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from withdrawn_bnb

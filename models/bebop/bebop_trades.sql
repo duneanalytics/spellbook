@@ -1,4 +1,5 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('trades'),
         post_hook='{{ expose_spells(\'["polygon", "arbitrum", "ethereum"]\',
                         "project",
@@ -20,8 +21,10 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
+        trade_type,
         token_bought_symbol,
         token_sold_symbol,
         token_pair,
