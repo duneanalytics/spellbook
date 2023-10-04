@@ -9,6 +9,9 @@
         )
 }}
 
+/*
+  remove ref('zeroex_bnb_api_fills_deduped') until bnb model is fixed and live in prod again
+*/
 
 {% set zeroex_models = [  
   ref('zeroex_arbitrum_api_fills_deduped')
@@ -19,7 +22,6 @@
   ,ref('zeroex_fantom_api_fills_deduped')
   ,ref('zeroex_optimism_api_fills_deduped')
   ,ref('zeroex_polygon_api_fills_deduped')
-  ,ref('zeroex_bnb_api_fills_deduped')
 ] %}
 
 
