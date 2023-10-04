@@ -47,7 +47,7 @@ models:
         tests:
           - not_null
       - &reward_amount_usd
-        name:  reward_amount_usd,
+        name:  reward_amount_usd
         description: "USD value of the referral reward at time of execution"
         tests:
           - dbt_utils.accepted_range:

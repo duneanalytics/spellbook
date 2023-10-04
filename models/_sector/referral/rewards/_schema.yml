@@ -54,7 +54,7 @@ models:
         description: "raw reward amount"
       - name:  reward_amount
         description: "reward amount corrected with the correct decimals"
-      - name:  reward_amount_usd,
+      - name:  reward_amount_usd
         description: "USD value of the referral reward at time of execution"
         tests:
           - dbt_utils.accepted_range:
