@@ -24,7 +24,7 @@ select
     ,t.to as tx_to
 
     ,r.reward_amount_raw/pow(10,coalesce(erc.decimals,18)) as reward_amount
-    ,r.reward_amount_raw/pow(10,coalesce(erc.decimals,18))*p.price as reward_amount_usd,
+    ,r.reward_amount_raw/pow(10,coalesce(erc.decimals,18))*p.price as reward_amount_usd
 from {{rewards_cte}} r
 left join {{source(blockchain,'transactions')}} t
     on r.block_number = t.block_number and r.tx_hash = t.hash
