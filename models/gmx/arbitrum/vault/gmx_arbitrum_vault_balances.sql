@@ -399,14 +399,14 @@ FROM
     (
     SELECT -- This subquery collates all the data extracted from the vault balance CTE, joins them to the minute series, and uses last data to extrapolate over null values
         a.minute,
-        FIRST_VALUE(b.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS frax_balance,
-        FIRST_VALUE(c.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdt_balance,
-        FIRST_VALUE(d.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_balance,
-        FIRST_VALUE(e.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdc_balance,
-        FIRST_VALUE(f.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_balance,
-        FIRST_VALUE(g.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_balance,
-        FIRST_VALUE(h.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_balance,
-        FIRST_VALUE(i.balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS dai_balance
+        last(b.balance, true) OVER (ORDER BY a.minute ASC) AS frax_balance,
+        last(c.balance, true) OVER (ORDER BY a.minute ASC) AS usdt_balance,
+        last(d.balance, true) OVER (ORDER BY a.minute ASC) AS wbtc_balance,
+        last(e.balance, true) OVER (ORDER BY a.minute ASC) AS usdc_balance,
+        last(f.balance, true) OVER (ORDER BY a.minute ASC) AS uni_balance,
+        last(g.balance, true) OVER (ORDER BY a.minute ASC) AS link_balance,
+        last(h.balance, true) OVER (ORDER BY a.minute ASC) AS weth_balance,
+        last(i.balance, true) OVER (ORDER BY a.minute ASC) AS dai_balance
     FROM minute a
     LEFT JOIN vault_balances_frax b
         ON a.minute = b.minute
