@@ -17,16 +17,15 @@
 }}
 
   SELECT
-    i.blockchain, i.name,
-    DATE_TRUNC('day',tx.block_time) AS block_date,
+    i.blockchain, i.name
+    ,DATE_TRUNC('day',tx.block_time) AS block_date
     ,DATE_DIFF('second',MIN(tx.block_time), MAX(tx.block_time)) AS active_secs_per_day_excl_first_block
     ,COUNT(DISTINCT block_number) AS num_blocks
     ,COUNT(*) AS num_txs_per_day
     ,COUNT(CASE WHEN success = true then 1 else 0 end) AS num_success_txs_per_day
     ,SUM(CASE WHEN gas_price > 0 THEN 1 ELSE 0 END) AS num_user_txs_per_day
     ,SUM(CASE WHEN gas_price > 0 AND success = true THEN 1 ELSE 0 END) AS num_success_user_txs_per_day
-    ,SUM(case when gas_price = 0 AND to = 0x4200000000000000000000000000000000000015 then 1 else 0 end) as l2_num_attr_deposit_txs_per_day --op configured
-    ,SUM(case when gas_price = 0 AND to = 0x4200000000000000000000000000000000000007 then 1 else 0 end) as l2_num_user_deposit_txs_per_day --op configured
+    ,SUM(case when gas_price = 0 AND to IN (SELECT address FROM {{ref('labels_system_addresses')}}) then 1 else 0 end) as system_txs_per_day
     ,COUNT(DISTINCT CASE WHEN gas_price > 0 THEN  tx."from" ELSE NULL END) AS num_user_addresses_per_day
     
     

@@ -559,10 +559,8 @@ models:
         name: num_user_txs_per_day
       - &num_success_user_txs_per_day
         name: num_success_user_txs_per_day
-      - &l2_num_attr_deposit_txs_per_day
-        name: l2_num_attr_deposit_txs_per_day
-      - &l2_num_user_deposit_txs_per_day
-        name: l2_num_user_deposit_txs_per_day
+      - &system_txs_per_day
+        name: system_txs_per_day
       - &num_user_addresses_per_day
         name: num_user_addresses_per_day
   
