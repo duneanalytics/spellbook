@@ -74,8 +74,8 @@ FROM
     SELECT
         a.minute AS minute,
         b.weth_transfer_value AS fees_weth_generated,
-        last(b.weth_cum_balance, true) OVER (ORDER BY a.minute ASC) AS fees_weth_cumulative, -- extrapolation
-        last(c.weth_current_price, true) OVER (ORDER BY a.minute ASC) AS weth_current_price -- extrapolation necessary for missing values arising from in data table syncing speed
+        FIRST_VALUE(b.weth_cum_balance) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS fees_weth_cumulative,
+        FIRST_VALUE(c.weth_current_price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_current_price
     FROM minute a
     -- since minute a is incremental filtered, the following time filters are excess
     LEFT JOIN
