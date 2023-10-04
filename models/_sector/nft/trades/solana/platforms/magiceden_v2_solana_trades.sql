@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'magiceden_solana_v2'
+        schema = 'magiceden_v2_solana'
         , tags = ['dunesql']
         , alias = alias('trades')
         ,materialized = 'incremental'
