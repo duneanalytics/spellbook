@@ -10,7 +10,7 @@ def get_tables_from_manifest(manifest_path):
     with open(manifest_path, "r") as f:
         # print(f"Loading manifest file at {manifest_path} ...")
         manifest = json.load(f)
-        legacy_count = dunecount = 0
+        legacy_count = dune_count = untranslated_count = 0
 
     for node_name in manifest["nodes"]:
         node_data = manifest["nodes"][node_name]
@@ -26,12 +26,13 @@ def get_tables_from_manifest(manifest_path):
                 legacy_count += 1
             elif 'dunesql' in node_data["tags"]:
                 row = f"{schema}, {name}, {path}, dunesql\n"
-                dunecount += 1
+                dune_count += 1
             else:
                 row = f"{schema}, {name}, {path}, none\n"
+                untranslated_count += 1
             table_csv_str += row
 
-    print(f"{legacy_count} legacy and {dunecount} dunesql models found")
+    print(f"{legacy_count} legacy, {dune_count} dunesql, and {untranslated_count} untranslated models found")
     return table_csv_str
 
 def upload_csv(table_csv, target):
