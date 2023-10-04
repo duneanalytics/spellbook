@@ -71,11 +71,11 @@ SELECT
     , t.taker_fee as taker_fee_amount_raw
     , t.taker_fee/1e9 as taker_fee_amount
     , t.taker_fee/1e9 * sol_p.price as taker_fee_amount_usd
-    , t.taker_fee/COALESCE(t.price,1) as taker_fee_percentage
+    , case when t.taker_fee = 0 OR t.price = 0 then 0 else t.taker_fee/t.price end as taker_fee_percentage
     , t.maker_fee as maker_fee_amount_raw
     , t.maker_fee/1e9 as maker_fee_amount
     , t.maker_fee/1e9 * sol_p.price as maker_fee_amount_usd
-    , t.maker_fee/COALESCE(t.price,1) as maker_fee_percentage
+    , case when t.maker_fee = 0 OR t.price = 0 then 0 else t.maker_fee/t.price end as maker_fee_percentage
     , cast(null as double) as amm_fee_amount_raw
     , cast(null as double) as amm_fee_amount
     , cast(null as double) as amm_fee_amount_usd
@@ -83,7 +83,7 @@ SELECT
     , t.royalty_fee as royalty_fee_amount_raw 
     , t.royalty_fee/1e9 as royalty_fee_amount
     , t.royalty_fee/1e9 * sol_p.price as royalty_fee_amount_usd
-    , t.royalty_fee/COALESCE(t.price,1) as royalty_fee_percentage
+    , case when t.royalty_fee = 0 OR t.price = 0 then 0 else t.royalty_fee/t.price end as royalty_fee_percentage
     , t.instruction
     , t.outer_instruction_index
     , t.inner_instruction_index

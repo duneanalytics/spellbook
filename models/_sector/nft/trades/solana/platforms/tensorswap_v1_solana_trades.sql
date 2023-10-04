@@ -225,7 +225,7 @@ with
             , t.tswap_fee as taker_fee_amount_raw
             , t.tswap_fee/1e9 as taker_fee_amount
             , t.tswap_fee/1e9 * sol_p.price as taker_fee_amount_usd
-            , case when t.tswap_fee = 0 then 0 else t.tswap_fee/t.current_price end as taker_fee_percentage
+            , case when t.tswap_fee = 0 or t.current_price = 0 then 0 else t.tswap_fee/t.current_price end as taker_fee_percentage
             , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004*t.current_price else 0 end) as maker_fee_amount_raw
             , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004*t.current_price else 0 end)/1e9 as maker_fee_amount
             , -1*(case when t.call_block_time > timestamp '2023-05-25' then 0.004*t.current_price else 0 end)/1e9 * sol_p.price as maker_fee_amount_usd
@@ -234,11 +234,11 @@ with
             , t.mm_fee as amm_fee_amount_raw
             , t.mm_fee/1e9 as amm_fee_amount
             , t.mm_fee/1e9 * sol_p.price as amm_fee_amount_usd
-            , case when t.mm_fee = 0 then 0 else t.mm_fee/t.current_price end as amm_fee_percentage
+            , case when t.mm_fee = 0 or t.current_price = 0 then 0 else t.mm_fee/t.current_price end as amm_fee_percentage
             , t.creators_fee as royalty_fee_amount_raw
             , t.creators_fee/1e9 as royalty_fee_amount
             , t.creators_fee/1e9 * sol_p.price as royalty_fee_amount_usd
-            , case when t.creators_fee = 0 then 0 else t.creators_fee/t.current_price end as royalty_fee_percentage
+            , case when t.creators_fee = 0 or t.current_price = 0 then 0 else t.creators_fee/t.current_price end as royalty_fee_percentage
             , t.instruction
             , t.outer_instruction_index
             , coalesce(t.inner_instruction_index, 0) as inner_instruction_index
