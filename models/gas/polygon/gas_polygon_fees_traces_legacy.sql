@@ -1,14 +1,13 @@
 {{ config(
-	tags=['legacy'],
-
-    schema = 'gas_polygon',
-    alias = alias('fees_traces', legacy_model=True),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= date_trunc(\'day\', now() - interval \'1\' week)'],
-    unique_key = ['tx_hash', 'trace'],
+     tags=['legacy', 'prod_exclude', 'remove'],
+     schema = 'gas_polygon',
+     alias = alias('fees_traces', legacy_model=True),
+     partition_by = ['block_date'],
+     materialized = 'incremental',
+     file_format = 'delta',
+     incremental_strategy = 'merge',
+     incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= date_trunc(\'day\', now() - interval \'1\' week)'],
+     unique_key = ['tx_hash', 'trace'],
     )
 }}
 

@@ -579,3 +579,215 @@ models:
       - *admin_address
       - *operator_name
       - *token_value
+
+  - name: chainlink_fantom_automation_fulfilled_transactions
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "fulfilled", "transactions", "fantom"]
+    description: >
+      Chainlink Automation Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_fantom_automation_gas_daily
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "gas", "daily", "fantom"]
+    description: >
+      Chainlink Automation Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_fantom_automation_upkeep_performed_logs
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "upkeep", "performed", "logs", "fantom"]
+    description: >
+      Chainlink Automation Gas Submission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &tx_from
+        name: tx_from
+        description: "Transaction From"
+
+  - name: chainlink_fantom_automation_request_daily
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "request", "daily", "fantom"]
+    description: >
+      Chainlink Automation Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_fantom_automation_reverted_transactions
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "reverted", "transactions", "fantom"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_fantom_automation_reward_daily
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "reward", "daily", "fantom"]
+    description: >
+      Chainlink Automation Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &keeper_address
+        name: keeper_address
+        description: "Keeper Address"
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_fantom_automation_performed
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "performed", "fantom"]
+    description: >
+      Chainlink Automation Performed
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *keeper_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_fantom_automation_performed_daily
+    meta:
+      blockchain: "fantom"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "performed", "daily", "fantom"]
+    description: >
+      Chainlink Automation Performed Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *keeper_address
+      - *operator_name
+      - *token_value

@@ -3,9 +3,9 @@ version: 2
 models:
   - name: signatures
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','celo','base']
       sector: abi
-      contributors: [ilemi]
+      contributors: [ilemi,tomfutago]
     config:
       tags: ['contracts','abi','signatures','funcsig','topics']
     description: >

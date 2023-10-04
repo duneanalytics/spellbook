@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'unique_trade_id']
+    unique_key = ['unique_trade_id']
     )
 }}
 With solana_events as (
@@ -15,7 +15,6 @@ SELECT
   'opensea' as project,
   'v1' as version,
   from_base58(signatures[1]) as tx_hash,
-  cast(date_trunc('day',block_time) as date)  as block_date,
   block_time,
   CAST(block_slot AS bigint) as block_number,
   abs(post_balances[1] / 1e9 - pre_balances[1] / 1e9) * p.price AS amount_usd,
@@ -40,7 +39,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
 WHERE (contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')
        OR contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'))
 {% if not is_incremental() %}
-AND block_date > TIMESTAMP '2022-04-06'
+AND block_time > TIMESTAMP '2022-04-06'
 AND block_slot > 128251864
 {% endif %}
 {% if is_incremental() %}
@@ -53,7 +52,6 @@ SELECT
     project,
     version,
     block_time,
-    block_date,
     CAST(NULL AS uint256) as token_id,
     CAST(NULL AS varchar) as collection,
     amount_usd,

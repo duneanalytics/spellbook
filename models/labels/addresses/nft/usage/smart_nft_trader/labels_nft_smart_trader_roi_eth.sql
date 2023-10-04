@@ -1,4 +1,7 @@
-{{config(alias = alias('nft_smart_trader_roi_eth'))}}
+{{config(
+    tags=['dunesql'],
+    alias = alias('nft_smart_trader_roi_eth')
+)}}
 
 with  
 
