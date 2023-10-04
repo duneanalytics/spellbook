@@ -42,7 +42,7 @@
     ,SUM(CASE WHEN gas_price = 0 THEN 0 ELSE price*cast(l1_fee as double)/1e18 END) --if l2 gas price = cast(0 as uint256, then all 0
         AS usd_fees_per_day_l1_fee_contribution_usd
         
-        ,SUM(tc.l1_gas_used) AS l1_gas_used
+        ,SUM(tx.l1_gas_used) AS l1_gas_used
     
         ,SUM(tx.gas_used) AS gas_used
 
