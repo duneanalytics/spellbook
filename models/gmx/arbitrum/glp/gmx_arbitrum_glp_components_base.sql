@@ -1031,57 +1031,57 @@ FROM
         COALESCE(x.dai_getMinPrice,0) AS dai_getMinPrice
     FROM
         (
-        SELECT -- This subquery collates all the data extracted from the vault contract functions, joins them to the minute series, and uses last data to extrapolate over null values
+        SELECT
             a.minute,
-            
-            last(b1.amount, true) OVER (ORDER BY a.minute ASC) AS frax_poolAmounts,
-            last(b2.price, true) OVER (ORDER BY a.minute ASC) AS frax_getMaxPrice,
-            last(b3.price, true) OVER (ORDER BY a.minute ASC) AS frax_getMinPrice,
-            
-            last(c1.amount, true) OVER (ORDER BY a.minute ASC) AS usdt_poolAmounts,
-            last(c2.price, true) OVER (ORDER BY a.minute ASC) AS usdt_getMaxPrice,
-            last(c3.price, true) OVER (ORDER BY a.minute ASC) AS usdt_getMinPrice,
-            
-            last(d1.amount, true) OVER (ORDER BY a.minute ASC) AS wbtc_poolAmounts,
-            last(d2.amount, true) OVER (ORDER BY a.minute ASC) AS wbtc_reservedAmounts,
-            last(d3.amount, true) OVER (ORDER BY a.minute ASC) AS wbtc_guaranteedUsd,
-            last(d4.price, true) OVER (ORDER BY a.minute ASC) AS wbtc_getMaxPrice,
-            last(d5.price, true) OVER (ORDER BY a.minute ASC) AS wbtc_getMinPrice,
-            last(d6.price, true) OVER (ORDER BY a.minute ASC) AS wbtc_globalShortAveragePrices,
-            last(d7.amount, true) OVER (ORDER BY a.minute ASC) AS wbtc_globalShortSizes,
-            
-            last(e1.amount, true) OVER (ORDER BY a.minute ASC) AS usdc_poolAmounts,
-            last(e2.price, true) OVER (ORDER BY a.minute ASC) AS usdc_getMaxPrice,
-            last(e3.price, true) OVER (ORDER BY a.minute ASC) AS usdc_getMinPrice,
-            
-            last(f1.amount, true) OVER (ORDER BY a.minute ASC) AS uni_poolAmounts,
-            last(f2.amount, true) OVER (ORDER BY a.minute ASC) AS uni_reservedAmounts,
-            last(f3.amount, true) OVER (ORDER BY a.minute ASC) AS uni_guaranteedUsd,
-            last(f4.price, true) OVER (ORDER BY a.minute ASC) AS uni_getMaxPrice,
-            last(f5.price, true) OVER (ORDER BY a.minute ASC) AS uni_getMinPrice,
-            last(f6.price, true) OVER (ORDER BY a.minute ASC) AS uni_globalShortAveragePrices,
-            last(f7.amount, true) OVER (ORDER BY a.minute ASC) AS uni_globalShortSizes,
-            
-            last(g1.amount, true) OVER (ORDER BY a.minute ASC) AS link_poolAmounts,
-            last(g2.amount, true) OVER (ORDER BY a.minute ASC) AS link_reservedAmounts,
-            last(g3.amount, true) OVER (ORDER BY a.minute ASC) AS link_guaranteedUsd,
-            last(g4.price, true) OVER (ORDER BY a.minute ASC) AS link_getMaxPrice,
-            last(g5.price, true) OVER (ORDER BY a.minute ASC) AS link_getMinPrice,
-            last(g6.price, true) OVER (ORDER BY a.minute ASC) AS link_globalShortAveragePrices,
-            last(g7.amount, true) OVER (ORDER BY a.minute ASC) AS link_globalShortSizes,
-            
-            last(h1.amount, true) OVER (ORDER BY a.minute ASC) AS weth_poolAmounts,
-            last(h2.amount, true) OVER (ORDER BY a.minute ASC) AS weth_reservedAmounts,
-            last(h3.amount, true) OVER (ORDER BY a.minute ASC) AS weth_guaranteedUsd,
-            last(h4.price, true) OVER (ORDER BY a.minute ASC) AS weth_getMaxPrice,
-            last(h5.price, true) OVER (ORDER BY a.minute ASC) AS weth_getMinPrice,
-            last(h6.price, true) OVER (ORDER BY a.minute ASC) AS weth_globalShortAveragePrices,
-            last(h7.amount, true) OVER (ORDER BY a.minute ASC) AS weth_globalShortSizes,
-            
-            last(i1.amount, true) OVER (ORDER BY a.minute ASC) AS dai_poolAmounts,
-            last(i2.price, true) OVER (ORDER BY a.minute ASC) AS dai_getMaxPrice,
-            last(i3.price, true) OVER (ORDER BY a.minute ASC) AS dai_getMinPrice
-            
+
+            FIRST_VALUE(b1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS frax_poolAmounts,
+            FIRST_VALUE(b2.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS frax_getMaxPrice,
+            FIRST_VALUE(b3.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS frax_getMinPrice,
+
+            FIRST_VALUE(c1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdt_poolAmounts,
+            FIRST_VALUE(c2.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdt_getMaxPrice,
+            FIRST_VALUE(c3.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdt_getMinPrice,
+
+            FIRST_VALUE(d1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_poolAmounts,
+            FIRST_VALUE(d2.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_reservedAmounts,
+            FIRST_VALUE(d3.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_guaranteedUsd,
+            FIRST_VALUE(d4.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_getMaxPrice,
+            FIRST_VALUE(d5.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_getMinPrice,
+            FIRST_VALUE(d6.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_globalShortAveragePrices,
+            FIRST_VALUE(d7.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS wbtc_globalShortSizes,
+
+            FIRST_VALUE(e1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdc_poolAmounts,
+            FIRST_VALUE(e2.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdc_getMaxPrice,
+            FIRST_VALUE(e3.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS usdc_getMinPrice,
+
+            FIRST_VALUE(f1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_poolAmounts,
+            FIRST_VALUE(f2.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_reservedAmounts,
+            FIRST_VALUE(f3.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_guaranteedUsd,
+            FIRST_VALUE(f4.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_getMaxPrice,
+            FIRST_VALUE(f5.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_getMinPrice,
+            FIRST_VALUE(f6.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_globalShortAveragePrices,
+            FIRST_VALUE(f7.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS uni_globalShortSizes,
+
+            FIRST_VALUE(g1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_poolAmounts,
+            FIRST_VALUE(g2.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_reservedAmounts,
+            FIRST_VALUE(g3.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_guaranteedUsd,
+            FIRST_VALUE(g4.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_getMaxPrice,
+            FIRST_VALUE(g5.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_getMinPrice,
+            FIRST_VALUE(g6.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_globalShortAveragePrices,
+            FIRST_VALUE(g7.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS link_globalShortSizes,
+
+            FIRST_VALUE(h1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_poolAmounts,
+            FIRST_VALUE(h2.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_reservedAmounts,
+            FIRST_VALUE(h3.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_guaranteedUsd,
+            FIRST_VALUE(h4.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_getMaxPrice,
+            FIRST_VALUE(h5.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_getMinPrice,
+            FIRST_VALUE(h6.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_globalShortAveragePrices,
+            FIRST_VALUE(h7.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS weth_globalShortSizes,
+
+            FIRST_VALUE(i1.amount) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS dai_poolAmounts,
+            FIRST_VALUE(i2.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS dai_getMaxPrice,
+            FIRST_VALUE(i3.price) OVER (ORDER BY a.minute DESC ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS dai_getMinPrice
+
         FROM minute a
         
         LEFT JOIN glp_frax_poolAmounts b1
