@@ -212,7 +212,7 @@ SELECT
     , tb.pool_id as project_program_id
     , tb.trader_id
     , tb.tx_id
-    , tb.outer_instruction_indexW
+    , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
 FROM trades tb
