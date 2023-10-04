@@ -28,7 +28,7 @@ cnft_base as (
             , call_instruction_name as instruction
             , case when call_tx_signer = account_buyer then 'buy' else 'sell' end as trade_category
             , account_merkleTree as account_merkle_tree
-            , index as leaf_id
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+8+8,4))) as leaf_id --index is sometimes empty. idk what difference is with nonce
             , account_buyer as buyer
             , account_owner as seller
             , call_outer_instruction_index as outer_instruction_index
@@ -48,8 +48,6 @@ SELECT
     , 'tensor' as project
     , 'v2' as version
     , t.block_time
-    , tk.token_name
-    , tk.token_symbol
     , 'secondary' as trade_type
     , 1 as number_of_items --all single trades right now
     , t.trade_category
@@ -62,10 +60,7 @@ SELECT
     , 'So11111111111111111111111111111111111111112' as currency_address
     , t.account_merkle_tree  --token id equivalent
     , cast(t.leaf_id as bigint) as leaf_id --token id equivalent
-    , cast(null as varchar) as account_metadata
-    , cast(null as varchar) as account_master_edition
     , cast(null as varchar) as account_mint
-    , tk.verified_creator
     , 'TCMPhJdwDryooaGtiocG1u3xcYbRpiJzb283XfCZsDp' as project_program_id
     , cast(null as varchar) as aggregator_name
     , cast(null as varchar) as aggregator_address
@@ -93,5 +88,4 @@ SELECT
     , t.outer_instruction_index
     , t.inner_instruction_index
 FROM cnft_base t
-left join {{ ref('tokens_solana_nft') }} tk on tk.account_merkle_tree = t.account_merkle_tree and tk.leaf_id = t.leaf_id
 LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.block_time) --get sol_price

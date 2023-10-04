@@ -7,7 +7,7 @@
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
         ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
+        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_mint','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "magiceden",
@@ -196,8 +196,6 @@ with
             , 'magiceden' as project
             , 'v2' as version
             , t.call_block_time as block_time
-            , tk.token_name
-            , tk.token_symbol
             , 'secondary' as trade_type
             , token_size as number_of_items --all single trades right now
             , t.trade_category
@@ -210,10 +208,7 @@ with
             , 'So11111111111111111111111111111111111111112' as currency_address
             , cast(null as varchar) as account_merkle_tree
             , cast(null as bigint) leaf_id
-            , t.account_metadata --token id equivalent
-            , tk.account_master_edition --token id equivalent
-            , tk.account_mint --token id equivalent
-            , tk.verified_creator --contract address equivalent
+            , t.account_tokenMint as account_mint
             , 'TSWAPaqyCSx2KABk68Shruf4rp7CxcNi8hAsbdwmHbN' as project_program_id
             , cast(null as varchar) as aggregator_name
             , cast(null as varchar) as aggregator_address
@@ -240,8 +235,6 @@ with
             , t.outer_instruction_index
             , coalesce(t.inner_instruction_index,0) as inner_instruction_index
         FROM trades t
-        LEFT JOIN {{ ref('tokens_solana_nft') }} tk
-            ON t.account_metadata = tk.account_metadata
         LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
     )
 

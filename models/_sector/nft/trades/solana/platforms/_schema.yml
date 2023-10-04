@@ -17,7 +17,7 @@ models:
             - trade_category
             - outer_instruction_index
             - inner_instruction_index
-            - account_metadata
+            - account_mint
             - tx_id
      - check_seed:
          seed_file: ref('magiceden_v2_solana_trades_seed')
@@ -47,10 +47,6 @@ models:
      - &block_time
        name: block_time
        description: "UTC event block time"
-     - &token_name
-       name: token_name
-     - &token_symbol
-       name: token_symbol
      - &trade_type
        name: trade_type
        description: "primary or secondary"
@@ -81,27 +77,15 @@ models:
      - &currency_contract
        name: currency_contract
        description: "Contract address of original token used for payment, with ETH contract address swapped for WETH"
-     - &token_standard
-       name: token_standard
-       description: "Token standard"
      - &account_merkle_tree
        name: account_merkle_tree
        description: only applies to cNFTs, this is the tree the NFT is appended to
      - &leaf_id
        name: leaf_id
        description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
-     - &account_metadata
-       name: account_metadata
-       description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"
-     - &account_master_edition
-       name: account_master_edition
-       description: "Master edition for the account. All NFTs have a master edition"
      - &account_mint
        name: account_mint
        description: "Mint for the account. This is the token mint address from spl_token"
-     - &verified_creator
-       name: verified_creator
-       description: "This is the first creator in the creator_struct for the NFT. The first creator was originally used as the collection mint reference"
      - &project_program_id
        name: project_program_id
        description: "Program ID for the project"
@@ -191,7 +175,7 @@ models:
             - trade_category
             - outer_instruction_index
             - inner_instruction_index
-            - account_metadata
+            - account_mint
             - tx_id
       - check_seed:
           seed_file: ref('tensorswap_v1_solana_trades_seed')
@@ -213,8 +197,6 @@ models:
       - *project
       - *version
       - *block_time
-      - *token_name
-      - *token_symbol
       - *trade_type
       - *number_of_items
       - *trader_category
@@ -225,13 +207,9 @@ models:
       - *amount_raw
       - *currency_symbol
       - *currency_contract
-      - *token_standard
       - *account_merkle_tree
       - *leaf_id
-      - *account_metadata
-      - *account_master_edition
       - *account_mint
-      - *verified_creator
       - *project_program_id
       - *aggregator_name
       - *aggregator_address
@@ -296,8 +274,6 @@ models:
       - *project
       - *version
       - *block_time
-      - *token_name
-      - *token_symbol
       - *trade_type
       - *number_of_items
       - *trader_category
@@ -308,13 +284,9 @@ models:
       - *amount_raw
       - *currency_symbol
       - *currency_contract
-      - *token_standard
       - *account_merkle_tree
       - *leaf_id
-      - *account_metadata
-      - *account_master_edition
       - *account_mint
-      - *verified_creator
       - *project_program_id
       - *aggregator_name
       - *aggregator_address

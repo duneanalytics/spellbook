@@ -27,10 +27,6 @@ models:
        name: block_date
      - &block_month
        name: block_month
-     - &token_name
-       name: token_name
-     - &token_symbol
-       name: token_symbol
      - &trade_type
        name: trade_type
        description: "primary or secondary"
@@ -64,27 +60,15 @@ models:
      - &currency_contract
        name: currency_contract
        description: "Contract address of original token used for payment, with ETH contract address swapped for WETH"
-     - &token_standard
-       name: token_standard
-       description: "Token standard"
      - &account_merkle_tree
        name: account_merkle_tree
        description: only applies to cNFTs, this is the tree the NFT is appended to
      - &leaf_id
        name: leaf_id
        description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
-     - &account_metadata
-       name: account_metadata
-       description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"
-     - &account_master_edition
-       name: account_master_edition
-       description: "Master edition for the account. All NFTs have a master edition"
      - &account_mint
        name: account_mint
        description: "Mint for the account. This is the token mint address from spl_token"
-     - &verified_creator
-       name: verified_creator
-       description: "This is the first creator in the creator_struct for the NFT. The first creator was originally used as the collection mint reference"
      - &project_program_id
        name: project_program_id
        description: "Program ID for the project"

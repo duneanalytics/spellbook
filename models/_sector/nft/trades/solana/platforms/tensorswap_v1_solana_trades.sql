@@ -7,7 +7,7 @@
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
         ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_metadata','tx_id']
+        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_mint','tx_id']
         ,post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "tensorswap",
@@ -103,7 +103,7 @@ with
             , cast(rl.creators_fee as double) as creators_fee --we will just be missing this if log is truncated.
             , trade.call_instruction_name as instruction
             , trade.trade_category
-            , trade.account_metadata
+            , trade.account_mint
             , trade.account_buyer
             , trade.account_seller
             , trade.call_outer_instruction_index as outer_instruction_index
@@ -114,7 +114,7 @@ with
             , trade.call_tx_signer
         FROM (
             SELECT
-                call_account_arguments[7] as account_metadata
+                call_account_arguments[6] as account_mint
                 , call_account_arguments[12] as account_buyer
                 , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_seller
                 , config
@@ -133,7 +133,7 @@ with
             {% endif %}
             UNION ALL
             SELECT
-                call_account_arguments[6] as account_metadata
+                call_account_arguments[5] as account_mint
                 , call_account_arguments[9] as account_buyer
                 , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_seller
                 , null --no price fallback fyi. fix later with spl token join (too expensive for now)
@@ -152,7 +152,7 @@ with
             {% endif %}
             UNION ALL
             SELECT
-                call_account_arguments[8] as account_metadata
+                call_account_arguments[7] as account_mint
                 , '4zdNGgAtFsW1cQgHqkiWyRsxaAgxrSRRynnuunxzjxue' as account_buyer
                 , call_account_arguments[11] as account_seller --account_nftEscrow
                 , config
@@ -171,7 +171,7 @@ with
             {% endif %}
             UNION ALL
             SELECT
-                call_account_arguments[8] as account_metadata
+                call_account_arguments[7] as account_mint
                 , call_account_arguments[1] as account_buyer --shared
                 , call_account_arguments[11] as account_seller --pnftshared
                 , config
@@ -202,8 +202,6 @@ with
             , 'tensorswap' as project
             , 'v1' as version
             , t.call_block_time as block_time
-            , tk.token_name
-            , tk.token_symbol
             , 'secondary' as trade_type
             , 1 as number_of_items
             , t.trade_category
@@ -216,10 +214,7 @@ with
             , 'So11111111111111111111111111111111111111112' as currency_address
             , cast(null as varchar) as account_merkle_tree
             , cast(null as bigint) leaf_id
-            , t.account_metadata
-            , tk.account_master_edition
-            , tk.account_mint
-            , tk.verified_creator
+            , t.account_mint
             , 'TSWAPaqyCSx2KABk68Shruf4rp7CxcNi8hAsbdwmHbN' as project_program_id
             , cast(null as varchar) as aggregator_name
             , cast(null as varchar) as aggregator_address
@@ -248,8 +243,6 @@ with
             , t.outer_instruction_index
             , coalesce(t.inner_instruction_index, 0) as inner_instruction_index
         FROM trades t
-        LEFT JOIN {{ ref('tokens_solana_nft') }} tk
-            ON t.account_metadata = tk.account_metadata
         LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
     )
 
