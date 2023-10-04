@@ -17,7 +17,7 @@
 with minute as -- This CTE generates a series of minute values
          (
             {% if not is_incremental() %}
-            SELECT minute from unnest(sequence(date(TIMESTAMP '{{project_start_date}}'), date(now()), INTERVAL '1' minute)) AS _u(minute)
+            SELECT minute from unnest(sequence(TIMESTAMP '{{project_start_date}}', now(), INTERVAL '1' minute)) AS _u(minute)
             {% endif %}
             {% if is_incremental() %}
             SELECT minute from unnest(sequence(date(date_trunc('day', now() - interval '7' day)), date(now()), INTERVAL '1' minute)) AS _u(minute)
