@@ -134,7 +134,7 @@ with
                     , call_outer_instruction_index
                     , call_inner_instruction_index
                     -- , metadataArgs
-                FROM bubblegum_solana.bubblegum_call_mintToCollectionV1
+                FROM {{ source('bubblegum_solana','bubblegum_call_mintToCollectionV1') }}
                 WHERE 1=1 
             )
             
@@ -154,7 +154,7 @@ with
                     , call_outer_instruction_index
                     , call_inner_instruction_index
                     -- , message
-                FROM bubblegum_solana.bubblegum_call_mintV1
+                FROM {{ source('bubblegum_solana','bubblegum_call_mintV1') }}
             )
 
             SELECT 
