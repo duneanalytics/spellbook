@@ -26,8 +26,10 @@
 {% set p2porg = 'P2P.org' %}
 {% set simplyvc = 'Simply VC' %}
 {% set validationcloud = 'Validation Cloud' %}
+{% set vodafone = 'Vodafone' %}
 
 SELECT admin_address, operator_name FROM (VALUES
+  (0xfc0269175A0E8408dB0EAbFb8A2E1f34d7001fAc, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0xa5D0084A766203b463b3164DFc49D91509C12daB, '{{alphachain}}'),
   (0x3615Fa045f00ae0eD60Dc0141911757c2AdC5E03, '{{blockdaemon}}'),
@@ -44,5 +46,6 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x0921E157b690c4F89F7C2a210cFd8bF3964F6776, '{{northwestnodes}}'),
   (0xCDa423ee5A7A886eF113b181469581306fC8B607, '{{p2porg}}'),
   (0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf, '{{simplyvc}}'),
-  (0x183A96629fF566e7AA8AfA38980Cd037EB40A59A, '{{validationcloud}}')
+  (0x183A96629fF566e7AA8AfA38980Cd037EB40A59A, '{{validationcloud}}'),
+  (0xBf17cE6Bab86445C6ED68dcce397C289Ecd4e8F2, '{{vodafone}}')
 ) AS tmp_node_meta(admin_address, operator_name)

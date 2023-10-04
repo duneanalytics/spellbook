@@ -1,6 +1,6 @@
 {{  config(
-        schema = 'zeroex_optimism',
         tags=['dunesql'],
+        schema = 'zeroex_optimism',
         alias = alias('api_fills_deduped'),
         materialized='incremental',
         partition_by = ['block_month'],
@@ -66,8 +66,8 @@ AS
 SELECT  a.blockchain
       , '0x API'  as project
       , cast(null as varchar(10)) as version
-      , a.block_date
       , a.block_time
+      , a.block_date
       , a.block_month
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol

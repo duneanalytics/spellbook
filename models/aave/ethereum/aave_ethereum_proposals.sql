@@ -1,8 +1,7 @@
 {{ config(
-    tags = ['dunesql'], 
+    tags = ['dunesql'],
     schema = 'aave_ethereum',
     alias = alias('proposals'),
-    partition_by = ['block_date'],
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -22,7 +21,7 @@ SELECT MAX(b.number) AS latest_block
 FROM {{ source('ethereum','blocks') }} b
 ),
 
-cte_support as (SELECT 
+cte_support as (SELECT
         voter as voter,
         CASE WHEN support = false THEN sum(votingPower/1e18) ELSE 0 END AS votes_against,
         CASE WHEN support = true THEN sum(votingPower/1e18) ELSE 0 END AS votes_for,
@@ -33,9 +32,9 @@ GROUP BY support, id, voter),
 
 cte_sum_votes as (
 SELECT COUNT(DISTINCT voter) as number_of_voters,
-       SUM(votes_for) as votes_for, 
-       SUM(votes_against) as votes_against, 
-       SUM(votes_abstain) as votes_abstain, 
+       SUM(votes_for) as votes_for,
+       SUM(votes_against) as votes_against,
+       SUM(votes_abstain) as votes_abstain,
        SUM(votes_for) + SUM(votes_against) + SUM(votes_abstain) as votes_total,
        id
 from cte_support
@@ -60,8 +59,8 @@ SELECT DISTINCT
     csv.votes_total / 16e6 * 100 AS participation, -- Total votes / Total supply (16M for Aave)
     pcr.startBlock as start_block,
     pcr.endBlock as end_block,
-    CASE 
-         WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed' 
+    CASE
+         WHEN pex.id is not null and now() > pex.evt_block_time THEN 'Executed'
          WHEN pca.id is not null and now() > pca.evt_block_time THEN 'Canceled'
          WHEN (SELECT CAST(latest_block AS UINT256) FROM cte_latest_block) <= pcr.startBlock THEN 'Pending'
          WHEN (SELECT CAST(latest_block AS UINT256) FROM cte_latest_block) <= pcr.endBlock THEN 'Active'

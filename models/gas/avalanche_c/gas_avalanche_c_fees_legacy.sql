@@ -1,6 +1,5 @@
 {{ config(
-	tags=['legacy'],
-	
+     tags=['legacy','remove'],
     alias = alias('fees', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',

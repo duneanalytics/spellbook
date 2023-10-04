@@ -1,4 +1,4 @@
-{{ config(tags=['static', 'dunesql'], alias = alias('rebase'))}}
+{{ config( alias = alias('rebase'), tags=['static', 'dunesql'])}}
 
 SELECT contract_address, symbol
   FROM (VALUES

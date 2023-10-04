@@ -53,9 +53,9 @@
 {% set orionmoney = 'Orion.Money' %}
 {% set p2porg = 'P2P.org' %}
 {% set paradigm = 'Paradigm Citadel' %}
+{% set piertwo = 'Pier Two' %}
 {% set prophet = 'Prophet' %}
 {% set rhino = 'RHINO' %}
-{% set securedatalinks = 'Secure Data Links' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set stakefish = 'stake.fish' %}
@@ -68,13 +68,14 @@
 {% set thenetworkfirm = 'The Network Firm' %}
 {% set tiingo = 'Tiingo' %}
 {% set validationcloud = 'Validation Cloud' %}
-{% set vulcan = 'Vulcan Link' %}
 {% set wetez = 'Wetez' %}
 {% set xbto = 'XBTO' %}
 {% set youbi = 'Youbi' %}
 {% set ztake = 'Ztake.org' %}
 
 SELECT node_address, operator_name FROM (VALUES
+  (0x413e725094c7810669F91856cc58e73eA3fbc400, '{{a01node}}'),
+  (0x7FE938306c296A457F12203DCE8EF4d4AB444EC0, '{{a01node}}'),
   (0xCF4Be57aA078Dc7568C631BE7A73adc1cdA992F8, '{{a01node}}'),
   (0x7147333c6d821612577481458E512560bfA12ebD, '{{a01node}}'),
   (0xddEB598fe902A13Cc523aaff5240e9988eDCE170, '{{tsystems}}'),
@@ -131,10 +132,11 @@ SELECT node_address, operator_name FROM (VALUES
   (0x0D785c33bCe2D09e521BFc433efe42Da53d3A898, '{{orionmoney}}'),
   (0x8F3Ab0e87B70a57bD4980111a99a1b2c4b8334F4, '{{p2porg}}'),
   (0x23c8Fbd5E14A9565707D8D1a88045F2fA5648968, '{{p2porg}}'),
+  (0xf34aC04a28F7CB5324A167C96B24ADE9c742B44f, '{{piertwo}}'),
+  (0xF7C7AEaECD2349b129d5d15790241c32eeE4607B, '{{piertwo}}'),
   (0x8b1d49a93A84B5dA0917a1ed42D8a3E191C28524, '{{prophet}}'),
   (0xF1595809dE873a363d1647853C37dA5506Ed8Da6, '{{prophet}}'),
   (0x634438d879a90a25437B87168252c2b983734391, '{{rhino}}'),
-  (0xF7C7AEaECD2349b129d5d15790241c32eeE4607B, '{{securedatalinks}}'),
   (0x61317C73d0225b2E37140fb9664d607B450613C6, '{{simplyvc}}'),
   (0x3E70292211fDe00095408442766C7E56Eb91176c, '{{simplyvc}}'),
   (0x7BFb89db2d7217c57C3Ad3d4B55826eFD17dC2e9, '{{snzpool}}'),
@@ -148,9 +150,9 @@ SELECT node_address, operator_name FROM (VALUES
   (0xa7767CDb3252397d9D6050acD84819AFaBcd2Ff1, '{{syncnode}}'),
   (0xD084c90d0e486ade2c045374dB447b99f94811Ee, '{{thenetworkfirm}}'),
   (0x265b3Aaeb858F32Fe18CFc28EEA21977Fc379F3C, '{{tiingo}}'),
+  (0xD22c87Dc7a3F12dcBB75CEbDA2e96f6766AE114F, '{{validationcloud}}'),
   (0xC4b732Fd121F2f3783A9Ac2a6C62fD535FD13FdA, '{{validationcloud}}'),
   (0x52e77F4356bB39cBA841dC3E9c28eCe86900d68A, '{{validationcloud}}'),
-  (0xD22c87Dc7a3F12dcBB75CEbDA2e96f6766AE114F, '{{vulcan}}'),
   (0x5a6fCc02D8c50eA58a22115A7c4608b723030016, '{{wetez}}'),
   (0xe3E0596AC55Ae6044b757baB27426F7dC9e018d4, '{{xbto}}'),
   (0x7744F58E29849Bc7C804e4F4b88d0CE12f068513, '{{youbi}}'),
