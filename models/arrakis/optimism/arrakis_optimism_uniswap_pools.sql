@@ -38,5 +38,5 @@ FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc
         AND e1.blockchain = 'optimism'
 
 {% if is_incremental() %}
-WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1 month')
+WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1' month)
 {% endif %}
