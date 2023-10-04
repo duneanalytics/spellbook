@@ -28,7 +28,7 @@ models:
       contributors: ilemi
     config:
       tags: ['table', 'metadata', 'fungible', 'solana']
-    description: "NFTs minted using the Metaplex standard, with a master edition"
+    description: "NFTs minted using the Metaplex standard, with a master edition or cNFT tree"
     columns:
       - name: account_mint_authority
         description: "mint authority for the account. this is set so that the account cannot mint more tokens"
@@ -55,6 +55,7 @@ models:
         description: "this is the first creator in the creator_struct for the NFT. the first creator was originally used as the collection mint reference"
       - name: creator_struct
         description: "all creators and their royalty splits"
-      - name: tx_id
-      - name: block_time
-      - name: tx_signer
+      - name: call_tx_id
+      - name: call_block_time
+      - name: call_block_slot
+      - name: call_tx_signer

@@ -117,56 +117,58 @@ with
     )
 
     , cnfts as (
-                with 
-            mint_collection_v1 as (
-                SELECT
-                    account_merkleTree 
-                    , json_value(metadataArgs, 'strict $.MetadataArgs.name') as token_name
-                    , json_value(metadataArgs, 'strict $.MetadataArgs.symbol') as token_symbol
-                    , json_value(metadataArgs, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
-                    , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
-                    , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
-                    , json_value(metadataArgs, 'strict $.MetadataArgs.uri') as token_uri
-                    , cast(json_value(metadataArgs, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
-                    , json_query(metadataArgs, 'strict $.MetadataArgs.creators') as creators_struct
-                    , call_block_slot
-                    , call_block_time
-                    , call_outer_instruction_index
-                    , call_inner_instruction_index
-                    -- , metadataArgs
-                FROM {{ source('bubblegum_solana','bubblegum_call_mintToCollectionV1') }}
-                WHERE 1=1 
-            )
-            
-            , mint_v1 as (
-                SELECT
-                    account_merkleTree 
-                    , json_value(message, 'strict $.MetadataArgs.name') as token_name
-                    , json_value(message, 'strict $.MetadataArgs.symbol') as token_symbol
-                    , json_value(message, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
-                    , replace(replace(json_value(message, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
-                    , replace(replace(json_value(message, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
-                    , json_value(message, 'strict $.MetadataArgs.uri') as token_uri
-                    , cast(json_value(message, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
-                    , json_query(message, 'strict $.MetadataArgs.creators') as creators_struct
-                    , call_block_slot
-                    , call_block_time
-                    , call_outer_instruction_index
-                    , call_inner_instruction_index
-                    -- , message
-                FROM {{ source('bubblegum_solana','bubblegum_call_mintV1') }}
-            )
+        with 
+        mint_collection_v1 as (
+            SELECT
+                account_merkleTree 
+                , json_value(metadataArgs, 'strict $.MetadataArgs.name') as token_name
+                , json_value(metadataArgs, 'strict $.MetadataArgs.symbol') as token_symbol
+                , json_value(metadataArgs, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
+                , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
+                , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
+                , json_value(metadataArgs, 'strict $.MetadataArgs.uri') as token_uri
+                , cast(json_value(metadataArgs, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
+                , json_query(metadataArgs, 'strict $.MetadataArgs.creators') as creators_struct
+                , call_block_slot
+                , call_block_time
+                , call_outer_instruction_index
+                , call_inner_instruction_index
+                , call_tx_id
+                -- , metadataArgs
+            FROM {{ source('bubblegum_solana','bubblegum_call_mintToCollectionV1') }}
+            WHERE 1=1 
+        )
+        
+        , mint_v1 as (
+            SELECT
+                account_merkleTree 
+                , json_value(message, 'strict $.MetadataArgs.name') as token_name
+                , json_value(message, 'strict $.MetadataArgs.symbol') as token_symbol
+                , json_value(message, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
+                , replace(replace(json_value(message, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
+                , replace(replace(json_value(message, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
+                , json_value(message, 'strict $.MetadataArgs.uri') as token_uri
+                , cast(json_value(message, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
+                , json_query(message, 'strict $.MetadataArgs.creators') as creators_struct
+                , call_block_slot
+                , call_block_time
+                , call_outer_instruction_index
+                , call_inner_instruction_index
+                , call_tx_id
+                -- , message
+            FROM {{ source('bubblegum_solana','bubblegum_call_mintV1') }}
+        )
 
-            SELECT 
-            *
-            , row_number() over (partition by account_merkleTree
-                order by call_block_slot asc, call_outer_instruction_index asc, COALESCE(call_inner_instruction_index,0) asc)
-                as leaf_id
-            FROM (
-                SELECT * FROM mint_collection_v1
-                UNION ALL 
-                SELECT * FROM mint_v1
-            )
+        SELECT 
+        *
+        , row_number() over (partition by account_merkleTree
+            order by call_block_slot asc, call_outer_instruction_index asc, COALESCE(call_inner_instruction_index,0) asc)
+            as leaf_id
+        FROM (
+            SELECT * FROM mint_collection_v1
+            UNION ALL 
+            SELECT * FROM mint_v1
+        )
     )
   
 SELECT
