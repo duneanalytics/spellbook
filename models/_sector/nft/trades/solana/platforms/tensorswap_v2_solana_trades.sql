@@ -15,6 +15,7 @@
     )
 }}
 
+with 
 cnft_base as (
         -- explorer https://xray.helius.xyz/token/3d5Le48C7fSmCanRQ1UUCV3nLpv9rCdMMtsyzihvizx2
         -- mint https://solscan.io/tx/61LqYDXKBYxsZEJoRBCaP8mvbeKGfbezZ54YUj1JZxPN7hGgr1t5rqseTQzxvkTu72YxkeFWq4bcFpcJBTCBNcfs
