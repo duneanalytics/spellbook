@@ -32,7 +32,7 @@ cnft_base as (
             , account_buyer as buyer
             , account_owner as seller
             , call_outer_instruction_index as outer_instruction_index
-            , call_inner_instruction_index as inner_instruction_index
+            , coalesce(call_inner_instruction_index, 0) as inner_instruction_index
             , call_block_time as block_time
             , call_block_slot as block_slot
             , call_tx_id as tx_id
