@@ -99,7 +99,7 @@
         )
       ) = 6
       {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
+      AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
   ),
   max_log_index AS (
