@@ -31,7 +31,7 @@ from {{rewards_cte}} r
 left join {{source(blockchain,'transactions')}} t
     on r.block_number = t.block_number and r.tx_hash = t.hash
     {% if is_incremental %}
-    WHERE t.block_time > date_trunc('day', now() - interval '1' day)
+    and t.block_time > date_trunc('day', now() - interval '1' day)
     {% endif %}
 left join {{ref('tokens_erc20')}} erc
     on erc.blockchain = '{{blockchain}}'

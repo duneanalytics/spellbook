@@ -20,6 +20,6 @@ select
     ,evt_index as sub_tx_id
 from {{QuestFactory_evt_MintFeePaid}}
 {% if is_incremental %}
-WHERe evt_block_time > date_trunc('day', now() - interval '1' day)
+where evt_block_time > date_trunc('day', now() - interval '1' day)
 {% endif %}
 {% endmacro %}

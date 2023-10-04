@@ -20,6 +20,6 @@ select
     ,evt_index as sub_tx_id
 from {{ProtocolRewards_evt_RewardsDeposit}}
 {% if is_incremental %}
-WHERe evt_block_time > date_trunc('day', now() - interval '1' day)
+where evt_block_time > date_trunc('day', now() - interval '1' day)
 {% endif %}
 {% endmacro %}
