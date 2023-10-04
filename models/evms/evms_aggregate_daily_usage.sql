@@ -78,7 +78,7 @@
                 {% if is_incremental() %}
                 AND b.time >= NOW() - intveral '7' day
                 {% endif %}
-        LEFT JOIN {{ref('prices_usd')}} p
+        LEFT JOIN {{ source('prices', 'usd') }} p
                 ON p.minute = DATE_TRUNC('minute',tx.block_time)
                 AND p.blockchain IS NULL
                 AND p.symbol = i.native_token_symbol
