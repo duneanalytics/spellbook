@@ -1,7 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
-    schema = 'zerion_bnb'
+	tags=['legacy']
+    ,schema = 'zerion_bnb'
     ,alias = alias('trades', legacy_model=True)
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
