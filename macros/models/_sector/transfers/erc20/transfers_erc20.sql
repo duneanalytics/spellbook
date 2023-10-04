@@ -75,7 +75,7 @@ SELECT
     evt_tx_hash,
     evt_index,
     evt_block_time,
-    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    CAST(date_trunc('month', evt_block_time) as date) as evt_block_month,
     wallet_address,
     token_address,
     amount_raw
@@ -91,7 +91,7 @@ SELECT
     evt_tx_hash,
     evt_index,
     evt_block_time,
-    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    CAST(date_trunc('month', evt_block_time) as date) as evt_block_month,
     wallet_address,
     token_address,
     amount_raw
