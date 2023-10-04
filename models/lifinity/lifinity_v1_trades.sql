@@ -124,7 +124,7 @@ WITH
         {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+        AND sp.call_block_time >= now() - interval '1' day --TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
     

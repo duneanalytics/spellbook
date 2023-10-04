@@ -233,4 +233,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-WHERE recent_swap = 1
+WHERE 1=1 
+AND recent_swap = 1
