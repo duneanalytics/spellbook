@@ -93,5 +93,5 @@ SELECT
     , t.outer_instruction_index
     , t.inner_instruction_index
 FROM cnft_base t
-left join {{ ref('tokens_solana_nft') }} tk on tk.account_merkle_tree = t.account_merkleTree and tk.leaf_id = t.leaf_id
+left join {{ ref('tokens_solana_nft') }} tk on tk.account_merkle_tree = t.account_merkle_tree and tk.leaf_id = t.leaf_id
 LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.block_time) --get sol_price
