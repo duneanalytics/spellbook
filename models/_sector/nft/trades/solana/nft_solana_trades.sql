@@ -68,8 +68,7 @@ SELECT
         amm_fee_percentage,
         instruction,
         outer_instruction_index,
-        inner_instruction_index,
-        unique_trade_id
+        inner_instruction_index
 FROM {{ marketplace }}
 
 {% if not loop.last %}
