@@ -60,7 +60,7 @@ SELECT
     , t.price/1e9 * sol_p.price as amount_usd
     , 'SOL' as currency_symbol
     , 'So11111111111111111111111111111111111111112' as currency_address
-    , t.account_merkleTree as account_merkle_tree  --token id equivalent
+    , t.account_merkle_tree  --token id equivalent
     , cast(t.leaf_id as bigint) as leaf_id --token id equivalent
     , cast(null as varchar) as account_metadata
     , cast(null as varchar) as account_master_edition
