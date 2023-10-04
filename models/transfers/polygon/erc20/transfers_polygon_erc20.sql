@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     materialized = 'incremental',
-    partition_by = ['block_month'],
+    partition_by = ['evt_block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
