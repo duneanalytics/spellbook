@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tensorswap_solana'
+        schema = 'tensorswap_v1_solana'
         , tags = ['dunesql']
         , alias = alias('trades')
         ,materialized = 'incremental'
@@ -214,6 +214,8 @@ with
             , t.current_price/1e9 * sol_p.price as amount_usd
             , 'SOL' as currency_symbol
             , 'So11111111111111111111111111111111111111112' as currency_address
+            , cast(null as varchar) as account_merkle_tree
+            , cast(null as bigint) leaf_id
             , t.account_metadata
             , tk.account_master_edition
             , tk.account_mint

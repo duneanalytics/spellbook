@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: magiceden_solana_trades
+  - name: magiceden_v2_solana_trades
     meta:
       blockchain: solana
       project: magiceden
@@ -84,6 +84,12 @@ models:
      - &token_standard
        name: token_standard
        description: "Token standard"
+     - &account_merkle_tree
+       name: account_merkle_tree
+       description: only applies to cNFTs, this is the tree the NFT is appended to
+     - &leaf_id
+       name: leaf_id
+       description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
      - &account_metadata
        name: account_metadata
        description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"
@@ -171,7 +177,7 @@ models:
        tests:
          - not_null
 
-  - name: tensorswap_solana_trades
+  - name: tensorswap_v1_solana_trades
     meta:
       blockchain: solana
       project: tensor
@@ -222,6 +228,91 @@ models:
       - *currency_symbol
       - *currency_contract
       - *token_standard
+      - *account_merkle_tree
+      - *leaf_id
+      - *account_metadata
+      - *account_master_edition
+      - *account_mint
+      - *verified_creator
+      - *project_program_id
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_signer
+      - *taker_fee_amount_raw
+      - *taker_fee_amount
+      - *taker_fee_amount_usd
+      - *taker_fee_percentage
+      - *royalty_fee_currency_symbol
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *amm_fee_amount_raw
+      - *amm_fee_amount
+      - *amm_fee_amount_usd
+      - *amm_fee_percentage
+      - *unique_trade_id
+      - *instruction
+      - *outer_instruction_index
+      - *inner_instruction_index
+
+  - name: tensorswap_v2_solana_trades
+    meta:
+      blockchain: solana
+      project: tensor
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'tensorswap','solana','nft' ]
+    description: >
+      tensorswap solana trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - trade_category
+            - outer_instruction_index
+            - inner_instruction_index
+            - account_merkle_tree
+            - leaf_id
+            - tx_id
+      # add seed after initial run
+      # - check_seed:
+      #     seed_file: ref('tensorswap_solana_trades_seed')
+      #     match_columns:
+      #       - block_slot
+      #       - tx_id
+      #       - outer_instruction_index
+      #       - inner_instruction_index
+      #     check_columns:
+      #       - buyer
+      #       - seller
+      #       - account_mint
+      #       - amount_raw
+      #       - taker_fee_amount_raw
+      #       - maker_fee_amount_raw
+      #       - royalty_fee_amount_raw
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *token_name
+      - *token_symbol
+      - *trade_type
+      - *number_of_items
+      - *trader_category
+      - *seller
+      - *buyer
+      - *amount_usd
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *token_standard
+      - *account_merkle_tree
+      - *leaf_id
       - *account_metadata
       - *account_master_edition
       - *account_mint

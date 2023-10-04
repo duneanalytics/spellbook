@@ -67,6 +67,12 @@ models:
      - &token_standard
        name: token_standard
        description: "Token standard"
+     - &account_merkle_tree
+       name: account_merkle_tree
+       description: only applies to cNFTs, this is the tree the NFT is appended to
+     - &leaf_id
+       name: leaf_id
+       description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
      - &account_metadata
        name: account_metadata
        description: "Metadata for the account. Contains stuff like the name, symbol, and uri, etc"

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'magiceden_solana'
+        schema = 'magiceden_solana_v2'
         , tags = ['dunesql']
         , alias = alias('trades')
         ,materialized = 'incremental'
@@ -208,6 +208,8 @@ with
             , t.price/1e9 * sol_p.price as amount_usd
             , 'SOL' as currency_symbol
             , 'So11111111111111111111111111111111111111112' as currency_address
+            , cast(null as varchar) as account_merkle_tree
+            , cast(null as bigint) leaf_id
             , t.account_metadata --token id equivalent
             , tk.account_master_edition --token id equivalent
             , tk.account_mint --token id equivalent

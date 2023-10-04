@@ -12,8 +12,9 @@
 }}
 
 {% set solana_marketplaces = [
-    ref('magiceden_solana_trades')
-    , ref('tensorswap_solana_trades')
+    ref('magiceden_v2_solana_trades')
+    , ref('tensorswap_v1_solana_trades')
+    , ref('tensorswap_v2_solana_trades')
 ] %}
 
 
@@ -37,6 +38,8 @@ SELECT
         amount_usd,
         currency_symbol,
         currency_address,
+        account_merkle_tree,
+        leaf_id,
         account_metadata,
         account_master_edition,
         account_mint,
