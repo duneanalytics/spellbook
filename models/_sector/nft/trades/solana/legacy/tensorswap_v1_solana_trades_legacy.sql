@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'tensorswap_solana',
+    schema = 'tensorswap_v1_solana',
     tags = ['legacy'],
     alias = alias('trades', legacy_model=True),
 )

@@ -115,8 +115,103 @@ with
                 ON v.account_metadata = joined_m.account_metadata
                 and v.account_collectionMint != 'metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s' --if it is this then collection was null in the update
     )
+
+    , cnfts as (
+                with 
+            mint_collection_v1 as (
+                SELECT
+                    account_merkleTree 
+                    , json_value(metadataArgs, 'strict $.MetadataArgs.name') as token_name
+                    , json_value(metadataArgs, 'strict $.MetadataArgs.symbol') as token_symbol
+                    , json_value(metadataArgs, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
+                    , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
+                    , replace(replace(json_value(metadataArgs, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
+                    , json_value(metadataArgs, 'strict $.MetadataArgs.uri') as token_uri
+                    , cast(json_value(metadataArgs, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
+                    , json_query(metadataArgs, 'strict $.MetadataArgs.creators') as creators_struct
+                    , call_block_slot
+                    , call_block_time
+                    , call_outer_instruction_index
+                    , call_inner_instruction_index
+                    -- , metadataArgs
+                FROM bubblegum_solana.bubblegum_call_mintToCollectionV1
+                WHERE 1=1 
+            )
+            
+            , mint_v1 as (
+                SELECT
+                    account_merkleTree 
+                    , json_value(message, 'strict $.MetadataArgs.name') as token_name
+                    , json_value(message, 'strict $.MetadataArgs.symbol') as token_symbol
+                    , json_value(message, 'strict $.MetadataArgs.tokenStandard.TokenStandard') as token_standard
+                    , replace(replace(json_value(message, 'strict $.MetadataArgs.collection.Collection.key'), 'PublicKey(', ''), ')','') as collection_mint
+                    , replace(replace(json_value(message, 'strict $.MetadataArgs.creators[*].Creator.address'), 'PublicKey(', ''), ')','') as verified_creator
+                    , json_value(message, 'strict $.MetadataArgs.uri') as token_uri
+                    , cast(json_value(message, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
+                    , json_query(message, 'strict $.MetadataArgs.creators') as creators_struct
+                    , call_block_slot
+                    , call_block_time
+                    , call_outer_instruction_index
+                    , call_inner_instruction_index
+                    -- , message
+                FROM bubblegum_solana.bubblegum_call_mintV1
+            )
+
+            SELECT 
+            *
+            , row_number() over (partition by account_merkleTree
+                order by call_block_slot asc, call_outer_instruction_index asc, COALESCE(call_inner_instruction_index,0) asc)
+                as leaf_id
+            FROM (
+                SELECT * FROM mint_collection_v1
+                UNION ALL 
+                SELECT * FROM mint_v1
+            )
+    )
   
 SELECT
-*
+    account_mint_authority
+    , cast(null as bigint) as leaf_id
+    , cast(null as varchar) as account_merkle_tree
+    , account_master_edition
+    , account_metadata
+    , account_mint
+    , version
+    , token_standard 
+    , token_name 
+    , token_symbol 
+    , token_uri
+    , seller_fee_basis_points
+    , collection_mint
+    , verified_creator
+    , creators_struct
+    , call_tx_id
+    , call_block_time
+    , call_block_slot
+    , call_tx_signer
 FROM token_metadata tk 
 WHERE recent_update = 1
+
+UNION ALL 
+
+SELECT 
+    cast(null as varchar) as account_mint_authority
+    , cast(leaf_id as bigint) as leaf_id
+    , account_merkle_tree
+    , cast(null as varchar) as account_master_edition
+    , cast(null as varchar) as account_metadata
+    , cast(null as varchar) as account_mint
+    , 'cNFT' as version
+    , token_standard 
+    , token_name 
+    , token_symbol 
+    , token_uri
+    , seller_fee_basis_points
+    , collection_mint
+    , verified_creator
+    , creators_struct
+    , call_tx_id
+    , call_block_time
+    , call_block_slot
+    , call_tx_signer
+FROM cnfts 

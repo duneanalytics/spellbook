@@ -32,7 +32,11 @@ models:
     columns:
       - name: account_mint_authority
         description: "mint authority for the account. this is set so that the account cannot mint more tokens"
-      - name: account_maste_edition
+      - name: account_merkle_tree
+        description: only applies to cNFTs, this is the tree the NFT is appended to
+      - name: leaf_id
+        description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
+      - name: account_master_edition
         description: "master edition for the account. all NFTs have a master edition"
       - name: account_metadata
         description: "metadata for the account. contains stuff like the name, symbol, and uri, etc"
@@ -52,8 +56,5 @@ models:
       - name: creator_struct
         description: "all creators and their royalty splits"
       - name: tx_id
-      - name: call_block_time
-      - name: verify_block_time
-        description: "the last time the collection mint was changed"
+      - name: block_time
       - name: tx_signer
-      - name: recent_update

@@ -26,7 +26,7 @@ cnft_base as (
             , cast(maxAmount as double)*sellerFeeBasisPoints/10000 as royalty_fee
             , call_instruction_name as instruction
             , case when call_tx_signer = account_buyer then 'buy' else 'sell' end as trade_category
-            , account_merkleTree
+            , account_merkleTree as account_merkle_tree
             , index as leaf_id
             , account_buyer as buyer
             , account_owner as seller
@@ -60,7 +60,7 @@ SELECT
     , 'SOL' as currency_symbol
     , 'So11111111111111111111111111111111111111112' as currency_address
     , t.account_merkleTree --token id equivalent
-    , t.leaf_id --token id equivalent
+    , cast(t.leaf_id as bigint) as leaf_id --token id equivalent
     , cast(null as varchar) as account_metadata
     , cast(null as varchar) as account_master_edition
     , cast(null as varchar) as account_mint
