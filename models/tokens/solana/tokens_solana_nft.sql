@@ -197,7 +197,7 @@ UNION ALL
 SELECT 
     cast(null as varchar) as account_mint_authority
     , cast(leaf_id as bigint) as leaf_id
-    , account_merkle_tree
+    , account_merkleTree as account_merkle_tree
     , cast(null as varchar) as account_master_edition
     , cast(null as varchar) as account_metadata
     , cast(null as varchar) as account_mint
