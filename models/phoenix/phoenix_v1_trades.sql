@@ -221,7 +221,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('p_bought.minute')}}
+    AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -229,7 +229,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('p_sold.minute')}}
+    AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

@@ -92,7 +92,7 @@
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
             {% if is_incremental() %}
-            WHERE {{incremental_predicate('tr_1.call_block_time')}}
+            AND {{incremental_predicate('tr_1.call_block_time')}}
             {% else %}
             AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
@@ -102,7 +102,7 @@
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 3)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 3))
             {% if is_incremental() %}
-            WHERE {{incremental_predicate('tr_2.call_block_time')}}
+            AND {{incremental_predicate('tr_2.call_block_time')}}
             {% else %}
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
@@ -110,7 +110,7 @@
         LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
         WHERE 1=1
         {% if is_incremental() %}
-        WHERE {{incremental_predicate('sp.call_block_time')}}
+        AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
@@ -148,7 +148,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('p_bought.minute')}}
+    AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -156,7 +156,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('p_sold.minute')}}
+    AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
