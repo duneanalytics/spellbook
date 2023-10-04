@@ -20,7 +20,7 @@
      , ('arbitrum', source('arbitrum', 'logs'))
      , ('celo', source('celo', 'logs'))
      , ('base', source('base', 'logs'))
-     , ('goerli', source('goerli', 'logs_decoded'))
+     , ('goerli', source('goerli', 'logs'))
 ] %}
 
 SELECT *
