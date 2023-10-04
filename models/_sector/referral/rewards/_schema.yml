@@ -44,8 +44,6 @@ models:
         description: "transaction receiver"
       - name:  category
         description: "project category (NFT/AMM/Staking/...)"
-      - name:  reward_type,
-        description: "type used to make distinctions between different reward types from the same project"
       - name:  referrer_address
         description: "address of the person making the referral"
       - name:  referee_address

@@ -43,7 +43,6 @@ FROM (
         tx_from,
         tx_to,
         category,
-        reward_type,
         referrer_address,
         referee_address,
         currency_contract,
