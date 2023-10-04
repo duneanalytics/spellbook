@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('tx_hash_labels_all'),
     materialized = 'table',
     file_format = 'delta',
