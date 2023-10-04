@@ -97,6 +97,9 @@
           )
         )
       ) = 6
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
   ),
   max_log_index AS (
     SELECT
@@ -174,6 +177,9 @@
             *
             , 2 * bytearray_to_integer (bytearray_substring (call_data, 3, 1)) - 1 as side --if side = 1 then tokenB was bought, else tokenA was bought 
         FROM {{ source('phoenix_v1_solana','phoenix_v1_call_Swap') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('call_block_time')}}
+        {% endif %}
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
@@ -206,23 +212,23 @@ SELECT
     , tb.pool_id as project_program_id
     , tb.trader_id
     , tb.tx_id
-    , tb.outer_instruction_index
+    , tb.outer_instruction_indexW
     , tb.inner_instruction_index
     , tb.tx_index
 FROM trades tb
-LEFT JOIN {{ source('prices','usd') }} p_bought ON p_bought.blockchain = 'solana' 
+LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ source('prices','usd') }} p_sold ON p_sold.blockchain = 'solana' 
+LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('p_sold.minute')}}
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
