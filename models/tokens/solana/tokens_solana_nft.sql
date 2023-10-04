@@ -134,6 +134,7 @@ with
                 , call_outer_instruction_index
                 , call_inner_instruction_index
                 , call_tx_id
+                , call_tx_signer
                 -- , metadataArgs
             FROM {{ source('bubblegum_solana','bubblegum_call_mintToCollectionV1') }}
             WHERE 1=1 
@@ -155,6 +156,7 @@ with
                 , call_outer_instruction_index
                 , call_inner_instruction_index
                 , call_tx_id
+                , call_tx_signer
                 -- , message
             FROM {{ source('bubblegum_solana','bubblegum_call_mintV1') }}
         )
