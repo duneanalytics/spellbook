@@ -45,7 +45,7 @@ cnft_base as (
     
 SELECT
     'solana' as blockchain
-    , 'tensor' as project
+    , 'tensorswap' as project
     , 'v2' as version
     , t.block_time
     , 'secondary' as trade_type
