@@ -489,7 +489,8 @@ models:
       - name: chain_id
         description: "Chain ID"
       - *blockchain
-      - name: name
+      - &name
+        name: name
         description: "Capitalised name of the blockchain"
       - name: chain_type
         description: "Chain type"
@@ -530,3 +531,82 @@ models:
       - &method_descriptor 
         name: method_descriptor
         description: "Manual descriptor of the method ID, which should help explan why it is considered a 'non-app' method."  
+
+  - name: evms_aggregate_daily_usage
+      meta:
+        blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base
+        sector: evms
+        contributors:  msilb7
+      config:
+        tags:   ['evms', 'usage']
+      description: "Aggregate daily usage data, partitioned by chain."
+      columns:
+        - *blockchain
+        - *name
+        - &block_date
+          name: block_date
+        - &active_secs_per_day_excl_first_block
+          name: active_secs_per_day_excl_first_block
+          description: "How many seconds during the day a chain was active, excluding the firt block (i.e. we need to add the block time to get the actual active seconds)"
+        - &num_blocks
+          name: num_blocks
+          description: "How many blocks were processed"
+        - &num_txs_per_day
+          name: num_txs_per_day
+        - &num_success_txs_per_day
+          name: num_success_txs_per_day
+        - &num_user_txs_per_day
+          name: num_user_txs_per_day
+        - &num_success_user_txs_per_day
+          name: num_success_user_txs_per_day
+        - &l2_num_attr_deposit_txs_per_day --op configured
+          name: l2_num_attr_deposit_txs_per_day
+        - &l2_num_user_deposit_txs_per_day --op configured
+          name: l2_num_user_deposit_txs_per_day
+        - &num_user_addresses_per_day
+          name: num_user_addresses_per_day
+    
+        - &native_fees_per_day
+          name: native_fees_per_day
+        - &native_fees_per_day_base_fee_contribution
+          name: native_fees_per_day_base_fee_contribution
+        - &native_fees_per_day_priority_fee_contribution
+          name: native_fees_per_day_priority_fee_contribution
+        - &native_fees_per_day_l1_fee_contribution
+          name: native_fees_per_day_l1_fee_contribution
+    
+        - &usd_fees_per_day
+          name: usd_fees_per_day
+        - &usd_fees_per_day_base_fee_contribution
+          name: usd_fees_per_day_base_fee_contribution
+        - &usd_fees_per_day_priority_fee_contribution
+          name: usd_fees_per_day_priority_fee_contribution
+        - &usd_fees_per_day_l1_fee_contribution_usd
+          name: usd_fees_per_day_l1_fee_contribution_usd
+        
+        - &l1_gas_used
+          name: l1_gas_used
+    
+        - &gas_used
+          name: gas_used
+
+        - &avg_gas_price_gwei --if not free
+          name: avg_gas_price_gwei
+        - &avg_base_fee_gwei --if not free
+          name: avg_base_fee_gwei
+        - &avg_l1_gas_price_on_l2_gwei --if not free
+          name: avg_l1_gas_price_on_l2_gwei
+    
+        - &calldata_bytes_per_day
+          name: calldata_bytes_per_day
+        - &calldata_gas_per_day
+          name: calldata_gas_per_day
+    
+        - &l1_gas_used_user_txs_per_day
+          name: l1_gas_used_user_txs_per_day
+        - &calldata_bytes_user_txs_per_day
+          name: calldata_bytes_user_txs_per_day
+        - &calldata_gas_user_txs_per_day
+          name: calldata_gas_user_txs_per_day
+        - &gas_used_user_txs_per_day
+          name: gas_used_user_txs_per_day
