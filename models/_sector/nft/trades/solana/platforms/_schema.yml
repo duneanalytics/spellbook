@@ -20,7 +20,7 @@ models:
             - account_metadata
             - tx_id
      - check_seed:
-         seed_file: ref('magiceden_solana_trades_seed')
+         seed_file: ref('magiceden_v2_solana_trades_seed')
          match_columns:
            - block_slot
            - tx_id
@@ -194,7 +194,7 @@ models:
             - account_metadata
             - tx_id
       - check_seed:
-          seed_file: ref('tensorswap_solana_trades_seed')
+          seed_file: ref('tensorswap_v1_solana_trades_seed')
           match_columns:
             - block_slot
             - tx_id
@@ -275,22 +275,22 @@ models:
             - account_merkle_tree
             - leaf_id
             - tx_id
-      # add seed after initial run
-      # - check_seed:
-      #     seed_file: ref('tensorswap_solana_trades_seed')
-      #     match_columns:
-      #       - block_slot
-      #       - tx_id
-      #       - outer_instruction_index
-      #       - inner_instruction_index
-      #     check_columns:
-      #       - buyer
-      #       - seller
-      #       - account_mint
-      #       - amount_raw
-      #       - taker_fee_amount_raw
-      #       - maker_fee_amount_raw
-      #       - royalty_fee_amount_raw
+      - check_seed:
+          seed_file: ref('tensorswap_v2_solana_trades_seed')
+          match_columns:
+            - block_slot
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+          check_columns:
+            - buyer
+            - seller
+            - account_merkle_tree
+            - leaf_id
+            - amount_raw
+            - taker_fee_amount_raw
+            - maker_fee_amount_raw
+            - royalty_fee_amount_raw
     columns:
       - *blockchain
       - *project
