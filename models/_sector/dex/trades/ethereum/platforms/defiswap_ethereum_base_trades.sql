@@ -26,7 +26,6 @@ WITH dexs AS
         ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
         ,t.evt_index AS evt_index
     FROM {{ source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap') }} t
     INNER JOIN {{ source('crodefi_ethereum', 'CroDefiSwapFactory_evt_PairCreated') }} f
@@ -48,6 +47,5 @@ SELECT TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
      , dexs.maker
      , dexs.project_contract_address
      , dexs.tx_hash
-     , dexs.trace_address
      , dexs.evt_index
 FROM dexs
