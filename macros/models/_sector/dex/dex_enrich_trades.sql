@@ -28,7 +28,7 @@ WITH base_union AS (
         evt_index
     FROM {{ dex_model[2] }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
@@ -59,11 +59,11 @@ SELECT base.blockchain,
            )                                                     AS amount_usd,
        base.token_bought_address,
        base.token_sold_address,
-       coalesce(base.taker, tx.from)                             AS taker,
+       coalesce(base.taker, tx."from")                           AS taker,
        base.maker,
        base.project_contract_address,
        base.tx_hash,
-       tx.from                                                   AS tx_from,
+       tx."from"                                                 AS tx_from,
        tx.to                                                     AS tx_to,
        base.trace_address,
        base.evt_index
@@ -71,7 +71,7 @@ FROM base_union base
 INNER JOIN {{ transactions_model }} tx
     ON tx.hash = base.tx_hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ tokens_erc20_model }} erc20a
     ON erc20a.contract_address = base.token_bought_address
@@ -84,14 +84,14 @@ LEFT JOIN {{ prices_model }} pa
     AND pa.contract_address = base.token_bought_address
     AND pa.blockchain = '{{ blockchain }}'
     {% if is_incremental() %}
-    AND pa.minute >= date_trunc("day", now() - interval '1 week')
+    AND pa.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ prices_model }} pb
     ON pb.minute = date_trunc('minute', base.block_time)
     AND pb.contract_address = base.token_sold_address
     AND pb.blockchain = '{{ blockchain }}'
     {% if is_incremental() %}
-    AND pb.minute >= date_trunc("day", now() - interval '1 week')
+    AND pb.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
