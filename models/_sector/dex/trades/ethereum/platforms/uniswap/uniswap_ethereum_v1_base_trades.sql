@@ -1,7 +1,8 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'uniswap_ethereum',
     alias = 'v1_base_trades',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -17,15 +18,14 @@ WITH dexs AS
     -- Uniswap v1 TokenPurchase
     SELECT t.evt_block_time     AS block_time
          , t.buyer              AS taker
-         , ''                   AS maker
-         , t.tokens_bought      AS token_bought_amount_raw
-         , t.eth_sold           AS token_sold_amount_raw
-         , CAST(NULL AS DOUBLE) AS amount_usd
-         , f.token              AS token_bought_address
-         , '{{weth_address}}'   AS token_sold_address --Using WETH for easier joining with USD price table
-         , t.contract_address   AS project_contract_address
-         , t.evt_tx_hash        AS tx_hash
-         , ''                   AS trace_address
+         ,CAST(NULL as VARBINARY) as maker
+         ,t.tokens_bought AS token_bought_amount_raw
+         ,t.eth_sold AS token_sold_amount_raw
+         ,NULL AS amount_usd
+         ,f.token AS token_bought_address
+         ,{{weth_address}} AS token_sold_address --Using WETH for easier joining with USD price table
+         ,t.contract_address AS project_contract_address
+         ,t.evt_tx_hash AS tx_hash
          , t.evt_index
     FROM {{ source('uniswap_ethereum', 'Exchange_evt_TokenPurchase') }} t
     INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
@@ -39,15 +39,14 @@ WITH dexs AS
     -- Uniswap v1 EthPurchase
     SELECT t.evt_block_time     AS block_time
          , t.buyer              AS taker
-         , ''                   AS maker
-         , t.eth_bought         AS token_bought_amount_raw
-         , t.tokens_sold        AS token_sold_amount_raw
-         , CAST(NULL AS DOUBLE) AS amount_usd
-         , '{{weth_address}}'   AS token_bought_address --Using WETH for easier joining with USD price tabl
-         , f.token              AS token_sold_address
-         , t.contract_address   AS project_contract_address
-         , t.evt_tx_hash        AS tx_hash
-         , ''                   AS trace_address
+         ,CAST(NULL as VARBINARY) as maker
+         ,t.eth_bought AS token_bought_amount_raw
+         ,t.tokens_sold AS token_sold_amount_raw
+         ,NULL AS amount_usd
+         ,{{weth_address}} AS token_bought_address --Using WETH for easier joining with USD price table
+         ,f.token AS token_sold_address
+         ,t.contract_address AS project_contract_address
+         ,t.evt_tx_hash AS tx_hash
          , t.evt_index
     FROM {{ source('uniswap_ethereum', 'Exchange_evt_EthPurchase') }} t
     INNER JOIN {{ source('uniswap_ethereum', 'Factory_evt_NewExchange') }} f
@@ -58,9 +57,10 @@ WITH dexs AS
 )
 
 SELECT TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
      , dexs.block_time
-     , CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0)) AS token_bought_amount_raw
-     , CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))   AS token_sold_amount_raw
+     ,dexs.token_bought_amount_raw  AS token_bought_amount_raw
+     ,dexs.token_sold_amount_raw AS token_sold_amount_raw
      , dexs.amount_usd
      , dexs.token_bought_address
      , dexs.token_sold_address
@@ -68,7 +68,5 @@ SELECT TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
      , dexs.maker
      , dexs.project_contract_address
      , dexs.tx_hash
-     , dexs.trace_address
      , dexs.evt_index
 FROM dexs
-;
