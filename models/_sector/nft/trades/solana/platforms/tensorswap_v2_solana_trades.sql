@@ -41,6 +41,54 @@ cnft_base as (
         {% if is_incremental() %}
         WHERE {{incremental_predicate('call_block_time')}}
         {% endif %}
+
+        UNION ALL 
+        
+        SELECT 
+            cast(minAmount as double) as price
+            , cast(minAmount as double)*0.014 as taker_fee --taker fee is 1.4% right now.
+            , 0 as maker_fee --maker fee goes back to users
+            , cast(minAmount as double)*cast(json_value(metaArgs, 'strict $.TMetadataArgs.sellerFeeBasisPoints') as double)/10000 as royalty_fee
+            , call_instruction_name as instruction
+            , 'sell' as trade_category
+            , account_merkleTree
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+8+8,4))) as leaf_id
+            , account_owner as buyer
+            , account_seller as seller
+            , call_outer_instruction_index as outer_instruction_index
+            , call_inner_instruction_index as inner_instruction_index
+            , call_block_time as block_time
+            , call_block_slot as block_slot
+            , call_tx_id as tx_id
+            , call_tx_signer as tx_signer
+        FROM {{ source('tensor_cnft_solana','tcomp_call_takeBidFullMeta') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('call_block_time')}}
+        {% endif %}
+
+        UNION ALL 
+        
+        SELECT 
+            cast(minAmount as double) as price
+            , cast(minAmount as double)*0.014 as taker_fee --taker fee is 1.4% right now.
+            , 0 as maker_fee --maker fee goes back to users
+            , cast(minAmount as double)*sellerFeeBasisPoints/10000 as royalty_fee
+            , call_instruction_name as instruction
+            , 'sell' as trade_category
+            , account_merkleTree
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+8+8,4))) as leaf_id
+            , account_owner as buyer
+            , account_seller as seller
+            , call_outer_instruction_index as outer_instruction_index
+            , call_inner_instruction_index as inner_instruction_index
+            , call_block_time as block_time
+            , call_block_slot as block_slot
+            , call_tx_id as tx_id
+            , call_tx_signer as tx_signer
+        FROM {{ source('tensor_cnft_solana','tcomp_call_takeBidMetaHash') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('call_block_time')}}
+        {% endif %}
     )
     
 SELECT

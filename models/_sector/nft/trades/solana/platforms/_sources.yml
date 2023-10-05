@@ -15,4 +15,6 @@ sources:
   - name: tensor_cnft_solana
     tables:
       - name: tcomp_call_buy
+      - name: tcomp_call_takeBidMetaHash
+      - name: tcomp_call_takeBidFullMeta
   
