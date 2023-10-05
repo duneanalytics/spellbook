@@ -1,7 +1,8 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'defiswap_ethereum',
     alias ='base_trades',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -19,10 +20,10 @@ WITH dexs AS
         ,t.to AS taker
         ,t.contract_address AS maker
         ,CAST(NULL AS DOUBLE) AS amount_usd
-        ,CASE WHEN amount0Out = '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-        ,CASE WHEN amount0Out = '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
-        ,CASE WHEN amount0In = '0' OR amount1Out = '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
+        ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
+        ,CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
+        ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,'' AS trace_address
@@ -31,14 +32,15 @@ WITH dexs AS
     INNER JOIN {{ source('crodefi_ethereum', 'CroDefiSwapFactory_evt_PairCreated') }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
 SELECT TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
      , dexs.block_time
-     , CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0)) AS token_bought_amount_raw
-     , CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))   AS token_sold_amount_raw
+     , dexs.token_bought_amount_raw AS token_bought_amount_raw
+     , dexs.token_sold_amount_raw AS token_sold_amount_raw
      , dexs.amount_usd
      , dexs.token_bought_address
      , dexs.token_sold_address
