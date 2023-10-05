@@ -14,6 +14,7 @@ WITH base_union AS (
         '{{ dex_model[0] }}' as project,
         '{{ dex_model[1] }}' as version,
         block_date,
+        block_month,
         block_time,
         token_bought_amount_raw,
         token_sold_amount_raw,
