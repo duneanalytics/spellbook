@@ -1,7 +1,7 @@
 {{ config(
-	tags=['legacy'],
-	
-    alias = alias('trades', legacy_model=True)
+	tags=['legacy']
+    ,schema = 'zerion_arbitrum'
+    ,alias = alias('trades', legacy_model=True)
     ,partition_by = ['block_date']
     ,materialized = 'incremental'
     ,file_format = 'delta'

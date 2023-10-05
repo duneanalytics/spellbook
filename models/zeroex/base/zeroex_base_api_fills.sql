@@ -19,7 +19,7 @@
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/2834419
+-- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822 
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
@@ -37,13 +37,13 @@ WITH zeroex_tx AS (
         FROM {{ source('base', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
-                0x61935cbdd02287b511119ddb11aeb42f1593b7ef, 
+                0xdef1c0ded9bec7f1a1670819833240f027b25eff, 
                 -- forwarder addresses
                 0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5,
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
                 0x4ef40d1bf0983899892946830abf99eca2dbc5ce, 
                 -- exchange proxy
-                0xdef1c0ded9bec7f1a1670819833240f027b25eff
+                0xdef189deaef76e379df891899eb5a00a94cbc250
                 )
                 AND (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
@@ -101,8 +101,8 @@ BridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -130,8 +130,8 @@ NewBridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,

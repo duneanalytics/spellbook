@@ -14,6 +14,8 @@ profile: "spellbook-local"
 
 vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
+  DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
+  DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
 
 # These configurations specify where dbt should look for different types of files.

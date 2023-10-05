@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('pool_incentives_rates')
-    , partition_by = ['block_date']
+    tags=['dunesql']
+    , alias = alias('pool_incentives_rates')
     , materialized = 'table'
     )
 }}
@@ -81,7 +81,7 @@ WITH last_block AS (
              , pu.pid
              , pu.lp_address
              , pu.alloc_points
-             , COALESCE(ru.tokens_per_second_raw, 0)                                                          AS tokens_per_second_raw
+             , COALESCE(ru.tokens_per_second_raw, UINT256 '0')                                                          AS tokens_per_second_raw
              , SUM(pu.alloc_points)
                    OVER (PARTITION BY e.evt_block_number, COALESCE(pu.contract_address, ru.contract_address)) AS total_alloc_points
         FROM events e
