@@ -55,12 +55,12 @@ SELECT
 FROM 
 (
     SELECT 
-        date_trunc('hour', block_time) as hour, 
+        date_trunc('minute', block_time) as hour, 
         contract_address,
         blockchain,
         approx_percentile(price, 0.5) AS median_price,
         COUNT(price) as sample_size 
     FROM dex_trades
     GROUP BY 1, 2, 3
-    HAVING COUNT(price) >= 5 
+    -- HAVING COUNT(price) >= 5 
 ) tmp
