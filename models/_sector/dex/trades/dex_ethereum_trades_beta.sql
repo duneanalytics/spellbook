@@ -11,7 +11,12 @@
 }}
 -- (project, project_version, model)
 {% set base_models = [
+    -- defiswap
      ('defiswap',   '1',    ref('defiswap_ethereum_base_trades'))
+    -- uniswap
+    ,('uniswap',    '1',    ref('uniswap_ethereum_v1_base_trades'))
+    ,('uniswap',    '2',    ref('uniswap_ethereum_v2_base_trades'))
+    ,('uniswap',    '3',    ref('uniswap_ethereum_v3_base_trades'))
 ] %}
 
 
