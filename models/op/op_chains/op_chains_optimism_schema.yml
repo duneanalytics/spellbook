@@ -34,4 +34,4 @@ models:
         description: "Binary flag if the chain is known to be Superchain aligned (does not exist yet - to be launched)."
         tests:
           - accepted_values:
-              values: [0,1]
+              values: [UINT256 '0', UINT256 '1']
