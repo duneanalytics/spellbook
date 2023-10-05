@@ -306,3 +306,28 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
+
+  - name: ens_set_name_latest
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: sankinyue
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice','setname','latest']
+    description: "View the latest ENS set name records"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+    columns:
+      - name: last_block_time
+        description: "Block time of the latest transaction hash ENS set name record"
+      - name: address
+        description: "The ETH address"
+      - name: name
+        description: "The ENS set name"
+      - name: registrar
+        description: "The registrar contract address of the address set name record"
+      - name: last_tx_hash
+        description: "Latest transaction hash of the ENS set name"

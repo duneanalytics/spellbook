@@ -36,3 +36,4 @@ sources:
         identifier: DssVestTransferrable_evt_Vest
       - name: mkr_evt_transfer
         identifier: mkr_evt_Transfer
+      - name: dssflashlegacy_evt_FlashLoan

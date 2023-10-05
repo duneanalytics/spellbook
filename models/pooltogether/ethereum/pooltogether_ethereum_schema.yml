@@ -94,3 +94,48 @@ models:
         description: "total prize of the prize structure"
         tests:
           - not_null
+
+  - name: pooltogether_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: pooltogether
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'pooltogether']
+    description: "List of claim transactions for the $POOL airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time of transaction"
+      - name: block_number
+        description: "Block number of transaction"
+      - name: project
+        description: "Project name"
+      - name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - name: recipient
+        description: "Airdrop recipient"
+      - name: contract_address
+        description: "Contract addressed used"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_raw
+        description: "Original amount of tokens"
+      - name: amount_raw
+        description: "USD value of tokens"
+      - name: token_address
+        description: "Token address"
+      - name: token_symbol
+        description: "Token symbol"
+      - name: evt_index
+        description: "Event index"

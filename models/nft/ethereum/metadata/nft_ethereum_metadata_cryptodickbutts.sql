@@ -1,5 +1,7 @@
 {{ config(
-        alias = 'cryptodickbutts'
+        tags = ['static','dunesql']
+        ,schema = 'nft_ethereum_metadata'
+        ,alias = alias('cryptodickbutts')
         )
 }}
 

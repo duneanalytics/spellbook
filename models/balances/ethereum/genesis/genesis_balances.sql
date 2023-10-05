@@ -1,5 +1,5 @@
 {{ config(
-	alias ='genesis_balances',
+	alias = alias('genesis_balances'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "balances",

@@ -23,7 +23,7 @@ models:
       - check_dex_aggregator_seed:
           blockchain: arbitrum
           project: bebop
-          version: 1
+          version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -94,3 +94,9 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &trade_type
+        name: trade_type
+        description: "Trade classification (Multi-buy, Multi-sell or Simple-swap)"

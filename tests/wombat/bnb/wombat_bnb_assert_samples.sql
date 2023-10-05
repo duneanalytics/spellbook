@@ -9,9 +9,9 @@ with trades as (
     from {{ ref('wombat_bnb_trades') }}
     where 1=0
 		-- 3 manually tested swaps
-		or (tx_hash='0xb228abac355fbc699ab0b134f48a495929069310aa32132ca5cdb679a81b6128' and evt_index='111')
-		or (tx_hash='0x7a6f269ba6a5826e1ac578ec0bb3272429912ab38a8e2533706415cad6cf0634' and evt_index='128')
-		or (tx_hash='0x478de9749640e880e80485550c62a63072fa946c791f3cf00b60e417c34cb4dd' and evt_index='138')
+		or (tx_hash=0xb228abac355fbc699ab0b134f48a495929069310aa32132ca5cdb679a81b6128 and evt_index=111)
+		or (tx_hash=0x7a6f269ba6a5826e1ac578ec0bb3272429912ab38a8e2533706415cad6cf0634 and evt_index=128)
+		or (tx_hash=0x478de9749640e880e80485550c62a63072fa946c791f3cf00b60e417c34cb4dd and evt_index=138)
 )
 , examples as (
     select * from {{ ref('dex_trades_seed') }}

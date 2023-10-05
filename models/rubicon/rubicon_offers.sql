@@ -1,6 +1,7 @@
 {{ config(
-        alias ='offers',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        tags = ['dunesql'],
+        alias = alias('offers'),
+        post_hook='{{ expose_spells(\'["optimism", "arbitrum", "base"]\',
                                 "project",
                                 "rubicon",
                                 \'["denver"]\') }}'
@@ -8,7 +9,9 @@
 }}
 
 {% set rubi_models = [
-ref('rubicon_optimism_offers')
+ref('rubicon_optimism_offers'),
+ref('rubicon_arbitrum_offers'),
+ref('rubicon_base_offers'),
 ] %}
 
 SELECT * 

@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'glp_fees',
+        alias = alias('glp_fees'),
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

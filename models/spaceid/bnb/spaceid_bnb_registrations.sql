@@ -1,6 +1,6 @@
 {{
     config(
-        alias='registrations'
+        alias = alias('registrations')
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'

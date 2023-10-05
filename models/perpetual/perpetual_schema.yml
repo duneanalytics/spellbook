@@ -3,7 +3,7 @@ version: 2
 models:
   - name: perpetual_trades
     meta:
-      blockchain: optimism, avalanche_c, arbitrum
+      blockchain: optimism, avalanche_c, arbitrum, polygon
       sector: perpetual
       contributors: msilb7, drethereum, rplust, Henrystats
     config:
@@ -80,3 +80,6 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"

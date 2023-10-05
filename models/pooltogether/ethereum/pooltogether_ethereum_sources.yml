@@ -62,3 +62,10 @@ sources:
           - &prizeDistrubution
             name: prizeDistrubution
             description: "Parameters that determine the prize structure (bitRangeSize, matchCardinality, startTimestampOffset, endTimestampOffset, maxPickPerUser, expiryDuration, numberOfPicks, tiers, prize)"
+  
+  - name: pooltogether_ethereum
+    description: >
+      PoolTogether ethereum contracts
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time

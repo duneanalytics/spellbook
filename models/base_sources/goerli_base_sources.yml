@@ -111,6 +111,27 @@ sources:
           - name: refund_address
             description: "Refund Address"
 
+      - name: traces_decoded
+        loaded_at_field: block_time
+        description: "A Goerli trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: contract_name
+            description: "Name of the Goerli smart contract generating the log"
+          - name: function_name
+            description: "Name of the Goerli smart contract function generating the log"
+          - name: namespace
+            description: "Namespace of the Goerli smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - name: to
+            description: "Wallet address that received the trace"
+          - name: trace_address
+            description: "All returned traces, gives the exact location in the call trace"
+          - *tx_hash
+
       - name: logs
         loaded_at_field: block_time
         description: "A Goerli log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
@@ -135,6 +156,27 @@ sources:
           - name: index
             description: "Log index"
           - *tx_index
+
+      - name: logs_decoded
+        loaded_at_field: block_time
+        description: "A Goerli log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: index
+            description: "Log index"
+          - name: contract_address
+            description: "Address of the Goerli smart contract generating the log"
+          - name: contract_name
+            description: "Name of the Goerli smart contract generating the log"
+          - name: event_name
+            description: "Name of the Goerli smart contract event generating the log"
+          - name: namespace
+            description: "Namespace of the Goerli smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - *tx_hash
 
       - name: blocks
         freshness:
@@ -229,6 +271,25 @@ sources:
             description: "Event block number"
           - *from
           - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
+      - name: evt_approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC20 tokens on Goerli."
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: approved
+            description: "Approved"
+          - name: owner
+            description: "Owner"
+          - name: spender
+            description: "Spender"
           - name: value
             description: "Amount of ERC20 token transferred"
 

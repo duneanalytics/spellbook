@@ -1,6 +1,6 @@
 {{ config(
          schema = 'opensea_polygon',        
-         alias ='events'
+         alias = alias('events')
          )
 }}
 

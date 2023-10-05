@@ -1,5 +1,6 @@
 {{ config(
-	alias = 'perpetual_trades',
+	tags=['dunesql'],
+	alias = alias('perpetual_trades'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "perpetual_protocol",
@@ -11,12 +12,14 @@
  ref('perpetual_protocol_v2_optimism_perpetual_trades')
 ] %}
 
+
 SELECT *
 FROM (
     {% for perpetual_protocol_perpetual_trades in perpetual_protocol_optimism_perpetual_trade_models %}
     SELECT
 		blockchain
 		,block_date
+		,block_month
 		,block_time
 		,virtual_asset
 		,underlying_asset

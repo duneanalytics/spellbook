@@ -1,0 +1,145 @@
+version: 2
+
+sources:
+  - name: timeswap_polygon
+    description: "decoded events for timeswap lend and borrow transactions on polygon"
+    tables:
+      - name: TimeswapV2PeripheryUniswapV3LendGivenPrincipal_evt_LendGivenPrincipal
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "The address for the uniswap periphery lend given principal contract used in lend transaction"
+
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+
+          - &from
+            name: from
+            description: "The address of the account that initiated the lend transaction"
+
+          - &isToken0
+            name: isToken0
+            description: ""
+
+          - &maturity
+            name: maturity
+            description: "The maturity value of the pool"
+
+          - &positionAmount
+            name: positionAmount
+            description: "The amount of position in wei"
+
+          - &strike
+            name: strike
+            description: "The strike value of the pool"
+
+          - &to
+            name: to
+            description: "The address of that received the lend transaction"
+
+          - &token0
+            name: token0
+            description: "The address of the token0 in the pool"
+
+          - &token1
+            name: token1
+            description: "The address of the token1 in the pool"
+
+          - &tokenAmount
+            name: tokenAmount
+            description: "The amount of token in wei"
+        
+      - name: TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_evt_BorrowGivenPrincipal
+        columns:
+          - *contract_address    
+          - *evt_tx_hash 
+          - *evt_index    
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *isToken0
+          - *maturity
+          - *strike
+          - *to
+          - *token0
+          - *token1
+          - *tokenAmount
+
+      - name: TimeswapV2PeripheryNoDexBorrowGivenPrincipal_evt_BorrowGivenPrincipal
+        columns:
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *isToken0
+          - *maturity
+          - *strike
+          - *to
+          - *token0
+          - *token1
+          - *tokenAmount
+        
+      - name: TimeswapV2PeripheryNoDexLendGivenPrincipal_evt_LendGivenPrincipal
+        columns:
+          - *contract_address    
+          - *evt_tx_hash
+          - *evt_index           
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *isToken0
+          - *maturity
+          - *strike
+          - *to
+          - *token0
+          - *token1
+          - *tokenAmount
+    
+      - name: TimeswapV2PeripheryUniswapV3LendGivenPrincipal_call_lendGivenPrincipal
+        columns:
+          - *contract_address
+
+          - &call_success
+            name: call_success
+            description: "The success value of the call"
+          
+          - &call_tx_hash
+            name: call_tx_hash
+            description: "Primary key of the transaction"
+
+          - &call_block_time
+            name: call_block_time
+            description: "Timestamp for block event time in UTC"
+          
+          - &call_block_number
+            name: call_block_number
+            description: "Block number which processed the unique transaction hash"
+
+          - &param
+            name: param
+            description: "The parameters of the call"
+
+      - name: TimeswapV2PeripheryUniswapV3BorrowGivenPrincipal_call_borrowGivenPrincipal
+        columns:
+          - *contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_block_time 
+          - *call_block_number
+          - *param
+        

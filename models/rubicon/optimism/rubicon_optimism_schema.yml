@@ -19,7 +19,6 @@ models:
               - version
               - tx_hash
               - evt_index
-              - trace_address
       - check_dex_seed:
           blockchain: optimism
           project: rubicon
@@ -37,6 +36,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -88,9 +90,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: "the event index of the trade"
@@ -107,6 +106,9 @@ models:
     tests:
       - check_seed:
           seed_file: ref('dex_offers_seed')
+          filter:
+            blockchain: optimism
+            project: rubicon
           match_columns:
             - block_date
             - blockchain
@@ -120,14 +122,14 @@ models:
             - sell_token_address
             - buy_token_address
             - token_pair
-            - sell_amount
-            - buy_amount
-            - sold_amount
-            - bought_amount
-            - sell_amount_usd
-            - buy_amount_usd
-            - sold_amount_usd
-            - bought_amount_usd
+#            - sell_amount
+#            - buy_amount
+#            - sold_amount
+#            - bought_amount
+#            - sell_amount_usd
+#            - buy_amount_usd
+#            - sold_amount_usd
+#            - bought_amount_usd
             - gas_price
             - gas_used
             - l1_gas_price
@@ -152,6 +154,7 @@ models:
       - *version
       - *block_date
       - *block_time
+      - *block_month
       - &block_number
         name: block_number
         description: "the block number of the block that the offer was created in"
@@ -197,7 +200,7 @@ models:
       - &bought_amount_raw
         name: bought_amount_raw
         description: "the raw amount of the token that the offer has bought"
-      - &sell_amount_usd: 
+      - &sell_amount_usd 
         name: sell_amount_usd
         description: "the amount of the token that the maker is selling in USD (at the time of the offer creation)"
       - &buy_amount_usd

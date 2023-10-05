@@ -1,23 +1,22 @@
 version: 2
 
 models:
-  - name: tigris_v1_polygon_positions_leverage
+  - name: tigris_polygon_positions_leverage
     meta:
       blockchain: polygon
-      project: tigris_v1
+      project: tigris
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      combined leverage data to get up to get most recent on v1
+      combined leverage data to get up to get most recent on v1 & v2
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
             - position_id
             - leverage
-            - version
-            - evt_index
+            - positions_contract
     columns:
       - &evt_block_time
         name: evt_block_time
@@ -28,30 +27,38 @@ models:
       - &leverage
         name: leverage
         description: "leverage of trade at evt block time"
+      - &project_contract_address
+        name: project_contract_address
+        description: "trading contract address"
       - &version
         name: version
-        description: "contract version"
-      - &evt_index
-        name: evt_index
-        description: "blockchain transaction index "
-
-  - name: tigris_v1_polygon_positions_close
+        description: "project contract version"
+      - &positions_contract
+        name: positions_contract
+        description: "corresponding position contract address"
+      - &protocol_version
+        name: protocol_version
+        description: "tigris project version "
+  
+  - name: tigris_polygon_positions_close
     meta:
       blockchain: polygon
-      project: tigris_v1
+      project: tigris
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description:
-      "data on close posititions that includes margin on v1"
+      "data on close posititions that includes margin on v1 & v2"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
             - position_id
-            - latest_leverage_time
+            - evt_block_time
             - payout
             - evt_index
+            - version
+            - positions_contract
     columns:
       - &evt_tx_hash
         name: evt_tx_hash
@@ -59,9 +66,6 @@ models:
       - *evt_block_time
       - *leverage
       - *position_id
-      - &latest_leverage_time
-        name: latest_leverage_time
-        description: "last block time leverage was updated"
       - &payout
         name: payout
         description: "amount paid out to trader"
@@ -71,144 +75,67 @@ models:
       - &new_margin
         name: new_margin
         description: "margin after payout was processed"
-      - *evt_index
+      - *project_contract_address
+      - *positions_contract
+      - &day
+        name: day 
+        description: "date_trunc of block time of position opening"
+      - &block_month
+        name: block_month
+        description: "date_trunc of block month of trade"
+      - *version
+      - &trader
+        name: trader
+        description: "trader that was liquidated"
+      - &evt_index
+        name: evt_index
+        description: "blockchain transaction index "
+      - &price
+        name: price 
+        description: "entry price of trade"
+      - *protocol_version
 
-  - name: tigris_v1_polygon_positions_margin
+  - name: tigris_polygon_positions_margin
     meta:
       blockchain: polygon
-      project: tigris_v1
+      project: tigris
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      margin change data on v1
+      margin change data on v1 & v2
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
             - position_id
             - margin
-            - version
-            - evt_index
     columns:
       - *evt_block_time
       - *position_id
       - &margin
         name: margin
         description: "margin of trade at block time"
+      - *project_contract_address
       - *version
-      - *evt_index
+      - *positions_contract
 
-  - name: tigris_v1_polygon_positions_liquidation
+  - name: tigris_polygon_positions_liquidation
     meta:
       blockchain: polygon
-      project: tigris_v1
+      project: tigris
       contributors: Henrystats 
     config:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
-      liquidation data on v1
+      liquidation data on v1 & v2
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
             - position_id
+            - positions_contract
             - version
-    columns:
-      - *evt_block_time
-      - *position_id
-      - *margin
-      - *evt_tx_hash
-      - *leverage
-      - *version
-      - *evt_index
-      - &trader
-        name: trader
-        description: "trader that was liquidated"
-      - &day
-        name: day
-        description: "date of trade"
-
-  - name: tigris_v2_polygon_positions_leverage
-    meta:
-      blockchain: polygon
-      project: tigris_v2
-      contributors: Henrystats 
-    config:
-      tags: [ 'tigris', 'perps', 'margin' ]
-    description: >
-      combined leverage data to get up to get most recent on v2
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - position_id
-            - leverage
-    columns:
-      - *evt_block_time
-      - *position_id
-      - *leverage
-  
-  - name: tigris_v2_polygon_positions_close
-    meta:
-      blockchain: polygon
-      project: tigris_v2
-      contributors: Henrystats 
-    config:
-      tags: [ 'tigris', 'perps', 'margin' ]
-    description:
-      "data on close posititions that includes margin on v2"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_tx_hash
-            - position_id
-            - latest_leverage_time
-            - payout
-    columns:
-      - *evt_tx_hash
-      - *evt_block_time
-      - *leverage
-      - *position_id
-      - *latest_leverage_time
-      - *payout
-      - *previous_margin
-      - *new_margin
-
-  - name: tigris_v2_polygon_positions_margin
-    meta:
-      blockchain: polygon
-      project: tigris_v2
-      contributors: Henrystats 
-    config:
-      tags: [ 'tigris', 'perps', 'margin' ]
-    description: >
-      margin change data on v2
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - position_id
-            - margin
-    columns:
-      - *evt_block_time
-      - *position_id
-      - *margin
-
-  - name: tigris_v2_polygon_positions_liquidation
-    meta:
-      blockchain: polygon
-      project: tigris_v2
-      contributors: Henrystats 
-    config:
-      tags: [ 'tigris', 'perps', 'margin' ]
-    description: >
-      liquidation data on v2
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_block_time
-            - position_id
     columns:
       - *evt_block_time
       - *position_id
@@ -218,3 +145,9 @@ models:
       - *evt_index
       - *trader
       - *day
+      - *project_contract_address
+      - *block_month
+      - *protocol_version
+      - *version
+      - *price
+      - *positions_contract

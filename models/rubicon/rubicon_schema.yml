@@ -15,15 +15,18 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -75,9 +78,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
@@ -103,7 +103,7 @@ models:
       - &tx_index
         name: tx_index
         description: "the transaction index of the transaction that the offer was created in"
-      - *evt_index  
+      - *evt_index
       - *maker
       - &sell_token_symbol
         name: sell_token_symbol
@@ -130,7 +130,7 @@ models:
       - &buy_amount_raw
         name: buy_amount_raw
         description: "the raw amount of the token that the maker is buying"
-      - &sold_amount 
+      - &sold_amount
         name: sold_amount
         description: "the amount of the token that the offer has sold"
       - &bought_amount
@@ -142,7 +142,7 @@ models:
       - &bought_amount_raw
         name: bought_amount_raw
         description: "the raw amount of the token that the offer has bought"
-      - &sell_amount_usd: 
+      - &sell_amount_usd
         name: sell_amount_usd
         description: "the amount of the token that the maker is selling in USD (at the time of the offer creation)"
       - &buy_amount_usd
@@ -153,7 +153,7 @@ models:
         description: "the amount of the token that the offer has sold in USD (summed bassed on the price at the time of each trade (if any))"
       - &bought_amount_usd
         name: bought_amount_usd
-        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"  
+        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"
       - &txn_cost_usd
         name: txn_cost_usd
         description: "the cost of the transaction in USD"

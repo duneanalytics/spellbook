@@ -1,9 +1,9 @@
 {{ config(
-        schema='prices_optimism',
-        alias ='tokens_bridged',
-        materialized='table',
+        schema = 'prices_optimism',
+        alias = alias('tokens_bridged'),
+        materialized = 'table',
         file_format = 'delta',
-        tags=['static']
+        tags = ['dunesql']
         )
 }}
 SELECT

@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias='erc721') }}
+{{ config(materialized='view', alias = alias('erc721')) }}
 
 with
     received_transfers as (

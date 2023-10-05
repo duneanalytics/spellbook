@@ -10,47 +10,47 @@ sources:
         columns:
           - &call_block_number
             name: call_block_number
-            description: 'Block number which processed the unique transaction hash'
+            description: "Block number which processed the unique transaction hash"
           - &call_block_time
             name: call_block_time
-            description: 'Timestamp for block time in which the call occurred in UTC'
+            description: "Timestamp for block time in which the call occurred in UTC"
           - &call_success
             name: call_success
-            description: 'Boolean indicating if call was successfully processed'
+            description: "Boolean indicating if call was successfully processed"
           - &call_trace_address
             name: call_trace_address
-            description: ''
+            description: ""
           - &call_tx_hash
             name: call_tx_hash
-            description: 'Primary key of the transaction'
+            description: "Primary key of the transaction"
           - name: contract_address
-            description: 'Address of the InvestmentPoolFactory contract'
+            description: "Address of the InvestmentPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - &output_0
             name: output_0
-            description: 'Contract address of the created pool'
+            description: "Contract address of the created pool"
           - &owner
             name: owner
-            description: 'Contract of the pool owner'
+            description: "Contract of the pool owner"
           - &swapFeePercentage
             name: swapFeePercentage
-            description: 'Pool swap fee in percentage'
+            description: "Pool swap fee in percentage"
           - &swapEnabledOnStart
             name: swapEnabledOnStart
-            description: 'Boolean indicating if swap is enabled on start'
+            description: "Boolean indicating if swap is enabled on start"
           - &managementSwapFeePercentage
             name: managementSwapFeePercentage
-            description: 'Management swap fee in percentage'
+            description: "Management swap fee in percentage"
           - &symbol
             name: symbol
-            description: 'Symbol of the created pool'
+            description: "Symbol of the created pool"
           - &tokens
             name: tokens
-            description: 'Array with the address of the created pool tokens'
+            description: "Array with the address of the created pool tokens"
           - &weights
             name: weights
-            description: 'Array with the weight of each token in the created pool'
+            description: "Array with the weight of each token in the created pool"
 
       - name: StablePoolFactory_call_create
         description: >
@@ -63,12 +63,12 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the StablePoolFactory contract'
+            description: "Address of the StablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - &amplificationParameter
             name: amplificationParameter
-            description: 'Amplification parameter of the created pool'
+            description: "Amplification parameter of the created pool"
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -86,18 +86,18 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the MetaStablePoolFactory contract'
+            description: "Address of the MetaStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - &oracleEnabled
             name: oracleEnabled
-            description: 'Boolean which indicates if the oracle functionality is enabled in the created pool'
+            description: "Boolean which indicates if the oracle functionality is enabled in the created pool"
           - &rateProviders
             name: rateProviders
-            description: 'Array with the contracts of the rate providers of the created pool'
+            description: "Array with the contracts of the rate providers of the created pool"
           - &priceRateCacheDuration
             name: priceRateCacheDuration
-            description: 'Array with the duration of the cached prices from RateProviders for each token'
+            description: "Array with the duration of the cached prices from RateProviders for each token"
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -116,9 +116,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the LiquidityBootstrappingPoolFactory contract'
+            description: "Address of the LiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -138,9 +138,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -160,15 +160,15 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the ComposableStablePoolFactory contract'
+            description: "Address of the ComposableStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - &tokenRateCacheDurations
             name: tokenRateCacheDurations
-            description: 'Array with the duration of each tokens cached by RateProviders'
+            description: "Array with the duration of each tokens cached by RateProviders"
           - &exemptFromYieldProtocolFeeFlags
             name: exemptFromYieldProtocolFeeFlags
-            description: 'Array of booleans indicating if each token of the pool is exempt from yield protocol fee'
+            description: "Array of booleans indicating if each token of the pool is exempt from yield protocol fee"
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -188,15 +188,15 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the AaveLinearPoolFactory contract'
+            description: "Address of the AaveLinearPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - &mainToken
             name: mainToken
-            description: 'Address of the main token of the created pool'
+            description: "Address of the main token of the created pool"
           - &wrappedToken
             name: wrappedToken
-            description: 'Address of the wrapped token of the created pool'
+            description: "Address of the wrapped token of the created pool"
           - &upperTarget
             name: upperTarget
             description: 'Upper limit of the "no fee zone" of the created pool'
@@ -216,9 +216,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the AaveLinearPoolFactory contract'
+            description: "Address of the AaveLinearPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *mainToken
           - *wrappedToken
           - *upperTarget
@@ -226,6 +226,21 @@ sources:
           - *owner
           - *swapFeePercentage
           - *symbol
+
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        columns:
+          - name: contract_address
+          - &evt_tx_hash
+            name: evt_tx_hash
+          - &evt_index
+            name: evt_index
+          - &evt_block_time
+            name: evt_block_time
+          - &evt_block_number
+            name: evt_block_number
+          - name: gauge
+          - name: pool
+          - name: streamer
 
   - name: balancer_v2_ethereum
     tables:
@@ -239,9 +254,9 @@ sources:
           - *call_success
           - *call_trace_address
           - name: contract_address
-            description: 'Address of the InvestmentPoolFactory contract'
+            description: "Address of the InvestmentPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -262,9 +277,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the StablePoolFactory contract'
+            description: "Address of the StablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *amplificationParameter
           - *output_0
           - *owner
@@ -283,9 +298,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the MetaStablePoolFactory contract'
+            description: "Address of the MetaStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *oracleEnabled
           - *rateProviders
           - *priceRateCacheDuration
@@ -307,9 +322,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the LiquidityBootstrappingPoolFactory contract'
+            description: "Address of the LiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -329,9 +344,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -351,9 +366,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the StablePhantomPoolFactory contract'
+            description: "Address of the StablePhantomPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *output_0
           - *owner
           - *rateProviders
@@ -374,9 +389,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the ComposableStablePoolFactory contract'
+            description: "Address of the ComposableStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *tokenRateCacheDurations
           - *exemptFromYieldProtocolFeeFlags
           - *output_0
@@ -398,9 +413,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the AaveLinearPoolFactory contract'
+            description: "Address of the AaveLinearPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *mainToken
           - *wrappedToken
           - *upperTarget
@@ -422,9 +437,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the StablePoolFactory contract'
+            description: "Address of the StablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *amplificationParameter
           - *output_0
           - *owner
@@ -443,9 +458,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the MetaStablePoolFactory contract'
+            description: "Address of the MetaStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *oracleEnabled
           - *rateProviders
           - *priceRateCacheDuration
@@ -467,9 +482,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -489,9 +504,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the ComposableStablePoolFactory contract'
+            description: "Address of the ComposableStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *exemptFromYieldProtocolFeeFlags
           - *output_0
           - *owner
@@ -513,9 +528,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the AaveLinearPoolFactory contract'
+            description: "Address of the AaveLinearPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *mainToken
           - *wrappedToken
           - *upperTarget
@@ -537,9 +552,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the InvestmentPoolFactory contract'
+            description: "Address of the InvestmentPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *output_0
           - *owner
           - *swapFeePercentage
@@ -560,9 +575,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the StablePoolFactory contract'
+            description: "Address of the StablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *amplificationParameter
           - *output_0
           - *owner
@@ -581,9 +596,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the MetaStablePoolFactory contract'
+            description: "Address of the MetaStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *oracleEnabled
           - *rateProviders
           - *priceRateCacheDuration
@@ -605,9 +620,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the LiquidityBootstrappingPoolFactory contract'
+            description: "Address of the LiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -627,9 +642,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *swapEnabledOnStart
           - *output_0
           - *owner
@@ -649,9 +664,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the StablePhantomPoolFactory contract'
+            description: "Address of the StablePhantomPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *output_0
           - *owner
           - *rateProviders
@@ -672,9 +687,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the ComposableStablePoolFactory contract'
+            description: "Address of the ComposableStablePoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *tokenRateCacheDurations
           - *exemptFromYieldProtocolFeeFlags
           - *output_0
@@ -696,9 +711,9 @@ sources:
           - *call_trace_address
           - *call_tx_hash
           - name: contract_address
-            description: 'Address of the AaveLinearPoolFactory contract'
+            description: "Address of the AaveLinearPoolFactory contract"
           - name: name
-            description: 'Name of the created pool'
+            description: "Name of the created pool"
           - *mainToken
           - *wrappedToken
           - *upperTarget
@@ -714,14 +729,10 @@ sources:
       - name: LiquidityGaugeFactory_evt_GaugeCreated
         columns:
           - name: contract_address
-          - &evt_tx_hash
-            name: evt_tx_hash
-          - &evt_index
-            name: evt_index
-          - &evt_block_time
-            name: evt_block_time
-          - &evt_block_number
-            name: evt_block_number
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
           - name: gauge
           - name: pool
 
@@ -854,17 +865,378 @@ sources:
           - name: pool
           - name: streamer
 
-  - name: balancer_arbitrum
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+  - name: balancer_v2_gnosis
     tables:
-      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+
+      - name: StablePoolV2Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer StablePoolFactory contract.
+        loaded_at_field: call_block_time
         columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
           - name: contract_address
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: gauge
-          - name: pool
-          - name: streamer
+            description: 'Address of the StablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *amplificationParameter
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *swapEnabledOnStart
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: ComposableStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: AaveLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the AaveLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+      - name: AaveLinearPoolV3Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the AaveLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+      - name: ComposableStablePoolV2Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+  - name: balancer_v2_avalanche_c
+    tables:
+
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *swapEnabledOnStart
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: ComposableStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: AaveLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the AaveLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+      - name: ERC4626LinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: ManagedPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+  - name: balancer_v2_base
+    tables:
+
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *swapEnabledOnStart
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: ComposableStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ComposableStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: AaveLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the AaveLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+      - name: ERC4626LinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ERC4626LinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: ManagedPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ManagedPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ManagedStablePoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens

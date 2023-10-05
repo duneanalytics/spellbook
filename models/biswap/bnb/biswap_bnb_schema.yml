@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: biswap_bnb_trades
+  - name: biswap_v2_bnb_trades
     meta:
       blockchain: bnb
       sector: dex
@@ -20,11 +20,10 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: bnb
           project: biswap
-          version: 1
+          version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -38,6 +37,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -89,9 +91,91 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
-        description: ""
+        description: "Index of the corresponding trade event"
+
+  - name: biswap_v3_bnb_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap_v3
+      contributors: chef_seaweed
+    config:
+      tags: ['bnb','biswap','trades','dex']
+    description: >
+        Biswap v3 contract trades on Binance Smart Chain (bsc)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: bnb
+          project: biswap
+          version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_month
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+
+  - name: biswap_bnb_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: codingsh, chef_seaweed
+    config:
+      tags: ['bnb','biswap','trades','dex']
+    description: >
+        Biswap trades on BNB chain across all contracts and versions. This table will load dex trades downstream
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+

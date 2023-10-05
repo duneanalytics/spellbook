@@ -1,7 +1,7 @@
 WITH test_1 AS
 (
     SELECT * FROM {{ ref('cow_protocol_ethereum_trade_slippage') }}
-    WHERE order_uid = '0x514a80473dc24034a1983ec831603f2f100ad7defd1578b077c637f73f3b92ecffab14b181409170378471b13ff2bff5be012c646434b605'
+    WHERE order_uid = 0x514a80473dc24034a1983ec831603f2f100ad7defd1578b077c637f73f3b92ecffab14b181409170378471b13ff2bff5be012c646434b605
     AND block_number = 16975171
     AND (
         abs(amount_percentage) > 3.3

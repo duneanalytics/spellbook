@@ -49,3 +49,11 @@ macros:
   - name: mark_as_spell
     description: >
       Catch all macro to mark all models as spells even if they are not exposed in the data explorer
+  
+  - name: source
+    description: >
+      Change source database.
+
+  - name: alias
+    description: >
+      Add dummy alias

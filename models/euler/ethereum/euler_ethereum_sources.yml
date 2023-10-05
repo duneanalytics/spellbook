@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: euler_ethereum
+    description: "Decoded contracts for Euler on Ethereum"
+
+    tables:
+      - name: Euler_evt_Borrow
+        loaded_at_field: evt_block_time
+      - name: Euler_evt_Repay
+        loaded_at_field: evt_block_time

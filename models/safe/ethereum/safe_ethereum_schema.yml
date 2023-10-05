@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: safe
-      contributors: scherbovich, tschubotz, frankmaseo
+      contributors: scherbovich, tschubotz, frankmaseo, danielpartida
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
@@ -24,6 +24,8 @@ models:
         description: "Version of initially created safe"
       - &block_date
         name: block_date
+      - &block_month
+        name: block_month
       - &creation_time
         name: creation_time
         description: "Date/time of safe creation"
@@ -41,9 +43,16 @@ models:
     config:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - tx_hash
+            - trace_address
     columns:
       - *address
       - *block_date
+      - *block_month
       - &block_time
         name: block_time
         description: "Date of Eth transfer"
@@ -86,6 +95,7 @@ models:
     columns:
       - *blockchain
       - *block_date
+      - *block_month
       - *block_time
       - &block_number
         name: block_number
@@ -128,6 +138,55 @@ models:
         name: output
         description: "Output data"
 
+  - name: safe_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: safe
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'safe']
+    description: "List of claim transactions for the $SAFE airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *block_month
+      - &project
+        name: project
+        description: "Project name"
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - *tx_hash
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        
   - name: safe_ethereum_signer_thresholds
     tests:
       - dbt_utils.unique_combination_of_columns:

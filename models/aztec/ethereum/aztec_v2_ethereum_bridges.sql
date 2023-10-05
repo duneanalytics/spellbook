@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
-    alias = 'bridges',
+    alias = alias('bridges'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",

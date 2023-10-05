@@ -1,5 +1,7 @@
 {{ config(
-        alias = 'ringers'
+        tags = ['static','dunesql']
+        ,schema = 'nft_ethereum_metadata'
+        ,alias = alias('ringers')
         )
 }}
 

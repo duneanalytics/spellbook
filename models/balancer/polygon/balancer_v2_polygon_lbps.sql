@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_polygon',
-        alias='lbps',
+        alias = alias('lbps'),
         unique_key = ['pool_id'],
         post_hook='{{ expose_spells_hide_trino(\'["polygon"]\',
                                     "project",

@@ -1,15 +1,21 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","fantom"]\',
+	    tags=['dunesql'],
+        alias = alias('trades'),
+        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon"]\',
                                 "project",
                                 "paraswap",
-                                \'["Henrystats"]\') }}'
+                                \'["Henrystats","springzh"]\') }}'
         )
 }}
 
 {% set paraswap_models = [
 ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_fantom_trades')
+,ref('paraswap_arbitrum_trades')
+,ref('paraswap_bnb_trades')
+,ref('paraswap_ethereum_trades')
+,ref('paraswap_optimism_trades')
+,ref('paraswap_polygon_trades')
 ] %}
 
 
@@ -20,6 +26,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -38,7 +45,7 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address, --ensure field is explicitly cast as array<bigint> in base models
+        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}

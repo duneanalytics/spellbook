@@ -3,12 +3,12 @@ version: 2
 models:
   - name: paraswap_trades
     meta:
-      blockchain: avalanche_c, fantom
+      blockchain: avalanche_c, fantom, arbitrum, bnb, ethereum, optimism, polygon
       sector: dex
       project: paraswap
-      contributors: Henrystats
+      contributors: Henrystats, springzh
     config:
-      tags: ['avalanche_c', 'fantom', 'paraswap','trades', 'dex', 'aggregator', 'Henrystats','cross-chain']
+      tags: ['avalanche_c', 'fantom', 'paraswap','trades', 'dex', 'aggregator', 'Henrystats','cross-chain', 'arbitrum', 'bnb', 'ethereum', 'optimism', 'polygon']
     description: >
         Paraswap aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:

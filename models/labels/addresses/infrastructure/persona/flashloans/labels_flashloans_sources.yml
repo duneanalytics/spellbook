@@ -1,9 +1,0 @@
-version: 2
-
-sources:
-  - name: balancer_v2_ethereum
-    tables:
-      - name: Vault_evt_FlashLoan
-  - name: uniswap_v3_ethereum
-    tables:
-      - name: Pair_evt_Flash

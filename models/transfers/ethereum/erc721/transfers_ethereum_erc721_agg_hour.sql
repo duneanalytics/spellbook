@@ -1,5 +1,5 @@
 {{ config(
-        alias ='erc721_agg_hour',
+        alias = alias('erc721_agg_hour'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

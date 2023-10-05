@@ -1,7 +1,7 @@
  {{
   config(
         schema='arrakis',
-        alias='uniswap_pools',
+        alias = alias('uniswap_pools'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "arrakis",

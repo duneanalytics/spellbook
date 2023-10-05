@@ -1,5 +1,6 @@
 {{ config(
-        alias ='aggregators_markers',
+        tags = ['dunesql'],
+        alias = alias('aggregators_markers'),
 		materialized = 'table',
         unique_key='hash_marker',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -9,29 +10,30 @@
 }}
 
  WITH reservoir AS (
-    SELECT distinct substring(unhex(regexp_replace(data, '^.*00', '')), 2, length(unhex(regexp_replace(data, '^.*00', '')))-2) AS router_website
-    , regexp_replace(data, '^.*00', '') AS hash_marker
+    SELECT distinct from_utf8(from_hex(substring(regexp_replace(cast(data as varchar), '^.*00', ''), 3, length(regexp_replace(cast(data as varchar), '^.*00', ''))-4))) AS router_website
+    , from_hex(regexp_replace(cast(data as varchar), '^.*00', '')) AS hash_marker
     FROM {{ source('ethereum','transactions') }}
     WHERE to IN (
-        '0x00000000006c3852cbef3e08e8df289169ede581', --seaport
-        '0x74312363e45dcaba76c59ec49a7aa8a65a67eed3', --x2y2
-        '0x59728544b08ab483533076417fbbb2fd0b17ce3a', --looksrare
-        '0x9ebfb53fa8526906738856848a27cb11b0285c3f'  --reservoir
+        0x00000000006c3852cbef3e08e8df289169ede581, --seaport
+        0x74312363e45dcaba76c59ec49a7aa8a65a67eed3, --x2y2
+        0x59728544b08ab483533076417fbbb2fd0b17ce3a, --looksrare
+        0x9ebfb53fa8526906738856848a27cb11b0285c3f  --reservoir
     )
-    AND `RIGHT`(data, 2) = '1f'
-    AND `LEFT`(regexp_replace(data, '^.*00', ''), 2)='1f'
-    AND regexp_replace(data, '^.*00', '') != '1f'
-    AND length(regexp_replace(data, '^.*00', ''))%2 = 0
-    AND block_time > '2022-10-15'
+    AND substr(cast(data as varchar),length(cast(data as varchar))-1, 2) = '1f'
+    AND substr(regexp_replace(cast(data as varchar), '^.*00', ''),1, 2)='1f'
+    AND regexp_replace(cast(data as varchar), '^.*00', '') != '1f'
+    AND length(regexp_replace(cast(data as varchar), '^.*00', ''))%2 = 0
+    AND block_time > TIMESTAMP '2022-10-15'
     )
 
   -- needed to eliminate duplicates
   , reservoir_fixed as (
     select r_a.*
     from reservoir r_a
-    anti join reservoir r_b
+    LEFT join reservoir r_b
         ON r_a.hash_marker != r_b.hash_marker
-        and `right`(r_a.hash_marker, length(r_b.hash_marker)) = r_b.hash_marker
+        and bytearray_starts_with(bytearray_reverse(r_a.hash_marker),bytearray_reverse(r_b.hash_marker)) --equivalent to ends_with
+    WHERE r_b.hash_marker is null
   )
 
   , all_markers as (
@@ -86,18 +88,18 @@
             WHEN router_website='nounish.market' THEN 'Nounish Market'
             WHEN router_website='dev.evaluate.xyz' THEN 'Evaluate Market'
             WHEN router_website='market.cosmoskidznft.com' THEN 'Cosmos Kidz'
-            ELSE router_website::string
+            ELSE router_website
             END AS router_name
     FROM reservoir_fixed
     UNION ALL
     SELECT
         hash_marker ,aggregator_name, router_name
     FROM ( VALUES
-      ('72db8c0b', 'Gem', null)
-    , ('332d1229', 'Blur', null)
-    , ('a8a9c101', 'Alpha Sharks', null)
-    , ('9616c6c64617461', 'Rarible', null)
-    , ('61598d6d', 'Flip', null)
+      (0x72db8c0b, 'Gem', null)
+    , (0x332d1229, 'Blur', null)
+    , (0xa8a9c101, 'Alpha Sharks', null)
+    , (0x09616c6c64617461, 'Rarible', null)
+    , (0x61598d6d, 'Flip', null)
     ) AS temp_table (hash_marker ,aggregator_name, router_name)
   )
 

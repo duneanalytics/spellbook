@@ -13,4 +13,4 @@ select evt_tx_hash from batches_with_trades
 where evt_tx_hash not in (select tx_hash from {{ ref('cow_protocol_ethereum_batches' )}})
 -- The reference table is only refreshed once in a while,
 -- so we impose a time constraint on this test.
-and evt_block_time < date(now()) - interval '1 day'
+and evt_block_time < date(now()) - interval '1' day

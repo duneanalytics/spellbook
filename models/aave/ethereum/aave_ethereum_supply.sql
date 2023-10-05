@@ -1,9 +1,10 @@
 {{ config(
-      alias='supply'
+      tags = ['dunesql']
+      , alias = alias('supply')
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave",
-                                  \'["batwayne", "chuxin"]\') }}'
+                                  \'["batwayne", "chuxin", "hildobby"]\') }}'
   )
 }}
 
@@ -42,4 +43,3 @@ FROM
             evt_block_number 
       FROM {{ ref('aave_v2_ethereum_supply') }}
 )
-;

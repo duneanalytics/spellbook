@@ -85,3 +85,6 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"

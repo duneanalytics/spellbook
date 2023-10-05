@@ -1,5 +1,5 @@
 {{ config(
-       alias = 'top_erc1155_holders',
+       alias = alias('top_erc1155_holders'),
        materialized='table',
        post_hook='{{ expose_spells(\'["ethereum"]\',
                                    "sector",

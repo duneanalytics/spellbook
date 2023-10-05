@@ -3,12 +3,12 @@ version: 2
 models:
   - name: labels_cex
     meta:
-      blockchain: ethereum, bnb, fantom, optimism
+      blockchain: ethereum, bnb, fantom, optimism, arbitrum, avalanche_c, bitcoin, polygon
       sector: labels
       project: cex
       contributors: hildobby, soispoke, Henrystats, msilb7
     config:
-      tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'cex']
+      tags: ['labels', 'ethereum', 'fantom', 'bnb', 'optimism', 'avalanche_c', 'bitcoin', 'polygon', 'arbitrum', 'cex']
     description: "Known centralised exchange addresses across chains"
     columns:
       - &blockchain
@@ -68,7 +68,7 @@ models:
       blockchain: bnb
       sector: labels
       project: cex
-      contributors: soispoke
+      contributors: soispoke, hildobby
     config:
       tags: ['labels', 'bnb', 'cex']
     description: "Known centralised exchange addresses on BNB chain"
@@ -89,7 +89,7 @@ models:
       blockchain: fantom
       sector: labels
       project: cex
-      contributors: Henrystats
+      contributors: Henrystats, hildobby
     config:
       tags: ['labels', 'fantom', 'cex']
     description: "Known centralised exchange addresses on Fantom chain"
@@ -104,16 +104,100 @@ models:
       - *updated_at
       - *model_name
       - *label_type
-  
+
   - name: labels_cex_bitcoin
     meta:
       blockchain: bitcoin
       sector: labels
       project: cex
-      contributors: ilemi
+      contributors: hildobby, ilemi
     config:
-      tags: ['labels', 'cex', 'bitcoin']
-    description: "Known centralised exchange addresses across bitcoin"
+      tags: ['labels', 'bitcoin', 'cex']
+    description: "Known centralised exchange addresses on Bitcoin"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_cex_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: cex
+      contributors: hildobby
+    config:
+      tags: ['labels', 'arbitrum', 'cex']
+    description: "Known centralised exchange addresses on Arbitrum"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_cex_polygon
+    meta:
+      blockchain: polygon
+      sector: labels
+      project: cex
+      contributors: hildobby
+    config:
+      tags: ['labels', 'polygon', 'cex']
+    description: "Known centralised exchange addresses on Polygon"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_cex_avalanche_c
+    meta:
+      blockchain: avalanche_c
+      sector: labels
+      project: cex
+      contributors: hildobby
+    config:
+      tags: ['labels', 'avalanche_c', 'cex']
+    description: "Known centralised exchange addresses on Avalanche"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_cex_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: cex
+      contributors: hildobby, msilb7
+    config:
+      tags: ['labels', 'optimism', 'cex']
+    description: "Known centralised exchange addresses on Optimism"
     columns:
       - *blockchain
       - *address

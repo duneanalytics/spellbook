@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'pool_incentives_mappings'
+    tags=['dunesql'],
+    alias = alias('pool_incentives_mappings')
     )
 }}
 

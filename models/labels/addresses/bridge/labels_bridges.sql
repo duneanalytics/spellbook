@@ -1,5 +1,5 @@
-{{ config(
-    alias = 'bridge',
+{{ config(tags=['dunesql'],
+    alias = alias('bridge'),
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "fantom"]\',

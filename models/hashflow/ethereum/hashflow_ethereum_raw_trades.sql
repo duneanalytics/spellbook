@@ -1,6 +1,6 @@
 {{ config(
-    tags=['prod_exclude'],
-    alias = 'raw_trades',
+    tags=['dunesql', 'prod_exclude'],
+    alias = alias('raw_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,6 +12,11 @@
                                 \'["justabi", "jeff-dude"]\') }}'
     )
 }}
+
+{#
+## model not yet migrated to dunesql syntax and excluded in prod on both engines due to complexity
+## needs refactoring to read from decoded tables
+ #}
 
 {% set project_start_date = '2021-04-28' %}
 
@@ -112,7 +117,7 @@ new_router as (
             else ('0x' || substring(get_json_object(quote,'$.quoteToken') from 3)) end
 ),
 
-event_decoding_legacy_router as (
+event_decoding_router as (
     select
         tx_hash,
         index as evt_index,
@@ -165,7 +170,7 @@ legacy_router_w_integration as (
                 maker_token_amount/power(10, mp.decimals) * mp.price) end as amount_usd
     from ethereum_traces t
     inner join ethereum_transactions tx on tx.hash = t.tx_hash
-    left join event_decoding_legacy_router l on l.tx_id = substring(t.input, 325, 32) -- join on tx_id 1:1, no dup
+    left join event_decoding_router l on l.tx_id = substring(t.input, 325, 32) -- join on tx_id 1:1, no dup
     left join prices_usd tp on tp.minute = date_trunc('minute', t.block_time)
         and tp.contract_address =
             case when substring(input, 81, 20) = '0x0000000000000000000000000000000000000000'
@@ -205,7 +210,7 @@ legacy_router_w_integration as (
                 maker_token_amount/power(10, mp.decimals) * mp.price) end as amount_usd
     from ethereum_traces t
     inner join ethereum_transactions tx on tx.hash = t.tx_hash
-    left join event_decoding_legacy_router l on l.tx_id = substring(t.input, 485, 32)
+    left join event_decoding_router l on l.tx_id = substring(t.input, 485, 32)
     left join prices_usd tp on tp.minute = date_trunc('minute', t.block_time)
         and tp.contract_address =
             case when substring(input, 177, 20) = '0x0000000000000000000000000000000000000000'

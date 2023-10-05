@@ -1,8 +1,9 @@
 {{ config(
-    alias = 'addresses',
+    tags = ['dunesql'],
+    alias = alias('addresses'),
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
+    post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
                                 \'["soispoke", "hildobby", "ilemi", "hosuke"]\') }}')
@@ -77,4 +78,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

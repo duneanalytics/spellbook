@@ -1,0 +1,218 @@
+version: 2
+
+models:
+  - name: transfers_celo_celo
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: celo
+      contributors: msilb7, chuxin, tomfutago
+    config:
+      tags: ["transfers", "celo"]
+    description: "Events of native CELO transfers on Celo."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - trace_address
+    columns:
+      - &from
+        name: from
+        description: "Wallet address that initiated the transaction"
+      - &to
+        name: to
+        description: "Wallet address that received the transaction"
+      - name: contract_address
+        description: "Using the CELO deposit placeholder address to match with prices tables"
+      - &value
+        name: value
+        description: "Amount of CELO transferred from sender to recipient"
+      - &value_decimal
+        name: value_decimal
+        description: "Amount of CELO transferred in decimals from sender to recipient"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        tests:
+          - not_null
+      - name: trace_address
+        description: "All returned traces, gives the exact location in the call trace"
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+        tests:
+          - not_null
+      - &tx_block_time
+        name: tx_block_time
+        description: "Timestamp for block event time in UTC"
+      - &tx_block_number
+        name: tx_block_number
+        description: "Block number"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Function calls specified by the first four bytes of data sent with a transaction"
+      - &tx_to
+        name: tx_to
+        description: "To Address for the Transaction"
+      - &tx_from
+          name: tx_from
+          description: "From Address for the Transaction"
+
+  - name: transfers_celo_erc20
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc20']
+    description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - transfer_type
+            - evt_index
+            - wallet_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer Type: sent/received"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - *block_month
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+      - &evt_index
+        name: evt_index
+        description: "Event Index"
+      - *tx_hash
+
+  - name: transfers_celo_erc20_agg_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark."
+      - *wallet_address
+      - *token_address
+      - &symbol
+        name: symbol
+        description: "ERC20 token symbol"
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
+
+  - name: transfers_celo_erc20_rolling_hour
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    description: "ERC20 Token Transfers on Celo per hour."
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_hour
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - name: amount_raw
+        description: "Rolling sum of raw amount of ERC20 token held *before* taking into account token decimals"
+      - name: amount
+        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when table was last updated"
+
+  - name: transfers_celo_erc20_agg_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark."
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+
+  - name: transfers_celo_erc20_rolling_day
+    meta:
+      blockchain: celo
+      sector: transfers
+      project: erc20
+      contributors: soispoke, dot2dotseurat, tomfutago
+    description: "ERC20 Token Transfers on Celo per day."
+    config:
+      tags: ['transfers', 'celo', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet_address
+            - token_address
+            - block_day
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_day
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - name: amount_raw
+        description: "Rolling sum of raw amount of ERC20 token held *before* taking into account token decimals"
+      - name: amount
+        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
+      - *recency_index
+      - *last_updated

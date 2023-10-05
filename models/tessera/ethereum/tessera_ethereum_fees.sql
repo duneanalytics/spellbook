@@ -1,5 +1,6 @@
 {{ config (
-    alias = 'fees',
+    tags=['dunesql'],
+    alias = alias('fees'),
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 -- FEES GENERATED

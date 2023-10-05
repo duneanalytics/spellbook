@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'base_pairs',
+    alias = alias('base_pairs'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

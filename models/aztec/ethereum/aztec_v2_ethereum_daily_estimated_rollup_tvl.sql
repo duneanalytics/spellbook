@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aztec_v2_ethereum',
-    alias = 'daily_estimated_rollup_tvl',
+    alias = alias('daily_estimated_rollup_tvl'),
     post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",

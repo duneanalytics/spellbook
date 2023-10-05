@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: paladin_ethereum
+    description: >
+      $PAL airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time

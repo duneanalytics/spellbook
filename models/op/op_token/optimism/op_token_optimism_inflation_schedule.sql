@@ -1,6 +1,6 @@
 {{ config(
         schema = 'op_token_optimism',
-        alias='inflation_schedule'
+        alias = alias('inflation_schedule')
         , unique_key = ['schedule_confirmed_date', 'schedule_start_date']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

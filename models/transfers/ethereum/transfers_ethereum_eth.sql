@@ -1,6 +1,6 @@
 {{ 
     config(
-        alias ='eth', 
+        alias = alias('eth'), 
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

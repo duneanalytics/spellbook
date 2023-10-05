@@ -22,9 +22,9 @@ models:
             - evt_index
             - trace_address
       - check_dex_aggregator_seed:
-          blockchain: fantom
-          project: paraswap
-          version: 5
+         blockchain: fantom
+         project: paraswap
+         version: 5
     columns:
       - &blockchain
         name: blockchain

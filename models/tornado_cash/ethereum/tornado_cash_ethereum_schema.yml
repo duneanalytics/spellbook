@@ -1,8 +1,65 @@
 version: 2
 
-
-
 models:
+  - name: tornado_cash_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: tornado_cash
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'tornado_cash']
+    description: "List of claim transactions for the $TORN airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - &project
+        name: project
+        description: "Project name"
+      - &airdrop_identifier
+        name: airdrop_identifier
+        description: "Airdrop identifier name"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of tokens"
+      - &amount_original
+        name: amount_original
+        description: "Original amount of tokens"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        
   - name: tornado_cash_ethereum_deposits
     meta:
       blockchain: ethereum
@@ -18,21 +75,14 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - &block_time
-        name: block_time
-        description: "UTC event block time"
+      - *block_time
       - &currency_contract
         name: currency_contract
         description: "Currency contract address (on Ethereum mainnet) of currency deposited/withdrawn from Tornado Cash, with ETH contract address swapped for WETH"
       - &currency_symbol
         name: currency_symbol
         description: "Symbol of currency deposited/withdrawn from Tornado Cash"
-      - &blockchain
-        name: blockchain
-        tests:
-          - accepted_values:
-              values: ['ethereum']
-        description: "Blockchain"
+      - *blockchain
       - &tornado_version
         name: tornado_version
         tests:
@@ -42,14 +92,10 @@ models:
       - &depositor
         name: depositor
         description: "Address depositing into Tornado Cash"
-      - &contract_address
-        name: contract_address
-        description: "Contract Address of used Tornado Cash Pool"
+      - *contract_address
       - name: leaf_index
         description: "Leaf index"
-      - &evt_index
-        name: evt_index
-        description: "Event index"
+      - *evt_index
 
   - name: tornado_cash_ethereum_withdrawals
     meta:

@@ -1,5 +1,5 @@
-{{ config( alias='nft',
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon"]\',
+{{ config(tags=['dunesql'], alias = alias('nft'),
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon","base","celo"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xRob"]\') }}')}}
@@ -14,6 +14,8 @@
     ,('gnosis',     ref('tokens_gnosis_nft'))
     ,('optimism',   ref('tokens_optimism_nft'))
     ,('polygon',    ref('tokens_polygon_nft'))
+    ,('base',       ref('tokens_base_nft'))
+    ,('celo',       ref('tokens_celo_nft'))
 ] %}
 
 SELECT *

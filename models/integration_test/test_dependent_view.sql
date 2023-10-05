@@ -1,5 +1,5 @@
 {{ config(
-        alias ='test_dependent_view'
+        alias = alias('test_dependent_view')
         )
 }}
 

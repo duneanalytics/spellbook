@@ -88,7 +88,10 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index number"
-  
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"
+
   - name: synthetix_v2_optimism_perpetual_trades
     meta:
       blockchain: optimism
@@ -132,6 +135,7 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+      - *block_month
 
   - name: synthetix_optimism_perpetual_trades
     meta:
@@ -163,7 +167,8 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
-  
+      - *block_month
+
   - name: synthetix_optimism_spot_trades
     meta:
       blockchain: optimism
@@ -182,7 +187,6 @@ models:
               - version
               - tx_hash
               - evt_index
-              - trace_address
       - check_dex_seed:
           blockchain: optimism
           project: synthetix
@@ -191,6 +195,7 @@ models:
       - *blockchain
       - *project
       - *version
+      - *block_month
       - *block_date
       - *block_time
       - &token_bought_symbol
@@ -235,7 +240,4 @@ models:
       - *tx_hash
       - *tx_from
       - *tx_to
-      - &trace_address
-        name: trace_address
-        description: ""
       - *evt_index

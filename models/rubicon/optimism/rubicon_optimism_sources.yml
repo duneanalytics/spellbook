@@ -72,3 +72,38 @@ sources:
             description: "the amount of the token being bought"
           - *maker
           - *timestamp
+
+      - name: RubiconMarket_evt_emitOffer
+        loaded_at_field: evt_block_time
+        description: "a table of events triggered when a maker creates an offer" 
+        columes: 
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *id
+          - *pair
+          - *maker
+          - *pay_gem
+          - *buy_gem
+          - *pay_amt
+          - *buy_amt
+          
+      - name: RubiconMarket_evt_emitTake
+        loaded_at_field: evt_block_time
+        description: "a table of events triggered when a taker fills an outstanding offer" 
+        columes: 
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *id
+          - *pair
+          - *taker
+          - *maker
+          - *pay_gem
+          - *buy_gem
+          - *take_amt
+          - *give_amt
