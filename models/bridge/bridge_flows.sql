@@ -55,7 +55,7 @@ WITH bridge_protocols AS (
             , tx_to
             , cast(transfer_id as varbinary) as transfer_id
             , evt_index
-            , trace_address
+            , CAST(trace_address as array<bigint>) as trace_address
             , tx_method_id
         FROM {{ bridge_protocol_model }} bmod
             LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
@@ -107,7 +107,7 @@ WITH bridge_protocols AS (
             , tx_to
             , cast(transfer_id as varbinary) as transfer_id
             , evt_index
-            , trace_address
+            , CAST(trace_address as array<bigint>) as trace_address
             , tx_method_id
         FROM {{ native_bridge_model }} bmod
             LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
