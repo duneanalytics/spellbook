@@ -1,11 +1,11 @@
 version: 2
 
 models:
-  - name: oneinch_arbitrum_ar_calls_transfers
+  - name: oneinch_arbitrum_calls_transfers
     meta:
       blockchain: ['arbitrum']
       sector: oneinch
-      contributors: ['grkhr']
+      contributors: ['grkhr', 'Max-Morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -30,10 +30,14 @@ models:
         name: call_success
       - &call_trace_address
         name: call_trace_address
-      - &caller
-        name: caller
+      - &call_from
+        name: call_from
+      - &call_to
+        name: call_to
       - &call_selector
         name: call_selector
+      - &protocol
+        name: protocol
       - &transfer_trace_address
         name: transfer_trace_address
       - &contract_address
@@ -46,10 +50,14 @@ models:
         name: transfer_from
       - &transfer_to
         name: transfer_to
-      - &rn_ta_asc
-        name: rn_ta_asc
-      - &rn_ta_desc
-        name: rn_ta_desc
+      - &transfer_top_level
+        name: transfer_top_level
+      - &transfers_between_players
+        name: transfers_between_players
+      - &rn_tta_asc
+        name: rn_tta_asc
+      - &rn_tta_desc
+        name: rn_tta_desc
       - &call_output
         name: call_output
       - &call_input
@@ -65,3 +73,43 @@ models:
         tests:
           - unique
           - not_null
+
+
+
+
+  - name: oneinch_arbitrum_ar_calls_transfers
+    meta:
+      blockchain: ['arbitrum']
+      sector: oneinch
+      contributors: ['grkhr']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        oneinch arbitrum calls & transfers
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *tx_hash
+      - *tx_from
+      - *tx_success
+      - *call_success
+      - *call_trace_address
+      - &caller
+        name: caller
+      - *call_selector
+      - *transfer_trace_address
+      - *contract_address
+      - *amount
+      - *native_token
+      - *transfer_from
+      - *transfer_to
+      - &rn_ta_asc
+        name: rn_ta_asc
+      - &rn_ta_desc
+        name: rn_ta_desc
+      - *call_output
+      - *call_input
+      - *minute
+      - *block_month
+      - *unique_call_transfer_id

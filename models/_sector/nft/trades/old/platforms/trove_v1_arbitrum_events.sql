@@ -42,7 +42,6 @@ select
     'arbitrum' as blockchain,
     'trove' as project,
     'v1' as version,
-    date_trunc('day',mp.block_time) as block_date,
     mp.block_time,
     token_id,
     nft_tokens.name as collection,

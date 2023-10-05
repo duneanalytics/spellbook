@@ -13,7 +13,17 @@ sources:
         loaded_at_field: evt_block_time
       - name: Elastic_Pool_evt_BurnRTokens
         loaded_at_field: evt_block_time
-      
+      - name: ElasticFactoryV2_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Swap
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Burn
+        loaded_at_field: evt_block_time                      
+      - name: ElasticPoolV2_evt_BurnRTokens
+        loaded_at_field: evt_block_time      
+
   - name: uniswap_v3_ethereum
     description: "Ethereum decoded tables related to Uniswap v3 contract"
     freshness: # default freshness
@@ -83,4 +93,18 @@ sources:
         loaded_at_field: evt_block_time 
       - name:  rETHwstETH_evt_TokenExchange   
         loaded_at_field: evt_block_time 
+
+  - name: pancakeswap_v3_ethereum
+    description: "Ethereum decoded tables related to Pancakeswap v3 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: PancakeV3Pool_evt_Collect
+        loaded_at_field: evt_block_time
+      - name: PancakeV3Pool_evt_Burn
+        loaded_at_field: evt_block_time
+      
 

@@ -1,5 +1,6 @@
 {{
     config(
+        tags=['dunesql'],
         alias = alias('trader_platforms'),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
                     "sector",
@@ -33,16 +34,15 @@ with trader_platforms as (
 
 select blockchain,
        address,
-       array_join(array_distinct(collect_list(concat(upper(substring(project, 1, 1)), substring(project, 2)))),
+       array_join(array_distinct(ARRAY_AGG(concat(upper(substring(project, 1, 1)), substring(project, 2)))),
                   ', ') || ' User' AS name,
-       "dex"                       AS category,
-       "gentrexha"                 AS contributor,
-       "query"                     AS source,
-       timestamp('2022-12-21')     AS created_at,
+       'dex'                       AS category,
+       'gentrexha'                 AS contributor,
+       'query'                     AS source,
+       TIMESTAMP '2022-12-21'           AS created_at,
        now()                       AS updated_at,
-       "trader_platforms"          AS model_name,
-       "persona"                   AS label_type
+       'trader_platforms'          AS model_name,
+       'persona'                   AS label_type
 from trader_platforms
 where address is not null
 group by address, blockchain 
-; 

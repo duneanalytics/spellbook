@@ -1,6 +1,7 @@
 {{
     config(
         alias = alias('tx_hash_labels_bluechip_investment_ethereum'),
+        tags=['dunesql']
     )
 }}
 
@@ -10,9 +11,9 @@ with
         bluechip_address
     from
         (
-            VALUES  ('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'), -- wBTC
-                    ('0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'), -- WETH
-                    ('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')  -- ETH
+            VALUES  (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), -- wBTC
+                    (0x2260fac5e5542a773aa44fbcfedf7c193bc2c599), -- WETH
+                    (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)  -- ETH
         ) t(bluechip_address)
  ),
 
@@ -35,15 +36,15 @@ with
  )
 
 select
-  "ethereum" as blockchain,
-  concat(tx_hash, CAST(evt_index AS VARCHAR(100)), project, version) as tx_hash_key,
-  "Bluechip Investment" as name,
-  "tx_hash" as category,
-  "gentrexha" as contributor,
-  "query" as source,
-  CAST('2023-02-21' AS TIMESTAMP) as created_at,
+  'ethereum' as blockchain,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR), project, version) as tx_hash_key,
+  'Bluechip Investment' as name,
+  'tx_hash' as category,
+  'gentrexha' as contributor,
+  'query' as source,
+  TIMESTAMP '2023-02-21' as created_at,
   now() as updated_at,
-  "bluechip_investment" as model_name,
-  "usage" as label_type
+  'bluechip_investment' as model_name,
+  'usage' as label_type
 from
   bluechip_investment_trades
