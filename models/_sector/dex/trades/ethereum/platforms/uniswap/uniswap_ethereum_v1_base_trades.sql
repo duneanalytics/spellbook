@@ -21,7 +21,7 @@ WITH dexs AS
          ,CAST(NULL as VARBINARY) as maker
          ,t.tokens_bought AS token_bought_amount_raw
          ,t.eth_sold AS token_sold_amount_raw
-         ,NULL AS amount_usd
+         ,CAST(NULL AS DOUBLE) AS amount_usd
          ,f.token AS token_bought_address
          ,{{weth_address}} AS token_sold_address --Using WETH for easier joining with USD price table
          ,t.contract_address AS project_contract_address
