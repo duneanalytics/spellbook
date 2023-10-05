@@ -85,7 +85,7 @@ buy_transactions as (
         token_bought_address, 
         token_sold_amount as eth_sold, 
         amount_usd as usd_value,
-        ROW_NUMBER() OVER (PARTITION BY trader, token_bought_address ORDER BY block_time) as trade_id
+        ROW_NUMBER() OVER (PARTITION BY taker, token_bought_address ORDER BY block_time) as trade_id
     FROM 
     {{ ref('uniswap_v2_ethereum_trades') }}
     WHERE block_time > CAST(NOW() as timestamp) - Interval '2' Month
@@ -146,8 +146,8 @@ sell_filters as (
     (
     SELECT 
         MAX(st.cum_sold_amount) as sold_amount, 
-        AVG(st.price) as avg_sell_price, 
-        MAX(st.block_time) as last_sell_time
+        AVG(st.token_price) as avg_sell_price, 
+        MAX(st.block_time) as last_sell_time,
         m.trade_id
     FROM 
     market_cap m 
@@ -157,7 +157,7 @@ sell_filters as (
         AND m.trader = st.trader
         AND st.block_time > m.block_time
         AND st.cum_sold_amount <= m.token_bought_amount
-    GROUP BY 3 
+    GROUP BY 4
     ) a 
     INNER JOIN 
     market_cap m 
