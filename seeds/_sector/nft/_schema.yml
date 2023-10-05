@@ -221,4 +221,3 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
-
