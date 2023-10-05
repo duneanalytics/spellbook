@@ -1,11 +1,126 @@
 version: 2
 
 models:
-  - name: staking_ethereum_entities
+  - name: staking_ethereum_entities_contracts
     meta:
       blockchain: ethereum
       sector: staking
       contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified depositor entities (where a contract is called and the ETH comes from a different address)
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_coinbase
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Coinbase's Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_binance
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Binance's Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_addresses
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby, sankinyue
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_darma_capital
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: DARMA Capital's Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby, sankinyue
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
@@ -47,11 +162,11 @@ models:
         description: "Amount of ETH staked in trasaction"
       - name: depositor_address
         description: "Address of depositor"
-      - name: depositor_entity
+      - name: entity
         description: "Name of depositor if identified"
-      - name: depositor_entity_unique_name
+      - name: entity_unique_name
         description: "Unique name of depositor if identified"
-      - name: depositor_entity_category
+      - name: entity_category
         description: "Category of depositor if identified"
       - name: tx_hash
         description: "Transaction hash of deposit"
@@ -65,9 +180,6 @@ models:
         description: "Signature"
       - name: withdrawal_credentials_type
         description: "Withdrawal credentials type"
-        tests:
-          - accepted_values:
-              values: ['0x00', '0x01']
       - name: withdrawal_address
         description: "Defined withdrawal address"
       - name: withdrawal_credentials

@@ -80,7 +80,8 @@ WITH
     , v4_limit_fills AS (
 
         SELECT
-            fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+            fills.evt_block_time AS block_time
+            , fills.evt_block_number as block_number
             , 'v4' AS protocol_version
             , 'limit' as native_order_type
             , fills.evt_tx_hash AS transaction_hash
@@ -142,7 +143,8 @@ WITH
 
     , v4_rfq_fills AS (
       SELECT
-          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
+          fills.evt_block_time AS block_time
+          , fills.evt_block_number as block_number
           , 'v4' AS protocol_version
           , 'rfq' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
@@ -201,9 +203,10 @@ WITH
     ), otc_fills as
     (
       SELECT
-          fills.evt_block_time AS block_time, fills.evt_block_number as block_number
-          , 'otc' as native_order_type
+          fills.evt_block_time AS block_time
+          , fills.evt_block_number as block_number
           , 'v4' AS protocol_version
+          , 'otc' as native_order_type
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address
@@ -261,18 +264,81 @@ WITH
     ),
 
     all_fills as (
-    
+        SELECT
+            block_time
+            , block_number
+            , protocol_version
+            , native_order_type
+            , transaction_hash
+            , evt_index
+            , maker_address
+            , taker_address
+            , maker_token
+            , token_pair
+            , taker_token_filled_amount_raw
+            , maker_token_filled_amount_raw
+            , contract_address
+            , maker_symbol
+            , maker_asset_filled_amount
+            , taker_token
+            , taker_symbol
+            , taker_asset_filled_amount
+            , matcha_limit_order_flag
+            , volume_usd
+            , protocol_fee_paid_eth
+        FROM v4_limit_fills
 
+        UNION ALL
 
-    SELECT * FROM v4_limit_fills
+        SELECT
+            block_time
+            , block_number
+            , protocol_version
+            , native_order_type
+            , transaction_hash
+            , evt_index
+            , maker_address
+            , taker_address
+            , maker_token
+            , token_pair
+            , taker_token_filled_amount_raw
+            , maker_token_filled_amount_raw
+            , contract_address
+            , maker_symbol
+            , maker_asset_filled_amount
+            , taker_token
+            , taker_symbol
+            , taker_asset_filled_amount
+            , matcha_limit_order_flag
+            , volume_usd
+            , protocol_fee_paid_eth
+        FROM v4_rfq_fills
 
-    UNION ALL
-
-    SELECT * FROM v4_rfq_fills
-
-    UNION ALL
-    
-    SELECT * FROM otc_fills
+        UNION ALL
+        
+        SELECT
+            block_time
+            , block_number
+            , protocol_version
+            , native_order_type
+            , transaction_hash
+            , evt_index
+            , maker_address
+            , taker_address
+            , maker_token
+            , token_pair
+            , taker_token_filled_amount_raw
+            , maker_token_filled_amount_raw
+            , contract_address
+            , maker_symbol
+            , maker_asset_filled_amount
+            , taker_token
+            , taker_symbol
+            , taker_asset_filled_amount
+            , matcha_limit_order_flag
+            , volume_usd
+            , protocol_fee_paid_eth
+        FROM otc_fills
     )
             SELECT distinct 
                 all_fills.block_time AS block_time, 

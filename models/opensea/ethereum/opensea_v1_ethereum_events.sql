@@ -148,7 +148,6 @@ SELECT
   'opensea' as project,
   'v1' as version,
   project_contract_address,
-  TRY_CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
   t.block_time,
   t.block_number,
   t.tx_hash,
@@ -182,6 +181,7 @@ SELECT
   royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
   t.fee_recipient as royalty_fee_receive_address,
   CASE WHEN t.native_eth THEN 'ETH' ELSE erc20.symbol END AS royalty_fee_currency_symbol,
+  cast(cast(t.order_evt_index as varchar) || cast(t.nft_evt_index as varchar) as bigint) as evt_index, -- using this downstream in nft mints
   'wyvern-opensea' || '-' || cast(t.tx_hash as varchar) || '-' || cast(t.order_evt_index as varchar)|| '-' || cast(t.nft_evt_index as varchar) || '-' || cast(token_id as varchar) as unique_trade_id
 FROM enhanced_trades t
 INNER JOIN {{ source('ethereum','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash

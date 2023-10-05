@@ -16,6 +16,7 @@ WITH base_union as (
         '{{ nft_model[0] }}' as project,
         '{{ nft_model[1] }}' as project_version,
         block_date,
+        cast(date_trunc('month', block_time) as date) as block_month,
         block_time,
         block_number,
         tx_hash,
@@ -51,6 +52,7 @@ SELECT
     base.project,
     base.project_version,
     base.block_date,
+    base.block_month,
     base.block_time,
     base.block_number,
     base.tx_hash,
@@ -84,7 +86,9 @@ SELECT
     case when base.price_raw > uint256 '0' then cast(100*base.royalty_fee_amount_raw/base.price_raw as double) else double '0' end as royalty_fee_percentage,
     coalesce(agg1.contract_address,agg2.contract_address) as aggregator_address,
     {% if aggregator_markers != null %}
-    coalesce(agg_mark.aggregator_name, agg1.name, agg2.name) as aggregator_name
+    CASE WHEN coalesce(agg_mark.aggregator_name, agg1.name, agg2.name)='Gem' AND base.block_number >= 16971894 THEN 'OpenSea Pro' -- 16971894 is the first block of 2023-04-04 which is when Gem rebranded to OpenSea Pro
+        ELSE coalesce(agg_mark.aggregator_name, agg1.name, agg2.name)
+        END as aggregator_name
     {% else %}
     coalesce(agg1.name,agg2.name) as aggregator_name
     {% endif %}

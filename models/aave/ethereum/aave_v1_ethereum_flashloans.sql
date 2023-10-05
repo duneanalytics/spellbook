@@ -1,5 +1,7 @@
 {{ config(
-    schema = 'aave_v1_ethereum'
+    tags = ['dunesql']
+    , partition_by = ['block_month']
+    , schema = 'aave_v1_ethereum'
     , alias = alias('flashloans')
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -19,22 +21,23 @@ WITH flashloans AS (
     , flash.evt_tx_hash AS tx_hash
     , flash.evt_index
     , CAST(flash._totalFee AS double) AS fee
-    , CASE WHEN flash._reserve='{{aave_mock_address}}' THEN '{{weth_address}}' ELSE flash._reserve END AS currency_contract
-    , CASE WHEN flash._reserve='{{aave_mock_address}}' THEN 'ETH' ELSE erc20.symbol END AS currency_symbol
-    , CASE WHEN flash._reserve='{{aave_mock_address}}' THEN 18 ELSE erc20.decimals END AS currency_decimals
+    , CASE WHEN flash._reserve= {{aave_mock_address}} THEN {{weth_address}} ELSE flash._reserve END AS currency_contract
+    , CASE WHEN flash._reserve= {{aave_mock_address}} THEN 'ETH' ELSE erc20.symbol END AS currency_symbol
+    , CASE WHEN flash._reserve= {{aave_mock_address}} THEN 18 ELSE erc20.decimals END AS currency_decimals
     , flash._target AS recipient
     , flash.contract_address AS contract_address
     FROM {{ source('aave_ethereum','LendingPool_evt_FlashLoan') }} flash
     LEFT JOIN {{ ref('tokens_ethereum_erc20') }} erc20 ON flash._reserve = erc20.contract_address
     WHERE CAST(flash._amount AS double) > 0
         {% if is_incremental() %}
-        AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+        AND flash.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     )
     
 SELECT 'ethereum' AS blockchain
 , 'Aave' AS project
 , '1' AS version
+, CAST(date_trunc('Month', flash.block_time) as date) AS block_month
 , flash.block_time
 , flash.block_number
 , flash.amount_raw/POWER(10, flash.currency_decimals) AS amount

@@ -1,37 +1,59 @@
-{{ config(materialized='view', alias = alias('erc20'),
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+{{ config(
+    tags=['dunesql'],
+    materialized = 'incremental',
+    partition_by = ['block_month'],
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
+    alias = alias('erc20'),
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}') }}
+                                    \'["Henrystats"]\') }}') }}
 
-with
-    sent_transfers as (
-        select
-            CAST('send' AS VARCHAR(4)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`to` AS VARCHAR(100)) as unique_transfer_id,
-            `to` as wallet_address,
-            contract_address as token_address,
+WITH 
+
+erc20_transfers  as (
+        SELECT 
+            'receive' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
             evt_block_time,
-            value as amount_raw
-        from
-            {{ source('erc20_arbitrum', 'evt_transfer') }}
-    )
+            to as wallet_address, 
+            contract_address as token_address,
+            CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_arbitrum', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
 
-    ,
-    received_transfers as (
-        select
-        CAST('receive' AS VARCHAR(7)) || CAST('-' AS VARCHAR(1)) || CAST(evt_tx_hash AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(evt_index AS VARCHAR(100)) || CAST('-' AS VARCHAR(1)) || CAST(`from` AS VARCHAR(100)) as unique_transfer_id,
-        `from` as wallet_address,
-        contract_address as token_address,
-        evt_block_time,
-        '-' || CAST(value AS VARCHAR(100)) as amount_raw
-        from
-            {{ source('erc20_arbitrum', 'evt_transfer') }}
-    )
+        UNION ALL 
 
--- There is no need to add WETH deposits / withdrawals since WETH on Arbitrum triggers transfer evens for both.
-    
-select unique_transfer_id, 'arbitrum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from sent_transfers
-union
-select unique_transfer_id, 'arbitrum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from received_transfers
+        SELECT 
+            'send' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
+            evt_block_time,
+            "from" as wallet_address, 
+            contract_address as token_address,
+            -CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_arbitrum', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+)
+
+SELECT
+    'arbitrum' as blockchain, 
+    transfer_type,
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+erc20_transfers

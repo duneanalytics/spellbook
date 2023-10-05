@@ -1,5 +1,7 @@
 {{ config(
+        tags=['dunesql'],
         alias = alias('flashloans'),
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -31,6 +33,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_time,
         amount,
         amount_usd,
@@ -42,8 +45,10 @@ FROM (
         contract_address
     FROM {{ flash_model }}
     {% if not loop.last %}
+    {% if is_incremental() %}
+    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;

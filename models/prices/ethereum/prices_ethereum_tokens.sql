@@ -161,6 +161,7 @@ FROM
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),
     ('get-get-protocol', 'ethereum', 'GET', 0x8a854288a5976036a725879164ca3e91d30c6a1b, 18),
+    ('gho-gho', 'ethereum', 'GHO', 0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f, 18),
     ('gno-gnosis', 'ethereum', 'GNO', 0x6810e776880c02933d47db1b9fc05908e5386b96, 18),
     ('gnt-golem', 'ethereum', 'GNT', 0xa74476443119a942de498590fe1f2454d7d4ac0d, 18),
     ('govi-govi', 'ethereum', 'GOVI', 0xeeaa40b28a2d1b0b08f6f97bb1dd4b75316c6107, 18),
@@ -1611,15 +1612,16 @@ FROM
     ('imgnai-imgnai', 'ethereum', 'IMGNAI', 0xA735A3AF76CC30791C61c10d585833829d36CBe0, 9),
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', 0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5, 9),
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', 0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1, 18),
-    ('weth-weth', 'ethereum', 'bpETH', 0x0000000000a39bb272e79075ade125fd351887ac, 18),
-    ('pepe-pepe1', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18),   
+    ('weth-weth', 'ethereum', 'bpETH', 0x0000000000a39bb272e79075ade125fd351887ac, 18),  
     ('grain-granary','ethereum','GRAIN',0xf88baf18fab7e330fa0c4f83949e23f52fececce,18),
     ('verse-verse-token', 'ethereum', 'VERSE', 0x249ca82617ec3dfb2589c4c17ab7ec9765350a18, 18),
     ('mc-merit-circle', 'ethereum', 'MC', 0x949d48eca67b17269629c7194f4b727d4ef9e5d6, 18),
     ('r-r-stablecoin', 'ethereum', 'R', 0x183015a9ba6ff60230fdeadc3f43b3d788b13e21, 18),
     ('gnx-genaro-network', 'ethereum', 'GNX', 0x6ec8a24cabdc339a06a172f8223ea557055adaa5, 9),
     ('pndc-pond-coin', 'ethereum', 'PNDC', 0x423f4e6138e475d85cf7ea071ac92097ed631eea, 18),
-    ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18)
+    ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
+    ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18),
+    ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
