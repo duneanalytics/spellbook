@@ -1,22 +1,14 @@
 version: 2
 
 models:
-  - name: orca_whirlpool_trades
+  - name: dex_solana_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
       tags: ['solana','dex']  
     description: >
-        all whirlpool dex trades on Solana
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
+        all dex trades on Solana
     columns:
       - &blockchain
         name: blockchain
