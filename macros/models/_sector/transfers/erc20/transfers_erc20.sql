@@ -81,6 +81,8 @@ SELECT
     amount_raw
 FROM
 erc20_transfers
+-- filter overflows
+WHERE amount_raw is not null
 
 {% if wrapped_token_deposit and wrapped_token_withdrawal %}
 UNION ALL
@@ -97,6 +99,8 @@ SELECT
     amount_raw
 FROM
 wrapped_token_events
+-- filter overflows
+WHERE amount_raw is not null
 {% endif %}
 
 {% endmacro %}
