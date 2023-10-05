@@ -1,6 +1,6 @@
 {{ config(   schema = 'balances_ethereum',
         tags = ['dunesql'],
-        alias = alias('erc20_project'),
+        alias = alias('erc20_pnls'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
