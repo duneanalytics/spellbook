@@ -16,12 +16,12 @@
 }}
 {% set chain_models = [
 
-  ref('contracts_ethereum_find_self_destruct_contracts')
+    ref('contracts_ethereum_find_self_destruct_contracts')
+  , ref('contracts_base_find_self_destruct_contracts')
 
 ] %}
 --  ('contracts_arbitrum_find_self_destruct_contracts')
 -- ,('contracts_avalanche_c_find_self_destruct_contracts')
--- ,('contracts_base_find_self_destruct_contracts')
 -- ,('contracts_bnb_find_self_destruct_contracts')
 -- ,('contracts_celo_find_self_destruct_contracts')
 -- ,('contracts_fantom_find_self_destruct_contracts')

@@ -32,7 +32,7 @@ FROM (VALUES
     , ('infinity', 'Infinity', 'Direct', NULL)
     , ('zora', 'Zora', 'Direct', 'ourZORA')
     , ('reservoir', 'Reservoir', 'Aggregator', 'reservoir0x')
-    , ('alpha sharks', 'Alpha Sharks', 'Aggregator', 'AlphaSharksNFT')
+    , ('magically', 'Magically', 'Aggregator', 'Magically_gg')
     , ('uniswap', 'Uniswap', 'Aggregator', 'Uniswap')
     , ('okx', 'OKX', 'Aggregator', 'okx')
     , ('bitkeep', 'BitKeep', 'Aggregator', 'BitgetWallet')
