@@ -24,7 +24,6 @@ WITH base_union AS (
         maker,
         project_contract_address,
         tx_hash,
-        trace_address,
         evt_index
     FROM {{ dex_model[2] }}
     {% if is_incremental() %}
@@ -65,7 +64,6 @@ SELECT base.blockchain,
        base.tx_hash,
        tx."from"                                                 AS tx_from,
        tx.to                                                     AS tx_to,
-       base.trace_address,
        base.evt_index
 FROM base_union base
 INNER JOIN {{ transactions_model }} tx
