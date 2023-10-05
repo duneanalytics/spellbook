@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_from', 'tx_to', 'value', 'contract_address', 'evt_tx_hash', 'evt_index', 'broad_txn_type', 'spec_txn_type', 'to_protocol', 'from_protocol', 'bridge_address', 'trace_address'],
+    unique_key = ['evt_tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
