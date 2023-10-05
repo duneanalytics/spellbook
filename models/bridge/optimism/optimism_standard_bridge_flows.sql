@@ -42,7 +42,7 @@ WITH bridge_events AS (
         ,bytearray_substring(topic2, 13, 20) AS bridged_token_address
         ,bytearray_to_uint256(bytearray_substring(data,33,32)) as bridged_token_amount_raw
         , bytearray_substring(data, 13, 20) AS recipient_address
-        , CAST(NULL as array<bigint>) AS trace_address
+        , array[-1] AS trace_address
         , l.index AS evt_index
         , l.contract_address AS project_contract_address
         , NULL AS transfer_id
@@ -68,7 +68,7 @@ WITH bridge_events AS (
         , bytearray_substring(topic2, 13, 20) AS bridged_token_address
         , bytearray_to_uint256(bytearray_substring(data,33,32)) as bridged_token_amount_raw
         , bytearray_substring(data, 13, 20) AS recipient_address
-        , CAST(NULL as array<bigint>) AS trace_address
+        , array[-1] AS trace_address
         , l.index AS evt_index
         , l.contract_address AS project_contract_address
         , NULL AS transfer_id
