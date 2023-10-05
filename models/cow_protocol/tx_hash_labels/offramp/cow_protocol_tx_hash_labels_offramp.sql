@@ -1,7 +1,8 @@
 {{
     config(
         alias = alias('tx_hash_labels_offramp'),
-        post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}'
+        post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}',
+        tags=['dunesql']
     )
 }}
 

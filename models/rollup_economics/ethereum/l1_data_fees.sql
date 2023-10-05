@@ -1,7 +1,7 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
     alias = alias('l1_data_fees'),
-    tags = ['dunesql'],
+    tags = ['dunesql', 'prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
