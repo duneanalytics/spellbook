@@ -1,56 +1,6 @@
 version: 2
 
 models:
-  - name: nft_celo_transfers
-    meta:
-      blockchain: celo
-      sector: nft
-      contributors: hildobby, 0xRob, tomfutago
-    config:
-      tags: ['nft', 'celo', 'transfers']
-    description: >
-        NFT transfers
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - contract_address
-            - token_id
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: block_time
-        description: "UTC event block time"
-      - name: block_number
-        description: "Block number in which the transaction was executed"
-      - name: token_standard
-        tests:
-          - accepted_values:
-              values: ['erc721', 'erc1155']
-        description: "Token standard"
-      - name: transfer_type
-        tests:
-          - accepted_values:
-              values: ['single', 'batch']
-        description: "single or batch transfer of tokens"
-      - name: evt_index
-        description: "Event index"
-      - name: contract_address
-        description: "NFT contract address"
-      - name: token_id
-        description: "ID of transfered token(s)"
-      - name: amount
-        description: "Amount of transfered tokens"
-      - name: from
-        description: "Address that sent the token(s)"
-      - name: to
-        description: "Address that received the token(s)"
-      - name: executed_by
-        description: "Address that executed the transaction"
-      - name: tx_hash
-        description: "Transaction hash"
-
   - name: nft_celo_aggregators
     meta:
       blockchain: celo
