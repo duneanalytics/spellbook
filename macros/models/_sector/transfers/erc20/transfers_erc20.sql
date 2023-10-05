@@ -11,7 +11,7 @@ erc20_transfers  as (
             evt_block_time,
             to as wallet_address,
             contract_address as token_address,
-            value as amount_raw
+            cast(value as int256) as amount_raw
         FROM
         {{ erc20_evt_transfer }}
         {% if is_incremental() %}
@@ -27,7 +27,7 @@ erc20_transfers  as (
             evt_block_time,
             "from" as wallet_address,
             contract_address as token_address,
-            -value as amount_raw
+            -cast(value as int256) as amount_raw
         FROM
         {{ erc20_evt_transfer }}
         {% if is_incremental() %}
@@ -44,7 +44,7 @@ erc20_transfers  as (
             evt_block_time,
             dst as wallet_address,
             contract_address as token_address,
-            wad as amount_raw
+            cast(wad as int256) as amount_raw
         FROM
         {{ wrapped_token_deposit }}
         {% if is_incremental() %}
@@ -60,7 +60,7 @@ erc20_transfers  as (
             evt_block_time,
             src as wallet_address,
             contract_address as token_address,
-            -wad as amount_raw
+            -cast(wad as int256) as amount_raw
         FROM
         {{ wrapped_token_withdrawal }}
         {% if is_incremental() %}
