@@ -111,6 +111,7 @@ models:
     meta:
       blockchain: ethereum
       sector: balances
+      project: erc20
       contributors: Henrystats
     config:
       tags: ['ethereum', 'test project spell']
