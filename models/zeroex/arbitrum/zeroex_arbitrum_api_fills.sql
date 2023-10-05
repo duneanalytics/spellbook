@@ -207,8 +207,8 @@ NewBridgeFill AS (
             0xdef1c0ded9bec7f1a1670819833240f027b25eff    AS taker,
             bytearray_substring(DATA, 45, 20)                 AS taker_token,
             bytearray_substring(DATA, 77, 20)                AS maker_token,
-            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS taker_token_amount_raw,
-            bytearray_to_uint256(bytearray_substring(DATA, 142, 20)) AS maker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
@@ -298,7 +298,9 @@ SELECT
         max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-       CASE WHEN maker_token IN (0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1,
+       CASE when maker_token in (0xaf88d065e77c8cc2239327c5edb3a432268e5831) then all_tx.maker_token_amount_raw / CAST(POWER(10, 6) AS DOUBLE) --usdc
+            when taker_token in (0xaf88d065e77c8cc2239327c5edb3a432268e5831) then all_tx.taker_token_amount_raw / CAST(POWER(10, 6) AS DOUBLE) --usdc 
+            WHEN maker_token IN (0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1,
             0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a,0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9, 0xd74f5255d557944cf7dd0e45ff521520002d5748) AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
              WHEN taker_token IN(0x82af49447d8a07e3bd95bd0d56f35241523fbab1,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0xda10009cbd5d07dd0cecc66161fc93d7c9000da1,
