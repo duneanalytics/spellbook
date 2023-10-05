@@ -1,9 +1,8 @@
 {{ config(
 	tags=['legacy'],
-	
+
     schema = 'looksrare_v2_ethereum',
     alias = alias('base_trades', legacy_model=True),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

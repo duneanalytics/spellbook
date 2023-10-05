@@ -2,7 +2,6 @@
     schema = 'sudoswap_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -224,8 +223,7 @@ WITH
 
     ,swaps_cleaned as (
         SELECT
-             cast(date_trunc('month', call_block_time) as date) AS block_date
-            , call_block_time as block_time
+             call_block_time as block_time
             , call_block_number as block_number
             , nft_token_id
             , cardinality(nft_token_id) as number_of_items
@@ -250,8 +248,7 @@ WITH
     )
 
 SELECT
-      block_date
-    , block_time
+      block_time
     , block_number
     , tx_hash
     , project_contract_address
