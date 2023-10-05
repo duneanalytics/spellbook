@@ -36,6 +36,7 @@ with
             , meta.account_metadata
             , meta.account_mint
             , meta.call_block_time
+            , master.account_edition as master_edition
         FROM (
             SELECT 
                 call_tx_id
@@ -75,23 +76,23 @@ with
             UNION ALL
             SELECT account_mintAuthority, account_edition, account_metadata FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMasterEditionV3') }}
             ) master ON master.account_metadata = meta.account_metadata
-        WHERE master.account_edition is null --we DON't want the NFTs
         {% if is_incremental() %}
-        and meta.call_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE meta.call_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
 
 SELECT
     tk.account_mint as token_mint_address
     , tk.decimals
-    , trim(json_value(args, 'strict $.name'))as symbol 
-    , trim(json_value(args, 'strict $.symbol')) as name 
+    , trim(json_value(args, 'strict $.name'))as name 
+    , trim(json_value(args, 'strict $.symbol')) as symbol 
     , trim(json_value(args, 'strict $.uri')) as token_uri
 FROM tokens tk
-JOIN metadata m ON tk.account_mint = m.account_mint
+LEFT JOIN metadata m ON tk.account_mint = m.account_mint
 WHERE tk.decimals != 0
 and json_value(args, 'strict $.name') not like '%#%'
 and json_value(args, 'strict $.symbol') is not null
+and m.master_edition is null
 
 UNION ALL
 

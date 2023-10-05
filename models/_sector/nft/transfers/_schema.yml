@@ -1,0 +1,311 @@
+version: 2
+
+models:
+  - name: nft_transfers
+    meta:
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'transfers']
+    description: >
+        NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      - &blockchain
+        name: blockchain
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed"
+      - &token_standard
+        name: token_standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
+        description: "Token standard"
+      - &transfer_type
+        name: transfer_type
+        tests:
+          - accepted_values:
+              values: ['single', 'batch']
+        description: "single or batch transfer of tokens"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &contract_address
+        name: contract_address
+        description: "NFT contract address"
+      - &token_id
+        name: token_id
+        description: "ID of transfered token(s)"
+      - &amount
+        name: amount
+        description: "Amount of transfered tokens"
+      - &from
+        name: from
+        description: "Address that sent the token(s)"
+      - &to
+        name: to
+        description: "Address that received the token(s)"
+      - &executed_by
+        name: executed_by
+        description: "Address that executed the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &unique_transfer_id
+        name: unique_transfer_id
+        tests:
+          - unique
+        description: "Unique transfer ID"
+
+  - name: nft_ethereum_transfers
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_arbitrum_transfers
+    meta:
+      blockchain: arbitrum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_avalanche_c_transfers
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_base_transfers
+    meta:
+      blockchain: base
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_bnb_transfers
+    meta:
+      blockchain: bnb
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_celo_transfers
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_fantom_transfers
+    meta:
+      blockchain: fantom
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_gnosis_transfers
+    meta:
+      blockchain: gnosis
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_goerli_transfers
+    meta:
+      blockchain: goerli
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_optimism_transfers
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_polygon_transfers
+    meta:
+      blockchain: polygon
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
