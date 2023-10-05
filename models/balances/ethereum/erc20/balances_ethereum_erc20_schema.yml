@@ -126,3 +126,4 @@ models:
       - name: token_bought_address
       - name: eth_sold
       - name: usd_value
+      - name: block_month

@@ -79,6 +79,7 @@ buy_transactions as (
         tx_hash,
         tx_from, 
         block_time, 
+        block_month,
         COALESCE(token_bought_amount, token_bought_amount_raw/1e18) as token_bought_amount, 
         amount_usd/(COALESCE(token_bought_amount, token_bought_amount_raw/1e18)) as token_price, 
         token_bought_address, 
