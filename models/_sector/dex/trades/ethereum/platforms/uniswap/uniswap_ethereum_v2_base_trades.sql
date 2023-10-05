@@ -35,7 +35,7 @@ WITH dexs AS
     WHERE t.contract_address NOT IN (
         {{weth_ubomb_wash_trading_pair}},
         {{weth_weth_wash_trading_pair}},
-        {{feg_eth_wash_trading_pair}})
+        {{feg_eth_wash_trading_pair}}
     )
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
