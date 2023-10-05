@@ -156,11 +156,11 @@ models:
 
   - name: nft_transfers
     meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, zksync
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'zksync', 'transfers']
+      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'transfers']
     description: >
         NFT transfers
     tests:
