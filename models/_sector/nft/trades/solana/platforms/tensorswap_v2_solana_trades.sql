@@ -43,7 +43,7 @@ cnft_base as (
         {% endif %}
 
         UNION ALL 
-        
+
         SELECT 
             cast(minAmount as double) as price
             , cast(minAmount as double)*0.014 as taker_fee --taker fee is 1.4% right now.
@@ -56,7 +56,7 @@ cnft_base as (
             , account_owner as buyer
             , account_seller as seller
             , call_outer_instruction_index as outer_instruction_index
-            , call_inner_instruction_index as inner_instruction_index
+            , coalesce(call_inner_instruction_index, 0) as inner_instruction_index
             , call_block_time as block_time
             , call_block_slot as block_slot
             , call_tx_id as tx_id
@@ -80,7 +80,7 @@ cnft_base as (
             , account_owner as buyer
             , account_seller as seller
             , call_outer_instruction_index as outer_instruction_index
-            , call_inner_instruction_index as inner_instruction_index
+            , coalesce(call_inner_instruction_index, 0) as inner_instruction_index
             , call_block_time as block_time
             , call_block_slot as block_slot
             , call_tx_id as tx_id
