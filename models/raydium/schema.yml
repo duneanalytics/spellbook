@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: orca_whirlpool_trades
+  - name: raydium_v3_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
       tags: ['solana','dex']  
     description: >
-        all whirlpool dex trades on Solana
+        all raydium_v3 dex trades on Solana
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

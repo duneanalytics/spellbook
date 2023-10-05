@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: orca_whirlpool_trades
+  - name: phoenix_v1_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
+      contributors: [ilemi, jarryx]
     config:
       tags: ['solana','dex']  
     description: >
-        all whirlpool dex trades on Solana
+        all phoenix v1 dex trades on Solana
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
