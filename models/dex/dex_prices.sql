@@ -62,5 +62,4 @@ FROM
         COUNT(price) as sample_size 
     FROM dex_trades
     GROUP BY 1, 2, 3
-    -- HAVING COUNT(price) >= 5 
 ) tmp
