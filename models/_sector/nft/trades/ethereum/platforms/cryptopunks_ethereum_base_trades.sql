@@ -2,6 +2,7 @@
     schema = 'cryptopunks_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -29,7 +30,8 @@ with accepted_bid_prices as (
     group by 1,2,3
 )
 
-select    evt.evt_block_time as block_time
+select  cast(date_trunc('month',evt.evt_block_time) as date) as block_date
+        , evt.evt_block_time as block_time
         , evt.evt_block_number as block_number
         , evt.evt_tx_hash as tx_hash
         , evt.contract_address as project_contract_address
