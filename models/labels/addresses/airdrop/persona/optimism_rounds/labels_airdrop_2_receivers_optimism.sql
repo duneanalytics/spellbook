@@ -1,5 +1,5 @@
 {{config(
-    tags = ['dunesql']
+    tags = ['dunesql', 'prod_exclude']
     , alias = alias('airdrop_2_receivers_optimism')
 )}}
 
