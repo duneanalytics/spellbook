@@ -3,7 +3,7 @@ version: 2
 models:
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, zksync
       sector: addresses_events
       project: addresses
       contributors: hildobby, Henrystats
@@ -32,7 +32,7 @@ models:
 
   - name: addresses_events_first_activity
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync
       sector: addresses_events
       project: addresses
       contributors: Henrystats
