@@ -1,8 +1,7 @@
 {{ config(
     tags=['dunesql'],
-    schema = 'uniswap_ethereum',
-    alias = 'v2_base_trades',
-    partition_by = ['block_month'],
+    schema = 'uniswap_v2_ethereum',
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -23,7 +22,6 @@ WITH dexs AS
          , CAST(NULL as VARBINARY) as maker
          , CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
          , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-         , CAST(NULL AS DOUBLE) AS amount_usd
          , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
          , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
          , t.contract_address as project_contract_address
@@ -38,21 +36,21 @@ WITH dexs AS
         {{feg_eth_wash_trading_pair}}
     )
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 )
 
-SELECT TRY_CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
-     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-     , dexs.block_time
-     , dexs.token_bought_amount_raw  AS token_bought_amount_raw
-     , dexs.token_sold_amount_raw AS token_sold_amount_raw
-     , dexs.amount_usd
-     , dexs.token_bought_address
-     , dexs.token_sold_address
-     , dexs.taker
-     , dexs.maker
-     , dexs.project_contract_address
-     , dexs.tx_hash
-     , dexs.evt_index
+SELECT 
+    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    , dexs.block_time
+    , dexs.token_bought_amount_raw  AS token_bought_amount_raw
+    , dexs.token_sold_amount_raw AS token_sold_amount_raw
+    , dexs.token_bought_address
+    , dexs.token_sold_address
+    , dexs.taker
+    , dexs.maker
+    , dexs.project_contract_address
+    , dexs.tx_hash
+    , dexs.evt_index
 FROM dexs
