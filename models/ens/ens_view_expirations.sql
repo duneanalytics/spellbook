@@ -20,7 +20,7 @@ FROM (
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRegistered')}}
     UNION
     SELECT
-        cast(id as varbinary) id AS label,
+        cast(id as varbinary) AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRenewed')}}
