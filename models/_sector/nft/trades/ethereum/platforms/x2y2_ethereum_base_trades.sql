@@ -2,7 +2,6 @@
     schema = 'x2y2_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -16,8 +15,7 @@
 
 WITH src_evt_inventory as (
     SELECT
-     cast(date_trunc('month',evt_block_time) as date) as block_date
-    ,evt_block_time as block_time
+     evt_block_time as block_time
     ,evt_block_number as block_number
     ,evt_tx_hash as tx_hash
     ,contract_address as project_contract_address
@@ -62,8 +60,7 @@ WITH src_evt_inventory as (
 
 -- results
 SELECT
-  block_date
-, block_time
+  block_time
 , block_number
 , tx_hash
 , project_contract_address

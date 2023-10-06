@@ -2,7 +2,6 @@
     schema = 'looksrare_v1_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -95,8 +94,7 @@ WITH looksrare_trades AS (
 
 
 SELECT
-  cast(date_trunc('month', lr.block_time) as date) AS block_date
-, lr.block_time
+  lr.block_time
 , lr.block_number
 , lr.tx_hash
 , lr.project_contract_address
