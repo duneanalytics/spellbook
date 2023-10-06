@@ -1,5 +1,5 @@
 {{config(
-    tags = ['dunesql', 'prod_exclude']
+    tags = ['dunesql']
     , alias = alias('airdrop_2_receivers_optimism')
 )}}
 
@@ -14,4 +14,4 @@ SELECT
     now() as updated_at,
     'op_airdrop_2_receivers' AS model_name,
     'persona' as label_type
-FROM {{ source('dune_upload', 'op_airdrop2_addresses_detailed_list') }}
+FROM {{ source('dune', 'oplabspbc.dataset_op_airdrop2_addresses_detailed_list') }}
