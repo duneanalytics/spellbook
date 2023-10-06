@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'seaport_v1_ethereum',
     alias = alias('trades'),
     partition_by = ['block_date'],
@@ -13,20 +14,20 @@
     )
 }}
 
-{% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
+{% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
 {% set c_alternative_token_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
-{% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_native_symbol = 'ETH' %}
+{% set c_seaport_first_date = '2022-06-01' %}
 {% set c_seaport_contract_address = "0x00000000006c3852cbef3e08e8df289169ede581" %} -- v1 = Seaport v1.1
 
 with source_ethereum_transactions as (
     select *
     from {{ source('ethereum','transactions') }}
     {% if not is_incremental() %}
-    where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+    where block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,ref_seaport_ethereum_base_pairs as (
@@ -34,7 +35,7 @@ with source_ethereum_transactions as (
       from {{ ref('seaport_ethereum_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -61,10 +62,10 @@ with source_ethereum_transactions as (
     from {{ source('prices', 'usd') }}
     where blockchain = 'ethereum'
     {% if not is_incremental() %}
-      and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
+      and minute >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -258,10 +259,10 @@ with source_ethereum_transactions as (
           ,t.from as tx_from
           ,t.to as tx_to
           ,right(t.data,8) as right_hash
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
+          ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+          ,case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                 else a.token_contract_address
            end as token_alternative_symbol
           ,e.decimals as price_token_decimals
@@ -277,10 +278,10 @@ with source_ethereum_transactions as (
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
-  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                       end
-  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
@@ -361,4 +362,4 @@ with source_ethereum_transactions as (
         ,sub_idx
         ,sub_type
     from iv_trades
-;
+

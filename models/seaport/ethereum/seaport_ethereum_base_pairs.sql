@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('base_pairs'),
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -12,7 +13,7 @@
      )
 }}
 
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_seaport_first_date = '2022-06-01' %}
 
 with iv_offer_consideration as (
     select evt_block_time as block_time
@@ -54,7 +55,7 @@ with iv_offer_consideration as (
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
             ,order_hash            
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private -- will be deprecated in base_pairs
     from
@@ -73,10 +74,10 @@ with iv_offer_consideration as (
             , posexplode(offer) as (offer_idx, offer_item)
         from {{ source('seaport_ethereum', 'Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
     union all
@@ -119,7 +120,7 @@ with iv_offer_consideration as (
             ,size(offer) as offer_cnt
             ,size(consideration) as consideration_cnt
             ,order_hash
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private -- will be deprecated in base_pairs
     from
@@ -138,10 +139,10 @@ with iv_offer_consideration as (
             ,posexplode(consideration) as (consideration_idx, consideration_item)
         from {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }}
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}        
     )
 )
@@ -196,4 +197,3 @@ with iv_offer_consideration as (
 )
 select *
 from iv_base_pairs
-;
