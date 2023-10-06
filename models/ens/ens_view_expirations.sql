@@ -14,13 +14,13 @@ SELECT
     count(*) AS "count"
 FROM (
     SELECT
-        to_base(cast(id as bigint),16) AS label,
+        id AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRegistered')}}
     UNION
     SELECT
-        to_base(cast(id as bigint),16) AS label,
+        id AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRenewed')}}
