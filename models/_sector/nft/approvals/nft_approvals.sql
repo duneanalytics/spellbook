@@ -26,6 +26,7 @@
 ,ref('nft_goerli_approvals')
 ,ref('nft_celo_approvals')
 ,ref('nft_base_approvals')
+,ref('nft_zksync_approvals')
 ] %}
 
 SELECT *
