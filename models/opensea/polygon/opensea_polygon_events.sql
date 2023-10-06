@@ -69,7 +69,6 @@ SELECT *
         SELECT   blockchain
                 ,project
                 ,version
-                ,block_date
                 ,block_time
                 ,token_id
                 ,collection
@@ -130,7 +129,6 @@ SELECT *
                 blockchain
                ,project
                ,version
-               ,block_date
                ,block_time
                ,token_id
                ,collection

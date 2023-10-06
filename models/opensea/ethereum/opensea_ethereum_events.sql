@@ -71,7 +71,6 @@ FROM (   -- UNION ALL is in reverse order because the newer table contains more 
         SELECT   blockchain
                 ,project
                 ,version
-                ,block_date
                 ,block_time
                 ,token_id
                 ,collection
@@ -132,7 +131,6 @@ FROM (   -- UNION ALL is in reverse order because the newer table contains more 
                 blockchain
                ,project
                ,version
-               ,block_date
                ,block_time
                ,token_id
                ,collection
