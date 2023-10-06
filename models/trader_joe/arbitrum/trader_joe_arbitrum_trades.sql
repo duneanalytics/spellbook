@@ -1,7 +1,7 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades')
-        )
-}}
+{{ config(
+        tags=['dunesql']
+        , alias = alias('trades')
+)}}
 
 {% set trader_joe_models = [
     ref('trader_joe_v2_arbitrum_trades')
