@@ -11,14 +11,13 @@ WITH base_union AS (
     {% for dex_model in models %}
     SELECT
         '{{ blockchain }}' as blockchain,
-        '{{ dex_model[0] }}' as project,
-        '{{ dex_model[1] }}' as version,
+        '{{ dex_model[1] }}' as project,
+        '{{ dex_model[2] }}' as version,
         block_date,
         block_month,
         block_time,
         token_bought_amount_raw,
         token_sold_amount_raw,
-        amount_usd,
         token_bought_address,
         token_sold_address,
         taker,
@@ -26,7 +25,7 @@ WITH base_union AS (
         project_contract_address,
         tx_hash,
         evt_index
-    FROM {{ dex_model[2] }}
+    FROM {{ dex_model[3] }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
@@ -55,7 +54,6 @@ enrichments AS (
         base.token_bought_amount_raw,
         base.token_sold_amount_raw,
         coalesce(
-                base.amount_usd,
                 base.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price,
                 base.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
             ) AS amount_usd,
@@ -71,6 +69,7 @@ enrichments AS (
     FROM base_union base
     INNER JOIN {{ transactions_model }} tx
         ON tx.hash = base.tx_hash
+        AND tx.block_time = base.block_time
         {% if is_incremental() %}
         AND {{incremental_predicate('tx.block_time')}}
         {% endif %}
