@@ -1,4 +1,5 @@
 {{ config(
+         tags=['dunesql'],
          schema = 'opensea_arbitrum',        
          alias = alias('events')
          )

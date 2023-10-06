@@ -1,4 +1,5 @@
 {{ config(
+      tags=['dunesql'],
          schema = 'opensea_optimism',        
         alias = alias('events')
 )
