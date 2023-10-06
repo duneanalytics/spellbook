@@ -81,9 +81,9 @@ FROM (
     , CAST(NULL AS VARBINARY) as sender_address
     , tl.recipient AS recipient_address
     , '' AS trace_address
-    ,tl.evt_index
-    ,tl.contract_address AS project_contract_address
-    , CAST(NULL AS VARBINARY) AS transfer_id
+    , tl.evt_index
+    , tl.contract_address AS project_contract_address
+    , 0x AS transfer_id
     , UINT256 '1' AS source_chain_id
     , (SELECT chain_id FROM {{ ref('chain_info_chain_ids') }} WHERE lower(chain_name) = 'optimism') AS destination_chain_id
     
