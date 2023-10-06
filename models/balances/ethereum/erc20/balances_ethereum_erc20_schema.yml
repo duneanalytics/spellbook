@@ -106,26 +106,3 @@ models:
     columns:
       - name: token_address
         description: "Token Address for possibly non-compliant erc20 token"
-
-  - name: balances_ethereum_erc20_project
-    meta:
-      blockchain: ethereum
-      sector: balances
-      project: erc20
-      contributors: Henrystats
-    config:
-      tags: ['ethereum', 'test project spell']
-    description: >
-      Testing a spell to see if it runs faster on spellbook
-    columns:
-      - name: trader
-      - name: tx_hash
-      - name: tx_from
-      - name: block_time
-      - name: token_bought_amount
-      - name: token_price
-      - name: token_bought_address
-      - name: eth_sold
-      - name: usd_value
-      - name: block_month
-      - name: market_cap
