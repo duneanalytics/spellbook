@@ -103,7 +103,7 @@ with tx_batch_appends as (
       length(t.data) as data_length
     FROM
       {{ source('ethereum','transactions') }} as t
-      INNER JOIN {{ source('dune_upload','op_stack_chain_metadata') }} op ON (
+      INNER JOIN {{ source('dune','oplabspbc.dataset_op_stack_chain_metadata') }} op ON (
         t."from" = op.batchinbox_from_address
         AND t.to = op.batchinbox_to_address
       )

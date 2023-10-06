@@ -1,11 +1,11 @@
 version: 2
 
 sources:
-  - name: dune_upload
+  - name: dune
     description: >
       OP chain metadata uploaded by the OPLabs team.
     tables:
-      - name: op_stack_chain_metadata
-      - name: op_airdrop1_addresses_detailed_list
-      - name: op_airdrop2_addresses_detailed_list
-      - name: op_airdrop_3_addresses_detailed_list
+      - name: oplabspbc.dataset_op_stack_chain_metadata
+      - name: oplabspbc.dataset_op_airdrop1_addresses_detailed_list
+      - name: oplabspbc.dataset_op_airdrop2_addresses_detailed_list
+      - name: oplabspbc.dataset_op_airdrop_3_addresses_detailed_list
