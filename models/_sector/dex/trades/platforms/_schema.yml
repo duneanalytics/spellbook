@@ -1,6 +1,36 @@
 version: 2
 
 models:
+  - name: defiswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: defiswap
+      contributors: pandajackson42, 0xRob, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'defiswap' ]
+    description: "Defiswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('defiswap_ethereum_trades')
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
+      - check_seed:
+          seed_file: ref('defiswap_ethereum_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+            
   - name: uniswap_ethereum_v1_base_trades
     meta:
       blockchain: ethereum
