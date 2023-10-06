@@ -14,13 +14,13 @@ SELECT
     count(*) AS "count"
 FROM (
     SELECT
-        id AS label,
+        cast(id as varbinary) AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRegistered')}}
     UNION
     SELECT
-        id AS label,
+        cast(id as varbinary) id AS label,
         expires,
         evt_block_time
     FROM {{source('ethereumnameservice_ethereum', 'BaseRegistrarImplementation_evt_NameRenewed')}}
