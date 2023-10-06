@@ -2,7 +2,7 @@
     tags=['dunesql'],
     schema = 'aztec_v2_ethereum',
     alias = alias('daily_estimated_rollup_tvl'),
-    post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
                                 \'["Henrystats"]\') }}'
