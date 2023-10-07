@@ -1417,3 +1417,8 @@ models:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
+
+    openxswap:
+      +schema: openxswap
+      optimism:
+        +schema: openxswap_optimism
