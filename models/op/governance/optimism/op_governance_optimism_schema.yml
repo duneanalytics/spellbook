@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: op_governance_optimism_delegates
+    meta:
+      blockchain: optimism
+      project: op_governance_optimism
+      contributors: kaiblade
+
+    config:
+      tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
+    description: "Tracks OP delegates voting power and delegating addresses data over time"
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - delegate
+            
+    columns:
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &delegate
+        name: delegate
+        description: "Optimism addresses of delegates"
+      - &current_voting_power
+        name: current_voting_power
+        description: "Latest voting power of delegates"
+      - &previous_voting_power
+        name: previous_voting_power
+        description: "Previous voting power of delegates"
+      - &power_diff
+        name: power_diff
+        description: "The difference between current_voting_power and previous_voting_power"
+      - &voting_power_change
+        name: voting_power_change
+        description: "Percentage change of delegates voting power over time"
+      - &total_voting_power
+        name: total_voting_power
+        description: "Total votable supply"
+      - &voting_power_share
+        name: voting_power_share
+        description: "Share of the total voting power expressed in percentage"
+      - &number_of_delegators
+        name: number_of_delegators
+        description: "Number of addresses delegating voting power to the delegate"
+      - &total_delegators
+        name: total_delegators 
+        description: "Total number of addresses delegating voting power to delegates"
+      - &total_delegators_share
+        name: total_delegators_share
+        description: "Share of the total delegating addresses expressed in percentage"
+      
