@@ -5,7 +5,7 @@
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['block_time', 'tx_hash', 'delegate']
+        , unique_key = ['block_time', 'tx_hash', 'evt_index']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "op_governance",
@@ -13,12 +13,12 @@
   )
 }}
 
--- {% set project_start_date = '2022-05-26' %} 
 
 WITH delegate_votes_data_raw AS
 (SELECT evt_tx_hash AS tx_hash,
 evt_block_time AS block_time,
 evt_block_number AS block_number,
+evt_index,
 delegate,
 CAST(newBalance AS DOUBLE)/1e18 AS newBalance, 
 CAST(previousBalance AS DOUBLE)/1e18 AS previousBalance,
@@ -46,6 +46,7 @@ combined_delegator_count AS
 (SELECT evt_tx_hash AS tx_hash, 
 evt_block_time AS block_time, 
 evt_block_number AS block_number,
+evt_index,
 fromDelegate AS delegate, 
 -1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
@@ -59,7 +60,8 @@ UNION
 
 SELECT evt_tx_hash AS tx_hash, 
 evt_block_time AS block_time, 
-evt_block_number AS block_number, 
+evt_block_number AS block_number,
+evt_index, 
 toDelegate AS delegate, 
 1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
@@ -70,7 +72,7 @@ WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 ),
 
 delegator_count_data AS
-(SELECT tx_hash, block_time, block_number, delegate, 
+(SELECT tx_hash, block_time, block_number, evt_index, delegate, 
 SUM(delegator_count) OVER (PARTITION BY delegate ORDER BY block_time) AS number_of_delegators,
 SUM(delegator_count) OVER (ORDER BY block_time) AS total_delegators
 FROM combined_delegator_count
@@ -90,7 +92,8 @@ votingPower_delegators_data_revised AS
 (SELECT 
 tx_hash,
 block_time, 
-block_number, 
+block_number,
+evt_index,
 delegate,
 newBalance, 
 previousBalance,
@@ -109,6 +112,7 @@ FROM votingPower_delegators_data
 OP_delegates_table_raw AS
 (SELECT block_time, 
 tx_hash,
+evt_index,
 delegate,
 newBalance AS current_voting_power,
 previousBalance AS previous_voting_power,

@@ -16,7 +16,7 @@ models:
           combination_of_columns:
             - block_time
             - tx_hash
-            - delegate
+            - evt_index
             
     columns:
       - &block_time
@@ -25,6 +25,9 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
       - &delegate
         name: delegate
         description: "Optimism addresses of delegates"
