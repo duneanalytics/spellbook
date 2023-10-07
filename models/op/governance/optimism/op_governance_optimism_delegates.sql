@@ -13,7 +13,7 @@
   )
 }}
 
-{% set project_start_date = '2022-05-26' %} 
+-- {% set project_start_date = '2022-05-26' %} 
 
 WITH delegate_votes_data_raw AS
 (SELECT evt_tx_hash AS tx_hash,
@@ -24,9 +24,9 @@ CAST(newBalance AS DOUBLE)/1e18 AS newBalance,
 CAST(previousBalance AS DOUBLE)/1e18 AS previousBalance,
 CAST(newBalance AS DOUBLE)/1e18 - CAST(previousBalance AS DOUBLE)/1e18 AS power_diff
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }}
-WHERE CAST(evt_block_time AS DATE) >= DATE{{project_start_date}}
+WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
-    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %}
 ),
 
@@ -50,9 +50,9 @@ fromDelegate AS delegate,
 -1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
-AND CAST(evt_block_time AS DATE) >= DATE{{project_start_date}}
+AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
-    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %}
 
 UNION 
@@ -63,9 +63,9 @@ evt_block_number AS block_number,
 toDelegate AS delegate, 
 1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
-WHERE CAST(evt_block_time AS DATE) >= DATE{{project_start_date}}
+WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
-    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %} 
 ),
 
