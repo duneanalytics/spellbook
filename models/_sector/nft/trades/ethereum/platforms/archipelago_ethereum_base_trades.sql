@@ -2,7 +2,6 @@
     schema = 'archipelago_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -48,8 +47,7 @@ fee_events as (
 )
 
 SELECT
-    cast(date_trunc('month',trade.evt_block_time) as date) as block_date
-    ,trade.evt_block_time as block_time
+    trade.evt_block_time as block_time
     ,trade.evt_block_number as block_number
     ,trade.evt_tx_hash as tx_hash
     ,trade.contract_address as project_contract_address

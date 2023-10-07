@@ -651,6 +651,16 @@ WITH curated_list AS (
       ,(0x22fe024ffec24631a625113bdf5e9f7d447c8ddf, 'Teahouse')
       ,(0xC73Fc08C931Efe3FCE850C09278472e8a81c2e05, 'XEN Crypto')
       ,(0x0Cf83143f0AB9D6e178fC7f141205ec2992266C8, 'CoinTool')
+      ,(0x464eD76C6B2DdeCC9aa1E990211670a81b93474B, 'VMEX Finance')
+      ,(0x1FcCC097db89A86Bfc474A1028F93958295b1Fb7, 'Pendle')
+      ,(0xC107DAcAf1d6e369CFDc67695BEAdf5e2068191e, 'Pendle') --Token
+      ,(0x0CdB34e6a4D635142BB92fe403D38F636BbB77b8, 'Penpie') --Token
+      ,(0x9E7a882fF45C4a5EcC9BAdbFbC775c3e68c62F32, 'Swapsicle') --WooStakingProxy
+      ,(0x51150F973c2b0537642f5AE8911A49567598808f, 'Toros')
+      ,(0x8cA573430Fd584065C080fF1d2eA1a8DfB259Ae8, 'Revest Finance')
+      ,(0x225114369fA6b133400A4BB86d08c62044387266, 'HashDao Finance') 
+      ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, 'Woo Network') --SuperChargerVault
+      ,(0x2C47d8232B11156dF8324f13F13C112770a98b80, 'Interport Finance')
 
   ) as temp_table (creator_address, contract_project)
 )
