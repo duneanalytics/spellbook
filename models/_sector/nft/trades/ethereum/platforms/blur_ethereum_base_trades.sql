@@ -2,7 +2,6 @@
     schema = 'blur_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -15,8 +14,7 @@
 
 
 SELECT
-        cast(date_trunc('month', bm.evt_block_time) as date) AS block_date
-    , bm.evt_block_time AS block_time
+      bm.evt_block_time AS block_time
     , bm.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(bm.buy, '$.collection')) AS nft_contract_address
     , cast(JSON_EXTRACT_SCALAR(bm.sell, '$.tokenId') as uint256) AS nft_token_id
