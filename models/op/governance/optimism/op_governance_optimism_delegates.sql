@@ -57,7 +57,7 @@ AND CAST(evt_block_time AS DATE) >= DATE{{project_start_date}}
 
 UNION 
 
-SELECT SELECT evt_tx_hash AS tx_hash, 
+SELECT evt_tx_hash AS tx_hash, 
 evt_block_time AS block_time, 
 evt_block_number AS block_number, 
 toDelegate AS delegate, 
