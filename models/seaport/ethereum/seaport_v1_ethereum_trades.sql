@@ -197,10 +197,10 @@ with source_ethereum_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address
-        ,CAST(round(price_amount_raw / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
-        ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
+        ,CAST(round(price_amount_raw / nft_cnt) AS DECIMAL(38,0)) as price_amount_raw  -- to truncate the odd number of decimal places
+        ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw
+        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
