@@ -673,7 +673,7 @@ WITH curated_list AS (
       ,(0x086D4a6964E2dF36ca3664613F96C0fB3E5F272C, 'Aragon')
       ,(0x99C19AB10b9EC8aC6fcda9586E81f6B73a298870, 'dm3')
       ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
-  
+
   ) as temp_table (creator_address, contract_project)
 )
 ,filtered_list AS (
