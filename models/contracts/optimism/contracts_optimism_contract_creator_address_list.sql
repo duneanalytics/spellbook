@@ -329,7 +329,7 @@ WITH curated_list AS (
       ,(0xb98d4d4e205aff4d4755e9df19bd0b8bd4e0f148, 'Fuji Finance')
       ,(0xFb59Ce8986943163F14C590755b29dB2998F2322, 'Sonne Finance')
       ,(0x5bd973c3841b754386963abb117ffc796041aecf, 'OpenXProject')
-      ,(0xB32D9aa786E4f53f9484539cF44B1E092F94D483, 'Quest3')
+      ,(0xB32D9aa786E4f53f9484539cF44B1E092F94D483, 'QuestN')
       ,(0x7a6468F8161ef39d7639c67DfA5637BA1b7ba74B, 'Alchemix')
       ,(0xC6387E937Bcef8De3334f80EDC623275d42457ff, 'Yearn')
       ,(0x4B9f696c998f9549485a3a85DcA692Fd6CCE491F, 'Flashstake')
@@ -661,7 +661,7 @@ WITH curated_list AS (
       ,(0x225114369fA6b133400A4BB86d08c62044387266, 'HashDao Finance') 
       ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, 'Woo Network') --SuperChargerVault
       ,(0x2C47d8232B11156dF8324f13F13C112770a98b80, 'Interport Finance')
-      ,(0x99a9cC2Aaf54F6bE94A437641692A72810f6E9d5, 'Bored Town')
+      ,(0x99a9cC2Aaf54F6bE94A437641692A72810f6E9d5, 'Bored Town') --Campaigns
       ,(0xcFa1Bf8CA39A89B6c0E9AFF55454B20e589c0dA0, 'Bored Town') --Launchpad
       ,(0x8b6c27ec466923fad66Ada94c78AA320eA876969, 'Opti.Domains')
       ,(0x888811AC3DC01628eBD22b1Aa01a35825aD997e8, 'Opti.Domains')
@@ -673,7 +673,7 @@ WITH curated_list AS (
       ,(0x086D4a6964E2dF36ca3664613F96C0fB3E5F272C, 'Aragon')
       ,(0x99C19AB10b9EC8aC6fcda9586E81f6B73a298870, 'dm3')
       ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
-
+  
   ) as temp_table (creator_address, contract_project)
 )
 ,filtered_list AS (
