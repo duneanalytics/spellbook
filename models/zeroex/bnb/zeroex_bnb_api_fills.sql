@@ -1,5 +1,5 @@
 {{  config(
-        tags=['dunesql', 'prod_exclude'],
+        tags=['dunesql'],
         alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_month'],
@@ -249,7 +249,7 @@ NewBridgeFill AS (
             bytearray_substring(DATA, 13, 20) AS maker,
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
-            bytearray_substring(DATA, 74, 20) AS maker_token,
+            bytearray_substring(DATA, 77, 20) AS maker_token,
             bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
             bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
             'NewBridgeFill' AS type,
@@ -298,12 +298,12 @@ uni_v2_swap as (
         , s.index as evt_index
         , s.contract_address
         , s.block_time
-        , s.contract_address AS maker
+        , bytearray_SUBSTRING(DATA, 27, 40) AS maker
         , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
         , z.taker_token
         , z.maker_token
-        , greatest(bytearray_to_uint256(bytearray_substring(DATA, 45, 20)), bytearray_to_uint256(bytearray_substring(DATA, 13, 20))) AS taker_token_amount_raw
-        , greatest(bytearray_to_uint256(bytearray_substring(DATA, 77, 20)), bytearray_to_uint256(bytearray_substring(DATA, 109, 20))) AS maker_token_amount_raw
+        , (bytearray_to_uint256(bytearray_substring(DATA, 45, 20))) AS taker_token_amount_raw
+        , (bytearray_to_uint256(bytearray_substring(DATA, 77, 20))) AS maker_token_amount_raw
         , 'direct_uniswapv2' AS TYPE
         , z.affiliate_address AS affiliate_address
         , TRUE AS swap_flag
@@ -323,8 +323,8 @@ uni_v2_swap as (
 , uni_v2_pair_creation as (
     SELECT
         bytearray_substring(data,13,20) as pair,
-        bytearray_substring(topic2, 13, 20) AS makerToken,
-        bytearray_substring(topic1, 13, 20) AS takerToken,
+        bytearray_substring(topic1, 13, 20) AS makerToken,
+        bytearray_substring(topic2, 13, 20) AS takerToken,
         rank() over (partition by bytearray_substring(data,13,20) order by block_time asc) rnk
     FROM {{ source('bnb', 'logs') }} creation
     WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event

@@ -42,7 +42,7 @@ limit_orders_v1 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_arbitrum', limit_cancel_trading_evt) }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

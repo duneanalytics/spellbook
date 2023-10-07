@@ -1,8 +1,9 @@
 
 
 {{ config(
-        schema = 'op_token_optimism',
-        alias = alias('initial_allocations')
+        tags=['dunesql']
+        , schema = 'op_token_optimism'
+        , alias = alias('initial_allocations')
         , unique_key = ['allocation_category','allocation_subcategory']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
