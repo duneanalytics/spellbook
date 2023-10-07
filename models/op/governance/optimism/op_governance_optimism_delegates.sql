@@ -63,7 +63,7 @@ evt_block_number AS block_number,
 toDelegate AS delegate, 
 1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
-WHERE CAST(evt_block_time AS DATE) >= DATEDATE{{project_start_date}}
+WHERE CAST(evt_block_time AS DATE) >= DATE{{project_start_date}}
 {% if is_incremental() %}
     AND evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %} 
