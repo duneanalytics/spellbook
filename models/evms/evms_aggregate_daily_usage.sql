@@ -75,20 +75,20 @@
                 AND b.number = tx.block_number
                 AND b.time = tx.block_time
                 {% if is_incremental() %}
-                AND b.time >= NOW() - intveral '7' day
+                AND b.time >= date_trunc('day', now() - interval '7' Day)
                 {% endif %}
         LEFT JOIN {{ source('prices', 'usd') }} p
                 ON p.minute = DATE_TRUNC('minute',tx.block_time)
                 AND p.blockchain IS NULL
                 AND p.symbol = i.native_token_symbol
                 {% if is_incremental() %}
-                AND p.minute >= NOW() - intveral '7' day
+                AND p.minute >= date_trunc('day', now() - interval '7' Day)
                 {% endif %}
         
 
     WHERE 1=1
     {% if is_incremental() %}
-    AND tx.block_time >= NOW() - intveral '7' day
-        AND b.time >= NOW() - intveral '7' day
+        AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
+        AND b.time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     GROUP BY 1,2,3
