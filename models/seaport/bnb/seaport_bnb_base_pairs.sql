@@ -70,6 +70,7 @@ with iv_offer_consideration as (
             , offer_idx
             , offer_item
         from {{ source('seaport_bnb', 'Seaport_evt_OrderFulfilled') }}
+        cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
         {% if not is_incremental() %}
         where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
