@@ -126,6 +126,30 @@ models:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
       - *tagging_method
 
+  - name: staking_ethereum_chorusone
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby, sankinyue
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description:  Chorus One's Ethereum staking identified depositor entities
+    columns:
+      - name: address
+        description: "Address of indentified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - *tagging_method
+
   - name: staking_ethereum_entities
     meta:
       blockchain: ethereum
