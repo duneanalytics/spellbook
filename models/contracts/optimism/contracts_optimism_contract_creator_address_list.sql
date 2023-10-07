@@ -667,7 +667,9 @@ WITH curated_list AS (
       ,(0x888811AC3DC01628eBD22b1Aa01a35825aD997e8, 'Opti.Domains')
       ,(0x14B214CA36249b516B59401B3b221CB87483b53C, 'Scry Protocol')
       ,(0x4D633C53cF71220FB65Fa8eABEC5ae5dc450c9Ae, 'Oppa Bear NFT')
-      
+      ,(0x8325Cb5093FF55C02c4F3e54f43709C5A824FB70, 'Tripster')
+      ,(0x1208a26faa0f4ac65b42098419eb4daa5e580ac6, 'ENS Wildcard Domains')
+
   ) as temp_table (creator_address, contract_project)
 )
 ,filtered_list AS (
