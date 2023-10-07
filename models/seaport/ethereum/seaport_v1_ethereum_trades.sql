@@ -258,7 +258,7 @@ with source_ethereum_transactions as (
           ,n.name AS nft_token_name
           ,t.from as tx_from
           ,t.to as tx_to
-          ,right(t.data,8) as right_hash
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
           ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
@@ -286,7 +286,7 @@ with source_ethereum_transactions as (
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
   left join ref_nft_aggregators agg on agg.contract_address = t.to
-  left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
+  left join ref_nft_aggregators_marks agg_m on bytearray_starts_with(bytearray_reverse(t.data), bytearray_reverse(agg_m.hash_marker))
 )
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.

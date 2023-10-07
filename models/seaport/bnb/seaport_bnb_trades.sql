@@ -218,7 +218,7 @@ with source_bnb_transactions as (
           ,n.name AS nft_token_name
           ,t.from as tx_from
           ,t.to as tx_to
-          ,right(t.data,8) as right_hash
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
           ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
