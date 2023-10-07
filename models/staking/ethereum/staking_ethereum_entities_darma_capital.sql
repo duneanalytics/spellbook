@@ -11,6 +11,7 @@ SELECT txs.to AS address
 , 'DARMA Capital' AS entity
 , CONCAT('DARMA Capital ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'Staking Pools' AS category
+, 'deposit_address' AS tagging_method
 FROM {{ source('ethereum', 'transactions') }} txs
 INNER JOIN {{ source('ethereum', 'transactions') }} txs2 ON txs."from" = 0x7bf6583ec7f7b507e6d0d439901c4a0047936fd7
     AND txs2."from"=txs.to

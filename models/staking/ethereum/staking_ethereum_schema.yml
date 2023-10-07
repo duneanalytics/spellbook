@@ -23,6 +23,12 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - &tagging_method
+        name: tagging_method
+        description: "Method used to identify entity"
+        tests:
+          - accepted_values:
+              values: ['deposit_address', 'tx_from', 'pubkey']
 
   - name: staking_ethereum_entities_coinbase
     meta:
@@ -46,6 +52,7 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - *tagging_method
 
   - name: staking_ethereum_entities_binance
     meta:
@@ -69,6 +76,7 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - *tagging_method
 
   - name: staking_ethereum_entities_addresses
     meta:
@@ -92,6 +100,7 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - *tagging_method
 
   - name: staking_ethereum_entities_darma_capital
     meta:
@@ -115,6 +124,7 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - *tagging_method
 
   - name: staking_ethereum_entities
     meta:
@@ -138,6 +148,7 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+      - *tagging_method
 
   - name: staking_ethereum_deposits
     meta:

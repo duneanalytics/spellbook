@@ -11,6 +11,7 @@ SELECT binance.address
 , 'Binance' AS entity
 , CONCAT('Binance ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category
+, 'deposit_address' AS tagging_method
 FROM (
     SELECT 0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18 AS address
     UNION ALL

@@ -11,6 +11,7 @@ SELECT coinbase.address
 , 'Coinbase' AS entity
 , CONCAT('Coinbase ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category
+, 'deposit_address' AS tagging_method
 FROM (
         SELECT
             et."from" AS address

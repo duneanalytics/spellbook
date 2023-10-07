@@ -8,7 +8,7 @@
 }}
 
 WITH contracts AS (
-    SELECT address, entity, entity AS entity_unique_name, category
+    SELECT address, entity, entity AS entity_unique_name, category, 'deposit_address' AS tagging_method
     FROM
     (VALUES
     (0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f, 'Rocket Pool', 'Liquid Staking')
