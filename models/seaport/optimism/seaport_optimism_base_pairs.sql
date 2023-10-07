@@ -102,7 +102,6 @@ with iv_offer_consideration as (
             end as consideration_first_item_type        
             ,recipient as sender
             ,from_hex(json_extract_scalar(consideration_item,'$.recipient')) as receiver
-            ,from_hex(json_extract_scalar(consideration_item,'$.recipient')) as receiver
             ,zone
             ,from_hex(json_extract_scalar(consideration_item,'$.token')) as token_contract_address
             ,cast(json_extract_scalar(consideration_item,'$.amount') as uint256) as original_amount
