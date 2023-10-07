@@ -22,7 +22,7 @@ evt_block_number AS block_number,
 delegate,
 CAST(newBalance AS DOUBLE)/1e18 AS newBalance, 
 CAST(previousBalance AS DOUBLE)/1e18 AS previousBalance,
-CAST(newBalance AS DOUBLE)/1e18 - CAST(previousBaevt.lance AS DOUBLE)/1e18 AS power_diff
+CAST(newBalance AS DOUBLE)/1e18 - CAST(previousBalance AS DOUBLE)/1e18 AS power_diff
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }}
 WHERE CAST(evt_block_time AS DATE) >= DATE{{project_start_date}}
 {% if is_incremental() %}
