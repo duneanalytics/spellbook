@@ -101,7 +101,7 @@ with iv_offer_consideration as (
                 else 'etc'
             end as consideration_first_item_type        
             ,recipient as sender
-            ,consideration_item:recipient as receiver
+            ,from_hex(json_extract_scalar(consideration_item,'$.recipient')) as receiver
             ,from_hex(json_extract_scalar(consideration_item,'$.recipient')) as receiver
             ,zone
             ,from_hex(json_extract_scalar(consideration_item,'$.token')) as token_contract_address
