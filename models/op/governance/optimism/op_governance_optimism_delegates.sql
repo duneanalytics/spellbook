@@ -13,7 +13,6 @@
   )
 }}
 
-
 WITH delegate_votes_data_raw AS
 (SELECT evt_tx_hash AS tx_hash,
 evt_block_time AS block_time,
