@@ -669,6 +669,10 @@ WITH curated_list AS (
       ,(0x4D633C53cF71220FB65Fa8eABEC5ae5dc450c9Ae, 'Oppa Bear NFT')
       ,(0x8325Cb5093FF55C02c4F3e54f43709C5A824FB70, 'Tripster')
       ,(0x1208a26faa0f4ac65b42098419eb4daa5e580ac6, 'ENS Wildcard Domains')
+      ,(0x10850762bAc0dc6660630c1EfFe188A7cbFDdc88, 'OptiChads NFT')
+      ,(0x086D4a6964E2dF36ca3664613F96C0fB3E5F272C, 'Aragon')
+      ,(0x99C19AB10b9EC8aC6fcda9586E81f6B73a298870, 'dm3')
+      ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
 
   ) as temp_table (creator_address, contract_project)
 )
