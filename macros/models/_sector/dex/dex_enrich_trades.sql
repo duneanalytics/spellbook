@@ -35,6 +35,19 @@ WITH base_union AS (
     {% endfor %}
 ),
 
+prices AS (
+    SELECT
+        blockchain,
+        contract_address,
+        minute,
+        price
+    FROM {{ prices_model }}
+    WHERE blockchain = '{{ blockchain }}'
+    {% if is_incremental() %}
+     AND {{incremental_predicate('minute')}}
+    {% endif %}
+),
+
 enrichments AS (
     SELECT
         base.blockchain,
@@ -79,20 +92,12 @@ enrichments AS (
     LEFT JOIN {{ tokens_erc20_model }} erc20_sold
         ON erc20_sold.contract_address = base.token_sold_address
         AND erc20_sold.blockchain = '{{ blockchain }}'
-    LEFT JOIN {{ prices_model }} p_bought
+    LEFT JOIN prices p_bought
         ON p_bought.minute = date_trunc('minute', base.block_time)
         AND p_bought.contract_address = base.token_bought_address
-        AND p_bought.blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
-        AND {{incremental_predicate('p_bought.minute')}}
-        {% endif %}
-    LEFT JOIN {{ prices_model }} p_sold
+    LEFT JOIN prices p_sold
         ON p_sold.minute = date_trunc('minute', base.block_time)
         AND p_sold.contract_address = base.token_sold_address
-        AND p_sold.blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
-        AND {{incremental_predicate('p_sold.minute')}}
-        {% endif %}
 )
 
 select * from enrichments
