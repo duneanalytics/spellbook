@@ -96,13 +96,14 @@ ON power.delegate = del.delegate
 AND power.tx_hash = del.tx_hash
 AND power.block_number = del.block_number
 {% if is_incremental() %}
-    WHERE power.block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+    AND power.block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %}
 ),
 
 votingPower_delegators_data_revised AS
 (SELECT 
 tx_hash,
+
 block_time, 
 block_number,
 evt_index,
