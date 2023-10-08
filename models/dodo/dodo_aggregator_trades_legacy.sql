@@ -15,7 +15,6 @@ ref('dodo_aggregator_ethereum_trades_legacy')
 , ref('dodo_aggregator_polygon_trades_legacy')
 , ref('dodo_aggregator_arbitrum_trades_legacy')
 , ref('dodo_aggregator_optimism_trades_legacy')
-, ref('dodo_aggregator_base_trades_legacy')
 ] %}
 
 
