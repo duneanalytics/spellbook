@@ -188,10 +188,10 @@ with source_avalanche_c_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address 
-        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places 
-        ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
+        ,CAST(round(cast(price_amount_raw as double) / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
+        ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw  
+        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw 
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
@@ -205,7 +205,7 @@ with source_avalanche_c_transactions as (
           end as estimated_price
         ,is_private
         ,sub_type
-        ,sub_idx
+        ,a.sub_idx
   from iv_base_pairs_priv a
   left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
     and b.tx_hash = a.tx_hash
