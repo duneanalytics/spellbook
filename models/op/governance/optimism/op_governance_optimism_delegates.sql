@@ -96,7 +96,7 @@ ON power.delegate = del.delegate
 AND power.tx_hash = del.tx_hash
 AND power.block_number = del.block_number
 {% if is_incremental() %}
-    WHERE block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+    WHERE power.block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %}
 ),
 
