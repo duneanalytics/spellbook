@@ -47,6 +47,14 @@ FROM rolling_voting_power
 -- {% endif %}
 ),
 
+incremental_delegator_data AS
+(SELECT *
+FROM  {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
+{% if is_incremental() %}
+    WHERE evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+{% endif %}
+), 
+
 combined_delegator_count AS
 (SELECT evt_tx_hash AS tx_hash, 
 evt_block_time AS block_time, 
@@ -54,12 +62,10 @@ evt_block_number AS block_number,
 evt_index,
 fromDelegate AS delegate, 
 -1 AS delegator_count
-FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
+FROM incremental_delegator_data 
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
 AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
-{% if is_incremental() %}
-    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
-{% endif %}
+
 
 UNION 
 
@@ -69,11 +75,9 @@ evt_block_number AS block_number,
 evt_index, 
 toDelegate AS delegate, 
 1 AS delegator_count
-FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
+FROM incremental_delegator_data
 WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
-{% if is_incremental() %}
-    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
-{% endif %} 
+
 ),
 
 delegator_count_data AS
