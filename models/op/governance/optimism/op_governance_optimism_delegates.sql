@@ -29,7 +29,6 @@ WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 -- {% endif %}
 ),
 
-
 rolling_voting_power AS
 (SELECT *,
 SUM(power_diff) OVER (ORDER BY block_time) AS total_voting_power
