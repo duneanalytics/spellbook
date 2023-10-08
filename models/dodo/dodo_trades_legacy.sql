@@ -2,7 +2,7 @@
 	tags=['legacy'],
 	
         alias = alias('trades', legacy_model=True),
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
                                 "project",
                                 "dodo",
                                 \'["scoffie", "owen05"]\') }}'
@@ -15,6 +15,7 @@ ref('dodo_ethereum_trades_legacy')
 , ref('dodo_polygon_trades_legacy')
 , ref('dodo_arbitrum_trades_legacy')
 , ref('dodo_optimism_trades_legacy')
+, ref('dodo_base_trades_legacy')
 ] %}
 
 SELECT *
