@@ -57,7 +57,7 @@ fromDelegate AS delegate,
 -1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
-AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
+-- AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
     AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %}
@@ -71,9 +71,9 @@ evt_index,
 toDelegate AS delegate, 
 1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
-WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
+-- WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
-    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+    WHERE evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
 {% endif %} 
 ),
 
