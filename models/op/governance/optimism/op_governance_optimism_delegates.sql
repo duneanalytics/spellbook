@@ -13,7 +13,17 @@
   )
 }}
 
-WITH delegate_votes_data_raw AS
+
+WITH 
+{% if is_incremental() %}
+incremental_delegate_vote_data AS
+(SELECT distinct(delegate)
+FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }}
+WHERE evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+),
+{% endif %}
+
+delegate_votes_data_raw AS
 (SELECT evt_tx_hash AS tx_hash,
 evt_block_time AS block_time,
 evt_block_number AS block_number,
@@ -22,10 +32,14 @@ delegate,
 CAST(newBalance AS DOUBLE)/1e18 AS newBalance, 
 CAST(previousBalance AS DOUBLE)/1e18 AS previousBalance,
 CAST(newBalance AS DOUBLE)/1e18 - CAST(previousBalance AS DOUBLE)/1e18 AS power_diff
-FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }}
+FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }} AS hist
 WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
-    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+    AND EXISTS (
+    SELECT increment.delegate
+    FROM incremental_delegate_vote_data AS increment
+    WHERE increment.delegate = hist.delegate
+    )
 {% endif %}
 ),
 
