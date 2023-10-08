@@ -29,6 +29,7 @@ WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% endif %}
 ),
 
+
 rolling_voting_power AS
 (SELECT *,
 SUM(power_diff) OVER (ORDER BY block_time) AS total_voting_power
@@ -124,11 +125,12 @@ total_delegators
 FROM votingPower_delegators_data_revised
 ), 
 
-OP_delegates_table AS
+op_delegates_table AS
 (SELECT *, 
 (CAST(number_of_delegators AS DOUBLE) / CAST(total_delegators AS DOUBLE))*100 AS total_delegators_share
 FROM OP_delegates_table_raw
 )
 
+
 SELECT *
-FROM OP_delegates_table
+FROM op_delegates_table
