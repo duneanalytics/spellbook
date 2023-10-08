@@ -24,9 +24,9 @@ CAST(previousBalance AS DOUBLE)/1e18 AS previousBalance,
 CAST(newBalance AS DOUBLE)/1e18 - CAST(previousBalance AS DOUBLE)/1e18 AS power_diff
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }}
 WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
--- {% if is_incremental() %}
---     AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
--- {% endif %}
+{% if is_incremental() %}
+    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+{% endif %}
 ),
 
 rolling_voting_power AS
@@ -56,10 +56,10 @@ fromDelegate AS delegate,
 -1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
--- AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
--- {% if is_incremental() %}
---     AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
--- {% endif %}
+AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
+{% if is_incremental() %}
+    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+{% endif %}
 
 UNION 
 
@@ -70,10 +70,10 @@ evt_index,
 toDelegate AS delegate, 
 1 AS delegator_count
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
--- WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
--- {% if is_incremental() %}
---     WHERE evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
--- {% endif %} 
+WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
+{% if is_incremental() %}
+    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+{% endif %} 
 ),
 
 delegator_count_data AS
