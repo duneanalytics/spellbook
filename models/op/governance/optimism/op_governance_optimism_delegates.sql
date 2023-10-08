@@ -158,4 +158,6 @@ FROM OP_delegates_table_raw
 
 
 SELECT *
-FROM op_delegates_table
+-- FROM op_delegates_table
+FROM incremental_delegator_data
+
