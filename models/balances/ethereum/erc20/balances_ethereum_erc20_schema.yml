@@ -106,3 +106,21 @@ models:
     columns:
       - name: token_address
         description: "Token Address for possibly non-compliant erc20 token"
+
+  - name: balances_ethereum_erc20_supply
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: erc20
+      contributors: soispoke, dot2dotseurat, Henrystats
+    config:
+      tags: ['balances', 'ethereum', 'erc20', 'supply', 'Henrystats']
+    description: >
+        This is only a test model.
+        Depends on erc20_ethereum_transfers.
+    columns:
+      - &total_supply
+        name: total_supply
+        description: "token supply"
+      - *token_address
+
