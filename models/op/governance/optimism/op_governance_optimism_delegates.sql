@@ -31,7 +31,6 @@ fromDelegate AS delegate,
 FROM ref{{'op_governance_optimism_delegators_incremental'}}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
 AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
-s
 
 UNION 
 
