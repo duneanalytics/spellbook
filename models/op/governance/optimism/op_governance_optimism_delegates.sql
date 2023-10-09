@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'op_governance_optimism'
-        ,tags=['dunesql']
+        tags=['dunesql']
+        , schema = 'op_governance_optimism'
         , alias = alias('delegates')
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
@@ -8,10 +8,12 @@
                                   \'["kaiblade"]\') }}'
   )
 }}
+
+
 WITH rolling_voting_power AS
 (SELECT *,
 SUM(power_diff) OVER (ORDER BY block_time) AS total_voting_power
-FROM ref{{ 'op_governance_optimism_votingPower_incremental' }}
+FROM {{ ref('op_governance_optimism_votingPower_incremental') }}
 ),
 
 voting_power_share_data AS
@@ -27,7 +29,7 @@ block_number,
 evt_index,
 fromDelegate AS delegate, 
 -1 AS delegator_count
-FROM ref{{ 'op_governance_optimism_delegators_incremental' }}
+FROM {{ ref('op_governance_optimism_delegators_incremental') }}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
 AND CAST(block_time AS DATE) >= DATE'2022-05-26'
 
@@ -39,7 +41,7 @@ block_number,
 evt_index, 
 toDelegate AS delegate, 
 1 AS delegator_count
-FROM ref{{ 'op_governance_optimism_delegators_incremental' }}
+FROM {{ ref('op_governance_optimism_delegators_incremental') }}
 WHERE CAST(block_time AS DATE) >= DATE'2022-05-26'
 ),
 
@@ -102,7 +104,6 @@ OP_delegates_table AS
 (CAST(number_of_delegators AS DOUBLE) / CAST(total_delegators AS DOUBLE))*100 AS total_delegators_share
 FROM OP_delegates_table_raw
 )
-
 
 SELECT *
 FROM OP_delegates_table

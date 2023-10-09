@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+         tags=['dunesql']
         , schema = 'op_governance_optimism'
         , alias = alias('votingPower_incremental')
         , materialized = 'incremental'
