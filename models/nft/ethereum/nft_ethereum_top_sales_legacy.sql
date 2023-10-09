@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy','remove'],
+
      alias = alias('top_sales', legacy_model=True),
      materialized='table',
      post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -21,7 +21,7 @@ WITH src AS
         , ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY amount_original DESC) as rn
     FROM
         {{ ref('nft_trades_legacy') }}
-    WHERE 
+    WHERE
         blockchain = 'ethereum'
         AND currency_symbol IN ('ETH', 'WETH')
         AND amount_original IS NOT NULL

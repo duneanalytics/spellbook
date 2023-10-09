@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     schema = 'fractal_polygon',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

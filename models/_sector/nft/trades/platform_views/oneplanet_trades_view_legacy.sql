@@ -1,7 +1,7 @@
 
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
         schema = 'oneplanet',
         alias = alias('trades', legacy_model=True),
         materialized = 'view',

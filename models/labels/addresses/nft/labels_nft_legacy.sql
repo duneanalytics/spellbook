@@ -1,5 +1,5 @@
 {{config(
-	tags=['legacy'],
+	tags=['legacy','remove'],
 	alias = alias('nft', legacy_model=True),
         post_hook='{{ expose_spells(\'["ethereum","solana"]\',
                                     "sector",

@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy','remove'],
+
     alias = alias('top_minters', legacy_model=True),
     materialized='incremental',
     file_format = 'delta',
@@ -19,21 +19,21 @@ WITH weekly_unique_minter_nft_address AS
     SELECT DISTINCT
         nft_contract_address,
         buyer
-    FROM 
+    FROM
         {{ ref('nft_mints_legacy') }}
-    WHERE 
+    WHERE
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
 )
-SELECT 
+SELECT
     src.nft_contract_address,
-    src.buyer as minter, 
-    SUM(src.amount_original) as eth_spent, 
+    src.buyer as minter,
+    SUM(src.amount_original) as eth_spent,
     COUNT(*) as no_minted,
     MAX(src.block_time) as last_updated
-FROM 
+FROM
     {{ ref('nft_mints_legacy') }} src
 INNER JOIN
     weekly_unique_minter_nft_address
@@ -43,21 +43,21 @@ WHERE
     src.blockchain = 'ethereum'
     AND src.currency_symbol IN ('WETH', 'ETH')
     AND src.amount_original IS NOT NULL
-GROUP BY 
+GROUP BY
     1, 2
 {% else %}
-SELECT 
+SELECT
     nft_contract_address,
-    buyer as minter, 
-    SUM(amount_original) as eth_spent, 
+    buyer as minter,
+    SUM(amount_original) as eth_spent,
     COUNT(*) as no_minted,
     MAX(block_time) as last_updated
-FROM 
+FROM
     {{ ref('nft_mints_legacy') }}
 WHERE
     blockchain = 'ethereum'
     AND currency_symbol IN ('WETH', 'ETH')
     AND amount_original IS NOT NULL
-GROUP BY 
+GROUP BY
     1, 2
 {% endif %}

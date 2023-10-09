@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy','remove'],
+
     alias = alias('linked_addresses', legacy_model=True),
     partition_by = ['blockchain'],
     materialized = 'incremental',

@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy','remove'],
+
     alias = alias('wallet_metrics', legacy_model=True),
     materialized='table',
     file_format = 'delta',
@@ -20,7 +20,7 @@ nft_trades_no_wash as
     AND wt.unique_trade_id=nft.unique_trade_id
     where is_wash_trade = FALSE ),
 
---- adding in mints because a mint can be interpreted as a buy for $0 or gas fees 
+--- adding in mints because a mint can be interpreted as a buy for $0 or gas fees
 nft_trades_no_wash_w_mints as (
 select cast(aggregator_address as string)       as aggregator_address,
        cast(aggregator_name as string)          as aggregator_name,
@@ -83,7 +83,7 @@ select cast(aggregator_address as string)       as aggregator_address,
 from {{ref('nft_mints_legacy')}}
 )
 ,
--- creating a longform version of buys and sells 
+-- creating a longform version of buys and sells
 buys_and_sells_nft_trades_no_wash_w_mints as
 (
     --sells
@@ -229,15 +229,15 @@ where 1 = 1
 order by b.block_time desc
 ),
 
---- Hacky split to fix bloom size error 
-all_trades_profit_and_unrealized_profit_w_floors as 
+--- Hacky split to fix bloom size error
+all_trades_profit_and_unrealized_profit_w_floors as
 
-    (select 
+    (select
         b.*,
         coalesce(floors1.avg_floor_price * p.price, floors2.price_p5_eth * p.price, 0)          floor_usd,
                coalesce(sell_amount_usd, floors1.avg_floor_price * p.price, floors2.price_p5_eth * p.price, 0) +
                buy_amount_usd                                                                            usd_profit,
-        
+
         coalesce(floors1.avg_floor_price, floors2.price_p5_eth, 0)                              floor_eth,
         coalesce(sell_amount_eth, floors1.avg_floor_price, floors2.price_p5_eth, 0)                sell_amount_eth_or_floor,
         case

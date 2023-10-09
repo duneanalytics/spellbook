@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     schema = 'quix_seaport_optimism',
     alias = alias('seaport_events', legacy_model=True),
     partition_by = ['block_date'],

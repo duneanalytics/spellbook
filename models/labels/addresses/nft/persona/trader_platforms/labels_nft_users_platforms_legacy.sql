@@ -1,5 +1,5 @@
 {{config(
-	tags=['legacy'],
+	tags=['legacy','remove'],
 	alias = alias('nft_users_platforms', legacy_model=True))}}
 
 WITH nft_trades AS (

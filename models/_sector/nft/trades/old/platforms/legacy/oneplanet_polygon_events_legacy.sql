@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     schema = 'oneplanet_polygon',
     alias = alias('events', legacy_model=True),
     materialized = 'incremental',

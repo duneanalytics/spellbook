@@ -1,11 +1,11 @@
 {{config(
-	tags=['legacy'],
+	tags=['legacy','remove'],
 	alias = alias('nft_smart_trader_roi_eth', legacy_model=True))}}
 
-with  
+with
 
 aggregated_wallet_trading_stats AS (
-    select * 
+    select *
     from {{ref('nft_ethereum_wallet_metrics_legacy')}}
     where trades_count >= 10
         and unique_collections_traded >= 3
@@ -14,15 +14,15 @@ aggregated_wallet_trading_stats AS (
         and roi_eth > 0
 ),
 
-     
+
 aggregated_wallet_trading_stats_w_ranks AS (
     select ROW_NUMBER() OVER (ORDER BY roi_eth_realized DESC) rank_roi,
            count(1) over () AS                                total_count,
            *
     from aggregated_wallet_trading_stats
 ),
-        
-        
+
+
 aggregated_wallet_trading_stats_w_label AS (
     select 'ethereum'                                                                 AS blockchain,
            wallet                                                                     AS address,
@@ -42,8 +42,8 @@ aggregated_wallet_trading_stats_w_label AS (
            current_timestamp                                                          AS updated_at,
            'nft_traders_roi'                                                          AS model_name,
            'usage'                                                                    AS label_type
-           -- uncomment line below to see stats on the trader 
-           -- , *  
+           -- uncomment line below to see stats on the trader
+           -- , *
     from aggregated_wallet_trading_stats_w_ranks order by roi_eth_realized desc
 )
 

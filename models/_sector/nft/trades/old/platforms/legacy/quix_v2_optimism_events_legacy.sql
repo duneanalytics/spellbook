@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     schema = 'quix_v2_optimism',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

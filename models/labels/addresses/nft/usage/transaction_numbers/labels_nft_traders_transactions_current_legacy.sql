@@ -1,6 +1,6 @@
 
 {{config(
-	tags=['legacy'],
+	tags=['legacy','remove'],
 	alias = alias('nft_traders_transactions_current', legacy_model=True))}}
 
 WITH nft_trades AS (

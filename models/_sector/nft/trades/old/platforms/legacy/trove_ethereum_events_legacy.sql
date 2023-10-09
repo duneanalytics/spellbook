@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy', 'remove'],
+
     schema = 'trove_ethereum',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

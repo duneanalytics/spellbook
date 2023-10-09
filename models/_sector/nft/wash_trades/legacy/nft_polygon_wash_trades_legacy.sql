@@ -1,5 +1,5 @@
 {{ config(
-	    tags=['legacy'],
+	    tags=['legacy', 'remove'],
         schema = 'nft_polygon',
         alias = alias('wash_trades', legacy_model=True),
         partition_by=['block_date'],

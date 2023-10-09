@@ -1,5 +1,5 @@
 {{ config(
-	tags=['legacy'],
+	tags=['legacy', 'remove'],
 	    schema = 'nft',
         alias = alias('wash_trades', legacy_model=True),
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon"]\',

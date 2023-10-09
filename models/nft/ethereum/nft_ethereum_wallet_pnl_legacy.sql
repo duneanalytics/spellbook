@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	tags=['legacy','remove'],
+
     alias = alias('wallet_pnl', legacy_model=True),
     materialized='incremental',
     file_format = 'delta',
@@ -14,118 +14,118 @@
 }}
 
 {% if is_incremental() %}
-WITH weekly_unique_wallet_address as 
+WITH weekly_unique_wallet_address as
 (
     SELECT DISTINCT
         nft_contract_address,
-        buyer as wallet 
-    FROM 
+        buyer as wallet
+    FROM
         {{ ref('nft_trades_legacy') }}
-    WHERE 
+    WHERE
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
         AND number_of_items = 1
-        AND buyer != seller 
-    
-    UNION 
+        AND buyer != seller
+
+    UNION
 
     SELECT DISTINCT
         nft_contract_address,
-        seller as wallet 
-    FROM 
+        seller as wallet
+    FROM
         {{ ref('nft_trades_legacy') }}
-    WHERE 
+    WHERE
         block_time >= date_trunc("day", now() - interval '1 week')
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
         AND number_of_items = 1
-        AND buyer != seller 
+        AND buyer != seller
 )
 , trades as
 (
     --sells
     SELECT
-        src.seller as wallet, 
-        src.nft_contract_address, 
+        src.seller as wallet,
+        src.nft_contract_address,
         'Sells' as trade_type,
-        SUM(src.amount_original) as eth_amount, 
-        COUNT(*) as trades, 
+        SUM(src.amount_original) as eth_amount,
+        COUNT(*) as trades,
         MAX(src.block_time) as last_updated
-    FROM 
-        {{ ref('nft_trades_legacy') }} src 
-    INNER JOIN 
+    FROM
+        {{ ref('nft_trades_legacy') }} src
+    INNER JOIN
         weekly_unique_wallet_address
         ON src.nft_contract_address = weekly_unique_wallet_address.nft_contract_address
         AND src.seller = weekly_unique_wallet_address.wallet
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
-        AND src.buyer != src.seller 
+        AND src.buyer != src.seller
         AND src.number_of_items = 1
-        AND src.amount_original IS NOT NULL 
+        AND src.amount_original IS NOT NULL
     GROUP BY
         1, 2, 3
 
-    UNION ALL 
+    UNION ALL
 
     --buys
-    SELECT 
-        src.buyer as wallet, 
-        src.nft_contract_address, 
+    SELECT
+        src.buyer as wallet,
+        src.nft_contract_address,
         'Buys' as trade_type,
         -1 * SUM(src.amount_original) as eth_amount,
-        COUNT(*) as trades, 
+        COUNT(*) as trades,
         MAX(src.block_time) as last_updated
-    FROM 
+    FROM
         {{ ref('nft_trades_legacy') }} src
-    INNER JOIN 
+    INNER JOIN
         weekly_unique_wallet_address
         ON src.nft_contract_address = weekly_unique_wallet_address.nft_contract_address
         AND src.buyer = weekly_unique_wallet_address.wallet
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
-        AND src.buyer != src.seller 
+        AND src.buyer != src.seller
         AND src.number_of_items = 1
-        AND src.amount_original IS NOT NULL 
+        AND src.amount_original IS NOT NULL
     GROUP BY
         1, 2, 3
 )
 SELECT
-    wallet, 
-    nft_contract_address, 
+    wallet,
+    nft_contract_address,
     MAX(last_updated) as last_updated,
     COALESCE
     (
         SUM
         (
-            CASE 
+            CASE
                 WHEN trade_type = 'Buys'
-                THEN ABS(eth_amount) 
-                ELSE 0 
+                THEN ABS(eth_amount)
+                ELSE 0
             END
         )
     , 0
-    ) as eth_spent, 
+    ) as eth_spent,
     COALESCE
     (
         SUM
         (
-            CASE 
+            CASE
                 WHEN trade_type = 'Sells'
                 THEN eth_amount
-                ELSE 0 
+                ELSE 0
             END
         )
     , 0
-    ) as eth_received, 
-    SUM(eth_amount) as pnl, 
-    SUM(trades) as trades 
-FROM 
-    trades 
+    ) as eth_received,
+    SUM(eth_amount) as pnl,
+    SUM(trades) as trades
+FROM
+    trades
 GROUP BY
     1, 2
 {% else %}
@@ -133,76 +133,76 @@ WITH trades as
 (
     --sells
     SELECT
-        src.seller as wallet, 
-        src.nft_contract_address, 
+        src.seller as wallet,
+        src.nft_contract_address,
         'Sells' as trade_type,
-        SUM(src.amount_original) as eth_amount, 
-        COUNT(*) as trades, 
+        SUM(src.amount_original) as eth_amount,
+        COUNT(*) as trades,
         MAX(src.block_time) as last_updated
-    FROM 
-        {{ ref('nft_trades_legacy') }} src 
-    WHERE
-        src.currency_symbol IN ('ETH', 'WETH')
-        AND src.blockchain = 'ethereum'
-        AND src.buyer != src.seller 
-        AND src.number_of_items = 1
-        AND src.amount_original IS NOT NULL 
-    GROUP BY
-        1, 2, 3
-
-    UNION ALL 
-
-    --buys
-    SELECT 
-        src.buyer as wallet, 
-        src.nft_contract_address, 
-        'Buys' as trade_type,
-        -1 * SUM(src.amount_original) as eth_amount,
-        COUNT(*) as trades, 
-        MAX(src.block_time) as last_updated
-    FROM 
+    FROM
         {{ ref('nft_trades_legacy') }} src
     WHERE
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
-        AND src.buyer != src.seller 
+        AND src.buyer != src.seller
         AND src.number_of_items = 1
-        AND src.amount_original IS NOT NULL 
+        AND src.amount_original IS NOT NULL
+    GROUP BY
+        1, 2, 3
+
+    UNION ALL
+
+    --buys
+    SELECT
+        src.buyer as wallet,
+        src.nft_contract_address,
+        'Buys' as trade_type,
+        -1 * SUM(src.amount_original) as eth_amount,
+        COUNT(*) as trades,
+        MAX(src.block_time) as last_updated
+    FROM
+        {{ ref('nft_trades_legacy') }} src
+    WHERE
+        src.currency_symbol IN ('ETH', 'WETH')
+        AND src.blockchain = 'ethereum'
+        AND src.buyer != src.seller
+        AND src.number_of_items = 1
+        AND src.amount_original IS NOT NULL
     GROUP BY
         1, 2, 3
 )
 SELECT
-    wallet, 
-    nft_contract_address, 
+    wallet,
+    nft_contract_address,
     MAX(last_updated) as last_updated,
     COALESCE
     (
         SUM
         (
-            CASE 
+            CASE
                 WHEN trade_type = 'Buys'
-                THEN ABS(eth_amount) 
-                ELSE 0 
+                THEN ABS(eth_amount)
+                ELSE 0
             END
         )
     , 0
-    ) as eth_spent, 
+    ) as eth_spent,
     COALESCE
     (
         SUM
         (
-            CASE 
+            CASE
                 WHEN trade_type = 'Sells'
                 THEN eth_amount
-                ELSE 0 
+                ELSE 0
             END
         )
     , 0
-    ) as eth_received, 
-    SUM(eth_amount) as pnl, 
-    SUM(trades) as trades 
-FROM 
-    trades 
+    ) as eth_received,
+    SUM(eth_amount) as pnl,
+    SUM(trades) as trades
+FROM
+    trades
 GROUP BY
     1, 2
 {% endif %}
