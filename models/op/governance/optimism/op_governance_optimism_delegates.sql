@@ -11,7 +11,7 @@
 WITH rolling_voting_power AS
 (SELECT *,
 SUM(power_diff) OVER (ORDER BY block_time) AS total_voting_power
-FROM ref{{'op_governance_optimism_votingPower_incremental'}}
+FROM ref{{ 'op_governance_optimism_votingPower_incremental' }}
 ),
 
 voting_power_share_data AS
@@ -27,7 +27,7 @@ block_number,
 evt_index,
 fromDelegate AS delegate, 
 -1 AS delegator_count
-FROM ref{{'op_governance_optimism_delegators_incremental'}}
+FROM ref{{ 'op_governance_optimism_delegators_incremental' }}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
 AND CAST(block_time AS DATE) >= DATE'2022-05-26'
 
@@ -39,7 +39,7 @@ block_number,
 evt_index, 
 toDelegate AS delegate, 
 1 AS delegator_count
-FROM ref{{'op_governance_optimism_delegators_incremental'}}
+FROM ref{{ 'op_governance_optimism_delegators_incremental'} }
 WHERE CAST(block_time AS DATE) >= DATE'2022-05-26'
 ),
 
