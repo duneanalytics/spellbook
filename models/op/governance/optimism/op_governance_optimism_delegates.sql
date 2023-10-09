@@ -173,5 +173,6 @@ FROM OP_delegates_table_raw
 
 SELECT *
 FROM op_delegates_table
+
 -- FROM delegate_votes_data_raw 
 
