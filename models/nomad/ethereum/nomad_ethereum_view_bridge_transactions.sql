@@ -10,16 +10,16 @@
 
 with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
       values
-      (6648936, 'Ethereum', 'Outflow'),
-      (1650811245, 'Moonbeam', 'Outflow'),
-      (70901803, 'Moonbeam', 'Inflow'),
-      (1702260083, 'Evmos', 'Outflow'),
-      (73111513, 'Evmos', 'Inflow'),
-      (25393, 'Milkomeda C1', 'Outflow'),
-      (10906210, 'Milkomeda C1', 'Inflow'),
-      (1635148152, 'Avalanche', 'Outflow'),
-      (70229078, 'Avalanche', 'Inflow'),
-      (2019844457, 'Gnosis Chain (xdai)', 'Outflow')
+      (UINT256 '6648936', 'Ethereum', 'Outflow'),
+      (UINT256 '1650811245', 'Moonbeam', 'Outflow'),
+      (UINT256 '70901803', 'Moonbeam', 'Inflow'),
+      (UINT256 '1702260083', 'Evmos', 'Outflow'),
+      (UINT256 '73111513', 'Evmos', 'Inflow'),
+      (UINT256 '25393', 'Milkomeda C1', 'Outflow'),
+      (UINT256 '10906210', 'Milkomeda C1', 'Inflow'),
+      (UINT256 '1635148152', 'Avalanche', 'Outflow'),
+      (UINT256 '70229078', 'Avalanche', 'Inflow'),
+      (UINT256 '2019844457', 'Gnosis Chain (xdai)', 'Outflow')
 )
 
 ,nomad_bridge_transactions as (
@@ -36,12 +36,12 @@ with nomad_bridge_domains(domain_id, domain_name, domain_type) as (
           ,CAST(amount AS DOUBLE) / pow(10, e1.decimals) * coalesce(p1.price, 0) as usd_amount
           ,"from" as sender
           ,bytearray_ltrim(toId) as recipient
-          ,toDomain as domain_id
+          ,cast(toDomain as UINT256) as domain_id
           ,d.domain_name as domain_name
           ,fastLiquidityEnabled as fast_liquidity_enabled
           ,0x0000000000000000000000000000000000000000 as liquidity_provider
       from {{ source('nomad_ethereum','BridgeRouter_evt_Send') }} s
-      inner join nomad_bridge_domains d on d.domain_id = s.toDomain
+      inner join nomad_bridge_domains d on d.domain_id = cast(s.toDomain as UINT256)
       left join {{ ref('tokens_erc20') }} e1 on e1.contract_address = s.token and e1.blockchain = 'ethereum'
       left join {{ source('prices', 'usd') }} p1 on p1.contract_address = s.token
             and p1.minute = date_trunc('minute', s.evt_block_time)
