@@ -20,7 +20,12 @@
      , ('pubkey', ref('staking_ethereum_entities_chorusone'))
 ] %}
 
-SELECT *
+SELECT depositor_address
+, tx_from
+, pubkey
+, entity
+, entity_unique_name
+, category
 FROM (
         {% for entities_addresses_model in entities_addresses_models if entities_addresses_model[0] == 'depositor_address' %}
         SELECT depositor_address
@@ -49,4 +54,4 @@ FROM (
         UNION ALL
         {% endif %}
         {% endfor %}
-        );
+        )
