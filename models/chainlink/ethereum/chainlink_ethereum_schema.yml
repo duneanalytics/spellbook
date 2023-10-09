@@ -581,3 +581,208 @@ models:
       - *admin_address
       - *operator_name
       - *token_value
+
+  - name: chainlink_ethereum_automation_gas_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "gas", "daily", "ethereum"]
+    description: >
+      Chainlink Automation Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_ethereum_automation_upkeep_performed_logs
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags:
+        ["chainlink", "automation", "upkeep", "performed", "logs", "ethereum"]
+    description: >
+      Chainlink Automation Upkeep Performed Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &tx_from
+        name: tx_from
+        description: "Transaction From"
+
+  - name: chainlink_ethereum_automation_fulfilled_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "fulfilled", "transactions", "ethereum"]
+    description: >
+      Chainlink Automation Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_automation_request_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "request", "daily", "ethereum"]
+    description: >
+      Chainlink Automation Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_ethereum_automation_reverted_transactions
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "reverted", "transactions", "ethereum"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_automation_reward_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "reward", "daily", "ethereum"]
+    description: >
+      Chainlink Automation Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &keeper_address
+        name: keeper_address
+        description: "Keeper Address"
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_ethereum_automation_performed
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "performed", "ethereum"]
+    description: >
+      Chainlink Automation Performed
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *keeper_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_ethereum_automation_performed_daily
+    meta:
+      blockchain: ethereum
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "automation", "performed", "daily", "ethereum"]
+    description: >
+      Chainlink Automation Performed Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *keeper_address
+      - *operator_name
+      - *token_value

@@ -70,17 +70,17 @@ with
                 when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
                 else concat(tokenA_symbol, '-', tokenB_symbol)
             end as token_pair
-            , case when sp.aToB = true then COALESCE(tokenB_symbol, tokenB) 
+            , case when tk_1.token_mint_address = wp.tokenA then COALESCE(tokenB_symbol, tokenB) 
                 else COALESCE(tokenA_symbol, tokenA)
                 end as token_bought_symbol 
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
-            , tr_2.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenB_decimals else tokenA_decimals end),1) as token_bought_amount
-            , case when sp.aToB = true then COALESCE(tokenA_symbol, tokenA)
+            , tr_2.amount/pow(10,case when tk_1.token_mint_address = wp.tokenA then wp.tokenB_decimals else tokenA_decimals end) as token_bought_amount
+            , case when tk_1.token_mint_address = wp.tokenA then COALESCE(tokenA_symbol, tokenA)
                 else COALESCE(tokenB_symbol, tokenB)
                 end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
-            , tr_1.amount/COALESCE(pow(10,case when sp.aToB = true then wp.tokenA_decimals else tokenB_decimals end),1) as token_sold_amount
+            , tr_1.amount/pow(10,case when tk_1.token_mint_address = wp.tokenA then wp.tokenA_decimals else tokenB_decimals end) as token_sold_amount
             , wp.fee_tier
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
@@ -88,16 +88,17 @@ with
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            , case when sp.aToB = true then wp.tokenB
+            , case when tk_1.token_mint_address = wp.tokenA then wp.tokenB
                 else wp.tokenA
                 end as token_bought_mint_address
-            , case when sp.aToB = true then wp.tokenA 
+            , case when tk_1.token_mint_address = wp.tokenA then wp.tokenA 
                 else wp.tokenB
                 end as token_sold_mint_address
-            , case when sp.aToB = true then wp.tokenBVault
+            , case when tk_1.token_mint_address = wp.tokenA then wp.tokenBVault
                 else wp.tokenAVault
                 end as token_bought_vault
-            , case when sp.aToB = true then wp.tokenAVault 
+            , case when tk_1.token_mint_address = wp.tokenA
+                then wp.tokenAVault 
                 else wp.tokenBVault
                 end as token_sold_vault
             , wp.update_time
@@ -115,16 +116,17 @@ with
             {% else %}
             AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2
             ON tr_2.call_tx_id = sp.call_tx_id 
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
+            AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2) 
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
             {% if is_incremental() %}
             AND tr_2.call_block_time >= date_trunc('day', now() - interval '7' day)
             {% else %}
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
+        LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
         WHERE 1=1
             {% if is_incremental() %}
             AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -185,4 +187,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-WHERE recent_update = 1 
+WHERE recent_update = 1

@@ -1,11 +1,12 @@
 {{
     config(
         schema="balancer_ethereum",
+        tags = ['dunesql'],
         alias = alias('vebal_slopes'),
-        post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",
-                                    \'["markusbkoch", "mendesfabio", "stefenon"]\') }}'
+                                    \'["markusbkoch", "mendesfabio", "stefenon", "viniabussafi"]\') }}'
     )
 }}
 
@@ -18,9 +19,9 @@ WITH base_locks AS (
 
         UNION ALL
 
-        SELECT provider, cast(null as numeric(38)) AS locked_at, locktime AS unlocked_at, ts AS updated_at
+        SELECT provider, CAST(null as UINT256) AS locked_at, locktime AS unlocked_at, ts AS updated_at
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
-        WHERE value = 0
+        WHERE CAST(value AS DOUBLE) = 0
     ),
 
     decorated_locks AS (
@@ -44,9 +45,9 @@ WITH base_locks AS (
             provider,
             evt_block_number AS block_number,
             evt_block_time AS block_time,
-            SUM(value/1e18) AS delta_bpt
+            SUM(CAST(value AS DOUBLE))/CAST(1e18 AS DOUBLE) AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Deposit') }}
-        GROUP BY provider, block_number, block_time
+        GROUP BY 1, 2, 3
     ),
 
     withdrawals AS (
@@ -54,9 +55,9 @@ WITH base_locks AS (
             provider,
             evt_block_number AS block_number,
             evt_block_time AS block_time,
-            -SUM(value/1e18) AS delta_bpt
+            -SUM(CAST(value AS DOUBLE))/CAST(1e18 AS DOUBLE) AS delta_bpt
         FROM {{ source('balancer_ethereum', 'veBAL_evt_Withdraw') }}
-        GROUP BY provider, block_number, block_time
+        GROUP BY 1, 2, 3
     ),
 
     bpt_locked_balance AS (
@@ -89,16 +90,16 @@ WITH base_locks AS (
             block_number,
             block_time,
             updated_at,
-            unix_timestamp(block_time) AS block_timestamp,
+            to_unixtime(block_time) AS block_timestamp,
             b.provider AS wallet_address,
             bpt_balance,
             unlocked_at,
             bpt_balance / (365*86400) AS slope,
-            (unlocked_at - unix_timestamp(block_time)) * bpt_balance / (365*86400) AS bias
+            (CAST(unlocked_at AS DOUBLE) - to_unixtime(block_time)) * bpt_balance / (365*86400) AS bias
         FROM cumulative_balances b
         LEFT JOIN locks_info l
         ON l.provider = b.provider
-        AND l.updated_at <= unix_timestamp(block_time)
+        AND l.updated_at <= CAST(to_unixtime(block_time) AS UINT256)
     ),
 
     max_updated_at AS (
@@ -127,4 +128,4 @@ ON a.block_number = b.block_number
 AND a.block_time = b.block_time
 AND a.wallet_address = b.wallet_address
 AND a.updated_at = b.updated_at
-ORDER BY a.wallet_address, a.block_number
+ORDER BY 4, 1

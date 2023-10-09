@@ -14,7 +14,7 @@ WITH
 
 {% set limit_order_tables = [
     'options_evt_OptionsLimitOrderExecuted',
-
+    'Options_V2_evt_OptionsLimitOrderExecuted'
 ] %}
 
 limit_order_v2 AS (
