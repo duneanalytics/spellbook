@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    tags = ['dunesql'],
     schema = 'uniswap_v3_ethereum',
     alias = 'trades_beta',
     materialized = 'view',
@@ -20,9 +20,7 @@ where project = 'uniswap'
 
 -- uni_v3.base_trades -> enrich -> uniswap_v3_ethereum.trades
 -- -- (blockchain, project, project_version, model)
--- {% set base_models = [
---     ('ethereum',   'uniswap',    '3',    ref('uniswap_ethereum_v3_base_trades'))
--- ] %}
+-- {% set base_models = [ ('ethereum',   'uniswap',    '3',    ref('uniswap_ethereum_v3_base_trades')) ] %}
 --
 --
 -- -- macros/models/sector/dex
