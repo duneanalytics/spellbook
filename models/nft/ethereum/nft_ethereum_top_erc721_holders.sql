@@ -1,5 +1,4 @@
 {{ config(
-       tags=['dunesql'],
        alias = alias('top_erc721_holders'),
        materialized='table',
        post_hook='{{ expose_spells(\'["ethereum"]\',
