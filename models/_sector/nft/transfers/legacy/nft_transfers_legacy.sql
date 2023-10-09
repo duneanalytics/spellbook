@@ -24,7 +24,6 @@
 ,ref('nft_polygon_transfers_legacy')
 ,ref('nft_fantom_transfers_legacy')
 ,ref('nft_goerli_transfers_legacy')
-,ref('nft_zksync_transfers_legacy')
 ] %}
 
 SELECT *

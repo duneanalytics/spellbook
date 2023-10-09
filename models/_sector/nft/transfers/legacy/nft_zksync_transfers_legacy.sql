@@ -1,5 +1,6 @@
 {{ config(
 	tags=['legacy'],
+	schema = 'nft_zksync',
         alias = alias('transfers', legacy_model=True),
         partition_by=['block_date'],
         materialized='incremental',
@@ -8,4 +9,4 @@
 )
 }}
 
-SELECT 1
+ SELECT 1
