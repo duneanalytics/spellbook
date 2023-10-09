@@ -29,8 +29,8 @@ SELECT depositor_address
 FROM (
         {% for entities_addresses_model in entities_addresses_models if entities_addresses_model[0] == 'depositor_address' %}
         SELECT depositor_address
-        , NULL AS tx_from
-        , NULL AS pubkey
+        , from_hex(NULL) AS tx_from
+        , from_hex(NULL) AS pubkey
         , entity
         , entity_unique_name
         , category
@@ -43,8 +43,8 @@ FROM (
         UNION ALL
 
         {% for entities_addresses_model in entities_addresses_models if entities_addresses_model[0] == 'pubkey' %}
-        SELECT NULL AS depositor_address
-        , NULL AS tx_from
+        SELECT from_hex(NULL) AS depositor_address
+        , from_hex(NULL) AS tx_from
         , pubkey AS pubkey
         , entity
         , entity_unique_name
