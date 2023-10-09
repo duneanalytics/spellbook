@@ -23,7 +23,7 @@ models:
       - check_dex_seed:
           blockchain: optimism
           project: kyberswap
-          version: dmm
+          version: elastic_2
     columns:
       - &blockchain
         name: blockchain
