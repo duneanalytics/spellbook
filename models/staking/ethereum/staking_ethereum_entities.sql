@@ -17,7 +17,7 @@
      , ('depositor_address', ref('staking_ethereum_entities_coinbase'))
      , ('depositor_address', ref('staking_ethereum_entities_binance'))
      , ('depositor_address', ref('staking_ethereum_entities_darma_capital'))
-     , ('pubkey', ref('staking_ethereum_entities_chorus_one'))
+     , ('pubkey', ref('staking_ethereum_entities_chorusone'))
 ] %}
 
 SELECT *
