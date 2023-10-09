@@ -2,21 +2,36 @@ version: 2
 
 models:
   - name: nft_arbitrum_aggregators
-    meta:
-      blockchain: arbitrum
-      sector: nft
-      contributors: hildobby, tomfutago, chuxin, 0xRob
-    config:
-      tags: ['nft', 'aggregators']
-    description: >
-        NFT aggregators
     columns:
-      - name: contract_address
+      - &contract_address
+        name: contract_address
         description: "Aggregator project's contract address"
         tests:
           - unique
+      - &name
       - name: name
         description: "Aggregator project's name"
+
+  - name: nft_avalanche_c_aggregators
+    columns:
+      - *contract_address
+      - *name
+  - name: nft_bnb_aggregators
+    columns:
+      - *contract_address
+      - *name
+  - name: nft_celo_aggregators
+    columns:
+      - *contract_address
+      - *name
+  - name: nft_optimism_aggregators
+    columns:
+      - *contract_address
+      - *name
+  - name: nft_polygon_aggregators
+    columns:
+      - *contract_address
+      - *name
 
   - name: nft_ethereum_aggregators
     meta:
