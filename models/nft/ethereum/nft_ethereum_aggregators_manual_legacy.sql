@@ -42,11 +42,11 @@ FROM
     , ('0x2a7251d1e7d708c507b1b0d3ff328007beecce5d', 'Rarible') -- Rarible
     , ('0x2c45af926d5f62c5935278106800a03eb565778e', 'Rarible') -- Rarible
     , ('0x1ee3151cff01321059e3865214379b85c79ca984', 'Magic Eden') -- Magic Eden
-    , ('0x141efc30c4093bc0f8204accb8afa6643fddecf2', 'Alpha Sharks') -- Alpha Sharks
-    , ('0x552b16d19dbad7af2786fe5a40d96d2a5c09428c', 'Alpha Sharks') -- Alpha Sharks 2.0
-    , ('0x114e54a100a0415abf9727234c92c83dbcc59abf', 'Alpha Sharks') -- Alpha Sharks 2.1
-    , ('0x1ed3d33b41e392014e0c9d8125369aba4e09798f', 'Alpha Sharks') -- Magically (Alpha Sharks)
-    , ('0x04898894a0b6c094a920eafd180ef4ac30f00a43', 'Alpha Sharks') -- Magically (Alpha Sharks)
+    , ('0x141efc30c4093bc0f8204accb8afa6643fddecf2', 'Magically') -- Magically (Alpha Sharks)
+    , ('0x552b16d19dbad7af2786fe5a40d96d2a5c09428c', 'Magically') -- Magically (Alpha Sharks 2.0)
+    , ('0x114e54a100a0415abf9727234c92c83dbcc59abf', 'Magically') -- Magically (Alpha Sharks 2.1)
+    , ('0x1ed3d33b41e392014e0c9d8125369aba4e09798f', 'Magically') -- Magically (Alpha Sharks)
+    , ('0x04898894a0b6c094a920eafd180ef4ac30f00a43', 'Magically') -- Magically (Alpha Sharks)
     , ('0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b', 'Uniswap') -- Uniswap's Universal Router
     , ('0x4c60051384bd2d3c01bfc845cf5f4b44bcbe9de5', 'Uniswap') -- Uniswap's Universal Router 2
     , ('0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad', 'Uniswap') -- Uniswap's Universal Router 3

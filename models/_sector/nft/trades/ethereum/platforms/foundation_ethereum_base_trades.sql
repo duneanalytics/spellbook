@@ -2,7 +2,6 @@
     tags = ['dunesql'],
     schema = 'foundation_ethereum',
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -103,8 +102,7 @@ WITH all_foundation_trades AS (
     )
 
 SELECT
- cast(date_trunc('month', t.block_time) as date) AS block_date
-, t.block_time
+  t.block_time
 , t.block_number
 , t.nft_token_id
 , UINT256 '1' AS nft_amount
