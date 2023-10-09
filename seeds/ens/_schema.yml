@@ -8,6 +8,12 @@ seeds:
         label: varbinary
         evt_block_number: bigint
         evt_index: bigint
+  - name: ens_view_expirations_postgres
+    config:
+      tags: dunesql
+      column_types:
+        label: varbinary
+        min_expires: timestamp
   - name: ens_view_registries_postgres
     config:
       tags: dunesql
