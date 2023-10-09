@@ -56,7 +56,7 @@ kyberswap_dex AS (
         ,'elastic_2'                                                                                             AS version
         ,t.evt_index
 
-    FROM {{ source('kyber_bnb', 'ElasticPoolV2_evt_swap') }} t
+    FROM {{ source('kyber_bnb', 'ElasticPoolV2_evt_Swap') }} t
     INNER JOIN {{ source('kyber_bnb', 'ElasticFactoryV2_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
