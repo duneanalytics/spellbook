@@ -77,13 +77,13 @@ models:
             - evt_index
             
     columns:
-      - &block_time
+      - *block_time
         name: block_time
         description: "Block time of transaction"
-      - &tx_hash
+      - *tx_hash
         name: tx_hash
         description: "Transaction hash"
-      - &evt_index
+      - *evt_index
         name: evt_index
         description: "Event index"
       - &fromDelegate
@@ -111,16 +111,16 @@ models:
             - evt_index
             
     columns:
-      - &block_time
+      - *block_time
         name: block_time
         description: "Block time of transaction"
-      - &tx_hash
+      - *tx_hash
         name: tx_hash
         description: "Transaction hash"
-      - &evt_index
+      - *evt_index
         name: evt_index
         description: "Event index"
-      - &delegate
+      - *delegate
         name: delegate
         description: "Optimism addresses of delegates"
       - &newBalance
@@ -129,7 +129,7 @@ models:
       - &previousBalance
         name: previousBalance
         description: "Previous voting power of delegates"
-      - &power_diff
+      - *power_diff
         name: power_diff
         description: "The difference between current_voting_power and previous_voting_power"
      
