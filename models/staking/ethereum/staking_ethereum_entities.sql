@@ -23,9 +23,9 @@
 SELECT *
 FROM (
         {% for entities_addresses_model in entities_addresses_models %}
-        SELECT CASE '{{ entities_addresses_model[0] }}'='depositor_address' THEN depositor_address ELSE NULL END AS deposit_address
-        SELECT CASE '{{ entities_addresses_model[0] }}'='tx_from' THEN tx_from ELSE NULL END AS tx_from
-        SELECT CASE '{{ entities_addresses_model[0] }}'='pubkey' THEN pubkey ELSE NULL END AS pubkey
+        SELECT CASE WHEN '{{ entities_addresses_model[0] }}'='depositor_address' THEN depositor_address ELSE NULL END AS deposit_address
+        , CASE WHEN '{{ entities_addresses_model[0] }}'='tx_from' THEN tx_from ELSE NULL END AS tx_from
+        , CASE WHEN '{{ entities_addresses_model[0] }}'='pubkey' THEN pubkey ELSE NULL END AS pubkey
         , entity
         , entity_unique_name
         , category
