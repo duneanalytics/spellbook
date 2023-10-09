@@ -1,5 +1,6 @@
 {{ config(
-        tags=['dunesql']
+        schema = 'op_governance_optimism'
+        ,tags=['dunesql']
         , alias = alias('delegates')
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
@@ -98,7 +99,7 @@ total_delegators
 FROM votingPower_delegators_data_revised
 ), 
 
-op_delegates_table AS
+OP_delegates_table AS
 (SELECT *, 
 (CAST(number_of_delegators AS DOUBLE) / CAST(total_delegators AS DOUBLE))*100 AS total_delegators_share
 FROM OP_delegates_table_raw
@@ -106,4 +107,4 @@ FROM OP_delegates_table_raw
 
 
 SELECT *
-FROM op_delegates_table
+FROM OP_delegates_table
