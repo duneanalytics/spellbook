@@ -28,7 +28,7 @@ block_number,
 evt_index,
 fromDelegate AS delegate, 
 -1 AS delegator_count
-FROM FROM ref{{'op_governance_optimism_delegators_incremental'}}
+FROM ref{{'op_governance_optimism_delegators_incremental'}}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
 AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 s
