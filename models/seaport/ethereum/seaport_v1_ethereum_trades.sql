@@ -200,7 +200,7 @@ with source_ethereum_transactions as (
         ,CAST(round(cast(price_amount_raw as double) / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
         ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw 
+        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
@@ -274,7 +274,6 @@ with source_ethereum_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,sub_idx
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
