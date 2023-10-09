@@ -133,3 +133,27 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: uniswap_v3_ethereum_trades_beta
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v3
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: ['ethereum','uniswap_v3','trades', 'uniswap','dex']
+    description: >
+        Uniswap V3 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 3
