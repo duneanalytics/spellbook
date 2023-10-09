@@ -11,7 +11,7 @@ models:
     description: Ethereum staking identified depositor entities (where a contract is called and the ETH comes from a different address)
     columns:
       - name: depositor_address
-        description: "Address of indentified depositor entity"
+        description: "Address of identified depositor entity"
         tests:
           - unique
       - name: entity
@@ -34,7 +34,7 @@ models:
     description: Coinbase's Ethereum staking identified depositor entities
     columns:
       - name: depositor_address
-        description: "Address of indentified depositor entity"
+        description: "Address of identified depositor entity"
         tests:
           - unique
       - name: entity
@@ -57,7 +57,7 @@ models:
     description: Binance's Ethereum staking identified depositor entities
     columns:
       - name: depositor_address
-        description: "Address of indentified depositor entity"
+        description: "Address of identified depositor entity"
         tests:
           - unique
       - name: entity
@@ -70,7 +70,7 @@ models:
           - accepted_values:
               values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
 
-  - name: staking_ethereum_entities_addresses
+  - name: staking_ethereum_entities_depositor_addresses
     meta:
       blockchain: ethereum
       sector: staking
@@ -80,7 +80,30 @@ models:
     description: Ethereum staking identified depositor entities
     columns:
       - name: depositor_address
-        description: "Address of indentified depositor entity"
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_tx_from_addresses
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified tx_from entities
+    columns:
+      - name: tx_from
+        description: "Address that initiated the deposit transaction(s)"
         tests:
           - unique
       - name: entity
@@ -103,7 +126,7 @@ models:
     description: DARMA Capital's Ethereum staking identified depositor entities
     columns:
       - name: depositor_address
-        description: "Address of indentified depositor entity"
+        description: "Address of identified depositor entity"
         tests:
           - unique
       - name: entity
@@ -126,7 +149,7 @@ models:
     description:  Chorus One's Ethereum staking identified depositor entities
     columns:
       - name: pubkey
-        description: "Pubkey of indentified validator"
+        description: "Pubkey of identified validator"
         tests:
           - unique
       - name: entity

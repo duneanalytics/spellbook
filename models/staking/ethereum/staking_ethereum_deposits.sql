@@ -1,5 +1,6 @@
 {{ config(
     tags = ['dunesql'],
+    schema = 'staking_ethereum',
     alias = alias('deposits'),
     materialized = 'incremental',
     file_format = 'delta',

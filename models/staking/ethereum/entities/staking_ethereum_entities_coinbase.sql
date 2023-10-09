@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'staking_ethereum',
     alias = alias('entities_coinbase'),
     tags = ['dunesql'],
     materialized = 'incremental',

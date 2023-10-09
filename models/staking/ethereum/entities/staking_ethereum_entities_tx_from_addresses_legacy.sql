@@ -1,7 +1,7 @@
 {{
   config(
         schema = 'staking_ethereum',
-        alias = alias('entities_darma_capital', legacy_model=True),
+        alias = alias('entities_tx_from_addresses', legacy_model=True),
         tags=['legacy', 'static']
         )
 }}

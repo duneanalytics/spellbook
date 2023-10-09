@@ -1,5 +1,6 @@
 {{ config(
-    alias = alias('entities_addresses'),
+    schema = 'staking_ethereum',
+    alias = alias('entities_depositor_addresses'),
     tags = ['dunesql', 'static'],
     unique_key = ['address'])
 }}
@@ -108,5 +109,6 @@ FROM
     , (0x1b63142628311395ceafeea5667e7c9026c862ca, 'Taylor Gerring', 'Taylor Gerring', 'Independent Staker')
     , (0x2ed8eb76c91fa25b21d588128569dbc2f885e511, 'Linke Yang', 'Linke Yang', 'Independent Staker')
     , (0x96f4489fe75d0494bd5088b0d80b17a5759dac37, 'Tranchess', 'Tranchess', 'Liquid Staking')
+    , (0x1a0ffc5d6a8f14bacfb21056355394128fa6b955, 'DxPool', 'DxPool', 'Staking Pools')
     ) 
     x (depositor_address, entity, entity_unique_name, category)
