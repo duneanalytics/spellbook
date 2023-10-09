@@ -21,7 +21,7 @@
      , ('celo', source('erc20_celo', 'evt_approval'))
      , ('base', source('erc20_base', 'evt_Approval'))
      , ('goerli', source('erc20_goerli', 'evt_approval'))
-     , ('zksync', source('zksync', 'evt_approval'))
+     , ('zksync', source('erc20_zksync', 'evt_approval'))
 ] %}
 
 SELECT *
