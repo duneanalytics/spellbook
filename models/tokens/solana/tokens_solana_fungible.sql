@@ -105,7 +105,7 @@ SELECT
   , trim(name) as name
   , trim(symbol) as symbol
   , token_uri
-  , created_at
+  , cast(created_at as timestamp) created_at
 FROM 
 (
   VALUES
@@ -115,6 +115,6 @@ FROM
   'wrapped SOL',
   'SOL',
   null,
-  timestamp '2021-01-31 00:00:00',
+  '2021-01-31 00:00:00'
 )
 ) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at)
