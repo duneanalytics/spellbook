@@ -5,7 +5,6 @@
 
 {% test check_columns_nft_base_trades(model) %}
     {%- set column_types = {
-        'block_date':'date',
         'block_time':'timestamp(3) with time zone',
         'block_number':'bigint',
         'tx_hash':'varbinary',

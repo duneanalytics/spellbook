@@ -2,7 +2,6 @@
     schema = 'blur_seaport_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,8 +12,7 @@
 {% set seaport_usage_start_date = "cast('2023-01-25' as timestamp)" %}
 
 SELECT
-      cast(date_trunc('month', s.evt_block_time) as date) AS block_date
-    , s.evt_block_time AS block_time
+      s.evt_block_time AS block_time
     , s.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(s.offer[1], '$.token')) AS nft_contract_address
     , cast(JSON_EXTRACT_SCALAR(s.offer[1], '$.identifier') as uint256) AS nft_token_id

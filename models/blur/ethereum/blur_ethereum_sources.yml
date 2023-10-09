@@ -7,3 +7,15 @@ sources:
     tables:
       - name: BlurAirdrop_evt_Claimed
         loaded_at_field: evt_block_time
+      - name: Blend_evt_LoanOfferTaken
+        loaded_at_field: evt_block_time
+      - name: Blend_evt_Refinance
+        loaded_at_field: evt_block_time
+      - name: Blend_evt_Seize
+        loaded_at_field: evt_block_time
+      - name: Blend_evt_Repay
+        loaded_at_field: evt_block_time
+      - name: Blend_evt_StartAuction
+        loaded_at_field: evt_block_time
+      - name: Blend_evt_BuyLocked
+        loaded_at_field: evt_block_time
