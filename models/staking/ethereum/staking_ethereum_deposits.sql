@@ -56,7 +56,7 @@ WITH deposit_events AS (
     {% endif %}
     )
     
-SELECT d.block_time
+SELECT distinct d.block_time
 , d.block_number
 , d.amount AS amount_staked
 , ett.depositor_address
