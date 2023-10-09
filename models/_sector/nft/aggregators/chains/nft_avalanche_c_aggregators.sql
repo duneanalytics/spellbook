@@ -1,5 +1,6 @@
 {{config(
       tags = ['dunesql'],
+      schema = 'nft_avalanche_c',
       alias=alias('aggregators')
   )
 }}

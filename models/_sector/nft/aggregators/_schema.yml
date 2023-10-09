@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: nft_optimism_aggregators
+  - name: nft_aggregators
     meta:
-      blockchain: optimism
+      blockchain: arbitrum, avalanche_c, bnb, celo, ethereum, optimism, polygon
       sector: nft
-      contributors: chuxin, hildobby
+      contributors: hildobby, tomfutago, chuxin, 0xRob, soispoke
     config:
-      tags: ['nft', 'optimism', 'aggregators']
+      tags: ['nft', 'aggregators']
     description: >
         NFT aggregators
     columns:

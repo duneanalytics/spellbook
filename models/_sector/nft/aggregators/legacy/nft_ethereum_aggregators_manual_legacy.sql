@@ -1,5 +1,8 @@
 {{config(
-	tags=['legacy'],alias = alias('aggregators_manual', legacy_model=True))}}
+	tags=['legacy'],
+	schema = 'nft_ethereum',
+	alias = alias('aggregators_manual', legacy_model=True)
+	)}}
 SELECT
   LOWER(contract_address) AS contract_address,
   name

@@ -1,5 +1,6 @@
 {{config(
     tags = ['dunesql'],
+    schema = 'nft_ethereum',
     alias=alias('aggregators_manual')
 )}}
 SELECT
