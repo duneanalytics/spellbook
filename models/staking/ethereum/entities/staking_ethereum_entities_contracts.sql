@@ -31,7 +31,7 @@ WITH contracts AS (
         x (address, entity, category)
     )
 
-SELECT address
+SELECT address AS depositor_address
 , entity
 , CONCAT(entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS VARCHAR)) AS entity_unique_name
 , category AS category

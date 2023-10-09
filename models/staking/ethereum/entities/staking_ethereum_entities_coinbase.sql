@@ -7,7 +7,7 @@
     unique_key = ['address'])
 }}
 
-SELECT coinbase.address
+SELECT coinbase.address AS depositor_address
 , 'Coinbase' AS entity
 , CONCAT('Coinbase ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category

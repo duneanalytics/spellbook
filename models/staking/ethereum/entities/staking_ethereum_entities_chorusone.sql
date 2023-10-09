@@ -7,7 +7,7 @@
     unique_key = ['address'])
 }}
 
-WITH chorus_one_pubkeys AS (
+WITH chorusone_pubkeys AS (
     SELECT pubkey
     FROM (VALUES
         (0x8510c8091b2d52dade2962260665d245c33175c16c84622847b7b6fb7743509cc784489dea62a056f9b7941b53cac09a)
@@ -609,3 +609,9 @@ WITH chorus_one_pubkeys AS (
         , (0xa375ae79b9e182ae978f8b7460872932ba7c70077e9747eda823654c1df18e55f9fa4a1529f24d361ebff2af409d215c)
         ) AS temp_table (pubkey)
         )
+
+SELECT pubkey
+, 'Chorus One' AS entity
+, CONCAT('Chorus One ', CAST(ROW_NUMBER() OVER (ORDER BY pubkey) AS VARCHAR)) AS entity_unique_name
+, 'Staking Pools' AS category
+FROM chorusone_pubkeys
