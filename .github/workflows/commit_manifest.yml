@@ -12,7 +12,7 @@ concurrency:
       
 jobs:
   commit_manifest:
-    runs-on: [ self-hosted, linux, spellbook-trino ]
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     strategy:
       matrix:
         engine: [ 'spark', 'dunesql' ]
