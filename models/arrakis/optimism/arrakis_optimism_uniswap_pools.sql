@@ -1,6 +1,7 @@
 
  {{
   config(
+        tags=['dunesql'],
         schema='arrakis_optimism',
         alias = alias('uniswap_pools'),
         materialized = 'incremental',
@@ -13,9 +14,9 @@
 SELECT distinct
     'optimism' AS blockchain,
 
-    CONCAT(COALESCE(e0.symbol,token0)
+    CONCAT(COALESCE(e0.symbol,cast(token0 as varchar))
             , '/'
-            ,COALESCE(e1.symbol,token1)
+            ,COALESCE(e1.symbol,cast(token1 as varchar))
             ,'-'
             , TRIM(CAST(CAST(ROUND(fee / 1e4, 2) AS DECIMAL(20, 2)) AS VARCHAR(10) ))
             ,'%'
@@ -37,5 +38,5 @@ FROM {{ source('arrakis_optimism', 'ArrakisFactoryV1_evt_PoolCreated') }} pc
         AND e1.blockchain = 'optimism'
 
 {% if is_incremental() %}
-WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1 month')
+WHERE pc.evt_block_time >= date_trunc('day', now() - interval '1' month)
 {% endif %}
