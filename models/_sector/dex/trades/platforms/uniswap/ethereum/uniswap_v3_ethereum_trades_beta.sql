@@ -17,19 +17,3 @@ from ref('dex_trades_beta')
 where project = 'uniswap'
   and version = '3'
   and blockchain = 'ethereum'
-
--- uni_v3.base_trades -> enrich -> uniswap_v3_ethereum.trades
--- -- (blockchain, project, project_version, model)
--- {% set base_models = [ ('ethereum',   'uniswap',    '3',    ref('uniswap_ethereum_v3_base_trades')) ] %}
---
---
--- -- macros/models/sector/dex
--- {{
---     dex_enrich_trades(
---         blockchain = 'ethereum'
---         ,models = base_models
---         ,transactions_model = source('ethereum', 'transactions')
---         ,tokens_erc20_model = ref('tokens_erc20')
---         ,prices_model = source('prices', 'usd')
---     )
--- }}
