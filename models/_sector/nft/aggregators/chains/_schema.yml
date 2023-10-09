@@ -9,7 +9,7 @@ models:
         tests:
           - unique
       - &name
-      - name: name
+        name: name
         description: "Aggregator project's name"
 
   - name: nft_avalanche_c_aggregators
