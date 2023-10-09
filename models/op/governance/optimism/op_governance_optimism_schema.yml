@@ -77,7 +77,7 @@ models:
             - evt_index
             
     columns:
-      - *block_time"
+      - *block_time
       - *tx_hash
       - *evt_index
       - &fromDelegate
