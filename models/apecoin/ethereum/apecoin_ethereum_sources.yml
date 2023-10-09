@@ -1,9 +1,0 @@
-version: 2
-
-sources: 
-  - name: apecoin_ethereum
-    description: >
-      ApeCoin ethereum contracts
-    tables:
-      - name: AirdropGrapesToken_evt_AirDrop
-        loaded_at_field: evt_block_time
