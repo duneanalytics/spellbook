@@ -22,10 +22,25 @@
 
 SELECT *
 FROM (
-        {% for entities_addresses_model in entities_addresses_models %}
-        SELECT CASE WHEN '{{ entities_addresses_model[0] }}'='depositor_address' THEN depositor_address ELSE NULL END AS deposit_address
-        , CASE WHEN '{{ entities_addresses_model[0] }}'='tx_from' THEN tx_from ELSE NULL END AS tx_from
-        , CASE WHEN '{{ entities_addresses_model[0] }}'='pubkey' THEN pubkey ELSE NULL END AS pubkey
+        {% for entities_addresses_model in entities_addresses_models if entities_addresses_model[0] == 'depositor_address' %}
+        SELECT depositor_address
+        , NULL AS tx_from
+        , NULL AS pubkey
+        , entity
+        , entity_unique_name
+        , category
+        FROM {{ entities_addresses_model[1] }}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+
+        UNION ALL
+
+        {% for entities_addresses_model in entities_addresses_models if entities_addresses_model[0] == 'pubkey' %}
+        SELECT NULL AS depositor_address
+        , NULL AS tx_from
+        , pubkey AS pubkey
         , entity
         , entity_unique_name
         , category
