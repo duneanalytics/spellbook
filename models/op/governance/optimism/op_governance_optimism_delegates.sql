@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'op_governance_optimism'
+        ,schema = 'op_governance_optimism'
         ,tags=['dunesql']
         , alias = alias('delegates')
         , post_hook='{{ expose_spells(\'["optimism"]\',
@@ -8,8 +8,6 @@
                                   \'["kaiblade"]\') }}'
   )
 }}
-
-
 WITH rolling_voting_power AS
 (SELECT *,
 SUM(power_diff) OVER (ORDER BY block_time) AS total_voting_power
@@ -31,7 +29,7 @@ fromDelegate AS delegate,
 -1 AS delegator_count
 FROM ref{{'op_governance_optimism_delegators_incremental'}}
 WHERE fromDelegate != 0x0000000000000000000000000000000000000000
-AND CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
+AND CAST(block_time AS DATE) >= DATE'2022-05-26'
 
 UNION 
 
@@ -42,7 +40,7 @@ evt_index,
 toDelegate AS delegate, 
 1 AS delegator_count
 FROM ref{{'op_governance_optimism_delegators_incremental'}}
-WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
+WHERE CAST(block_time AS DATE) >= DATE'2022-05-26'
 ),
 
 delegator_count_data AS
