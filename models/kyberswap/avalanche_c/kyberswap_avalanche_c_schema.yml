@@ -23,7 +23,7 @@ models:
       - check_dex_seed:
           blockchain: avalanche_c
           project: kyberswap
-          version: elastic_2
+          version: classic
     columns:
       - &blockchain
         name: blockchain
