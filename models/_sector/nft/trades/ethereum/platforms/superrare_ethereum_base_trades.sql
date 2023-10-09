@@ -2,7 +2,6 @@
     schema = 'superrare_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,7 +12,7 @@
 
 -- raw data table with all sales on superrare platform -- both primary and secondary
 with all_superrare_sales as (
-    -- 0x2947f98c42597966a0ec25e92843c09ac17fbaa7 -- SuperRareMarketAuction 
+    -- 0x2947f98c42597966a0ec25e92843c09ac17fbaa7 -- SuperRareMarketAuction
     -- 0x65b49f7aee40347f5a90b714be4ef086f3fe5e2c -- SuperRareMarketAuction : V2 https://github.com/superrare/pixura-contracts/blob/66b39164255d29d07e00b4ad8df206c379bf35e7/contracts/build/SuperRareMarketAuctionV2.json
     select  evt_block_time as block_time
             , evt_block_number as block_number
@@ -152,7 +151,6 @@ with all_superrare_sales as (
 )
 
 SELECT
-    cast(date_trunc('month', a.block_time) AS date) AS block_date,
     a.block_time,
     a.block_number,
     a.nft_token_id,
