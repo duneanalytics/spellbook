@@ -9,6 +9,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities (where a contract is called and the ETH comes from a different address)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -32,6 +36,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Coinbase's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -55,6 +63,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Binance's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -78,6 +90,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -101,6 +117,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified tx_from entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_from
     columns:
       - name: tx_from
         description: "Address that initiated the deposit transaction(s)"
@@ -124,6 +144,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: DARMA Capital's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
@@ -147,6 +171,10 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description:  Chorus One's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pubkey
     columns:
       - name: pubkey
         description: "Pubkey of identified validator"

@@ -11,6 +11,12 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+            - tx_from
+            - pubkey
     columns:
       - name: depositor_address
         description: "Address of indentified depositor entity"

@@ -2,7 +2,7 @@
     schema = 'staking_ethereum',
     alias = alias('entities_depositor_addresses'),
     tags = ['dunesql', 'static'],
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
 SELECT depositor_address, entity, entity_unique_name, category

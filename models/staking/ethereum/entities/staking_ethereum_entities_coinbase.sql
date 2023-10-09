@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
 SELECT coinbase.address AS depositor_address
