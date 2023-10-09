@@ -17,6 +17,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -63,6 +65,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -109,6 +113,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -148,6 +154,13 @@ models:
       tags: ['fungible', 'ethereum', 'transfers']
     description: >
         Native and ERC20 transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - from
+            - to
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -155,6 +168,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -201,6 +216,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"§
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -247,6 +264,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -293,6 +312,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -339,6 +360,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
@@ -385,6 +408,8 @@ models:
         description: "UTC event block time"
       - name: block_number
         description: "Block number in which the transaction was executed"
+      - name: block_month
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount

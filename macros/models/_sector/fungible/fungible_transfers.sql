@@ -42,6 +42,7 @@ WITH transfers AS (
 SELECT '{{blockchain}}' as blockchain
 , t.block_time
 , t.block_number
+, date_trunc('month', t.block_time) AS block_month
 , t.amount_raw
 , t.amount
 , pu.price AS usd_price
