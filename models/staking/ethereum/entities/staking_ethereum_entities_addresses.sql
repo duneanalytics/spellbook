@@ -109,4 +109,4 @@ FROM
     , (0x2ed8eb76c91fa25b21d588128569dbc2f885e511, 'Linke Yang', 'Linke Yang', 'Independent Staker')
     , (0x96f4489fe75d0494bd5088b0d80b17a5759dac37, 'Tranchess', 'Tranchess', 'Liquid Staking')
     ) 
-    x (address, entity, entity_unique_name, category)
+    x (depositor_address, entity, entity_unique_name, category)
