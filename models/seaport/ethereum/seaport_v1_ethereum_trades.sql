@@ -256,7 +256,7 @@ with source_ethereum_transactions as (
           ,a.sub_type
           ,a.sub_idx
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
           ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'

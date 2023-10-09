@@ -58,7 +58,7 @@ with source_arbitrum_transactions as (
     {% if not is_incremental() %}
       and minute >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
-    {% if is_incremental() %} 
+    {% if is_incremental() %}
       and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
@@ -96,7 +96,7 @@ with source_arbitrum_transactions as (
         ,a.is_traded_nft
         ,a.is_moved_nft
   from ref_seaport_arbitrum_base_pairs a
-  where 1=1 
+  where 1=1
     and not a.is_private
   union all
   select a.block_date
@@ -145,13 +145,13 @@ with source_arbitrum_transactions as (
     and a.is_private
     and not a.is_moved_nft
     and a.consideration_cnt > 0
-) 
+)
 ,iv_volume as (
   select block_date
         ,block_time
         ,tx_hash
         ,evt_index
-        ,max(token_contract_address) as token_contract_address 
+        ,max(token_contract_address) as token_contract_address
         ,sum(case when is_price then original_amount end) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
@@ -177,7 +177,7 @@ with source_arbitrum_transactions as (
         ,a.block_number
         ,a.sender as seller
         ,a.receiver as buyer
-        ,case when nft_cnt > 1 then 'bundle trade' 
+        ,case when nft_cnt > 1 then 'bundle trade'
               else 'single item trade'
           end as trade_type
         ,a.order_type
@@ -187,7 +187,7 @@ with source_arbitrum_transactions as (
         ,a.item_type as nft_token_standard
         ,a.zone
         ,a.platform_contract_address
-        ,b.token_contract_address 
+        ,b.token_contract_address
         ,CAST(round(price_amount_raw / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
         ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
         ,platform_fee_receiver
@@ -216,7 +216,7 @@ with source_arbitrum_transactions as (
 ,iv_trades as (
   select a.*
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
           ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
           ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'
@@ -237,7 +237,7 @@ with source_arbitrum_transactions as (
           ,sub_idx
   from iv_nfts a
   inner join source_arbitrum_transactions t on t.hash = a.tx_hash
-  left join ref_tokens_nft n on n.contract_address = nft_contract_address 
+  left join ref_tokens_nft n on n.contract_address = nft_contract_address
   left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                       end
@@ -245,13 +245,13 @@ with source_arbitrum_transactions as (
                                                             else a.token_contract_address
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
-  left join ref_nft_aggregators agg on agg.contract_address = t.to                                     
+  left join ref_nft_aggregators agg on agg.contract_address = t.to
 )
 ,iv_columns as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
-  -- initcap the code value if needed 
-  select 
+  -- initcap the code value if needed
+  select
     -- basic info
     'arbitrum' as blockchain
     ,'seaport' as project
@@ -273,7 +273,7 @@ with source_arbitrum_transactions as (
     ,nft_token_amount as number_of_items
     ,nft_token_standard as token_standard
 
-    -- price info          
+    -- price info
     ,price_amount as amount_original
     ,price_amount_raw as amount_raw
     ,price_amount_usd as amount_usd
