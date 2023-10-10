@@ -157,7 +157,7 @@ models:
             - trace_address
       - check_dex_aggregator_seed:
           blockchain: base
-          project: DODO
+          project: dodo
           version: 0
     columns:
       - *blockchain
