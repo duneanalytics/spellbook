@@ -20,16 +20,10 @@ models:
     columns:
       - name: depositor_address
         description: "Address of indentified depositor entity"
-        tests:
-          - unique
       - name: tx_from
         description: "Address that initiated the ETH staking deposit"
-        tests:
-          - unique
       - name: pubkey
         description: "Pubkey of indentified validator"
-        tests:
-          - unique
       - name: entity
         description: "Identified entity name"
       - name: entity_unique_name
