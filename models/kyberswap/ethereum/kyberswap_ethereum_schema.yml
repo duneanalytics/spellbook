@@ -23,7 +23,7 @@ models:
       - check_dex_seed:
           blockchain: ethereum
           project: kyberswap
-          version: classic
+          version: elastic
     columns:
       - &blockchain
         name: blockchain
