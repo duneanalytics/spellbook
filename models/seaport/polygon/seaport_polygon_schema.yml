@@ -135,7 +135,7 @@ models:
             - token_id
             - sub_type
             - sub_idx
-      - check_seaport_seed_legacy:
+      - check_seaport_seed:
           blockchain: polygon
           project: seaport
           version: v1
