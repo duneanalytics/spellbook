@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["zksync"]\',
                                     "project",
                                     "safe",
-                                    \'["kryptaki"]\') }}'
+                                    \'["danielpartida", "kryptaki"]\' }}'
     )
 }}
 
