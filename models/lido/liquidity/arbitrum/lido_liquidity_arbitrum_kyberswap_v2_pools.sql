@@ -1,7 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
     alias = alias('kyberswap_v2_pools'),
-    tags = ['dunesql', 'prod_exclude'],
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
