@@ -66,13 +66,13 @@ seeds:
       column_types:
         block_time: timestamp
         block_date: date
-        evt_index: uint256
+        evt_index: int
         tx_hash: varbinary
         maker: varbinary
         taker: varbinary
         matcher: varbinary
         nft_address: varbinary
-        nft_id: int
+        nft_id: int256
         label: varchar
         price_label: varbinary
         token: varbinary
