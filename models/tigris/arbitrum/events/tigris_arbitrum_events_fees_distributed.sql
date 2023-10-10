@@ -21,7 +21,8 @@ WITH
     'Trading_evt_FeesDistributed',
     'TradingV2_evt_FeesDistributed',
     'TradingV3_evt_FeesDistributed',
-    'TradingV4_evt_FeesDistributed'
+    'TradingV4_evt_FeesDistributed',
+    'TradingV5_evt_FeesDistributed'
 ] %}
 
 fees_v1 AS (
@@ -38,7 +39,7 @@ fees_v1 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_arbitrum', fees_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

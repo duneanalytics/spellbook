@@ -58,6 +58,13 @@ WITH dao_wallet AS (
         , (LOWER('0x1a3da79ee7db30466ca752de6a75def5e635b2f6'), 'TechOps Auditor Wallet', 'Fixed', 'TECH-001')
         , (LOWER('0x5F5c328732c9E52DfCb81067b8bA56459b33921f'), 'Foundation Reserves', 'Fixed', 'DAIF-001')
         , (LOWER('0x478c7ce3e1df09130f8d65a23ad80e05b352af62'), 'Gelato Keepers', 'Variable', 'GELATO')
+        , (LOWER('0x926c21602FeC84d6d0fA6450b40Edba595B5c6e4'), 'Gelato Keepers', 'Variable', 'GELATO')
+        , (LOWER('0x37b375e3D418fbECba6b283e704F840AB32f3b3C'), 'Keep3r Keepers', 'Variable', 'KEEP3R')
+        , (LOWER('0x5A6007d17302238D63aB21407FF600a67765f982'), 'Techops Keepers', 'Variable', 'TECHOPS')
+        , (LOWER('0xfB5e1D841BDA584Af789bDFABe3c6419140EC065'), 'Chainlink Keepers', 'Variable', 'CHAINLINK')
+        , (LOWER('0xaeFed819b6657B3960A8515863abe0529Dfc444A'), 'Keep3r Keepers', 'Variable', 'KEEP3R')
+        , (LOWER('0x0B5a34D084b6A5ae4361de033d1e6255623b41eD'), 'Gelato Keepers', 'Variable', 'GELATO')
+        , (LOWER('0xc6A048550C9553F8Ac20fbdeB06f114c27ECcabb'), 'Gelato Keepers', 'Variable', 'GELATO')
         --, (LOWER('0x0048FC4357DB3c0f45AdEA433a07A20769dDB0CF'), 'DSS Blow', 'Variable', 'BLOW')
         , (LOWER('0xb386Bc4e8bAE87c3F67ae94Da36F385C100a370a'), 'New Risk Multisig', 'Fixed', 'RISK-001')
     ) AS  t(wallet_address, wallet_label, varfix, code)
@@ -284,19 +291,34 @@ WITH dao_wallet AS (
 )
 , team_dai_burns_tx AS (
     SELECT call_tx_hash
-         , usr
-    FROM {{ source('maker_ethereum', 'dai_call_burn') }}
-    WHERE call_success
-      AND (usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf' OR usr IN (SELECT wallet_address FROM dao_wallet))
+        , usr
+        , is_keeper
+    FROM (
+        SELECT d_c_b.call_tx_hash
+            , d_c_b.usr
+            , dao_wallet.wallet_label LIKE '% Keepers' as is_keeper
+        FROM {{ source('maker_ethereum', 'dai_call_burn') }} as d_c_b
+        JOIN dao_wallet on d_c_b.usr = dao_wallet.wallet_address
+        where call_success
+        UNION ALL
+        SELECT d_c_b.call_tx_hash
+            , d_c_b.usr
+            , false as is_keeper
+        FROM {{ source('maker_ethereum', 'dai_call_burn') }} as d_c_b
+        where call_success
+        AND usr = '0x0048fc4357db3c0f45adea433a07a20769ddb0cf'
+    )
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
     GROUP BY call_tx_hash
         , usr
+        , is_keeper
 )
 , team_dai_burns_preunioned AS (
     SELECT vat.call_block_time        AS ts
          , vat.call_tx_hash           AS hash
+         , tx.is_keeper
          , SUM(vat.rad / POW(10, 45)) AS value
     FROM {{ source('maker_ethereum', 'vat_call_move') }} vat
     JOIN team_dai_burns_tx tx -- Flop income (coming directly from users wallets)
@@ -308,11 +330,12 @@ WITH dao_wallet AS (
     --   {% endif %}
     GROUP BY vat.call_block_time
         , vat.call_tx_hash
+	, tx.is_keeper
 )
 , team_dai_burns AS (
     SELECT ts
          , hash
-         , 31730 AS code
+         , (CASE WHEN is_keeper THEN 31710 ELSE 31730 END) AS code
          , value --increased equity
     FROM team_dai_burns_preunioned
 
@@ -376,11 +399,11 @@ WITH dao_wallet AS (
     SELECT call_tx_hash
         , CASE WHEN usr = '0x6c6d4be2223b5d202263515351034861dd9afdb6' THEN 'RWA009-A'
             WHEN usr = '0xef1b095f700be471981aae025f92b03091c3ad47' THEN 'RWA007-A'
-            WHEN usr = '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f' THEN 'RWA014-A'
+            WHEN usr = '0x71ec6d5ee95b12062139311ca1fe8fd698cbe0cf' THEN 'RWA014-A'
         END AS ilk
     FROM {{ source('maker_ethereum', 'dai_call_burn') }}
     WHERE call_success
-      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47', '0x5c82d7eafd66d7f5edc2b844860bfd93c3b0474f') --HVB RWA JAR, MIP65 RWA JAR, COINBASE RWA JAR
+      AND usr IN ('0x6c6d4be2223b5d202263515351034861dd9afdb6', '0xef1b095f700be471981aae025f92b03091c3ad47', '0x71ec6d5ee95b12062139311ca1fe8fd698cbe0cf') --HVB RWA JAR, MIP65 RWA JAR, COINBASE RWA JAR
     --   {% if is_incremental() %}
     --   AND call_block_time >= date_trunc("day", now() - interval '1 week')
     --   {% endif %}
@@ -720,7 +743,7 @@ WITH dao_wallet AS (
     SELECT mints.call_block_time   AS ts
          , mints.call_tx_hash      AS hash
          , CASE
-               WHEN dao_wallet.code = 'GELATO' THEN 31710 --keeper maintenance expenses
+               WHEN dao_wallet.code IN ('GELATO', 'KEEP3R', 'CHAINLINK', 'TECHOPS') THEN 31710 --keeper maintenance expenses
                WHEN dao_wallet.code = 'GAS' THEN 31630 -- oracle gas expenses
                WHEN dao_wallet.code IS NOT NULL THEN 31720 --workforce expenses
                ELSE 31740 --direct opex - when a suck operation is used to directly transfer DAI to a third party

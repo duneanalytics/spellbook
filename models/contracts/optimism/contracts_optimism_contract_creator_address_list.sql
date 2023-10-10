@@ -617,11 +617,68 @@ WITH curated_list AS (
       ,(0x9aaa603cb8ce688cdb48ab132dd1b8ad7b5ade02, 'Bulls DAO')
       ,(0x9bbFB9919062C29a5eE15aCD93c9D7c3b14d31aa, 'AttestationStation')
       ,(0xC8D7d0BD61C5Ca5A493a229f6754Da5560F486ae, 'Magpie')
-      
+      ,(0x344a908d1a7b7d06b7ad7169c1db81fc9d496de9, 'zkLink')
+      ,(0xd0fe1538031f5647b1846d35b36f22e7317a1e35, 'Altitude Bridge')
+      ,(0x645487828d5769c20365fdb8786a5e2b734d785c, 'Altitude Bridge')
+      ,(0x01cf911dd46f90290bf5f93d0ef34237df7df1b6, 'Hedgey Finance')
+      ,(0x320bcb681ce7023edfe48ade9cf5bf67a11bcd36, 'Hedgey Finance')
+      ,(0xf537880c505bfa7cda6c8c49d7efa53d45b52d40, 'Binance')
+      ,(0x91f23057ee6e2d1e1ba00a7c1d71ba1a0b2c3113, 'Alongside Crypto Market Index')
+      ,(0xe3f641ad659249a020e2af63c3f9abd6cffb668b, 'Alta Finance')
+      ,(0x5afae3d2b0dcee1833bb947fac15d4f2d2d5d523, 'Ax Protocol')
+      ,(0xb28837949e7a3f1ac862036e8a0ae392c9ff9bb4, 'Axelar')
+      ,(0x38a93e70b0d8343657f802c1c3fdb06ac8f8fe99, 'AladdinDAO')
+      ,(0x4b785041d6a705d41f7578b13f93a7e315d2f8ff, 'Bankless DAO')
+      ,(0x048c6bad48c51436764ed1fdb3c9d1c25d2c0ada, 'Bolide Finance')
+      ,(0x615b5313a927571343f9355225e555cf7688d5e1, 'Cartesi')
+      ,(0x9bccd51ee5cf97791e39544827ef675cd81171b8, 'Circle')
+      ,(0xf44e40882f3536edfea032530213c7fcf146b269, 'YFX Protocol')
+      ,(0x81ead4918134ae386dbd04346216e20ab8f822c4, 'ERC4337')
+      ,(0x0a06590435ac975eac04862e7a3b6f0a4feb5ccc, 'Nansen NFT')
+      ,(0xc34fd9b40afb41ac528abb3c7ef643a6ba3667e3, 'Rabbithole')
+      ,(0xAfdFB268C7984925e3990c768B474578adEca20E, 'Rabbithole')
+      ,(0xb82119772ded0318b1930c6ed45bc4bcd3009cff, 'Connext')
+      ,(0x12125c8a52B8E4ed1A28e1f964023b4477f11300, 'Zora')
+      ,(0xaae81BC3Fc4BE22E3A5c1cbC32ecD922f594b085, 'Rabbithole')
+      ,(0xc516fe1fee5122d66e9427721a63d6c27e1201ca, 'Pooltogether')
+      ,(0x068053f77e321c8828f5fea91b6917011b1a77fe, 'Beamer Bridge')
+      ,(0x12d970154ac171293323f20757130d5731850deb, 'Kwenta')
+      ,(0x1f98431c8ad98523631ae4a59f267346ea31f984, 'Uniswap')
+      ,(0xfba662e1a8e91a350702cf3b87d0c2d2fb4ba57f, 'Seaport')
+      ,(0x625796b2869d94de2d11841288789663005c080f, 'Overtime Markets')
+      ,(0x9a187663e454e99cafd40a2712606cc306e301b2, 'Aave')
+      ,(0x8a598f5629d3e6a8747afbfd6b9b982a2d1078a1, 'Arrakis Finance')
+      ,(0x22fe024ffec24631a625113bdf5e9f7d447c8ddf, 'Teahouse')
+      ,(0xC73Fc08C931Efe3FCE850C09278472e8a81c2e05, 'XEN Crypto')
+      ,(0x0Cf83143f0AB9D6e178fC7f141205ec2992266C8, 'CoinTool')
+      ,(0x464eD76C6B2DdeCC9aa1E990211670a81b93474B, 'VMEX Finance')
+      ,(0x1FcCC097db89A86Bfc474A1028F93958295b1Fb7, 'Pendle')
+      ,(0xC107DAcAf1d6e369CFDc67695BEAdf5e2068191e, 'Pendle') --Token
+      ,(0x0CdB34e6a4D635142BB92fe403D38F636BbB77b8, 'Penpie') --Token
+      ,(0x9E7a882fF45C4a5EcC9BAdbFbC775c3e68c62F32, 'Swapsicle') --WooStakingProxy
+      ,(0x51150F973c2b0537642f5AE8911A49567598808f, 'Toros')
+      ,(0x8cA573430Fd584065C080fF1d2eA1a8DfB259Ae8, 'Revest Finance')
+      ,(0x225114369fA6b133400A4BB86d08c62044387266, 'HashDao Finance') 
+      ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, 'Woo Network') --SuperChargerVault
+      ,(0x2C47d8232B11156dF8324f13F13C112770a98b80, 'Interport Finance')
+      ,(0x99a9cC2Aaf54F6bE94A437641692A72810f6E9d5, 'Bored Town') --Campaigns
+      ,(0xcFa1Bf8CA39A89B6c0E9AFF55454B20e589c0dA0, 'Bored Town') --Launchpad
+      ,(0x8b6c27ec466923fad66Ada94c78AA320eA876969, 'Opti.domains')
+      ,(0x888811AC3DC01628eBD22b1Aa01a35825aD997e8, 'Opti.domains')
+      ,(0x14B214CA36249b516B59401B3b221CB87483b53C, 'SCRY')
+      ,(0x4D633C53cF71220FB65Fa8eABEC5ae5dc450c9Ae, 'Oppa Bear NFT')
+      ,(0x8325Cb5093FF55C02c4F3e54f43709C5A824FB70, 'Tripster')
+      ,(0x1208a26faa0f4ac65b42098419eb4daa5e580ac6, 'ENS Wildcard Domains')
+      ,(0x10850762bAc0dc6660630c1EfFe188A7cbFDdc88, 'OptiChads NFT')
+      ,(0x086D4a6964E2dF36ca3664613F96C0fB3E5F272C, 'Aragon')
+      ,(0x99C19AB10b9EC8aC6fcda9586E81f6B73a298870, 'dm3 Protocol')
+      ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
+
   ) as temp_table (creator_address, contract_project)
 )
-SELECT 
-  creator_address, contract_project
+,filtered_list AS (
+  SELECT 
+    creator_address, contract_project
 --filter out creators that we never want to map
   FROM curated_list f
 WHERE f.creator_address NOT IN (
@@ -629,4 +686,12 @@ WHERE f.creator_address NOT IN (
 )
 
 GROUP BY 1,2
+)
 
+-- Enforce consistent project name mapping to contracts_optimism_project_name_mappings.sql
+SELECT list.creator_address,
+  Coalesce(mapping.mapped_name, list.contract_project) AS contract_project
+  FROM filtered_list list
+  LEFT JOIN {{ ref('contracts_optimism_project_name_mappings') }} mapping
+  ON Lower(list.contract_project) = Lower(mapping.dune_name)
+  

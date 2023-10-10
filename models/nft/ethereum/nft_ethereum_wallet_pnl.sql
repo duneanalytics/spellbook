@@ -1,4 +1,6 @@
 {{ config(
+    tags = ['dunesql'],
+    schema = 'nft_ethereum',
     alias = alias('wallet_pnl'),
     materialized='incremental',
     file_format = 'delta',
@@ -20,11 +22,11 @@ WITH weekly_unique_wallet_address as
     FROM 
         {{ ref('nft_trades') }}
     WHERE 
-        block_time >= date_trunc("day", now() - interval '1 week')
+        block_time >= date_trunc('day', now() - interval '7' Day)
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
-        AND number_of_items = 1
+        AND number_of_items = UINT256 '1'
         AND buyer != seller 
     
     UNION 
@@ -35,11 +37,11 @@ WITH weekly_unique_wallet_address as
     FROM 
         {{ ref('nft_trades') }}
     WHERE 
-        block_time >= date_trunc("day", now() - interval '1 week')
+        block_time >= date_trunc('day', now() - interval '7' Day)
         AND blockchain = 'ethereum'
         AND currency_symbol IN ('WETH', 'ETH')
         AND amount_original IS NOT NULL
-        AND number_of_items = 1
+        AND number_of_items = UINT256 '1'
         AND buyer != seller 
 )
 , trades as
@@ -62,7 +64,7 @@ WITH weekly_unique_wallet_address as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
@@ -87,7 +89,7 @@ WITH weekly_unique_wallet_address as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
@@ -143,7 +145,7 @@ WITH trades as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3
@@ -164,7 +166,7 @@ WITH trades as
         src.currency_symbol IN ('ETH', 'WETH')
         AND src.blockchain = 'ethereum'
         AND src.buyer != src.seller 
-        AND src.number_of_items = 1
+        AND src.number_of_items = UINT256 '1'
         AND src.amount_original IS NOT NULL 
     GROUP BY
         1, 2, 3

@@ -12,16 +12,21 @@
  
  ref('lido_liquidity_arbitrum_wombat_pools'),
  ref('lido_liquidity_arbitrum_kyberswap_pools'),
+ ref('lido_liquidity_arbitrum_kyberswap_v2_pools'),
  ref('lido_liquidity_arbitrum_uniswap_v3_pools'),
  ref('lido_liquidity_arbitrum_curve_pools'),
  ref('lido_liquidity_arbitrum_balancer_pools'),
  ref('lido_liquidity_arbitrum_camelot_pools'),
  ref('lido_liquidity_optimism_kyberswap_pools'),
+ ref('lido_liquidity_optimism_kyberswap_v2_pools'),
  ref('lido_liquidity_optimism_uniswap_v3_pools'),
  ref('lido_liquidity_optimism_curve_pools'),
  ref('lido_liquidity_optimism_balancer_pools'),
  ref('lido_liquidity_optimism_velodrome_pools'),
+ ref('lido_liquidity_optimism_velodrome_v2_pools'),
  ref('lido_liquidity_polygon_balancer_pools'),
+ ref('lido_liquidity_polygon_uniswap_v3_pools'),
+ ref('lido_liquidity_polygon_kyberswap_v2_pools'),
  ref('lido_liquidity_ethereum_curve_steth_conc_pool'),
  ref('lido_liquidity_ethereum_curve_steth_frxeth_pool'),
  ref('lido_liquidity_ethereum_curve_steth_pool'),
@@ -29,12 +34,15 @@
  ref('lido_liquidity_ethereum_curve_steth_ng_pool'),
  ref('lido_liquidity_ethereum_balancer_pools'),
  ref('lido_liquidity_ethereum_kyberswap_pools'),
+ ref('lido_liquidity_ethereum_kyberswap_v2_pools'),
  ref('lido_liquidity_ethereum_maverick_pools'),
- ref('lido_liquidity_ethereum_uniswap_v3_pools')
+ ref('lido_liquidity_ethereum_uniswap_v3_pools'),
+ ref('lido_liquidity_ethereum_pancakeswap_v3_pools'),
+ ref('lido_liquidity_ethereum_uniswap_v2_pools')
  
 ] %}
 
-{% set project_start_date =  '2021-01-05'%} 
+{% set project_start_date =  '2020-12-15'%} 
 
 
 with  dates as (
@@ -103,29 +111,30 @@ FROM (
 )
 
 , pools_per_dates as (
-  select dates.day, pool,rate
+  select    dates.day, pool, rate
   from dates
   join (select distinct pool from pools) on 1=1
   left join wsteth_rate on dates.day = wsteth_rate.day
 )
 
 
-SELECT pool_name, 
+SELECT     l.pool_name, 
            l.pool, 
-           blockchain, 
-           project, 
-           fee, 
+           l.blockchain, 
+           l.project, 
+           l.fee, 
            d.day as time, 
-           main_token, 
-           main_token_symbol,
-           paired_token, 
-           paired_token_symbol, 
-           case when main_token_symbol = 'stETH' then main_token_reserve* rate else main_token_reserve end as main_token_reserve, 
-           paired_token_reserve,
-           main_token_usd_reserve, 
-           paired_token_usd_reserve, 
-           trading_volume
+           l.main_token, 
+           l.main_token_symbol,
+           l.paired_token, 
+           l.paired_token_symbol, 
+           case when l.main_token_symbol = 'stETH' and l.pool != 0x4028daac072e492d34a3afdbef0ba7e35d8b55c4 
+                then l.main_token_reserve* rate else l.main_token_reserve end as main_token_reserve, 
+           l.paired_token_reserve,
+           l.main_token_usd_reserve, 
+           l.paired_token_usd_reserve, 
+           coalesce(vol.trading_volume, 0) as trading_volume
 FROM pools_per_dates d
 LEFT JOIN pools AS l on d.day >= DATE_TRUNC('day', l.time) and  d.day <  DATE_TRUNC('day', l.next_time) and d.pool = l.pool
-WHERE l.pool is not null
-;
+LEFT JOIN pools AS vol on d.day = DATE_TRUNC('day', vol.time)  and d.pool = vol.pool
+WHERE l.pool is not null  

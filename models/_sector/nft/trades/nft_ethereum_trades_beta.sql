@@ -2,7 +2,7 @@
     schema = 'nft_ethereum',
     tags = ['dunesql'],
     alias = alias('trades_beta'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

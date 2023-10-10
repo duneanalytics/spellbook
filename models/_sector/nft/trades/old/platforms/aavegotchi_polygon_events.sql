@@ -73,7 +73,6 @@ SELECT
     'aavegotchi' AS project,
     'v1' AS version,
     a.evt_tx_hash AS tx_hash,
-    date_trunc('day', a.evt_block_time) AS block_date,
     a.evt_block_time AS block_time,
     a.evt_block_number AS block_number,
     CAST(amount_raw / power(10, erc.decimals) * p.price as double) AS amount_usd,

@@ -1,82 +1,161 @@
 version: 2
 
 seeds:
-   - name: zeroex_arbitrum_native_fills_sample
-     config:
-       tags: dunesql
-       column_types:
-         timestamp: timestamp
-         protocol_version: varchar
-         tx_hash: varbinary
-         evt_index: integer
-         maker: varbinary
-         taker: varbinary
-         maker_token: varbinary
-         maker_symbol: varchar
-         maker_asset_filled_amount: double
-         taker_token: varbinary
-         taker_symbol: varchar
-         taker_asset_filled_amount: double
-         fee_recipient_address: varbinary
-         volume_usd: double
-         protocol_fee_paid_eth: double
+  - name: zeroex_arbitrum_native_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        timestamp: timestamp
+        protocol_version: varchar
+        tx_hash: varbinary
+        evt_index: integer
+        maker: varbinary
+        taker: varbinary
+        maker_token: varbinary
+        maker_symbol: varchar
+        maker_asset_filled_amount: double
+        taker_token: varbinary
+        taker_symbol: varchar
+        taker_asset_filled_amount: double
+        fee_recipient_address: varbinary
+        volume_usd: double
+        protocol_fee_paid_eth: double
 
-   - name: zeroex_bnb_native_fills_sample
-     config:
-       tags: dunesql
-       column_types:
-         timestamp: timestamp
-         protocol_version: varchar
-         tx_hash: varbinary
-         evt_index: integer
-         maker: varbinary
-         taker: varbinary
-         maker_token: varbinary
-         maker_symbol: varchar
-         maker_asset_filled_amount: double
-         taker_token: varbinary
-         taker_symbol: varchar
-         taker_asset_filled_amount: double
-         fee_recipient_address: varbinary
-         volume_usd: double
-         protocol_fee_paid_eth: double
+  - name: zeroex_bnb_native_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        timestamp: timestamp
+        protocol_version: varchar
+        tx_hash: varbinary
+        evt_index: integer
+        maker: varbinary
+        taker: varbinary
+        maker_token: varbinary
+        maker_symbol: varchar
+        maker_asset_filled_amount: double
+        taker_token: varbinary
+        taker_symbol: varchar
+        taker_asset_filled_amount: double
+        fee_recipient_address: varbinary
+        volume_usd: double
+        protocol_fee_paid_eth: double
 
-   - name: zeroex_ethereum_native_fills_sample
-     config:
-       tags: dunesql
-       column_types:
-         timestamp: timestamp
-         protocol_version: varchar
-         tx_hash: varbinary
-         evt_index: integer
-         maker: varbinary
-         taker: varbinary
-         maker_token: varbinary
-         maker_symbol: varchar
-         maker_asset_filled_amount: double
-         taker_token: varbinary
-         taker_symbol: varchar
-         taker_asset_filled_amount: double
-         fee_recipient_address: varbinary
-         volume_usd: double
-         protocol_fee_paid_eth: double
+  - name: zeroex_ethereum_native_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        timestamp: timestamp
+        protocol_version: varchar
+        tx_hash: varbinary
+        evt_index: integer
+        maker: varbinary
+        taker: varbinary
+        maker_token: varbinary
+        maker_symbol: varchar
+        maker_asset_filled_amount: double
+        taker_token: varbinary
+        taker_symbol: varchar
+        taker_asset_filled_amount: double
+        fee_recipient_address: varbinary
+        volume_usd: double
+        protocol_fee_paid_eth: double
 
-   - name: zeroex_polygon_native_fills_sample
-     config:
-       tags: dunesql
-       column_types:
-         timestamp: timestamp
-         protocol_version: varchar
-         tx_hash: varbinary
-         evt_index: integer
-         maker: varbinary
-         taker: varbinary
-         maker_token: varbinary
-         maker_symbol: varchar
-         maker_asset_filled_amount: double
-         taker_token: varbinary
-         taker_symbol: varchar
-         taker_asset_filled_amount: double
-         fee_recipient_address: varbinary
-         volume_usd: double
-         protocol_fee_paid_eth: double
+  - name: zeroex_polygon_native_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        timestamp: timestamp
+        protocol_version: varchar
+        tx_hash: varbinary
+        evt_index: integer
+        maker: varbinary
+        taker: varbinary
+        maker_token: varbinary
+        maker_symbol: varchar
+        maker_asset_filled_amount: double
+        taker_token: varbinary
+        taker_symbol: varchar
+        taker_asset_filled_amount: double
+        fee_recipient_address: varbinary
+        volume_usd: double
+        protocol_fee_paid_eth: double
+
+  - name: zeroex_native_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        timestamp: timestamp
+        protocol_version: varchar
+        tx_hash: varbinary
+        evt_index: integer
+        maker: varbinary
+        taker: varbinary
+        maker_token: varbinary
+        maker_symbol: varchar
+        maker_asset_filled_amount: double
+        taker_token: varbinary
+        taker_symbol: varchar
+        taker_asset_filled_amount: double
+        fee_recipient_address: varbinary
+        volume_usd: double
+        protocol_fee_paid_eth: double
+
+  - name: zeroex_api_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        tx_hash: varbinary
+        block_number: bigint
+        evt_index: int
+        contract_address: varbinary
+        block_time: timestamp
+        maker: varbinary
+        taker: varbinary
+        taker_token: varbinary
+        taker_symbol: varchar
+        maker_token: varbinary
+        maker_symbol: varchar
+        token_pair: varchar
+        taker_token_amount: double
+        taker_token_amount_raw: varchar
+        maker_token_amount: double
+        maker_token_amount_raw: varchar
+        type: varchar
+        affiliate_address: varbinary
+        swap_flag: boolean
+        matcha_limit_order_flag: boolean
+        volume_usd: double
+        tx_from: varbinary
+        tx_to: varbinary
+
+  - name: zeroex_api_fills_deduped_sample
+    config:
+      tags: dunesql
+      column_types:
+        blockchain: varchar
+        block_date: date
+        tx_hash: varbinary
+        block_number: bigint
+        evt_index: int
+        contract_address: varbinary
+        block_time: timestamp
+        maker: varbinary
+        taker: varbinary
+        taker_token: varbinary
+        taker_symbol: varchar
+        maker_token: varbinary
+        maker_symbol: varchar
+        token_pair: varchar
+        taker_token_amount: double
+        taker_token_amount_raw: varchar
+        maker_token_amount: double
+        maker_token_amount_raw: varchar
+        type: varchar
+        affiliate_address: varbinary
+        swap_flag: boolean
+        matcha_limit_order_flag: boolean
+        volume_usd: double
+        tx_from: varbinary
+        tx_to: varbinary
+        fills_within: int
