@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy','remove'],
-
+	tags=['legacy'],
+	
        alias = alias('top_erc721_holders', legacy_model=True),
        materialized='table',
        post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -10,40 +10,40 @@
        )
    }}
 
-WITH
+WITH 
 
 erc721_balances as (
-    SELECT
+    SELECT 
         wallet_address,
         token_address as nft_contract_address,
-        COUNT(tokenId) as balance
-    FROM
+        COUNT(tokenId) as balance 
+    FROM 
     {{ ref('balances_ethereum_erc721_latest_legacy') }}
     GROUP BY 1, 2
-),
+), 
 
 total_supply as (
-    SELECT
-        wallet_address,
-        nft_contract_address,
-        balance,
+    SELECT 
+        wallet_address, 
+        nft_contract_address, 
+        balance, 
         SUM(balance) OVER (PARTITION BY nft_contract_address) as total_supply
-    FROM
+    FROM 
     erc721_balances
 )
 
-SELECT
-    *
-FROM
+SELECT 
+    * 
+FROM 
 (
- SELECT
+ SELECT 
      wallet_address,
-     nft_contract_address,
-     balance,
+     nft_contract_address, 
+     balance, 
      balance/total_supply as supply_share,
-     total_supply,
+     total_supply, 
     ROW_NUMBER() OVER (PARTITION BY nft_contract_address ORDER BY balance DESC) as rn
- FROM
+ FROM 
  total_supply
-) x
-WHERE rn <= 50
+) x 
+WHERE rn <= 50 

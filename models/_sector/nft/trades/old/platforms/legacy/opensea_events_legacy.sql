@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
         schema = 'opensea',
         alias = alias('events', legacy_model=True)
 )

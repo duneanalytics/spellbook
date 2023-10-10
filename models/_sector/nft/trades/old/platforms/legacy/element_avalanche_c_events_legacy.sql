@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
     schema = 'element_avalanche_c',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

@@ -1,11 +1,11 @@
 {{ config(
     schema = 'blur_v2_ethereum',
     alias = alias('base_trades', legacy_model=True),
-    tags = ['legacy','remove']
+    tags = ['legacy']
     )
 }}
-
-
+  
+  
 -- DUMMY TABLE, WILL BE REMOVED SOON
-select
+select 
   1

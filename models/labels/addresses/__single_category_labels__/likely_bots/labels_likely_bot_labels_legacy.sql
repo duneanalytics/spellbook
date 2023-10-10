@@ -1,11 +1,11 @@
 {{
     config(
-	tags=['legacy','remove'],
-
+	tags=['legacy'],
+	
         alias = alias('likely_bot_labels', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
-        "sector",
-        "labels",
+        post_hook='{{ expose_spells(\'["optimism"]\', 
+        "sector", 
+        "labels", 
         \'["msilb7"]\') }}'
     )
 }}

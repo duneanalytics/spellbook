@@ -1,7 +1,7 @@
 
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
         schema = 'pancakeswap_nft',
         alias = alias('trades', legacy_model=True),
         materialized = 'view',

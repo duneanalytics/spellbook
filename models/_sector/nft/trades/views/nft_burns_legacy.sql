@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy','remove'],
-
+	tags=['legacy'],
+	
         schema = 'nft',
         alias = alias('burns', legacy_model=True),
         materialized = 'view',

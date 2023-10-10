@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy','remove'],
-
+	tags=['legacy'],
+	
     schema = 'nft',
     alias = alias('events_old', legacy_model=True),
     partition_by = ['block_date'],

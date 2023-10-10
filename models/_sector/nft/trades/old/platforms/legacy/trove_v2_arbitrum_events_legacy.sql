@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
     schema='trove_v2_arbitrum',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

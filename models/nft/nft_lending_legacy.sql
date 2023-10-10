@@ -1,9 +1,9 @@
 {{ config(
     schema = 'nft',
     alias = alias('lending', legacy_model=True),
-    tags = ['legacy','remove']
+    tags = ['legacy']
     )
 }}
 
-SELECT
-    1
+SELECT 
+    1 

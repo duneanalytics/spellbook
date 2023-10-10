@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
     schema = 'nftearth_optimism',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
     schema = 'magiceden_solana',
     alias = alias('events', legacy_model=True),
     partition_by = ['block_date'],

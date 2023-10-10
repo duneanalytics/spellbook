@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy','remove'],
-
+	tags=['legacy'],
+	
     alias = alias('addresses', legacy_model=True),
     materialized = 'table',
     file_format = 'delta',

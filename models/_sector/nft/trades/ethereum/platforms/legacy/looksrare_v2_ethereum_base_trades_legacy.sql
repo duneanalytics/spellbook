@@ -1,5 +1,5 @@
 {{ config(
-	tags=['legacy', 'remove'],
+	tags=['legacy'],
 
     schema = 'looksrare_v2_ethereum',
     alias = alias('base_trades', legacy_model=True),

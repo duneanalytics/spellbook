@@ -1,5 +1,5 @@
 {{ config(
-        tags=['legacy', 'prod_exclude', 'remove'],
+        tags=['legacy', 'prod_exclude'],
         schema = 'superrare_ethereum',
         alias = alias('base_trades', legacy_model=True),
         partition_by = ['block_date'],

@@ -1,7 +1,7 @@
 
 {{ config(
-	tags=['legacy', 'remove'],
-
+	tags=['legacy'],
+	
         schema = 'x2y2',
         alias = alias('trades', legacy_model=True),
         materialized = 'view',
