@@ -25,8 +25,8 @@ with
             , call_outer_instruction_index
             , call_inner_instruction_index
             , call_tx_id
-        FROM {{ source('stake_program_solana', 'stake_call_Merge') }} m
-        LEFT JOIN {{ source('solana', 'account_activity') }} aa ON 1=1 
+        FROM {{ source('solana', 'account_activity') }} aa
+        JOIN {{ source('stake_program_solana', 'stake_call_Merge') }} m ON 1=1 
             AND aa.address = m.account_sourceStakeAccount --the source table gets completely merged so this is safest to join on
             AND aa.block_slot = m.call_block_slot
             AND aa.tx_id = m.call_tx_id
@@ -97,7 +97,4 @@ FROM (
     UNION ALL
     SELECT * FROM split
 )
-where 1=1 
-{% if is_incremental() %}
-and call_block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
+where 1=1
