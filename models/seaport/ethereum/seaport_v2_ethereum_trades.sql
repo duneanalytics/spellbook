@@ -76,7 +76,7 @@ with source_ethereum_transactions as (
           ,om_order_hash
           ,cardinality(orderHashes) as om_cnt
       from {{ source('seaport_ethereum','Seaport_evt_OrdersMatched') }}
-      cross join unnest(orderhash) with ordinality as foo(om_order_hash, om_order_id)
+      cross join unnest(orderHashes) with ordinality as foo(om_order_hash, om_order_id)
      where contract_address in (0x00000000000001ad428e4906ae43d8f9852d0dd6 -- Seaport v1.4
                                ,0x00000000000000adc04c56bf30ac9d3c0aaf14dc -- Seaport v1.5
                                )
