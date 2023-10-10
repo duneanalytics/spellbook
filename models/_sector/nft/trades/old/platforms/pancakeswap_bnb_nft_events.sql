@@ -18,7 +18,7 @@ WITH events AS (
         tokenId AS token_id,
         'erc721' AS token_standard,
         'Single Item Trade' AS trade_type,
-        cast(1 as uint256) AS number_of_items,
+        uint256 '1' AS number_of_items,
         'Buy' AS trade_category,
         buyer AS buyer,
         seller AS seller,
