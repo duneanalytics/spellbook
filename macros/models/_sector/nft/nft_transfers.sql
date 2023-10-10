@@ -16,7 +16,7 @@ FROM(
     , t.evt_index
     , t.contract_address
     , t.tokenId AS token_id
-    , cast(1 as uint256) AS amount
+    , uint256 '1' AS amount
     , t."from"
     , t.to
     {% if denormalized == True -%}

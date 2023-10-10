@@ -16,8 +16,8 @@ SELECT
 , cast(erc20TokenAmount as decimal(38)) AS price_raw
 , CASE WHEN erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{ var("ETH_ERC20_ADDRESS") }}'
     ELSE erc20Token END AS currency_contract
-, cast(0 as decimal(38)) as platform_fee_amount_raw
-, cast(0 as decimal(38)) as royalty_fee_amount_raw
+, decimal(38 '0') as platform_fee_amount_raw
+, decimal(38 '0') as royalty_fee_amount_raw
 , cast(null as varchar(1)) as platform_fee_address
 , cast(null as varchar(1)) as royalty_fee_address
 , contract_address AS project_contract_address
@@ -44,8 +44,8 @@ SELECT
 , cast(erc20TokenAmount as decimal(38)) AS price_raw
 , CASE WHEN erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{ var("ETH_ERC20_ADDRESS") }}'
     ELSE erc20Token END AS currency_contract
-, cast(0 as decimal(38)) as platform_fee_amount_raw
-, cast(0 as decimal(38)) as royalty_fee_amount_raw
+, decimal(38 '0') as platform_fee_amount_raw
+, decimal(38 '0') as royalty_fee_amount_raw
 , cast(null as varchar(1)) as platform_fee_address
 , cast(null as varchar(1)) as royalty_fee_address
 , contract_address AS project_contract_address
@@ -72,8 +72,8 @@ SELECT
 , cast(erc20FillAmount as decimal(38)) AS price_raw
 , CASE WHEN erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{ var("ETH_ERC20_ADDRESS") }}'
     ELSE erc20Token END AS currency_contract
-, cast(0 as decimal(38)) as platform_fee_amount_raw
-, cast(0 as decimal(38)) as royalty_fee_amount_raw
+, decimal(38 '0') as platform_fee_amount_raw
+, decimal(38 '0') as royalty_fee_amount_raw
 , cast(null as varchar(1)) as platform_fee_address
 , cast(null as varchar(1)) as royalty_fee_address
 , contract_address AS project_contract_address
@@ -100,8 +100,8 @@ SELECT
 , cast(erc20FillAmount as decimal(38)) AS price_raw
 , CASE WHEN erc20Token='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN '{{ var("ETH_ERC20_ADDRESS") }}'
     ELSE erc20Token END AS currency_contract
-, cast(0 as decimal(38)) as platform_fee_amount_raw
-, cast(0 as decimal(38)) as royalty_fee_amount_raw
+, decimal(38 '0') as platform_fee_amount_raw
+, decimal(38 '0') as royalty_fee_amount_raw
 , cast(null as varchar(1)) as platform_fee_address
 , cast(null as varchar(1)) as royalty_fee_address
 , contract_address AS project_contract_address
