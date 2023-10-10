@@ -188,7 +188,7 @@ with source_optimism_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address
-        ,CAST(round(cast(price_amount_raw as double) / nft_cnt) as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
+        ,CAST(price_amount_raw / nft_cnt as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
         ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
         ,platform_fee_receiver
         ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw
