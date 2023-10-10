@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('trades'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -259,6 +259,7 @@ with source_polygon_transactions as (
 
     -- order info
     ,block_date
+    ,cast(date_trunc('month',block_time) as date) as block_month
     ,block_time
     ,seller
     ,buyer
