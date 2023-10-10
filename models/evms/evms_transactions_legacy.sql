@@ -19,6 +19,7 @@
      , ('fantom', source('fantom', 'transactions'))
      , ('arbitrum', source('arbitrum', 'transactions'))
      , ('celo', source('celo', 'transactions'))
+     , ('goerli', source('goerli', 'transactions'))
 ] %}
 
 SELECT *
