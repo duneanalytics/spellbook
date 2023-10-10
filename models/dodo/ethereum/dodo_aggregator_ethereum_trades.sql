@@ -21,7 +21,7 @@ WITH dexs AS
         -- dodo proxy01
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'dodo proxy01' as proxy,
             sender AS taker,
@@ -46,7 +46,7 @@ WITH dexs AS
         -- dodo proxy02
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'dodo proxy02' as proxy,
             sender AS taker,
@@ -71,7 +71,7 @@ WITH dexs AS
         -- dodo proxy03
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'dodo proxy03' as proxy,
             sender AS taker,
@@ -96,7 +96,7 @@ WITH dexs AS
         -- dodo proxy04
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'dodo proxy04' as proxy,
             sender AS taker,
@@ -121,7 +121,7 @@ WITH dexs AS
         -- dodov2 proxy02
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'dodov2 proxy02' as proxy,
             sender AS taker,
@@ -146,7 +146,7 @@ WITH dexs AS
         -- DODORouteProxy
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'DODORouteProxy' as proxy,
             sender AS taker,
@@ -171,7 +171,7 @@ WITH dexs AS
         -- DODOFeeRouteProxy
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             'DODOFeeRouteProxy' as proxy,
             sender AS taker,

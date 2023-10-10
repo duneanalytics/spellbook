@@ -21,7 +21,7 @@ WITH dexs AS
         -- DODOFeeRouteProxy
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
@@ -45,7 +45,7 @@ WITH dexs AS
         -- DODOFeeRouteProxy_widget
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             sender AS taker,
             CAST(NULL AS VARBINARY) AS maker,
