@@ -8,15 +8,15 @@
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["base"]\',
+        post_hook='{{ expose_spells(\'["zksync"]\',
                                     "project",
                                     "safe",
-                                    \'["danielpartida"]\') }}'
+                                    \'["kryptaki"]\') }}'
     )
 }}
 
 select
-    'base' as blockchain,
+    'zksync' as blockchain,
     et."from" as address,
     case
         when et.to = 0xd9db270c1b5e3bd161e8c8503c55ceabee709552 then '1.3.0'
@@ -29,8 +29,8 @@ select
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time as creation_time,
     et.tx_hash
-from {{ source('base', 'traces') }} et
-join {{ ref('safe_base_singletons') }} s
+from {{ source('zksync', 'traces') }} et
+join {{ ref('safe_zksync_singletons') }} s
     on et.to = s.address
 where et.success = true
     and et.call_type = 'delegatecall' -- delegatecall to singleton is Safe (proxy) address
@@ -41,7 +41,7 @@ where et.success = true
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}
-    and et.block_time > TIMESTAMP '2023-07-01' -- for initial query optimisation
+    and et.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     and et.block_time > date_trunc('day', now() - interval '7' day)
