@@ -1,12 +1,16 @@
 {{ config(
     tags=['dunesql'],
-    schema = 'tigris_arbitrum',
+    schema = 'tigris',
     alias = alias('trades_pnl'),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version'],
+    post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
+                                "project",
+                                "tigris",
+                                \'["Henrystats"]\') }}'
     )
 }}
 
@@ -156,7 +160,6 @@ close_liquidate_pnl as (
             WHEN p.pnl > 0 THEN 1 ELSE 0 END as wins, 
         CASE 
             WHEN p.pnl <= 0 THEN 1 ELSE 0 END as losses
-        
     FROM 
     close_liquidate cl 
     LEFT JOIN 
@@ -165,5 +168,5 @@ close_liquidate_pnl as (
         AND cl.evt_tx_hash = p.evt_tx_hash 
         AND cl.blockchain = p.blockchain
 )
-
+-- use to reload 
 SELECT * FROM close_liquidate_pnl
