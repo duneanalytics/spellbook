@@ -1,16 +1,11 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["avalanche_c","bnb","arbitrum"]\',
-                                "project",
-                                "trader_joe",
-                                \'["jeff-dude","mtitus6","Henrystats","hsrvc"]\') }}'
-        )
-}}
+{{ config(
+        tags=['dunesql']
+        , alias = alias('trades')
+)}}
 
 {% set trader_joe_models = [
-    ref('trader_joe_avalanche_c_trades')
-,   ref('trader_joe_bnb_trades')
-,   ref('trader_joe_arbitrum_trades')
+    ref('trader_joe_v2_arbitrum_trades')
+,   ref('trader_joe_v2_1_arbitrum_trades')
 ] %}
 
 
