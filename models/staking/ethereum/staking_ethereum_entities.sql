@@ -5,27 +5,21 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['depositor_address', 'tx_from', 'pubkey'],
+    unique_key = ['entity_unique_name'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "staking",
                                 \'["hildobby", "sankinyue"]\') }}')
 }}
 
-{% set entities_depositor_address_models = [
-     (ref('staking_ethereum_entities_depositor_addresses'))
-     , (ref('staking_ethereum_entities_contracts'))
-     , (ref('staking_ethereum_entities_coinbase'))
-     , (ref('staking_ethereum_entities_binance'))
-     , (ref('staking_ethereum_entities_darma_capital'))
-] %}
-
-{% set entities_tx_from_models = [
-     (ref('staking_ethereum_entities_tx_from_addresses'))
-] %}
-
-{% set entities_pubkey_models = [
-     (ref('staking_ethereum_entities_chorusone'))
+{% set entities_identifiers_models = [
+     ('depositor_address', ref('staking_ethereum_entities_depositor_addresses'))
+     , ('depositor_address', ref('staking_ethereum_entities_contracts'))
+     , ('depositor_address', ref('staking_ethereum_entities_coinbase'))
+     , ('depositor_address', ref('staking_ethereum_entities_binance'))
+     , ('depositor_address', ref('staking_ethereum_entities_darma_capital'))
+     , ('tx_from', ref('staking_ethereum_entities_tx_from_addresses'))
+     , ('pubkey', ref('staking_ethereum_entities_chorusone'))
 ] %}
 
 SELECT depositor_address
@@ -35,14 +29,14 @@ SELECT depositor_address
 , entity_unique_name
 , category
 FROM (
-        {% for entities_depositor_address_model in entities_depositor_address_models %}
+        {% for entities_identifiers_model in entities_identifiers_models if entities_identifiers_model[0] == 'depositor_address' %}
         SELECT depositor_address
         , from_hex(NULL) AS tx_from
         , from_hex(NULL) AS pubkey
         , entity
         , entity_unique_name
         , category
-        FROM {{ entities_depositor_address_model }}
+        FROM {{ entities_identifiers_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -50,14 +44,14 @@ FROM (
 
         UNION ALL
 
-        {% for entities_tx_from_model in entities_tx_from_models %}
+        {% for entities_identifiers_model in entities_identifiers_models if entities_identifiers_model[0] == 'tx_from' %}
         SELECT from_hex(NULL) AS depositor_address
         , tx_from
         , from_hex(NULL) AS pubkey
         , entity
         , entity_unique_name
         , category
-        FROM {{ entities_tx_from_model }}
+        FROM {{ entities_identifiers_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -65,14 +59,14 @@ FROM (
 
         UNION ALL
 
-        {% for entities_pubkey_model in entities_pubkey_models %}
+        {% for entities_identifiers_model in entities_identifiers_models if entities_identifiers_model[0] == 'pubkey' %}
         SELECT from_hex(NULL) AS depositor_address
         , from_hex(NULL) AS tx_from
         , pubkey AS pubkey
         , entity
         , entity_unique_name
         , category
-        FROM {{ entities_pubkey_model }}
+        FROM {{ entities_identifiers_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
