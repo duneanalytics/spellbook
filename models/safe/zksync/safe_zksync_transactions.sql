@@ -7,15 +7,15 @@
         unique_key = ['block_date', 'tx_hash', 'trace_address'],
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["base"]\',
+        post_hook='{{ expose_spells(\'["zksync"]\',
                                     "project",
                                     "safe",
-                                    \'["danielpartida"]\') }}'
+                                    \'["kryptaki"]\') }}'
     )
 }}
 
 select
-    'base' as blockchain,
+    'zksync' as blockchain,
     try_cast(date_trunc('day', tr.block_time) as date) as block_date,
     CAST(date_trunc('month', tr.block_time) as DATE) as block_month,
     tr.block_time,
@@ -40,10 +40,10 @@ select
         when bytearray_substring(tr.input, 1, 4) = 0x5229073f then 'execTransactionFromModuleReturnData'
         else 'unknown'
     end as method
-from {{ source('base', 'traces') }} tr
-join {{ ref('safe_base_safes') }} s
+from {{ source('zksync', 'traces') }} tr
+join {{ ref('safe_zksync_safes') }} s
     on s.address = tr."from"
-join {{ ref('safe_base_singletons') }} ss
+join {{ ref('safe_zksync_singletons') }} ss
     on tr.to = ss.address
 where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
@@ -52,7 +52,7 @@ where bytearray_substring(tr.input, 1, 4) in (
     )
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
-    and tr.block_time > TIMESTAMP '2023-07-01' -- for initial query optimisation
+    and tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     and tr.block_time > date_trunc('day', now() - interval '7' day)
