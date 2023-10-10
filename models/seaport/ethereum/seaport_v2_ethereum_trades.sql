@@ -72,9 +72,11 @@ with source_ethereum_transactions as (
     select evt_block_time as om_block_time
           ,evt_tx_hash as om_tx_hash
           ,evt_index as om_evt_index
-          ,posexplode(orderhashes) as (om_order_id, om_order_hash)
+          ,om_order_id
+          ,om_order_hash
           ,cardinality(orderHashes) as om_cnt
       from {{ source('seaport_ethereum','Seaport_evt_OrdersMatched') }}
+      cross join unnest(orderhash) with ordinality as foo(om_order_hash, om_order_id)
      where contract_address in (0x00000000000001ad428e4906ae43d8f9852d0dd6 -- Seaport v1.4
                                ,0x00000000000000adc04c56bf30ac9d3c0aaf14dc -- Seaport v1.5
                                )
@@ -95,7 +97,7 @@ with source_ethereum_transactions as (
           ,a.receiver
           ,a.zone
           ,a.token_contract_address
-          ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
+          ,CAST(a.original_amount AS UNT256) AS original_amount
           ,a.item_type
           ,a.token_id
           ,a.platform_contract_address
@@ -131,7 +133,7 @@ with source_ethereum_transactions as (
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address
-        ,CAST(sum(case when is_price then original_amount end) AS DECIMAL(38,0)) as price_amount_raw
+        ,CAST(sum(case when is_price then original_amount end) AS UNT256) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
         ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
