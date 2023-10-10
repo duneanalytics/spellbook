@@ -234,7 +234,6 @@ with source_arbitrum_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,sub_idx
   from iv_nfts a
   inner join source_arbitrum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
