@@ -97,7 +97,7 @@ with source_ethereum_transactions as (
           ,a.receiver
           ,a.zone
           ,a.token_contract_address
-          ,CAST(a.original_amount AS UNT256) AS original_amount
+          ,CAST(a.original_amount AS UINT256) AS original_amount
           ,a.item_type
           ,a.token_id
           ,a.platform_contract_address
@@ -133,7 +133,7 @@ with source_ethereum_transactions as (
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address
-        ,CAST(sum(case when is_price then original_amount end) AS UNT256) as price_amount_raw
+        ,CAST(sum(case when is_price then original_amount end) AS UINT256) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
         ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
