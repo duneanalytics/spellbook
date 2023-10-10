@@ -601,6 +601,8 @@ models:
         +schema: trader_joe_avalanche_c
       bnb:
         +schema: trader_joe_bnb
+      arbitrum:
+        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
