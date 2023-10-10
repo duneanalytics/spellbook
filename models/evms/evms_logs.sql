@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         alias = alias('logs'),
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,6 +20,7 @@
      , ('arbitrum', source('arbitrum', 'logs'))
      , ('celo', source('celo', 'logs'))
      , ('base', source('base', 'logs'))
+     , ('goerli', source('goerli', 'logs'))
 ] %}
 
 SELECT *

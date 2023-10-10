@@ -3,7 +3,6 @@
 
 
 SELECT
-  cast(DATE_TRUNC('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -33,7 +32,6 @@ WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 
 SELECT
-  cast(date_trunc('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Sell' AS trade_category,
@@ -63,7 +61,6 @@ WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 
 SELECT
-  cast(date_trunc('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -93,7 +90,6 @@ WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 
 SELECT
-  cast(date_trunc('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,

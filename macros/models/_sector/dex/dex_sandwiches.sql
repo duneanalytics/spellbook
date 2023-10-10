@@ -22,6 +22,7 @@ SELECT distinct s1.blockchain
 , s1.token_bought_amount_raw
 , s1.token_sold_amount
 , s1.token_bought_amount
+, s1.amount_usd
 , s1.evt_index
 --, CASE WHEN s1.tx_from=s2.tx_from THEN 'tx_from' ELSE 'taker' END AS commonality
 --, CASE WHEN s1.token_bought_address=s2.token_sold_address THEN 'token_sold' ELSE 'token_bought' END AS sandwiched_token

@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['dunesql'],
     alias = alias('addresses'),
     materialized = 'table',
     file_format = 'delta',
@@ -28,12 +29,12 @@
 ] %}
 
 -- new/standardized labels
+--remove until upstream is resolved: , ref('labels_airdrop')
 {% set standardized_labels_models = [
     ref('labels_bridges')
     , ref('labels_dex')
     , ref('labels_social')
     , ref('labels_nft')
-    , ref('labels_airdrop')
     , ref('labels_dao')
     , ref('labels_infrastructure')
 ] %}
@@ -77,4 +78,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
