@@ -21,7 +21,7 @@ select
     ,r.reward_amount_raw
     ,r.project_contract_address
     ,r.sub_tx_id
-    ,(r.referrer_address = 0x0000000000000000000000000000000000000000) as is_referral
+    ,(r.referrer_address != 0x0000000000000000000000000000000000000000) as is_referral
 
     ,t."from" as tx_from
     ,t.to as tx_to
