@@ -35,7 +35,7 @@ with iv_offer_consideration as (
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc'
-            end as consideration_first_item_type  
+            end as consideration_first_item_type
             ,offerer
             ,recipient
             ,offerer as sender
@@ -57,6 +57,7 @@ with iv_offer_consideration as (
             ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private -- will be deprecated in base_pairs
+            ,order_hash
     from
     (
         select consideration
@@ -101,7 +102,7 @@ with iv_offer_consideration as (
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc'
-            end as consideration_first_item_type          
+            end as consideration_first_item_type
             ,offerer
             ,recipient
             ,recipient as sender
@@ -123,6 +124,7 @@ with iv_offer_consideration as (
             ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private -- will be deprecated in base_pairs
+            ,order_hash
     from
     (
         select consideration
@@ -145,7 +147,7 @@ with iv_offer_consideration as (
         {% endif %}
         {% if is_incremental() %}
         where evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}        
+        {% endif %}
     )
 )
 ,iv_base_pairs as (
