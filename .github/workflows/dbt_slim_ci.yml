@@ -57,7 +57,7 @@ jobs:
       - name: dbt dependencies
         run: "dbt deps"
 
-      - name: Run dbt model on Trino if dunesql engine is used, and retry until cluster is available
+      - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
         if: matrix.engine == 'dunesql'
         run: |
           RETRY_COUNT=0
