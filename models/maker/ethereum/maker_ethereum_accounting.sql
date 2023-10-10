@@ -1065,7 +1065,7 @@ WITH dao_wallet AS (
         , _tau
         , total_mkr             AS original_total_mkr
 --      original spark sql:  , (1 - (unix_timestamp(end_time)-_bgn)/ _tau) * total_mkr AS yanked_mkr
-        , (1 - (EXTRACT(second FROM end_time) - EXTRACT(second FROM from_unixtime(cast(_bgn as double)))) / _tau) * total_mkr AS yanked_mkr
+        , (1 - (to_unixtime(end_time) - _bgn*1e0) / _tau) * total_mkr AS yanked_mkr
     FROM yanks_with_context
 ), mkr_vest_creates_yanks AS
 (
