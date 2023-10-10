@@ -217,7 +217,7 @@ models:
       - name: block_number
         description: "Block number in which the transaction was executed"
       - name: block_month
-        description: "UTC event block month"§
+        description: "UTC event block month"
       - name: amount_raw
         description: "Raw amount"
       - name: amount
