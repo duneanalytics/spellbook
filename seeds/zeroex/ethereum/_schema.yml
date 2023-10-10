@@ -60,7 +60,7 @@ seeds:
         tx_to: varbinary
         fills_within: int
 
-  - name: zeroex_ethereum_api_fills_deduped_sample
+  - name: zeroex_ethereum_nft_fills_sample
     config:
       tags: dunesql
       column_types:
