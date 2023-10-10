@@ -56,7 +56,7 @@ jobs:
 
       - name: dbt dependencies
         run: "dbt deps"
-      
+
       - name: Run dbt model on Trino if dunesql engine is used, and retry until cluster is available
         if: matrix.engine == 'dunesql'
         run: |
@@ -67,7 +67,7 @@ jobs:
           
           until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
           do
-            dbt run $PROFILE --models trigger_scale && break
+            dbt debug $PROFILE && break
             RETRY_COUNT=$((RETRY_COUNT+1))
             if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
               echo "Max retries reached, failing..."
