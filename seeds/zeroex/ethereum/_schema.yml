@@ -66,7 +66,7 @@ seeds:
       column_types:
         block_time: timestamp
         block_date: date
-        evt_index: int
+        evt_index: uint256
         tx_hash: varbinary
         maker: varbinary
         taker: varbinary
