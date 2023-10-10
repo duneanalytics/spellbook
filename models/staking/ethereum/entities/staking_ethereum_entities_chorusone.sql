@@ -1,10 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
     alias = alias('entities_chorusone'),
-    tags = ['dunesql'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
+    tags = ['dunesql', 'static'],
     unique_key = ['pubkey'])
 }}
 
