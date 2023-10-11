@@ -88,7 +88,7 @@ SELECT w.block_time
 , NULL AS tx_from
 , NULL deposit_index
 , w."index" AS withdrawal_index
-, w.validator_index
+, validator_index
 , i.pubkey
 , NULL AS signature
 , w."address" AS withdrawal_address
