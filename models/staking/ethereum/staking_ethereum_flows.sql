@@ -33,25 +33,25 @@ WITH invalid_pubkeys AS (
     )
 
 , deposits AS (
-    SELECT block_time
-    , block_number
-    , amount_staked
-    , depositor_address
-    , entity
-    , entity_unique_name
-    , entity_category
-    , tx_hash
-    , tx_from
-    , deposit_index
-    , validator_index
+    SELECT d.block_time
+    , d.block_number
+    , d.amount_staked
+    , d.depositor_address
+    , d.entity
+    , d.entity_unique_name
+    , d.entity_category
+    , d.tx_hash
+    , d.tx_from
+    , d.deposit_index
+    , i.validator_index
     , pubkey
-    , signature
-    , withdrawal_address
-    , withdrawal_credentials
-    , withdrawal_credentials_type
-    , evt_index
-    FROM {{ ref('staking_ethereum_deposits')}}
-    INNER JOIN indexes USING (pubkey)
+    , d.signature
+    , d.withdrawal_address
+    , d.withdrawal_credentials
+    , d.withdrawal_credentials_type
+    , d.evt_index
+    FROM {{ ref('staking_ethereum_deposits')}} d
+    INNER JOIN indexes i USING (pubkey)
     )
     
 SELECT block_time
