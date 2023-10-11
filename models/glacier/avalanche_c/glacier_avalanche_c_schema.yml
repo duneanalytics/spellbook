@@ -1,6 +1,5 @@
 version: 3
 
-
 models:
   - name: glacier_v3_avalanche_c_trades
     meta:
