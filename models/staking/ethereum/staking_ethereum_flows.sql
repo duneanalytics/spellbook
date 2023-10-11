@@ -97,6 +97,6 @@ SELECT w.block_time
 , CASE WHEN w.amount/1e9 BETWEEN 20 AND 32 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN 32 END AS amount_full_withdrawn
 , CASE WHEN w.amount/1e9 < 20 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN (w.amount/1e9)-32 END AS amount_partial_withdrawn
 , NULL AS tx_hash
-, evt_index
+, NULL AS evt_index
 FROM {{source('ethereum', 'withdrawals')}} w
 INNER JOIN indexes i USING (validator_index)
