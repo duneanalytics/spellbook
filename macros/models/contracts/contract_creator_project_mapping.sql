@@ -182,7 +182,7 @@ SELECT *
       AND t.created_block_number = sd.created_block_number
       AND t.blockchain = sd.blockchain
       AND t.is_self_destruct = false --find new selfdestructs
-      AND {{ incremental_predicate('sd.destructed_time') }}
+      AND {{ incremental_predicate('sd.destructed_time') }} -- new self-destructs only
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
     left join {{ref('contracts_deterministic_contract_creators')}} as nd
