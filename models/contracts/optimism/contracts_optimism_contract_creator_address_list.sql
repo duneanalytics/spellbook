@@ -656,7 +656,7 @@ WITH curated_list AS (
       ,(0xC107DAcAf1d6e369CFDc67695BEAdf5e2068191e, 'Pendle') --Token
       ,(0x0CdB34e6a4D635142BB92fe403D38F636BbB77b8, 'Penpie') --Token
       ,(0x9E7a882fF45C4a5EcC9BAdbFbC775c3e68c62F32, 'Swapsicle') --WooStakingProxy
-      ,(0x51150F973c2b0537642f5AE8911A49567598808f, 'Toros')
+      ,(0x51150F973c2b0537642f5AE8911A49567598808f, 'Toros Finance')
       ,(0x8cA573430Fd584065C080fF1d2eA1a8DfB259Ae8, 'Revest Finance')
       ,(0x225114369fA6b133400A4BB86d08c62044387266, 'HashDao Finance') 
       ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, 'Woo Network') --SuperChargerVault
@@ -673,6 +673,8 @@ WITH curated_list AS (
       ,(0x086D4a6964E2dF36ca3664613F96C0fB3E5F272C, 'Aragon')
       ,(0x99C19AB10b9EC8aC6fcda9586E81f6B73a298870, 'dm3 Protocol')
       ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
+      ,(0x034e4b219ec4e58aa45a587d0bd85bc098674c7a, 'Stargate Finance')
+      ,(0x6D2b70e39C6bc63763098e336323591eb77Cd0C6, 'Farcaster')
 
   ) as temp_table (creator_address, contract_project)
 )
