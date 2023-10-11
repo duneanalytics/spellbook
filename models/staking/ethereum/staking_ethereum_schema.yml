@@ -14,7 +14,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - entity_unique_name
+            - depositor_address
+            - tx_from
+            - pubkey
     columns:
       - name: depositor_address
         description: "Address of indentified depositor entity"
