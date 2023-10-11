@@ -92,8 +92,6 @@ SELECT
 FROM tokens tk
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint
 WHERE tk.decimals != 0
-and json_value(args, 'strict $.name') not like '%#%'
-and json_value(args, 'strict $.symbol') is not null
 and m.master_edition is null
 
 UNION ALL
