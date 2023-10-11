@@ -24,14 +24,6 @@ WITH invalid_pubkeys AS (
 , indexes AS (
     SELECT pubkey
     , ROW_NUMBER() OVER (ORDER BY MIN(deposit_index)) - 1 AS validator_index
-    FROM {{ ref('staking_ethereum_deposits')}}
-    WHERE pubkey NOT IN (SELECT pubkey FROM invalid_pubkeys)
-    GROUP BY 1
-    )
-
-, entities AS (
-    SELECT pubkey
-    , ROW_NUMBER() OVER (ORDER BY MIN(deposit_index)) - 1 AS validator_index
     , MAX(entity) AS entity
     , MAX(entity_category) AS entity_category
     , MAX(entity_unique_name) AS entity_unique_name
