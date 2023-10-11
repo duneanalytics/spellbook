@@ -16,119 +16,6 @@ models:
       - name: name
         description: "Aggregator project's name"
 
-  - name: nft_wash_trades
-    meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon
-      sector: nft
-      contributors: hildobby
-    config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades']
-    description: >
-        NFT wash trades labelling
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &project
-        name: project
-        description: "Project"
-      - &version
-        name: version
-        description: "Project version"
-      - &block_time
-        name: block_time
-        description: "UTC event block time"
-      - &token_id
-        name: token_id
-        description: "NFT Token ID"
-      - &collection
-        name: collection
-        description: "NFT collection name"
-      - &token_standard
-        name: token_standard
-        description: "Token standard"
-      - &trade_type
-        name: trade_type
-        description: "Identify whether it was a single NFT trade or multiple NFTs traded"
-      - &number_of_items
-        name: number_of_items
-        description: "Number of items traded"
-      - &trade_category
-        name: trade_category
-        description: "How was this NFT traded ? (Direct buy, auction, etc...)"
-      - &evt_type
-        name: evt_type
-        description: "Event type (Trade, Mint, Burn)"
-      - &seller
-        name: seller
-        description: "Seller wallet address"
-      - &buyer
-        name: buyer
-        description: "Buyer wallet address"
-      - &amount_original
-        name: amount_original
-        description: "Traded amount in original currency"
-      - &amount_raw
-        name: amount_raw
-        description: "Traded amount in original currency before decimals correction"
-      - &currency_symbol
-        name: currency_symbol
-        description: "Symbol of original currency used for payment"
-      - &currency_contract
-        name: currency_contract
-        description: "Contract address of original token used for payment, with ETH contract address swapped for WETH"
-      - &nft_contract_address
-        name: nft_contract_address
-        description: "NFT contract address, only if 1 nft was transacted"
-      - &project_contract_address
-        name: project_contract_address
-        description: "Contract address used by the project, in this case wyvern contract"
-      - &aggregator_name
-        name: aggregator_name
-        description: "If the trade was performed via an aggregator, displays aggregator name"
-      - &aggregator_address
-        name: aggregator_address
-        description: "If the trade was performed via an aggregator, displays aggregator address"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash"
-      - &block_number
-        name: block_number
-        description: "Block number in which the transaction was executed "
-      - &tx_from
-        name: tx_from
-        description: "Address that initiated the transaction"
-      - &tx_to
-        name: tx_to
-        description: "Address that received the transaction"
-      - name: unique_trade_id
-        tests:
-          - is_unique_filtered
-      - &buyer_first_funded_by
-        name: buyer_first_funded_by
-        description: "Which wallet first funded the buyer's wallet in ETH"
-      - &seller_first_funded_by
-        name: seller_first_funded_by
-        description: "Which wallet first funded the seller's wallet in ETH"
-      - &filter_1_same_buyer_seller
-        name: filter_1_same_buyer_seller
-        description: "Were the seller and buyer the same address in the trade?"
-      - &filter_2_back_and_forth_trade
-        name: filter_2_back_and_forth_trade
-        description: "Was the NFT ever traded the other way around (buyer<>seller)"
-      - &filter_3_bought_or_sold_3x
-        name: filter_3_bought_or_sold_3x
-        description: "Was the same NFT bought 3+ times (Excluding ERC1155s)"
-      - &filter_4_first_funded_by_same_wallet
-        name: filter_4_first_funded_by_same_wallet
-        description: "Did the same wallet first fund the seller and buyer's wallets in ETH?"
-      - &filter_5_flashloan
-        name: filter_5_flashloan
-        description: "Did the tx include a flashloan?"
-      - &is_wash_trade
-        name: is_wash_trade
-        description: "Have any of the filters flag as true? Then it is labelled as a wash trade"
-
   - name: nft_linked_addresses
     meta:
       blockchain: ethereum, solana
@@ -145,67 +32,13 @@ models:
             - master_address
             - alternative_address
     columns:
-      - *blockchain
+      - name: blockchain
       - name: master_address
         description: "Master address"
       - name: alternative_address
         description: "Alternative address"
       - name: last_interaction
         description: "block_time of the last trade between the pair"
-
-
-  - name: nft_transfers
-    meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
-      sector: nft
-      contributors: hildobby
-    config:
-      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'transfers']
-    description: >
-        NFT transfers
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - token_id
-            - amount
-    columns:
-      - *blockchain
-      - name: block_time
-        description: "UTC event block time"
-      - name: block_number
-        description: "Block number in which the transaction was executed"
-      - name: token_standard
-        tests:
-          - accepted_values:
-              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
-        description: "Token standard"
-      - name: transfer_type
-        tests:
-          - accepted_values:
-              values: ['single', 'batch']
-        description: "single or batch transfer of tokens"
-      - name: evt_index
-        description: "Event index"
-      - name: contract_address
-        description: "NFT contract address"
-      - name: token_id
-        description: "ID of transfered token(s)"
-      - name: amount
-        description: "Amount of transfered tokens"
-      - name: from
-        description: "Address that sent the token(s)"
-      - name: to
-        description: "Address that received the token(s)"
-      - name: executed_by
-        description: "Address that executed the transaction"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: unique_transfer_id
-        tests:
-          - unique
-        description: "Unique transfer ID"
 
   - name: nft_lending
     meta:
@@ -227,42 +60,42 @@ models:
             - evt_index
             - lien_id
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - name: blockchain
+      - name: project
+      - name: version
       - &lending_category
         name: lending_category
         description: "Type of loans offered by the project, usually either pool to borrower or peer to peer"
-      - *block_time
+      - name: block_time
       - &block_date
         name: block_date
         description: "UTC event block date"
-      - *token_id
-      - *collection
+      - name: token_id
+      - name: collection
       - name: amount_usd
         description: "amount in USD"
-      - *token_standard
-      - *evt_type
+      - name: token_standard
+      - name: evt_type
       - &borrower
         name: borrower
         description:  "Address that took the loan"
       - &lender
         name: lender
         description:  "Address that faciliated the loan"
-      - *amount_original
-      - *amount_raw
+      - name: amount_original
+      - name: amount_raw
       - &collateral_currency_symbol
         name: collateral_currency_symbol
         description:  "Symbol of collateral currency used for loan"
       - &collateral_currency_contract
         name: collateral_currency_contract
         description:  "Contract address of collateral currency used for loan"
-      - *nft_contract_address
-      - *project_contract_address
-      - *tx_hash
-      - *block_number
-      - *tx_from
-      - *tx_to
+      - name: nft_contract_address
+      - name: project_contract_address
+      - name: tx_hash
+      - name: block_number
+      - name: tx_from
+      - name: tx_to
       - &evt_index
         name: evt_index
         description: "Index of the corresponding lending event"
