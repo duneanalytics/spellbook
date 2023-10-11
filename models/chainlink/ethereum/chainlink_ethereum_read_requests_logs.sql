@@ -15,7 +15,7 @@ SELECT
   traces."from",
   traces."to",
   input,
-  traces."output",
+  traces."output"
 
 FROM
   {{ source('ethereum', 'traces') }} traces
