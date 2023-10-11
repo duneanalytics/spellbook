@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        tags = ['dunesql', 'daily'],
         schema = 'contracts_base',
         alias = alias('creator_project_mapping'),
         materialized ='incremental',
