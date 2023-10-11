@@ -1,7 +1,7 @@
  {{
   config(
         tags = ['dunesql'],
-        schema = 'raydium_v3',
+        schema = 'raydium_v4',
         alias = alias('trades'),
         partition_by = ['block_month'],
         materialized = 'incremental',
