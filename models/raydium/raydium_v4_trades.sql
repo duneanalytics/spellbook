@@ -24,27 +24,34 @@
         SELECT 
             tkA.symbol as tokenA_symbol
             , tkA.decimals as tokenA_decimals
-            , ip.account_tokenMint0 as tokenA
-            , ip.account_tokenVault0 as tokenAVault
+            , ip.account_coinMint as tokenA
+            , ip.account_poolCoinTokenAccount as tokenAVault
             , tkB.symbol as tokenB_symbol
             , tkB.decimals as tokenB_decimals
-            , ip.account_tokenMint1 as tokenB
-            , ip.account_tokenVault1 as tokenBVault
-            , ip.account_ammConfig as fee_tier
-            , ip.account_poolState as pool_id
+            , ip.account_pcMint as tokenB
+            , ip.account_poolPcTokenAccount as tokenBVault
+            , cast(null as varchar) as fee_tier
+            , ip.account_amm as pool_id
+            , ip.account_serumMarket as serum_id
             , ip.call_tx_id as init_tx
             , ip.call_block_time as init_time
-            , row_number() over (partition by ip.account_poolState order by ip.call_block_time desc) as recent_init
-        FROM {{ source('raydium_clmm_solana','amm_v3_call_createPool') }} ip
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMint0
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMint1
+            , row_number() over (partition by ip.account_amm order by ip.call_block_time desc) as recent_init
+        FROM (
+            SELECT account_serumMarket, account_amm, account_coinMintAddress as account_CoinMint, account_poolCoinTokenAccount, account_pcMintAddress as account_pcMint, account_poolPcTokenAccount, call_tx_id, call_block_time 
+            FROM {{ source('raydium_amm_solana','raydium_amm_call_initialize1') }}
+            UNION ALL 
+            SELECT account_serumMarket, account_amm, account_coinMint, account_poolCoinTokenAccount, account_pcMint, account_poolPcTokenAccount, call_tx_id, call_block_time 
+            FROM {{ source('raydium_amm_solana','raydium_amm_call_initialize2') }} raydium_amm_solana.raydium_amm_call_initialize2   
+        ) ip
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_coinMint
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_pcMint
     )
     
     , all_swaps as (
         SELECT 
             sp.call_block_time as block_time
             , 'raydium' as project
-            , 3 as version
+            , 4 as version
             , 'solana' as blockchain
             , case when sp.call_is_inner = False then 'direct'
                 else sp.call_outer_executing_account
@@ -82,10 +89,16 @@
             , case when tk_1.token_mint_address = p.tokenA then p.tokenAVault 
                 else p.tokenBVault
                 end as token_sold_vault
-        FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} sp
+        FROM (
+            SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
+            FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
+            UNION ALL
+            SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
+            FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
+        ) sp
         INNER JOIN pools p
-            ON sp.account_poolState = p.pool_id --account 2
-            and p.recent_init = 1 --for some reason, some pools get created twice.
+            ON sp.account_poolState = p.pool_id
+            and p.recent_init = 1
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
             ON tr_1.call_tx_id = sp.call_tx_id 
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
