@@ -130,3 +130,22 @@ models:
         description: "Transaction hash of deposit"
       - name: evt_index
         description: "Event index"
+
+  - name: staking_ethereum_info
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['staking', 'ethereum', 'info']
+    description: >
+        Ethereum staking entities info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - entity
+    columns:
+      - name: entity
+        description: "Entity name"
+      - name: x_username
+        description: "Username on X"

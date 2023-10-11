@@ -19,7 +19,7 @@ WITH contracts AS (
     --, (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270, 'Kiln', 'Staking Pools')
     , (0x2421a0af8badfae12e1c1700e369747d3db47b09, 'SenseiNode', 'Staking Pools')
     , (0x10e02a656b5f9de2c44c687787c36a2c4801cc40, 'Tranchess', 'Liquid Staking')
-    , (0x447c3ee829a3b506ad0a66ff1089f30181c42637, 'KingHash', 'Liquid Staking')
+    , (0x447c3ee829a3b506ad0a66ff1089f30181c42637, 'HashKing', 'Liquid Staking')
     , (0xa8f50a6c41d67685b820b4fe6bed7e549e54a949, 'Eth2Stake', 'Staking Pools')
     , (0xf243a92eb7d4b4f6a00a57888b887bd01ec6fd12, 'MyEtherWallet', 'Staking Pools')
     , (0x73fd39ba4fb23c9b080fca0fcbe4c8c7a2d630d0, 'MyEtherWallet', 'Staking Pools')
