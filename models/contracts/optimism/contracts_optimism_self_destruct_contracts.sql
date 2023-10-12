@@ -14,18 +14,19 @@
 }}
 
 with creates as (
-    select 
+    select
       block_time as created_time
       , block_number AS created_block_number
       ,tx_hash as creation_tx_hash
       ,address as contract_address
       ,(CASE WHEN cardinality(trace_address) = 0 then cast(-1 as bigint) else trace_address[1] end) as trace_element
     from {{ source('optimism', 'traces') }}
-    where 
+    where
       type = 'create'
       and success
       and tx_success
       {% if is_incremental() %}
+      and {{ incremental_predicate('block_time') }}}
       and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
@@ -40,10 +41,10 @@ FROM (
   FROM (
     --self destruct method 1: same tx
     select
-      cr.created_time 
+      cr.created_time
       ,cr.created_block_number
-      ,cr.creation_tx_hash 
-      ,cr.contract_address 
+      ,cr.creation_tx_hash
+      ,cr.contract_address
       ,cr.trace_element
     from creates as cr
     join {{ source('optimism', 'traces') }} as sd
@@ -53,7 +54,7 @@ FROM (
       and cr.trace_element = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
       {% if is_incremental() %}
-      and sd.block_time >= date_trunc('day', now() - interval '7' day)
+      and {{ incremental_predicate('sd.block_time') }}
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
     group by 1, 2, 3, 4, 5
@@ -62,10 +63,10 @@ FROM (
 
     --self destruct method 2: later tx
     select
-      cr.created_time 
+      cr.created_time
       ,cr.created_block_number
-      ,cr.creation_tx_hash 
-      ,cr.contract_address 
+      ,cr.creation_tx_hash
+      ,cr.contract_address
       ,cr.trace_element
     from creates as cr
 
@@ -76,10 +77,10 @@ FROM (
       AND sds.type = 'suicide'
       AND sds.address IS NOT NULL
       {% if is_incremental() %}
-      and sds.block_time >= date_trunc('day', now() - interval '7' day)
+      and {{ incremental_predicate('sds.block_time') }}
       and cr.contract_address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
   ) inter
 
-) a 
+) a
 WHERE rn = 1
