@@ -38,7 +38,7 @@ WITH
                         AND aa.token_mint_address is null --only join on the empty token mints
                         AND tk.created_at <= aa.block_time --only get token mints that were created at or before this account activity
                   WHERE tx_success 
-                  AND block_time > now() - interval '7' day
+                  AND block_time > now() - interval '1' day
                   {% if is_incremental() %}
                   AND block_time >= date_trunc('day', now() - interval '1' day)
                   {% endif %}
