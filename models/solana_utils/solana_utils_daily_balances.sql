@@ -23,17 +23,22 @@ WITH
                   , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol 
                   , coalesce(post_token_balance,0) as token_balance --tokens are already correct decimals in this table
                   , coalesce(token_balance_owner,original_token_balance_owner) as token_balance_owner
-                  , tx_id
                   , block_time
+                  , block_slot
                   --could be one token mint closing and another opening on the same day. edge case but it exists.
                   , row_number() OVER (partition by address, coalesce(token_mint_address,original_token_mint_address), date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM (
                   SELECT
-                        tk.token_mint_address as original_token_mint_address
-                        , tk.token_balance_owner as original_token_balance_owner
-                        , tk.created_at
-                        , row_number() over (partition by aa.address, aa.block_slot, aa.tx_id, aa.tx_index order by tk.created_at desc) as latest_tk
-                        , aa.*
+                        aa.token_mint_address
+                        , aa.block_time
+                        , aa.block_slot
+                        , aa.address
+                        , aa.post_balance
+                        , aa.post_token_balance
+                        , aa.token_balance_owner
+                        , max_by(tk.token_mint_address, tk.created_at) as original_token_mint_address
+                        , max_by(tk.token_balance_owner, tk.created_at) as original_token_balance_owner
+                        -- , row_number() over (partition by aa.address, aa.block_slot, aa.tx_id, aa.tx_index order by tk.created_at desc) as latest_tk
                   FROM {{ source('solana','account_activity') }}  aa
                   LEFT JOIN {{ ref('solana_utils_token_accounts')}} tk ON tk.address = aa.address 
                         AND aa.token_mint_address is null --only join on the empty token mints
@@ -43,7 +48,9 @@ WITH
                   {% if is_incremental() %}
                   AND block_time >= date_trunc('day', now() - interval '1' day)
                   {% endif %}
-            ) WHERE latest_tk = 1
+                  group by 1,2,3,4,5,6,7
+            ) 
+            -- WHERE latest_tk = 1
       )
 
 SELECT 
