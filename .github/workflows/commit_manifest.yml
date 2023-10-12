@@ -48,7 +48,11 @@ jobs:
     
     - name: dbt dependencies
       run: "dbt deps"
-
+    
+    - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
+      if: matrix.engine == 'dunesql'
+      run: "./scripts/ensure_cluster.sh"
+          
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path . $PROFILE $COMPILE_TAG"
 
