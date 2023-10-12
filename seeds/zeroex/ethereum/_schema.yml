@@ -72,7 +72,7 @@ seeds:
         taker: varbinary
         matcher: varbinary
         nft_address: varbinary
-        nft_id: int256
+        nft_id: uint256
         label: varchar
         price_label: varbinary
         token: varbinary
