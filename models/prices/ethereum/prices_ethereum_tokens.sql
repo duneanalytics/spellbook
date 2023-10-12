@@ -1621,7 +1621,8 @@ FROM
     ('pndc-pond-coin', 'ethereum', 'PNDC', 0x423f4e6138e475d85cf7ea071ac92097ed631eea, 18),
     ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
     ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18),
-    ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18)
+    ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18),
+    ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
