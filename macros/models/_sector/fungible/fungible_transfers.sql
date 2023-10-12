@@ -7,8 +7,7 @@ WITH transfers AS (
     SELECT block_time
     , block_number
     , value AS amount_raw
-    , value/1e18 AS amount
-    , CAST(NULL AS varbinary) AS contract_address
+    , 0x0000000000000000000000000000000000000000 AS contract_address
     , '{{native_symbol}}' AS symbol
     , 18 AS decimals
     , 'native' AS token_standard
@@ -18,7 +17,7 @@ WITH transfers AS (
     , NULL AS evt_index
     FROM {{ traces }}
     WHERE success
-    AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
+    AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
     AND value > UINT256 '0'
     
     UNION ALL
@@ -26,7 +25,6 @@ WITH transfers AS (
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.value AS amount_raw
-    , t.value/POWER(10, tok.decimals) AS amount
     , t.contract_address
     , tok.symbol
     , tok.decimals
@@ -44,16 +42,17 @@ SELECT '{{blockchain}}' as blockchain
 , t.block_number
 , date_trunc('month', t.block_time) AS block_month
 , t.amount_raw
-, t.amount
+, t.amount_raw/t.decimals AS amount
 , pu.price AS usd_price
 , t.amount*pu.price AS usd_amount
 , t.contract_address
 , t.symbol
-, t.decimals
+--, t.decimals -- afaik no need for decimals since if they're available they should already be applied
 , t.token_standard
-, et."from" AS tx_from
 , t."from"
 , t.to
+, et."from" AS tx_from
+, et."to" AS tx_to
 , t.tx_hash
 , t.evt_index
 FROM transfers t
@@ -61,7 +60,7 @@ INNER JOIN {{ transactions }} et ON et.block_number=t.block_number
     AND et.hash=t.tx_hash
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
     AND (pu.contract_address=t.contract_address
-        OR t.contract_address IS NULL AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
+        OR t.contract_address=0x0000000000000000000000000000000000000000 AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
         )
     AND pu.minute = date_trunc('minute', t.block_time)
 
