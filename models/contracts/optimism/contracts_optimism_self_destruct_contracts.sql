@@ -26,8 +26,7 @@ with creates as (
       and success
       and tx_success
       {% if is_incremental() %}
-      and {{ incremental_predicate('block_time') }}}
-      and block_time >= date_trunc('day', now() - interval '7' day)
+      and {{ incremental_predicate('block_time') }}
       {% endif %}
 )
 
