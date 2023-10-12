@@ -116,7 +116,7 @@ SELECT *
     where
       1=1
       {% if is_incremental() %}
-      {{ incremental_predicate('ct.block_time') }}
+      and {{ incremental_predicate('ct.block_time') }}
 
     -- to get existing history of contract mapping / only select those we want to re-run
     union all
