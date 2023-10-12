@@ -6,6 +6,7 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
         unique_key = ['token_mint_address', 'address','day'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
@@ -40,7 +41,7 @@ WITH
                   WHERE tx_success 
                   AND block_time > now() - interval '1' day
                   {% if is_incremental() %}
-                  AND block_time >= date_trunc('day', now() - interval '1' day)
+                  AND {{incremental_predicate('block_time')}}
                   {% endif %}
             ) WHERE latest_tk = 1
       )
