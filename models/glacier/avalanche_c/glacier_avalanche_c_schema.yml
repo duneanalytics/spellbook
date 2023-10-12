@@ -6,11 +6,11 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: glacier_v3
-      contributors: sameepsi
+      contributors: discochuck
     config:
-      tags: ['polygon','quickswap_v3','trades', 'quickswap','dex']
+      tags: ['avalanche','glacier_v3','trades', 'glacier','dex']
     description: >
-        QuickSwap V3 contract trades on polygon
+        glacier V3 contract trades on avalanche
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
