@@ -82,14 +82,14 @@ INNER JOIN
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
-    AND erc20a.blockchain = 'polygon'
+    AND erc20a.blockchain = 'avalanche_c'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
-    AND erc20b.blockchain = 'polygon'
+    AND erc20b.blockchain = 'avalanche_c'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = 'polygon'
+    AND p_bought.blockchain = 'avalanche_c'
     {% if not is_incremental() %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
