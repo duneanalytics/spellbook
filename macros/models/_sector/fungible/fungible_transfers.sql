@@ -58,9 +58,10 @@ SELECT '{{blockchain}}' as blockchain
 FROM transfers t
 INNER JOIN {{ transactions }} et ON et.block_number=t.block_number
     AND et.hash=t.tx_hash
+INNER JOIN {{ ref('evms_info') }} info ON info.blockchain='{{blockchain}}'
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
-    AND (pu.contract_address=t.contract_address
-        OR t.contract_address=0x0000000000000000000000000000000000000000 AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
+    AND ((pu.contract_address=t.contract_address)
+        OR (t.contract_address=0x0000000000000000000000000000000000000000 AND pu.contract_address=info.wrapped_native_token_address)
         )
     AND pu.minute = date_trunc('minute', t.block_time)
 
