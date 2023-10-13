@@ -1,7 +1,7 @@
 {{ config(
     schema = 'friend_tech_base',
     tags = ['dunesql'],
-    alias = alias('base_trades'),
+    alias = alias('base_trades')
     )
 }}
 
