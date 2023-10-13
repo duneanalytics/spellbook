@@ -6,7 +6,7 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        incremental_predicates = ['DBT_INTERNAL_DEST.block_time >= date_trunc(\'day\', now() - interval \'1\' day)'],
+        incremental_predicates = ['DBT_INTERNAL_DEST.day >= date_trunc(\'day\', now() - interval \'1\' day)'],
         unique_key = ['token_mint_address', 'address','day'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
