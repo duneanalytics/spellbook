@@ -42,9 +42,9 @@ SELECT '{{blockchain}}' as blockchain
 , t.block_number
 , date_trunc('month', t.block_time) AS block_month
 , t.amount_raw
-, t.amount_raw/t.decimals FILTER (t.decimals IS NOT NULL) AS amount
+, t.amount_raw/POWER(10, t.decimals) FILTER (WHERE t.decimals IS NOT NULL) AS amount
 , pu.price AS usd_price
-, CAST(t.amount_raw/t.decimals AS DOUBLE)*pu.price FILTER (t.decimals IS NOT NULL AND pu.price IS NOT NULL) AS usd_amount
+, CAST(t.amount_raw/POWER(10, t.decimals) AS DOUBLE)*pu.price FILTER (WHERE t.decimals IS NOT NULL AND pu.price IS NOT NULL) AS usd_amount
 , t.contract_address
 , t.symbol
 --, t.decimals -- afaik no need for decimals since if they're available they should already be applied
