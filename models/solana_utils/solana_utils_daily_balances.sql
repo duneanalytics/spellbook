@@ -3,6 +3,7 @@
         tags=['dunesql'],
         schema = 'solana_utils',
         alias = alias('daily_balances'),
+        partition_by = ['month'],
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
@@ -18,6 +19,7 @@ WITH
       updated_balances as (
             SELECT
                   date_trunc('day', block_time) as day
+                  cast(date_trunc('month', block_time) as date) as month
                   , address
                   , coalesce(token_mint_address,original_token_mint_address) as token_mint_address
                   , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol
@@ -55,6 +57,7 @@ WITH
 
 SELECT
       day
+      , month
       , address
       , sol_balance
       , token_mint_address
