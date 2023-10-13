@@ -18,7 +18,7 @@ SELECT 'base' AS blockchain
 , shareAmount AS share_amount
 , subjectEthAmount/1e18 AS subject_fee_amount
 , protocolEthAmount/1e18 AS protocol_fee_amount
-, 0x00000000 AS currency_contract
+, 0x0000000000000000000000000000000000000000 AS currency_contract
 , 'ETH' AS currency_symbol
 , supply
 , evt_tx_hash AS tx_hash
