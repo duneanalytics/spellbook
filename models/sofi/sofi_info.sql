@@ -17,4 +17,4 @@ FROM (VALUES
     	, ('friend3', 'Friend3', 'bnb', '', 'Friend3AI')
         , ('hub3', 'hub3', 'solana', '', 'hub3ee')
         , ('friendzy', 'Friendzy', 'solan', '', 'Friendzygg_')
-    ) AS temp_table (project, name, blockchain, marketplace_type, x_username)
+    ) AS temp_table (project, name, blockchain, share_name, x_username)
