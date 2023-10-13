@@ -118,7 +118,7 @@ models:
       - *power_diff
   
   models:
-  - name: op_governance_optimism_delegates_addresses_legacy
+  - name: op_governance_optimism_delegates_addresses
     meta:
       blockchain: optimism
       project: op_governance_optimism
