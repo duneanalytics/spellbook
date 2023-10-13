@@ -116,6 +116,33 @@ models:
         name: previousBalance
         description: "Previous voting power of delegates"
       - *power_diff
+  
+  models:
+  - name: op_governance_optimism_delegates_addresses_legacy
+    meta:
+      blockchain: optimism
+      project: op_governance_optimism
+      contributors: kaiblade
+
+    config:
+      tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
+    description: "OP delegates addresses info including address name and ens"
+
+    columns:
+      - &address
+        name: address
+        description: "Addresses of delegates"
+        tests:
+          - unique
+          - not_null
+      - &name
+        name: name
+        description: "Name associated with each of the delegate addresses"
+      - &ens
+        name: ens
+        description: "Ethereum Name Service ID associated with the delegates addresses"
+
+
 
      
       

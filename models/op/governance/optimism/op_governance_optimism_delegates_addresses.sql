@@ -1,7 +1,9 @@
 {{config(
-        tags = ['static', 'dunesql'],
-        alias = alias('delegate_addresses'),
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        schema = 'op_governance_optimism'
+        , tags = ['static', 'dunesql']
+        , alias = alias('delegate_addresses')
+        , unique_key='address'
+        , post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "governance",
                                     \'["kaiblade"]\') }}')}}
@@ -128,5 +130,7 @@ FROM (
 
 )
 
-SELECT address,name,ens FROM address_names
+SELECT address,
+name,
+ens FROM address_names
 WHERE rn = 1 --exclude dupes
