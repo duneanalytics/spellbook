@@ -210,11 +210,8 @@ WITH levels as (
 -- b = base-level contract
 {% for i in range(max_levels) -%}
 
-{% if i == 0 %}
-with level0
-{% else %}
 ,level{{i}}
-{% endif %}
+
   as (
     select
       {{i}} as level 
