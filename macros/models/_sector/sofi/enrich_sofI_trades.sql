@@ -3,12 +3,12 @@
 
 {% for base_trades_model in base_trades_models %}
 SELECT t.blockchain
-, date_trunc('month', block_time) AS block_month
-, block_time
+, date_trunc('month', t.block_time) AS block_month
+, t.block_time
 , t.block_number
 , t.project
-, trader
-, subject
+, t.trader
+, t.subject
 , txs."from" AS tx_from
 , txs.to AS tx_to
 , t.trade_side
@@ -21,10 +21,10 @@ SELECT t.blockchain
 , t.protocol_amount*pu.price AS protocol_amount_usd
 , t.currency_contract
 , t.currency_symbol
-, supply
-, evt_tx_hash AS tx_hash
-, evt_index
-, contract_address
+, t.supply
+, t.tx_hash
+, t.evt_index
+, t.contract_address
 FROM {{ base_trades_model }} t
 INNER JOIN {{raw_transactions}} txs ON txs.block_number=t.block_number
     AND  txs.hash=t.tx_hash
