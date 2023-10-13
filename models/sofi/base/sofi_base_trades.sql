@@ -15,7 +15,7 @@
 ] %}
 
 WITH trades AS (
-    {{enrich_sofi_trades('base', base_trades)}}
+    {{enrich_sofi_trades('base', base_models, source('base', 'transactions'))}}
     )
 
 SELECT *

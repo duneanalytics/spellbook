@@ -1,4 +1,4 @@
-{% macro enrich_sofi_trades(blockchain, base_trades_models) %}
+{% macro enrich_sofi_trades(blockchain, base_trades_models, raw_transactions) %}
 
 
 {% for base_trades_model in base_trades_models %}
@@ -26,7 +26,7 @@ SELECT t.blockchain
 , evt_index
 , contract_address
 FROM {{ base_trades_model }} t
-INNER JOIN {{ source('{{ blockchain }}', 'transactions') }} txs ON txs.block_number=t.block_number
+INNER JOIN {{raw_transactions}} txs ON txs.block_number=t.block_number
     AND  txs.hash=t.tx_hash
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
