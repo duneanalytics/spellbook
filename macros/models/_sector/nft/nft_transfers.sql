@@ -31,11 +31,11 @@ FROM(
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
-        AND et.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('et.block_time')}}
         {% endif %}
     {%- endif -%}
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -65,11 +65,11 @@ FROM(
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
-        AND et.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('et.block_time')}}
         {% endif %}
     {%- endif -%}
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -100,7 +100,7 @@ FROM(
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('t.evt_block_time')}}
         {% endif %}
         {% if spark_mode == True %}
         {# This deduplicates rows. Double check if this is correct or not #}
@@ -111,7 +111,7 @@ FROM(
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
         {% if is_incremental() %}
-        AND et.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('et.block_time')}}
         {% endif %}
     {%- endif -%}
     {% if spark_mode == True %}

@@ -8,7 +8,7 @@ on:
       
 jobs:
   upload_status:
-    runs-on: [ self-hosted, linux, spellbook-trino ]
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
   
     steps:
       - uses: actions/setup-python@v3
@@ -19,12 +19,16 @@ jobs:
       
       - name: dbt dependencies
         run: "dbt deps"
+
+      - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
+        if: matrix.engine == 'dunesql'
+        run: "./scripts/ensure_cluster.sh"
       
       - name: Install Python dependencies
         run: "pip install requests"
       
-      - name: DBT compile to create prod manifest from main
-        run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql --select tag:legacy tag:dunesql"
+      - name: Create Manifest
+        run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql"
 
       - name: Upload translation status CSV to Dune
         env:

@@ -52,12 +52,19 @@
     {'project': 'opx_finance',
     'blockchain': 'optimism',
     'schema': 'opx_finance_optimism',
-    'table_name': 'Router_evt_Swap'},
+    'table_name': 'Router_evt_Swap',
+    'time_column': 'evt_block_time'},
 
     {'project': 'mauve',
      'blockchain': 'ethereum',
      'schema': 'mauve_ethereum',
      'table_name': 'MauvePool_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'openxswap',
+     'blockchain': 'optimism',
+     'schema': 'openxswap_optimism',
+     'table_name': 'Aggregator_evt_Swap',
      'time_column': 'evt_block_time'}
 ] %}
 

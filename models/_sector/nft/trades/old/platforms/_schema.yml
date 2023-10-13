@@ -183,7 +183,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - tx_hash
             - evt_index
             - nft_contract_address
@@ -216,7 +215,6 @@ models:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - unique_trade_id
       - check_seed:
           seed_file: ref('pancakeswap_nft_trades_samples')
