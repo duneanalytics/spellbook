@@ -34,7 +34,7 @@ models:
      - &project
        name: project
        description: "Project"
-        tests:
+       tests:
           - relationships:
               to: ref('nft_marketplaces_info')
               field: project
