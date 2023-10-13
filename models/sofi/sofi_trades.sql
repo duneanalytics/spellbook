@@ -16,7 +16,8 @@
 SELECT *
 FROM (
     {% for chain_specific_model in chain_specific_models %}
-    SELECT block_time
+    SELECT blockchain
+    , block_time
     , block_number
     , project
     , trader
