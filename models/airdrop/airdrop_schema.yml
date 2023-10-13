@@ -77,6 +77,10 @@ models:
     columns:
       - name: project
         description: "Marketplace codename"
+        tests:
+          - relationships:
+              to: ref('airdrop_claims')
+              field: project
       - name: name
         description: "Marketplace capitalised name"
       - name: eligible_addresses
