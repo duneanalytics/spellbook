@@ -27,10 +27,10 @@ FROM (
     , amount
     , amount_usd
     , share_amount
-    , subject_amount
-    , subject_amount_usd
-    , protocol_amount
-    , protocol_amount_usd
+    , subject_fee_amount
+    , subject_fee_amount_usd
+    , protocol_fee_amount
+    , protocol_fee_amount_usd
     , currency_contract
     , currency_symbol
     , supply
