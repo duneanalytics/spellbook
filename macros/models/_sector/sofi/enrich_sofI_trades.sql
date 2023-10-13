@@ -1,4 +1,4 @@
-{% macro enrich_sofi_trades(blockchain, base_trades) %}
+{% macro enrich_sofi_trades(blockchain, base_trades_models) %}
 
 
 {% for base_trades_model in base_trades_models %}
@@ -33,7 +33,7 @@ INNER JOIN {{ source('{{ blockchain }}', 'transactions') }} txs ON txs.block_num
     AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 INNER JOIN {{ref('evms_info')}} info ON info.blockchain='{{ blockchain }}'
-LEFT JOIN {{ source('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{ blockchain }}'
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{ blockchain }}'
     AND (pu.contract_address=info.wrapped_native_token_address
     AND pu.minute = date_trunc('minute', t.block_time)
         )

@@ -14,7 +14,9 @@
      (ref('friend_tech_base_base_trades'))
 ] %}
 
-WITH trades AS ({{enrich_sofi_trades('base', base_trades)}})
+WITH trades AS (
+    {{enrich_sofi_trades('base', base_trades)}}
+    )
 
 SELECT *
 FROM trades
