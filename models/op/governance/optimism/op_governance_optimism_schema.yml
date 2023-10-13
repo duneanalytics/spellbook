@@ -117,7 +117,6 @@ models:
         description: "Previous voting power of delegates"
       - *power_diff
   
-  models:
   - name: op_governance_optimism_delegates_addresses
     meta:
       blockchain: optimism
