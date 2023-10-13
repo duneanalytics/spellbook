@@ -26,8 +26,8 @@ WITH early_price AS (
 SELECT 'ethereum' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'Forta Network' AS project
-, 'Forta Network Airdrop' AS airdrop_identifier
+, 'forta_network' AS project
+, 1 AS airdrop_number
 , t.recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
