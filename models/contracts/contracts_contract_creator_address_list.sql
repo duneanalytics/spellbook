@@ -695,6 +695,8 @@ WITH curated_list AS (
       ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
       ,(0x034e4b219ec4e58aa45a587d0bd85bc098674c7a, 'Stargate Finance')
       ,(0x6D2b70e39C6bc63763098e336323591eb77Cd0C6, 'Farcaster')
+      ,(0x4e1f7ede4c1647abc50d412ac5a7be52ea4423d3, 'Hedgey Finance')
+      ,(0x1fd06f088c720ba3b7a3634a8f021fdd485dca42, 'Allo Protocol (Gitcoin)')
 
       
   ) as temp_table (creator_address, contract_project)
