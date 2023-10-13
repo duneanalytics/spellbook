@@ -30,6 +30,10 @@ models:
       - &project
         name: project
         description: "Project name"
+        tests:
+          - relationships:
+              to: ref('airdrop_info')
+              field: project
       - &airdrop_number
         name: airdrop_number
         description: "Airdrop identifier number"
@@ -77,10 +81,6 @@ models:
     columns:
       - name: project
         description: "Marketplace codename"
-        tests:
-          - relationships:
-              to: ref('airdrop_claims')
-              field: project
       - name: name
         description: "Marketplace capitalised name"
       - name: eligible_addresses
