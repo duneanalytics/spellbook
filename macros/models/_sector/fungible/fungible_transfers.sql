@@ -44,7 +44,7 @@ SELECT '{{blockchain}}' as blockchain
 , t.amount_raw
 , t.amount_raw/t.decimals AS amount
 , pu.price AS usd_price
-, t.amount*pu.price AS usd_amount
+, (t.amount_raw/t.decimals)*pu.price AS usd_amount
 , t.contract_address
 , t.symbol
 --, t.decimals -- afaik no need for decimals since if they're available they should already be applied
