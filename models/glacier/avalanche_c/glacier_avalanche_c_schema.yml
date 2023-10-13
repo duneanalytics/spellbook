@@ -1,4 +1,4 @@
-version: 3
+version: 2
 
 models:
   - name: glacier_v3_avalanche_c_trades
