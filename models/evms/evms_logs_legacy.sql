@@ -20,6 +20,7 @@
      , ('optimism', source('optimism', 'logs'))
      , ('arbitrum', source('arbitrum', 'logs'))
      , ('celo', source('celo', 'logs'))
+     , ('goerli', source('goerli', 'logs'))
 ] %}
 
 SELECT *

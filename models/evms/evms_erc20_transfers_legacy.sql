@@ -20,6 +20,7 @@
      , ('optimism', source('erc20_optimism', 'evt_transfer'))
      , ('arbitrum', source('erc20_arbitrum', 'evt_transfer'))
      , ('celo', source('erc20_celo', 'evt_transfer'))
+     , ('goerli', source('erc20_goerli', 'evt_transfer'))
 ] %}
 
 SELECT *

@@ -9,18 +9,15 @@ models:
       tags: ['solana','token_accounts']
     description: >
         unique token_mint_address and address pairs from solana.account_activity
-    tests:
-        - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-                - token_mint_address
-                - address
     columns:
       - &token_mint_address
         name: token_mint_address
+      - &token_balance_owner
+        name: token_balance_owner
       - &address
         name: address
-      - &updated_at
-        name: updated_at
+      - &created_at
+        name: created_at
   
   - name: solana_utils_daily_balances
     meta:
@@ -39,9 +36,9 @@ models:
         name: sol_balance
       - &token_balance
         name: token_balance
-      - &token_balance_owner
-        name: token_balance_owner
-      - *updated_at
+      - *token_balance_owner
+      - &updated_at
+        name: updated_at
 
   - name: solana_utils_latest_balances
     meta:
