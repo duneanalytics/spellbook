@@ -70,3 +70,29 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract addressed used"
+
+  - name: sofi_info
+    meta:
+      blockchain: bnb, avalanche_c, arbitrum, base
+      sector: sofi
+      contributors: hildobby
+    config:
+      tags: ['sofi', 'bnb', 'avalanche_c',  'arbitrum', 'base', 'info']
+    description: >
+        SoFis info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+    columns:
+      - *project
+      - &name
+        name: name
+        description: "Marketplace capitalised name"
+      - *blockchain
+      - &share_name
+        name: share_name
+        description: "Name of shares"
+      - &x_username
+        name: x_username
+        description: "Username on X"

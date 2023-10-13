@@ -1,7 +1,7 @@
 {{ config(
     schema = 'sofi_base',
-    tags = ['dunesql'],
-    alias = alias('trades'),
+    tags = ['legacy', 'static'],
+    alias = alias('trades', legacy_model=True),
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,11 +10,4 @@
     )
 }}
 
-{% set base_models = [
-     (ref('friend_tech_base_base_trades'))
-] %}
-
-WITH trades AS ({{enrich_sofi_trades('base', base_trades)}})
-
-SELECT *
-FROM trades
+SELECT 1
