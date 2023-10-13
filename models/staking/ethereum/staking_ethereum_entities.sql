@@ -6,7 +6,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "staking",
-                                \'["hildobby", "sankinyue"]\') }}')
+                                \'["hildobby", "sankinyue", "nerolation"]\') }}')
 }}
 
 {% set entities_identifiers_models = [
