@@ -671,8 +671,10 @@ WITH curated_list AS (
       ,(0x22fe024ffec24631a625113bdf5e9f7d447c8ddf, 'Teahouse')
       ,(0xC73Fc08C931Efe3FCE850C09278472e8a81c2e05, 'XEN Crypto')
       ,(0x0Cf83143f0AB9D6e178fC7f141205ec2992266C8, 'CoinTool')
-
-      
+      ,(0x000002c34bAE6DD7BeC72AcbA6aAAC1e01A359De, 'SyncSwap')
+      ,(0xce20d01E96710885Db68ecd7cDd2423293f15130, 'Mute')
+      ,(0x8633500EF5c41CE955B4958AD5e61ca58A2B3cB6, 'SpaceFi')
+  
   ) as temp_table (creator_address, contract_project)
 )
 
