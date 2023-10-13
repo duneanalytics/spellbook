@@ -3,7 +3,7 @@
 
 {% for base_trades_model in base_trades_models %}
 SELECT t.blockchain
-, date_trunc('month', t.block_time) AS block_month
+, CAST(date_trunc('month', t.block_time) AS date) AS block_month
 , t.block_time
 , t.block_number
 , t.project
