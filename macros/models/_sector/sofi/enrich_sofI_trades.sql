@@ -15,10 +15,10 @@ SELECT t.blockchain
 , t.amount
 , t.amount*pu.price AS amount_usd
 , t.share_amount
-, t.subject_amount
-, t.subject_amount*pu.price AS subject_amount_usd
-, t.protocol_amount
-, t.protocol_amount*pu.price AS protocol_amount_usd
+, t.subject_fee_amount
+, t.subject_fee_amount*pu.price AS subject_fee_amount_usd
+, t.protocol_fee_amount
+, t.protocol_fee_amount*pu.price AS protocol_fee_amount_usd
 , t.currency_contract
 , t.currency_symbol
 , t.supply

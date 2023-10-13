@@ -43,15 +43,24 @@ models:
       - &amount
         name: amount
         description: "Amount of traded currency"
+      - &amount_usd
+        name: amount_usd
+        description: "Amount in USD"
       - &share_amount
         name: share_amount
         description: "Amout of shares"
       - &subject_fee_amount
         name: subject_fee_amount
         description: "Subject fee amount"
+      - &subject_fee_amount_usd
+        name: subject_fee_amount_usd
+        description: "Subject fee amount in USD"
       - &protocol_fee_amount
         name: protocol_fee_amount
         description: "Protocol fee amount"
+      - &protocol_fee_amount_usd
+        name: protocol_fee_amount_usd
+        description: "Protocol fee amount in USD"
       - &currency_contract
         name: currency_contract
         description: "Currency contract"
