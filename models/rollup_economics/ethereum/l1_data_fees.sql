@@ -102,17 +102,17 @@ with tx_batch_appends as (
       length(t.data) as data_length
     FROM
       {{ source('ethereum','transactions') }} as t
-      INNER JOIN {{ source('addresses_ethereum','l2_batch_submitters') }} op ON 
+      INNER JOIN {{ source('addresses_ethereum_l2_batch_submitters') }} op ON 
       (
         (
           t."from" IN (
             SELECT address 
-            FROM {{ source('addresses_ethereum','l2_batch_submitters') }}
+            FROM {{ source('addresses_ethereum_l2_batch_submitters') }}
             WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L1BatchInbox' AND role_type = 'from_address'
           )
           AND t.to IN (
             SELECT address 
-            FROM {{ source('addresses_ethereum','l2_batch_submitters') }}
+            FROM {{ source('addresses_ethereum_l2_batch_submitters') }}
             WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L1BatchInbox' AND role_type = 'to_address'
           )
         )
@@ -120,12 +120,12 @@ with tx_batch_appends as (
         (
           t."from" IN (
             SELECT address 
-            FROM {{ source('addresses_ethereum','l2_batch_submitters') }}
+            FROM {{ source('addresses_ethereum_l2_batch_submitters') }}
             WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L2OutputOracle' AND role_type = 'from_address'
           )
           AND t.to IN (
             SELECT address 
-            FROM {{ source('addresses_ethereum','l2_batch_submitters') }}
+            FROM {{ source('addresses_ethereum_l2_batch_submitters') }}
             WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L2OutputOracle' AND role_type = 'to_address'
           )
         )
