@@ -110,5 +110,6 @@ FROM
     , (0x2ed8eb76c91fa25b21d588128569dbc2f885e511, 'Linke Yang', 'Linke Yang', 'Independent Staker')
     , (0x96f4489fe75d0494bd5088b0d80b17a5759dac37, 'Tranchess', 'Tranchess', 'Liquid Staking')
     , (0x1a0ffc5d6a8f14bacfb21056355394128fa6b955, 'DxPool', 'DxPool', 'Staking Pools')
+    , (0xa1619fb8ccc03ee3c8d543fb8be993764030e028, 'Ebunker', 'Staking Pools')
     ) 
     x (depositor_address, entity, entity_unique_name, category)
