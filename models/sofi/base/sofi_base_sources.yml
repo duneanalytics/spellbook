@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: friendtech_base
+    description: friend.tech base
+    tables:
+      - name: FriendtechSharesV1_evt_Trade
+        loaded_at_field: evt_block_time
