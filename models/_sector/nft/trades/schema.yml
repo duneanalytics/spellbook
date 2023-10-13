@@ -34,6 +34,10 @@ models:
      - &project
        name: project
        description: "Project"
+        tests:
+          - relationships:
+              to: ref('nft_marketplaces_info')
+              field: project
      - &version
        name: version
        description: "Project version"
