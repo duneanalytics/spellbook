@@ -93,24 +93,44 @@ with tx_batch_appends as (
         AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-    UNION ALL
-    SELECT
-      lower(op.name) as name,
+    UNION ALL SELECT
+      lower(op.protocol_name) as name,
       t.block_number,
       t.hash,
-      (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
-      p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+      (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
+      p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
       length(t.data) as data_length
     FROM
       {{ source('ethereum','transactions') }} as t
-      INNER JOIN {{ source('dune_upload','op_stack_chain_metadata') }} op ON (
-        t."from" = op.batchinbox_from_address
-        AND t.to = op.batchinbox_to_address
+      INNER JOIN {{ source('addresses_ethereum', 'l2_batch_submitters') }} op ON 
+      (
+        (
+          t."from" IN (
+            SELECT address 
+            FROM addresses_ethereum.l2_batch_submitters
+            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L1BatchInbox' AND role_type = 'from_address'
+          )
+          AND t.to IN (
+            SELECT address 
+            FROM addresses_ethereum.l2_batch_submitters
+            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L1BatchInbox' AND role_type = 'to_address'
+          )
+        )
+        OR 
+        (
+          t."from" IN (
+            SELECT address 
+            FROM addresses_ethereum.l2_batch_submitters
+            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L2OutputOracle' AND role_type = 'from_address'
+          )
+          AND t.to IN (
+            SELECT address 
+            FROM addresses_ethereum.l2_batch_submitters
+            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L2OutputOracle' AND role_type = 'to_address'
+          )
+        )
       )
-      OR (
-        t."from" = op.l2_output_oracle_from_address
-        AND t.to = op.l2_output_oracle
-      )
+      AND op.protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') 
       AND t.block_time >= timestamp '2022-01-01'
       INNER JOIN {{ source('prices','usd') }} p
         ON p.minute = date_trunc('minute', t.block_time)
