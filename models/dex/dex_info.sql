@@ -20,6 +20,7 @@ FROM (VALUES
     , ('balancer', 'Balancer', 'Direct & FLashloans', 'Balancer')
     , ('trader_joe', 'Trader Joe', 'Direct', 'traderjoe_xyz')
     , ('spookyswap', 'SpookySwap', 'Direct', 'SpookySwap')
+    , ('spookswap', 'SpookySwap', 'Direct', 'SpookySwap')  -- To remove, should be just spookyswap
     , ('biswap', 'Biswap', 'Direct', 'Biswap_Dex')
     , ('bancor_network', 'Bancor', 'Direct', 'Bancor') -- To Fix, should be just bancor
     , ('bancor', 'Bancor', 'Direct', 'Bancor')
@@ -71,6 +72,7 @@ FROM (VALUES
     , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
     , ('cow_protocol', 'CoW Swap', 'Aggregator', 'CoWSwap')
+    , ('CoW Protocol', 'CoW Swap', 'Aggregator', 'CoWSwap') -- To Fix, should be just cow_protocol
     , ('openocean', 'OpenOcean', 'Aggregator', 'OpenOceanGlobal')
     , ('lifi', 'LI.FI', 'Aggregator', 'lifiprotocol')
     , ('yield_yak', 'Yield Yak', 'Aggregator', 'yieldyak_')
