@@ -35,8 +35,8 @@ models:
       - &trade_side
         name: trade_side
         description: "Side of the trade"
-      - &amount
-        name: amount
+      - &amount_original
+        name: amount_original
         description: "Amount of traded currency"
       - &share_amount
         name: share_amount
@@ -84,7 +84,7 @@ models:
       - *trader
       - *subject
       - *trade_side
-      - *amount
+      - *amount_original
       - *share_amount
       - *subject_fee_amount
       - *protocol_fee_amount
@@ -118,7 +118,7 @@ models:
         name: tx_to
         description: "Transaction to address"
       - *trade_side
-      - *amount
+      - *amount_original
       - &amount_usd
         name: amount_usd
         description: "Amount in USD"

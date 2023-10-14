@@ -14,7 +14,7 @@ SELECT 'base' AS blockchain
 , trader
 , subject
 , CASE WHEN isBuy = TRUE THEN 'buy' ELSE 'sell' END AS trade_side
-, ethAmount/1e18 AS amount
+, ethAmount/1e18 AS amount_original
 , shareAmount AS share_amount
 , subjectEthAmount/1e18 AS subject_fee_amount
 , protocolEthAmount/1e18 AS protocol_fee_amount

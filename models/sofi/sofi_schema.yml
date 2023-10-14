@@ -40,8 +40,8 @@ models:
       - &trade_side
         name: trade_side
         description: "Side of the trade"
-      - &amount
-        name: amount
+      - &amount_original
+        name: amount_original
         description: "Amount of traded currency"
       - &amount_usd
         name: amount_usd

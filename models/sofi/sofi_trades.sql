@@ -28,7 +28,7 @@ FROM (
     , tx_from
     , tx_to
     , trade_side
-    , amount
+    , amount_original
     , amount_usd
     , share_amount
     , subject_fee_amount
