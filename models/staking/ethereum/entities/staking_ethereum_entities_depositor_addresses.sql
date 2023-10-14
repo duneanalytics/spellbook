@@ -124,8 +124,12 @@ FROM
     , (0xbd2e7492e7A7afcFBacBe072E353E871caB391f7, 'Upbit', 'Upbit 8', 'CEX')
     , (0xB61428Db947a9eE049B966fb0536CB00579753eD, 'Korbit', 'Korbit 1', 'CEX')
     , (0x39FD78FE6A72FaaE2aB5f1f053c253B2e3685C15, 'Huobi', 'Huobi 3', 'CEX')
-    , (0x3842872545a9BA25FeA0805cB34e83eFde15e1f8, 'Bitgo', 'Bitgo 1', 'CEX')
-    , (0xd7E2409f6C4F98e0bD9844e3A865d9E314eff8Ca, 'Bitgo', 'Bitgo 2', 'CEX')
+    , (0xc611a82181b867487491541FB89f821fC22410aE, 'Huobi', 'Huobi 4', 'CEX')    
+    , (0x3842872545a9BA25FeA0805cB34e83eFde15e1f8, 'BitGo', 'BitGo 1', 'CEX')
+    , (0xd7E2409f6C4F98e0bD9844e3A865d9E314eff8Ca, 'BitGo', 'BitGo 2', 'CEX')
+    , (0x8d874F5A07dF691bC8e56818Ca1eBc6027B60d51, 'Paxos', 'Paxos 1', 'CEX')
+    , (0x00ecC96508d299Fa8d228d569d8582980C1bc75e, 'Uphold', 'Uphold 1', 'CEX')
+    , (0x307048Ad5Ab7279D34e5358331B0d48050ADa274, 'CoinCDX', 'CoinCDX 1', 'CEX')
     --, (, '', '', '')
     ---------
 
