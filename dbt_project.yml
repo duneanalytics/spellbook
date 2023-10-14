@@ -1424,3 +1424,8 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
+
+    moola:
+      +schema: moola
+      celo:
+        +schema: moola_celo
