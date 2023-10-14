@@ -19,10 +19,10 @@ with flashloans as (
   select
     flash.evt_block_time,
     flash.evt_block_number,
-    cast(flash.amount as int256) as amount,
+    cast(flash.amount as double) as amount,
     flash.evt_tx_hash,
     flash.evt_index,
-    cast(flash.premium as int256) as fee,
+    cast(flash.premium as double) as fee,
     flash.asset as token_address,
     erc20.symbol as symbol,
     erc20.decimals as currency_decimals,
@@ -30,7 +30,7 @@ with flashloans as (
     flash.contract_address
   from {{ source('moolainterestbearingmoo_celo', 'LendingPool_evt_FlashLoan') }} flash
     left join {{ ref('tokens_celo_erc20') }} erc20 on erc20.contract_address = flash.asset
-  where cast(flash.amount as int256) > 0
+  where cast(flash.amount as double) > 0
     {% if is_incremental() %}
     and {{ incremental_predicate('flash.evt_block_time') }}
     {% endif %}
