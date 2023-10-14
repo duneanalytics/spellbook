@@ -117,6 +117,7 @@ FROM
     , (0x2d4F5E4982F980BC61aA571AE63f66bF3577618C, 'BlockFi', 'BlockFi 1', 'CEX')
     , (0x98b92fde3F215F25e9D8CA1C6Ec67b65440bf38a, 'Bitfinex', 'Bitfinex 3', 'CEX')
     , (0xA2D6A09448819F4c89df2885Ab652AFA31D55341, 'OKX', 'OKX 4', 'CEX')
+    , (0xb158126c22ad89Ddd7C5Af0dF1221E5baa629dAC, 'OKX', 'OKX 5', 'CEX')
     , (0x51656396e883C1e398ccEc721A8C2aF5a98bEb01, 'Bitcoin Suisse', 'Bitcoin Suisse 8', 'CEX') -- Certain
     , (0x028A07979d3Fed8e9459D0A84D8814087fE36A74, 'Bitcoin Suisse', 'Bitcoin Suisse 9', 'CEX')
     , (0x06051f7AF88694201f74c71c4e25f7F4e35a9779, 'Bitcoin Suisse', 'Bitcoin Suisse 10', 'CEX')
