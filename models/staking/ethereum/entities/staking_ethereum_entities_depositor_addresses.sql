@@ -105,6 +105,7 @@ FROM
     , (0x20312e96b1a0568ac31c6630844a962383cc66c2, 'CoinSpot', 'CoinSpot 1', 'CEX')
     , (0x02cEe8dD7581946beF23102e69869F8dA96ee502, 'CoinSpot', 'CoinSpot 2', 'CEX')
     , (0x01b92134c905aa3a9a8a97f3ea464f768f340301, 'CoinSpot', 'CoinSpot 3', 'CEX')
+    , (0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 1', 'CEX')
 
     , (0x4757d97449aca795510b9f3152c6a9019a3545c3, 'Daniel Wang', 'wangdong.eth',   'Independent Staker')
     , (0x69aa0361dbb0527d4f1e5312403bd41788fe61fe, 'Daniel Wang', 'danielwang.eth', 'Independent Staker')
