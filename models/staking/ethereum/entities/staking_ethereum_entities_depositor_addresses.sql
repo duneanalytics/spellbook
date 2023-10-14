@@ -67,7 +67,8 @@ FROM
     , (0xbb84d966c09264ce9a2104a4a20bb378369986db, 'WEX Exchange', 'WEX Exchange', 'CEX')
     , (0xbafa44efe7901e04e39dad13167d089c559c1138, 'Frax Finance', 'Frax Finance', 'Liquid Staking')
     , (0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340, 'Coinbase', 'Coinbase Batch 1', 'CEX')
-    , (0xeee27662c2b8eba3cd936a23f039f3189633e4c8, 'Celsius', 'Celsius', 'Staking Pools')
+    , (0xeee27662c2b8eba3cd936a23f039f3189633e4c8, 'Celsius', 'Celsius 1', 'Staking Pools')
+    , (0x3f124c700fb5e741f128e28985267d44f56b242f, 'Celsius', 'Celsius 2', 'Staking Pools')
     , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell 1', 'Liquid Staking')
     , (0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39, 'Swell', 'Swell 2', 'Liquid Staking')
     , (0x5180db0237291a6449dda9ed33ad90a38787621c, 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
@@ -104,6 +105,7 @@ FROM
     , (0x20312e96b1a0568ac31c6630844a962383cc66c2, 'CoinSpot', 'CoinSpot 1', 'CEX')
     , (0x02cEe8dD7581946beF23102e69869F8dA96ee502, 'CoinSpot', 'CoinSpot 2', 'CEX')
     , (0x01b92134c905aa3a9a8a97f3ea464f768f340301, 'CoinSpot', 'CoinSpot 3', 'CEX')
+
     , (0x4757d97449aca795510b9f3152c6a9019a3545c3, 'Daniel Wang', 'wangdong.eth',   'Independent Staker')
     , (0x69aa0361dbb0527d4f1e5312403bd41788fe61fe, 'Daniel Wang', 'danielwang.eth', 'Independent Staker')
     , (0xa12baeb64d4de260ed48a3ab5de8d5cbea1acdbd, 'Daniel Wang', 'Daniel Wang 1',  'Independent Staker')
