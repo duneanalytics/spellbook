@@ -1,4 +1,4 @@
-{% macro enrich_sofi_trades(blockchain, base_trades_models, raw_transactions) %}
+{% macro enrich_social_trades(blockchain, base_trades_models, raw_transactions) %}
 
 
 {% for base_trades_model in base_trades_models %}
