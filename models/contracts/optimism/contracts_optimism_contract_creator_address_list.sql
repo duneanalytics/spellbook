@@ -661,6 +661,18 @@ WITH curated_list AS (
       ,(0x225114369fA6b133400A4BB86d08c62044387266, 'HashDao Finance') 
       ,(0x97471c0fDDdb5E5Cc34cb08CB17961Bd3a53F38f, 'Woo Network') --SuperChargerVault
       ,(0x2C47d8232B11156dF8324f13F13C112770a98b80, 'Interport Finance')
+      ,(0x99a9cC2Aaf54F6bE94A437641692A72810f6E9d5, 'Bored Town') --Campaigns
+      ,(0xcFa1Bf8CA39A89B6c0E9AFF55454B20e589c0dA0, 'Bored Town') --Launchpad
+      ,(0x8b6c27ec466923fad66Ada94c78AA320eA876969, 'Opti.domains')
+      ,(0x888811AC3DC01628eBD22b1Aa01a35825aD997e8, 'Opti.domains')
+      ,(0x14B214CA36249b516B59401B3b221CB87483b53C, 'SCRY')
+      ,(0x4D633C53cF71220FB65Fa8eABEC5ae5dc450c9Ae, 'Oppa Bear NFT')
+      ,(0x8325Cb5093FF55C02c4F3e54f43709C5A824FB70, 'Tripster')
+      ,(0x1208a26faa0f4ac65b42098419eb4daa5e580ac6, 'ENS Wildcard Domains')
+      ,(0x10850762bAc0dc6660630c1EfFe188A7cbFDdc88, 'OptiChads NFT')
+      ,(0x086D4a6964E2dF36ca3664613F96C0fB3E5F272C, 'Aragon')
+      ,(0x99C19AB10b9EC8aC6fcda9586E81f6B73a298870, 'dm3 Protocol')
+      ,(0xe7B38950a6396fae5dF3e6f2b3F7BB8F65a81703, 'RedStone')
 
   ) as temp_table (creator_address, contract_project)
 )
