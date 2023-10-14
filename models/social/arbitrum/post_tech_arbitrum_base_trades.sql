@@ -5,7 +5,7 @@
     )
 }}
 
-{% set post_tech_fan_start_date = '2023-08-30' %}
+{% set post_tech_start_date = '2023-08-30' %}
 
 SELECT 'arbitrum' AS blockchain
 , evt_block_time AS block_time
