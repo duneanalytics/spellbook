@@ -28,9 +28,9 @@ LEFT JOIN {{ source('avalanche_c', 'logs') }} logs ON logs.block_number = txs.bl
     AND txs.success
 WHERE logs.topic0 = 0xc9d4f93ded9b42fa24561e02b2a40f720f71601eb1b3f7b3fd4eff20877639ee
     {% if is_incremental() %}
-    WHERE txs.block_time >= date_trunc('day', now() - interval '7' day)
-    WHERE logs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND logs.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE txs.block_time >= TIMESTAMP '{{stars_arena_start_date}}'
-    WHERE logs.block_time >= TIMESTAMP '{{stars_arena_start_date}}'
+    AND txs.block_time >= TIMESTAMP '{{stars_arena_start_date}}'
+    AND logs.block_time >= TIMESTAMP '{{stars_arena_start_date}}'
     {% endif %}
