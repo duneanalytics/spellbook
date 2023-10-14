@@ -16,6 +16,7 @@
     ,('polygon',    ref('tokens_polygon_nft'))
     ,('base',       ref('tokens_base_nft'))
     ,('celo',       ref('tokens_celo_nft'))
+    ,('zksync',       ref('tokens_zksync_nft'))
 ] %}
 
 SELECT *
