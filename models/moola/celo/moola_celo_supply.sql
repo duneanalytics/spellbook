@@ -16,6 +16,7 @@
 }}
 
 select
+  cast(date_trunc('month', deposit.evt_block_time) as date) as evt_block_month,
   deposit.transaction_type,
   erc20.symbol,
   deposit.token_address,
@@ -23,11 +24,10 @@ select
   deposit.withdrawn_to,
   deposit.liquidator,
   deposit.amount / power(10, erc20.decimals) as amount,
-  (deposit.amount / power(10, p.decimals)) * p.price as usd_amount,
+  (deposit.amount / power(10, p.decimals)) * p.price as amount_usd,
   deposit.evt_tx_hash,
   deposit.evt_index,
   deposit.evt_block_time,
-  cast(date_trunc('month', deposit.evt_block_time) as date) as evt_block_month,
   deposit.evt_block_number
 from (
     select

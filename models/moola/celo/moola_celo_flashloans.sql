@@ -23,8 +23,8 @@ with flashloans as (
     flash.evt_tx_hash,
     flash.evt_index,
     cast(flash.premium as int256) as fee,
-    flash.asset as currency_contract,
-    erc20.symbol as currency_symbol,
+    flash.asset as token_address,
+    erc20.symbol as symbol,
     erc20.decimals as currency_decimals,
     flash.target as recipient,
     flash.contract_address
@@ -45,13 +45,13 @@ select
   flash.evt_tx_hash,
   flash.evt_index,
   flash.fee / power(10, flash.currency_decimals) as fee,
-  flash.currency_contract,
-  flash.currency_symbol,
+  flash.token_address,
+  flash.symbol,
   flash.recipient,
   flash.contract_address
 from flashloans flash
   left join {{ source('prices','usd') }} p on p.blockchain = 'celo'  
-    and flash.currency_contract = p.contract_address
+    and flash.token_address = p.contract_address
     and date_trunc('minute', flash.evt_block_time) = p.minute
     {% if is_incremental() %}
     and {{ incremental_predicate('p.minute') }}

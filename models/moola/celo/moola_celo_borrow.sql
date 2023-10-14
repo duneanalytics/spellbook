@@ -16,6 +16,7 @@
 }}
 
 select
+  cast(date_trunc('month', borrow.evt_block_time) as date) as evt_block_month,
   borrow.transaction_type,
   borrow.loan_type,
   erc20.symbol,
@@ -24,7 +25,7 @@ select
   borrow.repayer,
   borrow.liquidator,
   borrow.amount / power(10, erc20.decimals) as amount,
-  (borrow.amount / power(10, p.decimals)) * p.price as usd_amount,
+  (borrow.amount / power(10, p.decimals)) * p.price as amount_usd,
   borrow.evt_tx_hash,
   borrow.evt_index,
   borrow.evt_block_time,
