@@ -1,4 +1,4 @@
-{{ config(alias = alias('nft_curated'), tags=['static', 'dunesql']) }}
+{{ config(schema = 'tokens_zksync', alias = alias('nft_curated'), tags=['static', 'dunesql']) }}
 
 SELECT
   contract_address, name, symbol

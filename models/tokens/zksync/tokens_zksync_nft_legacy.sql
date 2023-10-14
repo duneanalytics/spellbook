@@ -1,6 +1,7 @@
 {{ config(
-	tags=['legacy'],
-        alias = alias('nft', legacy_model=True)
+	tags=['legacy']
+        , schema = 'tokens_zksync'
+        , alias = alias('nft', legacy_model=True)
         )
 }}
 

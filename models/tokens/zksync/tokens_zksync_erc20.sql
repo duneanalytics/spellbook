@@ -1,5 +1,6 @@
 {{ config(
     tags=['dunesql', 'static']
+    , schema = 'tokens_zksync'
     , alias = alias('erc20')
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["zksync"]\',
