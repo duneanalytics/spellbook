@@ -92,7 +92,8 @@ FROM
     , (0x7badde47f41ceb2c0889091c8fc69e4d9059fb19, 'Prysm Team', 'Prysm Team', 'Independent Staker')
     , (0x43a0927a6361258e6cbaed415df275a412c543b5, 'Teku Team', 'Teku Team', 'Independent Staker')
     , (0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6, 'Nimbus Team', 'Nimbus Team', 'Independent Staker')
-    , (0x4ca21e4d3a86e7399698f88686f5596dbe74adeb, 'P2P.org', 'P2P.org', 'Staking Pools')
+    , (0x4ca21e4d3a86e7399698f88686f5596dbe74adeb, 'P2P.org', 'P2P.org 1', 'Staking Pools')
+    , (0x8e76a33f1aFf7EB15DE832810506814aF4789536, 'P2P.org', 'P2P.org 2', 'Staking Pools')
     , (0x8103151e2377e78c04a3d2564e20542680ed3096, 'Node DAO', 'Node DAO', 'Liquid Staking')
     , (0x4befa2aa9c305238aa3e0b5d17eb20c045269e9d, 'RockX', 'RockX', 'Staking Pools')
     , (0xea674fdde714fd979de3edf0f56aa9716b898ec8, 'Ethermine', 'Ethermine', 'Staking Pools')
@@ -106,6 +107,27 @@ FROM
     , (0x02cEe8dD7581946beF23102e69869F8dA96ee502, 'CoinSpot', 'CoinSpot 2', 'CEX')
     , (0x01b92134c905aa3a9a8a97f3ea464f768f340301, 'CoinSpot', 'CoinSpot 3', 'CEX')
     , (0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 1', 'CEX')
+
+    -- STILL TESTING THOSE:
+    , (0x2d4F5E4982F980BC61aA571AE63f66bF3577618C, 'BlockFi', 'BlockFi 1', 'CEX')
+    , (0xcfec2842900cfA687e2C60581574B206B9e69Ff5, 'Poloniex', 'Poloniex 3', 'CEX')
+    , (0x54B0f363e88a05cefDEb5f8c810286B439140A94, 'OKX', 'OKX 4', 'CEX')
+    , (0x9772ABd9469AD597961166ED3220720aFDd51912, 'OKX', 'OKX 5', 'CEX')
+    , (0xb158126c22ad89Ddd7C5Af0dF1221E5baa629dAC, 'OKX', 'OKX 6', 'CEX')
+    , (0xA2D6A09448819F4c89df2885Ab652AFA31D55341, 'OKX', 'OKX 7', 'CEX')
+    , (0x51656396e883C1e398ccEc721A8C2aF5a98bEb01, 'Bitcoin Suisse', 'Bitcoin Suisse 8', 'CEX') -- Certain
+    , (0x028A07979d3Fed8e9459D0A84D8814087fE36A74, 'Bitcoin Suisse', 'Bitcoin Suisse 9', 'CEX')
+    , (0x06051f7AF88694201f74c71c4e25f7F4e35a9779, 'Bitcoin Suisse', 'Bitcoin Suisse 10', 'CEX')
+    , (0xE900B070b6BEF5EF6b3A94332d613F39206Aa5e1, 'Bitcoin Suisse', 'Bitcoin Suisse 11', 'CEX')
+    , (0xC0Cdd1f2B682b06B8451d106C614dBbC92E1caBb, 'Upbit', 'Upbit 6', 'CEX')
+    , (0xbDB640AB9D4870Baf24Fbe562CC3Ab83CE212887, 'Upbit', 'Upbit 7', 'CEX')
+    , (0xbd2e7492e7A7afcFBacBe072E353E871caB391f7, 'Upbit', 'Upbit 8', 'CEX')
+    , (0xB61428Db947a9eE049B966fb0536CB00579753eD, 'Korbit', 'Korbit 1', 'CEX')
+    , (0x39FD78FE6A72FaaE2aB5f1f053c253B2e3685C15, 'Huobi', 'Huobi 3', 'CEX')
+    , (0x3842872545a9BA25FeA0805cB34e83eFde15e1f8, 'Bitgo', 'Bitgo 1', 'CEX')
+    , (0xd7E2409f6C4F98e0bD9844e3A865d9E314eff8Ca, 'Bitgo', 'Bitgo 2', 'CEX')
+    --, (, '', '', '')
+    ---------
 
     , (0x4757d97449aca795510b9f3152c6a9019a3545c3, 'Daniel Wang', 'wangdong.eth',   'Independent Staker')
     , (0x69aa0361dbb0527d4f1e5312403bd41788fe61fe, 'Daniel Wang', 'danielwang.eth', 'Independent Staker')
