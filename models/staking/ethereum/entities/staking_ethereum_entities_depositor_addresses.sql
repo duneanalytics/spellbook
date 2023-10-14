@@ -69,6 +69,7 @@ FROM
     , (0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340, 'Coinbase', 'Coinbase Batch 1', 'CEX')
     , (0xeee27662c2b8eba3cd936a23f039f3189633e4c8, 'Celsius', 'Celsius 1', 'Staking Pools')
     , (0x3f124c700fb5e741f128e28985267d44f56b242f, 'Celsius', 'Celsius 2', 'Staking Pools')
+    , (0xbd9d540f6a671d4280d81127de555a7d8ce7e204, 'Celsius', 'Celsius 3', 'Staking Pools')
     , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell 1', 'Liquid Staking')
     , (0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39, 'Swell', 'Swell 2', 'Liquid Staking')
     , (0x5180db0237291a6449dda9ed33ad90a38787621c, 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
@@ -109,13 +110,13 @@ FROM
     , (0x3842872545a9BA25FeA0805cB34e83eFde15e1f8, 'BitGo', 'BitGo 1', 'CEX')
     , (0xd7E2409f6C4F98e0bD9844e3A865d9E314eff8Ca, 'BitGo', 'BitGo 2', 'CEX')
     , (0xa86341E5C278443c8648be44110167E1bbD9Cba6, 'XHash', 'XHash 1', 'CEX')
+    , (0x6e16cbd8bed3d6577487a1376d8aa94fba5a09f0, 'BTC-e', 'BTC-e 2', 'CEX')
 
     -- STILL TESTING THOSE:
     , (0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 1', 'CEX')
     , (0x2d4F5E4982F980BC61aA571AE63f66bF3577618C, 'BlockFi', 'BlockFi 1', 'CEX')
     , (0x98b92fde3F215F25e9D8CA1C6Ec67b65440bf38a, 'Bitfinex', 'Bitfinex 3', 'CEX')
-    , (0x9772ABd9469AD597961166ED3220720aFDd51912, 'OKX', 'OKX 4', 'CEX')
-    , (0xA2D6A09448819F4c89df2885Ab652AFA31D55341, 'OKX', 'OKX 5', 'CEX')
+    , (0xA2D6A09448819F4c89df2885Ab652AFA31D55341, 'OKX', 'OKX 4', 'CEX')
     , (0x51656396e883C1e398ccEc721A8C2aF5a98bEb01, 'Bitcoin Suisse', 'Bitcoin Suisse 8', 'CEX') -- Certain
     , (0x028A07979d3Fed8e9459D0A84D8814087fE36A74, 'Bitcoin Suisse', 'Bitcoin Suisse 9', 'CEX')
     , (0x06051f7AF88694201f74c71c4e25f7F4e35a9779, 'Bitcoin Suisse', 'Bitcoin Suisse 10', 'CEX')
