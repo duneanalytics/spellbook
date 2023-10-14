@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: friend3_v1_bnb
+    description: friend3 base
+    tables:
+      - name: Friend3V1_evt_Trade
+        loaded_at_field: evt_block_time

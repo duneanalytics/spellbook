@@ -2,7 +2,7 @@
     schema = 'sofi',
     tags = ['dunesql'],
     alias = alias('trades'),
-    post_hook='{{ expose_spells(\'["base"]\',
+    post_hook='{{ expose_spells(\'["base", "avalanche_c", "arbitrum", "bnb"]\',
                                 "sector",
                                 "sofi",
                                 \'["hildobby"]\') }}'
@@ -10,7 +10,10 @@
 }}
 
 {% set chain_specific_models = [
-     (ref('sofi_base_trades'))
+    (ref('sofi_base_trades'))
+    , (ref('sofi_avalanche_c_trades'))
+    , (ref('sofi_arbitrum_trades'))
+    , (ref('sofi_bnb_trades'))
 ] %}
 
 SELECT *
