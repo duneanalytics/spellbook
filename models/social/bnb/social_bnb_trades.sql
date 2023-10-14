@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'sofi_arbitrum',
+    schema = 'social_bnb',
     tags = ['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_month'],
@@ -11,12 +11,11 @@
 }}
 
 {% set base_models = [
-    (ref('cipher_arbitrum_base_trades'))
-    , (ref('post_tech_arbitrum_base_trades'))
+    (ref('friend3_bnb_base_trades'))
 ] %}
 
 WITH trades AS (
-    {{enrich_sofi_trades('arbitrum', base_models, source('arbitrum', 'transactions'))}}
+    {{enrich_social_trades('bnb', base_models, source('bnb', 'transactions'))}}
     )
 
 SELECT *

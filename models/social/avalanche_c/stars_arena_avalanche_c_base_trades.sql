@@ -14,7 +14,7 @@ SELECT txs.block_time
 , bytearray_ltrim(bytearray_substring(logs.data, 1 + 32, 32)) AS subject
 , (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 2, 32)))) AS is_buy
 , (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 3, 32)))) AS share_amount
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 4, 32))))/1e18 AS eth_amount
+--, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 4, 32))))/1e18 AS eth_amount
 , (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 5, 32))))/1e18 AS eth_amount
 , (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 6, 32))))/1e18 AS protocol_fee
 , (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 7, 32))))/1e18 AS subject_fee

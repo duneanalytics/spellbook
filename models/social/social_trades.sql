@@ -1,19 +1,19 @@
 {{ config(
-    schema = 'sofi',
+    schema = 'social',
     tags = ['dunesql'],
     alias = alias('trades'),
     post_hook='{{ expose_spells(\'["base", "avalanche_c", "arbitrum", "bnb"]\',
                                 "sector",
-                                "sofi",
+                                "social",
                                 \'["hildobby"]\') }}'
     )
 }}
 
 {% set chain_specific_models = [
-    (ref('sofi_base_trades'))
-    , (ref('sofi_avalanche_c_trades'))
-    , (ref('sofi_arbitrum_trades'))
-    , (ref('sofi_bnb_trades'))
+    (ref('social_base_trades'))
+    , (ref('social_avalanche_c_trades'))
+    , (ref('social_arbitrum_trades'))
+    , (ref('social_bnb_trades'))
 ] %}
 
 SELECT *

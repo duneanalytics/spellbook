@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: cipher_arbitrum_base_trades
+  - name: friend_tech_base_base_trades
     meta:
-      blockchain: arbitrum
-      sector: sofi
-      project: cipher
+      blockchain: base
+      sector: social
+      project: friend_tech
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'arbitrum', 'trades', 'cipher']
-    description: "Cipher basic trades info"
+      tags: ['table', 'social', 'base', 'trades', 'friend_tech']
+    description: "friend.tech basic trades info"
     columns:
       - &blockchain
         name: blockchain
@@ -66,43 +66,14 @@ models:
         name: contract_address
         description: "Contract addressed used"
 
-  - name: post_tech_arbitrum_base_trades
+  - name: social_base_trades
     meta:
-      blockchain: arbitrum
-      sector: sofi
-      project: post_tech
+      blockchain: base
+      sector: social
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'arbitrum', 'trades', 'post_tech']
-    description: "post.tech basic trades info"
-    columns:
-      - *blockchain
-      - *block_month
-      - *block_time
-      - *block_number
-      - *project
-      - *trader
-      - *subject
-      - *trade_side
-      - *amount_original
-      - *share_amount
-      - *subject_fee_amount
-      - *protocol_fee_amount
-      - *currency_contract
-      - *currency_symbol
-      - *supply
-      - *tx_hash
-      - *evt_index
-      - *contract_address
-
-  - name: sofi_arbitrum_trades
-    meta:
-      blockchain: arbitrum
-      sector: sofi
-      contributors: hildobby
-    config:
-      tags: ['table', 'sofi', 'arbitrum', 'trades', 'cipher']
-    description: "Sofi trades on Avalanche"
+      tags: ['table', 'social', 'base', 'trades', 'friend_tech']
+    description: "social trades on Base"
     columns:
       - *blockchain
       - *block_month

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: friend_tech_base_base_trades
+  - name: stars_arena_avalanche_c_base_trades
     meta:
-      blockchain: base
-      sector: sofi
-      project: friend_tech
+      blockchain: avalanche_c
+      sector: social
+      project: stars_arena
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'base', 'trades', 'friend_tech']
-    description: "friend.tech basic trades info"
+      tags: ['table', 'social', 'avalanche_c', 'trades', 'stars_arena']
+    description: "Stars Arena basic trades info"
     columns:
       - &blockchain
         name: blockchain
@@ -66,14 +66,14 @@ models:
         name: contract_address
         description: "Contract addressed used"
 
-  - name: sofi_base_trades
+  - name: social_avalanche_c_trades
     meta:
-      blockchain: base
-      sector: sofi
+      blockchain: avalanche_c
+      sector: social
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'base', 'trades', 'friend_tech']
-    description: "Sofi trades on Base"
+      tags: ['table', 'social', 'avalanche_c', 'trades', 'stars_arena']
+    description: "social trades on Avalanche"
     columns:
       - *blockchain
       - *block_month

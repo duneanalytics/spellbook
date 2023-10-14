@@ -1,22 +1,27 @@
 version: 2
 
 models:
-  - name: stars_arena_avalanche_c_base_trades
+  - name: social_trades
     meta:
-      blockchain: avalanche_c
-      sector: sofi
-      project: stars_arena
+      blockchain: base
+      sector: social
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'avalanche_c', 'trades', 'stars_arena']
-    description: "Stars Arena basic trades info"
+      tags: ['table', 'social', 'base', 'trades', 'friend_tech']
+    description: "friend.tech basic trades info"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain"
       - &block_month
         name: block_month
-        description: "Block month"
+        description: "Block month of transaction"
       - &block_time
         name: block_time
         description: "Block time of transaction"
@@ -38,15 +43,24 @@ models:
       - &amount_original
         name: amount_original
         description: "Amount of traded currency"
+      - &amount_usd
+        name: amount_usd
+        description: "Amount in USD"
       - &share_amount
         name: share_amount
         description: "Amout of shares"
       - &subject_fee_amount
         name: subject_fee_amount
         description: "Subject fee amount"
+      - &subject_fee_amount_usd
+        name: subject_fee_amount_usd
+        description: "Subject fee amount in USD"
       - &protocol_fee_amount
         name: protocol_fee_amount
         description: "Protocol fee amount"
+      - &protocol_fee_amount_usd
+        name: protocol_fee_amount_usd
+        description: "Protocol fee amount in USD"
       - &currency_contract
         name: currency_contract
         description: "Currency contract"
@@ -66,45 +80,28 @@ models:
         name: contract_address
         description: "Contract addressed used"
 
-  - name: sofi_avalanche_c_trades
+  - name: social_info
     meta:
-      blockchain: avalanche_c
-      sector: sofi
+      blockchain: bnb, avalanche_c, arbitrum, base
+      sector: social
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'avalanche_c', 'trades', 'stars_arena']
-    description: "Sofi trades on Avalanche"
+      tags: ['social', 'bnb', 'avalanche_c',  'arbitrum', 'base', 'info']
+    description: >
+        socials info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
     columns:
-      - *blockchain
-      - *block_month
-      - *block_time
-      - *block_number
       - *project
-      - *trader
-      - *subject
-      - &tx_from
-        name: tx_from
-        description: "Transaction from address"
-      - &tx_to
-        name: tx_to
-        description: "Transaction to address"
-      - *trade_side
-      - *amount_original
-      - &amount_usd
-        name: amount_usd
-        description: "Amount in USD"
-      - *share_amount
-      - *subject_fee_amount
-      - &subject_fee_amount_usd
-        name: subject_fee_amount_usd
-        description: "Subject fee amount in USD"
-      - *protocol_fee_amount
-      - &protocol_fee_amount_usd
-        name: protocol_fee_amount_usd
-        description: "Protocol fee amount in USD"
-      - *currency_contract
-      - *currency_symbol
-      - *supply
-      - *tx_hash
-      - *evt_index
-      - *contract_address
+      - &name
+        name: name
+        description: "Marketplace capitalised name"
+      - *blockchain
+      - &share_name
+        name: share_name
+        description: "Name of shares"
+      - &x_username
+        name: x_username
+        description: "Username on X"

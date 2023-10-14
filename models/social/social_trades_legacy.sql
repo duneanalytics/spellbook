@@ -1,10 +1,10 @@
 {{ config(
-    schema = 'sofi',
+    schema = 'social',
     tags = ['legacy', 'static'],
     alias = alias('trades', legacy_model=True),
     post_hook='{{ expose_spells(\'["base"]\',
                                 "sector",
-                                "sofi",
+                                "social",
                                 \'["hildobby"]\') }}'
     )
 }}

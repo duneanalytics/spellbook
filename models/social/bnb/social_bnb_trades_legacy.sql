@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'sofi_avalanche_c',
+    schema = 'social_bnb',
     tags = ['legacy', 'static'],
     alias = alias('trades', legacy_model=True)
     )

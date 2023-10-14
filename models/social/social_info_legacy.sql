@@ -1,10 +1,10 @@
 {{ config(
         tags = ['legacy', 'static'],
-        schema='sofi',
+        schema='social',
         alias = alias('info', legacy_model=True),
         post_hook='{{ expose_spells(\'["bnb", "avalanche_c", "arbitrum", "base"]\',
                                     "sector",
-                                    "sofi",
+                                    "social",
                                     \'["hildobby"]\') }}')
 }}
 

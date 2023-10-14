@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'sofi_base',
+    schema = 'social_avalanche_c',
     tags = ['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_month'],
@@ -11,11 +11,11 @@
 }}
 
 {% set base_models = [
-     (ref('friend_tech_base_base_trades'))
+     (ref('stars_arena_avalanche_c_base_trades'))
 ] %}
 
 WITH trades AS (
-    {{enrich_sofi_trades('base', base_models, source('base', 'transactions'))}}
+    {{enrich_social_trades('avalanche_c', base_models, source('avalanche_c', 'transactions'))}}
     )
 
 SELECT *

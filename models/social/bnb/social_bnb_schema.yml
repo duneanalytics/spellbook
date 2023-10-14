@@ -4,11 +4,11 @@ models:
   - name: friend3_bnb_base_trades
     meta:
       blockchain: bnb
-      sector: sofi
+      sector: social
       project: friend3
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'bnb', 'trades', 'friend3']
+      tags: ['table', 'social', 'bnb', 'trades', 'friend3']
     description: "Friend3 basic trades info"
     columns:
       - &blockchain
@@ -66,14 +66,14 @@ models:
         name: contract_address
         description: "Contract addressed used"
 
-  - name: sofi_bnb_trades
+  - name: social_bnb_trades
     meta:
       blockchain: bnb
-      sector: sofi
+      sector: social
       contributors: hildobby
     config:
-      tags: ['table', 'sofi', 'bnb', 'trades', 'friend3']
-    description: "Sofi trades on Avalanche"
+      tags: ['table', 'social', 'bnb', 'trades', 'friend3']
+    description: "social trades on Avalanche"
     columns:
       - *blockchain
       - *block_month
