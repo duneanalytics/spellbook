@@ -11,7 +11,7 @@
 }}
 
 -- (blockchain, project, project_version, model, project_start_date)
-{% set base_models =
+{% set base_model =
 (   'ethereum',
     'uniswap',
     '3',
@@ -23,8 +23,8 @@
 -- macros/models/sector/dex
 {{
     dex_enrich_trades(
-        models = base_models
-        ,transactions_model = source(base_models[0], 'transactions')
+        model = base_model
+        ,transactions_model = source(base_model[0], 'transactions')
         ,tokens_erc20_model = ref('tokens_erc20')
         ,prices_model = source('prices', 'usd')
     )

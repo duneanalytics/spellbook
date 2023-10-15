@@ -1,5 +1,5 @@
 {% macro dex_enrich_trades(
-    models=[],
+    model=null,
     transactions_model=null,
     tokens_erc20_model=null,
     prices_model=null
@@ -7,11 +7,10 @@
 %}
 
 WITH base_union AS (
-    {% for dex_model in models %}
     SELECT
-        '{{ dex_model[0] }}' as blockchain,
-        '{{ dex_model[1] }}' as project,
-        '{{ dex_model[2] }}' as version,
+        '{{ model[0] }}' as blockchain,
+        '{{ model[1] }}' as project,
+        '{{ model[2] }}' as version,
         block_date,
         block_month,
         block_time,
@@ -24,14 +23,10 @@ WITH base_union AS (
         project_contract_address,
         tx_hash,
         evt_index
-    FROM {{ dex_model[3] }}
+    FROM {{ model[3] }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
 ),
 
 prices AS (
@@ -41,12 +36,12 @@ prices AS (
         minute,
         price
     FROM {{ prices_model }}
-    WHERE blockchain = '{{ dex_model[0] }}'
+    WHERE blockchain = '{{ model[0] }}'
     {% if is_incremental() %}
       AND {{incremental_predicate('minute')}}
     {% endif %}
     {% if not is_incremental() %}
-      AND minute >= TIMESTAMP '{{ dex_model[4] }}'
+      AND minute >= TIMESTAMP '{{ model[4] }}'
     {% endif %}
 ),
 
@@ -90,10 +85,10 @@ enrichments AS (
         {% endif %}
     LEFT JOIN {{ tokens_erc20_model }} erc20_bought
         ON erc20_bought.contract_address = base.token_bought_address
-        AND erc20_bought.blockchain = '{{ dex_model[0] }}'
+        AND erc20_bought.blockchain = '{{ model[0] }}'
     LEFT JOIN {{ tokens_erc20_model }} erc20_sold
         ON erc20_sold.contract_address = base.token_sold_address
-        AND erc20_sold.blockchain = '{{ dex_model[0] }}'
+        AND erc20_sold.blockchain = '{{ model[0] }}'
     LEFT JOIN prices p_bought
         ON p_bought.minute = date_trunc('minute', base.block_time)
         AND p_bought.contract_address = base.token_bought_address
