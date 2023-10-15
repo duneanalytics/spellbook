@@ -24,16 +24,29 @@ sources:
             name: amount1
           - &amount0
             name: amount0
-          - *contract_address
-          - *evt_block_number
-          - *evt_block_time 
-          - *evt_index
-          - *evt_tx_hash
+          - &contract_address
+            name: contract_address
+            description: "Arbitrum address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
           - &liquidity
             name: liquidity
           - &recipient
             name: recipient
-          - *sender
+          - &sender
+            name: sender
           - &price
             name: price
           - &tick
@@ -50,5 +63,7 @@ sources:
           - *evt_tx_hash
           - &pool
             name: pool
-          - *token0
-          - *token1
+          - &token0
+            name: token0
+          - &token1
+            name: token1
