@@ -7,16 +7,17 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['tx_hash','evt_index','token_id','number_of_items'],
-    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum"]\',
+    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum","celo"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin"]\') }}')
+                    \'["soispoke","umer_h_adil","hildobby","0xRob","chuxin","tomfutago"]\') }}')
 }}
 
 
 {% set native_mints = [
  ref('nft_ethereum_native_mints')
 ,ref('nft_optimism_native_mints')
+,ref('nft_celo_native_mints')
 ] %}
 
 

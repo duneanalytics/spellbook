@@ -9,7 +9,7 @@
     nft_aggregators,
     tokens_nft,
     default_currency_symbol = 'ETH',
-    default_currency_contract = 0x000000000000000000000000000000000000dead,
+    default_currency_contract = '0x000000000000000000000000000000000000dead',
     addresses_defi = null
 )%}
 
@@ -166,7 +166,7 @@ from (
             {% endif %}
           left join {{ src_prices_usd }} pu_native on pu_native.blockchain = '{{blockchain}}'
             and pu_native.minute = date_trunc('minute', trc.block_time)
-            and pu_native.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+            and pu_native.contract_address = {{ default_currency_contract }}
             {% if is_incremental () %}
             and {{ incremental_predicate('pu_native.minute') }}
             {% endif %}
