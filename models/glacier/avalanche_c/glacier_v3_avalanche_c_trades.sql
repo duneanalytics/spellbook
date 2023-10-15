@@ -31,9 +31,9 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('glacier_v3_avalanche_c', 'AlgebraPool_evt_Swap') }} t
+        {{ source('glacier_avalanche_c', 'AlgebraPool_evt_Swap') }} t
     INNER JOIN 
-        {{ source('glacier_v3_avalanche_c', 'AlgebraFactory_evt_Pool') }} f
+        {{ source('glacier_avalanche_c', 'AlgebraFactory_evt_Pool') }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
