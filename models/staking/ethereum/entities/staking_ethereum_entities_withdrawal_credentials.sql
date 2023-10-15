@@ -8,11 +8,6 @@
     unique_key = ['depositor_address'])
 }}
 
-SELECT from_hex(NULL) AS withdrawal_credentials
-, CAST(NULL AS varchar) AS entity_unique_name
-, CAST(NULL AS varchar) AS category
-
-
 SELECT withdrawal_credentials, entity, entity_unique_name, category
 FROM
 (VALUES

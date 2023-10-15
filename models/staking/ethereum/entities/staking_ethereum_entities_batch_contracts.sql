@@ -8,6 +8,9 @@
     unique_key = ['depositor_address'])
 }}
 
-SELECT from_hex(NULL) AS pubkey
-, CAST(NULL AS varchar) AS entity_unique_name
-, CAST(NULL AS varchar) AS category
+SELECT pubkey, entity, entity_unique_name, category
+FROM
+(VALUES
+(0x0000000000000000000000000000000000000000, '', '', '')
+    ) 
+    x (pubkey, entity, entity_unique_name, category)

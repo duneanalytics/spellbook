@@ -17,6 +17,7 @@ models:
             - depositor_address
             - tx_from
             - pubkey
+            - withdrawal_credentials
     columns:
       - name: depositor_address
         description: "Address of indentified depositor entity"
@@ -24,6 +25,8 @@ models:
         description: "Address that initiated the ETH staking deposit"
       - name: pubkey
         description: "Pubkey of indentified validator"
+      - name: withdrawal_credentials
+        description: "Withdrawal Credentials of indentified validator"
       - name: entity
         description: "Identified entity name"
       - name: entity_unique_name
