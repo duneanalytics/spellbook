@@ -1,0 +1,20 @@
+version: 2
+
+models:
+ - name: dex_trades_beta
+   meta:
+     blockchain: ethereum
+     sector: dex
+     contributors: 0xRob, hosuke
+   config:
+     tags: ['dex', 'trades', 'beta']
+   description: "New dex trades model"
+   tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - block_date
+           - blockchain
+           - project
+           - version
+           - tx_hash
+           - evt_index
