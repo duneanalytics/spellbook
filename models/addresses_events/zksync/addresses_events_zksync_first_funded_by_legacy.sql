@@ -1,6 +1,7 @@
 {{ config(
 	tags=['legacy'],
-    alias = alias('first_funded_by', legacy_model=True)
+	schema = 'addresses_events_zksync',
+        alias = alias('first_funded_by', legacy_model=True)
     )
 }}
 
