@@ -9,5 +9,5 @@
 }}
 
 SELECT from_hex(NULL) AS pubkey
-, NULL AS entity_unique_name
-, NULL AS category
+, CAST(NULL AS varchar) AS entity_unique_name
+, CAST(NULL AS varchar) AS category
