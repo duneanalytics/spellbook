@@ -1,5 +1,5 @@
 {{ config(tags=['dunesql'],
-    schema = 'glacier_v3_avalanceh_c',
+    schema = 'glacier_avalanceh_c',
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
