@@ -196,7 +196,7 @@ models:
       project: camelot
       contributors: ytoast, whale_hunter
     config:
-      tags: ['arbitrum','camelot','trades','dex','ytoast']
+      tags: ['arbitrum','camelot','trades','dex','ytoast', 'whale_hunter']
     description: >
         Camelot trades on Arbitrum
     columns:
