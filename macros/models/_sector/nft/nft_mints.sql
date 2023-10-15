@@ -127,14 +127,14 @@ from (
             pu_native.price * sum(cast(trc.value as double)) / power(10, 18),
             pu_erc20.price * sum(cast(erc20s.value as double)) / power(10, pu_erc20.decimals)
           ) * (nft_mints.amount / nft_count.nfts_minted_in_tx) as amount_usd,
-          case
+          /*case
             when trc.success then '{{ default_currency_symbol }}'
             else pu_erc20.symbol
           end as currency_symbol,
           case
             when trc.success then {{ default_currency_contract }}
             else erc20s.contract_address
-          end as currency_contract,
+          end as currency_contract,*/
           nft_mints.contract_address as nft_contract_address,
           tx.to as project_contract_address,
           agg.name as aggregator_name,
