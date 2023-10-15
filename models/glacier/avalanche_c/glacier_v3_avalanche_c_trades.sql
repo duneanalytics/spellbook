@@ -8,7 +8,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
-                                "glacier_v3",
+                                "glacier",
                                 \'["discochuck"]\') }}'
     )
 }}
