@@ -164,7 +164,6 @@ FROM
     , (0x00ecC96508d299Fa8d228d569d8582980C1bc75e, 'Uphold', 'Uphold 1', 'CEX')
     , (0x307048Ad5Ab7279D34e5358331B0d48050ADa274, 'CoinCDX', 'CoinCDX 1', 'CEX')
     , (0xe2c29d3f014001b1895bb4de2fba08e053491b45, 'Staked.us', 'Staked.us 2', 'Staking Pools')
-    , (0x8e76a33f1aff7eb15de832810506814af4789536, 'P2P.org', 'P2P.org 3', 'Staking Pools')
     --, (, '', '', '')
     ---------
 
