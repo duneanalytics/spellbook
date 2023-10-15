@@ -4,11 +4,11 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, celo
       sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, tomfutago
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'celo', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
     description: >
         NFT mints
     tests:
