@@ -49,7 +49,7 @@ add_margin_events AS (
             ap.contract_address as project_contract_address
         FROM {{ source('tigristrade_polygon', add_margin_trading_evt) }} ap
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -67,7 +67,7 @@ add_margin_calls AS (
             ap._addMargin/1e18 as margin_change
         FROM {{ source('tigristrade_polygon', add_margin_trading_call) }} ap
         {% if is_incremental() %}
-        WHERE ap.call_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

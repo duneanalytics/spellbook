@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'aztec_v2_ethereum',
     alias = alias('daily_deposits'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -39,7 +40,7 @@ token_prices_token as (
         AVG(p.price) as price
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= CAST('{{first_transfer_date}}' AS TIMESTAMP)
+    WHERE p.minute >= TIMESTAMP '{{first_transfer_date}}'
     AND p.contract_address IN (SELECT token_address FROM token_addresses)
     AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
@@ -52,7 +53,7 @@ token_prices_eth as (
         1 as price_eth
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= CAST('{{first_transfer_date}}' AS TIMESTAMP)
+    WHERE p.minute >= TIMESTAMP '{{first_transfer_date}}'
     AND p.blockchain = 'ethereum'
     AND p.symbol = 'WETH'
     GROUP BY 1, 3 
@@ -89,5 +90,5 @@ token_prices as (
     FROM daily_transfers dt
     LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
-    LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+    LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -- using this to get price for missing ETH token 
 ; 

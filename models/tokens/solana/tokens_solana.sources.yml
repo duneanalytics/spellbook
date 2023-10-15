@@ -17,6 +17,8 @@ sources:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
+      - name: mpl_token_metadata_call_Create
+        loaded_at_field: call_block_time
       - name: mpl_token_metadata_call_CreateMetadataAccount
         loaded_at_field: call_block_time
       - name: mpl_token_metadata_call_CreateMetadataAccountV2
@@ -26,4 +28,16 @@ sources:
       - name: mpl_token_metadata_call_CreateMasterEdition
         loaded_at_field: call_block_time
       - name: mpl_token_metadata_call_CreateMasterEditionV3
+        loaded_at_field: call_block_time
+      - name: mpl_token_metadata_call_Verify
+        loaded_at_field: call_block_time
+  - name: bubblegum_solana
+    description: "bubblegum cNFT minting decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: bubblegum_call_mintV1
+        loaded_at_field: call_block_time
+      - name: bubblegum_call_mintToCollectionV1
         loaded_at_field: call_block_time

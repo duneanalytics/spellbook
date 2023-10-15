@@ -2,7 +2,7 @@
         tags = ['dunesql'],
         alias = alias('creation_traces'),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,6 +20,7 @@
      , ('arbitrum', source('arbitrum', 'creation_traces'))
      , ('celo', source('celo', 'creation_traces'))
      , ('base', source('base', 'creation_traces'))
+     , ('goerli', source('goerli', 'creation_traces'))
 ] %}
 
 SELECT *

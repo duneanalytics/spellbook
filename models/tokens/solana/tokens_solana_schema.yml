@@ -19,3 +19,43 @@ models:
         description: "token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible a token can be"
+
+  - name: tokens_solana_nft
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: fungible
+      contributors: ilemi
+    config:
+      tags: ['table', 'metadata', 'fungible', 'solana']
+    description: "NFTs minted using the Metaplex standard, with a master edition or cNFT tree"
+    columns:
+      - name: account_mint_authority
+        description: "mint authority for the account. this is set so that the account cannot mint more tokens"
+      - name: account_merkle_tree
+        description: only applies to cNFTs, this is the tree the NFT is appended to
+      - name: leaf_id
+        description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
+      - name: account_master_edition
+        description: "master edition for the account. all NFTs have a master edition"
+      - name: account_metadata
+        description: "metadata for the account. contains stuff like the name, symbol, and uri, etc"
+      - name: account_mint
+        description: "mint for the account. this is the token mint address from spl_token"
+      - name: version
+        description: "version of the NFT - Token Metdata, cNFT, etc"
+      - name: token_standard
+      - name: token_name
+      - name: token_symbol
+      - name: token_uri
+      - name: seller_fee_basis_points
+      - name: collection_mint
+        description: "this is the token mint address of the collection. this is the same for all NFTs in the collection"
+      - name: verified_creator
+        description: "this is the first creator in the creator_struct for the NFT. the first creator was originally used as the collection mint reference"
+      - name: creator_struct
+        description: "all creators and their royalty splits"
+      - name: call_tx_id
+      - name: call_block_time
+      - name: call_block_slot
+      - name: call_tx_signer
