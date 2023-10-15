@@ -8,6 +8,8 @@
     unique_key = ['depositor_address'])
 }}
 
+SELECT 
+
 SELECT txs.to AS depositor_address
 , 'DARMA Capital' AS entity
 , CONCAT('DARMA Capital ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS VARCHAR)) AS entity_unique_name
