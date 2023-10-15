@@ -4,6 +4,7 @@
         schema = 'nft_celo',
         alias = alias('native_mints'),
         partition_by = ['block_month'],
+        materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['tx_hash','evt_index','token_id','number_of_items']
@@ -24,6 +25,6 @@
         nft_aggregators = ref('nft_' ~ blockchain ~ '_aggregators'),
         tokens_nft = ref('tokens_' ~ blockchain ~ '_nft'),
         default_currency_symbol = 'CELO',
-        default_currency_contract = 0x471EcE3750Da237f93B8E339c536989b8978a438
+        default_currency_contract = '0x471EcE3750Da237f93B8E339c536989b8978a438'
     )
 }}
