@@ -41,7 +41,7 @@ WITH dexs AS (
     {{ source('camelot_v3_arbitrum', 'AlgebraPool_evt_Swap') }} AS swaps
   INNER JOIN 
     {{ source('camelot_v3_arbitrum', 'AlgebraFactory_evt_Pool') }} AS pairs
-      ON swaps.contract_address = pairs.pair
+      ON swaps.contract_address = pairs.pool
   {% if is_incremental() %}
   WHERE swaps.evt_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
