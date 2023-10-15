@@ -2,6 +2,7 @@
     tags=['dunesql'],
     schema = 'uniswap_v1_ethereum',
     alias = 'base_trades',
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
