@@ -65,7 +65,7 @@ select
   amount_original,
   amount_usd,
   currency_symbol,
-  --currency_contract,
+  currency_contract,
   nft_contract_address,
   project_contract_address,
   aggregator_name,
@@ -131,10 +131,10 @@ from (
             when trc.success then '{{ default_currency_symbol }}'
             else pu_erc20.symbol
           end as currency_symbol,
-          /*case
+          case
             when trc.success then {{ default_currency_contract }}
             else erc20s.contract_address
-          end as currency_contract,*/
+          end as currency_contract,
           nft_mints.contract_address as nft_contract_address,
           tx.to as project_contract_address,
           agg.name as aggregator_name,
