@@ -1,0 +1,24 @@
+version: 2
+
+seeds:
+  - name: defiswap_ethereum_base_trades_seed
+    config:
+      tags: dunesql
+      column_types:
+        version: varchar
+        tx_hash: varbinary
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+
+  - name: uniswap_ethereum_base_trades_seed
+    config:
+      tags: dunesql
+      column_types:
+        version: varchar
+        tx_hash: varbinary
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
