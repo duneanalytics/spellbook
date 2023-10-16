@@ -34,9 +34,9 @@
         and r.block_number = t.block_number
     where 
         (r.call_type not in ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
-        and r.tx_success
-        and r.success
-        and r.value > '0'
+        and r.tx_success = true
+        and r.success = true
+        and r.value > cast(0 as uint256)
         {% if is_incremental() %} -- this filter will only be applied on an incremental run 
         and r.block_time >= date_trunc('day', now() - interval '7' day)
         and t.block_time >= date_trunc('day', now() - interval '7' day)
