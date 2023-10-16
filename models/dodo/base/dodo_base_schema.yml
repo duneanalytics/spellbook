@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: dodo_bnb_trades
+  - name: dodo_base_trades
     meta:
-      blockchain: bnb
+      blockchain: base
       sector: dex
       project: dodo
-      contributors: owen05, scoffie
+      contributors: owen05
     config:
-      tags: ['bnb','dodo','trades', 'dex']
+      tags: ['base','dodo','trades', 'dex']
     description: >
-        Dodo trades on BNBChain.
+        Dodo trades on BASE.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,10 +23,10 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed (specify:bnb)"
+        description: "Blockchain which the DEX is deployed (specify: base)"
       - &project
         name: project
-        description: "Project name of the DEX (specify:DODO)"
+        description: "Project name of the DEX (specify: DODO)"
       - &version
         name: version
         description: "Version of dodo contracts (0 - dodo_aggregator, 1 - DODOV1, 2_dvm - DODOV2 public pool, 2_dsp - DODOV2 stable pool, 2_dpp - DODOV2 private pool)"
@@ -88,16 +88,16 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: dodo_pools_bnb_trades
+  - name: dodo_pools_base_trades
     meta:
-      blockchain: bnb
+      blockchain: base
       sector: dex
       project: dodo_pools
       contributors: owen05
     config:
-      tags: ['bnb', 'dodo', 'pools', 'trades', 'dex']
+      tags: ['base', 'dodo', 'pools', 'trades', 'dex']
     description: >
-        DodoV1 && DODOV2 pools' trades on BNBChain.
+        DodoV1 && DODOV2 pools' trades on Base.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -108,19 +108,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: bnb
-          project: dodo
-          version: 1
-      - check_dex_seed:
-          blockchain: bnb
-          project: dodo
-          version: 2_dvm
-      - check_dex_seed:
-          blockchain: bnb
-          project: dodo
-          version: 2_dsp
-      - check_dex_seed:
-          blockchain: bnb
+          blockchain: base
           project: dodo
           version: 2_dpp
     columns:
@@ -147,16 +135,16 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: dodo_aggregator_bnb_trades
+  - name: dodo_aggregator_base_trades
     meta:
-      blockchain: bnb
+      blockchain: base
       sector: dex
       project: dodo_aggregator
       contributors: owen05
     config:
-      tags: ['bnb', 'dodo', 'aggregator', 'trades', 'dex']
+      tags: ['base', 'dodo', 'aggregator', 'trades', 'dex']
     description: >
-        DODO Aggregation on BNBChain.
+        DODO Aggregation on BASE.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -168,7 +156,7 @@ models:
             - evt_index
             - trace_address
       - check_dex_aggregator_seed:
-          blockchain: bnb
+          blockchain: base
           project: DODO X
           version: 0
     columns:
