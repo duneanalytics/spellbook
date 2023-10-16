@@ -19,6 +19,7 @@
      , ('pubkey', ref('staking_ethereum_entities_chorusone'))
      , ('pubkey', ref('staking_ethereum_entities_batch_contracts'))
      , ('withdrawal_credentials', ref('staking_ethereum_entities_withdrawal_credentials'))
+     , ('depositor_address', ref('staking_ethereum_entities_bitcoin_suisse'))
 ] %}
 
 SELECT depositor_address

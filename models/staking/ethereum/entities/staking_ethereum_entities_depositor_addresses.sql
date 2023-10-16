@@ -22,6 +22,7 @@ FROM
     , (0x2a7077399b3e90f5392d55a1dc7046ad8d152348, 'Bitcoin Suisse', 'Bitcoin Suisse 5', 'CEX')
     , (0xc2288b408dc872a1546f13e6ebfa9c94998316a2, 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'CEX')
     , (0x4ebf51689228236ec55bcafef9d79663992a7fb6, 'Bitcoin Suisse', 'Bitcoin Suisse 7', 'CEX')
+    
     , (0x51656396e883C1e398ccEc721A8C2aF5a98bEb01, 'Bitcoin Suisse', 'Bitcoin Suisse 8', 'CEX')
     , (0x028A07979d3Fed8e9459D0A84D8814087fE36A74, 'Bitcoin Suisse', 'Bitcoin Suisse 9', 'CEX')
     , (0x06051f7AF88694201f74c71c4e25f7F4e35a9779, 'Bitcoin Suisse', 'Bitcoin Suisse 10', 'CEX')
