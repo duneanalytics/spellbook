@@ -27,7 +27,6 @@ FROM
     , (0xbf1556a7d625654e3d64d1f0466a60a697fac178, 'imToken', 'imToken Staking[NodeProviderInfStones]', 'Staking Pools')
     , (0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d, 'SharedStake', 'SharedStake', 'Liquid Staking')
     , (0xeadcba8bf9aca93f627f31fb05470f5a0686ceca, 'StakeWise Solos', 'StakeWise Solos', 'Staking Pools')
-    , (0x66827bcd635f2bb1779d68c46aeb16541bca6ba8, 'Auxo', 'Auxo', 'Staking Pools')
     --, (0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18, 'Abyss Finance', 'Abyss Finance', 'Batch Staking Contract')
     , (0x66827bcd635f2bb1779d68c46aeb16541bca6ba8, 'PieDAO', 'PieDAO', 'Staking Pools')
     , (0xd6216fc19db775df9774a6e33526131da7d19a2c, 'KuCoin', 'KuCoin 1', 'CEX')
