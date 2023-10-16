@@ -1,13 +1,14 @@
 {{ config(
+    schema = 'staking_ethereum',
     alias = alias('entities_binance'),
     tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
-SELECT binance.address
+SELECT binance.address AS depositor_address
 , 'Binance' AS entity
 , CONCAT('Binance ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(t.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category

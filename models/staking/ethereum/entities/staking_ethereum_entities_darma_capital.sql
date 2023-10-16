@@ -1,13 +1,14 @@
 {{ config(
+    schema = 'staking_ethereum',
     alias = alias('entities_darma_capital'),
     tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
-SELECT txs.to AS address
+SELECT txs.to AS depositor_address
 , 'DARMA Capital' AS entity
 , CONCAT('DARMA Capital ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(txs.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'Staking Pools' AS category

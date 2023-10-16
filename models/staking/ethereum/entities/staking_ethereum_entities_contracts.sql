@@ -1,24 +1,25 @@
 {{ config(
+    schema = 'staking_ethereum',
     alias = alias('entities_contracts'),
     tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
 WITH contracts AS (
-    SELECT address, entity, entity AS entity_unique_name, category
+    SELECT address, entity, entity AS entity_unique_name, category, 'deposit_address' AS tagging_method
     FROM
     (VALUES
     (0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f, 'Rocket Pool', 'Liquid Staking')
     , (0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0, 'Rocket Pool', 'Liquid Staking')
     , (0x2fb42ffe2d7df8381853e96304300c6a5e846905, 'Rocket Pool', 'Liquid Staking')
-    , (0x9b8c989ff27e948f55b53bb19b3cc1947852e394, 'Kiln', 'Staking Pools')
-    , (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270, 'Kiln', 'Staking Pools')
+    --, (0x9b8c989ff27e948f55b53bb19b3cc1947852e394, 'Kiln', 'Staking Pools') -- Kiln doesn't custody or manage any validators, hence the removal
+    --, (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270, 'Kiln', 'Staking Pools')
     , (0x2421a0af8badfae12e1c1700e369747d3db47b09, 'SenseiNode', 'Staking Pools')
     , (0x10e02a656b5f9de2c44c687787c36a2c4801cc40, 'Tranchess', 'Liquid Staking')
-    , (0x447c3ee829a3b506ad0a66ff1089f30181c42637, 'KingHash', 'Liquid Staking')
+    , (0x447c3ee829a3b506ad0a66ff1089f30181c42637, 'HashKing', 'Liquid Staking')
     , (0xa8f50a6c41d67685b820b4fe6bed7e549e54a949, 'Eth2Stake', 'Staking Pools')
     , (0xf243a92eb7d4b4f6a00a57888b887bd01ec6fd12, 'MyEtherWallet', 'Staking Pools')
     , (0x73fd39ba4fb23c9b080fca0fcbe4c8c7a2d630d0, 'MyEtherWallet', 'Staking Pools')
@@ -31,7 +32,7 @@ WITH contracts AS (
         x (address, entity, category)
     )
 
-SELECT address
+SELECT address AS depositor_address
 , entity
 , CONCAT(entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY first_used) AS VARCHAR)) AS entity_unique_name
 , category AS category
