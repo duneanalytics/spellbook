@@ -1,10 +1,11 @@
 {{ config(
     tags = ['dunesql'],
+    schema = 'staking_ethereum',
     alias = alias('deposits'),
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'deposit_index'],
+    unique_key = ['tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "staking",
@@ -55,7 +56,7 @@ WITH deposit_events AS (
     {% endif %}
     )
     
-SELECT d.block_time
+SELECT distinct d.block_time
 , d.block_number
 , d.amount AS amount_staked
 , ett.depositor_address
@@ -85,4 +86,6 @@ INNER JOIN traces ett ON ett.block_number=d.block_number
     AND ett.amount=d.amount
     AND ett.table_merging_traces_id=d.table_merging_deposits_id
 LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
-    ON ett.depositor_address=ete.address
+    ON ((ete.depositor_address IS NOT NULL AND ett.depositor_address=ete.depositor_address)
+    OR (ete.tx_from IS NOT NULL AND et."from"=ete.tx_from)
+    OR (ete.pubkey IS NOT NULL AND d.pubkey=ete.pubkey))
