@@ -9,7 +9,7 @@
 }}
 
 WITH hardcoded AS (
-    SELECT tx_from, date(first_tx) AS first_tx
+    SELECT depositor_address, date(first_tx) AS first_tx
     FROM
     (VALUES
     (0x2a7077399b3e90f5392d55a1dc7046ad8d152348, '2020-11-19')
@@ -20,17 +20,17 @@ WITH hardcoded AS (
     , (0xc2288b408dc872a1546f13e6ebfa9c94998316a2, '2020-11-25')
     , (0x4ebf51689228236ec55bcafef9d79663992a7fb6, '2023-08-24')
     )
-    x (tx_from, first_tx)
+    x (depositor_address, first_tx)
     )
 
-SELECT tx_from
+SELECT depositor_address
 , 'Bitcoin Suisse' AS entity
 , CONCAT('Bitcoin Suisse ', CAST(ROW_NUMBER() OVER (ORDER BY first_tx) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category
 FROM (
     SELECT * FROM hardcoded
     UNION ALL
-    SELECT txs."from" AS tx_from, MIN(evt_block_time) AS first_tx
+    SELECT txs."from" AS depositor_address, MIN(evt_block_time) AS first_tx
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} dep
     INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=dep.evt_block_number
         AND txs.hash=dep.evt_tx_hash
