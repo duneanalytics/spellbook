@@ -98,7 +98,7 @@ methods as (
         , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
         , if(
             coalesce(transfers.transfer_from, transfers.transfer_to) is not null
-            , count(*) over(partition by calls.blockchain, calls.tx_hash, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
+            , count(*) over(partition by calls.blockchain, calls.tx_hash, calls.start, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
         ) as transfers_between_players
         , rn_tta_asc
         , rn_tta_desc
@@ -119,7 +119,6 @@ methods as (
             , amount
             , transfer_from
             , transfer_to
-            , 1 as transfers_between_players  
             , trf
             , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
