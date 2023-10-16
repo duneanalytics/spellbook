@@ -2,7 +2,7 @@
 
 
 {% for base_trades_model in base_trades_models %}
-SELECT t.blockchain
+SELECT '{{ blockchain }}' AS blockchain
 , CAST(date_trunc('month', t.block_time) AS date) AS block_month
 , t.block_time
 , t.block_number
