@@ -1,15 +1,16 @@
 {{ config(
-    alias = alias('entities_addresses'),
+    schema = 'staking_ethereum',
+    alias = alias('entities_depositor_addresses'),
     tags = ['dunesql', 'static'],
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
-SELECT address, entity, entity_unique_name, category
+SELECT depositor_address, entity, entity_unique_name, category
 FROM
 (VALUES
-(0xae7ab96520de3a18e5e111b5eaab095312d7fe84, 'Lido', 'Lido', 'Liquid Staking')
-    , (0xfddf38947afb03c621c71b06c9c70bce73f12999, 'Lido', 'Lido', 'Liquid Staking')
-    , (0xa76a7d0d06754e4fc4941519d1f9d56fd9f8d53b, 'Lido', 'Lido', 'Liquid Staking')
+(0xae7ab96520de3a18e5e111b5eaab095312d7fe84, 'Lido', 'Lido 1', 'Liquid Staking')
+    , (0xfddf38947afb03c621c71b06c9c70bce73f12999, 'Lido', 'Lido 2', 'Liquid Staking')
+    , (0xa76a7d0d06754e4fc4941519d1f9d56fd9f8d53b, 'Lido', 'Lido 3', 'Liquid Staking')
     , (0x39dc6a99209b5e6b81dc8540c86ff10981ebda29, 'Staked.us', 'Staked.us', 'Staking Pools')
     , (0x0194512e77d798e4871973d9cb9d7ddfc0ffd801, 'stakefish', 'stakefish 1', 'Staking Pools')
     , (0xd4039ecc40aeda0582036437cf3ec02845da4c13, 'Kraken', 'Kraken 1', 'CEX')
@@ -32,8 +33,7 @@ FROM
     , (0xbf1556a7d625654e3d64d1f0466a60a697fac178, 'imToken', 'imToken Staking[NodeProviderInfStones]', 'Staking Pools')
     , (0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d, 'SharedStake', 'SharedStake', 'Liquid Staking')
     , (0xeadcba8bf9aca93f627f31fb05470f5a0686ceca, 'StakeWise Solos', 'StakeWise Solos', 'Staking Pools')
-    , (0xfa5f9eaa65ffb2a75de092eb7f3fc84fc86b5b18, 'Abyss Finance', 'Abyss Finance', 'Batch Staking Contract')
-    , (0x66827bcd635f2bb1779d68c46aeb16541bca6ba8, 'PieDAO', 'PieDAO', 'Staking Pools')
+    , (0x66827bcd635f2bb1779d68c46aeb16541bca6ba8, 'Auxo', 'Auxo', 'Staking Pools')
     , (0xd6216fc19db775df9774a6e33526131da7d19a2c, 'KuCoin', 'KuCoin 1', 'CEX')
     , (0x1692e170361cefd1eb7240ec13d048fd9af6d667, 'KuCoin', 'KuCoin 2', 'CEX')
     , (0x7b915c27a0ed48e2ce726ee40f20b2bf8a88a1b3, 'KuCoin', 'KuCoin 3', 'CEX')
@@ -63,16 +63,16 @@ FROM
     , (0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini', 'CEX')
     , (0xbb84d966c09264ce9a2104a4a20bb378369986db, 'WEX Exchange', 'WEX Exchange', 'CEX')
     , (0xbafa44efe7901e04e39dad13167d089c559c1138, 'Frax Finance', 'Frax Finance', 'Liquid Staking')
-    --, (0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340, 'stakefish', 'stakefish 2', 'Staking Pools') -- fork of stakefish batch deposit contract that isn't controlled by stakefish
+    , (0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340, 'Coinbase', 'Coinbase Batch 1', 'CEX')
     , (0xeee27662c2b8eba3cd936a23f039f3189633e4c8, 'Celsius', 'Celsius', 'Staking Pools')
-    , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell', 'Liquid Staking')
-    , (0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39, 'Swell', 'Swell', 'Liquid Staking')
+    , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell 1', 'Liquid Staking')
+    , (0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39, 'Swell', 'Swell 2', 'Liquid Staking')
     , (0x5180db0237291a6449dda9ed33ad90a38787621c, 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
     , (0xaab27b150451726ec7738aa1d0a94505c8729bd1, 'Eden Network', 'Eden Network', 'Others')
     , (0x234ee9e35f8e9749a002fc42970d570db716453b, 'Gate.io', 'Gate.io', 'CEX')
     , (0x6c7c332a090c8d2085857cf3220ea01c6d45a723, 'Unagii', 'Unagii', 'Staking Pools')
     , (0x663d3947f03ef5b387992b880ac85940057c13e3, 'WeekInEth', 'WeekInEth', 'Others')
-    , (0x3ccc0b321ec18997490c8bfc2c882ef83d546ddd, 'Cake DeFi', 'Cake DeFi', 'Staking Pools')
+    , (0x3ccc0b321ec18997490c8bfc2c882ef83d546ddd, 'Bake', 'Bake', 'Staking Pools')
     , (0x31e180e06d771dbafa3d6eea452195ad1020fbdb, 'Ethereum Hive', 'Ethereum Hive', 'Staking Pools')
     , (0x6b523cd4fcdf3332bcb3177050e22cf7272b4c3a, 'Consensus Cell Network', 'Consensus Cell Network', 'Others')
     , (0xd3b16f647ad234f8b5bb2bdbe8e919daa5268681, 'FOAM Signal', 'FOAM Signal', 'Others')
@@ -109,5 +109,6 @@ FROM
     , (0x1b63142628311395ceafeea5667e7c9026c862ca, 'Taylor Gerring', 'Taylor Gerring', 'Independent Staker')
     , (0x2ed8eb76c91fa25b21d588128569dbc2f885e511, 'Linke Yang', 'Linke Yang', 'Independent Staker')
     , (0x96f4489fe75d0494bd5088b0d80b17a5759dac37, 'Tranchess', 'Tranchess', 'Liquid Staking')
+    , (0x1a0ffc5d6a8f14bacfb21056355394128fa6b955, 'DxPool', 'DxPool', 'Staking Pools')
     ) 
-    x (address, entity, entity_unique_name, category)
+    x (depositor_address, entity, entity_unique_name, category)

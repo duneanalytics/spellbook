@@ -1,16 +1,18 @@
 {{ config(
+    schema = 'staking_ethereum',
     alias = alias('entities_coinbase'),
     tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address'])
+    unique_key = ['depositor_address'])
 }}
 
-SELECT coinbase.address
+SELECT coinbase.address AS depositor_address
 , 'Coinbase' AS entity
 , CONCAT('Coinbase ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(coinbase.block_time)) AS VARCHAR)) AS entity_unique_name
 , 'CEX' AS category
+, 'deposit_address' AS tagging_method
 FROM (
         SELECT
             et."from" AS address
