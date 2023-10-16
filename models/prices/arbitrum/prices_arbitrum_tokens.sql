@@ -105,5 +105,9 @@ FROM
     ('oath-oath','arbitrum','OATH',0xa1150db5105987cec5fd092273d1e3cbb22b378b,18),
     ('winr-winr-protocol','arbitrum','WINR',0xd77b108d4f6cefaa0cae9506a934e825becca46e,18),
     ('ram-ramses-exchange','arbitrum','RAM',0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418,18),
-    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18)
+    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18),  
+    ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
+    ('pendle-pendle','arbitrum','PENDLE',0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8,18),
+    ('gns-gains-network','arbitrum','GNS',0x18c11fd286c5ec11c3b683caa813b77f5163a122,18),
+    ('joe-trader-joe','arbitrum','JOE',0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07,18),        
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
