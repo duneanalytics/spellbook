@@ -130,7 +130,7 @@ FROM (VALUES
     ('ethereum',0xf7d583bee22b514a4c4dfea147524642a722115c, 'jedinexus', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0xdbb59151b18dd72e9ac092706e93de5b5d7a9325, 'trislit', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0xc5b4e3ed8b30bf691bfda2d1604080a6781d0fc3, 'godar', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
-    {# ('ethereum','3.41e+47', 'drgempire', 'superrare', 'cat', 'static', date('2022-10-01'), now()), #}
+    -- ('ethereum','3.41e+47', 'drgempire', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0x974108626da1c3972f57d8d98a7793d3f378d3c7, 'esco37', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0xfc68bb04eb6f4fd255522cb9c815f3d445bd9c52, 'sco', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0xd36954df517cfd9d533d4494b0e62b61c02fc29a, 'mythin', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
