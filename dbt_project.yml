@@ -490,6 +490,8 @@ models:
         +schema: dodo_arbitrum
       optimism:
         +schema: dodo_optimism
+      base:
+        +schema: dodo_base
 
 
     spookyswap:

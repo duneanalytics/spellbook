@@ -96,7 +96,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             '' AS trace_address,
             evt_index
         FROM
-            {{ source('dodo_arbitrum', 'dvm_evt_DODOSwap')}}
+            {{ source('dodo_arbitrum', 'DVM_evt_DODOSwap')}}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
@@ -144,7 +144,7 @@ WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_
             '' AS trace_address,
             evt_index
         FROM
-            {{ source('dodo_arbitrum', 'dsp_evt_DODOSwap')}}
+            {{ source('dodo_arbitrum', 'DSP_evt_DODOSwap')}}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
         {% endif %}
