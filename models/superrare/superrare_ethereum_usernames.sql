@@ -5053,7 +5053,7 @@ FROM (VALUES
     ('ethereum',0xf3344f10117096e3e5a0ecabf9a62bebda5dfd99, 'serinedr', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0x47cb4f3d1cc75531115f88e41c7829b9c1bf3a15, 'midabi', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0x5b33758bf3054e4a1805298237abe5f3695d6389, 'deb0wskii', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
-    ('ethereum','address', 'user.username', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
+    -- ('ethereum','address', 'user.username', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0xe1ff19610020d72930aee1b9c047e35b7fd0080e, 'ninjaboffin', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0x8e80a3c6ca902603b3b76b44a2c608d9da0fd083, 'sidequ35t', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
     ('ethereum',0x425115e62bf1bcbd2901f6d7a350dba4b07b9ecc, 'anonymousz', 'superrare', 'cat', 'static', date('2022-10-01'), now()),
