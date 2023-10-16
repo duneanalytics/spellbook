@@ -59,3 +59,27 @@ seeds:
         tx_from: varbinary
         tx_to: varbinary
         fills_within: int
+
+  - name: zeroex_ethereum_nft_fills_sample
+    config:
+      tags: dunesql
+      column_types:
+        block_time: timestamp
+        block_date: date
+        evt_index: int
+        tx_hash: varbinary
+        maker: varbinary
+        taker: varbinary
+        matcher: varbinary
+        nft_address: varbinary
+        nft_id: uint256
+        label: varchar
+        price_label: varbinary
+        token: varbinary
+        token_amount_raw: varchar 
+        symbol: varchar
+        price_usd: double
+        token_amount: double
+        project_name: varchar
+        
+

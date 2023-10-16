@@ -16,7 +16,20 @@ seeds:
 
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed
     config:
+      tags: dunesql
       column_types:
         day: date
         eth_ingress: double
         eth_egress: double
+  
+  - name: nexusmutual_ethereum_product_information_seed
+    config:
+      tags: dunesql
+      column_types:
+        date_added: date
+        product_contract_address: varbinary
+        product_name: varchar
+        product_type: varchar
+        syndicate: varchar
+
+
