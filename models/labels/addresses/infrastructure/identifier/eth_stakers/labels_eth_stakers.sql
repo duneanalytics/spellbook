@@ -7,7 +7,7 @@
 
 WITH identified_stakers AS (
     SELECT 'ethereum' AS blockchain
-    , address
+    , depositor_address as address
     , entity AS name
     , 'infrastructure' AS category
     , 'hildobby' AS contributor
