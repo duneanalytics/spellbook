@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: kyberswap_arbitrum_trades
+  - name: kyberswap_polygon_trades
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: dex
       project: kyberswap
-      contributors: ppclunghe, gregshestakovlido
+      contributors:
     config:
-      tags: ['arbitrum','dex','trades', 'kyberswap', 'ppclunghe', 'gregshestakovlido']
+      tags: ['polygon', 'dex','trades', 'kyberswap', 'ppclunghe', 'gregshestakovlido', 'nhd98z']
     description: >
-        Kyberswap trades on Arbitrum across all contracts and versions. This table will load dex trades downstream.
+      Kyberswap trades on Polygon across all contracts and versions. This table will load dex trades downstream.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -87,16 +87,16 @@ models:
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
-  - name: kyberswap_aggregator_arbitrum_trades
+  - name: kyberswap_aggregator_polygon_trades
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: dex_aggregator
       project: kyberswap
       contributors: nhd98z
     config:
-      tags: ['arbitrum', 'kyberswap', 'aggregator', 'trades', 'dex']
+      tags: ['polygon', 'kyberswap', 'aggregator', 'trades', 'dex']
     description: >
-      Kyberswap Aggregator on Arbitrum.
+      Kyberswap Aggregator on polygon.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -108,9 +108,9 @@ models:
             - evt_index
             - trace_address
       - check_dex_aggregator_seed:
-          blockchain: arbitrum
+          blockchain: polygon
           project: kyberswap
-          version: 2
+          version: meta_2
     columns:
       - name: blockchain
       - name: project

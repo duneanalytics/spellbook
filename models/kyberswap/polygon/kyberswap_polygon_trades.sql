@@ -5,14 +5,14 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "kyberswap",
-                                \'["ppclunghe", "gregshestakovlido"]\') }}'
+                                \'["nhd98z"]\') }}'
     )
 }}
 
-{% set project_start_date = '2021-04-05' %} 
+{% set project_start_date = '2021-04-05' %}
 
 WITH
 
@@ -31,35 +31,8 @@ kyberswap_dex AS (
         ,'classic'                                                                    AS version
         ,t.evt_index
 
-    FROM {{ source('kyber_ethereum', 'DMMPool_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_ethereum', 'DMMFactory_evt_PoolCreated') }} p
-        ON t.contract_address = p.pool
-    {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    {% else %}
-    WHERE t.evt_block_time >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-
-    UNION ALL
-
-    -- https://docs.kyberswap.com/contract/implement-a-swap
-    -- deltaQty0 and deltaQty1, Negative numbers represent the sold amount, and positive numbers represent the buy amount
-    SELECT
-        t.evt_block_time                                                                                         AS block_time
-        ,t.sender                                                                                                AS taker
-        ,t.recipient                                                                                             AS maker
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty1), abs(t.deltaQty0)) as uint256) AS token_bought_amount_raw
-        ,cast(if(starts_with(cast(t.deltaQty0 as varchar), '-'), abs(t.deltaQty0), abs(t.deltaQty1)) as uint256) AS token_sold_amount_raw
-        ,NULL                                                                                                    AS amount_usd
-        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token1, p.token0)                                  AS token_bought_address
-        ,if(starts_with(cast(t.deltaQty0 as varchar), '-'), p.token0, p.token1)                                  AS token_sold_address
-        ,t.contract_address                                                                                      AS project_contract_address
-        ,t.evt_tx_hash                                                                                           AS tx_hash
-        ,'elastic'                                                                                               AS version	
-        ,t.evt_index
-
-    FROM {{ source('kyber_ethereum', 'Elastic_Pool_evt_swap') }} t
-    INNER JOIN {{ source('kyber_ethereum', 'Elastic_Factory_evt_PoolCreated') }} p
+    FROM {{ source('kyber_polygon', 'DMMPool_evt_Swap') }} t
+    INNER JOIN {{ source('kyber_polygon', 'DMMFactory_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -83,8 +56,8 @@ kyberswap_dex AS (
         ,'elastic_2'                                                                                             AS version
         ,t.evt_index
 
-    FROM {{ source('kyber_ethereum', 'ElasticPoolV2_evt_Swap') }} t
-    INNER JOIN {{ source('kyber_ethereum', 'ElasticFactoryV2_evt_PoolCreated') }} p
+    FROM {{ source('kyber_polygon', 'ElasticPoolV2_evt_Swap') }} t
+    INNER JOIN {{ source('kyber_polygon', 'ElasticFactoryV2_evt_PoolCreated') }} p
         ON t.contract_address = p.pool
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -94,7 +67,7 @@ kyberswap_dex AS (
 )
 
 SELECT
-    'ethereum'                                                            AS blockchain
+    'polygon'                                                                 AS blockchain
     ,'kyberswap'                                                          AS project
     ,version                                                              AS version
     ,try_cast(date_trunc('DAY', kyberswap_dex.block_time) AS date)        AS block_date
@@ -124,7 +97,7 @@ SELECT
     ,tx.to                                                               AS tx_to
     ,kyberswap_dex.evt_index
 FROM kyberswap_dex
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
+INNER JOIN {{ source('polygon', 'transactions') }} tx
     ON kyberswap_dex.tx_hash = tx.hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
@@ -133,14 +106,14 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = kyberswap_dex.token_bought_address
-    and erc20a.blockchain = 'ethereum'
+    and erc20a.blockchain = 'polygon'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = kyberswap_dex.token_sold_address
-    AND erc20b.blockchain = 'ethereum'
+    AND erc20b.blockchain = 'polygon'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_bought.contract_address = kyberswap_dex.token_bought_address
-    AND p_bought.blockchain = 'ethereum'
+    AND p_bought.blockchain = 'polygon'
     {% if is_incremental() %}
     AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
@@ -149,7 +122,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', kyberswap_dex.block_time)
     AND p_sold.contract_address = kyberswap_dex.token_sold_address
-    AND p_sold.blockchain = 'ethereum'
+    AND p_sold.blockchain = 'polygon'
     {% if is_incremental() %}
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% else %}
