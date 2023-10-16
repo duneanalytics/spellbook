@@ -5,7 +5,7 @@
     )
 }}
 
-{% set friend3_fan_start_date = '2023-09-20' %}
+{% set friend3_start_date = '2023-09-20' %}
 
 SELECT 'bnb' AS blockchain
 , evt_block_time AS block_time
@@ -28,5 +28,5 @@ FROM {{source('friend3_v1_bnb', 'Friend3V1_evt_Trade')}}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% else %}
-WHERE evt_block_time >= TIMESTAMP '{{friend_tech_start_date}}'
+WHERE evt_block_time >= TIMESTAMP '{{friend3_start_date}}'
 {% endif %}
