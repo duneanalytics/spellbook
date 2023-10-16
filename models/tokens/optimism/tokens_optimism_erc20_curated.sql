@@ -217,7 +217,7 @@ WITH raw_token_list AS (
     ,(0xe4dE4B87345815C71aa843ea4841bCdc682637bb, 'BUILD', 18, 'underlying')
     ,(0x66e8617d1Df7ab523a316a6c01D16Aa5beD93681, 'SHACK', 18, 'underlying')
     ,(0xf899e3909B4492859d44260E1de41A9E663e70F5, 'RADIO', 18, 'underlying')
-    ,(0x73cb180bf0521828d8849bc8CF2B920918e23032, 'USD+', 18, 'underlying')
+    ,(0x73cb180bf0521828d8849bc8CF2B920918e23032, 'USD+', 6, 'underlying')
     ,(0xc3864f98f2a61A7cAeb95b039D031b4E2f55e0e9, 'OpenX', 18, 'underlying')
     ,(0x1DB2466d9F5e10D7090E7152B68d62703a2245F0, 'SONNE', 18, 'underlying')
     ,(0x1eC50880101022C11530A069690F5446d1464592, 'USDy', 18, 'receipt')
