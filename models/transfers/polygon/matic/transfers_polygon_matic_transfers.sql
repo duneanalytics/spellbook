@@ -1,5 +1,6 @@
 {{ 
     config(
+        tags=['dunesql'],
         alias = alias('matic_transfers'), 
         materialized ='incremental',
         file_format ='delta',
