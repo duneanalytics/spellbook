@@ -32,6 +32,9 @@
     join {{ source('ethereum', 'transactions') }} as t 
         on r.tx_hash = t.hash
         and r.block_number = t.block_number
+        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+        and r.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     where 
         (r.call_type not in ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
         and r.tx_success = true
