@@ -14,7 +14,7 @@
 }}
 
     select 
-        r.from
+        r."from"
         ,r.to
         --Using the ETH placeholder address to match with prices tables
         ,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as contract_address
@@ -27,7 +27,7 @@
         ,bytearray_substring(t.data, 1, 4) as tx_method_id
         ,cast(r.tx_hash as varchar) || '-' || cast(r.trace_address as varchar) as unique_transfer_id
         ,t.to AS tx_to
-        ,t.`from` AS tx_from
+        ,t."from" AS tx_from
     from {{ source('ethereum', 'traces') }} as r 
     join {{ source('ethereum', 'transactions') }} as t 
         on r.tx_hash = t.hash
