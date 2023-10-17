@@ -344,7 +344,7 @@ SELECT * FROM level{{max_levels - 1}}
   from (
     SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
-    SELECT {{max_levels}} as level, * FROM levels WHERE to_iterate_creators = 0 --get legacy contracts
+    SELECT {{max_levels}} as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
   ) f
   left join {{ ref('contracts_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
