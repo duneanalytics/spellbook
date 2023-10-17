@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['depositor_address'])
+    unique_key = ['withdrawal_credentials'])
 }}
 
 SELECT withdrawal_credentials, entity, entity_unique_name, category

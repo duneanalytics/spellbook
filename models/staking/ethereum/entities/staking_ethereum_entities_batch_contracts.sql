@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['depositor_address'])
+    unique_key = ['pubkey'])
 }}
 
 SELECT pubkey, entity, entity_unique_name, category
