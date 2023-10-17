@@ -7,10 +7,7 @@
                                 \'["Henrystats"]\') }}'
         )
 }}
-/*
-    note: this spell has not been migrated to dunesql, therefore is only a view on spark
-        please migrate to dunesql to ensure up-to-date logic & data
-*/
+
 {% set gmx_perp_models = [
 ref('gmx_avalanche_c_perpetual_trades')
 , ref('gmx_arbitrum_perpetual_trades')
