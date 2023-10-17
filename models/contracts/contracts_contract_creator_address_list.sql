@@ -700,6 +700,7 @@ WITH curated_list AS (
       ,(0x4F0D938A81343A5Fb10d6BB20BF5996E2e557586, 'RAI Finance')
       ,(0xeee47e88a8176c0774673e0e78ed0afffd5f7fff, 'Tokepad')
       ,(0xE824ff5D7A5De844ea11F5ac5EbE2B6F02b7c511, 'MCT-XENFT')
+      ,(0x3c6D5c150EE29B698c6C821B53886C41d239669c, 'Uniswap')
 
       
   ) as temp_table (creator_address, contract_project)
