@@ -18,6 +18,7 @@ WITH invalid_pubkeys AS (
         , (0x86f473a006c566f1648a82c74cdfbd4a3cb2ea04eb2e0d49ef381ab2562576888554ef3d39e56996f24c804abb489600)
         , (0x8c69edd7a8e8da5330787952a1ad5075516e6fd4bda1586d62dd64701f7628d5229eb7f929017dea9ae6995f9c69ef5e)
         , (0x80a29e569e8ced0be1fff42c845a59449aecf8a2503542e4e76763ccc0265e683e2d5d46618cc829349293ed08ff49ff)
+        , (0x00) -- This is a dummy pubkey used to refresh the table
         ) AS temp_table (pubkey)
     )
 
