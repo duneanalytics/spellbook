@@ -20,7 +20,7 @@ SELECT '{{ blockchain }}' AS blockchain
 , t.protocol_fee_amount
 , t.protocol_fee_amount*pu.price AS protocol_fee_amount_usd
 , t.currency_contract
-, CASE WHEN t.currency_contract=0x0000000000000000000000000000000000000000 THEN info.native_token_symbol ELSE tok.currency_symbol END AS currency_symbol
+, CASE WHEN t.currency_contract=0x0000000000000000000000000000000000000000 THEN info.native_token_symbol ELSE tok.symbol END AS currency_symbol
 , t.supply
 , t.tx_hash
 , t.evt_index
