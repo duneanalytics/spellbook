@@ -786,3 +786,265 @@ models:
       - *keeper_address
       - *operator_name
       - *token_value
+
+  - name: chainlink_ethereum_vrf_fulfilled_transactions
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "fulfilled", "transactions", "ethereum"]
+    description: >
+      Chainlink VRF Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_vrf_gas_daily
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "gas", "daily", "ethereum"]
+    description: >
+      Chainlink VRF Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_ethereum_vrf_v1_random_fulfilled_logs
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "ethereum"]
+    description: >
+      Chainlink VRF V1 Randomness Fulfilled Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+
+  - name: chainlink_ethereum_vrf_v1_random_request_logs
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "ethereum"]
+    description: >
+      Chainlink VRF V1 Randomness Requested Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_ethereum_vrf_v2_random_fulfilled_logs
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "ethereum"]
+    description: >
+      Chainlink VRF V2 Randomness Fulfilled Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+
+  - name: chainlink_ethereum_vrf_request_daily
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "daily", "ethereum"]
+    description: >
+      Chainlink VRF Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_ethereum_vrf_reverted_transactions
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "reverted", "transactions", "ethereum"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_ethereum_vrf_reward_daily
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "reward", "daily", "ethereum"]
+    description: >
+      Chainlink VRF Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - operator_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &operator_address
+        name: operator_address
+        description: "Operator Address"
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_ethereum_vrf_request_fulfilled
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "fulfilled", "ethereum"]
+    description: >
+      Chainlink VRF Request Fulfilled
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *operator_address
+      - *token_value
+
+  - name: chainlink_ethereum_vrf_request_fulfilled_daily
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "ethereum"]
+    description: >
+      Chainlink VRF Request Fulfilled Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - operator_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *operator_address
+      - *token_value

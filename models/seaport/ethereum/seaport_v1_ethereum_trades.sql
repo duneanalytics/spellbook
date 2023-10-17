@@ -1,4 +1,5 @@
 {{ config(
+    tags=['dunesql'],
     schema = 'seaport_v1_ethereum',
     alias = alias('trades'),
     partition_by = ['block_date'],
@@ -13,20 +14,20 @@
     )
 }}
 
-{% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
+{% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
 {% set c_alternative_token_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
-{% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_native_symbol = 'ETH' %}
+{% set c_seaport_first_date = '2022-06-01' %}
 {% set c_seaport_contract_address = "0x00000000006c3852cbef3e08e8df289169ede581" %} -- v1 = Seaport v1.1
 
 with source_ethereum_transactions as (
     select *
     from {{ source('ethereum','transactions') }}
     {% if not is_incremental() %}
-    where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+    where block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,ref_seaport_ethereum_base_pairs as (
@@ -34,7 +35,7 @@ with source_ethereum_transactions as (
       from {{ ref('seaport_ethereum_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -61,10 +62,10 @@ with source_ethereum_transactions as (
     from {{ source('prices', 'usd') }}
     where blockchain = 'ethereum'
     {% if not is_incremental() %}
-      and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
+      and minute >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -81,7 +82,7 @@ with source_ethereum_transactions as (
         ,a.receiver
         ,a.zone
         ,a.token_contract_address
-        ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
+        ,CAST(a.original_amount AS UINT256) AS original_amount
         ,a.item_type
         ,a.token_id
         ,a.platform_contract_address
@@ -102,7 +103,7 @@ with source_ethereum_transactions as (
         ,a.is_moved_nft
   from ref_seaport_ethereum_base_pairs a
   where 1=1
-    and a.platform_contract_address = '{{c_seaport_contract_address}}'
+    and a.platform_contract_address = {{c_seaport_contract_address}}
     and not a.is_private
   union all
   select a.block_date
@@ -120,7 +121,7 @@ with source_ethereum_transactions as (
           end as receiver
         ,a.zone
         ,a.token_contract_address
-        ,CAST(a.original_amount AS DECIMAL(38,0)) AS original_amount
+        ,CAST(a.original_amount AS UINT256) AS original_amount
         ,a.item_type
         ,a.token_id
         ,a.platform_contract_address
@@ -148,7 +149,7 @@ with source_ethereum_transactions as (
     and b.original_amount = a.original_amount
     and b.is_moved_nft
   where 1=1
-    and a.platform_contract_address = '{{c_seaport_contract_address}}'
+    and a.platform_contract_address = {{c_seaport_contract_address}}
     and a.is_private
     and not a.is_moved_nft
     and a.consideration_cnt > 0
@@ -159,7 +160,7 @@ with source_ethereum_transactions as (
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address
-        ,CAST(sum(case when is_price then original_amount end) AS DECIMAL(38,0)) as price_amount_raw
+        ,CAST(sum(case when is_price then original_amount end) AS UINT256) as price_amount_raw
         ,sum(case when is_platform_fee then original_amount end) as platform_fee_amount_raw
         ,max(case when is_platform_fee then receiver end) as platform_fee_receiver
         ,sum(case when is_creator_fee then original_amount end) as creator_fee_amount_raw
@@ -196,10 +197,10 @@ with source_ethereum_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address
-        ,CAST(round(price_amount_raw / nft_cnt) AS DECIMAL(38,0)) as price_amount_raw  -- to truncate the odd number of decimal places
-        ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
+        ,CAST(price_amount_raw / nft_cnt as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
+        ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
+        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
@@ -255,13 +256,13 @@ with source_ethereum_transactions as (
           ,a.sub_type
           ,a.sub_idx
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
-          ,right(t.data,8) as right_hash
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
+          ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+          ,case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                 else a.token_contract_address
            end as token_alternative_symbol
           ,e.decimals as price_token_decimals
@@ -273,19 +274,18 @@ with source_ethereum_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,coalesce(agg.name,agg_m.aggregator_name) as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,sub_idx
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
-  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                       end
-  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
   left join ref_nft_aggregators agg on agg.contract_address = t.to
-  left join ref_nft_aggregators_marks agg_m on right(t.data, agg_m.hash_marker_size) = agg_m.hash_marker
+  left join ref_nft_aggregators_marks agg_m on bytearray_starts_with(bytearray_reverse(t.data), bytearray_reverse(agg_m.hash_marker))
 )
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
@@ -361,4 +361,4 @@ with source_ethereum_transactions as (
         ,sub_idx
         ,sub_type
     from iv_trades
-;
+
