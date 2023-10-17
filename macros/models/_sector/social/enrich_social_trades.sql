@@ -20,7 +20,7 @@ SELECT '{{ blockchain }}' AS blockchain
 , t.protocol_fee_amount
 , t.protocol_fee_amount*pu.price AS protocol_fee_amount_usd
 , t.currency_contract
-, t.currency_symbol
+, CASE WHEN t.currency_contract=0x0000000000000000000000000000000000000000 THEN info.native_token_symbol ELSE tok.currency_symbol END AS currency_symbol
 , t.supply
 , t.tx_hash
 , t.evt_index
@@ -33,6 +33,8 @@ INNER JOIN {{raw_transactions}} txs ON txs.block_number=t.block_number
     AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 INNER JOIN {{ref('evms_info')}} info ON info.blockchain='{{ blockchain }}'
+LEFT JOIN {{ref('tokens_erc20')}} tok ON tok.blockchain='{{ blockchain }}'
+    AND tok.contract_address=t.currency_contract
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{ blockchain }}'
     AND (pu.contract_address=info.wrapped_native_token_address
     AND pu.minute = date_trunc('minute', t.block_time)
