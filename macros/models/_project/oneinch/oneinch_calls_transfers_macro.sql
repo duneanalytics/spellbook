@@ -27,6 +27,7 @@ methods as (
         , calls.call_from
         , call_to
         , transactions.tx_from
+        , transactions.tx_to
         , transactions.tx_success
         , calls.call_success
         , call_selector
@@ -38,6 +39,7 @@ methods as (
         select 
             '{{ blockchain }}' as blockchain
             , "from" as tx_from
+            , "to" as tx_to
             , "hash" as tx_hash
             , success as tx_success
             , block_time
@@ -80,6 +82,7 @@ methods as (
         -- tx
         , calls.tx_hash
         , calls.tx_from
+        , calls.tx_to
         , calls.tx_success
         -- call
         , calls.call_success
