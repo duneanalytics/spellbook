@@ -25,7 +25,7 @@
         ,r.block_time as tx_block_time 
         ,r.block_number as tx_block_number 
         ,bytearray_substring(t.data, 1, 4) as tx_method_id
-        ,cast(r.tx_hash as varchar) || '-' || cast(r.trace_address as varchar) as unique_transfer_id
+        ,cast(r.tx_hash as varchar) || '-' || array_join(r.trace_address,',') as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
     from {{ source('polygon', 'traces') }} as r 
