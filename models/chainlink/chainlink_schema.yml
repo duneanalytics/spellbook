@@ -1717,12 +1717,26 @@ models:
 
   - name: chainlink_read_requests_feeds_daily
     meta:
-      blockchain: ["ethereum"]
+      blockchain:
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "read", "requests", "feeds", "daily", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "read",
+          "requests",
+          "feeds",
+          "daily",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink Read Requests Feeds Daily
     tests:
@@ -1743,12 +1757,25 @@ models:
 
   - name: chainlink_read_requests_feeds
     meta:
-      blockchain: ["ethereum"]
+      blockchain:
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "read", "requests", "feeds", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "read",
+          "requests",
+          "feeds",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink Read Requests Feeds
     columns:
@@ -1759,12 +1786,25 @@ models:
 
   - name: chainlink_read_requests_logs
     meta:
-      blockchain: ["ethereum"]
+      blockchain:
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "read", "requests", "logs", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "read",
+          "requests",
+          "logs",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink Read Requests Logs
     columns:
@@ -1788,12 +1828,26 @@ models:
 
   - name: chainlink_read_requests_requester_daily
     meta:
-      blockchain: ["ethereum"]
+      blockchain:
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "read", "requests", "requester", "daily", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "read",
+          "requests",
+          "requester",
+          "daily",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink Read Requests Requester Daily
     tests:
@@ -1816,12 +1870,25 @@ models:
 
   - name: chainlink_read_requests_requester
     meta:
-      blockchain: ["ethereum"]
+      blockchain:
+        ["arbitrum", "avalanche_c", "bnb", "ethereum", "optimism", "polygon"]
       sector: oracle
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "read", "requests", "requester", "ethereum"]
+      tags:
+        [
+          "chainlink",
+          "read",
+          "requests",
+          "requester",
+          "arbitrum",
+          "avalanche_c",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
     description: >
       Chainlink Read Requests Requester
     columns:
