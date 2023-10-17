@@ -341,11 +341,11 @@ SELECT * FROM level{{max_levels - 1}}
     ,f.token_standard
     ,f.code
     ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
-  from (
+  from levels/*(
     SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
     SELECT * FROM levels WHERE to_iterate_creators = 0 --get legacy contracts
-  ) f
+  )*/ f
   left join {{ ref('contracts_contract_creator_address_list') }} as cc 
     on f.creator_address = cc.creator_address
   left join {{ ref('contracts_contract_creator_address_list') }} as ccd
