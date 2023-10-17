@@ -1,7 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
     alias = alias('kyberswap_v2_pools'),
-    tags = ['dunesql', 'prod_exclude'],
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -79,87 +79,6 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
       DATE_TRUNC('day', minute) = current_date
       AND blockchain = 'arbitrum'
       AND contract_address IN (SELECT address  FROM tokens where address NOT IN  (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 0x9cfb13e6c11054ac9fcb92ba89644f30775436e4 ))
-
-      UNION ALL
-      --USDC prices from mainnet
-    SELECT DISTINCT
-      DATE_TRUNC('day', minute) AS time,
-      0xaf88d065e77c8cc2239327c5edb3a432268e5831  AS token,
-      decimals, 
-      symbol,
-      AVG(price) AS price
-    FROM
-      {{source('prices','usd')}} p
-    
-    {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
-    {% endif %}
-
-      AND DATE_TRUNC('day', minute) < current_date
-      AND blockchain = 'ethereum'
-      AND contract_address IN  (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48)
-    GROUP BY 1, 2,3,4
-    UNION ALL
-    SELECT DISTINCT
-      DATE_TRUNC('day', minute),
-      0xaf88d065e77c8cc2239327c5edb3a432268e5831 AS token,
-      decimals, 
-      symbol,
-      LAST_VALUE(price) OVER (
-        PARTITION BY
-          DATE_TRUNC('day', minute),
-          contract_address
-        ORDER BY minute range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
-    FROM
-      {{source('prices','usd')}}
-    WHERE
-      DATE_TRUNC('day', minute) = current_date
-      AND blockchain = 'ethereum'
-      AND contract_address IN  (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48)
-
-       UNION ALL
-      --axl-wstETH
-          SELECT DISTINCT
-      DATE_TRUNC('day', minute) AS time,
-      0x9cfb13e6c11054ac9fcb92ba89644f30775436e4  AS token,
-      decimals, 
-      'axl-wstETH',
-      AVG(price) AS price
-    FROM
-      {{source('prices','usd')}} p
-    
-    {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
-    {% endif %}
-
-      AND DATE_TRUNC('day', minute) < current_date
-      AND blockchain = 'arbitrum'
-      AND contract_address IN (0x5979d7b546e38e414f7e9822514be443a4800529)
-      
-    GROUP BY 1, 2,3,4
-    UNION ALL
-    SELECT DISTINCT
-      DATE_TRUNC('day', minute),
-      0x9cfb13e6c11054ac9fcb92ba89644f30775436e4  AS token,
-      decimals, 
-      'axl-wstETH',
-      LAST_VALUE(price) OVER (
-        PARTITION BY
-          DATE_TRUNC('day', minute),
-          contract_address
-        ORDER BY minute range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
-    FROM
-      {{source('prices','usd')}}
-    WHERE
-      DATE_TRUNC('day', minute) = current_date
-      AND blockchain = 'arbitrum'
-      AND contract_address IN (0x5979d7b546e38e414f7e9822514be443a4800529)
 
   )
 
@@ -371,6 +290,6 @@ group by 1,2
   left join  trading_volume tv  on l.time = tv.time and l.pool = tv.pool
   
 )
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), paired_token_symbol),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
+select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
 from all_metrics
 
