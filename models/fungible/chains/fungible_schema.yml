@@ -140,8 +140,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            - from
-            - to
     columns:
       - *blockchain
       - *block_time
