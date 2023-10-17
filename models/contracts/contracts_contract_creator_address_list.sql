@@ -664,6 +664,9 @@ WITH curated_list AS (
       ,(0x22fe024ffec24631a625113bdf5e9f7d447c8ddf, 'Teahouse')
       ,(0xC73Fc08C931Efe3FCE850C09278472e8a81c2e05, 'XEN Crypto')
       ,(0x0Cf83143f0AB9D6e178fC7f141205ec2992266C8, 'CoinTool')
+      ,(0x000002c34bAE6DD7BeC72AcbA6aAAC1e01A359De, 'SyncSwap')
+      ,(0xce20d01E96710885Db68ecd7cDd2423293f15130, 'Mute')
+      ,(0x8633500EF5c41CE955B4958AD5e61ca58A2B3cB6, 'SpaceFi')
       ,(0x464eD76C6B2DdeCC9aa1E990211670a81b93474B, 'VMEX Finance')
       ,(0x1FcCC097db89A86Bfc474A1028F93958295b1Fb7, 'Pendle')
       ,(0xC107DAcAf1d6e369CFDc67695BEAdf5e2068191e, 'Pendle') --Token
@@ -690,8 +693,6 @@ WITH curated_list AS (
       ,(0x6D2b70e39C6bc63763098e336323591eb77Cd0C6, 'Farcaster')
       ,(0x4e1f7ede4c1647abc50d412ac5a7be52ea4423d3, 'Hedgey Finance')
       ,(0x1fd06f088c720ba3b7a3634a8f021fdd485dca42, 'Allo Protocol (Gitcoin)')
-
-      
   ) as temp_table (creator_address, contract_project)
 )
 
