@@ -1,10 +1,11 @@
  {{
   config(
-        tags = ['dunesql'],
+        tags = ['dunesql', 'prod_daily'],
         alias = alias('contract_mapping'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_time')],
         unique_key='contract_address',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
