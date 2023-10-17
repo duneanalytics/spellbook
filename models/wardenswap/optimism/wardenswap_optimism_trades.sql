@@ -1,4 +1,5 @@
 {{ config(tags=['dunesql']
+    ,schema = 'wardenswap_optimism'
     ,alias = alias('trades')
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
