@@ -13,6 +13,11 @@
     )
 }}
 
+/*
+    note: this spell has not been migrated to dunesql, as there are duplicates issues and issue is not resolved
+        please migrate to dunesql & fix duplicates to ensure up-to-date logic & data
+*/
+
 
 {% set project_start_date = '2022-11-29' %}
 
