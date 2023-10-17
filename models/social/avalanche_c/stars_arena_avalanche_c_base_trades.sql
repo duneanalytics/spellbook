@@ -7,20 +7,23 @@
 
 {% set stars_arena_start_date = '2023-09-20' %}
 
-SELECT txs.block_time
+SELECT 'avalanche_c' AS blockchain
+, txs.block_time
 , txs.block_number
-, txs."from" AS tx_from
+, 'stars_arena' AS project
 , bytearray_ltrim(bytearray_substring(logs.data, 1, 32)) AS trader
 , bytearray_ltrim(bytearray_substring(logs.data, 1 + 32, 32)) AS subject
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 2, 32)))) AS is_buy
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 3, 32)))) AS share_amount
+, CASE WHEN (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 2, 32)))) = 1 THEN 'buy' ELSE 'sell' END AS trade_side
+, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 5, 32))))/1e18 AS amount_original
 --, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 4, 32))))/1e18 AS eth_amount
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 5, 32))))/1e18 AS eth_amount
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 6, 32))))/1e18 AS protocol_fee
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 7, 32))))/1e18 AS subject_fee
+, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 3, 32)))) AS share_amount
+, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 7, 32))))/1e18 AS subject_fee_amount
+, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 6, 32))))/1e18 AS protocol_fee_amount
+, 0x0000000000000000000000000000000000000000 AS currency_contract
 , (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 8, 32)))) AS supply
 , txs.hash AS tx_hash
 , logs.index AS evt_index
+, txs.to AS contract_address
 FROM {{ source('avalanche_c', 'transactions') }} txs
 LEFT JOIN {{ source('avalanche_c', 'logs') }} logs ON logs.block_number = txs.block_number
     AND logs.tx_hash = txs.hash
