@@ -1,6 +1,8 @@
 {{ config(
 	tags=['legacy'],
-	materialized='view', alias = alias('erc721', legacy_model=True)) }}
+    alias = alias('erc721', legacy_model=True)
+    ) 
+}}
 
 with
     received_transfers as (
