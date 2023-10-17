@@ -19,7 +19,6 @@
         src_contracts = source(blockchain, 'contracts'),
         src_traces = source(blockchain, 'traces'),
         src_transactions = source(blockchain, 'transactions'),
-        src_prices_usd = source('prices', 'usd'),
         src_erc20_evt_transfer = source('erc20_' ~ blockchain, 'evt_transfer'),
         nft_transfers = ref('nft_' ~ blockchain ~ '_transfers'),
         nft_aggregators = ref('nft_' ~ blockchain ~ '_aggregators'),

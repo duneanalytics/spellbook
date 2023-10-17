@@ -3,7 +3,6 @@
     src_contracts,
     src_traces,
     src_transactions,
-    src_prices_usd,
     src_erc20_evt_transfer,
     nft_transfers,
     nft_aggregators,
@@ -26,7 +25,7 @@ namespaces as (
 nfts_per_tx_tmp as (
   select
     tx_hash,
-    sum(amount) as nfts_minted_in_tx
+    sum(cast(amount as double)) as nfts_minted_in_tx -- from some erc1155 uint256 is not enough
   from {{ nft_transfers }}
   {% if is_incremental () %}
   where {{ incremental_predicate('block_time') }}
@@ -38,7 +37,7 @@ nfts_per_tx as (
   select
     tx_hash,
     case
-      when nfts_minted_in_tx = uint256 '0' then uint256 '1'
+      when nfts_minted_in_tx = 0 then 1
       else nfts_minted_in_tx
     end as nfts_minted_in_tx
   from nfts_per_tx_tmp
@@ -164,7 +163,7 @@ from (
             {% if is_incremental () %}
             and {{ incremental_predicate('trc.block_time') }}
             {% endif %}
-          left join {{ src_prices_usd }} pu_native on pu_native.blockchain = '{{blockchain}}'
+          left join {{ source('prices', 'usd') }} pu_native on pu_native.blockchain = '{{blockchain}}'
             and pu_native.minute = date_trunc('minute', trc.block_time)
             and pu_native.contract_address = {{ default_currency_contract }}
             {% if is_incremental () %}
@@ -177,7 +176,7 @@ from (
             {% if is_incremental () %}
             and {{ incremental_predicate('erc20s.evt_block_time') }}
             {% endif %}
-          left join {{ src_prices_usd }} pu_erc20 on pu_erc20.blockchain = '{{blockchain}}'
+          left join {{ source('prices', 'usd') }} pu_erc20 on pu_erc20.blockchain = '{{blockchain}}'
             and pu_erc20.minute = date_trunc('minute', erc20s.evt_block_time)
             and erc20s.contract_address = pu_erc20.contract_address
             {% if is_incremental () %}
