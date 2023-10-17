@@ -14,7 +14,7 @@
 }}
 
     select 
-        r.from
+        r."from"
         ,r.to
         --Using the ETH placeholder address to match with prices tables
         ,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as contract_address
