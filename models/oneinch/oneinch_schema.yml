@@ -406,6 +406,24 @@ models:
           - not_null
       - &kyc
         name: kyc
+  
+  - name: oneinch_fusion_settlements
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: ['grkhr', 'max-morrow']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        fusion settlements
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - *contract_address_not_null
+      - *blockchain_not_null
 
 
   - name: oneinch_methods
