@@ -10,6 +10,11 @@
     )
 }}
 
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 {% set create_lbp_contracts = [
                                 source('balancer_v2_ethereum', 'LiquidityBootstrappingPoolFactory_call_create'),
                                 source('balancer_v2_ethereum', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create')
