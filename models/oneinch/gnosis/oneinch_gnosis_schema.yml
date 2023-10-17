@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ['gnosis']
       sector: oneinch
-      contributors: ['grkhr', 'Max-Morrow']
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >

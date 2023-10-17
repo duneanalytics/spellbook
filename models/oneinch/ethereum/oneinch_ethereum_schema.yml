@@ -1107,7 +1107,7 @@ models:
     meta:
       blockchain: ['ethereum']
       sector: oneinch
-      contributors: ['grkhr']
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
