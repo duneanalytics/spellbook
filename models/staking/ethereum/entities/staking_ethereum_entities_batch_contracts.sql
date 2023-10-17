@@ -11,6 +11,6 @@
 SELECT pubkey, entity, entity_unique_name, category
 FROM
 (VALUES
-(0x0000000000000000000000000000000000000000, '', '', '')
+(0x0000000000000000000000000000000000000000, '', '', 'CEX')
     ) 
     x (pubkey, entity, entity_unique_name, category)

@@ -23,12 +23,9 @@ WITH hardcoded AS (
     x (depositor_address, first_tx)
     )
 
-SELECT depositor_address
-, 'Bitcoin Suisse' AS entity
-, CONCAT('Bitcoin Suisse ', CAST(ROW_NUMBER() OVER (ORDER BY first_tx) AS VARCHAR)) AS entity_unique_name
-, 'CEX' AS category
-FROM (
-    SELECT * FROM hardcoded
+, all_deposits AS (
+    SELECT depositor_address, first_tx
+    FROM hardcoded
     UNION ALL
     SELECT txs."from" AS depositor_address, MIN(evt_block_time) AS first_tx
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} dep
@@ -45,3 +42,10 @@ FROM (
         {% endif %}
     GROUP BY 1
     )
+
+SELECT depositor_address
+, 'Bitcoin Suisse' AS entity
+, CONCAT('Bitcoin Suisse ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(first_tx)) AS VARCHAR)) AS entity_unique_name
+, 'CEX' AS category
+FROM all_deposits
+GROUP BY 1
