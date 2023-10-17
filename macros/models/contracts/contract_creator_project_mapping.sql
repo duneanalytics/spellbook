@@ -610,11 +610,7 @@ FROM (
     created_month,
     blockchain,
     trace_creator_address,  contract_address, 
-    --initcap: https://jordanlamborn.medium.com/presto-sql-proper-case-initcap-how-to-capitalize-the-first-letter-of-each-word-in-presto-5fbac3f0154c
-    (array_join((transform((split(lower(contract_project),' '))
-      , x -> concat(upper(substr(x,1,1)),substr(x,2,length(x))))),' ',''))
-      AS contract_project
-    --
+    initcap(contract_project) AS contract_project,
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
   , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
