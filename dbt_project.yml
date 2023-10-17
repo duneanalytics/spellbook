@@ -1426,8 +1426,3 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
-
-    wardenswap:
-      +schema: wardenswap
-      optimism:
-        +schema: wardenswap_optimism
