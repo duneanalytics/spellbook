@@ -3,9 +3,7 @@
 	
         alias = alias('glp_fees', legacy_model=True),
         partition_by = ['block_date'],
-        materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
