@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["stefenon", "viniabussafi"]\') }}'
+                                    \'["stefenon", "viniabussafi", "thetroyharris"]\') }}'
     )
 }}
 
@@ -217,6 +217,7 @@ WITH pool_labels AS (
 SELECT
     b.day,
     b.pool_id,
+    BYTEARRAY_SUBSTRING(b.pool_id, 1, 20) AS pool_address,
     p.pool_symbol,
     'avalanche_c' as blockchain,
     token AS token_address,

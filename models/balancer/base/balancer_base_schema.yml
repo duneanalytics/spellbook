@@ -217,7 +217,7 @@ models:
     meta:
       blockchain: base
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, viniabussafi, thetroyharris
     config:
       tags: ['base', 'balancer', 'pools', 'liquidity']
     description: >
@@ -232,6 +232,7 @@ models:
       - name: day
         description: 'UTC event block time truncated to the day mark'
       - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
       - *blockchain

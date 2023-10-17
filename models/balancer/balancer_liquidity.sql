@@ -2,11 +2,10 @@
         schema = 'balancer',
         alias = alias('liquidity'), 
         tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base" 
-        ]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base"]\',
                                 "project",
                                 "balancer",
-                                \'["viniabussafi"]\') }}'
+                                \'["stefenon", "viniabussafi", "thetroyharris"]\') }}'
         )
 }}
 
@@ -27,6 +26,7 @@ FROM (
     SELECT
     day,
     pool_id,
+    pool_address,
     pool_symbol,
     blockchain,
     token_address,

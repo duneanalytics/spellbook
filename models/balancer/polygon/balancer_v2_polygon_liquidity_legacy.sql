@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["stefenon", "viniabussafi"]\') }}'
+                                    \'["stefenon", "viniabussafi", "thetroyharris"]\') }}'
     )
 }}
 
@@ -207,6 +207,7 @@ zipped_balance_changes AS (
 SELECT
     b.day,
     b.pool_id,
+    SUBSTRING(b.pool_id, 0, 42) AS pool_address,
     p.pool_symbol,
     'polygon' as blockchain,
     token AS token_address,
