@@ -609,8 +609,8 @@ FROM (
   SELECT
     created_month,
     blockchain,
-    trace_creator_address,  contract_address, 
-    initcap(contract_project) AS contract_project,
+    trace_creator_address,  contract_address
+  , initcap(contract_project) AS contract_project
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
   , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
