@@ -17,7 +17,7 @@
 
 
 SELECT
-    block_date as day,
+    cast(date_trunc('day',block_time) as date) as day,
     CASE
       WHEN trade_category = 'Sell' THEN buyer
       ELSE seller
@@ -51,8 +51,8 @@ ON usd.blockchain = null and usd.symbol = 'ETH'
     AND minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 {% if not is_incremental() %}
-WHERE block_date >= TIMESTAMP '{{project_start_date}}'
+WHERE block_time >= TIMESTAMP '{{project_start_date}}'
 {% else %}
-WHERE block_date >= date_trunc('day', now() - interval '7' day)
+WHERE block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY 1,2

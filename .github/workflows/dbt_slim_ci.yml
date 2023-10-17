@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   dbt-test:
-    runs-on: [ self-hosted, linux, spellbook-trino ]
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     strategy:
       matrix:
         engine: [ 'dunesql', 'spark' ]
@@ -56,6 +56,10 @@ jobs:
 
       - name: dbt dependencies
         run: "dbt deps"
+      
+      - name: Run dbt model on Trino if dunesql engine is used, and retry until cluster is available
+        if: matrix.engine == 'dunesql'
+        run: "./scripts/ensure_cluster.sh"
 
       - name: Check no common models between DuneSQL and Spark
         if: matrix.engine == 'dunesql'

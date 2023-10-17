@@ -1,10 +1,11 @@
 {{ config(
+    tags=['dunesql'],
     alias = alias('trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id'],
+    unique_key = ['block_date', 'tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",
                             "seaport",
@@ -12,19 +13,19 @@
     )
 }}
 
-{% set c_native_token_address = "0x0000000000000000000000000000000000000000" %}
+{% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
 {% set c_alternative_token_address = "0x4200000000000000000000000000000000000006" %}  -- WETH
-{% set c_native_symbol = "ETH" %}
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_native_symbol = 'ETH' %}
+{% set c_seaport_first_date = '2022-06-01' %}
 
 with source_optimism_transactions as (
     select *
     from {{ source('optimism','transactions') }}
     {% if not is_incremental() %}
-    where block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+    where block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-    where block_time >= date_trunc("day", now() - interval '1 week')
+    where block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,ref_seaport_optimism_base_pairs as (
@@ -32,7 +33,7 @@ with source_optimism_transactions as (
       from {{ ref('seaport_optimism_base_pairs') }}
       where 1=1
       {% if is_incremental() %}
-            and block_time >= date_trunc("day", now() - interval '1 week')
+            and block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 ,ref_tokens_nft as (
@@ -55,10 +56,10 @@ with source_optimism_transactions as (
     from {{ source('prices', 'usd') }}
     where blockchain = 'optimism'
     {% if not is_incremental() %}
-      and minute >= date '{{c_seaport_first_date}}'  -- seaport first txn
+      and minute >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
     {% endif %}
     {% if is_incremental() %}
-      and minute >= date_trunc("day", now() - interval '1 week')
+      and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,iv_base_pairs_priv as (
@@ -187,10 +188,10 @@ with source_optimism_transactions as (
         ,a.zone
         ,a.platform_contract_address
         ,b.token_contract_address
-        ,round(price_amount_raw / nft_cnt) as price_amount_raw  -- to truncate the odd number of decimal places
-        ,round(platform_fee_amount_raw / nft_cnt) as platform_fee_amount_raw
+        ,CAST(price_amount_raw / nft_cnt as uint256) as price_amount_raw  -- to truncate the odd number of decimal places
+        ,cast(platform_fee_amount_raw / nft_cnt as uint256) as platform_fee_amount_raw
         ,platform_fee_receiver
-        ,round(creator_fee_amount_raw / nft_cnt) as creator_fee_amount_raw
+        ,cast(creator_fee_amount_raw / nft_cnt as uint256) as creator_fee_amount_raw
         ,creator_fee_amount_raw_1 / nft_cnt as creator_fee_amount_raw_1
         ,creator_fee_amount_raw_2 / nft_cnt as creator_fee_amount_raw_2
         ,creator_fee_amount_raw_3 / nft_cnt as creator_fee_amount_raw_3
@@ -215,13 +216,13 @@ with source_optimism_transactions as (
 ,iv_trades as (
   select a.*
           ,n.name AS nft_token_name
-          ,t.from as tx_from
+          ,t."from" as tx_from
           ,t.to as tx_to
-          ,right(t.data,8) as right_hash
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_native_symbol}}'
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
+          ,case when a.token_contract_address = {{c_native_token_address}} then '{{c_native_symbol}}'
                 else e.symbol
            end as token_symbol
-          ,case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+          ,case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                 else a.token_contract_address
            end as token_alternative_symbol
           ,e.decimals as price_token_decimals
@@ -233,14 +234,13 @@ with source_optimism_transactions as (
           ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
           ,agg.name as aggregator_name
           ,agg.contract_address AS aggregator_address
-          ,sub_idx
   from iv_nfts a
   inner join source_optimism_transactions t on t.hash = a.tx_hash
   left join ref_tokens_nft n on n.contract_address = nft_contract_address
-  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                       end
-  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = '{{c_native_token_address}}' then '{{c_alternative_token_address}}'
+  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = {{c_native_token_address}} then {{c_alternative_token_address}}
                                                             else a.token_contract_address
                                                         end
     and p.minute = date_trunc('minute', a.block_time)
@@ -322,8 +322,5 @@ with source_optimism_transactions as (
     ,sub_type
   from iv_trades
 )
-select
-  *
-  ,concat(block_date, tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx) as unique_trade_id
+select  *
 from iv_columns
-;

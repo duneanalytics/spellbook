@@ -8,7 +8,7 @@
                                     \'["hildobby"]\') }}')
 }}
 
-SELECT codename, name, marketplace_type, x_username
+SELECT project, name, marketplace_type, x_username
 FROM (VALUES
     	('uniswap', 'Uniswap', 'Direct', 'Uniswap')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
@@ -58,4 +58,4 @@ FROM (VALUES
     , ('glacier', '', '', '')
     , ('nomiswap', '', '', '')
     , ('onepunchswap', '', '', '')
-    ) AS temp_table (codename, name, marketplace_type, x_username)
+    ) AS temp_table (project, name, marketplace_type, x_username)

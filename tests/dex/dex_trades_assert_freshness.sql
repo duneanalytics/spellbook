@@ -59,6 +59,18 @@
      'blockchain': 'ethereum',
      'schema': 'mauve_ethereum',
      'table_name': 'MauvePool_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'openxswap',
+     'blockchain': 'optimism',
+     'schema': 'openxswap_optimism',
+     'table_name': 'Aggregator_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+     {'project': 'wardenswap',
+     'blockchain': 'optimism',
+     'schema': 'wardenswap_optimism',
+     'table_name': 'WardenRouterV2_L2_evt_Trade',
      'time_column': 'evt_block_time'}
 ] %}
 
