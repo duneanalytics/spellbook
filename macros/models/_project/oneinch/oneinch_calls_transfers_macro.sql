@@ -98,7 +98,6 @@ methods as (
         , transfers.native_token
         , transfers.transfer_from
         , transfers.transfer_to
-        , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
         , if(
             coalesce(transfers.transfer_from, transfers.transfer_to) is not null
             , count(*) over(partition by calls.blockchain, calls.tx_hash, calls.start, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
@@ -122,7 +121,6 @@ methods as (
             , amount
             , transfer_from
             , transfer_to
-            , trf
             , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
         from (
@@ -146,7 +144,6 @@ methods as (
                     when {{ selector }} = {{ transfer_from_selector }} then substr(input, 49, 20)
                     when value > uint256 '0' then "to"
                 end as transfer_to
-                , array_agg(if(value > uint256 '0', null, trace_address)) over(partition by tx_hash) as trf
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %}
