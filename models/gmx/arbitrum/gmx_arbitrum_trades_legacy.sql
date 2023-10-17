@@ -3,9 +3,7 @@
 	
     alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
-    materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -34,12 +32,11 @@ dexs as (
             evt_index
         FROM 
         {{ source('gmx_arbitrum', 'Router_evt_Swap') }}
-        {% if not is_incremental() %}
+        
         WHERE evt_block_time >= '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
+        
+        
+        
 )
 
 SELECT
@@ -76,12 +73,11 @@ SELECT
 FROM dexs
 INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
-    {% if not is_incremental() %}
+    
     AND tx.block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND tx.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    
+    
+    
 LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'arbitrum'
@@ -92,20 +88,18 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'arbitrum'
-    {% if not is_incremental() %}
+    
     AND p_bought.minute >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    
+    
+    
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'arbitrum'
-    {% if not is_incremental() %}
+    
     AND p_sold.minute >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+    
+    
+    
 ;

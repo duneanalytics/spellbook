@@ -3,9 +3,7 @@
 	
     alias = alias('perpetual_trades', legacy_model=True),
     partition_by = ['block_date'],
-    materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -37,12 +35,11 @@ perp_events as (
         evt_tx_hash as tx_hash 
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_DecreasePosition') }}
-    {% if not is_incremental() %}
+
     WHERE evt_block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+
+    
+
 
     UNION ALL 
 
@@ -64,12 +61,11 @@ perp_events as (
         evt_tx_hash as tx_hash 
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_IncreasePosition') }}
-    {% if not is_incremental() %}
+
     WHERE evt_block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+
+    
+
 
     UNION ALL 
 
@@ -91,12 +87,11 @@ perp_events as (
         evt_tx_hash as tx_hash 
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_LiquidatePosition') }}
-    {% if not is_incremental() %}
+
     WHERE evt_block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+
+    
+
 )
 
 SELECT 
@@ -132,12 +127,11 @@ perp_events pe
 INNER JOIN {{ source('arbitrum', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash
     AND pe.block_number = txns.block_number
-    {% if not is_incremental() %}
+
     AND txns.block_time >= '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+
+    
+
 LEFT JOIN {{ ref('tokens_erc20_legacy') }} erc20a
     ON erc20a.contract_address = pe.virtual_asset
     AND erc20a.blockchain = 'arbitrum'
