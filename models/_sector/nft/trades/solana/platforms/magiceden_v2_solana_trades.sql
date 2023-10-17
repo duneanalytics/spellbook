@@ -209,7 +209,7 @@ with
             , cast(null as varchar) as account_merkle_tree
             , cast(null as bigint) leaf_id
             , t.account_tokenMint as account_mint
-            , 'TSWAPaqyCSx2KABk68Shruf4rp7CxcNi8hAsbdwmHbN' as project_program_id
+            , 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K' as project_program_id
             , cast(null as varchar) as aggregator_name
             , cast(null as varchar) as aggregator_address
             , t.call_tx_id as tx_id
