@@ -12,8 +12,8 @@ SELECT '{{ blockchain }}' AS blockchain
 , txs."from" AS tx_from
 , txs.to AS tx_to
 , t.trade_side
-, t.amount
-, t.amount*pu.price AS amount_usd
+, t.amount_original
+, t.amount_original*pu.price AS amount_usd
 , t.share_amount
 , t.subject_fee_amount
 , t.subject_fee_amount*pu.price AS subject_fee_amount_usd
