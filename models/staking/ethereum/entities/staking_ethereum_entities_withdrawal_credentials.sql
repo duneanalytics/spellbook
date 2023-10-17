@@ -11,6 +11,6 @@
 SELECT withdrawal_credentials, entity, entity_unique_name, category
 FROM
 (VALUES
-(0x010000000000000000000000d1026749530a15c20cb7b30368d8c15e200fe1d6, 'Bitcoin Suisse', 'Bitcoin Suisse 13', 'CEX')
+(0x0000, '', '', 'CEX')
     ) 
     x (withdrawal_credentials, entity, entity_unique_name, category)
