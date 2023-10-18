@@ -14,25 +14,18 @@
 
 
 SELECT
-date_trunc('day', tr.block_time) as day
+date_trunc('day', t.block_time) AS day
 , 'zksync era' AS name
-, SUM(cast(tr.value as double)/1e18) as l2_rev
-, SUM(p.price * cast(tr.value as double)/1e18) as l2_rev_usd
-FROM {{ source('ethereum','traces') }} tr
+, SUM((t.gas_used * t.gas_price)/POWER(10,18)) AS l2_rev
+, SUM(p.price * (t.gas_used * t.gas_price)/POWER(10,18)) AS l2_rev_usd
+FROM {{ source('zksync','transactions') }} t
 INNER JOIN {{ source('prices','usd') }} p
-  ON p.minute = date_trunc('minute', tr.block_time)
+  ON p.minute = date_trunc('minute', t.block_time)
   AND p.blockchain is null
   AND p.symbol = 'ETH'
-  AND tr.success=true
-  AND tr.type='call'
-  AND (tr.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR tr.call_type IS null)
-  AND (tr."from" = 0xfeee860e7aae671124e9a4e61139f3a5085dfeee
-      OR tr."from" = 0xa9232040bf0e0aea2578a5b2243f2916dbfc0a69
-    )
-  AND cast(tr.value as double)/1e18 > 0
-  AND tr.block_time >= timestamp '2022-02-01'
+  AND t.block_time >= timestamp '2022-01-01'
   {% if is_incremental() %}
-  AND tr.block_time >= date_trunc('day', now() - interval '7' day)
+  AND t.block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
   GROUP BY 1,2
 
