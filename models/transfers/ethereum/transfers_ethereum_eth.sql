@@ -32,7 +32,7 @@ join {{ source('ethereum', 'transactions') }} as t
     on r.tx_hash = t.hash
     and r.block_number = t.block_number
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    {{incremental_predicate('t.block_time')}}
+    and {{incremental_predicate('t.block_time')}}
     {% endif %}
 where 
     (r.call_type not in ('delegatecall', 'callcode', 'staticcall') or r.call_type is null)
@@ -40,5 +40,5 @@ where
     and r.success = true
     and r.value > uint256 '0'
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
-    {{incremental_predicate('r.block_time')}}
+    and {{incremental_predicate('r.block_time')}}
     {% endif %}
