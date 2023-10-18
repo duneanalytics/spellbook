@@ -1,9 +1,12 @@
 {% macro soundxyz_referral_rewards(
     blockchain
-    ,evt_Minted
+    ,evt_Minted_models
     )
 %}
+
+
 with model as (
+    {% for evt_Minted in evt_Minted_models %}
     select
         '{{blockchain}}' as blockchain
         ,'soundxyz' as project
@@ -24,7 +27,9 @@ with model as (
     {% if is_incremental() %}
     where evt_block_time > date_trunc('day', now() - interval '1' day)
     {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
 )
 {{ add_tx_from_and_to('model', blockchain) }}
 {% endmacro %}
-

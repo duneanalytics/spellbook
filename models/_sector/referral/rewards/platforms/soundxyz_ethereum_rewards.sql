@@ -11,10 +11,11 @@
 }}
 
 
-{{soundxyz_referral_rewards(blockchain = "ethereum",evt_Minted = source('sound_xyz_ethereum','RangeEditionMinter_evt_Minted'))}}
-union all
-{{soundxyz_referral_rewards(blockchain = "ethereum",evt_Minted = source('sound_xyz_ethereum','MerkleDropMinter_evt_Minted'))}}
-union all
-{{soundxyz_referral_rewards(blockchain = "ethereum",evt_Minted = source('sound_xyz_ethereum','RangeEditionMinterV2_evt_Minted'))}}
-union all
-{{soundxyz_referral_rewards(blockchain = "ethereum",evt_Minted = source('sound_xyz_ethereum','MerkleDropMinterV2_evt_Minted'))}}
+{{soundxyz_referral_rewards(
+    blockchain = "ethereum",
+    evt_Minted_models = [source('sound_xyz_ethereum','RangeEditionMinter_evt_Minted')
+                        ,source('sound_xyz_ethereum','MerkleDropMinter_evt_Minted')
+                        ,source('sound_xyz_ethereum','RangeEditionMinterV2_evt_Minted')
+                        ,source('sound_xyz_ethereum','MerkleDropMinterV2_evt_Minted')
+                        ]
+ )}}
