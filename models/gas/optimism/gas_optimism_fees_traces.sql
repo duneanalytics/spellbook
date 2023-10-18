@@ -2,11 +2,7 @@
     tags=['dunesql'],
     schema = 'gas_optimism',
     alias = alias('fees_traces'),
-    partition_by = ['block_date'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'trace'],
+    materialized = 'view',
     )
 }}
 
