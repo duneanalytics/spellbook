@@ -2,7 +2,7 @@
 (
     alias = alias('first_activity')
     , tags = ['dunesql']
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon"]\',
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["Henrystats"]\') }}'
@@ -18,6 +18,7 @@
 , ref('addresses_events_gnosis_first_activity')
 , ref('addresses_events_optimism_first_activity')
 , ref('addresses_events_polygon_first_activity')
+, ref('addresses_events_celo_first_activity')
 ] %}
 
 SELECT *
