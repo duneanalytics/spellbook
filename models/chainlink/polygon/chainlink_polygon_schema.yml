@@ -1066,12 +1066,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - date_start
             - admin_address
     columns:
-      - *blockchain
       - *date_start
-      - *date_month
       - *admin_address
       - *token_amount

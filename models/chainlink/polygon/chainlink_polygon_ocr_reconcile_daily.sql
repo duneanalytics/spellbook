@@ -2,19 +2,12 @@
   config(
     tags=['dunesql'],
     alias=alias('ocr_reconcile_daily'),
-    partition_by = ['date_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['date_start', 'admin_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",
                                 \'["linkpool_ryan"]\') }}'
   )
 }}
-
-{% set incremental_interval = '7' %}
 
 WITH
   reconcile_20231017_polygon_evt_transfer as (
@@ -28,9 +21,6 @@ WITH
     WHERE
       evt_transfer.evt_block_time >= cast('2023-10-16' as date)
       AND evt_transfer."to" = 0x2431d49d225C1BcCE7541deA6Da7aEf9C7AD3e23    
-      {% if is_incremental() %}
-      AND evt_transfer.evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
     GROUP BY
       evt_transfer.evt_tx_hash,
       evt_transfer.evt_index,
@@ -58,9 +48,6 @@ WITH
     WHERE
       evt_transfer.evt_block_time >= cast('2023-10-16' as date)
       AND evt_transfer."to" = 0xC489244f2a5FC0E65A0677560EAA4A13F5036ab6    
-      {% if is_incremental() %}
-      AND evt_transfer.evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
     GROUP BY
       evt_transfer.evt_tx_hash,
       evt_transfer.evt_index,
@@ -78,9 +65,7 @@ WITH
       3
   )
 SELECT
-  'polygon' as blockchain,
   COALESCE(reconcile_polygon.date_start, reconcile_ethereum.date_start) as date_start,
-  COALESCE(reconcile_polygon.date_month, reconcile_ethereum.date_month) as date_month,
   COALESCE(reconcile_polygon.admin_address, reconcile_ethereum.admin_address) as admin_address,
   COALESCE(reconcile_polygon.token_amount, 0) + COALESCE(reconcile_ethereum.token_amount, 0) as token_amount
 FROM 
