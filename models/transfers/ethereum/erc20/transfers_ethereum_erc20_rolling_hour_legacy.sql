@@ -1,8 +1,7 @@
 {{ config(
 	tags=['legacy'],
-	
-        alias = alias('erc20_rolling_hour', legacy_model=True)
-        )
+    alias = alias('erc20_rolling_hour', legacy_model=True)
+    )
 }}
 
         select

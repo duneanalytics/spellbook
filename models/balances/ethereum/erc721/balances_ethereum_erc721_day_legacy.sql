@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
+        materialized = 'view',
         alias = alias('erc721_day', legacy_model=True),
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",

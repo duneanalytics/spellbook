@@ -2,10 +2,8 @@
 	tags=['legacy'],
 	
         alias = alias('glp_components', legacy_model=True),
-        materialized = 'incremental',
         partition_by = ['block_date'],
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
