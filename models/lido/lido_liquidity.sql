@@ -37,11 +37,12 @@
  ref('lido_liquidity_ethereum_kyberswap_v2_pools'),
  ref('lido_liquidity_ethereum_maverick_pools'),
  ref('lido_liquidity_ethereum_uniswap_v3_pools'),
- ref('lido_liquidity_ethereum_pancakeswap_v3_pools')
+ ref('lido_liquidity_ethereum_pancakeswap_v3_pools'),
+ ref('lido_liquidity_ethereum_uniswap_v2_pools')
  
 ] %}
 
-{% set project_start_date =  '2021-01-05'%} 
+{% set project_start_date =  '2020-12-15'%} 
 
 
 with  dates as (
@@ -127,7 +128,8 @@ SELECT     l.pool_name,
            l.main_token_symbol,
            l.paired_token, 
            l.paired_token_symbol, 
-           case when l.main_token_symbol = 'stETH' then l.main_token_reserve* rate else l.main_token_reserve end as main_token_reserve, 
+           case when l.main_token_symbol = 'stETH' and l.pool != 0x4028daac072e492d34a3afdbef0ba7e35d8b55c4 
+                then l.main_token_reserve* rate else l.main_token_reserve end as main_token_reserve, 
            l.paired_token_reserve,
            l.main_token_usd_reserve, 
            l.paired_token_usd_reserve, 

@@ -174,18 +174,10 @@ models:
           +materialized: table
           +file_format: delta
           +tags: "static"
-      gnosis:
-        +schema: nft_gnosis
       optimism:
         +schema: nft_optimism
       polygon:
         +schema: nft_polygon
-      fantom:
-        +schema: nft_fantom
-      goerli:
-        +schema: nft_goerli
-      base:
-        +schema: nft_base
       celo:
         +schema: nft_celo
 
@@ -318,7 +310,7 @@ models:
       ethereum:
         +schema: maverick_ethereum
       bnb:
-        +schema: maverick_bnb  
+        +schema: maverick_bnb
 
     daohaus:
       +schema: daohaus
@@ -498,6 +490,8 @@ models:
         +schema: dodo_arbitrum
       optimism:
         +schema: dodo_optimism
+      base:
+        +schema: dodo_base
 
 
     spookyswap:
@@ -609,6 +603,8 @@ models:
         +schema: trader_joe_avalanche_c
       bnb:
         +schema: trader_joe_bnb
+      arbitrum:
+        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -792,9 +788,6 @@ models:
       polygon:
         +schema: equalizer_polygon
 
-    integration_test:
-      +schema: integration_test
-
     curvefi:
       +schema: curvefi
       ethereum:
@@ -935,13 +928,13 @@ models:
       arbitrum:
         +schema: pancakeswap_arbitrum
       base:
-        +schema: pancakeswap_base 
+        +schema: pancakeswap_base
 
     bancor:
       +schema: bancor
       ethereum:
         +schema: bancor_ethereum
-    
+
     carbon_defi:
       +schema: carbon_defi
       ethereum:
@@ -1127,7 +1120,7 @@ models:
       +schema: tokenfy
       ethereum:
         +schema: tokenfy_ethereum
-    
+
     tokenlon:
       +schema: tokenlon
       ethereum:
@@ -1360,7 +1353,7 @@ models:
       +schema: glacier
       avalanche_c:
         +schema: glacier_avalanche_c
-    
+
     tokemak:
       +schema: tokemak
       ethereum:
@@ -1371,16 +1364,16 @@ models:
       +schema: thena
       bnb:
         +schema: thena_bnb
-    
+
     sound_xyz:
       +schema: sound_xyz
       optimism:
         +schema: sound_xyz_optimism
-        
+
 
     quests:
       +schema: quests
-    
+
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
@@ -1405,7 +1398,7 @@ models:
       +schema: zora
       optimism:
         +schema: zora_optimism
-    
+
     decent:
       +schema: decent
       optimism:
@@ -1415,13 +1408,18 @@ models:
       +schema: mirror
       optimism:
         +schema: mirror_optimism
-          
+
     worldcoin:
       +schema: worldcoin
       optimism:
         +schema: worldcoin_optimism
-    
+
     aerodrome:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
+
+    openxswap:
+      +schema: openxswap
+      optimism:
+        +schema: openxswap_optimism

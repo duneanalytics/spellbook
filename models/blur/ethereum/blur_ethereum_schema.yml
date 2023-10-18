@@ -59,3 +59,58 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
+
+  - name: blur_ethereum_blend_events
+    meta:
+      blockchain: ethereum
+      sector: nft
+      project: blur
+      contributors: hildobby
+    config:
+      tags: ['table', 'loans', 'ethereum', 'blend', 'blur']
+    description: "All Blend-related events"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - lien_id
+            - tx_hash
+            - evt_index
+    columns:
+      - *block_time
+      - *block_number
+      - &lien_id
+        name: lien_id
+        description: "Lien ID"
+      - &event
+        name: event
+        description: "Event"
+      - &nft_contract_address
+        name: nft_contract_address
+        description: "NFT Collection Smart contract address"
+      - &nft_collection_name
+        name: nft_collection_name
+        description: "NFT Collection name"
+      - &token_id
+        name: token_id
+        description: "Token ID"
+      - &amount_eth
+        name: amount_eth
+        description: "Amount of ETH"
+      - *amount_usd
+      - &apy_rate
+        name: apy_rate
+        description: "APY Rate"
+      - &auction_duration
+        name: auction_duration
+        description: "Auction duration"
+      - &lender
+        name: lender
+        description: "Lender"
+      - &borrower
+        name: borrower
+        description: "Borrower"
+      - *tx_hash
+      - &tx_index
+        name: tx_index
+        description: "Transaction index in block"
+      - *evt_index

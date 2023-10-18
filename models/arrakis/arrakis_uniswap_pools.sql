@@ -1,5 +1,6 @@
  {{
   config(
+        tags=['dunesql'],
         schema='arrakis',
         alias = alias('uniswap_pools'),
         post_hook='{{ expose_spells(\'["optimism"]\',
@@ -33,4 +34,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
