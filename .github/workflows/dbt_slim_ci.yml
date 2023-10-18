@@ -21,7 +21,7 @@ jobs:
       matrix:
         engine: [ 'dunesql', 'spark' ]
       max-parallel: 1
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - name: Check out repository code
