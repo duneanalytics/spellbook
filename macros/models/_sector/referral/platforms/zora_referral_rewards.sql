@@ -22,11 +22,11 @@ select
     ,cast(null as varbinary) as referee_address     -- will be overwritten as tx_from
     ,{{ var("ETH_ERC20_ADDRESS") }} as currency_contract
     ,mintReferralReward as reward_amount_raw
-    ,"from" as project_contract_address     -- the drop contract
+    ,e."from" as project_contract_address     -- the drop contract
     ,evt_index as sub_tx_id
     ,tx."from" as tx_from
     ,tx.to as tx_to
-from {{ProtocolRewards_evt_RewardsDeposit}}
+from {{ProtocolRewards_evt_RewardsDeposit}} e
 inner join {{source(blockchain, 'transactions')}} tx
     on evt_block_number = tx.block_number
     and evt_tx_hash = tx.hash
