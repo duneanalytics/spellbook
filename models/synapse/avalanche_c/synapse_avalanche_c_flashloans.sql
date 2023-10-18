@@ -14,7 +14,7 @@
 {% set weth_address = '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' %}
 
 SELECT '{{blockchain}}' AS blockchain
-, 'Synapse' AS project
+, 'synapse' AS project
 , '1' AS version
 , CAST(date_trunc('Month', flash.evt_block_time) as date) as block_month
 , flash.evt_block_time AS block_time

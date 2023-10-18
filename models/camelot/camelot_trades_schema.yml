@@ -8,7 +8,7 @@ models:
       project: camelot
       contributors: ytoast
     config:
-      tags: ['arbitrum', 'ytoast']
+      tags: ['arbitrum', 'ytoast', 'whale_hunter']
     description: >
         Camelot trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
