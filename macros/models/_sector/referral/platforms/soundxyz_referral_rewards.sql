@@ -30,6 +30,7 @@ with model as (
     {% if not loop.last %}
     UNION ALL
     {% endif %}
+    {% endfor %}
 )
 {{ add_tx_from_and_to('model', blockchain) }}
 {% endmacro %}
