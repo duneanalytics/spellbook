@@ -98,6 +98,12 @@ models:
     config:
       tags: ['safe', 'zksync']
     description: "Safe transactions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - *block_date
