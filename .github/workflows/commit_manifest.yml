@@ -24,6 +24,10 @@ jobs:
     - name: Add git_sha to schema
       run: "/runner/change_schema.sh wizard"
     
+    - name: Setup variables
+      run: |
+          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+
     - name: dbt dependencies
       run: "dbt deps"
     
@@ -31,7 +35,7 @@ jobs:
       run: "./scripts/ensure_cluster.sh"
           
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql --select tag:dunesql"
+      run: "dbt compile --target-path . $PROFILE --select tag:dunesql"
 
     - name: copy old manifest locally
       run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json s3://manifest-spellbook-dunesql/previous_manifest.json"
