@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: arkham_ethereum
+    description: >
+      Arkham ethereum contracts
+    tables:
+      - name: Airdrop_evt_Claimed
+        loaded_at_field: evt_block_time

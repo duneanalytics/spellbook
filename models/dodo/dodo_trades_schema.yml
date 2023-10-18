@@ -2,14 +2,14 @@ version: 2
 models:
   - name: dodo_trades
     meta:
-      blockchain: ethereum, bnb, polygon, arbitrum, optimism
+      blockchain: ethereum, bnb, polygon, arbitrum, optimism, base
       sector: dex
       project: dodo
       contributors: scoffie, owen05
     config:
-      tags: ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'dex', 'aggregator', 'trades', 'dodo',]
+      tags: ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'base', 'dex', 'aggregator', 'trades', 'dodo']
     description: >
-        dodo trades across five networks. This table will load dex trades downstream.
+        dodo trades across six networks. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
@@ -81,14 +81,14 @@ models:
         description: "the position of this event log within this transaction"
   - name: dodo_aggregator_trades
     meta:
-      blockchain: ethereum, bnb, polygon, arbitrum, optimism
+      blockchain: ethereum, bnb, polygon, arbitrum, optimism, base
       sector: dex_aggregator
       project: dodo
       contributors: owen05
     config:
-      tags:  ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'dex', 'aggregator', 'trades', 'dodo']
+      tags:  ['ethereum','bnb', 'polygon', 'arbitrum', 'optimism', 'base', 'dex', 'aggregator', 'trades', 'dodo']
     description: >
-        DODO Aggregator across five networks. This table will load dex_aggregator trades downstream.
+        DODO Aggregator across six networks. This table will load dex_aggregator trades downstream.
     columns:
       - *blockchain
       - *project
