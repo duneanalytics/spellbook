@@ -1,5 +1,5 @@
 {{ config(
-	tags=['legacy','prod_exclude'],
+	tags=['legacy'],
 	
         alias = alias('trades', legacy_model=True)
         )

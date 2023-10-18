@@ -1,5 +1,5 @@
 {{  config(
-	tags=['legacy','prod_exclude'],
+	tags=['legacy'],
 	
         schema='oneinch_ethereum',
         alias = alias('trades_oneproto', legacy_model=True),
