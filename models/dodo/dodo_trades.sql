@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
                                 "project",
                                 "dodo",
                                 \'["scoffie", "owen05"]\') }}'
@@ -14,6 +14,7 @@ ref('dodo_pools_ethereum_trades')
 , ref('dodo_pools_polygon_trades')
 , ref('dodo_pools_arbitrum_trades')
 , ref('dodo_pools_optimism_trades')
+, ref('dodo_pools_base_trades')
 ] %}
 
 SELECT *
