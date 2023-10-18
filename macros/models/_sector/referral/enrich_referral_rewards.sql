@@ -25,7 +25,7 @@ from {{model}} r
 left join {{ref('tokens_erc20')}} erc
     on erc.blockchain = r.blockchain
     and erc.contract_address = r.currency_contract
-left join {{ref('prices_usd')}} p
+left join {{source('prices','usd')}} p
     on p.minute = date_trunc('minute',r.block_time)
     and (
         (p.blockchain = r.blockchain
