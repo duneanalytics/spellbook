@@ -1,7 +1,8 @@
 {% macro source(source_name, table_name) %}
   {% set rel = builtins.source(source_name, table_name) %}
   {%- if source_name == 'dune' -%}
-    {% do return(rel) %}
+    {% set newrel = rel.replace_path(database="dune") %}
+    {% do return(newrel) %}
   {%- elif target.type == 'trino' -%}
       {% set newrel = rel.replace_path(database="delta_prod") %}
     {% do return(newrel) %}
