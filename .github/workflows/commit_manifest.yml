@@ -13,10 +13,6 @@ concurrency:
 jobs:
   commit_manifest:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
-    strategy:
-      matrix:
-        engine: [ 'spark', 'dunesql' ]
-      max-parallel: 1
 
     steps:
     - uses: actions/setup-python@v3
@@ -28,43 +24,24 @@ jobs:
     - name: Add git_sha to schema
       run: "/runner/change_schema.sh wizard"
     
-    - name: Setup variables
-      run: |
-        if [[ "${{ matrix.engine }}" == "dunesql" ]]; then
-          printf "Using dunesql engine\n"
-          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-          echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
-          echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
-        elif [[ "${{ matrix.engine }}" == "spark" ]]; then
-          printf "Using spark engine\n"
-          echo "PROFILE=--profiles-dir $HOME/.dbt --profile spark" >> $GITHUB_ENV
-          echo "COMPILE_TAG=--select tag:legacy" >> $GITHUB_ENV
-          echo "S3_LOCATION=manifest-spellbook" >> $GITHUB_ENV
-          echo 
-        else
-          echo "Unknown engine: ${{ matrix.engine }}"
-          exit 1
-        fi
-    
     - name: dbt dependencies
       run: "dbt deps"
     
     - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
-      if: matrix.engine == 'dunesql'
       run: "./scripts/ensure_cluster.sh"
           
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . $PROFILE $COMPILE_TAG"
+      run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql --select tag:dunesql"
 
     - name: copy old manifest locally
-      run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/previous_manifest.json"
+      run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json s3://manifest-spellbook-dunesql/previous_manifest.json"
 
     - name: Set environment variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
 
     - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
-      run: "aws s3 cp s3://$S3_LOCATION/manifest.json s3://$S3_LOCATION/manifest_$GIT_SHA.json"
+      run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json s3://manifest-spellbook-dunesql/manifest_$GIT_SHA.json"
 
     - name: upload manifest
-      run: "aws s3 cp manifest.json s3://$S3_LOCATION/manifest.json"
+      run: "aws s3 cp manifest.json s3://manifest-spellbook-dunesql/manifest.json"
