@@ -48,6 +48,13 @@ models:
     config:
       tags: ['safe', 'transfers', 'zksync']
     description: "Eth transfers for safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
+            - amount_raw
     columns:
       - *address
       - *block_date
