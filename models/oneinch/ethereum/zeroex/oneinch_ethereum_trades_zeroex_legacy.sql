@@ -1,5 +1,5 @@
 {{  config(
-	tags=['legacy'],
+	tags=['legacy','prod_exclude'],
 	
         schema='oneinch_ethereum',
         alias = alias('trades_zeroex', legacy_model=True),
