@@ -12,7 +12,6 @@
                                     \'["msilb7", "chuxin"]\') }}'
     )
 }}
-
     select 
         r."from"
         ,r.to

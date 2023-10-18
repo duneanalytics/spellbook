@@ -7,6 +7,11 @@
         )
 }}
 
+/*
+    note: this spell has not been migrated to dunesql, as there are duplicates issues and issue is not resolved
+        please migrate to dunesql & fix duplicates to ensure up-to-date logic & data
+*/
+
 {% set odos_models = [
 ref('odos_avalanche_c_trades')
 ] %}
