@@ -39,11 +39,11 @@ WITH traces AS (
           {% if is_incremental() %}
           WHERE block_time >= date_trunc('day', NOW() - interval '1' day)
           {% endif %}
-          
+
           UNION ALL
-          
-          SELECT CAST(NULL AS varbinary) AS "from" 
-          , CAST(NULL AS varbinary) AS "to" 
+
+          SELECT CAST(NULL AS varbinary) AS "from"
+          , CAST(NULL AS varbinary) AS "to"
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS bigint) AS gas_used_original
