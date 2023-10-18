@@ -24,6 +24,7 @@
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set validationcloud = 'Validation Cloud' %}
+{% set vulcan = 'Vulcan Link' %}
 
 SELECT admin_address, operator_name FROM (VALUES
   (0x4a3dF8cAe46765d33c2551ff5438a5C5FC44347c, '{{chainlayer}}'),
@@ -41,6 +42,6 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x0446B8d5d3F3fA74eDbd32154b023FD8da172f05, '{{snzpool}}'),
   (0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1, '{{snzpool}}'),
   (0x183A96629fF566e7AA8AfA38980Cd037EB40A59A, '{{validationcloud}}'),
-  (0x4E28977d71f148ae2c523e8Aa4b6F3071d81Add1, '{{validationcloud}}'),
-  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{validationcloud}}')
+  (0x4E28977d71f148ae2c523e8Aa4b6F3071d81Add1, '{{vulcan}}'),
+  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{vulcan}}')
 ) AS tmp_node_meta(admin_address, operator_name)
