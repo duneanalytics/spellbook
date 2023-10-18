@@ -10,14 +10,8 @@
     )
 }}
 
-WITH rewards_cte as (
-    {{rabbithole_referral_rewards(
+{{rabbithole_referral_rewards(
         blockchain = "polygon"
         ,QuestFactory_evt_MintFeePaid = source('rabbithole_polygon','QuestFactory_evt_MintFeePaid')
         )
     }}
-)
-
-{{ expand_referral_rewards(
-    blockchain='polygon'
-    ,rewards_cte='rewards_cte') }}

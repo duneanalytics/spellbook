@@ -34,8 +34,6 @@ models:
       - &referee_address
         name:  referee_address
         description: "address of the person being referred"
-        tests:
-          - not_null
       - &currency_contract
         name:  currency_contract
         description: "contract address of the currency"
@@ -46,24 +44,21 @@ models:
         description: "raw reward amount"
         tests:
           - not_null
-      - &reward_amount_usd
-        name:  reward_amount_usd
-        description: "USD value of the referral reward at time of execution"
-        tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000 # $1m is an arbitrary number, intended to flag outlier amounts early
       - &sub_tx_id
         name: sub_tx_id
         description: "id to distinguish multiple rewards in 1 transaction. Often the event index"
         tests:
           - not_null
-      - &is_referral
-        name: is_referral
-        description: "whether or not the a referral was made (and payed out)"
+      - &tx_from
+        name: tx_from
+        description: "transaction from address"
         tests:
-          - accepted_values:
-              values: [ true, false ]
-              quote: false
+          - not_null
+      - &tx_to
+        name: tx_to
+        description: "transaction to address"
+        tests:
+          - not_null
 
   - name: zora_base_rewards
     tests:
@@ -80,9 +75,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: zora_optimism_rewards
     tests:
@@ -99,9 +95,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: rabbithole_arbitrum_rewards
     tests:
@@ -118,9 +115,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: rabbithole_base_rewards
     tests:
@@ -137,9 +135,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: rabbithole_optimism_rewards
     tests:
@@ -156,9 +155,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: rabbithole_polygon_rewards
     tests:
@@ -175,9 +175,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: soundxyz_ethereum_rewards
     tests:
@@ -194,9 +195,10 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
 
   - name: soundxyz_optimism_rewards
     tests:
@@ -213,6 +215,7 @@ models:
       - *referee_address
       - *currency_contract
       - *reward_amount_raw
-      - *reward_amount_usd
       - *sub_tx_id
-      - *is_referral
+      - *tx_from
+      - *tx_to
+
