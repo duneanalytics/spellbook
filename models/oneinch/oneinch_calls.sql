@@ -58,6 +58,7 @@
     {% endif %}
 {% endfor %}
 {% set select_columns = select_columns | join(', ') %}
+{% set group_columns = group_columns | join(', ') %}
 
 
 
