@@ -1,6 +1,5 @@
 {{ config(
 	tags=['legacy'],
-	
         alias = alias('erc721_rolling_hour', legacy_model=True))
 }}
 

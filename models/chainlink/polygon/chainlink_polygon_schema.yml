@@ -1053,3 +1053,22 @@ models:
       - *date_month
       - *operator_address
       - *token_value
+
+  - name: chainlink_polygon_ocr_reconcile_daily
+    meta:
+      blockchain: "polygon"
+      project: chainlink
+      contributors: ["linkpool_ryan"]
+    config:
+      tags: ["chainlink", "ocr", "reward", "daily", "polygon"]
+    description: >
+      Chainlink OCR Reconcile Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date_start
+            - admin_address
+    columns:
+      - *date_start
+      - *admin_address
+      - *token_amount
