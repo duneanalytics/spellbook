@@ -9,7 +9,7 @@
 {% endmacro %}
 
 {% macro dune_source(source_name, table_name) %}
-  {% set rel = builtins.source(source_name, table_name).replace_path(database="dune") %}
+  {% set rel = builtins.source(source_name, table_name) %}
   {% do return(rel) %}
 {% endmacro %}
 
