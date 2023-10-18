@@ -1,16 +1,8 @@
 {{ config(
-	tags=['legacy'],
-	
+	  tags=['legacy'],
     schema ='pooltogether_v4_ethereum',
     alias = alias('prize_structure', legacy_model=True),
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'network'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "pooltogether_v4",
-                                \'["bronder"]\') }}'
+    materialized = 'view'
 )}}
 
 WITH
@@ -32,9 +24,6 @@ prize_distribution AS (
     FROM
       {{ source('pooltogether_v4_ethereum', 'PrizeTierHistoryV2_call_getPrizeTier')}}
     WHERE call_success = true
-    {% if is_incremental() %}
-      AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 
     UNION ALL
 
@@ -54,9 +43,6 @@ prize_distribution AS (
     FROM
       {{ source('pooltogether_v4_ethereum', 'PrizeDistributionBuffer_evt_PrizeDistributionSet')}}
     WHERE drawID < 447 --DPR On Ethereum started on draw 447
-    {% if is_incremental() %}
-      AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
 ),
 
 detailed_prize_distribution AS (
