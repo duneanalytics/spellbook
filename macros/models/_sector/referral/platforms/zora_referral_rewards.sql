@@ -14,7 +14,7 @@ with model as (
         ,cast(date_trunc('month',evt_block_time) as date) as block_month
         ,evt_tx_hash as tx_hash
         ,'NFT' as category
-        ,mintReferral as referrer_address
+        ,case when mintReferralReward = uint256 '0' then 0x0000000000000000000000000000000000000000 else mintReferral end as referrer_address
         ,cast(null as varbinary) as referee_address     -- will be overwritten as tx_from
         ,{{ var("ETH_ERC20_ADDRESS") }} as currency_contract
         ,mintReferralReward as reward_amount_raw
