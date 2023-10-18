@@ -14,4 +14,4 @@ SELECT
     now() as updated_at,
     'op_airdrop_3_receivers' AS model_name,
     'persona' as label_type
-FROM {{ source('dune', 'oplabspbc.dataset_op_airdrop_3_addresses_detailed_list') }}
+FROM {{ dune_source('oplabspbc', 'dataset_op_airdrop_3_addresses_detailed_list') }}
