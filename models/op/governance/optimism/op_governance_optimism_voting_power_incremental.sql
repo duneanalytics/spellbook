@@ -1,7 +1,7 @@
 {{ config(
          tags=['dunesql']
         , schema = 'op_governance_optimism'
-        , alias = alias('votingPower_incremental')
+        , alias = alias('voting_power_incremental')
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'

@@ -13,7 +13,7 @@
 WITH rolling_voting_power AS
 (SELECT *,
 SUM(power_diff) OVER (ORDER BY block_time) AS total_voting_power
-FROM {{ ref('op_governance_optimism_votingPower_incremental') }}
+FROM {{ ref('op_governance_optimism_voting_power_incremental') }}
 ),
 
 voting_power_share_data AS
@@ -52,7 +52,7 @@ SUM(delegator_count) OVER (ORDER BY block_time) AS total_delegators
 FROM combined_delegator_count
 ),
 
-votingPower_delegators_data AS
+voting_power_delegators_data AS
 (SELECT power.*, del.number_of_delegators, 
 del.total_delegators
 FROM voting_power_share_data power
@@ -62,7 +62,7 @@ AND power.tx_hash = del.tx_hash
 AND power.block_number = del.block_number
 ),
 
-votingPower_delegators_data_revised AS
+voting_power_delegators_data_revised AS
 (SELECT 
 tx_hash,
 block_time, 
@@ -80,7 +80,7 @@ total_voting_power,
 voting_power_share,
 LAST_VALUE(number_of_delegators) IGNORE NULLS OVER (PARTITION BY delegate ORDER BY block_time) AS number_of_delegators,
 LAST_VALUE(total_delegators) IGNORE NULLS OVER (ORDER BY block_time) AS total_delegators
-FROM votingPower_delegators_data
+FROM voting_power_delegators_data
 ),
 
 OP_delegates_table_raw AS
@@ -96,7 +96,7 @@ total_voting_power,
 voting_power_share,
 COALESCE(number_of_delegators,1) AS number_of_delegators,
 total_delegators
-FROM votingPower_delegators_data_revised
+FROM voting_power_delegators_data_revised
 ), 
 
 OP_delegates_table AS
