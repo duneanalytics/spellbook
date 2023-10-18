@@ -34,7 +34,7 @@ where et.block_time > timestamp '2023-09-01' -- for initial query optimisation
 {% endif %}
 {% if is_incremental() %}
 -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-where et.block_time > date_trunc('day', now() - interval '10' day)
+where {{ incremental_predicate('et.block_time') }}
 {% endif %}
 
 union all
