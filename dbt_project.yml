@@ -788,9 +788,6 @@ models:
       polygon:
         +schema: equalizer_polygon
 
-    integration_test:
-      +schema: integration_test
-
     curvefi:
       +schema: curvefi
       ethereum:

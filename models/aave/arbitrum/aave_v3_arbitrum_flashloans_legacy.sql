@@ -40,7 +40,7 @@ WITH flashloans AS (
     )
     
 SELECT 'arbitrum'                                                       AS blockchain
-     , 'Aave'                                                           AS project
+     , 'aave'                                                           AS project
      , '3'                                                              AS version
      , flash.block_time
      , flash.block_number
