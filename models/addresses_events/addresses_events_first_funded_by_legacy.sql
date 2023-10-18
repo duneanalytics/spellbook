@@ -2,7 +2,7 @@
 	tags=['legacy'],
 	
     alias = alias('first_funded_by', legacy_model=True)
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "zksync"]\',
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby"]\') }}'
@@ -18,7 +18,6 @@ ref('addresses_events_arbitrum_first_funded_by_legacy')
 , ref('addresses_events_gnosis_first_funded_by_legacy')
 , ref('addresses_events_optimism_first_funded_by_legacy')
 , ref('addresses_events_polygon_first_funded_by_legacy')
-, ref('addresses_events_zksync_first_funded_by_legacy')
 ] %}
 
 SELECT *
