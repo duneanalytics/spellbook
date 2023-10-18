@@ -87,7 +87,7 @@ models:
         name: toDelegate
         description: "Delegate to which voting power is redelegated"
 
-  - name: op_governance_optimism_votingPower_incremental
+  - name: op_governance_optimism_voting_power_incremental
     meta:
       blockchain: optimism
       project: op_governance_optimism
