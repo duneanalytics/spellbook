@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        tags=['dunesql', 'prod_exclude'],
         alias = alias('test_incremental_table'),
         materialized ='incremental',
         file_format ='delta',

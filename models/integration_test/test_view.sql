@@ -1,5 +1,5 @@
 {{ config(
-  tags=['dunesql'],
+  tags=['dunesql', 'prod_exclude'],
   materialized='view',
   schema='integration_test', 
   alias = alias('test_view')) }}
