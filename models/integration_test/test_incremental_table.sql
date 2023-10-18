@@ -4,7 +4,8 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key='unique_transfer_id'
+        unique_key='unique_transfer_id',
+        schema='integration_test'
         )
 }}
 

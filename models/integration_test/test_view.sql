@@ -1,6 +1,7 @@
 {{ config(
   tags=['dunesql'],
-  materialized='view', 
+  materialized='view',
+  schema='integration_test', 
   alias = alias('test_view')) }}
 
 with
