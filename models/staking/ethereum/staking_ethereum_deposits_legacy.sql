@@ -1,6 +1,6 @@
 {{ config(
 	tags=['legacy'],
-	
+    schema = 'staking_ethereum',
     alias = alias('deposits', legacy_model=True),
     materialized = 'incremental',
     file_format = 'delta',
