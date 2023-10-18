@@ -28,8 +28,8 @@ select
     ,tx.to as tx_to
 from {{ProtocolRewards_evt_RewardsDeposit}}
 inner join {{source(blockchain, 'transactions')}} tx
-    on model.block_number = tx.block_number
-    and model.tx_hash = tx.hash
+    on evt_block_number = tx.block_number
+    and evt_tx_hash = tx.hash
     {% if is_incremental() %}
     and tx.block_time > date_trunc('day', now() - interval '1' day)
     {% endif %}
