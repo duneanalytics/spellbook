@@ -28,7 +28,7 @@ jobs:
             echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
 
       - name: Add git_sha to schema
-        run: "/runner/change_schema.sh git_${{ matrix.engine }}_$GIT_SHA"
+        run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
       - name: Get latest manifest
         run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json manifest.json"
