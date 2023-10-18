@@ -1,5 +1,5 @@
 # .github/workflows/app.yaml
-name: dbt slim ci (in beta)
+name: dbt slim ci
 
 on:
   workflow_dispatch:
@@ -39,12 +39,6 @@ jobs:
       
       - name: Activate DuneSQL Cluster
         run: "./scripts/ensure_cluster.sh"
-
-      - name: Check no common models between DuneSQL and Spark
-        run: "./scripts/dunesql_spark_empty_intersection.sh"
-
-      - name: Check for missing legacy models
-        run: "./scripts/missing_legacy_model.sh"
 
       - name: dbt compile to create manifest to compare to
         run: "dbt compile $PROFILE --select tag:dunesql"
