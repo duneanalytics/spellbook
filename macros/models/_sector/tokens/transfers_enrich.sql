@@ -2,6 +2,7 @@
 CASE WHEN t.token_standard = 'native' THEN {{native_column}}
     WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN {{erc20_column}}
     ELSE {{else_column}}
+END
 {%- endmacro-%}
 
 {%- macro transfers_enrich(blockchain, transfers_base) %}
