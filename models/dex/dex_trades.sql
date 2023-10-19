@@ -72,6 +72,8 @@
 ,ref('ubeswap_celo_trades')
 ,ref('opx_finance_optimism_trades')
 ,ref('mauve_trades')
+,ref('openxswap_optimism_trades')
+,ref('wardenswap_optimism_trades')
 ] %}
 
 
