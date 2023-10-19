@@ -14,12 +14,12 @@ SELECT 'avalanche_c' AS blockchain
 , bytearray_ltrim(bytearray_substring(logs.data, 1, 32)) AS trader
 , bytearray_ltrim(bytearray_substring(logs.data, 1 + 32, 32)) AS subject
 , CASE WHEN (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 2, 32)))) = INT256 '1' THEN 'buy' ELSE 'sell' END AS trade_side
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 4, 32))))/1e18 AS amount_original
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 3, 32)))) AS share_amount
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 6, 32))))/1e18 AS subject_fee_amount
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 7, 32))))/1e18 AS protocol_fee_amount
+, CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 4, 32)))/1e18 AS double) AS amount_original
+, CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 3, 32))) AS UINT256) AS share_amount
+, CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 6, 32)))/1e18 AS double) AS subject_fee_amount
+, CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 7, 32)))/1e18 AS double) AS protocol_fee_amount
 , 0x0000000000000000000000000000000000000000 AS currency_contract
-, (varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 8, 32)))) AS supply
+, CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 8, 32))) AS UINT256) AS supply
 , txs.hash AS tx_hash
 , logs.index AS evt_index
 , txs.to AS contract_address
