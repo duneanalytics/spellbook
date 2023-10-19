@@ -69,7 +69,7 @@
      'blockchain': 'optimism',
      'schema': 'wardenswap_optimism',
      'table_name': 'WardenRouterV2_L2_evt_Trade',
-     'time_column': 'evt_block_time'}
+     'time_column': 'evt_block_time'},
 
     {'project': 'openocean_v2',
      'blockchain': 'optimism',
