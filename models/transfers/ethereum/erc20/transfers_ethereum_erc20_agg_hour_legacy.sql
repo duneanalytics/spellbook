@@ -1,13 +1,13 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('erc20_agg_hour', legacy_model=True),
-        materialized ='incremental',
         file_format ='delta',
-        incremental_strategy='merge',
         unique_key='unique_transfer_id'
         )
 }}
+
+-- removed from config:
+-- materialized ='incremental',
 
 select
     'ethereum' as blockchain,
@@ -20,8 +20,4 @@ select
     sum(tr.amount_raw / power(10, t.decimals)) as amount
 from {{ ref('transfers_ethereum_erc20_legacy') }} tr
 left join {{ ref('tokens_ethereum_erc20_legacy') }} t on t.contract_address = tr.token_address
-{% if is_incremental() %}
--- this filter will only be applied on an incremental run
-where tr.evt_block_time >= date_trunc('hour', now() - interval '1 week')
-{% endif %}
 group by 1, 2, 3, 4, 5, 6

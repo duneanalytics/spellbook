@@ -19,6 +19,8 @@ models:
         description: "token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible a token can be"
+      - name: created_at
+        description: token mint created at
 
   - name: tokens_solana_nft
     meta:
@@ -42,6 +44,8 @@ models:
         description: "metadata for the account. contains stuff like the name, symbol, and uri, etc"
       - name: account_mint
         description: "mint for the account. this is the token mint address from spl_token"
+      - name: minter
+        description: "the account_payer or account_leafOwner that minted the NFT"
       - name: version
         description: "version of the NFT - Token Metdata, cNFT, etc"
       - name: token_standard
