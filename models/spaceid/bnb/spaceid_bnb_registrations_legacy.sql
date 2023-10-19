@@ -1,16 +1,8 @@
 {{
     config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('registrations', legacy_model=True)
-        ,materialized = 'incremental'
-        ,file_format = 'delta'
-        ,incremental_strategy = 'merge'
-        ,unique_key = ['name']
-        ,post_hook='{{ expose_spells(\'["bnb"]\',
-                                    "project",
-                                    "spaceid",
-                                    \'["springzh"]\') }}'
+        ,materialized = 'view'
     )
 }}
 SELECT 'v3'                    as version,
@@ -25,9 +17,6 @@ SELECT 'v3'                    as version,
        evt_block_number        as block_number,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV3_evt_NameRegistered')}}
-{% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 
 UNION ALL
 
@@ -43,9 +32,6 @@ SELECT 'v4'                    as version,
        evt_block_number        as block_number,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV4_evt_NameRegistered')}}
-{% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 
 UNION ALL
 
@@ -61,9 +47,6 @@ SELECT 'v5'                    as version,
        evt_block_number        as block_number,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV5_evt_NameRegistered')}}
-{% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 
 UNION ALL
 
@@ -79,9 +62,6 @@ SELECT 'v6'                    as version,
        evt_block_number        as block_number,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV6_evt_NameRegistered')}}
-{% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 
 UNION ALL
 
@@ -97,9 +77,6 @@ SELECT 'v7'                    as version,
        evt_block_number        as block_number,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV7_evt_NameRegistered')}}
-{% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 
 UNION ALL
 
@@ -115,9 +92,6 @@ SELECT 'v8'                    as version,
        evt_block_number        as block_number,
        evt_index
 FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV8_evt_NameRegistered')}}
-{% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
-{% endif %}
 
 UNION ALL
 
@@ -137,6 +111,3 @@ FROM {{source('spaceid_bnb', 'BNBRegistrarControllerV9_evt_NameRegistered')}} v9
 LEFT JOIN {{source('spaceid_bnb', 'BNBRegistrarControllerV5_evt_NameRegistered')}} v5
     ON v9.name = v5.name
 WHERE v5.name is null
-  {% if is_incremental() %}
-  AND v9.evt_block_time >= date_trunc("day", now() - interval '1 week')
-  {% endif %}

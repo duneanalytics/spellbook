@@ -3,9 +3,7 @@
 	
         alias = alias('glp_aum', legacy_model=True),
         partition_by = ['block_date'],
-        materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
@@ -46,9 +44,4 @@ SELECT -- This query calculates the AUM of each component of GLP
     
     dai_available_assets * dai_current_price AS dai_aum
 FROM {{ref('gmx_arbitrum_glp_components_legacy')}}
-{% if is_incremental() %}
-WHERE minute >= date_trunc("day", now() - interval '1 day')
-{% endif %}
-{% if not is_incremental() %}
 WHERE minute >= '{{project_start_date}}'
-{% endif %}
