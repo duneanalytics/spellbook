@@ -53,6 +53,33 @@ WITH pools AS (
       cc.symbol,
       'WP' AS pool_type
     FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolFactory_call_create') }} cc
+      ON c.evt_tx_hash = cc.call_tx_hash
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+    CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+    CROSS JOIN UNNEST(cc.normalizedWeights) AS w(weights)
+    {% if is_incremental() %}
+    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+  ) zip
+
+  UNION ALL
+
+  SELECT
+    pool_id,
+    zip.tokens AS token_address,
+    zip.weights / pow(10, 18) AS normalized_weight,
+    symbol,
+    pool_type
+  FROM (
+    SELECT
+      c.poolId AS pool_id,
+      t.tokens,
+      w.weights,
+      cc.symbol,
+      'WP' AS pool_type
+    FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_arbitrum', 'WeightedPoolV2Factory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
       AND bytearray_substring(c.poolId, 1, 20) = cc.output_0

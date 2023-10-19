@@ -39,7 +39,7 @@ WITH flashloans AS (
     )
     
 SELECT 'avalanche_c'                                                    AS blockchain
-     , 'Aave'                                                           AS project
+     , 'aave'                                                           AS project
      , '2'                                                              AS version
      , flash.block_time
      , flash.block_number
