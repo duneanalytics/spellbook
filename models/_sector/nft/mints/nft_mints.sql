@@ -18,7 +18,7 @@
  ref('nft_ethereum_native_mints')
 ,ref('nft_optimism_native_mints')
 ,ref('nft_celo_native_mints')
-,ref('nft_polygon_native_mints')
+--,ref('nft_polygon_native_mints')
 ] %}
 
 

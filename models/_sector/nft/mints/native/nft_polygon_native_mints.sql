@@ -1,3 +1,7 @@
+/*
+-- temp exclude from build - more refactoring needed to avoid:
+-- TrinoQueryError(type=INSUFFICIENT_RESOURCES, name=EXCEEDED_LOCAL_MEMORY_LIMIT, message="Query exceeded per-node memory limit of 170GB
+
 {{
     config(
         tags = ['dunesql'],
@@ -27,3 +31,5 @@
         default_currency_contract = '0xCC42724C6683B7E57334c4E856f4c9965ED682bD'
     )
 }}
+
+*/
