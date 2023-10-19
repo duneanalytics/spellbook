@@ -18,6 +18,6 @@ fromDelegate,
 toDelegate
 FROM  {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
 {% if is_incremental() %}
-    WHERE evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+    WHERE {{ incremental_predicate('evt_block_time') }}
 {% endif %}
 
