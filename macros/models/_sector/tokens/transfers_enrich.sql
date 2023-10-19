@@ -1,3 +1,9 @@
+{%- macro case_when_token_standard(native_column, erc20_column, else_column) -%}
+CASE WHEN t.token_standard = 'native' THEN {{native_column}}
+    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN {{erc20_column}}
+    ELSE {{else_column}}
+{%- endmacro-%}
+
 {%- macro transfers_enrich(blockchain, transfers_base) %}
 SELECT '{{blockchain}}'
 , t.block_time
@@ -12,20 +18,13 @@ SELECT '{{blockchain}}'
 , t."from"
 , t.to
 , t.contract_address
-,CASE WHEN t.token_standard = 'native' THEN 'SYMBOL' -- this if should be a helper macro
-    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN tokens_erc20.symbol
-    ELSE NULL
- END AS symbol
+, case_when_token_standard('\'SYMBOL\'', 'tokens_erc20.symbol', 'NULL') AS symbol
 , t.amount_raw
-, CASE WHEN t.token_standard = 'native' THEN t.amount_raw / power(10, 18)
-    WHEN t.token_standard = 'erc20' OR THEN t.token_standard = 'bep20'  t.amount_raw / power(10, tokens_erc20.decimals)
-    ELSE cast(t.amount_raw as double)
- END AS amount
+, case_when_token_standard('t.amount_raw / power(10, 18)', 'amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)') AS amount
 , prices.price AS usd_price
-, CASE WHEN t.token_standard = 'native' THEN (t.amount_raw / power(10, 18)) * prices.price
-    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN (t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price
-    ELSE NULL
- END AS usd_amount
+, case_when_token_standard('(t.amount_raw / power(10, 18)) * prices.price',
+    '(t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price',
+    'NULL') AS usd_amount
 FROM {{transfers_base}} t
 LEFT JOIN {{ref('tokens_erc20')}} tokens_erc20 on tokens_erc20.blockchain = '{{blockchain}}' AND tokens_erc20.contract_address = t.contract_address
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.blockchain = '{{blockchain}}'
