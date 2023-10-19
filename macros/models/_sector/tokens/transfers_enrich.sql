@@ -16,13 +16,13 @@ SELECT t.block_time
     ELSE NULL
  END AS symbol
 , t.amount_raw
-, CASE WHEN t.token_standard = 'native' THEN t.amount_raw / power(10, tokens_erc20.decimals)
-    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN t.amount_raw / power(10, 18)
+, CASE WHEN t.token_standard = 'native' THEN t.amount_raw / power(10, 18)
+    WHEN t.token_standard = 'erc20' OR THEN t.token_standard = 'bep20'  t.amount_raw / power(10, tokens_erc20.decimals)
     ELSE cast(t.amount_raw as double)
  END AS amount
 , prices.price AS usd_price
-, CASE WHEN t.token_standard = 'native' THEN (t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price
-    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN (t.amount_raw / power(10, 18)) * prices.price
+, CASE WHEN t.token_standard = 'native' THEN (t.amount_raw / power(10, 18)) * prices.price
+    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN (t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price
     ELSE NULL
  END AS usd_amount
 FROM {{transfers_base}} t
