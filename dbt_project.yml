@@ -1238,9 +1238,6 @@ models:
       op_token:
         optimism:
           +schema: op_token_optimism
-      governance:
-        optimism:
-          +schema: op_governance_optimism
 
     rubicon:
       +schema: rubicon
