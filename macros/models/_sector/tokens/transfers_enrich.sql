@@ -1,13 +1,14 @@
 {%- macro transfers_enrich(blockchain, transfers_base) %}
-SELECT t.block_time
+SELECT '{{blockchain}}'
+, t.block_time
 , t.block_number
 , t.tx_hash
+, t.tx_index
 , t.evt_index
 , t.trace_address
 , t.token_standard
 , t.tx_from
 , t.tx_to
-, t.tx_index
 , t."from"
 , t.to
 , t.contract_address
