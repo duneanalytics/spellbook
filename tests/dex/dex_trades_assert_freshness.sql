@@ -76,6 +76,7 @@
      'schema': 'openocean_v2_optimism',
      'table_name': 'OpenOceanExchangeProxy_evt_Swapped',
      'time_column': 'evt_block_time'}
+  
 ] %}
 
 

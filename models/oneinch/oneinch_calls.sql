@@ -32,6 +32,7 @@
         'block_time',
         'tx_hash',
         'tx_from',
+        'tx_to',
         'tx_success',
         'call_success',
         'call_trace_address',
