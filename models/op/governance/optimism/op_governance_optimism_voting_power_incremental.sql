@@ -20,5 +20,5 @@ CAST(newBalance AS DOUBLE)/1e18 - CAST(previousBalance AS DOUBLE)/1e18 AS power_
 FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateVotesChanged') }} 
 WHERE CAST(evt_block_time AS DATE) >= DATE'2022-05-26'
 {% if is_incremental() %}
-    AND evt_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+    AND {{ incremental_predicate('evt_block_time') }}
 {% endif %}
