@@ -31,7 +31,7 @@ WHERE
   {% if is_incremental() %}
   AND {{incremental_predicate('t.block_time')}}
   {% else %}
-  t.block_time >= timestamp '2022-01-01'
+  AND t.block_time >= timestamp '2022-01-01'
   {% endif %}
 GROUP BY 1,2
 
@@ -55,7 +55,7 @@ WHERE
   {% if is_incremental() %}
   AND {{incremental_predicate('t.block_time')}}
   {% else %}
-  t.block_time >= timestamp '2022-01-01'
+  AND t.block_time >= timestamp '2022-01-01'
   {% endif %}
 GROUP BY 1,2
 
@@ -88,7 +88,7 @@ WHERE
   {% if is_incremental() %}
   AND {{incremental_predicate('t.block_time')}}
   {% else %}
-  t.block_time > timestamp '2023-06-06 16:11' --when bedrock upgrade happened
+  AND t.block_time > timestamp '2023-06-06 16:11' --when bedrock upgrade happened
   {% endif %}
 GROUP BY 1,2
 
