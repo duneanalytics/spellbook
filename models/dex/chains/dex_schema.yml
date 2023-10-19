@@ -437,3 +437,390 @@ models:
       - *token_bought_amount
       - *amount_usd
       - *evt_index
+
+  - name: dex_ethereum_arbitrages
+    meta: 
+      blockchain: ethereum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'ethereum']
+    description: >
+      DEX MEV Arbitrage Trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_arbitrum_arbitrages
+    meta: 
+      blockchain: arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'arbitrum']
+    description: >
+      DEX MEV Arbitrage Trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_avalanche_c_arbitrages
+    meta: 
+      blockchain: avalanche_c
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'avalanche_c']
+    description: >
+      DEX MEV Arbitrage Trades on Avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_bnb_arbitrages
+    meta: 
+      blockchain: bnb
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'bnb']
+    description: >
+      DEX MEV Arbitrage Trades on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_fantom_arbitrages
+    meta: 
+      blockchain: fantom
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'fantom']
+    description: >
+      DEX MEV Arbitrage Trades on Fantom
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_gnosis_arbitrages
+    meta: 
+      blockchain: gnosis
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'gnosis']
+    description: >
+      DEX MEV Arbitrage Trades on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_optimism_arbitrages
+    meta: 
+      blockchain: optimism
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'optimism']
+    description: >
+      DEX MEV Arbitrage Trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_polygon_arbitrages
+    meta: 
+      blockchain: polygon
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'polygon']
+    description: >
+      DEX MEV Arbitrage Trades on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_base_arbitrages
+    meta: 
+      blockchain: base
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'base']
+    description: >
+      DEX MEV Arbitrage Trades on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
