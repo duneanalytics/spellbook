@@ -13,5 +13,4 @@
 {{transfers_enrich(
     blockchain='ethereum',
     transfers_base = ref('tokens_ethereum_transfers_base'),
-    tokens_erc20 = ref('tokens_erc20'),
 )}}

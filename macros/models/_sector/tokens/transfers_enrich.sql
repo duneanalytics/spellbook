@@ -1,4 +1,4 @@
-{%- macro transfers_enrich(blockchain, transfers_base, tokens_erc20) %}
+{%- macro transfers_enrich(blockchain, transfers_base) %}
 SELECT t.block_time
 , t.block_number
 , t.tx_hash
@@ -26,8 +26,8 @@ SELECT t.block_time
     ELSE NULL
  END AS usd_amount
 FROM {{transfers_base}} t
-LEFT JOIN {{tokens_erc20}} tokens_erc20 on tokens_erc20.contract_address = t.contract_address
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} prices ON prices.blockchain = '{{blockchain}}'
+LEFT JOIN {{ref('tokens_erc20')}} tokens_erc20 on tokens_erc20.blockchain = '{{blockchain}}' AND tokens_erc20.contract_address = t.contract_address
     AND (
             prices.contract_address=t.contract_address
             OR t.contract_address IS NULL AND prices.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
