@@ -1,6 +1,8 @@
 {%- macro case_when_token_standard(native_column, erc20_column, else_column) -%}
-CASE WHEN t.token_standard = 'native' THEN {{native_column}}
-    WHEN t.token_standard = 'erc20' OR t.token_standard = 'bep20' THEN {{erc20_column}}
+CASE token_standard
+    WHEN 'native' THEN {{native_column}}
+    WHEN 'erc20' THEN {{erc20_column}}
+    WHEN 'bep20' THEN {{erc20_column}}
     ELSE {{else_column}}
 END
 {%- endmacro-%}
