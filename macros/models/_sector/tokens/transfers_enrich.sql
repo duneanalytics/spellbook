@@ -6,7 +6,7 @@ END
 {%- endmacro-%}
 
 {%- macro transfers_enrich(blockchain, transfers_base) %}
-SELECT '{{blockchain}}'
+SELECT '{{blockchain}}' as blockchain
 , t.block_time
 , t.block_number
 , t.tx_hash
