@@ -1,7 +1,12 @@
 {{ config(
 	tags=['legacy'],
-	materialized='view', alias = alias('erc1155', legacy_model=True)) }}
-
+	alias = alias('erc1155', legacy_model=True)
+  ) 
+}}
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 with
   erc1155_ids_batch AS (
     SELECT
