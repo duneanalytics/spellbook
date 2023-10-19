@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
     alias = alias('donations'),
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -51,6 +51,7 @@ SELECT 'polygon' AS blockchain
 , 'v1' AS version
 , grd.round_name AS grant_round
 , date_trunc('day', gd.block_time) AS block_date
+, CAST(date_trunc('month', gd.block_time) AS DATE) AS block_month
 , gd.block_time
 , gd.block_number
 , gd.amount_raw
