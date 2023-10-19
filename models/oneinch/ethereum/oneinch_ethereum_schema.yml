@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: oneinch_ethereum_trades_v1
+  - name: oneinch_v1_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -98,7 +98,7 @@ models:
         name: block_month
         description: "UTC event block month of the trade"
 
-  - name: oneinch_ethereum_trades_v2
+  - name: oneinch_v2_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -147,7 +147,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_v3
+  - name: oneinch_v3_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -196,7 +196,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_v4
+  - name: oneinch_v4_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -245,7 +245,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_v5
+  - name: oneinch_v5_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -294,7 +294,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_onesplit
+  - name: oneinch_onesplit_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -343,7 +343,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_oneproto
+  - name: oneinch_oneproto_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -392,7 +392,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_zeroex
+  - name: oneinch_zeroex_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -441,7 +441,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_unoswap_v3
+  - name: oneinch_unoswap_v3_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -486,7 +486,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_unoswap_v4
+  - name: oneinch_unoswap_v4_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -535,7 +535,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_unoswap_v5
+  - name: oneinch_unoswap_v5_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -580,7 +580,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_uniswap_v3
+  - name: oneinch_uniswap_v3_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -629,7 +629,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_clipper
+  - name: oneinch_clipper_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -678,7 +678,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_v1
+  - name: oneinch_limit_order_protocol_v1_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -727,7 +727,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_v2
+  - name: oneinch_limit_order_protocol_v2_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -776,7 +776,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_v3
+  - name: oneinch_limit_order_protocol_v3_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -825,7 +825,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_embedded_rfq
+  - name: oneinch_limit_order_protocol_embedded_rfq_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -874,7 +874,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_rfq_v1
+  - name: oneinch_limit_order_protocol_rfq_v1_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -923,7 +923,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_rfq_v2
+  - name: oneinch_limit_order_protocol_rfq_v2_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
@@ -972,7 +972,7 @@ models:
       - *evt_index
       - *block_month
 
-  - name: oneinch_ethereum_trades_limit_order_protocol_rfq_v3
+  - name: oneinch_limit_order_protocol_rfq_v3_ethereum_trades
     meta:
       blockchain: ethereum
       project: oneinch
