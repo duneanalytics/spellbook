@@ -7,13 +7,13 @@ WITH transfers AS (
     SELECT block_time
     , block_number
     , tx_hash
-    , value AS amount_raw
+    , NULL AS evt_index
+    , trace_address
     , CAST(NULL AS varbinary) AS contract_address
     , 'native' AS token_standard
     , "from"
     , to
-    , NULL AS evt_index
-    , trace_address
+    , value AS amount_raw
     FROM {{ traces }}
     WHERE success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
@@ -27,13 +27,13 @@ WITH transfers AS (
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
-    , t.value AS amount_raw
+    , t.evt_index
+    , NULL AS trace_address
     , t.contract_address
     , '{{token_standard_20}}' AS token_standard
     , t."from"
     , t.to
-    , t.evt_index
-    , NULL AS trace_address
+    , t.value AS amount_raw
     FROM {{ erc20_transfers }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
@@ -45,14 +45,14 @@ WITH transfers AS (
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
-    , t.wad AS amount_raw -- is this safe cross chain?
+    , t.evt_index
+    , NULL AS trace_address
     , t.contract_address
     -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
-    , t."from"
-    , t.to
-    , t.evt_index
-    , NULL AS trace_address
+    , 0x0000000000000000000000000000000000000000 as "from"  -- TODO: change to variable
+    , t.dst as "to"
+    , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_deposit }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
@@ -63,14 +63,14 @@ WITH transfers AS (
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
-    , t.wad AS amount_raw -- is this safe cross chain?
+    , t.evt_index
+    , NULL AS trace_address
     , t.contract_address
     -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
-    , t."from"
-    , t.to
-    , t.evt_index
-    , NULL AS trace_address
+    , t.src as "from"
+    , 0x0000000000000000000000000000000000000000 as "to"  -- TODO: change to variable
+    , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_withdrawal }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
