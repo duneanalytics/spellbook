@@ -71,7 +71,7 @@
      'table_name': 'WardenRouterV2_L2_evt_Trade',
      'time_column': 'evt_block_time'},
 
-    {'project': 'openocean_v2',
+    {'project': 'openocean',
      'blockchain': 'optimism',
      'schema': 'openocean_v2_optimism',
      'table_name': 'OpenOceanExchangeProxy_evt_Swapped',

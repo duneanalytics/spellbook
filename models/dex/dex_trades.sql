@@ -74,7 +74,7 @@
 ,ref('mauve_trades')
 ,ref('openxswap_optimism_trades')
 ,ref('wardenswap_optimism_trades')
-,ref('openocean_v2_optimism_trades')
+,ref('openocean_optimism_trades')
 ] %}
 
 
