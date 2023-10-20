@@ -59,7 +59,7 @@ models:
         name: total_delegators_share
         description: "Share of the total delegating addresses expressed in percentage"
   
-  - name: op_governance_optimism_delegators_incremental
+  - name: op_governance_optimism_delegators
     meta:
       blockchain: optimism
       project: op_governance_optimism
@@ -87,7 +87,7 @@ models:
         name: toDelegate
         description: "Delegate to which voting power is redelegated"
 
-  - name: op_governance_optimism_voting_power_incremental
+  - name: op_governance_optimism_voting_power
     meta:
       blockchain: optimism
       project: op_governance_optimism

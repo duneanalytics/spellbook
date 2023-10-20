@@ -9,8 +9,7 @@
                                     \'["kaiblade"]\') }}')}}
 
 WITH address_names AS (
-SELECT address, name, ens, ROW_NUMBER() OVER (PARTITION BY address) AS rn
-
+SELECT address, name, ens
 FROM (
     values
     (0x46abfe1c972fca43766d6ad70e1c1df72f4bb4d1,'Synthetix Ambassador Council','snxambassador.eth')
@@ -133,4 +132,3 @@ FROM (
 SELECT address,
 name,
 ens FROM address_names
-WHERE rn = 1 --exclude dupes
