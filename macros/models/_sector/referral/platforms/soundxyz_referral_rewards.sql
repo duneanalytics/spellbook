@@ -25,7 +25,7 @@ with model as (
         ,evt_index as sub_tx_id
     from {{evt_Minted}}
     {% if is_incremental() %}
-    where evt_block_time > date_trunc('day', now() - interval '1' day)
+    where {{incremental_predicate('evt_block_number')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL

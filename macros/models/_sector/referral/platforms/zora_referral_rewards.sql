@@ -31,9 +31,9 @@ inner join {{source(blockchain, 'transactions')}} tx
     on evt_block_number = tx.block_number
     and evt_tx_hash = tx.hash
     {% if is_incremental() %}
-    and tx.block_time > date_trunc('day', now() - interval '1' day)
+    and {{incremental_predicate('tx.block_time')}}
     {% endif %}
 {% if is_incremental() %}
-where evt_block_time > date_trunc('day', now() - interval '1' day)
+where {{incremental_predicate('evt_block_number')}}
 {% endif %}
 {% endmacro %}
