@@ -11,7 +11,6 @@ WITH sequenced_trades AS (
     , SUM(token_bought_amount) AS token_bought_amount
     , token_sold_address
     , SUM(token_sold_amount) AS token_sold_amount
-    --, array_agg(evt_index) AS array_indices
     , ARRAY_AGG(ROW(project_contract_address, evt_index)) AS project_evt_pairs
     , ROW_NUMBER() OVER (PARTITION BY block_time, tx_hash) AS seq_num
     FROM {{ ref('dex_trades') }}
@@ -27,10 +26,6 @@ WITH sequenced_trades AS (
     SELECT DISTINCT s1.block_time
     , s1.tx_hash
     , s1.taker
-    , s1.project_contract_address AS project_contract_address_1
-    , s2.project_contract_address AS project_contract_address_2
-    , s1.seq_num AS seq_num_1
-    , s2.seq_num AS seq_num_2
     , CASE WHEN s1.token_sold_amount <= s2.token_bought_amount THEN true ELSE false END AS first_is_less
     , s1.project_evt_pairs AS project_evt_pairs_1
     , s2.project_evt_pairs AS project_evt_pairs_2
@@ -38,8 +33,6 @@ WITH sequenced_trades AS (
     , s1.token_bought_address AS token_bought_s1
     , s2.token_sold_address AS token_sold_s2
     , s2.token_bought_address AS token_bought_s2
-    --, array_indices AS evt_indices_1
-    --, s2.array_indices AS evt_indices_2
     FROM sequenced_trades s1
     INNER JOIN sequenced_trades s2 ON s1.tx_hash = s2.tx_hash
         AND s1.token_sold_address = s2.token_bought_address
@@ -62,11 +55,8 @@ WITH sequenced_trades AS (
     , pt.tx_hash
     , pt.taker
     , array_distinct(flatten(array_agg(pt.project_evt_pairs_1) || array_agg(pt.project_evt_pairs_2))) AS project_evt_pairs
-    --, array_agg() AS evt_indices
     , COUNT(*) FILTER (WHERE first_is_less = TRUE) AS first_is_less
     , COUNT(*) FILTER (WHERE first_is_less = FALSE) AS first_is_more
-    --, array_agg(DISTINCT seq_num_1 ORDER BY seq_num_1) AS seq_num_1s
-    --, array_agg(DISTINCT seq_num_2 ORDER BY seq_num_2) AS seq_num_2s
     FROM paired_trades pt
     JOIN token_mappings tm ON pt.block_time=tm.block_time AND pt.tx_hash = tm.tx_hash
     INNER JOIN {{ fungible_transfers }} f ON pt.block_time=f.block_time
@@ -74,14 +64,11 @@ WITH sequenced_trades AS (
         AND pt.taker=f."from"
         AND f.amount_raw > UINT256 '0'
         -- No need to check token_sold_s1 & token_bought_s2 since those were joined on:
-        AND (contains(tm.tokens_sold, pt.token_bought_s1) OR contains(array[CAST(f.contract_address AS varbinary)], pt.token_bought_s1))
-        AND (contains(tm.tokens_sold, pt.token_sold_s2) OR contains(array[CAST(f.contract_address AS varbinary)], pt.token_sold_s2))
-        --AND (contains(array[CAST(pt.token_bought_s1 AS varbinary)], tm.tokens_sold) OR contains(array[CAST(pt.token_bought_s1 AS varbinary)], f.contract_address))
-        --AND (contains(array[CAST(pt.token_sold_s2 AS varbinary)], tm.tokens_sold) OR contains(array[CAST(pt.token_sold_s2 AS varbinary)], f.contract_address))
-
-        --AND (element_at(tm.tokens_sold, pt.token_bought_s1) IS NOT NULL OR element_at(f.contract_address, pt.token_bought_s1) IS NOT NULL)
-        --AND (element_at(pt.token_bought_s1, tm.tokens_sold) IS NOT NULL OR element_at(pt.token_bought_s1, f.contract_address) IS NOT NULL)
-        --AND (element_at(pt.token_sold_s2, tm.tokens_sold) IS NOT NULL OR element_at(pt.token_sold_s2, f.contract_address) IS NOT NULL)
+        AND (contains(tm.tokens_sold, pt.token_bought_s1) OR contains(array[f.contract_address], pt.token_bought_s1))
+        AND (contains(tm.tokens_sold, pt.token_sold_s2) OR contains(array[f.contract_address], pt.token_sold_s2))
+        {% if is_incremental() %}
+        AND f.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     GROUP BY 1, 2, 3
     HAVING (COUNT(*) FILTER (WHERE first_is_less = FALSE)) > 0
     AND (COUNT(*) FILTER (WHERE first_is_less = TRUE)) > 0
