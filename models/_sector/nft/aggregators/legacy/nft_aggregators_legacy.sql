@@ -1,5 +1,6 @@
 {{ config(
 	tags=['legacy'],
+	schema = 'nft',
         alias = alias('aggregators', legacy_model=True),
         post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","polygon", "optimism"]\',
                                     "sector",

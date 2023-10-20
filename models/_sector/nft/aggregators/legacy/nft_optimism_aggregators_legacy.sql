@@ -1,5 +1,8 @@
-{{ config(
-	tags=['legacy'], alias = alias('aggregators', legacy_model=True)) }}
+{{config(
+	tags=['legacy'],
+	schema = 'nft_optimism',
+	alias = alias('aggregators', legacy_model=True)
+	)}}
 
 SELECT
   lower(contract_address) as contract_address,
