@@ -1107,7 +1107,7 @@ models:
     meta:
       blockchain: ['ethereum']
       sector: oneinch
-      contributors: ['grkhr']
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -1124,6 +1124,7 @@ models:
         tests:
           - not_null
       - *tx_from
+      - *tx_to
       - &tx_success
         name: tx_success
       - &call_success
@@ -1149,8 +1150,6 @@ models:
         name: transfer_from
       - &transfer_to
         name: transfer_to
-      - &transfer_top_level
-        name: transfer_top_level
       - &transfers_between_players
         name: transfers_between_players
       - &rn_tta_asc

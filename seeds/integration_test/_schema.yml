@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: test_seed
+    config:
+      tags: dunesql
+      column_types:
+        evt_tx_hash: varbinary
+        from: varbinary
+        to: varbinary
+        tokenid: uint256
+        value: double
