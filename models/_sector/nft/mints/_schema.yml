@@ -18,6 +18,7 @@ models:
             - evt_index
             - token_id
             - number_of_items
+            - currency_contract
     columns:
       - &blockchain
         name: blockchain
