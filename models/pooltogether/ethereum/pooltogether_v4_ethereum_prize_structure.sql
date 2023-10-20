@@ -11,6 +11,11 @@
                                 \'["bronder"]\') }}'
 )}}
 
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 WITH
   --Calculate prize structure for Ethereum network per drawID
 prize_distribution AS (
