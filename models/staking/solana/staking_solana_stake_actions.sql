@@ -32,6 +32,7 @@ with
             AND aa.tx_id = m.call_tx_id
             and aa.writable = true
             and aa.balance_change != 0
+            AND aa.token_mint_address is null
             and aa.tx_success
         where 1=1 
         {% if is_incremental() %}
