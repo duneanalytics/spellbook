@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: oneplanet_polygon_base_pairs_legacy
+  - name: oneplanet_polygon_base_pairs
     meta:
       blockchain: polygon
       project: oneplanet
