@@ -1,10 +1,10 @@
-{{ config(
-	tags=['legacy'],
-	
-        alias = alias('erc20_noncompliant', legacy_model=True),
-        materialized ='table',
-        file_format = 'delta'
-) 
+{{
+        config
+        (
+                tags=['legacy'],
+                materialized = 'view',
+                alias = alias('erc20_noncompliant', legacy_model=True)
+        ) 
 }}
 
 select distinct token_address

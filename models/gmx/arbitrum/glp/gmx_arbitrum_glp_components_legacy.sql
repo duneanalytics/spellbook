@@ -3,9 +3,7 @@
 	
         alias = alias('glp_components', legacy_model=True),
         partition_by = ['block_date'],
-        materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                         "project",
@@ -56,9 +54,4 @@ SELECT
     dai_available_assets, -- DAI Pool Amounts - Decimal Places 18
     dai_current_price
 FROM {{ref('gmx_arbitrum_glp_components_base_legacy')}}
-{% if is_incremental() %}
-WHERE minute >= date_trunc("day", now() - interval '1 week')
-{% endif %}
-{% if not is_incremental() %}
 WHERE minute >= '{{project_start_date}}'
-{% endif %}

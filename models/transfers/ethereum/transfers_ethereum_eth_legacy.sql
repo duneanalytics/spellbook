@@ -3,9 +3,7 @@
 	tags=['legacy'],
 	
         alias = alias('eth', legacy_model=True), 
-        materialized ='incremental',
         file_format ='delta',
-        incremental_strategy='merge',
         unique_key='unique_transfer_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
@@ -13,6 +11,7 @@
                                     \'["msilb7", "chuxin"]\') }}'
     )
 }}
+
 with eth_transfers as (
     select 
         r.from
@@ -38,10 +37,6 @@ with eth_transfers as (
         and r.tx_success
         and r.success
         and r.value > '0'
-        {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-        and r.block_time >= date_trunc('day', now() - interval '1 week')
-        and t.block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
 )
 select *
 from eth_transfers

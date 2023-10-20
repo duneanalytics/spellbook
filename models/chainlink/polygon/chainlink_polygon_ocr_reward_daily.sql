@@ -85,16 +85,20 @@ WITH
       payment_meta.date_start,
       cast(date_trunc('month', payment_meta.date_start) as date) as date_month,
       payment_meta.admin_address,
-      ocr_operator_admin_meta.operator_name,      
-      COALESCE(ocr_reward_evt_transfer_daily.token_amount / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) as token_amount,
-      (COALESCE(ocr_reward_evt_transfer_daily.token_amount / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) * payment_meta.usd_amount) as usd_amount
+      ocr_operator_admin_meta.operator_name,
+      COALESCE((ocr_reward_evt_transfer_daily.token_amount + COALESCE(reconcile_daily.token_amount, 0)) / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) as token_amount,
+      (COALESCE((ocr_reward_evt_transfer_daily.token_amount + COALESCE(reconcile_daily.token_amount, 0)) / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) * payment_meta.usd_amount) as usd_amount
     FROM 
       payment_meta
     LEFT JOIN 
       {{ref('chainlink_polygon_ocr_reward_evt_transfer_daily')}} ocr_reward_evt_transfer_daily ON
         payment_meta.next_payment_date = ocr_reward_evt_transfer_daily.date_start AND
         payment_meta.admin_address = ocr_reward_evt_transfer_daily.admin_address
-    LEFT JOIN {{ ref('chainlink_polygon_ocr_operator_admin_meta') }} ocr_operator_admin_meta ON ocr_operator_admin_meta.admin_address = ocr_reward_evt_transfer_daily.admin_address
+    LEFT JOIN {{ ref('chainlink_polygon_ocr_operator_admin_meta') }} ocr_operator_admin_meta
+      ON ocr_operator_admin_meta.admin_address = ocr_reward_evt_transfer_daily.admin_address
+    LEFT JOIN {{ ref('chainlink_polygon_ocr_reconcile_daily') }} reconcile_daily
+      ON reconcile_daily.date_start = payment_meta.date_start
+      AND reconcile_daily.admin_address = payment_meta.admin_address
     ORDER BY date_start
   )
 SELECT

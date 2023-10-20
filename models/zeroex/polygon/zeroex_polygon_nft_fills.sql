@@ -13,6 +13,11 @@
     )
 }}
 
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 {% set zeroex_v4_nft_start_date = '2022-03-01' %}
 
 --sample query on dune v2: https://dune.com/queries/1844568 

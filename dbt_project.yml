@@ -478,6 +478,8 @@ models:
         +schema: dodo_arbitrum
       optimism:
         +schema: dodo_optimism
+      base:
+        +schema: dodo_base
 
 
     spookyswap:
@@ -589,6 +591,8 @@ models:
         +schema: trader_joe_avalanche_c
       bnb:
         +schema: trader_joe_bnb
+      arbitrum:
+        +schema: trader_joe_arbitrum
 
     odos:
       +schema: odos
@@ -771,9 +775,6 @@ models:
         +schema: equalizer_optimism
       polygon:
         +schema: equalizer_polygon
-
-    integration_test:
-      +schema: integration_test
 
     curvefi:
       +schema: curvefi
@@ -1405,3 +1406,8 @@ models:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
+
+    openxswap:
+      +schema: openxswap
+      optimism:
+        +schema: openxswap_optimism
