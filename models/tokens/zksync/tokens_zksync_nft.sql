@@ -1,11 +1,13 @@
-{{ config(tags=['dunesql'],
-        alias = alias('nft')
-        , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["zksync"]\',
+{{ config(
+    tags=['dunesql']
+    , schema = 'tokens_zksync'
+    , alias = alias('nft')
+    , materialized = 'table'
+    , post_hook='{{ expose_spells(\'["zksync"]\',
                                 "sector",
                                 "tokens",
                                 \'["lgingerich"]\') }}'
-        )
+    )
 }}
 
 SELECT
