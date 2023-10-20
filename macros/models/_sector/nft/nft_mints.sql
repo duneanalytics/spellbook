@@ -130,6 +130,9 @@ nft_mint_with_erc20 as (
 
 select
   '{{blockchain}}' as blockchain,
+  coalesce(ec.namespace, 'Unknown') as project,
+  coalesce(tok.name, 'Unknown') as collection,
+  '' as version,
   nft_mints.block_time,
   nft_mints.block_date,
   nft_mints.block_month,
@@ -148,8 +151,6 @@ select
   nft_mints.project_contract_address,
   nft_mints.tx_from,
   nft_mints.tx_to,
-  coalesce(ec.namespace, 'Unknown') as project,
-  coalesce(tok.name, 'Unknown') as collection,
   coalesce(mint_native.amount_raw, mint_erc20.amount_raw, uint256 '0') as amount_raw,
   coalesce(mint_native.amount_original, mint_erc20.amount_original, 0) as amount_original,
   coalesce(mint_native.amount_usd, mint_erc20.amount_usd, 0) as amount_usd,
