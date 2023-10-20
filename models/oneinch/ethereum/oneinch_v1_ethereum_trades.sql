@@ -46,7 +46,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v1_call_aggregate') }}
+        {{ source('oneinch_ethereum', 'ExchangeV1_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -70,7 +70,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v2_call_aggregate') }}
+        {{ source('oneinch_ethereum', 'ExchangeV2_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -94,7 +94,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v3_call_aggregate') }}
+        {{ source('oneinch_ethereum', 'ExchangeV3_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -118,7 +118,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v4_call_aggregate') }}
+        {{ source('oneinch_ethereum', 'ExchangeV4_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -142,7 +142,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v5_call_aggregate') }}
+        {{ source('oneinch_ethereum', 'ExchangeV5_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -166,7 +166,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v6_call_aggregate') }}
+        {{ source('oneinch_ethereum', 'ExchangeV6_call_aggregate') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -190,7 +190,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'exchange_v7_call_swap') }}
+        {{ source('oneinch_ethereum', 'ExchangeV7_call_swap') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -214,7 +214,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_ethereum', 'OneInchExchange_call_swap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV1_call_swap') }}
     WHERE
         call_success
         {% if is_incremental() %}
