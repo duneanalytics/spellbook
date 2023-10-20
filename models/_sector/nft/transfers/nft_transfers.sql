@@ -26,11 +26,8 @@
 ,ref('nft_fantom_transfers')
 ,ref('nft_goerli_transfers')
 ,ref('nft_base_transfers')
-,ref('nft_zksync_transfers')
-<<<<<<< HEAD
-=======
 ,ref('nft_celo_transfers')
->>>>>>> main
+,ref('nft_zksync_transfers')
 ] %}
 
 SELECT *
