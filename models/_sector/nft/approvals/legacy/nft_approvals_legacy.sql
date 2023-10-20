@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'block_number','tx_hash','evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "zksync"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}')
@@ -23,6 +23,7 @@
 ,ref('nft_polygon_approvals_legacy')
 ,ref('nft_fantom_approvals_legacy')
 ,ref('nft_goerli_approvals_legacy')
+,ref('nft_zksync_approvals_legacy')
 ] %}
 
 SELECT *

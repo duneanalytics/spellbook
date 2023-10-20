@@ -8,7 +8,8 @@
 }}
 
 {% set camelot_models = [
-ref('camelot_v1_arbitrum_trades')
+ref('camelot_v1_arbitrum_trades'),
+ref('camelot_v3_arbitrum_trades')
 ] %}
 
 
