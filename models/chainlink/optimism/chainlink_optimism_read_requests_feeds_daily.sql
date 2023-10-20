@@ -10,8 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
-
 SELECT
   'optimism' as blockchain,
   MAX(CAST(date_trunc('month', date_start) as date)) as date_month,
@@ -22,7 +20,7 @@ SELECT
 FROM {{ ref('chainlink_optimism_read_requests_feeds') }} log_meta
 {% if is_incremental() %}
   WHERE
-   date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+   {{ incremental_predicate('date_start') }}
 {% endif %}
 GROUP BY
   3, 4

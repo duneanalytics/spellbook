@@ -10,8 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
-
 SELECT
   'bnb' as blockchain,
   cast(date_trunc('day', read_requests_requester.date_start) AS date) AS date_start,
@@ -22,7 +20,8 @@ SELECT
 FROM
   {{ref('chainlink_bnb_read_requests_requester')}} read_requests_requester
 {% if is_incremental() %}
-  WHERE read_requests_requester.date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+  WHERE 
+  {{ incremental_predicate('date_start') }}
 {% endif %}      
 GROUP BY
   2, 4
