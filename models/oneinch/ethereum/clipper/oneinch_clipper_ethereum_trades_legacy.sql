@@ -31,7 +31,7 @@ WITH clipper AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_clipperSwap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_clipperSwap') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -53,7 +53,7 @@ WITH clipper AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_clipperSwapTo') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_clipperSwapTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -75,7 +75,7 @@ WITH clipper AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_clipperSwapToWithPermit') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_clipperSwapToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}
