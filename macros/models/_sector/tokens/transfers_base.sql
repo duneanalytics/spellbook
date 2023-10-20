@@ -45,7 +45,7 @@ WITH transfers AS (
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
-    , t.value AS amount_raw
+    , t.wad AS amount_raw -- is this safe cross chain?
     , t.contract_address
     -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
@@ -63,7 +63,7 @@ WITH transfers AS (
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
-    , t.value AS amount_raw
+    , t.wad AS amount_raw -- is this safe cross chain?
     , t.contract_address
     -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
