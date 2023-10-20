@@ -1,4 +1,9 @@
-{{ config( alias = alias('erc20'), tags=['static', 'dunesql'])}}
+{{ config(
+        schema = 'tokens_zksync'
+        , alias = alias('erc20')
+        , tags=['static', 'dunesql']
+        )
+}}
 
 SELECT contract_address, symbol, decimals
 FROM (VALUES
