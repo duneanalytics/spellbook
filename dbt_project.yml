@@ -161,12 +161,6 @@ models:
 
     nft:
       +schema: nft
-      arbitrum:
-        +schema: nft_arbitrum
-      avalanche_c:
-        +schema: nft_avalanche_c
-      bnb:
-        +schema: nft_bnb
       ethereum:
         +schema: nft_ethereum
         metadata:
@@ -174,12 +168,6 @@ models:
           +materialized: table
           +file_format: delta
           +tags: "static"
-      optimism:
-        +schema: nft_optimism
-      polygon:
-        +schema: nft_polygon
-      celo:
-        +schema: nft_celo
 
     cex:
       +schema: cex
