@@ -13,4 +13,5 @@
 {{dex_arbitrages(
         blockchain='base'
         , transactions = source('base','transactions')
+        , fungible_transfers = ref('fungible_base_transfers')
 )}}

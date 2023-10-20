@@ -13,4 +13,5 @@
 {{dex_arbitrages(
         blockchain='optimism'
         , transactions = source('optimism','transactions')
+        , fungible_transfers = ref('fungible_polygon_transfers')
 )}}

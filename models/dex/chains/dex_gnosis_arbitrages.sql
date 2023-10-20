@@ -13,4 +13,5 @@
 {{dex_arbitrages(
         blockchain='gnosis'
         , transactions = source('gnosis','transactions')
+        , fungible_transfers = ref('fungible_gnosis_transfers')
 )}}

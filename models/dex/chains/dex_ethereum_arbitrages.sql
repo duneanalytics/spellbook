@@ -13,4 +13,5 @@
 {{dex_arbitrages(
         blockchain='ethereum'
         , transactions = source('ethereum','transactions')
+        , fungible_transfers = ref('fungible_ethereum_transfers')
 )}}

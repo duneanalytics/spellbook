@@ -13,4 +13,5 @@
 {{dex_arbitrages(
         blockchain='avalanche_c'
         , transactions = source('avalanche_c','transactions')
+        , fungible_transfers = ref('fungible_avalanche_c_transfers')
 )}}

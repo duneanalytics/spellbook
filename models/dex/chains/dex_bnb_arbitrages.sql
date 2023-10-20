@@ -13,4 +13,5 @@
 {{dex_arbitrages(
         blockchain='bnb'
         , transactions = source('bnb','transactions')
+        , fungible_transfers = ref('fungible_bnb_transfers')
 )}}
