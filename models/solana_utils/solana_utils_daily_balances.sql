@@ -33,6 +33,8 @@ WITH
                   , row_number() OVER (partition by address, date_trunc('day', block_time) order by block_slot desc) as latest_balance
             FROM {{ source('solana','account_activity') }}
             WHERE tx_success 
+            AND balance_change != 0
+            AND token_balance_change != 0
             AND (
                   --if the address is a token_mint_account, then mint_address should not be null
                   (address NOT in (select address from tokens_accounts))
