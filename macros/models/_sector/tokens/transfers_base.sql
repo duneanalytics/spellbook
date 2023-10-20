@@ -53,7 +53,7 @@ WITH transfers AS (
     , t.to
     , t.evt_index
     , NULL AS trace_address
-    FROM {{ wrapped_token_deposit }}
+    FROM {{ wrapped_token_deposit }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
@@ -71,7 +71,7 @@ WITH transfers AS (
     , t.to
     , t.evt_index
     , NULL AS trace_address
-    FROM {{ wrapped_token_withdrawal }}
+    FROM {{ wrapped_token_withdrawal }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
