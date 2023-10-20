@@ -152,17 +152,11 @@ select
   nft_mints.project_contract_address,
   nft_mints.tx_from,
   nft_mints.tx_to,
-  coalesce(mint_native.amount_raw, mint_erc20.amount_raw, uint256 '0') as amount_raw,
-  coalesce(mint_native.amount_original, mint_erc20.amount_original, 0) as amount_original,
-  coalesce(mint_native.amount_usd, mint_erc20.amount_usd, 0) as amount_usd,
-  case
-    when mint_erc20.tx_hash is not null then mint_erc20.symbol
-    else mint_native.symbol
-  end as currency_symbol,
-  case
-    when mint_erc20.tx_hash is not null then mint_erc20.contract_address
-    else mint_native.contract_address
-  end as currency_contract,
+  coalesce(mint_erc20.amount_raw, mint_native.amount_raw, uint256 '0') as amount_raw,
+  coalesce(mint_erc20.amount_original, mint_native.amount_original, 0) as amount_original,
+  coalesce(mint_erc20.amount_usd, mint_native.amount_usd, 0) as amount_usd,
+  coalesce(mint_erc20.symbol, mint_native.symbol, {{ default_currency_symbol }}) as currency_symbol,
+  coalesce(mint_erc20.contract_address, mint_native.contract_address, {{ default_currency_contract }}) as currency_contract,
   agg.name as aggregator_name,
   agg.contract_address as aggregator_address,
   cast(0 as uint256) as platform_fee_amount_raw,
