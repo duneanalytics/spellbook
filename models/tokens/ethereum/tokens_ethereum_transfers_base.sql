@@ -15,5 +15,5 @@
     transactions = source('ethereum','transactions'),
     erc20_transfers = source('erc20_ethereum','evt_Transfer'),
     wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
-    wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal')
+    wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
 )}}
