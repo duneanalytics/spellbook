@@ -40,6 +40,8 @@ WITH transfers AS (
     {% endif %}
 
     {% if wrapped_token_deposit and wrapped_token_withdrawal %}
+    UNION ALL
+
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
