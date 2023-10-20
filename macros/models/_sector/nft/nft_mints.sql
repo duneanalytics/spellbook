@@ -156,12 +156,12 @@ select
   coalesce(mint_native.amount_original, mint_erc20.amount_original, 0) as amount_original,
   coalesce(mint_native.amount_usd, mint_erc20.amount_usd, 0) as amount_usd,
   case
-    when mint_native.tx_hash is not null then mint_native.symbol
-    else mint_erc20.symbol
+    when mint_erc20.tx_hash is not null then mint_erc20.symbol
+    else mint_native.symbol
   end as currency_symbol,
   case
-    when mint_native.tx_hash is not null then mint_native.contract_address
-    else mint_erc20.contract_address
+    when mint_erc20.tx_hash is not null then mint_erc20.contract_address
+    else mint_native.contract_address
   end as currency_contract,
   agg.name as aggregator_name,
   agg.contract_address as aggregator_address,
