@@ -1,5 +1,6 @@
 {{config(
 	tags=['legacy'],
+	schema = 'nft_arbitrum',
     alias=alias('aggregators', legacy_model=True)
 )}}
 
