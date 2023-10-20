@@ -9,6 +9,11 @@
     )
 }}
 
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 WITH traces AS (
      SELECT traces.block_time
      , traces.block_number

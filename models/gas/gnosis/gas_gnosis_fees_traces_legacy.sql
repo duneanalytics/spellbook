@@ -1,12 +1,8 @@
 {{ config(
-     tags=['legacy', 'prod_exclude', 'remove'],
+     tags=['legacy'],
      schema = 'gas_gnosis',
      alias = alias('fees_traces', legacy_model=True),
-     partition_by = ['block_date'],
-     materialized = 'incremental',
-     file_format = 'delta',
-     incremental_strategy = 'merge',
-     unique_key = ['tx_hash', 'trace'],
+     materialized = 'view'
     )
 }}
 
@@ -40,9 +36,6 @@ WITH traces AS (
           , success AS trace_success
           , tx_success
           FROM {{ source('gnosis','traces') }}
-          {% if is_incremental() %}
-          WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
-          {% endif %}
           
           UNION ALL
           
@@ -61,9 +54,6 @@ WITH traces AS (
           , CAST(NULL AS boolean) AS tx_success
           FROM {{ source('gnosis','traces') }}
           WHERE cardinality(trace_address) > 0
-          {% if is_incremental() %}
-          AND block_time >= date_trunc("day", NOW() - interval '1 days')
-          {% endif %}
           ) traces
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
      )
@@ -98,12 +88,6 @@ SELECT 'gnosis' AS blockchain
 FROM traces
 INNER JOIN {{ source('gnosis','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
-     {% if is_incremental() %}
-     AND txs.block_time >= date_trunc("day", NOW() - interval '1 days')
-     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
      AND pu.blockchain='gnosis'
      AND pu.contract_address='0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
-     {% if is_incremental() %}
-     AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
-     {% endif %}
