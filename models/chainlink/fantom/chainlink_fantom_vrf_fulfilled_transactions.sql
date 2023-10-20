@@ -10,8 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
-
 WITH
   fantom_usd AS (
     SELECT
@@ -22,33 +20,57 @@ WITH
     WHERE
       symbol = 'FTM'
       {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND
+           {{ incremental_predicate('minute') }}
       {% endif %}      
   ),
   vrf_fulfilled_transactions AS (
     SELECT
       tx.hash as tx_hash,
       tx.index as tx_index,
-      MAX(tx.block_time) as block_time,
+      MAX(tx.block_time) as tx_block_time,
       cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
       tx."from" as "node_address",
-      MAX(
-        (cast((gas_used) as double) / 1e18) * gas_price
-      ) as token_amount,
+      MAX((cast((gas_used) as double) / 1e18) * gas_price) as token_amount,
       MAX(fantom_usd.usd_amount) as usd_amount
     FROM
       {{ source('fantom', 'transactions') }} tx
       RIGHT JOIN {{ ref('chainlink_fantom_vrf_v1_random_fulfilled_logs') }} vrf_v1_logs ON vrf_v1_logs.tx_hash = tx.hash
       {% if is_incremental() %}
-        AND vrf_v1_logs.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}
-      RIGHT JOIN {{ ref('chainlink_fantom_vrf_v2_random_fulfilled_logs') }} vrf_v2_logs ON vrf_v2_logs.tx_hash = tx.hash
-      {% if is_incremental() %}
-        AND vrf_v2_logs.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND
+          {{ incremental_predicate('tx.block_time') }}
       {% endif %}
       LEFT JOIN fantom_usd ON date_trunc('minute', tx.block_time) = fantom_usd.block_time
     {% if is_incremental() %}
-      WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      WHERE
+        {{ incremental_predicate('tx.block_time') }}
+    {% endif %}      
+    GROUP BY
+      tx.hash,
+      tx.index,
+      tx."from"
+
+    UNION
+
+    SELECT
+      tx.hash as tx_hash,
+      tx.index as tx_index,
+      MAX(tx.block_time) as tx_block_time,
+      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
+      tx."from" as "node_address",
+      MAX((cast((gas_used) as double) / 1e18) * gas_price) as token_amount,
+      MAX(fantom_usd.usd_amount) as usd_amount
+    FROM
+      {{ source('fantom', 'transactions') }} tx
+      RIGHT JOIN {{ ref('chainlink_fantom_vrf_v2_random_fulfilled_logs') }} vrf_v2_logs ON vrf_v2_logs.tx_hash = tx.hash
+      {% if is_incremental() %}
+        AND
+          {{ incremental_predicate('tx.block_time') }}
+      {% endif %}
+      LEFT JOIN fantom_usd ON date_trunc('minute', tx.block_time) = fantom_usd.block_time
+    {% if is_incremental() %}
+      WHERE
+        {{ incremental_predicate('tx.block_time') }}
     {% endif %}      
     GROUP BY
       tx.hash,
@@ -57,7 +79,7 @@ WITH
   )
 SELECT
  'fantom' as blockchain,
-  block_time,
+  tx_block_time as block_time,
   date_month,
   node_address,
   token_amount,
