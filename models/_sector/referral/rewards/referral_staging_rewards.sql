@@ -43,7 +43,7 @@ FROM (
         sub_tx_id
     FROM {{ model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('block_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL

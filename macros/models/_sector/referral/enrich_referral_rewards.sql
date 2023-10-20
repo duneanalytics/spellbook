@@ -34,9 +34,9 @@ left join {{source('prices','usd')}} p
             and p.symbol = 'ETH' and p.blockchain is null)
         )
     {% if is_incremental() %}
-    and p.minute > date_trunc('day', now() - interval '1' day)
+    where {{incremental_predicate('p.minute')}}
     {% endif %}
 {% if is_incremental() %}
-where r.block_time > date_trunc('day', now() - interval '1' day)
+where {{incremental_predicate('r.block_time')}}
 {% endif %}
 {% endmacro %}

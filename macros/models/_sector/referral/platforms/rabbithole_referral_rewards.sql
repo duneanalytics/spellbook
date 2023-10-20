@@ -23,7 +23,7 @@ with model as (
         ,evt_index as sub_tx_id
     from {{QuestFactory_evt_MintFeePaid}}
     {% if is_incremental() %}
-    where {{incremental_predicate('evt_block_number')}}
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 )
 

@@ -34,6 +34,6 @@ inner join {{source(blockchain, 'transactions')}} tx
     and {{incremental_predicate('tx.block_time')}}
     {% endif %}
 {% if is_incremental() %}
-where {{incremental_predicate('evt_block_number')}}
+where {{incremental_predicate('evt_block_time')}}
 {% endif %}
 {% endmacro %}
