@@ -78,9 +78,9 @@ nft_mint_with_native as (
     nft_mints.token_id,
     {{ default_currency_contract }} as contract_address,
     '{{ default_currency_symbol }}' as symbol,
-    cast(coalesce(cast(trc.value as double), 0) * nft_mints.mint_ratio as uint256) as amount_raw,
-    (coalesce(cast(trc.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio as amount_original,
-    (coalesce(cast(trc.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio * pu_native.price as amount_usd
+    cast(sum(coalesce(cast(trc.value as double), 0) * nft_mints.mint_ratio) as uint256) as amount_raw,
+    sum((coalesce(cast(trc.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio) as amount_original,
+    sum((coalesce(cast(trc.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio * pu_native.price) as amount_usd
   from nft_mints
     join {{ src_traces }} trc on nft_mints.block_time = trc.block_time
       and nft_mints.tx_hash = trc.tx_hash
@@ -98,6 +98,7 @@ nft_mint_with_native as (
     and (trc.call_type not in ('delegatecall', 'callcode', 'staticcall') or trc.call_type is null)
     and cast(trc.value as double) > 0
     and trc.success
+  group by 1,2,3
 ),
 
 nft_mint_with_erc20 as (
