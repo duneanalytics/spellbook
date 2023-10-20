@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: optimism
       sector: dex
-      project: openocean_v2
+      project: openocean
       contributors: ARDev097
     config:
-      tags: ['optimism', 'openocean_v2', 'trades', 'openocean', 'dex']
+      tags: ['optimism', 'openocean', 'trades', 'openocean', 'dex']
     description: >
       openocean V2 contract trades on optimism
     tests:
