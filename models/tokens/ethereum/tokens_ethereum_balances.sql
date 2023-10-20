@@ -6,5 +6,5 @@
 }}
 
 {{balances_enrich(
-    transfers_base = ref('tokens_ethereum_balances_base'),
+    balances_base = ref('tokens_ethereum_balances_base'),
 )}}
