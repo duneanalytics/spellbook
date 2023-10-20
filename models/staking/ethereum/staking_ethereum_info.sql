@@ -32,7 +32,7 @@ FROM (VALUES
     , ('StakeHound', 'stakedTokens')
     , ('Swell', 'swellnetworkio')
     , ('Bitstamp', 'Bitstamp')
-    , ('Huobi', 'HuobiGlobal')
+    , ('HTX', 'HTX_Global')
     , ('imToken', 'imTokenOfficial')
     , ('Stkr (Ankr)', 'ankr')
     , ('KuCoin', 'kucoincom')
