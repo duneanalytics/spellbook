@@ -1,4 +1,4 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, wrapped_token_deposit = null, wrapped_token_withdrawal = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 {# denormalized tables are not yet in use #}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
@@ -38,6 +38,42 @@ WITH transfers AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
+
+    {% if wrapped_token_deposit and wrapped_token_withdrawal %}
+    SELECT t.evt_block_time AS block_time
+    , t.evt_block_number AS block_number
+    , t.evt_tx_hash AS tx_hash
+    , t.value AS amount_raw
+    , t.contract_address
+    -- technically this is not a standard 20 token, but we use it for consistency
+    , '{{token_standard_20}}' AS token_standard
+    , t."from"
+    , t.to
+    , t.evt_index
+    , NULL AS trace_address
+    FROM {{ wrapped_token_deposit }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% endif %}
+
+    UNION ALL
+
+    SELECT t.evt_block_time AS block_time
+    , t.evt_block_number AS block_number
+    , t.evt_tx_hash AS tx_hash
+    , t.value AS amount_raw
+    , t.contract_address
+    -- technically this is not a standard 20 token, but we use it for consistency
+    , '{{token_standard_20}}' AS token_standard
+    , t."from"
+    , t.to
+    , t.evt_index
+    , NULL AS trace_address
+    FROM {{ wrapped_token_withdrawal }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% endif %}
+{% endif %}
     )
 
 SELECT '{{blockchain}}' as blockchain
@@ -45,6 +81,7 @@ SELECT '{{blockchain}}' as blockchain
 , t.block_time
 , t.block_number
 , t.tx_hash
+-- method_id => first 4bytes of data
 , t.evt_index
 , t.trace_address
 , t.token_standard
