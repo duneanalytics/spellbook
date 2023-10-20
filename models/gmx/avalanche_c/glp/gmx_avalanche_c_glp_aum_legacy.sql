@@ -3,9 +3,7 @@
 	
         alias = alias('glp_aum', legacy_model=True),
         partition_by = ['block_date'],
-        materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
@@ -31,9 +29,4 @@ SELECT -- This query calculates the AUM of each component of GLP
     (wbtc_e_available_assets * wbtc_e_current_price) + (wbtc_e_longs) + (wbtc_e_current_price - wbtc_e_shorts_entry_price) * COALESCE((wbtc_e_shorts_outstanding_notional / wbtc_e_current_price),0) AS wbtc_e_aum, -- Removes null values derrived from 0 divided 0
     (btc_b_available_assets * btc_b_current_price) + (btc_b_longs) + (btc_b_current_price - btc_b_shorts_entry_price) * COALESCE((btc_b_shorts_outstanding_notional / btc_b_current_price),0) AS btc_b_aum -- Removes null values derrived from 0 divided 0
 FROM {{ref('gmx_avalanche_c_glp_components_legacy')}}
-{% if is_incremental() %}
-WHERE minute >= date_trunc("day", now() - interval '1 day')
-{% endif %}
-{% if not is_incremental() %}
 WHERE minute >= '{{project_start_date}}'
-{% endif %}
