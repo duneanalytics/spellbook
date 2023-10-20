@@ -34,7 +34,7 @@ left join {{source('prices','usd')}} p
             and p.symbol = 'ETH' and p.blockchain is null)
         )
     {% if is_incremental() %}
-    where {{incremental_predicate('p.minute')}}
+    and {{incremental_predicate('p.minute')}}
     {% endif %}
 {% if is_incremental() %}
 where {{incremental_predicate('r.block_time')}}
