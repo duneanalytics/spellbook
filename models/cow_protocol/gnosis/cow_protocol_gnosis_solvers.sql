@@ -61,7 +61,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x8e600b399Da9c46255ccac98764987cF81837a66, 'barn', 'Enso'),
                  (0xC8D2f12a9505a82C4f6994204f4BbF095183E63A, 'barn', 'SeaSolver'),
                  (0xE3068acB5b5672408eADaD4417e7d3BA41D4FEBe, 'prod', 'SeaSolver'),
-                 (0x12c53cdD1ef150E1cd291DD210b761acFADA6B9C, 'prod', 'Enso')
+                 (0x12c53cdD1ef150E1cd291DD210b761acFADA6B9C, 'prod', 'Enso'),
                  (0xf671d28fef15e5eafc21898c2814b1b4cd88bc9a, 'prod', 'Gnosis_BalancerSOR'),
                  (0x056545021B39790eFb0a074827e7FddCb751A179, 'prod', 'Gnosis_1inch'),
                  (0xfb88fC234278a2c9CCEFfbAcdb01B8A993307A22, 'prod', 'Quasimodo'),
