@@ -1,15 +1,16 @@
 {{config(
+        schema = "cex_optimism",
         tags = ['static', 'dunesql'],
         alias = alias('addresses'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "cex",
-                                    \'["msilb7", "hildobby"]\') }}')}}
+                                    \'["msilb7", "hildobby", "kaiblade"]\') }}')}}
 
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
-     ('optimism', 0x88880809d6345119ccabe8a9015e4b1309456990, 'Juno', 'Juno 1', 'msilb7', date '2022-10-10')
-    , ('optimism', 0x5122e9aa635c13afd2fc31de3953e0896bac7ab4, 'Coinbase', 'Coinbase 1', 'msilb7', date '2022-10-10')
+--    ('optimism', 0x88880809d6345119ccabe8a9015e4b1309456990, 'Juno', 'Juno 1', 'msilb7', date '2022-10-10') -- Not a crypto exchange, source: https://help.juno.finance/en/articles/6413828-is-juno-a-crypto-exchange
+     ('optimism', 0x5122e9aa635c13afd2fc31de3953e0896bac7ab4, 'Coinbase', 'Coinbase 1', 'msilb7', date '2022-10-10')
     , ('optimism', 0xf491d040110384dbcf7f241ffe2a546513fd873d, 'Coinbase', 'Coinbase 2', 'msilb7', date '2022-10-10')
     , ('optimism', 0xd839c179a4606f46abd7a757f7bb77d7593ae249, 'Coinbase', 'Coinbase 3', 'msilb7', date '2022-10-10')
     , ('optimism', 0xc8373edfad6d5c5f600b6b2507f78431c5271ff5, 'Coinbase', 'Coinbase 4', 'msilb7', date '2022-10-10')
@@ -43,6 +44,10 @@ FROM (VALUES
     , ('optimism', 0x0639556F03714A74a5fEEaF5736a4A64fF70D206, 'Bitget', 'Bitget 1', 'msilb7', date '2022-10-10')
     , ('optimism', 0x5bdf85216ec1e38d6458c870992a69e38e03f7ef, 'Bitget', 'Bitget 2', 'msilb7', date '2022-10-10')
     , ('optimism', 0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689, 'Bitget', 'Bitget 3', 'msilb7', date '2022-10-10')
+    , ('optimism', 0x92bd687953da50855aee2df0cff282cc2d5f226b, 'Crypto.com', 'Crypto.com 1', 'kaiblade', date '2023-10-19')
+    , ('optimism', 0x72a53cdbbcc1b9efa39c834a540550e23463aacb, 'Crypto.com', 'Crypto.com 2', 'kaiblade', date '2023-10-19')
+    , ('optimism', 0x9a552417cfc942a5c88ab474756d3d9962f917c0, 'Crypto.com', 'Crypto.com 3', 'kaiblade', date '2023-10-21')
+    , ('optimism', 0xdf90c9b995a3b10a5b8570a47101e6c6a29eb945, 'MEXC', 'MEXC 1', 'kaiblade', date '2023-10-19')
     -- WOO Network, source: https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/woo-cex/index.js
     , ('optimism', 0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df, 'WOO Network', 'WOO Network 1', 'hildobby', date '2023-04-07')
     , ('optimism', 0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4, 'WOO Network', 'WOO Network 2', 'hildobby', date '2023-04-07')

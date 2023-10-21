@@ -8,22 +8,47 @@ models:
       contributors: hildobby
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'optimism']
-    description: "All CEX-tied addresses identified on Optimism"
+    description: "All CEX vault addresses identified on Optimism"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - address
     columns:
-      - name: blockchain
+      - &blockchain
+        name: blockchain
         description: "Blockchain"
-      - name: address
+      - &address
+        name: address
         description: "Address"
-      - name: cex_name
+      - &cex_name
+        name: cex_name
         description: "Name of centralised exchange"
-      - name: distinct_name
+      - &distinct_name
+        name: distinct_name
         description: "Distinct name of centralised exchange address"
-      - name: added_by
+      - &added_by
+        name: added_by
         description: "Who added the address"
-      - name: added_date
+      - &added_date
+        name: added_date
         description: "Date the address was added on"
+
+  - name: cex_optimism_deposit_addresses
+    meta:
+      blockchain: optimism
+      sector: cex
+      contributors: kaiblade
+    config:
+      tags: ['cex','addresses', 'deposits', 'withdrawals', 'optimism']
+    description: "CEX deposit addresses on Optimism"
+  
+    columns:
+      - &cex_deposit_address
+        name: cex_deposit_address
+        description: "CEX deposit address"
+        tests:
+          - unique
+          - not_null
+      - *cex_name
+      
