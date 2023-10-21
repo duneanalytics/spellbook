@@ -50,7 +50,7 @@ WITH project_mints as
         seller,
         buyer,
         amount_original,
-        amount_raw,
+        cast(amount_raw as double) as amount_raw,
         currency_symbol,
         currency_contract,
         nft_contract_address,
