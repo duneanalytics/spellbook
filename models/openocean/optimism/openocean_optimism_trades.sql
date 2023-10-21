@@ -1,6 +1,6 @@
 {{ config(
     tags = ['dunesql'],
-    schema = 'openocean_v2_optimism',
+    schema = 'openocean_optimism',
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',
