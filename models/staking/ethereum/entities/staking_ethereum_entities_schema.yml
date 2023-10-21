@@ -120,10 +120,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - pubkey
+            - tx_from
     columns:
-      - name: pubkey
-        description: "Pubkey of identified depositor entity"
+      - name: tx_from
+        description: "Transaction sender of identified depositor entity"
         tests:
           - unique
       - name: entity

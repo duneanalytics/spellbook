@@ -9,14 +9,14 @@
 }}
 
 WITH tagged_entities AS (
-    SELECT funds_origin, entity, category, offset
+    SELECT funds_origin, entity, category
     FROM (VALUES
-        (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'Manifold Finance', 'Staking Pools', 1)
-        , (0xcDBF58a9A9b54a2C43800c50C7192946dE858321, 'Bitpanda', 'CEX', 1)
-        , (0x70D5cCC14a1a264c05Ff48B3ec6751b0959541aA, 'Binance US', 'CEX', 1)
-        , (0x301407427168FB51bcc927b9FB76DCd88Fe45681, 'Ether Capital', 'Staking Pools', 1)
+        (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'Manifold Finance', 'Staking Pools')
+        , (0xcDBF58a9A9b54a2C43800c50C7192946dE858321, 'Bitpanda', 'CEX')
+        , (0x70D5cCC14a1a264c05Ff48B3ec6751b0959541aA, 'Binance US', 'CEX')
+        , (0x301407427168FB51bcc927b9FB76DCd88Fe45681, 'Ether Capital', 'Staking Pools')
         ) 
-        x (funds_origin, entity, category, offset)
+        x (funds_origin, entity, category)
     )
 
 , batch_contracts AS (
@@ -29,9 +29,9 @@ WITH tagged_entities AS (
         ) AS temp_table (contract)
     )
 
-SELECT d.pubkey
+SELECT txs."from" AS tx_from
 , e.entity
-, CONCAT(e.entity, ' ', CAST(MAX(e.offset)+(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time))) AS VARCHAR)) AS entity_unique_name
+, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
 , e.category
 FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
 INNER JOIN {{ source('ethereum', 'traces') }} dep ON dep.to = 0x00000000219ab540356cbb839cbe05303d7705fa
@@ -53,7 +53,14 @@ INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.ev
     AND traces.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 INNER JOIN tagged_entities e ON e.funds_origin=traces."from"
+INNER JOIN {{ source('ethereum', 'traces') }} txs ON txs.block_number=traces.block_number
+    AND txs.hash=traces.tx_hash
+    AND txs.block_time >= TIMESTAMP '2020-10-14'
+    {% if is_incremental() %}
+    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+WHERE d.evt_block_time >= TIMESTAMP '2020-10-14'
 {% if is_incremental() %}
-WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
+AND d.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY 1, 2, 4
