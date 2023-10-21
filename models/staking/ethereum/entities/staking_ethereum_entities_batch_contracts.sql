@@ -28,7 +28,7 @@ WITH tagged_entities AS (
     
 SELECT d.pubkey
 , e.entity
-, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
+, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY e.entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
 FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
 INNER JOIN batch_contracts sc USING (depositor_address)
 INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.evt_block_number
@@ -39,5 +39,5 @@ INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.ev
     {% if is_incremental() %}
     AND traces.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-INNER JOIN tagged_entities e USING e.funds_origin=traces."from"
+INNER JOIN tagged_entities e ON e.funds_origin=traces."from"
 GROUP BY 1, 2
