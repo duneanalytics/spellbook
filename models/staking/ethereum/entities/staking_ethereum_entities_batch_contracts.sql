@@ -11,7 +11,7 @@
 WITH tagged_entities AS (
     SELECT funds_origin, entity, category, offset
     FROM (VALUES
-        (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'Manifold Finance', 'Staking Pool', 1)
+        (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'Manifold Finance', 'Staking Pools', 1)
         ) 
         x (funds_origin, entity, category, offset)
     )
