@@ -28,9 +28,18 @@ deposit_addresses AS
 FROM vault_deposits deposits
 JOIN {{ ref('cex_optimism_addresses') }} vaults
 ON deposits.cex_vault_address = vaults.address
+),
+
+-- address frequency of more than 1 means it's not a CEX deposit address
+deposit_addresses_frequency AS
+(SELECT cex_deposit_address, COUNT(cex_deposit_address) AS address_frequency
+FROM deposit_addresses
+GROUP BY cex_deposit_address
 )
 
 SELECT *
 FROM deposit_addresses
+WHERE cex_deposit_address NOT IN (SELECT cex_deposit_address FROM deposit_addresses_frequency WHERE address_frequency > 1 )
+
 
 
