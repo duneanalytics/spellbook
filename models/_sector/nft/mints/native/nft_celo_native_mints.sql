@@ -7,7 +7,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_hash','evt_index','token_id','number_of_items','currency_contract']
+        unique_key = ['tx_hash','evt_index','token_id','currency_contract']
     )
 }}
 

@@ -7,8 +7,8 @@
     nft_transfers,
     nft_aggregators,
     tokens_nft,
-    default_currency_symbol = 'ETH',
-    default_currency_contract = '0x000000000000000000000000000000000000dead',
+    default_currency_symbol,
+    default_currency_contract,
     addresses_defi = null
 )%}
 

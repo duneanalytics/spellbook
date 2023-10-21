@@ -6,7 +6,7 @@ models:
     meta:
       blockchain: ethereum
       sector: nft
-      contributors: umer_h_adil, hildobby
+      contributors: umer_h_adil, hildobby, tomfutago
     config:
       tags: [ 'nft','ethereum' ]
     description: >
@@ -17,7 +17,7 @@ models:
             - tx_hash
             - evt_index
             - token_id
-            - number_of_items
+            - currency_contract
     columns:
       - &tx_hash
         name: tx_hash
@@ -37,6 +37,11 @@ models:
       - &number_of_items
         name: number_of_items
         description: "number_of_items"
+        tests:
+          - not_null
+      - &currency_contract
+        name: currency_contract
+        description: "currency contract"
         tests:
           - not_null
       - &amount_usd
@@ -61,10 +66,35 @@ models:
             - tx_hash
             - evt_index
             - token_id
-            - number_of_items
+            - currency_contract
     columns:
       - *tx_hash
       - *evt_index
       - *token_id
       - *number_of_items
+      - *currency_contract
+      - *amount_usd
+
+  - name: nft_celo_native_mints
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: [ 'nft','celo' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - currency_contract
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *currency_contract
       - *amount_usd
