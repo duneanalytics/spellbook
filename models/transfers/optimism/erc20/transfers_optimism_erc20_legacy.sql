@@ -1,10 +1,12 @@
 {{ config(
 	tags=['legacy'],
-	materialized='view', alias = alias('erc20', legacy_model=True),
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}') }}
+	alias = alias('erc20', legacy_model=True),
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "sector",
+                                "transfers",
+                                \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}'
+    ) 
+}}
 
 with
     sent_transfers as (

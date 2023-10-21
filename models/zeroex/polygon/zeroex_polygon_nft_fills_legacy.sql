@@ -1,17 +1,7 @@
 {{  config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
         alias = alias('nft_fills', legacy_model=True),
-        materialized='incremental',
-        partition_by = ['block_date'],
-        unique_key = ['block_date', 'tx_hash', 'evt_index'],
-        on_schema_change='sync_all_columns',     
-        file_format ='delta',
-        incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "zeroex",
-                                \'["rantum","bakabhai993", "danning.sui"]\') }}'
+        materialized='view'
     )
 }}
 
@@ -39,12 +29,6 @@ WITH tbl_cte_transaction AS
          , erc20TokenAmount AS token_amount_raw
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1 
-        {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
-        {% endif %}
 
     UNION ALL
 
@@ -67,12 +51,6 @@ WITH tbl_cte_transaction AS
             , erc20FillAmount   AS token_amount_raw
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1 
-        {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '1 week')
-        {% endif %}
-        {% if not is_incremental() %}
-        AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
-        {% endif %}
 )
 , tbl_usd AS
 (
@@ -89,12 +67,6 @@ WITH tbl_cte_transaction AS
         WHERE 1=1
             AND blockchain = 'polygon'
             AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction) 
-            {% if is_incremental() %}
-            AND minute > now() - interval '100 days'
-            {% endif %}
-            {% if not is_incremental() %}
-            AND minute >= '{{zeroex_v4_nft_start_date}}' 
-            {% endif %}
     ) a
     WHERE ranker = 1 
 ) 
