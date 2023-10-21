@@ -17,6 +17,7 @@ models:
             - tx_hash
             - evt_index
             - token_id
+            - number_of_items
             - currency_contract
     columns:
       - &tx_hash
@@ -66,13 +67,12 @@ models:
             - tx_hash
             - evt_index
             - token_id
-            - currency_contract
+            - number_of_items
     columns:
       - *tx_hash
       - *evt_index
       - *token_id
       - *number_of_items
-      - *currency_contract
       - *amount_usd
 
   - name: nft_celo_native_mints
@@ -90,6 +90,7 @@ models:
             - tx_hash
             - evt_index
             - token_id
+            - number_of_items
             - currency_contract
     columns:
       - *tx_hash
