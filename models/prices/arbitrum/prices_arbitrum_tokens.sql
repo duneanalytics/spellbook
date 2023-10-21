@@ -109,5 +109,5 @@ FROM
     ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
     ('pendle-pendle','arbitrum','PENDLE',0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8,18),
     ('gns-gains-network','arbitrum','GNS',0x18c11fd286c5ec11c3b683caa813b77f5163a122,18),
-    ('joe-trader-joe','arbitrum','JOE',0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07,18),        
+    ('joe-trader-joe','arbitrum','JOE',0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07,18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
