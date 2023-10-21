@@ -29,6 +29,7 @@ WITH tagged_entities AS (
 SELECT d.pubkey
 , e.entity
 , CONCAT(e.entity, ' ', CAST(MAX(e.offset)+(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time))) AS VARCHAR)) AS entity_unique_name
+, e.category
 FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
 INNER JOIN {{ source('ethereum', 'traces') }} dep ON dep.to = 0x00000000219ab540356cbb839cbe05303d7705fa
     AND (dep.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR dep.call_type IS NULL)
@@ -52,4 +53,4 @@ INNER JOIN tagged_entities e ON e.funds_origin=traces."from"
 {% if is_incremental() %}
 WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-GROUP BY 1, 2
+GROUP BY 1, 2, 4
