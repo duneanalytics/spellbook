@@ -53,7 +53,7 @@ INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.ev
     AND traces.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 INNER JOIN tagged_entities e ON e.funds_origin=traces."from"
-INNER JOIN {{ source('ethereum', 'traces') }} txs ON txs.block_number=traces.block_number
+INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=traces.block_number
     AND txs.hash=traces.tx_hash
     AND txs.block_time >= TIMESTAMP '2020-10-14'
     {% if is_incremental() %}
