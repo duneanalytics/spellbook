@@ -78,7 +78,7 @@ nft_mint_with_native as (
     nft_mints.token_id,
     {{ default_currency_contract }} as contract_address,
     '{{ default_currency_symbol }}' as symbol,
-    cast(sum(coalesce(cast(trc.value as double), 0) * nft_mints.mint_ratio) as uint256) as amount_raw,
+    sum(coalesce(cast(trc.value as double), 0) * nft_mints.mint_ratio) as amount_raw,
     sum((coalesce(cast(trc.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio) as amount_original,
     sum((coalesce(cast(trc.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio * pu_native.price) as amount_usd
   from nft_mints
@@ -108,7 +108,7 @@ nft_mint_with_erc20 as (
     nft_mints.token_id,
     erc20.contract_address,
     pu_erc20.symbol,
-    cast(sum(coalesce(cast(erc20.value as double), 0) * nft_mints.mint_ratio) as uint256) as amount_raw, -- sum? what if 2+ different tokens? like when Uniswap V3 Positions NFT-V1 is minted
+    sum(coalesce(cast(erc20.value as double), 0) * nft_mints.mint_ratio) as amount_raw,
     sum((coalesce(cast(erc20.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio) as amount_original,
     sum((coalesce(cast(erc20.value as double), 0) / power(10, 18)) * nft_mints.mint_ratio * pu_erc20.price) as amount_usd
   from nft_mints
@@ -152,7 +152,7 @@ select
   nft_mints.project_contract_address,
   nft_mints.tx_from,
   nft_mints.tx_to,
-  coalesce(mint_erc20.amount_raw, mint_native.amount_raw, uint256 '0') as amount_raw,
+  coalesce(mint_erc20.amount_raw, mint_native.amount_raw, 0) as amount_raw,
   coalesce(mint_erc20.amount_original, mint_native.amount_original, 0) as amount_original,
   coalesce(mint_erc20.amount_usd, mint_native.amount_usd, 0) as amount_usd,
   coalesce(mint_erc20.symbol, mint_native.symbol, '{{ default_currency_symbol }}') as currency_symbol,
