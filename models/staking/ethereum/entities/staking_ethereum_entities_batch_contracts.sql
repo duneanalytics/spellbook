@@ -29,12 +29,15 @@ WITH tagged_entities AS (
 SELECT d.pubkey
 , e.entity
 , CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
-FROM {{ ref('staking_ethereum_deposits')}} d
+FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
 INNER JOIN batch_contracts sc USING (depositor_address)
-INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.block_number
-    AND traces.tx_hash=d.tx_hash
+INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.evt_block_number
+    AND traces.tx_hash=d.evt_tx_hash
     AND traces.to=depositor_address
     AND (traces.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR traces.call_type IS NULL)
     AND traces.value > UINT256 '0'
+    {% if is_incremental() %}
+    AND traces.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 INNER JOIN tagged_entities e USING e.funds_origin=traces."from"
 GROUP BY 1, 2
