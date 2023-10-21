@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       sector: cex
-      contributors: hildobby
+      contributors: hildobby, msilb7, kaiblade
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'optimism']
     description: "All CEX vault addresses identified on Optimism"
