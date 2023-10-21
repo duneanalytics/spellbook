@@ -12,7 +12,7 @@ WITH received_by_builder AS (
         {% if is_incremental() %}
         AND traces.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-    LEFT JOIN erc20_ethereum.evt_Transfer erc ON erc.evt_block_number=b.number
+    LEFT JOIN {{source('erc20_' + blockchain, 'evt_transfer')}}  erc ON erc.evt_block_number=b.number
         AND b.miner=erc.to
         AND erc.value > UINT256 '0'
         {% if is_incremental() %}
