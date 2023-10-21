@@ -181,7 +181,7 @@ from nft_mints
   left join namespaces ec on nft_mints.tx_to = ec.address
 where 1 = 1
   {% if addresses_defi %}
-  and nft_mints.contract_address not in (select address from {{ addresses_defi }})
+  and nft_mints.nft_contract_address not in (select address from {{ addresses_defi }})
   {% endif %}
   {% if is_incremental () %}
   and {{ incremental_predicate('nft_mints.block_time') }}
