@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='avalanche_c'
+        , blocks = source('avalanche_c','blocks')
+        , traces = source('avalanche_c','traces')
         , transactions = source('avalanche_c','transactions')
 )}}

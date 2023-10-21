@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='arbitrum'
+        , blocks = source('arbitrum','blocks')
+        , traces = source('arbitrum','traces')
         , transactions = source('arbitrum','transactions')
 )}}

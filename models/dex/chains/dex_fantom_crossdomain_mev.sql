@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='fantom'
+        , blocks = source('fantom','blocks')
+        , traces = source('fantom','traces')
         , transactions = source('fantom','transactions')
 )}}

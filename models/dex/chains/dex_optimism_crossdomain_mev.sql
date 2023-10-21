@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='optimism'
+        , blocks = source('optimism','blocks')
+        , traces = source('optimism','traces')
         , transactions = source('optimism','transactions')
 )}}

@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='base'
+        , blocks = source('base','blocks')
+        , traces = source('base','traces')
         , transactions = source('base','transactions')
 )}}

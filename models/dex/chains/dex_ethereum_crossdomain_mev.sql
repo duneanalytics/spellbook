@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='ethereum'
+        , blocks = source('ethereum','blocks')
+        , traces = source('ethereum','traces')
         , transactions = source('ethereum','transactions')
 )}}

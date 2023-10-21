@@ -12,5 +12,7 @@
 
 {{dex_crossdomain_mev(
         blockchain='gnosis'
+        , blocks = source('gnosis','blocks')
+        , traces = source('gnosis','traces')
         , transactions = source('gnosis','transactions')
 )}}
