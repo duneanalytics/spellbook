@@ -119,8 +119,7 @@ FROM
     , (0x2d4F5E4982F980BC61aA571AE63f66bF3577618C, 'BlockFi', 'BlockFi 1', 'CEX')
     , (0xB61428Db947a9eE049B966fb0536CB00579753eD, 'Korbit', 'Korbit 1', 'CEX')
     , (0x8d874F5A07dF691bC8e56818Ca1eBc6027B60d51, 'Paxos', 'Paxos 1', 'CEX')
-
-    -- STILL TESTING THOSE:
+    /*
     , (0x275a81e1848d176d6eb9c3f5d12c920f234408a6, 'BitGo', 'BitGo 1', 'CEX')
     , (0x276142c6358ccb8d90d35d7710789059d7dc56b3, 'BitGo', 'BitGo 2', 'CEX')
     , (0xa9d9366f97cc1727ead2f6115c0f446a977b0219, 'BitGo', 'BitGo 3', 'CEX')
@@ -150,14 +149,7 @@ FROM
     , (0x0be7c0a084127bd3f2ecf100453c7f21e76d77ae, 'BitGo', 'BitGo 27', 'CEX')
     , (0xf1b022b28006eb433f1fc69a87cde46f41d6aa8e, 'BitGo', 'BitGo 28', 'CEX')
     , (0x38e434ec10c11a448736a9e1f9d66a38d33ae4ab, 'BitGo', 'BitGo 29', 'CEX')
-    --, (0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 1', 'CEX')
-    --, (0x9b0c45d46D386cEdD98873168C36efd0DcBa8d46, 'Revolut', 'Revolut 2', 'CEX')
-    --, (0x98b92fde3F215F25e9D8CA1C6Ec67b65440bf38a, 'Bitfinex', 'Bitfinex 3', 'CEX')
-    --, (0xc611a82181b867487491541FB89f821fC22410aE, 'HTX', 'HTX 4', 'CEX') 
-    --, (0xe2c29d3f014001b1895bb4de2fba08e053491b45, 'Staked.us', 'Staked.us 2', 'Staking Pools')
-    --, (, '', '', '')
-    ---------
-
+    */
     , (0x4757d97449aca795510b9f3152c6a9019a3545c3, 'Daniel Wang', 'wangdong.eth',   'Independent Staker')
     , (0x69aa0361dbb0527d4f1e5312403bd41788fe61fe, 'Daniel Wang', 'danielwang.eth', 'Independent Staker')
     , (0xa12baeb64d4de260ed48a3ab5de8d5cbea1acdbd, 'Daniel Wang', 'Daniel Wang 1',  'Independent Staker')
