@@ -16,12 +16,13 @@
     
 {% set project_start_date = '2021-08-30' %}
 
+
 WITH dexs AS 
 (
         -- dodo proxy
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             sender AS taker,
             '' AS maker,
@@ -45,7 +46,7 @@ WITH dexs AS
         -- DODORouteProxy
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             sender AS taker,
             '' AS maker,
@@ -69,7 +70,7 @@ WITH dexs AS
         -- DODOFeeRouteProxy
         SELECT
             evt_block_time AS block_time,
-            'dodo' AS project,
+            'DODO X' AS project,
             '0' AS version,
             sender AS taker,
             '' AS maker,
