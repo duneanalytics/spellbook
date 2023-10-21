@@ -199,3 +199,15 @@ models:
     columns:
       # only listing columns that have tests here for simplicity
       - *unique_trade_id
+  - name: nft_celo_wash_trades
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: [ 'nft', 'wash_trades' ]
+    description: >
+      NFT wash trades labelling
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *unique_trade_id

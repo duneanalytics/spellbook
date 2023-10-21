@@ -40,7 +40,7 @@ WITH flashloans AS (
     )
     
 SELECT 'arbitrum'                                                       AS blockchain
-     , 'Aave'                                                           AS project
+     , 'aave'                                                           AS project
      , '3'                                                              AS version
      , CAST(date_trunc('Month', flash.block_time) as date)              AS block_month
      , flash.block_time

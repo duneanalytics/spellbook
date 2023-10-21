@@ -128,8 +128,9 @@
         , 'phoenix' as project 
         , 1 as version 
         , 'solana' as blockchain
-        , case when s.call_inner_instruction_index is null then s.call_outer_executing_account 
-            else 'direct' end as trade_source
+        , case when s.call_outer_executing_account = 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY' then 'direct'
+            else s.call_outer_executing_account
+            end as trade_source
         , case
             when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
             else concat(tokenA_symbol, '-', tokenB_symbol)
