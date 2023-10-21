@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pubkey'])
+    unique_key = ['tx_from'])
 }}
 
 WITH tagged_entities AS (
