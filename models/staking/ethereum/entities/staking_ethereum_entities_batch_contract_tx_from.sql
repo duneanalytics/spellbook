@@ -1,6 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_batch_contracts'),
+    alias = alias('entities_batch_contracts_tx_from'),
     tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +14,6 @@ WITH tagged_entities AS (
         (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'Manifold Finance', 'Staking Pools')
         , (0xcDBF58a9A9b54a2C43800c50C7192946dE858321, 'Bitpanda', 'CEX')
         , (0x70D5cCC14a1a264c05Ff48B3ec6751b0959541aA, 'Binance US', 'CEX')
-        , (0x301407427168FB51bcc927b9FB76DCd88Fe45681, 'Ether Capital', 'Staking Pools')
         ) 
         x (funds_origin, entity, category)
     )
