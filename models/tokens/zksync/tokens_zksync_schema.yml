@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: tokens_zksync_erc20
+    meta:
+      blockchain: zksync
+      sector: tokens
+      project: erc20
+      contributors: lgingerich
+    config:
+      tags: ['table', 'erc20']
+    description: "ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"
+
+  - name: tokens_zksync_nft_curated
+    meta:
+      blockchain: zksync
+      sector: nft
+      contributors: lgingerich
+    config:
+      tags: ['tokens', 'zksync', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Token Symbol"
+
+  - name: tokens_zksync_nft
+    meta:
+      blockchain: zksync
+      sector: nft
+      contributors: lgingerich
+    config:
+      tags: [ 'tokens', 'zksync', 'nft', 'erc721', 'erc1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Token Symbol"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
+        description: >
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.
+          
+
+  - name: tokens_zksync_nft_standards
+    meta:
+      blockchain: zksync
+      sector: nft
+      contributors: lgingerich
+    config:
+      tags: [ 'nft','zksync' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
