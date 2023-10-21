@@ -25,19 +25,31 @@ WITH tagged_entities AS (
         , (0xe8239B17034c372CDF8A5F8d3cCb7Cf1795c4572) -- Batch Deposit
         ) AS temp_table (depositor_address)
     )
-    
+
 SELECT d.pubkey
 , e.entity
-, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY e.entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
+, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
 FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
-INNER JOIN batch_contracts sc USING (depositor_address)
+INNER JOIN {{ source('ethereum', 'traces') }} dep ON dep.to = 0x00000000219ab540356cbb839cbe05303d7705fa
+    AND (dep.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR dep.call_type IS NULL)
+    AND dep.value > UINT256 '0'
+    AND dep.success
+    AND dep.block_time >= TIMESTAMP '2020-10-14'
+    {% if is_incremental() %}
+    AND dep.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+INNER JOIN batch_contracts bc ON bc.contract=dep."from"
 INNER JOIN {{ source('ethereum', 'traces') }} traces ON traces.block_number=d.evt_block_number
     AND traces.tx_hash=d.evt_tx_hash
-    AND traces.to=depositor_address
+    AND traces.to=dep."from"
     AND (traces.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR traces.call_type IS NULL)
     AND traces.value > UINT256 '0'
+    AND traces.block_time >= TIMESTAMP '2020-10-14'
     {% if is_incremental() %}
     AND traces.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 INNER JOIN tagged_entities e ON e.funds_origin=traces."from"
+{% if is_incremental() %}
+WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
 GROUP BY 1, 2
