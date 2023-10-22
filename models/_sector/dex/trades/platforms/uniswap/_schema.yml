@@ -185,6 +185,54 @@ models:
         name: evt_index
         description: "the position of this event log within this transaction"
 
+  - name: uniswap_v1_ethereum_trades_beta
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v1
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum','uniswap_v1','trades', 'uniswap','dex' ]
+    description: >
+      Uniswap V1 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 1
+
+  - name: uniswap_v2_ethereum_trades_beta
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap_v2
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum','uniswap_v2','trades', 'uniswap','dex' ]
+    description: >
+      Uniswap V2 contract trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: ethereum
+          project: uniswap
+          version: 2
+
   - name: uniswap_v3_ethereum_trades_beta
     meta:
       blockchain: ethereum
