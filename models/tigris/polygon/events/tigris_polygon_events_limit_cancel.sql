@@ -49,7 +49,7 @@ limit_orders_v1_1 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_polygon', limit_cancel_trading_evt) }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -72,7 +72,7 @@ limit_orders_v1_2 AS (
             t._trader as trader
         FROM {{ source('tigristrade_polygon', limit_cancel_trading_evt) }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
