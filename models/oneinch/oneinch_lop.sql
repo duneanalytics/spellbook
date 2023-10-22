@@ -40,10 +40,10 @@ with
         
         {% for row in methods %}
 
-            {% if row.outputs_number >= 2 and row.outputs_names_number > 0 %}
+            {% if row.outputs_names_number > 1 %}
                 {% set making_amount = 'output_' + row.outputs_names[1] %}
                 {% set taking_amount = 'output_' + row.outputs_names[2] %}
-            {% elif row.outputs_number >= 2 and row.outputs_names_number == 0 %}
+            {% elif row.outputs_number > 1 %}
                 {% set making_amount = 'output_0' %}
                 {% set taking_amount = 'output_1' %}
             {% else %}
@@ -53,7 +53,7 @@ with
 
             select
                 -- block
-                row.blockchain as blockchain
+                {{ row.blockchain }} as blockchain
                 , transactions.block_time
                 
                 -- tx
@@ -63,9 +63,9 @@ with
                 , transactions.success as tx_success
 
                 -- contract & method
-                , row.contract_name as contract_name
-                , cast(cast(substr(row.contract_name, length(row.contract_name)) as double) - if(position('limit' in lower(row.contract_name)) > 0, 0, 2) as varchar) as protocol_version
-                , row.method as method
+                , {{ row.contract_name }} as contract_name
+                , cast(cast(substr({{ row.contract_name }}, length({{ row.contract_name }})) as double) - if(position('limit' in lower({{ row.contract_name }})) > 0, 0, 2) as varchar) as protocol_version
+                , {{ row.method }} as method
 
                 -- call
                 , traces."from" as call_from
@@ -84,10 +84,10 @@ with
 
                 -- ext
                 , date_trunc('minute', transactions.block_time) as minute
-                , row.inputs_names as inputs_names
-                , row.inputs_types as inputs_types
-                , row.outputs_names as outputs_names
-                , row.outputs_types as outputs_types
+                , {{ row.inputs_names }} as inputs_names
+                , {{ row.inputs_types }} as inputs_types
+                , {{ row.outputs_names }} as outputs_names
+                , {{ row.outputs_types }} as outputs_types
             from (
                 select
                     call_tx_hash as tx_hash
