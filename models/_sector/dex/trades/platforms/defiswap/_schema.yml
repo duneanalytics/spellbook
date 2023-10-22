@@ -30,3 +30,27 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: defiswap_ethereum_trades_beta
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: defiswap
+      contributors: pandajackson42, hosuke
+    config:
+      tags: [ 'ethereum','defiswap','trades', 'dex' ]
+    description: >
+      defiswap trades on Ethereum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: ethereum
+          project: defiswap
+          version: 1
