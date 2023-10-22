@@ -1,7 +1,7 @@
 {{
     config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
+        materialized = 'view',
         schema = 'balancer_v2_ethereum',
         alias = alias('lbps', legacy_model=True),
         unique_key = ['pool_id'],

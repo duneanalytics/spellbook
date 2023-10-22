@@ -1,4 +1,5 @@
 {{  config(
+        tags=['dunesql'],
         alias = alias('nft_fills'),
         materialized='incremental',
         partition_by = ['block_date'],
@@ -27,10 +28,10 @@ WITH tbl_cte_transaction AS
          , erc721Token      AS nft_address
          , erc721TokenId    AS nft_id
          , 'erc721'         AS label
-         , '1'  as nft_cnt
+         , UINT256 '1'  as nft_cnt
          , CASE
-                WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 ELSE erc20Token
             END             AS price_label
          , erc20Token       AS token
@@ -38,10 +39,10 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1 
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-        AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
+        AND evt_block_time >= TIMESTAMP '{{zeroex_v4_nft_start_date}}'
         {% endif %}
 
     UNION ALL
@@ -57,8 +58,8 @@ WITH tbl_cte_transaction AS
             , 'erc1155'         AS label
             , erc1155FillAmount AS nft_cnt
             , CASE
-                WHEN erc20Token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                THEN '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 ELSE erc20Token
                 END             AS price_label
             , erc20Token        AS token
@@ -66,10 +67,10 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1 
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         {% if not is_incremental() %}
-        AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
+        AND evt_block_time >= TIMESTAMP '{{zeroex_v4_nft_start_date}}'
         {% endif %}
 )
 , tbl_usd AS
@@ -88,10 +89,10 @@ WITH tbl_cte_transaction AS
             AND blockchain = 'ethereum'
             AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction) 
             {% if is_incremental() %}
-            AND minute > now() - interval '100 days'
+            AND minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND minute >= '{{zeroex_v4_nft_start_date}}' 
+            AND minute >= TIMESTAMP '{{zeroex_v4_nft_start_date}}' 
             {% endif %}
     ) a
     WHERE ranker = 1 
@@ -113,7 +114,7 @@ SELECT a.evt_block_time                                      AS block_time
      , a.token
      , a.token_amount_raw
      , CASE
-            WHEN token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+            WHEN token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             THEN 'ETH'
             ELSE b.symbol
       END                                                    AS symbol

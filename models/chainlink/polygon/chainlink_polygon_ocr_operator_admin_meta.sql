@@ -29,7 +29,7 @@
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set stakingfacilities = 'Staking Facilities' %}
-{% set validationcloud = 'Validation Cloud' %}
+{% set vulcan = 'Vulcan Link' %}
 {% set ztake = 'Ztake.org' %}
 
 SELECT admin_address, operator_name FROM (VALUES
@@ -57,6 +57,6 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x1f11134A80aEd1FF47E3ee97A4d3f978A0629669, '{{simplyvc}}'),
   (0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1, '{{snzpool}}'),
   (0x3D65be029c949F52cABa2d8E8270c098256697d9, '{{stakingfacilities}}'),
-  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{validationcloud}}'),
+  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{vulcan}}'),
   (0x0039F22efB07A647557C7C5d17854CFD6D489eF3, '{{ztake}}')
 ) AS tmp_node_meta(admin_address, operator_name)
