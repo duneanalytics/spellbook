@@ -38,6 +38,7 @@ contracts as (
         , ('1inch'				, 0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9, 'LimitOrderProtocolV2'        , array['arbitrum'])
         , ('1inch'				, 0x0f85a912448279111694f4ba4f85dc641c54b594, 'LimitOrderProtocolV2'        , array['avalanche_c'])
         , ('1inch'				, 0x11431a89893025d2a48dca4eddc396f8c8117187, 'LimitOrderProtocolV2'        , array['optimism'])
+        , ('1inch'				, 0x11dee30e710b8d4a8630392781cc3c0046365d4c, 'LimitOrderProtocolV2'        , array['fantom'])
         , ('1inch'				, 0x11111254369792b2ca5d084ab5eea397ca8fa48b, 'AggregationRouterV1'			, array['ethereum'])
         , ('1inch'				, 0x111111125434b319222cdbf8c261674adb56f3ae, 'AggregationRouterV2'			, array['ethereum'])
         , ('1inch'				, 0x111111254bf8547e7183e4bbfc36199f3cedf4a1, 'AggregationRouterV2'			, array['bnb'])
