@@ -21,7 +21,6 @@
   , ref('contracts_celo_find_self_destruct_contracts')
   , ref('contracts_arbitrum_find_self_destruct_contracts')
   , ref('contracts_gnosis_find_self_destruct_contracts')
-  , ref('contracts_polygon_find_self_destruct_contracts')
 
 ] %}
 
@@ -30,6 +29,7 @@
 -- ,('contracts_fantom_find_self_destruct_contracts')
 -- ,('contracts_goerli_find_self_destruct_contracts')
 -- ,('contracts_optimism_find_self_destruct_contracts')
+-- ,('contracts_polygon_find_self_destruct_contracts')
 
 SELECT *
 FROM (
