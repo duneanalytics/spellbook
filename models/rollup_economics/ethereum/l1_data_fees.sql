@@ -102,35 +102,24 @@ with tx_batch_appends as (
       length(t.data) as data_length
     FROM
       {{ source('ethereum','transactions') }} as t
-      INNER JOIN {{ ref('addresses_ethereum_l2_batch_submitters') }} op ON 
-      (
-        (
-          t."from" IN (
-            SELECT address 
-            FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L1BatchInbox' AND role_type = 'from_address'
-          )
-          AND t.to IN (
-            SELECT address 
-            FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L1BatchInbox' AND role_type = 'to_address'
-          )
-        )
-        OR 
-        (
-          t."from" IN (
-            SELECT address 
-            FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L2OutputOracle' AND role_type = 'from_address'
-          )
-          AND t.to IN (
-            SELECT address 
-            FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-            WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') AND submitter_type = 'L2OutputOracle' AND role_type = 'to_address'
-          )
-        )
+      INNER JOIN (
+        SELECT 
+            protocol_name,
+            MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l1_batch_inbox_from_address",
+            MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l1_batch_inbox_to_address",
+            MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l2_output_oracle_from_address",
+            MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l2_output_oracle_to_address"
+        FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
+        WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo')
+        GROUP BY protocol_name
+      ) as op ON (
+          t."from" = op.l1_batch_inbox_from_address
+          AND t.to = op.l1_batch_inbox_to_address
       )
-      AND op.protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo') 
+      OR (
+          t."from" = op.l2_output_oracle_from_address
+          AND t.to = op.l2_output_oracle_to_address
+      )
       AND t.block_time >= timestamp '2022-01-01'
       INNER JOIN {{ source('prices','usd') }} p
         ON p.minute = date_trunc('minute', t.block_time)
