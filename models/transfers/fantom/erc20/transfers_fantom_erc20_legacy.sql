@@ -1,10 +1,7 @@
 {{ config(
 	tags=['legacy'],
-	
     alias = alias('erc20', legacy_model=True),
-    materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'],
     post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
@@ -25,9 +22,6 @@ with
             value as amount_raw
         from
             {{ source('erc20_fantom', 'evt_transfer') }} et
-        {% if is_incremental() %}
-            where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
     ),
     received_transfers as (
         select
@@ -40,9 +34,6 @@ with
             '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
             {{ source('erc20_fantom', 'evt_transfer') }} et
-        {% if is_incremental() %}
-            where evt_block_time >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
     )
 
 -- There is no need to add wrapped FTM deposits / withdrawals since wrapped FTM on fantom triggers transfer events for both.

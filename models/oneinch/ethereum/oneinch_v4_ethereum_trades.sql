@@ -46,7 +46,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_swap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_swap') }}
     WHERE
         call_success
         {% if is_incremental() %}
