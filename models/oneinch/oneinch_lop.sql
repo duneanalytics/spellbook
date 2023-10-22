@@ -38,10 +38,7 @@ with
 
     , orders as (
         
-        {% set rows = execute('select * from methods') %}
-        {% for row in rows %}
-
-        -- {% for row in methods %}
+        {% for row in methods %}
 
             {% if row.outputs_names_number > 1 %}
                 {% set making_amount = 'output_' + row.outputs_names[1] %}
