@@ -8,7 +8,7 @@
         incremental_strategy='merge',
         unique_key=['blockchain','contract_address'],
         partition_by=['blockchain'],
-        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli", "celo"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin"]\') }}'
@@ -19,13 +19,13 @@
 
    ref('contracts_ethereum_contract_creator_project_mapping')
  , ref('contracts_base_contract_creator_project_mapping')
+ , ref('contracts_celo_contract_creator_project_mapping')
 
 ] %}
 --  ('contracts_arbitrum_contract_creator_project_mapping')
 -- ,('contracts_avalanche_c_contract_creator_project_mapping')
 --
 -- ,('contracts_bnb_contract_creator_project_mapping')
--- ,('contracts_celo_contract_creator_project_mapping')
 -- ,('contracts_fantom_contract_creator_project_mapping')
 -- ,('contracts_gnosis_contract_creator_project_mapping')
 -- ,('contracts_goerli_contract_creator_project_mapping')
