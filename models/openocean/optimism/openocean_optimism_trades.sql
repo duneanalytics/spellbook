@@ -13,7 +13,6 @@
 {% set project_start_date = '2022-01-20' %}
 
 WITH 
-
 dexs as (
     SELECT 
         evt_block_time as block_time, 
@@ -33,7 +32,6 @@ dexs as (
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
-
 SELECT
     'optimism' as blockchain, 
     'openocean' as project, 
