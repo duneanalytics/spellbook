@@ -20,17 +20,17 @@
    ref('contracts_ethereum_contract_creator_project_mapping')
  , ref('contracts_base_contract_creator_project_mapping')
  , ref('contracts_celo_contract_creator_project_mapping')
+ , ref('contracts_arbitrum_contract_creator_project_mapping')
+ , ref('contracts_gnosis_contract_creator_project_mapping')
+ , ref('contracts_polygon_contract_creator_project_mapping')
 
 ] %}
---  ('contracts_arbitrum_contract_creator_project_mapping')
+
 -- ,('contracts_avalanche_c_contract_creator_project_mapping')
---
 -- ,('contracts_bnb_contract_creator_project_mapping')
 -- ,('contracts_fantom_contract_creator_project_mapping')
--- ,('contracts_gnosis_contract_creator_project_mapping')
 -- ,('contracts_goerli_contract_creator_project_mapping')
 -- ,('contracts_optimism_contract_creator_project_mapping')
--- ,('contracts_polygon_contract_creator_project_mapping')
 
 SELECT *
 FROM (
