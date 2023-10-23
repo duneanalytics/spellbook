@@ -41,17 +41,19 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_clipperSwapToWithPermit
         loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrder
+        loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderTo
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderToWithPermit
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrder
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderRFQ
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderRFQTo
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQCompact
         loaded_at_field: call_block_time
       - name: MerkleDistributor_evt_Claimed
         loaded_at_field: evt_block_time
