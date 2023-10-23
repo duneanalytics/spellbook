@@ -29,8 +29,8 @@ SELECT 'ethereum' AS blockchain
 , CAST(date_trunc('month', t.evt_block_time) as date) as block_month
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'AlchemyDAO' AS project
-, 'AlchemyDAO Airdrop' AS airdrop_identifier
+, 'alchemydao' AS project
+, 1 AS airdrop_number
 , t.account AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
