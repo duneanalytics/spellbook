@@ -66,6 +66,7 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xfAE26207ab74ee528214ee92f94427f8Cdbb6A32, '{{tiingo}}'),
   (0x183A96629fF566e7AA8AfA38980Cd037EB40A59A, '{{validationcloud}}'),
   (0x0b16EC1044F60F03B0e815f863bd4d27638cbD0A, '{{xbto}}'),
+  (0xBa5ed4Cd392ABC8Df7009B4A385eB3e05c7375F1, '{{ztake}}'),
   (0x0039F22efB07A647557C7C5d17854CFD6D489eF3, '{{ztake}}'),
   (0x9d69B0fcbcf9a7e513E947Cd7ce2019904e2E764, '{{ztake}}')
 ) AS tmp_node_meta(admin_address, operator_name)
