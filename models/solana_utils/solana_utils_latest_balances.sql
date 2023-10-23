@@ -10,10 +10,10 @@
                                     \'["ilemi"]\') }}')
 }}
 
-WITH 
+WITH
       updated_balances as (
             SELECT
-                  address 
+                  address
                   , day
                   , sol_balance
                   , token_mint_address
@@ -23,13 +23,13 @@ WITH
             FROM {{ ref('solana_utils_daily_balances') }}
       )
 
-SELECT 
-      address
-      , sol_balance
-      , token_balance
+SELECT
+      ub.address
+      , un.sol_balance
+      , un.token_balance
       , coalesce(ub.token_mint_address, tk.token_mint_address) as token_mint_address
       , coalesce(ub.token_balance_owner, tk.token_balance_owner) as token_balance_owner
-      , now() as updated_at 
+      , now() as updated_at
 FROM updated_balances ub
 LEFT JOIN {{ ref('solana_utils_token_accounts')}} tk ON tk.address = ub.address
 WHERE latest_balance = 1
