@@ -27,3 +27,36 @@ models:
         description: "Who added the address"
       - name: added_date
         description: "Date the address was added on"
+
+  - name: cex_deposit_addresses
+    meta:
+      blockchain: polygon, optimism, ethereum, arbitrum, avalanche_c, fantom, bnb
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','addresses', 'deposits']
+    description: "All CEX-tied deposit addresses identified across chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - deposit_address
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: deposit_address
+        description: "Deposit address"
+      - name: cex_address
+        description: "CEX address"
+      - name: distinct_name
+        description: "Distinct name"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: deposit_token_type
+        description: "Deposit token type"
+      - name: eth_funders
+        description: "ETH Funders"
