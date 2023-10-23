@@ -11,7 +11,7 @@
 WITH tagged_entities AS (
     SELECT funds_origin, entity, category
     FROM (VALUES
-        (0x301407427168FB51bcc927b9FB76DCd88Fe45681, 'Ether Capital', 'Staking Pools')
+        (0x301407427168FB51bcc927b9FB76DCd88Fe45681, 'Ether Capital', 'Staking Pool')
         ) 
         x (funds_origin, entity, category)
     )

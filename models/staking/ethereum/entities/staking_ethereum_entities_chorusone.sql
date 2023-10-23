@@ -8,7 +8,7 @@
 SELECT pubkey
 , 'Chorus One' AS entity
 , CONCAT('Chorus One ', CAST(ROW_NUMBER() OVER (ORDER BY pubkey) AS VARCHAR)) AS entity_unique_name
-, 'Staking Pools' AS category
+, 'Staking Pool' AS category
 FROM (VALUES
     (0x8510c8091b2d52dade2962260665d245c33175c16c84622847b7b6fb7743509cc784489dea62a056f9b7941b53cac09a)
     , (0xa450e9ba0fd3b1bbc079d7b2d680e8e07fb7eae0d396d3b9b5cfe67a4fcc42254b02d51de08e78f36f67190ef444645b)
