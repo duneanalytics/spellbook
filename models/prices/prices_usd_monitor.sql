@@ -10,10 +10,10 @@
 -- monitor to gather quantile information about prices latency
 select
     now() as recorded_at
-    ,cast(qdigest(latency) as varbinary) as latency_seconds_digest
+    ,cast(qdigest(latency_seconds) as varbinary) as latency_seconds_digest
 from (
     select
-    blockchain, contract_address, date_diff('second',now(),max(minute)) as latency
+    blockchain, contract_address, date_diff('second',now(),max(minute)) as latency_seconds
     from {{source('prices','usd')}}
     where minute >= now() - interval '7' day    -- we'll consider anything that's more then 7 days late as stale tokens
     group by 1,2
