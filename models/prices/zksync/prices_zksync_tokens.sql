@@ -39,7 +39,7 @@ FROM
     , ('lqty-liquity', 'LQTY', 0xf755cF4f0887279a8BCBE5E39eE062a5B7188401, 18)
     , ('pepe-pepe', 'PEPE', 0xFD282F16a64c6D304aC05d1A58Da15bed0467c71, 18)
     , ('reth-rocket-pool-eth', 'rETH', 0x32Fd44bB869620C0EF993754c8a00Be67C464806, 18)
-    , ('rpl-rocket-pool', 'RPL', 0x32Fd44bB869620C0EF993754c8a00Be67C464806, 18)
+    , ('rpl-rocket-pool', 'RPL', 0x1CF8553Da5a75C20cdC33532cb19Ef7E3bFFf5BC, 18)
     , ('ufi-purefi', 'UFI', 0xa0C1BC64364d39c7239bd0118b70039dBe5BbdAE, 18)
     , ('cbeth-coinbase-wrapped-staked-eth', 'cbETH', 0x75Af292c1c9a37b3EA2E6041168B4E48875b9ED5, 18)
     , ('ibex-impermax', 'IBEX', 0xbe9f8C0d6f0Fd7e46CDaCCA340747EA2f247991D, 18)
