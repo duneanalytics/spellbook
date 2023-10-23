@@ -114,3 +114,21 @@ models:
             - version
             - tx_hash
             - evt_index
+
+  - name: dex_optimism_trades_beta
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: [ 'dex', 'trades', 'beta' ]
+    description: "New dex optimism trades model"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
