@@ -6,7 +6,6 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_number', 'tx_index', 'evt_index', 'trace_address'],
-        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
         )
 }}
 
