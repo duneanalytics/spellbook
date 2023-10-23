@@ -1,7 +1,7 @@
  {{
   config(
         
-        alias = alias('self_destruct_contracts'),
+        alias = 'self_destruct_contracts',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

@@ -1,5 +1,5 @@
 {{ config(
-       alias = alias('flashloans')
+       alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'

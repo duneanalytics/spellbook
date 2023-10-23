@@ -2,7 +2,7 @@
     config(
         schema='balancer_v2_gnosis',
         
-        alias = alias('transfers_bpt'),
+        alias = 'transfers_bpt',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

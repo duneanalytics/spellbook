@@ -2,7 +2,7 @@
     config(
         
         schema = 'moola_celo',
-        alias = alias('interest'),
+        alias = 'interest',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",

@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('v0_5_userops_basics'),
+    alias = 'v0_5_userops_basics',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('events'),
+    alias = 'events',
     
     partition_by = ['block_date'],
     materialized = 'incremental',

@@ -1,5 +1,5 @@
 {{config(
-     alias = alias('aave_v2_liquidations')
+     alias = 'aave_v2_liquidations'
 )}}
 
 

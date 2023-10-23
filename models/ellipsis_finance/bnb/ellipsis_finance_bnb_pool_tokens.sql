@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('pool_tokens'),
+    alias = 'pool_tokens',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

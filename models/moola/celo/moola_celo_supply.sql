@@ -2,7 +2,7 @@
     config(
         
         schema = 'moola_celo',
-        alias = alias('supply'),
+        alias = 'supply',
         partition_by = ['evt_block_month'],
         materialized = 'incremental',
         file_format = 'delta',

@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('dai_referral_payment'),
+        alias = 'dai_referral_payment',
          
         materialized = 'table',
         file_format = 'delta',

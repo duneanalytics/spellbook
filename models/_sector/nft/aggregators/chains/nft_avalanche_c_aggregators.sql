@@ -1,7 +1,7 @@
 {{config(
       
       schema = 'nft_avalanche_c',
-      alias=alias('aggregators')
+      alias='aggregators'
   )
 }}
 SELECT

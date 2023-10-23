@@ -1,7 +1,7 @@
 {{ config(
      partition_by = ['block_month']
       , schema = 'uniswap_v3_ethereum'
-      , alias = alias('flashloans')
+      , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'

@@ -1,7 +1,7 @@
 {{ config(
         tags = ['static']
         ,schema = 'nft_ethereum_metadata'
-        ,alias = alias('chromie_squiggle')
+        ,alias = 'chromie_squiggle'
         )
 }}
 

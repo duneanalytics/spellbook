@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('resolver_latest'),
+    alias = 'resolver_latest',
     
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",

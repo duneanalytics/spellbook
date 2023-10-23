@@ -1,7 +1,7 @@
 {{ 
     config(
         
-        alias = alias('erc1155'),
+        alias = 'erc1155',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

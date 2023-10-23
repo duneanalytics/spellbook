@@ -1,6 +1,6 @@
 {{ config(
     schema = 'timeswap_polygon'
-    ,alias = alias('pools')
+    ,alias = 'pools'
     ,unique_key = ['pool_pair', 'maturity', 'strike']
     ,post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",

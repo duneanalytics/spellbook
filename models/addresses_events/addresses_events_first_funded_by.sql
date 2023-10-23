@@ -1,6 +1,6 @@
 {{ config
 (
-    alias = alias('first_funded_by')
+    alias = 'first_funded_by'
     
     , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo"]\',
                                     "sector",

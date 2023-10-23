@@ -1,4 +1,4 @@
-{{config(alias = alias('worldcoin_accounts'),
+{{config(alias = 'worldcoin_accounts',
         
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",

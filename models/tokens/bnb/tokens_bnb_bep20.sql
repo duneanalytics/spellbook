@@ -1,4 +1,4 @@
-{{ config( alias = alias('bep20'), tags=['static'])}}
+{{ config( alias = 'bep20', tags=['static'])}}
 
 SELECT contract_address, symbol, decimals
   FROM (VALUES 

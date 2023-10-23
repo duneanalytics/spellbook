@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('token_standards_ethereum'),
+    alias = 'token_standards_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

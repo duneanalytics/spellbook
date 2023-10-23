@@ -1,7 +1,7 @@
 {{ config(
         tags = ['static']
         ,schema = 'nft_ethereum_metadata'
-        ,alias = alias('bright_moments')
+        ,alias = 'bright_moments'
         )
 }}
 

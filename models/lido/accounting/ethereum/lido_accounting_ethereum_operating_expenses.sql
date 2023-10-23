@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('operating_expenses'),
+        alias = 'operating_expenses',
          
         materialized = 'table',
         file_format = 'delta',

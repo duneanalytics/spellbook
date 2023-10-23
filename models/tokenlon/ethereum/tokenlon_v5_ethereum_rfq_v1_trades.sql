@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tokenlon_v5_ethereum',
-    alias = alias('rfq_v1_trades'),
+    alias = 'rfq_v1_trades',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'x2y2',
-        alias = alias('trades'),
+        alias = 'trades',
         
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum"]\',

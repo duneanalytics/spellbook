@@ -2,7 +2,7 @@
   config(
         
         schema = 'solana_utils',
-        alias = alias('daily_balances'),
+        alias = 'daily_balances',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',

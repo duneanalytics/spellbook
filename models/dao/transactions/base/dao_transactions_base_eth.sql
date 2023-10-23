@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('transactions_base_eth'),
+    alias = 'transactions_base_eth',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

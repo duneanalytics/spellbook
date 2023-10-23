@@ -1,6 +1,6 @@
 {{ config(
      schema = 'tokens_zksync'
-    , alias = alias('nft')
+    , alias = 'nft'
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["zksync"]\',
                                 "sector",

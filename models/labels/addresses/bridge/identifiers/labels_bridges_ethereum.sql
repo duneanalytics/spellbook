@@ -1,5 +1,5 @@
 {{config(
-        alias = alias('bridges_ethereum'),
+        alias = 'bridges_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

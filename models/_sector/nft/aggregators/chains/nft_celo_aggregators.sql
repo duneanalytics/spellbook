@@ -2,7 +2,7 @@
     config(
         
         schema = 'nft_celo',
-        alias = alias('aggregators'),
+        alias = 'aggregators',
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "nft",

@@ -1,7 +1,7 @@
 {{
     config(
         schema='balancer_v1_ethereum',
-        alias = alias('liquidity'),
+        alias = 'liquidity',
         
         materialized = 'incremental',
         file_format = 'delta',

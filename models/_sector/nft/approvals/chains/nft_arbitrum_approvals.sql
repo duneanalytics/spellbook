@@ -2,7 +2,7 @@
     config(
         
         schema = 'nft_arbitrum',
-        alias = alias('approvals'),
+        alias = 'approvals',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

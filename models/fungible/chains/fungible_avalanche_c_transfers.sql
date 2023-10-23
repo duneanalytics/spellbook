@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'fungible_avalanche_c',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

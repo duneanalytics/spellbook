@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('prices_latest'),
+        alias = 'prices_latest',
         
         partition_by = ['block_month'],
         materialized = 'incremental',

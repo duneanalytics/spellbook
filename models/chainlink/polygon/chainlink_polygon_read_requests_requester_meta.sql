@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('read_requests_requester_meta'),
+    alias='read_requests_requester_meta',
     materialized = 'view'
   )
 }}

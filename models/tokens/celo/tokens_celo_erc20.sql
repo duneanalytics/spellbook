@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc20')
+        alias = 'erc20'
         , tags=['static']
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["celo"]\',

@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'solana_utils',
-        alias = alias('latest_balances'),
+        alias = 'latest_balances',
         materialized='table',
         
         post_hook='{{ expose_spells(\'["solana"]\',

@@ -1,5 +1,5 @@
 {{  config(
-        alias=alias('eth_flow_orders'),
+        alias='eth_flow_orders',
         
         materialized='incremental',
         partition_by = ['block_date'],

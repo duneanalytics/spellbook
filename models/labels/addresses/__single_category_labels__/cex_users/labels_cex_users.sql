@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('cex_users'),
+        alias = 'cex_users',
         post_hook='{{ expose_spells(\'["optimism","ethereum"]\',
                                     "sector",
                                     "labels",

@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('cross_domain_messenger_messages'),
+    alias = 'cross_domain_messenger_messages',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

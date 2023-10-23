@@ -2,7 +2,7 @@
     config(
         
         schema = 'nft_avalanche_c',
-        alias = alias('approvals'),
+        alias = 'approvals',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

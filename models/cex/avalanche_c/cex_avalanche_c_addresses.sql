@@ -1,6 +1,6 @@
 {{config(
         tags = ['static'],
-        alias = alias('addresses'),
+        alias = 'addresses',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "cex",

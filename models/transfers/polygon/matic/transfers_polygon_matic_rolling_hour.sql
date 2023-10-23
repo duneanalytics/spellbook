@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('matic_rolling_hour'))
+        alias = 'matic_rolling_hour')
 }}
 
         SELECT

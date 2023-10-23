@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_polygon', 
-    alias = alias('balancer_pools'), 
+    alias = 'balancer_pools', 
      
     materialized = 'incremental',
     file_format = 'delta',

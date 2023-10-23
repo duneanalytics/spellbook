@@ -2,7 +2,7 @@
   config(
         
         schema = 'contracts',
-        alias = alias('predeploys'),
+        alias = 'predeploys',
         post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
                                     "sector",
                                     "contracts",

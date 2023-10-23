@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('curve_steth_pool'),
+    alias = 'curve_steth_pool',
              
     materialized = 'incremental',
     file_format = 'delta',

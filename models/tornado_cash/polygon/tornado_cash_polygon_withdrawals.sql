@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tornado_cash_polygon',
-        alias = alias('withdrawals'),
+        alias = 'withdrawals',
         
         materialized='incremental',
         partition_by=['block_date'],

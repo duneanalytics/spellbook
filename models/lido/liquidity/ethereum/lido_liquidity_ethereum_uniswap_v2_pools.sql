@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('uniswap_v2_pools'),
+    alias = 'uniswap_v2_pools',
                  
     materialized = 'incremental',
     file_format = 'delta',

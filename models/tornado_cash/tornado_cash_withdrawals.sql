@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('withdrawals'),
+        alias = 'withdrawals',
         
         materialized='incremental',
         partition_by=['block_date'],

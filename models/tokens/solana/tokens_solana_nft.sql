@@ -1,7 +1,7 @@
 {{ config
 (        
   schema = 'tokens_solana',
-  alias = alias('nft'),
+  alias = 'nft',
   
   materialized='table',
   post_hook='{{ expose_spells(\'["solana"]\',

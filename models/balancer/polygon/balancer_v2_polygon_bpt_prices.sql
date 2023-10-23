@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_polygon',
-        alias = alias('bpt_prices'),
+        alias = 'bpt_prices',
         
         materialized = 'incremental',
         file_format = 'delta',

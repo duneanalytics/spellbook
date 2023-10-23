@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'looksrare',
-        alias = alias('trades'),
+        alias = 'trades',
         
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum"]\',

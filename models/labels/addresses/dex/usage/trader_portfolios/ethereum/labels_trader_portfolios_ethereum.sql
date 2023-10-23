@@ -1,7 +1,7 @@
 {{
     config(
         tags=[ 'prod_exclude'],
-        alias = alias('trader_portfolios_ethereum'),
+        alias = 'trader_portfolios_ethereum',
     )
 }}
 

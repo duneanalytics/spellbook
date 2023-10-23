@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('cex_fantom'),
+        alias = 'cex_fantom',
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_avalanche_c',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
         tags = ['static']

@@ -1,7 +1,7 @@
 {{
     config(
         schema='balancer_v1_ethereum',
-        alias = alias('pools_tokens_weights'),
+        alias = 'pools_tokens_weights',
         
         materialized = 'incremental',
         file_format = 'delta',

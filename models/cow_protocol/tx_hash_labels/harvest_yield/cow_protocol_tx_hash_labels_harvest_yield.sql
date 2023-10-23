@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('tx_hash_labels_harvest_yield'),
+        alias = 'tx_hash_labels_harvest_yield',
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}',
         
         

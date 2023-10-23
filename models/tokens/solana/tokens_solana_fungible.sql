@@ -1,6 +1,6 @@
 {{ config
 (
-  alias = alias('fungible'),
+  alias = 'fungible',
   
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",

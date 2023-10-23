@@ -1,6 +1,6 @@
 {{config(
     
-    alias = alias('nft_smart_trader_roi_eth')
+    alias = 'nft_smart_trader_roi_eth'
 )}}
 
 with  

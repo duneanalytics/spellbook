@@ -1,6 +1,6 @@
 {{config(
         tags = ['static'],
-        alias = alias('ofac_sanctioned_ethereum'),
+        alias = 'ofac_sanctioned_ethereum',
         post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

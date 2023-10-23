@@ -1,7 +1,7 @@
 {{
     config(
         schema='balancer_v2_base',
-        alias = alias('liquidity'),
+        alias = 'liquidity',
         
         materialized = 'table',
         file_format = 'delta',

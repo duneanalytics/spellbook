@@ -1,6 +1,6 @@
 {{ config(
     tags=[ 'static']
-    , alias = alias('erc20')
+    , alias = 'erc20'
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",

@@ -1,6 +1,6 @@
 {{ config(
         schema='prices',
-        alias = alias('usd_latest'),
+        alias = 'usd_latest',
         
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "zksync"]\',
                                     "sector",

@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('other_distributions_claims'),
+    alias = 'other_distributions_claims',
     
     partition_by = ['block_date'],
     materialized = 'incremental',

@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('steth_referral_payment'),
+        alias = 'steth_referral_payment',
          
         materialized = 'table',
         file_format = 'delta',

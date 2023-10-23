@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('fm_reverted_transactions'),
+    alias='fm_reverted_transactions',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',

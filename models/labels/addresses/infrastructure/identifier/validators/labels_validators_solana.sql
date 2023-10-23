@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('validators_solana'))}}
+    alias = 'validators_solana')}}
 
 SELECT distinct
     'solana' as blockchain,

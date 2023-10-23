@@ -1,6 +1,6 @@
 {{config(
     
-    alias = alias('dao_addresses'))}}
+    alias = 'dao_addresses')}}
 
 {% set aragon_models = [
 ref('aragon_base_app_dao_addresses')

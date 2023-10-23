@@ -1,5 +1,5 @@
 {{ config(
-        alias=alias('native'),
+        alias='native',
         tags=['static'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo"]\',
                                     "sector",

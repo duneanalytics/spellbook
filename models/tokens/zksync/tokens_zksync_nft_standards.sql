@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'tokens_zksync',
-    alias = alias('nft_standards'),
+    alias = 'nft_standards',
     materialized='incremental',
     incremental_strategy = 'merge',
     file_format = 'delta',

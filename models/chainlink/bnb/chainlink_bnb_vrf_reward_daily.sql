@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('vrf_reward_daily'),
+    alias='vrf_reward_daily',
     partition_by = ['date_month'],
     materialized = 'incremental',
     file_format = 'delta',

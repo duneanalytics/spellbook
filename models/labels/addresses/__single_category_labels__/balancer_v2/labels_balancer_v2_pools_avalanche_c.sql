@@ -1,5 +1,5 @@
 {{config(
-  alias = alias('balancer_v2_pools_avalanche_c'),
+  alias = 'balancer_v2_pools_avalanche_c',
   materialized = 'incremental',
   
   file_format = 'delta',

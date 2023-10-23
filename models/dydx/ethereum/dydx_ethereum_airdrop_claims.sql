@@ -2,7 +2,7 @@
     config(
         
         schema = 'dydx_ethereum',
-        alias = alias('airdrop_claims'),
+        alias = 'airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

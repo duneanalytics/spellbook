@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('ocr_reward_transmission_logs'),
+    alias='ocr_reward_transmission_logs',
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",

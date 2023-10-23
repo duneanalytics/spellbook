@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'fungible_fantom',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

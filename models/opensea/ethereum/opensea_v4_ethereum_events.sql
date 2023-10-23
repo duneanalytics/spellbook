@@ -1,6 +1,6 @@
 {{ config(
     schema = 'opensea_v4_ethereum',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('transactions'),
+    alias = 'transactions',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
                                 "sector",

@@ -1,6 +1,6 @@
 {{config(
         tags = ['static'],
-        alias = alias('addresses'),
+        alias = 'addresses',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "cex",

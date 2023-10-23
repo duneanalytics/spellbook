@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('bep20_hour'),
+        alias = 'bep20_hour',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "balances",

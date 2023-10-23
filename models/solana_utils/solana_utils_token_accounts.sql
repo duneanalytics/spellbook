@@ -2,7 +2,7 @@
   config(
         schema = 'solana_utils',
         
-        alias = alias('token_accounts'),
+        alias = 'token_accounts',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',

@@ -1,5 +1,5 @@
 {{config(
-  alias = alias('balancer_v2_pools_gnosis'),
+  alias = 'balancer_v2_pools_gnosis',
   materialized = 'incremental',
   
   file_format = 'delta',

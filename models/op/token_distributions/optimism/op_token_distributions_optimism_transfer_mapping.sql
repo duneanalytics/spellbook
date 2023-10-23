@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('transfer_mapping'),
+    alias = 'transfer_mapping',
     
     partition_by = ['block_date'],
     materialized = 'incremental',

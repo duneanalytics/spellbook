@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zerion_polygon'
-    ,alias = alias('trades')
+    ,alias = 'trades'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'

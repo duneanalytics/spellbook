@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('linked_addresses'),
+    alias = 'linked_addresses',
     
     schema = 'nft',
     partition_by = ['blockchain'],

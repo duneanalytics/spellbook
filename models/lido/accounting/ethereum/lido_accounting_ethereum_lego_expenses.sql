@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('lego_expenses'),
+        alias = 'lego_expenses',
          
         materialized = 'table',
         file_format = 'delta',

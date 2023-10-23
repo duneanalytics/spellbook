@@ -1,7 +1,7 @@
 {{ 
     config(
         
-        alias = alias('erc20_rolling_hour'),
+        alias = 'erc20_rolling_hour',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

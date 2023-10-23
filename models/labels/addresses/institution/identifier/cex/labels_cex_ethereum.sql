@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('cex_ethereum'),
+        alias = 'cex_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

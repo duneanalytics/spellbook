@@ -1,6 +1,6 @@
 {{ config
 (
-    alias = alias('v0_5_account_deployed'),
+    alias = 'v0_5_account_deployed',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

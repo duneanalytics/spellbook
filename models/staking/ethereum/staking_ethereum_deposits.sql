@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'staking_ethereum',
-    alias = alias('deposits'),
+    alias = 'deposits',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

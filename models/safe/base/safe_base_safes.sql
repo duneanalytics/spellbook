@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         
-        alias= alias('safes'),
+        alias= 'safes',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',

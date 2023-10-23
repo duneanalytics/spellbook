@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zora_base',
-    alias = alias('rewards'),
+    alias = 'rewards',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('erc20_rolling_day'))
+        alias = 'erc20_rolling_day')
 }}
 
         SELECT

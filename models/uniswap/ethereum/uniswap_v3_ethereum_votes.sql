@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'uniswap_v3_ethereum',
-    alias = alias('votes'),
+    alias = 'votes',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',

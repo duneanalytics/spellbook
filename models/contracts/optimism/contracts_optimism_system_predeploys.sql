@@ -1,7 +1,7 @@
  {{
   config(
 		tags = ['static'],
-        alias = alias('system_predeploys'),
+        alias = 'system_predeploys',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "contracts",

@@ -1,6 +1,6 @@
 {{ config(
         schema='prices',
-        alias = alias('usd_latest_historical'),
+        alias = 'usd_latest_historical',
         
         materialized = 'incremental',
         file_format = 'delta',

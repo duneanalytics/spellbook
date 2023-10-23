@@ -1,5 +1,5 @@
 {{config(
-  alias = alias('balancer_v2_pools_arbitrum'),
+  alias = 'balancer_v2_pools_arbitrum',
   materialized = 'incremental',
   
   file_format = 'delta',

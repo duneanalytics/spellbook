@@ -1,6 +1,6 @@
 {{ config(
     schema = 'opensea_v3_polygon',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

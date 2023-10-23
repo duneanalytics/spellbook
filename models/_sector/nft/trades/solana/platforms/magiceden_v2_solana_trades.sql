@@ -2,7 +2,7 @@
     config(
         schema = 'magiceden_v2_solana'
         
-        , alias = alias('trades')
+        , alias = 'trades'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'

@@ -1,5 +1,5 @@
 {{ config(
-     alias = alias('token_prices')
+     alias = 'token_prices'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

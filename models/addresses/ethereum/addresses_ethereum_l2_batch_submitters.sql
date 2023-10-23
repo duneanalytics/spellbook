@@ -1,4 +1,4 @@
-{{ config(alias = alias('l2_batch_submitters'),
+{{ config(alias = 'l2_batch_submitters',
         tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",

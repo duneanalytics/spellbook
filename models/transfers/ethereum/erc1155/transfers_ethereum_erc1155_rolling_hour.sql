@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc1155_rolling_hour')
+        alias = 'erc1155_rolling_hour'
         )
 }}
 /*

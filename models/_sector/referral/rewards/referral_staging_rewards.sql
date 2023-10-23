@@ -1,6 +1,6 @@
 {{ config(
     schema = 'referral',
-    alias = alias('staging_rewards'),
+    alias = 'staging_rewards',
     
     materialized = 'view'
     )

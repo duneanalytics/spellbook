@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('addresses_polygon'))}}
+        alias = 'addresses_polygon')}}
 
 {% set addresses_models = [
 ref('aragon_polygon_dao_addresses')

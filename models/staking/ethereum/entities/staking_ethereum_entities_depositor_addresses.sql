@@ -1,6 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_depositor_addresses'),
+    alias = 'entities_depositor_addresses',
     tags = [ 'static'],
     unique_key = ['depositor_address'])
 }}

@@ -1,5 +1,5 @@
 {{ config(
-     alias = alias('etv_liquidity_credits_reward')
+     alias = 'etv_liquidity_credits_reward'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

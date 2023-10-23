@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('donations'),
+    alias = 'donations',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

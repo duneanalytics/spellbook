@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'nft_ethereum',
-        alias =alias('transfers'),
+        alias ='transfers',
         partition_by=['block_month'],
         materialized='incremental',
         file_format = 'delta',

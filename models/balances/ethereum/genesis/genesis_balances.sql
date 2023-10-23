@@ -1,6 +1,6 @@
 {{ config(
 	tags=[ 'static'],
-	alias = alias('genesis_balances'),
+	alias = 'genesis_balances',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "balances",

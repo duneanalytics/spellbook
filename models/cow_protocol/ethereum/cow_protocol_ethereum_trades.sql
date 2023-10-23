@@ -1,6 +1,6 @@
 {{  config(
         
-        alias=alias('trades'),
+        alias='trades',
         materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],

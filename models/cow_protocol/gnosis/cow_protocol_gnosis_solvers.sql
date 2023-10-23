@@ -1,5 +1,5 @@
 {{ config(
-        alias=alias('solvers'),
+        alias='solvers',
         
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",

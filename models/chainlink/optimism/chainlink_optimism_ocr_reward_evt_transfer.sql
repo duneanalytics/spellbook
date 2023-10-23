@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('ocr_reward_evt_transfer'),
+    alias='ocr_reward_evt_transfer',
     materialized='view',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",

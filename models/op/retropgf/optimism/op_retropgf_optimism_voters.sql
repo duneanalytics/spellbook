@@ -1,6 +1,6 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , alias = alias('voters')
+        , alias = 'voters'
         
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

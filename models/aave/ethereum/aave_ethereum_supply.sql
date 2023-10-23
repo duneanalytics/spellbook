@@ -1,5 +1,5 @@
 {{ config(
-       alias = alias('supply')
+       alias = 'supply'
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave",

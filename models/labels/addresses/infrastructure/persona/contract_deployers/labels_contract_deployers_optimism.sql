@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('contract_deployers_optimism'),
+        alias = 'contract_deployers_optimism',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

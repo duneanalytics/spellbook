@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('vrf_v2_random_fulfilled_logs'),
+    alias='vrf_v2_random_fulfilled_logs',
     materialized='view'
   )
 }}

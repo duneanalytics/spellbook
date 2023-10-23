@@ -1,6 +1,6 @@
 {{ config(
         schema = 'nft',
-        alias = alias('burns'),
+        alias = 'burns',
         
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',

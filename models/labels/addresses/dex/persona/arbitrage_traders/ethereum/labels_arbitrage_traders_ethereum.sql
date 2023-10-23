@@ -1,5 +1,5 @@
 {{config(
-     alias = alias('arbitrage_traders_ethereum')
+     alias = 'arbitrage_traders_ethereum'
 )}}
 
 with 

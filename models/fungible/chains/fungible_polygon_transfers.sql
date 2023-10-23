@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'fungible_polygon',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

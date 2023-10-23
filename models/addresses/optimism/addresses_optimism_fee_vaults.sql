@@ -1,6 +1,6 @@
 {{config(
       tags = ['static'],
-      alias = alias('fee_vaults'),
+      alias = 'fee_vaults',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "addresses",

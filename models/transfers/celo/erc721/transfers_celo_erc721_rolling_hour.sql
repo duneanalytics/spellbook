@@ -1,7 +1,7 @@
 {{ 
     config(
         
-        alias = alias('erc721_rolling_hour'),
+        alias = 'erc721_rolling_hour',
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
                                     "transfers",

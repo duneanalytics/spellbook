@@ -1,6 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_coinbase'),
+    alias = 'entities_coinbase',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('punk_bid_events'),
+        alias = 'punk_bid_events',
         partition_by = ['evt_block_time_week'],
         materialized = 'incremental',
         file_format = 'delta',

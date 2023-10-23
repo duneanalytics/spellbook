@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         
-        alias = alias('xdai_transfers'),
+        alias = 'xdai_transfers',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',

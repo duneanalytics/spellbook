@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('mints'),
+    alias = 'mints',
     schema = 'nft',
     partition_by = ['block_month'],
     materialized = 'incremental',

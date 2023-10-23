@@ -1,7 +1,7 @@
 {{config(
     
     schema = 'nft_polygon',
-    alias = alias('aggregators')
+    alias = 'aggregators'
 )}}
 
 SELECT

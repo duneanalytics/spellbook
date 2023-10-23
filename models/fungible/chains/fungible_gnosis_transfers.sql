@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'fungible_gnosis',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

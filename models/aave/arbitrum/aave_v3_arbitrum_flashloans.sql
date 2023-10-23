@@ -1,6 +1,6 @@
 {{ config(
      schema = 'aave_v3_arbitrum'
-    , alias = alias('flashloans')
+    , alias = 'flashloans'
     , materialized = 'incremental'
     , partition_by = ['block_month']
     , file_format = 'delta'

@@ -7,7 +7,7 @@
 {{ 
     config( 
         schema = 'oneinch_' + blockchain,
-        alias = alias('ar_calls_transfers'),
+        alias = 'ar_calls_transfers',
         
         partition_by = ['block_month'],
         materialized = 'incremental',

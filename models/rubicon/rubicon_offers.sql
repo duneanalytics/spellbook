@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('offers'),
+        alias = 'offers',
         post_hook='{{ expose_spells(\'["optimism", "arbitrum", "base"]\',
                                 "project",
                                 "rubicon",

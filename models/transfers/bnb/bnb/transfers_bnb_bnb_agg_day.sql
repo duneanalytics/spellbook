@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('bnb_agg_day'),
+        alias = 'bnb_agg_day',
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',

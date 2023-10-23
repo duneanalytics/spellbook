@@ -1,6 +1,6 @@
 {{ config(
     schema = 'rabbithole_polygon',
-    alias = alias('rewards'),
+    alias = 'rewards',
     
     materialized = 'incremental',
     file_format = 'delta',

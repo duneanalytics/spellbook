@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('bnb_rolling_hour'))
+        alias = 'bnb_rolling_hour')
 }}
 
         SELECT

@@ -1,6 +1,6 @@
 {{
     config(
-        alias=alias('quest_participants'),
+        alias='quest_participants',
         
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 

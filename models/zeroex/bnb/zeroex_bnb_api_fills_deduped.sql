@@ -1,6 +1,6 @@
 {{  config(
         
-        alias = alias('api_fills_deduped'),
+        alias = 'api_fills_deduped',
         materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],

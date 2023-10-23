@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('quest_completions'),
+    alias = 'quest_completions',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

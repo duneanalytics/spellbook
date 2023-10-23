@@ -2,7 +2,7 @@
     config(
         schema="balancer_ethereum",
         
-        alias = alias('vebal_slopes'),
+        alias = 'vebal_slopes',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",

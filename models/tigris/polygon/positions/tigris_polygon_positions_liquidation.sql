@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'tigris_polygon',
-    alias = alias('positions_liquidation')
+    alias = 'positions_liquidation'
     )
  }}
 

@@ -1,6 +1,6 @@
 {{ config(
     
-        alias = alias('events_contracts_positions')
+        alias = 'events_contracts_positions'
         )
 }}
 

@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('erc20_latest'),
+        alias = 'erc20_latest',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "balances",

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'nft',
-    alias = alias('events'),
+    alias = 'events',
     
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',

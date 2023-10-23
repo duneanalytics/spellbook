@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'contracts',
-    alias = alias('disperse_contracts')
+    alias = 'disperse_contracts'
     )
 }}
 

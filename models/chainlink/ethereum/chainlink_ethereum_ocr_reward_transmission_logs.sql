@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('ocr_reward_transmission_logs'),
+    alias='ocr_reward_transmission_logs',
     materialized='view',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",

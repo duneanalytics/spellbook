@@ -1,6 +1,6 @@
 {{ config(
 		
-        alias = alias('perpetual_trades'),
+        alias = 'perpetual_trades',
         post_hook='{{ expose_spells(\'["avalanche_c","arbitrum"]\',
                                 "project",
                                 "gmx",

@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'oneinch',
-        alias = alias('exchange_contracts'),
+        alias = 'exchange_contracts',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['contract_address', 'blockchain'],

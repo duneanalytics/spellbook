@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc20_day'),
+        alias = 'erc20_day',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
                                             "balances",

@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('other_tags'),
+    alias = 'other_tags',
     tags = [ 'static']
     )
 }}

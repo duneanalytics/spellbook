@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('validators_ethereum'))}}
+    alias = 'validators_ethereum')}}
 
 SELECT distinct
     'ethereum' as blockchain,

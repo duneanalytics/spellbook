@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('bribes'),
+    alias = 'bribes',
     materialized = 'table',
     
     file_format = 'delta',

@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('lox_incentives'),
+        alias = 'lox_incentives',
          
         materialized = 'table',
         file_format = 'delta',

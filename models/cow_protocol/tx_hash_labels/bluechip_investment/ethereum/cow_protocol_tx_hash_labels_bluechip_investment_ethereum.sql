@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('tx_hash_labels_bluechip_investment_ethereum'),
+        alias = 'tx_hash_labels_bluechip_investment_ethereum',
         
     )
 }}

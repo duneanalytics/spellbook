@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('resolver_records'),
+    alias = 'resolver_records',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_polygon',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
         tags = ['static']

@@ -1,6 +1,6 @@
 {{ config(
      schema = 'op_governance_optimism'
-        , alias = alias('delegators')
+        , alias = 'delegators'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'

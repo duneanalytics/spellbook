@@ -1,6 +1,6 @@
 {{ config(
     schema = 'element_bnb',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

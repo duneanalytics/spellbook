@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('reverse_latest'),
+    alias = 'reverse_latest',
     
     materialized = 'incremental',
     file_format = 'delta',

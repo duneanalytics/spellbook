@@ -1,6 +1,6 @@
 {{config(
     tags = [ 'prod_exclude']
-    , alias = alias('airdrop_3_receivers_optimism')
+    , alias = 'airdrop_3_receivers_optimism'
 )}}
 
 SELECT

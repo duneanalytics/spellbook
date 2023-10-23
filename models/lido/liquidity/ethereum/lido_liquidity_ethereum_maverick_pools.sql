@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('maverick_pools'),
+    alias = 'maverick_pools',
                  
     materialized = 'incremental',
     file_format = 'delta',

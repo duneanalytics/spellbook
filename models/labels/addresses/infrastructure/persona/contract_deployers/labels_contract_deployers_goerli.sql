@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('contract_deployers_goerli'),
+        alias = 'contract_deployers_goerli',
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
                                     "labels",

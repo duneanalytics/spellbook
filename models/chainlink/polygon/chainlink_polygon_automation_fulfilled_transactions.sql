@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('automation_fulfilled_transactions'),
+    alias='automation_fulfilled_transactions',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',

@@ -1,6 +1,6 @@
 {{
     config(
-    alias = alias('cross_chain_trades')
+    alias = 'cross_chain_trades'
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
         ,unique_key = ['block_date', 'source_chain', 'tx_hash']

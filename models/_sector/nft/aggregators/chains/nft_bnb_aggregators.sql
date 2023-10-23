@@ -1,7 +1,7 @@
 {{config(
     
     schema = 'nft_bnb',
-    alias = alias('aggregators')
+    alias = 'aggregators'
 )}}
 
 SELECT

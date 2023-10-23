@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'fungible_bnb',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

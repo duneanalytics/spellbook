@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('withdrawals'),
+        alias = 'withdrawals',
          
         materialized = 'table',
         file_format = 'delta',

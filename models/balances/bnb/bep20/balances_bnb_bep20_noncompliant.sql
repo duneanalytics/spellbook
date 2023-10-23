@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('noncompliant'),
+        alias = 'noncompliant',
         materialized ='table',
         file_format = 'delta'
         )

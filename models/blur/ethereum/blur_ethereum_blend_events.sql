@@ -2,7 +2,7 @@
     config(
         
         schema = 'blur_ethereum',
-        alias = alias('blend_events'),
+        alias = 'blend_events',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "blur",

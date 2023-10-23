@@ -1,6 +1,6 @@
 {{ config(
         schema = 'transfers_bitcoin',
-        alias = alias('satoshi_agg_day'),
+        alias = 'satoshi_agg_day',
         
         materialized ='incremental',
         file_format ='delta',

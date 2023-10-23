@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('fundraising'),
+        alias = 'fundraising',
          
         materialized = 'table',
         file_format = 'delta',

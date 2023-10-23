@@ -1,6 +1,6 @@
 {{ config(
     schema='trove_v1_arbitrum',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

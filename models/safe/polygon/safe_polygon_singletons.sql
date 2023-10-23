@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='table',
-        alias = alias('singletons'),
+        alias = 'singletons',
         
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",

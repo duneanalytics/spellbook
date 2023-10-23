@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc20')
+        alias = 'erc20'
         , tags=['static']
         )
 }}

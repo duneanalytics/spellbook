@@ -1,7 +1,7 @@
 {{
     config(
         
-        alias = alias('dex_traders'),
+        alias = 'dex_traders',
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "gnosis", "optimism", "polygon"]\', 
         "sector", 
         "labels", 

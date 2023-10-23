@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'tigris_arbitrum',
-    alias = alias('events_asset_added')
+    alias = 'events_asset_added'
     )
  }}
 

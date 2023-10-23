@@ -1,6 +1,6 @@
 {{ config(
      schema = 'op_token_optimism'
-        , alias = alias('metadata')
+        , alias = 'metadata'
         , unique_key = ['contract_address']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

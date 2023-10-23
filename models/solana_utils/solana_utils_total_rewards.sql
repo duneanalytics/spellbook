@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'solana_utils',
-        alias = alias('total_rewards'),
+        alias = 'total_rewards',
         materialized='table',
         
         post_hook='{{ expose_spells(\'["solana"]\',

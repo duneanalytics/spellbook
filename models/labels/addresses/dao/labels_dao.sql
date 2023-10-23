@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('dao'),
+    alias = 'dao',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',

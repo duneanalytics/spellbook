@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('funds'),
+        alias = 'funds',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

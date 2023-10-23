@@ -2,7 +2,7 @@
   config(
     tags = ['static'],
     schema = 'contracts',
-    alias = alias('contract_overrides'),
+    alias = 'contract_overrides',
     unique_key='contract_address',
     post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
                               "sector",

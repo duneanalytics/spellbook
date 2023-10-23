@@ -2,7 +2,7 @@
     config(
         materialized='table',
         
-        alias = alias('singletons'),
+        alias = 'singletons',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "safe",

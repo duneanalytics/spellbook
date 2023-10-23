@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'nft',
-        alias = alias('aggregators'),
+        alias = 'aggregators',
         post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","polygon","optimism","celo"]\',
                                     "sector",
                                     "nft",

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'stealcam_arbitrum',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('revenue'),
+        alias = 'revenue',
          
         materialized = 'table',
         file_format = 'delta',

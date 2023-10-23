@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'velodrome_optimism',
-        alias=alias('bribe_mappings'),
+        alias='bribe_mappings',
         
         materialized = 'table',
         unique_key = ['pool_contract', 'incentives_contract', 'allowed_rewards'],

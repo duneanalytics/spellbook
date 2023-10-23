@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_avalanche_c',
-        alias = alias('bpt_prices'),
+        alias = 'bpt_prices',
         
         materialized = 'incremental',
         file_format = 'delta',

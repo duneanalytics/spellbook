@@ -1,4 +1,4 @@
-{{config(alias = alias('ens'),
+{{config(alias = 'ens',
         
         materialized = 'table',
         file_format = 'delta',

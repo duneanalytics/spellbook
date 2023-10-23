@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('token_standards_avalanche_c'),
+    alias = 'token_standards_avalanche_c',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "labels",

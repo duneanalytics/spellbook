@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('pool_creations'),
+        alias = 'pool_creations',
         schema = 'sudoswap_ethereum',
         
         materialized = 'incremental',

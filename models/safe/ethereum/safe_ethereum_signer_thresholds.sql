@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('signer_thresholds'),
+        alias = 'signer_thresholds',
         
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

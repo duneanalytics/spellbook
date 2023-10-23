@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'solana_utils',
-        alias = alias('sns_domains'),
+        alias = 'sns_domains',
         materialized='table',
         
         post_hook='{{ expose_spells(\'["solana"]\',

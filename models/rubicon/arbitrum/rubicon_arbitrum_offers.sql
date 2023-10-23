@@ -1,6 +1,6 @@
 {{ config(
     schema = 'rubicon_arbitrum',
-    alias = alias('offers'),
+    alias = 'offers',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

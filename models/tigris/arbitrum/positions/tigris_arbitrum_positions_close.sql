@@ -1,7 +1,7 @@
 {{ config(
     
     schema = 'tigris_arbitrum',
-    alias = alias('positions_close')
+    alias = 'positions_close'
     )
  }}
 

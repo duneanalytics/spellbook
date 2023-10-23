@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('fm_reward_evt_transfer'),
+    alias='fm_reward_evt_transfer',
     materialized='view'
   )
 }}

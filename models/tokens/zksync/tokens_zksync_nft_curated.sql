@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens_zksync'
-        , alias = alias('nft_curated')
+        , alias = 'nft_curated'
         , tags=['static']
         )
 }}

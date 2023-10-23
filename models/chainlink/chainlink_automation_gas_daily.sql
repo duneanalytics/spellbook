@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('automation_gas_daily'),
+    alias='automation_gas_daily',
     post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
                             "project",
                             "chainlink",

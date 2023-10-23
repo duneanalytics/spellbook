@@ -1,6 +1,6 @@
 {{ 
     config(
-        alias = alias('eth'), 
+        alias = 'eth', 
         
         materialized ='incremental',
         file_format ='delta',

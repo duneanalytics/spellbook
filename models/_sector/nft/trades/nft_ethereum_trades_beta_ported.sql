@@ -1,7 +1,7 @@
 {{ config(
     schema = 'nft_ethereum',
     
-    alias = alias('trades_beta_ported'),
+    alias = 'trades_beta_ported',
     materialized = 'view'
     )
 }}

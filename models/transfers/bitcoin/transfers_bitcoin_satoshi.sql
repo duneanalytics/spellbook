@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'transfers_bitcoin',
-        alias = alias('satoshi'),
+        alias = 'satoshi',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

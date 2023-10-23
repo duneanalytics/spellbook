@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('ocr_reward_daily'),
+    alias='ocr_reward_daily',
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",

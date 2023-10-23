@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('trades'),
+    alias = 'trades',
     post_hook='{{ expose_spells(\'[ "optimism"]\',
                                 "project",
                                 "zipswap",

@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('redeem'),
+    alias = 'redeem',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ironbank",

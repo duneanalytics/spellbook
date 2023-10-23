@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tornado_cash_gnosis',
-        alias = alias('deposits'),
+        alias = 'deposits',
         
         materialized='incremental',
         partition_by=['block_date'],

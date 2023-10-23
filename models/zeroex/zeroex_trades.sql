@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zeroex'
-        ,alias = alias('trades')
+        ,alias = 'trades'
         ,post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb"]\',
                                 "project",
                                 "zeroex",

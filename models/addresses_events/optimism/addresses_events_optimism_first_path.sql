@@ -1,7 +1,7 @@
 {{ config(
     schema = 'addresses_events_optimism'
     
-    , alias = alias('first_path')
+    , alias = 'first_path'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'append'

@@ -1,6 +1,6 @@
 {{
     config(
-          alias = alias('edition_metadata')
+          alias = 'edition_metadata'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'

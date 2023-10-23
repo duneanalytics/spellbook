@@ -1,7 +1,7 @@
 {{ config(
       
          schema = 'opensea_optimism',        
-        alias = alias('events')
+        alias = 'events'
 )
 }}
 

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'addresses_events_testnets_goerli'
-    , alias = alias('first_funded_by')
+    , alias = 'first_funded_by'
     
     , materialized = 'incremental'
     , file_format = 'delta'

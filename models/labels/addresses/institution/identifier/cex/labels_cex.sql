@@ -1,6 +1,6 @@
 {{config(
     
-    alias = alias('cex')
+    alias = 'cex'
 )}}
 
 

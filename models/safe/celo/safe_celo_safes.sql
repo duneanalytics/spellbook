@@ -3,7 +3,7 @@
         materialized='incremental',
         
         schema='safe_celo',
-        alias = alias('safes'),
+        alias = 'safes',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',

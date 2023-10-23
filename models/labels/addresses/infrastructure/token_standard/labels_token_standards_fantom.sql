@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('token_standards_fantom'),
+    alias = 'token_standards_fantom',
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

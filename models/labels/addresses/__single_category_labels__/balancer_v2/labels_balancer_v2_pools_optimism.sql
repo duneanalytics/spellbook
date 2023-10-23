@@ -1,5 +1,5 @@
 {{config(
-  alias = alias('balancer_v2_pools_optimism'),
+  alias = 'balancer_v2_pools_optimism',
   materialized = 'incremental',
   
   file_format = 'delta',

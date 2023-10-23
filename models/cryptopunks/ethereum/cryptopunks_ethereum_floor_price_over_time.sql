@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('floor_price_over_time'),
+        alias = 'floor_price_over_time',
         unique_key='day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

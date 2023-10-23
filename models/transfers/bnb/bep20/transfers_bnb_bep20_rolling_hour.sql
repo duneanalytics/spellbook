@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('bep20_rolling_hour'))
+        alias = 'bep20_rolling_hour')
 }}
 
         SELECT

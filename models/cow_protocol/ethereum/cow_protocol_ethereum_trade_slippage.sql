@@ -1,5 +1,5 @@
 {{ config(
-        alias=alias('trade_slippage'),
+        alias='trade_slippage',
         
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

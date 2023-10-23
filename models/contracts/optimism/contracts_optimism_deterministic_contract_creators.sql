@@ -1,7 +1,7 @@
 {{ 
   config(
     tags = ['static'],
-    alias = alias('deterministic_contract_creators'),
+    alias = 'deterministic_contract_creators',
     unique_key='creator_address',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",

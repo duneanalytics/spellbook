@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = alias('matic_hour'),
+        alias = 'matic_hour',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "balances",

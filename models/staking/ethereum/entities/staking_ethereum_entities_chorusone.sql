@@ -1,6 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_chorusone'),
+    alias = 'entities_chorusone',
     tags = [ 'static'],
     unique_key = ['pubkey'])
 }}

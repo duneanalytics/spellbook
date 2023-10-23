@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('addresses_ethereum'))}}
+        alias = 'addresses_ethereum')}}
 
 {% set addresses_models = [
 ref('aragon_ethereum_dao_addresses')

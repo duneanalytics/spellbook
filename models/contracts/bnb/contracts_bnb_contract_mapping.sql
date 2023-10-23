@@ -1,6 +1,6 @@
 {{
   config(
-        alias = alias('contract_mapping'),
+        alias = 'contract_mapping',
         tags=[ 'static'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",

@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('vrf_request_fulfilled'),
+    alias='vrf_request_fulfilled',
     materialized='view'
   )
 }}

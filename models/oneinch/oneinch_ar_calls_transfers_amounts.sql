@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = alias('ar_calls_transfers_amounts'),
+        alias = 'ar_calls_transfers_amounts',
         materialized = 'view',
         unique_key = ['blockchain', 'unique_call_transfer_id'],
         

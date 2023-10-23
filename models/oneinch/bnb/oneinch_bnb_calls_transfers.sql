@@ -6,7 +6,7 @@
 {{ 
     config( 
         schema = 'oneinch_' + blockchain,
-        alias = alias('calls_transfers'),
+        alias = 'calls_transfers',
         
         partition_by = ['block_month'],
         materialized = 'incremental',

@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('token_standards_polygon'),
+    alias = 'token_standards_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",

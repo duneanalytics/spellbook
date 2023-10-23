@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         
-        alias = alias('bnb_transfers'),
+        alias = 'bnb_transfers',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',

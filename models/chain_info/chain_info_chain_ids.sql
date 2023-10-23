@@ -2,7 +2,7 @@
   config(
       
         schema = 'chain_info',
-        alias = alias('chain_ids')
+        alias = 'chain_ids'
   )
 }}
 

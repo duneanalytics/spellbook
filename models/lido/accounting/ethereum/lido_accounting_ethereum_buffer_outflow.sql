@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('buffer_outflow'),
+        alias = 'buffer_outflow',
          
         materialized = 'table',
         file_format = 'delta',

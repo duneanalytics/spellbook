@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'oneinch_ethereum',
-        alias = alias('trades')
+        alias = 'trades'
         )
 }}
 

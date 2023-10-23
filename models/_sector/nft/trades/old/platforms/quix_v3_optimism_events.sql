@@ -1,6 +1,6 @@
 {{ config(
     schema = 'quix_v3_optimism',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -3,7 +3,7 @@
         materialized='table',
         
         schema='safe_celo',
-        alias = alias('singletons'),
+        alias = 'singletons',
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "project",
                                     "safe",

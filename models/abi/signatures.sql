@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('signatures'),
+        alias = 'signatures',
         schema = 'abi',
         partition_by = ['created_at_month'],
         materialized = 'incremental',

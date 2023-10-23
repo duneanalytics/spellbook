@@ -1,7 +1,7 @@
 {{
     config(
         tags = ['static'],
-        alias = alias('nft_curated'),
+        alias = 'nft_curated',
         materialized = 'table',
         post_hook = '{{ expose_spells(\'["celo"]\',
                                     "sector",

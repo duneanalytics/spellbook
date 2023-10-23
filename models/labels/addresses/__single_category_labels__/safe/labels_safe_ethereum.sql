@@ -1,6 +1,6 @@
 {{config(
     
-    alias = alias('safe_ethereum')
+    alias = 'safe_ethereum'
 )}}
 
 SELECT

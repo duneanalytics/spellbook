@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('fm_gas_daily'),
+    alias='fm_gas_daily',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',

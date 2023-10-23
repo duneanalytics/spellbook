@@ -1,5 +1,5 @@
 {{config(
-     alias = alias('aztec_v2_contracts_ethereum')
+     alias = 'aztec_v2_contracts_ethereum'
 )}}
 
 with

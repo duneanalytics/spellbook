@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
-    alias = alias('wombat_pools'),
+    alias = 'wombat_pools',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('validators_bnb'),
+    alias = 'validators_bnb',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",
                                     "labels",

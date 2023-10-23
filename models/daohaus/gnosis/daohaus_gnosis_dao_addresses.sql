@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('dao_addresses'),
+    alias = 'dao_addresses',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

@@ -2,7 +2,7 @@
     config(
         tags=[ 'static'],
         schema = 'botto_ethereum',
-        alias = alias('airdrop_claims'),
+        alias = 'airdrop_claims',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['recipient', 'tx_hash', 'evt_index'],

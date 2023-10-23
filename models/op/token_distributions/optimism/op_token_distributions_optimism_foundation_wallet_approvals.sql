@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('foundation_wallet_approvals'),
+    alias = 'foundation_wallet_approvals',
     
     partition_by = ['block_date'],
     materialized = 'incremental',

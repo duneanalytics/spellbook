@@ -1,6 +1,6 @@
 {{ config(
     schema = 'quickswap_v3_polygon',
-    alias = alias('trades'),
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('op_mainnet'),
+    alias = 'op_mainnet',
     materialized='incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias = alias('erc20_bridged_mapping')
+    alias = 'erc20_bridged_mapping'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

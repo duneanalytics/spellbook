@@ -1,6 +1,6 @@
 {{config(
     
-    alias = alias('balancer_v1_pools_ethereum'),
+    alias = 'balancer_v1_pools_ethereum',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

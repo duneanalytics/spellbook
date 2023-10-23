@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('tokens')
+    alias = 'tokens'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

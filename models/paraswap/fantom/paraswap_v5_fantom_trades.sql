@@ -1,6 +1,6 @@
 {{ config(
     schema = 'paraswap_v5_fantom',
-    alias = alias('trades'),
+    alias = 'trades',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

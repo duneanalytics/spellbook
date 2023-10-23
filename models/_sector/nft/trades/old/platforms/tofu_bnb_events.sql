@@ -1,6 +1,6 @@
 {{ config(
     schema = 'tofu_bnb',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

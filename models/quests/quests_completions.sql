@@ -1,6 +1,6 @@
 {{
     config(
-        alias=alias('completions'),
+        alias='completions',
         
         post_hook='{{ expose_spells(\'["optimism"]\', 
         "sector", 

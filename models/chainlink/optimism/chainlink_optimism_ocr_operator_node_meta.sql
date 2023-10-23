@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('ocr_operator_node_meta'),
+    alias='ocr_operator_node_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",

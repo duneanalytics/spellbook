@@ -1,6 +1,6 @@
 {{ config(
         schema = 'account_abstraction_erc4337',
-        alias = alias('userops'),
+        alias = 'userops',
         
         post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis"]\',
                                 "project",

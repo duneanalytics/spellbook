@@ -2,7 +2,7 @@
     config(
         schema = 'balancer_v2_base',
         
-        alias = alias('pools_fees'),
+        alias = 'pools_fees',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'paraswap_v5_avalanche_c',
-    alias = alias('trades'),
+    alias = 'trades',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

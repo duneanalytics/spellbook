@@ -1,6 +1,6 @@
 {{config(
     
-    alias = alias('three_letter_ens_count')
+    alias = 'three_letter_ens_count'
 )}}
 
 WITH three_letter_ens_count AS (

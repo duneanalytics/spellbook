@@ -1,6 +1,6 @@
 {{config(
         
-        alias = alias('cex_avalanche_c'),
+        alias = 'cex_avalanche_c',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "labels",

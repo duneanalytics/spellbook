@@ -1,6 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities'),
+    alias = 'entities',
     
     unique_key = ['depositor_address', 'tx_from', 'pubkey'],
     post_hook='{{ expose_spells(\'["ethereum"]\',

@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = alias('mint'),
+    alias = 'mint',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ironbank",

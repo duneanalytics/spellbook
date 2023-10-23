@@ -2,7 +2,7 @@
   tags=[ 'prod_exclude'],
   materialized='view',
   schema='integration_test', 
-  alias = alias('test_view')) }}
+  alias = 'test_view') }}
 
 with
   erc1155_ids_batch AS (

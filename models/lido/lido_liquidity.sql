@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('liquidity'),
+        alias = 'liquidity',
          
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",

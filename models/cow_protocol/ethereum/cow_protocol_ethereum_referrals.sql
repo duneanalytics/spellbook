@@ -1,5 +1,5 @@
 {{ config(
-        alias=alias('referrals'),
+        alias='referrals',
         
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

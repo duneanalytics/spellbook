@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
-    alias = alias('curve_pools'),
+    alias = 'curve_pools',
      
     materialized = 'incremental',
     file_format = 'delta',

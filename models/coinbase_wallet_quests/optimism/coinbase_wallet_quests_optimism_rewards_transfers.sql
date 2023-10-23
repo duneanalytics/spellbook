@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('rewards_transfers'),
+    alias = 'rewards_transfers',
     
     partition_by = ['block_month'],
     materialized = 'incremental',

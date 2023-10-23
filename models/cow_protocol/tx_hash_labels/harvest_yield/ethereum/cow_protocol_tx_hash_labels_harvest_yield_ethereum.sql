@@ -1,6 +1,6 @@
 {{
     config(
-        alias = alias('tx_hash_labels_harvest_yield_ethereum'),
+        alias = 'tx_hash_labels_harvest_yield_ethereum',
         
     )
 }}

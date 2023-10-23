@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('borrow')
+    alias = 'borrow'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'

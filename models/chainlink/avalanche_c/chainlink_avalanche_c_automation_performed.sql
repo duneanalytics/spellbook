@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('automation_performed'),
+    alias='automation_performed',
     materialized='view'
   )
 }}

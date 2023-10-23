@@ -1,6 +1,6 @@
 {{ config(
 
-    alias = alias('curve_wsteth_reth_pool'),
+    alias = 'curve_wsteth_reth_pool',
                
     materialized = 'incremental',
     file_format = 'delta',

@@ -2,7 +2,7 @@
   config(
         
         schema = 'dex_solana',
-        alias = alias('trades'),
+        alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",

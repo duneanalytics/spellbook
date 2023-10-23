@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('liquidity_incentives'),
+        alias = 'liquidity_incentives',
          
         materialized = 'table',
         file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
-    alias = alias('l1_data_fees'),
+    alias = 'l1_data_fees',
     
     materialized = 'incremental',
     file_format = 'delta',

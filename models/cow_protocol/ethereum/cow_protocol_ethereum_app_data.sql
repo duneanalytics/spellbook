@@ -1,4 +1,4 @@
-{{ config(alias=alias('app_data'),
+{{ config(alias='app_data',
         
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

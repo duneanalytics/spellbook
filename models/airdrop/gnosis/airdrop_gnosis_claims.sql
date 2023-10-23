@@ -1,6 +1,6 @@
 {{ config(
     
-        alias = alias('claims'),
+        alias = 'claims',
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                       "sector",
                                       "airdrop",

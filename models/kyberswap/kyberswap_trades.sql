@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('trades'),
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["avalanche_c","optimism","ethereum","arbitrum","bnb","polygon"]\',
                                 "project",
                                 "kyberswap",

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'fractal_polygon',
-    alias = alias('events'),
+    alias = 'events',
     
     materialized = 'incremental',
     file_format = 'delta',

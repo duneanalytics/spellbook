@@ -1,6 +1,6 @@
 {{config(
   tags = ['static'],
-  alias = alias('grants_funding'),
+  alias = 'grants_funding',
 	post_hook='{{ expose_spells(\'["optimism"]\',
 		"sector",
 		"addresses",

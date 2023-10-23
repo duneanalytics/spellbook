@@ -1,7 +1,7 @@
 {{
     config(
         
-        alias = alias('trader_frequencies'),
+        alias = 'trader_frequencies',
         post_hook='{{ expose_spells(\'
         ["ethereum", "fantom", "arbitrum", "avalanche_c", "gnosis", "bnb", "optimism", "polygon"]\',
         "sector",

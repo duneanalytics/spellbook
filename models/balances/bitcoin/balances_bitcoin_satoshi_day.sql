@@ -1,6 +1,6 @@
 {{ config(
         schema = 'balances_bitcoin',
-        alias = alias('satoshi_day'),
+        alias = 'satoshi_day',
         
         partition_by = ['day'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',

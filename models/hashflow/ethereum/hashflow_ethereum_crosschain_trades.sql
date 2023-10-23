@@ -1,6 +1,6 @@
 {{
     config(
-    alias = alias('cross_chain_trades')
+    alias = 'cross_chain_trades'
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
         ,file_format = 'delta'

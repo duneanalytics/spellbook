@@ -4,7 +4,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_number', 'unique_trade_id'],
-    alias = alias('events'),
+    alias = 'events',
     
 )}}
 

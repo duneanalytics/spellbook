@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zora_ethereum',
-    alias = alias('rewards'),
+    alias = 'rewards',
     
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias=alias('fm_fulfilled_transactions'),
+    alias='fm_fulfilled_transactions',
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",

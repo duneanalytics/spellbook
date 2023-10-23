@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_polygon',
-    alias = alias('kyberswap_v2_pools'),
+    alias = 'kyberswap_v2_pools',
      
     materialized = 'incremental',
     file_format = 'delta',

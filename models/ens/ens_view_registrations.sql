@@ -1,5 +1,5 @@
 {{config(
-        alias = alias('view_registrations'),
+        alias = 'view_registrations',
         
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

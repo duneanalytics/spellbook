@@ -1,5 +1,5 @@
 {{config(
-        alias = alias('eth_stakers'),
+        alias = 'eth_stakers',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

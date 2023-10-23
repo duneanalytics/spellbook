@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('deposits'),
+        alias = 'deposits',
          
         materialized = 'incremental',
         file_format = 'delta',

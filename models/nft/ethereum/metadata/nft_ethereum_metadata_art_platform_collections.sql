@@ -1,7 +1,7 @@
 {{ config(
         tags = ['static']
         ,schema = 'nft_ethereum_metadata'
-        ,alias = alias('art_platform_collections')
+        ,alias = 'art_platform_collections'
 )
 }}
 

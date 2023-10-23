@@ -1,6 +1,6 @@
 {{config(
         tags=[ 'prod_exclude'],
-        alias = alias('airdrop'),
+        alias = 'airdrop',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

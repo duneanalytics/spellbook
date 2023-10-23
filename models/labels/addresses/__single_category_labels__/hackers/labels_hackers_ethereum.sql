@@ -1,6 +1,6 @@
 {{config(
         tags = ['static'],
-        alias = alias('hackers_ethereum'),
+        alias = 'hackers_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

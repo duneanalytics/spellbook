@@ -1,5 +1,5 @@
 {{config(
-    alias = alias('all_vaults'),
+    alias = 'all_vaults',
     materialized='table',
     file_format = 'delta',
     tags=['static']

@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'fungible_arbitrum',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 
