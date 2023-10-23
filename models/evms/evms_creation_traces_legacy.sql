@@ -3,7 +3,7 @@
 	
         alias = alias('creation_traces', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -21,6 +21,7 @@
      , ('arbitrum', source('arbitrum', 'creation_traces'))
      , ('arbitrum', source('arbitrum', 'creation_traces'))
      , ('goerli', source('goerli', 'creation_traces'))
+     , ('zksync', source('zksync', 'creation_traces'))
 ] %}
 
 SELECT *
