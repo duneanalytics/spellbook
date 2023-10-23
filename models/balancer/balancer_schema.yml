@@ -130,7 +130,7 @@ models:
       sector: lending
       contributors: hildobby
     config:
-      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'flashloans']
+      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'flashloans']
     description: >
       All Balancer flashloans
     tests:

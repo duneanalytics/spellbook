@@ -47,6 +47,30 @@
      'blockchain': 'ethereum',
      'schema': 'bancornetwork_ethereum',
      'table_name': 'BancorNetwork_v10_evt_Conversion',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'opx_finance',
+    'blockchain': 'optimism',
+    'schema': 'opx_finance_optimism',
+    'table_name': 'Router_evt_Swap',
+    'time_column': 'evt_block_time'},
+
+    {'project': 'mauve',
+     'blockchain': 'ethereum',
+     'schema': 'mauve_ethereum',
+     'table_name': 'MauvePool_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'openxswap',
+     'blockchain': 'optimism',
+     'schema': 'openxswap_optimism',
+     'table_name': 'Aggregator_evt_Swap',
+     'time_column': 'evt_block_time'},
+
+     {'project': 'wardenswap',
+     'blockchain': 'optimism',
+     'schema': 'wardenswap_optimism',
+     'table_name': 'WardenRouterV2_L2_evt_Trade',
      'time_column': 'evt_block_time'}
 ] %}
 

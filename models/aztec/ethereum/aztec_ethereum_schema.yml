@@ -12,17 +12,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - tx_from
-            - tx_to
-            - value
-            - contract_address
             - evt_tx_hash
             - evt_index
-            - broad_txn_type
-            - spec_txn_type
-            - to_protocol
-            - from_protocol
-            - bridge_address
             - trace_address
     columns:
         - &tx_from

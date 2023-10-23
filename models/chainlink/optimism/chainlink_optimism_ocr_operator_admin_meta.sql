@@ -19,10 +19,11 @@
 {% set inotel = 'Inotel' %}
 {% set linkpool = 'LinkPool' %}
 {% set linkriver = 'LinkRiver' %}
-{% set securedatalinks = 'Secure Data Links' %}
+{% set piertwo = 'Pier Two' %}
 {% set simplyvc = 'Simply VC' %}
 
 SELECT admin_address, operator_name FROM (VALUES
+  (0xC9110BebfC02fCa90a1cc3417F8869784f63B94B, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0x3615Fa045f00ae0eD60Dc0141911757c2AdC5E03, '{{blockdaemon}}'),
   (0x4a3dF8cAe46765d33c2551ff5438a5C5FC44347c, '{{chainlayer}}'),
@@ -33,6 +34,6 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x69F89eFbB5e5519EAf93a0Af3dbA3f3101350b0d, '{{linkriver}}'),
-  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{securedatalinks}}'),
+  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{piertwo}}'),
   (0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf, '{{simplyvc}}')
 ) AS tmp_node_meta(admin_address, operator_name)

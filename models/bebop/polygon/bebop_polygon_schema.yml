@@ -23,7 +23,7 @@ models:
       - check_dex_aggregator_seed:
           blockchain: polygon
           project: bebop
-          version: 1
+          version: 2
     columns:
       - &blockchain
         name: blockchain

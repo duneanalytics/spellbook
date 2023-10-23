@@ -1,5 +1,6 @@
 {{ config(
-        schema = 'op_token_optimism'
+        tags=['dunesql']
+        , schema = 'op_token_optimism'
         , alias = alias('metadata')
         , unique_key = ['contract_address']
         , post_hook='{{ expose_spells(\'["optimism"]\',
@@ -22,7 +23,7 @@ WITH global_values AS (
     cast('2022-05-31' AS date) AS token_launch_date
 
     FROM {{ref('tokens_optimism_erc20')}} t
-    WHERE t.contract_address = '0x4200000000000000000000000000000000000042'
+    WHERE t.contract_address = 0x4200000000000000000000000000000000000042
 
 )
 

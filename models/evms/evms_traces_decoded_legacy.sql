@@ -20,6 +20,7 @@
      , ('optimism', source('optimism', 'traces_decoded'))
      , ('arbitrum', source('arbitrum', 'traces_decoded'))
      , ('celo', source('celo', 'traces_decoded'))
+     , ('goerli', source('goerli', 'traces_decoded'))
 ] %}
 
 SELECT *

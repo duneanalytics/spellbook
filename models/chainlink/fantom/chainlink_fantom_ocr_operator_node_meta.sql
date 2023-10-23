@@ -30,6 +30,7 @@
 
 SELECT node_address, operator_name FROM (VALUES
   (0x09285FBb87B75FBA9400683233C0BC1DE53afCa8, '{{a01node}}'),
+  (0x139a1fD7230E215346cd583f48d87aedc4276B45, '{{a01node}}'),
   (0xCC4c922db2EF8c911F37E73c03B632DD1585Ad0E, '{{chainlayer}}'),
   (0xB2ffBb538558196e5Db351b33B647eFe654a9647, '{{cryptomanufaktur}}'),
   (0xF3C4a8041c62146350C83d593D4ecccD3C1D8F86, '{{dextrac}}'),

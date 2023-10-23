@@ -14,7 +14,7 @@
 }}
 
 SELECT 'ethereum' AS blockchain
-    , 'Euler' AS project
+    , 'euler' AS project
     , '1' AS version
     , CAST(date_trunc('Month', b.evt_block_time) as date) as block_month
     , b.evt_block_time AS block_time

@@ -53,9 +53,9 @@
 {% set orionmoney = 'Orion.Money' %}
 {% set p2porg = 'P2P.org' %}
 {% set paradigm = 'Paradigm Citadel' %}
+{% set piertwo = 'Pier Two' %}
 {% set prophet = 'Prophet' %}
 {% set rhino = 'RHINO' %}
-{% set securedatalinks = 'Secure Data Links' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set stakefish = 'stake.fish' %}
@@ -75,6 +75,7 @@
 {% set ztake = 'Ztake.org' %}
 
 SELECT admin_address, operator_name FROM (VALUES
+  (0x7A30E4B6307c0Db7AeF247A656b44d888B23a2DC, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0x89177B9c203bA0A9294aecf2f3806d98907bec6f, '{{tsystems}}'),
   (0xa5D0084A766203b463b3164DFc49D91509C12daB, '{{alphachain}}'),
@@ -132,9 +133,9 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xCDa423ee5A7A886eF113b181469581306fC8B607, '{{p2porg}}'),
   (0xB45A43e998286ab3Be4106b4c381f01dccE772a4, '{{p2porg}}'),
   (0xfb390441fF968F7569cd6F3CF01cb7214DFeed31, '{{paradigm}}'),
+  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{piertwo}}'),
   (0xBDB624CD1051F687f116bB0c642330B2aBdfcc06, '{{prophet}}'),
   (0xDA80050Ed4F50033949608208f79EE43Ab91dF55, '{{rhino}}'),
-  (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{securedatalinks}}'),
   (0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf, '{{simplyvc}}'),
   (0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1, '{{snzpool}}'),
   (0x21F1dB6E4B5e1dF5c68bC1dfB58c28942Ed4737D, '{{stakefish}}'),

@@ -2,7 +2,6 @@
     schema = 'zora_v1_ethereum',
     tags = ['dunesql'],
     alias = alias('base_trades'),
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,8 +10,7 @@
 }}
 
 SELECT
-     cast(date_trunc('month',bf.evt_block_time) as date) AS block_date
-    , bf.evt_block_time AS block_time
+      bf.evt_block_time AS block_time
     , bf.evt_block_number AS block_number
     , bf.contract_address AS project_contract_address
     , bf.evt_tx_hash AS tx_hash

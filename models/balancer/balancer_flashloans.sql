@@ -1,7 +1,7 @@
 {{ config(
     tags=['dunesql'],
         alias = alias('flashloans'),
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base"]\',
                                 "project",
                                 "balancer",
                                 \'["hildobby"]\') }}'
@@ -14,6 +14,8 @@ ref('balancer_v2_ethereum_flashloans')
 , ref('balancer_v2_arbitrum_flashloans')
 , ref('balancer_v2_polygon_flashloans')
 , ref('balancer_v2_gnosis_flashloans')
+, ref('balancer_v2_avalanche_c_flashloans')
+, ref('balancer_v2_base_flashloans')
 ] %}
 
 

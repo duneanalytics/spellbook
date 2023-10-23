@@ -19,8 +19,8 @@
 {% set linkpool = 'LinkPool' %}
 {% set linkriver = 'LinkRiver' %}
 {% set matrixedlink = 'Matrixed.Link' %}
-{% set mycelium = 'Mycelium' %}
 {% set northwestnodes = 'NorthWest Nodes' %}
+{% set piertwo = 'Pier Two' %}
 {% set simplyvc = 'Simply VC' %}
 {% set snzpool = 'SNZPool' %}
 {% set validationcloud = 'Validation Cloud' %}
@@ -37,8 +37,8 @@ SELECT node_address, operator_name FROM (VALUES
   (0x27C56A6d40F20A33349F0822201fbc10d455Be66, '{{linkpool}}'),
   (0xb6d51122E3473a2A463f2F8752660570237C30a4, '{{linkriver}}'),
   (0x64AE501217d502Be8a1d9D4a4f669fbAC6a0c062, '{{matrixedlink}}'),
-  (0xbD620be125abf8b569B9A3CC132aad0bcF1Ff0E7, '{{mycelium}}'),
   (0xEB1a8834cF6CA6d721E5CB1A8Ad472BBF62eEf8E, '{{northwestnodes}}'),
+  (0xbD620be125abf8b569B9A3CC132aad0bcF1Ff0E7, '{{piertwo}}'),
   (0xD596389948247b582317a1EfA76cD7741A134191, '{{simplyvc}}'),
   (0x01f4e56D5ee46e84Edf8595ca7A7B62a3306De76, '{{snzpool}}'),
   (0xB0576808343819a21B9171B018b87da204967B6F, '{{validationcloud}}'),
