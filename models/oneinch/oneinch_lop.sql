@@ -14,7 +14,7 @@
 
 with
     
-    _methods as (
+    methods as (
         select
             contract_address
             , contract_name
@@ -35,8 +35,6 @@ with
             and json_value(entity, 'lax $.stateMutability') in ('payable', 'nonpayable')
             and position('fill' in lower(json_value(entity, 'lax $.name'))) > 0
     )
-
-    {% set methods = run_query('select * from _methods') %}
 
     , orders as (
         
