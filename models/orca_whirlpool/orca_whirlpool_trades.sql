@@ -56,6 +56,35 @@ with
     LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMintA 
     LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMintB
     )
+
+    , two_hop as (
+        SELECT
+            account_whirlpoolOne as account_whirlpool
+            , call_outer_instruction_index
+            , call_inner_instruction_index
+            , call_is_inner
+            , call_tx_signer
+            , call_tx_id
+            , call_tx_index
+            , call_block_time
+            , call_outer_executing_account
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwap') }} sp
+        
+        UNION ALL
+        
+        --for second hop, we're going to spoof things so that the join on +1 and +2 still work just fine. 
+        SELECT
+            account_whirlpoolTwo as account_whirlpool
+            , call_outer_instruction_index
+            , COALESCE(call_inner_instruction_index,0) + 2 as call_inner_instruction_index
+            , true as call_is_inner
+            , call_tx_signer
+            , call_tx_id
+            , call_tx_index
+            , call_block_time
+            , call_outer_executing_account
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwap') }} sp
+    )
     
     , all_swaps as (
         SELECT 
@@ -63,7 +92,7 @@ with
             , 'whirlpool' as project
             , 1 as version
             , 'solana' as blockchain
-            , case when sp.call_is_inner = False then 'direct'
+            , case when sp.call_outer_executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc' then 'direct'
                 else sp.call_outer_executing_account
                 end as trade_source
             ,case
@@ -102,12 +131,30 @@ with
                 else wp.tokenBVault
                 end as token_sold_vault
             , wp.update_time
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} sp
+        FROM (
+            SELECT 
+                account_whirlpool
+                , call_outer_instruction_index
+                , call_inner_instruction_index
+                , call_is_inner
+                , call_tx_signer
+                , call_tx_id
+                , call_tx_index
+                , call_block_time
+                , call_outer_executing_account    
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} 
+            
+            UNION ALL 
+            
+            SELECT * FROM two_hop
+            )
+            sp
         INNER JOIN whirlpools wp
             ON sp.account_whirlpool = wp.whirlpool_id 
             AND sp.call_block_time >= wp.update_time
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
             ON tr_1.call_tx_id = sp.call_tx_id 
+            AND tr_1.call_block_slot = sp.call_block_slot
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
@@ -118,6 +165,7 @@ with
             {% endif %}
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2
             ON tr_2.call_tx_id = sp.call_tx_id 
+            AND tr_2.call_block_slot = sp.call_block_slot
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2) 
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))

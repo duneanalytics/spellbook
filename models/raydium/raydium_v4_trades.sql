@@ -101,6 +101,7 @@
             and p.recent_init = 1
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
             ON tr_1.call_tx_id = sp.call_tx_id 
+            AND tr_1.call_block_slot = sp.call_block_slot
             AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
@@ -111,6 +112,7 @@
             {% endif %}
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 
             ON tr_2.call_tx_id = sp.call_tx_id 
+            AND tr_2.call_block_slot = sp.call_block_slot
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 3)
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 3))
