@@ -25,8 +25,8 @@ WITH
 
 SELECT
       ub.address
-      , un.sol_balance
-      , un.token_balance
+      , ub.sol_balance
+      , ub.token_balance
       , coalesce(ub.token_mint_address, tk.token_mint_address) as token_mint_address
       , coalesce(ub.token_balance_owner, tk.token_balance_owner) as token_balance_owner
       , now() as updated_at
