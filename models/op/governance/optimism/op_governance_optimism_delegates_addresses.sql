@@ -5,7 +5,7 @@
         , unique_key='address'
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
-                                    "op_governance",
+                                    "governance",
                                     \'["kaiblade"]\') }}')}}
 
 WITH address_names AS (
