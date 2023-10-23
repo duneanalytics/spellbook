@@ -45,8 +45,7 @@ WITH
                         AND tk.created_at <= aa.block_time --only get token mints that were created at or before this account activity
                   WHERE tx_success
                   --many writable accounts are included in account activity but don't see any state changes. So this shrinks the table by 70%.
-                  AND aa.balance_change != 0 
-                  and aa.token_balance_change != 0
+                  AND (aa.balance_change != 0 or aa.token_balance_change != 0)
                   {% if is_incremental() %}
                   AND block_time >= date_trunc('day', now() - interval '1' day)
                   {% endif %}
