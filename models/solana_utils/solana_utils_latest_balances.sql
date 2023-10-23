@@ -27,8 +27,9 @@ SELECT
       address
       , sol_balance
       , token_balance
-      , token_mint_address
-      , token_balance_owner
+      , coalesce(ub.token_mint_address, tk.token_mint_address) as token_mint_address
+      , coalesce(ub.token_balance_owner, tk.token_balance_owner) as token_balance_owner
       , now() as updated_at 
-FROM updated_balances
+FROM updated_balances ub
+LEFT JOIN {{ ref('solana_utils_token_accounts')}} tk ON tk.address = ub.address
 WHERE latest_balance = 1
