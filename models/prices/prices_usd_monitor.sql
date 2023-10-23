@@ -1,0 +1,20 @@
+{{ config(
+        tags = ['dunesql'],
+        schema='prices',
+        alias = alias('usd_monitor'),
+        materialized = 'incremental',
+        incremental_strategy = 'append'
+        )
+}}
+
+-- monitor to gather quantile information about prices latency
+select
+    now() as recorded_at
+    ,cast(qdigest(latency)as varbinary) latency_digest_varbinary
+from (
+    select
+    blockchain, contract_address, date_diff('second',now(),max(minute))) as latency
+    from {{source('prices.usd')}}
+    where minute >= now() - interval '7' day    -- we'll consider anything that's more then 7 days late as stale tokens
+    group by 1,2
+)
