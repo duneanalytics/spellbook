@@ -68,6 +68,7 @@
 {% set thenetworkfirm = 'The Network Firm' %}
 {% set tiingo = 'Tiingo' %}
 {% set validationcloud = 'Validation Cloud' %}
+{% set vulcan = 'Vulcan Link' %}
 {% set wetez = 'Wetez' %}
 {% set xbto = 'XBTO' %}
 {% set youbi = 'Youbi' %}
@@ -150,9 +151,9 @@ SELECT node_address, operator_name FROM (VALUES
   (0xa7767CDb3252397d9D6050acD84819AFaBcd2Ff1, '{{syncnode}}'),
   (0xD084c90d0e486ade2c045374dB447b99f94811Ee, '{{thenetworkfirm}}'),
   (0x265b3Aaeb858F32Fe18CFc28EEA21977Fc379F3C, '{{tiingo}}'),
-  (0xD22c87Dc7a3F12dcBB75CEbDA2e96f6766AE114F, '{{validationcloud}}'),
   (0xC4b732Fd121F2f3783A9Ac2a6C62fD535FD13FdA, '{{validationcloud}}'),
   (0x52e77F4356bB39cBA841dC3E9c28eCe86900d68A, '{{validationcloud}}'),
+  (0xD22c87Dc7a3F12dcBB75CEbDA2e96f6766AE114F, '{{vulcan}}'),
   (0x5a6fCc02D8c50eA58a22115A7c4608b723030016, '{{wetez}}'),
   (0xe3E0596AC55Ae6044b757baB27426F7dC9e018d4, '{{xbto}}'),
   (0x7744F58E29849Bc7C804e4F4b88d0CE12f068513, '{{youbi}}'),

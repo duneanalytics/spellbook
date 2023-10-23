@@ -29,7 +29,7 @@ WITH limit_order_protocol_embedded_rfq AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQ') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_fillOrderRFQ') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -50,7 +50,7 @@ WITH limit_order_protocol_embedded_rfq AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQTo') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_fillOrderRFQTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -71,7 +71,7 @@ WITH limit_order_protocol_embedded_rfq AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQToWithPermit') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_fillOrderRFQToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}

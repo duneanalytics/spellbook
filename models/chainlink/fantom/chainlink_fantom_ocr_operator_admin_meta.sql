@@ -26,7 +26,7 @@
 {% set prophet = 'Prophet' %}
 {% set syncnode = 'SyncNode' %}
 {% set tiingo = 'Tiingo' %}
-{% set validationcloud = 'Validation Cloud' %}
+{% set vulcan = 'Vulcan Link' %}
 
 SELECT admin_address, operator_name FROM (VALUES
   (0xcEf78991Df18B131eED7bBf91C3C7da2e78338e5, '{{a01node}}'),
@@ -47,5 +47,5 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xBDB624CD1051F687f116bB0c642330B2aBdfcc06, '{{prophet}}'),
   (0xC51D3470693BC049809A1c515606124c7C75908d, '{{syncnode}}'),
   (0xfAE26207ab74ee528214ee92f94427f8Cdbb6A32, '{{tiingo}}'),
-  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{validationcloud}}')
+  (0x7D0f8dd25135047967bA6C50309b567957dd52c3, '{{vulcan}}')
 ) AS tmp_node_meta(admin_address, operator_name)
