@@ -1,6 +1,5 @@
 {{ config(
-        
-      , partition_by = ['block_month']
+     partition_by = ['block_month']
       , schema = 'balancer_v2_avalanche_c'
       , alias = alias('flashloans')
       , materialized = 'incremental'

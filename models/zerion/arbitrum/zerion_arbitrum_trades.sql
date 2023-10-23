@@ -1,6 +1,5 @@
 {{ config(
-    
-    ,schema = 'zerion_arbitrum'
+    schema = 'zerion_arbitrum'
     ,alias = alias('trades')
     ,materialized = 'incremental'
     ,file_format = 'delta'

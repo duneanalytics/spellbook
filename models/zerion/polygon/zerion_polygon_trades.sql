@@ -1,6 +1,5 @@
 {{ config(
-    
-    ,schema = 'zerion_polygon'
+    schema = 'zerion_polygon'
     ,alias = alias('trades')
     ,materialized = 'incremental'
     ,file_format = 'delta'

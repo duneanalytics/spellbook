@@ -1,6 +1,5 @@
 {{ config(
-    
-    ,schema = 'zerion_avalanche_c'
+    schema = 'zerion_avalanche_c'
     ,alias = alias('trades')
     ,materialized = 'incremental'
     ,file_format = 'delta'

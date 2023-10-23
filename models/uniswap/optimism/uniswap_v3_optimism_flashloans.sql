@@ -1,6 +1,5 @@
 {{ config(
-        
-      , partition_by = ['block_month']
+     partition_by = ['block_month']
       , schema = 'uniswap_v3_optimism'
       , alias = alias('flashloans')
       , materialized = 'incremental'

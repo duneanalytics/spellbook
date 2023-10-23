@@ -1,6 +1,5 @@
 {{ config(
-    
-    , alias = alias('pool_incentives_rates')
+     alias = alias('pool_incentives_rates')
     , materialized = 'table'
     )
 }}

@@ -1,6 +1,5 @@
 {{ config(
-    
-    ,schema = 'zerion_gnosis'
+    schema = 'zerion_gnosis'
     ,alias = alias('trades')
     ,materialized = 'incremental'
     ,file_format = 'delta'

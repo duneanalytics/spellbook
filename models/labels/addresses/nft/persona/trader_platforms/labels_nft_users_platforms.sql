@@ -1,6 +1,5 @@
 {{config(
-    
-    , alias = alias('nft_users_platforms')
+     alias = alias('nft_users_platforms')
 )}}
 
 WITH nft_trades AS (

@@ -1,6 +1,5 @@
 {{ config(
-    
-    , partition_by = ['block_month']
+     partition_by = ['block_month']
     , schema = 'synapse_fantom'
     , alias = alias('flashloans')
     , materialized = 'incremental'

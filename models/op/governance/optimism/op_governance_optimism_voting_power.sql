@@ -1,6 +1,5 @@
 {{ config(
-         
-        , schema = 'op_governance_optimism'
+     schema = 'op_governance_optimism'
         , alias = alias('voting_power')
         , materialized = 'incremental'
         , file_format = 'delta'

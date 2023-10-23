@@ -1,6 +1,5 @@
 {{ config(
-        
-        , schema = 'op_governance_optimism'
+     schema = 'op_governance_optimism'
         , alias = alias('delegates')
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

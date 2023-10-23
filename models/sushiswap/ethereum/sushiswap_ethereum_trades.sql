@@ -1,6 +1,5 @@
 {{ config(
-    
-    ,schema = 'sushiswap_ethereum'
+    schema = 'sushiswap_ethereum'
     ,alias = alias('trades')
     ,partition_by = ['block_month']
     ,materialized = 'incremental'

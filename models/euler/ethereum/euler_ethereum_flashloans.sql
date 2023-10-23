@@ -1,6 +1,5 @@
 {{ config(
-        
-      , alias = alias('flashloans')
+     alias = alias('flashloans')
       , partition_by = ['block_month']
       , materialized = 'incremental'
       , file_format = 'delta'

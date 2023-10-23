@@ -1,6 +1,5 @@
 {{ config(
-        
-        , alias = alias('trades')
+     alias = alias('trades')
 )}}
 
 {% set trader_joe_models = [
