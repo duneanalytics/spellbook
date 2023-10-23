@@ -97,7 +97,7 @@
             FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseIn') }}
         ) sp
         INNER JOIN pools p
-            ON sp.account_poolState = p.pool_id
+            ON sp.account_amm = p.pool_id
             and p.recent_init = 1
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
             ON tr_1.call_tx_id = sp.call_tx_id 
