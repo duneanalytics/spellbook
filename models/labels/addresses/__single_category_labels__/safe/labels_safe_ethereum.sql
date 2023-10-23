@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql'],
+    
     alias = alias('safe_ethereum')
 )}}
 

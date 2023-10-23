@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_optimism',
-        tags = ['dunesql'],
+        
         alias = alias('gauge_mappings'),
         materialized = 'incremental',
         file_format = 'delta',

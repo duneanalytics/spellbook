@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('fm_reward_evt_transfer_daily'),
     partition_by=['date_month'],
     materialized='incremental',

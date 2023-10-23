@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql']
+    
     , partition_by = ['block_month']
     , schema = 'synapse_avalanche_c'
     , alias = alias('flashloans')

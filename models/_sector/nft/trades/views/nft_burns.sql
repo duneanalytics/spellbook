@@ -1,7 +1,7 @@
 {{ config(
         schema = 'nft',
         alias = alias('burns'),
-        tags = ['dunesql'],
+        
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb"]\',
                                     "sector",

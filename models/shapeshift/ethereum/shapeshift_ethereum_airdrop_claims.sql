@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         schema = 'shapeshiftethereum',
         alias = alias('airdrop_claims'),
         materialized = 'table',

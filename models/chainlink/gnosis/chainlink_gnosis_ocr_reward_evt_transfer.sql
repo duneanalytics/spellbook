@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('ocr_reward_evt_transfer'),
     materialized='view',
     post_hook='{{ expose_spells(\'["gnosis"]\',

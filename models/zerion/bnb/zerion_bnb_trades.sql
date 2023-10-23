@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql']
+    
     ,schema = 'zerion_bnb'
     ,alias = alias('trades')
     ,materialized = 'incremental'

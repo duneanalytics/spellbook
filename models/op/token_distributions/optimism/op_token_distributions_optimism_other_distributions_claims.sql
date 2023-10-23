@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('other_distributions_claims'),
-    tags = ['dunesql'],
+    
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

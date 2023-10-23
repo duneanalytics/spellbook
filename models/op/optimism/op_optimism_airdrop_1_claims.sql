@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'op_optimism',
         alias = alias('airdrop_1_claims'),
         materialized = 'incremental',

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
     alias = alias('options_limit_order'),
     partition_by = ['block_month'],

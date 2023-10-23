@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('automation_gas_daily'),
     post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
                             "project",

@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         alias = alias('vebal_votes'),
         materialized = 'table',
         file_format = 'delta',

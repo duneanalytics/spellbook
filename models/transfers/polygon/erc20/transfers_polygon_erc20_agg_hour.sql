@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         alias = alias('erc20_agg_hour'),
         partition_by = ['block_month'],
         materialized ='incremental',

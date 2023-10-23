@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('top_minters'),
     materialized='incremental',
     file_format = 'delta',

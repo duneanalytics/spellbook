@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql']
+    
     , alias = alias('arbitrage_traders_ethereum')
 )}}
 

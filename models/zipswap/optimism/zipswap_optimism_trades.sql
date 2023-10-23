@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'zipswap_optimism',
     alias = alias('trades'),
     partition_by = ['block_month'],

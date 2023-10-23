@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('dex'),
     materialized = 'table',
     file_format = 'delta',

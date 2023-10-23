@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('vrf_gas_daily'),
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","polygon"]\',
                             "project",

@@ -1,6 +1,6 @@
  {{
   config(
-        tags=['dunesql'],
+        
         schema = 'solana_utils',
         alias = alias('daily_balances'),
         materialized='incremental',

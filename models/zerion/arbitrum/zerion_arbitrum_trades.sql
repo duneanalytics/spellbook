@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql']
+    
     ,schema = 'zerion_arbitrum'
     ,alias = alias('trades')
     ,materialized = 'incremental'

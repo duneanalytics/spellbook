@@ -1,5 +1,5 @@
 {{ config (
-    tags=['static', 'dunesql'],
+    tags=['static'],
     alias = alias('test_addresses'),
     post_hook = '{{ 
         expose_spells(\'["polygon"]\',

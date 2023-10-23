@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'uniswap_v3_ethereum',
     alias = alias('proposals'),
     materialized = 'table',

@@ -1,7 +1,7 @@
 {{
     config(
         alias = alias('balances'),
-        tags = ['dunesql'],
+        
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",

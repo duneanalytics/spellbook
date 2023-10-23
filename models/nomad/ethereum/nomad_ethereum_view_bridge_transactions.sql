@@ -1,6 +1,6 @@
 {{
   config(
-      tags=['dunesql'],
+      
       alias=alias('view_bridge_transactions'),
       post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "project",

@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         partition_by = ['block_month'],
         schema = 'safe_ethereum',
         alias = alias('airdrop_claims'),

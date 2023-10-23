@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'lifi_v2_fantom',
     alias = alias('trades'),
     partition_by = ['block_month'],

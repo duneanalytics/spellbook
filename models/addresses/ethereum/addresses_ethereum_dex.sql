@@ -1,5 +1,5 @@
 {{config(alias = alias('dex'),
-        tags=['static', 'dunesql'],
+        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",

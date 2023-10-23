@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'transfers_bitcoin',
         alias = alias('satoshi'),
         materialized='incremental',

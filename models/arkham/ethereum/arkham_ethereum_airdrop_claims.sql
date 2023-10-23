@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'arkham_ethereum',
         alias = alias('airdrop_claims'),
         materialized = 'table',

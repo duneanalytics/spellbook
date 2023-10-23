@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'mauve_ethereum',
     alias = alias('pools'),
     materialized = 'incremental',

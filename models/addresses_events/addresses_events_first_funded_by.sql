@@ -1,7 +1,7 @@
 {{ config
 (
     alias = alias('first_funded_by')
-    , tags = ['dunesql']
+    
     , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo"]\',
                                     "sector",
                                     "addresses_events",

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'compound_v2_ethereum',
     alias = alias('supply'),
     partition_by = ['block_month'],

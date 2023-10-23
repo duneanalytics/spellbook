@@ -1,6 +1,6 @@
 {{ config(
     schema = 'addresses_events_optimism'
-    , tags = ['dunesql']
+    
     , alias = alias('first_path')
     , materialized = 'incremental'
     , file_format = 'delta'

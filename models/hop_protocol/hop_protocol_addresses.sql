@@ -1,6 +1,6 @@
 {{
   config(
-        tags=['dunesql'],
+        
         schema = 'hop_protocol',
         alias = alias('addresses'),
         post_hook='{{ expose_spells(\'["optimism"]\',

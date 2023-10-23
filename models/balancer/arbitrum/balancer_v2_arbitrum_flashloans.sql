@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
       , partition_by = ['block_month']
       , schema = 'balancer_v2_arbitrum'
       , alias = alias('flashloans')

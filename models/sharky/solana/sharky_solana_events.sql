@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'sharky_solana',
     alias = alias('events'),
     partition_by = ['block_month'],

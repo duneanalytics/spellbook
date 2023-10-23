@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'gitcoin_ethereum',
     alias = alias('proposals'),
     materialized = 'table',

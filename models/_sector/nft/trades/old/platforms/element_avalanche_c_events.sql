@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_avalanche_c',
     alias = alias('events'),
-    tags = ['dunesql'],
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

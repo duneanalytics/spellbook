@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('curve_steth_ng_pool'),
-    tags = ['dunesql'], 
+     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

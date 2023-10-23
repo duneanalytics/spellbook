@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        
         alias = alias('current_bids'),
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',

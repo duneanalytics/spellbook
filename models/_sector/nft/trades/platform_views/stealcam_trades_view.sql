@@ -2,7 +2,7 @@
 {{ config(
         schema = 'stealcam',
         alias = alias('trades'),
-        tags = ['dunesql'],
+        
         materialized = 'view',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",

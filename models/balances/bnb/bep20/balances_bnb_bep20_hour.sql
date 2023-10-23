@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         alias = alias('bep20_hour'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v4_ethereum',
     alias = alias('events'),
-    tags = ['dunesql'],
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,6 +1,6 @@
 {{ 
     config(
-        tags = ['dunesql'],
+        
         schema = 'moola_celo',
         alias = alias('interest'),
         materialized = 'view',

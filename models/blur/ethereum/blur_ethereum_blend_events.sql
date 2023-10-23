@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'blur_ethereum',
         alias = alias('blend_events'),
         post_hook='{{ expose_spells(\'["ethereum"]\',

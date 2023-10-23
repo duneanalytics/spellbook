@@ -2,7 +2,7 @@
     alias = alias('all_vaults'),
     materialized='table',
     file_format = 'delta',
-    tags=['static', 'dunesql']
+    tags=['static']
   )
 }}
 SELECT contract_address, symbol, decimals

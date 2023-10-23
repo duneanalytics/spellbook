@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'trader_joe_v2_arbitrum',
     alias = alias('trades'),
     partition_by = ['block_month'],

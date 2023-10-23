@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'nft_ethereum',
     alias = alias('wallet_pnl'),
     materialized='incremental',

@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_arbitrum',
         alias=alias('wash_trades'),
         partition_by=['block_month'],

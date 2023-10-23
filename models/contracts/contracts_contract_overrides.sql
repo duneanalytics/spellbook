@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
+    tags = ['static'],
     schema = 'contracts',
     alias = alias('contract_overrides'),
     unique_key='contract_address',

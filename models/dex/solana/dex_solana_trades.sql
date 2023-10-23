@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'dex_solana',
         alias = alias('trades'),
         materialized = 'view',

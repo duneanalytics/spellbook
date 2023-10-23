@@ -1,7 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
     alias = alias('entities_chorusone'),
-    tags = ['dunesql', 'static'],
+    tags = [ 'static'],
     unique_key = ['pubkey'])
 }}
 

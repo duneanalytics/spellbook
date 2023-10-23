@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
         , schema = 'zeroex'
         , alias = alias('api_fills')
         , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon"]\',

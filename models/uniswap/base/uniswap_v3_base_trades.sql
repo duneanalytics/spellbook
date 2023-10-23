@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'uniswap_v3_base',
     alias = alias('trades'),
     partition_by = ['block_month'],

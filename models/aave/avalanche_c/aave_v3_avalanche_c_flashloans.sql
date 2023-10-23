@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['dunesql']
-    , partition_by = ['block_month']
+     partition_by = ['block_month']
     , schema = 'aave_v3_avalanche_c'
     , alias = alias('flashloans')
     , materialized = 'incremental'

@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        
         alias = alias('punk_offer_events'),
         partition_by = ['evt_block_time_week'],
         materialized = 'incremental',

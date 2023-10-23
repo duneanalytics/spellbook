@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         schema = 'ellipsis_finance_bnb',
         alias = alias('airdrop_claims'),
         materialized = 'table',

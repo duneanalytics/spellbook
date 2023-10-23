@@ -2,7 +2,7 @@
     config(
         schema = 'aerodrome_base',
         alias=alias('bribe_mappings'),
-        tags=['dunesql'],
+        
         materialized = 'table',
         unique_key = ['pool_contract', 'incentives_contract', 'allowed_rewards'],
         post_hook='{{ expose_spells(\'["base"]\',

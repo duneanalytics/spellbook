@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
+    tags = ['static'],
     alias = alias('project_name_mappings'),
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["optimism"]\',

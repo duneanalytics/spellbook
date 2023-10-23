@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('ocr_operator_admin_meta'),
     materialized = 'view',
     post_hook='{{ expose_spells(\'["optimism"]\',

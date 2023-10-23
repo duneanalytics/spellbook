@@ -1,7 +1,7 @@
 {{
     config(
         schema="balancer_ethereum",
-        tags = ['dunesql'],
+        
         alias = alias('vebal_slopes'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

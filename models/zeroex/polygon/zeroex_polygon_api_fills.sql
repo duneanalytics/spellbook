@@ -1,6 +1,6 @@
 {{  config(
         schema = 'zeroex_polygon',
-        tags=['dunesql'],
+        
         alias = alias('api_fills'),
         materialized='incremental',
         partition_by = ['block_month'],

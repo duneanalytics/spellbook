@@ -1,5 +1,5 @@
 {{ config(
-	tags=['dunesql', 'static'],
+	tags=[ 'static'],
 	alias = alias('genesis_balances'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",

@@ -1,7 +1,7 @@
 {{
   config(
         alias = alias('contract_mapping'),
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "contracts",

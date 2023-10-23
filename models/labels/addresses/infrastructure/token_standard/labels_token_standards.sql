@@ -1,4 +1,4 @@
-{{config(tags=['dunesql'],
+{{config(
         alias = alias('token_standards'),
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis","goerli","optimism","polygon"]\',
                                     "sector",

@@ -1,6 +1,6 @@
 {{ config
 (
-    tags = ['dunesql'],
+    
     schema = 'kyberswap_aggregator_arbitrum',
     alias = alias('trades'),
     partition_by = ['block_month'],

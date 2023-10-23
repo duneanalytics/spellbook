@@ -1,7 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
     alias = alias('entities_tx_from_addresses'),
-    tags = ['dunesql', 'static'],
+    tags = [ 'static'],
     unique_key = ['tx_from'])
 }}
 

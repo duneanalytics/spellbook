@@ -4,7 +4,7 @@
         alias = alias('contract_addresses'),
         materialized = 'view',
         unique_key = ['blockchain', 'contract_address'],
-        tags = ['dunesql'],
+        
     )
 }}
 

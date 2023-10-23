@@ -1,5 +1,5 @@
 {{ config (
-    tags=['dunesql']
+    
     , alias = alias('etv_liquidity_withdrawal')
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 

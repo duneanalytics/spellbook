@@ -1,5 +1,5 @@
 {{ config(
-     tags = ['dunesql'],
+     
     alias = alias('transactions_gnosis_erc20'),
     partition_by = ['block_month'],
     materialized = 'incremental',

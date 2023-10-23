@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('accounts'),
     materialized = 'incremental',
     file_format = 'delta',

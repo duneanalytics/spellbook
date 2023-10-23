@@ -1,5 +1,5 @@
 {{config(
-        tags = ['dunesql'],
+        
         alias = alias('addresses_ethereum'))}}
 
 {% set addresses_models = [

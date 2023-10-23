@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
       , alias = alias('flashloans')
       , partition_by = ['block_month']
       , materialized = 'incremental'

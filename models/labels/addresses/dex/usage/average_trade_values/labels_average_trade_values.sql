@@ -1,6 +1,6 @@
 {{
     config(
-       tags=['dunesql'],
+       
         alias = alias('average_trade_values'),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon"]\',
         "sector",

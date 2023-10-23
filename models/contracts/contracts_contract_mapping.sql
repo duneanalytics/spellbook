@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'contracts',
         alias = alias('contract_mapping'),
         materialized ='incremental',

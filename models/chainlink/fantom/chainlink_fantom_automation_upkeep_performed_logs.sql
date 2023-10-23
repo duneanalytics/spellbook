@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('automation_upkeep_performed_logs'),
     materialized='view',
     post_hook='{{ expose_spells(\'["fantom"]\',

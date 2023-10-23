@@ -3,7 +3,7 @@
         schema = 'solana_utils',
         alias = alias('total_rewards'),
         materialized='table',
-        tags = ['dunesql'],
+        
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",

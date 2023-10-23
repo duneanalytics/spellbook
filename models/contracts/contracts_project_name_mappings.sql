@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
+    tags = ['static'],
     schema = 'contracts',
     alias = alias('project_name_mappings'),
     unique_key='dune_name',

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tokens_zksync',
     alias = alias('nft_standards'),
     materialized='incremental',

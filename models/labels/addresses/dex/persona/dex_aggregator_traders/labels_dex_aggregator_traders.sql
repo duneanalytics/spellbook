@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql'],
+        
         alias = alias('dex_aggregator_traders'),
         post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum", "gnosis", "optimism", "polygon"]\', 
         "sector", 

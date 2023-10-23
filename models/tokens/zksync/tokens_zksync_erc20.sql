@@ -1,7 +1,7 @@
 {{ config(
         schema = 'tokens_zksync'
         , alias = alias('erc20')
-        , tags=['static', 'dunesql']
+        , tags=['static']
         )
 }}
 

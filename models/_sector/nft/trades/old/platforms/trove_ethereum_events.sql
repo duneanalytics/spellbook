@@ -1,7 +1,7 @@
 {{ config(
     schema = 'trove_ethereum',
     alias = alias('events'),
-    tags = ['dunesql'],
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

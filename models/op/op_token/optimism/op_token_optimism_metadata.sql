@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
         , schema = 'op_token_optimism'
         , alias = alias('metadata')
         , unique_key = ['contract_address']

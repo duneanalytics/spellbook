@@ -1,5 +1,5 @@
 {{ config(
-	tags=['dunesql'],
+	
     schema = 'synthetix_v2_optimism',
 	alias = alias('perpetual_trades'),
 	partition_by = ['block_month'],

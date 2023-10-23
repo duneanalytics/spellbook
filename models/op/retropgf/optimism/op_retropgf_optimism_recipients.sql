@@ -1,6 +1,6 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        ,tags = ['dunesql']
+        
         , alias = alias('recipients')
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

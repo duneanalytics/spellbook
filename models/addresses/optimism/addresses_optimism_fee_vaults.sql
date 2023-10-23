@@ -1,5 +1,5 @@
 {{config(
-      tags = ['dunesql','static'],
+      tags = ['static'],
       alias = alias('fee_vaults'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",

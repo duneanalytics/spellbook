@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
         alias = alias('nft')
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["base"]\',

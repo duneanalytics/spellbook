@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql']
+    
     , alias = alias('aave_v2_liquidations')
 )}}
 

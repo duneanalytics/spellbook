@@ -1,4 +1,4 @@
-{{config(tags=['dunesql'],
+{{config(
     alias = alias('token_standards_ethereum'),
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",

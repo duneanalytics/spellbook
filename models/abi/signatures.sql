@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['created_at', 'unique_signature_id'],
-        tags = ['dunesql'],
+        
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom","celo","base"]\',
                         "sector",
                         "abi",

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql', 'static']
+    tags=[ 'static']
     , alias = alias('erc20')
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["base"]\',

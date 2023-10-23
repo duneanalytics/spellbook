@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('repay'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",

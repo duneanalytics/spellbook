@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'seaport_v2_ethereum',
     alias = alias('trades'),
     partition_by = ['block_date'],

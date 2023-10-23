@@ -1,5 +1,5 @@
 {{config(
-        tags = ['dunesql'],
+        
         alias = alias('addresses_base'))}}
 
 {% set addresses_models = [

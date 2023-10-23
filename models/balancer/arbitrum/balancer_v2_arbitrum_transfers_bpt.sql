@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_arbitrum',
-        tags = ['dunesql'],
+        
         alias = alias('transfers_bpt'),
         partition_by = ['block_month'],
         materialized = 'incremental',

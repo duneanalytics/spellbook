@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'pancakeswap_v3_bnb',
     alias = alias('amm_trades'),
     partition_by = ['block_month'],

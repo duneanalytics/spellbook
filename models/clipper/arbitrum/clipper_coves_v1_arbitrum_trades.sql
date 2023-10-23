@@ -1,5 +1,5 @@
 {{ 
-    config(tags=['dunesql'],
+    config(
     schema = 'clipper_coves_v1_arbitrum',
     alias = alias('trades'),
     partition_by = ['block_month'],

@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['static', 'dunesql'],
+        tags = ['static'],
         alias = alias('addresses'),
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom"]\',
                                     "sector",

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'paraswap_v4_polygon',
     alias = alias('trades'),
-    tags = ['dunesql'],
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

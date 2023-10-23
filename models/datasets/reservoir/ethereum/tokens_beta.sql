@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'reservoir',
     alias = alias('tokens_beta'),
     post_hook = '{{ expose_dataset(\'["ethereum"]\',

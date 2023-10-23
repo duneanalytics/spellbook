@@ -1,5 +1,5 @@
 {{  config(
-    tags=['dunesql'],
+    
         schema = 'zeroex_celo',
         alias = alias('api_fills'),
         materialized='incremental',

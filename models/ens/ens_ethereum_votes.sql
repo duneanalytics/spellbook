@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'ens_ethereum',
     alias = alias('votes'),
     materialized = 'table',

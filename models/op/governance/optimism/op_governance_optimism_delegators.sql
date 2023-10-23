@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
         , schema = 'op_governance_optimism'
         , alias = alias('delegators')
         , materialized = 'incremental'

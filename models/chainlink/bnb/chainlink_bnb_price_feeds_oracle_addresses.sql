@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('price_feeds_oracle_addresses'),
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",

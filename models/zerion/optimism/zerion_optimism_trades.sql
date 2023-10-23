@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql']
+    
     ,schema = 'zerion_optimism'
     ,alias = alias('trades')
     ,materialized = 'incremental'

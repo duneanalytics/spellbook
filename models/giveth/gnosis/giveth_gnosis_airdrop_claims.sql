@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         schema = 'giveth_gnosis',
         alias = alias('airdrop_claims'),
         materialized = 'table',

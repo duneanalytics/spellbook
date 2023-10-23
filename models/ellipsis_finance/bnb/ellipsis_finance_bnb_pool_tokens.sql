@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('pool_tokens'),
     materialized = 'incremental',
     file_format = 'delta',

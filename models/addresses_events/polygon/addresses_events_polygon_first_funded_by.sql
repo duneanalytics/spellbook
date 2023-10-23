@@ -1,6 +1,6 @@
 {{ config(
     schema = 'addresses_events_polygon'
-    , tags = ['dunesql']
+    
     , alias = alias('first_funded_by')
     , materialized = 'incremental'
     , file_format = 'delta'

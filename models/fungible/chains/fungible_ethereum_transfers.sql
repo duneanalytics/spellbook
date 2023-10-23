@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'fungible_ethereum',
         alias=alias('transfers'),
 )

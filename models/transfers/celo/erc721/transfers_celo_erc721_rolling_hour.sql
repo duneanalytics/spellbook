@@ -1,6 +1,6 @@
 {{ 
     config(
-        tags = ['dunesql'],
+        
         alias = alias('erc721_rolling_hour'),
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",

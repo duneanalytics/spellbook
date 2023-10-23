@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     alias = alias('addresses'),
     materialized = 'view',
     file_format = 'delta',

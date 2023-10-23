@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'dex_optimism',
         alias = alias('sandwiches'),
         partition_by = ['block_month'],

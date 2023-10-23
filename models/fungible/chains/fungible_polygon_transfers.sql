@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'fungible_polygon',
         alias=alias('transfers'),
 )

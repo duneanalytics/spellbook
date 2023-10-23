@@ -1,6 +1,6 @@
 {{ config(
     alias = alias('trades'),
-    tags=['dunesql'],
+    
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "tokenlon",

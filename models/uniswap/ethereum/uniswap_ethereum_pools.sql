@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'uniswap_ethereum',
     alias = alias('pools'),
     materialized = 'incremental',

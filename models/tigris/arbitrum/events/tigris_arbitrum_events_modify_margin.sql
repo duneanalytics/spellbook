@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
     alias = alias('events_modify_margin'),
     partition_by = ['block_month'],

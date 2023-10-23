@@ -5,7 +5,7 @@
     incremental_strategy = 'merge',
     unique_key = ['block_number', 'unique_trade_id'],
     alias = alias('events'),
-    tags = ['dunesql']
+    
 )}}
 
 {% set weth_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}

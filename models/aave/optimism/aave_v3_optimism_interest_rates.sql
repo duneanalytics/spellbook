@@ -1,6 +1,5 @@
 {{ config(
-  tags = ['dunesql']
-  , schema = 'aave_v3_optimism'
+   schema = 'aave_v3_optimism'
   , materialized = 'incremental'
   , file_format = 'delta'
   , incremental_strategy = 'merge'

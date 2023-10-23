@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'sushiswap_celo',
         alias = alias('trades'),
         partition_by = ['block_month'],

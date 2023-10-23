@@ -1,7 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
     alias = alias('camelot_pools'),
-    tags = ['dunesql'],
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

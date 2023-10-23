@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('fm_reverted_transactions'),
     partition_by=['date_month'],
     materialized='incremental',

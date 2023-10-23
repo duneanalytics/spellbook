@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql'],
+    
     alias = alias('smart_dex_traders_ethereum')
 )}}
 /*

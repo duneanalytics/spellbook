@@ -1,6 +1,6 @@
 {{ config(
         schema='collectionswap_ethereum',
-        tags = ['dunesql'],
+        
         alias = alias('pools'),
         materialized = 'incremental',
         file_format = 'delta',

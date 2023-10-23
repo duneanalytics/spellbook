@@ -1,7 +1,7 @@
 {{ config(
     schema = 'paraswap_v5_avalanche_c',
     alias = alias('trades'),
-    tags = ['dunesql'],
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

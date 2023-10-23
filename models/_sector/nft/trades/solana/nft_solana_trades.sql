@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'nft_solana'
-        , tags = ['dunesql']
+        
         , alias = alias('trades')
         , materialized = 'view'
         ,post_hook='{{ expose_spells(\'["solana"]\',

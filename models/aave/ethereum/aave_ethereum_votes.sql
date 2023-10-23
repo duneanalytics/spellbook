@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'aave_ethereum',
     alias = alias('votes'),
     materialized = 'table',

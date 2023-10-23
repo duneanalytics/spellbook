@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     alias = alias('transactions'),
     materialized = 'view',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',

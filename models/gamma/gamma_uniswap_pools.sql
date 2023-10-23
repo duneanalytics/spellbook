@@ -1,6 +1,6 @@
  {{
   config(
-        tags=['dunesql'],
+        
         schema='gamma',
         alias = alias('uniswap_pools'),
         materialized = 'incremental',

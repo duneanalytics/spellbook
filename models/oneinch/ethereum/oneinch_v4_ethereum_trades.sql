@@ -1,5 +1,5 @@
 {{  config(
-        tags = ['dunesql'],
+        
         schema='oneinch_v4_ethereum',
         alias = alias('trades'),
         partition_by = ['block_month'],

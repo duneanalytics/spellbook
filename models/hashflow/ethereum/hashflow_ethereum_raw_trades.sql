@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql', 'prod_exclude'],
+    tags=[ 'prod_exclude'],
     alias = alias('raw_trades'),
     partition_by = ['block_date'],
     materialized = 'incremental',

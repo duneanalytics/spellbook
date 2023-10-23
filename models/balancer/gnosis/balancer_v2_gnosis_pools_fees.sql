@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v2_gnosis',
-        tags = ['dunesql'],
+        
         alias = alias('pools_fees'),
         materialized = 'incremental',
         file_format = 'delta',

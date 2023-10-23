@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         alias = alias('matic_agg_day'),
         partition_by = ['block_month'],
         materialized ='incremental',

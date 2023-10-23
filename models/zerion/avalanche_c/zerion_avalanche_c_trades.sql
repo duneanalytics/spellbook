@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql']
+    
     ,schema = 'zerion_avalanche_c'
     ,alias = alias('trades')
     ,materialized = 'incremental'

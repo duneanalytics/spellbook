@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='nft',
         alias = alias('marketplaces_info'),
         unique_key = ['codename'],

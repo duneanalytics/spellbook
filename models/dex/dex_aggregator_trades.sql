@@ -1,6 +1,6 @@
 
 {{ config(
-        tags=['dunesql'],
+        
         schema ='dex_aggregator',
         alias = alias('trades'),
         materialized = 'incremental',

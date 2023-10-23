@@ -1,7 +1,7 @@
 
 
 {{ config(
-        tags=['dunesql']
+        
         , schema = 'op_token_optimism'
         , alias = alias('initial_allocations')
         , unique_key = ['allocation_category','allocation_subcategory']

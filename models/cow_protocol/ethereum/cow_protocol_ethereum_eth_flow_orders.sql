@@ -1,6 +1,6 @@
 {{  config(
         alias=alias('eth_flow_orders'),
-        tags = ['dunesql'],
+        
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash', 'order_uid'],

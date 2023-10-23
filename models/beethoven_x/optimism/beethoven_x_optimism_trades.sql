@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql', 'prod_exclude'],
+{{ config(tags=[ 'prod_exclude'],
     schema = 'beethoven_x_optimism',
     alias = alias('trades'),
     partition_by = ['block_month'],

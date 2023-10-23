@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('balances'),
     materialized = 'table',
     file_format = 'delta',

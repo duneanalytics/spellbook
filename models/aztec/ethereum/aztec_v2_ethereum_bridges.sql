@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'aztec_v2_ethereum',
     alias = alias('bridges'),
     post_hook='{{ expose_spells(\'["ethereum"]\',

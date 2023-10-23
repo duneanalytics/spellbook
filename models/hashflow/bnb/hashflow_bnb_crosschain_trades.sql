@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql']
+        
         ,alias = alias('cross_chain_trades')
         ,partition_by = ['block_date']
         ,materialized='incremental'

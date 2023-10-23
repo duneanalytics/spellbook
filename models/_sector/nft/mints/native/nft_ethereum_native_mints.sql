@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_ethereum',
         alias = alias('native_mints'),
         partition_by = ['block_month'],

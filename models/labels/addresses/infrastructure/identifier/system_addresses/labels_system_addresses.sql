@@ -1,4 +1,4 @@
-{{config(tags=['dunesql'],
+{{config(
     alias = alias('system_addresses'),
     post_hook='{{ expose_spells(\'["arbitrum","optimism","solana"]\',
                                 "sector",

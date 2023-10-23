@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'biswap_v3_bnb',
     alias = alias('trades'),
     partition_by = ['block_month'],

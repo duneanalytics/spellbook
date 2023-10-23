@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'genie_ethereum',
         alias = alias('airdrop_claims'),
         materialized = 'incremental',

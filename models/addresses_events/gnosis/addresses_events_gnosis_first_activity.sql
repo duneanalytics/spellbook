@@ -1,6 +1,6 @@
 {{ config(
     schema = 'addresses_events_gnosis'
-    , tags = ['dunesql']
+    
     , alias = alias('first_activity')
     , materialized = 'incremental'
     , file_format = 'delta'

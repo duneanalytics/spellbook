@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'gas_optimism',
     alias = alias('fees_traces'),
     materialized = 'view',

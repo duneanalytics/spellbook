@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
+    tags = ['static'],
     alias = alias('contract_overrides'),
     unique_key='contract_address',
     post_hook='{{ expose_spells(\'["optimism"]\',

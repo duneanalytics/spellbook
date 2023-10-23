@@ -1,6 +1,6 @@
 {{config(
         schema = 'op_governance_optimism'
-        , tags = ['static', 'dunesql']
+        , tags = ['static']
         , alias = alias('delegates_addresses')
         , unique_key='address'
         , post_hook='{{ expose_spells(\'["optimism"]\',

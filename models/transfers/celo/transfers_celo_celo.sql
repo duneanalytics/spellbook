@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         alias = alias('celo'),
         partition_by = ['block_month'],
         materialized = 'incremental',

@@ -8,7 +8,7 @@
     config( 
         schema = 'oneinch_' + blockchain,
         alias = alias('ar_calls_transfers'),
-        tags = ['dunesql'],
+        
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

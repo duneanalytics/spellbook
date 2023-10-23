@@ -1,6 +1,6 @@
 {{  config(
         alias = alias('batches'),
-        tags=['dunesql'],
+        
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],

@@ -1,4 +1,4 @@
-{{  config(tags=['dunesql'],
+{{  config(
         alias = alias('native_fills'),
         materialized='incremental',
         partition_by = ['block_month'],

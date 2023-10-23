@@ -1,5 +1,5 @@
 {{
-    config(tags=['dunesql'],
+    config(
         alias = alias('contract_deployers_gnosis'),
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",

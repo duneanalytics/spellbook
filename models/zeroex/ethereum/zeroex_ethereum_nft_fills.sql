@@ -1,5 +1,5 @@
 {{  config(
-        tags=['dunesql'],
+        
         alias = alias('nft_fills'),
         materialized='incremental',
         partition_by = ['block_date'],

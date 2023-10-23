@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'sushiswap_base',
     alias = alias('trades'),
     partition_by = ['block_month'],

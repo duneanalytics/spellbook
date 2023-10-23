@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zora_v1_ethereum',
-    tags = ['dunesql'],
+    
     alias = alias('base_trades'),
     materialized = 'incremental',
     file_format = 'delta',

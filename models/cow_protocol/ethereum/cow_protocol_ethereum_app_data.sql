@@ -1,5 +1,5 @@
 {{ config(alias=alias('app_data'),
-        tags=['dunesql'],
+        
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",

@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft',
         alias =alias('transfers'),
         partition_by = ['block_month'],

@@ -3,7 +3,7 @@
         alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql'],
+        tags = ['static'],
         post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync"]\',
                                     "sector",
                                     "prices",

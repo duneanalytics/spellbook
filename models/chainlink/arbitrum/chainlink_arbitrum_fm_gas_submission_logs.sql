@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('fm_gas_submission_logs'),
     materialized='view'
   )

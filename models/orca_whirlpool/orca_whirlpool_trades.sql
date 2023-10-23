@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'orca_whirlpool',
         alias = alias('trades'),
         partition_by = ['block_month'],

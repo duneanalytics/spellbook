@@ -1,6 +1,6 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
+    tags = ['static'],
     schema = 'contracts',
     alias = alias('contract_creator_address_list'),
     unique_key='creator_address',

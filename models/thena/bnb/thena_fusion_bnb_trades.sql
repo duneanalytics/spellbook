@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'thena_fusion_bnb',
     alias = alias('trades'),
     partition_by = ['block_month'],

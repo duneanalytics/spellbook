@@ -1,7 +1,7 @@
 {{ config(
     schema = 'referral',
     alias = alias('staging_rewards'),
-    tags = ['dunesql'],
+    
     materialized = 'view'
     )
 }}

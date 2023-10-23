@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'hop_protocol_optimism',
     alias = alias('flows'),
     partition_by = ['block_month'],

@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('vrf_request_daily'),
     partition_by=['date_month'],
     materialized='incremental',

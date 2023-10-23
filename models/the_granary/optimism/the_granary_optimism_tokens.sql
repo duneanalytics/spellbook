@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     alias = alias('tokens')
     , materialized = 'incremental'
     , file_format = 'delta'

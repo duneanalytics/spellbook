@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'nft_gnosis',
         alias = alias('approvals'),
         partition_by = ['block_month'],

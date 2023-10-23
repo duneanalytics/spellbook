@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        
         alias = alias('trades'),
         partition_by = ['block_month'],
         post_hook='{{ expose_spells(\'["bnb"]\',

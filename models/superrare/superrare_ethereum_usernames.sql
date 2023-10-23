@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql'],
+    
     schema='superrare_ethereum', 
     alias = alias('usernames'))}}
 

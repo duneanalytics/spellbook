@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['static','dunesql']
+        tags = ['static']
         ,schema = 'nft_ethereum_metadata'
         ,alias = alias('proof_grails_ii')
         )

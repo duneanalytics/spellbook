@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'maverick_v1_ethereum',
     alias = alias('trades'),
     partition_by = ['block_month'],

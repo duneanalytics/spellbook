@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         alias = alias('accounting'),
         partition_by = ['dt'],
         materialized = 'table',

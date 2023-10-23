@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'openocean_v2_avalanche_c',
     alias = alias('trades'),
     partition_by = ['block_month'],

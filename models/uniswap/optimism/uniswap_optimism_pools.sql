@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema='uniswap_v3_optimism',
         alias=alias('pools'),
         materialized='table',

@@ -1,5 +1,5 @@
 {{config(
-        tags=['dunesql'],
+        
         alias = alias('tornado_cash'),
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum","bnb","avalanche_c","optimism","gnosis"]\',
                                     "sector",

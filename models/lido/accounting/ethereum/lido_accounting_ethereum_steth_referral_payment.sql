@@ -1,6 +1,6 @@
 {{ config(
         alias = alias('steth_referral_payment'),
-        tags = ['dunesql'], 
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

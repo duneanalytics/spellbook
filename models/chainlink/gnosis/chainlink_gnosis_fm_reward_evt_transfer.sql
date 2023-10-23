@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('fm_reward_evt_transfer'),
     materialized='view'
   )

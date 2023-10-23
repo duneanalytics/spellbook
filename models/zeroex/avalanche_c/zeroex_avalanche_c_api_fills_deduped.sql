@@ -1,5 +1,5 @@
 {{  config(
-        tags=['dunesql'],
+        
         schema = 'zeroex_avalanche_c',
         alias = alias('api_fills_deduped'),
         materialized='incremental',

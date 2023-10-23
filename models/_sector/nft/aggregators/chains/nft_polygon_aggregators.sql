@@ -1,5 +1,5 @@
 {{config(
-    tags = ['dunesql'],
+    
     schema = 'nft_polygon',
     alias = alias('aggregators')
 )}}

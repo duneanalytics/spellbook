@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
         alias = alias('trades')
         )
 }}

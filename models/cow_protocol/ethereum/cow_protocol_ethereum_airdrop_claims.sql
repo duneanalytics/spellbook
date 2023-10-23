@@ -4,7 +4,7 @@
         alias = alias('airdrop_claims'),
         materialized = 'table',
         file_format = 'delta',
-        tags=['static', 'dunesql'],
+        tags=['static'],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",

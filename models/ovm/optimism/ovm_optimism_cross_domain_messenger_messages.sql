@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('cross_domain_messenger_messages'),
     partition_by = ['block_month'],
     materialized = 'incremental',

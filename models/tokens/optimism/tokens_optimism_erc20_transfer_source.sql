@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        
         alias = alias('erc20_transfer_source'),
         materialized='incremental',
         incremental_strategy = 'merge',

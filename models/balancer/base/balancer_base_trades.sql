@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'balancer_base',
     alias = alias('trades'),
     post_hook='{{ expose_spells(\'["base"]\',

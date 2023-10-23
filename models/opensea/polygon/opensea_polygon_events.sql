@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        
          schema = 'opensea_polygon',        
          alias = alias('events')
          )

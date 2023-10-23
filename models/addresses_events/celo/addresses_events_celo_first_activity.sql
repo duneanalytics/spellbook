@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'addresses_events_celo',
         alias = alias('first_activity'),
         materialized = 'incremental',

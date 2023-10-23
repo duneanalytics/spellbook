@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['dunesql']
-    ,schema = 'timeswap_arbitrum'
+    schema = 'timeswap_arbitrum'
     ,alias = alias('pools')
     ,unique_key = ['pool_pair', 'maturity', 'strike']
     ,post_hook='{{ expose_spells(\'["arbitrum"]\',

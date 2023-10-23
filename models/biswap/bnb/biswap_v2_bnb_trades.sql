@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'biswap_v2_bnb',
     alias = alias('trades'),
     partition_by = ['block_month'],

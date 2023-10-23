@@ -1,4 +1,4 @@
-{{config(tags=['dunesql'],
+{{config(
     alias = alias('token_standards_avalanche_c'),
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",

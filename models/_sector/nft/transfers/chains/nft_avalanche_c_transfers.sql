@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_avalanche_c',
         alias =alias('transfers'),
         partition_by=['block_month'],

@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'fungible_celo',
         alias=alias('transfers'),
 )

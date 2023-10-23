@@ -1,5 +1,5 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'contracts',
     alias = alias('disperse_contracts')
     )

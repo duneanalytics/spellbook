@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         alias = alias('self_destruct_contracts'),
         materialized ='incremental',
         file_format ='delta',

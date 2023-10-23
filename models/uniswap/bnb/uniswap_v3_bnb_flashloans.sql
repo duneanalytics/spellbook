@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
       , partition_by = ['block_month']
       , schema = 'uniswap_v3_bnb'
       , alias = alias('flashloans')

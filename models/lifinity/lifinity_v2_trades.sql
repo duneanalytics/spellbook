@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'lifinity_v2',
         alias = alias('trades'),
         partition_by = ['block_month'],

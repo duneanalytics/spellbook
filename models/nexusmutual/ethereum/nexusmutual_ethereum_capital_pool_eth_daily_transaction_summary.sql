@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('capital_pool_eth_daily_transaction_summary'),
     partition_by = ['day'],
     materialized = 'incremental',

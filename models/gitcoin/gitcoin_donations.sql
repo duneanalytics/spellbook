@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql'],
+        
         alias = alias('donations'),
         partition_by = ['block_month'],
         materialized = 'incremental',

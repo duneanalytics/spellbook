@@ -5,7 +5,7 @@
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['resolver_address', 'farm_address'],
-        tags = ['dunesql']
+        
     )
 }}
 

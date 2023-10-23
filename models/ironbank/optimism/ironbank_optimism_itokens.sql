@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('itokens'),
     post_hook='{{ expose_spells(\'["optimism"]\',
                             "project",

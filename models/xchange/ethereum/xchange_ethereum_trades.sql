@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'xchange_ethereum'
     ,alias = alias('trades')
     ,partition_by = ['block_month']

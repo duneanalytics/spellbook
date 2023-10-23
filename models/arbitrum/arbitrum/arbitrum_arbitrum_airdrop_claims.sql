@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'arbitrum_arbitrum',
         alias = alias('airdrop_claims'),
         materialized = 'incremental',

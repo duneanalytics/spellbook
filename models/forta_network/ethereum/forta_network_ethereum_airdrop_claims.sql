@@ -1,6 +1,6 @@
 {{
     config(
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         schema = 'forta_network_ethereum',
         alias = alias('airdrop_claims'),
         materialized = 'table',

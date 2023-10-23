@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
     alias = alias('trades'),
     partition_by = ['block_month'],

@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     alias = alias('base_pairs'),
     partition_by = ['block_date'],
     materialized = 'incremental',

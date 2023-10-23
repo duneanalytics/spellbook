@@ -1,5 +1,5 @@
 {{ config(
-        tags=['dunesql']
+        
         , schema = 'op_governance_optimism'
         , alias = alias('delegates')
         , post_hook='{{ expose_spells(\'["optimism"]\',

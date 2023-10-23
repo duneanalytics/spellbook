@@ -1,5 +1,5 @@
 {{config(
-        tags=['dunesql'],
+        
         alias = alias('balancer_v2_gauges_arbitrum'),
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",

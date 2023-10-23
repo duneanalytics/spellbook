@@ -1,5 +1,5 @@
 {{ config(
-	tags=['dunesql'],
+	
     schema = 'compound_v2_ethereum',
     alias = alias('ctokens'),
     post_hook = '{{ expose_spells(\'["ethereum"]\',

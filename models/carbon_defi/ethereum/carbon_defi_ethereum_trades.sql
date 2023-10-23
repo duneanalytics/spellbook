@@ -1,5 +1,5 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'carbon_defi_ethereum',
     alias = alias('trades'),
     partition_by = ['block_month'],

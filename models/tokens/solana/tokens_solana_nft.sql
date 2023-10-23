@@ -2,7 +2,7 @@
 (        
   schema = 'tokens_solana',
   alias = alias('nft'),
-  tags = ['dunesql'],
+  
   materialized='table',
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",

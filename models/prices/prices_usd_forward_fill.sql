@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema='prices',
         alias = alias('usd_forward_fill'),
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "zksync"]\',

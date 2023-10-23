@@ -1,6 +1,6 @@
 {{ config(
         schema = 'balances_polygon',
-        tags = ['dunesql'],
+        
         alias = alias('erc20_hour'),
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",

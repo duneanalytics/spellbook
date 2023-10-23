@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'solana_utils',
-        tags = ['dunesql'],
+        
         alias = alias('token_accounts'),
         materialized='incremental',
         file_format = 'delta',

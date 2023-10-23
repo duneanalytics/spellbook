@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         partition_by = ['block_month'],
         schema = 'velodrome_ethereum',
         alias = alias('airdrop_claims'),

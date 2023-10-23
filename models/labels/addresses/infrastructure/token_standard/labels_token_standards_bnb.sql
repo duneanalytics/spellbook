@@ -1,4 +1,4 @@
-{{config(tags=['dunesql'],
+{{config(
     alias = alias('token_standards_bnb'),
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "sector",

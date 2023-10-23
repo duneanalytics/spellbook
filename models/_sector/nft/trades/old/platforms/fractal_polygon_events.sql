@@ -1,7 +1,7 @@
 {{ config(
     schema = 'fractal_polygon',
     alias = alias('events'),
-    tags = ['dunesql'],
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

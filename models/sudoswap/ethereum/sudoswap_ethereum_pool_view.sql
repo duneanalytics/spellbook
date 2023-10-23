@@ -2,7 +2,7 @@
 config(
       alias = alias('pools'),
       schema = 'sudoswap_ethereum',
-      tags = ['dunesql'],
+      
       post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "sudoswap",

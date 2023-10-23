@@ -1,5 +1,5 @@
 {{config(
-    tags = ['dunesql'],
+    
     schema = 'nft_optimism',
     alias = alias('aggregators')
 )}}

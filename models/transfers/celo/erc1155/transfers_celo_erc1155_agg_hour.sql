@@ -1,6 +1,6 @@
 {{ 
     config(
-        tags = ['dunesql'],
+        
         alias = alias('erc1155_agg_hour'),
         partition_by = ['block_month'],
         materialized = 'incremental',

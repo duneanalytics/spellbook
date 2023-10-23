@@ -1,5 +1,5 @@
 {{ config(
-        tags = ['dunesql'],
+        
         alias = alias('approvals'),
         schema = 'nft',
         partition_by = ['block_month', 'blockchain'],

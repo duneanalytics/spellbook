@@ -1,5 +1,5 @@
 {{config(
-        tags=['dunesql'],
+        
         alias = alias('project_wallets'),
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",

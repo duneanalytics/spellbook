@@ -1,6 +1,6 @@
 {{
   config(
-    tags=['dunesql'],
+    
     alias=alias('automation_meta'),
     materialized = 'view'
   )

@@ -1,5 +1,5 @@
 {{config(
-        tags = ['dunesql'],
+        
         alias = alias('cex_users'),
         post_hook='{{ expose_spells(\'["optimism","ethereum"]\',
                                     "sector",

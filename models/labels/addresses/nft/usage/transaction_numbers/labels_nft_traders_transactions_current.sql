@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql']
+    
     , alias = alias('nft_traders_transactions_current')
 )}}
 

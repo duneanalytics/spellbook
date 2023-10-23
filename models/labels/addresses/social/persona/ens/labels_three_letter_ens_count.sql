@@ -1,5 +1,5 @@
 {{config(
-    tags=['dunesql'],
+    
     alias = alias('three_letter_ens_count')
 )}}
 

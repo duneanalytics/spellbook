@@ -1,6 +1,6 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'moola_celo',
         alias = alias('borrow'),
         partition_by = ['evt_block_month'],

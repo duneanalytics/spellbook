@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer_v2_ethereum',
-    tags = ['dunesql'],
+    
     alias = alias('trades'),
     partition_by = ['block_month'],
     materialized = 'incremental',

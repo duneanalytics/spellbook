@@ -1,6 +1,6 @@
 {{
   config(
-      tags=['dunesql'],
+      
         schema = 'chain_info',
         alias = alias('chain_ids')
   )
