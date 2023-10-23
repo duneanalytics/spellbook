@@ -19,6 +19,7 @@ WITH
       updated_balances as (
             SELECT
                   date_trunc('day', block_time) as day
+                  , date_trunc('month', block_time) as month
                   , address
                   , token_mint_address
                   , cast(post_balance as double)/1e9 as sol_balance --lamport -> sol
@@ -38,6 +39,7 @@ WITH
 
 SELECT
       day
+      , month
       , address
       , sol_balance
       , token_mint_address
