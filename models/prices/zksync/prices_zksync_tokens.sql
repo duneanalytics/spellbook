@@ -51,4 +51,4 @@ FROM
     , ('byn-nbx', 'BYN', 0x2d850F34E957BA3dcbEe47fc2c79ff78044fB12e, 18)
     , ('wagmi5-wag', 'WAGMI', 0xD7C6210f3d6011D6B1BdDfA60440fe763340Df4c, 18)
     , ('pool-pooltogether', 'POOL', 0x97003aC71CC4a096E06C73e753d9b84f0039A064, 18)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+) as temp (token_id, symbol, contract_address, decimals)
