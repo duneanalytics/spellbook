@@ -14,7 +14,7 @@
 }}
 
 SELECT 'fantom' AS blockchain
-, 'spookswap' AS project
+, 'spookyswap' AS project
 , '1' AS version
 , pair AS pool
 , 0.2 AS fee
