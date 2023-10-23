@@ -1,5 +1,5 @@
 {{ config(
-        schema='prices_base',
+        schema='prices_zksync',
         alias = alias('tokens'),
         materialized='table',
         file_format = 'delta',
