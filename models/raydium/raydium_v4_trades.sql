@@ -38,10 +38,10 @@
             , row_number() over (partition by ip.account_amm order by ip.call_block_time desc) as recent_init
         FROM (
             SELECT account_serumMarket, account_amm, account_coinMintAddress as account_CoinMint, account_poolCoinTokenAccount, account_pcMintAddress as account_pcMint, account_poolPcTokenAccount, call_tx_id, call_block_time 
-            FROM {{ source('raydium_amm_solana','raydium_amm_call_initialize1') }}
+            FROM {{ source('raydium_amm_solana','raydium_amm_call_initialize') }}
             UNION ALL 
             SELECT account_serumMarket, account_amm, account_coinMint, account_poolCoinTokenAccount, account_pcMint, account_poolPcTokenAccount, call_tx_id, call_block_time 
-            FROM {{ source('raydium_amm_solana','raydium_amm_call_initialize2') }} raydium_amm_solana.raydium_amm_call_initialize2   
+            FROM {{ source('raydium_amm_solana','raydium_amm_call_initialize2') }}
         ) ip
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_coinMint
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_pcMint
