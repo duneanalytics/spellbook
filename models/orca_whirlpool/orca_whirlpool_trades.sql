@@ -67,6 +67,7 @@ with
             , call_tx_id
             , call_tx_index
             , call_block_time
+            , call_block_slot
             , call_outer_executing_account
         FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwap') }} sp
         
@@ -82,6 +83,7 @@ with
             , call_tx_id
             , call_tx_index
             , call_block_time
+            , call_block_slot
             , call_outer_executing_account
         FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwap') }} sp
     )
@@ -132,21 +134,22 @@ with
                 end as token_sold_vault
             , wp.update_time
         FROM (
-            SELECT 
-                account_whirlpool
-                , call_outer_instruction_index
-                , call_inner_instruction_index
-                , call_is_inner
-                , call_tx_signer
-                , call_tx_id
-                , call_tx_index
-                , call_block_time
-                , call_outer_executing_account    
-            FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} 
-            
-            UNION ALL 
-            
-            SELECT * FROM two_hop
+                SELECT 
+                    account_whirlpool
+                    , call_outer_instruction_index
+                    , call_inner_instruction_index
+                    , call_is_inner
+                    , call_tx_signer
+                    , call_tx_id
+                    , call_tx_index
+                    , call_block_time
+                    , call_block_slot
+                    , call_outer_executing_account    
+                FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} 
+                
+                UNION ALL 
+                
+                SELECT * FROM two_hop
             )
             sp
         INNER JOIN whirlpools wp
