@@ -146,10 +146,22 @@ with
                     , call_block_slot
                     , call_outer_executing_account    
                 FROM {{ source('whirlpool_solana', 'whirlpool_call_swap') }} 
+                WHERE 1=1
+                {% if is_incremental() %}
+                AND {{incremental_predicate('call_block_time')}}
+                {% else %}
+                AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
                 
                 UNION ALL 
                 
                 SELECT * FROM two_hop
+                WHERE 1=1
+                {% if is_incremental() %}
+                AND {{incremental_predicate('call_block_time')}}
+                {% else %}
+                AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
             )
             sp
         INNER JOIN whirlpools wp
@@ -162,7 +174,7 @@ with
             AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
             {% if is_incremental() %}
-            AND tr_1.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('tr_1.call_block_time')}}
             {% else %}
             AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
@@ -173,17 +185,11 @@ with
             AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2) 
                 OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
             {% if is_incremental() %}
-            AND tr_2.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('tr_2.call_block_time')}}
             {% else %}
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
-        WHERE 1=1
-            {% if is_incremental() %}
-            AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
-            {% else %}
-            AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
     )
     
 SELECT
