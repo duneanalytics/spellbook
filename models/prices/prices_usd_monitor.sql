@@ -10,7 +10,7 @@
 -- monitor to gather quantile information about prices latency
 select
     now() as recorded_at
-    ,cast(qdigest_agg(latency_seconds) as varbinary) as latency_seconds_digest
+    ,qdigest_agg(latency_seconds) as latency_seconds_digest
 from (
     select
     blockchain, contract_address, date_diff('second',now(),max(minute)) as latency_seconds
