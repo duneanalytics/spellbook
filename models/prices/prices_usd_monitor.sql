@@ -14,7 +14,7 @@ select
 from (
     select
     blockchain, contract_address, date_diff('second',now(),max(minute))) as latency
-    from {{source('prices.usd')}}
+    from {{source('prices','usd')}}
     where minute >= now() - interval '7' day    -- we'll consider anything that's more then 7 days late as stale tokens
     group by 1,2
 )
