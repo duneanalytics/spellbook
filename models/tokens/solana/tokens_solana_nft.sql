@@ -18,6 +18,7 @@ with
             joined_m.account_mintAuthority as account_mint_authority
             , joined_m.account_masterEdition as account_master_edition
             , joined_m.account_metadata
+            , joined_m.account_payer
             , joined_m.account_mint
             , joined_m.version
             , json_value(args, 'strict $.tokenStandard.TokenStandard') as token_standard 
@@ -45,6 +46,7 @@ with
                 , account_authority as account_mintAuthority
                 , account_masterEdition
                 , account_metadata
+                , account_payer
                 , account_mint
                 , call_tx_signer
                 , 'Token Metadata' as version 
@@ -58,6 +60,7 @@ with
                 , master.account_mintAuthority
                 , master.account_edition as account_masterEdition
                 , m.account_metadata
+                , account_payer
                 , m.account_mint
                 , m.call_tx_signer
                 , m.version 
@@ -70,6 +73,7 @@ with
                     , call_block_time
                     , json_query(createMetadataAccountArgs, 'lax $.CreateMetadataAccountArgs.data.Data') as args
                     , account_metadata
+                    , account_payer
                     , account_mint
                     , call_tx_signer
                     , 'Token Metadata' as version 
@@ -83,6 +87,7 @@ with
                     , call_block_time
                     , json_query(createMetadataAccountArgsV2, 'lax $.CreateMetadataAccountArgsV2.data.DataV2') as args
                     , account_metadata
+                    , account_payer
                     , account_mint
                     , call_tx_signer
                     , 'Token Metadata' as version
@@ -96,6 +101,7 @@ with
                     , call_block_time
                     , json_query(createMetadataAccountArgsV3, 'lax $.CreateMetadataAccountArgsV3.data.DataV2') as args
                     , account_metadata
+                    , account_payer
                     , account_mint
                     , call_tx_signer
                     , 'Token Metadata' as version 
@@ -129,6 +135,7 @@ with
                 , json_value(metadataArgs, 'strict $.MetadataArgs.uri') as token_uri
                 , cast(json_value(metadataArgs, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
                 , json_query(metadataArgs, 'strict $.MetadataArgs.creators') as creators_struct
+                , account_leafOwner
                 , call_block_slot
                 , call_block_time
                 , call_outer_instruction_index
@@ -151,6 +158,7 @@ with
                 , json_value(message, 'strict $.MetadataArgs.uri') as token_uri
                 , cast(json_value(message, 'strict $.MetadataArgs.sellerFeeBasisPoints') as double) as seller_fee_basis_points
                 , json_query(message, 'strict $.MetadataArgs.creators') as creators_struct
+                , account_leafOwner
                 , call_block_slot
                 , call_block_time
                 , call_outer_instruction_index
@@ -180,6 +188,7 @@ SELECT
     , account_master_edition
     , account_metadata
     , account_mint
+    , account_payer as minter
     , version
     , token_standard 
     , token_name 
@@ -205,6 +214,7 @@ SELECT
     , cast(null as varchar) as account_master_edition
     , cast(null as varchar) as account_metadata
     , cast(null as varchar) as account_mint
+    , account_leafOwner as minter
     , 'cNFT' as version
     , token_standard 
     , token_name 

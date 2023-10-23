@@ -1,6 +1,6 @@
 {{ config(
-	tags=['legacy'],
-	
+	    tags=['legacy'],
+        materialized = 'view',
         schema = 'bridge',
         alias = alias('flows', legacy_model=True),
         post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',

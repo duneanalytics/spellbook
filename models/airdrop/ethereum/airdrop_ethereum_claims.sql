@@ -46,6 +46,7 @@
     , ref('thales_ethereum_airdrop_claims')
     , ref('value_defi_ethereum_airdrop_claims')
     , ref('alchemydao_ethereum_airdrop_claims')
+    , ref('arkham_ethereum_airdrop_claims')
 ] %}
 
 SELECT *
@@ -56,7 +57,7 @@ FROM (
     , block_time
     , block_number
     , project
-    , airdrop_identifier
+    , airdrop_number
     , recipient
     , contract_address
     , tx_hash

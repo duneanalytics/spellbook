@@ -31,7 +31,7 @@ WITH limit_order_protocol AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_ethereum', 'LimitOrderProtocol_call_fillOrder') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV1_call_fillOrder') }}
     WHERE
         call_success
         {% if is_incremental() %}

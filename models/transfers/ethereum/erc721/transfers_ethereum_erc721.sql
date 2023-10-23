@@ -1,5 +1,8 @@
 {{ config(materialized='view', alias = alias('erc721')) }}
-
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 with
     received_transfers as (
         select 'receive' || '-' ||  evt_tx_hash || '-' || CAST(evt_index AS VARCHAR(100)) || '-' || `to` as unique_tx_id,

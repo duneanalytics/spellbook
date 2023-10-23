@@ -29,7 +29,7 @@ WITH uniswap AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_uniswapV3Swap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_uniswapV3Swap') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -50,7 +50,7 @@ WITH uniswap AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_uniswapV3SwapTo') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_uniswapV3SwapTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -71,7 +71,7 @@ WITH uniswap AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_uniswapV3SwapToWithPermit') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_uniswapV3SwapToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}
