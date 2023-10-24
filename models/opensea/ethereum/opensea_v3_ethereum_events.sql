@@ -38,4 +38,3 @@ where (
     fee_wallet_name = 'opensea'
     or right_hash = 0x360c6ebe
  )
-)
