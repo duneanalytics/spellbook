@@ -29,7 +29,7 @@ WITH all_foundation_trades AS (
     FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
     INNER JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' day)
+     WHERE {{incremental_predicate('f.evt_block_time')}}
      {% else %}
      WHERE f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
      {% endif %}
@@ -51,7 +51,7 @@ WITH all_foundation_trades AS (
     , evt_index as sub_tx_trade_id
     FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' day)
+     WHERE f.{{incremental_predicate('evt_block_time')}}
      {% else %}
      WHERE f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
      {% endif %}
@@ -73,7 +73,7 @@ WITH all_foundation_trades AS (
     , evt_index as sub_tx_trade_id
     FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' day)
+     WHERE f.{{incremental_predicate('evt_block_time')}}
      {% else %}
      WHERE f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
      {% endif %}
@@ -95,14 +95,17 @@ WITH all_foundation_trades AS (
     , evt_index as sub_tx_trade_id
     FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
      {% if is_incremental() %} -- this filter will only be applied on an incremental run
-     WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' day)
+     WHERE f.{{incremental_predicate('evt_block_time')}}
      {% else %}
      WHERE f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
      {% endif %}
     )
 
 SELECT
-  t.block_time
+ 'ethereum' as blockchain
+, 'foundation' as project
+, 'v1' as project_version
+, t.block_time
 , t.block_number
 , t.nft_token_id
 , UINT256 '1' AS nft_amount

@@ -10,7 +10,10 @@
 }}
 
 SELECT
-      evt_block_time AS block_time
+      'ethereum' as blockchain
+    , 'zora' as project
+    , 'v2' as project_version
+    , evt_block_time AS block_time
     , evt_block_number AS block_number
     , contract_address AS project_contract_address
     , evt_tx_hash AS tx_hash
@@ -30,5 +33,5 @@ SELECT
     , evt_index as sub_tx_trade_id
 FROM {{ source('zora_ethereum','AuctionHouse_evt_AuctionEnded') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}

@@ -10,11 +10,14 @@
 }}
 
 
-{% set project_start_date = "cast('2022-10-18' as timestamp)" %}
+{% set project_start_date = "2022-10-18" %}
 
 
 SELECT
-      bm.evt_block_time AS block_time
+      'ethereum' as blockchain
+    , 'blur' as project
+    , 'v1' as project_version
+    , bm.evt_block_time AS block_time
     , bm.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(bm.buy, '$.collection')) AS nft_contract_address
     , cast(JSON_EXTRACT_SCALAR(bm.sell, '$.tokenId') as uint256) AS nft_token_id
@@ -37,7 +40,7 @@ SELECT
     , bm.evt_index as sub_tx_trade_id
 FROM {{ source('blur_ethereum','BlurExchange_evt_OrdersMatched') }} bm
 {% if is_incremental() %}
-WHERE bm.evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('bm.evt_block_time')}}
 {% else %}
-WHERE bm.evt_block_time >= {{project_start_date}}
+WHERE bm.evt_block_time >= TIMESTAMP '{{project_start_date}}'
 {% endif %}

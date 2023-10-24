@@ -1,8 +1,11 @@
 -- Element NFT trades (re-usable macro for all chains)
-{% macro element_v1_base_trades(erc721_sell_order_filled, erc721_buy_order_filled, erc1155_sell_order_filled, erc1155_buy_order_filled) %}
+{% macro element_v1_base_trades(blockchain, erc721_sell_order_filled, erc721_buy_order_filled, erc1155_sell_order_filled, erc1155_buy_order_filled) %}
 
 
 SELECT
+  '{{blockchain}}' as blockchain,
+  'element' as project,
+  'v1' as project_version,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -26,12 +29,15 @@ SELECT
   evt_index AS sub_tx_trade_id
 FROM {{ erc721_sell_order_filled }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
 
 UNION ALL
 
 SELECT
+  '{{blockchain}}' as blockchain,
+  'element' as project,
+  'v1' as project_version,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Sell' AS trade_category,
@@ -55,12 +61,15 @@ SELECT
   evt_index AS sub_tx_trade_id
 FROM {{ erc721_buy_order_filled }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
 
 UNION ALL
 
 SELECT
+  '{{blockchain}}' as blockchain,
+  'element' as project,
+  'v1' as project_version,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -84,12 +93,15 @@ SELECT
   evt_index AS sub_tx_trade_id
 FROM {{ erc1155_buy_order_filled }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
 
 UNION ALL
 
 SELECT
+  '{{blockchain}}' as blockchain,
+  'element' as project,
+  'v1' as project_version,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -113,7 +125,7 @@ SELECT
   evt_index AS sub_tx_trade_id
 FROM {{ erc1155_sell_order_filled }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
 
 {% endmacro %}
