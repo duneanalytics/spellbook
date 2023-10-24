@@ -1,14 +1,14 @@
  {{
   config(
-        
+        tags = ['dunesql'],
         schema = 'contracts',
-        alias = 'contract_mapping',
+        alias = alias('contract_mapping'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
         unique_key=['blockchain','contract_address'],
         partition_by=['blockchain'],
-        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "base"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin"]\') }}'
