@@ -2,16 +2,16 @@
     config(
         schema = 'oneinch',
         alias = alias('lop_trades'),
-        materialized = 'incremental',
-        partition_by = ['block_month'],
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address'],
-        tags = ['dunesql'],
+        materialized = 'view',
+        tags = ['dunesql']
     )
 }}
 
+
+
 {% set lookback_days = -7 %}
+
+
 
 with
     
@@ -19,8 +19,8 @@ with
         select
             blockchain
             , block_time
-            , date_trunc('day', transactions.block_time) as block_date
-            , date_trunc('month', transactions.block_time) as block_month
+            , date(date_trunc('day', transactions.block_time)) as block_date
+            , block_month
             , minute
             , tx_hash
             , tx_from
@@ -35,12 +35,17 @@ with
             , taker_asset as dst_token_address
             , taking_amount as dst_amount
             , '1inch LOP' as project
-        from {{ ref('oneinch_lop') }}
+        from (
+            select * from {{ ref('oneinch_lop') }}
+            {% if is_incremental() %}
+                where block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp)
+            {% endif %}
         left join (
             select blockchain, contract_address as call_from, true as fusion
             from {{ ref('oneinch_fusion_settlements') }}
         ) using(blockchain, call_from)
-        where tx_success and call_success and fusion is null
+        where tx_success and call_success and fusion is null -- exclude orders that were called by Fusion settlement contracts
+        
     )
 
     , prices_src as (
@@ -74,29 +79,28 @@ with
     , additions as (
         select
             blockchain
-            , block_time
-            , block_date
-            , block_month
             , project
             , version
+            , block_date
+            , block_month
+            , block_time
+            , coalesce(dst_symbol, '') as token_bought_symbol
+            , coalesce(src_symbol, '') as token_sold_symbol
+            , coalesce(src_symbol, '') || '-' || coalesce(dst_symbol, '') as token_pair
+            , cast(dst_amount as double) / pow(10, dst_decimals) as token_bought_amount
+            , cast(src_amount as double) / pow(10, src_decimals) as token_sold_amount
+            , dst_amount as token_bought_amount_raw
+            , src_amount as token_sold_amount_raw
+            , coalesce(cast(src_amount as double) / pow(10, src_decimals) * src_price, cast(dst_amount as double) / pow(10, dst_decimals) * dst_price) as amount_usd
+            , dst_token_address as token_bought_address
+            , src_token_address as token_sold_address
+            , taker
+            , maker
             , project_contract_address
             , tx_hash
             , tx_from
             , tx_to
-            , maker
-            , null as taker
-            , coalesce(src_symbol, '') || '-' || coalesce(dst_symbol, '') as token_pair
-            , src_token_address as token_sold_address
-            , coalesce(src_symbol, '') as token_sold_symbol
-            , src_amount as token_sold_amount_raw
-            , cast(src_amount as double) / pow(10, src_decimals) as token_sold_amount
-            , dst_token_address as token_bought_address
-            , coalesce(dst_symbol, '') as token_bought_symbol
-            , dst_amount as token_bought_amount_raw
-            , cast(dst_amount as double) / pow(10, dst_decimals) as token_bought_amount
-            , coalesce(cast(src_amount as double) / pow(10, src_decimals) * src_price, cast(dst_amount as double) / pow(10, dst_decimals) * dst_price) as amount_usd
-            , null as evt_index
-            , call_trace_address
+            , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
         from orders
         left join prices_src using(blockchain, src_token_address, minute)
         left join prices_dst using(blockchain, dst_token_address, minute)

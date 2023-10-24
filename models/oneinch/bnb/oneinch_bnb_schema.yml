@@ -128,6 +128,7 @@ models:
         name: call_gas_used
       - *call_output
       - *minute
+      - *block_month
 
   - name: oneinch_bnb_ar_calls_transfers
     meta:

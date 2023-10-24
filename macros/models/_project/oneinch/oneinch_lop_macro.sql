@@ -112,6 +112,7 @@ orders as (
             , call_gas_used
             , call_output
             , date_trunc('minute', block_time) as minute
+            , date(date_trunc('month', block_time)) as block_month
         from ({% for method, method_data in contract_data.methods.items() %}
             select
                 call_tx_hash as tx_hash
@@ -123,17 +124,17 @@ orders as (
                 , call_success
                 , from_hex(order_map['makerAsset']) as maker_asset
                 , from_hex(order_map['takerAsset']) as taker_asset
-                , {% if 'maker' in method_data.keys() %} {{ method_data['maker'] }} {% else %} from_hex(order_map['maker']) {% endif %} as maker
-                , {% if 'making_amount' in method_data.keys() %} {{ method_data['making_amount'] }} {% else %} output_0 {% endif %} as making_amount
-                , {% if 'taking_amount' in method_data.keys() %} {{ method_data['taking_amount'] }} {% else %} output_1 {% endif %} as taking_amount
-                , {% if 'order_hash' in method_data.keys() %} {{ method_data['order_hash'] }} {% else %} null {% endif %} as order_hash
+                , {{ method_data.get("maker", "from_hex(order_map['maker'])") }} as maker
+                , {{ method_data.get("making_amount", "output_0") }} as making_amount
+                , {{ method_data.get("taking_amount", "output_1") }} as taking_amount
+                , {{ method_data.get("order_hash", "null") }} as order_hash
             from (
-                select *, cast(json_parse({% if 'order' in method_data.keys() %} {{ method_data['order'] }} {% else %} "order" {% endif %}) as map(varchar, varchar)) as order_map
+                select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                {% if is_incremental() %}where block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp){% endif %}
+                {% if is_incremental() %} where block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% endif %}
             )
-            {% if not loop.last %}union all{% endif %}
-        {% endfor %}) as orders
+            {% if not loop.last %} union all {% endif %}
+        {% endfor %})
         join (
             select
                 block_time
@@ -142,8 +143,8 @@ orders as (
                 , "to" as tx_to
                 , success as tx_success
             from {{ source(blockchain, 'transactions') }}
-            where block_time >= {% if is_incremental() %}cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp){% else %}timestamp '{{ contract_data['start'] }}'{% endif %}
-        ) as transactions using(tx_hash)
+            where block_time >= {% if is_incremental() %} cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% else %} timestamp '{{ contract_data['start'] }}' {% endif %}
+        ) using(tx_hash)
         join (
             select
                 tx_hash
@@ -153,10 +154,10 @@ orders as (
                 , gas_used as call_gas_used
                 , output as call_output
             from {{ source(blockchain, 'traces') }}
-            where block_time >= {% if is_incremental() %}cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp){% else %}timestamp '{{ contract_data['start'] }}'{% endif %}
+            where block_time >= {% if is_incremental() %} cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% else %} timestamp '{{ contract_data['start'] }}' {% endif %}
                 and call_type = 'call'
-        ) as calls using(tx_hash, call_trace_address)
-        {% if not loop.last %}union all{% endif %}
+        ) using(tx_hash, call_trace_address)
+        {% if not loop.last %} union all {% endif %}
     {% endfor %}
 )
 

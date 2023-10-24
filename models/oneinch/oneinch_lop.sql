@@ -28,5 +28,5 @@
 
 {% for blockchain in blockchains %}
     select * from {{ ref('oneinch_' + blockchain + '_lop') }}
-    {% if not loop.last %}union all{% endif %}
+    {% if not loop.last %} union all {% endif %}
 {% endfor %}
