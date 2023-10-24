@@ -25,7 +25,7 @@ models:
         description: "Address of the contract"
         tests:
           - not_null
-          - is_unique
+          - unique
       - &contract_project
         name: contract_project
         description: "Project name of the contract"
