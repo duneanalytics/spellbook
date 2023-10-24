@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('disperse_contracts')
+    
+    alias = 'disperse_contracts'
     )
 }}
 

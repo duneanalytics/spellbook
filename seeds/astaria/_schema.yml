@@ -3,7 +3,6 @@ version: 2
 seeds:
    - name: astaria_lending_seed
      config:
-       tags: dunesql
        column_types:
          block_number: bigint
          tx_hash: varbinary

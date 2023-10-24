@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
-    alias = alias('bpt_prices'),
-    tags = ['dunesql'],
+    alias = 'bpt_prices',
+    
     post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis", "optimism","avalanche_c"]\',
                             "project",
                             "balancer",

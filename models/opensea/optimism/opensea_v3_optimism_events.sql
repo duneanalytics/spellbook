@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v3_optimism',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

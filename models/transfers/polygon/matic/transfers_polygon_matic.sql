@@ -1,11 +1,11 @@
 {{ config(
-    tags=['dunesql'],
+    
     materialized = 'incremental',
     partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
-    alias = alias('matic'),
+    alias = 'matic',
     post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "transfers",

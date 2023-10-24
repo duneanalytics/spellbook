@@ -1,6 +1,6 @@
 {{ config(
-        alias=alias('solvers'),
-        tags=['dunesql'],
+        alias='solvers',
+        
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "cow_protocol",

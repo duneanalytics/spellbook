@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('curve_steth_pool'),
-    tags = ['dunesql'],         
+    alias = 'curve_steth_pool',
+             
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

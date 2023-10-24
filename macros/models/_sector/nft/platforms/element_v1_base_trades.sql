@@ -3,7 +3,6 @@
 
 
 SELECT
-  cast(DATE_TRUNC('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -18,8 +17,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
@@ -33,7 +32,6 @@ WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 
 SELECT
-  cast(date_trunc('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Sell' AS trade_category,
@@ -48,8 +46,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
@@ -63,7 +61,6 @@ WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 
 SELECT
-  cast(date_trunc('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -78,8 +75,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
@@ -93,7 +90,6 @@ WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 
 SELECT
-  cast(date_trunc('month', evt_block_time) as date) AS block_date,
   evt_block_time AS block_time,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
@@ -108,8 +104,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,

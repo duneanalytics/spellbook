@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('positions_liquidation')
+    alias = 'positions_liquidation'
     )
  }}
 

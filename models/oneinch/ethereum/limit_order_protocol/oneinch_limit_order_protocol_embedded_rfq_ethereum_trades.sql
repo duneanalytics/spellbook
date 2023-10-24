@@ -1,7 +1,7 @@
 {{  config(
-        tags = ['dunesql'],
+        
         schema='oneinch_limit_order_protocol_embedded_rfq_ethereum',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -28,7 +28,7 @@ WITH limit_order_protocol_embedded_rfq AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQ') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_fillOrderRFQ') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -49,7 +49,7 @@ WITH limit_order_protocol_embedded_rfq AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQTo') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_fillOrderRFQTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -70,7 +70,7 @@ WITH limit_order_protocol_embedded_rfq AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_fillOrderRFQToWithPermit') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_fillOrderRFQToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}

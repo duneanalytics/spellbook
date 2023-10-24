@@ -1,7 +1,7 @@
 {{  config(
-        tags = ['dunesql'],
+        
         schema='oneinch_v4_ethereum',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -46,7 +46,7 @@ WITH oneinch_calls AS
         CAST(-1 as integer) AS evt_index,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_swap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_swap') }}
     WHERE
         call_success
         {% if is_incremental() %}

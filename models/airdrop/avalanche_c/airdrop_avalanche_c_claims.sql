@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-        alias = alias('claims'),
+    
+        alias = 'claims',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                       "sector",
                                       "airdrop",
@@ -21,7 +21,7 @@ FROM (
     , block_time
     , block_number
     , project
-    , airdrop_identifier
+    , airdrop_number
     , recipient
     , contract_address
     , tx_hash
