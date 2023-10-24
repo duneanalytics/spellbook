@@ -3,7 +3,7 @@
 	
         alias = alias('transactions', legacy_model=True),
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,6 +20,7 @@
      , ('arbitrum', source('arbitrum', 'transactions'))
      , ('celo', source('celo', 'transactions'))
      , ('goerli', source('goerli', 'transactions'))
+     , ('zksync', source('zksync', 'transactions'))
 ] %}
 
 SELECT *

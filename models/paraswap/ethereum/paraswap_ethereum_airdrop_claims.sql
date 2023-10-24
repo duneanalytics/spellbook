@@ -31,8 +31,8 @@ SELECT 'ethereum' AS blockchain
 , CAST(date_trunc('month', t.evt_block_time) as date) as block_month
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'Paraswap' AS project
-, 'Paraswap Airdrop' AS airdrop_identifier
+, 'paraswap' AS project
+, 1 AS airdrop_number
 , "from" AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
