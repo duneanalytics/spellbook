@@ -1,8 +1,8 @@
 {{
     config(
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         schema = 'pangolin_avalanche_c',
-        alias = alias('airdrop_claims'),
+        alias = 'airdrop_claims',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
@@ -26,8 +26,8 @@ WITH early_price AS (
 SELECT 'avalanche_c' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'Pangolin' AS project
-, 'Pangolin Airdrop' AS airdrop_identifier
+, 'pangolin' AS project
+, 1 AS airdrop_number
 , t.claimer AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash

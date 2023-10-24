@@ -1,11 +1,16 @@
 {{ config(
-        alias = alias('erc20_hour'),
+        alias = 'erc20_hour',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",
                                             "balances",
                                             \'["soispoke","dot2dotseurat"]\') }}'
         )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 with
     hours as (

@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql']
-    ,schema = 'zerion_bnb'
-    ,alias = alias('trades')
+    schema = 'zerion_bnb'
+    ,alias = 'trades'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'

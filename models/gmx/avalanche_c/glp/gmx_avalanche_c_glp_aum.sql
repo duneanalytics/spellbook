@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('glp_aum'),
+        alias = 'glp_aum',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,7 +11,10 @@
                                     \'["theachenyj"]\') }}'
         )
 }}
-
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 /*
 Stablecoin holings AUM = poolAmounts * current_price
 Directional holdings AUM = (available_assets * current_price) + (longs) + (current_price - average_short_entry_price) * (shorts_opened_notional / current_price)

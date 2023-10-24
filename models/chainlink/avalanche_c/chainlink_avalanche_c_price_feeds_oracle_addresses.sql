@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('price_feeds_oracle_addresses'),
+    
+    alias='price_feeds_oracle_addresses',
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "chainlink",

@@ -1,43 +1,6 @@
 version: 2
 
 models:
-  - name: nft_ethereum_aggregators
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: hildobby, soispoke
-    config:
-      tags: ['nft', 'ethereum', 'aggregators']
-    description: >
-        NFT aggregators
-    columns:
-      - name: contract_address
-        description: "Aggregator project's contract address"
-        tests:
-          - unique
-      - name: name
-        description: "Aggregator project's name"
-
-  - name: nft_ethereum_aggregators_markers
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: hildobby
-    config:
-      tags: ['nft', 'ethereum', 'aggregators']
-    description: >
-        NFT aggregators markers
-    columns:
-      - name: hash_marker
-        description: "Hash used to identify an aggregator"
-        tests:
-          - unique
-      - name: aggregator_name
-        description: "Name of aggregator tied to the hash_marker"
-      - name: router_name
-        description: "Name of protocol that routed this trade using the aggregator, is NULL if it's the same as aggregator_name"
-      - name: hash_marker_size
-        description: "Number of characters the hash_marker is made of, can be useful on joins"
 
   - name: nft_ethereum_top_sales
     meta:
@@ -214,40 +177,6 @@ models:
         description: "Unique weeks the trader bought NFTs in"
       - name: unique_weeks_selling
         description: "Unique weeks the trader sold NFTs in"
-
-  - name: nft_ethereum_aggregators_manual
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: hildobby, soispoke
-    config:
-      tags: [ 'nft', 'ethereum', 'aggregators' ]
-    description: >
-      NFT aggregators manual entries
-    columns:
-      - name: contract_address
-        description: "Aggregator project's contract address"
-        tests:
-          - unique
-      - name: name
-        description: "Aggregator project's name"
-
-  - name: nft_ethereum_aggregators_gem
-    meta:
-      blockchain: ethereum
-      sector: nft
-      contributors: hildobby, 0xRob
-    config:
-      tags: [ 'nft', 'ethereum', 'aggregators' ]
-    description: >
-      NFT aggregators gem deployed contracts
-    columns:
-      - name: contract_address
-        description: "Aggregator project's contract address"
-        tests:
-          - unique
-      - name: name
-        description: "Aggregator project's name"
 
 
   - name: nft_ethereum_top_erc1155_holders

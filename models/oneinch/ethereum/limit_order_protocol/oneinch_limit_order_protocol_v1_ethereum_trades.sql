@@ -1,7 +1,7 @@
 {{  config(
-    tags = ['dunesql'],
+    
         schema='oneinch_limit_order_protocol_v1_ethereum',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -30,7 +30,7 @@ WITH limit_order_protocol AS
         call_tx_hash,
         call_trace_address
     FROM
-        {{ source('oneinch_lop_ethereum', 'LimitOrderProtocol_call_fillOrder') }}
+        {{ source('oneinch_ethereum', 'LimitOrderProtocolV1_call_fillOrder') }}
     WHERE
         call_success
         {% if is_incremental() %}

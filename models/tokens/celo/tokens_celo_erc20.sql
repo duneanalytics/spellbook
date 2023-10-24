@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('erc20')
-        , tags=['static', 'dunesql']
+        alias = 'erc20'
+        , tags=['static']
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",

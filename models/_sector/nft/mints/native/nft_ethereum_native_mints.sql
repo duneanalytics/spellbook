@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_ethereum',
-        alias = alias('native_mints'),
+        alias = 'native_mints',
         partition_by = ['block_month'],
 		materialized = 'incremental',
 		file_format = 'delta',
@@ -111,16 +111,16 @@ SELECT distinct 'ethereum' AS blockchain
 , nft_mints.tx_hash AS tx_hash
 , etxs."from" AS tx_from
 , etxs.to AS tx_to
-, CAST(0 AS UINT256) AS platform_fee_amount_raw
-, CAST(0 AS DOUBLE) AS platform_fee_amount
-, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
-, CAST(0 AS DOUBLE) AS platform_fee_percentage
+, UINT256 '0' AS platform_fee_amount_raw
+, DOUBLE '0' AS platform_fee_amount
+, DOUBLE '0' AS platform_fee_amount_usd
+, DOUBLE '0' AS platform_fee_percentage
 , CAST(NULL as VARBINARY) AS royalty_fee_receive_address
 , '0' AS royalty_fee_currency_symbol
-, CAST(0 AS UINT256) AS royalty_fee_amount_raw
-, CAST(0 AS DOUBLE) AS royalty_fee_amount
-, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
-, CAST(0 AS DOUBLE) AS royalty_fee_percentage
+, UINT256 '0' AS royalty_fee_amount_raw
+, DOUBLE '0' AS royalty_fee_amount
+, DOUBLE '0' AS royalty_fee_amount_usd
+, DOUBLE '0' AS royalty_fee_percentage
 , nft_mints.evt_index
 FROM {{ ref('nft_ethereum_transfers') }} nft_mints
 LEFT JOIN nfts_per_tx nft_count ON nft_count.tx_hash=nft_mints.tx_hash

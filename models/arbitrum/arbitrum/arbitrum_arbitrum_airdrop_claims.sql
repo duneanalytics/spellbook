@@ -1,8 +1,8 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'arbitrum_arbitrum',
-        alias = alias('airdrop_claims'),
+        alias = 'airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -27,8 +27,8 @@ WITH early_price AS (
 SELECT 'arbitrum' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'Arbitrum' AS project
-, 'Arbitrum Airdrop' AS airdrop_identifier
+, 'arbitrum' AS project
+, 1 AS airdrop_number
 , t.recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash

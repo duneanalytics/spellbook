@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('vrf_fulfilled_transactions'),
+    
+    alias='vrf_fulfilled_transactions',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',

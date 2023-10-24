@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('node_names'),
-    tags = ['dunesql'],
+    alias = 'node_names',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

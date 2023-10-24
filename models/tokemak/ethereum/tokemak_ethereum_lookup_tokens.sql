@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql', 'static'],
+    tags=[ 'static'],
     schema='tokemak_ethereum',
-    alias = alias('lookup_tokens'),
+    alias = 'lookup_tokens',
     post_hook = '{{ expose_spells(\'["ethereum"]\',
         "project", 
             "Tokemak",

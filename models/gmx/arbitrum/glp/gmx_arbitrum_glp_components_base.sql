@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('glp_components_base'),
+    alias = 'glp_components_base',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,6 +8,10 @@
         )
 }}
 
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 {% set project_start_date = '2021-08-31 08:13' %}
 
 WITH minute AS  -- This CTE generates a series of minute values

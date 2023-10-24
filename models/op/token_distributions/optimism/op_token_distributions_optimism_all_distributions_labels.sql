@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('all_distributions_labels'),
-    tags = ['dunesql'],
+    alias = 'all_distributions_labels',
+    
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",
