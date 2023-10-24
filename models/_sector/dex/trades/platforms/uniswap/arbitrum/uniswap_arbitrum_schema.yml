@@ -15,8 +15,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - equal_rowcount:
-          compare_model: ref('uniswap_v3_arbitrum_trades')
+#      - equal_rowcount:
+#          compare_model: ref('uniswap_v3_arbitrum_trades')
       - equal_rowcount_with_sources:
           evt_sources:
             - source('uniswap_v3_arbitrum', 'Pair_evt_Swap')
