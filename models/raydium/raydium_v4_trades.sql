@@ -50,7 +50,6 @@
             , COALESCE(tk_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
             , trs_2.account_source as token_bought_vault
             , trs_1.account_destination as token_sold_vault
-            , base_in
         FROM (
             SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
