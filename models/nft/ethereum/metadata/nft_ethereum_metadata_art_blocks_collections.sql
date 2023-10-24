@@ -1,8 +1,8 @@
 
 {{ config(
-        tags = ['static','dunesql']
+        tags = ['static']
         ,schema = 'nft_ethereum_metadata'
-        ,alias = alias('art_blocks_collections')
+        ,alias = 'art_blocks_collections'
         )
 }}
 

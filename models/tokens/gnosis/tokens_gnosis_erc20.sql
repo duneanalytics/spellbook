@@ -1,4 +1,4 @@
-{{ config( alias = alias('erc20'), tags=['static', 'dunesql'])}}
+{{ config( alias = 'erc20', tags=['static'])}}
 
 SELECT contract_address as contract_address, symbol, decimals
 FROM (VALUES (0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c, 'biubiu.tools', 18),

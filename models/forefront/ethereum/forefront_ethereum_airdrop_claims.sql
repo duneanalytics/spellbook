@@ -1,8 +1,8 @@
 {{
     config(
-        tags=['dunesql', 'static'],
+        tags=[ 'static'],
         schema = 'forefront_ethereum',
-        alias = alias('airdrop_claims'),
+        alias = 'airdrop_claims',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['recipient', 'tx_hash', 'evt_index'],

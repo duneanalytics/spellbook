@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('price_feeds_hourly'),
+    
+    alias='price_feeds_hourly',
     post_hook='{{ expose_spells(\'["bnb","optimism","polygon","arbitrum","avalanche_c","ethereum","fantom","gnosis"]\',
                             "project",
                             "chainlink",

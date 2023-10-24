@@ -1,7 +1,7 @@
 {{ config(
         schema='prices',
-        alias = alias('usd_latest'),
-        tags= ['dunesql'],
+        alias = 'usd_latest',
+        
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "zksync"]\',
                                     "sector",
                                     "prices",

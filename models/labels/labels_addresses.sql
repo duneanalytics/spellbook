@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('addresses'),
+    
+    alias = 'addresses',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',

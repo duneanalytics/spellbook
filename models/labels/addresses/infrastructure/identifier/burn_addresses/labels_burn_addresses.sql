@@ -1,6 +1,6 @@
 {{config(
-    alias = alias('burn_addresses'),
-    tags=['static', 'dunesql'],
+    alias = 'burn_addresses',
+    tags=['static'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "optimism", "fantom", "avalanche_c", "gnosis"]\',
                                 "sector",
                                 "labels",

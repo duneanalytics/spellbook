@@ -1,5 +1,5 @@
-{{config(alias = alias('ens'),
-        tags = ['dunesql'],
+{{config(alias = 'ens',
+        
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain','address'],

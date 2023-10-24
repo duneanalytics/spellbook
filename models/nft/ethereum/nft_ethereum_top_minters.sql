@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('top_minters'),
+    
+    alias = 'top_minters',
     materialized='incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'pancakeswap_v2_ethereum',
-    alias = alias('mmpool_trades'),
+    alias = 'mmpool_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

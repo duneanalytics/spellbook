@@ -1,6 +1,6 @@
 {{config(
-        tags = ['static', 'dunesql'],
-        alias = alias('hackers_ethereum'),
+        tags = ['static'],
+        alias = 'hackers_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

@@ -1,7 +1,7 @@
 {{config(
-    tags = ['dunesql'],
+    
     schema = 'nft_ethereum',
-    alias = alias('aggregators_gem')
+    alias = 'aggregators_gem'
 )}}
 WITH vasa_contracts as (
     SELECT distinct
