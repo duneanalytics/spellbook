@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
         alias = 'erc721_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
