@@ -178,11 +178,13 @@ models:
       - *code_bytelength
       - *token_standard
       - *code_deploy_rank_by_chain
-      - *to_iterate_creators
       - *code
+      - &to_iterate_creators
+        name: to_iterate_creators
+        description: "Is this a new contract (or new mapping) that needs to be iterated to get the creator)"
       - &is_new_contract
         name: is_new_contract
-        description: "Is this a new contract (or new mapping) that needs to be iterated to get the creator)"
+        description: "Is this a new contract"
   
   - name: contracts_ethereum_creator_project_iterated_creators
     meta:
