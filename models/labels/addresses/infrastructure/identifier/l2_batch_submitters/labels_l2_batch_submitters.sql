@@ -1,6 +1,6 @@
 {{config(
-    tags=['dunesql'],
-    alias = alias('l2_batch_submitters'),
+    
+    alias = 'l2_batch_submitters',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "labels",

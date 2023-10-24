@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('matic_rolling_day'))
+        
+        alias = 'matic_rolling_day')
 }}
 
         SELECT

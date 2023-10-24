@@ -34,7 +34,3 @@ macros:
   - name: source
     description: >
       Change source database.
-
-  - name: alias
-    description: >
-      Add dummy alias

@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: zeroex_arbitrum_native_fills_sample
     config:
-      tags: dunesql
       column_types:
         timestamp: timestamp
         protocol_version: varchar
@@ -23,7 +22,6 @@ seeds:
 
   - name: zeroex_bnb_native_fills_sample
     config:
-      tags: dunesql
       column_types:
         timestamp: timestamp
         protocol_version: varchar
@@ -43,7 +41,6 @@ seeds:
 
   - name: zeroex_ethereum_native_fills_sample
     config:
-      tags: dunesql
       column_types:
         timestamp: timestamp
         protocol_version: varchar
@@ -63,7 +60,6 @@ seeds:
 
   - name: zeroex_polygon_native_fills_sample
     config:
-      tags: dunesql
       column_types:
         timestamp: timestamp
         protocol_version: varchar
@@ -83,7 +79,6 @@ seeds:
 
   - name: zeroex_native_fills_sample
     config:
-      tags: dunesql
       column_types:
         timestamp: timestamp
         protocol_version: varchar
@@ -103,7 +98,6 @@ seeds:
 
   - name: zeroex_api_fills_sample
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         block_number: bigint
@@ -131,7 +125,6 @@ seeds:
 
   - name: zeroex_api_fills_deduped_sample
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         block_date: date

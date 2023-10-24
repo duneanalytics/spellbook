@@ -1,6 +1,6 @@
 {{ config(
-        alias=alias('native'),
-        tags=['static', 'dunesql'],
+        alias='native',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo"]\',
                                     "sector",
                                     "tokens",

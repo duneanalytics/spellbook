@@ -1,7 +1,7 @@
 {{config(
-  alias = alias('balancer_v2_pools_optimism'),
+  alias = 'balancer_v2_pools_optimism',
   materialized = 'incremental',
-  tags = ['dunesql'],
+  
   file_format = 'delta',
   incremental_strategy = 'merge',
   unique_key = ['address'],

@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('wallet_metrics'),
+    
+    alias = 'wallet_metrics',
     materialized='table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',

@@ -1,6 +1,5 @@
-{{ config (
-    tags=['dunesql']
-    , alias = alias('etv_keeper_work')
+{{ config(
+     alias = 'etv_keeper_work'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

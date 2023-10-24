@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: rubicon_arbitrum_offers_seed
     config:
-      tags: dunesql
       column_types:
         maker: varbinary
         version: varchar

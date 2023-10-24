@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('glp_components'),
+        alias = 'glp_components',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

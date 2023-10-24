@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc721_latest'),
+        alias = 'erc721_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",

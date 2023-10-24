@@ -1,6 +1,6 @@
 {{ config(
         schema = 'opensea',
-        alias = alias('events')
+        alias = 'events'
 )
 }}
 

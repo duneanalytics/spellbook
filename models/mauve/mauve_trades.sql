@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'],
+{{ config(
         schema = 'mauve',
-        alias = alias('trades'),
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "mauve",

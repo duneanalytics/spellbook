@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: zeroex_celo_api_fills_sample
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         block_number: bigint
