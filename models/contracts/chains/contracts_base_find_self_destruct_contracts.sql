@@ -1,6 +1,5 @@
  {{
   config(
-        tags = ['dunesql'],
         schema = 'contracts_base',
         alias = 'find_self_destruct_contracts',
         materialized ='incremental',

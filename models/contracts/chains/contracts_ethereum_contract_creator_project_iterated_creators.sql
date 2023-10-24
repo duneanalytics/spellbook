@@ -1,8 +1,7 @@
  {{
   config(
-        tags = ['dunesql'],
         schema = 'contracts_ethereum',
-        alias = alias('contract_creator_project_iterated_creators'),
+        alias = 'contract_creator_project_iterated_creators',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

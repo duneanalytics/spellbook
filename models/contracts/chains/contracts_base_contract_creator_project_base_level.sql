@@ -1,8 +1,7 @@
  {{
   config(
-        tags = ['dunesql'],
         schema = 'contracts_base',
-        alias = alias('contract_creator_project_base_level'),
+        alias = 'contract_creator_project_base_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

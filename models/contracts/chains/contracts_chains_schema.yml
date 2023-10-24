@@ -9,10 +9,6 @@ models:
     config:
       tags: ['evm', 'ethereum', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on Ethereum."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
               
     columns:
       - &created_month
@@ -29,6 +25,7 @@ models:
         description: "Address of the contract"
         tests:
           - not_null
+          - is_unique
       - &contract_project
         name: contract_project
         description: "Project name of the contract"
@@ -150,10 +147,7 @@ models:
     config:
       tags: ['evm', 'ethereum', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on Ethereum."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address         
+      
     columns:
       - *blockchain
       - *trace_creator_address
@@ -193,10 +187,7 @@ models:
     config:
       tags: ['evm', 'ethereum', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on Ethereum."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
+
     columns:
       - *blockchain
       - *trace_creator_address
@@ -231,10 +222,7 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on base."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
+
     columns:
       - *created_month
       - *blockchain
@@ -294,10 +282,7 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on Base."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
+
     columns:
       - *blockchain
       - *trace_creator_address
@@ -333,10 +318,7 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on Base."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
+
     columns:
       - *blockchain
       - *trace_creator_address
