@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_ethereum',
-        alias = alias('aggregators_markers'),
+        alias = 'aggregators_markers',
 		materialized = 'table',
         unique_key='hash_marker',
         post_hook='{{ expose_spells(\'["ethereum"]\',

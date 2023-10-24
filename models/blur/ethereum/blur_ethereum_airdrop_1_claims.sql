@@ -1,8 +1,8 @@
 {{
     config(
-        tags=['dunesql'],
+        
         schema = 'blur_ethereum',
-        alias = alias('airdrop_1_claims'),
+        alias = 'airdrop_1_claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

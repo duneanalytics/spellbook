@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql']
-    , schema = 'tokens_zksync'
-    , alias = alias('nft')
+     schema = 'tokens_zksync'
+    , alias = 'nft'
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["zksync"]\',
                                 "sector",

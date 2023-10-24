@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'aztec_v2_ethereum',
-    alias = alias('rollupbridge_transfers'),
+    alias = 'rollupbridge_transfers',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

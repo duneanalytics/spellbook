@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('options_trades'),
+    alias = 'options_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

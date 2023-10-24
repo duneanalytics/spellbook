@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('chainlink_read_requests_logs'),
+    
+    alias='chainlink_read_requests_logs',
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum", "optimism","polygon"]\',
                             "project",
                             "chainlink",

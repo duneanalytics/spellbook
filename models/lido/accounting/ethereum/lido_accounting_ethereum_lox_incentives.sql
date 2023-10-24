@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('lox_incentives'),
-        tags = ['dunesql'], 
+        alias = 'lox_incentives',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

@@ -1,7 +1,6 @@
 {{ config(
-    tags=['dunesql']
-    ,schema = 'sushiswap_ethereum'
-    ,alias = alias('trades')
+    schema = 'sushiswap_ethereum'
+    ,alias = 'trades'
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'

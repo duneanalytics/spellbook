@@ -1,6 +1,6 @@
  {{
-  config(tags=['dunesql'],
-    alias = alias('nft_bridged_mapping'),
+  config(
+    alias = 'nft_bridged_mapping',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",

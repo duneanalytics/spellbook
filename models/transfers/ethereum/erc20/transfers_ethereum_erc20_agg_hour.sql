@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc20_agg_hour'),
+        alias = 'erc20_agg_hour',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

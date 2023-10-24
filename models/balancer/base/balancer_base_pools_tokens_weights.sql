@@ -1,7 +1,7 @@
 {{ config(
         schema='balancer_base',
-        alias = alias('pools_tokens_weights'),
-        tags = ['dunesql']
+        alias = 'pools_tokens_weights',
+        
         )
 }}
 
