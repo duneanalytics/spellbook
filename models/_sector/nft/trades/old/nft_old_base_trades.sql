@@ -3,6 +3,7 @@
     alias = alias('base_trades'),
     tags = ['dunesql'],
     materialized = 'view'
+    )
 }}
 
 
