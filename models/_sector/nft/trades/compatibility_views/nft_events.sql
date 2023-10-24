@@ -2,7 +2,8 @@
         schema = 'nft',
         alias = alias('events'),
         tags = ['dunesql'],
-        materialized = 'view',
+        materialized = 'view'
+        )
 }}
 
 -- kept for backward compatibility

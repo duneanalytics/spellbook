@@ -7,6 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['project','project_version','tx_hash','sub_tx_trade_id']
+    )
 }}
 
 
