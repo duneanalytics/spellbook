@@ -81,6 +81,39 @@ WITH zeroex_tx AS (
     group by tx_hash, taker_token, maker_token
 
 ),
+direct_sushiswap AS (
+    SELECT
+            swap.evt_tx_hash AS tx_hash,
+            swap.evt_index,
+            swap.contract_address,
+            swap.evt_block_time AS block_time,
+            swap.contract_address AS maker,
+            LAST_VALUE(swap.to) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN 
+                CASE WHEN swap.amount0In >= swap.amount0Out THEN cast(swap.amount0In - swap.amount0Out as int256) ELSE cast(0 as int256) END ELSE 
+                CASE WHEN swap.amount1In >= swap.amount1Out THEN cast(swap.amount1In - swap.amount1Out as int256) ELSE cast(0 as int256) END END AS taker_token_amount_raw,
+            CASE WHEN swap.amount0In > swap.amount0Out THEN 
+                CASE WHEN swap.amount1Out >= swap.amount1In THEN cast(swap.amount1Out - swap.amount1In as int256) ELSE cast(0 as int256) END ELSE 
+                CASE WHEN swap.amount0Out >= swap.amount0In THEN cast(swap.amount0Out - swap.amount0In as int256) ELSE cast(0 as int256) END END AS maker_token_amount_raw,
+
+            'Sushiswap Direct' AS type,
+            zeroex_tx.affiliate_address AS affiliate_address,
+            TRUE AS swap_flag,
+            FALSE AS matcha_limit_order_flag
+   FROM {{ source('sushi_bnb', 'UniswapV2Pair_evt_Swap') }} swap
+   LEFT JOIN {{ source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
+   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
+
+        {% if is_incremental() %}
+        AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+        {% if not is_incremental() %}
+        AND swap.evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
+        {% endif %}
+),
 v2_fills_no_bridge AS (
     SELECT
             fills.evt_tx_hash                                                          AS tx_hash,
@@ -362,6 +395,8 @@ where rnk = 1
 all_tx AS (
     SELECT *
     FROM direct_uniswapv2
+    union ALL SELECT * 
+    from direct_sushiswap 
     UNION ALL SELECT *
     FROM direct_PLP
     UNION ALL SELECT *
