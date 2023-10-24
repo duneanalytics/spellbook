@@ -271,7 +271,7 @@ models:
       - *is_eoa_deployed
       - *is_updated_on_last_run
 
-- name: contracts_base_find_self_destruct_contracts
+  - name: contracts_base_find_self_destruct_contracts
     meta:
       blockchain: base
       sector: contracts
@@ -289,7 +289,7 @@ models:
       - *destructed_block_number
       - *destructed_tx_hash
 
-- name: contracts_base_contract_creator_project_base_level
+  - name: contracts_base_contract_creator_project_base_level
     meta:
       blockchain: base
       sector: contracts
@@ -329,7 +329,7 @@ models:
       - *code
       - *is_new_contract
 
-- name: contracts_base_creator_project_iterated_creators
+  - name: contracts_base_creator_project_iterated_creators
     meta:
       blockchain: base
       sector: contracts
