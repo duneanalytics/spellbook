@@ -19,7 +19,7 @@ models:
           compare_model: ref('uniswap_v3_polygon_trades')
       - equal_rowcount_with_sources:
           evt_sources:
-            - source('uniswap_v3_polygon', 'Pair_evt_Swap')
+            - source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap')
 
   - name: uniswap_v3_polygon_trades_beta
     meta:

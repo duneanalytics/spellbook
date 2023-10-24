@@ -12,7 +12,7 @@
 {% set project_start_date = '2022-07-07' %}
 
 {{
-    uniswap_v3_forked_celo_trades(
+    uniswap_v3_forked_base_trades(
         Pair_evt_Swap = source('uniswap_v3_celo', 'Pair_evt_Swap')
         , Factory_evt_PoolCreated = source('uniswap_v3_celo', 'UniswapV3Factory_evt_PoolCreated')
     )
