@@ -293,9 +293,9 @@ SELECT
   'ethereum' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
   CASE WHEN pool_type IN ('SP', 'LP', 'LBP') 
-    THEN LOWER(pool_symbol)
-    ELSE lower(concat(array_join(array_sort(array_distinct(array_agg(token_symbol))), '/'), ' ', 
-  SUBSTRING(array_join(array_agg(cast(norm_weight AS varchar)), '/'),1,5)))
+  THEN lower(pool_symbol)
+    ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
+    array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
   END AS name,
   pool_type,
   'balancer_v2_pool' AS category,
