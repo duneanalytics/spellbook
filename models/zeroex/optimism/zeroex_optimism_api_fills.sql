@@ -184,7 +184,7 @@ NewBridgeFill AS (
             logs.contract_address,
             block_time                                      AS block_time,
             bytearray_substring(DATA, 13, 20) AS maker,
-            0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
+            0xdef1abe32c034e558cdd535791643c58a13acc10 AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
             bytearray_substring(DATA, 77, 20) AS maker_token,
             bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
