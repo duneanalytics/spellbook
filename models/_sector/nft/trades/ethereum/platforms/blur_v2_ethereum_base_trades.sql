@@ -24,7 +24,7 @@ WITH blur_v2_trades AS (
     , orderHash AS order_hash
     , bytearray_to_uint256(bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),1,11)) AS nft_token_id
     , bytearray_substring(cast(tokenIdListingIndexTrader as varbinary),13,20) AS trader
-    , CAST(0 AS double) AS fee
+    , double '0' AS fee
     , NULL AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721Packed') }}
     {% if is_incremental() %}
@@ -91,11 +91,11 @@ SELECT
 , CASE WHEN bt.order_type = 0 THEN bt.trader ELSE txs."from" END AS seller
 , bt.nft_contract_address
 , bt.nft_token_id AS nft_token_id
-, CAST(1 AS UINT256) AS nft_amount
+, UINT256 '1' AS nft_amount
 , bt.price_raw
 , CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
 , bt.project_contract_address
-, CAST(0 AS uint256) AS platform_fee_amount_raw
+, uint256 '0' AS platform_fee_amount_raw
 , CAST(NULL AS varbinary) AS platform_fee_address
 , CAST(ROUND(bt.price_raw * bt.fee) AS UINT256) AS royalty_fee_amount_raw
 , bt.royalty_fee_address

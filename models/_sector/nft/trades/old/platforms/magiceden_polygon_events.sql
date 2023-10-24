@@ -28,7 +28,7 @@ WITH erc721_trades AS (
           CASE when direction = 0 THEN maker ELSE taker END AS seller,
           erc721Token AS nft_contract_address,
           erc721TokenId AS token_id,
-          cast(1 as uint256) AS number_of_items,
+          uint256 '1' AS number_of_items,
           'erc721' AS token_standard,
           CASE
                WHEN erc20Token in (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
@@ -199,7 +199,7 @@ SELECT
   a.contract_address AS project_contract_address,
   a.evt_type,
   CAST(NULL AS varchar) AS collection,
-  CASE WHEN number_of_items = cast(1 as uint256) THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
+  CASE WHEN number_of_items = uint256 '1' THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
   CAST(number_of_items AS uint256) AS number_of_items,
   CAST(NULL AS varchar) AS trade_category,
   buyer,

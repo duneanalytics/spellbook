@@ -111,16 +111,16 @@ select
     , nft_mints.tx_hash as tx_hash
     , etxs."from" as tx_from
     , etxs.to as tx_to
-    , cast(0 as UINT256) as platform_fee_amount_raw
-    , cast(0 as double) as platform_fee_amount
-    , cast(0 as double) as platform_fee_amount_usd
-    , cast(0 as double) as platform_fee_percentage
+    , UINT256 '0' as platform_fee_amount_raw
+    , double '0' as platform_fee_amount
+    , double '0' as platform_fee_amount_usd
+    , double '0' as platform_fee_percentage
     , CAST(NULL as VARBINARY) as royalty_fee_receive_address
     , '0' as royalty_fee_currency_symbol
-    , cast(0 as UINT256) as royalty_fee_amount_raw
-    , cast(0 as double) as royalty_fee_amount
-    , cast(0 as double) as royalty_fee_amount_usd
-    , cast(0 as double) as royalty_fee_percentage
+    , UINT256 '0' as royalty_fee_amount_raw
+    , double '0' as royalty_fee_amount
+    , double '0' as royalty_fee_amount_usd
+    , double '0' as royalty_fee_percentage
     , nft_mints.evt_index
     , cast(coalesce(sum(tr.value), sum(cast(erc20s.value as double)), 0)*(nft_mints.amount/nft_count.nfts_minted_in_tx) as UINT256) as amount_raw
     , coalesce(sum(tr.value_decimal), sum(cast(erc20s.value as double))/power(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) as amount_original

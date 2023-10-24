@@ -25,7 +25,7 @@ SELECT
     , from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.token')) AS currency_contract
     , s.contract_address AS project_contract_address
     , s.evt_tx_hash AS tx_hash
-    , CAST(0 AS uint256) AS platform_fee_amount_raw -- Hardcoded 0% platform fee
+    , uint256 '0' AS platform_fee_amount_raw -- Hardcoded 0% platform fee
     , LEAST(CAST(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.amount') AS uint256), CAST(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.amount') AS uint256)) AS royalty_fee_amount_raw
     , CASE WHEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))!=s.recipient THEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))
         ELSE from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.recipient'))
