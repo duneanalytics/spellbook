@@ -464,7 +464,7 @@ models:
     meta:
       blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
       sector: oneinch
-      contributors: ['max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'lop', 'calls']
     description: >
@@ -515,7 +515,7 @@ models:
     meta:
       blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
       sector: oneinch
-      contributors: ['max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'lop', 'trades']
     description: >
