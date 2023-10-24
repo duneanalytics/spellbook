@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('transactions_polygon_eth'),
+    
+    alias = 'transactions_polygon_eth',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

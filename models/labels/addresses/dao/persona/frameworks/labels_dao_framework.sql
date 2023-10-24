@@ -1,6 +1,6 @@
 {{config(
-    tags=['dunesql'],
-    alias = alias('dao_framework')
+    
+    alias = 'dao_framework'
 )}}
 
 WITH dao_address_w_name AS (

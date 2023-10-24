@@ -1,6 +1,5 @@
 {{config(
-    tags=['dunesql']
-    , alias = alias('nft_traders_volume_usd')
+     alias = 'nft_traders_volume_usd'
 )}}
 
 WITH nft_trades AS (

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'gas_gnosis',
-    alias = alias('fees_traces'),
+    alias = 'fees_traces',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,6 +8,11 @@
     unique_key = ['tx_hash', 'trace'],
     )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 WITH traces AS (
      SELECT traces.block_time

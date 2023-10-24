@@ -1,7 +1,6 @@
 {{ config(
-    tags = ['dunesql']
-    , schema = 'aave_v3_arbitrum'
-    , alias = alias('flashloans')
+     schema = 'aave_v3_arbitrum'
+    , alias = 'flashloans'
     , materialized = 'incremental'
     , partition_by = ['block_month']
     , file_format = 'delta'

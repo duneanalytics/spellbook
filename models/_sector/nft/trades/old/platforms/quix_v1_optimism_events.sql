@@ -1,7 +1,7 @@
 {{ config(
     schema = 'quix_v1_optimism',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -94,7 +94,7 @@ with events_raw as (
         ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
         ,'erc721' as token_standard
         ,'Single Item Trade' as trade_type
-        ,cast(1 as uint256) as number_of_items
+        ,uint256 '1' as number_of_items
         ,'Buy' as trade_category
         ,'Trade' as evt_type
         ,er.seller

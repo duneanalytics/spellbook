@@ -1,7 +1,7 @@
 {{ config(
-        tags=['dunesql'],
+        
         schema = 'yearn'
-        , alias = alias('vaults')
+        , alias = 'vaults'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'

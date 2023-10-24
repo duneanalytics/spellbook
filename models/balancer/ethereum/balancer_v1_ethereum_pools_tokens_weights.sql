@@ -1,8 +1,8 @@
 {{
     config(
         schema='balancer_v1_ethereum',
-        alias = alias('pools_tokens_weights'),
-        tags = ['dunesql'],
+        alias = 'pools_tokens_weights',
+        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

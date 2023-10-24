@@ -1,7 +1,7 @@
 {{ config(
         schema = 'tornado_cash_optimism',
-        alias = alias('withdrawals'),
-        tags = ['dunesql'],
+        alias = 'withdrawals',
+        
         materialized='incremental',
         partition_by=['block_date'],
         file_format = 'delta',

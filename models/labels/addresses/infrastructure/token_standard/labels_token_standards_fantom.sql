@@ -1,5 +1,5 @@
-{{config(tags=['dunesql'],
-    alias = alias('token_standards_fantom'),
+{{config(
+    alias = 'token_standards_fantom',
         post_hook='{{ expose_spells(\'["fantom"]\',
                                     "sector",
                                     "labels",

@@ -1,6 +1,5 @@
 {{config(
-        tags=['dunesql']
-        ,alias = alias('safe'),
+    alias = 'safe',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

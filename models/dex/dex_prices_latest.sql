@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('prices_latest'),
-        tags = ['dunesql'],
+        alias = 'prices_latest',
+        
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

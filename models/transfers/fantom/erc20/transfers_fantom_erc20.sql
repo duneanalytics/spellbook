@@ -1,5 +1,5 @@
 {{ config(
-    alias = alias('erc20'),
+    alias = 'erc20',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -10,6 +10,11 @@
                                     \'["soispoke", "dot2dotseurat", "tschubotz", "hosuke"]\') }}'
     )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 with
     sent_transfers as (

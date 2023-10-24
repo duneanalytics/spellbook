@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: xchange_ethereum_trades_seed
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         project: varchar

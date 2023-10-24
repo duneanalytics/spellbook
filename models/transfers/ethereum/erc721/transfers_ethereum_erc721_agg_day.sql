@@ -1,12 +1,15 @@
 {{ config(
-        alias = alias('erc721_agg_day'),
+        alias = 'erc721_agg_day',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
         unique_key='unique_transfer_id'
         )
 }}
-
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 select
     'ethereum' as blockchain,
     date_trunc('day', evt_block_time) as day,

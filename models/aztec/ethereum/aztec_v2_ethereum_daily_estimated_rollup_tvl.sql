@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'aztec_v2_ethereum',
-    alias = alias('daily_estimated_rollup_tvl'),
+    alias = 'daily_estimated_rollup_tvl',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",

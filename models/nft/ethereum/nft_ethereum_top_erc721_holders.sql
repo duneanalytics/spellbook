@@ -1,5 +1,5 @@
 {{ config(
-       alias = alias('top_erc721_holders'),
+       alias = 'top_erc721_holders',
        materialized='table',
        post_hook='{{ expose_spells(\'["ethereum"]\',
                                    "sector",
@@ -7,6 +7,11 @@
                                    \'["Henrystats"]\') }}'
        )
    }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 WITH 
 

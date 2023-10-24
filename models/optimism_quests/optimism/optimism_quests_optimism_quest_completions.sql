@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('quest_completions'),
-    tags=['dunesql'],
+    alias = 'quest_completions',
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
