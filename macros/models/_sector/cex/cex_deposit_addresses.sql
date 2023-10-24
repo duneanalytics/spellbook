@@ -70,7 +70,8 @@ WITH first_txs AS (
     GROUP BY 1, 2, 3, 4, 5, 6, 7
     )
 
-SELECT dct.block_time
+SELECT '{{blockchain}}' AS blockchain
+, dct.block_time
 , dct.block_number
 , dct.deposit_address
 , dct.cex_address
