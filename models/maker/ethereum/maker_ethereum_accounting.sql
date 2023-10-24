@@ -4,6 +4,7 @@
         partition_by = ['dt'],
         materialized = 'table',
         file_format = 'delta',
+        pre_hook='{{ mark_distinct_strategy(None) }}',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "maker",
