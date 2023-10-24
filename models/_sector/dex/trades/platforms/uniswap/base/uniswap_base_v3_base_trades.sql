@@ -1,6 +1,6 @@
 {{ config(
     tags=['dunesql'],
-    schema = 'uniswap_v3_arbitrum',
+    schema = 'uniswap_v3_base',
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,11 +9,11 @@
     )
 }}
 
-{% set project_start_date = '2021-06-01' %}
+{% set project_start_date = '2023-07-16' %}
 
 {{
     uniswap_v3_forked_base_trades(
-        Pair_evt_Swap = source('uniswap_v3_arbitrum', 'Pair_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_v3_arbitrum', 'Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('uniswap_v3_base', 'UniswapV3Pool_evt_Swap')
+        , Factory_evt_PoolCreated = source('uniswap_v3_base', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
