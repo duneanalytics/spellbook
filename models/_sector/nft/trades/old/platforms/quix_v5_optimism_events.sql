@@ -126,7 +126,7 @@ with events_raw as (
         when erc1155.evt_tx_hash is not null then 'erc1155'
         end as token_standard
         ,'Single Item Trade' as trade_type
-        ,cast(1 as uint256) as number_of_items
+        ,uint256 '1' as number_of_items
         ,'Buy' as trade_category
         ,'Trade' as evt_type
         ,er.seller

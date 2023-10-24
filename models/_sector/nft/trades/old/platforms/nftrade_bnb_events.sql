@@ -50,39 +50,39 @@ source_inventory_enriched as (
     SELECT
         src.*,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN taker_asset_address
+            WHEN src.maker_id = uint256 '0' OR src.maker_id IS NULL THEN taker_asset_address
             ELSE maker_asset_address
         END as nft_contract_address,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN src.taker_id
+            WHEN src.maker_id = uint256 '0' OR src.maker_id IS NULL THEN src.taker_id
             ELSE src.maker_id
         END as token_id,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN src.maker_asset_amount_raw
+            WHEN src.maker_id = uint256 '0' OR src.maker_id IS NULL THEN src.maker_asset_amount_raw
             ELSE src.taker_asset_amount_raw
         END as amount_raw,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN src.maker_asset_amount
+            WHEN src.maker_id = uint256 '0' OR src.maker_id IS NULL THEN src.maker_asset_amount
             ELSE src.taker_asset_amount
         END as amount_original,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) or src.maker_id IS NULL THEN 'Sell'
+            WHEN src.maker_id = uint256 '0' or src.maker_id IS NULL THEN 'Sell'
             ELSE 'Buy'
         END as trade_category,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) or src.maker_id IS NULL THEN src.maker_address
+            WHEN src.maker_id = uint256 '0' or src.maker_id IS NULL THEN src.maker_address
             ELSE src.taker_address
         END as buyer,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) or src.maker_id IS NULL THEN src.taker_address
+            WHEN src.maker_id = uint256 '0' or src.maker_id IS NULL THEN src.taker_address
             ELSE src.maker_address
         END as seller,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN (src.protocol_fees/src.maker_asset_amount) * 100
+            WHEN src.maker_id = uint256 '0' OR src.maker_id IS NULL THEN (src.protocol_fees/src.maker_asset_amount) * 100
             ELSE (src.protocol_fees/src.taker_asset_amount) * 100
         END as platform_fee_percentage,
         CASE
-            WHEN src.maker_id = cast(0 as uint256) OR src.maker_id IS NULL THEN (src.royalty_fees/src.maker_asset_amount) * 100
+            WHEN src.maker_id = uint256 '0' OR src.maker_id IS NULL THEN (src.royalty_fees/src.maker_asset_amount) * 100
             ELSE (src.royalty_fees/src.taker_asset_amount) * 100
         END as royalty_fee_percentage
     FROM
@@ -105,7 +105,7 @@ source_inventory_enriched as (
             ELSE 'erc1155'
         END as token_standard,
         'Single Item Trade' as trade_type,
-        CAST(1 AS uint256) AS number_of_items,
+        uint256 '1' AS number_of_items,
         src.trade_category,
         'Trade' as evt_type,
         src.buyer,

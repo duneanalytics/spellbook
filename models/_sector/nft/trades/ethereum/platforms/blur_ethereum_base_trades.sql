@@ -30,8 +30,8 @@ SELECT
     , from_hex(JSON_EXTRACT_SCALAR(bm.buy, '$.paymentToken')) AS currency_contract
     , bm.contract_address AS project_contract_address
     , bm.evt_tx_hash AS tx_hash
-    , cast(0 as uint256) AS platform_fee_amount_raw  -- Hardcoded 0% platform fee
-    , CAST(COALESCE(cast(JSON_EXTRACT_SCALAR(bm.buy, '$.price') as uint256)*cast(JSON_EXTRACT_SCALAR(cast(JSON_EXTRACT(bm.sell, '$.fees[0]') as varchar), '$.rate') as uint256)/10000, cast(0 as uint256)) AS uint256) AS royalty_fee_amount_raw
+    , uint256 '0' AS platform_fee_amount_raw  -- Hardcoded 0% platform fee
+    , CAST(COALESCE(cast(JSON_EXTRACT_SCALAR(bm.buy, '$.price') as uint256)*cast(JSON_EXTRACT_SCALAR(cast(JSON_EXTRACT(bm.sell, '$.fees[0]') as varchar), '$.rate') as uint256)/10000, uint256 '0') AS uint256) AS royalty_fee_amount_raw
     , from_hex(JSON_EXTRACT_SCALAR(cast(json_extract(bm.sell, '$.fees[0]') as varchar), '$.recipient')) AS royalty_fee_address
     , cast(NULL as varbinary) as platform_fee_address
     , bm.evt_index as sub_tx_trade_id

@@ -53,4 +53,5 @@ FROM (VALUES
     , ('pooltogether', 'PoolTogether', NULL, NULL, NULL, NULL, TRUE, 'PoolTogether_', '2021-02-17 02:18', NULL)
     , ('diva', 'Diva', NULL, 106000000, NULL, 1000000000, TRUE, 'divastaking', NULL, NULL)
     , ('arkham', 'Arkham', NULL, NULL, NULL, NULL, TRUE, 'ArkhamIntel', '2023-06-27 19:00', NULL)
+    , ('velodrome', 'Velodrome', NULL, NULL, NULL, NULL, TRUE, 'VelodromeFi', '2022-06-01 20:54', NULL)
     ) AS temp_table (project, name, eligible_addresses, circulating_supply_on_drop, max_supply, airdropped_total, token_issued_by_protocol, x_username, airdrop_start, airdrop_end)
