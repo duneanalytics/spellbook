@@ -135,8 +135,8 @@ with
                             where call_block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp)
                         {% endif %}
                     ) as orders
-                    join {{ source(row.blockchain, 'transactions') }} on transactions.hash = orders.tx_hash
-                    join {{ source(row.blockchain, 'traces') }} using(tx_hash, trace_address)
+                    join {{ source(blockchain, 'transactions') }} on transactions.hash = orders.tx_hash
+                    join {{ source(blockchain, 'traces') }} using(tx_hash, trace_address)
 
                     {% if not loop.last %} union all {% endif %}
                     
@@ -147,7 +147,7 @@ with
             {% endfor %}
 
             {% if not loop.last %} union all {% endif %}
-            
+
         {% endfor %}
 
     )
