@@ -1,10 +1,9 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = alias('lop'),
+        alias = 'lop',
         materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address'],
-        tags = ['dunesql']
+        unique_key = ['blockchain', 'tx_hash', 'call_trace_address']
     )
 }}
 

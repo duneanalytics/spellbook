@@ -1,9 +1,8 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = alias('lop_trades'),
-        materialized = 'view',
-        tags = ['dunesql']
+        alias = 'lop_trades',
+        materialized = 'view'
     )
 }}
 
