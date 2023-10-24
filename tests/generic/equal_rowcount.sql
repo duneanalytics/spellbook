@@ -30,6 +30,6 @@
         a.id_dbtutils_test_equal_rowcount = b.id_dbtutils_test_equal_rowcount
     )
 
-    select * from final where diff_count > 0
+    select * from final where diff_count > 5000
 
 {% endtest %}

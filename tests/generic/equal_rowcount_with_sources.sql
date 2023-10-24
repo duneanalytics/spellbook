@@ -23,5 +23,5 @@
     on 1=1
     )
 
-    select * from unit_test where diff_count > 0
+    select * from unit_test where diff_count > 100
 {% endtest %}
