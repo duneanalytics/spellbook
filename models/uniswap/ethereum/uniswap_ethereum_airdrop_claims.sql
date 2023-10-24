@@ -26,8 +26,8 @@ WITH early_price AS (
 SELECT 'ethereum' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'Uniswap' AS project
-, 'Uniswap Airdrop' AS airdrop_identifier
+, 'uniswap' AS project
+, 1 AS airdrop_number
 , t.account AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
