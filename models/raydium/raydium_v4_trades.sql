@@ -16,7 +16,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
-{% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at). It should be '2022-08-17' but for some reason there are swaps on AMMs for a year before this date. must be something related to bpf upgrades that I don't understand yet.
+{% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at).
 
   WITH
     --we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
