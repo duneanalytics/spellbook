@@ -1,7 +1,7 @@
 {{ config
 (
-    alias = alias('v0_6_account_deployed'),
-    tags=['dunesql'],
+    alias = 'v0_6_account_deployed',
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('resolver_records'),
-    tags = ['dunesql'],
+    alias = 'resolver_records',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

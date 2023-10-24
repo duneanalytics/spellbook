@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('matic_agg_hour'),
+        
+        alias = 'matic_agg_hour',
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',

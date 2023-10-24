@@ -1,8 +1,7 @@
 {{ config(
     schema = 'cryptopunks_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -30,8 +29,7 @@ with accepted_bid_prices as (
     group by 1,2,3
 )
 
-select  cast(date_trunc('month',evt.evt_block_time) as date) as block_date
-        , evt.evt_block_time as block_time
+select    evt.evt_block_time as block_time
         , evt.evt_block_number as block_number
         , evt.evt_tx_hash as tx_hash
         , evt.contract_address as project_contract_address
@@ -47,8 +45,8 @@ select  cast(date_trunc('month',evt.evt_block_time) as date) as block_date
         , evt.contract_address as nft_contract_address
         , cast(coalesce(call.latest_bid, evt.value) as UINT256) as price_raw
         , {{ var("ETH_ERC20_ADDRESS") }} AS currency_contract -- all trades are in ETH
-        , cast(0 as UINT256) as platform_fee_amount_raw
-        , cast(0 as UINT256) as royalty_fee_amount_raw
+        , UINT256 '0' as platform_fee_amount_raw
+        , UINT256 '0' as royalty_fee_amount_raw
         , cast(null as varbinary) as platform_fee_address
         , cast(null as varbinary) as royalty_fee_address
 from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} evt

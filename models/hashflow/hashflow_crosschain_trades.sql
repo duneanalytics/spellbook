@@ -1,6 +1,7 @@
 {{
     config(
-        alias = alias('cross_chain_trades')
+        
+        alias = 'cross_chain_trades'
         ,post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb"]\',
                         "project",
                         "hashflow",

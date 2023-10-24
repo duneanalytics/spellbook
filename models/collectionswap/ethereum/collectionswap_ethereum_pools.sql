@@ -1,7 +1,7 @@
 {{ config(
         schema='collectionswap_ethereum',
-        tags = ['dunesql'],
-        alias = alias('pools'),
+        
+        alias = 'pools',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('events_limit_order'),
+    alias = 'events_limit_order',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -64,7 +64,7 @@ limit_orders_v1 AS (
             ON t._asset = ta.asset_id
             AND ta.protocol_version = '1'
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

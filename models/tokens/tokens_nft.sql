@@ -1,4 +1,4 @@
-{{ config(tags=['dunesql'], alias = alias('nft'),
+{{ config( alias = 'nft',
         post_hook='{{ expose_spells(\'["avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom","arbitrum","polygon","base","celo"]\',
                                     "sector",
                                     "tokens",

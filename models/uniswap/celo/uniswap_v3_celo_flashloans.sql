@@ -1,6 +1,5 @@
 {{ config(
-      tags = ['dunesql']
-      , alias = alias('flashloans')
+       alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -34,7 +33,7 @@ WITH flashloans AS (
     )
 
 SELECT 'celo' AS blockchain
-, 'Uniswap' AS project
+, 'uniswap' AS project
 , '3' AS version
 , CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time

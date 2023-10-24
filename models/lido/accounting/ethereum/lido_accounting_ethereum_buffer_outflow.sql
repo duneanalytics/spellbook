@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('buffer_outflow'),
-        tags = ['dunesql'], 
+        alias = 'buffer_outflow',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

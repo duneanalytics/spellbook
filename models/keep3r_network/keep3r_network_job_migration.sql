@@ -1,6 +1,5 @@
-{{ config (
-    tags=['dunesql']
-    , alias = alias('etv_job_migration')
+{{ config(
+     alias = 'etv_job_migration'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

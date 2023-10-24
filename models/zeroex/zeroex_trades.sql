@@ -1,7 +1,6 @@
 {{ config(
-        tags=['dunesql']
-        ,schema = 'zeroex'
-        ,alias = alias('trades')
+    schema = 'zeroex'
+        ,alias = 'trades'
         ,post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb"]\',
                                 "project",
                                 "zeroex",

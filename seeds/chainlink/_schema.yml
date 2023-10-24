@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: chainlink_get_price_seed
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         block_time: timestamp

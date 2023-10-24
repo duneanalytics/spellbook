@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='nft',
-        alias = alias('marketplaces_info'),
+        alias = 'marketplaces_info',
         unique_key = ['codename'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
                                     "sector",
@@ -9,7 +9,7 @@
                                     \'["hildobby"]\') }}')
 }}
 
-SELECT codename, name, marketplace_type, x_username
+SELECT project, name, marketplace_type, x_username
 FROM (VALUES
     ('opensea', 'OpenSea', 'Direct', 'opensea')
     , ('cryptopunks', 'CryptoPunks', 'Direct', 'cryptopunksnfts')
@@ -32,7 +32,7 @@ FROM (VALUES
     , ('infinity', 'Infinity', 'Direct', NULL)
     , ('zora', 'Zora', 'Direct', 'ourZORA')
     , ('reservoir', 'Reservoir', 'Aggregator', 'reservoir0x')
-    , ('alpha sharks', 'Alpha Sharks', 'Aggregator', 'AlphaSharksNFT')
+    , ('magically', 'Magically', 'Aggregator', 'Magically_gg')
     , ('uniswap', 'Uniswap', 'Aggregator', 'Uniswap')
     , ('okx', 'OKX', 'Aggregator', 'okx')
     , ('bitkeep', 'BitKeep', 'Aggregator', 'BitgetWallet')
@@ -63,4 +63,4 @@ FROM (VALUES
     , ('stealcam', 'Stealcam', 'Direct', 'trystealcam')
     , ('collectionswap', 'Collectionswap', 'Direct', 'collectionswap')
     , ('decentraland', 'Decentraland', 'Direct', 'decentraland')
-    ) AS temp_table (codename, name, marketplace_type, x_username)
+    ) AS temp_table (project, name, marketplace_type, x_username)
