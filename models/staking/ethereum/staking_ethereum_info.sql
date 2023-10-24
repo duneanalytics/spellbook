@@ -39,7 +39,7 @@ FROM (VALUES
     , ('Bake', 'bake_io')
     , ('Liquid Collective', 'liquid_col')
     , ('Stader', 'staderlabs')
-    , ('Manifold Finance', 'foldfinance')
+    , ('MEV Protocol', 'mevdotio')
     , ('Bitfinex', 'bitfinex')
     , ('Chorus One', 'ChorusOne')
     , ('WEX Exchange', 'WEXnz')
