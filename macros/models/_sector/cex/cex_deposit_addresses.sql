@@ -50,7 +50,7 @@ WITH first_txs AS (
     INNER JOIN {{ erc20_transfers }} t2 ON txs.block_number=t2.evt_block_number
         AND txs.tx_hash=t2.evt_tx_hash
         AND t."from"=t2.to
-        AND t2.evt_block_time BETWEEN t.block_time - interval '1' day AND t.block_time
+        AND t2.evt_block_time BETWEEN t.evt_block_time - interval '1' day AND t.evt_block_time
         {% if is_incremental() %}
         AND t2.evt_block_time >= date_trunc('day', now() - interval '8' day)
         {% endif %}
