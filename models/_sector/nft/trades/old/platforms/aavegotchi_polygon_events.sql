@@ -23,7 +23,7 @@ WITH trades AS (
         seller,
         erc721TokenAddress AS nft_contract_address,
         erc721TokenId AS token_id,
-        cast(1 as bigint) AS number_of_items,
+        bigint '1' AS number_of_items,
         'erc721' AS token_standard,
         0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7 AS currency_contract, -- All sale are in GHST
         priceInWei AS amount_raw,
@@ -98,11 +98,11 @@ SELECT
     CAST(2 * amount_raw / 100 AS uint256) AS platform_fee_amount_raw,
     CAST(2 * amount_raw / power(10, erc.decimals) / 100 AS double) AS platform_fee_amount,
     CAST(2 * amount_raw / power(10, erc.decimals) * p.price / 100 AS double) AS platform_fee_amount_usd,
-    CAST(2 AS double) AS platform_fee_percentage, -- Treasury 0xd4151c984e6cf33e04ffaaf06c3374b2926ecc64 receive 2%
-    CAST(0 AS uint256) AS royalty_fee_amount_raw,
-    CAST(0 AS double) AS royalty_fee_amount,
-    CAST(0 AS double) AS royalty_fee_amount_usd,
-    CAST(0 AS double) AS royalty_fee_percentage,
+    double '2' AS platform_fee_percentage, -- Treasury 0xd4151c984e6cf33e04ffaaf06c3374b2926ecc64 receive 2%
+    uint256 '0' AS royalty_fee_amount_raw,
+    double '0' AS royalty_fee_amount,
+    double '0' AS royalty_fee_amount_usd,
+    double '0' AS royalty_fee_percentage,
     CAST(NULL AS varbinary) AS royalty_fee_receive_address,
     CAST(NULL AS varchar) AS royalty_fee_currency_symbol,
     cast(evt_tx_hash as varchar) || '-' || evt_type || '-' || cast(evt_index as varchar) || '-' || cast(token_id as varchar) AS unique_trade_id

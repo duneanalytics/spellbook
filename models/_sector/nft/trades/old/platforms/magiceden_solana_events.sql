@@ -100,7 +100,7 @@ SELECT
           )
          AND contains(log_messages, 'Program log: Instruction: Buy') THEN 'Single Item Trade' ELSE NULL
          END as trade_type,
-  CAST(1 AS uint256) as number_of_items,
+  uint256 '1' as number_of_items,
   cast(NULL as varchar) as trade_category,
   from_base58(signer) as buyer,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
@@ -119,7 +119,7 @@ SELECT
   cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
-  CAST(2 AS DOUBLE) as platform_fee_percentage,
+  DOUBLE '2' as platform_fee_percentage,
   CAST (abs(element_at(post_balances,12) - element_at(pre_balances,12)) + abs(element_at(post_balances,13) - element_at(pre_balances,13))
     + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS uint256) as royalty_fee_amount_raw,
   abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9) + abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
