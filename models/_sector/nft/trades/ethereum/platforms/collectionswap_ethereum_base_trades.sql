@@ -1,8 +1,7 @@
 {{ config(
     schema = 'collectionswap_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -19,7 +18,7 @@ raw_trades as (
     from(
         select
             block_number, block_time, evt_index, tx_hash, buyer, seller,
-            cast(1 as uint256) as nft_amount,
+            uint256 '1' as nft_amount,
             price_raw/number_of_items as price_raw,
             platform_fee_amount_raw/number_of_items as platform_fee_amount_raw,
             royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw,
@@ -99,8 +98,7 @@ base_trades as (
 
 -- results
 SELECT
-  cast(date_trunc('month',block_time ) as date) as block_date
-, block_time
+  block_time
 , block_number
 , tx_hash
 , project_contract_address

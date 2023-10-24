@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('signer_thresholds'),
-        tags = ['dunesql'],
+        alias = 'signer_thresholds',
+        
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "safe",

@@ -1,8 +1,8 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'curvefi_optimism',
-        alias = alias('gauge_mappings'),
+        alias = 'gauge_mappings',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

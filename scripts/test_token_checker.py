@@ -20,10 +20,11 @@ def test_test_token_checker_attrs2():
     assert '0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d' == token['contract_address']
 
 
-def test_token_missing_contract1(caplog):
-    test_line = "('dai-dai', 'avalanche_c', 'DAI', 0xd586e7f844cea2f87f50152665bcbc2c279d8d70, 18),"
-    checker.validate_token(test_line)
-    assert [log for log in caplog.records if log.levelname == 'WARNING']
+# Not missing now: https://api.coinpaprika.com/v1/coins/dai-dai
+# def test_token_missing_contract1(caplog):
+#     test_line = "('dai-dai', 'avalanche_c', 'DAI', 0xd586e7f844cea2f87f50152665bcbc2c279d8d70, 18),"
+#     checker.validate_token(test_line)
+#     assert [log for log in caplog.records if log.levelname == 'WARNING']
 
 
 def test_valid_token0():
@@ -61,8 +62,7 @@ def test_valid_token6():
     test_line = "('bets-betswirl', 'polygon', 'BETS', 0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b, 18),"
     checker.validate_token(test_line)
 
-def test_inactive_token():
+def test_valid_token7():
     test_line = "('grain-granary', 'fantom', 'GRAIN', 0x02838746d9e1413e07ee064fcbada57055417f21, 18),"
-    # grain-granary is no longer active: https://api.coinpaprika.com/v1/coins/grain-granary
-    with pytest.raises(AssertionError):
-        checker.validate_token(test_line)
+    # grain-granary is active now: https://api.coinpaprika.com/v1/coins/grain-granary
+    checker.validate_token(test_line)

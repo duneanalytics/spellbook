@@ -1,8 +1,8 @@
 {{
     config(
         schema="balancer_ethereum",
-        tags = ['dunesql'],
-        alias = alias('vebal_balances_day'),
+        
+        alias = 'vebal_balances_day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer",

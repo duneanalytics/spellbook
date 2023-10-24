@@ -1,0 +1,21 @@
+version: 2
+
+seeds:
+  - name: seaport_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_date: timestamp
+        tx_hash: varbinary
+        evt_index: int
+        nft_contract_address: varbinary
+        token_id: uint256
+        sub_type: varchar
+        sub_idx: int
+        buyer: varbinary
+        seller: varbinary
+
+
+

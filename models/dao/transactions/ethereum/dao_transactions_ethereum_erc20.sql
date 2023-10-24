@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('transactions_ethereum_erc20'),
+    
+    alias = 'transactions_ethereum_erc20',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

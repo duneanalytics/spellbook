@@ -1,8 +1,7 @@
 {{ config(
     schema = 'zora_v3_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -140,7 +139,7 @@ WITH v3_trades as (
         UNION ALL SELECT evt_block_time, evt_tx_hash, tokenContract, tokenId, amount, recipient
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_RoyaltyPayout') }}
         )
-        WHERE cast(amount as uint256) > cast(0 as uint256)
+        WHERE cast(amount as uint256) > uint256 '0'
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -149,22 +148,21 @@ WITH v3_trades as (
 )
 
 SELECT
-    cast(date_trunc('month',block_time) as date) as block_date
-    , block_time
+      block_time
     , block_number
     , project_contract_address
     , tx_hash
     , nft_contract_address
     , nft_token_id
-    , CAST(1 as uint256) as nft_amount
+    , uint256 '1' as nft_amount
     , trade_category
     , 'secondary' as trade_type
     , buyer
     , seller
     , price_raw as price_raw
     , currency_contract
-    , CAST(0 as uint256) AS platform_fee_amount_raw
-    , coalesce(roy.royalty_fee_amount_raw,cast(0 as uint256)) as royalty_fee_amount_raw
+    , uint256 '0' AS platform_fee_amount_raw
+    , coalesce(roy.royalty_fee_amount_raw,uint256 '0') as royalty_fee_amount_raw
     , CAST(NULL as varbinary) AS platform_fee_address
     , roy.royalty_fee_address as royalty_fee_address
     , sub_tx_trade_id

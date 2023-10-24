@@ -1,8 +1,8 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('logs_decoded'),
+        
+        alias = 'logs_decoded',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,6 +20,8 @@
      , ('arbitrum', source('arbitrum', 'logs_decoded'))
      , ('celo', source('celo', 'logs_decoded'))
      , ('base', source('base', 'logs_decoded'))
+     , ('goerli', source('goerli', 'logs_decoded'))
+     , ('zksync', source('zksync', 'logs_decoded'))
 ] %}
 
 SELECT *

@@ -1,7 +1,7 @@
 {{
     config(
-        alias = alias('tx_hash_labels_early_investment_ethereum'),
-        tags=['dunesql']
+        alias = 'tx_hash_labels_early_investment_ethereum',
+        
     )
 }}
 

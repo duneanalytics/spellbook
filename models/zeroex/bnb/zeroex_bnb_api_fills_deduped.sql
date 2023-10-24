@@ -1,6 +1,6 @@
 {{  config(
-        tags=['dunesql', 'prod_exclude'],
-        alias = alias('api_fills_deduped'),
+        
+        alias = 'api_fills_deduped',
         materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -65,9 +65,9 @@ AS
 SELECT  a.blockchain
       , '0x API'  as project
       , cast(null as varchar) as version
+      , a.block_time
       , a.block_date
       , a.block_month
-      , a.block_time
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair

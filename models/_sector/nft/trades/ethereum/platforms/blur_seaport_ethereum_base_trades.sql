@@ -1,8 +1,7 @@
 {{ config(
     schema = 'blur_seaport_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,8 +12,7 @@
 {% set seaport_usage_start_date = "cast('2023-01-25' as timestamp)" %}
 
 SELECT
-      cast(date_trunc('month', s.evt_block_time) as date) AS block_date
-    , s.evt_block_time AS block_time
+      s.evt_block_time AS block_time
     , s.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(s.offer[1], '$.token')) AS nft_contract_address
     , cast(JSON_EXTRACT_SCALAR(s.offer[1], '$.identifier') as uint256) AS nft_token_id
@@ -27,7 +25,7 @@ SELECT
     , from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.token')) AS currency_contract
     , s.contract_address AS project_contract_address
     , s.evt_tx_hash AS tx_hash
-    , CAST(0 AS uint256) AS platform_fee_amount_raw -- Hardcoded 0% platform fee
+    , uint256 '0' AS platform_fee_amount_raw -- Hardcoded 0% platform fee
     , LEAST(CAST(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.amount') AS uint256), CAST(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.amount') AS uint256)) AS royalty_fee_amount_raw
     , CASE WHEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))!=s.recipient THEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))
         ELSE from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.recipient'))
