@@ -13,6 +13,7 @@
 {% set solana_dexes = [
     ref('orca_whirlpool_trades')
     , ref('raydium_v3_trades')
+    , ref('raydium_v4_trades')
     , ref('phoenix_v1_trades')
     , ref('lifinity_v1_trades')
     , ref('lifinity_v2_trades')
