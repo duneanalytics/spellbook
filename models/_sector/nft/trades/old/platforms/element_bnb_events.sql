@@ -143,14 +143,14 @@ SELECT alet.blockchain
 , alet.block_number
 , bt."from" AS tx_from
 , bt.to AS tx_to
-, CAST(0 AS uint256) AS platform_fee_amount_raw
-, CAST(0 AS DOUBLE) AS platform_fee_amount
-, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
-, CAST(0 AS DOUBLE) AS platform_fee_percentage
-, CAST(0 AS uint256) AS royalty_fee_amount_raw
-, CAST(0 AS DOUBLE) AS royalty_fee_amount
-, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
-, CAST(0 AS DOUBLE) AS royalty_fee_percentage
+, uint256 '0' AS platform_fee_amount_raw
+, DOUBLE '0' AS platform_fee_amount
+, DOUBLE '0' AS platform_fee_amount_usd
+, DOUBLE '0' AS platform_fee_percentage
+, uint256 '0' AS royalty_fee_amount_raw
+, DOUBLE '0' AS royalty_fee_amount
+, DOUBLE '0' AS royalty_fee_amount_usd
+, DOUBLE '0' AS royalty_fee_percentage
 , CAST('0' AS varbinary) AS royalty_fee_receive_address
 , CAST('0' AS VARCHAR) AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.token_id as varchar) AS unique_trade_id

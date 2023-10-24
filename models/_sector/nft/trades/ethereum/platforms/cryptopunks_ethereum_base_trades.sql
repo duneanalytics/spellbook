@@ -45,8 +45,8 @@ select    evt.evt_block_time as block_time
         , evt.contract_address as nft_contract_address
         , cast(coalesce(call.latest_bid, evt.value) as UINT256) as price_raw
         , {{ var("ETH_ERC20_ADDRESS") }} AS currency_contract -- all trades are in ETH
-        , cast(0 as UINT256) as platform_fee_amount_raw
-        , cast(0 as UINT256) as royalty_fee_amount_raw
+        , UINT256 '0' as platform_fee_amount_raw
+        , UINT256 '0' as royalty_fee_amount_raw
         , cast(null as varbinary) as platform_fee_address
         , cast(null as varbinary) as royalty_fee_address
 from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} evt
