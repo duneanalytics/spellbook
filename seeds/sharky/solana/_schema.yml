@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: sharky_solana_loans_solscan
     config:
-      tags: dunesql
       column_types:
         block_time: timestamp
         tx_hash: varchar
