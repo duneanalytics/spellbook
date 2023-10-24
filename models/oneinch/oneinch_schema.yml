@@ -75,7 +75,7 @@ models:
 
   - name: oneinch_protocols
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -123,7 +123,7 @@ models:
 
   - name: oneinch_calls
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -171,7 +171,7 @@ models:
 
   - name: oneinch_ar_calls
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -204,7 +204,7 @@ models:
 
   - name: oneinch_calls_transfers_amounts
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -264,7 +264,7 @@ models:
 
   - name: oneinch_ar_calls_transfers_amounts
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -308,7 +308,7 @@ models:
 
   - name: oneinch_exchange_contracts
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -428,7 +428,7 @@ models:
 
   - name: oneinch_methods
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
