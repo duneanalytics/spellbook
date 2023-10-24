@@ -22,13 +22,17 @@ ref('cex_arbitrum_deposit_addresses')
 SELECT *
 FROM (
     {% for cex_model in cex_models %}
-    SELECT
-        blockchain, 
-        address,
-        cex_name,
-        distinct_name,
-        added_by,
-        added_date
+    SELECT blockchain
+    , block_month
+    , block_time
+    , block_number
+    , deposit_address
+    , cex_address
+    , cex_name
+    , distinct_name
+    , tx_hash
+    , deposit_token_type
+    , eth_funders
     FROM {{ cex_model }}
     {% if not loop.last %}
     UNION ALL
