@@ -1,6 +1,7 @@
 {{ config(
+tags=['prod_exclude'],
         schema = 'bridge',
-        alias = alias('flows'),
+        alias = 'flows',
         post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                 "sector",
                                 "bridge",

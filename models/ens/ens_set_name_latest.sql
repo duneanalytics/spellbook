@@ -1,7 +1,7 @@
 {{
     config(
-         alias = alias('set_name_latest')
-        ,tags = ['dunesql']
+         alias = 'set_name_latest'
+        
         ,materialized = 'table'
         ,file_format = 'delta'
         ,unique_key = ['address', 'name']

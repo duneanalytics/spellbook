@@ -1,6 +1,7 @@
 {{ config(
+tags=['prod_exclude'],
     schema ='pooltogether_v4_ethereum',
-    alias = alias('prize_structure'),
+    alias = 'prize_structure',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('vrf_reverted_transactions'),
+    
+    alias='vrf_reverted_transactions',
     post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","polygon"]\',
                             "project",
                             "chainlink",

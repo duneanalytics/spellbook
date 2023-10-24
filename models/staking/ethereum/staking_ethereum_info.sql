@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='staking_ethereum',
-        alias = alias('info'),
+        alias = 'info',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "staking",

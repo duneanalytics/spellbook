@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('options_fees_distributed'),
+    alias = 'options_fees_distributed',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

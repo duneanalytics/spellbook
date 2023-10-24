@@ -1,9 +1,9 @@
 {{
     config(
         materialized='incremental',
-        tags = ['dunesql'],
+        
         schema='safe_celo',
-        alias = alias('transactions'),
+        alias = 'transactions',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'],
         file_format ='delta',

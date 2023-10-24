@@ -1,5 +1,6 @@
 {{ config(
-    alias = alias('erc20'),
+tags=['prod_exclude'],
+    alias = 'erc20',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

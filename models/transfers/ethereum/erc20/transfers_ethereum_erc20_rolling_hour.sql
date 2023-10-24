@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('erc20_rolling_hour')
+tags=['prod_exclude'],
+        alias = 'erc20_rolling_hour'
         )
 }}
 /*

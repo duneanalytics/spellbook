@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('erc1155_agg_hour'),
+tags=['prod_exclude'],
+        alias = 'erc1155_agg_hour',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
