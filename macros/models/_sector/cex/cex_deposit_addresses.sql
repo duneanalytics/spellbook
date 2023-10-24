@@ -89,6 +89,6 @@ INNER JOIN {{ traces }} traces ON dct.block_number=traces.block_number
     {% if is_incremental() %}
     AND traces.block_time >= date_trunc('day', now() - interval '8' day)
     {% endif %}
-GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 {% endmacro %}
