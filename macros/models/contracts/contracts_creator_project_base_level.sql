@@ -1,8 +1,35 @@
 {% macro contracts_creator_project_base_level( chain ) %}
 
-WITH base_level as (
 
-SELECT *
+SELECT 
+         blockchain
+        ,trace_creator_address
+        ,creator_address
+        ,deployer_address
+        ,contract_address
+        
+        ,created_time
+        ,created_block_number
+        ,creation_tx_hash
+        ,created_tx_from
+        ,created_tx_to
+        ,created_tx_method_id
+        ,created_tx_index
+
+        ,top_level_time
+        ,top_level_block_number
+        ,top_level_tx_hash
+        ,top_level_tx_from
+        ,top_level_tx_to
+        ,top_level_tx_method_id
+
+        ,code_bytelength
+        ,token_standard
+        ,code_deploy_rank_by_chain
+        ,to_iterate_creators
+        ,code
+        
+        ,is_new_contract
   FROM (
   select 
     blockchain
@@ -155,6 +182,6 @@ SELECT *
 ) y 
 --Don't run the same contract twice (i.e. incremental and existing)
 WHERE contract_order = 1
-)
+
 
 {% endmacro %}
