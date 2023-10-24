@@ -44,6 +44,8 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain"
+      - name: block_month
+        description: "Block month"
       - name: block_time
         description: "Block time"
       - name: block_number
