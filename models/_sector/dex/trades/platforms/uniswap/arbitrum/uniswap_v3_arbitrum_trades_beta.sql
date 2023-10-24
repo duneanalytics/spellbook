@@ -6,8 +6,7 @@
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "uniswap_v3",
-                                \''["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc","mtitus6"]
-\'') }}''
+                                \'["jeff-dude", "markusbkoch", "masquot", "milkyklim", "0xBoxer", "mewwts", "hagaetc","mtitus6"]\) }}'
     )
 }}
 
