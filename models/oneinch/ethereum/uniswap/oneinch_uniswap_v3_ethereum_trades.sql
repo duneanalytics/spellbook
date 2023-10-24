@@ -376,3 +376,7 @@ LEFT JOIN {{ source('prices', 'usd') }} as prices_eth
     {% else %}
     AND prices_eth.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
+WHERE 
+    src.tx_hash not in (
+        0x14613a8f439f5f65b3235fbae95b67bc5f6aa7b0937af73e8df593e00d8abb12 -- broken tx with wrong amount and decimals, causing $8,439,415,024,975,841 vol
+    )
