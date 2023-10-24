@@ -1,5 +1,5 @@
-{{config(tags=['dunesql'],
-    alias = alias('flashloans_ethereum'),
+{{config(
+    alias = 'flashloans_ethereum',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

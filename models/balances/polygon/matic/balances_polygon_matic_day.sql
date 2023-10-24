@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('matic_day'),
+        
+        alias = 'matic_day',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "balances",

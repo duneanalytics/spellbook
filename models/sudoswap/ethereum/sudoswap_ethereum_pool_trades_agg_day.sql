@@ -1,8 +1,8 @@
 {{ config(
-        alias = alias('pool_trades'),
+        alias = 'pool_trades',
         materialized = 'incremental',
         schema = 'sudoswap_ethereum',
-        tags = ['dunesql'],
+        
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_address'],

@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('erc20'),
-    tags = ['dunesql'],
+    alias = 'erc20',
+    
     materialized ='incremental',
     file_format ='delta',
     incremental_strategy='merge',

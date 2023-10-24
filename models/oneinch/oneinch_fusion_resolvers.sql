@@ -1,11 +1,11 @@
 {{
     config(
         schema = 'oneinch',
-        alias = alias('fusion_resolvers'),
+        alias = 'fusion_resolvers',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['address', 'last_changed_at'],
-        tags = ['dunesql']
+        
     )
 }}
 

@@ -371,11 +371,6 @@ models:
       bnb:
         +schema: babyswap_bnb
 
-    oneplanet:
-      +schema: oneplanet
-      polygon:
-        +schema: oneplanet_polygon
-
     opensea:
       +schema: opensea
       ethereum:
@@ -1002,11 +997,6 @@ models:
       ethereum:
         +schema: nexusmutual_ethereum
 
-    quix:
-      +schema: quix
-      optimism:
-        +schema: quix_optimism
-
     zeroex:
       +schema: zeroex
       ethereum:
@@ -1258,11 +1248,6 @@ models:
       +schema: oneinch
       ethereum:
         +schema: oneinch_ethereum
-
-    nftearth:
-      +schema: nftearth
-      optimism:
-        +schema: nftearth_optimism
 
     pooltogether:
       +schema: pooltogether

@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias = alias('erc20'),
+{{ config(materialized='view', alias = 'erc20',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "transfers",

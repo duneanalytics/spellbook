@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'fungible_arbitrum',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

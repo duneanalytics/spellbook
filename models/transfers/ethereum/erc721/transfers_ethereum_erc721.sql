@@ -1,4 +1,4 @@
-{{ config(materialized='view', alias = alias('erc721')) }}
+{{ config(materialized='view', alias = 'erc721') }}
 /*
     note: this spell has not been migrated to dunesql, therefore is only a view on spark
         please migrate to dunesql to ensure up-to-date logic & data

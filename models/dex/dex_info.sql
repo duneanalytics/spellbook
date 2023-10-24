@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='dex',
-        alias = alias('info'),
+        alias = 'info',
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
                                     "sector",
                                     "dex",

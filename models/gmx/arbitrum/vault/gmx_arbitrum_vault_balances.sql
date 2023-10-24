@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('vault_balances'),
+        alias = 'vault_balances',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

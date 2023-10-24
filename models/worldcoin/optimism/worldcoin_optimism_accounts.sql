@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('accounts'),
+    
+    alias = 'accounts',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

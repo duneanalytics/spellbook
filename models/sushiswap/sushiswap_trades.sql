@@ -1,7 +1,7 @@
 {{ config(
-        tags=['dunesql'],
+        
         schema = 'sushiswap',
-        alias = alias('trades'),
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "base", "celo"]\',
                         "project",
                         "sushiswap",
