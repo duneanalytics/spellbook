@@ -2,7 +2,7 @@
         alias = alias('wash_trades'),
         schema = 'nft',
         tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon", "celo"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}')
@@ -16,6 +16,7 @@
 , ref('nft_gnosis_wash_trades')
 , ref('nft_optimism_wash_trades')
 , ref('nft_polygon_wash_trades')
+, ref('nft_celo_wash_trades')
 ] %}
 
 SELECT *

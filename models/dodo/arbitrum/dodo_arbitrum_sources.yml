@@ -78,7 +78,7 @@ sources:
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
 
-      - name: dvm_evt_DODOSwap
+      - name: DVM_evt_DODOSwap
         description: >
           Decoded table related to the DVM DODOSwap contract events.
         loaded_at_field: evt_block_time
@@ -106,7 +106,7 @@ sources:
           - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
 
-      - name: dsp_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
         description: >
           Decoded table related to DSP DODOSwap contract events.
         loaded_at_field: evt_block_time

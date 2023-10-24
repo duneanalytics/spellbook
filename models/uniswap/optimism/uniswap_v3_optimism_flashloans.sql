@@ -36,7 +36,7 @@ WITH flashloans AS (
     )
 
 SELECT 'optimism' AS blockchain
-, 'Uniswap' AS project
+, 'uniswap' AS project
 , '3' AS version
 , CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time

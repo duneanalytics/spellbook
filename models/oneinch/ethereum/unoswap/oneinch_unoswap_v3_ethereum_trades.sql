@@ -30,7 +30,7 @@ WITH unoswap AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_call_unoswap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV3_call_unoswap') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -52,7 +52,7 @@ WITH unoswap AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_call_unoswapWithPermit') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV3_call_unoswapWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}

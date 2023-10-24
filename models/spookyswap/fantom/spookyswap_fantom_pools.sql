@@ -13,7 +13,7 @@
 }}
 
 SELECT 'fantom' AS blockchain
-, 'spookswap' AS project
+, 'spookyswap' AS project
 , '1' AS version
 , pair AS pool
 , CAST(0.2 as decimal) AS fee

@@ -6,6 +6,12 @@
                                             \'["soispoke"]\') }}'
         )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 SELECT
     'ethereum' as blockchain,
     b.wallet_address,
