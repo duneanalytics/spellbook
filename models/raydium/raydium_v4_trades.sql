@@ -1,6 +1,5 @@
  {{
   config(
-        tags = ['dunesql'],
         schema = 'raydium_v4',
         alias = alias('trades'),
         partition_by = ['block_month'],
