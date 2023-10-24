@@ -1,9 +1,8 @@
 {{ config(
-	tags=['legacy'],
-	
-       alias = alias('top_erc721_holders', legacy_model=True),
-       materialized='table',
-       post_hook='{{ expose_spells(\'["ethereum"]\',
+	    tags=['legacy'],
+        alias = alias('top_erc721_holders', legacy_model=True),
+        materialized='view',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                    "sector",
                                    "nft",
                                    \'["Henrystats"]\') }}'

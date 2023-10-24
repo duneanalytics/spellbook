@@ -17,6 +17,7 @@ with
         , call_data
         , account_mint
         , call_tx_id
+        , call_block_time
         FROM (
             SELECT call_data, account_mint, call_tx_id, call_block_time FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint') }}
             UNION ALL 
@@ -87,11 +88,10 @@ SELECT
     , trim(json_value(args, 'strict $.name'))as name 
     , trim(json_value(args, 'strict $.symbol')) as symbol 
     , trim(json_value(args, 'strict $.uri')) as token_uri
+    , tk.call_block_time as created_at
 FROM tokens tk
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint
 WHERE tk.decimals != 0
-and json_value(args, 'strict $.name') not like '%#%'
-and json_value(args, 'strict $.symbol') is not null
 and m.master_edition is null
 
 UNION ALL
@@ -100,17 +100,19 @@ UNION ALL
 SELECT 
   trim(token_mint_address) as token_mint_address
   , decimals
-  , trim(symbol) as symbol
   , trim(name) as name
+  , trim(symbol) as symbol
   , token_uri
+  , cast(created_at as timestamp) created_at
 FROM 
 (
   VALUES
 (
   'So11111111111111111111111111111111111111112',
   9,
-  'SOL',
   'wrapped SOL',
-  null
+  'SOL',
+  null,
+  '2021-01-31 00:00:00'
 )
-) AS temp_table (token_mint_address, decimals, symbol, name, token_uri)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at)
