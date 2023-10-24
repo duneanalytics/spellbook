@@ -1,7 +1,7 @@
 {{ config(
         tags=['dunesql'],
         alias = alias('donations'),
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -27,6 +27,7 @@ FROM (
         version,
         grant_round,
         block_date,
+        block_month,
         block_time,
         block_number,
         amount_raw,

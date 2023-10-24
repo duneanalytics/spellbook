@@ -29,8 +29,8 @@ models:
       - &project
         name: project
         description: "Project name"
-      - &airdrop_identifier
-        name: airdrop_identifier
+      - &airdrop_number
+        name: airdrop_number
         description: "Airdrop identifier name"
       - &recipient
         name: recipient

@@ -74,7 +74,7 @@ WITH trades AS (
         p.call_block_number AS evt_block_number,
         p.call_tx_hash AS evt_tx_hash,
         p.contract_address,
-        CAST(1 as integer) AS evt_index,
+        integer '1' AS evt_index,
         'Trade' AS evt_type,
         t."from" AS buyer, --p.direct:nftData
         from_hex(json_extract_scalar(p.direct,'$.sellOrderMaker')) AS seller,
@@ -112,7 +112,7 @@ WITH trades AS (
         p.call_block_number AS evt_block_number,
         p.call_tx_hash AS evt_tx_hash,
         p.contract_address,
-        CAST(1 as integer) AS evt_index,
+        integer '1' AS evt_index,
         'Trade' AS evt_type,
         from_hex(json_extract_scalar(p.direct,'$.bidMaker')) AS buyer,
         t."from" AS seller,
@@ -159,7 +159,7 @@ trade_amount_detail as (
         AND e.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     WHERE t.currency_contract = 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
-        AND e.value > cast(0 as uint256)
+        AND e.value > uint256 '0'
         AND cardinality(trace_address) > 0 -- exclude the main call record
 
     UNION ALL
@@ -186,14 +186,14 @@ trade_amount_summary as (
         amount_raw,
         -- When there is royalty fee, it is the first transfer
         (case when transfer_count >= 4 then amount_raw_2 else amount_raw_1 end) AS platform_fee_amount_raw,
-        (case when transfer_count >= 4 then amount_raw_1 else cast(0 as uint256) end) AS royalty_fee_amount_raw
+        (case when transfer_count >= 4 then amount_raw_1 else uint256 '0' end) AS royalty_fee_amount_raw
     FROM (
         SELECT evt_block_number,
             evt_tx_hash,
             sum(amount_raw) AS amount_raw,
-            sum(case when item_index = 1 then amount_raw else cast(0 as uint256) end) AS amount_raw_1,
-            sum(case when item_index = 2 then amount_raw else cast(0 as uint256) end) AS amount_raw_2,
-            sum(case when item_index = 3 then amount_raw else cast(0 as uint256) end) AS amount_raw_3,
+            sum(case when item_index = 1 then amount_raw else uint256 '0' end) AS amount_raw_1,
+            sum(case when item_index = 2 then amount_raw else uint256 '0' end) AS amount_raw_2,
+            sum(case when item_index = 3 then amount_raw else uint256 '0' end) AS amount_raw_3,
             count(*) as transfer_count
         FROM trade_amount_detail
         GROUP BY 1, 2
@@ -207,9 +207,9 @@ SELECT
   a.evt_tx_hash AS tx_hash,
   a.evt_block_time AS block_time,
   a.evt_block_number AS block_number,
-  coalesce(s.amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS amount_usd,
-  coalesce(s.amount_raw,cast(0 as uint256)) / power(10, erc.decimals) AS amount_original,
-  coalesce(s.amount_raw,cast(0 as uint256)) as amount_raw,
+  coalesce(s.amount_raw,uint256 '0') / power(10, erc.decimals) * p.price AS amount_usd,
+  coalesce(s.amount_raw,uint256 '0') / power(10, erc.decimals) AS amount_original,
+  coalesce(s.amount_raw,uint256 '0') as amount_raw,
   CASE WHEN erc.symbol = 'WMATIC' THEN 'MATIC' ELSE erc.symbol END AS currency_symbol,
   a.currency_contract,
   token_id,
@@ -217,7 +217,7 @@ SELECT
   a.contract_address AS project_contract_address,
   evt_type,
   CAST(NULL AS varchar) AS collection,
-  CASE WHEN number_of_items = cast(1 as uint256) THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
+  CASE WHEN number_of_items = uint256 '1' THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
   number_of_items,
   a.trade_category,
   a.buyer,
@@ -227,14 +227,14 @@ SELECT
   agg.contract_address AS aggregator_address,
   t."from" AS tx_from,
   t."to" AS tx_to,
-  coalesce(s.platform_fee_amount_raw,cast(0 as uint256)) as platform_fee_amount_raw,
-  CAST(coalesce(s.platform_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) AS double) AS platform_fee_amount,
-  CAST(coalesce(s.platform_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  CAST(coalesce(s.platform_fee_amount_raw,cast(0 as uint256))  / s.amount_raw * 100 as double) as platform_fee_percentage,
-  coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) AS royalty_fee_amount_raw,
-  CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) as double) AS royalty_fee_amount,
-  CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
-  CAST(coalesce(s.royalty_fee_amount_raw,cast(0 as uint256)) / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
+  coalesce(s.platform_fee_amount_raw,uint256 '0') as platform_fee_amount_raw,
+  CAST(coalesce(s.platform_fee_amount_raw,uint256 '0') / power(10, erc.decimals) AS double) AS platform_fee_amount,
+  CAST(coalesce(s.platform_fee_amount_raw,uint256 '0') / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
+  CAST(coalesce(s.platform_fee_amount_raw,uint256 '0')  / s.amount_raw * 100 as double) as platform_fee_percentage,
+  coalesce(s.royalty_fee_amount_raw,uint256 '0') AS royalty_fee_amount_raw,
+  CAST(coalesce(s.royalty_fee_amount_raw,uint256 '0') / power(10, erc.decimals) as double) AS royalty_fee_amount,
+  CAST(coalesce(s.royalty_fee_amount_raw,uint256 '0') / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
+  CAST(coalesce(s.royalty_fee_amount_raw,uint256 '0') / s.amount_raw * 100 AS double) AS royalty_fee_percentage,
   cast(null as varbinary) AS royalty_fee_receive_address,
   cast(null as varchar) AS royalty_fee_currency_symbol,
   cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_index as varchar) AS unique_trade_id

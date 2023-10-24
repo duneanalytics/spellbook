@@ -3,9 +3,7 @@
 	
         alias = alias('glp_fees', legacy_model=True),
         partition_by = ['block_date'],
-        materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_date', 'minute'],
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
@@ -21,12 +19,7 @@ WITH minute AS  -- This CTE generates a series of minute values
     SELECT *
     FROM
         (
-        {% if not is_incremental() %}
         SELECT explode(sequence(TIMESTAMP '{{project_start_date}}', CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute -- 2021-08-31 08:13 is the timestamp of the first vault transaction
-        {% endif %}
-        {% if is_incremental() %}
-        SELECT explode(sequence(date_trunc("day", now() - interval '1 week'), CURRENT_TIMESTAMP, INTERVAL 1 minute)) AS minute
-        {% endif %}
         )
     ),
 
@@ -54,12 +47,7 @@ fglp_balances AS -- This CTE returns the accuals of WETH tokens in the Fee GLP c
             FROM {{ source('erc20_arbitrum', 'evt_transfer') }}
             WHERE `to` = '0x4e971a87900b931ff39d1aad67697f49835400b6' -- Fee GLP contract
                 AND `contract_address` = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' -- WETH Arbitrum Smart Contract
-                {% if not is_incremental() %}
                 AND evt_block_time >= '{{project_start_date}}'
-                {% endif %}
-                {% if is_incremental() %}
-                AND evt_block_time >= date_trunc("day", now() - interval '1 week')
-                {% endif %}
             ) a
         GROUP BY a.minute
         ) b
@@ -88,12 +76,7 @@ FROM
             weth_cum_balance
         FROM fglp_balances
         -- excess time filter
-        {% if not is_incremental() %}
         WHERE minute >= '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        WHERE minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         ) b
         ON a.minute = b.minute
     LEFT JOIN
@@ -103,12 +86,7 @@ FROM
             weth_current_price
         FROM {{ref('gmx_arbitrum_glp_components_legacy')}}
         -- excess time filter
-        {% if not is_incremental() %}
         WHERE minute >= '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        WHERE minute >= date_trunc("day", now() - interval '1 week')
-        {% endif %}
         ) c 
         ON a.minute = c.minute
     ) x

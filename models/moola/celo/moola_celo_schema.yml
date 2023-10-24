@@ -1,0 +1,149 @@
+version: 2
+
+models:
+  - name: moola_celo_interest_rates
+    meta:
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'moola', 'interest', 'lending', 'aave_v2']
+    description: "Hourly Moola interest rates on Celo"
+    columns:
+      - &reserve
+        name: reserve
+        description: "Moola reserve contract address"
+      - &symbol
+        name: symbol
+        description: "Symbol of the reserve"
+      - &evt_block_hour
+        name: evt_block_hour
+        description: "Block timestamp truncated to hours"
+      - &deposit_apy
+        name: deposit_apy
+        description: "Hourly deposit interest rate value of the reserve"
+      - &stable_borrow_apy
+        name: stable_borrow_apy
+        description: "Hourly stable borrow interest rate value of the reserve" 
+      - &variable_borrow_apy
+        name: variable_borrow_apy
+        description: "Hourly variable borrow interest rate value of the reserve"
+        
+  - name: moola_celo_supply
+    meta:
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'moola', 'supply', 'lending', 'aave_v2']
+    description: "All Moola transactions involving supply transactions on celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - &evt_block_month
+        name: evt_block_month
+        description: "Block Month column used to partition data in this table"
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"
+      - *symbol
+      - &token_address
+        name: token_address
+        description: "Moola reserve contract address"  
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "The wallet address where the tokens are withdrawn"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
+      - &amount_usd
+        name: amount_usd
+        description: "Token amount in USD" 
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"   
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event block number"
+
+  - name: moola_celo_borrow
+    meta:
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'moola', 'borrow', 'lending', 'aave_v2']
+    description: "All Moola transactions involving borrow transactions on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - *evt_block_month
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *amount_usd
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+
+  - name: moola_celo_flashloans
+    meta:
+     blockchain: celo
+     sector: lending
+     contributors: tomfutago
+    config:
+      tags: ['celo', 'moola', 'flashloans', 'lending', 'aave_v2']
+    description: "Moola flashloans on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+    columns:
+      - *evt_block_month
+      - *evt_block_time
+      - *evt_block_number
+      - *amount
+      - *amount_usd
+      - *evt_tx_hash
+      - *evt_index
+      - name: fee
+        description: "Flashloan fee"
+      - *token_address
+      - *symbol
+      - name: recipient
+        description: "Flashloan recipient"
+      - name: contract_address
+        description: "Flashload contract address"
