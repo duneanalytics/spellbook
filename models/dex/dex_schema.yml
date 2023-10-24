@@ -65,7 +65,6 @@ models:
         tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
