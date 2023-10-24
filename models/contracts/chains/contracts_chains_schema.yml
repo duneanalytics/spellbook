@@ -179,7 +179,7 @@ models:
         name: is_new_contract
         description: "Is this a new contract"
   
-  - name: contracts_ethereum_creator_project_iterated_creators
+  - name: contracts_ethereum_contract_creator_project_iterated_creators
     meta:
       blockchain: ethereum
       sector: contracts
@@ -310,7 +310,7 @@ models:
       - *code
       - *is_new_contract
 
-  - name: contracts_base_creator_project_iterated_creators
+  - name: contracts_base_contract_creator_project_iterated_creators
     meta:
       blockchain: base
       sector: contracts
