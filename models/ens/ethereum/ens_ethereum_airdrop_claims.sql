@@ -26,8 +26,8 @@ WITH early_price AS (
 SELECT 'ethereum' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
-, 'Ethereum Name Service' AS project
-, 'Ethereum Name Service Airdrop' AS airdrop_identifier
+, 'ethereum_name_service' AS project
+, 1 AS airdrop_number
 , t.claimant AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
