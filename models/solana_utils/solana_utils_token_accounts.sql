@@ -2,7 +2,6 @@
   config(
         schema = 'solana_utils',
         alias = 'token_accounts',
-        materialized='incremental',
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["solana"]\',
