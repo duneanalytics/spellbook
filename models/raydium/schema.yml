@@ -8,7 +8,7 @@ models:
     config:
       tags: ['solana','dex']  
     description: >
-        all raydium_v3 dex trades on Solana
+        all raydium_v3 CLAMM dex trades on Solana
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -100,3 +100,47 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: raydium_v4_trades
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','dex']  
+    description: >
+        all raydium_v4 hybrid amm dex trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+            - tx_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *trade_source
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *fee_tier
+      - *fee_usd
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index

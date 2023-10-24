@@ -24,14 +24,14 @@ WITH mints as
        ,NULL as buyer
        ,NULL as seller
        ,'Mint' as evt_type
-       ,CAST(1 AS uint256) AS number_of_items
+       ,uint256 '1' AS number_of_items
        ,NULL as trade_type
        ,NULL as trade_category
        ,'BNB' as currency_symbol
        ,0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as currency_contract
        ,0x836eb8202d4bc2ed14d1d2861e441c69228155cc AS nft_contract_address -- generic contract address for all nfts on NFTb no individual contract addreses
        ,_recipient as royalty_fee_receive_address
-        ,CAST(0 as uint256) AS amount_raw
+        ,uint256 '0' AS amount_raw
        ,CASE WHEN cardinality(_royaltyAmounts)>1 THEN CAST (10 AS DOUBLE)
               WHEN cardinality(_royaltyAmounts)=1 THEN CAST (element_at(_royaltyAmounts, 1) AS DOUBLE)
               ELSE CAST (0 AS DOUBLE)
@@ -59,14 +59,14 @@ AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
        ,NULL as buyer
        ,NULL as seller
        ,'Burn' as evt_type
-       ,CAST(1 AS uint256) AS number_of_items
+       ,uint256 '1' AS number_of_items
        ,NULL as trade_type
        ,NULL as trade_category
        ,'BNB' as currency_symbol
        ,0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as currency_contract
        ,0x836eb8202d4bc2ed14d1d2861e441c69228155cc AS nft_contract_address  -- generic contract address for all nfts on NFTb no individual contract addreses
        ,"from" as royalty_fee_receive_address
-       ,CAST(0 as uint256) AS amount_raw
+       ,uint256 '0' AS amount_raw
        ,CAST (0 as DOUBLE) as royalty_fee_percentage
 FROM {{source('nftb_bnb', 'NFT_evt_Transfer')}} tr
 WHERE 1=1
@@ -98,7 +98,7 @@ AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
         END as seller
 
        ,'Trade' as evt_type
-       ,CAST(1 AS uint256) AS number_of_items
+       ,uint256 '1' AS number_of_items
        ,'Single Item Trade' as trade_type
        ,CASE WHEN tr."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65
               THEN 'Auction Settled'
