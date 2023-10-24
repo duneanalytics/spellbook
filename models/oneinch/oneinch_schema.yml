@@ -525,7 +525,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - call_trace_address
+            - evt_index
     columns:
       - *blockchain_not_null
       - *project

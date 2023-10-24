@@ -40,6 +40,7 @@ with
             {% if is_incremental() %}
                 where block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp)
             {% endif %}
+        )
         left join (
             select blockchain, contract_address as call_from, true as fusion
             from {{ ref('oneinch_fusion_settlements') }}
