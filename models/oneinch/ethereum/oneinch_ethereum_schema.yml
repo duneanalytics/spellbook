@@ -1194,22 +1194,25 @@ models:
       - *tx_from
       - *tx_to
       - *tx_success
-      - *contract_name
+      - &contract_name
+        name: contract_name
       - &protocol_version
         name: protocol_version
-      - *method
+      - &method
+        name: method
       - *call_from
       - *call_to
-      - *call_trace_address_not_null
+      - &call_trace_address_not_null
+        name: call_trace_address
+        tests:
+          - not_null
       - *call_selector
-      - &maker
-        name: maker
+      - *maker
       - &maker_asset
         name: maker_asset
       - &making_amount
         name: making_amount
-      - &taker
-        name: taker
+      - *taker
       - &taker_asset
         name: taker_asset
       - &taking_amount
@@ -1219,7 +1222,6 @@ models:
       - *call_success
       - &call_gas_used
         name: call_gas_used
-      - *call_input
       - *call_output
       - *minute
 
