@@ -16,7 +16,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
-{% set project_start_date = '2022-08-17' %} --grabbed program deployed at time (account created at)
+{% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at). It should be '2022-08-17' but for some reason there are swaps on AMMs for a year before this date. must be something related to bpf upgrades that I don't understand yet.
 
   WITH
     --we aren't tracking using pool inits because there are a hundred or so pools from 2021 that did not use a consistent pattern.
@@ -59,7 +59,7 @@
         ) sp
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_1 
             ON trs_1.call_tx_id = sp.call_tx_id 
-            AND trs_1.call_block_slot = sp.call_block_slot
+            AND trs_1.call_block_time = sp.call_block_time
             AND trs_1.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND trs_1.call_inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND trs_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
@@ -70,7 +70,7 @@
             {% endif %}
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_2 
             ON trs_2.call_tx_id = sp.call_tx_id 
-            AND trs_2.call_block_slot = sp.call_block_slot
+            AND trs_2.call_block_time = sp.call_block_time
             AND trs_2.call_outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND trs_2.call_inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND trs_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
