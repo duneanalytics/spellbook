@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
         alias = 'trades',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",

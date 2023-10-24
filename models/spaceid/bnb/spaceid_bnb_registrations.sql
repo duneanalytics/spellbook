@@ -1,5 +1,6 @@
 {{
     config(
+tags=['prod_exclude'],
         alias = 'registrations'
         ,materialized = 'incremental'
         ,file_format = 'delta'

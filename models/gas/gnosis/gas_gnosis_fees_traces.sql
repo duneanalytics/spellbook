@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
     schema = 'gas_gnosis',
     alias = 'fees_traces',
     partition_by = ['block_date'],
