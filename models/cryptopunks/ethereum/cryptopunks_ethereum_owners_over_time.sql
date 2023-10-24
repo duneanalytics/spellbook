@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('owners_over_time'),
+        
+        alias = 'owners_over_time',
         unique_key='day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

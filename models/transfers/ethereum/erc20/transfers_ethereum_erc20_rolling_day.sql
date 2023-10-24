@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc20_rolling_day'))
+        alias = 'erc20_rolling_day')
 }}
 /*
     note: this spell has not been migrated to dunesql, therefore is only a view on spark

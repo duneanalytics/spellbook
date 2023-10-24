@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('pancakeswap_v3_pools'),
-    tags = ['dunesql'],        
+    alias = 'pancakeswap_v3_pools',
+            
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,6 +1,6 @@
 {{config(
-        tags = ['dunesql'],
-        alias = alias('cex_bitcoin'),
+        
+        alias = 'cex_bitcoin',
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
                                     "labels",

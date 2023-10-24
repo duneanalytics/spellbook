@@ -1,5 +1,5 @@
 {{  config(
-        alias = alias('nft_fills'),
+        alias = 'nft_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],

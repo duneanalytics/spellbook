@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('ocr_reconcile_daily'),
+    
+    alias='ocr_reconcile_daily',
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "chainlink",

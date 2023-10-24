@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('withdrawals'),
-        tags = ['dunesql'],
+        alias = 'withdrawals',
+        
         materialized='incremental',
         partition_by=['block_date'],
         file_format = 'delta',

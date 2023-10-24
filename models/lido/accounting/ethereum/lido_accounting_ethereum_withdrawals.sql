@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('withdrawals'),
-        tags = ['dunesql'], 
+        alias = 'withdrawals',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

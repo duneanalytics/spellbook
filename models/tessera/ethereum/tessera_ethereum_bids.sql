@@ -1,7 +1,7 @@
 -- PROTOFORM DISTRIBUTION BID. for example LPDA
 {{ config (
-    tags=['dunesql'],
-    alias = alias('bids'),
+    
+    alias = 'bids',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 

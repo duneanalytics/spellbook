@@ -1,7 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_darma_capital'),
-    tags = ['dunesql'],
+    alias = 'entities_darma_capital',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

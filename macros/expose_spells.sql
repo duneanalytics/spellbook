@@ -4,35 +4,22 @@
     {%- do exceptions.raise_compiler_error("Invalid contributors '%s'. The list of contributors must be valid JSON." % contributors) -%}
   {%- endif -%}
   {%- if target.name == 'prod' -%}
-    {%- if 'dunesql' not in model.config.get("tags") -%}
-        ALTER {{"view" if model.config.materialized == "view" else "table"}} {{ this }}
-          SET TBLPROPERTIES (
-            'dune.public'='true',
-            'dune.data_explorer.blockchains'= '{{ blockchains }}',     -- e.g., ["ethereum","solana"]
-            'dune.data_explorer.category'='abstraction',
-            'dune.data_explorer.abstraction.type'= '{{ spell_type }}', -- 'project' or 'sector'
-            'dune.data_explorer.abstraction.name'= '{{ spell_name }}', -- 'aave' or 'uniswap'
-            'dune.data_explorer.contributors'= '{{ validated_contributors }}',   -- e.g., ["soispoke","jeff_dude"]
-            'dune.vacuum' = '{"enabled":true}'
-          )
+    {%- set properties = {
+            'dune.public': 'true',
+            'dune.data_explorer.blockchains':  blockchains | as_text,
+            'dune.data_explorer.category': 'abstraction',
+            'dune.data_explorer.abstraction.type': spell_type,
+            'dune.data_explorer.abstraction.name': spell_name,
+            'dune.data_explorer.contributors': validated_contributors,
+            'dune.vacuum': '{"enabled":true}'
+          } -%}
+    {%- if model.config.materialized == "view" -%}
+      CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
+        {{ trino_properties(properties) }}
+      )
     {%- else -%}
-      {%- set properties = {
-              'dune.public': 'true',
-              'dune.data_explorer.blockchains':  blockchains | as_text,
-              'dune.data_explorer.category': 'abstraction',
-              'dune.data_explorer.abstraction.type': spell_type,
-              'dune.data_explorer.abstraction.name': spell_name,
-              'dune.data_explorer.contributors': validated_contributors,
-              'dune.vacuum': '{"enabled":true}'
-            } -%}
-      {%- if model.config.materialized == "view" -%}
-        CALL {{ model.database }}._internal.alter_view_properties('{{ model.schema }}', '{{ model.alias }}',
-          {{ trino_properties(properties) }}
-        )
-      {%- else -%}
-        ALTER TABLE {{ this }}
-          SET PROPERTIES extra_properties = {{ trino_properties(properties) }}
-      {%- endif -%}
+      ALTER TABLE {{ this }}
+        SET PROPERTIES extra_properties = {{ trino_properties(properties) }}
     {%- endif -%}
   {%- endif -%}
 {%- endmacro -%}

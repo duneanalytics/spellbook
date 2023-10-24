@@ -1,8 +1,8 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema='uniswap_v3_optimism',
-        alias=alias('pools'),
+        alias='pools',
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',

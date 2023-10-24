@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('itokens'),
+    
+    alias = 'itokens',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "ironbank",

@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-        alias = alias('nft_standards'),
+{{ config(
+        alias = 'nft_standards',
         materialized='incremental',
         incremental_strategy = 'merge',
         file_format = 'delta',

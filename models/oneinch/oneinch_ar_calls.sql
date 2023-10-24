@@ -1,10 +1,10 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = alias('ar_calls'),
+        alias = 'ar_calls',
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address'],
-        tags = ['dunesql'],
+        
     )
 }}
 

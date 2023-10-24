@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-    alias = alias('tokens')
+{{ config(
+    alias = 'tokens'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

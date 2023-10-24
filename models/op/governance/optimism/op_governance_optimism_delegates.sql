@@ -1,7 +1,6 @@
 {{ config(
-        tags=['dunesql']
-        , schema = 'op_governance_optimism'
-        , alias = alias('delegates')
+     schema = 'op_governance_optimism'
+        , alias = 'delegates'
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "op_governance",
