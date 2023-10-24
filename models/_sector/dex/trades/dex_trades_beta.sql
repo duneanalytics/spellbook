@@ -15,8 +15,13 @@
 }}
 
 {% set models = [
-    ref('dex_ethereum_trades_beta')
+    ref('dex_arbitrum_trades_beta')
+    , ref('dex_base_trades_beta')
+    , ref('dex_bnb_trades_beta')
+    , ref('dex_celo_trades_beta')
+    , ref('dex_ethereum_trades_beta')
     , ref('dex_optimism_trades_beta')
+    , ref('dex_polygon_trades_beta')
 ] %}
 
 SELECT *

@@ -97,6 +97,78 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
+  - name: dex_arbitrum_trades_beta
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: [ 'dex', 'trades', 'beta' ]
+    description: "New dex arbitrum trades model"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+
+  - name: dex_base_trades_beta
+    meta:
+      blockchain: base
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: [ 'dex', 'trades', 'beta' ]
+    description: "New dex base trades model"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+
+  - name: dex_bnb_trades_beta
+    meta:
+      blockchain: bnb
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: [ 'dex', 'trades', 'beta' ]
+    description: "New dex bnb trades model"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+
+  - name: dex_celo_trades_beta
+    meta:
+      blockchain: celo
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: [ 'dex', 'trades', 'beta' ]
+    description: "New dex celo trades model"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+
   - name: dex_ethereum_trades_beta
     meta:
       blockchain: ethereum
@@ -123,6 +195,24 @@ models:
     config:
       tags: [ 'dex', 'trades', 'beta' ]
     description: "New dex optimism trades model"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+
+  - name: dex_polygon_trades_beta
+    meta:
+      blockchain: polygon
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: [ 'dex', 'trades', 'beta' ]
+    description: "New dex polygon trades model"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

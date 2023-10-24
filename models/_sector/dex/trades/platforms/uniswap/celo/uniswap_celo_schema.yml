@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: uniswap_celo_v3_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, tomfutago
+    config:
+      tags: [ 'celo', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap celo v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - equal_rowcount:
+          compare_model: ref('uniswap_v3_celo_trades')
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('uniswap_v3_celo', 'Pair_evt_Swap')
+
+  - name: uniswap_v3_celo_trades_beta
+    meta:
+      blockchain: celo
+      sector: dex
+      project: uniswap_v3
+      contributors: jeff-dude, masquot, soispoke, tomfutago
+    config:
+      tags: [ 'celo','uniswap_v3','trades', 'uniswap','dex' ]
+    description: >
+      Uniswap V3 contract trades on celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: celo
+          project: uniswap
+          version: 3

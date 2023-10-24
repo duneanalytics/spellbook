@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: uniswap_bnb_v3_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap
+      contributors: chrispearcx
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap bnb v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - equal_rowcount:
+          compare_model: ref('uniswap_v3_bnb_trades')
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('uniswap_v3_bnb', 'Pair_evt_Swap')
+
+  - name: uniswap_v3_bnb_trades_beta
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap_v3
+      contributors: chrispearcx
+    config:
+      tags: [ 'bnb','uniswap_v3','trades', 'uniswap','dex' ]
+    description: >
+      Uniswap V3 contract trades on bnb
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: bnb
+          project: uniswap
+          version: 3
