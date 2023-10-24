@@ -36,7 +36,11 @@ with
             , taking_amount as dst_amount
             , '1inch LOP' as project
         from {{ ref('oneinch_lop') }}
-        where tx_success and call_success
+        left join (
+            select blockchain, contract_address as call_from, true as fusion
+            from {{ ref('oneinch_fusion_settlements') }}
+        ) using(blockchain, call_from)
+        where tx_success and call_success and fusion is null
     )
 
     , prices_src as (
