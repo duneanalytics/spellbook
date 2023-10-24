@@ -1,5 +1,7 @@
 {% macro contract_creator_project_mapping_by_chain( chain ) %}
 
+-- maybe split out contract naming mappings in to a separate thing
+-- do token and name mappings at the end
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
 {% set max_levels = 3 %} --NOTE: This will make the "creator address" not accurate, if the levels are too low - pivot to use deployer_address
