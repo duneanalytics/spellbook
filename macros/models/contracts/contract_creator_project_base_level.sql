@@ -1,4 +1,4 @@
-{% macro contracts_creator_project_base_level( chain ) %}
+{% macro contract_creator_project_base_level( chain ) %}
 
 
 SELECT 

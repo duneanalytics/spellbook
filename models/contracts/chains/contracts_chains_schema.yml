@@ -30,13 +30,13 @@ models:
         tests:
           - not_null
       - &contract_project
-        name: contracts_project
+        name: contract_project
         description: "Project name of the contract"
       - &token_symbol
         name: token_symbol
         description: "Token symbol of the contract, if any"
       - &contract_name
-        name: contracts_name
+        name: contract_name
         description: "Contract name"
       - &creator_address
         name: creator_address
@@ -70,7 +70,7 @@ models:
         description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
       - &created_tx_index
         name: created_tx_index
-        dedscription: "Index of the contract creation transaction within its block"
+        description: "Index of the contract creation transaction within its block"
       - &top_level_time
         name: top_level_time
         description: "Top-Level contract creation transaction block time"
@@ -153,8 +153,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - contract_address
-                
+              - contract_address         
     columns:
       - *blockchain
       - *trace_creator_address
@@ -198,7 +197,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - contract_address
-                
     columns:
       - *blockchain
       - *trace_creator_address
@@ -237,7 +235,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - contract_address
-              
     columns:
       - *created_month
       - *blockchain
@@ -301,7 +298,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - contract_address
-                
     columns:
       - *blockchain
       - *trace_creator_address
@@ -341,7 +337,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - contract_address
-                
     columns:
       - *blockchain
       - *trace_creator_address
