@@ -15,7 +15,7 @@
 {{
     uniswap_v3_forked_base_trades(
         Pair_evt_Swap = source('uniswap_v3_optimism', 'Pair_evt_Swap')
-        , Factory_evt_PairCreated = ref('uniswap_optimism_pools')
+        , Factory_evt_PoolCreated = ref('uniswap_optimism_pools')
     )
 }}
 

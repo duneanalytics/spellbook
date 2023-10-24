@@ -14,6 +14,6 @@
 {{
     uniswap_v3_forked_base_trades(
         Pair_evt_Swap = source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap')
-        , Factory_evt_PairCreated = source('uniswap_v3_polygon', 'Factory_evt_PoolCreated')
+        , Factory_evt_PoolCreated = source('uniswap_v3_polygon', 'Factory_evt_PoolCreated')
     )
 }}
