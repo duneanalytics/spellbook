@@ -502,20 +502,14 @@ models:
         name: taker_asset
       - &taking_amount
         name: taking_amount
+      - &order_hash
+        name: order_hash
       - *call_success
       - &call_gas_used
         name: call_gas_used
       - *call_input
       - *call_output
       - *minute
-      - &inputs_names
-        name: inputs_names
-      - &inputs_types
-        name: inputs_types
-      - &outputs_names
-        name: outputs_names
-      - &outputs_types
-        name: outputs_types
 
   - name: oneinch_lop_trades
     meta:

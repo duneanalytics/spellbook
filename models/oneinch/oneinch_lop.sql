@@ -53,22 +53,25 @@
             'version': '"3"'
             , 'blockchains': ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
             , 'methods': {
-                'fillOrder': {'empty': 'empty'}
+                'fillOrder': {'order_hash': 'output_3'}
                 , 'fillOrderTo': {'empty': 'empty'
                     , 'order': '"order_"'
                     , 'making_amount': 'output_actualMakingAmount'
                     , 'taking_amount': 'output_actualTakingAmount'
+                    , 'order_hash': 'output_orderHash'
                 }
-                , 'fillOrderToWithPermit': {'empty': 'empty'}
-                , 'fillOrderRFQ': {'empty': 'empty'}
+                , 'fillOrderToWithPermit': {'order_hash': 'output_3'}
+                , 'fillOrderRFQ': {'order_hash': 'output_3'}
                 , 'fillOrderRFQTo': {'empty': 'empty'
                     , 'making_amount': 'output_filledMakingAmount'
                     , 'taking_amount': 'output_filledTakingAmount'
+                    , 'order_hash': 'output_orderHash'
                 }
-                , 'fillOrderRFQToWithPermit': {'empty': 'empty'}
+                , 'fillOrderRFQToWithPermit': {'order_hash': 'output_3'}
                 , 'fillOrderRFQCompact': {'empty': 'empty'
                     , 'making_amount': 'output_filledMakingAmount'
                     , 'taking_amount': 'output_filledTakingAmount'
+                    , 'order_hash': 'output_orderHash'
                 }
             }
         }
@@ -110,6 +113,7 @@ with
                         , if(orders.making_amount is null, bytearray_to_uint256(substr(order_map['makerAssetData'], 4 + 32*2 + 1, 32)), orders.making_amount) as making_amount
                         , from_hex(order_map['takerAsset']) as taker_asset
                         , if(orders.taking_amount is null, bytearray_to_uint256(substr(order_map['takerAssetData'], 4 + 32*2 + 1, 32)), orders.taking_amount) as taking_amount
+                        , orders.order_hash as order_hash
                         , traces.success as call_success
                         , traces.gas_used as call_gas_used
                         , traces.input as call_input
@@ -124,6 +128,7 @@ with
                             , call_trace_address as trace_address
                             , {% if 'making_amount' in method_data.keys() %} {{ method_data['making_amount'] }} {% else %} output_0 {% endif %} as making_amount
                             , {% if 'taking_amount' in method_data.keys() %} {{ method_data['taking_amount'] }} {% else %} output_1 {% endif %} as taking_amount
+                            , {% if 'order_hash' in method_data.keys() %} {{ method_data['order_hash'] }} {% else %} null {% endif %} as order_hash
                             , cast(json_parse({% if 'order' in method_data.keys() %} {{ method_data['order'] }} {% else %} "order" {% endif %}) as map(varchar, varchar)) as order_map
                         from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                         {% if is_incremental() %}
