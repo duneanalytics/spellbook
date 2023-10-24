@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v1_ethereum',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'table',
     file_format = 'delta'
     )

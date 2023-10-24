@@ -1,5 +1,5 @@
-{{ config(alias=alias('order_rewards'),
-        tags = ['dunesql'],
+{{ config(alias='order_rewards',
+        
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",

@@ -1,6 +1,6 @@
 {{
-    config(tags=['dunesql'],
-        alias = alias('contract_deployers_ethereum'),
+    config(
+        alias = 'contract_deployers_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

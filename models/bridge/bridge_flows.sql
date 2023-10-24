@@ -1,12 +1,18 @@
 {{ config(
+tags=['prod_exclude'],
         schema = 'bridge',
-        alias = alias('flows'),
+        alias = 'flows',
         post_hook='{{ expose_spells_hide_trino(\'["optimism"]\',
                                 "sector",
                                 "bridge",
                                 \'["msilb7","soispoke"]\') }}'
         )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 {% set bridge_protocol_flows_models = [
     ref( 'hop_protocol_flows' )

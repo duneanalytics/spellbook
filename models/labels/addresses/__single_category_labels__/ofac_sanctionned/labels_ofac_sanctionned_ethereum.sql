@@ -1,6 +1,6 @@
 {{config(
-        tags = ['static', 'dunesql'],
-        alias = alias('ofac_sanctioned_ethereum'),
+        tags = ['static'],
+        alias = 'ofac_sanctioned_ethereum',
         post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

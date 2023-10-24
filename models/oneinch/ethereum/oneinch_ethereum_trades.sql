@@ -1,6 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('trades')
+        
+        schema = 'oneinch_ethereum',
+        alias = 'trades'
         )
 }}
 

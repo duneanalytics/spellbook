@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('events_open_position'),
+    alias = 'events_open_position',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -68,7 +68,7 @@ open_position_v1_1 AS (
             ON CAST(json_extract_scalar(_tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
             AND ta.protocol_version = '1'
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -109,7 +109,7 @@ open_position_v1_2 AS (
             ON CAST(json_extract_scalar(_tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
             AND ta.protocol_version = '1'
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

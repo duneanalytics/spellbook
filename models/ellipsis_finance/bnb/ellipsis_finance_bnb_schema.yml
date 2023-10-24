@@ -159,8 +159,8 @@ models:
         description: "Block number of transaction"
       - name: project
         description: "Project name"
-      - name: airdrop_identifier
-        description: "Airdrop identifier name"
+      - name: airdrop_number
+        description: "Airdrop identifier number"
       - name: recipient
         description: "Airdrop recipient"
       - name: contract_address

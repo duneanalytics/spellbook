@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='nft',
-        alias = alias('marketplaces_info'),
+        alias = 'marketplaces_info',
         unique_key = ['codename'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
                                     "sector",
@@ -32,7 +32,7 @@ FROM (VALUES
     , ('infinity', 'Infinity', 'Direct', NULL)
     , ('zora', 'Zora', 'Direct', 'ourZORA')
     , ('reservoir', 'Reservoir', 'Aggregator', 'reservoir0x')
-    , ('alpha sharks', 'Alpha Sharks', 'Aggregator', 'AlphaSharksNFT')
+    , ('magically', 'Magically', 'Aggregator', 'Magically_gg')
     , ('uniswap', 'Uniswap', 'Aggregator', 'Uniswap')
     , ('okx', 'OKX', 'Aggregator', 'okx')
     , ('bitkeep', 'BitKeep', 'Aggregator', 'BitgetWallet')

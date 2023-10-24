@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('erc20_generated'),
+    
+    alias = 'erc20_generated',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
