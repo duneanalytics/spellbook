@@ -24,7 +24,6 @@ SELECT
         ,top_level_tx_method_id
 
         ,code_bytelength
-        ,token_standard
         ,code_deploy_rank_by_chain
         ,to_iterate_creators
         ,code
@@ -55,7 +54,6 @@ SELECT
     ,top_level_tx_method_id
 
     ,code_bytelength
-    ,token_standard
     ,code_deploy_rank_by_chain
     ,to_iterate_creators
     ,code
