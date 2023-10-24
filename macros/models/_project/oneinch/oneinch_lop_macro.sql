@@ -137,7 +137,7 @@ orders as (
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                {% if is_incremental() %} where block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% endif %}
+                {% if is_incremental() %} where call_block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% endif %}
             )
             {% if not loop.last %} union all {% endif %}
         {% endfor %})
