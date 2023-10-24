@@ -33,7 +33,7 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
       AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
@@ -61,7 +61,7 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
       AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
@@ -89,7 +89,7 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
       AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
