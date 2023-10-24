@@ -1,8 +1,8 @@
  {{
   config(
-        tags=['dunesql'],
+        
         schema = 'solana_utils',
-        alias = alias('daily_balances'),
+        alias = 'daily_balances',
         partition_by = ['month'],
         materialized='incremental',
         file_format = 'delta',

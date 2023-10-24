@@ -3,7 +3,6 @@ version: 2
 seeds:
    - name: dao_addresses_seed
      config:
-       tags: dunesql
        column_types:
          blockchain: varchar
          dao_creator_tool: varchar
@@ -13,7 +12,6 @@ seeds:
 
    - name: dao_transactions_seed
      config:
-       tags: dunesql
        column_types:
          blockchain: varchar
          dao_creator_tool: varchar

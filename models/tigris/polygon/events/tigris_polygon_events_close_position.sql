@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('events_close_position'),
+    alias = 'events_close_position',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

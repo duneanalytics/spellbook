@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_optimism',
-        alias = alias('native_mints'),
+        alias = 'native_mints',
         partition_by = ['block_month'],
 		file_format = 'delta',
 		incremental_strategy = 'merge',

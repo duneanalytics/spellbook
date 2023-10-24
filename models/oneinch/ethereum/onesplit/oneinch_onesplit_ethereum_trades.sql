@@ -1,7 +1,7 @@
 {{  config(
-        tags = ['dunesql'],
+        
         schema='oneinch_onesplit_ethereum',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',

@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: first_funded_by_seed
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         address: varbinary
@@ -13,7 +12,6 @@ seeds:
 
   - name: first_activity_seed
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         address: varbinary

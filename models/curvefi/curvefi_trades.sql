@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         partition_by = ['block_month'],
-        alias = alias('trades'),
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom"]\',
                                 "project",
                                 "curvefi",

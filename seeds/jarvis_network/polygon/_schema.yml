@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: jarvis_network_polygon_view_transactions_seed
     config:
-      tags: dunesql
       column_types:
         action: varchar
         user: varbinary

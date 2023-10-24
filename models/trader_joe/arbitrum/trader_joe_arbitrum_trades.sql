@@ -1,6 +1,5 @@
 {{ config(
-        tags=['dunesql']
-        , alias = alias('trades')
+     alias = 'trades'
 )}}
 
 {% set trader_joe_models = [

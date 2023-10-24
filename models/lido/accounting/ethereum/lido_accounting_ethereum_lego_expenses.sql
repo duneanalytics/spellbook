@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('lego_expenses'),
-        tags = ['dunesql'], 
+        alias = 'lego_expenses',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

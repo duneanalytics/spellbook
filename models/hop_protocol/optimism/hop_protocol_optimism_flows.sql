@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'hop_protocol_optimism',
-    alias = alias('flows'),
+    alias = 'flows',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'referral',
-    alias = alias('rewards'),
-    tags = ['dunesql'],
+    alias = 'rewards',
+    
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',

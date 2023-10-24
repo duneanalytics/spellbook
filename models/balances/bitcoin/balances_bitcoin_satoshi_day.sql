@@ -1,7 +1,7 @@
 {{ config(
         schema = 'balances_bitcoin',
-        alias = alias('satoshi_day'),
-        tags = ['dunesql'],
+        alias = 'satoshi_day',
+        
         partition_by = ['day'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                         "sector",

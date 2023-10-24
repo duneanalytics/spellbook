@@ -1,7 +1,7 @@
 {{ config(
     schema = 'addresses_events_testnets_goerli'
-    , alias = alias('first_funded_by')
-    , tags = ['dunesql']
+    , alias = 'first_funded_by'
+    
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

@@ -1,7 +1,7 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
-    alias = alias('project_name_mappings'),
+    tags = ['static'],
+    alias = 'project_name_mappings',
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["optimism"]\',
                               "sector",

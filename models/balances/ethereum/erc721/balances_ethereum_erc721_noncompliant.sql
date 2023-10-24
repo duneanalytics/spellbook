@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('erc721_noncompliant')
+        alias = 'erc721_noncompliant'
 ) 
 }}
 

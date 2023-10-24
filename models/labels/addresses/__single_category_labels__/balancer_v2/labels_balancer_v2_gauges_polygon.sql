@@ -1,6 +1,6 @@
 {{config(
-        tags=['dunesql'],
-        alias = alias('balancer_v2_gauges_polygon'),
+        
+        alias = 'balancer_v2_gauges_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",

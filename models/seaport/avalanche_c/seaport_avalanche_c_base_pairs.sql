@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('base_pairs'),
+    
+    alias = 'base_pairs',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,8 +1,8 @@
 {{
     config(
         schema = 'tensorswap_v1_solana'
-        , tags = ['dunesql']
-        , alias = alias('trades')
+        
+        , alias = 'trades'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'

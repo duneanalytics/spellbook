@@ -35,7 +35,7 @@ jobs:
       run: "./scripts/ensure_cluster.sh"
           
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . $PROFILE --select tag:dunesql"
+      run: "dbt compile --target-path . $PROFILE"
 
     - name: copy old manifest locally
       run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json s3://manifest-spellbook-dunesql/previous_manifest.json"
