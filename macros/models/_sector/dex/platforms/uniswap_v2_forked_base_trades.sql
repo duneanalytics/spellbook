@@ -6,7 +6,6 @@
 
 WITH dexs AS
 (
-    -- defiswap
     SELECT
         t.evt_block_time AS block_time
         ,t.to AS taker
