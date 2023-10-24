@@ -32,416 +32,43 @@
     ,"code"
     ,"code_deploy_rank_by_chain"
 ] %}
-WITH base_level as (
 
-SELECT *
-  FROM (
+WITH unified_contract_sources AS (
+
   select 
     blockchain
-    ,trace_creator_address -- get the original contract creator address
-    ,creator_address --top level creator, where we iterate up through factories
-    ,COALESCE(deployer_address --if already mapped, pull deployer. else this is the intermediate creator
-            , creator_address) as deployer_address -- deployer from the trace - does not iterate up
+    ,trace_creator_address
+    ,ic.creator_address
+    ,deployer_address
     ,contract_address
-
+    ,COALESCE(al.contract_project, ald.contract_project, oc.namespace) AS contract_project
+    ,oc.name as contract_name 
     ,created_time
-    ,created_block_number
+    ,source
+    ,top_level_time
     ,creation_tx_hash
+    ,created_block_number
+    ,top_level_tx_hash
+    ,top_level_block_number
+    ,top_level_tx_from
+    ,top_level_tx_to
+    ,top_level_tx_method_id
     ,created_tx_from
     ,created_tx_to
     ,created_tx_method_id
     ,created_tx_index
-
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
-
     ,code_bytelength
-    ,is_self_destruct
-    ,token_standard
     ,code_deploy_rank_by_chain
-    ,to_iterate_creators
     ,code
-    
-    ,is_new_contract
-    ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number ASC, is_new_contract DESC ) AS contract_order -- to ensure no dupes
-
-  from (
-    WITH incremental_contracts AS (
-        select 
-            '{{chain}}' AS blockchain
-            ,ct."from" as trace_creator_address
-            ,CASE WHEN ct."from" IN (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN t."from" --tx sender
-              WHEN aa.contract_project = 'Gnosis Safe' THEN t.to --smart wallet
-              WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
-                  CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
-                  ELSE bytearray_substring(t.data, 145,20) END
-                  )
-              ELSE ct."from"
-            END as creator_address
-            ,CAST(NULL AS varbinary) as deployer_address -- deployer from the trace - does not iterate up
-            ,ct.address as contract_address
-            ,ct.block_time as created_time
-            ,ct.block_number as created_block_number
-            ,ct.tx_hash as creation_tx_hash
-            ,t.block_time as top_level_time
-            ,t.block_number as top_level_block_number
-            ,t.hash as top_level_tx_hash
-            ,t."from" AS top_level_tx_from
-            ,t.to AS top_level_tx_to
-            ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
-            ,t."from" AS created_tx_from
-            ,t.to AS created_tx_to
-            ,bytearray_substring(t.data,1,4) AS created_tx_method_id
-            ,t.index as created_tx_index
-            ,ct.code
-            ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
-            ,bytearray_length(ct.code) AS code_bytelength
-            ,coalesce(sd.contract_address is not NULL, false) as is_self_destruct
-            ,NULL AS token_standard
-            ,1 AS to_iterate_creators
-            ,1 AS is_new_contract
-          from {{ source( chain , 'transactions') }} as t 
-          inner join  {{ source( chain , 'creation_traces') }} as ct 
-            ON t.hash = ct.tx_hash
-            AND t.block_time = ct.block_time
-            AND t.block_number = ct.block_number
-            {% if is_incremental() %}
-            and t.block_time >= date_trunc('day', now() - interval '7' day)
-            AND ct.block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-          left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
-            on ct.address = sd.contract_address
-            and ct.tx_hash = sd.creation_tx_hash
-            and ct.block_time = sd.created_time
-            AND sd.blockchain = '{{chain}}'
-            {% if is_incremental() %}
-            and sd.created_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-          left join {{ ref('evm_smart_account_method_ids') }} aa 
-            ON aa.method_id = bytearray_substring(t.data,1,4)
-          where 
-            1=1
-            {% if is_incremental() %}
-            and ct.block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %} -- incremental filter
-      )
-    SELECT * FROM incremental_contracts
-
-    {% if is_incremental() %}
-    -- to get existing history of contract mapping / only select those we want to re-run
-    union all 
-
-    select 
-      t.blockchain
-      ,t.trace_creator_address
-      ,t.creator_address
-      ,t.deployer_address
-      ,t.contract_address
-      ,t.created_time
-      ,t.created_block_number
-      ,t.creation_tx_hash
-      -- If the creator becomes marked as deterministic, we want to re-map
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
-        ELSE t.top_level_time END AS top_level_time
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
-        ELSE t.top_level_block_number END AS top_level_block_number
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.creation_tx_hash
-        ELSE t.top_level_tx_hash END AS top_level_tx_hash
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from
-        ELSE t.top_level_tx_from END AS top_level_tx_from
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
-        ELSE t.top_level_tx_to END AS top_level_tx_to
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
-        ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
-      ---
-      ,t.created_tx_from
-      ,t.created_tx_to
-      ,t.created_tx_method_id
-      ,t.created_tx_index
-      ,t.code
-      ,t.code_deploy_rank_by_chain
-      ,t.code_bytelength
-      ,case when t.is_self_destruct then true
-            when sd.contract_address is not NULL then true
-            else false
-      end as is_self_destruct
-      ,token_standard
-      , CASE
-        WHEN nd.creator_address IS NOT NULL THEN 1
-        ELSE 0 END AS to_iterate_creators
-      , 0 AS is_new_contract
-    from {{ this }} t
-    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
-      on t.contract_address = sd.contract_address
-      and t.creation_tx_hash = sd.creation_tx_hash
-      and t.created_time = sd.created_time
-      AND t.created_block_number = sd.created_block_number
-      AND t.blockchain = sd.blockchain
-      AND t.is_self_destruct = false --find new selfdestructs
-      AND sd.destructed_time >= date_trunc('day', now() - interval '7' day) -- new self-destructs only
-
-    -- If the creator becomes marked as deterministic, we want to re-run it.
-    left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-      ON nd.creator_address = t.creator_address
-
-    
-    WHERE t.blockchain = '{{chain}}'
-
-    {% endif %} -- incremental filter
-
-  ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25
-) y 
---Don't run the same contract twice (i.e. incremental and existing)
-WHERE contract_order = 1
-)
-
-, levels as (
--- starting from 0 
--- u = next level up contract (i.e. the factory)
--- b = base-level contract
-{% for i in range(max_levels) -%}
-
-{% if i == 0 %}
-with level0
-{% else %}
-,level{{i}}
-{% endif %}
-  as (
-    select
-      {{i}} as level 
-      ,b.blockchain
-      ,b.trace_creator_address -- get the original contract creator address
-      ,case when nd.creator_address IS NOT NULL
-        THEN b.created_tx_from --when deterministic creator, we take the tx sender
-        ELSE coalesce(u.creator_address, b.creator_address)
-      END as creator_address -- get the highest-level creator we know of
-      ,b.deployer_address
-      ,b.contract_address
-      -- store the raw created data
-      ,b.created_time
-      ,b.created_block_number
-      ,b.creation_tx_hash
-      ,b.created_tx_from
-      ,b.created_tx_to
-      ,b.created_tx_method_id
-      ,b.created_tx_index
-
-      -- when deterministic, pull the tx-level data
-      ,case when nd.creator_address IS NOT NULL
-        then b.top_level_time ELSE COALESCE(u.top_level_time, b.top_level_time ) END AS top_level_time
-      ,case when nd.creator_address IS NOT NULL
-        then b.top_level_block_number else COALESCE(u.top_level_block_number, b.top_level_block_number ) end AS top_level_block_number
-      ,case when nd.creator_address IS NOT NULL
-        then b.top_level_tx_hash else COALESCE(u.top_level_tx_hash, b.top_level_tx_hash ) end AS top_level_tx_hash
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_from ELSE COALESCE(u.created_tx_from, b.created_tx_from ) END AS top_level_tx_from
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
-
-      ,b.code_bytelength
-      ,b.is_self_destruct
-      ,b.token_standard
-      ,b.code_deploy_rank_by_chain
-      ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
-      ,b.code
-      ,b.is_new_contract
-      ,b.contract_order
-
-    {% if loop.first -%}
-    from base_level as b
-    left join base_level as u --get info about the contract that created this contract
-      on b.creator_address = u.contract_address
-      AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
-      AND b.blockchain = u.blockchain
-    {% else -%}
-    from level{{i-1}} as b
-    left join base_level as u --get info about the contract that created this contract
-      on b.creator_address = u.contract_address
-      AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
-      AND b.blockchain = u.blockchain
-    {% endif %}
-    -- is the creator deterministic?
-    left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-      ON nd.creator_address = b.creator_address
-    
-    WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
-)
-{%- endfor %}
-
-SELECT * FROM level{{max_levels - 1}}
-
-)
-
-, code_ranks AS ( --generate code deploy rank without ranking over all prior contracts (except for initial builds)
-  WITH new_contracts AS (
-  SELECT
-    blockchain
-    , contract_address
-    , created_block_number
-    , code
-    , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
-
-  FROM base_level
-  WHERE is_new_contract = 1
-  )
-
-  , existing_contracts_by_chain AS (
-    SELECT
-      blockchain
-      , code
-      , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
-    FROM base_level
-    WHERE is_new_contract = 0 AND code IS NOT NULL
-    AND code IN (SELECT code from new_contracts)
-    GROUP BY 1,2
-  )
-
-
-  SELECT 
-  nc.blockchain, nc.contract_address, nc.code, nc.created_block_number
-    , COALESCE(cbc.max_code_deploy_rank_by_chain,0) + nc.code_deploy_rank_by_chain_intermediate AS code_deploy_rank_by_chain
-  FROM new_contracts nc 
-    LEFT JOIN existing_contracts_by_chain cbc
-      ON cbc.code = nc.code
-      AND cbc.blockchain = nc.blockchain
-
-)
-
-,creator_contracts as (
-  select 
-    f.blockchain
-    ,f.trace_creator_address
-    ,f.creator_address
-    ,f.deployer_address
-    ,f.contract_address
-    ,coalesce(cc.contract_project, ccd.contract_project, cctr.contract_project) as contract_project 
-    ,f.created_time
-    ,f.creation_tx_hash
-    ,f.created_block_number
-    ,f.top_level_time
-    ,f.top_level_tx_hash
-    ,f.top_level_block_number
-    ,f.top_level_tx_from
-    ,f.top_level_tx_to
-    ,f.top_level_tx_method_id
-    ,f.created_tx_from
-    ,f.created_tx_to
-    ,f.created_tx_method_id
-    ,f.created_tx_index
-    ,f.code_bytelength
-    ,f.is_self_destruct
-    ,f.token_standard
-    ,f.code
-    ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
-  from (
-    SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
-    UNION ALL
-    SELECT {{max_levels}} as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
-  ) f
-  left join {{ ref('contracts_contract_creator_address_list') }} as cc 
-    on f.creator_address = cc.creator_address
-  left join {{ ref('contracts_contract_creator_address_list') }} as ccd
-    on f.trace_creator_address = ccd.creator_address
-    AND cc.creator_address IS NULL
-  left join {{ ref('contracts_contract_creator_address_list') }} as cctr
-    on f.deployer_address = cctr.creator_address
-    AND ccd.creator_address IS NULL
-  
-  LEFT JOIN code_ranks cr --code ranks for new contracts
-    ON cr.blockchain = f.blockchain
-    AND cr.contract_address = f.contract_address
-    AND cr.created_block_number = f.created_block_number
-  
-  where f.contract_address is not null
- )
-,combine as (
-
-  select 
-    cc.blockchain
-    ,cc.trace_creator_address
-    ,cc.creator_address
-    ,cc.deployer_address
-    ,cc.contract_address
-    ,coalesce(cc.contract_project, oc.namespace) as contract_project 
-    ,oc.name as contract_name 
-    ,cc.created_time
-    ,coalesce(cc.is_self_destruct, false) as is_self_destruct
-    ,cc.token_standard
-    ,'creator contracts' as source
-    ,cc.top_level_time
-    ,cc.creation_tx_hash
-    ,cc.created_block_number
-    ,cc.top_level_tx_hash
-    ,cc.top_level_block_number
-    ,cc.top_level_tx_from
-    ,cc.top_level_tx_to
-    ,cc.top_level_tx_method_id
-    ,cc.created_tx_from
-    ,cc.created_tx_to
-    ,cc.created_tx_method_id
-    ,cc.created_tx_index
-    ,cc.code_bytelength
-    ,cc.code_deploy_rank_by_chain
-    ,cc.code
     ,1 as map_rank
-  from creator_contracts as cc 
-  left join {{ source( chain , 'contracts') }} as oc 
-    on cc.contract_address = oc.address 
-  WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
-  
-  union all
-  -- missing contracts
-  select 
-    '{{chain}}' AS blockchain
-    ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
-    ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
-    ,COALESCE(oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS deployer_address
-    ,l.contract_address
-    ,oc.namespace as contract_project 
-    ,oc.name as contract_name 
-    ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
-    ,false as is_self_destruct
-    ,NULL AS token_standard
-    ,'missing contracts' as source
-    ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
-    ,CAST(NULL AS varbinary) as top_level_tx_hash
-    ,cast(NULL as bigint) as top_level_block_number
-    ,CAST(NULL AS varbinary) as creation_tx_hash
-    ,cast(NULL as bigint) as created_block_number
-    ,CAST(NULL AS varbinary) as top_level_tx_from
-    ,CAST(NULL AS varbinary) as top_level_tx_to
-    ,CAST(NULL AS varbinary) as top_level_tx_method_id
-    ,CAST(NULL AS varbinary) as created_tx_from
-    ,CAST(NULL AS varbinary) as created_tx_to
-    ,CAST(NULL AS varbinary) as created_tx_method_id
-    ,l.tx_index AS created_tx_index
-    ,bytearray_length(oc.code) as code_bytelength
-    ,1 as code_deploy_rank_by_chain
-    ,oc.code
-    ,2 as map_rank
-  from {{ source( chain , 'logs') }} as l
+  from {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }} ic
+  -- map creator here
+    LEFT JOIN {{ref('contracts_contract_creator_address_list')}} al 
+      ON ic.creator_address = al.creator_address
+    LEFT JOIN {{ref('contracts_contract_creator_address_list')}} ald
+      ON ic.deployer_address = ald.creator_address
     left join {{ source( chain , 'contracts') }} as oc 
       ON l.contract_address = oc.address
-  WHERE
-    l.contract_address NOT IN (SELECT cc.contract_address FROM creator_contracts cc WHERE cc.blockchain = '{{chain}}')
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      and l.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-  GROUP BY oc."from", l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
-  
 ---
 -- predeploys
 ---
@@ -456,8 +83,6 @@ SELECT * FROM level{{max_levels - 1}}
       ,contract_project
       ,contract_name
       ,created_time
-      ,is_self_destruct
-      ,NULL AS token_standard
       ,source
       ,created_time as top_level_time
       ,CAST(NULL AS varbinary) as top_level_tx_hash
@@ -474,20 +99,67 @@ SELECT * FROM level{{max_levels - 1}}
       ,cast(NULL as bigint) as code_bytelength --todo
       ,1 as code_deploy_rank_by_chain
       ,CAST(NULL AS varbinary) AS code
-      ,3 as map_rank
+      ,2 as map_rank
 
     FROM {{ ref('contracts_predeploys') }} pre
     where 
     1=1
     and pre.blockchain = '{{chain}}'
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-    and 1=0 --do not run on incremental builds
-    {% endif %}
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11
+    GROUP BY 1,2,3,4,5,6,7,8,9,10
 
+  ---
+  -- missing contracts
+  ---
+
+  union all
+  
+  select 
+    '{{chain}}' AS blockchain
+    ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
+    ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
+    ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS deployer_address
+    ,l.contract_address
+    ,oc.namespace as contract_project 
+    ,oc.name as contract_name 
+    ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
+    ,'missing contracts' as source
+    ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
+    ,CAST(NULL AS varbinary) as top_level_tx_hash
+    ,cast(NULL as bigint) as top_level_block_number
+    ,CAST(NULL AS varbinary) as creation_tx_hash
+    ,cast(NULL as bigint) as created_block_number
+    ,CAST(NULL AS varbinary) as top_level_tx_from
+    ,CAST(NULL AS varbinary) as top_level_tx_to
+    ,CAST(NULL AS varbinary) as top_level_tx_method_id
+    ,CAST(NULL AS varbinary) as created_tx_from
+    ,CAST(NULL AS varbinary) as created_tx_to
+    ,CAST(NULL AS varbinary) as created_tx_method_id
+    ,l.tx_index AS created_tx_index
+    ,bytearray_length(oc.code) as code_bytelength
+    ,1 as code_deploy_rank_by_chain
+    ,oc.code
+    ,3 as map_rank
+  from {{ source( chain , 'logs') }} as l
+    left join {{ source( chain , 'creation_traces') }} as ct 
+      ON l.contract_address = oc.address
+    left join {{ source( chain , 'contracts') }} as oc 
+      ON l.contract_address = oc.address
+  WHERE
+    l.contract_address NOT IN (SELECT contract_address
+                          FROM {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }}
+                          WHERE blockchain = '{{chain}}'
+                          )
+    AND l.contract_address NOT IN (SELECT contract_address FROM {{ ref('contracts_predeploys') }} WHERE pre.blockchain = '{{chain}}')
+    
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+      and l.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+  GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
+  
 )
 
-,get_contracts as (
+, get_contracts as (
   --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
   select
     blockchain
@@ -500,13 +172,12 @@ SELECT * FROM level{{max_levels - 1}}
     c.blockchain
     ,c.trace_creator_address
     ,c.contract_address
-    ,c.contract_project
     ,t_mapped.symbol as token_symbol
-    ,c.contract_name
     ,c.creator_address
+    ,c.contract_project
+    ,c.contract_name
     ,c.deployer_address
     ,c.created_time 
-    ,c.is_self_destruct
 
     ,c.creation_tx_hash
     ,c.created_block_number
@@ -528,7 +199,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
 
-  from combine as c 
+  from unified_contract_sources as c 
   left join (
         select
           e.blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
@@ -544,8 +215,10 @@ SELECT * FROM level{{max_levels - 1}}
       ) as t_mapped
     on c.contract_address = t_mapped.contract_address
     AND c.blockchain = t_mapped.blockchain
-  left join ( --ideally, we have an 'all tokens spell' to read from (pending Dune team?)
-          SELECT contract_address, MIN(min_block_number) AS min_block_number, concat_ws(', ', ARRAY_AGG(DISTINCT token_standard) ) AS token_standard
+  left join ( --ideally, we have an 'all tokens spell' to read from (pending Dune team?), until then:
+          SELECT contract_address
+            , MIN(min_block_number) AS min_block_number
+            , MAX_BY(token_standard, LENGTH(token_standard)) AS token_standard
           FROM (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
             FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
@@ -617,7 +290,7 @@ FROM (
   , initcap(contract_project) AS contract_project
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
-  , is_self_destruct, creation_tx_hash, created_block_number, created_tx_from
+  , creation_tx_hash, created_block_number, created_tx_from
   , created_tx_to, created_tx_method_id, created_tx_index
   , top_level_time, top_level_tx_hash, top_level_block_number
   , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
@@ -648,7 +321,7 @@ FROM (
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
-      ,coalesce(c.is_self_destruct, false) as is_self_destruct
+      ,CASE WHEN sd.is_self_destruct IS NOT NULL THEN true ELSE false END as is_self_destruct
       ,c.creation_tx_hash
       ,COALESCE(c.created_block_number,0) AS created_block_number
       ,c.created_tx_from
@@ -675,6 +348,11 @@ FROM (
       on lower(c.contract_project) = lower(dnm.dune_name)
     left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
       on c.contract_address = co.contract_address
+    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
+      on c.contract_address = sd.contract_address
+      AND c.blockchain = sd.blockchain
+      and c.creation_tx_hash = sd.creation_tx_hash
+      AND c.created_block_number = sd.created_block_number
   ) f
 ) u
 
