@@ -18,7 +18,7 @@ with
         select
             blockchain
             , block_time
-            , date(date_trunc('day', transactions.block_time)) as block_date
+            , date(block_time) as block_date
             , block_month
             , minute
             , tx_hash
