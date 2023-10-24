@@ -15,7 +15,7 @@
 with stealcam as (
 select
     *
-    ,case when value > cast(0 as uint256) then cast((value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) as uint256) else cast(0 as uint256) end as surplus_value
+    ,case when value > uint256 '0' then cast((value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) as uint256) else uint256 '0' end as surplus_value
 FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -33,14 +33,14 @@ SELECT 'arbitrum' AS blockchain
 , sc.evt_block_number AS block_number
 , 'Single Item Trade' AS trade_type
 , 'Buy' AS trade_category
-, CASE WHEN sc.value=cast(0 as uint256) THEN 'Mint' ELSE 'Trade' END AS evt_type
+, CASE WHEN sc.value=uint256 '0' THEN 'Mint' ELSE 'Trade' END AS evt_type
 , sc."from" AS seller
 , sc.to AS buyer
 , sc.contract_address AS nft_contract_address
 , 'Stealcam' AS collection
 , sc.id AS token_id
 , 'erc721' AS token_standard
-, CAST(1 AS uint256) AS number_of_items
+, uint256 '1' AS number_of_items
 , 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 AS currency_contract
 , 'ETH' AS currency_symbol
 , sc.value AS amount_raw

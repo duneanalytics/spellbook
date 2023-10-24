@@ -175,7 +175,7 @@ SELECT
     end as platform_fee_amount_raw,
     case
         when a.seller = coalesce(minter.to, minter_superrare.to)
-        then cast(0 as uint256)
+        then uint256 '0'
         else cast(ROUND(0.10 * (a.price_raw)) as uint256)  -- fixed 10% royalty fee on secondary sales
     end as royalty_fee_amount_raw,
     cast(NULL as varbinary) as royalty_fee_address,
