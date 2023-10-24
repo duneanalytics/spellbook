@@ -2,7 +2,7 @@
   config(
         
         schema = 'contracts_ethereum',
-        alias = 'creator_project_mapping',
+        alias = alias('creator_project_mapping'),
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
