@@ -34,7 +34,6 @@ WITH fee_wallets as (
 
 select *
 from trades
-where
 where (
     fee_wallet_name = 'opensea'
     or right_hash = 0x360c6ebe
