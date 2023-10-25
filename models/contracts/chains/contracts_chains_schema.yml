@@ -156,6 +156,7 @@ models:
       - *contract_address
         
       - *created_time
+      - *created_month
       - *created_block_number
       - *creation_tx_hash
       - *created_tx_from
@@ -194,6 +195,7 @@ models:
       - *deployer_address
       - *contract_address
       - *created_time
+      - *created_month
       - *top_level_time
       - *creation_tx_hash
       - *created_block_number
@@ -233,6 +235,7 @@ models:
       - *creator_address
       - *deployer_address
       - *created_time
+      - *created_month
       - *contract_creator_if_factory
       - *is_self_destruct
       - *creation_tx_hash
@@ -290,6 +293,7 @@ models:
       - *contract_address
         
       - *created_time
+      - *created_month
       - *created_block_number
       - *creation_tx_hash
       - *created_tx_from
@@ -324,6 +328,7 @@ models:
       - *deployer_address
       - *contract_address
       - *created_time
+      - *created_month
       - *top_level_time
       - *creation_tx_hash
       - *created_block_number

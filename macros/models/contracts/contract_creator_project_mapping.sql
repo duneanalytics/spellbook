@@ -14,6 +14,7 @@
     ,"creator_address"
     ,"deployer_address"
     ,"created_time"
+    ,"created_month"
     ,"created_block_number"
     ,"is_self_destruct"
     ,"creation_tx_hash"
@@ -44,6 +45,7 @@ WITH unified_contract_sources AS (
     ,COALESCE(al.contract_project, ald.contract_project, oc.namespace) AS contract_project
     ,oc.name as contract_name 
     ,created_time
+    ,created_month
     ,source
     ,top_level_time
     ,creation_tx_hash
@@ -83,6 +85,7 @@ WITH unified_contract_sources AS (
       ,contract_project
       ,contract_name
       ,created_time
+      ,DATE_TRUNC('month',created_time) AS created_month
       ,source
       ,created_time as top_level_time
       ,CAST(NULL AS varbinary) as top_level_tx_hash
@@ -105,7 +108,7 @@ WITH unified_contract_sources AS (
     where 
     1=1
     and pre.blockchain = '{{chain}}'
-    GROUP BY 1,2,3,4,5,6,7,8,9,10
+    GROUP BY 1,2,3,4,5,6,7,8,9,10,11
 
   ---
   -- missing contracts
@@ -122,6 +125,7 @@ WITH unified_contract_sources AS (
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
     ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
+    ,DATE_TRUNC('month',COALESCE(oc.created_at, MIN(block_time)) ) AS created_month
     ,'missing contracts' as source
     ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
     ,CAST(NULL AS varbinary) as top_level_tx_hash
@@ -178,6 +182,7 @@ WITH unified_contract_sources AS (
     ,c.contract_name
     ,c.deployer_address
     ,c.created_time 
+    ,c.created_month
 
     ,c.creation_tx_hash
     ,c.created_block_number
@@ -301,7 +306,7 @@ FROM (
 
   FROM (
     select 
-      cast(DATE_TRUNC('month',c.created_time) as date) AS created_month
+      created_month
       ,c.blockchain
       ,c.trace_creator_address
       ,c.contract_address

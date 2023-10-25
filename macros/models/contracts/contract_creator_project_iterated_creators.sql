@@ -31,6 +31,7 @@ with level0
       ,b.contract_address
       -- store the raw created data
       ,b.created_time
+      ,b.created_month
       ,b.created_block_number
       ,b.creation_tx_hash
       ,b.created_tx_from
@@ -128,6 +129,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,f.deployer_address
     ,f.contract_address
     ,f.created_time
+    ,f.created_month
     ,f.creation_tx_hash
     ,f.created_block_number
     ,f.top_level_time
@@ -164,6 +166,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,cc.deployer_address
     ,cc.contract_address
     ,cc.created_time
+    ,cc.created_month
     ,'creator contracts' as source
     ,cc.top_level_time
     ,cc.creation_tx_hash
@@ -184,6 +187,6 @@ SELECT * FROM level{{max_levels - 1}}
   left join {{ source( chain , 'contracts') }} as oc 
     on cc.contract_address = oc.address 
   WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 
 {% endmacro %}
