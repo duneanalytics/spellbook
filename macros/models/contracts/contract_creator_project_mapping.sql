@@ -124,10 +124,10 @@ WITH unified_contract_sources AS (
     ,l.contract_address
     ,oc.namespace as contract_project 
     ,oc.name as contract_name 
-    ,COALESCE(oc.created_at, MIN(block_time)) AS created_time
-    ,DATE_TRUNC('month',COALESCE(oc.created_at, MIN(block_time)) ) AS created_month
+    ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) AS created_time
+    ,DATE_TRUNC('month',COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) ) AS created_month
     ,'missing contracts' as source
-    ,COALESCE(oc.created_at, MIN(block_time)) as top_level_time
+    ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) as top_level_time
     ,CAST(NULL AS varbinary) as top_level_tx_hash
     ,cast(NULL as bigint) as top_level_block_number
     ,CAST(NULL AS varbinary) as creation_tx_hash
