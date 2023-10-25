@@ -1,7 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_withdrawal_credentials'),
-    tags = ['dunesql', 'static'],
+    alias = 'entities_withdrawal_credentials',
+    tags = ['static'],
     unique_key = ['withdrawal_credentials'])
 }}
 
