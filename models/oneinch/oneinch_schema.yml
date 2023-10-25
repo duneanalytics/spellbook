@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -31,7 +31,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -77,7 +77,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -125,7 +125,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, '']
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -146,6 +146,8 @@ models:
           - not_null
       - &tx_from
         name: tx_from
+      - &tx_to
+        name: tx_to
       - &tx_success
         name: tx_success
       - &call_success
@@ -171,7 +173,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, '']
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -204,7 +206,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -264,7 +266,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -308,7 +310,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -342,7 +344,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -379,7 +381,7 @@ models:
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -404,13 +406,31 @@ models:
           - not_null
       - &kyc
         name: kyc
+  
+  - name: oneinch_fusion_settlements
+    meta:
+      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      sector: oneinch
+      contributors: ['grkhr', 'max-morrow']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        fusion settlements
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - *contract_address_not_null
+      - *blockchain_not_null
 
 
   - name: oneinch_methods
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
       sector: oneinch
-      contributors: [grkhr, Max-Morrow]
+      contributors: ['grkhr', 'max-morrow']
     config:
       tags: ['oneinch', 'raw']
     description: >

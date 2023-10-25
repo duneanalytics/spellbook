@@ -161,12 +161,6 @@ models:
 
     nft:
       +schema: nft
-      arbitrum:
-        +schema: nft_arbitrum
-      avalanche_c:
-        +schema: nft_avalanche_c
-      bnb:
-        +schema: nft_bnb
       ethereum:
         +schema: nft_ethereum
         metadata:
@@ -174,12 +168,6 @@ models:
           +materialized: table
           +file_format: delta
           +tags: "static"
-      optimism:
-        +schema: nft_optimism
-      polygon:
-        +schema: nft_polygon
-      celo:
-        +schema: nft_celo
 
     cex:
       +schema: cex
@@ -382,11 +370,6 @@ models:
       +schema: babyswap
       bnb:
         +schema: babyswap_bnb
-
-    oneplanet:
-      +schema: oneplanet
-      polygon:
-        +schema: oneplanet_polygon
 
     opensea:
       +schema: opensea
@@ -788,9 +771,6 @@ models:
       polygon:
         +schema: equalizer_polygon
 
-    integration_test:
-      +schema: integration_test
-
     curvefi:
       +schema: curvefi
       ethereum:
@@ -1016,11 +996,6 @@ models:
       +schema: nexusmutual
       ethereum:
         +schema: nexusmutual_ethereum
-
-    quix:
-      +schema: quix
-      optimism:
-        +schema: quix_optimism
 
     zeroex:
       +schema: zeroex
@@ -1273,11 +1248,6 @@ models:
       +schema: oneinch
       ethereum:
         +schema: oneinch_ethereum
-
-    nftearth:
-      +schema: nftearth
-      optimism:
-        +schema: nftearth_optimism
 
     pooltogether:
       +schema: pooltogether

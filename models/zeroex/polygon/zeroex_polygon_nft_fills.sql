@@ -1,5 +1,6 @@
 {{  config(
-        alias = alias('nft_fills'),
+tags=['prod_exclude'],
+        alias = 'nft_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
@@ -12,6 +13,11 @@
                                 \'["rantum","bakabhai993", "danning.sui"]\') }}'
     )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 {% set zeroex_v4_nft_start_date = '2022-03-01' %}
 

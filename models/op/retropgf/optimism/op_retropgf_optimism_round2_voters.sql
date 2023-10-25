@@ -1,8 +1,8 @@
 {{ config(
         schema = 'op_retropgf_optimism'
-        , alias = alias('round2_voters')
+        , alias = 'round2_voters'
         , materialized='table'
-        , tags=['static', 'dunesql']
+        , tags=['static']
   )
 }}
 

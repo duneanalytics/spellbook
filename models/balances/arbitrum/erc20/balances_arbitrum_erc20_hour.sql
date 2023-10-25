@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc20_hour'),
+        
+        alias = 'erc20_hour',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "balances",

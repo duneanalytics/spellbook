@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('bep20_rolling_day'))
+        
+        alias = 'bep20_rolling_day')
 }}
 
         SELECT
