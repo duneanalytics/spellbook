@@ -1,7 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
     alias = 'entities_binance',
-    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
