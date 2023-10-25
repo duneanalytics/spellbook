@@ -29,10 +29,11 @@ WITH pools AS (
     INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
       AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
-    CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-    CROSS JOIN UNNEST(cc.normalizedWeights) AS w(weights)
+    CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
+    CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
+    WHERE t.pos = w.pos
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
       AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   ) zip
@@ -124,10 +125,12 @@ settings AS (
 SELECT 
   'avalanche_c' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE
-    WHEN pool_type IN ('SP.LP.LBP') THEN lower(pool_symbol)
-    ELSE lower(concat(array_join(array_sort(array_agg(token_symbol)), '/'), ' ', array_join(array_sort(array_agg(cast(norm_weight AS varchar))), '/')))
+  CASE WHEN pool_type IN ('SP', 'LP', 'LBP') 
+  THEN lower(pool_symbol)
+    ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
+    array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
   END AS name,
+  pool_type,
   'balancer_v2_pool' AS category,
   'balancerlabs' AS contributor,
   'query' AS source,
