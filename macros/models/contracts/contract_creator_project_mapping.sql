@@ -29,7 +29,6 @@
 ] %}
 
 WITH unified_contract_sources AS (
-
   select 
     blockchain
     ,trace_creator_address
