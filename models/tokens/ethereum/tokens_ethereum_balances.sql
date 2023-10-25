@@ -1,5 +1,5 @@
 {{ config(
-        alias = alias('balances'),
+        alias = 'balances',
         tags=['dunesql'],
         materialized = 'view',
         )
