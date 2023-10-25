@@ -61,8 +61,9 @@
             ON trs_1.call_tx_id = sp.call_tx_id 
             AND trs_1.call_block_time = sp.call_block_time
             AND trs_1.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND trs_1.call_inner_instruction_index = 1) 
-                OR (sp.call_is_inner = true AND trs_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
+            AND ((sp.call_is_inner = false AND (trs_1.call_inner_instruction_index = 1 OR trs_1.call_inner_instruction_index = 2)) 
+                OR (sp.call_is_inner = true AND (trs_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
+                )
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.call_block_time')}}
             {% else %}
@@ -72,8 +73,9 @@
             ON trs_2.call_tx_id = sp.call_tx_id 
             AND trs_2.call_block_time = sp.call_block_time
             AND trs_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND trs_2.call_inner_instruction_index = 2)
-                OR (sp.call_is_inner = true AND trs_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
+            AND ((sp.call_is_inner = false AND (trs_2.call_inner_instruction_index = 2 OR trs_2.call_inner_instruction_index = 3))
+                OR (sp.call_is_inner = true AND (trs_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.call_inner_instruction_index = sp.call_inner_instruction_index + 3))
+                )
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.call_block_time')}}
             {% else %}
@@ -85,6 +87,7 @@
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = tk_1.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = tk_2.token_mint_address
         WHERE 1=1
+        and tk_1.token_mint_address != tk_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
         {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}
