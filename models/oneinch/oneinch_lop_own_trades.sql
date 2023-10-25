@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'lop_trades',
+        alias = 'lop_own_trades',
         materialized = 'view'
     )
 }}
