@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql','monitoring'],
+        tags = ['monitoring'],
         schema='prices',
-        alias = alias('usd_monitor'),
+        alias = 'usd_monitor',
         materialized = 'incremental',
         incremental_strategy = 'append'
         )
