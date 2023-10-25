@@ -1,6 +1,6 @@
 {{ config(
     schema = 'collectionswap_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -51,7 +51,7 @@ raw_trades as (
             {% if is_incremental() %}
             WHERE {{incremental_predicate('evt_block_time')}}
             {% else %}
-            WHERE evt_block_time >= '{{project_start_date}}'
+            WHERE evt_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             union all
             select
@@ -78,7 +78,7 @@ raw_trades as (
             {% if is_incremental() %}
             WHERE {{incremental_predicate('evt_block_time')}}
             {% else %}
-            WHERE evt_block_time >= '{{project_start_date}}'
+            WHERE evt_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             )
         CROSS JOIN UNNEST(nft_id_array)
