@@ -103,61 +103,61 @@ WITH unified_contract_sources AS (
     and pre.blockchain = '{{chain}}'
     GROUP BY 1,2,3,4,5,6,7,8,9,10,11
 
-  ---
-  -- missing contracts
-  ---
+  -- ---
+  -- -- missing contracts
+  -- ---
 
-  union all
+  -- union all
   
-  select 
-    '{{chain}}' AS blockchain
-    ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
-    ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
-    ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS deployer_address
-    ,l.contract_address
-    ,oc.namespace as contract_project 
-    ,oc.name as contract_name 
-    ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) AS created_time
-    ,cast( DATE_TRUNC('month',COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) ) as date) AS created_month
-    ,'missing contracts' as source
-    ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) as top_level_time
-    ,CAST(NULL AS varbinary) as top_level_tx_hash
-    ,cast(NULL as bigint) as top_level_block_number
-    ,CAST(NULL AS varbinary) as creation_tx_hash
-    ,cast(NULL as bigint) as created_block_number
-    ,CAST(NULL AS varbinary) as top_level_tx_from
-    ,CAST(NULL AS varbinary) as top_level_tx_to
-    ,CAST(NULL AS varbinary) as top_level_tx_method_id
-    ,CAST(NULL AS varbinary) as created_tx_from
-    ,CAST(NULL AS varbinary) as created_tx_to
-    ,CAST(NULL AS varbinary) as created_tx_method_id
-    ,l.tx_index AS created_tx_index
-    ,bytearray_length(oc.code) as code_bytelength
-    ,1 as code_deploy_rank_by_chain
-    ,oc.code
-    ,3 as map_rank
-  from {{ source( chain , 'logs') }} as l
-    left join {{ source( chain , 'creation_traces') }} as ct 
-      ON l.contract_address = ct.address
-    left join {{ source( chain , 'contracts') }} as oc 
-      ON l.contract_address = oc.address
-  WHERE
-    l.contract_address NOT IN
-                        (SELECT contract_address
-                          FROM {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }}
-                          WHERE blockchain = '{{chain}}'
-                        )
-    AND l.contract_address NOT IN
-                        (
-                          SELECT contract_address FROM {{ ref('contracts_predeploys') }}
-                          WHERE blockchain = '{{chain}}'
-                        )
+  -- select 
+  --   '{{chain}}' AS blockchain
+  --   ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
+  --   ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
+  --   ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS deployer_address
+  --   ,l.contract_address
+  --   ,oc.namespace as contract_project 
+  --   ,oc.name as contract_name 
+  --   ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) AS created_time
+  --   ,cast( DATE_TRUNC('month',COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) ) as date) AS created_month
+  --   ,'missing contracts' as source
+  --   ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) as top_level_time
+  --   ,CAST(NULL AS varbinary) as top_level_tx_hash
+  --   ,cast(NULL as bigint) as top_level_block_number
+  --   ,CAST(NULL AS varbinary) as creation_tx_hash
+  --   ,cast(NULL as bigint) as created_block_number
+  --   ,CAST(NULL AS varbinary) as top_level_tx_from
+  --   ,CAST(NULL AS varbinary) as top_level_tx_to
+  --   ,CAST(NULL AS varbinary) as top_level_tx_method_id
+  --   ,CAST(NULL AS varbinary) as created_tx_from
+  --   ,CAST(NULL AS varbinary) as created_tx_to
+  --   ,CAST(NULL AS varbinary) as created_tx_method_id
+  --   ,l.tx_index AS created_tx_index
+  --   ,bytearray_length(oc.code) as code_bytelength
+  --   ,1 as code_deploy_rank_by_chain
+  --   ,oc.code
+  --   ,3 as map_rank
+  -- from {{ source( chain , 'logs') }} as l
+  --   left join {{ source( chain , 'creation_traces') }} as ct 
+  --     ON l.contract_address = ct.address
+  --   left join {{ source( chain , 'contracts') }} as oc 
+  --     ON l.contract_address = oc.address
+  -- WHERE
+  --   l.contract_address NOT IN
+  --                       (SELECT contract_address
+  --                         FROM {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }}
+  --                         WHERE blockchain = '{{chain}}'
+  --                       )
+  --   AND l.contract_address NOT IN
+  --                       (
+  --                         SELECT contract_address FROM {{ ref('contracts_predeploys') }}
+  --                         WHERE blockchain = '{{chain}}'
+  --                       )
     
-    {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      and l.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+  --   {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+  --     and l.block_time >= date_trunc('day', now() - interval '7' day)
+  --   {% endif %}
 
-  GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, ct.block_time, oc.created_at, l.tx_index, oc.code
+  -- GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, ct.block_time, oc.created_at, l.tx_index, oc.code
   
 )
 
