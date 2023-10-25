@@ -1,6 +1,6 @@
 {{ config(
         schema = 'nft',
-        alias = alias('events'),
+        alias = 'events',
         tags = ['dunesql'],
         materialized = 'view'
         )

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'nft',
     tags = ['dunesql'],
-    alias = alias('trades_beta'),
+    alias = 'trades_beta',
     partition_by = ['blockchain','project','block_month'],
     materialized = 'view',
     file_format = 'delta',

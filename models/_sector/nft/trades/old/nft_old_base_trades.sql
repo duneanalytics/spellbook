@@ -1,6 +1,6 @@
 {{ config(
     schema = 'nft_old',
-    alias = alias('base_trades'),
+    alias = 'base_trades',
     tags = ['dunesql'],
     materialized = 'view'
     )
