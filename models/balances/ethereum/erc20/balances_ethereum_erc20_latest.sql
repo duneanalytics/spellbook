@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
         alias = 'erc20_latest',
         post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
                                             "sector",

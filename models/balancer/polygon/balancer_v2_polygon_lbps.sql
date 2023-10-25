@@ -1,5 +1,6 @@
 {{
     config(
+tags=['prod_exclude'],
         schema = 'balancer_v2_polygon',
         alias = 'lbps',
         unique_key = ['pool_id'],
