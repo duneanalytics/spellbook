@@ -37,7 +37,7 @@ with
         from (
             select * from {{ ref('oneinch_lop') }}
             {% if is_incremental() %}
-                where block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp)
+                where incremental_predicate('block_time')
             {% endif %}
         )
         left join (
@@ -58,7 +58,7 @@ with
             , price as src_price
         from {{ source('prices', 'usd') }}
         {% if is_incremental() %}
-            where minute >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp)
+            where incremental_predicate('minute')
         {% endif %}
     )
 
@@ -72,7 +72,7 @@ with
             , price as dst_price
         from {{ source('prices', 'usd') }}
         {% if is_incremental() %}
-            where minute >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp)
+            where incremental_predicate('minute')
         {% endif %}
     )
 

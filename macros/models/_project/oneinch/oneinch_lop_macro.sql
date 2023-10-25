@@ -6,10 +6,6 @@
 
 
 
-{% set lookback_days = -7 %}
-
-
-
 {%
     set cfg = {
         'LimitOrderProtocolV1': {
@@ -137,7 +133,9 @@ orders as (
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                {% if is_incremental() %} where call_block_time >= cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% endif %}
+                {% if is_incremental() %} 
+                    where incremental_predicate('call_block_time') 
+                {% endif %}
             )
             {% if not loop.last %} union all {% endif %}
         {% endfor %})
@@ -149,7 +147,12 @@ orders as (
                 , "to" as tx_to
                 , success as tx_success
             from {{ source(blockchain, 'transactions') }}
-            where block_time >= {% if is_incremental() %} cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% else %} timestamp '{{ contract_data['start'] }}' {% endif %}
+            where 
+                {% if is_incremental() %} 
+                    incremental_predicate('block_time') 
+                {% else %} 
+                    block_time >= timestamp '{{ contract_data['start'] }}' 
+                {% endif %}
         ) using(tx_hash)
         join (
             select
@@ -160,7 +163,12 @@ orders as (
                 , gas_used as call_gas_used
                 , output as call_output
             from {{ source(blockchain, 'traces') }}
-            where block_time >= {% if is_incremental() %} cast(date_add('day', {{ lookback_days }}, current_timestamp) as timestamp) {% else %} timestamp '{{ contract_data['start'] }}' {% endif %}
+            where 
+                {% if is_incremental() %} 
+                    incremental_predicate('block_time') 
+                {% else %} 
+                    block_time >= timestamp '{{ contract_data['start'] }}' 
+                {% endif %}
                 and call_type = 'call'
         ) using(tx_hash, call_trace_address)
         {% if not loop.last %} union all {% endif %}
