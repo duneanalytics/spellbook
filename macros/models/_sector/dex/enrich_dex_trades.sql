@@ -44,12 +44,12 @@ enrichments AS (
             ) AS amount_usd,
         base.token_bought_address,
         base.token_sold_address,
-        coalesce(base.taker, tx."from") AS taker,
+        coalesce(base.taker, base.tx_from) AS taker,
         base.maker,
         base.project_contract_address,
         base.tx_hash,
-        tx."from" AS tx_from,
-        tx.to AS tx_to,
+        base.tx_from,
+        base.tx_to,
         base.evt_index
     FROM {{ base_trades }} base
     LEFT JOIN {{ tokens_erc20_model }} erc20_bought
