@@ -20,6 +20,7 @@ WITH
             FROM {{ source('solana','account_activity') }}
             WHERE token_mint_address is not null
             group by 1,2
+            --ci force
       )
       
 SELECT * FROM distinct_accounts
