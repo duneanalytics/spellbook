@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
         alias = 'glp_components',
         partition_by = ['block_date'],
         materialized = 'incremental',

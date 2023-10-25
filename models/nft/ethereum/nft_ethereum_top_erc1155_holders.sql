@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
        alias = 'top_erc1155_holders',
        materialized='table',
        post_hook='{{ expose_spells(\'["ethereum"]\',

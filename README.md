@@ -1,77 +1,3 @@
-# Spellbook on DuneSQL is here 🪄
-It's time. Spellbook is ready to accept PRs to build spells on the DuneSQL engine!  
-
-For any questions or help from Dune team, please use the open GH discussion [here](https://github.com/duneanalytics/spellbook/discussions/3558).
-
-## Initial step(s)
-We can continue to safely use the setup instructions below in the new DuneSQL world: [Setting up your dev environment](#setting-up-your-local-dev-environment).  
-
-To be safe, it's recommended in your local setup to:
-- exit any existing running python environment(s)
-- ensure you are in spellbook root directory
-- rerun `pipenv install`
-- rerun `pipenv shell` to re-enter the environment
-
-The process to compile code locally, grab from target directory & run on the Dune app remains the same.  
-
-Ensure you are still in Spellbook root directory, then run the following command:
-
-```console
-dbt compile
-```
-
-A recent change in the new setup was to include a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](https://github.com/duneanalytics/spellbook/blob/main/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
-Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
-
-## High-level overview of Spellbook current state
-As we enter the phase of building on DuneSQL, we will continue to run spells in parallel on both the legacy engine (spark) and the new engine (DuneSQL).  
-**Note:** the below processes will simplify post-migration and we will eventually deprecate spark engine and all legacy files.
-- the single most important piece of code to help differentiate engines is through usage of dbt tags, specifically a `tag:dunesql` value applied in each spell's config block when ready to run on DuneSQL -- more on this exact setup below.
-- the `dbt slim ci` gh action attached to two PR's will show two jobs: one for spark, one for DuneSQL -- you will notice depending on how dbt tags are used in spell config, one of the two engines will skip all steps to ignore running there.
-- the process to contribute will differ between net new spells & modifying/migrating existing spells -- details for each process [here](#how-can-i-contribute-spells-on-dunesql).
-
-## How can I contribute spells on DuneSQL?
-The process will differ for new spells vs. migrating existing spells.
-
-### How can I tell the status of a particular spell?
-Here are a few things to look for, when looking for spells in the repo:
-- all spells have two files
-  - one with `_legacy.sql` suffix
-    - the legacy file refers to **spark** engine, as we are looking to deprecate once fully migrated
-    - all legacy files contain a `tags = ['legacy']` to help our orchestration engines determine spark engine
-  - one without the legacy suffix
-    - these files refer to **dunesql** engine
-    - all of these files will either contain a tag for dunesql or not (`tags = ['dunesql']`)
-      - if there is a tag present, the spell has been successfully migrated to dunesql syntax and is ready to run on the dunesql engine
-      - if there is no tag present, the spell is sitting idle and waiting for migration and will not run on any engine until migrated and tag is added
-
-### New spells
-If creating a new spell, follow the below steps:
-- Follow the same process from the spark engine setup
-  - SQL file for spell, YAML files for source & schema files, seeds & tests as needed
-- add tag for DuneSQL in spell config block
-  - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
-- ensure alias property follows the below format:
-  - `alias = alias('blocks'),`
-- PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
-  - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
-### Existing spells
-If modifying existing spells which haven't been migrated to DuneSQL yet, it is recommended to migrate at the same time.  
-
-Steps to migrate:
-- Find the spell SQL file to translate in the repo
-  - **note:** you can safely ignore the _legacy file, as they are intended to maintain the spark syntax (unless you need to alter logic in spark spell for bug fixes)
-    - previously, it was requested for users to generate the _legacy files in the migration process, but the Dune team has gone ahead and universally built the legacy files for simplicity in the process of migration
-  - add tag for DuneSQL in spell config block
-    - `tags = ['dunesql'],` -- this is vital for orchestration and testing on the correct engine. If `tags` property already exists in the spell, then simply append new value after a comma: `tags = ['static', 'dunesql'],`
-  - update alias property to leverage the new alias macro -- Dune team will maintain this alias macro, it's simply to help differentiate engines & metastores
-    - `alias = alias('blocks'),`
-  - now it's time to translate the code within to DuneSQL syntax!
-- to find downstream spells from modified upstream spells, the following can be run: `dbt ls --resource-type model --output name --select <insert spell name>+`
-  - **future note:** when downstream spells are also migrated, we can double check to reference DuneSQL versioned spells. We will be working in a upstream --> downstream lineage path to full migration.
-- PR CI tests will check for this `tag:dunesql` applied and run on spark (`tag:legacy`) or dunesql dependent on if tag exists. the opposite engine will run too, but all steps should have no output and succeed.  
-  - the logs of the CI test gh action can still be used to grab table names and query on dune app for ~24 hours – be sure to query on the engine you modify!
-
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 
@@ -188,11 +114,14 @@ To pull the dbt project dependencies run:
 dbt deps
 ```
 
-Then, run the following command:
+Ensure you are in Spellbook root directory, then run the following command:
 
 ```console
 dbt compile
 ```
+
+Spellbook root directory includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](https://github.com/duneanalytics/spellbook/blob/main/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
+Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
 
 dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containing plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there are big errors the compile process will not complete.
 If you haven't made changes to the directory beforehand, you can now start adding, editing, or deleting files within the repository.

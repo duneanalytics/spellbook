@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
     schema ='pooltogether_v4_ethereum',
     alias = 'prize_structure',
     materialized = 'incremental',
