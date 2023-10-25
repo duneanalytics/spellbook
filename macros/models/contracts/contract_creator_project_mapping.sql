@@ -273,8 +273,26 @@ WITH unified_contract_sources AS (
 )
 
 
-SELECT u.*,
+SELECT
+    u.created_month,
+    u.blockchain,
+    u.trace_creator_address,  u.contract_address
+  , u.contract_project
+  , u.token_symbol
+  , u.contract_name, u.creator_address, u.deployer_address, u.created_time
+  , u.is_self_destruct
+  , u.creation_tx_hash, u.created_block_number, u.created_tx_from
+  , u.created_tx_to, u.created_tx_method_id, u.created_tx_index
+  , u.top_level_time, u.top_level_tx_hash, u.top_level_block_number
+  , u.top_level_tx_from, u.top_level_tx_to , u.top_level_tx_method_id
+  , u.code_bytelength , COALESCE(u.token_standard, th.token_standard) AS token_standard
+  , u.code
+  , u.code_deploy_rank_by_chain
+  , u.is_eoa_deployed
+  , u.is_smart_wallet_deployed
+  , u.is_deterministic_deployer_deployed
 
+  ,
   {% if is_incremental() %}
   CASE WHEN
     th.contract_address IS NULL -- did not exist
@@ -293,9 +311,9 @@ SELECT u.*,
 
 FROM (
   SELECT
-    created_month,
-    blockchain,
-    trace_creator_address,  contract_address
+    created_month
+  , blockchain
+  , trace_creator_address, contract_address
   , initcap(contract_project) AS contract_project
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
