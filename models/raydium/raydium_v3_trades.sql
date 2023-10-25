@@ -1,8 +1,8 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'raydium_v3',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -15,6 +15,7 @@
                                     "raydium",
                                     \'["ilemi"]\') }}')
 }}
+
 
 {% set project_start_date = '2022-08-17' %} --grabbed program deployed at time (account created at)
 

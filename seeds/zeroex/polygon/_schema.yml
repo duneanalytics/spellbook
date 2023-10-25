@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: zeroex_polygon_api_fills_sample
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         block_number: bigint
@@ -30,7 +29,6 @@ seeds:
         tx_to: varbinary
   - name: zeroex_polygon_api_fills_deduped_sample
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         block_date: date

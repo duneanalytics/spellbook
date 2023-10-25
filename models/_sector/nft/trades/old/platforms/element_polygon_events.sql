@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_polygon',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

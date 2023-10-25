@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('view_pools'),
+    
+    alias = 'view_pools',
     materialized='table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',

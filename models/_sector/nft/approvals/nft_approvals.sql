@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('approvals'),
+        
+        alias = 'approvals',
         schema = 'nft',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',

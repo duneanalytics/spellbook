@@ -1,6 +1,5 @@
 {{config(
-    tags=['dunesql']
-    , alias = alias('aave_v2_deposit_size')
+     alias = 'aave_v2_deposit_size'
 )}}
 
 with latest_net_deposits AS ( 

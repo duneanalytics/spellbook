@@ -1,8 +1,8 @@
 {{
     config(
         schema = 'balancer_v2_avalanche_c',
-        tags = ['dunesql'],
-        alias = alias('pools_fees'),
+        
+        alias = 'pools_fees',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

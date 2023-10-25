@@ -1,8 +1,8 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'moola_celo',
-        alias = alias('flashloans'),
+        alias = 'flashloans',
         partition_by = ['evt_block_month'],
         materialized = 'incremental',
         file_format = 'delta',

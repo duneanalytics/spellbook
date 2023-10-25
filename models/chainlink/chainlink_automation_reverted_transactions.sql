@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('automation_reverted_transactions'),
+    
+    alias='automation_reverted_transactions',
     post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
                             "project",
                             "chainlink",
