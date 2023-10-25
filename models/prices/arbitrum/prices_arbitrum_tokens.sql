@@ -64,6 +64,7 @@ FROM
     ('myc-mycelium','arbitrum','MYC',0xc74fe4c715510ec2f8c61d70d397b32043f55abe,18),
     ('perp-perpetual-protocol','arbitrum','PERP',0x753d224bcf9aafacd81558c32341416df61d3dac,18),
     ('rai-rai-reflex-index','arbitrum','RAI',0xaef5bbcbfa438519a5ea80b4c7181b4e78d419f2,18),
+    ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
     ('rdpx-dopex-rebate-token','arbitrum','RDPX',0x32eb7902d4134bf98a28b963d26de779af92a212,18),
     ('rgt-rari-governance-token','arbitrum','RGT',0xef888bca6ab6b1d26dbec977c455388ecd794794,18),
     ('route-router-protocol','arbitrum','ROUTE',0x5298060a95205be6dd4abc21910a4bb23d6dcd8b,18),
