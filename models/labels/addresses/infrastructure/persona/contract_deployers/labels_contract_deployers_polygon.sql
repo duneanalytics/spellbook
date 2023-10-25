@@ -1,6 +1,6 @@
 {{
-    config(tags=['dunesql'],
-        alias = alias('contract_deployers_polygon'),
+    config(
+        alias = 'contract_deployers_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",

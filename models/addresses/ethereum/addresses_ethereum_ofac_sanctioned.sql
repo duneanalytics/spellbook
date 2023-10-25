@@ -1,5 +1,5 @@
-{{config(alias = alias('ofac_sanctioned'),
-        tags=['static', 'dunesql'],
+{{config(alias = 'ofac_sanctioned',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",

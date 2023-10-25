@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('mint'),
+    
+    alias = 'mint',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "ironbank",
