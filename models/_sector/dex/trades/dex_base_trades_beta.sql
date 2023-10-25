@@ -10,20 +10,12 @@
     )
 }}
 
-
--- (blockchain, project, project_version, model)
-{% set base_models = [
-    ('base',   'uniswap',    '3',    ref('uniswap_base_v3_base_trades'))
-] %}
-
-
 -- macros/models/sector/dex
 {{
-    dex_enrich_trades(
+    enrich_dex_trades(
         blockchain = 'base'
-        ,models = base_models
-        ,transactions_model = source('base', 'transactions')
-        ,tokens_erc20_model = ref('tokens_erc20')
-        ,prices_model = source('prices', 'usd')
+        , base_trades = ref('dex_base_base_trades')
+        , tokens_erc20_model = ref('tokens_erc20')
+        , prices_model = source('prices', 'usd')
     )
 }}
