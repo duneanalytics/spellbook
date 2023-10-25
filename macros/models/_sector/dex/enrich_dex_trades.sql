@@ -1,39 +1,10 @@
-{% macro dex_enrich_trades(
+{% macro enrich_dex_trades(
     blockchain='',
-    models=[],
-    transactions_model=null,
+    base_trades = null,
     tokens_erc20_model=null,
     prices_model=null
     )
 %}
-
-WITH base_union AS (
-    {% for dex_model in models %}
-    SELECT
-        '{{ blockchain }}' as blockchain,
-        '{{ dex_model[1] }}' as project,
-        '{{ dex_model[2] }}' as version,
-        block_date,
-        block_month,
-        block_time,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
-        token_bought_address,
-        token_sold_address,
-        taker,
-        maker,
-        project_contract_address,
-        tx_hash,
-        evt_index
-    FROM {{ dex_model[3] }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
-    {% endif %}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
-),
 
 prices AS (
     SELECT
@@ -79,13 +50,7 @@ enrichments AS (
         tx."from" AS tx_from,
         tx.to AS tx_to,
         base.evt_index
-    FROM base_union base
-    INNER JOIN {{ transactions_model }} tx
-        ON tx.hash = base.tx_hash
-        AND tx.block_time = base.block_time
-        {% if is_incremental() %}
-        AND {{incremental_predicate('tx.block_time')}}
-        {% endif %}
+    FROM {{ base_trades }} base
     LEFT JOIN {{ tokens_erc20_model }} erc20_bought
         ON erc20_bought.contract_address = base.token_bought_address
         AND erc20_bought.blockchain = '{{ blockchain }}'
