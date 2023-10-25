@@ -299,10 +299,6 @@ models:
         +schema: maverick_ethereum
       bnb:
         +schema: maverick_bnb
-      base:
-        +schema: maverick_base
-      zksync:
-        +schema: maverick_zksync
 
     daohaus:
       +schema: daohaus
