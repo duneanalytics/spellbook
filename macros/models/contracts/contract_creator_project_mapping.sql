@@ -145,7 +145,7 @@ WITH unified_contract_sources AS (
     ,3 as map_rank
   from {{ source( chain , 'logs') }} as l
     left join {{ source( chain , 'creation_traces') }} as ct 
-      ON l.contract_address = oc.address
+      ON l.contract_address = ct.address
     left join {{ source( chain , 'contracts') }} as oc 
       ON l.contract_address = oc.address
   WHERE
