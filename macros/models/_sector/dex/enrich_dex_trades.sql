@@ -6,7 +6,7 @@
     )
 %}
 
-prices AS (
+WITH prices AS (
     SELECT
         blockchain,
         contract_address,
@@ -15,7 +15,7 @@ prices AS (
     FROM {{ prices_model }}
     WHERE blockchain = '{{ blockchain }}'
     {% if is_incremental() %}
-     AND {{incremental_predicate('minute')}}
+     AND {{ incremental_predicate('minute') }}
     {% endif %}
 ),
 
