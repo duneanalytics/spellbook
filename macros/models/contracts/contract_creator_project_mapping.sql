@@ -164,7 +164,7 @@ WITH unified_contract_sources AS (
       and l.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, oc.created_at, l.tx_index, oc.code
+  GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, COALESCE(ct.block_time, oc.created_at), l.tx_index, oc.code
   
 )
 
