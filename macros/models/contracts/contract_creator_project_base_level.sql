@@ -168,7 +168,7 @@ SELECT
       OR (
           nd.creator_address = t.trace_creator_address
           AND 
-          t.creator_address != t.top_level_tx_from
+          t.creator_address != t.created_tx_from
         )
 
     
