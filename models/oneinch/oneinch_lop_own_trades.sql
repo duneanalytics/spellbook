@@ -8,10 +8,6 @@
 
 
 
-{% set lookback_days = -7 %}
-
-
-
 with
     
     orders as (
