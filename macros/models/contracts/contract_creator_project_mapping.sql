@@ -306,6 +306,7 @@ FROM (
   , initcap(contract_project) AS contract_project
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
+  , is_self_destruct
   , creation_tx_hash, created_block_number, created_tx_from
   , created_tx_to, created_tx_method_id, created_tx_index
   , top_level_time, top_level_tx_hash, top_level_block_number
