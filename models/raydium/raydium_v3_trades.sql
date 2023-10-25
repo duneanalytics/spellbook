@@ -16,6 +16,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
+
 {% set project_start_date = '2022-08-17' %} --grabbed program deployed at time (account created at)
 
   WITH
@@ -82,7 +83,29 @@
             , case when tk_1.token_mint_address = p.tokenA then p.tokenAVault 
                 else p.tokenBVault
                 end as token_sold_vault
-        FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} sp
+        FROM (
+            SELECT 
+                account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
+            FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} 
+            WHERE 1=1
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+            
+            UNION ALL 
+
+            SELECT 
+                account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
+            FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swapV2') }}
+            WHERE 1=1
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+        ) sp
         INNER JOIN pools p
             ON sp.account_poolState = p.pool_id --account 2
             and p.recent_init = 1 --for some reason, some pools get created twice.
@@ -99,8 +122,8 @@
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 
             ON tr_2.call_tx_id = sp.call_tx_id 
             AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 3)
-                OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 3))
+            AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
+                OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_2.call_block_time')}}
             {% else %}
@@ -108,12 +131,6 @@
             {% endif %}
         --we want to get what token was transfered out first as this is the sold token. THIS MUST BE THE DESTINATION account, the source account is commonly created/closed through swap legs.
         LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
-        WHERE 1=1
-        {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
-        {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
     )
     
 SELECT
