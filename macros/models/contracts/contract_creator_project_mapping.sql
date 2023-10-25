@@ -149,11 +149,16 @@ WITH unified_contract_sources AS (
     left join {{ source( chain , 'contracts') }} as oc 
       ON l.contract_address = oc.address
   WHERE
-    l.contract_address NOT IN (SELECT contract_address
+    l.contract_address NOT IN
+                        (SELECT contract_address
                           FROM {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }}
                           WHERE blockchain = '{{chain}}'
-                          )
-    AND l.contract_address NOT IN (SELECT contract_address FROM {{ ref('contracts_predeploys') }} WHERE pre.blockchain = '{{chain}}')
+                        )
+    AND l.contract_address NOT IN
+                        (
+                          SELECT contract_address FROM {{ ref('contracts_predeploys') }}
+                          WHERE blockchain = '{{chain}}'
+                        )
     
     {% if is_incremental() %} -- this filter will only be applied on an incremental run 
       and l.block_time >= date_trunc('day', now() - interval '7' day)
@@ -169,7 +174,9 @@ WITH unified_contract_sources AS (
     blockchain
     ,contract_address
     {% for col in cols %}
-    ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
+    , (array_agg({{ col }} ORDER BY map_rank ASC NULLS LAST)
+      filter (where {{ col }} is not NULL))[1]
+    as {{ col }}
     {% endfor %}
   FROM (
   select 
@@ -262,7 +269,6 @@ WITH unified_contract_sources AS (
         on c.contract_address = t_raw.contract_address
         AND c.created_block_number <= t_raw.min_block_number
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
-  ORDER BY map_rank ASC NULLS LAST --order we pick
   ) a
   where contract_address is not NULL 
   group by 1,2
