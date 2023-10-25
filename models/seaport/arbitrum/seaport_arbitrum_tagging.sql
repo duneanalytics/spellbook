@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('tagging'),
-    tags = ['dunesql', 'static'],
+    alias = 'tagging',
+    tags = [ 'static'],
     unique_key = ['blockchain', 'tagging_method', 'identifier'])
 }}
 

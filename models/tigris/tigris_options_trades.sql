@@ -1,6 +1,6 @@
 {{ config(
-	tags=['dunesql'],
-	alias = alias('options_trades'),
+	
+	alias = 'options_trades',
     post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
                                 "project",
                                 "tigris",

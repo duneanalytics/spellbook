@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
-    tags = ['dunesql'],
-    alias = alias('transfers_bpt'),
+    
+    alias = 'transfers_bpt',
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",

@@ -1,6 +1,6 @@
 {{ config(
-	tags=['dunesql'],
-	alias = alias('perpetual_trades'),
+	
+	alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "perpetual_protocol",

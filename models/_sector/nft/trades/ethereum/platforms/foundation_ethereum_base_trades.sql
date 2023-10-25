@@ -1,7 +1,7 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'foundation_ethereum',
-    alias = alias('base_trades'),
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

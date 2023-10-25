@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('quotation_trades'),
-    tags=['dunesql'],
+    alias = 'quotation_trades',
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

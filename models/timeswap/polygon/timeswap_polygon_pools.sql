@@ -1,7 +1,6 @@
 {{ config(
-    tags = ['dunesql']
-    ,schema = 'timeswap_polygon'
-    ,alias = alias('pools')
+    schema = 'timeswap_polygon'
+    ,alias = 'pools'
     ,unique_key = ['pool_pair', 'maturity', 'strike']
     ,post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",

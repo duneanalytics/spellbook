@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('liquidity_manager_pools'),
+        
+        alias = 'liquidity_manager_pools',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "uniswap",

@@ -20,8 +20,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
@@ -52,8 +52,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
@@ -84,8 +84,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
@@ -116,8 +116,8 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  cast(0 AS UINT256) AS platform_fee_amount_raw,
-  cast(0 AS UINT256) AS royalty_fee_amount_raw,
+  UINT256 '0' AS platform_fee_amount_raw,
+  UINT256 '0' AS royalty_fee_amount_raw,
   cast(NULL AS VARBINARY) AS platform_fee_address,
   cast(NULL AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,

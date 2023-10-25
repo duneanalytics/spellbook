@@ -1,8 +1,8 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'addresses_events_celo',
-        alias = alias('first_activity'),
+        alias = 'first_activity',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'append',

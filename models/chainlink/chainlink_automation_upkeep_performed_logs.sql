@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('automation_upkeep_performed_logs'),
+    
+    alias='automation_upkeep_performed_logs',
     post_hook='{{ expose_spells(\'["ethereum", "avalanche_c", "bnb", "fantom", "polygon"]\',
                             "project",
                             "chainlink",
