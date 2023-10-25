@@ -164,8 +164,8 @@ SELECT
 
     -- If the creator becomes marked as deterministic, we want to re-run it.
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-      ON nd.creator_address = t.creator_address
-      OR (
+      ON nd.creator_address = t.creator_address -- creator is not deterministic
+      OR ( --somewhere in the flow up was not deterministic
           nd.creator_address = t.trace_creator_address
           AND 
           t.creator_address != t.created_tx_from
