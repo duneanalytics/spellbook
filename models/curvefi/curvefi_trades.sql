@@ -1,8 +1,8 @@
 {{ config(
-        tags = ['dunesql'],
+        schema = 'curvefi',
         partition_by = ['block_month'],
-        alias = alias('trades'),
-        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom","celo"]\',
+        alias = 'trades',
+        post_hook = '{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom","celo"]\',
                                 "project",
                                 "curvefi",
                                 \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste","tomfutago"]\') }}'

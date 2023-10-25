@@ -1,13 +1,9 @@
 {{
     config(
-        tags = ['dunesql'],
-        alias = alias('pools'),
+        schema = 'curvefi_celo',
+        alias = 'pools',
         materialized = 'table',
-        unique_key = ['version', 'tokenid', 'token', 'pool'],
-        post_hook = '{{ expose_spells(\'["celo"]\',
-                                    "project",
-                                    "curvefi",
-                                    \'["tomfutago"]\') }}'
+        unique_key = ['version', 'tokenid', 'token', 'pool']
     )
 }}
 
