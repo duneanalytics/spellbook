@@ -10,7 +10,8 @@
 WITH dexs AS
 (
     SELECT
-        t.evt_block_time AS block_time
+        t.evt_block_number AS block_number
+        ,t.evt_block_time AS block_time
         ,t.to AS taker
         ,t.contract_address AS maker
         ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
@@ -34,6 +35,7 @@ SELECT
     , '{{ version }}' AS version
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    , dexs.block_number
     , dexs.block_time
     , dexs.token_bought_amount_raw AS token_bought_amount_raw
     , dexs.token_sold_amount_raw AS token_sold_amount_raw

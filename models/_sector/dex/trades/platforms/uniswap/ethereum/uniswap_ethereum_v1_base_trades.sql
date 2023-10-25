@@ -15,7 +15,8 @@
 WITH dexs AS
 (
     -- Uniswap v1 TokenPurchase
-    SELECT t.evt_block_time     AS block_time
+    SELECT t.evt_block_number  AS block_number
+         ,t.evt_block_time     AS block_time
          ,t.buyer              AS taker
          ,CAST(NULL as VARBINARY) as maker
          ,t.tokens_bought AS token_bought_amount_raw
@@ -35,7 +36,8 @@ WITH dexs AS
     UNION ALL
 
     -- Uniswap v1 EthPurchase
-    SELECT t.evt_block_time     AS block_time
+    SELECT t.evt_block_number  AS block_number
+         ,t.evt_block_time     AS block_time
          ,t.buyer              AS taker
          ,CAST(NULL as VARBINARY) as maker
          ,t.eth_bought AS token_bought_amount_raw
@@ -58,7 +60,8 @@ SELECT
     , 'uniswap' AS project
     , '1' AS version
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
-    ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    , dexs.block_number
     , dexs.block_time
     , dexs.token_bought_amount_raw  AS token_bought_amount_raw
     , dexs.token_sold_amount_raw AS token_sold_amount_raw

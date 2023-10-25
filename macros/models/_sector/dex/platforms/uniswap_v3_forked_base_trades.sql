@@ -9,7 +9,8 @@
 
 WITH dexs AS
 (
-    SELECT t.evt_block_time                                                AS block_time
+    SELECT t.evt_block_number                                              AS block_number
+         , t.evt_block_time                                                AS block_time
          , t.recipient                                                     AS taker
          , CAST(NULL as VARBINARY) as maker
          , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
@@ -34,6 +35,7 @@ SELECT
     , '{{ version }}' AS version
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    , dexs.block_number
     , dexs.block_time
     , CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw

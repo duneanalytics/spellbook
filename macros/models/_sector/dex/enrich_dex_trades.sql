@@ -26,6 +26,7 @@ enrichments AS (
         base.version,
         base.block_date,
         base.block_month,
+        base.block_number,
         base.block_time,
         erc20_bought.symbol AS token_bought_symbol,
         erc20_sold.symbol AS token_sold_symbol,

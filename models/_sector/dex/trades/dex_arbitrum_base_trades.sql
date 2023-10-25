@@ -25,6 +25,7 @@ WITH base_union AS (
             version,
             block_date,
             block_month,
+            block_number,
             block_time,
             token_bought_amount_raw,
             token_sold_amount_raw,
