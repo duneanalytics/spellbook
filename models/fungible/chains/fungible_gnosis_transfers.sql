@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'fungible_gnosis',
-        alias=alias('transfers'),
+        alias='transfers',
 )
 }}
 

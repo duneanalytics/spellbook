@@ -1,6 +1,6 @@
 {{config(
-        tags=['dunesql', 'prod_exclude'],
-        alias = alias('airdrop'),
+        tags=[ 'prod_exclude'],
+        alias = 'airdrop',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

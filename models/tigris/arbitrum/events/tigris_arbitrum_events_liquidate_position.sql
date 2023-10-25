@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('events_liquidate_position'),
+    alias = 'events_liquidate_position',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

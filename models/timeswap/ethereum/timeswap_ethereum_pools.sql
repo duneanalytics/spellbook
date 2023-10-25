@@ -1,7 +1,6 @@
 {{ config(
-    tags = ['dunesql']
-    ,schema = 'timeswap_ethereum'
-    ,alias = alias('pools')
+    schema = 'timeswap_ethereum'
+    ,alias = 'pools'
     ,unique_key = ['pool_pair', 'maturity', 'strike']
     ,post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",

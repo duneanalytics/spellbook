@@ -1,7 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities'),
-    tags = ['dunesql'],
+    alias = 'entities',
+    
     unique_key = ['depositor_address', 'tx_from', 'pubkey'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",

@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql']
-    ,schema = 'wardenswap_optimism'
-    ,alias = alias('trades')
+{{ config(
+    schema = 'wardenswap_optimism'
+    ,alias = 'trades'
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'

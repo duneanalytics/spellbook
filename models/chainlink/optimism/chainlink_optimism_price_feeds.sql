@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('price_feeds'),
+    
+    alias='price_feeds',
     partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
