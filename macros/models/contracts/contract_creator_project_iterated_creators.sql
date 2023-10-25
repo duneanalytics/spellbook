@@ -58,7 +58,6 @@ with level0
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
       ,b.code
       ,b.is_new_contract
-      ,b.contract_order
 
     {% if loop.first -%}
     from {{ref('contracts_' + chain + '_contract_creator_project_base_level') }} as b
