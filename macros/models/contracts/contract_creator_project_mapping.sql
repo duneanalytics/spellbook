@@ -16,7 +16,6 @@
     ,"created_time"
     ,"created_month"
     ,"created_block_number"
-    ,"is_self_destruct"
     ,"creation_tx_hash"
     ,"top_level_tx_hash"
     ,"top_level_block_number"
