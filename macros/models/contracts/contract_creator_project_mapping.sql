@@ -285,7 +285,12 @@ SELECT
   , u.created_tx_to, u.created_tx_method_id, u.created_tx_index
   , u.top_level_time, u.top_level_tx_hash, u.top_level_block_number
   , u.top_level_tx_from, u.top_level_tx_to , u.top_level_tx_method_id
-  , u.code_bytelength , COALESCE(u.token_standard, th.token_standard) AS token_standard
+  , u.code_bytelength
+  {% if is_incremental() %}
+  , COALESCE(u.token_standard, th.token_standard) AS token_standard
+  {% else -%}
+  , u.token_standard
+  {% endif %}
   , u.code
   , u.code_deploy_rank_by_chain
   , u.is_eoa_deployed
