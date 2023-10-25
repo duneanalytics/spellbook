@@ -511,7 +511,7 @@ models:
       - *minute
       - *block_month_not_null
 
-  - name: oneinch_lop_trades
+  - name: oneinch_lop_own_trades
     meta:
       blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
       sector: oneinch
