@@ -1,6 +1,6 @@
 {{ config(
-    tags = ['dunesql'],
-    alias = alias('pool_details')
+    
+    alias = 'pool_details'
 ) }}
 
 SELECT

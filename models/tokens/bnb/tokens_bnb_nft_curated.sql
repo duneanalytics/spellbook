@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('nft_curated'),
-        tags=['static', 'dunesql']
+        alias = 'nft_curated',
+        tags=['static']
         )
 }}
 

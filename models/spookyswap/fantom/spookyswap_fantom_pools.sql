@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('pools'),
+    
+    alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -13,7 +13,7 @@
 }}
 
 SELECT 'fantom' AS blockchain
-, 'spookswap' AS project
+, 'spookyswap' AS project
 , '1' AS version
 , pair AS pool
 , CAST(0.2 as decimal) AS fee

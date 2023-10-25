@@ -1,7 +1,7 @@
 {{ config(
-        alias = alias('pool_balance_changes'),
+        alias = 'pool_balance_changes',
         schema = 'sudoswap_ethereum',
-        tags = ['dunesql'],
+        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

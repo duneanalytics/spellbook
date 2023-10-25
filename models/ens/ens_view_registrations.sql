@@ -1,6 +1,6 @@
 {{config(
-        alias = alias('view_registrations'),
-        tags = ['dunesql'],
+        alias = 'view_registrations',
+        
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "ens",

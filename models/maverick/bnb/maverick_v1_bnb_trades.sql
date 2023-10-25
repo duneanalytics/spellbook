@@ -1,6 +1,6 @@
-{{ config(tags=['dunesql'],
+{{ config(
     schema = 'maverick_v1_bnb',
-    alias = alias('trades'),
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

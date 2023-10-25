@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('read_requests_requester_daily'),
+    
+    alias='read_requests_requester_daily',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',

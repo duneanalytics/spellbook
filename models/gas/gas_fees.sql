@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('fees'),
+        
+        alias = 'fees',
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum"]\',
                                 "sector",
                                 "gas",

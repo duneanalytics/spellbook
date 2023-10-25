@@ -1,6 +1,6 @@
 {{config(
-        tags=['dunesql'],
-        alias = alias('nft'),
+        
+        alias = 'nft',
         post_hook='{{ expose_spells(\'["ethereum","solana"]\',
                                     "sector",
                                     "labels",

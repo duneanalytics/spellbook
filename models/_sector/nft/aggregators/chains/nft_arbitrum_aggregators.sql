@@ -1,7 +1,7 @@
 {{config(
-    tags= ['dunesql'],
+    
     schema = 'nft_arbitrum',
-    alias=alias('aggregators')
+    alias='aggregators'
 )}}
 
 SELECT
