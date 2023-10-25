@@ -56,7 +56,7 @@
 
 -- we have to do some column wrangling here to convert the old schema to the new base_trades schema
 SELECT * FROM  (
-{% for nft_model in models %}
+{% for nft_model in nft_models %}
     SELECT
         blockchain,
         project,
