@@ -18,7 +18,7 @@
 
 with base_union as (
 SELECT * FROM  (
-{% for nft_model in models %}
+{% for nft_model in nft_models %}
     SELECT
         blockchain,
         project,
