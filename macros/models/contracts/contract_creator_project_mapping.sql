@@ -70,7 +70,7 @@ WITH unified_contract_sources AS (
     LEFT JOIN {{ref('contracts_contract_creator_address_list')}} ald
       ON ic.deployer_address = ald.creator_address
     left join {{ source( chain , 'contracts') }} as oc 
-      ON l.contract_address = oc.address
+      ON ic.contract_address = oc.address
 ---
 -- predeploys
 ---
