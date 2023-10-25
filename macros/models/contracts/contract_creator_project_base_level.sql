@@ -9,7 +9,7 @@ SELECT
         ,contract_address
         
         ,created_time
-        ,DATE_TRUNC('month',created_time) AS created_month
+        ,cast( DATE_TRUNC('month',created_time) as date) AS created_month
         ,created_block_number
         ,creation_tx_hash
         ,created_tx_from
