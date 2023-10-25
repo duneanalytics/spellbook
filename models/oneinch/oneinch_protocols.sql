@@ -21,7 +21,8 @@
         'fantom',
         'gnosis',
         'optimism',
-        'polygon'
+        'polygon',
+        'zksync'
     ]
 %}
 
@@ -47,6 +48,7 @@ contracts as (
             , (0x1111111254fb6c44bac0bed2854e76f90643097d, 'AR-V4',  'Aggregation Router V4',   array['ethereum', 'bnb', 'polygon', 'gnosis', 'arbitrum', 'avalanche_c', 'fantom'])
             , (0x1111111254760f7ab3f16433eea9304126dcd199, 'AR-V4',  'Aggregation Router V4',   array['optimism'])
             , (0x1111111254eeb25477b68fb85ed929f73a960582, 'V5&V3',  'AR V5 & LOP V3',          array['ethereum', 'bnb', 'polygon', 'gnosis', 'arbitrum', 'avalanche_c', 'optimism', 'fantom', 'base'])
+            , (0x6e2b76966cbd9cf4cc2fa0d76d24d5241e0abc2f, 'V5&V3',  'AR V5 & LOP V3',          array['zksync'])
 
             , (0x3ef51736315f52d568d6d2cf289419b9cfffe782, 'LOP-V1', 'Limit Order Protocol V1', array['ethereum'])
             , (0xe3456f4ee65e745a44ec3bcb83d0f2529d1b84eb, 'LOP-V1', 'Limit Order Protocol V1', array['bnb'])
