@@ -54,7 +54,6 @@ with level0
         then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
 
       ,b.code_bytelength
-      ,b.token_standard
       ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
       ,b.code
