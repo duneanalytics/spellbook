@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('pool_incentives_config')
-    , tags=['static', 'dunesql']
+    alias = 'pool_incentives_config'
+    , tags=['static']
     )
 }}
 

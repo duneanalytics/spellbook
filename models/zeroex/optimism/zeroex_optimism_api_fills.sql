@@ -1,7 +1,7 @@
 {{  config(
          schema = 'zeroex_optimism',
-        tags=['dunesql'],
-        alias = alias('api_fills'),
+        
+        alias = 'api_fills',
         materialized='incremental',                                      
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],

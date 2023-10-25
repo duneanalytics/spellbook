@@ -1,8 +1,8 @@
 {{ 
     config(
         materialized='incremental',
-        tags = ['dunesql'],
-        alias = alias('matic_transfers'),
+        
+        alias = 'matic_transfers',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',

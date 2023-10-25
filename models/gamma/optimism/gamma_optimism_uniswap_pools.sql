@@ -1,8 +1,8 @@
  {{
   config(
-        tags=['dunesql'],
+        
         schema='gamma_optimism',
-        alias = alias('uniswap_pools'),
+        alias = 'uniswap_pools',
         materialized = 'table',
         unique_key = ['contract_address', 'pool_contract']
   )

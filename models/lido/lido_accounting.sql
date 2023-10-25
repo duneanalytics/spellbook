@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('accounting'),
-        tags = ['dunesql'], 
+        alias = 'accounting',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
