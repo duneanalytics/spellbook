@@ -206,7 +206,7 @@ WITH unified_contract_sources AS (
     ,c.top_level_tx_method_id
 
     ,c.code_bytelength
-    ,COALESCE(t_mapped.token_standard, t_raw.token_standard, c.token_standard) AS token_standard
+    ,COALESCE(t_mapped.token_standard, t_raw.token_standard) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
@@ -235,6 +235,7 @@ WITH unified_contract_sources AS (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
             FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
             WHERE 1=1
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             AND r.evt_block_time > NOW() - interval '7' day
             {% endif %}
@@ -243,6 +244,7 @@ WITH unified_contract_sources AS (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
             FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
             WHERE 1=1
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             AND r.evt_block_time > NOW() - interval '7' day
             {% endif %}
@@ -251,6 +253,7 @@ WITH unified_contract_sources AS (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc721' as token_standard
             FROM {{source('erc721_' + chain, 'evt_transfer')}} r
             WHERE 1=1
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             AND r.evt_block_time > NOW() - interval '7' day
             {% endif %}
@@ -259,6 +262,7 @@ WITH unified_contract_sources AS (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r
             WHERE 1=1
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_erc20')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             AND r.evt_block_time > NOW() - interval '7' day
             {% endif %}
@@ -268,6 +272,7 @@ WITH unified_contract_sources AS (
         ) as t_raw
         on c.contract_address = t_raw.contract_address
         AND c.created_block_number <= t_raw.min_block_number
+        AND t_mapped.contract_address IS NULL
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   ) a
   where contract_address is not NULL 
