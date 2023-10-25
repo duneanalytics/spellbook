@@ -61,7 +61,7 @@ WITH unified_contract_sources AS (
     ,created_tx_index
     ,code_bytelength
     ,code_deploy_rank_by_chain
-    ,code
+    ,ic.code
     ,1 as map_rank
   from {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }} ic
   -- map creator here
