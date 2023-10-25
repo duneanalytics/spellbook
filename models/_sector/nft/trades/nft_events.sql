@@ -1,7 +1,7 @@
 {{ config(
     schema = 'nft',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',

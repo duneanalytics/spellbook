@@ -1,5 +1,5 @@
-{{ config( alias = alias('erc20'),
-        tags=['static', 'dunesql'],
+{{ config( alias = 'erc20',
+        tags=['static'],
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo"]\',
                                     "sector",
                                     "tokens",

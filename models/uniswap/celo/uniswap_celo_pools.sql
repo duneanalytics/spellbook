@@ -1,7 +1,7 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'uniswap_celo',
-    alias = alias('pools'),
+    alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

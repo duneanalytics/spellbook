@@ -1,11 +1,11 @@
 {{ config(
-    tags=['dunesql'],
+    
     materialized = 'incremental',
     partition_by = ['block_month'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
-    alias = alias('erc20'),
+    alias = 'erc20',
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "transfers",

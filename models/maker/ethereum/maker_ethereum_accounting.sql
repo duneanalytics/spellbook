@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('accounting'),
+        
+        alias = 'accounting',
         partition_by = ['dt'],
         materialized = 'table',
         file_format = 'delta',
