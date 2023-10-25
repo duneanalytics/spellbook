@@ -315,6 +315,8 @@ FROM (
   , code
   , code_deploy_rank_by_chain
   , is_eoa_deployed
+  , is_smart_wallet_deployed
+  , is_deterministic_deployer_deployed
 
   FROM (
     select 
