@@ -16,7 +16,16 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      
+      - check_seed:
+          seed_file: ref('zeroex_optimism_api_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - taker_token
+            - taker_token_amount
     columns:
       - &tx_hash
         name: tx_hash
