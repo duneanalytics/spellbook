@@ -107,14 +107,6 @@ SELECT
             and t.block_time >= date_trunc('day', now() - interval '7' day)
             AND ct.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
-          left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
-            on ct.address = sd.contract_address
-            and ct.tx_hash = sd.creation_tx_hash
-            and ct.block_time = sd.created_time
-            AND sd.blockchain = '{{chain}}'
-            {% if is_incremental() %}
-            and sd.created_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
           left join {{ ref('evm_smart_account_method_ids') }} aa 
             ON aa.method_id = bytearray_substring(t.data,1,4)
           where 
