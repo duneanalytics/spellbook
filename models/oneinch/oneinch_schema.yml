@@ -462,7 +462,7 @@ models:
 
   - name: oneinch_lop
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -513,7 +513,7 @@ models:
 
   - name: oneinch_lop_trades
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:

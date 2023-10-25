@@ -52,7 +52,7 @@
         },
         'AggregationRouterV5': {
             'version': '3',
-            'blockchains': ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom", "base"],
+            'blockchains': ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom", "base", "zksync"],
             'start': '2022-11-04',
             'methods': {
                 'fillOrder': {
