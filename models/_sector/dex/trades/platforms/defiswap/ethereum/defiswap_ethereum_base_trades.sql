@@ -13,7 +13,10 @@
 
 {{
     uniswap_v2_forked_base_trades(
-        Pair_evt_Swap = source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
+        blockchain = 'ethereum'
+        , project = 'defiswap'
+        , version = '1'
+        , Pair_evt_Swap = source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
         , Factory_evt_PairCreated = source('crodefi_ethereum', 'CroDefiSwapFactory_evt_PairCreated')
     )
 }}

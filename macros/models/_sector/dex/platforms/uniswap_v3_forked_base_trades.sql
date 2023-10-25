@@ -1,5 +1,8 @@
 {% macro uniswap_v3_forked_base_trades(
-    Pair_evt_Swap = null
+    blockchain = null
+    , project = null
+    , version = null
+    , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
     )
 %}
@@ -26,7 +29,10 @@ WITH dexs AS
 )
 
 SELECT
-    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    '{{ blockchain }}' AS blockchain
+    , '{{ project }}' AS project
+    , '{{ version }}' AS version
+    , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , dexs.block_time
     , CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw

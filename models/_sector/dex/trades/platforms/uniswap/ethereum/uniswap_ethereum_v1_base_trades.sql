@@ -53,8 +53,11 @@ WITH dexs AS
     {% endif %}
 )
 
-SELECT 
-    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+SELECT
+    'ethereum' AS blockchain
+    , 'uniswap' AS project
+    , '1' AS version
+    , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , dexs.block_time
     , dexs.token_bought_amount_raw  AS token_bought_amount_raw

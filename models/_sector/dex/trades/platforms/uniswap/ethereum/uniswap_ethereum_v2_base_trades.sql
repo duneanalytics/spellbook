@@ -18,7 +18,10 @@ WITH dexs AS
 (
     {{
     uniswap_v2_forked_base_trades(
-        Pair_evt_Swap = source('uniswap_v2_ethereum', 'Pair_evt_Swap')
+        blockchain = 'ethereum'
+        , project = 'uniswap'
+        , version = '2'
+        , Pair_evt_Swap = source('uniswap_v2_ethereum', 'Pair_evt_Swap')
         , Factory_evt_PairCreated = source('uniswap_v2_ethereum', 'Factory_evt_PairCreated')
     )
     }}

@@ -13,7 +13,10 @@
 
 {{
     uniswap_v3_forked_base_trades(
-        Pair_evt_Swap = source('uniswap_v3_base', 'UniswapV3Pool_evt_Swap')
+        blockchain = 'base'
+        , project = 'uniswap'
+        , version = '3'
+        , Pair_evt_Swap = source('uniswap_v3_base', 'UniswapV3Pool_evt_Swap')
         , Factory_evt_PoolCreated = source('uniswap_v3_base', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
