@@ -1,6 +1,5 @@
  {{
   config(
-        
         schema = 'contracts_ethereum',
         alias = 'find_self_destruct_contracts',
         materialized ='incremental',

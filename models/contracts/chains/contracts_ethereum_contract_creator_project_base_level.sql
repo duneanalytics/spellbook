@@ -1,7 +1,7 @@
  {{
   config(
-        schema = 'contracts_base',
-        alias = 'creator_project_mapping',
+        schema = 'contracts_ethereum',
+        alias = 'contract_creator_project_base_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -11,6 +11,6 @@
   )
 }}
 
-{{contract_creator_project_mapping_by_chain(
-    chain='base'
+{{contract_creator_project_base_level(
+    chain='ethereum'
 )}}
