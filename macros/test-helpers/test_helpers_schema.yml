@@ -1,7 +1,5 @@
 version: 2
 
 macros:
-  - name: check_seed_macro_legacy
-    description: "Macro to be used in generic seed check tests. It checks if every row in a seed file is present in the model"
   - name: check_seed_macro
     description: "Macro to be used in generic seed check tests. It checks if every row in a seed file is present in the model"

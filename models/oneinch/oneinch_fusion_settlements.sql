@@ -1,10 +1,10 @@
 {{
     config(
         schema = 'oneinch',
-        alias = alias('fusion_settlements'),
+        alias = 'fusion_settlements',
         materialized = 'view',
         unique_key = ['contract_address', 'blockchain'],
-        tags = ['dunesql']
+        
     )
 }}
 

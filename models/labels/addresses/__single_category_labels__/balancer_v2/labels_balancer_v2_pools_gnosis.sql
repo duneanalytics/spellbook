@@ -1,7 +1,7 @@
 {{config(
-  alias = alias('balancer_v2_pools_gnosis'),
+  alias = 'balancer_v2_pools_gnosis',
   materialized = 'incremental',
-  tags = ['dunesql'],
+  
   file_format = 'delta',
   incremental_strategy = 'merge',
   unique_key = ['address'],

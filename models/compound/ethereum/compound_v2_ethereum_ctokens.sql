@@ -1,7 +1,7 @@
 {{ config(
-	tags=['dunesql'],
+	
     schema = 'compound_v2_ethereum',
-    alias = alias('ctokens'),
+    alias = 'ctokens',
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "compound_v2",

@@ -1,11 +1,10 @@
 {{ config(
-  tags = ['dunesql']
-  , schema = 'aave_v3_optimism'
+   schema = 'aave_v3_optimism'
   , materialized = 'incremental'
   , file_format = 'delta'
   , incremental_strategy = 'merge'
   , unique_key = ['reserve', 'symbol', 'hour']
-  , alias = alias('interest')
+  , alias = 'interest'
   , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave_v3",

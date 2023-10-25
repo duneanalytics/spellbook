@@ -1,7 +1,7 @@
 {{
   config(
-        tags=['dunesql'],
-        alias = alias('jfiat_address_mapping'),
+        
+        alias = 'jfiat_address_mapping',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "jarvis_network",

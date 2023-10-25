@@ -1,8 +1,8 @@
 {{
     config(
         schema='balancer_v2_optimism',
-        alias = alias('liquidity'),
-        tags = ['dunesql'],
+        alias = 'liquidity',
+        
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["optimism"]\',
