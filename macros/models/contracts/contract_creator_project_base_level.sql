@@ -165,6 +165,11 @@ SELECT
     -- If the creator becomes marked as deterministic, we want to re-run it.
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = t.creator_address
+      OR (
+          nd.creator_address = t.trace_creator_address
+          AND 
+          t.creator_address != t.top_level_tx_from
+        )
 
     
     WHERE t.blockchain = '{{chain}}'
