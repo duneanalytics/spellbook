@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
         alias = 'vault_balances',
         partition_by = ['block_date'],
         materialized = 'incremental',

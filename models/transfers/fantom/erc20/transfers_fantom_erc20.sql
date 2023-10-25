@@ -1,4 +1,5 @@
 {{ config(
+tags=['prod_exclude'],
     alias = 'erc20',
     materialized = 'incremental',
     file_format = 'delta',

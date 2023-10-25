@@ -1,4 +1,5 @@
-{{ config(materialized='view', alias = 'erc20',
+{{ config(
+tags=['prod_exclude'],materialized='view', alias = 'erc20',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "transfers",
