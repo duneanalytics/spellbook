@@ -97,6 +97,14 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
+  - name: dex_arbitrum_base_trades
+  - name: dex_base_base_trades
+  - name: dex_bnb_base_trades
+  - name: dex_celo_base_trades
+  - name: dex_ethereum_base_trades
+  - name: dex_optimism_base_trades
+  - name: dex_polygon_base_trades
+
   - name: dex_arbitrum_trades_beta
     meta:
       blockchain: arbitrum
