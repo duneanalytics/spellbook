@@ -12,7 +12,7 @@
 
 WITH 
       distinct_accounts as (
-            --force update
+            --force
             SELECT
                   token_mint_address
                   , address 
