@@ -115,5 +115,13 @@ FROM
     ('euros-the-standard-euro','arbitrum','EUROS',0x643b34980e635719c15a2d4ce69571a258f940e9,18),
     ('dmt1-dmt','arbitrum','DMT',0x8b0e6f19ee57089f7649a455d89d7bc6314d04e8,18),
     ('pbx-paribus','arbitrum','PBX',0xbad58ed9b5f26a002ea250d7a60dc6729a4a2403,18),
-    ('pls-plutusdao','arbitrum','PLS',0x51318b7d00db7acc4026c88c3952b66278b6a67f,18)
+    ('pls-plutusdao','arbitrum','PLS',0x51318b7d00db7acc4026c88c3952b66278b6a67f,18),
+    ('pendle-pendle','arbitrum','PENDLE',0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8,18),
+    ('tig-tigris','arbitrum','TIG',0x3a33473d7990a605a88ac72a78ad4efc40a54adb,18),
+    ('aidoge-arbdoge-ai','arbitrum','AIDOGE',0x09e18590e8f76b6cf471b3cd75fe1a1a9d2b2c2b,6),
+    ('lode-lodestar','arbitrum','LODE',0xf19547f9ed24aa66b03c3a552d181ae334fbb8db,18),
+    ('hmx-hmx','arbitrum','HMX',0x83d6c8c06ac276465e4c92e7ac8c23740f435140,18),
+    ('aibb-bullbear-ai','arbitrum','AIBB',0xb9af4762c039d63e30039f1712dfab77026408c7,18),
+    ('dca-autodca','arbitrum','DCA',0x965f298e4ade51c0b0bb24e3369deb6c7d5b3951,18),
+    ('ush-unsheth','arbitrum','USH',0x51a80238b5738725128d3a3e06ab41c1d4c05c74,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
