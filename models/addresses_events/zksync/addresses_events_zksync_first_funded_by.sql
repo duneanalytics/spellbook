@@ -1,7 +1,6 @@
 {{ config(
     schema = 'addresses_events_zksync'
-    , tags = ['dunesql']
-    , alias = alias('first_funded_by')
+    , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'append'
