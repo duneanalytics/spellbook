@@ -33,10 +33,10 @@ SELECT
     '{{ blockchain }}' AS blockchain
     , '{{ project }}' AS project
     , '{{ version }}' AS version
-    , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-    , dexs.block_number
+    , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , dexs.block_time
+    , dexs.block_number
     , CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
