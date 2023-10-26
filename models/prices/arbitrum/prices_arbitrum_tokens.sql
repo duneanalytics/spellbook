@@ -123,5 +123,11 @@ FROM
     ('hmx-hmx','arbitrum','HMX',0x83d6c8c06ac276465e4c92e7ac8c23740f435140,18),
     ('aibb-bullbear-ai','arbitrum','AIBB',0xb9af4762c039d63e30039f1712dfab77026408c7,18),
     ('dca-autodca','arbitrum','DCA',0x965f298e4ade51c0b0bb24e3369deb6c7d5b3951,18),
-    ('ush-unsheth','arbitrum','USH',0x51a80238b5738725128d3a3e06ab41c1d4c05c74,18)
+    ('ush-unsheth','arbitrum','USH',0x51a80238b5738725128d3a3e06ab41c1d4c05c74,18),
+    ('hdn-hydranet','arbitrum','HDN',0x3404149e9ee6f17fb41db1ce593ee48fbdcd9506,18),
+    ('vela-vela-token','arbitrum','VELA',0x088cd8f5ef3652623c22d48b1605dcfe860cd704,18),
+    ('choke-artichoke','arbitrum','CHOKE',0x6fc2680d8ad8e8312191441b4eca9eff8d06b45a,18),
+    ('pot-traderdao','arbitrum','POT',0x76ce14237110c865f431e18f91fc1b225fb6fe99,18),
+    ('arbi-arbipad','arbitrum','ARBI',0x07dd5beaffb65b8ff2e575d500bdf324a05295dc,18),
+    ('acid-0xacid','arbitrum','ACID',0x29c1ea5ed7af53094b1a79ef60d20641987c867e,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
