@@ -110,7 +110,7 @@ FROM
     ('grail-camelot-token','arbitrum','GRAIL',0x3d9907f9a368ad0a51be60f7da3b97cf940982d8,18),
     ('pnp-penpie','arbitrum','PNP',0x2ac2b254bc18cd4999f64773a966e4f4869c34ee,18),
     ('premia-premia','arbitrum','PNP',0x51fc0f6660482ea73330e414efd7808811a57fa2,18),
-    ('kuji-kujira6','arbitrum','KUJI',0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca,6),
+    ('kuji-kujira','arbitrum','KUJI',0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca,6),
     ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
     ('euros-the-standard-euro','arbitrum','EUROS',0x643b34980e635719c15a2d4ce69571a258f940e9,18),
     ('dmt1-dmt','arbitrum','DMT',0x8b0e6f19ee57089f7649a455d89d7bc6314d04e8,18),
