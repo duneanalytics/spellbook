@@ -81,7 +81,7 @@ SELECT
     {% else %}
     coalesce(agg1.name,agg2.name) as aggregator_name
     {% endif %}
-FROM {{base_union}} base
+FROM {{base_trades}} base
 LEFT JOIN {{ref('tokens_nft')}} nft
     ON nft.blockchain = base.blockchain
     AND nft.contract_address = base.nft_contract_address
