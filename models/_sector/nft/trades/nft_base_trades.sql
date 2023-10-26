@@ -55,5 +55,4 @@ SELECT * FROM  (
     {% endfor %}
     )
 )
-
 select * from base_union
