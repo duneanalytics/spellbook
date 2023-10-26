@@ -24,7 +24,7 @@ FROM
     , (0x194bd70b59491ce1310ea0bceabdb6c23ac9d5b2, 'HTX', 'HTX 1', 'CEX')
     , (0xb73f4d4e99f65ec4b16b684e44f81aeca5ba2b7c, 'HTX', 'HTX 2', 'CEX')
     , (0x39FD78FE6A72FaaE2aB5f1f053c253B2e3685C15, 'HTX', 'HTX 3', 'CEX')
-    , (0x5bbe36152d3cd3eb7183a82470b39b29eedf068b, 'Hord', 'Hord 1', 'CEX')
+    , (0x5bbe36152d3cd3eb7183a82470b39b29eedf068b, 'Hord', 'Hord 1', 'Liquid Staking')
     , (0xbf1556a7d625654e3d64d1f0466a60a697fac178, 'imToken', 'imToken Staking[NodeProviderInfStones]', 'Staking Pool')
     , (0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d, 'SharedStake', 'SharedStake', 'Liquid Staking')
     , (0xeadcba8bf9aca93f627f31fb05470f5a0686ceca, 'StakeWise Solos', 'StakeWise Solos', 'Staking Pool')
