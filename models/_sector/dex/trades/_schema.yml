@@ -3,16 +3,14 @@ version: 2
 models:
   - name: dex_trades_beta
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum, base, bnb, celo, ethereum, optimism, polygon
       sector: dex
-      contributors: 0xRob, hosuke
+      contributors: 0xRob, hosuke, jeff-dude
     config:
       tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex trades model"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - blockchain
             - project
             - version
@@ -32,18 +30,18 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_date
-        name: block_date
-        description: "UTC event block date of each DEX trade"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
-      - &block_number
-        name: block_number
-        description: "Block number of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "Block number of each DEX trade"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -71,7 +69,6 @@ models:
         tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -100,136 +97,4 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: dex_arbitrum_base_trades
-  - name: dex_base_base_trades
-  - name: dex_bnb_base_trades
-  - name: dex_celo_base_trades
-  - name: dex_ethereum_base_trades
-  - name: dex_optimism_base_trades
-  - name: dex_polygon_base_trades
-
-  - name: dex_arbitrum_trades_beta
-    meta:
-      blockchain: arbitrum
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex arbitrum trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-
-  - name: dex_base_trades_beta
-    meta:
-      blockchain: base
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex base trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-
-  - name: dex_bnb_trades_beta
-    meta:
-      blockchain: bnb
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex bnb trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-
-  - name: dex_celo_trades_beta
-    meta:
-      blockchain: celo
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex celo trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-
-  - name: dex_ethereum_trades_beta
-    meta:
-      blockchain: ethereum
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex ethereum trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-
-  - name: dex_optimism_trades_beta
-    meta:
-      blockchain: optimism
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex optimism trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-
-  - name: dex_polygon_trades_beta
-    meta:
-      blockchain: polygon
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: [ 'dex', 'trades', 'beta' ]
-    description: "New dex polygon trades model"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
+  - name: dex_base_trades

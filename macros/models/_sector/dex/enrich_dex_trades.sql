@@ -1,5 +1,4 @@
 {% macro enrich_dex_trades(
-    blockchain='',
     base_trades = null,
     tokens_erc20_model=null,
     prices_model=null
@@ -13,9 +12,8 @@ WITH prices AS (
         minute,
         price
     FROM {{ prices_model }}
-    WHERE blockchain = '{{ blockchain }}'
     {% if is_incremental() %}
-     AND {{ incremental_predicate('minute') }}
+    WHERE {{ incremental_predicate('minute') }}
     {% endif %}
 ),
 
@@ -54,16 +52,18 @@ enrichments AS (
     FROM {{ base_trades }} base
     LEFT JOIN {{ tokens_erc20_model }} erc20_bought
         ON erc20_bought.contract_address = base.token_bought_address
-        AND erc20_bought.blockchain = '{{ blockchain }}'
+        AND erc20_bought.blockchain = base.blockchain
     LEFT JOIN {{ tokens_erc20_model }} erc20_sold
         ON erc20_sold.contract_address = base.token_sold_address
-        AND erc20_sold.blockchain = '{{ blockchain }}'
-    LEFT JOIN prices p_bought
+        AND erc20_sold.blockchain = base.blockchain
+    LEFT JOIN prices as p_bought
         ON p_bought.minute = date_trunc('minute', base.block_time)
         AND p_bought.contract_address = base.token_bought_address
-    LEFT JOIN prices p_sold
+        AND p_bought.blockchain = base.blockchain
+    LEFT JOIN prices as p_sold
         ON p_sold.minute = date_trunc('minute', base.block_time)
         AND p_sold.contract_address = base.token_sold_address
+        AND p_sold.blockchain = base.blockchain
 )
 
 select * from enrichments
