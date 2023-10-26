@@ -10,7 +10,7 @@
 WITH tagged_entities AS (
     SELECT funds_origin, entity, category
     FROM (VALUES
-        (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'MEV Protocol', 'Staking Pool')
+        (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'MEV Protocol', 'Liquid Staking')
         , (0xcDBF58a9A9b54a2C43800c50C7192946dE858321, 'Bitpanda', 'CEX')
         , (0x70D5cCC14a1a264c05Ff48B3ec6751b0959541aA, 'Binance US', 'CEX')
         ) 
