@@ -1,15 +1,15 @@
 {{ config(
         alias = 'balances_base',
         tags=['dunesql'],
-        partition_by = ['block_date'],
+        partition_by = ['token_standard', 'block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_number', 'tx_index', 'evt_index', 'trace_address'],
+        unique_key = ['token_standard', 'block_number', 'tx_index', 'token_address', 'wallet_address'],
         )
 }}
 
-{{balances_base(
-    blockchain='ethereum',
-    transfers_base = ref('tokens_ethereum_transfers_base'),
-)}}
+select * from {{ref('tokens_ethereum_balances_base_erc20')}}
+
+UNION ALL
+select * from {{ref('tokens_ethereum_balances_base_native')}}
