@@ -14,9 +14,9 @@
 -- (blockchain, project, project_version, model)
 {% set base_models = [
     ref('defiswap_ethereum_base_trades')
-    , ref('uniswap_ethereum_v1_base_trades')
-    , ref('uniswap_ethereum_v2_base_trades')
-    , ref('uniswap_ethereum_v3_base_trades')
+    , ref('uniswap_v1_ethereum_base_trades')
+    , ref('uniswap_v2_ethereum_base_trades')
+    , ref('uniswap_v3_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (

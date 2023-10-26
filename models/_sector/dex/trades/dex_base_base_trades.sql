@@ -13,7 +13,7 @@
 
 -- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_base_v3_base_trades')
+    ref('uniswap_v3_base_base_trades')
 ] %}
 
 WITH base_union AS (
