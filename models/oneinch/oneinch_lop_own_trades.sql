@@ -24,7 +24,7 @@ with
             , protocol_version as version
             , call_trace_address
             , maker
-            , maker_asset as src_token_addrwess
+            , maker_asset as src_token_address
             , making_amount as src_amount
             , call_from as taker
             , taker_asset as dst_token_address
