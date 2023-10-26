@@ -106,5 +106,15 @@ FROM
     ('oath-oath','arbitrum','OATH',0xa1150db5105987cec5fd092273d1e3cbb22b378b,18),
     ('winr-winr-protocol','arbitrum','WINR',0xd77b108d4f6cefaa0cae9506a934e825becca46e,18),
     ('ram-ramses-exchange','arbitrum','RAM',0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418,18),
-    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18)
+    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18),
+    ---
+    ('grail-camelot-token','arbitrum','GRAIL',0x3d9907f9a368ad0a51be60f7da3b97cf940982d8,18),
+    ('pnp-penpie','arbitrum','PNP',0x2ac2b254bc18cd4999f64773a966e4f4869c34ee,18),
+    ('premia-premia','arbitrum','PNP',0x51fc0f6660482ea73330e414efd7808811a57fa2,18),
+    ('kuji-kujira6','arbitrum','KUJI',0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca,6),
+    ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
+    ('euros-the-standard-euro','arbitrum','EUROS',0x643b34980e635719c15a2d4ce69571a258f940e9,18),
+    ('dmt1-dmt','arbitrum','DMT',0x8b0e6f19ee57089f7649a455d89d7bc6314d04e8,18),
+    ('pbx-paribus','arbitrum','PBX',0xbad58ed9b5f26a002ea250d7a60dc6729a4a2403,18),
+    ('pls-plutusdao','arbitrum','PLS',0x51318b7d00db7acc4026c88c3952b66278b6a67f,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
