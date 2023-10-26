@@ -1,6 +1,6 @@
 {{config(
-    alias = alias('lens_poster_frequencies')
-    , tags=['dunesql']
+    alias = 'lens_poster_frequencies'
+    
     , post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",
