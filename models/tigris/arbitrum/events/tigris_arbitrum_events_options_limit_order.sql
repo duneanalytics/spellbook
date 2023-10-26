@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('options_limit_order'),
+    alias = 'options_limit_order',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +14,7 @@ WITH
 
 {% set limit_order_tables = [
     'options_evt_OptionsLimitOrderExecuted',
-
+    'Options_V2_evt_OptionsLimitOrderExecuted'
 ] %}
 
 limit_order_v2 AS (

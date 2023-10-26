@@ -1,5 +1,6 @@
 {{ config (
-    alias = alias('distributions'),
+    
+    alias = 'distributions',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 -- PROTOFORM DISTRIBUTION. for example LPDA

@@ -157,12 +157,13 @@ models:
       - *blockchain
       - *block_time
       - *block_number
+      - *block_month
       - &project
         name: project
         description: "Project name"
-      - &airdrop_identifier
-        name: airdrop_identifier
-        description: "Airdrop identifier name"
+      - &airdrop_number
+        name: airdrop_number
+        description: "Airdrop identifier number"
       - &recipient
         name: recipient
         description: "Airdrop recipient"

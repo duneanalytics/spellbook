@@ -223,6 +223,7 @@ models:
         - name: currency_symbol
         - name: recipient
         - name: contract_address
+        - name: block_month
 
   - name: aave_optimism_flashloans
     meta:
@@ -253,4 +254,5 @@ models:
         - name: currency_symbol
         - name: recipient
         - name: contract_address
+        - name: block_month
         

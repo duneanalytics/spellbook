@@ -1,5 +1,6 @@
-
-{{config(alias = alias('nft_traders_transactions_current'))}}
+{{config(
+     alias = 'nft_traders_transactions_current'
+)}}
 
 WITH nft_trades AS (
 SELECT
@@ -42,7 +43,7 @@ SELECT * FROM (
     'nft' AS category,
     'hildobby' AS contributor,
     'query' AS source,
-    timestamp('2022-08-24') as created_at,
+    TIMESTAMP '2022-08-24'  as created_at,
     now() as updated_at,
     'nft_traders_transactions_current' as model_name,
     'usage' as label_type

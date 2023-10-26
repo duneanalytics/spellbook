@@ -10,6 +10,8 @@ models:
       tags: ['solana','opensea','events']
     description: >
         OpenSea events on Solana
+    tests:
+      - check_columns_nft_old_events
     columns:
       - &blockchain
         name: blockchain

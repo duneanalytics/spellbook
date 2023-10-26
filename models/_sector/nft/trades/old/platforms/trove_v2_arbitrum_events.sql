@@ -1,7 +1,7 @@
 {{ config(
     schema='trove_v2_arbitrum',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -78,7 +78,6 @@ select
     'arbitrum' as blockchain,
     'trove' as project,
     'v2' as version,
-    date_trunc('day',mp.block_time) as block_date,
     mp.block_time,
     token_id,
     nft_tokens.name as collection,

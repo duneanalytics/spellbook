@@ -1,5 +1,7 @@
 {{ config(
-        alias = alias('ringers')
+        tags = ['static']
+        ,schema = 'nft_ethereum_metadata'
+        ,alias = 'ringers'
         )
 }}
 

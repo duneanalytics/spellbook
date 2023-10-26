@@ -73,3 +73,15 @@ sources:
         loaded_at_field: evt_block_time
       - name: rsr_frax_usdc_pool_evt_TokenExchange
         loaded_at_field: evt_block_time
+  - name: curvefi_v2_ethereum
+    description: "decoded events and function calls for curve.fi v2 on ethereum"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: CurveTricryptoFactory_evt_TricryptoPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: CurveTricryptoFactory_call_deploy_pool
+        loaded_at_field: call_block_time
+      - name: CurveTricryptoFactory_evt_LiquidityGaugeDeployed
+        loaded_at_field: evt_block_time

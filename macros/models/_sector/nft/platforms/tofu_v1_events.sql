@@ -56,7 +56,6 @@ WITH tff AS (
 SELECT '{{blockchain}}'                                 as blockchain
      , 'tofu'                                as project
      , 'v1'                                  as version
-     , date_trunc('day', tfe.evt_block_time) as block_date
      , tfe.evt_block_time                    as block_time
      , tfe.evt_block_number                  as block_number
      , tff.token_id                          as token_id

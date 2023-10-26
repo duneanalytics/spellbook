@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: balances_bitcoin_satoshi_day
+    meta:
+      blockchain: bitcoin
+      sector: balances
+      project: satoshi
+      contributors: longnhbkhn
+    config:
+      tags: ['balances', 'bitcoin', 'satoshi', 'day', 'longnhbkhn']
+    description: >
+        Daily token balances of Satoshi Bitcoin per wallets
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Chai name"
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - name: amount_raw
+        description: "The number of Satoshis in the wallet"
+      - name: amount
+        description: "The number of Bitcoins in the wallet"
+      - name: price_btc
+        description: "Price of btc at day"
+      - name: profit
+        description: "Profit by USD of the wallet"
+      - &amount_usd
+        name: amount_usd
+        description: "USD balance of the wallet"
+      - name: total_asset
+        description: "Total asset by USD of the wallet"

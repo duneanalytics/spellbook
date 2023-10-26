@@ -1,6 +1,7 @@
-{{ 
-    config(tags=['dunesql'],
-    alias = alias('trades'),
+{{ config(
+    schema = 'rubicon_optimism',
+    
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

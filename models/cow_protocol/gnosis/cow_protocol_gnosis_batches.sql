@@ -1,6 +1,6 @@
 {{  config(
-        alias = alias('batches'),
-        tags = ['dunesql'],
+        alias = 'batches',
+        
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
@@ -65,7 +65,7 @@ batch_values as (
 
 combined_batch_info as (
     select
-        block_date,
+        b.block_date,
         evt_block_time                                 as block_time,
         num_trades,
         dex_swaps,

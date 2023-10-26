@@ -1,7 +1,6 @@
 {{ config(
-    alias = alias('maverick_pools'),
-    tags = ['dunesql'],             
-    partition_by = ['time'],
+    alias = 'maverick_pools',
+                 
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

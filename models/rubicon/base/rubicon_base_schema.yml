@@ -1,0 +1,242 @@
+version: 2
+
+models:
+  - name: rubicon_base_trades
+    meta:
+      blockchain: base
+      project: rubicon
+      contributors: denver
+    config:
+      tags: ['base','rubicon','dex']
+    description: >
+        A table containing all trades of rubicon on base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - check_dex_seed:
+          blockchain: base
+          project: rubicon
+          version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the transaction"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the transaction"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the transaction"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the transaction"
+      - &evt_index
+        name: evt_index
+        description: "the event index of the trade"
+
+  - name: rubicon_base_offers
+    meta:
+      blockchain: base
+      project: rubicon
+      contributors: denver
+    config:
+      tags: ['base','rubicon','dex']
+    description: >
+        A table containing all offers of rubicon on base
+    tests:
+      - check_seed:
+          seed_file: ref('dex_offers_seed')
+          filter:
+            blockchain: base
+            project: rubicon
+          match_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+          check_columns:
+            - sell_token_symbol
+            - buy_token_symbol
+            - sell_token_address
+            - buy_token_address
+            - token_pair
+#            - sell_amount
+#            - buy_amount
+#            - sold_amount
+#            - bought_amount
+#            - sell_amount_usd
+#            - buy_amount_usd
+#            - sold_amount_usd
+#            - bought_amount_usd
+            - gas_price
+            - gas_used
+            - l1_gas_price
+            - l1_gas_used
+            - txn_cost_eth
+            - eth_price 
+            - txn_cost_usd
+            - project_contract_address
+            - tx_from
+            - tx_to
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *block_month
+      - &block_number
+        name: block_number
+        description: "the block number of the block that the offer was created in"
+      - &tx_index
+        name: tx_index
+        description: "the transaction index of the transaction that the offer was created in"
+      - *evt_index   
+      - *maker
+      - &sell_token_symbol
+        name: sell_token_symbol
+        description: "the token the offer is selling"
+      - &buy_token_symbol
+        name: buy_token_symbol
+        description: "the token the offer is buying"
+      - &sell_token_address
+        name: sell_token_address
+        description: "the address of the token the offer is selling"
+      - &buy_token_address
+        name: buy_token_address
+        description: "the address of the token the offer is buying"
+      - *token_pair
+      - &sell_amount
+        name: sell_amount
+        description: "the amount of the token that the maker is selling"
+      - &buy_amount
+        name: buy_amount
+        description: "the amount of the token that the maker is buying"
+      - &sell_amount_raw
+        name: sell_amount_raw
+        description: "the raw amount of the token that the maker is selling"
+      - &buy_amount_raw
+        name: buy_amount_raw
+        description: "the raw amount of the token that the maker is buying"
+      - &sold_amount 
+        name: sold_amount
+        description: "the amount of the token that the offer has sold"
+      - &bought_amount
+        name: bought_amount
+        description: "the amount of the token that the offer has bought"
+      - &sold_amount_raw
+        name: sold_amount_raw
+        description: "the raw amount of the token that the offer has sold"
+      - &bought_amount_raw
+        name: bought_amount_raw
+        description: "the raw amount of the token that the offer has bought"
+      - &sell_amount_usd
+        name: sell_amount_usd
+        description: "the amount of the token that the maker is selling in USD (at the time of the offer creation)"
+      - &buy_amount_usd
+        name: buy_amount_usd
+        description: "the amount of the token that the maker is buying in USD (at the time of the offer creation)"
+      - &sold_amount_usd
+        name: sold_amount_usd
+        description: "the amount of the token that the offer has sold in USD (summed bassed on the price at the time of each trade (if any))"
+      - &bought_amount_usd
+        name: bought_amount_usd
+        description: "the amount of the token that the offer has bought in USD (summed bassed on the price at the time of each trade (if any))"  
+      - &gas_price
+        name: gas_price
+        description: "the gas price of the transaction that created the offer"
+      - &gas_used
+        name: gas_used
+        description: "the gas used by the transaction that created the offer"
+      - &l1_gas_price
+        name: l1_gas_price
+        description: "the gas price of the transaction that created the offer on ethereum mainnet"
+      - &l1_gas_used
+        name: l1_gas_used
+        description: "the gas used by the transaction that created the offer on ethereum mainnet"
+      - &l1_fee_scalar
+        name: l1_fee
+        description: "the fee paid to ethereum mainnet"
+      - &txn_cost_eth
+        name: txn_cost_eth
+        description: "the cost of the transaction in ETH"
+      - &eth_price
+        name: eth_price
+        description: "the price of ETH at the time of the offer creation"
+      - &txn_cost_usd
+        name: txn_cost_usd
+        description: "the cost of the transaction in USD"
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to

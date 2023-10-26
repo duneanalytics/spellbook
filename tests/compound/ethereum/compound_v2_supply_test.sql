@@ -5,9 +5,9 @@ with unit_test1 as (
         else false
     end as test
     from {{ ref('compound_v2_ethereum_supply') }}
-    where evt_tx_hash = '0xbd26747069016ebea68a7f5fe27b3ad0aec9502cd91c81dcf572a94e4a70d391'
-        and depositor = '0x6d8bfdb4c4975bb086fc9027e48d5775f609ff88'
-        and token_address = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+    where evt_tx_hash = 0xbd26747069016ebea68a7f5fe27b3ad0aec9502cd91c81dcf572a94e4a70d391
+        and depositor = 0x6d8bfdb4c4975bb086fc9027e48d5775f609ff88
+        and token_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
 ),
 unit_test2 as (
     -- cEther mint
@@ -16,9 +16,9 @@ unit_test2 as (
         else false
     end as test
     from {{ ref('compound_v2_ethereum_supply') }}
-    where evt_tx_hash = '0x10f0743281e65468fb219df648ad333903e98067d53a695d7884deaddb5a01a2'
-        and depositor = '0x56178a0d5f301baf6cf3e1cd53d9863437345bf9'
-        and token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    where evt_tx_hash = 0x10f0743281e65468fb219df648ad333903e98067d53a695d7884deaddb5a01a2
+        and depositor = 0x56178a0d5f301baf6cf3e1cd53d9863437345bf9
+        and token_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
 ),
 unit_test3 as (
     -- cErc20 redeem
@@ -27,9 +27,9 @@ unit_test3 as (
         else false
     end as test
     from {{ ref('compound_v2_ethereum_supply') }}
-    where evt_tx_hash = '0x5ac3b9766a7a69f967965ce1ea8e09bfa6ab06aaac5f4cac7bd9eb0d194b6b09'
-        and withdrawn_to = '0x12c012ac4b947a072a1f6abb478d094094931215'
-        and token_address = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+    where evt_tx_hash = 0x5ac3b9766a7a69f967965ce1ea8e09bfa6ab06aaac5f4cac7bd9eb0d194b6b09
+        and withdrawn_to = 0x12c012ac4b947a072a1f6abb478d094094931215
+        and token_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
 ),
 unit_test4 as (
     -- cEther redeem
@@ -38,9 +38,9 @@ unit_test4 as (
         else false
     end as test
     from {{ ref('compound_v2_ethereum_supply') }}
-    where evt_tx_hash = '0xdf0042e538d1648181700514cac4df273ee2b635eb3c49ff2c3159580faf0345'
-        and withdrawn_to = '0xcf1383458a1b2fd705694b4cb1441dee244b09cf'
-        and token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    where evt_tx_hash = 0xdf0042e538d1648181700514cac4df273ee2b635eb3c49ff2c3159580faf0345
+        and withdrawn_to = 0xcf1383458a1b2fd705694b4cb1441dee244b09cf
+        and token_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
 )
 
 select * from (

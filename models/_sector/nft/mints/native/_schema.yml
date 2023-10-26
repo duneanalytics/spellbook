@@ -1,0 +1,70 @@
+version: 2
+
+models:
+
+  - name: nft_ethereum_native_mints
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: umer_h_adil, hildobby
+    config:
+      tags: [ 'nft','ethereum' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - &tx_hash
+        name: tx_hash
+        description: "tx_hash"
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "evt_index"
+        tests:
+          - not_null
+      - &token_id
+        name: token_id
+        description: "token_id version"
+        tests:
+          - not_null
+      - &number_of_items
+        name: number_of_items
+        description: "number_of_items"
+        tests:
+          - not_null
+      - &amount_usd
+        name: amount_usd
+        description:  "USD value of the trade at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+
+  - name: nft_optimism_native_mints
+    meta:
+      blockchain: optimism
+      sector: nft
+      contributors: chuxin
+    config:
+      tags: [ 'nft','ethereum' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd

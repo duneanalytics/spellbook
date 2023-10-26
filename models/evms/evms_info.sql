@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
-        alias = alias('info'),
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        tags = [ 'static'],
+        alias = 'info',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}')
@@ -22,7 +22,7 @@ FROM (VALUES
         , (8453, 'base', 'Base', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://basescan.org/', timestamp '2023-06-15 00:35', 'OP Stack', 'ethereum')
         , (7777777, 'zora', 'ZORA Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.zora.energy/', timestamp '2023-06-14 00:03', 'OP Stack', 'ethereum')
         , (424, 'pgn', 'Public Goods Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.publicgoods.network/', timestamp '2023-07-11 22:18', 'OP Stack', 'ethereum')
-        , (324, 'zksync', 'zkSync Era', 'Layer 2', 'ZK Rollup', 'ETH', NULL , 'https://explorer.zksync.io/', timestamp '2023-02-14 15:22', 'zkSync', 'ethereum')
+        , (324, 'zksync', 'zkSync Era', 'Layer 2', 'ZK Rollup', 'ETH', 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91, 'https://explorer.zksync.io/', timestamp '2023-02-14 15:22', 'zkSync', 'ethereum')
         , (1101, 'polygonzkevm', 'Polygon zkEVM', 'Layer 2', 'ZK Rollup', 'ETH', NULL, 'https://zkevm.polygonscan.com/', timestamp '2023-03-24 05:30', 'Polygon', 'ethereum')
         , (1088, 'metis_andromeda', 'Metis Andromeda', NULL, NULL, NULL, NULL, 'https://andromeda-explorer.metis.io/', timestamp '2021-11-18 22:19', 'Optimistic Virtual Machine', 'ethereum')
         , (5000, 'mantle', 'Mantle', 'Layer 2', 'Optimistic Rollup', 'MNT', NULL, 'https://explorer.mantle.xyz/', timestamp '2023-07-02 18:21', NULL, 'ethereum')
@@ -31,4 +31,6 @@ FROM (VALUES
         , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'Optimistic Virtual Machine', 'ethereum')
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'ethereum')
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'goerli')
+        , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL)
+        , (8217, 'klaytn', 'Klaytn', 'Layer 1', NULL, 'KLAY', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://scope.klaytn.com/', timestamp '2019-06-25 13:41:14', NULL, NULL)
         ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability)

@@ -1,11 +1,11 @@
 {{ config(
     schema = 'tofu_arbitrum',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'bundle_index' ]
+    unique_key = ['block_number', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'bundle_index' ]
     )
 }}
 

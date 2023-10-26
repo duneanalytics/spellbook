@@ -25,6 +25,9 @@ models:
             - maker
             - taker
     columns:
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
       - &evt_index
         name: evt_index
         description: "Index of the corresponding order filled event"
@@ -172,9 +175,12 @@ models:
           check_columns:
             - maker
             - taker
+            - maker_token
+            - taker_token
     columns:
       - *blockchain
       - *block_date
+      - *block_month
       - *block_time
       - &taker_symbol
         name: taker_symbol

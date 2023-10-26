@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: lifinity_amm_solana
+    description: "lifinity v1 decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: lifinity_amm_call_swap
+        loaded_at_field: call_block_time
+  - name: lifinity_amm_v2_solana
+    description: "lifinity v2 decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: lifinity_amm_v2_call_swap
+        loaded_at_field: call_block_time

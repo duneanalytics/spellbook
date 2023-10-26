@@ -40,6 +40,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
       - &maker
         name: maker
         description: "For limit order, the wallet who posted order first; for AMM orders, the liquidity pools; for RFQ orders, the professional market makers."
@@ -112,6 +115,7 @@ models:
       - *contract_address
       - *block_time
       - *block_date
+      - *block_month
       - *maker
       - *taker
       - *taker_token

@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('ocr_fulfilled_transactions'),
+    
+    alias='ocr_fulfilled_transactions',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
@@ -24,7 +24,7 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      symbol = 'ETH'
+      symbol = 'XDAI'
       {% if is_incremental() %}
         AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}      

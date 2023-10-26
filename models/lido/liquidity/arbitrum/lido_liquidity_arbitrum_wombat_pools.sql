@@ -1,8 +1,7 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
-    alias = alias('wombat_pools'),
-    partition_by = ['time'],
-    tags = ['dunesql'],
+    alias = 'wombat_pools',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

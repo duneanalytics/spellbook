@@ -1,21 +1,17 @@
 {{ config(
-        alias = alias('bep20_rolling_day')
-        )
+        
+        alias = 'bep20_rolling_day')
 }}
 
-select
-    'bnb' as blockchain,
-    day,
-    wallet_address,
-    token_address,
-    symbol,
-    NOW() as last_updated,
-    row_number() over (partition by token_address, wallet_address order by day desc) as recency_index,
-    sum(amount_raw) over (
-        partition by token_address, wallet_address order by day
-    ) as amount_raw,
-    sum(amount) over (
-        partition by token_address, wallet_address order by day
-    ) as amount
-from {{ ref('transfers_bnb_bep20_agg_day') }}
-;
+        SELECT
+            blockchain, 
+            day, 
+            wallet_address,
+            token_address,
+            symbol, 
+            CAST(NOW() as timestamp) as last_updated,
+            ROW_NUMBER() OVER (PARTITION BY token_address, wallet_address ORDER BY day DESC) as recency_index,
+            SUM(amount_raw) OVER (PARTITION BY token_address, wallet_address ORDER BY day) as amount_raw, 
+            SUM(amount) OVER (PARTITION BY token_address, wallet_address ORDER BY day) as amount          
+        FROM 
+        {{ ref('transfers_bnb_bep20_agg_day') }}

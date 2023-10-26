@@ -1,7 +1,7 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
-    alias = alias('l1_data_fees'),
-    tags = ['dunesql'],
+    alias = 'l1_data_fees',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -93,23 +93,32 @@ with tx_batch_appends as (
         AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-    UNION ALL
-    SELECT
-      lower(op.name) as name,
+    UNION ALL SELECT
+      lower(op.protocol_name) as name,
       t.block_number,
       t.hash,
-      (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
-      p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+      (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
+      p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
       length(t.data) as data_length
     FROM
       {{ source('ethereum','transactions') }} as t
-      INNER JOIN {{ source('dune_upload','op_stack_chain_metadata') }} op ON (
-        t."from" = op.batchinbox_from_address
-        AND t.to = op.batchinbox_to_address
+      INNER JOIN (
+        SELECT 
+            protocol_name,
+            MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l1_batch_inbox_from_address",
+            MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l1_batch_inbox_to_address",
+            MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l2_output_oracle_from_address",
+            MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l2_output_oracle_to_address"
+        FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
+        WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo')
+        GROUP BY protocol_name
+      ) as op ON (
+          t."from" = op.l1_batch_inbox_from_address
+          AND t.to = op.l1_batch_inbox_to_address
       )
       OR (
-        t."from" = op.l2_output_oracle_from_address
-        AND t.to = op.l2_output_oracle
+          t."from" = op.l2_output_oracle_from_address
+          AND t.to = op.l2_output_oracle_to_address
       )
       AND t.block_time >= timestamp '2022-01-01'
       INNER JOIN {{ source('prices','usd') }} p
@@ -138,6 +147,28 @@ with tx_batch_appends as (
           AND cast(t.data as varchar) LIKE '0x77552641%'
       )
       AND t.block_time >= timestamp '2022-01-01'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'imx' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND (
+            t."from" = 0x9B7f7d0d23d4CAce5A3157752D0D4e4bf25E927e -- Operator, StateUpdate poster
+            AND t.to = 0x5FDCCA53617f4d2b9134B29090C87D01058e27e9 -- StateUpdate proxy contract
+            AND cast(t.data as varchar) LIKE '0x538f9406%'
+      )
+      AND t.block_time >= timestamp '2021-03-24' -- mainnet launch date
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}

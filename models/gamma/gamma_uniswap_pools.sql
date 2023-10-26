@@ -1,7 +1,8 @@
  {{
   config(
+        
         schema='gamma',
-        alias = alias('uniswap_pools'),
+        alias = 'uniswap_pools',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -37,4 +38,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('withdrawals'),
-        partition_by = ['day'],
+        alias = 'withdrawals',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -21,7 +21,7 @@ with withdrawals as (
                    WHEN amount / 1e9 > 32 THEN 32
                    ELSE 0 END) AS withdrawn_principal
     from {{source('ethereum', 'withdrawals')}}
-    where address = lower('0xB9D7934878B5FB9610B3fE8A5e441e8fad7E293f')
+    where address = 0xB9D7934878B5FB9610B3fE8A5e441e8fad7E293f
     group by 1,2
 )
 

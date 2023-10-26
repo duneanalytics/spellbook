@@ -1,12 +1,12 @@
 {{ config(
         schema='prices_polygon',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql']
+        tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , blockchain
     , symbol
@@ -36,6 +36,10 @@ FROM
     ('wmatic-wrapped-matic-wormhole', 'polygon', 'WMATIC', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 18),
     ('link-chainlink', 'polygon', 'LINK', 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39, 18),
     ('ghst-aavegotchi', 'polygon', 'GHST', 0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7, 18),
+    ('gltr-gax-liquidity-token-reward', 'polygon', 'GLTR', 0x3801C3B3B5c98F88a9c9005966AA96aa440B9Afc, 18),
+    ('fud-fud', 'polygon', 'FUD', 0x403E967b044d4Be25170310157cB1A4Bf10bdD0f, 18),
+    ('fomo-fomo', 'polygon', 'FOMO', 0x44A6e0BE76e1D9620A7F76588e4509fE4fa8E8C8, 18),
+    ('alpha-alpha', 'polygon', 'ALPHA', 0x6a3E7C3c6EF65Ee26975b12293cA1AAD7e1dAeD2, 18),
     ('crv-curve-dao-token', 'polygon', 'CRV', 0x172370d5cd63279efa6d502dab29171933a610af, 18),
     ('mimatic-mimatic', 'polygon', 'MIMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1, 18),
     ('kom-kommunitas', 'polygon', 'KOM', 0xc004e2318722ea2b15499d6375905d75ee5390b8, 8),
@@ -63,5 +67,6 @@ FROM
     ('tetu-tetu-reward-token','polygon','TETU',0x255707B70BF90aa112006E1b07B9AeA6De021424,18),
     ('quick-quickswap','polygon','QUICK',0x831753dd7087cac61ab5644b308642cc1c33dc13,18),
     ('dimo-dimo','polygon','DIMO',0xe261d618a959afffd53168cd07d12e37b26761db,18),
-    ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18)
+    ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18),
+    ('val-valeria','polygon','VAL',0x456f931298065b1852647de005dd27227146d8b9,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

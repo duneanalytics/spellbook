@@ -130,7 +130,7 @@ models:
       sector: lending
       contributors: hildobby
     config:
-      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'flashloans']
+      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'flashloans']
     description: >
       All Balancer flashloans
     tests:
@@ -144,6 +144,7 @@ models:
       - name: project
       - name: version
       - name: block_time
+      - name: block_month
       - name: block_number
       - name: amount
       - name: amount_usd
@@ -154,6 +155,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
   - name: balancer_bpt_prices
     meta:

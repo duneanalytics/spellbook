@@ -1,10 +1,9 @@
  {{
   config(
-        alias = alias('token_accounts'),
-        materialized='incremental',
+        schema = 'solana_utils',
+        alias = 'token_accounts',
+        materialized='table',
         file_format = 'delta',
-        incremental_strategy='merge',
-        unique_key = ['token_mint_address', 'address'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -13,15 +12,15 @@
 
 WITH 
       distinct_accounts as (
+            --force
             SELECT
-                  distinct 
                   token_mint_address
                   , address 
+                  , max_by(token_balance_owner, block_time) as token_balance_owner --some account created before and then again after token owner schema change, so then it created dupes.
+                  , min(block_time) as created_at 
             FROM {{ source('solana','account_activity') }}
             WHERE token_mint_address is not null
-            {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
-            {% endif %}
+            group by 1,2
       )
       
-SELECT *, now() as updated_at FROM distinct_accounts
+SELECT * FROM distinct_accounts

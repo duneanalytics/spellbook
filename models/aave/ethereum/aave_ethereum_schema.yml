@@ -345,6 +345,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
  - name: aave_v2_ethereum_flashloans
    meta:
@@ -375,6 +376,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
  - name: aave_v3_ethereum_flashloans
    meta:
@@ -405,6 +407,7 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month
 
  - name: aave_ethereum_flashloans
    meta:
@@ -435,3 +438,4 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month

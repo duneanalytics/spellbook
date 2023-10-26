@@ -1,6 +1,6 @@
 -- Check that the accounting table provided a 0 net balance for 2022 and the correct amount
 with balance_2022 as (
-  select sum(case when left(code, 1) = '1' then value else -value end) as balance,
+  select sum(case when SUBSTR(CAST(code AS VARCHAR), 1, 1) = '1' then value else -value end) as balance,
          sum(abs(value))                                               as abs_balance
   from {{ ref('maker_ethereum_accounting') }}
   where extract(year from ts) = 2022
@@ -18,4 +18,4 @@ tests as (
 )
 select *
 from tests
-where success is false
+where success = false

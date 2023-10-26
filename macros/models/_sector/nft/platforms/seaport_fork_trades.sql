@@ -10,6 +10,8 @@
      ,native_token_symbol = 'ETH'
      ,start_date = '2023-02-01'
      ,seaport_fork_address = '0x00000000006c3852cbef3e08e8df289169ede581'
+     ,project = 'seaport_fork'
+     ,version = 'seaport'
 ) %}
 --This macro is a copy of seaport_v3_trades with support for a different contract address
 
@@ -327,7 +329,6 @@ with source_ethereum_transactions as (
             ,a.nft_cnt
             ,a.erc721_cnt
             ,a.erc1155_cnt
-            ,cast(date_trunc('day', a.block_time) as date) as block_date
             ,case when offer_first_item_type = 'erc20' then 'offer accepted'
                   when offer_first_item_type in ('erc721','erc1155') then 'buy'
                   else 'etc' -- some txns has no nfts
@@ -428,7 +429,6 @@ with source_ethereum_transactions as (
             ,a.nft_cnt
             ,a.erc721_cnt
             ,a.erc1155_cnt
-            ,cast(date_trunc('day', a.block_time) as date) as block_date
             ,case when offer_first_item_type in ('erc20','native') then 'offer accepted'
                   when offer_first_item_type in ('erc721','erc1155') then 'buy'
                   else 'etc' -- some txns has no nfts
@@ -491,8 +491,7 @@ with source_ethereum_transactions as (
     where not is_self_trans
 )
 ,iv_volume as (
-  select block_date
-        ,block_time
+  select block_time
         ,tx_hash
         ,evt_index
         ,max(token_contract_address) as token_contract_address
@@ -515,12 +514,11 @@ with source_ethereum_transactions as (
    from iv_base_pairs a
   where 1=1
     and eth_erc_idx > 0
-  group by 1,2,3,4
+  group by 1,2,3
   having count(distinct token_contract_address) = 1  -- some private sale trade has more that one currencies
 )
 ,iv_nfts as (
-  select a.block_date
-        ,a.block_time
+  select a.block_time
         ,a.tx_hash
         ,a.evt_index
         ,a.block_number
@@ -560,15 +558,14 @@ with source_ethereum_transactions as (
         ,order_hash
         ,b.fee_wallet_name
   from iv_base_pairs a
-        left join iv_volume b on b.block_date = a.block_date  -- tx_hash and evt_index is PK, but for performance, block_time is included
+        left join iv_volume b on b.block_time = a.block_time  -- tx_hash and evt_index is PK, but for performance, block_time is included
                               and b.tx_hash = a.tx_hash
                               and b.evt_index = a.evt_index
   where 1=1
     and a.is_traded_nft
 )
 ,iv_trades as (
-    select a.block_date
-          ,a.block_time
+    select a.block_time
           ,a.tx_hash
           ,a.evt_index
           ,a.block_number
@@ -640,11 +637,10 @@ with source_ethereum_transactions as (
 select
         -- basic info
          '{{blockchain}}' as blockchain
-        ,'opensea' as project
-        ,'v3' as version
+        ,'{{project}}' as project
+        ,'{{version}}' as version
 
         -- order info
-        ,block_date
         ,block_time
         ,seller
         ,buyer

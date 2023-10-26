@@ -3,14 +3,14 @@ version: 2
 models:
   - name: pancakeswap_trades
     meta:
-      blockchain: bnb, ethereum, arbitrum
+      blockchain: bnb, ethereum, arbitrum, base
       sector: dex
       project: pancakeswap
       contributors: hosuke, chef_seaweed
     config:
-      tags: ['bnb', 'ethereum', 'arbitrum', 'pancakeswap','trades', 'dex', 'hosuke', 'chef_seaweed']
+      tags: ['bnb', 'ethereum', 'arbitrum', 'base', 'pancakeswap', 'trades', 'dex', 'hosuke', 'chef_seaweed']
     description: >
-        PancakeSwap trades on BNB chain, Ethereum and Arbitrum across all contracts and versions. This table will load dex trades downstream.
+        PancakeSwap trades on BNB chain, Ethereum, Arbitrum and Base across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain

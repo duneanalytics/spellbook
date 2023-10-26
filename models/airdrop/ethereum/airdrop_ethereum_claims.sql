@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('claims'),
+        
+        alias = 'claims',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "sector",
                                       "airdrop",
@@ -26,25 +27,26 @@
     , ref('looksrare_ethereum_airdrop_claims')
     , ref('oneinch_ethereum_airdrop_claims')
     , ref('paladin_ethereum_airdrop_claims')
-    , ref('paraswap_ethereum_airdrop_claims')
     , ref('ribbon_ethereum_airdrop_claims')
-    , ref('safe_ethereum_airdrop_claims')
     , ref('sudoswap_ethereum_airdrop_claims')
     , ref('tornado_cash_ethereum_airdrop_claims')
     , ref('uniswap_ethereum_airdrop_claims')
     , ref('x2y2_ethereum_airdrop_claims')
     , ref('pooltogether_ethereum_airdrop_claims')
-    , ref('gearbox_ethereum_airdrop_claims')
     , ref('notional_ethereum_airdrop_claims')
     , ref('snowswap_ethereum_airdrop_claims')
     , ref('botto_ethereum_airdrop_claims')
-    , ref('thales_ethereum_airdrop_claims')
     , ref('shapeshift_ethereum_airdrop_claims')
-    , ref('value_defi_ethereum_airdrop_claims')
     , ref('tokenfy_ethereum_airdrop_claims')
     , ref('component_ethereum_airdrop_claims')
     , ref('forefront_ethereum_airdrop_claims')
+    , ref('paraswap_ethereum_airdrop_claims') 
+    , ref('safe_ethereum_airdrop_claims')
+    , ref('gearbox_ethereum_airdrop_claims')
+    , ref('thales_ethereum_airdrop_claims')
+    , ref('value_defi_ethereum_airdrop_claims')
     , ref('alchemydao_ethereum_airdrop_claims')
+    , ref('arkham_ethereum_airdrop_claims')
 ] %}
 
 SELECT *
@@ -55,7 +57,7 @@ FROM (
     , block_time
     , block_number
     , project
-    , airdrop_identifier
+    , airdrop_number
     , recipient
     , contract_address
     , tx_hash

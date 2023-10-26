@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_polygon',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -125,19 +125,18 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
-, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , polygon_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, polygon_bep20_tokens.decimals)*prices.price AS amount_usd
 , alet.token_standard
 , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, CAST(alet.number_of_items AS DECIMAL(38,0)) AS number_of_items
+, CAST(alet.number_of_items AS uint256) AS number_of_items
 , alet.trade_category
 , 'Trade' AS evt_type
 , alet.seller
 , alet.buyer
 , alet.amount_raw/POWER(10, polygon_bep20_tokens.decimals) AS amount_original
-, CAST(alet.amount_raw AS DECIMAL(38,0)) AS amount_raw
+, CAST(alet.amount_raw AS uint256) AS amount_raw
 , COALESCE(alet.currency_symbol, polygon_bep20_tokens.symbol) AS currency_symbol
 , alet.currency_contract
 , alet.nft_contract_address
@@ -148,14 +147,14 @@ SELECT alet.blockchain
 , alet.block_number
 , bt."from" AS tx_from
 , bt.to AS tx_to
-, CAST(0 AS uint256) AS platform_fee_amount_raw
-, CAST(0 AS DOUBLE) AS platform_fee_amount
-, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
-, CAST(0 AS DOUBLE) AS platform_fee_percentage
-, CAST(0 AS uint256) AS royalty_fee_amount_raw
-, CAST(0 AS DOUBLE) AS royalty_fee_amount
-, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
-, CAST(0 AS DOUBLE) AS royalty_fee_percentage
+, uint256 '0' AS platform_fee_amount_raw
+, DOUBLE '0' AS platform_fee_amount
+, DOUBLE '0' AS platform_fee_amount_usd
+, DOUBLE '0' AS platform_fee_percentage
+, uint256 '0' AS royalty_fee_amount_raw
+, DOUBLE '0' AS royalty_fee_amount
+, DOUBLE '0' AS royalty_fee_amount_usd
+, DOUBLE '0' AS royalty_fee_percentage
 , CAST(null AS varbinary) AS royalty_fee_receive_address
 , CAST(null AS VARCHAR) AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.seller as varchar) || cast(alet.buyer as varchar) || cast(alet.nft_contract_address as varchar) || cast(alet.token_id as varchar) || cast(alet.evt_index as varchar) AS unique_trade_id
@@ -172,4 +171,4 @@ LEFT JOIN {{ source('polygon','transactions') }} bt ON bt.hash=alet.tx_hash
     AND bt.block_time=alet.block_time
         {% if is_incremental() %}
         AND bt.block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %} 
+        {% endif %}

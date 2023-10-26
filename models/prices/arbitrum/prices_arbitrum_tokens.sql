@@ -1,9 +1,9 @@
 {{ config(
         schema='prices_arbitrum',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql']
+        tags = ['static']
         )
 }}
 SELECT
@@ -64,6 +64,7 @@ FROM
     ('myc-mycelium','arbitrum','MYC',0xc74fe4c715510ec2f8c61d70d397b32043f55abe,18),
     ('perp-perpetual-protocol','arbitrum','PERP',0x753d224bcf9aafacd81558c32341416df61d3dac,18),
     ('rai-rai-reflex-index','arbitrum','RAI',0xaef5bbcbfa438519a5ea80b4c7181b4e78d419f2,18),
+    ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
     ('rdpx-dopex-rebate-token','arbitrum','RDPX',0x32eb7902d4134bf98a28b963d26de779af92a212,18),
     ('rgt-rari-governance-token','arbitrum','RGT',0xef888bca6ab6b1d26dbec977c455388ecd794794,18),
     ('route-router-protocol','arbitrum','ROUTE',0x5298060a95205be6dd4abc21910a4bb23d6dcd8b,18),
@@ -83,7 +84,8 @@ FROM
     ('uma-uma','arbitrum','UMA',0xd693ec944a85eeca4247ec1c3b130dca9b0c3b22,18),
     ('umami-umami-finance','arbitrum','UMAMI',0x1622bf67e6e5747b81866fe0b85178a93c7f86e3,9),
     ('uni-uniswap','arbitrum','UNI',0xfa7f8980b0f1e64a2062791cc3b0871572f1f7f0,18),
-    ('usdc-usd-coin', 'arbitrum', 'USDC', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 6),
+    ('usdc-usd-coin', 'arbitrum', 'USDC.e', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 6),
+    ('usdc-usd-coin', 'arbitrum', 'USDC', 0xaf88d065e77c8cC2239327C5EDb3A432268e5831, 6),
     ('usdd-usdd','arbitrum','USDD',0x680447595e8b7b3aa1b43beb9f6098c79ac2ab3f,18),
     ('usdr-usd-reserve','arbitrum','USDR',0xbc60ff90497f99cbf6fb84ce1e31845637033445,18),
     ('usdt-tether', 'arbitrum', 'USDT', 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9, 6),
@@ -103,5 +105,6 @@ FROM
     ('grain-granary','arbitrum','GRAIN',0x80bb30d62a16e1f2084deae84dc293531c3ac3a1,18),
     ('oath-oath','arbitrum','OATH',0xa1150db5105987cec5fd092273d1e3cbb22b378b,18),
     ('winr-winr-protocol','arbitrum','WINR',0xd77b108d4f6cefaa0cae9506a934e825becca46e,18),
-    ('ram-ramses-exchange','arbitrum','RAM',0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418,18)
+    ('ram-ramses-exchange','arbitrum','RAM',0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418,18),
+    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

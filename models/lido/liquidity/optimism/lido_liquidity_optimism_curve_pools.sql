@@ -1,8 +1,7 @@
 {{ config(
     schema='lido_liquidity_optimism',
-    alias = alias('curve_pools'),
-    tags = ['dunesql'], 
-    partition_by = ['time'],
+    alias = 'curve_pools',
+     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

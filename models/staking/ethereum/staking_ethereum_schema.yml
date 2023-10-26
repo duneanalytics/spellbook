@@ -1,19 +1,48 @@
 version: 2
 
+models:version: 2
+
 models:
   - name: staking_ethereum_entities
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby
+      contributors: hildobby, sankinyue
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+            - tx_from
+            - pubkey
+            - withdrawal_credentials
     columns:
-      - name: address
-        description: "Address of indentified depositor entity"
+      - name: depositor_address
+        description: "Address of identified depositor entity"
         tests:
-          - unique
+          - unique:
+              config:
+                where: "depositor_address is not null"
+      - name: tx_from
+        description: "Address that initiated the ETH staking deposit"
+        tests:
+          - unique:
+              config:
+                where: "tx_from is not null"
+      - name: pubkey
+        description: "Pubkey of identified validator"
+        tests:
+          - unique:
+              config:
+                where: "pubkey is not null"
+      - name: withdrawal_credentials
+        description: "Withdrawal Credentials of identified validator"
+        tests:
+          - unique:
+              config:
+                where: "withdrawal_credentials is not null"
       - name: entity
         description: "Identified entity name"
       - name: entity_unique_name
@@ -22,7 +51,7 @@ models:
         description: "Category of entity"
         tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
 
   - name: staking_ethereum_deposits
     meta:
@@ -35,23 +64,22 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_time
             - tx_hash
-            - deposit_index
+            - evt_index
     columns:
       - name: block_time
         description: "Block time of deposit transaction"
       - name: block_number
         description: "Block number of deposit transaction"
       - name: amount_staked
-        description: "Amount of ETH staked in trasaction"
+        description: "Amount of ETH staked in transaction"
       - name: depositor_address
         description: "Address of depositor"
-      - name: depositor_entity
+      - name: entity
         description: "Name of depositor if identified"
-      - name: depositor_entity_unique_name
+      - name: entity_unique_name
         description: "Unique name of depositor if identified"
-      - name: depositor_entity_category
+      - name: entity_category
         description: "Category of depositor if identified"
       - name: tx_hash
         description: "Transaction hash of deposit"
@@ -65,11 +93,78 @@ models:
         description: "Signature"
       - name: withdrawal_credentials_type
         description: "Withdrawal credentials type"
-        tests:
-          - accepted_values:
-              values: ['0x00', '0x01']
       - name: withdrawal_address
         description: "Defined withdrawal address"
       - name: withdrawal_credentials
         description: "Withdrawal credentials"
       - name: evt_index
+        description: "Event index"
+
+  - name: staking_ethereum_flows
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby, 0xBoxer
+    config:
+      tags: ['ethereum', 'staking', 'deposits', 'withdrawals']
+    description: Ethereum staking deposits & withdrawals
+    columns:
+      - name: block_time
+        description: "Block time of deposit transaction"
+      - name: block_number
+        description: "Block number of deposit transaction"
+      - name: amount_staked
+        description: "Amount of ETH staked in transaction"
+      - name: depositor_address
+        description: "Address of depositor"
+      - name: entity
+        description: "Name of depositor if identified"
+      - name: entity_unique_name
+        description: "Unique name of depositor if identified"
+      - name: entity_category
+        description: "Category of depositor if identified"
+      - name: tx_from
+        description: "The address that executed the transaction"
+      - name: deposit_index
+        description: "Deposit index"
+      - name: withdrawal_index
+        description: "Withdrawal index"
+      - name: validator_index
+        description: "Validator index"
+      - name: pubkey
+        description: "Public key"
+      - name: signature
+        description: "Signature"
+      - name: withdrawal_address
+        description: "Defined withdrawal address"
+      - name: withdrawal_credentials
+        description: "Withdrawal credentials"
+      - name: withdrawal_credentials_type
+        description: "Withdrawal credentials type"
+      - name: amount_full_withdrawn
+        description: "Amount from full withdrawal"
+      - name: amount_partial_withdrawn
+        description: "Amount from partial withdrawal"
+      - name: tx_hash
+        description: "Transaction hash of deposit"
+      - name: evt_index
+        description: "Event index"
+
+  - name: staking_ethereum_info
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['staking', 'ethereum', 'info']
+    description: >
+        Ethereum staking entities info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - entity
+    columns:
+      - name: entity
+        description: "Entity name"
+      - name: x_username
+        description: "Username on X"

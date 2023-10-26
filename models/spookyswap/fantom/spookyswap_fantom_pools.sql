@@ -1,5 +1,6 @@
 {{ config(
-    alias = alias('pools'),
+    
+    alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,10 +13,10 @@
 }}
 
 SELECT 'fantom' AS blockchain
-, 'spookswap' AS project
+, 'spookyswap' AS project
 , '1' AS version
 , pair AS pool
-, 0.2 AS fee
+, CAST(0.2 as decimal) AS fee
 , token0
 , token1
 , evt_block_time AS creation_block_time
@@ -23,5 +24,5 @@ SELECT 'fantom' AS blockchain
 , contract_address
 FROM {{ source('spookyswap_fantom', 'UniswapV2Factory_evt_PairCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}

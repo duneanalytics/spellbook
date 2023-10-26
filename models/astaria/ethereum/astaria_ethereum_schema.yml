@@ -147,11 +147,14 @@ models:
             check_columns:
               - amount_original
               - evt_type
-              - address
+              - borrower
     columns:
       - *blockchain
       - *project
       - *version
+      - &lending_category
+        name: lending_category
+        description: "Type of loans offered by the project, usually either pool to borrower or peer to peer"
       - &block_time
         name: block_time
         description: "UTC event block time"
@@ -169,9 +172,10 @@ models:
         name: token_standard
         description:  "Token standard"
       - *evt_type
-      - &address
-        name: address
-        description:  "Address repaying or borrowing"
+      - *borrower
+      - &lender
+        name: lender
+        description:  "Address that faciliated the loan"
       - &amount_original
         name: amount_original
         description:  "Traded amount in original currency"

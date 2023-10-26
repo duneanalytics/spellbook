@@ -1,6 +1,7 @@
 -- PROTOFORM DISTRIBUTION BID. for example LPDA
 {{ config (
-    alias = alias('bids'),
+    
+    alias = 'bids',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}
 

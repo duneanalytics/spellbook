@@ -1,8 +1,7 @@
 {{ config(
     schema = 'trove_ethereum',
-    alias = alias('events'),
-    tags = ['dunesql'],
-    partition_by = ['block_date'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -58,7 +57,6 @@ select
     'ethereum' as blockchain,
     'trove' as project,
     'v2' as version,
-    cast(date_trunc('day',mp.block_time) as date) as block_date,
     mp.block_time,
     token_id,
     nft_tokens.name as collection,

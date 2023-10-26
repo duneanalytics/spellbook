@@ -1,5 +1,6 @@
 {{ config(
-      alias = alias('flashloans')
+       partition_by = ['block_month']
+      , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -22,6 +23,7 @@ FROM (
       SELECT blockchain
       , project
       , version
+      , block_month
       , block_time
       , block_number
       , amount
@@ -35,7 +37,7 @@ FROM (
       , contract_address
     FROM {{ aave_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL

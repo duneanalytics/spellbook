@@ -22,9 +22,9 @@ models:
       - &project
         name: project
         description: "Project name"
-      - &airdrop_identifier
-        name: airdrop_identifier
-        description: "Airdrop identifier name"
+      - &airdrop_number
+        name: airdrop_number
+        description: "Airdrop identifier number"
       - &recipient
         name: recipient
         description: "Airdrop recipient"
@@ -52,34 +52,3 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
-
-  - name: airdrop_optimism_addresses_1
-    meta:
-      blockchain: optimism
-      sector: cex
-      project: addresses
-      contributors: Msilb7
-    config:
-      tags: ['table', 'airdrop', 'addresses', 'optimism', 'static']
-    description: "List of addresses eligible for $OP airdrop and amount they received based on their activity"
-    columns:
-      - name: address
-        description: "Eligible address for $OP airdrop"
-      - name: a_is_voter
-        description: "Voted for/against a DAO governance proposal"
-      - name: b_is_multisig_signer
-        description: "Multisig Signer"
-      - name: c_is_gitcoin
-        description: "Gitcoin Donor (on L1)"
-      - name: d_is_price_out
-        description: "User Priced Out of Ethereum"
-      - name: e_op_user
-        description: "Optimism User"
-      - name: f_op_repeat
-        description: "Repeat Optimism User"
-      - name: num_categories_if_op_user
-        description: "Number of Categories & OP User"
-      - name: g_overlap_bonus
-        description: "Overlap Bonus"
-      - name: total_op_eligible_to_claim
-        description: "Total $OP tokens eligible to claim"

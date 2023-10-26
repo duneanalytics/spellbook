@@ -1,11 +1,11 @@
 {{ config(
     schema = 'quix_v3_optimism',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'tx_hash', 'token_id', 'seller',  'evt_index']
+    unique_key = ['tx_hash', 'token_id', 'seller',  'evt_index']
     )
 }}
 {% set quix_fee_address_address = '0xec1557a67d4980c948cd473075293204f4d280fd' %}
@@ -128,7 +128,6 @@ with events_raw as (
         'optimism' as blockchain
         ,'quix' as project
         ,'v3' as version
-        ,TRY_CAST(date_trunc('DAY', er.block_time) AS date) AS block_date
         ,er.block_time
         ,er.token_id
         ,n.name as collection
@@ -138,7 +137,7 @@ with events_raw as (
         when erc1155.evt_tx_hash is not null then 'erc1155'
         end as token_standard
         ,'Single Item Trade' as trade_type
-        ,cast(1 as uint256) as number_of_items
+        ,uint256 '1' as number_of_items
         ,'Buy' as trade_category
         ,'Trade' as evt_type
         ,er.seller
@@ -261,5 +260,5 @@ with events_raw as (
 )
 select
     *
-    ,concat(cast(block_date as varchar), cast(tx_hash as varchar), cast(token_id as varchar),cast(evt_index as varchar)) as unique_trade_id
+    ,concat(cast(tx_hash as varchar), cast(token_id as varchar),cast(evt_index as varchar)) as unique_trade_id
 from final

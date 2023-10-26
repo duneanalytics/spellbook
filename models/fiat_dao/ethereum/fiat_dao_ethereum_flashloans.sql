@@ -1,5 +1,6 @@
 {{ config(
-      alias = alias('flashloans')
+     partition_by = ['block_month']
+      , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -12,8 +13,9 @@
 }}
 
 SELECT 'ethereum' AS blockchain
-, 'Fiat DAO' AS project
-, 1 AS version
+, 'fiat_dao' AS project
+, '1' AS version
+, CAST(date_trunc('Month', flash.evt_block_time) AS date) as block_month
 , flash.evt_block_time AS block_time
 , flash.evt_block_number AS block_number
 , flash.amount/POWER(10, 18) AS amount
@@ -31,8 +33,8 @@ LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address = flash.token
     AND pu.minute = date_trunc('minute', flash.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc("day", now() - interval '1 week')
+    AND pu.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 {% if is_incremental() %}
-AND flash.evt_block_time >= date_trunc("day", now() - interval '1 week')
+AND flash.evt_block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}

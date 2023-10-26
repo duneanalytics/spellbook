@@ -101,3 +101,6 @@ models:
       - &msg_index
         name: msg_index
         description: Index of the message within the transaction. We use this to join messages with deposits/withdrawals since they follow the same order.
+      - &block_month
+        name: block_month
+        description: Month of the block time

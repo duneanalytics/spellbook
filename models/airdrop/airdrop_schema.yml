@@ -30,9 +30,13 @@ models:
       - &project
         name: project
         description: "Project name"
-      - &airdrop_identifier
-        name: airdrop_identifier
-        description: "Airdrop identifier name"
+        tests:
+          - relationships:
+              to: ref('airdrop_info')
+              field: project
+      - &airdrop_number
+        name: airdrop_number
+        description: "Airdrop identifier number"
       - &recipient
         name: recipient
         description: "Airdrop recipient"
@@ -60,3 +64,38 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
+
+  - name: airdrop_info
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['airdrop', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'info']
+    description: >
+        Airdrop info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+    columns:
+      - name: project
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: eligible_addresses
+        description: "NUmber of addresses eligible for the airdrop"
+      - name: airdropped_total
+        description: "Totla amount of tokens airdropped"
+      - name: circulating_supply_on_drop
+        description: "Circulating supply when the airdrop goes live"
+      - name: max_supply
+        description: "Maximum token supply"
+      - name: token_issued_by_protocol
+        description: "Was the token issued by the protocol?"
+      - name: x_username
+        description: "Username on X"
+      - name: airdrop_start
+        description: "Airdrop claim start date"
+      - name: airdrop_end
+        description: "Airdrop claim end date"

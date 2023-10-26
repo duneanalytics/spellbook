@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('ocr_operator_admin_meta'),
+    
+    alias='ocr_operator_admin_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
@@ -29,6 +29,7 @@
 {% set vulcan = 'Vulcan Link' %}
 
 SELECT admin_address, operator_name FROM (VALUES
+  (0xcEf78991Df18B131eED7bBf91C3C7da2e78338e5, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0x4a3dF8cAe46765d33c2551ff5438a5C5FC44347c, '{{chainlayer}}'),
   (0x59eCf48345A221E0731E785ED79eD40d0A94E2A5, '{{cryptomanufaktur}}'),

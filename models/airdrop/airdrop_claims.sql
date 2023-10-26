@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('claims'),
+        
+        alias = 'claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -30,7 +31,7 @@ FROM (
         , block_time
         , block_number
         , project
-        , airdrop_identifier
+        , airdrop_number
         , recipient
         , contract_address
         , tx_hash
@@ -42,10 +43,11 @@ FROM (
         , evt_index
     FROM {{ airdrop_claims_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
+

@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('pools'),
+        
+        alias = 'pools',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -39,7 +40,7 @@ FROM (
     FROM {{ dex_pool_model }}
     {% if not loop.last %}
     {% if is_incremental() %}
-    WHERE creation_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE creation_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     UNION ALL
     {% endif %}

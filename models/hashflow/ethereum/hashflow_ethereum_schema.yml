@@ -87,7 +87,7 @@ models:
             - tx_hash
             - evt_index
             - trace_address
-      - check_dex_seed_legacy:
+      - check_dex_seed:
           blockchain: ethereum
           project: hashflow
           version: 1

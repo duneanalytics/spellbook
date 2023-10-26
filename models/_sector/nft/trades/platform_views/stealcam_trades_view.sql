@@ -1,7 +1,8 @@
 
 {{ config(
         schema = 'stealcam',
-        alias = alias('trades'),
+        alias = 'trades',
+        
         materialized = 'view',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
@@ -11,4 +12,4 @@
 
 SELECT *
 FROM {{ ref('nft_trades') }}
-WHERE project = "stealcam"
+WHERE project = 'stealcam'

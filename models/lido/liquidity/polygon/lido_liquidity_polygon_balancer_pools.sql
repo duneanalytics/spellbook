@@ -1,8 +1,7 @@
 {{ config(
     schema='lido_liquidity_polygon', 
-    alias = alias('balancer_pools'), 
-    tags = ['dunesql'], 
-    partition_by = ['time'],
+    alias = 'balancer_pools', 
+     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

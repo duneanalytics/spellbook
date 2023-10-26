@@ -40,7 +40,7 @@ models:
 
   - name: chain_info_dune_chains
     meta:
-      blockchain: ethereum, optimism, bnb, gnosis, polygon, fantom, arbitrum, avalanche_c, solana
+      blockchain: ethereum, optimism, bnb, gnosis, polygon, fantom, arbitrum, avalanche_c, solana, base, celo
       project: chain_info
       contributors: cc7768, msilb7
     config:

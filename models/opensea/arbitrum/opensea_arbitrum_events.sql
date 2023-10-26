@@ -1,6 +1,7 @@
 {{ config(
+         
          schema = 'opensea_arbitrum',        
-         alias = alias('events')
+         alias = 'events'
          )
 }}
 
@@ -9,7 +10,6 @@ SELECT *
         SELECT   blockchain
                 ,project
                 ,version
-                ,block_date
                 ,block_time
                 ,token_id
                 ,collection
@@ -69,7 +69,6 @@ SELECT *
         SELECT   blockchain
                 ,project
                 ,version
-                ,block_date
                 ,block_time
                 ,token_id
                 ,collection

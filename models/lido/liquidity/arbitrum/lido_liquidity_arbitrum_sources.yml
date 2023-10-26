@@ -13,6 +13,17 @@ sources:
         loaded_at_field: evt_block_time
       - name: Elastic_Pool_evt_BurnRTokens
         loaded_at_field: evt_block_time  
+      - name: ElasticFactoryV2_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Swap
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Burn
+        loaded_at_field: evt_block_time                      
+      - name: ElasticPoolV2_evt_BurnRTokens
+        loaded_at_field: evt_block_time      
+
   - name: camelot_arbitrum
     description: "Arbitrum decoded tables related to Camelot pools contracts"
     freshness: # default freshness

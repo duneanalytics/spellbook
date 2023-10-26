@@ -1,7 +1,8 @@
 
 {{ config(
         schema = 'magiceden',
-        alias = alias('trades'),
+        alias = 'trades',
+        
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana", "polygon"]\',
                                     "project",
@@ -11,4 +12,4 @@
 
 SELECT *
 FROM {{ ref('nft_trades') }}
-WHERE project = "magiceden"
+WHERE project = 'magiceden'

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'element_avalanche_c',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -121,13 +121,12 @@ SELECT alet.blockchain
 , alet.project
 , alet.version
 , alet.block_time
-, date_trunc('day', alet.block_time) AS block_date
 , alet.token_id
 , ava_nft_tokens.name AS collection
 , alet.amount_raw/POWER(10, ava_erc20_tokens.decimals)*prices.price AS amount_usd
 , alet.token_standard
 , CASE WHEN agg.name IS NOT NULL THEN 'Bundle Trade' ELSE 'Single Item Trade' END AS trade_type
-, alet.number_of_items
+, cast(alet.number_of_items as uint256) as number_of_items
 , alet.trade_category
 , 'Trade' AS evt_type
 , alet.seller
@@ -144,14 +143,14 @@ SELECT alet.blockchain
 , alet.block_number
 , at."from" AS tx_from
 , at.to AS tx_to
-, CAST(0 AS uint256) AS platform_fee_amount_raw
-, CAST(0 AS DOUBLE) AS platform_fee_amount
-, CAST(0 AS DOUBLE) AS platform_fee_amount_usd
-, CAST(0 AS DOUBLE) AS platform_fee_percentage
-, CAST(0 AS uint256) AS royalty_fee_amount_raw
-, CAST(0 AS DOUBLE) AS royalty_fee_amount
-, CAST(0 AS DOUBLE) AS royalty_fee_amount_usd
-, CAST(0 AS DOUBLE) AS royalty_fee_percentage
+, uint256 '0' AS platform_fee_amount_raw
+, DOUBLE '0' AS platform_fee_amount
+, DOUBLE '0' AS platform_fee_amount_usd
+, DOUBLE '0' AS platform_fee_percentage
+, uint256 '0' AS royalty_fee_amount_raw
+, DOUBLE '0' AS royalty_fee_amount
+, DOUBLE '0' AS royalty_fee_amount_usd
+, DOUBLE '0' AS royalty_fee_percentage
 , CAST('0' AS varbinary) AS royalty_fee_receive_address
 , CAST('0' AS VARCHAR) AS royalty_fee_currency_symbol
 , alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.token_id as varchar) AS unique_trade_id

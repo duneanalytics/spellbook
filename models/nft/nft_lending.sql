@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-        alias = alias('lending'),
+    
+        alias = 'lending',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -25,6 +25,7 @@ FROM (
         blockchain,
         project,
         version,
+        lending_category,
         block_date,
         block_month,
         block_time,
@@ -35,7 +36,8 @@ FROM (
         amount_usd,
         token_standard,
         evt_type,
-        address,
+        borrower,
+        lender,
         amount_original,
         amount_raw,
         collateral_currency_symbol,

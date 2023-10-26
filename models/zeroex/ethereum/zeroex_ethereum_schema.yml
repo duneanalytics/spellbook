@@ -42,6 +42,9 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each trade"
@@ -121,6 +124,7 @@ models:
     columns:
       - *blockchain
       - *block_date
+      - *block_month
       - *block_time
       - *taker_symbol
       - *maker_symbol

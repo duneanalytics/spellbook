@@ -1,0 +1,95 @@
+version: 2
+
+models:
+  - name: seaport_traces
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'traces']
+    description: >
+        Seaport emitted event traces across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - evt_index
+            - order_hash
+            - trace_side
+            - trace_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: trace_side
+        tests:
+          - accepted_values:
+              values: ['consideration', 'offer']
+        description: "Side of the trace"
+      - name: order_hash
+        description: "Unique trade identifier hash"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20', 'erc721', 'erc1155', 'bep20', 'bep721', 'bep1155']
+        description: "Token standard"
+      - name: trace_index
+        description: "Index of the trace"
+      - name: seaport_contract_address
+        description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
+      - name: token_address
+        description: "Token address"
+      - name: amount
+        description: "Amount"
+      - name: identifier
+        description: "Token identified"
+      - name: recipient
+        description: "Recipient"
+      - name: offerer
+        description: "Offerer"
+      - name: zone
+        description: "Seaport zone"
+      - name: evt_index
+        description: "Event index"
+
+  - name: seaport_tagging
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, ethereum, optimism, polygon
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'arbitrum', 'avalanche_c', 'base', 'bnb', 'ethereum', 'optimism', 'polygon', 'tagging']
+    description: >
+        Seaport tagging to identify the different protocols using Seaport across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tagging_method
+            - identifier
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: tagging_method
+        description: "Identification method"
+        tests:
+          - accepted_values:
+              values: ['zone', 'fee_recipient', 'tx_data_salt']
+      - name: identifier
+        description: "Identifier hash"
+      - name: protocol
+        description: "Protocol"
+      - name: protocol_type
+        description: "Type of Protocol"

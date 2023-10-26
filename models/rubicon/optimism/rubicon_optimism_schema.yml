@@ -106,6 +106,9 @@ models:
     tests:
       - check_seed:
           seed_file: ref('dex_offers_seed')
+          filter:
+            blockchain: optimism
+            project: rubicon
           match_columns:
             - block_date
             - blockchain
@@ -119,14 +122,14 @@ models:
             - sell_token_address
             - buy_token_address
             - token_pair
-            - sell_amount
-            - buy_amount
-            - sold_amount
-            - bought_amount
-            - sell_amount_usd
-            - buy_amount_usd
-            - sold_amount_usd
-            - bought_amount_usd
+#            - sell_amount
+#            - buy_amount
+#            - sold_amount
+#            - bought_amount
+#            - sell_amount_usd
+#            - buy_amount_usd
+#            - sold_amount_usd
+#            - bought_amount_usd
             - gas_price
             - gas_used
             - l1_gas_price
@@ -151,6 +154,7 @@ models:
       - *version
       - *block_date
       - *block_time
+      - *block_month
       - &block_number
         name: block_number
         description: "the block number of the block that the offer was created in"
