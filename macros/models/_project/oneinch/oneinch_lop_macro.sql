@@ -134,7 +134,7 @@ orders as (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                 {% if is_incremental() %} 
-                    where incremental_predicate('call_block_time') 
+                    where {{ incremental_predicate('call_block_time') }}
                 {% endif %}
             )
             {% if not loop.last %} union all {% endif %}
@@ -149,7 +149,7 @@ orders as (
             from {{ source(blockchain, 'transactions') }}
             where 
                 {% if is_incremental() %} 
-                    incremental_predicate('block_time') 
+                    {{ incremental_predicate('block_time') }}
                 {% else %} 
                     block_time >= timestamp '{{ contract_data['start'] }}' 
                 {% endif %}
@@ -165,7 +165,7 @@ orders as (
             from {{ source(blockchain, 'traces') }}
             where 
                 {% if is_incremental() %} 
-                    incremental_predicate('block_time') 
+                    {{ incremental_predicate('block_time') }}
                 {% else %} 
                     block_time >= timestamp '{{ contract_data['start'] }}' 
                 {% endif %}

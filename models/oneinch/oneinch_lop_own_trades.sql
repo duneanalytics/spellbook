@@ -24,7 +24,7 @@ with
             , protocol_version as version
             , call_trace_address
             , maker
-            , maker_asset as src_token_address
+            , maker_asset as src_token_addrwess
             , making_amount as src_amount
             , call_from as taker
             , taker_asset as dst_token_address
@@ -33,7 +33,7 @@ with
         from (
             select * from {{ ref('oneinch_lop') }}
             {% if is_incremental() %}
-                where incremental_predicate('block_time')
+                where {{ incremental_predicate('block_time') }}
             {% endif %}
         )
         left join (
@@ -54,7 +54,7 @@ with
             , price as src_price
         from {{ source('prices', 'usd') }}
         {% if is_incremental() %}
-            where incremental_predicate('minute')
+            where {{ incremental_predicate('minute') }}
         {% endif %}
     )
 
@@ -68,7 +68,7 @@ with
             , price as dst_price
         from {{ source('prices', 'usd') }}
         {% if is_incremental() %}
-            where incremental_predicate('minute')
+            where {{ incremental_predicate('minute') }}
         {% endif %}
     )
 
