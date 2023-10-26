@@ -49,6 +49,7 @@ known_solver_metadata (address, environment, name) as (
                  (0xd474668a7a9daf34f37c54b22622106277c24166, 'barn', 'MIP'),
                  (0x97d69672e8fe5be64d7d5bbba438ae9b08187667, 'barn', 'MIP'),
                  (0x43e834BE774da64DDe12014e287539E910310255, 'barn', 'Legacy'),
+                 (0x67F25791224f0132E6c5102D4b0B3Fbf9e8Aa69d, 'barn', 'Legacy'),
                  (0xc605D77C083FeD57EbC70D0B1d8E0F0fe6a39a8C, 'barn', 'Naive'),
                  (0x2Dd00F9f614E2D8E3AB14FBAe1FDA36395E76b85, 'barn', 'Baseline'),
                  (0xF9E47818698A0E2588848B8aB0E631D84B86B852, 'barn', 'Quasimodo'),
