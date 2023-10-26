@@ -1,5 +1,4 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'uniswap_v1_ethereum',
     alias = 'base_trades',
     materialized = 'incremental',
@@ -9,7 +8,6 @@
     )
 }}
 
-{% set project_start_date = '2018-11-01' %}
 {% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 
 WITH dexs AS

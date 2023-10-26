@@ -1,16 +1,11 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'dex',
     alias ='trades_beta',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo"]\',
-                                "sector",
-                                "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith", "rantum", "mike-x7f", "0xr3x", "tomfutago"]\') }}'
+    unique_key = ['block_date', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 

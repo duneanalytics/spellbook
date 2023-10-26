@@ -1,12 +1,7 @@
 {{ config(
-    tags = ['dunesql'],
     schema = 'uniswap',
     alias = 'trades_beta',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "uniswap",
-                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago"]\') }}'
+    materialized = 'view'
     )
 }}
 

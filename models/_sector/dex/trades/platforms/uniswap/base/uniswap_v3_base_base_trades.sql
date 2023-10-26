@@ -1,5 +1,4 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'uniswap_v3_base',
     alias = 'base_trades',
     materialized = 'incremental',
@@ -8,8 +7,6 @@
     unique_key = ['tx_hash', 'evt_index']
     )
 }}
-
-{% set project_start_date = '2023-07-16' %}
 
 {{
     uniswap_v3_forked_base_trades(

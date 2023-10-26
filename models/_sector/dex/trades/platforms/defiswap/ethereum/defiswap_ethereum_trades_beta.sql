@@ -1,12 +1,7 @@
 {{ config(
-    tags = ['dunesql'],
     schema = 'defiswap_ethereum',
     alias = 'trades_beta',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "defiswap",
-                                    \'["pandajackson42", "hosuke"]\') }}'
+    materialized = 'view'
     )
 }}
 

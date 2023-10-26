@@ -1,5 +1,4 @@
 {{ config(
-    tags=['dunesql'],
     schema = 'uniswap_v2_ethereum',
     alias = 'base_trades',
     materialized = 'incremental',
@@ -9,7 +8,6 @@
     )
 }}
 
-{% set project_start_date = '2020-05-05' %}
 {% set weth_ubomb_wash_trading_pair = '0xed9c854cb02de75ce4c9bba992828d6cb7fd5c71' %}
 {% set weth_weth_wash_trading_pair = '0xf9c1fa7d41bf44ade1dd08d37cc68f67ae75bf92' %}
 {% set feg_eth_wash_trading_pair = '0x854373387e41371ac6e307a1f29603c6fa10d872' %}
