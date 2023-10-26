@@ -1,11 +1,7 @@
 {{ config(
     schema = 'dex_ethereum',
     alias = 'base_trades',
-    partition_by = ['block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_date', 'project', 'version', 'tx_hash', 'evt_index']
+    materialized = 'view'
     )
 }}
 
@@ -25,10 +21,10 @@ WITH base_union AS (
             blockchain,
             project,
             version,
-            block_date,
             block_month,
-            block_number,
+            block_date,
             block_time,
+            block_number,
             token_bought_amount_raw,
             token_sold_amount_raw,
             token_bought_address,
