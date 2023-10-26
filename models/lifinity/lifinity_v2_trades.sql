@@ -119,7 +119,7 @@ WITH
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         --we want to get what token was transfered out first as this is the sold token. THIS MUST BE THE DESTINATION account, the source account is commonly created/closed through swap legs.
-        LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
+        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination
         WHERE 1=1
         {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}

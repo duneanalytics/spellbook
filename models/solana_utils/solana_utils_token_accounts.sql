@@ -12,6 +12,7 @@
 
 WITH 
       distinct_accounts as (
+            --force
             SELECT
                   token_mint_address
                   , address 
