@@ -1,8 +1,8 @@
 {{
     config(
-        alias = alias('tx_hash_labels_treasury_management'),
+        alias = 'tx_hash_labels_treasury_management',
         post_hook='{{ expose_spells(\'["ethereum"]\', "sector", "tx_hash_labels", \'["gentrexha"]\') }}',
-        tags=['dunesql']
+        
     )
 }}
 

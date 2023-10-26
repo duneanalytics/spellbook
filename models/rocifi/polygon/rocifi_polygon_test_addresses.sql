@@ -1,6 +1,6 @@
 {{ config (
-    tags=['static', 'dunesql'],
-    alias = alias('test_addresses'),
+    tags=['static'],
+    alias = 'test_addresses',
     post_hook = '{{ 
         expose_spells(\'["polygon"]\',
         "project", 

@@ -1,7 +1,7 @@
 {{ config(
-    tags = ['dunesql'],
+    
     schema = 'balancer',
-    alias = alias('trades'),
+    alias = 'trades',
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",

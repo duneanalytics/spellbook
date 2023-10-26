@@ -1,7 +1,7 @@
 {{ config(
     schema = 'archipelago_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -60,8 +60,8 @@ SELECT
     ,uint256 '1' as nft_amount
     ,trade.currency as currency_contract
     ,cast(trade.cost as uint256) as price_raw
-    ,cast(coalesce(fee.platform_amount,cast(0 as uint256)) as uint256) as platform_fee_amount_raw
-    ,cast(coalesce(fee.royalty_amount,cast(0 as uint256)) as uint256) as royalty_fee_amount_raw
+    ,cast(coalesce(fee.platform_amount,uint256 '0') as uint256) as platform_fee_amount_raw
+    ,cast(coalesce(fee.royalty_amount,uint256 '0') as uint256) as royalty_fee_amount_raw
     ,CAST(null as varbinary) as platform_fee_address
     ,CAST(null as varbinary) as royalty_fee_address
     ,trade.evt_index as sub_tx_trade_id

@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'curvefi',
-    alias = alias('gauge_mappings'),
+    alias = 'gauge_mappings',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "curvefi",
