@@ -3,6 +3,8 @@
 
 Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
+bogus change, don't merge
+
 ## TL;DR
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
 - Don't know where to start? The docs below will guide you, but as a summary:
