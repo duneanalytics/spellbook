@@ -4,7 +4,7 @@
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
-                                    "fungible",
+                                    "tokens",
                                     \'["hildobby", "aalan3"]\') }}'
         )
 }}
