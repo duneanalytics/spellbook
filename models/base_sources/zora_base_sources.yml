@@ -304,7 +304,6 @@ sources:
             description: "Spender"
           - name: value
             description: "Amount of ERC20 token transferred"
-          -
 
   - name: erc1155_zora
     description: "Transfers events for ERC1155 tokens on Zora."
