@@ -20,8 +20,6 @@ models:
             - version
             - tx_hash
             - evt_index
-            - token_bought_address
-            - token_sold_address
       - check_dex_seed:
           blockchain: ethereum
           project: uniswap
@@ -116,6 +114,8 @@ models:
             - version
             - tx_hash
             - evt_index
+            - token_bought_address
+            - token_sold_address
       - check_dex_seed:
           blockchain: ethereum
           project: uniswap
