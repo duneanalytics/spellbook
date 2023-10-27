@@ -1,6 +1,5 @@
 {{ config(
         alias = 'transfers',
-        tags=['dunesql'],
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
