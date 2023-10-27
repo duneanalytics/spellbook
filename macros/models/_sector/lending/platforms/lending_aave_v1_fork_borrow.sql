@@ -1,17 +1,29 @@
 {%
-  macro lending_aave_v1_forked_borrow(
+  macro lending_aave_v1_fork_borrow(
     blockchain,
     project,
     version,
     aave_mock_address,
     native_token_address,
-    LendingPool_evt_Borrow,
-    LendingPool_evt_Repay,
-    LendingPool_evt_LiquidationCall
+    project_decoded_as = 'aave'
   )
 %}
 
-with base_borrow as (
+with
+
+src_LendingPool_evt_Borrow as (
+  select * from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Borrow') }}
+),
+
+src_LendingPool_evt_Repay as (
+  select * from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Repay') }}
+),
+
+src_LendingPool_evt_LiquidationCall as (
+  select * from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
+),
+
+base_borrow as (
   select
     'borrow' as transaction_type,
     case 
@@ -30,7 +42,7 @@ with base_borrow as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from {{ LendingPool_evt_Borrow }}
+  from src_LendingPool_evt_Borrow
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -50,7 +62,7 @@ with base_borrow as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from {{ LendingPool_evt_Repay }}
+  from src_LendingPool_evt_Repay
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -70,7 +82,7 @@ with base_borrow as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from {{ LendingPool_evt_LiquidationCall }}
+  from src_LendingPool_evt_LiquidationCall
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
