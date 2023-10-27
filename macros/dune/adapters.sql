@@ -1,4 +1,5 @@
 {% macro trino__create_table_as(temporary, relation, sql) -%}
+  {{ log("trino__create_table_as", info=true)}}
   {%- set _properties = {} -%}
   {%- if config.get('partition_by', None) != None -%}
     {%- do _properties.update({'partitioned_by': "ARRAY['" + (config.get('partition_by') | join("', '") )  + "']"}) -%}
