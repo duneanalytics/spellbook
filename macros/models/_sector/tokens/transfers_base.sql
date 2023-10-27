@@ -10,7 +10,7 @@ WITH transfers AS (
     , NULL AS evt_index
     , trace_address
     {% if native_contract_address%}
-    , native_contract_address AS contract_address
+    , {{native_contract_address}} AS contract_address
     {% else %}
     , CAST(NULL AS varbinary) AS contract_address
     {% endif %}
