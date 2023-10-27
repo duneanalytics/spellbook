@@ -19,7 +19,6 @@ select
     unique_tx_id || '-' || cast(wallet_address as varchar) || '-' || cast(token_address as varchar) || cast(tokenId as varchar) || '-' || cast(sum(amount) as varchar) as unique_transfer_id
 FROM {{ ref('test_view') }}
 {% if is_incremental() %}
--- this filter will only be applied on an incremental run
 where evt_block_time > date_trunc('day', now() - interval '2' day) 
 {% endif %}
 group by
