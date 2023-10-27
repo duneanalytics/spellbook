@@ -39,7 +39,6 @@ WITH dexs AS
         ,f.token1 AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-
         ,t.evt_index
     FROM
         {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} t
@@ -67,7 +66,6 @@ WITH dexs AS
         ,f.token0 AS token_sold_address
         ,t.contract_address AS project_contract_address
         ,t.evt_tx_hash AS tx_hash
-        ,'' AS trace_address
         ,t.evt_index
     FROM
         {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} t
