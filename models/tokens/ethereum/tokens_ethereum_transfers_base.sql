@@ -10,12 +10,12 @@
         )
 }}
 
+-- TODO: use variable for native_contract_address
 {{transfers_base(
     blockchain='ethereum',
     traces = source('ethereum','traces'),
     transactions = source('ethereum','transactions'),
     erc20_transfers = source('erc20_ethereum','evt_Transfer'),
-    -- TODO: use variable here
     native_contract_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
     wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
     wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
