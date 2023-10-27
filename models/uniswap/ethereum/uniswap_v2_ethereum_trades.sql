@@ -49,7 +49,7 @@ WITH dexs AS
         {{weth_ubomb_wash_trading_pair}},
         {{weth_weth_wash_trading_pair}},
         {{feg_eth_wash_trading_pair}})
-    AND (amount0Out > 0 OR amount1In > 0)
+    AND (amount0Out > UINT256 '0' OR amount1In > UINT256 '0')
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
     {% endif %}
@@ -77,7 +77,7 @@ WITH dexs AS
         {{weth_ubomb_wash_trading_pair}},
         {{weth_weth_wash_trading_pair}},
         {{feg_eth_wash_trading_pair}})
-    AND (amount1Out > 0 OR amount0In > 0)
+    AND (amount1Out > UINT256 '0' OR amount0In > UINT256 '0')
     {% if is_incremental() %}
     AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
