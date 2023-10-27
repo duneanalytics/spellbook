@@ -1,0 +1,232 @@
+version: 2
+
+models:
+  - name: labels_contract_deployers_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'arbitrum', 'contract_deployers']
+    description: "Smart contract deployers on Arbitrum"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"   
+      - &address
+        name: address
+        description: "Address of known token smart contract"
+      - &name
+        name: name
+        description: "Token standard of the smart contract"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
+
+  - name: labels_contract_deployers_avalanche_c
+    meta:
+      blockchain: avalanche_c
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'avalanche_c', 'contract_deployers']
+    description: "Smart contract deployers on Avalanche"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'bnb', 'contract_deployers']
+    description: "Smart contract deployers on BNB"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'ethereum', 'contract_deployers']
+    description: "Smart contract deployers on Arbitrum"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_fantom
+    meta:
+      blockchain: fantom
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'fantom', 'contract_deployers']
+    description: "Smart contract deployers on Arbitrum"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_gnosis
+    meta:
+      blockchain: gnosis
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'gnosis', 'contract_deployers']
+    description: "Smart contract deployers on Gnosis"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_goerli
+    meta:
+      blockchain: goerli
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'goerli', 'contract_deployers']
+    description: "Smart contract deployers on Goerli"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'optimism', 'contract_deployers']
+    description: "Smart contract deployers on Optimism"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers_polygon
+    meta:
+      blockchain: polygon
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'polygon', 'contract_deployers']
+    description: "Smart contract deployers on Polygon"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_contract_deployers
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
+      sector: labels
+      project: contract_deployers
+      contributors: hildobby
+    config:
+      tags: ['labels', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'contract_deployers']
+    description: "Smart contract deployers across blockchains"
+    columns:
+      - *blockchain 
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type

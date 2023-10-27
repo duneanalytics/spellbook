@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: dex_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount: double
+        token_sold_amount: double
+        block_date: timestamp

@@ -1,5 +1,9 @@
-{{ config(materialized='view', alias='erc1155') }}
-
+{{ config(
+tags=['prod_exclude'],materialized='view', alias = 'erc1155') }}
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 with
   erc1155_ids_batch AS (
     SELECT

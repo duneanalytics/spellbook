@@ -1,0 +1,221 @@
+version: 2
+
+models:
+
+  - name: zora_ethereum_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:  # this is only the minimal subset of columns that have tests defined.
+      - &project
+        name: project
+        description: "Project"
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "transaction hash"
+        tests:
+          - not_null
+      - &category
+        name:  category
+        description: "project category (NFT/AMM/Staking/...)"
+        tests:
+          - accepted_values:
+                values: [ 'NFT', 'AMM', 'Quest', 'Staking' ]
+      - &referrer_address
+        name:  referrer_address
+        description: "address of the person making the referral"
+        tests:
+          - not_null
+      - &referee_address
+        name:  referee_address
+        description: "address of the person being referred"
+      - &currency_contract
+        name:  currency_contract
+        description: "contract address of the currency"
+        tests:
+          - not_null
+      - &reward_amount_raw
+        name:  reward_amount_raw
+        description: "raw reward amount"
+        tests:
+          - not_null
+      - &sub_tx_id
+        name: sub_tx_id
+        description: "id to distinguish multiple rewards in 1 transaction. Often the event index"
+        tests:
+          - not_null
+      - &tx_from
+        name: tx_from
+        description: "transaction from address"
+        tests:
+          - not_null
+      - &tx_to
+        name: tx_to
+        description: "transaction to address"
+        tests:
+          - not_null
+
+  - name: zora_base_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: zora_optimism_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: rabbithole_arbitrum_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: rabbithole_base_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: rabbithole_optimism_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: rabbithole_polygon_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: soundxyz_ethereum_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+
+  - name: soundxyz_optimism_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+

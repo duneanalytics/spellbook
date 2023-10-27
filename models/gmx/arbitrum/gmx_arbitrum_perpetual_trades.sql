@@ -1,6 +1,7 @@
 {{ config(
+    
     alias = 'perpetual_trades',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -20,13 +21,14 @@ perp_events as (
     -- decrease position
     SELECT
         evt_block_time as block_time, 
+        evt_block_number as block_number, 
         'decrease_position' as trade_data, 
         indexToken as virtual_asset,
         collateralToken as underlying_asset,
         sizeDelta/1E30 as volume_usd, 
         fee/1E30 as fee_usd, 
         collateralDelta/1E30 as margin_usd,
-        CAST(sizeDelta as double) as volume_raw,
+        CAST(sizeDelta as UINT256) as volume_raw,
         CASE WHEN isLong = false THEN 'short' ELSE 'long' END as trade_type,
         account as trader, 
         contract_address as market_address, 
@@ -35,10 +37,10 @@ perp_events as (
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_DecreasePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 
     UNION ALL 
@@ -46,13 +48,14 @@ perp_events as (
     -- increase position 
     SELECT
         evt_block_time as block_time, 
+        evt_block_number as block_number, 
         'increase_position' as trade_data, 
         indexToken as virtual_asset,
         collateralToken as underlying_asset,
         sizeDelta/1E30 as volume_usd, 
         fee/1E30 as fee_usd, 
         collateralDelta/1E30 as margin_usd,
-        CAST(sizeDelta as double) as volume_raw,
+        CAST(sizeDelta as UINT256) as volume_raw,
         CASE WHEN isLong = false THEN 'short' ELSE 'long' END as trade_type, 
         account as trader, 
         contract_address as market_address, 
@@ -61,10 +64,10 @@ perp_events as (
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_IncreasePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 
     UNION ALL 
@@ -72,13 +75,14 @@ perp_events as (
     -- liquidate position 
     SELECT
         evt_block_time as block_time, 
+        evt_block_number as block_number, 
         'liquidate_position' as trade_data, 
         indexToken as virtual_asset,
         collateralToken as underlying_asset,
         size/1E30 as volume_usd, 
         0 as fee_usd, 
         collateral/1E30 as margin_usd,
-        CAST(size as double) as volume_raw, 
+        CAST(size as UINT256) as volume_raw, 
         CASE WHEN isLong = false THEN 'short' ELSE 'long' END as trade_type, 
         account as trader, 
         contract_address as market_address, 
@@ -87,24 +91,26 @@ perp_events as (
     FROM 
     {{ source('gmx_arbitrum', 'Vault_evt_LiquidatePosition') }}
     {% if not is_incremental() %}
-    WHERE evt_block_time >= '{{project_start_date}}'
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 )
 
 SELECT 
     'arbitrum' as blockchain, 
     'gmx' as project, 
-    '1' as version, 
-    date_trunc('day', pe.block_time) as block_date, 
+    '1' as version,
+    'gmx' as frontend,
+    CAST(date_trunc('day', pe.block_time) as date) as block_date, 
+    CAST(date_trunc('month', pe.block_time) as date) as block_month,
     pe.block_time, 
-    COALESCE(erc20a.symbol, pe.virtual_asset) as virtual_asset, 
-    COALESCE(erc20b.symbol, pe.underlying_asset) as underlying_asset, 
+    COALESCE(erc20a.symbol, CAST(pe.virtual_asset as VARCHAR)) as virtual_asset, 
+    COALESCE(erc20b.symbol, CAST(pe.underlying_asset as VARCHAR)) as underlying_asset, 
     CASE 
-        WHEN pe.virtual_asset = pe.underlying_asset THEN COALESCE(erc20a.symbol, pe.virtual_asset)
-        ELSE COALESCE(erc20a.symbol, pe.virtual_asset) || '-' || COALESCE(erc20b.symbol, pe.underlying_asset)
+        WHEN pe.virtual_asset = pe.underlying_asset THEN COALESCE(erc20a.symbol, CAST(pe.virtual_asset as VARCHAR))
+        ELSE COALESCE(erc20a.symbol, CAST(pe.virtual_asset as VARCHAR)) || '-' || COALESCE(erc20b.symbol, CAST(pe.underlying_asset as VARCHAR))
     END as market, 
     pe.market_address,
     pe.volume_usd,
@@ -118,18 +124,19 @@ SELECT
     pe.trader, 
     pe.volume_raw,
     pe.tx_hash,
-    txns.to as tx_to,
-    txns.from as tx_from,
+    txns."to" as tx_to,
+    txns."from" as tx_from,
     pe.evt_index
 FROM 
 perp_events pe 
 INNER JOIN {{ source('arbitrum', 'transactions') }} txns 
     ON pe.tx_hash = txns.hash
+    AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
-    AND txns.block_time >= '{{project_start_date}}'
+    AND txns.block_time >= DATE '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND txns.block_time >= date_trunc("day", now() - interval '1 week')
+    AND txns.block_time >= date_trunc('day', now() - interval '7' DAY)
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = pe.virtual_asset

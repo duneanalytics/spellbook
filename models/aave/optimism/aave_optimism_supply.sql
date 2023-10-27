@@ -1,5 +1,5 @@
 {{ config(
-      alias='supply'
+       alias = 'supply'
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave",

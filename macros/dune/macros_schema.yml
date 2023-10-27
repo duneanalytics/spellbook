@@ -21,25 +21,6 @@ macros:
         type: column name or expression
         description: "Node"
 
-  - name: databricks__create_table_as
-    description: >
-      Overrides databricks table macro to use an s3 bucket set by a dbt var set by an env variable.
-      Macros do not allow access to env variables and therefore we must set use the dbt_project file
-      to set the dbt var with the env var. If no env var is set, no location will be used. Env vars
-      must be set by Dune employees but no change is needed for wizards
-
-  - name: spark__create_table_as
-    description: >
-      Same but overrides macro for spark package
-
-  - name: databricks__create_csv_table
-    description: >
-      Same as create_table_as but for seeds with databricks package
-
-  - name: spark__create_csv_table
-    description: >
-      Same as create_table_as but for seeds with spark package
-
   - name: is_incremental
     description: >
       Overrides the core is_incremental marco to allow the usage of a force-incremental command line variable.
@@ -49,3 +30,7 @@ macros:
   - name: mark_as_spell
     description: >
       Catch all macro to mark all models as spells even if they are not exposed in the data explorer
+  
+  - name: source
+    description: >
+      Change source database.

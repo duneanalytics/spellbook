@@ -1,0 +1,82 @@
+version: 2
+
+seeds:
+  - name: zeroex_ethereum_api_fills_sample
+    config:
+      column_types:
+        tx_hash: varbinary
+        block_number: bigint
+        evt_index: int
+        contract_address: varbinary
+        block_time: timestamp
+        maker: varbinary
+        taker: varbinary
+        taker_token: varbinary
+        taker_symbol: varchar
+        maker_token: varbinary
+        maker_symbol: varchar
+        token_pair: varchar
+        taker_token_amount: double
+        taker_token_amount_raw: varchar
+        maker_token_amount: double
+        maker_token_amount_raw: varchar
+        type: varchar
+        affiliate_address: varbinary
+        swap_flag: boolean
+        matcha_limit_order_flag: boolean
+        volume_usd: double
+        tx_from: varbinary
+        tx_to: varbinary
+
+  - name: zeroex_ethereum_api_fills_deduped_sample
+    config:
+      column_types:
+        blockchain: varchar
+        block_date: date
+        tx_hash: varbinary
+        block_number: bigint
+        evt_index: int
+        contract_address: varbinary
+        block_time: timestamp
+        maker: varbinary
+        taker: varbinary
+        taker_token: varbinary
+        taker_symbol: varchar
+        maker_token: varbinary
+        maker_symbol: varchar
+        token_pair: varchar
+        taker_token_amount: double
+        taker_token_amount_raw: varchar
+        maker_token_amount: double
+        maker_token_amount_raw: varchar
+        type: varchar
+        affiliate_address: varbinary
+        swap_flag: boolean
+        matcha_limit_order_flag: boolean
+        volume_usd: double
+        tx_from: varbinary
+        tx_to: varbinary
+        fills_within: int
+
+  - name: zeroex_ethereum_nft_fills_sample
+    config:
+      column_types:
+        block_time: timestamp
+        block_date: date
+        evt_index: int
+        tx_hash: varbinary
+        maker: varbinary
+        taker: varbinary
+        matcher: varbinary
+        nft_address: varbinary
+        nft_id: uint256
+        label: varchar
+        price_label: varbinary
+        token: varbinary
+        token_amount_raw: varchar 
+        symbol: varchar
+        price_usd: double
+        token_amount: double
+        project_name: varchar
+        
+

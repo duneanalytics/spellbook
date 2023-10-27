@@ -28,7 +28,7 @@
                 ON 1=1
                     {%- for column_name in seed_matching_columns %}
                     {% if column_name == 'trace_address' %}
-                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model.{{column_name}}
+                    AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model.{{column_name}}
                     {% else %}
                     AND seed.{{column_name}} = model.{{column_name}}
                     {% endif %}
@@ -37,7 +37,7 @@
         ON 1=1
             {%- for column_name in seed_matching_columns %}
             {% if column_name == 'trace_address' %}
-            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY()) = model_sample.{{column_name}}
+            AND COALESCE(CAST(split(seed.{{column_name}}, ',') as array<bigint>), ARRAY[]) = model_sample.{{column_name}}
             {% else %}
             AND seed.{{column_name}} = model_sample.{{column_name}}
             {% endif %}
@@ -54,8 +54,10 @@
     matching_count_test as (
         select
             'matched records count' as test_description,
-            count(model_{{seed_matching_columns[0]}}) as `result_model`,
-            1 as `expected_seed`,
+            -- these are cast to varchar to unify column types, note this is only for displaying them in the test results
+            cast(count(model_{{seed_matching_columns[0]}}) as varchar) as result_model,
+            cast(1 as varchar) as expected_seed,
+            (count(model_{{seed_matching_columns[0]}}) = 1) as equality_check,
             {%- for column_name in seed_matching_columns %}
             seed_{{column_name}} as {{column_name}}{% if not loop.last %},{% endif %}
             {% endfor -%}
@@ -70,17 +72,15 @@
     (
         {%- for checked_column in seed_check_columns %}
         select
-            'equality test: {{checked_column}}' as test_description
-            ,test.*
-        from (
-            select
-                model_{{checked_column}} as `result_model`,
-                seed_{{checked_column}} as `expected_seed`,
-                {%- for column_name in seed_matching_columns %}
-                seed_{{column_name}} {% if not loop.last %},{% endif %}
-                {% endfor -%}
-            from matched_records
-        ) test
+            'equality test: {{checked_column}}' as test_description,
+            -- these are cast to varchar to unify column types, note this is only for displaying them in the test results
+            cast(model_{{checked_column}} as varchar) as result_model,
+            cast(seed_{{checked_column}} as varchar) as expected_seed,
+            (model_{{checked_column}} IS NOT DISTINCT FROM seed_{{checked_column}}) as equality_check,
+            {%- for column_name in seed_matching_columns %}
+            seed_{{column_name}} as {{column_name}}{% if not loop.last %},{% endif %}
+            {% endfor -%}
+        from matched_records
         {%- if not loop.last %}
         UNION ALL
         {% endif -%}
@@ -95,5 +95,6 @@
         select *
         from equality_tests
     ) all
-    where `result_model` != `expected_seed`
+    -- equality check can be null so we have to check explicitly for nulls
+    where equality_check is distinct from true
 {% endmacro %}

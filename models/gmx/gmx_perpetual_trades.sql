@@ -1,5 +1,6 @@
 {{ config(
-        alias ='perpetual_trades',
+		
+        alias = 'perpetual_trades',
         post_hook='{{ expose_spells(\'["avalanche_c","arbitrum"]\',
                                 "project",
                                 "gmx",
@@ -12,12 +13,14 @@ ref('gmx_avalanche_c_perpetual_trades')
 , ref('gmx_arbitrum_perpetual_trades')
 ] %}
 
+
 SELECT *
 FROM (
     {% for perpetual_model in gmx_perp_models %}
     SELECT
 		blockchain
 		,block_date
+		,block_month
 		,block_time
 		,virtual_asset
 		,underlying_asset
@@ -29,6 +32,7 @@ FROM (
 		,trade
 		,project
 		,version
+		,frontend
 		,trader
 		,volume_raw
 		,tx_hash

@@ -1,9 +1,9 @@
 {{ config(
-      alias='supply'
+       alias = 'supply'
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave",
-                                  \'["batwayne", "chuxin"]\') }}'
+                                  \'["batwayne", "chuxin", "hildobby"]\') }}'
   )
 }}
 
@@ -25,7 +25,7 @@ FROM
             evt_block_time,
             evt_block_number 
       FROM {{ ref('aave_v1_ethereum_supply') }}
-      UNION
+      UNION ALL
       SELECT 
             version,
             transaction_type,
@@ -42,4 +42,3 @@ FROM
             evt_block_number 
       FROM {{ ref('aave_v2_ethereum_supply') }}
 )
-;

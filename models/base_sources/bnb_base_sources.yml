@@ -111,6 +111,27 @@ sources:
           - name: refund_address
             description: "Refund Address"
 
+      - name: traces_decoded
+        loaded_at_field: block_time
+        description: "A BNB trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: contract_name
+            description: "Name of the BNB smart contract generating the log"
+          - name: function_name
+            description: "Name of the BNB smart contract function generating the log"
+          - name: namespace
+            description: "Namespace of the BNB smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - name: to
+            description: "Wallet address that received the trace"
+          - name: trace_address
+            description: "All returned traces, gives the exact location in the call trace"
+          - *tx_hash
+
       - name: logs
         loaded_at_field: block_time
         description: "A BNB log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
@@ -135,6 +156,27 @@ sources:
           - name: index
             description: "Log index"
           - *tx_index
+
+      - name: logs_decoded
+        loaded_at_field: block_time
+        description: "A BNB log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: index
+            description: "Log index"
+          - name: contract_address
+            description: "Address of the BNB smart contract generating the log"
+          - name: contract_name
+            description: "Name of the BNB smart contract generating the log"
+          - name: event_name
+            description: "Name of the BNB smart contract event generating the log"
+          - name: namespace
+            description: "Namespace of the BNB smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - *tx_hash
 
       - name: blocks
         freshness:
@@ -187,6 +229,20 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
+          
+      - name: creation_traces
+        loaded_at_field: block_time
+        description: "BNB creation traces"
+        columns:
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: address
+            description: "Contract address created"
+          - name: from
+            description: "Contract creator address"
+          - name: code
+            description: "Contract code"
 
   # BEP Transfer Tables
   - name: erc20_bnb
@@ -217,6 +273,25 @@ sources:
           - *to
           - name: value
             description: "Amount of BEP20 token transferred"
+
+      - name: evt_approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC20 tokens on BNB."
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: approved
+            description: "Approved"
+          - name: owner
+            description: "Owner"
+          - name: spender
+            description: "Spender"
+          - name: value
+            description: "Amount of ERC20 token transferred"
 
   - name: erc1155_bnb
     description: "Transfers events for BEP1155 tokens on BNB."
@@ -258,6 +333,28 @@ sources:
             description: "BEP1155 token IDs"
           - name: values
             description: "Amounts of BEP1155 token transferred"
+          
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC1155 tokens on BNB."
+        columns:
+          - name: contract_address
+            description: "BEP1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved
+            name: approved
+            description: "Is approved"
+          - &owner
+            name: owner
+            description: "Owner"
+          - name: account
+            description: "Account"
+          - &operator
+            name: operator
+            description: "Opperator"
 
   - name: erc721_bnb
     description: "Transfers events for BEP721 tokens on BNB."
@@ -266,8 +363,7 @@ sources:
         loaded_at_field: evt_block_time
         description: "Transfers events for BEP721 tokens on BNB."
         columns:
-          - &contract_address
-            name: contract_address
+          - name: contract_address
             description: "BEP721 token contract address"
           - *evt_tx_hash
           - *evt_index
@@ -277,3 +373,32 @@ sources:
           - *to
           - name: tokenId
             description: "BEP721 token ID."
+            
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC721 tokens on BNB."
+        columns:
+          - name: contract_address
+            description: "BEP721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC721 tokens on BNB."
+        columns:
+          - name: contract_address
+            description: "BEP721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - *operator

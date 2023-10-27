@@ -1,6 +1,7 @@
 {{
     config(
-        alias='tx_hash_labels_onramp_ethereum',
+        alias = 'tx_hash_labels_onramp_ethereum',
+        
     )
 }}
 
@@ -24,15 +25,15 @@ with
  )
 
 select
-  "ethereum" as blockchain,
-  concat(tx_hash, evt_index, project, version) as tx_hash_key,
-  "Onramp from stable" AS name,
-  "tx_hash" AS category,
-  "gentrexha" AS contributor,
-  "query" AS source,
-  timestamp('2023-02-23') as created_at,
+  'ethereum' as blockchain,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR), project, version) as tx_hash_key,
+  'Onramp from stable' AS name,
+  'tx_hash' AS category,
+  'gentrexha' AS contributor,
+  'query' AS source,
+  TIMESTAMP '2023-02-23' as created_at,
   now() as updated_at,
-  "onramp" as model_name,
-  "usage" as label_type
+  'onramp' as model_name,
+  'usage' as label_type
 from
   onramp_trades

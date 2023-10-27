@@ -1,4 +1,5 @@
 {{ config(
+    
     schema = 'aztec_v2_ethereum',
     alias = 'deposit_assets',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -11,8 +12,8 @@ WITH
 
 assets_added as (
         SELECT
-            CAST('0' AS VARCHAR(5)) as asset_id,
-            '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' as asset_address,
+            UINT256 '0' as asset_id,
+            0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as asset_address,
             null as asset_gas_limit,
             null as date_added
 
@@ -34,7 +35,6 @@ SELECT
 FROM 
 assets_added a
 LEFT JOIN
-{{ ref('tokens_erc20') }} t 
+{{ ref('tokens_erc20') }} t
     ON a.asset_address = t.contract_address
     AND t.blockchain = 'ethereum'
-; 

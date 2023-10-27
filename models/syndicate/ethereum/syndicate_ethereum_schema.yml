@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: syndicate_ethereum_dao_addresses
+    meta:
+      blockchain: ethereum
+      project: syndicate
+      contributors: Henrystats 
+    config:
+      tags: [ 'ethereum', 'dao', 'syndicate', 'dao creator tools', 'Henrystats' ]
+    description: >
+      wallet addresses of daos created on syndicate
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - created_date
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+            - block_month
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain which the DAO is deployed"
+      - name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+        tests:
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &created_date
+        name: created_date
+        description: "UTC event block date of DAO creation"
+      - &created_block_time
+        name: created_block_time
+        description: "UTC event block time of DAO creation"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of DAO creation"

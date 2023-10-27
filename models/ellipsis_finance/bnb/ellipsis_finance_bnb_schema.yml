@@ -6,11 +6,11 @@ models:
       blockchain: bnb
       sector: dex
       project: ellipsis_finance
-      contributors: Henrystats, OxRob
+      contributors: Henrystats, 0xRob
     config:
-      tags: ['bnb','pool_tokens', 'ellipsis','dex']
+      tags: ["bnb", "pool_tokens", "ellipsis", "dex"]
     description: >
-        Ellipsis underlying tokens for token_exchange_underlying event
+      Ellipsis underlying tokens for token_exchange_underlying event
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,9 +25,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
@@ -52,11 +52,11 @@ models:
       blockchain: bnb
       sector: dex
       project: ellipsis_finance
-      contributors: Henrystats 0xRob
+      contributors: Henrystats, 0xRob
     config:
-      tags: ['bnb','trades', 'ellipsis_finance','dex']
+      tags: ["bnb", "trades", "ellipsis_finance", "dex"]
     description: >
-        Ellipsis finance trades on bnb
+      Ellipsis finance trades on bnb
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -66,18 +66,20 @@ models:
             - version
             - tx_hash
             - evt_index
-            - trace_address
       - check_dex_seed:
           blockchain: bnb
           project: ellipsis_finance
           version: 1
     columns:
       - *blockchain
-      - *project 
+      - *project
       - *version
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -129,9 +131,51 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: ""
       - &evt_index
         name: evt_index
         description: ""
+
+  - name: ellipsis_finance_bnb_airdrop_claims
+    meta:
+      blockchain: bnb
+      sector: airdrop
+      project: ellipsis_finance
+      contributors: hildobby
+    config:
+      tags: ["table", "airdrop", "bnb", "claim", "ellipsis_finance"]
+    description: "List of claim transactions for the $EPS airdrop"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time of transaction"
+      - name: block_number
+        description: "Block number of transaction"
+      - name: project
+        description: "Project name"
+      - name: airdrop_number
+        description: "Airdrop identifier number"
+      - name: recipient
+        description: "Airdrop recipient"
+      - name: contract_address
+        description: "Contract addressed used"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
+      - name: token_address
+        description: "Token address"
+      - name: token_symbol
+        description: "Token symbol"
+      - name: evt_index
+        description: "Event index"

@@ -45,7 +45,7 @@ sources:
 
       - name: Pool_evt_LzTrade
         loaded_at_field: evt_block_time
-        description: "Pool lazy trades events table"
+        description: "Pool layer zero trade events table"
         columns:
           - *evt_block_time
           - *evt_index

@@ -1,5 +1,7 @@
 {{ config(
         alias = 'pool_balance_changes',
+        schema = 'sudoswap_ethereum',
+        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -29,12 +31,12 @@ WITH
     FROM
       {{ source('erc721_ethereum','evt_transfer') }} et
       INNER JOIN pools p ON p.nft_contract_address = et.contract_address
-      AND (et.to = p.pool_address OR et.from = p.pool_address)
+      AND (et.to = p.pool_address OR et."from" = p.pool_address)
     {% if not is_incremental() %}
-    WHERE et.evt_block_time >= '{{project_start_date}}'
+    WHERE et.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    WHERE et.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE et.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     GROUP BY
       1,2
@@ -62,10 +64,10 @@ WITH
             OR tr.call_type IS null
           )
           {% if not is_incremental() %}
-          AND tr.block_time > '{{project_start_date}}'
+          AND tr.block_time > TIMESTAMP '{{project_start_date}}'
           {% endif %}
           {% if is_incremental() %}
-          AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+          AND tr.block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         GROUP BY
           1,2
@@ -79,7 +81,7 @@ WITH
           , SUM(tr.value/1e18) as eth_balance_out
         FROM
           {{ source('ethereum','traces') }} tr
-          INNER JOIN pools pc ON pc.pool_address = tr.from
+          INNER JOIN pools pc ON pc.pool_address = tr."from"
         WHERE tr.success = true
           AND tr.type = 'call'
           AND (
@@ -87,10 +89,10 @@ WITH
             OR tr.call_type IS null
           )
           {% if not is_incremental() %}
-          AND tr.block_time > '{{project_start_date}}'
+          AND tr.block_time > TIMESTAMP '{{project_start_date}}'
           {% endif %}
           {% if is_incremental() %}
-          AND tr.block_time >= date_trunc("day", now() - interval '1 week')
+          AND tr.block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         GROUP BY
           1,2
@@ -108,4 +110,3 @@ FROM eth_deltas e
 FULL JOIN erc721_deltas n
     ON e.day = n.day
     AND e.pool_address = n.pool_address
-;

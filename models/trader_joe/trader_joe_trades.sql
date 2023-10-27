@@ -1,14 +1,16 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        alias = 'trades',
+        post_hook='{{ expose_spells(\'["avalanche_c","bnb","arbitrum"]\',
                                 "project",
                                 "trader_joe",
-                                \'["jeff-dude","mtitus6","Henrystats"]\') }}'
+                                \'["jeff-dude","mtitus6","Henrystats","hsrvc"]\') }}'
         )
 }}
 
 {% set trader_joe_models = [
-ref('trader_joe_avalanche_c_trades')
+    ref('trader_joe_avalanche_c_trades')
+,   ref('trader_joe_bnb_trades')
+,   ref('trader_joe_arbitrum_trades')
 ] %}
 
 
@@ -19,6 +21,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -37,7 +40,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -45,4 +47,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

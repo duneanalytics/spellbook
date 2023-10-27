@@ -1,9 +1,11 @@
 {{ config(
-        alias='trades',
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism"]\',
+        
+        schema = 'sushiswap',
+        alias = 'trades',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "arbitrum", "fantom", "optimism", "base", "celo"]\',
                         "project",
                         "sushiswap",
-                        \'["augustog", "hosuke", "Henrystats", "msilb7"]\') }}'
+                        \'["augustog", "hosuke", "Henrystats", "msilb7", "chrispearcx", "codingsh", "wuligy", "tomfutago"]\') }}'
         )
 }}
 
@@ -14,6 +16,10 @@ ref('sushiswap_ethereum_trades')
 , ref('sushiswap_arbitrum_trades')
 , ref('sushiswap_fantom_trades')
 , ref('sushiswap_optimism_trades')
+, ref('sushiswap_polygon_trades')
+, ref('sushiswap_bnb_trades')
+, ref('sushiswap_base_trades')
+, ref('sushiswap_celo_trades')
 ] %}
 
 
@@ -25,6 +31,7 @@ FROM (
         project,
         version,
         block_date,
+        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
@@ -42,7 +49,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -50,4 +56,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-; 

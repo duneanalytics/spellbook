@@ -117,3 +117,42 @@ sources:
             description: "The owner of the address"
           - name: token_mint_address
             description: "The address of the mint token associated with this account"
+
+      - name: instruction_calls
+        loaded_at_field: block_time
+        description: "This is an unnested table of solana.transactions. There can be multiple instructions in a transaction, so having an exploded view here will make it a little easier to work with the data"
+        columns:
+          - *block_slot
+          - *block_hash
+          - *block_time
+          - *block_date
+          - name: index
+            description: "the order of the instruction in the original instructions of the transaction"
+          - name: tx_index
+            description: "The index of this transaction in the block"
+          - name: outer_instruction_index
+            description: "Index of the instruction in instructions. Starts from 1"
+          - name: inner_instruction_index
+            description: "Index of the instruction in inner_instructions. Starts from 1"
+          - name: outer_executing_account
+            description: "The account key of the program that executed this instruction at the outer level"
+          - name: inner_executing_account
+            description: "The account key of the program that executed this instruction at the inner level"
+          - name: executing_account
+            description: "The account key of the program that executed this instruction"
+          - name: data
+            description: "Program input data in a base-58 string"
+          - name: is_inner
+            description: "Marks if a row is an inner instruction or not"
+          - name: account_arguments
+            description: "Ordered list of accounts to pass to the program"
+          - name: inner_instructions
+            description: "Inner instructions"
+          - name: tx_signer
+            description: "The address that initiates the transaction and pays the transaction fee"
+          - name: tx_id
+            description: "The first signature in the transaction"
+          - name: tx_success
+            description: "The transaction was valid and thus committed."
+          - name: log_messages
+            description: "The log messages emitted by the transaction"

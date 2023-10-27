@@ -1,6 +1,7 @@
 {{ config(
+    
     alias = 'prices',
-    partition_by = ['day'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -21,13 +22,13 @@ dex_trades as (
         d.block_time, 
         d.blockchain
     FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ ref('tokens_erc20') }} er 
+    LEFT JOIN {{ ref('tokens_erc20') }} er
         ON d.token_bought_address = er.contract_address
         AND d.blockchain = er.blockchain
     WHERE d.amount_usd > 0 
-        AND d.token_bought_amount_raw > 0 
+        AND d.token_bought_amount_raw > UINT256 '0'
         {% if is_incremental() %}
-        AND d.block_time >= date_trunc("day", now() - interval '1 week')
+        AND d.block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 
     UNION ALL
@@ -38,18 +39,18 @@ dex_trades as (
         d.block_time, 
         d.blockchain
     FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ ref('tokens_erc20') }} er 
+    LEFT JOIN {{ ref('tokens_erc20') }} er
         ON d.token_sold_address = er.contract_address
         AND d.blockchain = er.blockchain
     WHERE d.amount_usd > 0 
-        AND d.token_bought_amount_raw > 0 
+        AND d.token_sold_amount_raw > UINT256 '0'
         {% if is_incremental() %}
-        AND d.block_time >= date_trunc("day", now() - interval '1 week')
+        AND d.block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
 )
 
 SELECT 
-    TRY_CAST(date_trunc('day', hour) as date) as day, -- for partitioning 
+    CAST(date_trunc('month', hour) as date) as block_month, -- for partitioning 
     * 
 FROM 
 (
@@ -57,10 +58,9 @@ FROM
         date_trunc('hour', block_time) as hour, 
         contract_address,
         blockchain,
-        (PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY price)) AS median_price,
+        approx_percentile(price, 0.5) AS median_price,
         COUNT(price) as sample_size 
     FROM dex_trades
     GROUP BY 1, 2, 3
     HAVING COUNT(price) >= 5 
 ) tmp
-;

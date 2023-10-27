@@ -1,6 +1,7 @@
 {{ config(
+tags=['prod_exclude'],
     schema ='pooltogether_v4_ethereum',
-    alias ='prize_structure',
+    alias = 'prize_structure',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -10,6 +11,11 @@
                                 "pooltogether_v4",
                                 \'["bronder"]\') }}'
 )}}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 WITH
   --Calculate prize structure for Ethereum network per drawID

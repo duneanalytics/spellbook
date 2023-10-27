@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: opensea_solana_trades_solscan
+    config:
+      column_types:
+        tx_hash: varchar

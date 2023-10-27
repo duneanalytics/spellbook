@@ -1,0 +1,20 @@
+version: 2
+
+seeds:
+  - name: first_funded_by_seed
+    config:
+      column_types:
+        blockchain: varchar
+        address: varbinary
+        first_funded_by: varbinary
+        block_number: bigint
+        tx_hash: varbinary
+
+  - name: first_activity_seed
+    config:
+      column_types:
+        blockchain: varchar
+        address: varbinary
+        first_activity_to: varbinary
+        first_block_number: bigint
+        first_tx_hash: varbinary

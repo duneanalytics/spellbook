@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: zeroex
-      contributors: rantumBits
+      contributors: rantum
     config:
       tags: ['avalanche_c','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -37,6 +37,9 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each trade"
@@ -93,7 +96,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: zeroex
-      contributors: rantumBits, sui414, bakabhai993
+      contributors: rantum, danning.sui, bakabhai993
     config:
       tags: ['avalanche_c','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -115,6 +118,7 @@ models:
     columns:
       - *blockchain
       - *block_date
+      - *block_month
       - *block_time
       - &taker_symbol
         name: taker_symbol
@@ -141,6 +145,7 @@ models:
       - *evt_index     
       - *type
       - *swap_flag
+      - *contract_address
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          

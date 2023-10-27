@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: nft_approvals
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, base, zksync
+      sector: nft
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'base', 'zksync', 'approvals']
+    description: >
+        NFT approvals
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+        tests:
+          - not_null
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
+        tests:
+          - not_null
+      - name: block_number
+        description: "event block number"
+      - name: address
+        description: "Address for which NFTs were approved"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['erc721', 'erc1155', 'bep721', 'bep1155']
+      - name: approval_for_all
+        description: "Was this an ApprovalForAll or a simple Approval?"
+      - name: contract_address
+        description: "Contract address"
+      - name: token_id
+        description: "token ID"
+      - name: approved
+        description: "Approved"
+      - name: operator
+        description: "Operator address"
+      - name: tx_hash
+        description: "transaction hash"
+        tests:
+          - not_null
+      - name: evt_index
+        description: "Event index"
+        tests:
+          - not_null

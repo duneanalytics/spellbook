@@ -1,7 +1,9 @@
 {{ config(
-     alias = 'top_sales',
-     materialized='table',
-     post_hook='{{ expose_spells(\'["ethereum"]\',
+    
+    schema = 'nft_ethereum',
+    alias = 'top_sales',
+    materialized='table',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                  "sector",
                                  "nft",
                                  \'["Henrystats"]\') }}'
@@ -23,7 +25,7 @@ WITH src AS
         blockchain = 'ethereum'
         AND currency_symbol IN ('ETH', 'WETH')
         AND amount_original IS NOT NULL
-        AND number_of_items = 1
+        AND number_of_items = UINT256 '1'
 )
 SELECT
     *

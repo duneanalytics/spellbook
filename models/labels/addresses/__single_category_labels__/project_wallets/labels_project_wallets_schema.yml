@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: labels_project_wallets
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - address
+          - name
+          - category
+          - model_name
+          - blockchain
+    meta:
+      blockchain: optimism
+      sector: labels
+      category: project_wallets
+      project: ['project_wallets']
+      contributors: soispoke
+    config:
+      tags: ['labels', 'optimism','projects']
+    description: "Known wallets belong to projects and apps"   
+    columns:
+      - name: blockchain
+        description: "Blockchain"   
+      - name: address
+        description: "wallet address"
+      - name: name
+        description: "name of project"
+      - name: contributor
+        description: "contributor"
+      - name: source
+        description: "How were labels generated (could be static or query)"
+      - name: created_at
+        description: "When were labels created"
+      - name: updated_at
+        description: "When were labels updated for the last time"
+      - name: model_name
+        description: "Name of the label model sourced from"
+      - name: label_type
+        description: "Type of label (see labels overall readme)"

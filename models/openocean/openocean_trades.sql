@@ -1,5 +1,6 @@
 {{ config(
-        alias ='trades',
+        
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["fantom", "avalanche_c"]\',
                                 "project",
                                 "openocean",
@@ -8,8 +9,8 @@
 }}
 
 {% set openocean_models = [
-ref('openocean_avalanche_c_trades')
-,ref('openocean_fantom_trades')
+    ref('openocean_avalanche_c_trades')
+    ,ref('openocean_fantom_trades')
 ] %}
 
 
@@ -20,6 +21,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -38,7 +40,7 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address, --ensure field is explicitly cast as array<bigint> in base models
+        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -46,4 +48,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

@@ -1,7 +1,8 @@
 {{  config(
+        
         alias='trades',
         materialized='incremental',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         unique_key = ['tx_hash', 'order_uid', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -13,13 +14,15 @@
     )
 }}
 
--- Find the PoC Query here: https://dune.com/queries/1719733
+-- Find the PoC Query here: https://dune.com/queries/2720387
 WITH
--- First subquery joins buy and sell token prices from prices.usd
--- Also deducts fee from sell amount
+-- First subquery joins buy and sell token prices from prices.usd.
+-- Also deducts fee from sell amount.
 trades_with_prices AS (
-    SELECT try_cast(date_trunc('day', evt_block_time) as date) as block_date,
+    SELECT cast(date_trunc('day', evt_block_time) as date) as block_date,
+           cast(date_trunc('month', evt_block_time) as date) as block_month,
            evt_block_time            as block_time,
+           evt_block_number          as block_number,
            evt_tx_hash               as tx_hash,
            evt_index,
            settlement.contract_address          as project_contract_address,
@@ -38,28 +41,30 @@ trades_with_prices AS (
                                  AND ps.minute = date_trunc('minute', evt_block_time)
                                  AND ps.blockchain = 'gnosis'
                                  {% if is_incremental() %}
-                                 AND ps.minute >= date_trunc("day", now() - interval '1 week')
+                                 AND ps.minute >= date_trunc('day', now() - interval '7' day)
                                  {% endif %}
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as pb
                              ON pb.contract_address = (
                                  CASE
-                                     WHEN buyToken = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                                         THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+                                     WHEN buyToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
                                      ELSE buyToken
                                      END)
                                  AND pb.minute = date_trunc('minute', evt_block_time)
                                  AND pb.blockchain = 'gnosis'
                                  {% if is_incremental() %}
-                                 AND pb.minute >= date_trunc("day", now() - interval '1 week')
+                                 AND pb.minute >= date_trunc('day', now() - interval '7' day)
                                  {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 -- Second subquery gets token symbol and decimals from tokens.erc20 (to display units bought and sold)
 trades_with_token_units as (
     SELECT block_date,
+           block_month,
            block_time,
+           block_number,
            tx_hash,
            evt_index,
            project_contract_address,
@@ -67,13 +72,13 @@ trades_with_token_units as (
            trader,
            sell_token                        as sell_token_address,
            (CASE
-                WHEN ts.symbol IS NULL THEN sell_token
+                WHEN ts.symbol IS NULL THEN cast(sell_token as varchar)
                 ELSE ts.symbol
                END)                          as sell_token,
            buy_token                         as buy_token_address,
            (CASE
-                WHEN tb.symbol IS NULL THEN buy_token
-                WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' THEN 'xDAI'
+                WHEN tb.symbol IS NULL THEN cast(buy_token AS varchar)
+                WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'xDAI'
                 ELSE tb.symbol
                END)                          as buy_token,
            sell_amount / pow(10, ts.decimals) as units_sold,
@@ -91,73 +96,75 @@ trades_with_token_units as (
              LEFT OUTER JOIN {{ ref('tokens_gnosis_erc20') }} tb
                              ON tb.contract_address =
                                 (CASE
-                                     WHEN buy_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                                         THEN '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d'
+                                     WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                         THEN 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
                                      ELSE buy_token
                                     END)
 ),
--- This, independent, aggregation defines a mapping of order_uid and trade
--- TODO - create a view for the following block mapping uid to app_data
-order_ids as (
-    select evt_tx_hash, collect_list(orderUid) as order_ids
-    from (  select orderUid, evt_tx_hash, evt_index
-            from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }}
-             {% if is_incremental() %}
-             where evt_block_time >= date_trunc("day", now() - interval '1 week')
-             {% endif %}
-                     sort by evt_index
-         ) as _
-    group by evt_tx_hash
-),
-
-exploded_order_ids as (
-    select evt_tx_hash, posexplode(order_ids)
-    from order_ids
-),
-
-reduced_order_ids as (
+sorted_orders as (
     select
-        col as order_id,
-        -- This is a dirty hack!
-        collect_list(evt_tx_hash)[0] as evt_tx_hash,
-        collect_list(pos)[0] as pos
-    from exploded_order_ids
-    group by order_id
+        evt_tx_hash,
+        evt_block_number,
+        array_agg(orderUid order by evt_index) as order_ids
+    from (
+        select
+            evt_tx_hash,
+            evt_index,
+            evt_block_number,
+            orderUid
+        from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }}
+        {% if is_incremental() %}
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    )
+    group by evt_tx_hash, evt_block_number
 ),
 
-trade_data as (
-    select call_tx_hash,
-           posexplode(trades)
-    from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_call_settle') }}
-    where call_success = true
-    {% if is_incremental() %}
-    AND call_block_time >= date_trunc("day", now() - interval '1 week')
-    {% endif %}
+orders_and_trades as (
+    select
+        evt_tx_hash,
+        trades,
+        order_ids
+    from sorted_orders
+    inner join {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_call_settle') }}
+        on evt_block_number = call_block_number
+        and evt_tx_hash = call_tx_hash
 ),
 
 uid_to_app_id as (
-    select
-        order_id as uid,
-        get_json_object(trades.col, '$.appData') as app_data,
-        get_json_object(trades.col, '$.receiver') as receiver,
-        get_json_object(trades.col, '$.sellAmount') as limit_sell_amount,
-        get_json_object(trades.col, '$.buyAmount') as limit_buy_amount,
-        get_json_object(trades.col, '$.validTo') as valid_to,
-        get_json_object(trades.col, '$.flags') as flags
-    from reduced_order_ids order_ids
-             join trade_data trades
-                  on evt_tx_hash = call_tx_hash
-                      and order_ids.pos = trades.pos
+    SELECT
+      distinct uid,
+      from_hex(JSON_EXTRACT_SCALAR(trade, '$.appData')) AS app_data,
+      from_hex(JSON_EXTRACT_SCALAR(trade, '$.receiver')) AS receiver,
+      cast(JSON_EXTRACT_SCALAR(trade, '$.sellAmount') as uint256) AS limit_sell_amount,
+      cast(JSON_EXTRACT_SCALAR(trade, '$.buyAmount') as uint256) AS limit_buy_amount,
+      date_format(
+        from_unixtime(cast(JSON_EXTRACT_SCALAR(trade, '$.validTo') as double)),
+        '%Y-%m-%d %T'
+      ) AS valid_to,
+      cast(JSON_EXTRACT_SCALAR(trade, '$.flags') as integer) AS flags
+    FROM
+      orders_and_trades
+      CROSS JOIN UNNEST (order_ids)
+    WITH
+      ORDINALITY AS o (uid, i)
+      CROSS JOIN UNNEST (trades)
+    WITH
+      ORDINALITY AS t (trade, j)
+    WHERE
+      i = j
 ),
 
 valued_trades as (
     SELECT block_date,
+           block_month,
            block_time,
+           block_number,
            tx_hash,
            evt_index,
-           CAST(ARRAY() as array<bigint>) AS trace_address,
+           ARRAY[-1] as trace_address,
            project_contract_address,
-           order_uid,
+           trades.order_uid,
            trader,
            sell_token_address,
            sell_token,
@@ -168,9 +175,9 @@ valued_trades as (
                  else concat(buy_token, '-', sell_token)
                end as token_pair,
            units_sold,
-           CAST(atoms_sold AS DECIMAL(38,0)) AS atoms_sold,
+           atoms_sold,
            units_bought,
-           CAST(atoms_bought AS DECIMAL(38,0)) AS atoms_bought,
+           atoms_bought,
            (CASE
                 WHEN sell_price IS NOT NULL THEN
                     -- Choose the larger of two prices when both not null.
@@ -180,7 +187,6 @@ valued_trades as (
                         ELSE sell_price * units_sold
                         END
                 WHEN sell_price IS NULL AND buy_price IS NOT NULL THEN buy_price * units_bought
-                ELSE NULL::numeric
                END)                                        as usd_value,
            buy_price,
            buy_price * units_bought                        as buy_value_usd,
@@ -189,32 +195,40 @@ valued_trades as (
            fee,
            fee_atoms,
            (CASE
-                WHEN sell_price IS NOT NULL THEN sell_price * fee
-             -- Note that this formulation is subject to some precision error in a few irregular cases:
-             -- E.g. In this transaction 0x84d57d1d57e01dd34091c763765ddda6ff713ad67840f39735f0bf0cced11f02
-             -- buy_price * units_bought * fee / units_sold
-             -- 1.001076 * 0.005 * 0.0010148996324193 / 3e-18 = 1693319440706.3
-             -- So, if sell_price had been null here (thankfully it is not), we would have a vastly inaccurate fee valuation
-                WHEN buy_price IS NOT NULL THEN buy_price * units_bought * fee / units_sold
-                ELSE NULL::numeric
-           END)                                            as fee_usd,
+                WHEN sell_price IS NOT NULL THEN
+                    CASE
+                        WHEN buy_price IS NOT NULL and buy_price * units_bought > sell_price * units_sold
+                            then buy_price * units_bought * fee / units_sold
+                        ELSE sell_price * fee
+                        END
+                WHEN sell_price IS NULL AND buy_price IS NOT NULL
+                    THEN buy_price * units_bought * fee / units_sold
+               END)                                        as fee_usd,
            app_data,
            case
-              when receiver = '0x0000000000000000000000000000000000000000'
+              when receiver = 0x0000000000000000000000000000000000000000
               then trader
               else receiver
            end                                    as receiver,
            limit_sell_amount,
            limit_buy_amount,
            valid_to,
-           flags
-    FROM trades_with_token_units
-             JOIN uid_to_app_id
-                  ON uid = order_uid
+           flags,
+           case when (flags % 2) = 0 then 'SELL' else 'BUY' end as order_type,
+           bitwise_and(flags, 2) != 0 as partial_fill,
+           (CASE
+            when (flags % 2) = 0 then atoms_sold / limit_sell_amount
+            else atoms_bought / limit_buy_amount
+            end
+        ) as fill_proportion
+    FROM trades_with_token_units trades
+    JOIN uid_to_app_id
+        ON uid = trades.order_uid
 )
 
-select *,
-  -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
-  -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
-  usd_value * (((limit_sell_amount / limit_buy_amount) - (atoms_sold/atoms_bought)) / (limit_sell_amount / limit_buy_amount)) as surplus_usd
+select
+    *,
+    -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
+    -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
+    usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
 from valued_trades

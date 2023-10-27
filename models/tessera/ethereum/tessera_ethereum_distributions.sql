@@ -1,4 +1,5 @@
 {{ config (
+    
     alias = 'distributions',
     post_hook = '{{ expose_spells(\'["ethereum"]\', "project", "tessera",\'["amadarrrr"]\') }}'
 ) }}

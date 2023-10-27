@@ -1,0 +1,1191 @@
+version: 2
+
+models:
+  - name: chainlink_avalanche_c_price_feeds
+    meta:
+      blockchain: avalanche_c
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
+    config:
+      tags: ["avalanche_c", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time"
+      - &block_date
+        name: block_date
+        description: "Block time truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &feed_name
+        name: feed_name
+        description: "Feed name from Chainlink docs"
+      - &oracle_price
+        name: oracle_price
+        description: "Price returned by Chainlink oracle update"
+      - &proxy_address
+        name: proxy_address
+        description: "Address of the proxy contract for the Chainlink oracle"
+      - &aggregator_address
+        name: aggregator_address
+        description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
+      - &underlying_token_price
+        name: underlying_token_price
+        description: "Price of the underlying token, with extra decimal adjustments if needed"
+
+  - name: chainlink_avalanche_c_price_feeds_hourly
+    meta:
+      blockchain: avalanche_c
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+    config:
+      tags: ["avalanche_c", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "Block time of the oracle update - truncated to hour"
+      - *block_date
+      - *block_month
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *base
+      - *quote
+      - *underlying_token_price
+
+  - name: chainlink_avalanche_c_price_feeds_oracle_addresses
+    meta:
+      blockchain: avalanche_c
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
+    config:
+      tags: ["avalanche_c", "chainlink", "oracle"]
+    description: >
+      Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - *feed_name
+      - &decimals
+        name: decimals
+        description: "Decimal adjustment for the oracle answer"
+      - *proxy_address
+      - *aggregator_address
+
+  - name: chainlink_avalanche_c_ocr_gas_transmission_logs
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "gas", "transmission", "logs", "avalanche_c"]
+    description: >
+      Chainlink OCR Gas Transmission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - tx_index
+    columns:
+      - *blockchain
+      - &block_hash
+        name: block_hash
+        description: "Block Hash"
+      - &contract_address
+        name: contract_address
+        description: "Contract Address"
+      - &data
+        name: data
+        description: "Data"
+      - &topic0
+        name: topic0
+        description: "Topic 0"
+      - &topic1
+        name: topic1
+        description: "Topic 1"
+      - &topic2
+        name: topic2
+        description: "Topic 2"
+      - &topic3
+        name: topic3
+        description: "Topic 3"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction Hash"
+      - *block_number
+      - *block_time
+      - &index
+        name: index
+        description: "Index"
+      - &tx_index
+        name: tx_index
+        description: "Transaction Index"
+
+  - name: chainlink_avalanche_c_ocr_fulfilled_transactions
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "fulfilled", "transactions", "avalanche_c"]
+    description: >
+      Chainlink OCR Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - &date_month
+        name: date_month
+        description: "Date truncated by month"
+      - &node_address
+        name: node_address
+        description: "Node Address"
+      - &token_amount
+        name: token_amount
+        description: "Token Amount"
+      - &usd_amount
+        name: usd_amount
+        description: "USD Amount"
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_ocr_reverted_transactions
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reverted", "transactions", "avalanche_c"]
+    description: >
+      Chainlink OCR Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_ocr_gas_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "gas", "daily", "avalanche_c"]
+    description: >
+      Chainlink OCR Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - &date_start
+        name: date_start
+        description: "Date Start"
+      - *date_month
+      - *node_address
+      - &operator_name
+        name: operator_name
+        description: "Operator Name"
+      - &fulfilled_token_amount
+        name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - &fulfilled_usd_amount
+        name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - &reverted_token_amount
+        name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - &reverted_usd_amount
+        name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - &total_token_amount
+        name: total_token_amount
+        description: "Total Token Amount"
+      - &total_usd_amount
+        name: total_usd_amount
+        description: "Total USD Amount"
+
+  - name: chainlink_avalanche_c_ocr_request_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "request", "daily", "avalanche_c"]
+    description: >
+      Chainlink OCR Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - &fulfilled_requests
+        name: fulfilled_requests
+        description: "Fulfilled Requests"
+      - &reverted_requests
+        name: reverted_requests
+        description: "Reverted Requests"
+      - &total_requests
+        name: total_requests
+        description: "Total Requests"
+
+  - name: chainlink_avalanche_c_ocr_reward_transmission_logs
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags:
+        ["chainlink", "ocr", "reward", "transmission", "logs", "avalanche_c"]
+    description: >
+      Chainlink OCR Reward Transmission Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_avalanche_c_ocr_reward_evt_transfer
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "avalanche_c"]
+    description: >
+      Chainlink OCR Reward Event Transfers
+    columns:
+      - *blockchain
+      - &evt_block_time
+        name: evt_block_time
+        description: "Event Block Time"
+      - &admin_address
+        name: admin_address
+        description: "Admin Address"
+      - *operator_name
+      - &token_value
+        name: token_value
+        description: "Token Value"
+
+  - name: chainlink_avalanche_c_ocr_reward_evt_transfer_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags:
+        [
+          "chainlink",
+          "ocr",
+          "reward",
+          "evt",
+          "transfer",
+          "daily",
+          "avalanche_c",
+        ]
+    description: >
+      Chainlink OCR Reward Event Transfers Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_avalanche_c_ocr_reward_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reward", "daily", "avalanche_c"]
+    description: >
+      Chainlink OCR Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_avalanche_c_fm_gas_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "daily", "avalanche_c"]
+    description: >
+      Chainlink FM Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_avalanche_c_fm_gas_submission_logs
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "submission", "logs", "avalanche_c"]
+    description: >
+      Chainlink FM Gas Transmission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_avalanche_c_fm_fulfilled_transactions
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "fulfilled", "transactions", "avalanche_c"]
+    description: >
+      Chainlink FM Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_fm_request_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "request", "daily", "avalanche_c"]
+    description: >
+      Chainlink FM Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_avalanche_c_fm_reverted_transactions
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reverted", "transactions", "avalanche_c"]
+    description: >
+      Chainlink FM Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_fm_reward_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "daily", "avalanche_c"]
+    description: >
+      Chainlink FM Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_avalanche_c_fm_reward_evt_transfer
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "evt", "transfer", "avalanche_c"]
+    description: >
+      Chainlink FM Reward Event Transfers
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_avalanche_c_fm_reward_evt_transfer_daily
+    meta:
+      blockchain: avalanche_c
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags:
+        ["chainlink", "fm", "reward", "evt", "transfer", "daily", "avalanche_c"]
+    description: >
+      Chainlink FM Reward Event Transfers Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_avalanche_c_automation_fulfilled_transactions
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags:
+        ["chainlink", "automation", "fulfilled", "transactions", "avalanche_c"]
+    description: >
+      Chainlink Automation Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_automation_gas_daily
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "gas", "daily", "avalanche_c"]
+    description: >
+      Chainlink Automation Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_avalanche_c_automation_upkeep_performed_logs
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags:
+        [
+          "chainlink",
+          "automation",
+          "upkeep",
+          "performed",
+          "logs",
+          "avalanche_c",
+        ]
+    description: >
+      Chainlink Automation Gas Submission Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &tx_from
+        name: tx_from
+        description: "Transaction From"
+
+  - name: chainlink_avalanche_c_automation_request_daily
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "request", "daily", "avalanche_c"]
+    description: >
+      Chainlink Automation Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_avalanche_c_automation_reverted_transactions
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags:
+        ["chainlink", "automation", "reverted", "transactions", "avalanche_c"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_automation_reward_daily
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "reward", "daily", "avalanche_c"]
+    description: >
+      Chainlink Automation Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &keeper_address
+        name: keeper_address
+        description: "Keeper Address"
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_avalanche_c_automation_performed
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "performed", "avalanche_c"]
+    description: >
+      Chainlink Automation Performed
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *keeper_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_avalanche_c_automation_performed_daily
+    meta:
+      blockchain: "avalanche_c"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "performed", "daily", "avalanche_c"]
+    description: >
+      Chainlink Automation Performed Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *keeper_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_avalanche_c_vrf_fulfilled_transactions
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "fulfilled", "transactions", "avalanche_c"]
+    description: >
+      Chainlink VRF Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_vrf_gas_daily
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "gas", "daily", "avalanche_c"]
+    description: >
+      Chainlink VRF Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_avalanche_c_vrf_v1_random_fulfilled_logs
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "avalanche_c"]
+    description: >
+      Chainlink VRF V1 Randomness Fulfilled Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+
+  - name: chainlink_avalanche_c_vrf_v1_random_request_logs
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        ["chainlink", "vrf", "v1", "random", "request", "logs", "avalanche_c"]
+    description: >
+      Chainlink VRF V1 Randomness Requested Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_avalanche_c_vrf_v2_random_fulfilled_logs
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "avalanche_c"]
+    description: >
+      Chainlink VRF V2 Randomness Fulfilled Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+
+  - name: chainlink_avalanche_c_vrf_request_daily
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "daily", "avalanche_c"]
+    description: >
+      Chainlink VRF Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_avalanche_c_vrf_reverted_transactions
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "reverted", "transactions", "avalanche_c"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_avalanche_c_vrf_reward_daily
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "reward", "daily", "avalanche_c"]
+    description: >
+      Chainlink VRF Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - operator_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &operator_address
+        name: operator_address
+        description: "Operator Address"
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_avalanche_c_vrf_request_fulfilled
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "fulfilled", "avalanche_c"]
+    description: >
+      Chainlink VRF Request Fulfilled
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *operator_address
+      - *token_value
+
+  - name: chainlink_avalanche_c_vrf_request_fulfilled_daily
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "avalanche_c"]
+    description: >
+      Chainlink VRF Request Fulfilled Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - operator_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *operator_address
+      - *token_value
+
+  - name: chainlink_avalanche_c_read_requests_feeds_daily
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "feeds", "daily", "avalanche_c"]
+    description: >
+      Chainlink Read Requests Feeds Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - feed_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &feed_address
+        name: feed_address
+        description: "Feed Address"
+      - *feed_name
+      - *total_requests
+
+  - name: chainlink_avalanche_c_read_requests_feeds
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "feeds", "avalanche_c"]
+    description: >
+      Chainlink Read Requests Feeds
+    columns:
+      - *blockchain
+      - *date_start
+      - *feed_name
+      - *feed_address
+
+  - name: chainlink_avalanche_c_read_requests_logs
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "logs", "avalanche_c"]
+    description: >
+      Chainlink Read Requests Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - &from
+        name: from
+        description: "From"
+      - &to
+        name: to
+        description: "To"
+      - &input
+        name: input
+        description: "Input"
+      - &output
+        name: output
+        description: "Output"
+
+  - name: chainlink_avalanche_c_read_requests_requester_daily
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        ["chainlink", "read", "requests", "requester", "daily", "avalanche_c"]
+    description: >
+      Chainlink Read Requests Requester Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - requester_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &requester_address
+        name: requester_address
+        description: "Requester Address"
+      - &requester_name
+        name: requester_name
+        description: "Requester Name"
+      - *total_requests
+
+  - name: chainlink_avalanche_c_read_requests_requester
+    meta:
+      blockchain: "avalanche_c"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "requester", "avalanche_c"]
+    description: >
+      Chainlink Read Requests Requester
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *feed_address
+      - *feed_name
+      - *requester_address
+      - *requester_name

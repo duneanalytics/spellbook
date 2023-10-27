@@ -27,3 +27,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: StableSwap_evt_TokenExchangeUnderlying
         loaded_at_field: evt_block_time
+      - name: AirdropClaim_evt_Claimed
+        loaded_at_field: evt_block_time

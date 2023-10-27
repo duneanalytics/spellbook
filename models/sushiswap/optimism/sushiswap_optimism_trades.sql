@@ -1,10 +1,10 @@
 {{ config(
     alias = 'trades'
-    ,partition_by = ['block_date']
+    ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
+    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -16,7 +16,7 @@ with dexs as (
         'trident-cpp' as version,
         t.evt_block_time as block_time,
         recipient as taker,
-        '' as maker,
+        CAST(NULL AS VARBINARY)as maker,
         amountOut as token_bought_amount_raw,
         amountIn as token_sold_amount_raw,
         null as amount_usd,
@@ -24,14 +24,13 @@ with dexs as (
         tokenIn as token_sold_address,
         t.contract_address as project_contract_address,
         t.evt_tx_hash as tx_hash,
-        '' as trace_address,
         t.evt_index
     FROM
         {{ source('sushi_optimism', 'ConstantProductPool_evt_Swap') }} t
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 
     UNION ALL
@@ -40,7 +39,7 @@ with dexs as (
         'trident-sp' as version,
         t.evt_block_time as block_time,
         recipient as taker,
-        '' as maker,
+        CAST(NULL AS VARBINARY)as maker,
         amountOut as token_bought_amount_raw,
         amountIn as token_sold_amount_raw,
         null as amount_usd,
@@ -48,14 +47,13 @@ with dexs as (
         tokenIn as token_sold_address,
         t.contract_address as project_contract_address,
         t.evt_tx_hash as tx_hash,
-        '' as trace_address,
         t.evt_index
     FROM
         {{ source('sushi_optimism', 'StablePool_evt_Swap') }} t
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
-    WHERE t.evt_block_time >= '{{ project_start_date }}'
+    WHERE t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
 )
 select
@@ -63,6 +61,7 @@ select
     'sushiswap' as project,
     version,
     try_cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
+    cast(date_trunc('month', dexs.block_time) as date) as block_month,
     dexs.block_time,
     erc20a.symbol as token_bought_symbol,
     erc20b.symbol as token_sold_symbol,
@@ -72,8 +71,8 @@ select
     end as token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
-    CAST(dexs.token_bought_amount_raw AS DECIMAL(38,0)) AS token_bought_amount_raw,
-    CAST(dexs.token_sold_amount_raw AS DECIMAL(38,0)) AS token_sold_amount_raw,
+    dexs.token_bought_amount_raw  AS token_bought_amount_raw,
+    dexs.token_sold_amount_raw  AS token_sold_amount_raw,
     coalesce(
         dexs.amount_usd
         ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
@@ -81,22 +80,21 @@ select
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    coalesce(dexs.taker, tx.from) AS taker,
+    coalesce(dexs.taker, tx."from") AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    tx.from AS tx_from,
+    tx."from" AS tx_from,
     tx.to AS tx_to,
-    dexs.trace_address,
     dexs.evt_index
 from dexs
 inner join {{ source('optimism', 'transactions') }} tx
     on dexs.tx_hash = tx.hash
     {% if not is_incremental() %}
-    and tx.block_time >= '{{project_start_date}}'
+    and tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc("day", now() - interval '1 week')
+    and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ ref('tokens_erc20') }} erc20a
     on erc20a.contract_address = dexs.token_bought_address
@@ -109,19 +107,19 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.contract_address = dexs.token_bought_address
     and p_bought.blockchain = 'optimism'
     {% if not is_incremental() %}
-    and p_bought.minute >= '{{project_start_date}}'
+    and p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc("day", now() - interval '1 week')
+    and p_bought.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
     and p_sold.contract_address = dexs.token_sold_address
     and p_sold.blockchain = 'optimism'
     {% if not is_incremental() %}
-    and p_sold.minute >= '{{project_start_date}}'
+    and p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc("day", now() - interval '1 week')
+    and p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     

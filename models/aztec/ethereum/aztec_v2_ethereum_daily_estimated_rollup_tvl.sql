@@ -1,7 +1,8 @@
 {{ config(
+    
     schema = 'aztec_v2_ethereum',
     alias = 'daily_estimated_rollup_tvl',
-    post_hook='{{ expose_spells_hide_trino(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",
                                 \'["Henrystats"]\') }}'
@@ -32,7 +33,7 @@ rollup_balance_changes as (
 )
 
 , day_series as (
-  SELECT explode(sequence(CAST('2022-06-06' as date), CAST(NOW() as date), interval '1 Day')) as date 
+  SELECT date from unnest(sequence(date('2022-06-06'), date(NOW()), interval '1' Day)) as _u(date)
 )
 
 , token_balances_filled as (
@@ -43,7 +44,8 @@ rollup_balance_changes as (
   from day_series d
   inner join token_balances b
         on d.date >= b.date
-        and d.date < coalesce(b.next_date,CAST(NOW() as date) + 1) -- if it's missing that means it's the last entry in the series
+        {# and d.date < coalesce(b.next_date,CAST(NOW() as date) + 1) -- if it's missing that means it's the last entry in the series #}
+        and d.date < coalesce(b.next_date,date(NOW())) -- if it's missing that means it's the last entry in the series
 )
 
 , token_addresses as (
@@ -59,7 +61,7 @@ rollup_balance_changes as (
         AVG(p.price) as price
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= '{{first_transfer_date}}'
+    WHERE p.minute >= TIMESTAMP '{{first_transfer_date}}'
     AND p.contract_address IN (SELECT token_address FROM token_addresses)
     AND p.blockchain = 'ethereum'
     GROUP BY 1, 2, 3 
@@ -72,7 +74,7 @@ rollup_balance_changes as (
         1 as price_eth
     FROM 
     {{ source('prices', 'usd') }} p 
-    WHERE p.minute >= '{{first_transfer_date}}'
+    WHERE p.minute >= TIMESTAMP '{{first_transfer_date}}'
     AND p.blockchain = 'ethereum'
     AND p.symbol = 'WETH'
     GROUP BY 1, 3 
@@ -100,9 +102,8 @@ rollup_balance_changes as (
     , b.balance * COALESCE(p.price_usd, bb.price) as tvl_usd
     , b.balance * COALESCE(p.price_eth, bb.price_eth) as tvl_eth
   FROM token_balances_filled b
-  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' 
-  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' -- using this to get price for missing ETH token 
+  LEFT join token_prices p on b.date = p.day and b.token_address = p.token_address AND b.token_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
+  LEFT JOIN token_prices_eth bb on b.date = bb.day AND b.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -- using this to get price for missing ETH token 
   
 )
 select * from token_tvls 
-;

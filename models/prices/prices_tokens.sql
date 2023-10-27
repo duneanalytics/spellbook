@@ -1,13 +1,13 @@
 {{ config(
         schema='prices',
-        alias ='tokens',
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom"]\',
+        tags = ['static'],
+        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich"]\') }}'
         )
 }}
 
@@ -22,6 +22,9 @@ ref('prices_native_tokens')
 ,ref('prices_optimism_tokens')
 ,ref('prices_polygon_tokens')
 ,ref('prices_solana_tokens')
+,ref('prices_celo_tokens')
+,ref('prices_base_tokens')
+,ref('prices_zksync_tokens')
 ] %}
 
 

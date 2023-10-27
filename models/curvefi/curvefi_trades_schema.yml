@@ -3,10 +3,10 @@ version: 2
 models:
   - name: curvefi_trades
     meta:
-      blockchain: ethereum, avalanche_c, optimism, fantom
+      blockchain: ethereum, avalanche_c, optimism, fantom, celo
       sector: dex
       project: curvefi
-      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7,ilemi,agaperste]
+      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7,ilemi,agaperste, tomfutago]
     config:
       tags: ['ethereum', 'avalanche_c', 'optimism', 'fantom', 'curvefi','trades', 'dex', 'cross-chain']
     description: >
@@ -75,9 +75,42 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
+  
+  - name: curvefi_gauge_mappings
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: msilb7
+    config:
+      tags: ['curve','curvefi', 'amm', 'trades', 'dex', 'incentives']
+    description: >
+      Gauge to Pool mappings for curve on all chains
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - &contract_address
+        name: contract_address
+        description: 'Gauge Creator Contract Address'
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - *evt_index

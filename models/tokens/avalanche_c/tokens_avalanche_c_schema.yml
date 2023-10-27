@@ -20,7 +20,7 @@ models:
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
 
-  - name: tokens_avalanche_c_nft
+  - name: tokens_avalanche_c_nft_curated
     meta:
       blockchain: avalanche_c
       sector: nft
@@ -38,13 +38,50 @@ models:
         description: "NFT project name"
       - name: symbol
         description: "NFT project symbol"
+
+  - name: tokens_avalanche_c_nft
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens', 'avalanche_c', 'nft', 'erc721', 'erc1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on avalanche c chain."
+        tests:
+          - unique
+      - name: name
+        description: "NFT project name"
+      - name: symbol
+        description: "NFT project symbol"
       - name: standard
         tests:
           - accepted_values:
-              values: ['erc721', 'erc1155', 'unknown']
+              values: [ 'erc721', 'erc1155']
         description: >
-            The token standard. This is the set of rules that the contract must respect 
-            to be compatible with the common standards. Accepted values are presently standards represented.
-            If you are adding a token with a new standard, remember to add it the accepted valeus list.
-      - name: category
-        description: "NFT Collection Category"
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.
+
+  - name: tokens_avalanche_c_nft_standards
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','avalanche_c' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']

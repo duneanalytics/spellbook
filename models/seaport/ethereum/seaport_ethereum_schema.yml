@@ -1,204 +1,6 @@
 version: 2
 
 models:
-  - name: seaport_ethereum_view_transactions
-    meta:
-      blockchain: ethereum
-      project: seaport
-      contributors: sohwak, soispoke, hildobby
-    config:
-      tags: ['ethereum','seaport','opensea','transaction']
-    description: >
-        Seaport transactions on Ethereum
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: block_time
-        description: "UTC event block time"
-      - name: nft_project_name
-        description: "name of the NFT collection"
-      - name: nft_token_id
-        description: "the token ID of the NFT transacted"
-      - name: erc_standard
-        description: "whether the NFTs transacted are ERC-721, ERC-1155 or a mix of both"
-      - name: platform
-        description: "platform on which transaction occurred (e.g. OpenSea)"
-      - name: platform_version
-        description: "Seaport is the 3rd exchange contract used by OpenSea (after Wyvern 2.2 and Wyvern 2.3)"
-      - name: trade_type
-        description: "identify whether it was a single NFT trade or multiple NFTs traded"
-      - name: number_of_items
-        description: "identify the number of items traded in the transaction"
-      - name: order_type
-        description: "basic order type and identifier criteria for collection and trait offers"
-      - name: evt_type
-        description:  "identify these transactions as trades"
-      - name: usd_amount
-        description:  "use the prices table to convert the original amount to amount in USD at the minute of the transaction"
-      - name: seller
-        description:  "seller wallet address"
-      - name: buyer
-        description:  "buyer wallet address"
-      - name: original_amount
-        description:  "original amount in original currency (so 0.2 if original final price was 0.2E)"
-      - name: original_amount_raw
-        description:  "raw original amount (can have many decimals or 0s in front)"
-      - name: original_currency
-        description:  "symbol of original token used in payment"
-      - name: original_currency_contract
-        description:  "contract address of original token used for payment"
-      - name: currency_contract
-        description:  "contract address of original token used for payment, with ETH contract address swapped for WETH"
-      - name: nft_contract_address
-        description:  "nft contract address, if only 1 nft was transacted"
-      - name: exchange_contract_address
-        description:  "exchange contract address - in this case, Seaport contract address"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: block_number
-        description:  "number of the ETH block in which transaction was executed "
-      - name: tx_from
-        description:  "actual from wallet address from ethereum.transactions table "
-      - name: tx_to
-        description:  "actual to wallet address from ethereum.transactions table (can be different from actual buyer if an aggregator is used)"
-      - name: evt_index
-        description:  "index of transaction within the block"
-      - name: fee_receive_address
-        description:  "wallet addresses receiving fees from the transaction"
-      - name: fee_currency
-        description:  "symbol of the token in which fees are paid out"
-      - name: fee_amount_raw
-        description:  "raw numerical amount of fees"
-      - name: fee_amount
-        description:  "fee amount in original token currency (properly formatted in decimals)"
-      - name: fee_usd_amount
-        description:  "fee amount in USD"
-      - name: zone_address
-        description:  "A zone is an account (usually a contract) that performs additional validation prior to fulfillment, and that can cancel the listing on behalf of the offerer. We'll use this to select for OpenSea transactions on Seaport."
-
-  - name: seaport_ethereum_transfers
-    meta:
-      blockchain: ethereum
-      project: seaport
-      contributors: soispoke, sohwak, hildobby
-    config:
-      tags: ['ethereum','seaport','transfers']
-    description: >
-        Seaport transfers on Ethereum
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &project
-        name: project
-        description: "Project"
-      - &version
-        name: version
-        description: "Project version"
-      - &block_time
-        name: block_time
-        description: "UTC event block time"
-      - &token_id
-        name: token_id
-        description: "NFT Token ID"
-      - &collection
-        name: collection
-        description: "NFT collection name"
-      - &amount_usd
-        name: amount_usd
-        description:  "USD value of the trade at time of execution"
-      - &token_standard
-        name: token_standard
-        description:  "Token standard"
-      - &trade_type
-        name: trade_type
-        description: "Identify whether it was a single NFT trade or multiple NFTs traded"
-      - &number_of_items
-        name: number_of_items
-        description:  "Number of items traded"
-      - &trade_category
-        name: trade_category
-        description:  "How was this NFT traded ? (Direct buy, auction, etc...)"
-      - &evt_type
-        name: evt_type
-        description:  "Event type (Trade, Mint, Burn)"
-      - &seller
-        name: seller
-        description:  "Seller wallet address"
-      - &buyer
-        name: buyer
-        description:  "Buyer wallet address"
-      - &amount_original
-        name: amount_original
-        description:  "Traded amount in original currency"
-      - &amount_raw
-        name: amount_raw
-        description:   "Traded amount in original currency before decimals correction"
-      - &currency_symbol
-        name: currency_symbol
-        description:  "Symbol of original currency used for payment"
-      - &currency_contract
-        name: currency_contract
-        description:  "Contract address of original token used for payment, with ETH contract address swapped for WETH"
-      - &nft_contract_address
-        name: nft_contract_address
-        description:  "NFT contract address, only if 1 nft was transacted"
-      - &project_contract_address
-        name: project_contract_address
-        description:  "Contract address used by the project, in this case wyvern contract"
-      - &aggregator_name
-        name: aggregator_name
-        description:  "If the trade was performed via an aggregator, displays aggregator name"
-      - &aggregator_address
-        name: aggregator_address
-        description:  "If the trade was performed via an aggregator, displays aggregator address"
-      - &tx_hash
-        name: tx_hash
-        description:  "Transaction hash"
-      - &block_number
-        name: block_number
-        description: "Block number in which the transaction was executed "
-      - &tx_from
-        name: tx_from
-        description:  "Address that initiated the transaction"
-      - &tx_to
-        name: tx_to
-        description:  "Address that received the transaction"
-      - &platform_fee_amount_raw
-        name: platform_fee_amount_raw
-        description:  "Raw numerical amount for platform fees"
-      - &platform_fee_amount
-        name: platform_fee_amount
-        description:  "Platform fee amount in original token currency (properly formatted in decimals)"
-      - &platform_fee_amount_usd
-        name: platform_fee_amount_usd
-        description:  "Platform fee amount in USD"
-      - &platform_fee_percentage
-        name: platform_fee_amount_usd
-        description:  "Platform fee in % of the amount paid for a given trade"
-      - &royalty_fee_amount_raw
-        name: royalty_fee_amount_raw
-        description:  "Raw numerical amount for royalty fees"
-      - &royalty_fee_amount
-        name: royalty_fee_amount
-        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
-      - &royalty_fee_amount_usd
-        name: royalty_fee_amount_usd
-        description:  "Royalty fee amount in USD"
-      - &royalty_fee_percentage
-        name: royalty_fee_percentage
-        description:  "Royalty fee in % of the amount paid for a given trade"
-      - &royalty_fee_receive_address
-        name: royalty_fee_receive_address
-        description:  "Wallet addresses receiving fees from the transaction"
-      - &royalty_fee_currency_symbol
-        name: royalty_fee_currency_symbol
-        description: "Symbol of the token in which fees are paid out"
-      - name: unique_trade_id
-        description:  "Unique trade ID"
-        tests:
-          - unique
-
   - name: seaport_ethereum_base_pairs
     meta:
       blockchain: ethereum
@@ -310,44 +112,96 @@ models:
       - check_seaport_seed:
           blockchain: ethereum
           project: seaport
-          version: v1        
+          version: v1
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project"
+      - &version
+        name: version
+        description: "Project version"
       - name: block_date
         description:  "block date"
-      - *block_time
-      - *seller
-      - *buyer
-      - *trade_type
-      - *trade_category
-      - *evt_type
-      - *nft_contract_address
-      - *collection
-      - *token_id
-      - *number_of_items
-      - *token_standard
-      - *amount_raw
-      - *amount_original
-      - *amount_usd
-      - *currency_symbol
-      - *currency_contract
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &seller
+        name: seller
+        description:  "Seller wallet address"
+      - &buyer
+        name: buyer
+        description:  "Buyer wallet address"
+      - &trade_type
+        name: trade_type
+        description: "Identify whether it was a single NFT trade or multiple NFTs traded"
+      - &trade_category
+        name: trade_category
+        description:  "How was this NFT traded ? (Direct buy, auction, etc...)"
+      - &evt_type
+        name: evt_type
+        description:  "Event type (Trade, Mint, Burn)"
+      - &nft_contract_address
+        name: nft_contract_address
+        description:  "NFT contract address, only if 1 nft was transacted"
+      - &collection
+        name: collection
+        description: "NFT collection name"
+      - &token_id
+        name: token_id
+        description: "NFT Token ID"
+      - &number_of_items
+        name: number_of_items
+        description:  "Number of items traded"
+      - &token_standard
+        name: token_standard
+        description:  "Token standard"
+      - &amount_raw
+        name: amount_raw
+        description:   "Traded amount in original currency before decimals correction"
+      - &amount_original
+        name: amount_original
+        description:  "Traded amount in original currency"
+      - &amount_usd
+        name: amount_usd
+        description:  "USD value of the trade at time of execution"
+      - &currency_symbol
+        name: currency_symbol
+        description:  "Symbol of original currency used for payment"
+      - &currency_contract
+        name: currency_contract
+        description:  "Contract address of original token used for payment, with ETH contract address swapped for WETH"
       - name:  original_currency_contract
         description: "original currency"
       - name:  currency_decimal
         description:  "Token Decimal"
-      - *project_contract_address
+      - &project_contract_address
+        name: project_contract_address
+        description:  "Contract address used by the project, in this case wyvern contract"
       - name: platform_fee_receive_address
         description:  "Platform fee receive address"
-      - *platform_fee_amount_raw
-      - *platform_fee_amount
-      - *platform_fee_amount_usd
+      - &platform_fee_amount_raw
+        name: platform_fee_amount_raw
+        description:  "Raw numerical amount for platform fees"
+      - &platform_fee_amount
+        name: platform_fee_amount
+        description:  "Platform fee amount in original token currency (properly formatted in decimals)"
+      - &platform_fee_amount_usd
+        name: platform_fee_amount_usd
+        description:  "Platform fee amount in USD"
       - name: royalty_fee_receive_address
         description:  "Wallet addresses receiving fees from the transaction"
-      - *royalty_fee_amount_raw
-      - *royalty_fee_amount
-      - *royalty_fee_amount_usd
+      - &royalty_fee_amount_raw
+        name: royalty_fee_amount_raw
+        description:  "Raw numerical amount for royalty fees"
+      - &royalty_fee_amount
+        name: royalty_fee_amount
+        description:  "Royalty fee amount in original token currency (properly formatted in decimals)"
+      - &royalty_fee_amount_usd
+        name: royalty_fee_amount_usd
+        description:  "Royalty fee amount in USD"
       - name: royalty_fee_receive_address_1
         description:  "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_receive_address_2
@@ -364,14 +218,26 @@ models:
         description:  "Wallet addresses receiving fees from the transaction"
       - name: royalty_fee_amount_raw_4
         description:  "Wallet addresses receiving fees from the transaction"
-      - *aggregator_name
-      - *aggregator_address
-      - *block_number
-      - *tx_hash
+      - &aggregator_name
+        name: aggregator_name
+        description:  "If the trade was performed via an aggregator, displays aggregator name"
+      - &aggregator_address
+        name: aggregator_address
+        description:  "If the trade was performed via an aggregator, displays aggregator address"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed "
+      - &tx_hash
+        name: tx_hash
+        description:  "Transaction hash"
       - name: evt_index
         description: "Event index of transaction event"
-      - *tx_from
-      - *tx_to
+      - &tx_from
+        name: tx_from
+        description:  "Address that initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description:  "Address that received the transaction"
       - name: right_hash
         description: "right 8 character of data column on Transaction"
       - name: zone_address
@@ -403,7 +269,7 @@ models:
       - check_seaport_seed:
           blockchain: ethereum
           project: seaport
-          version: v1        
+          version: v1
     columns:
       - *blockchain
       - *project
@@ -562,3 +428,95 @@ models:
         description: "True if it is bundle trade and dividened price"
       - name: is_private
         description: "True if it is private sale"
+
+  - name: seaport_ethereum_traces
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'ethereum', 'traces']
+    description: >
+        Seaport emitted event traces on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - evt_index
+            - order_hash
+            - trace_side
+            - trace_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: trace_side
+        tests:
+          - accepted_values:
+              values: ['consideration', 'offer']
+        description: "Side of the trace"
+      - name: order_hash
+        description: "Unique trade identifier hash"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20', 'erc721', 'erc1155']
+        description: "Token standard"
+      - name: trace_index
+        description: "Index of the trace"
+      - name: seaport_contract_address
+        description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
+      - name: token_address
+        description: "Token address"
+      - name: amount
+        description: "Amount"
+      - name: identifier
+        description: "Token identified"
+      - name: recipient
+        description: "Recipient"
+      - name: offerer
+        description: "Offerer"
+      - name: zone
+        description: "Seaport zone"
+      - name: evt_index
+        description: "Event index"
+
+  - name: seaport_ethereum_tagging
+    meta:
+      blockchain: ethereum
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'ethereum', 'tagging']
+    description: >
+        Seaport tagging to identify the different protocols using Seaport on Ethereum 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tagging_method
+            - identifier
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: tagging_method
+        description: "Identification method"
+        tests:
+          - accepted_values:
+              values: ['zone', 'fee_recipient', 'tx_data_salt']
+      - name: identifier
+        description: "Identifier hash"
+      - name: protocol
+        description: "Protocol"
+      - name: protocol_type
+        description: "Type of Protocol"

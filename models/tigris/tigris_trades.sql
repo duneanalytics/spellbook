@@ -1,5 +1,6 @@
 {{ config(
-        alias ='trades',
+    
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["polygon","arbitrum"]\',
                                 "project",
                                 "tigris",
@@ -8,8 +9,8 @@
 }}
 
 {% set models = [
-'tigris_polygon_trades'
-,'tigris_arbitrum_trades'
+ref('tigris_polygon_trades')
+,ref('tigris_arbitrum_trades')
 ] %}
 
 
@@ -18,7 +19,9 @@ FROM (
     {% for model in models %}
     SELECT
         blockchain,
+        block_month,
         day,
+        project_contract_address,
         evt_block_time,
         evt_index,
         evt_tx_hash,
@@ -34,11 +37,12 @@ FROM (
         trader,
         margin_change,
         trade_type,
-        version
-    FROM {{ ref(model) }}
+        version,
+        positions_contract,
+        protocol_version
+    FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;

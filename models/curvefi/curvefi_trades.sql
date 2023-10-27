@@ -1,9 +1,11 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom"]\',
+        schema = 'curvefi',
+        partition_by = ['block_month'],
+        alias = 'trades',
+        post_hook = '{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom","celo"]\',
                                 "project",
                                 "curvefi",
-                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste"]\') }}'
+                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste","tomfutago"]\') }}'
         )
 }}
 
@@ -12,6 +14,7 @@
 ,ref('curvefi_optimism_trades')
 ,ref('curvefi_avalanche_c_trades')
 ,ref('curvefi_fantom_trades')
+,ref('curvefi_celo_trades')
 ] %}
 
 
@@ -24,6 +27,7 @@ FROM (
         version,
         block_date,
         block_time,
+        block_month,
         token_bought_symbol,
         token_sold_symbol,
         token_pair,
@@ -40,7 +44,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ curvefi_model }}
     {% if not loop.last %}
@@ -48,4 +51,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

@@ -1,5 +1,6 @@
 {{  config(
-        alias='batches',
+        alias = 'batches',
+        
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
@@ -24,23 +25,23 @@ batch_counts as (
            name,
            sum(
                case
-                   when selector != '0x2e1a7d4d' -- unwrap
-                    and selector != '0x095ea7b3' -- approval
+                   when selector != 0x2e1a7d4d -- unwrap
+                    and selector != 0x095ea7b3 -- approval
                        then 1
                    else 0
                 end)                                                as dex_swaps,
-           sum(case when selector = '0x2e1a7d4d' then 1 else 0 end) as unwraps,
-           sum(case when selector = '0x095ea7b3' then 1 else 0 end) as token_approvals
+           sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
+           sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
     from {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} s
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
-            AND i.evt_block_time >= date_trunc("day", now() - interval '1 week')
+            AND i.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
         join cow_protocol_ethereum.solvers
             on solver = address
     {% if is_incremental() %}
-    WHERE s.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE s.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
 ),
@@ -54,44 +55,30 @@ batch_values as (
         price           as eth_price
     from {{ ref('cow_protocol_ethereum_trades') }}
         left outer join {{ source('prices', 'usd') }} as p
-            on p.contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+            on p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'ethereum'
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc("day", now() - interval '1 week')
+    WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     group by tx_hash, price
 ),
 
 combined_batch_info as (
     select
-        block_date,
+        b.block_date,
         evt_block_number                               as block_number,
         evt_block_time                                 as block_time,
         num_trades,
-        CASE
-            WHEN (
-              name ilike '%1inch'
-               OR name ilike '%ParaSwap'
-               OR name ilike '%0x'
-               OR name = 'Legacy'
-              )
-               THEN (
-                select count(*)
-                from {{ ref('dex_trades') }}
-                where tx_hash = evt_tx_hash
-                and blockchain = 'ethereum'
-              )
-            ELSE dex_swaps
-        END                                              as dex_swaps,
+        dex_swaps,
         batch_value,
         solver                                           as solver_address,
         evt_tx_hash                                      as tx_hash,
         gas_price,
         gas_used,
-        (gas_price * gas_used * eth_price) / pow(10, 18) as tx_cost_usd,
+        ((gas_price / pow(10, 9)) * gas_used * eth_price) / pow(10, 9) as tx_cost_usd,
         fee_value,
-        length(data)::decimal / 1024                     as call_data_size,
+        2 * bytearray_length(data) / 1024                     as call_data_size,
         unwraps,
         token_approvals
     from batch_counts b
@@ -100,7 +87,7 @@ combined_batch_info as (
         inner join {{ source('ethereum', 'transactions') }} tx
             on evt_tx_hash = hash
             {% if is_incremental() %}
-            AND block_time >= date_trunc("day", now() - interval '1 week')
+            AND block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )

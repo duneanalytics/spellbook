@@ -95,6 +95,9 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
 
   - name: lifi_fantom_trades
     meta:
@@ -130,3 +133,4 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+      - *block_month

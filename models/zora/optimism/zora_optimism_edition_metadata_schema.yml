@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: zora_optimism_edition_metadata
+    meta:
+      blockchain: optimism
+      project: zora
+      contributors: [msilb7]
+    config:
+      tags: ['optimism','zora','nft']
+    description: >
+       NFT editions minted on Zora on OP Mainnet
+    columns:
+      - &edition_address
+        name: edition_address
+        description: "Edition (token) Address"
+        tests:
+          - unique
+      - &created_tx_hash
+        name: created_tx_hash
+        description: "TX hash when created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block Number when created"
+      - &created_block_time
+        name: created_block_time
+        description: "Block Time when created"
+      - &edition_name
+        name: edition_name
+        description: "Edition (token) name"
+      - &edition_description
+        name: edition_description
+        description: "Edition (token) description"
+      - &edition_symbol
+        name: edition_symbol
+        description: "Edition (token) symbol"
+      - &edition_size
+        name: edition_size
+        description: "Edition (token) size"
+      - &royalty_pct
+        name: royalty_pct
+        description: "Royalty percentage (in decimal form)"
+      - &image_uri
+        name: image_uri
+        description: Image URI"
+      - &animation_uri
+        name: animation_uri
+        description: "Animation URI"
+      - &metadata_contract_uri
+        name: metadata_contract_uri
+        description: "metadata_contract_uri"
+      - &metadata_uri_base
+        name: metadata_uri_base
+        description: "metadata_uri_base"
+      - &funds_recipient
+        name: funds_recipient
+        description: "Address receiving funds"
+      - &default_admin
+        name: default_admin
+        description: "Admin of the edition (often the creator)"
+      - &mint_type
+        name: mint_type
+        description: "Type of mint"
+      - &sale_config
+        name: sale_config
+        description: "Additional columns describing mint parameters"

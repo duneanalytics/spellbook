@@ -1,5 +1,5 @@
 {{ config(
-      alias='borrow'
+       alias = 'borrow'
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave",
@@ -44,4 +44,3 @@ FROM
             evt_block_number  
       FROM {{ ref('aave_v2_ethereum_borrow') }} 
 )
-;

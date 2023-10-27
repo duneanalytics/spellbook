@@ -1,11 +1,12 @@
 {{ 
     config(
         materialized='table',
-        alias='singletons',
+        alias = 'singletons',
+        
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "safe",
-                                    \'["tschubotz"]\') }}'
+                                    \'["tschubotz", "danielpartida"]\') }}'
     ) 
 }}
 
@@ -48,3 +49,8 @@ union
 
 select distinct singleton as address 
 from {{ source('gnosis_safe_ethereum', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+
+union
+
+select distinct singleton as address
+from {{ source('gnosis_safe_ethereum', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}

@@ -1,14 +1,20 @@
 {{
     config(
+tags=['prod_exclude'],
         schema = 'balancer_v2_polygon',
-        alias='lbps',
+        alias = 'lbps',
         unique_key = ['pool_id'],
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells_hide_trino(\'["polygon"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["stefenon"]\') }}'
     )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
 
 {% set create_lbp_contracts = [
                                 source('balancer_v2_polygon', 'LiquidityBootstrappingPoolFactory_call_create'),

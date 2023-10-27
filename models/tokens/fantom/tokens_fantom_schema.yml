@@ -39,7 +39,7 @@ models:
       - name: symbol
         description: "Token symbol"
 
-  - name: tokens_fantom_nft
+  - name: tokens_fantom_nft_curated
     meta:
       blockchain: fantom
       sector: nft
@@ -57,16 +57,33 @@ models:
         description: "NFT Project Name"
       - name: symbol
         description: "NFT Token Symbol"
+
+  - name: tokens_fantom_nft
+    meta:
+      blockchain: fantom
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens', 'fantom', 'nft', 'erc721' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Token Symbol"
       - name: standard
         tests:
           - accepted_values:
-              values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare', 'unknown']
+              values: [ 'erc721', 'erc1155']
         description: >
-            The token standard. This is the set of rules that the contract must respect 
-            to be compatible with the common standards. Accepted values are presently standards represented.
-            If you are adding a token with a new standard, remember to add it the accepted valeus list.
-      - name: category
-        description: "NFT Collection Category"
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.
 
   - name: tokens_fantom_erc20_stablecoins
     meta:
@@ -88,3 +105,23 @@ models:
         description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
       - name: name
         description: "ERC20 stablecoin token name"
+
+  - name: tokens_fantom_nft_standards
+    meta:
+      blockchain: fantom
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','fantom' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']

@@ -3,7 +3,7 @@
 with test_data as (
     select count(*) as total
     from {{ ref('safe_fantom_safes') }}
-    where creation_time < '2023-02-14'
+    where creation_time < TIMESTAMP '2023-02-14'
 ),
 
 test_result as (

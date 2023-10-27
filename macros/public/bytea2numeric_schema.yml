@@ -1,9 +1,0 @@
-version: 2
-
-macros:
-  - name: bytea2numeric
-    description: "Converts a string to a numeric value"
-    arguments:
-      - name: column_name
-        type: column name or expression
-        description: "The name of a column, or an expression — anything that can be `select`-ed as a column"

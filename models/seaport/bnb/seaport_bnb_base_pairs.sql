@@ -1,4 +1,5 @@
 {{ config(
+    
     alias = 'base_pairs',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -12,7 +13,7 @@
      )
 }}
 
-{% set c_seaport_first_date = "2022-06-01" %}
+{% set c_seaport_first_date = '2022-06-01' %}
 
 with iv_offer_consideration as (
     select evt_block_time as block_time
@@ -20,38 +21,38 @@ with iv_offer_consideration as (
             ,evt_tx_hash as tx_hash
             ,evt_index
             ,'offer' as sub_type
-            ,offer_idx + 1 as sub_idx
-            ,case offer[0]:itemType 
+            ,offer_idx as sub_idx
+            ,case json_extract_scalar(element_at(offer,1),'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc'
             end as offer_first_item_type
-            ,case consideration[0]:itemType
+            ,case json_extract_scalar(element_at(consideration,1),'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
-            end as consideration_first_item_type          
+                else 'etc'
+            end as consideration_first_item_type       
             ,offerer as sender
             ,recipient as receiver
             ,zone
-            ,offer_item:token as token_contract_address 
-            ,cast(offer_item:amount as numeric(38)) as original_amount
-            ,case offer_item:itemType
+            ,from_hex(json_extract_scalar(offer_item,'$.token')) as token_contract_address
+            ,cast(json_extract_scalar(offer_item,'$.amount') as uint256) as original_amount
+            ,case json_extract_scalar(offer_item,'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
+                else 'etc'
             end as item_type
-            ,offer_item:identifier as token_id
+            ,cast(json_extract_scalar(offer_item,'$.identifier') as uint256) as token_id
             ,contract_address as platform_contract_address
-            ,size(offer) as offer_cnt
-            ,size(consideration) as consideration_cnt
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,cardinality(offer) as offer_cnt
+            ,cardinality(consideration) as consideration_cnt
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private
     from
@@ -66,13 +67,15 @@ with iv_offer_consideration as (
             , offerer
             , recipient
             , zone
-            , posexplode(offer) as (offer_idx, offer_item)
+            , offer_idx
+            , offer_item
         from {{ source('seaport_bnb', 'Seaport_evt_OrderFulfilled') }}
+        cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
     union all
@@ -81,38 +84,38 @@ with iv_offer_consideration as (
             ,evt_tx_hash as tx_hash
             ,evt_index
             ,'consideration' as sub_type
-            ,consideration_idx + 1 as sub_idx
-            ,case offer[0]:itemType 
+            ,consideration_idx as sub_idx
+            ,case json_extract_scalar(element_at(offer,1),'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc'
             end as offer_first_item_type
-            ,case consideration[0]:itemType
+            ,case json_extract_scalar(element_at(consideration,1),'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
-                else 'etc' 
-            end as consideration_first_item_type          
+                else 'etc'
+            end as consideration_first_item_type        
             ,recipient as sender
-            ,consideration_item:recipient as receiver
+            ,from_hex(json_extract_scalar(consideration_item,'$.recipient')) as receiver
             ,zone
-            ,consideration_item:token as token_contract_address
-            ,cast(consideration_item:amount as numeric(38)) as original_amount
-            ,case consideration_item:itemType
+            ,from_hex(json_extract_scalar(consideration_item,'$.token')) as token_contract_address
+            ,cast(json_extract_scalar(consideration_item,'$.amount') as uint256) as original_amount
+            ,case json_extract_scalar(consideration_item,'$.itemType')
                 when '0' then 'native'
                 when '1' then 'erc20'
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc' -- actually not exists
             end as item_type
-            ,consideration_item:identifier as token_id
+            ,cast(json_extract_scalar(consideration_item,'$.identifier') as uint256) as token_id
             ,contract_address as platform_contract_address
-            ,size(offer) as offer_cnt
-            ,size(consideration) as consideration_cnt
-            ,case when recipient = '0x0000000000000000000000000000000000000000' then true
+            ,cardinality(offer) as offer_cnt
+            ,cardinality(consideration) as consideration_cnt
+            ,case when recipient = 0x0000000000000000000000000000000000000000 then true
                 else false
             end as is_private
     from
@@ -126,13 +129,15 @@ with iv_offer_consideration as (
             , offer
             , recipient
             , zone
-            ,posexplode(consideration) as (consideration_idx, consideration_item)
+            , consideration_item
+            , consideration_idx
         from {{ source('seaport_bnb','Seaport_evt_OrderFulfilled') }}
+        cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
         {% if not is_incremental() %}
-        where evt_block_time >= date '{{c_seaport_first_date}}'  -- seaport first txn
+        where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
         {% endif %}
         {% if is_incremental() %}
-        where evt_block_time >= date_trunc("day", now() - interval '1 week')
+        where evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     )
 )
@@ -187,4 +192,3 @@ with iv_offer_consideration as (
 )
 select *
 from iv_base_pairs
-;

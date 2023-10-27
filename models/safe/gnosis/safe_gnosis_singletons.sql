@@ -1,7 +1,8 @@
 {{ 
     config(
         materialized='table',
-        alias='singletons',
+        alias = 'singletons',
+        
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "project",
                                     "safe",
@@ -33,4 +34,4 @@ from {{ source('gnosis_safe_gnosis', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCre
 union
 
 -- The Circles project used a custom Safe master copy, not via the official factories though, adding that manually.
-select '0x2cb0ebc503de87cfd8f0eceed8197bf7850184ae' as address
+select 0x2cb0ebc503de87cfd8f0eceed8197bf7850184ae as address

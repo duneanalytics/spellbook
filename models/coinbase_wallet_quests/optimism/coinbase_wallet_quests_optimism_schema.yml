@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: coinbase_wallet_quests_optimism_distributor_addresses
+    meta:
+      blockchain: optimism
+      project: coinbase_wallet_quests
+      contributors: msilb7
+    config:
+      tags: ['optimism','coinbase wallet','quests']
+    description: >
+        A table containing quest information (i.e. name, distributor address) for Coinbase Wallet Quests
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - distributor_address
+              - quest_name
+    columns:
+      - &distributor_address
+        name: distributor_address
+        description: "The address distributing quest rewards. There should be a distinct distributor address for each quest."
+      - &rewards_token
+        name: rewards_token
+        description:  "The token used as a quest reward"
+      - &quest_name
+        name: quest_name
+        description:  "The name of the quest"
+
+  - name: coinbase_wallet_quests_optimism_rewards_transfers
+    meta:
+      blockchain: optimism
+      project: coinbase_wallet_quests
+      contributors: msilb7
+    config:
+      tags: ['optimism','coinbase wallet','quests']
+    description: >
+        A table containing all rewards distirbutions for Coinbase Quests, tagged by quest.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_time
+              - tx_hash
+              - evt_index
+    columns:
+      - &block_date
+        name: block_date
+        description: "Date of the quest reward distribution"
+      - *distributor_address
+      - *rewards_token
+      - *quest_name
+      - &quester_address
+        name: quester_address
+        description: "Address receiving the quest reward"
+      - &tx_hash
+        name: tx_hash
+      - &evt_index
+        name: evt_index
+      - &block_time
+        name: block_time
+      - &block_number
+        name: block_number
+      - &rewards_token_value_raw
+        name: rewards_token_value_raw
+        description: "Amount of reward token distributed (not decimal adjusted)"
+      

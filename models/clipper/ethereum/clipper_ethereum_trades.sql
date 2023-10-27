@@ -1,16 +1,17 @@
 {{ config(
-        alias ='trades',
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "clipper",
-                                \'["0xRob"]\') }}'
+                                \'["0xRob", "amalashkevich"]\') }}'
         )
 }}
 
 {% set clipper_models = [
-'clipper_v1_ethereum_trades'
-,'clipper_v2_ethereum_trades'
-,'clipper_v3_ethereum_trades'
+ref('clipper_v1_ethereum_trades')
+, ref('clipper_v2_ethereum_trades')
+, ref('clipper_v3_ethereum_trades')
+, ref('clipper_v4_ethereum_trades')
 ] %}
 
 
@@ -21,6 +22,7 @@ FROM (
         blockchain,
         project,
         version,
+        block_month,
         block_date,
         block_time,
         token_bought_symbol,
@@ -39,12 +41,10 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
-    FROM {{ ref(dex_model) }}
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-;

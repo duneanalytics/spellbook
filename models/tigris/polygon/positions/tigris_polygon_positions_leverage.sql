@@ -1,4 +1,6 @@
 {{ config(
+    
+    schema = 'tigris_polygon',
     alias = 'positions_leverage'
     )
  }}
@@ -9,34 +11,43 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage, 
+        leverage,
+        project_contract_address,
         version,
-        evt_index
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_polygon_events_open_position') }}
+    WHERE open_type = 'open_position'
 
-    UNION 
+    UNION ALL
 
     SELECT 
         evt_block_time,
         position_id,
-        leverage, 
+        leverage,
+        project_contract_address,
         version,
-        evt_index
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_polygon_events_modify_margin') }}
 
-    UNION 
+    UNION ALL 
 
     SELECT 
         evt_block_time,
         position_id,
-        leverage, 
+        leverage,
+        project_contract_address,
         version,
-        evt_index
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_polygon_events_limit_order') }}
 )
 
-SELECT * FROM leverage
-; 
+SELECT 
+    l.*
+FROM 
+leverage l 

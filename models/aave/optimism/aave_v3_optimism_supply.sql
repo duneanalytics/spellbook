@@ -1,11 +1,10 @@
 {{ config(
-
-    schema = 'aave_v3_optimism'
+     schema = 'aave_v3_optimism'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['version', 'token_address', 'evt_tx_hash', 'evt_block_number', 'evt_index']
-    , alias='supply'
+    , alias = 'supply'
     , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave_v3",
@@ -21,8 +20,8 @@ SELECT
       depositor,
       withdrawn_to,
       liquidator,
-      amount / CAST(CONCAT('1e',CAST(erc20.decimals AS VARCHAR(100))) AS DOUBLE) AS amount,
-      (amount / CAST(CONCAT('1e',CAST(p.decimals AS VARCHAR(100))) AS DOUBLE)) * price AS usd_amount,
+      amount / power(10, erc20.decimals) AS amount,
+      (amount / power(10, p.decimals)) * price AS usd_amount,
       evt_tx_hash,
       evt_index,
       evt_block_time,
@@ -31,52 +30,52 @@ FROM (
 SELECT 
     '3' AS version,
     'deposit' AS transaction_type,
-    CAST(reserve AS VARCHAR(100)) AS token,
+    reserve AS token,
     user AS depositor, 
-    CAST(NULL AS VARCHAR(5)) as withdrawn_to,
-    CAST(NULL AS VARCHAR(5)) AS liquidator,
-    CAST(amount AS DECIMAL(38,0)) AS amount,
+    CAST(NULL AS VARBINARY) as withdrawn_to,
+    CAST(NULL AS VARBINARY) AS liquidator,
+    CAST(amount AS DOUBLE) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
     evt_block_number
 FROM {{ source('aave_v3_optimism','Pool_evt_Supply') }}
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 UNION ALL 
 SELECT 
     '3' AS version,
     'withdraw' AS transaction_type,
-    CAST(reserve AS VARCHAR(100)) AS token,
+    reserve AS token,
     user AS depositor,
-    CAST(to AS VARCHAR(100)) AS withdrawn_to,
-    CAST(NULL AS VARCHAR(5)) AS liquidator,
-    - CAST(amount AS DECIMAL(38,0)) AS amount,
+    to AS withdrawn_to,
+    CAST(NULL AS VARBINARY) AS liquidator,
+    - CAST(amount AS DOUBLE) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
     evt_block_number
 FROM {{ source('aave_v3_optimism','Pool_evt_Withdraw') }}
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 UNION ALL
 SELECT 
     '3' AS version,
     'deposit_liquidation' AS transaction_type,
-    CAST(collateralAsset AS VARCHAR(100)) AS token,
+    collateralAsset AS token,
     user AS depositor,
-    CAST(liquidator AS VARCHAR(100)) AS withdrawn_to,
-    CAST(liquidator AS VARCHAR(100)) AS liquidator,
-    - CAST(liquidatedCollateralAmount AS DECIMAL(38,0)) AS amount,
+    liquidator AS withdrawn_to,
+    liquidator AS liquidator,
+    - CAST(liquidatedCollateralAmount AS DOUBLE) AS amount,
     evt_tx_hash,
     evt_index,
     evt_block_time,
     evt_block_number
 FROM {{ source('aave_v3_optimism','Pool_evt_LiquidationCall') }}
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 ) deposit
 LEFT JOIN {{ ref('tokens_optimism_erc20') }} erc20
@@ -86,5 +85,5 @@ LEFT JOIN {{ source('prices','usd') }} p
     AND p.contract_address = deposit.token
     AND p.blockchain = 'optimism'
     {% if is_incremental() %}
-    AND p.minute >= date_trunc('day', now() - interval '1 week')
+    AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}

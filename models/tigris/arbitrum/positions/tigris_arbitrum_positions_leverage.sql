@@ -1,4 +1,6 @@
 {{ config(
+    
+    schema = 'tigris_arbitrum',
     alias = 'positions_leverage'
     )
  }}
@@ -9,16 +11,25 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage,
+        project_contract_address,
+        version,
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_arbitrum_events_open_position') }}
+    WHERE open_type = 'open_position'
 
     UNION ALL
 
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage,
+        project_contract_address,
+        version,
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_arbitrum_events_modify_margin') }}
 
@@ -27,11 +38,16 @@ leverage as (
     SELECT 
         evt_block_time,
         position_id,
-        leverage 
+        leverage,
+        project_contract_address,
+        version,
+        positions_contract,
+        protocol_version
     FROM 
     {{ ref('tigris_arbitrum_events_limit_order') }}
-
 )
 
-SELECT * FROM leverage 
-;
+SELECT 
+    l.*
+FROM 
+leverage l 

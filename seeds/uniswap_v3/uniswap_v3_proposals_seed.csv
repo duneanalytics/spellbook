@@ -1,4 +1,4 @@
-blockchain,proposal_id,outcome
+blockchain,proposal_id,status
 ethereum,4,Defeated
 ethereum,13,Executed
 ethereum,21,Canceled

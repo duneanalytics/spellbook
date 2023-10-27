@@ -1,6 +1,7 @@
 {{
     config(
-        alias='registrations'
+tags=['prod_exclude'],
+        alias = 'registrations'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
@@ -11,6 +12,12 @@
                                     \'["springzh"]\') }}'
     )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 SELECT 'v3'                    as version,
        evt_block_time          as block_time,
        name,

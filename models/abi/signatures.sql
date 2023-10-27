@@ -6,10 +6,11 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['created_at', 'unique_signature_id'],
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom"]\',
+        
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom","celo","base"]\',
                         "sector",
                         "abi",
-                        \'["ilemi"]\') }}'
+                        \'["ilemi","tomfutago"]\') }}'
         )
 }}
 
@@ -22,6 +23,8 @@
     ,source('bnb', 'signatures')
     ,source('gnosis', 'signatures')
     ,source('fantom', 'signatures')
+    ,source('celo', 'signatures')
+    ,source('base', 'signatures')
 ] %}
 
 WITH
@@ -31,14 +34,14 @@ WITH
             SELECT
                 abi,
                 created_at,
-                id,
+                coalesce(try(from_hex(id)), cast(id as varbinary)) as id,
                 signature,
                 type,
-                concat(id, signature, type) as unique_signature_id
+                concat(cast(id as varchar), signature, type) as unique_signature_id
             FROM {{ chain_source }}
 
             {% if is_incremental() %}
-            WHERE created_at >= date_trunc("day", now() - interval '2 days')
+            WHERE cast(created_at as timestamp) >= cast(date_add('day', -7, now()) as timestamp)
             {% endif %}
 
             {% if not loop.last %}
@@ -57,7 +60,7 @@ WITH
             , abi
             , type
             , created_at
-            , date_trunc('month',created_at) as created_at_month
+            , date(date_trunc('month', created_at)) as created_at_month
             , unique_signature_id
             , row_number() over (partition by unique_signature_id order by created_at desc) recency
         FROM signatures

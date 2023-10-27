@@ -15,12 +15,15 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -75,9 +78,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "the position of this event log within this transaction"
@@ -122,13 +122,17 @@ models:
         description: "Indicates the trade's direction whether a short, long, of if a position is being closed"
       - *project
       - *version
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
       - &trader
         name: trader
         description: "The address which made the swap in the protocol"
       - &volume_raw
         name: volume_raw
-        description: "The size of the position in raw form, 18 decimals for Synthetix and Perpetual, 8 decimals for Pika"
+        description: "The size of the position in raw form"
       - *tx_hash
       - *tx_from
       - *tx_to
       - *evt_index
+      - *block_month

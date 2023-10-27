@@ -13,8 +13,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - tx_hash
+            - block_month
+            - evt_type
+            - loan_id
             - id
     columns:
       - &blockchain
@@ -27,6 +28,9 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each event"
       - &block_time
         name: block_time
         description: "UTC event block time"
@@ -56,3 +60,9 @@ models:
       - &loan_id
         name: loan_id
         description: "The ID associated with the loan"
+      - &orderbook
+        name: orderbook
+        description: "The orderbook where the loan is placed"
+      - &nft
+        name: nft
+        description: "The mint address of the nft used as collateral"

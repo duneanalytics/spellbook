@@ -1,6 +1,7 @@
 {{ config(
-        alias ='trades',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism"]\',
+        
+        alias = 'trades',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
                                 "project",
                                 "dodo",
                                 \'["scoffie", "owen05"]\') }}'
@@ -8,13 +9,13 @@
 }}
 
 {% set dodo_models = [
-ref('dodo_ethereum_trades')
-, ref('dodo_bnb_trades')
-, ref('dodo_polygon_trades')
-, ref('dodo_arbitrum_trades')
-, ref('dodo_optimism_trades')
+ref('dodo_pools_ethereum_trades')
+, ref('dodo_pools_bnb_trades')
+, ref('dodo_pools_polygon_trades')
+, ref('dodo_pools_arbitrum_trades')
+, ref('dodo_pools_optimism_trades')
+, ref('dodo_pools_base_trades')
 ] %}
-
 
 SELECT *
 FROM (
@@ -24,6 +25,7 @@ FROM (
         project,
         version,
         block_date,
+        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
@@ -41,7 +43,6 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
     FROM {{ dex_model }}
     {% if not loop.last %}
@@ -49,4 +50,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;

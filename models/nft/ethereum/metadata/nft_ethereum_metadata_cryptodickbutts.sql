@@ -1,5 +1,7 @@
 {{ config(
-        alias = 'cryptodickbutts'
+        tags = ['static']
+        ,schema = 'nft_ethereum_metadata'
+        ,alias = 'cryptodickbutts'
         )
 }}
 

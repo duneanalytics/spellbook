@@ -1,5 +1,7 @@
 {{ config(
     alias = 'linked_addresses',
+    
+    schema = 'nft',
     partition_by = ['blockchain'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -22,6 +24,6 @@ where buyer is not null
     and seller is not null
     and blockchain is not null
 {% if is_incremental() %}
-and block_time >= date_trunc("day", now() - interval '1 week')
+and block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 GROUP BY 1,2,3

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: fantom
       sector: prices
-      contributors: aalan3, jeff-dude
+      contributors: aalan3, jeff-dude, rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'fantom']
     description: "Price tokens on fantom chain"

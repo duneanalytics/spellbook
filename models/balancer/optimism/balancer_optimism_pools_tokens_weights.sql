@@ -1,5 +1,6 @@
 {{ config(
-        alias ='pools_tokens_weights'
+        alias = 'pools_tokens_weights',
+        
         )
 }}
 

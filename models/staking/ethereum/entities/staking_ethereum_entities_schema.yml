@@ -1,0 +1,299 @@
+version: 2
+
+models:
+  - name: staking_ethereum_entities_contracts
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified depositor entities (where a contract is called and the ETH comes from a different address)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_coinbase
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Coinbase's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_binance
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Binance's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_bitcoin_suisse
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Bitcoin Suisse's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_batch_contracts_tx_from
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Batch staking contracts identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_from
+    columns:
+      - name: tx_from
+        description: "Transaction sender of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_batch_contracts_pubkey
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Batch staking contracts identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pubkey
+    columns:
+      - name: pubkey
+        description: "Pubkey of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_withdrawal_credentials
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Depositor entities identified through withdrawal credentials
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - withdrawal_credentials
+    columns:
+      - name: withdrawal_credentials
+        description: "Withdrawal Credentials of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_depositor_addresses
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby, sankinyue
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_tx_from_addresses
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: Ethereum staking identified tx_from entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_from
+    columns:
+      - name: tx_from
+        description: "Address that initiated the deposit transaction(s)"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_darma_capital
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: DARMA Capital's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+  - name: staking_ethereum_entities_chorusone
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description:  Chorus One's Ethereum staking identified depositor entities
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pubkey
+    columns:
+      - name: pubkey
+        description: "Pubkey of identified validator"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']

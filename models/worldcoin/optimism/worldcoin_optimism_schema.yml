@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: worldcoin_optimism_accounts
+    meta:
+      blockchain: optimism
+      project: worldcoin
+      contributors: msilb7
+    config:
+      tags: ['optimism', 'worldcoin', 'accounts']
+    description: >
+        Known Worldcoin accounts (gnosis safes) on Optimism.
+    columns:
+      - &worldcoin_deployer_address
+        name: worldcoin_deployer_address
+        description: "Worldcoin address that deployed the account (Safe)"
+      - &account_address
+        name: account_address
+        description: "Worldcoin user account (Safe) address"
+        tests:
+          - unique
+      - &created_time
+        name: created_time
+        description: "Created Time"
+      - &creation_tx_hash
+        name: creation_tx_hash
+        description: "Created Tx Hash"
+      - &created_block_number
+        name: created_block_number
+        description: "Created Block Number"
+      - &contract_project
+        name: contract_project
+        description: "Project mapping for the contract. We expect this to be Gnosis Safe"
+      - &contract_name
+        name: contract_name
+        description: "Contract Name for the contract. We expect this to be a Gnosis Safe"
+      - &trace_creator_address
+        name: trace_creator_address
+        description: "Deployer address in the creation trace. We expect this to be a Gnosis Safe deployer"

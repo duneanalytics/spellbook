@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: dappradar_ethereum
+    description: >
+      DappRadar ethereum contracts
+    tables:
+      - name: Airdrop_evt_TokenClaimed
+        loaded_at_field: evt_block_time

@@ -1,7 +1,8 @@
 {{ config(
+    
     schema = 'compound_v2_ethereum',
     alias = 'borrow',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -20,24 +21,25 @@ with borrows as (
         asset_symbol as symbol,
         asset_address as token_address,
         borrower,
-        cast(null as varchar(5)) as repayer,
-        cast(null as varchar(5)) as liquidator,
-        cast(borrowAmount as decimal(38, 0)) / decimals_mantissa as amount,
-        cast(borrowAmount as decimal(38, 0)) / decimals_mantissa * price as usd_amount,
+        cast(null as VARBINARY) as repayer,
+        cast(null as VARBINARY) as liquidator,
+        borrowAmount / decimals_mantissa as amount,
+        borrowAmount / decimals_mantissa * price as usd_amount,
         evt_tx_hash,
         evt_index,
         evt_block_time,
         evt_block_number,
-        date_trunc('DAY', evt_block_time) as block_date
+        date_trunc('DAY', evt_block_time) as block_date,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_Borrow') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc('day', now() - interval '7' day)
 		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_Borrow') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc('day', now() - interval '7' day)
 		{% endif %}
     ) evt_borrow
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
@@ -47,7 +49,7 @@ with borrows as (
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc("day", now() - interval '1 week')
+        and p.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 repays as (
@@ -58,23 +60,24 @@ repays as (
         asset_address as token_address,
         borrower,
         payer as repayer,
-        cast(null as varchar(5)) as liquidator,
-        -cast(repayAmount as decimal(38, 0)) / decimals_mantissa as amount,
-        -cast(repayAmount as decimal(38, 0)) / decimals_mantissa * price as usd_amount,
+        cast(null as varbinary) as liquidator,
+        - (repayAmount / decimals_mantissa) as amount,
+        - (repayAmount / decimals_mantissa) * price as usd_amount,
         evt_tx_hash,
         evt_index,
         evt_block_time,
         evt_block_number,
-        date_trunc('DAY', evt_block_time) as block_date
+        date_trunc('DAY', evt_block_time) as block_date,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_RepayBorrow') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc('day', now() - interval '7' day)
 		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_RepayBorrow') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc('day', now() - interval '7' day)
 		{% endif %}
     ) evt_repay
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
@@ -84,7 +87,7 @@ repays as (
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc("day", now() - interval '1 week')
+        and p.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 liquidations as (
@@ -96,22 +99,23 @@ liquidations as (
         borrower,
         liquidator as repayer,
         liquidator,
-        -cast(repayAmount as decimal(38, 0)) / decimals_mantissa as amount,
-        -cast(repayAmount as decimal(38, 0)) / decimals_mantissa * price as usd_amount,
+        - (repayAmount / decimals_mantissa) as amount,
+        - (repayAmount / decimals_mantissa) * price as usd_amount,
         evt_tx_hash,
         evt_index,
         evt_block_time,
         evt_block_number,
-        date_trunc('DAY', evt_block_time) as block_date
+        date_trunc('DAY', evt_block_time) as block_date,
+        CAST(date_trunc('month', evt_block_time) as date) as block_month
     from (
         select * from {{ source('compound_v2_ethereum', 'cErc20_evt_LiquidateBorrow') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc('day', now() - interval '7' day)
 		{% endif %}
         union all
         select * from {{ source('compound_v2_ethereum', 'cEther_evt_LiquidateBorrow') }}
         {% if is_incremental() %}
-		where evt_block_time >= date_trunc("day", now() - interval '1 week')
+		where evt_block_time >= date_trunc('day', now() - interval '7' day)
 		{% endif %}
     ) evt_liquidate
     left join {{ ref('compound_v2_ethereum_ctokens') }} ctokens
@@ -121,7 +125,7 @@ liquidations as (
         and p.contract_address = ctokens.asset_address
         and p.blockchain = 'ethereum'
         {% if is_incremental() %}
-        and p.minute >= date_trunc("day", now() - interval '1 week')
+        and p.minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 
