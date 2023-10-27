@@ -2,7 +2,7 @@
 
 -- if a PR test, use delta table w/o metastore reference
     {%- if target.schema.startswith(("github_actions")) or target.schema.startswith("dbt_") -%}
-        {{ log("TEST TEST")}}
+        {{ log("TEST TEST", info=true)}}
 
         {%- set file_path = model['name'] -%}
         {%- set target_relation = api.Relation.create(
