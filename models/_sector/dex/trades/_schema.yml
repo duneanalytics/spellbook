@@ -98,3 +98,36 @@ models:
         description: "Index of the corresponding trade event"
 
   - name: dex_base_trades
+    meta:
+      blockchain: arbitrum, base, bnb, celo, ethereum, optimism, polygon
+      sector: dex
+      contributors: 0xRob, hosuke, jeff-dude
+    config:
+      tags: [ 'dex', 'base_trades' ]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+      - *tx_from
+      - *tx_to
