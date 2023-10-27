@@ -1,4 +1,4 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, wrapped_token_deposit = null, wrapped_token_withdrawal = null) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, wrapped_token_deposit = null, wrapped_token_withdrawal = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 {# denormalized tables are not yet in use #}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
@@ -9,7 +9,11 @@ WITH transfers AS (
     , tx_hash
     , NULL AS evt_index
     , trace_address
+    {% if native_contract_address%}
+    , native_contract_address AS contract_address
+    {% else %}
     , CAST(NULL AS varbinary) AS contract_address
+    {% endif %}
     , 'native' AS token_standard
     , "from"
     , to
