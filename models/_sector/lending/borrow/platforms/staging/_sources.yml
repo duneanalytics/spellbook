@@ -167,7 +167,7 @@ sources:
     description: "Decoded contracts for aave v3 on Ethereum"
 
     tables:
-      - name: LendingPool_evt_Borrow
+      - name: Pool_evt_Borrow
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving borrows for aave v3 on ethereum"
         columns:
@@ -188,7 +188,7 @@ sources:
         - *onBehalfOf
         - *referral
           
-      - name: LendingPool_evt_Repay
+      - name: Pool_evt_Repay
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving repays for aave v2 on ethereum"
         columns:
@@ -202,7 +202,7 @@ sources:
         - *reserve
         - *user
       
-      - name: LendingPool_evt_LiquidationCall
+      - name: Pool_evt_LiquidationCall
         loaded_at_field: evt_block_time
         description: "Contians all the transactions involving liquidation for aave v2 on ethereum"
         columns:

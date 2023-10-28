@@ -12,15 +12,27 @@
 with
 
 src_LendingPool_evt_Borrow as (
-  select * from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Borrow') }}
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Borrow') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
 ),
 
 src_LendingPool_evt_Repay as (
-  select * from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Repay') }}
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Repay') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
 ),
 
 src_LendingPool_evt_LiquidationCall as (
-  select * from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
 ),
 
 base_borrow as (
@@ -43,9 +55,6 @@ base_borrow as (
     evt_block_time,
     evt_block_number
   from src_LendingPool_evt_Borrow
-  {% if is_incremental() %}
-  where {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
   union all
   select
     'repay' as transaction_type,
@@ -63,9 +72,6 @@ base_borrow as (
     evt_block_time,
     evt_block_number
   from src_LendingPool_evt_Repay
-  {% if is_incremental() %}
-  where {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
   union all
   select
     'borrow_liquidation' as transaction_type,
@@ -83,9 +89,6 @@ base_borrow as (
     evt_block_time,
     evt_block_number
   from src_LendingPool_evt_LiquidationCall
-  {% if is_incremental() %}
-  where {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
 )
 
 select
@@ -101,6 +104,7 @@ select
   amount,
   evt_tx_hash,
   evt_index,
+  cast(datetrunc('month', evt_block_time) as date) as evt_block_month,
   evt_block_time,
   evt_block_number
 from base_borrow

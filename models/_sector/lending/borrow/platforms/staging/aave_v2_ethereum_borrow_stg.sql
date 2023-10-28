@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'aave_v1_ethereum',
-    alias = 'borrow',
+    schema = 'aave_v2_ethereum',
+    alias = 'borrow_stg',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -10,10 +10,9 @@
 }}
 
 {{
-  lending_aave_v1_fork_borrow(
+  lending_aave_v2_fork_borrow(
     blockchain = 'ethereum',
     project = 'aave',
-    version = '1',
-    aave_mock_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-    native_token_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    version = '2'
+  )
 }}

@@ -15,11 +15,13 @@ select
   borrow.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as usd_amount,
   borrow.evt_tx_hash,
   borrow.evt_index,
+  borrow.evt_block_month,
   borrow.evt_block_time,
   borrow.evt_block_number
 from {{ model }} borrow
   left join {{ ref('tokens_erc20') }} erc20
     on borrow.token_address = erc20.contract_address
+    and borrow.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 
     on date_trunc('minute', borrow.evt_block_time) = p.minute
     and erc20.symbol = p.symbol

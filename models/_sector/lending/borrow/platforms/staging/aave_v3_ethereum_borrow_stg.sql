@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'aave_v3_ethereum',
-    alias = 'borrow',
+    alias = 'borrow_stg',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
