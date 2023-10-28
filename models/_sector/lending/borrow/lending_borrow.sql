@@ -2,7 +2,7 @@
   config(
     schema = 'lending',
     alias = 'borrow',
-    partition_by = ['blockchain', 'project', 'block_month'],
+    partition_by = ['blockchain', 'project', 'evt_block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
