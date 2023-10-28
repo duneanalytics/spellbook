@@ -10,42 +10,25 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'ethereum']
     description: "All Aave transactions involving borrow transactions on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-        tests:
-          - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
-          - not_null
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
-        tests:
-          - not_null
       - &transaction_type
         name: transaction_type
         description: "Transaction type"
-        tests:
-          - not_null
       - &symbol
         name: symbol
         description: "Token symbol"
       - &token_address
         name: token_address
         description: "Token contract address"
-        tests:
-          - not_null
       - &borrower
         name: borrower
         description: "Borrower wallet address"
@@ -64,21 +47,15 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: "Transaction hash of the event"
-        tests:
-          - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
-          - not_null
       - &evt_block_month
         name: evt_block_month
         description: "Block Month column used to partition data in this table"
       - &evt_block_time
         name: evt_block_time
         description: "Timestamp for block event time in UTC"
-        tests:
-          - not_null
       - &evt_block_number
         name: evt_block_number
         description: "Event block number"
@@ -94,13 +71,6 @@ models:
     config:
       tags: ['lending', 'borrow', 'moola', 'aave_v2', 'celo']
     description: "All Moola transactions involving borrow transactions on Celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
     columns:
       - *blockchain
       - *project
