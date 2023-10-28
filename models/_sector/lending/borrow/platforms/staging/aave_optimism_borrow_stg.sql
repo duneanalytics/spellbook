@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending',
+    schema = 'aave_optimism',
     alias = 'borrow_stg',
     materialized = 'view'
   )
@@ -8,8 +8,7 @@
 
 {%
   set models = [
-    ref('aave_ethereum_borrow_stg'),
-    ref('moola_celo_borrow_stg')
+    ref('aave_v3_optimism_borrow_stg')
   ]
 %}
 
