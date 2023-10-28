@@ -93,7 +93,7 @@ select
   amount,
   evt_tx_hash,
   evt_index,
-  cast(datetrunc('month', evt_block_time) as date) as evt_block_month,
+  cast(date_trunc('month', evt_block_time) as date) as evt_block_month,
   evt_block_time,
   evt_block_number
 from base_borrow
