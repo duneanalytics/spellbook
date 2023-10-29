@@ -54,6 +54,6 @@
     {%- set seed_check_columns = ['token_bought_address','token_sold_address'] -%}
     {%- set seed_matching_columns = ['blockchain','project','version','tx_hash','evt_index'] -%}
 
-    {{ check_seed_macro(a, b, seed_matching_columns, seed_check_columns) }}
+    {{ check_seed_macro(a, b, seed_matching_columns, seed_check_columns, with_needed = False) }}
 
 {% endtest %}
