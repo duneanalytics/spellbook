@@ -16,9 +16,7 @@
             maker,
             project_contract_address,
             tx_hash,
-            evt_index,
-            tx_from,
-            tx_to
+            evt_index
         from {{ model }}
         where block_date <= TIMESTAMP '{{ end_date }}'
         order by block_time desc
@@ -41,9 +39,7 @@
             maker,
             project_contract_address,
             tx_hash,
-            evt_index,
-            tx_from,
-            tx_to
+            evt_index
         from {{ compare_model }}
         where block_date <= TIMESTAMP '{{ end_date }}'
         order by block_time desc
