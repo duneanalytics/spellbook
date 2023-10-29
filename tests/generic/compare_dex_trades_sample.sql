@@ -21,6 +21,7 @@
             tx_to
         from {{ model }}
         where block_date <= TIMESTAMP '{{ end_date }}'
+        order by block_time desc
         limit {{ sample_size }}
 
     ),
@@ -45,6 +46,7 @@
             tx_to
         from {{ compare_model }}
         where block_date <= TIMESTAMP '{{ end_date }}'
+        order by block_time desc
         limit {{ sample_size }}
 
     )
