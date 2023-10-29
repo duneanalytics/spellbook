@@ -10,7 +10,8 @@ WITH indexed_sandwich_trades AS (
     , t.tx_hash_all AS tx_hash
     , t.evt_index_all AS evt_index
     FROM {{ ref('dex_trades') }} front
-    INNER JOIN {{ ref('dex_trades') }} back ON front.block_time=back.block_time
+    INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
+        AND front.block_time=back.block_time
         AND front.project_contract_address=back.project_contract_address
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
@@ -30,7 +31,8 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND tx_b.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-    INNER JOIN {{ ref('dex_trades') }} victim ON front.block_time=victim.block_time
+    INNER JOIN {{ ref('dex_trades') }} victim ON  victim.blockchain='{{blockchain}}'
+        AND front.block_time=victim.block_time
         AND front.project_contract_address=victim.project_contract_address
         AND victim.tx_from!=front.tx_from
         AND front.token_bought_address=victim.token_bought_address
