@@ -49,7 +49,7 @@
         order by block_time desc
         limit {{ sample_size }}
 
-    )
+    ),
 
     {%- set seed_check_columns = ['token_bought_address','token_sold_address'] -%}
     {%- set seed_matching_columns = ['blockchain','project','version','tx_hash','evt_index'] -%}
