@@ -12,6 +12,12 @@ WITH indexed_trades AS (
     , dt.tx_hash
     , dt.evt_index
     FROM {{ ref('dex_trades') }} dt
+    INNER JOIN {{ ref('dex_trades') }} dt2 ON dt.block_time=dt2.block_time
+        AND dt.project_contract_address=dt2.project_contract_address
+        AND dt.tx_from=dt2.tx_from
+        AND dt.tx_hash!=dt2.tx_hash
+        AND s1.token_sold_address=s2.token_bought_address
+        AND s1.token_bought_address=s2.token_sold_address
     INNER JOIN {{transactions}} tx ON tx.block_time=dt.block_time
         AND tx.hash=dt.tx_hash
         {% if is_incremental() %}
