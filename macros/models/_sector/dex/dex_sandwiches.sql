@@ -1,55 +1,52 @@
 {% macro dex_sandwiches(blockchain, transactions) %}
 
--- CTE no longer needed whenever dex.trades will have block_number & tx_index
-WITH indexed_trades AS (
-    SELECT dt.block_time
-    , tx.block_number
-    , dt.project_contract_address
-    , dt.tx_from
-    , tx.index AS tx_index
-    , dt.token_sold_address
-    , dt.token_bought_address
-    , dt.tx_hash
-    , dt.evt_index
-    FROM {{ ref('dex_trades') }} dt
-    INNER JOIN {{ ref('dex_trades') }} dt2 ON dt.block_time=dt2.block_time
-        AND dt.project_contract_address=dt2.project_contract_address
-        AND dt.tx_from=dt2.tx_from
-        AND dt.tx_hash!=dt2.tx_hash
-        AND s1.token_sold_address=s2.token_bought_address
-        AND s1.token_bought_address=s2.token_sold_address
-    INNER JOIN {{transactions}} tx ON tx.block_time=dt.block_time
-        AND tx.hash=dt.tx_hash
-        {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-    WHERE dt.blockchain='ethereum'
-    {% if is_incremental() %}
-    AND dt.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-    )
-
 -- Checking that frontrun trade (s1) has a matching backrun (s2) and at least one victim in between
-, sandwiches AS (
-    SELECT DISTINCT s1.block_time
-    , s1.block_number
-    , s1.project_contract_address
-    , s1.tx_index
-    , evt_index_all AS evt_index
-    FROM indexed_trades s1
-    INNER JOIN indexed_trades s2 ON s1.block_number=s2.block_number
-        AND s1.project_contract_address=s2.project_contract_address
-        AND s1.tx_from=s2.tx_from
-        AND s1.tx_index<s2.tx_index-1
-        AND s1.token_sold_address=s2.token_bought_address
-        AND s1.token_bought_address=s2.token_sold_address
-    INNER JOIN indexed_trades victim ON s1.block_number=victim.block_number
-        AND s1.project_contract_address=victim.project_contract_address
-        AND victim.tx_index BETWEEN s1.tx_index AND s2.tx_index
-        AND victim.tx_from!=s1.tx_from
-        AND s1.token_bought_address=victim.token_bought_address
-        AND s1.token_sold_address=victim.token_sold_address
-    CROSS JOIN UNNEST(ARRAY[s1.evt_index, s2.evt_index]) AS t(evt_index_all)
+WITH indexed_sandwich_trades AS (
+    SELECT DISTINCT front.block_time
+    , tx_f.block_number
+    , front.project_contract_address
+    , t.index_all AS tx_index
+    , t.tx_hash_all AS tx_hash
+    , t.evt_index_all AS evt_index
+    FROM {{ ref('dex_trades') }} front
+    INNER JOIN {{ ref('dex_trades') }} back ON front.block_time=back.block_time
+        AND front.project_contract_address=back.project_contract_address
+        AND front.tx_from=back.tx_from
+        AND front.tx_hash!=back.tx_hash
+        AND front.token_sold_address=back.token_bought_address
+        AND front.token_bought_address=back.token_sold_address
+        {% if is_incremental() %}
+        AND back.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    INNER JOIN {{transactions}} tx_f ON tx_f.block_time=front.block_time
+        AND tx_f.hash=front.tx_hash
+        {% if is_incremental() %}
+        AND tx_f.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    INNER JOIN {{transactions}} tx_b ON tx_b.block_time=back.block_time
+        AND tx_b.hash=back.tx_hash
+        AND tx_f.index + 1 < tx_b.index
+        {% if is_incremental() %}
+        AND tx_b.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    INNER JOIN {{ ref('dex_trades') }} victim ON front.block_time=victim.block_time
+        AND front.project_contract_address=victim.project_contract_address
+        AND victim.tx_from!=front.tx_from
+        AND front.token_bought_address=victim.token_bought_address
+        AND front.token_sold_address=victim.token_sold_address
+        {% if is_incremental() %}
+        AND victim.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    INNER JOIN {{transactions}} tx_v ON tx_v.block_time=front.block_time
+        AND tx_v.index BETWEEN tx_f.index AND tx_b.index
+        {% if is_incremental() %}
+        AND tx_v.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    CROSS JOIN UNNEST(ARRAY[(front.tx_hash, tx_f.index, front.evt_index), (back.tx_hash, tx_b.index, back.evt_index)]) AS t(tx_hash_all, evt_index_all, index_all)
+    WHERE front.blockchain='{{blockchain}}'
+    {% if is_incremental() %}
+    AND front.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
     )
 
 -- Joining back with dex.trades to get the rest of the data
@@ -78,6 +75,6 @@ SELECT dt.blockchain
 , dt.amount_usd
 , evt_index
 FROM {{ ref('dex_trades') }} dt
-INNER JOIN sandwiches s USING (block_time, project_contract_address, evt_index)
+INNER JOIN indexed_sandwich_trades s USING (block_time, project_contract_address, evt_index)
 
 {% endmacro %}
