@@ -43,7 +43,7 @@ WITH indexed_trades AS (
         AND victim.tx_from!=s1.tx_from
         AND s1.token_bought_address=victim.token_bought_address
         AND s1.token_sold_address=victim.token_sold_address
-    CROSS JOIN UNNEST(ARRAY[s1.evt_index, s2.evt_index)]) AS t(evt_index_all)
+    CROSS JOIN UNNEST(ARRAY[s1.evt_index, s2.evt_index]) AS t(evt_index_all)
     )
 
 -- Joining back with dex.trades to get the rest of the data
