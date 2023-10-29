@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - equal_rowcount:
+      - compare_dex_trades_sample:
           compare_model: ref('uniswap_v3_optimism_trades')
       - equal_rowcount_with_sources:
           evt_sources:
