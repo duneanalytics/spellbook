@@ -1,5 +1,6 @@
 {% macro dex_sandwiches(blockchain, transactions) %}
 
+-- CTE no longer needed whenever dex.trades will have block_number & tx_index
 WITH indexed_trades AS (
     SELECT dt.block_time
     , tx.block_number
@@ -22,12 +23,12 @@ WITH indexed_trades AS (
     {% endif %}
     )
 
+-- Checking that frontrun trade (s1) has a matching backrun (s2) and at least one victim in between
 , sandwiches AS (
     SELECT DISTINCT s1.block_time
     , s1.block_number
     , s1.project_contract_address
     , s1.tx_index
-    , tx_hash_all AS tx_hash
     , evt_index_all AS evt_index
     FROM indexed_trades s1
     INNER JOIN indexed_trades s2 ON s1.block_number=s2.block_number
@@ -42,9 +43,10 @@ WITH indexed_trades AS (
         AND victim.tx_from!=s1.tx_from
         AND s1.token_bought_address=victim.token_bought_address
         AND s1.token_sold_address=victim.token_sold_address
-    CROSS JOIN UNNEST(ARRAY[(s1.tx_hash, s1.evt_index), (s2.tx_hash, s2.evt_index)]) AS t(tx_hash_all, evt_index_all)
+    CROSS JOIN UNNEST(ARRAY[s1.evt_index, s2.evt_index)]) AS t(evt_index_all)
     )
 
+-- Joining back with dex.trades to get the rest of the data
 SELECT dt.blockchain
 , dt.project
 , dt.version
@@ -57,7 +59,7 @@ SELECT dt.blockchain
 , dt.token_bought_symbol
 , dt.maker
 , dt.taker
-, tx_hash
+, dt.tx_hash
 , dt.tx_from
 , dt.tx_to
 , project_contract_address
@@ -70,6 +72,6 @@ SELECT dt.blockchain
 , dt.amount_usd
 , evt_index
 FROM {{ ref('dex_trades') }} dt
-INNER JOIN sandwiches s USING (block_time, tx_hash, project_contract_address, evt_index)
+INNER JOIN sandwiches s USING (block_time, project_contract_address, evt_index)
 
 {% endmacro %}
