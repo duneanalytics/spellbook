@@ -1,11 +1,11 @@
 {{ config(
-        
+        schema = 'curvefi',
         partition_by = ['block_month'],
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom"]\',
+        post_hook = '{{ expose_spells(\'["ethereum","avalanche_c","optimism","fantom","celo"]\',
                                 "project",
                                 "curvefi",
-                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste"]\') }}'
+                                \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste","tomfutago"]\') }}'
         )
 }}
 
@@ -14,6 +14,7 @@
 ,ref('curvefi_optimism_trades')
 ,ref('curvefi_avalanche_c_trades')
 ,ref('curvefi_fantom_trades')
+,ref('curvefi_celo_trades')
 ] %}
 
 

@@ -67,5 +67,6 @@ FROM
     ('tetu-tetu-reward-token','polygon','TETU',0x255707B70BF90aa112006E1b07B9AeA6De021424,18),
     ('quick-quickswap','polygon','QUICK',0x831753dd7087cac61ab5644b308642cc1c33dc13,18),
     ('dimo-dimo','polygon','DIMO',0xe261d618a959afffd53168cd07d12e37b26761db,18),
-    ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18)
+    ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18),
+    ('val-valeria','polygon','VAL',0x456f931298065b1852647de005dd27227146d8b9,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
