@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('linked_addresses'),
-    tags = ['dunesql'],
+    alias = 'linked_addresses',
+    
     schema = 'nft',
     partition_by = ['blockchain'],
     materialized = 'incremental',

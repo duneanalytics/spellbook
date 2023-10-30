@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('erc20_noncompliant'),
+tags=['prod_exclude'],
+        alias = 'erc20_noncompliant',
         materialized ='table',
         file_format = 'delta'
 ) 

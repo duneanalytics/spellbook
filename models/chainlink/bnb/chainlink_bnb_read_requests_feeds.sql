@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('read_requests_feeds'),
+    
+    alias='read_requests_feeds',
     materialized='view',
   )
 }}

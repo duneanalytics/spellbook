@@ -1,7 +1,7 @@
 {{ 
     config(
-        tags = ['dunesql'],
-        alias = alias('erc20_rolling_day'),
+        
+        alias = 'erc20_rolling_day',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

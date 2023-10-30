@@ -1,7 +1,7 @@
 {{ config(
     schema='lido_liquidity_optimism',
-    alias = alias('uniswap_v3_pools'),
-    tags = ['dunesql'], 
+    alias = 'uniswap_v3_pools',
+     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
