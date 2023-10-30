@@ -18,9 +18,9 @@
             tx_hash,
             evt_index
         from {{ model }}
-        where block_date <= (TIMESTAMP '{{ end_date }}' - interval '1' second)
+        where block_date <= TIMESTAMP '{{ end_date }}'
         order by block_time desc
-        limit {{ sample_size * 2 }}
+        limit {{ sample_size * 3 }}
 
     ),
     b as (
@@ -41,7 +41,7 @@
             tx_hash,
             evt_index
         from {{ compare_model }}
-        where block_date <= TIMESTAMP '{{ end_date }}'
+        where block_date <= (TIMESTAMP '{{ end_date }}' - interval '1' second)
         order by block_time desc
         limit {{ sample_size }}
 
