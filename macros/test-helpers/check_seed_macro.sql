@@ -2,19 +2,9 @@
 -- you need to specify the matching columns and the columns to check for equality.
 -- filter: dictionary filter of column:value that is applied to the seed file
 
-{% macro check_seed_macro(
-    model
-    , seed_file
-    , seed_matching_columns=[]
-    , seed_check_columns=[]
-    , filter=None
-    , with_needed=True
-) %}
+{% macro check_seed_macro(model, seed_file, seed_matching_columns=[], seed_check_columns=[], filter=None) %}
 
-    {% if with_needed %}
-    with
-    {% endif %}
-    matched_records as (
+    with matched_records as (
         select
             {%- for column_name in seed_matching_columns %}
             seed.{{column_name}} as seed_{{column_name}},
