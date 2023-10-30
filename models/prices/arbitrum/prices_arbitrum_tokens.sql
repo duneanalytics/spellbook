@@ -122,7 +122,6 @@ FROM
     ('lode-lodestar','arbitrum','LODE',0xf19547f9ed24aa66b03c3a552d181ae334fbb8db,18),
     ('hmx-hmx','arbitrum','HMX',0x83d6c8c06ac276465e4c92e7ac8c23740f435140,18),
     ('aibb-bullbear-ai','arbitrum','AIBB',0xb9af4762c039d63e30039f1712dfab77026408c7,18),
-    ('dca-autodca','arbitrum','DCA',0x965f298e4ade51c0b0bb24e3369deb6c7d5b3951,18),
     ('ush-unsheth','arbitrum','USH',0x51a80238b5738725128d3a3e06ab41c1d4c05c74,18),
     ('hdn-hydranet','arbitrum','HDN',0x3404149e9ee6f17fb41db1ce593ee48fbdcd9506,18),
     ('vela-vela-token','arbitrum','VELA',0x088cd8f5ef3652623c22d48b1605dcfe860cd704,18),
