@@ -18,7 +18,7 @@
             tx_hash,
             evt_index
         from {{ model }}
-        where block_date <= TIMESTAMP '{{ end_date }}'
+        where block_date <= (TIMESTAMP '{{ end_date }}' - interval '1' second)
         order by block_time desc
         limit {{ sample_size * 2 }}
 
