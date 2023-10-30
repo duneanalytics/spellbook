@@ -45,7 +45,7 @@ LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', bloc
 AND p.blockchain = 'zksync'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}
-AND p.minute >= date_trunc('day', now() - interval '2' day)
+AND {{ incremental_predicate('p.minute') }}
 WHERE block_time >= date_trunc('day', now() - interval '2' day)
 AND blocks.time >= date_trunc('day', now() - interval '2' day)
 AND p.minute >= date_trunc('day', now() - interval '2' day)
