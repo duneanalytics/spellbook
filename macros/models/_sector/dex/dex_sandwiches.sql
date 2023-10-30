@@ -3,7 +3,6 @@
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
 WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
-    , tx_f.block_number
     , front.project_contract_address
     , t.tx_index_all AS tx_index
     FROM {{ ref('dex_trades') }} front
