@@ -14,7 +14,8 @@ WITH
 
 {% set limit_cancel_tables = [
     'options_evt_OptionsLimitCancelled',
-    'Options_V2_evt_OptionsLimitCancelled'
+    'Options_V2_evt_OptionsLimitCancelled',
+    'Options_V3_evt_OptionsLimitCancelled'
 ] %}
 
 limit_cancel_v2 AS (

@@ -93,6 +93,7 @@ all_fees as (
 
     SELECT * FROM excluded_trades
 )
+-- use to reload 
 
 SELECT 
     t.blockchain, 
