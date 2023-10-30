@@ -20,7 +20,7 @@
         from {{ model }}
         where block_time <= TIMESTAMP '{{ end_date }}'
         order by block_time desc
-        limit {{ sample_size * 3 }}
+        limit {{ sample_size * 5 }}
 
     ),
     b as (
