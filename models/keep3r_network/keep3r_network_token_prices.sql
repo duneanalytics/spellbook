@@ -1,6 +1,5 @@
-{{ config (
-    tags=['dunesql']
-    , alias = alias('token_prices')
+{{ config(
+     alias = 'token_prices'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

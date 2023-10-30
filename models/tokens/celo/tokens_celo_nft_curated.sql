@@ -1,7 +1,7 @@
 {{
     config(
-        tags = ['static', 'dunesql'],
-        alias = alias('nft_curated'),
+        tags = ['static'],
+        alias = 'nft_curated',
         materialized = 'table',
         post_hook = '{{ expose_spells(\'["celo"]\',
                                     "sector",

@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['static','dunesql']
+        tags = ['static']
         ,schema = 'nft_ethereum_metadata'
-        ,alias = alias('fellowship_gallery')
+        ,alias = 'fellowship_gallery'
         )
 }}
 

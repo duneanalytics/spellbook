@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql', 'static']
-    , alias = alias('erc20')
+    tags=[ 'static']
+    , alias = 'erc20'
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
