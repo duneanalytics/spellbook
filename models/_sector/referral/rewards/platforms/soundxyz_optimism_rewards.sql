@@ -1,7 +1,7 @@
 {{ config(
     schema = 'soundxyz_optimism',
-    alias = alias('rewards'),
-    tags = ['dunesql'],
+    alias = 'rewards',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: account_abstraction_erc4337_userops_seed
     config:
-      tags: dunesql
       column_types:
         entrypoint_contract: varbinary
         tx_hash: varbinary
@@ -16,7 +15,6 @@ seeds:
 
   - name: account_abstraction_erc4337_account_deployed_seed
     config:
-      tags: dunesql
       column_types:
         entrypoint_contract: varbinary
         tx_hash: varbinary

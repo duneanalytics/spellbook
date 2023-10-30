@@ -1,6 +1,6 @@
 {{
-    config(tags=['dunesql'],
-        alias = alias('contract_deployers_optimism'),
+    config(
+        alias = 'contract_deployers_optimism',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

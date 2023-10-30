@@ -1,6 +1,6 @@
 {{config(
-    tags=['dunesql'],
-    alias = alias('smart_dex_traders_ethereum')
+    
+    alias = 'smart_dex_traders_ethereum'
 )}}
 /*
 ** This is a submission for the Dune labels mini hackathon (March 2023)
