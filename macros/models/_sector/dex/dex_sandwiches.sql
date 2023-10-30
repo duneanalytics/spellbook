@@ -6,8 +6,7 @@ WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , tx_f.block_number
     , front.project_contract_address
-    , t.tx_hash_all AS tx_hash
-    , t.index_all AS tx_index
+    , t.tx_index_all AS tx_index
     , t.evt_index_all AS evt_index
     FROM {{ ref('dex_trades') }} front
     INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
@@ -45,7 +44,7 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND tx_v.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-    CROSS JOIN UNNEST(ARRAY[(front.tx_hash, tx_f.index, front.evt_index), (back.tx_hash, tx_b.index, back.evt_index)]) AS t(tx_hash_all, index_all, evt_index_all)
+    CROSS JOIN UNNEST(ARRAY[(tx_f.index, front.evt_index), (tx_b.index, back.evt_index)]) AS t(tx_index_all, evt_index_all)
     WHERE front.blockchain='{{blockchain}}'
     {% if is_incremental() %}
     AND front.block_time >= date_trunc('day', now() - interval '7' day)
@@ -65,7 +64,7 @@ SELECT dt.blockchain
 , dt.token_bought_symbol
 , dt.maker
 , dt.taker
-, tx_hash
+, dt.tx_hash
 , dt.tx_from
 , dt.tx_to
 , project_contract_address
@@ -78,7 +77,7 @@ SELECT dt.blockchain
 , dt.amount_usd
 , evt_index
 FROM {{ ref('dex_trades') }} dt
-INNER JOIN indexed_sandwich_trades s USING (block_time, tx_hash, project_contract_address, evt_index)
+INNER JOIN indexed_sandwich_trades s USING (block_time, project_contract_address, evt_index)
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND dt.block_time >= date_trunc('day', now() - interval '7' day)
