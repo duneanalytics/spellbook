@@ -4,7 +4,7 @@
 WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , front.project_contract_address
-    , t.tx_index_all AS tx_index
+    , t.evt_index_all AS evt_index
     FROM {{ ref('dex_trades') }} front
     INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
         AND front.block_time=back.block_time
@@ -62,7 +62,7 @@ SELECT dt.blockchain
 FROM {{ ref('dex_trades') }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
     AND dt.project_contract_address=s.project_contract_address
-    AND dt.evt_index=s.tx_index
+    AND dt.evt_index=s.evt_index
 INNER JOIN {{transactions}} tx ON tx.block_time=dt.block_time
     AND tx.hash=dt.tx_hash
     {% if is_incremental() %}
