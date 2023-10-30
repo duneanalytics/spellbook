@@ -1,7 +1,6 @@
 {% macro dex_sandwiches(blockchain, transactions) %}
 
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
--- Joins for tx_f, tx_b & tx_v will no longer be needed when dex.trades has block_number & tx_index
 WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , tx_f.block_number
@@ -36,7 +35,7 @@ WITH indexed_sandwich_trades AS (
     {% endif %}
     )
 
--- Joining back with dex.trades to get the rest of the data
+-- Joining back with dex.trades to get the rest of the data & adding block_number and tx_index to the mix
 SELECT dt.blockchain
 , dt.project
 , dt.version
