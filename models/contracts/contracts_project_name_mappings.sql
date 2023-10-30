@@ -118,5 +118,6 @@ from (
     ,('mintfun','mint.fun')
     ,('allo_protocol', 'allo protocol (gitcoin)')
     ,('union_protocol', 'Union Finance')
+    ,('gyroscope', 'Gyroscope')
 
     ) as temp_table (dune_name, mapped_name)
