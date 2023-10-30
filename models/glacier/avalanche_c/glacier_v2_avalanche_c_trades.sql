@@ -1,14 +1,11 @@
-{{ config(tags=['dunesql'],
-    alias = alias('trades')
+{{ config(tags=['dunesql']
+    ,schema = 'glacier_v2_avalanche_c'
+    ,alias = alias('trades')
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-    ,post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                      "project",
-                                      "glacier",
-                                    \'["discochuck"]\') }}'
     )
 }}
 
@@ -38,7 +35,7 @@ with dexs as (
 select 'avalanche_c'                                             as blockchain,
        'glacier'                                                 as project,
        '1'                                                       as version,
-       try_cast(date_trunc('DAY', dexs.block_time) as date)      as block_date,
+       cast(date_trunc('DAY', dexs.block_time) as date)      as block_date,
        cast(date_trunc('month', dexs.block_time) as date)        as block_month,
        dexs.block_time,
        erc20a.symbol                                             as token_bought_symbol,
