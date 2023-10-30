@@ -86,7 +86,7 @@
 
                 model.token_sold_address
                 from b seed
-            inner join a seed
+            inner join a model
                 ON 1=1
 
                     AND seed.blockchain = model.blockchain
