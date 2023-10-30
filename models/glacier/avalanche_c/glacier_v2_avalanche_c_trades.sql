@@ -34,7 +34,7 @@ with dexs as (
 )
 select 'avalanche_c'                                             as blockchain,
        'glacier'                                                 as project,
-       '1'                                                       as version,
+       '2'                                                       as version,
        cast(date_trunc('DAY', dexs.block_time) as date)      as block_date,
        cast(date_trunc('month', dexs.block_time) as date)        as block_month,
        dexs.block_time,

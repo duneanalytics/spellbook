@@ -117,7 +117,7 @@ models:
       - check_dex_seed:
           blockchain: avalanche_c 
           project: glacier
-          version: 1
+          version: 2
     columns:
       - *blockchain
       - *project
@@ -162,10 +162,6 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_seed:
-          blockchain: avalanche_c 
-          project: glacier
-          version: 1
     columns:
       - *blockchain
       - *project
