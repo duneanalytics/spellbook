@@ -6,8 +6,8 @@ WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , tx_f.block_number
     , front.project_contract_address
-    , t.index_all AS tx_index
     , t.tx_hash_all AS tx_hash
+    , t.index_all AS tx_index
     , t.evt_index_all AS evt_index
     FROM {{ ref('dex_trades') }} front
     INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
@@ -31,7 +31,7 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND tx_b.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-    INNER JOIN {{ ref('dex_trades') }} victim ON  victim.blockchain='{{blockchain}}'
+    INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
         AND front.block_time=victim.block_time
         AND front.project_contract_address=victim.project_contract_address
         AND victim.tx_from!=front.tx_from
@@ -57,7 +57,7 @@ SELECT dt.blockchain
 , dt.project
 , dt.version
 , block_time
-, CAST(date_trunc('month', block_time) AS date) AS block_month
+, dt.block_month
 , s.block_number
 , dt.token_sold_address
 , dt.token_bought_address
@@ -78,6 +78,6 @@ SELECT dt.blockchain
 , dt.amount_usd
 , evt_index
 FROM {{ ref('dex_trades') }} dt
-INNER JOIN indexed_sandwich_trades s USING (block_time, project_contract_address, evt_index)
+INNER JOIN indexed_sandwich_trades s USING (block_time, tx_hash, project_contract_address, evt_index)
 
 {% endmacro %}
