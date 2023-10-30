@@ -5,7 +5,7 @@
     incremental_strategy = 'merge',
     unique_key = ['block_number', 'unique_trade_id'],
     alias = 'events',
-    
+
 )}}
 
 {% set weth_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
@@ -46,7 +46,7 @@ with v2 as (
 ),
 stack as (
     select
-        cast(null as varchar) as version,
+        'v2' as version,
         evt_block_time as block_time,
         cast(null as uint256) as token_id,
         'erc721' as token_standard,
