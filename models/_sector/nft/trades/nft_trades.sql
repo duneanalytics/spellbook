@@ -9,4 +9,5 @@
                     \'["soispoke","0xRob", "hildobby"]\') }}')
 }}
 
+
 {{ port_to_old_schema(ref('nft_trades_beta')) }}
