@@ -65,7 +65,7 @@ SELECT dt.blockchain
 , dt.token_bought_symbol
 , dt.maker
 , dt.taker
-, dt.tx_hash
+, tx_hash
 , dt.tx_from
 , dt.tx_to
 , project_contract_address
