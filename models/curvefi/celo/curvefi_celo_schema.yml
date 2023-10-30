@@ -1,16 +1,66 @@
 version: 2
 
 models:
-  - name: curvefi_trades
+  - name: curvefi_celo_pools
     meta:
-      blockchain: ethereum, avalanche_c, optimism, fantom, celo
-      sector: dex
+      blockchain: celo
       project: curvefi
-      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7,ilemi,agaperste, tomfutago]
+      contributors: tomfutago
     config:
-      tags: ['ethereum', 'avalanche_c', 'optimism', 'fantom', 'curvefi','trades', 'dex', 'cross-chain']
+      tags: ['celo','curvefi','curve','dex']
     description: >
-        curve trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        A table containing all known pools of curvefi on Celo. Additional types should be monitored to ensure they're accurately shown.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - version
+              - tokenid
+              - token
+              - pool
+    columns:
+      - &version
+        name: version
+        description: "Versions of the pool: Basic Pool, Meta Pool, etc"
+        tests:
+          - not_null
+      - &tokenid
+        name: tokenid
+        description: "ID of the token in the pool"
+        tests:
+          - not_null
+      - &token
+        name: token
+        description: "Token Address"
+        tests:
+          - not_null
+      - &pool
+        name: pool
+        description: "Pool contract address"
+        tests:
+          - not_null
+
+  - name: curvefi_celo_trades
+    meta:
+      blockchain: celo
+      project: curvefi
+      contributors: tomfutago
+    config:
+      tags: ['celo','curvefi','curve','dex']
+    description: >
+        A table containing all trades of curvefi on celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - check_dex_seed:
+          blockchain: celo
+          project: curve
+          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -18,9 +68,8 @@ models:
       - &project 
         name: project
         description: "Project name of the DEX"  
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+      - name: version
+        description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -77,40 +126,7 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: "the position of this event log within this transaction"
-  
-  - name: curvefi_gauge_mappings
-    meta:
-      blockchain: optimism
-      sector: dex
-      contributors: msilb7
-    config:
-      tags: ['curve','curvefi', 'amm', 'trades', 'dex', 'incentives']
-    description: >
-      Gauge to Pool mappings for curve on all chains
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - &pool_contract
-        name: pool_contract
-        description: "Address of the liquidity pool contract"
-      - &incentives_contract
-        name: incentives_contract
-        description: "Address of the contract where incentives are stored and emitted."
-      - &incentives_type
-        name: incentives_type
-        description: "Description of the incentives address type."
-      - &evt_block_time
-        name: evt_block_time
-        description: 'Block time in UTC'
-      - &evt_block_number
-        name: evt_block_number
-        description: 'Block Number'
-      - &contract_address
-        name: contract_address
-        description: 'Gauge Creator Contract Address'
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: 'Tx Hash'
-      - *evt_index
+        description: ""
+      - &pool_type
+        name: pool_type
+        description: "What model the pool follows (i.e. meta pool, stable pool)"
