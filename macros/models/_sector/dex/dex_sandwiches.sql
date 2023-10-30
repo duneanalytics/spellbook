@@ -80,5 +80,8 @@ SELECT dt.blockchain
 FROM {{ ref('dex_trades') }} dt
 INNER JOIN indexed_sandwich_trades s USING (block_time, tx_hash, project_contract_address, evt_index)
 WHERE dt.blockchain='{{blockchain}}'
+{% if is_incremental() %}
+AND dt.block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
 
 {% endmacro %}
