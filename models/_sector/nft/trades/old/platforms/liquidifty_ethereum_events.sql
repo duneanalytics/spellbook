@@ -103,7 +103,7 @@ v3 as (
             when json_extract_scalar(currency, '$.assetType') = '0' then {{ weth_address }}
             else from_hex(json_extract_scalar(currency, '$.collection'))
         end as currency_contract,
-        from_hex(json_extract_scalar(nft, '$.collection') as nft_contract_address,
+        from_hex(json_extract_scalar(nft, '$.collection')) as nft_contract_address,
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
