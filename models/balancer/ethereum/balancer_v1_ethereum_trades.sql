@@ -47,6 +47,7 @@ v1 AS (
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
+
 prices AS (
     SELECT * from {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
