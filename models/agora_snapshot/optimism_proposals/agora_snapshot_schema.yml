@@ -1,0 +1,287 @@
+version: 2
+
+models:
+  - name: agora_snapshot_test_proposals
+    meta:
+      blockchain: optimism
+      sector: governance
+      project: agora_snapshot
+      contributors: chain_l
+    config:
+      tags: ['optimism','agora_snapshot','test_proposals ','governance']
+    description: >
+        analysis of test proposals available on agora and snapshot platform 
+    columns:
+      - &proposal_id
+        name: proposal_id
+        description: "The unique identifier of the proposal"
+      
+      - &proposal_type
+        name: proposal_type
+        description: "The type of proposal"
+      
+      - &proposal_description
+        name: proposal_description
+        description: "A brief description of the proposal"
+      
+      - &start_block
+        name: start_block
+        description: "The block timestamp for proposal voting start date"
+
+      - &start_date
+        name: start_date
+        description: "The date and time when the proposal voting started"
+
+      - &end_block
+        name: end_block
+        description: "The block timestamp for proposal voting end date"
+
+      - &end_date
+        name: end_date
+        description: "The date and time when the proposal voting ended"
+      
+      - &platform
+        name: platform
+        description: "The decentralized governance platform on which the proposal was created (e.g., Agora, Snapshot)"
+
+      - &voters
+        name: voters
+        description: "The unique identifier of the voters who voted on particular proposals"
+
+      - &corresponding_voting_weightage
+        name: corresponding_voting_weightage
+        description: "The corresponding voting weight of the voter's"
+      
+      - &corresponding_choices
+        name: corresponding_choices
+        description: "voter's voting choices(corresponding) for the proposal"
+
+      - &corresponding_choices_name
+        name: corresponding_choices_name
+        description: "voter's voting choice's name(corresponding) for the proposal"
+
+      - &highest_weighted_vote
+        name: highest_weighted_vote
+        description: "The vote with the highest weight"
+
+      - &highest_weighted_voter
+        name: highest_weighted_voter
+        description: "The voter whose vote is the highest weight"
+
+      - &highest_weighted_voter_percentage
+        name: highest_weighted_voter_percentage
+        description: "The percentage of the total voting weight that the highest weight voter has"
+      
+      - &total_for_votingWeightage
+        name: total_for_votingWeightage
+        description: "The total voting weight of all the votes in favor of the proposal"
+      
+      - &total_abstain_votingWeightage
+        name: total_abstain_votingWeightage
+        description: "The total voting weight of all the votes that abstained on the proposal"
+
+      - &total_against_votingWeightage
+        name: total_against_votingWeightage
+        description: "The total voting weight of all the votes against the proposal"
+      
+      - &unique_for_votes
+        name: unique_for_votes
+        description: "The unique number of votes in favor of the proposal"
+      
+      - &unique_abstain_votes
+        name: unique_abstain_votes
+        description: "The unique number of votes that abstained on the proposal"
+
+      - &unique_against_votes
+        name: unique_against_votes
+        description: "The unique number of votes against the proposal"
+
+      - &unique_votes_count
+        name: unique_votes_count
+        description: "The unique number of votes cast on the proposal"
+
+      - &total_votes_casted
+        name: total_votes_casted
+        description: "The total number of votes cast on the proposal, excluding abstaining votes"
+
+      - &proposal_status
+        name: proposal_status
+        description: "The current status of the proposal"
+  
+  - name: agora_snapshot_multiple_options_proposals
+    meta:
+      blockchain: optimism
+      sector: governance
+      project: agora_snapshot
+      contributors: ARDev0097
+    config:
+      tags: ['optimism','agora_snapshot','multiple_options_proposals ','governance']
+    description: >
+        analysis of multiple options proposals available on agora and snapshot platform 
+    columns:
+      - *proposal_id
+
+      - *proposal_type
+      
+      - *proposal_description
+
+      - *start_block
+
+      - *start_date
+
+      - *end_block
+
+      - *end_date
+      
+      - *platform
+
+      - *voters
+
+      - *corresponding_voting_weightage
+
+      - *corresponding_choices
+
+      - *corresponding_choices_name
+
+      - *highest_weighted_vote
+
+      - *highest_weighted_voter
+
+      - *highest_weighted_voter_percentage
+
+      - *total_for_votingWeightage
+      
+      - *total_abstain_votingWeightage
+
+      - *total_against_votingWeightage
+
+      - *unique_for_votes
+
+      - *unique_abstain_votes
+
+      - *unique_against_votes
+
+      - *unique_votes_count
+
+      - *total_votes_casted
+
+      - *proposal_status
+  
+  - name: agora_snapshot_for_against_proposals
+    meta:
+      blockchain: optimism
+      sector: governance
+      project: agora_snapshot
+      contributors: chain_l
+    config:
+      tags: ['optimism','agora_snapshot','for_against_proposals ','governance']
+    description: >
+        analysis of for_against proposals available on agora and snapshot platform 
+    columns:
+      - *proposal_id
+
+      - *proposal_type
+      
+      - *proposal_description
+
+      - *start_block
+
+      - *start_date
+
+      - *end_block
+
+      - *end_date
+      
+      - *platform
+
+      - *voters
+
+      - *corresponding_voting_weightage
+
+      - *corresponding_choices
+
+      - *corresponding_choices_name
+
+      - *highest_weighted_vote
+
+      - *highest_weighted_voter
+
+      - *highest_weighted_voter_percentage
+
+      - *total_for_votingWeightage
+      
+      - *total_abstain_votingWeightage
+
+      - *total_against_votingWeightage
+
+      - *unique_for_votes
+
+      - *unique_abstain_votes
+
+      - *unique_against_votes
+
+      - *unique_votes_count
+
+      - *total_votes_casted
+
+      - *proposal_status
+  
+  - name: agora_snapshot_proposals
+    meta:
+      blockchain: optimism
+      sector: governance
+      project: agora_snapshot
+      contributors: chain_l
+    config:
+      tags: ['optimism','agora_snapshot','proposals ','governance']
+    description: >
+        analysis of all proposals available on agora and snapshot platform 
+    columns:
+      - *proposal_id
+
+      - *proposal_type
+      
+      - *proposal_description
+
+      - *start_block
+
+      - *start_date
+
+      - *end_block
+
+      - *end_date
+      
+      - *platform
+
+      - *voters
+
+      - *corresponding_voting_weightage
+
+      - *corresponding_choices
+
+      - *corresponding_choices_name
+
+      - *highest_weighted_vote
+
+      - *highest_weighted_voter
+
+      - *highest_weighted_voter_percentage
+
+      - *total_for_votingWeightage
+      
+      - *total_abstain_votingWeightage
+
+      - *total_against_votingWeightage
+
+      - *unique_for_votes
+
+      - *unique_abstain_votes
+
+      - *unique_against_votes
+
+      - *unique_votes_count
+
+      - *total_votes_casted
+
+      - *proposal_status
+  
