@@ -74,6 +74,7 @@ WITH
                 {% if not is_incremental() %}
                 AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
+                AND taker_token != 0xd4690a51044db77d91d7aa8f7a3a5ad5da331af0 --0x brokerV3 contract for nft trades
     )
     , v2_1_fills AS (
         SELECT
@@ -344,6 +345,7 @@ all_fills as (
                contract_address,
                native_order_type
         FROM {{ table }}
+        
         {% if not loop.last %}
         UNION ALL
         {% endif %}
