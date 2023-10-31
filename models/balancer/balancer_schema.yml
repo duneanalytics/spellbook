@@ -178,7 +178,7 @@ models:
       - name: contract_address
       - name: median_price
 
-  - name: balancer_v2_liquidity
+  - name: balancer_liquidity
     meta:
       blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
       project: balancer_v2
@@ -201,9 +201,11 @@ models:
       - *pool_id
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - *blockchain
-      - name: token_address
-        description: 'Contract address for the token'
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
+      - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw

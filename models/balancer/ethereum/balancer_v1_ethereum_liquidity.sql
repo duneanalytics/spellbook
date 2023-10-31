@@ -83,7 +83,7 @@ prices AS (
             t.symbol,
             cumulative_amount as token_balance_raw,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd
         FROM cumulative_balance b
         LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = b.token
         LEFT JOIN prices p1 ON p1.day = b.day
