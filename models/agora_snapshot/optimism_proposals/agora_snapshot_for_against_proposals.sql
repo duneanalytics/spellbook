@@ -3,6 +3,7 @@
 {{ config(tags=['dunesql']
     ,alias = 'agora_snapshot_for_against_proposals'
     ,materialized = 'incremental'
+    ,schema = 'agora_snapshot_optimism_proposals'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']

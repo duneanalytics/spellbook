@@ -4,6 +4,7 @@
     ,alias = 'agora_snapshot_test_proposals'
     ,materialized = 'incremental'
     ,file_format = 'delta'
+    ,schema = 'agora_snapshot_optimism_proposals'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
