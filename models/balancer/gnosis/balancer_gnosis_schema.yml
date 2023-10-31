@@ -264,7 +264,7 @@ models:
         description: 'Blockchain in which pool was deployed'      
       - name: token_address
         description: 'Address of the token'   
-        - name: token_symbol
+      - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
         description: 'Raw balance of the token in the pool'
