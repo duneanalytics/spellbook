@@ -4,12 +4,16 @@
 WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
     , t.tx_hash_all AS tx_hash
+    , front.project
+    , front.version
     , front.project_contract_address
     , t.evt_index_all AS evt_index
     FROM {{ ref('dex_trades') }} front
     INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
         AND front.block_time=back.block_time
         AND front.project_contract_address=back.project_contract_address
+        AND front.project=back.project
+        AND front.version=back.version
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
         AND front.token_sold_address=back.token_bought_address
@@ -21,6 +25,8 @@ WITH indexed_sandwich_trades AS (
     INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
         AND front.block_time=victim.block_time
         AND front.project_contract_address=victim.project_contract_address
+        AND front.project=victim.project
+        AND front.version=victim.version
         AND front.tx_from!=victim.tx_from
         AND front.token_bought_address=victim.token_bought_address
         AND front.token_sold_address=victim.token_sold_address
@@ -64,6 +70,8 @@ FROM {{ ref('dex_trades') }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
     AND dt.tx_hash=s.tx_hash
     AND dt.project_contract_address=s.project_contract_address
+    AND dt.project=s.project
+    AND dt.version=s.version
     AND dt.evt_index=s.evt_index
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
