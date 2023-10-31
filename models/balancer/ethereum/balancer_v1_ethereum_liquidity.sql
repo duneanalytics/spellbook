@@ -122,7 +122,7 @@ prices AS (
         FROM pool_liquidity_estimates b
         LEFT JOIN cumulative_usd_balance c ON c.day = b.day
         AND c.pool = b.pool
-        LEFT JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
+        INNER JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = w.token_address
         LEFT JOIN pool_labels p ON p.address = w.pool_id
