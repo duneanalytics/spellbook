@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'gas_zksync',
     alias = 'fees',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -38,15 +38,15 @@ SELECT
 FROM {{ source('zksync','transactions') }} txns
 JOIN {{ source('zksync','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
-AND block_time >= date_trunc('day', now() - interval '2' day)
-AND blocks.time >= date_trunc('day', now() - interval '2' day)
+AND {{ incremental_predicate('block_time') }}
+AND {{ incremental_predicate('blocks.time') }}
 {% endif %}
 LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
 AND p.blockchain = 'zksync'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}
 AND {{ incremental_predicate('p.minute') }}
-WHERE block_time >= date_trunc('day', now() - interval '2' day)
-AND blocks.time >= date_trunc('day', now() - interval '2' day)
-AND p.minute >= date_trunc('day', now() - interval '2' day)
+WHERE {{ incremental_predicate('block_time') }}
+AND {{ incremental_predicate('blocks.time') }}
+AND {{ incremental_predicate('p.minute') }}
 {% endif %}
