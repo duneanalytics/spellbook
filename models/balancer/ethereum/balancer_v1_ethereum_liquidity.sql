@@ -16,7 +16,7 @@
 
 WITH pool_labels AS (
     SELECT
-        address AS pool_id,
+        address,
         name AS pool_symbol
     FROM {{ ref('labels_balancer_v1_pools_ethereum') }}
     ),
