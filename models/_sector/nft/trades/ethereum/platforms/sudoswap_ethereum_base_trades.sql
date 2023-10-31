@@ -1,6 +1,6 @@
 {{ config(
     schema = 'sudoswap_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -95,7 +95,7 @@ WITH
         ON tr.success and s.call_block_number = tr.block_number and s.call_tx_hash = tr.tx_hash and s.call_trace_address = tr.trace_address
         {% if is_incremental() %}
         -- this filter will only be applied on an incremental run. We only want to update with new swaps.
-        AND tr.{{incremental_predicate('tr.block_time')}}
+        AND {{incremental_predicate('tr.block_time')}}
         {% else %}
         AND tr.block_time >= TIMESTAMP '2022-4-1'
         {% endif %}
@@ -213,7 +213,7 @@ WITH
                 OR cardinality(call_trace_address) = 0 -- In this case the swap function was called directly, all traces are thus subtraces of that call (like 0x34a52a94fce15c090cc16adbd6824948c731ecb19a39350633590a9cd163658b).
                 )
             {% if is_incremental() %}
-            AND tr.{{incremental_predicate('tr.block_time')}}
+            AND {{incremental_predicate('tr.block_time')}}
             {% endif %}
             {% if not is_incremental() %}
             AND tr.block_time >= TIMESTAMP '2022-4-1'
