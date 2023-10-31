@@ -29,8 +29,6 @@ FROM {{ ref('dex_trades') }} front
 INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
     AND front.block_time=back.block_time
     AND front.project_contract_address=back.project_contract_address
-    --AND front.project=back.project
-    --AND front.version=back.version
     AND front.tx_from=back.tx_from
     AND front.tx_hash!=back.tx_hash
     AND front.token_sold_address=back.token_bought_address
@@ -42,8 +40,6 @@ INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
 INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
     AND front.block_time=victim.block_time
     AND front.project_contract_address=victim.project_contract_address
-    --AND front.project=victim.project
-    --AND front.version=victim.version
     AND front.tx_from!=victim.tx_from
     AND front.token_bought_address=victim.token_bought_address
     AND front.token_sold_address=victim.token_sold_address
@@ -51,19 +47,17 @@ INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
     {% if is_incremental() %}
     AND victim.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
---CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
 INNER JOIN {{ ref('dex_trades') }} dt ON dt.blockchain='{{blockchain}}'
     AND dt.block_time=front.block_time
     AND dt.tx_hash IN (front.tx_hash, back.tx_hash)
     AND dt.project_contract_address=front.project_contract_address
-    --AND dt.project=front.project
-    --AND dt.version=front.version
     AND dt.evt_index IN (front.evt_index, back.evt_index)
     AND ((dt.token_sold_address=front.token_sold_address AND dt.token_bought_address=front.token_bought_address)
         OR (dt.token_sold_address=front.token_bought_address AND dt.token_bought_address=front.token_sold_address))
     {% if is_incremental() %}
     AND dt.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+-- Can be removed once dex.trades has block_number & tx_index
 INNER JOIN {{transactions}} tx ON tx.block_time=dt.block_time
     AND tx.hash=dt.tx_hash
     {% if is_incremental() %}
