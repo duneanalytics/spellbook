@@ -117,7 +117,7 @@ prices AS (
             t.symbol AS token_symbol,
             token_balance_raw,
             token_balance,
-            liquidity * normalized_weight AS protocol_liquidity_usd
+            liquidity * normalized_weight AS protocol_liquidity_usd,
             liquidity * normalized_weight AS pool_liquidity_usd
         FROM pool_liquidity_estimates b
         LEFT JOIN cumulative_usd_balance c ON c.day = b.day
