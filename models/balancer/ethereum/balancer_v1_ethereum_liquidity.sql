@@ -104,7 +104,7 @@ prices AS (
         AND CAST (b.protocol_liquidity_usd as DOUBLE) > CAST (0 as DOUBLE)
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         GROUP BY 1, 2
-    ),
+    )
     
 
         SELECT
