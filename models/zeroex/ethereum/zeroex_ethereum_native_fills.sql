@@ -22,13 +22,13 @@ WITH
             , fills.evt_index
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
-            , bytearray_substring(fills.makerAssetData, 17, 20) AS maker_token
+            , greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) AS maker_token
             , mt.symbol AS maker_symbol
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
             , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
-            , bytearray_substring(fills.takerAssetData, 17, 20) AS taker_token
+            , greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20)) AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
@@ -55,18 +55,18 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN bytearray_substring(fills.takerAssetData, 17, 20) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                    ELSE bytearray_substring(fills.takerAssetData, 17, 20)
+                    WHEN greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                    ELSE greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN bytearray_substring(fills.makerAssetData, 17, 20) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                    ELSE bytearray_substring(fills.makerAssetData, 17, 20)
+                    WHEN greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                    ELSE greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = bytearray_substring(fills.makerAssetData, 17, 20)
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = bytearray_substring(fills.takerAssetData, 17, 20)
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -83,13 +83,13 @@ WITH
             , fills.evt_index
             , fills.makerAddress AS maker_address
             , fills.takerAddress AS taker_address
-            , bytearray_substring(fills.makerAssetData, 17, 20) AS maker_token
+            , greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) AS maker_token
             , mt.symbol AS maker_symbol
             , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
             , fills.takerAssetFilledAmount as taker_token_filled_amount_raw
             , fills.makerAssetFilledAmount as maker_token_filled_amount_raw
             , fills.makerAssetFilledAmount / pow(10, mt.decimals) AS maker_asset_filled_amount
-            , bytearray_substring(fills.takerAssetData, 17, 20) AS taker_token
+            , greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20)) AS taker_token
             , tt.symbol AS taker_symbol
             , fills.takerAssetFilledAmount / pow(10, tt.decimals) AS taker_asset_filled_amount
             , (fills.feeRecipientAddress in 
@@ -115,18 +115,18 @@ WITH
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN bytearray_substring(fills.takerAssetData, 17, 20) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                    ELSE bytearray_substring(fills.takerAssetData, 17, 20)
+                    WHEN greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                    ELSE greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
-                    WHEN bytearray_substring(fills.makerAssetData, 17, 20) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                    ELSE bytearray_substring(fills.makerAssetData, 17, 20)
+                    WHEN greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                    ELSE greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = bytearray_substring(fills.makerAssetData, 17, 20)
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = bytearray_substring(fills.takerAssetData, 17, 20)
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
+        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
