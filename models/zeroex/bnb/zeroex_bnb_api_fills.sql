@@ -267,35 +267,7 @@ BridgeFill AS (
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
-pancakeSwapTrades AS (
-    SELECT
-            swap.evt_tx_hash                                                                        AS tx_hash,
-            swap.evt_index,
-            swap.contract_address,
-            swap.evt_block_time                                                                     AS block_time,
-            swap.contract_address                                                                   AS maker,
-            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
-            CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
-            CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
-            CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
-            CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount0) ELSE ABS(swap.amount1) END AS maker_token_amount_raw,
-            'PancakeSwap'                                                                     AS type,
-            zeroex_tx.affiliate_address                                                             AS affiliate_address,
-            TRUE                                                                                    AS swap_flag,
-            FALSE                                                                                   AS matcha_limit_order_flag
-    FROM {{ source('pancake_bnb', 'PancakePair_evt_Swap') }} swap
-   LEFT JOIN {{ source('pancake_bnb', 'PancakePair_evt_Mint') }} pair ON pair.pool = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
-   WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
-        {% if is_incremental() %}
-        AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-        {% if not is_incremental() %}
-        AND swap.evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
-        {% endif %}
-
-),
 NewBridgeFill AS (
     SELECT
             logs.tx_hash,
