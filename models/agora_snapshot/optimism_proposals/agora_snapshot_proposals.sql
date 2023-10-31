@@ -61,7 +61,7 @@ FROM (
   TRY_CAST(startBlock AS BIGINT) As start_block,
   TRY_CAST(endBlock AS BIGINT) As end_block,
   'agora' AS platform
- FROM optimism_governor_optimism.OptimismGovernorV5_evt_ProposalCreated
+ FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCreated') }}
  WHERE 
  votingModule IS NULL
  AND TRY_CAST("proposalId" AS VARBINARY) IN (
@@ -87,14 +87,14 @@ LEFT JOIN (
    WHEN support = 2
    THEN 'abstain'
   END AS status
- FROM optimism_governor_optimism.OptimismGovernorV5_evt_VoteCast
+ FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
 ) AS v
  ON p.proposal_id = v.proposal_id
-LEFT JOIN optimism.blocks AS s
+LEFT JOIN {{ source('optimism','blocks') }} AS s
  ON p.start_block = s.number
-LEFT JOIN optimism.blocks AS e
+LEFT JOIN {{ source('optimism','blocks') }} AS e
  ON p.end_block = e.number
-LEFT JOIN optimism_governor_optimism.OptimismGovernorV5_evt_ProposalCanceled AS pc
+LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc
  ON p.proposal_id = TRY_CAST(pc.proposalId AS VARBINARY)
 GROUP BY
  p.proposal_id,
@@ -246,7 +246,7 @@ FROM (
     "end" AS end_block,
     FROM_UNIXTIME("end") AS end_date,
     'snapshot' AS platform
-  FROM snapshot.proposals
+  FROM {{ source('snapshot','proposals') }}
   WHERE
     "space" = 'opcollective.eth'
     AND "id" IN (0x7b9a8eee9f90c7af6587afc5aef0db050c1e5ee9277d3aa18d8624976fb466bd,0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9)
@@ -266,7 +266,7 @@ LEFT JOIN (
       WHEN choice = '3'
       THEN 'abstain'
     END AS status
-  FROM snapshot.votes
+  FROM {{ source('snapshot','votes') }}
   WHERE
     "space" = 'opcollective.eth'
 ) AS v
@@ -322,7 +322,7 @@ FROM (
   TRY_CAST(startBlock AS BIGINT) As start_block,
   TRY_CAST(endBlock AS BIGINT) As end_block,
   'agora' AS platform
- FROM optimism_governor_optimism.OptimismGovernorV5_evt_ProposalCreated
+ FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCreated') }}
  WHERE votingModule IS NOT NULL
 ) AS p
 LEFT JOIN (
@@ -340,14 +340,14 @@ LEFT JOIN (
    WHEN support = 2
    THEN 'abstain'
   END AS status
- FROM optimism_governor_optimism.OptimismGovernorV5_evt_VoteCast
+ FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
 ) AS v
  ON p.proposal_id = v.proposal_id
-LEFT JOIN optimism.blocks AS s
+LEFT JOIN {{ source('optimism','blocks') }} AS s
  ON p.start_block = s.number
-LEFT JOIN optimism.blocks AS e
+LEFT JOIN {{ source('optimism','blocks') }} AS e
  ON p.end_block = e.number
-LEFT JOIN optimism_governor_optimism.OptimismGovernorV5_evt_ProposalCanceled AS pc
+LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc
  ON p.proposal_id = TRY_CAST(pc.proposalId AS VARBINARY)
 GROUP BY
  p.proposal_id,
@@ -493,7 +493,7 @@ FROM (
     "end" AS end_block,
     FROM_UNIXTIME("end") AS end_date,
     'snapshot' AS platform
-  FROM snapshot.proposals
+  FROM {{ source('snapshot','proposals') }}
   WHERE
     "space" = 'opcollective.eth'
     AND "type" = 'approval'
@@ -513,7 +513,7 @@ LEFT JOIN (
       WHEN choice = '3'
       THEN 'abstain'
     END AS status
-  FROM snapshot.votes
+  FROM {{ source('snapshot','votes') }}
   WHERE
     "space" = 'opcollective.eth'
 ) AS v
@@ -577,7 +577,7 @@ FROM (
   TRY_CAST(startBlock AS BIGINT) As start_block,
   TRY_CAST(endBlock AS BIGINT) As end_block,
   'agora' AS platform
- FROM optimism_governor_optimism.OptimismGovernorV5_evt_ProposalCreated
+ FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCreated') }}
  WHERE votingModule IS NULL
  AND LOWER(description) NOT LIKE '%test vote%'
  AND NOT CAST("proposalID" AS VARCHAR) IN ('90839767999322802375479087567202389126141447078032129455920633707568400402209')
@@ -597,14 +597,14 @@ LEFT JOIN (
    WHEN support = 2
    THEN 'abstain'
   END AS status
- FROM optimism_governor_optimism.OptimismGovernorV5_evt_VoteCast
+ FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
 ) AS v
  ON p.proposal_id = v.proposal_id
-LEFT JOIN optimism.blocks AS s
+LEFT JOIN {{ source('optimism','blocks') }} AS s
  ON p.start_block = s.number
-LEFT JOIN optimism.blocks AS e
+LEFT JOIN {{ source('optimism','blocks') }} AS e
  ON p.end_block = e.number
-LEFT JOIN optimism_governor_optimism.OptimismGovernorV5_evt_ProposalCanceled AS pc
+LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc
  ON p.proposal_id = TRY_CAST(pc.proposalId AS VARBINARY)
 GROUP BY
  p.proposal_id,
@@ -756,7 +756,7 @@ FROM (
     "end" AS end_block,
     FROM_UNIXTIME("end") AS end_date,
     'snapshot' AS platform
-  FROM snapshot.proposals
+  FROM {{ source('snapshot','proposals') }}
   WHERE
     "space" = 'opcollective.eth'
     AND "type" != 'approval'
@@ -777,7 +777,7 @@ LEFT JOIN (
       WHEN choice = '3'
       THEN 'abstain'
     END AS status
-  FROM snapshot.votes
+  FROM {{ source('snapshot','votes') }}
   WHERE
     "space" = 'opcollective.eth'
 ) AS v

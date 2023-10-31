@@ -18,5 +18,6 @@ sources:
     tables:
       - name: OptimismGovernorV5_evt_ProposalCreated
       - name: OptimismGovernorV5_evt_VoteCast
+      - name: OptimismGovernorV5_evt_ProposalCanceled
 
     
