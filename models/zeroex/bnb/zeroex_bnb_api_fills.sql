@@ -25,9 +25,8 @@ WITH zeroex_tx AS (
             CASE
                 WHEN takerAddress = 0x63305728359c088a52b0b0eeec235db4d31a67fc THEN takerAddress
                 ELSE CAST(NULL as varbinary)
-            END AS affiliate_address,
-            bytearray_substring(v3.takerAssetData, 17, 20) as taker_token,
-            bytearray_substring(v3.makerAssetData, 17, 20) as maker_token
+            END AS affiliate_address
+            
         FROM
             {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE
@@ -54,9 +53,8 @@ WITH zeroex_tx AS (
                     THEN SUBSTRING(INPUT FROM (bytearray_position(INPUT, 0x869584cd) + 16) FOR 20)
                 WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0
                     THEN SUBSTRING(INPUT FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16) FOR 20)
-            END AS affiliate_address,
-            bytearray_substring(INPUT, 177, 20) AS taker_token,
-            bytearray_substring(INPUT, 209, 20) AS maker_token                
+            END AS affiliate_address
+
         FROM {{ source('bnb', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -80,7 +78,7 @@ WITH zeroex_tx AS (
     ) temp
     group by tx_hash, taker_token, maker_token
 
-),
+),/*
 direct_sushiswap AS (
     SELECT
             swap.evt_tx_hash AS tx_hash,
@@ -113,7 +111,7 @@ direct_sushiswap AS (
         {% if not is_incremental() %}
         AND swap.evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
         {% endif %}
-),
+),*/
 v2_fills_no_bridge AS (
     SELECT
             fills.evt_tx_hash                                                          AS tx_hash,
@@ -273,6 +271,7 @@ BridgeFill AS (
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
+
 NewBridgeFill AS (
     SELECT
             logs.tx_hash,
@@ -331,7 +330,7 @@ uni_v2_swap as (
         , s.index as evt_index
         , s.contract_address
         , s.block_time
-        , bytearray_SUBSTRING(DATA, 27, 40) AS maker
+        , bytearray_SUBSTRING(DATA, 13, 20) AS maker
         , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker
         , z.taker_token
         , z.maker_token
@@ -357,8 +356,8 @@ uni_v2_swap as (
     SELECT
         bytearray_substring(data,13,20) as pair,
         bytearray_substring(topic1, 13, 20) AS makerToken,
-        bytearray_substring(topic2, 13, 20) AS takerToken,
-        rank() over (partition by bytearray_substring(data,13,20) order by block_time asc) rnk
+        bytearray_substring(topic2, 13, 20) AS takerToken
+        
     FROM {{ source('bnb', 'logs') }} creation
     WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event
         {% if is_incremental() %}
@@ -389,14 +388,14 @@ select s.tx_hash,
 from uni_v2_swap s 
 
 join uni_v2_pair_creation creation on s.contract_address = creation.pair 
-where rnk = 1 
+
 ),  
 
 all_tx AS (
     SELECT *
     FROM direct_uniswapv2
-    union ALL SELECT * 
-    from direct_sushiswap 
+    /*union ALL SELECT * 
+    from direct_sushiswap */
     UNION ALL SELECT *
     FROM direct_PLP
     UNION ALL SELECT *
