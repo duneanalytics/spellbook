@@ -13,38 +13,53 @@
 {% set project_start_date = '2020-03-13' %}
 
 
-WITH v1 AS (
-    select
+WITH 
+
+swap_fees AS (
+    SELECT * FROM(
+    SELECT
+        contract_address,
+        swapFee,
+        call_block_time,
+        ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY call_block_time DESC) AS row_num
+    FROM {{ source('balancer_v1_ethereum', 'BPool_call_setSwapFee') }})
+        WHERE row_num = 1),
+
+v1 AS (
+    SELECT
         '1' AS version,
         tokenOut AS token_bought_address,
         tokenAmountOut AS token_bought_amount_raw,
         tokenIn AS token_sold_address,
         tokenAmountIn AS token_sold_amount_raw,
-        contract_address AS project_contract_address,
+        swaps.contract_address AS project_contract_address,
+        (swapFee / 1e16) AS swap_fee_percentage,
         evt_block_time,
         evt_tx_hash,
         evt_index
-    from {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }}
+    FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} swaps
+        LEFT JOIN swap_fees fees
+            ON fees.contract_address = swaps.contract_address
     {% if not is_incremental() %}
-        where evt_block_time >= TIMESTAMP '{{project_start_date}}'
+        WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        where evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 prices AS (
-    select * from {{ source('prices', 'usd') }}
-    where blockchain = 'ethereum'
+    SELECT * from {{ source('prices', 'usd') }}
+    WHERE blockchain = 'ethereum'
     {% if not is_incremental() %}
-        and minute >= TIMESTAMP '{{project_start_date}}'
+        AND minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        and minute >= date_trunc('day', now() - interval '7' day)
+        AND minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
 
-select
+SELECT
     'ethereum' AS blockchain,
     'balancer' AS project,
     version,
@@ -53,10 +68,10 @@ select
     TRY_CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date,
     erc20a.symbol AS token_bought_symbol,
     erc20b.symbol AS token_sold_symbol,
-    case
-        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-        else concat(erc20a.symbol, '-', erc20b.symbol)
-    end AS token_pair,
+    CASE
+        WHEN lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
+        ELSE concat(erc20a.symbol, '-', erc20b.symbol)
+    END AS token_pair,
     token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
     token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
     CAST(token_bought_amount_raw AS UINT256) AS token_bought_amount_raw,
@@ -70,7 +85,7 @@ select
     tx."from" AS taker,
     CAST(NULL AS VARBINARY) AS maker,
     CAST(NULL AS VARBINARY) AS pool_id,
-    CAST(NULL AS DOUBLE) AS swap_fee,
+    CAST(trades.swap_fee_percentage AS DOUBLE) AS swap_fee,
     project_contract_address,
     evt_tx_hash AS tx_hash,
     tx."from" AS tx_from,
