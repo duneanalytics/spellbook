@@ -328,7 +328,8 @@ sources:
         loaded_at_field: evt_block_time
         columns:
           - *call_tx_hash
-          - *contract_address
+          - name: contract_address
+            description: ''
           - name: swapFee
             description: ''
           - *call_block_number
