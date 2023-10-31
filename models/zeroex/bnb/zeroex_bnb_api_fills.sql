@@ -16,9 +16,7 @@
 -- Test Query here: https://dune.com/queries/2274187
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address,
-           taker_token,
-           maker_token
+           max(affiliate_address) as affiliate_address
     FROM (
         SELECT
             v3.evt_tx_hash AS tx_hash,
@@ -26,7 +24,6 @@ WITH zeroex_tx AS (
                 WHEN takerAddress = 0x63305728359c088a52b0b0eeec235db4d31a67fc THEN takerAddress
                 ELSE CAST(NULL as varbinary)
             END AS affiliate_address
-            
         FROM
             {{ source('zeroex_v2_bnb', 'Exchange_evt_Fill') }} v3
         WHERE
@@ -53,8 +50,7 @@ WITH zeroex_tx AS (
                     THEN SUBSTRING(INPUT FROM (bytearray_position(INPUT, 0x869584cd) + 16) FOR 20)
                 WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0
                     THEN SUBSTRING(INPUT FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16) FOR 20)
-            END AS affiliate_address
-
+            END AS affiliate_address            
         FROM {{ source('bnb', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -76,7 +72,7 @@ WITH zeroex_tx AS (
                 AND block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
     ) temp
-    group by tx_hash, taker_token, maker_token
+    group by tx_hash
 
 ),/*
 direct_sushiswap AS (
@@ -271,7 +267,35 @@ BridgeFill AS (
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
+pancakeSwapTrades AS (
+    SELECT
+            swap.evt_tx_hash                                                                        AS tx_hash,
+            swap.evt_index,
+            swap.contract_address,
+            swap.evt_block_time                                                                     AS block_time,
+            swap.contract_address                                                                   AS maker,
+            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
+            CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
+            CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
+            CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount0) ELSE ABS(swap.amount1) END AS maker_token_amount_raw,
+            'PancakeSwap'                                                                     AS type,
+            zeroex_tx.affiliate_address                                                             AS affiliate_address,
+            TRUE                                                                                    AS swap_flag,
+            FALSE                                                                                   AS matcha_limit_order_flag
+    FROM {{ source('pancake_bnb', 'PancakePair_evt_Swap') }} swap
+   LEFT JOIN {{ source('pancake_bnb', 'PancakePair_evt_Mint') }} pair ON pair.pool = swap.contract_address
+   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
+        {% if is_incremental() %}
+        AND swap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+        {% if not is_incremental() %}
+        AND swap.evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
+        {% endif %}
+
+),
 NewBridgeFill AS (
     SELECT
             logs.tx_hash,
@@ -356,8 +380,8 @@ uni_v2_swap as (
     SELECT
         bytearray_substring(data,13,20) as pair,
         bytearray_substring(topic1, 13, 20) AS makerToken,
-        bytearray_substring(topic2, 13, 20) AS takerToken
-        
+        bytearray_substring(topic2, 13, 20) AS takerToken,
+        rank() over (partition by bytearray_substring(data,13,20) order by block_time asc) rnk
     FROM {{ source('bnb', 'logs') }} creation
     WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event
         {% if is_incremental() %}
@@ -388,7 +412,7 @@ select s.tx_hash,
 from uni_v2_swap s 
 
 join uni_v2_pair_creation creation on s.contract_address = creation.pair 
-
+where rnk = 1 
 ),  
 
 all_tx AS (
