@@ -350,15 +350,10 @@ uni_v2_swap as (
     SELECT
         bytearray_substring(data,13,20) as pair,
         bytearray_substring(topic1, 13, 20) AS makerToken,
-        bytearray_substring(topic2, 13, 20) AS takerToken,
-        rank() over (partition by bytearray_substring(data,13,20) order by block_time asc) rnk
+        bytearray_substring(topic2, 13, 20) AS takerToken
     FROM {{ source('bnb', 'logs') }} creation
     WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event
-        {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
-        {% else %}
-        AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
-        {% endif %}
+        
       
    
 ) , 
@@ -382,7 +377,7 @@ select s.tx_hash,
 from uni_v2_swap s 
 
 join uni_v2_pair_creation creation on s.contract_address = creation.pair 
-where rnk = 1 
+
 ),  
 
 all_tx AS (
