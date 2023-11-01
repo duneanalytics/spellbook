@@ -69,5 +69,19 @@ FROM
     ('dimo-dimo','polygon','DIMO',0xe261d618a959afffd53168cd07d12e37b26761db,18),
     ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18),
     ('val-valeria','polygon','VAL',0x456f931298065b1852647de005dd27227146d8b9,18),
-    ('truehn-true-human-nature','polygon','TRUEHN',0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9)
+    ('truehn-true-human-nature','polygon','TRUEHN',0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9),
+    ('stg-stargatetoken','polygon','STG',0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590,18),
+    ('titan-iron-titanium-token','polygon','IRON ',0xaaa5b9e6c589642f98a1cda99b9d024b8407285a,18),
+    ('grt-the-graph','polygon','GRT',0x5fe2b58c013d7601147dcdd68c143a77499f5531,18),
+    ('snx-synthetix-network-token','polygon','SNX',0x50b728d8d964fd00c2d0aad81718b71311fef68a,18),
+    ('sff-sunflower-farm','polygon','SFF',0xdf9b4b57865b403e08c85568442f95c26b7896b0,18),
+    ('dino-dinoswap','polygon','DINO',0xaa9654becca45b5bdfa5ac646c939c62b527d394,18),
+    ('xend-xend-finance','polygon','XEND',0xa649325aa7c5093d12d6f98eb4378deae68ce23f,18),
+    ('mst-idle-mystic','polygon','MST',0xa353deb6fb81df3844d8bd614d33d040fdbb8188,18),
+    ('makerx-makerx','polygon','MAKERX',0x1ed02954d60ba14e26c230eec40cbac55fa3aeea,18),
+    ('champ-ultimate-champions','polygon','CHAMP',0xed755dba6ec1eb520076cec051a582a6d81a8253,18),
+    ('woo-wootrade','polygon','WOO',0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603,18),
+    ('route-router-protocol','polygon','ROUTE',0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4,18),
+    ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
+    ('comp-compoundd', 'ethereum', 'COMP', 0xc00e94cb662c3520282e6f5717214004a7f26888,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
