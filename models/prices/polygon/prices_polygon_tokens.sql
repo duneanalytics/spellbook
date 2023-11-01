@@ -83,5 +83,5 @@ FROM
     ('woo-wootrade','polygon','WOO',0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603,18),
     ('route-router-protocol','polygon','ROUTE',0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4,18),
     ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
-    ('comp-compoundd', 'ethereum', 'COMP', 0xc00e94cb662c3520282e6f5717214004a7f26888,18)
+    ('comp-compoundd', 'polygon', 'COMP', 0xc00e94cb662c3520282e6f5717214004a7f26888,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
