@@ -344,7 +344,6 @@ all_fills as (
                contract_address,
                native_order_type
         FROM {{ table }}
-        
         {% if not loop.last %}
         UNION ALL
         {% endif %}
