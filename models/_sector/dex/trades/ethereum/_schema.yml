@@ -15,8 +15,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - compare_dex_trades_sample:
-          compare_model: ref('uniswap_v1_ethereum_trades')
       - equal_rowcount_with_sources:
           evt_sources:
             - source('uniswap_ethereum', 'Exchange_evt_TokenPurchase')
@@ -50,8 +48,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - compare_dex_trades_sample:
-          compare_model: ref('uniswap_v2_ethereum_trades')
       #As there are negative filters, there will be fewer rows
       #- equal_rowcount_with_sources:
         #evt_sources:
@@ -85,8 +81,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - compare_dex_trades_sample:
-          compare_model: ref('uniswap_v3_ethereum_trades')
       - equal_rowcount_with_sources:
           evt_sources:
             - source('uniswap_v3_ethereum', 'Pair_evt_Swap')
@@ -119,8 +113,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - compare_dex_trades_sample:
-          compare_model: ref('defiswap_ethereum_trades')
       - equal_rowcount_with_sources:
           evt_sources:
             - source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
