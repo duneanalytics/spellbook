@@ -106,5 +106,6 @@ FROM
     ('oath-oath','arbitrum','OATH',0xa1150db5105987cec5fd092273d1e3cbb22b378b,18),
     ('winr-winr-protocol','arbitrum','WINR',0xd77b108d4f6cefaa0cae9506a934e825becca46e,18),
     ('ram-ramses-exchange','arbitrum','RAM',0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418,18),
-    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18)
+    ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18),
+    ('grt-the-graph','arbitrum','GRT',0x9623063377ad1b27544c965ccd7342f7ea7e88c7,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
