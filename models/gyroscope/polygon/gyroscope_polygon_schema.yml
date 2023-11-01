@@ -1,34 +1,45 @@
 version: 2
 
 models:
-  - name: gyroscope_trades
+
+  - name: gyroscope_polygon_trades
+
     meta:
-      blockchain: arbitrum, ethereum, optimism, polygon, zkevm
-      sector: dex
+
+      blockchain: polygon
+      project: gyroscope
       contributors: fmarrr
+
     config:
-      tags: ['gyroscope', 'amm', 'trades', 'dex']
-    description: >
-      DEX trades on balancer on all chains
+
+      tags: ["polygon", "gyroscope", "trades"]
+
+    description: dex trades on gyroscope E-CLP pools on polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index         
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - &blockchain 
+        name: blockchain        
+        description: "blockchain name(polygon)"
       - &project
         name: project
-        description: "Project name (gyroscope)"
-      - &version
-        name: version
-        description: "Version of the project"
-      - &block_month
-        name: block_month
-        description: "Block month in UTC"
+        description: "gyroscope as project"     
       - &block_date
         name: block_date
-        description: "Block date in UTC"
+        description: "UTC event block date"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
       - &block_time
         name: block_time
-        description: 'Block time in UTC'
+        description: "UTC event block time"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -58,31 +69,28 @@ models:
         description: "Contract address of the token bought"
       - &token_sold_address
         name: token_sold_address
-        description: "Contract address of the token sold"
+        description: "Contract address of the token sold"  
       - &taker
         name: taker
         description: "Address of trader who purchased a token"
-      - &maker
-        name: maker
-        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Polygon address for the liquidity pool used in transaction"
       - &pool_id
         name: pool_id
-        description: "Pool id"
+        description: "Unique encoded identifier that refers to each pool"
       - &swap_fee
         name: swap_fee
         description: 'Swap fee'
-      - &project_contract_address
-        name: project_contract_address
-        description: "Pool address"
       - &tx_hash
         name: tx_hash
-        description: 'Transaction hash'
+        description: "Transaction hash"
       - &tx_from
         name: tx_from
         description: "transaction.from"
       - &tx_to
         name: tx_to
         description: "transaction.to"
-      - &evt_index
+      - &evt_index 
         name: evt_index
-        description: 'Event index'
+        description: "Event index"
