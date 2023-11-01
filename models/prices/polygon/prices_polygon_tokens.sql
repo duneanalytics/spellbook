@@ -37,9 +37,9 @@ FROM
     ('link-chainlink', 'polygon', 'LINK', 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39, 18),
     ('ghst-aavegotchi', 'polygon', 'GHST', 0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7, 18),
     ('gltr-gax-liquidity-token-reward', 'polygon', 'GLTR', 0x3801C3B3B5c98F88a9c9005966AA96aa440B9Afc, 18),
-    ('fud-fud', 'polygon', 'FUD', 0x403E967b044d4Be25170310157cB1A4Bf10bdD0f, 18),
+    ('fud-fud', 'polygon', 'FUD', 0x403e967b044d4be25170310157cb1a4bf10bdd0f, 18),
     ('fomo-fomo', 'polygon', 'FOMO', 0x44A6e0BE76e1D9620A7F76588e4509fE4fa8E8C8, 18),
-    ('alpha-alpha', 'polygon', 'ALPHA', 0x6a3E7C3c6EF65Ee26975b12293cA1AAD7e1dAeD2, 18),
+    ('alpha-alpha', 'polygon', 'ALPHA', 0x6a3e7c3c6ef65ee26975b12293ca1aad7e1daed2, 18),
     ('crv-curve-dao-token', 'polygon', 'CRV', 0x172370d5cd63279efa6d502dab29171933a610af, 18),
     ('mimatic-mimatic', 'polygon', 'MIMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1, 18),
     ('kom-kommunitas', 'polygon', 'KOM', 0xc004e2318722ea2b15499d6375905d75ee5390b8, 8),
@@ -72,8 +72,6 @@ FROM
     ('truehn-true-human-nature','polygon','TRUEHN',0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9),
     ('stg-stargatetoken','polygon','STG',0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590,18),
     ('titan-iron-titanium-token','polygon','IRON ',0xaaa5b9e6c589642f98a1cda99b9d024b8407285a,18),
-    ('fud-fud','polygon','FUD ',0x403e967b044d4be25170310157cb1a4bf10bdd0f,18),
-    ('alpha-alpha','polygon','ALPHA ',0x6a3e7c3c6ef65ee26975b12293ca1aad7e1daed2,18),
     ('grt-the-graph','polygon','GRT',0x5fe2b58c013d7601147dcdd68c143a77499f5531,18),
     ('snx-synthetix-network-token','polygon','SNX',0x50b728d8d964fd00c2d0aad81718b71311fef68a,18),
     ('sff-sunflower-farm','polygon','SFF',0xdf9b4b57865b403e08c85568442f95c26b7896b0,18),
@@ -85,5 +83,5 @@ FROM
     ('woo-wootrade','polygon','WOO',0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603,18),
     ('route-router-protocol','polygon','ROUTE',0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4,18),
     ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
-    ('comp-compoundd','polygon','COMP',0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18)
+    ('comp-compoundd', 'ethereum', 'COMP', 0xc00e94cb662c3520282e6f5717214004a7f26888,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
