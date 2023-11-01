@@ -219,7 +219,7 @@ SELECT
     b.pool_id,
     p.pool_symbol,
     '2' AS version,
-    'ethereum' AS blockchain,
+    'gnosis' AS blockchain,
     token AS token_address,
     token_symbol,
     token_balance_raw,
