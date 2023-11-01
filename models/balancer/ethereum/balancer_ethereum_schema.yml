@@ -346,7 +346,7 @@ models:
           version: 1
     columns:
       - *blockchain
-      - *project
+      - *project 
       - *version
       - *block_month
       - *block_date
