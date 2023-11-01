@@ -7,8 +7,6 @@ WITH indexed_sandwich_trades AS (
     , front.project
     , front.version
     , front.project_contract_address
-    , front.token_sold_address
-    , front.token_bought_address
     , t.evt_index_all AS evt_index
     FROM {{ ref('dex_trades') }} front
     INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
@@ -68,9 +66,8 @@ FROM {{ ref('dex_trades') }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
     AND dt.tx_hash=s.tx_hash
     AND dt.project_contract_address=s.project_contract_address
-    AND ((dt.token_sold_address=s.token_sold_address AND dt.token_bought_address=s.token_bought_address)
-        OR (dt.token_sold_address=s.token_bought_address AND dt.token_bought_address=s.token_sold_address))
     AND dt.evt_index=s.evt_index
+-- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
     {% if is_incremental() %}
