@@ -9,7 +9,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "balancer_v2",
+                                "gyroscope",
                                 \'["fmarrr"]\') }}'
     )
 }}
@@ -215,7 +215,7 @@ FROM
 new_table_for_dexTrades AS (
     SELECT *,
         CASE 
-            WHEN project_contract_address IN (SELECT address FROM E_CLPs) THEN 'gyroscope' 
+            WHEN project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope' 
             ELSE project 
         END AS project
     FROM filtered_trades

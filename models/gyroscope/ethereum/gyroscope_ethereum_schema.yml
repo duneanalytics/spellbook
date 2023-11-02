@@ -14,16 +14,14 @@ models:
 
       tags: ["ethereum", "gyroscope", "trades"]
 
-    description: dex trades on gyroscope E-CLP pools on ethereum
+    description: trades on gyroscope E-CLP pools on ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index         
+            - token_bought_amount
+            - token_sold_amount
+            - tx_hash      
     columns:
       - &blockchain 
         name: blockchain        

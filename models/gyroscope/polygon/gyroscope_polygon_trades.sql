@@ -9,7 +9,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook = '{{ expose_spells(\'["polygon"]\',
                                 "project",
-                                "balancer_v2",
+                                "gyroscope",
                                 \'["fmarrr"]\') }}'
     )
 }}
