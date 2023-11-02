@@ -1,7 +1,8 @@
 {{ config(
+	tags=['legacy'],
+
     schema = 'gyroscope_polygon',
-    tags = ['dunesql'],
-    alias = alias('trades'),
+    alias = alias('trades', legacy_model=True),
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

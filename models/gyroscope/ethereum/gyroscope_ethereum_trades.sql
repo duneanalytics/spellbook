@@ -2,7 +2,7 @@
     schema = 'gyroscope_ethereum',
     tags = ['dunesql'],
     alias = alias('trades'),
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
