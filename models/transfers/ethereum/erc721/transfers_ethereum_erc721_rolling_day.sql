@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('erc721_rolling_day'))
+tags=['prod_exclude'],
+        alias = 'erc721_rolling_day')
 }}
 /*
     note: this spell has not been migrated to dunesql, therefore is only a view on spark

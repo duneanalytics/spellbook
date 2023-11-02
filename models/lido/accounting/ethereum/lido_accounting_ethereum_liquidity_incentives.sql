@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('liquidity_incentives'),
-        tags = ['dunesql'], 
+        alias = 'liquidity_incentives',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

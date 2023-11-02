@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: trove_v1_arbitrum_nft_samples
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -12,7 +11,6 @@ seeds:
 
   - name: trove_v2_arbitrum_nft_samples
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary

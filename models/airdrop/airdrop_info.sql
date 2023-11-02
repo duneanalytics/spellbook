@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='airdrop',
-        alias = alias('info'),
+        alias = 'info',
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
                                     "sector",
                                     "dex",

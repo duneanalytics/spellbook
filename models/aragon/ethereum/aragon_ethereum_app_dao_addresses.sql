@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('app_dao_addresses'),
+    
+    alias = 'app_dao_addresses',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

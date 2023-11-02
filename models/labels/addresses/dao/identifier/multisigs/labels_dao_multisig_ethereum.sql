@@ -1,6 +1,6 @@
 {{config(
-        tags=['dunesql'],
-        alias = alias('multisig_ethereum'),
+        
+        alias = 'multisig_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",

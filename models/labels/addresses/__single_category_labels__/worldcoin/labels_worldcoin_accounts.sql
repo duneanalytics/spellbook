@@ -1,5 +1,5 @@
-{{config(alias = alias('worldcoin_accounts'),
-        tags = ['dunesql'],
+{{config(alias = 'worldcoin_accounts',
+        
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "labels",

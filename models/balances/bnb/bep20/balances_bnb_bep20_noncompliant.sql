@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('noncompliant'),
+        
+        alias = 'noncompliant',
         materialized ='table',
         file_format = 'delta'
         )
