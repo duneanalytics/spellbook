@@ -1,7 +1,7 @@
 {{ config(
     schema = 'tokenlon_v5_ethereum',
-    tags=['dunesql'],
-    alias = alias('amm_v2_trades'),
+    
+    alias = 'amm_v2_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,8 +1,8 @@
 {{
     config(
-        tags = ['dunesql'],
+        
         schema = 'nft_celo',
-        alias = alias('wash_trades'),
+        alias = 'wash_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

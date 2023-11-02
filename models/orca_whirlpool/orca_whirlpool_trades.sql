@@ -1,8 +1,8 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'orca_whirlpool',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -189,7 +189,8 @@ with
             {% else %}
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        LEFT JOIN solana_utils.token_accounts tk_1 ON tk_1.address = tr_1.account_destination
+        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination
+        
     )
     
 SELECT
