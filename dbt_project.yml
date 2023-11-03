@@ -244,6 +244,8 @@ models:
         +schema: uniswap_base
       celo:
         +schema: uniswap_celo
+      avalanche_c:
+        +schema: uniswap_avalanche
 
     timeswap:
       +schema: timeswap
