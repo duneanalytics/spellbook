@@ -113,7 +113,10 @@ E_CLPs AS (
 filtered_trades as (
 SELECT
     'ethereum' AS blockchain,
-    'balancer' AS project,
+    CASE 
+        WHEN dexs.project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope'
+        ELSE 'balancer'
+        END AS project,
     '2' AS version,
     TRY_CAST(DATE_TRUNC('DAY', dexs.block_time) AS date) AS block_date,
     TRY_CAST(DATE_TRUNC('MONTH', dexs.block_time) AS date) AS block_month,
@@ -209,16 +212,6 @@ FROM
         {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}
-    where dexs.project_contract_address IN (SELECT pool FROM E_CLPs)
-),
-
-new_table_for_dexTrades AS (
-    SELECT *,
-        CASE 
-            WHEN project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope' 
-            ELSE project 
-        END AS project
-    FROM filtered_trades
 )
 
-SELECT * FROM new_table_for_dexTrades
+SELECT * FROM filtered_trades
