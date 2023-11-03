@@ -115,7 +115,6 @@ WITH
     'polygon' AS blockchain,
     CASE 
      WHEN dexs.project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope'
-     ELSE 'balancer'
     END AS project,
     'balancer' AS project,
     '2' AS version,
@@ -213,6 +212,7 @@ FROM
         {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}
+    where dexs.project_contract_address IN (SELECT pool FROM E_CLPs)
     )
 
 SELECT * FROM filtered_trades

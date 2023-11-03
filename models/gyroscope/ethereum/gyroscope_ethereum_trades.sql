@@ -115,7 +115,6 @@ SELECT
     'ethereum' AS blockchain,
     CASE 
         WHEN dexs.project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope'
-        ELSE 'balancer'
         END AS project,
     '2' AS version,
     TRY_CAST(DATE_TRUNC('DAY', dexs.block_time) AS date) AS block_date,
@@ -212,6 +211,7 @@ FROM
         {% if is_incremental() %}
         AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}
+    where dexs.project_contract_address IN (SELECT pool FROM E_CLPs)
 )
 
 SELECT * FROM filtered_trades
