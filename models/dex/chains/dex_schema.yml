@@ -437,4 +437,3 @@ models:
       - *token_bought_amount
       - *amount_usd
       - *evt_index
-      
