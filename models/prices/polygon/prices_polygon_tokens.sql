@@ -77,7 +77,6 @@ FROM
     ('sff-sunflower-farm','polygon','SFF',0xdf9b4b57865b403e08c85568442f95c26b7896b0,18),
     ('dino-dinoswap','polygon','DINO',0xaa9654becca45b5bdfa5ac646c939c62b527d394,18),
     ('xend-xend-finance','polygon','XEND',0xa649325aa7c5093d12d6f98eb4378deae68ce23f,18),
-    ('mst-idle-mystic','polygon','MST',0xa353deb6fb81df3844d8bd614d33d040fdbb8188,18),
     ('makerx-makerx','polygon','MAKERX',0x1ed02954d60ba14e26c230eec40cbac55fa3aeea,18),
     ('champ-ultimate-champions','polygon','CHAMP',0xed755dba6ec1eb520076cec051a582a6d81a8253,18),
     ('woo-wootrade','polygon','WOO',0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603,18),
