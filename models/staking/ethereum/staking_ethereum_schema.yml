@@ -168,3 +168,24 @@ models:
         description: "Entity name"
       - name: x_username
         description: "Username on X"
+
+  - name: staking_ethereum_batch_contracts
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['staking', 'ethereum', 'batch_contracts']
+    description: >
+        List of Ethereum staking batch contract
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "Address of batch contract"
+      - name: entity
+        description: "Entity name"
+      - name: entity_unique_name
+        description: "Unique name of entity"
