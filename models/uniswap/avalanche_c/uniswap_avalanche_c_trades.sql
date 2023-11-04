@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'uniswap_avalanche_c',
         alias = 'trades'
         )
 }}
