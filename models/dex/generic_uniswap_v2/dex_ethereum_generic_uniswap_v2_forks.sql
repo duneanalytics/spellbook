@@ -1,7 +1,7 @@
 {{ config(
         
         schema = 'dex_ethereum',
-        alias = 'sandwiches',
+        alias = 'generic_uniswap_v2_forks',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,7 +10,9 @@
         )
 }}
 
-{{dex_sandwiches(
-        blockchain='ethereum'
+{{generic_uniswap_v2_fork(
+        blockchain = 'ethereum'
         , transactions = source('ethereum','transactions')
+        , logs = source('ethereum','logs')
+        , contracts = source('ethereum','contracts')
 )}}
