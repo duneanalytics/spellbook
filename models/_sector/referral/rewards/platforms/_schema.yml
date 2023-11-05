@@ -1,7 +1,6 @@
 version: 2
 
 models:
-
   - name: zora_ethereum_rewards
     tests:
       - dbt_utils.unique_combination_of_columns:
