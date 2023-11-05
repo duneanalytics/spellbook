@@ -173,7 +173,7 @@ models:
     meta:
       blockchain: ethereum
       sector: staking
-      contributors: hildobby, 0xRob
+      contributors: hildobby
     config:
       tags: ['staking', 'ethereum', 'batch_contracts']
     description: >
