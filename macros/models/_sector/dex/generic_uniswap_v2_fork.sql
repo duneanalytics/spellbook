@@ -1,5 +1,6 @@
 {% macro generic_uniswap_v2_fork(blockchain, transactions, logs, contracts) %}
 
+{% set project_start_date = '2020-05-05' %}
 
 with decoding_raw_forks as 
 (
@@ -85,25 +86,41 @@ SELECT
     ,deployed_by_contract_address
 FROM dexs
 INNER JOIN {{transactions}} tx
-    ON tx.hash = dexs.tx_hash 
-    AND tx.block_time >= TIMESTAMP '2020-05-05'
-LEFT JOIN tokens.erc20 erc20a
+    ON tx.hash = dexs.tx_hash
+    {% if not is_incremental() %}
+    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = '{{blockchain}}'
-LEFT JOIN tokens.erc20 erc20b
+LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = '{{blockchain}}'
-LEFT JOIN delta_prod.prices.usd p_bought
+LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = '{{blockchain}}'
-    AND p_bought.minute >= TIMESTAMP '2020-05-05'
-LEFT JOIN delta_prod.prices.usd p_sold
+    {% if not is_incremental() %}
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = '{{blockchain}}'
-    AND p_sold.minute >= TIMESTAMP '2020-05-05'
+    {% if not is_incremental() %}
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 LEFT JOIN {{ref('dex_uniswap_v2_fork_mapping') }} fac
     ON dexs.project_contract_address = fac.factory_address
-
 {% endmacro %}
+
+
