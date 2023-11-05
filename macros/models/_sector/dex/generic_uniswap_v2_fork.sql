@@ -34,7 +34,7 @@ SELECT
     ,t.contract_address as project_contract_address
     ,t.evt_tx_hash AS tx_hash
     ,t.evt_index
-    ,f.contract_address as deployed_by_factory
+    ,f.contract_address as deployed_by_contract_address
 FROM decoding_raw_forks t
 INNER JOIN (Select 
              contract_address
