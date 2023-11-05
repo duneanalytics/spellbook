@@ -53,7 +53,7 @@ WHERE t.contract_address NOT IN (SELECT address FROM {{contracts}}) --excluding 
 )
 SELECT
     '{{blockchain}}' AS blockchain
-    ,'unknown_uniswap_v2_fork' AS project
+    ,coalesce(fac.project,'unknown_uniswap_v2_fork') AS project
     ,'2' AS version
     ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     ,CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
@@ -103,6 +103,7 @@ LEFT JOIN delta_prod.prices.usd p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = '{{blockchain}}'
     AND p_sold.minute >= TIMESTAMP '2020-05-05'
-
+LEFT JOIN ref('dex_uniswap_v2_fork_mapping') fac
+    on dexs.project_contract_address = fac.factory_address
 
 {% endmacro %}
