@@ -103,7 +103,7 @@ LEFT JOIN delta_prod.prices.usd p_sold
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = '{{blockchain}}'
     AND p_sold.minute >= TIMESTAMP '2020-05-05'
-LEFT JOIN ref('dex_uniswap_v2_fork_mapping') fac
-    on dexs.project_contract_address = fac.factory_address
+LEFT JOIN {{ref('dex_uniswap_v2_fork_mapping') }} fac
+    ON dexs.project_contract_address = fac.factory_address
 
 {% endmacro %}
