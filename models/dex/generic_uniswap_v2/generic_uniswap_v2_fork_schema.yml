@@ -1,11 +1,11 @@
 version: 2
 
 models:
-  - name: generic_uniswap_v2_fork_ethereum_trades
+  - name: dex_ethereum_generic_uniswap_v2_forks_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: generic_uniswap_v2_fork
+      project: generic_uniswap_v2_forks
       contributors: 0xBoxer
     config:
       tags: ['ethereum','uniswap_v2','trades','dex']
