@@ -1,4 +1,4 @@
-{% macro dex_sandwiches(blockchain, transactions, logs) %}
+{% macro generic_uniswap_v2_fork(blockchain, transactions, logs, contracts) %}
 
 
 with decoding_raw_forks as 
@@ -49,7 +49,7 @@ INNER JOIN (Select
          where topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9 --topic0 for uniswap_v2 factory event Pair_created
          ) f 
  ON f.pair = t.contract_address
-WHERE t.contract_address NOT IN (SELECT address FROM {{logs}}) --excluding already decoded contracts to avoid duplicates in dex.trades
+WHERE t.contract_address NOT IN (SELECT address FROM {{contracts}}) --excluding already decoded contracts to avoid duplicates in dex.trades
 )
 SELECT
     '{{blockchain}}' AS blockchain
@@ -82,7 +82,7 @@ SELECT
     ,tx."from" AS tx_from
     ,tx.to AS tx_to
     ,dexs.evt_index
-    ,deployed_by_factory
+    ,deployed_by_contract_address
 FROM dexs
 INNER JOIN {{transactions}} tx
     ON tx.hash = dexs.tx_hash 
