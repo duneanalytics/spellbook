@@ -120,7 +120,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 LEFT JOIN {{ref('dex_uniswap_v2_fork_mapping') }} fac
-    ON dexs.project_contract_address = fac.factory_address
+    ON dexs.deployed_by_contract_address = fac.factory_address
 {% endmacro %}
 
 
