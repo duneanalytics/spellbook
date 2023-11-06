@@ -35,7 +35,8 @@ pairs as (
     'TradingV2_evt_LimitOrderExecuted',
     'TradingV3_evt_LimitOrderExecuted',
     'TradingV4_evt_LimitOrderExecuted',
-    'TradingV5_evt_LimitOrderExecuted'
+    'TradingV5_evt_LimitOrderExecuted',
+    'TradingV6_evt_LimitOrderExecuted'
 ] %}
 
 limit_orders_v1 AS (

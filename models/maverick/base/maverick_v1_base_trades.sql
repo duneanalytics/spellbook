@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'maverick_v1_ethereum',
+    schema = 'maverick_v1_base',
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
                                 "maverick_v1",
                                 \'["get620v"]\') }}'
@@ -31,15 +31,15 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('maverick_v1_ethereum', 'pool_evt_Swap') }} t
-    INNER JOIN {{ source('maverick_v1_ethereum', 'factory_evt_PoolCreated') }} f
+        {{ source('maverick_v1_base', 'pool_evt_Swap') }} t
+    INNER JOIN {{ source('maverick_v1_base', 'factory_evt_PoolCreated') }} f
         ON f.poolAddress = t.contract_address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 SELECT
-    'ethereum' AS blockchain
+    'base' AS blockchain
     ,'maverick' AS project
     ,'1' AS version
     ,TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
@@ -70,7 +70,7 @@ SELECT
     ,tx.to AS tx_to
     ,dexs.evt_index
 FROM dexs
-INNER JOIN {{ source('ethereum', 'transactions') }} tx
+INNER JOIN {{ source('base', 'transactions') }} tx
     ON tx.hash = dexs.tx_hash
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -80,14 +80,14 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
-    AND erc20a.blockchain = 'ethereum'
+    AND erc20a.blockchain = 'base'
 LEFT JOIN {{ ref('tokens_erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
-    AND erc20b.blockchain = 'ethereum'
+    AND erc20b.blockchain = 'base'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = 'ethereum'
+    AND p_bought.blockchain = 'base'
     {% if not is_incremental() %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -97,7 +97,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'ethereum'
+    AND p_sold.blockchain = 'base'
     {% if not is_incremental() %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
