@@ -366,7 +366,9 @@ models:
             - pool_id
     columns:
       - *block_time
-      - *block_number
+      - &block_number
+        name: block_number
+        description: "The block number of the latest BPT supply change."
       - &lp_virtual_supply_raw
         name: lp_virtual_supply_raw
         description: "The supply of a BPT token. Equivalent to reading the 'getActualSupply' function of the ComposableStablePool."
