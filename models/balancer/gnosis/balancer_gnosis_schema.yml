@@ -262,7 +262,7 @@ models:
       - name: version
         description: 'Version of Balancer in which pool was deployed'
       - *blockchain      
-      - *token_address
+      - name: token_address
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
