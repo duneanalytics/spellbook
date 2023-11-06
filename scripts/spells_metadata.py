@@ -3,6 +3,7 @@ import subprocess
 import json
 import os
 import requests
+import yaml
 
 def get_starting_line(filename):
     with open(filename, 'r') as file:
@@ -34,7 +35,7 @@ def get_authors_commit(filename):
 
 def get_all_commits():
     # return list of all commits
-    # git log --pretty=format:commit,%at,%an -p 
+    # git log --pretty=format:commit,%at,%an --name-only
     cmd = ['git', 'log', '--pretty=format:commit,%h,%at,%an', '--name-only']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
@@ -44,11 +45,51 @@ def get_all_commits():
             hash = line.split(',')[1]
             timestamp = line.split(',')[2]
             author = line.split(',')[3]
-        elif line.startswith('models/') and line.endswith('.sql'):
+        elif line.endswith('.sql'):
             csv_string += f"{hash},{timestamp},{author},{line}\n"
     upload_csv(csv_string, "spellbook_commits")
 
-            
+def get_all_commits_stats():
+    # return list of all commits
+    # git log --pretty=format:commit,%at,%an -p 
+    cmd = ['git', 'log', '--pretty=format:commit,%h,%at,%an', '--numstat']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    csv_string = "hash,timestamp,author,filename,lines_added,lines_removed\n"
+    for line in stdout.decode('utf-8').split('\n'):
+        if line.startswith('commit'):
+            hash = line.split(',')[1]
+            timestamp = line.split(',')[2]
+            author = line.split(',')[3]
+        else:
+            stats = line.split('\t')
+            if len(stats) == 3:
+                if stats[2].endswith('.sql'):
+                    csv_string += f"{hash},{timestamp},{author},{stats[2]},{stats[0]},{stats[1]}\n"
+    # print(csv_string)
+    upload_csv(csv_string, "spellbook_commits_stats")
+
+def get_projects_and_sectors():
+    # walk models/ and subdirectories and find all the yml files
+    csv_string = "filename,sector,project\n"
+    for root, dirs, files in os.walk("models/"):
+        for file in files:
+            if file.endswith(".yml"):
+                # open yaml file and get project and sector
+                with open(os.path.join(root, file), "r") as f:
+                    data = yaml.load(f, Loader=yaml.FullLoader)
+                    if "models" in data:
+                        for model in data["models"]:
+                            model_name = (model["name"])
+                            sector = 'Null'
+                            project = 'Null'
+                            if "meta" in model:
+                                if "sector" in model["meta"]:
+                                    sector = model["meta"]["sector"]    
+                                if "project" in model["meta"]:
+                                    project = model["meta"]["project"]
+                            csv_string += f"{root}/{model_name}.sql,{sector},{project}\n"
+    upload_csv(csv_string, "spellbook_projects_and_sectors")
 
 def main():
     with open("target/manifest.json", "r") as f:
@@ -87,10 +128,8 @@ def main():
                 authors[filename]["commit"][author] += 1
             else:
                 authors[filename]["commit"][author] = 1
-    with open("authors.json", "w") as f:
-        f.write(json.dumps(authors))
+    
     return authors
-    # print(json.dumps(authors))
 
 def upload_csv(table_csv, target):
     """
@@ -112,14 +151,12 @@ def upload_csv(table_csv, target):
     }
     response = requests.post(url, data=json.dumps(payload), headers=headers)
     if response.status_code == 200 and response.json()['success']:
-        print(f'Success writing CSV to dune_upload.{target} ', flush=True)
+        print(f'Success writing CSV to dune.dune.dataset_{target} ', flush=True)
     else:
         print('Error writing CSV to Dune.com!')
         raise Exception(response.content)
     
-def generate_table(type): 
-    with open("authors.json", "r") as f:
-        data = json.load(f)
+def generate_table(type,data): 
     csv_string = f"filename,schema,name,author,{type}\n"
     for file in data:
         for author in data[file][type]:
@@ -140,11 +177,11 @@ def generate_project_commit_file():
     upload_csv(csv_string, "spellbook_project_commit_count")
 
 if __name__ == '__main__':
-    # authors = main()
-    # print("LOC")
-    # generate_table("loc")
-    # print("COMMIT")
-    # generate_table("commit")
-    # generate_project_commit_file()
+    authors = main()
+    generate_table("loc",authors)
+    generate_table("commit",authors)
+    generate_project_commit_file()
 
     get_all_commits()
+    get_all_commits_stats()
+    get_projects_and_sectors()
