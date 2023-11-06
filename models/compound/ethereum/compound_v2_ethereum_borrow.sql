@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'compound_v2_ethereum',
-    alias = alias('borrow'),
+    alias = 'borrow',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

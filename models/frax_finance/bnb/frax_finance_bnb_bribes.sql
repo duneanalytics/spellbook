@@ -1,7 +1,7 @@
 {{ config(
-    alias = alias('bribes'),
+    alias = 'bribes',
     materialized = 'table',
-    tags = ['dunesql'],
+    
     file_format = 'delta',
     unique_key = ['week_start', 'week_end', 'contract_address'],
     post_hook = '{{ expose_spells(\'["bnb"]\',

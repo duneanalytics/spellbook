@@ -1,7 +1,7 @@
 {{ config(
-        tags=['dunesql'],
+        
         schema = 'aave_v3'
-        , alias = alias('tokens')
+        , alias = 'tokens'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
