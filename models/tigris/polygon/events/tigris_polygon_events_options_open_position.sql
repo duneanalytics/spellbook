@@ -21,7 +21,8 @@ pairs as (
 
 {% set open_position_tables = [
     'options_evt_TradeOpened',
-    'Options_V2_evt_TradeOpened'
+    'Options_V2_evt_TradeOpened',
+    'Options_V3_evt_TradeOpened'
 ] %}
 
 open_position_v2 AS (
