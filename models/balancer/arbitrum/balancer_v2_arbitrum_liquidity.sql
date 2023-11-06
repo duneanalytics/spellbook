@@ -217,6 +217,7 @@ WITH pool_labels AS (
 SELECT
     b.day,
     b.pool_id,
+    BYTEARRAY_SUBSTRING(b.pool_id, 1, 20) AS pool_address,
     p.pool_symbol,
     '2' AS version,
     'arbitrum' AS blockchain,
