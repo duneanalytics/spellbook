@@ -30,8 +30,7 @@ swap_fees AS (
             LEFT JOIN {{ source('balancer_v1_ethereum', 'BPool_call_setSwapFee') }} fees
                 ON fees.contract_address = swaps.contract_address
                 AND fees.call_block_number < swaps.evt_block_number)
-        WHERE row_num = 1
-),
+        WHERE row_num = 1),
 
 v1 AS (
     SELECT
@@ -47,7 +46,7 @@ v1 AS (
         evt_index
     FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} swaps
         LEFT JOIN swap_fees fees
-            AND fees.evt_tx_hash = swaps.evt_tx_hash
+            ON fees.evt_tx_hash = swaps.evt_tx_hash
             AND fees.evt_block_number = swaps.evt_block_number
     {% if not is_incremental() %}
         WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -58,7 +57,8 @@ v1 AS (
 ),
 
 prices AS (
-    SELECT * from {{ source('prices', 'usd') }}
+    SELECT * 
+    FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
     {% if not is_incremental() %}
         AND minute >= TIMESTAMP '{{project_start_date}}'
