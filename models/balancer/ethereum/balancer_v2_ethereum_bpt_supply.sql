@@ -135,7 +135,7 @@ WITH
                             WHERE to = 0x0000000000000000000000000000000000000000
                         )
                     ) AS lp_token_burned
-                FROM {{ ref('evms.erc20_transfers') }}  --#########################
+                FROM {{ ref('evms_erc20_transfers') }}  --#########################
                 WHERE blockchain = 'ethereum'
                     AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools) 
                     AND (to = 0x0000000000000000000000000000000000000000 
@@ -156,7 +156,7 @@ WITH
                 , index AS tx_index
                 , "from" AS tx_from
                 , "to" AS tx_to
-            FROM {{ ref('evms.transactions') }} --#########################
+            FROM {{ ref('evms_transactions') }} --#########################
             WHERE blockchain = 'ethereum'
                 AND block_number >= (SELECT min(evt_block_number) FROM sub_pools)
         ) l
@@ -240,7 +240,7 @@ WITH
                     , index AS tx_index
                     , "from" AS tx_from
                     , "to" AS tx_to
-                FROM {{ ref('evms.transactions') }} --#########################
+                FROM {{ ref('evms_transactions') }} --#########################
                 WHERE  blockchain = 'ethereum'
                     AND block_number >= (SELECT min(evt_block_number) FROM sub_pools)
             ) txns
@@ -268,7 +268,7 @@ WITH
                             WHERE to = 0x0000000000000000000000000000000000000000
                         )
                     ) AS lp_token_burned
-                FROM {{ ref('evms.erc20_transfers') }}  --#########################
+                FROM {{ ref('evms_erc20_transfers') }}  --#########################
                 WHERE blockchain = 'ethereum'
                     AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools) 
                     AND (to = 0x0000000000000000000000000000000000000000 
@@ -348,7 +348,7 @@ WITH
                     , evt_index
                     , evt_tx_hash
                     , CAST(value AS int256) AS transfer_value 
-                FROM {{ ref('evms.erc20_transfers') }} --#########################
+                FROM {{ ref('evms_erc20_transfers') }} --#########################
                 WHERE blockchain = 'ethereum'
                     AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools)
                     AND "to" = 0xba12222222228d8ba445958a75a0704d566bf2c8
@@ -361,7 +361,7 @@ WITH
                     , evt_index
                     , evt_tx_hash
                     , -CAST(value AS int256) AS transfer_value 
-                FROM {{ ref('evms.erc20_transfers') }} --#########################
+                FROM {{ ref('evms_erc20_transfers') }} --#########################
                 WHERE blockchain = 'ethereum'
                     AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools)
                     AND "from" = 0xba12222222228d8ba445958a75a0704d566bf2c8
