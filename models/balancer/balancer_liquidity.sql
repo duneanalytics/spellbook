@@ -28,6 +28,7 @@ FROM (
     SELECT
     day,
     pool_id,
+    BYTEARRAY_SUBSTRING(b.pool_id, 1, 20) AS pool_address,
     pool_symbol,
     version,
     blockchain,

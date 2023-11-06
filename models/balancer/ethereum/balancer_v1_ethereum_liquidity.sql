@@ -110,6 +110,7 @@ prices AS (
         SELECT
             b.day,
             w.pool_id,
+            w.pool_id AS pool_address,
             p.name AS pool_symbol,
             '1' AS version,
             'ethereum' AS blockchain,

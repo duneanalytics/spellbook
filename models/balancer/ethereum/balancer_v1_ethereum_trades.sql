@@ -16,14 +16,22 @@
 WITH 
 
 swap_fees AS (
-    SELECT * FROM(
-    SELECT
-        contract_address,
-        swapFee,
-        call_block_time,
-        ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY call_block_time DESC) AS row_num
-    FROM {{ source('balancer_v1_ethereum', 'BPool_call_setSwapFee') }})
-        WHERE row_num = 1),
+    SELECT * FROM 
+    (
+        SELECT
+            swaps.contract_address,
+            swaps.evt_tx_hash,
+            swaps.evt_block_time,
+            swaps.evt_index,
+            swaps.evt_block_number,
+            fees.swapFee,
+            ROW_NUMBER() OVER (PARTITION BY swaps.contract_address, evt_tx_hash, evt_index ORDER BY call_block_number DESC) AS row_num
+        FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} swaps
+            LEFT JOIN {{ source('balancer_v1_ethereum', 'BPool_call_setSwapFee') }} fees
+                ON fees.contract_address = swaps.contract_address
+                AND fees.call_block_number < swaps.evt_block_number)
+        WHERE row_num = 1
+),
 
 v1 AS (
     SELECT
@@ -33,13 +41,14 @@ v1 AS (
         tokenIn AS token_sold_address,
         tokenAmountIn AS token_sold_amount_raw,
         swaps.contract_address AS project_contract_address,
-        (swapFee / 1e16) AS swap_fee_percentage,
+        (swapFee / 1e18) AS swap_fee_percentage,
         evt_block_time,
         evt_tx_hash,
         evt_index
     FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} swaps
         LEFT JOIN swap_fees fees
-            ON fees.contract_address = swaps.contract_address
+            AND fees.evt_tx_hash = swaps.evt_tx_hash
+            AND fees.evt_block_number = swaps.evt_block_number
     {% if not is_incremental() %}
         WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
