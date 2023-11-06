@@ -104,15 +104,15 @@ SELECT
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
             {% if is_incremental() %}
-            and t.block_time >= date_trunc('day', now() - interval '7' day)
-            AND ct.block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('t.block_time') }}
+            AND {{ incremental_predicate('ct.block_time') }}
             {% endif %}
           left join {{ ref('evm_smart_account_method_ids') }} aa 
             ON aa.method_id = bytearray_substring(t.data,1,4)
           where 
             1=1
             {% if is_incremental() %}
-            and ct.block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('ct.block_time') }}
             {% endif %} -- incremental filter
       )
     SELECT * FROM incremental_contracts

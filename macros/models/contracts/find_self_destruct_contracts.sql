@@ -31,14 +31,14 @@ FROM (
           = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
       {% if is_incremental() %}
-      and sd.block_time >= date_trunc('day', now() - interval '7' day)
+      AND {{ incremental_predicate('sd.block_time') }}
       and cr.address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
       AND cr.type = 'create'
       {% if is_incremental() %}
-      and cr.block_time >= date_trunc('day', now() - interval '7' day) --we know same tx
+      AND {{ incremental_predicate('cr.block_time') }} --we know same tx
       {% endif %}
     group by 1, 2, 3, 4, 5, 6, 7, 8
 
@@ -63,7 +63,7 @@ FROM (
       AND sds.type = 'suicide'
       AND sds.address IS NOT NULL
       {% if is_incremental() %}
-      and sds.block_time >= date_trunc('day', now() - interval '7' day)
+      AND {{ incremental_predicate('sds.block_time') }}
       and cr.address NOT IN (SELECT contract_address FROM {{this}} th WHERE th.blockchain = '{{chain}}' ) --ensure no duplicates
       {% endif %}
 

@@ -154,7 +154,7 @@ WITH unified_contract_sources AS (
   --                       )
     
   --   {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-  --     and l.block_time >= date_trunc('day', now() - interval '7' day)
+  --     AND {{ incremental_predicate('l.block_time') }}
   --   {% endif %}
 
   -- GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, ct.block_time, oc.created_at, l.tx_index, oc.code
@@ -230,7 +230,7 @@ WITH unified_contract_sources AS (
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND r.evt_block_time > NOW() - interval '7' day
+            AND {{ incremental_predicate('r.evt_block_time') }}
             {% endif %}
             group by 1
           UNION ALL
@@ -239,7 +239,7 @@ WITH unified_contract_sources AS (
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND r.evt_block_time > NOW() - interval '7' day
+            AND {{ incremental_predicate('r.evt_block_time') }}
             {% endif %}
             group by 1
           UNION ALL
@@ -248,7 +248,7 @@ WITH unified_contract_sources AS (
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND r.evt_block_time > NOW() - interval '7' day
+            AND {{ incremental_predicate('r.evt_block_time') }}
             {% endif %}
             group by 1
           UNION ALL
@@ -257,7 +257,7 @@ WITH unified_contract_sources AS (
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_erc20')}} WHERE  blockchain = '{{chain}}')
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND r.evt_block_time > NOW() - interval '7' day
+            AND {{ incremental_predicate('r.evt_block_time') }}
             {% endif %}
             group by 1
           ) ts 
