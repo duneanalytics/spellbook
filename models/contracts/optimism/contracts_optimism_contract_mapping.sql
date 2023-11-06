@@ -1,6 +1,6 @@
  {{
   config(
-        tags = ['prod_exclude'],        
+        
         alias = 'contract_mapping',
         materialized ='incremental',
         file_format ='delta',
