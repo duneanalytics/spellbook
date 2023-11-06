@@ -40,6 +40,11 @@ FROM
     , (0x25393bb68c89a894b5e20fa3fc3b3b34f843c672, 'SaitaSwap')
     , (0x03407772f5ebfb9b10df007a2dd6fff4ede47b53 ,'capitaldex')
     , (0x6c565c5bbdc7f023cae8a2495105a531caac6e54, 'groveswap')
+    , (0xF028F723ED1D0fE01cC59973C49298AA95c57472, 'SashimiSwap')
+    , (0x1fed2e360a5afb2ac4b047102a7012a57f3c8cab, 'BTswap')
+    , (0x35113a300ca0D7621374890ABFEAC30E88f214b1, 'SaitaSwap')
+    , (0xA40ec8A93293A3179D4b544239916C1B68cB47B6, 'SunflowerSwap')
+    , (0x5fa0060fcfea35b31f7a5f6025f0ff399b98edf1, 'OrionProtocol')
 ) AS t (factory_address, project)
 
     
