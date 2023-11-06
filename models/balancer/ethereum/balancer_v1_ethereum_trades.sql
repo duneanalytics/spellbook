@@ -41,9 +41,9 @@ v1 AS (
         tokenAmountIn AS token_sold_amount_raw,
         swaps.contract_address AS project_contract_address,
         (swapFee / 1e18) AS swap_fee_percentage,
-        evt_block_time,
-        evt_tx_hash,
-        evt_index
+        swaps.evt_block_time,
+        swaps.evt_tx_hash,
+        swaps.evt_index
     FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} swaps
         LEFT JOIN swap_fees fees
             ON fees.evt_tx_hash = swaps.evt_tx_hash
