@@ -422,7 +422,7 @@ WITH
             , blockchain AS b
             , symbol AS s
             , decimals AS d 
-        FROM {{ source('tokens', 'erc20') }} --#########################
+        FROM {{ ref ('tokens_erc20') }} --#########################
     )
 
     , data_table_1 AS (
