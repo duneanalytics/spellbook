@@ -92,7 +92,7 @@ def get_projects_and_sectors():
     upload_csv(csv_string, "spellbook_projects_and_sectors")
 
 def main():
-    with open("target/manifest.json", "r") as f:
+    with open("manifest.json", "r") as f:
         # print(f"Loading manifest file at {manifest_path} ...")
         manifest = json.load(f)
     authors = {}
@@ -181,7 +181,6 @@ if __name__ == '__main__':
     generate_table("loc",authors)
     generate_table("commit",authors)
     generate_project_commit_file()
-
     get_all_commits()
     get_all_commits_stats()
     get_projects_and_sectors()
