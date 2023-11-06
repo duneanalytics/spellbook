@@ -1,7 +1,7 @@
 {{  config(
-        tags = ['dunesql'],
+        
         schema='oneinch_clipper_ethereum',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -30,7 +30,7 @@ WITH clipper AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_clipperSwap') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_clipperSwap') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -52,7 +52,7 @@ WITH clipper AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_clipperSwapTo') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_clipperSwapTo') }}
     WHERE
         call_success
         {% if is_incremental() %}
@@ -74,7 +74,7 @@ WITH clipper AS
         call_block_time,
         contract_address
     FROM
-        {{ source('oneinch_v4_ethereum', 'AggregationRouterV4_call_clipperSwapToWithPermit') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV4_call_clipperSwapToWithPermit') }}
     WHERE
         call_success
         {% if is_incremental() %}

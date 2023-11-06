@@ -1,14 +1,14 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft',
-        alias =alias('transfers'),
+        alias ='transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_hash', 'evt_index', 'token_id', 'amount'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "base", "celo", "zksync"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby", "0xRob"]\') }}'
@@ -26,6 +26,8 @@
 ,ref('nft_fantom_transfers')
 ,ref('nft_goerli_transfers')
 ,ref('nft_base_transfers')
+,ref('nft_zksync_transfers')
+,ref('nft_celo_transfers')
 ] %}
 
 SELECT *

@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('claims'),
+        
+        alias = 'claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -31,7 +31,7 @@ FROM (
         , block_time
         , block_number
         , project
-        , airdrop_identifier
+        , airdrop_number
         , recipient
         , contract_address
         , tx_hash

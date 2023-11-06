@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('kyberswap_pools'),
-    tags = ['dunesql'],        
+    alias = 'kyberswap_pools',
+            
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

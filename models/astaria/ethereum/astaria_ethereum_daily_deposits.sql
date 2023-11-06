@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('daily_deposits')
+    
+    alias = 'daily_deposits'
     )
 }}
 

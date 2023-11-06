@@ -1,5 +1,5 @@
-{{  config(tags=['dunesql'],
-        alias = alias('native_fills'),
+{{  config(
+        alias = 'native_fills',
         materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],

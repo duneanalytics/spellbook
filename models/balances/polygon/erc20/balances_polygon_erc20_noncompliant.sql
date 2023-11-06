@@ -1,7 +1,7 @@
 {{ config(
         schema = 'balances_polygon',
-        tags = ['dunesql'],
-        alias = alias('erc20_noncompliant'),
+        
+        alias = 'erc20_noncompliant',
         materialized ='table',
         file_format = 'delta'
         )

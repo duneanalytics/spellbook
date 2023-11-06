@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc20_agg_hour'),
+        
+        alias = 'erc20_agg_hour',
         materialized ='incremental',
         partition_by = ['block_month'],
         file_format ='delta',

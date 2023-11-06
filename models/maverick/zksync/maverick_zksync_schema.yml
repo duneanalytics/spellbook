@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: maverick_v1_zksync_trades
+    meta:
+      blockchain: zksync
+      project: maverick
+      contributors: gte620v
+    config:
+      tags: ["maverick", "zksync", "mav", "dex"]
+    description: >
+      A table containing all trades of Maverick on zksync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: zksync
+          project: maverick
+          version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the transaction"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the transaction"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the transaction"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"
+

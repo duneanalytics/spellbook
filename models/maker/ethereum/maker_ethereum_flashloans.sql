@@ -1,6 +1,5 @@
 {{ config(
-      tags=['dunesql']
-      , alias = alias('flashloans')
+     alias = 'flashloans'
       , partition_by = ['block_month']
       , materialized = 'incremental'
       , file_format = 'delta'
@@ -14,7 +13,7 @@
 }}
 
 SELECT 'ethereum' AS blockchain
-, 'Maker' AS project
+, 'maker' AS project
 , '1' AS version
 , CAST(date_trunc('Month', flash.evt_block_time) as date) as block_month
 , flash.evt_block_time AS block_time

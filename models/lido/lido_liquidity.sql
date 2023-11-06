@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('liquidity'),
-        tags = ['dunesql'], 
+        alias = 'liquidity',
+         
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
                                 "project",
                                 "lido_liquidity",

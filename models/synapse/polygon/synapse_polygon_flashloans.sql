@@ -1,8 +1,7 @@
 {{ config(
-    tags=['dunesql']
-    , partition_by = ['block_month']
+     partition_by = ['block_month']
     , schema = 'synapse_polygon'
-    , alias = alias('flashloans')
+    , alias = 'flashloans'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -14,7 +13,7 @@
 {% set weth_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' %}
 
 SELECT '{{blockchain}}' AS blockchain
-, 'Synapse' AS project
+, 'synapse' AS project
 , '1' AS version
 , CAST(date_trunc('Month', flash.evt_block_time) as date) as block_month
 , flash.evt_block_time AS block_time

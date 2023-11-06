@@ -1,10 +1,10 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = alias('calls_transfers_amounts'),
+        alias = 'calls_transfers_amounts',
         materialized = 'view',
         unique_key = ['blockchain', 'unique_call_transfer_id'],
-        tags = ['dunesql'],
+        
     )
 }}
 
@@ -20,7 +20,8 @@
         'fantom',
         'gnosis',
         'optimism',
-        'polygon'
+        'polygon',
+        'zksync'
     ]
 %}
 

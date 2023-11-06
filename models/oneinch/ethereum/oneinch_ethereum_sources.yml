@@ -7,21 +7,21 @@ sources:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
-      - name: exchange_v1_call_aggregate
+      - name: ExchangeV1_call_aggregate
         loaded_at_field: call_block_time
-      - name: exchange_v2_call_aggregate
+      - name: ExchangeV2_call_aggregate
         loaded_at_field: call_block_time
-      - name: exchange_v3_call_aggregate
+      - name: ExchangeV3_call_aggregate
         loaded_at_field: call_block_time
-      - name: exchange_v4_call_aggregate
+      - name: ExchangeV4_call_aggregate
         loaded_at_field: call_block_time
-      - name: exchange_v5_call_aggregate
+      - name: ExchangeV5_call_aggregate
         loaded_at_field: call_block_time
-      - name: exchange_v6_call_aggregate
+      - name: ExchangeV6_call_aggregate
         loaded_at_field: call_block_time
-      - name: exchange_v7_call_swap
+      - name: ExchangeV7_call_swap
         loaded_at_field: call_block_time
-      - name: OneInchExchange_call_swap
+      - name: AggregationRouterV1_call_swap
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_swap
         loaded_at_field: call_block_time
@@ -55,22 +55,8 @@ sources:
         loaded_at_field: call_block_time
       - name: MerkleDistributor_evt_Claimed
         loaded_at_field: evt_block_time
-  
-  - name: oneinch_v2_ethereum
-    description: "decoded events and function calls for 1inch v2 on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: OneInchExchange_evt_Swapped
+      - name: AggregationRouterV2_evt_Swapped
         loaded_at_field: evt_block_time
-
-  - name: oneinch_v3_ethereum
-    description: "decoded events and function calls for 1inch v3 on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
       - name: AggregationRouterV3_evt_Swapped
         loaded_at_field: evt_block_time
       - name: AggregationRouterV3_call_unoswap
@@ -81,13 +67,6 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_unoswapWithPermit
         loaded_at_field: call_block_time
-
-  - name: oneinch_v4_ethereum
-    description: "decoded events and function calls for 1inch v4 on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
       - name: AggregationRouterV4_call_swap
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_uniswapV3Swap
@@ -108,48 +87,10 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
-      - name: AggregationRouterV4_call_unoswap
+      - name: LimitOrderProtocolV1_call_fillOrder
         loaded_at_field: call_block_time
-      - name: AggregationRouterV4_call_unoswapWithPermit
+      - name: LimitOrderProtocolV1_call_fillOrderRFQ
         loaded_at_field: call_block_time
-
-  - name: onesplit_ethereum
-    description: "decoded events and function calls for onesplit on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: OneSplit_call_swap
-        loaded_at_field: call_block_time
-      - name: OneSplit_call_goodSwap
-        loaded_at_field: call_block_time
-
-  - name: oneproto_ethereum
-    description: "decoded events and function calls for oneproto on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: OneSplitAudit_evt_Swapped
-        loaded_at_field: evt_block_time
-
-  - name: oneinch_lop_ethereum
-    description: "decoded events and function calls for limit order protocol v1 on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: LimitOrderProtocol_call_fillOrder
-        loaded_at_field: call_block_time
-      - name: LimitOrderProtocol_call_fillOrderRFQ
-        loaded_at_field: call_block_time
-
-  - name: oneinch_ethereum
-    description: "decoded events and function calls for limit order protocol v2 on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
       - name: LimitOrderProtocolV2_call_fillOrder
         loaded_at_field: call_block_time
       - name: LimitOrderProtocolV2_call_fillOrderTo
@@ -162,3 +103,25 @@ sources:
         loaded_at_field: call_block_time
       - name: LimitOrderProtocolV2_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
+
+
+  - name: onesplit_ethereum
+    description: "decoded events and function calls for onesplit on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneSplit_call_swap
+        loaded_at_field: call_block_time
+      - name: OneSplit_call_goodSwap
+        loaded_at_field: call_block_time
+
+
+  - name: oneproto_ethereum
+    description: "decoded events and function calls for oneproto on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneSplitAudit_evt_Swapped
+        loaded_at_field: evt_block_time
