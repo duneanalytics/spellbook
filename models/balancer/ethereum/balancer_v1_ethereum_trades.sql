@@ -49,10 +49,10 @@ v1 AS (
             ON fees.evt_tx_hash = swaps.evt_tx_hash
             AND fees.evt_block_number = swaps.evt_block_number
     {% if not is_incremental() %}
-        WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
+        WHERE swaps.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE swaps.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
 
