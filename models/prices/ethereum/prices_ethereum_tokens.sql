@@ -1625,7 +1625,8 @@ FROM
     ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18),
     ('val-valeria', 'ethereum', 'VAL', 0x011e128ec62840186f4a07e85e3ace28858c5606, 18),
     ('propc-propchain', 'ethereum', 'PROPC', 0x9ff58067bd8d239000010c154c6983a325df138e, 18),
-    ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18)
+    ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
+    ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
