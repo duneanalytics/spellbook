@@ -204,7 +204,7 @@ models:
       - *version
       - *blockchain     
       - name: token_address
-        description: 'Address of the token'      
+        description: 'Contract address for the token'
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw

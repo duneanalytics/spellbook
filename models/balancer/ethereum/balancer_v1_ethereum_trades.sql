@@ -16,8 +16,7 @@
 WITH 
 
 swap_fees AS (
-    SELECT * FROM 
-    (
+    SELECT * FROM (
         SELECT
             swaps.contract_address,
             swaps.evt_tx_hash,

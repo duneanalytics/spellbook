@@ -211,9 +211,8 @@ models:
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
       - name: version
         description: 'Version of Balancer in which pool was deployed'
-      - name: blockchain
-        description: 'Blockchain in which pool was deployed'      
-      - name: token_address
+      - *blockchain
+      - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
