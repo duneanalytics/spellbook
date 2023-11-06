@@ -230,6 +230,20 @@ sources:
       - name: Vault_evt_FlashLoan
         loaded_at_field: evt_block_time
 
+      - name: ComposableStablePoolFactory_evt_PoolCreated
+        description: >
+          Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 pool contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: pool
+            description: 'Ethereum address for the Composable Stable Pool created in the transaction.'
+
   - name: balancer_v1_ethereum
     description: >
       Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.
