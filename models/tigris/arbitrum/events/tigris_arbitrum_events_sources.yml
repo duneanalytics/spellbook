@@ -222,3 +222,33 @@ sources:
         loaded_at_field: evt_block_time
       - name: Options_V2_evt_TradeOpened
         loaded_at_field: evt_block_time
+      - name: TradingV6_evt_AddToPosition
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_PositionClosed
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_LimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_PositionLiquidated
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_MarginModified
+        loaded_at_field: evt_block_time
+      - name: TradingV6_call_addMargin
+        loaded_at_field: call_block_time
+      - name: TradingV6_call_removeMargin
+        loaded_at_field: call_block_time
+      - name: TradingV6_evt_PositionOpened
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_LimitCancelled
+        loaded_at_field: evt_block_time
+      - name: TradingV6_evt_FeesDistributed
+        loaded_at_field: evt_block_time
+      - name: Options_V3_evt_TradeClosed
+        loaded_at_field: evt_block_time
+      - name: Options_V3_evt_OptionsFeesDistributed
+        loaded_at_field: evt_block_time
+      - name: Options_V3_evt_OptionsLimitCancelled
+        loaded_at_field: evt_block_time
+      - name: Options_V3_evt_OptionsLimitOrderExecuted
+        loaded_at_field: evt_block_time
+      - name: Options_V3_evt_TradeOpened
+        loaded_at_field: evt_block_time
