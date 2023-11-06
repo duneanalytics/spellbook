@@ -1624,6 +1624,7 @@ FROM
     ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18),
     ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18),
     ('val-valeria', 'ethereum', 'VAL', 0x011e128ec62840186f4a07e85e3ace28858c5606, 18),
+    ('propc-propchain', 'ethereum', 'PROPC', 0x9ff58067bd8d239000010c154c6983a325df138e, 18),
     ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
