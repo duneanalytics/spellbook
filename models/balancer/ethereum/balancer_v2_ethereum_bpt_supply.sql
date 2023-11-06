@@ -423,6 +423,7 @@ WITH
             , symbol AS s
             , decimals AS d 
         FROM {{ ref ('tokens_erc20') }} --#########################
+        WHERE blockchain = 'ethereum'
     )
 
     , data_table_1 AS (
@@ -452,8 +453,7 @@ WITH
             , COALESCE(lp.d, 18) AS lp_d -- tokne_1 (LP) decimals (18)
         FROM join_exit_swap x
         LEFT JOIN t_erc20 lp
-            ON  lp.b = 'ethereum' 
-            AND lp.c = bytearray_substring(pool_id, 1, 20)
+            ON lp.c = bytearray_substring(pool_id, 1, 20)
     )
 
     , data_table_2 AS (
