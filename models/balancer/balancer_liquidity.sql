@@ -1,8 +1,9 @@
 {{ config(
         schema = 'balancer',
-        alias = alias('liquidity'), 
-        tags = ['dunesql'],
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base"]\',
+        alias = 'liquidity', 
+
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base"
+        ]\',
                                 "project",
                                 "balancer",
                                 \'["stefenon", "viniabussafi", "thetroyharris"]\') }}'

@@ -1,8 +1,7 @@
  {{
   config(
         schema = 'solana_utils',
-        tags = ['dunesql'],
-        alias = alias('token_accounts'),
+        alias = 'token_accounts',
         materialized='table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["solana"]\',
@@ -13,6 +12,7 @@
 
 WITH 
       distinct_accounts as (
+            --force
             SELECT
                   token_mint_address
                   , address 

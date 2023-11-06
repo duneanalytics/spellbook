@@ -1,6 +1,6 @@
 {{config(
-    tags = ['dunesql', 'prod_exclude']
-    , alias = alias('airdrop_1_receivers_optimism')
+    tags = [ 'prod_exclude']
+    , alias = 'airdrop_1_receivers_optimism'
 )}}
 
 SELECT

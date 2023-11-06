@@ -1,8 +1,8 @@
 
 {{ config(
-        tags=['dunesql'],
+        
         schema ='dex_aggregator',
-        alias = alias('trades'),
+        alias = 'trades',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

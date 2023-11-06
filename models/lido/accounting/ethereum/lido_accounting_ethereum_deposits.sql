@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('deposits'),
-        tags = ['dunesql'], 
+        alias = 'deposits',
+         
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

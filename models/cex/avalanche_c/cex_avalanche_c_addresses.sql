@@ -1,6 +1,6 @@
 {{config(
-        tags = ['static', 'dunesql'],
-        alias = alias('addresses'),
+        tags = ['static'],
+        alias = 'addresses',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "cex",
