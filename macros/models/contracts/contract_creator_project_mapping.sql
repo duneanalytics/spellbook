@@ -306,7 +306,6 @@ SELECT
     OR u.token_symbol<>th.token_symbol
     OR u.contract_name<>th.contract_name
     OR u.creator_address<>th.creator_address
-    OR u.code_deploy_rank_by_chain<>th.code_deploy_rank_by_chain
     OR u.token_standard<>th.token_standard
   THEN 1 ELSE 0 END
   {% else -%}
