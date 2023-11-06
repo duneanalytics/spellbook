@@ -39,7 +39,8 @@ FROM (
           *
     FROM {{ chain_model }}
     {% if is_incremental() %}
-    WHERE created_time >= date_trunc('day', now() - interval '7' day)
+    WHERE
+      {{ incremental_predicate('created_time') }}
     OR is_updated_in_last_run = 1 --flag we use to see if contract metadata is new
     {% endif %}
     {% if not loop.last %}
