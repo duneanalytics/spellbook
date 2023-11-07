@@ -1,5 +1,5 @@
 {% macro enrich_dex_trades(
-    base_trades = null
+    stg_trades = null
     , tokens_erc20_model = null
     , prices_model = null
     )
@@ -51,7 +51,7 @@ WITH prices AS (
         , base.tx_to
         , base.evt_index
     FROM
-        {{ base_trades }} base
+        {{ stg_trades }} base
     LEFT JOIN
         {{ tokens_erc20_model }} erc20_bought
         ON erc20_bought.contract_address = base.token_bought_address
