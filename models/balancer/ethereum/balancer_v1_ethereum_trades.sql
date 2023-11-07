@@ -29,7 +29,8 @@ swap_fees AS (
             LEFT JOIN {{ source('balancer_v1_ethereum', 'BPool_call_setSwapFee') }} fees
                 ON fees.contract_address = swaps.contract_address
                 AND fees.call_block_number < swaps.evt_block_number)
-        WHERE row_num = 1),
+        WHERE row_num = 1
+),
 
 v1 AS (
     SELECT
