@@ -47,6 +47,7 @@ v1 AS (
         LEFT JOIN swap_fees fees
             ON fees.evt_tx_hash = swaps.evt_tx_hash
             AND fees.evt_block_number = swaps.evt_block_number
+            AND fees.contract_address = swaps.contract_address
     {% if not is_incremental() %}
         WHERE swaps.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
