@@ -203,7 +203,8 @@ FROM
     ('edu-edu-coin', 'bnb', 'EDU', 0xbdeae1ca48894a1759a8374d63925f21f2ee2639, 18),
     ('id2-space-id', 'bnb', 'ID', 0x2dff88a56767223a5529ea5960da7a3f5f766406, 18),
     ('ankrbnb-ankr-staked-bnb', 'bnb', 'ankrBNB', 0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827, 18),
-    ('stkbnb-pstake-staked-bnb', 'bnb', 'STKBNB', 0xc2e9d07f66a89c44062459a47a0d2dc038e4fb16, 18)
+    ('joyg-kismet-joy-gold', 'bnb', 'JOYG', 0xe63c37e50a045c247b5003e24ba066f1cc3f0ff3, 8),
+    ('gft-galaxy-finance', 'bnb', 'GFT', 0xe77932b1216125848e82c3967e75698362168f99, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
