@@ -1,11 +1,6 @@
 {{ config(
         alias = 'transfers',
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["hildobby", "aalan3"]\') }}'
-        )
 }}
 
 
