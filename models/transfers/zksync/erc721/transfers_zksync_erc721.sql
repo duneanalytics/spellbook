@@ -26,7 +26,7 @@ erc721_transfers  as (
         FROM 
         {{ source('erc721_zksync', 'evt_transfer') }}
         {% if is_incremental() %}
-            AND {{ incremental_predicate('evt_block_time') }}
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 
     
@@ -44,7 +44,7 @@ erc721_transfers  as (
         FROM 
         {{ source('erc721_zksync', 'evt_transfer') }}
         {% if is_incremental() %}
-            AND {{ incremental_predicate('evt_block_time') }}
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 
