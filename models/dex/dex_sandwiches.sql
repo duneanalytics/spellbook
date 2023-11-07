@@ -46,7 +46,7 @@ FROM (
         , tx_to
         , project_contract_address
         , token_pair
-        , index
+        , tx_index
         , token_sold_amount_raw
         , token_bought_amount_raw
         , token_sold_amount
