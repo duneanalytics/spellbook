@@ -1,15 +1,28 @@
 version: 2
 
 models:
-  - name: maverick_trades
+  - name: maverick_v1_base_trades
     meta:
-      blockchain: ethereumm, bnb, base, zksync
-      sector: dex
-      contributors: gte620v, chef_seaweed
+      blockchain: base
+      project: maverick
+      contributors: gte620v
     config:
-      tags: ["maverick", "amm", "trades", "dex"]
+      tags: ["maverick", "base", "mav", "dex"]
     description: >
-      DEX trades on maverick on all chains
+      A table containing all trades of Maverick on base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: base
+          project: maverick
+          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -20,12 +33,12 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -70,13 +83,14 @@ models:
         description: "Project contract address which executed the trade on the blockchain"
       - &tx_hash
         name: tx_hash
-        description: "Transaction hash"
+        description: "Unique transaction hash value tied to each transaction on the DEX"
       - &tx_from
         name: tx_from
-        description: "transaction.from"
+        description: "Address which initiated the transaction"
       - &tx_to
         name: tx_to
-        description: "transaction.to"
+        description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: "Event index"
+        description: "Index of the corresponding trade event"
+
