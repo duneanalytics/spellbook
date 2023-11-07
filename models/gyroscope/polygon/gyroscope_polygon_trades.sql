@@ -27,8 +27,7 @@ with E_CLPs AS (
 
     SELECT
     *,
-    CASE
-      when project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope' end as project
+    'gyroscope' AS project
     FROM {{ ref('balancer_v2_polygon_trades') }} x
     inner join E_CLPs y
     on x.block_time >= y.min_block_time
