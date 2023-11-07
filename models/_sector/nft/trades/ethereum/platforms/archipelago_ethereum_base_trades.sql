@@ -1,6 +1,5 @@
 {{ config(
     schema = 'archipelago_ethereum',
-    
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
