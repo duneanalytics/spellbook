@@ -1,6 +1,5 @@
 {{ config(
         alias = 'transfers_base',
-        tags=['dunesql'],
         partition_by = ['token_standard', 'block_date'],
         materialized = 'incremental',
         file_format = 'delta',
