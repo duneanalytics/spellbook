@@ -1,6 +1,5 @@
 {{ config(
     schema = 'gyroscope_polygon',
-    tags = ['dunesql'],
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -14,16 +13,23 @@
     )
 }}
 
-{% set project_start_date = '2021-06-24' %}
-
-with
-    E_CLPs AS (
-    SELECT
-       pool
-    from {{ source('gyroscope_polygon','GyroECLPPoolFactory_evt_PoolCreated') }}
+with E_CLPs AS (
+    SELECT 
+        x.pool
+        , y.min_block_time
+        FROM  {{ source('gyroscope_polygon','GyroECLPPoolFactory_evt_PoolCreated') }} x
+        LEFT JOIN (
+            SELECT min(evt_block_time) AS min_block_time 
+            FROM {{ source('gyroscope_polygon','GyroECLPPoolFactory_evt_PoolCreated') }} 
+        ) y
+        on x.pool is not null
     )
 
     SELECT
-    *
-    FROM ref('balancer_trades')
-    where project_contract_address IN (SELECT pool FROM E_CLPs)
+    *,
+    CASE
+      when project_contract_address IN (SELECT pool FROM E_CLPs) THEN 'gyroscope' end as project
+    FROM {{ ref('balancer_v2_polygon_trades') }} x
+    inner join E_CLPs y
+    on x.block_time >= y.min_block_time
+    and x.project_contract_address = y.pool
