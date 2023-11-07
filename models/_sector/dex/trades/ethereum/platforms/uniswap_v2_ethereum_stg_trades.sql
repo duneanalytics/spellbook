@@ -1,10 +1,10 @@
 {{ config(
-    schema = 'uniswap_v2_ethereum',
-    alias = 'stg_trades',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index']
+    schema = 'uniswap_v2_ethereum'
+    , alias = 'stg_trades'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
     )
 }}
 
@@ -27,9 +27,11 @@ WITH dexs AS
 
 SELECT 
     *
-FROM dexs
-WHERE project_contract_address NOT IN (
-    {{weth_ubomb_wash_trading_pair}},
-    {{weth_weth_wash_trading_pair}},
-    {{feg_eth_wash_trading_pair}}
-)
+FROM 
+    dexs
+WHERE 
+    project_contract_address NOT IN (
+        {{weth_ubomb_wash_trading_pair}}
+        , {{weth_weth_wash_trading_pair}}
+        , {{feg_eth_wash_trading_pair}}
+        )

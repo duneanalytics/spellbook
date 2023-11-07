@@ -1,10 +1,10 @@
 {{ config(
-    schema = 'defiswap_ethereum',
-    alias ='stg_trades',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index']
+    schema = 'defiswap_ethereum'
+    , alias ='stg_trades'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
     )
 }}
 

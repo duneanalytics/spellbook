@@ -20,11 +20,14 @@ WITH dexs AS
         , t.contract_address AS project_contract_address
         , t.evt_tx_hash AS tx_hash
         , t.evt_index AS evt_index
-    FROM {{ Pair_evt_Swap }} t
-    INNER JOIN {{ Factory_evt_PairCreated }} f
+    FROM
+        {{ Pair_evt_Swap }} t
+    INNER JOIN
+        {{ Factory_evt_PairCreated }} f
         ON f.pair = t.contract_address
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('t.evt_block_time') }}
+    WHERE
+        {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 
@@ -45,7 +48,8 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
-FROM dexs
+FROM
+    dexs
 {% endmacro %}
 
 {% macro dex_fork_v3_trades(
@@ -58,23 +62,27 @@ FROM dexs
 %}
 WITH dexs AS
 (
-    SELECT t.evt_block_number AS block_number
-         , t.evt_block_time AS block_time
-         , t.recipient AS taker
-         , CAST(NULL as VARBINARY) as maker
-         , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-         , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
-         , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
-         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
-         , t.contract_address as project_contract_address
-         , f.fee
-         , t.evt_tx_hash AS tx_hash
-         , t.evt_index
-    FROM {{ Pair_evt_Swap }} t
-    INNER JOIN {{ Factory_evt_PoolCreated }} f
+    SELECT
+        t.evt_block_number AS block_number
+        , t.evt_block_time AS block_time
+        , t.recipient AS taker
+        , CAST(NULL as VARBINARY) as maker
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
+        , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        , t.contract_address as project_contract_address
+        , f.fee
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index
+    FROM
+        {{ Pair_evt_Swap }} t
+    INNER JOIN
+        {{ Factory_evt_PoolCreated }} f
         ON f.pool = t.contract_address
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('t.evt_block_time') }}
+    WHERE
+        {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 
@@ -95,5 +103,6 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
-FROM dexs
+FROM
+    dexs
 {% endmacro %}
