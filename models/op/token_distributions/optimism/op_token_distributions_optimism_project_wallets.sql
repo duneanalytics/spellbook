@@ -79,6 +79,7 @@ FROM (values
     ,(0x634977e11C823a436e587C1a1Eca959588C64287, 'Giveth', 'Grants Wallet')
     ,(0x4D9339dd97db55e3B9bCBE65dE39fF9c04d1C2cd, 'Giveth', 'Multisig')
     ,(0x4d728e92394e3d04cfadf58e075ce84c14949077, 'Velodrome', 'Multisig')
+    ,(0xc34fd9b40afb41ac528abb3c7ef643a6ba3667e3, 'Rabbithole', 'Intermediate')
 
     --quix - should come from CB
     ,(0x5Ad4A019F77e82940f6Dd15A5215362AF061A742,'Quix','Distributor')
