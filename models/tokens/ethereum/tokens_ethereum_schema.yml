@@ -135,6 +135,13 @@ models:
       tags: ['tokens','transfers', 'ethereum']
     description: >
       Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+            - trace_address
     columns:
       - name: blockchain
         description: "The blockchain of the transfers"
