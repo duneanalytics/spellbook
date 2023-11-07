@@ -73,7 +73,7 @@ FROM (values
     ,(0x1960733e0087b50FDfb656eA572DefFc2fF69dc2, 'Tide Protocol', 'Team Wallet')
     ,(0x7dcb4f75FF612Cf94E0b918160cbE55bE1C7b97d, 'Tide Protocol', 'Team Wallet')
     ,(0x48e239Fa0B364Cd92Fc750A50045c9f9E04DD781, 'Solidity Survivor', 'Team Wallet')
-    ,(0x450F82319f940936F1f4F253B468c3e6E566Cdd5, 'Synapse', 'OTC Wallet')
+    ,(0x450F82319f940936F1f4F253B468c3e6E566Cdd5, 'Synapse', 'OTC Wallet - Cumberland')
     ,(0xB8313Eaf73AED8fEa1D9930dF199B3c1Bdb67b47, 'Paraswap', 'Multisig')
     ,(0x0BeBD2FcA9854F657329324aA7dc90F656395189, 'Rotki', 'Multisig')
     ,(0x634977e11C823a436e587C1a1Eca959588C64287, 'Giveth', 'Grants Wallet')
