@@ -33,7 +33,6 @@ swap_fees AS (
 
 v1 AS (
     SELECT
-        '1' AS version,
         tokenOut AS token_bought_address,
         tokenAmountOut AS token_bought_amount_raw,
         tokenIn AS token_sold_address,
@@ -73,7 +72,7 @@ prices AS (
 SELECT
     'ethereum' AS blockchain,
     'balancer' AS project,
-    version,
+    '1' AS version,
     TRY_CAST(DATE_TRUNC('DAY', evt_block_time) AS date) AS block_date,
     TRY_CAST(DATE_TRUNC('MONTH', evt_block_time) AS date) AS block_month,
     evt_block_time AS block_time,
