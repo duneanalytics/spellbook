@@ -26,8 +26,30 @@ with E_CLPs AS (
 )
 
 SELECT
- *,
- 'gyroscope' AS project
+    blockchain,
+    'gyroscope' AS project,
+    block_date,
+    block_month,
+    block_time,
+    token_bought_symbol,
+    token_sold_symbol,
+    token_pair,
+    token_bought_amount,
+    token_sold_amount,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    amount_usd,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    pool_id,
+    swap_fee,
+    tx_hash,
+    tx_from,
+    tx_to,
+    evt_index
 FROM {{ ref('balancer_v2_ethereum_trades') }} x 
 inner join E_CLPs y
 on x.block_time >= y.min_block_time
