@@ -7,7 +7,7 @@ CASE token_standard
 END
 {%- endmacro-%}
 
-{%- macro transfers_enrich(blockchain, transfers_base) %}
+{%- macro transfers_enrich(blockchain, transfers_base, native_symbol) %}
 SELECT '{{blockchain}}' as blockchain
 , t.block_time
 , t.block_number
@@ -21,7 +21,7 @@ SELECT '{{blockchain}}' as blockchain
 , t."from"
 , t.to
 , t.contract_address
-, {{case_when_token_standard('\'SYMBOL\'', 'tokens_erc20.symbol', 'NULL')}} AS symbol
+, {{case_when_token_standard('{{native_symbol}}', 'tokens_erc20.symbol', 'NULL')}} AS symbol
 , t.amount_raw
 , {{case_when_token_standard('t.amount_raw / power(10, 18)', 'amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)')}} AS amount
 , prices.price AS usd_price
