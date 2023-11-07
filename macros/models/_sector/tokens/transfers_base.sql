@@ -7,7 +7,7 @@ WITH transfers AS (
     SELECT block_time
     , block_number
     , tx_hash
-    , NULL AS evt_index
+    , cast(NULL as bigint) AS evt_index
     , trace_address
     {% if native_contract_address%}
     , {{native_contract_address}} AS contract_address
