@@ -55,15 +55,7 @@ WITH unit_test AS (
 
         INNER JOIN {{ ref('gyroscope_ethereum_trades_test_data') }} AS test
 
-        ON LOWER(
-
-            actual.tx_hash
-
-        ) = LOWER(
-
-            test.tx_hash
-
-        )
+        ON  actual.tx_hash = test.tx_hash
 
 )
 
