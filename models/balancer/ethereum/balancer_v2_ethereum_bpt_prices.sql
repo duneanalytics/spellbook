@@ -143,7 +143,48 @@ WITH
         )
         GROUP BY 1, 2, 3
         ORDER BY 2 DESC, 3
+    ),
+
+    -- A new BPT price formula is used here and unioned to the forumla
+    -- constructed above. This forumla uses liquidity and BPT supply to
+    -- return a price.
+    liq AS (
+        SELECT 
+            day
+            , bytearray_substring(pool_id, 1, 20) AS pool_address
+            , sum(protocol_liquidity_usd) AS pool_liq 
+        FROM {{ ref('balancer_v2_ethereum_liquidity') }} 
+        {% if is_incremental() %}
+        WHERE day >= date_trunc('day', now() - interval '7' day)
+        {% endif %} 
+        GROUP BY 1, 2
+    ),
+
+    bpt_supply AS (
+        SELECT 
+            date_trunc('day', block_time) AS day
+            , bytearray_substring(pool_id, 1, 20) AS pool_address
+            , approx_percentile(lp_virtual_supply, 0.5) AS lpvs
+        FROM {{ ref('balancer_v2_ethereum_bpt_supply') }}
+        {% if is_incremental() %}
+        WHERE block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %} 
+        GROUP BY 1, 2
     )
+    
+SELECT 
+    'ethereum' AS blockchain
+    , CAST(x.day AS TIMESTAMP) AS hour
+    , CAST(x.pool_address AS VARCHAR) AS contract_address
+    , pool_liq / lpvs AS median_price
+FROM liq x
+INNER JOIN bpt_supply y
+ON y.day = x.day
+    AND y.pool_address = x.pool_address
+    AND y.lpvs > 0
+    AND x.pool_liq > 0
+
+UNION ALL
 
 SELECT
     blockchain,
@@ -162,3 +203,4 @@ SELECT
     END AS median_price
 FROM price_formulation
 ORDER BY 2 DESC, 3
+
