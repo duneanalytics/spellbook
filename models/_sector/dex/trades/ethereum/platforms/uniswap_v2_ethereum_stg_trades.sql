@@ -15,7 +15,7 @@
 WITH dexs AS
 (
     {{
-    dex_fork_v2_base_trades(
+    dex_fork_v2_trades(
         blockchain = 'ethereum'
         , project = 'uniswap'
         , version = '2'

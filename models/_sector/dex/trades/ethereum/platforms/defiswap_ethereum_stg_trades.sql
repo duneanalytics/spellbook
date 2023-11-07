@@ -9,7 +9,7 @@
 }}
 
 {{
-    dex_fork_v2_base_trades(
+    dex_fork_v2_trades(
         blockchain = 'ethereum'
         , project = 'defiswap'
         , version = '1'

@@ -9,7 +9,7 @@
 }}
 
 {{
-    dex_fork_v3_base_trades(
+    dex_fork_v3_trades(
         blockchain = 'celo'
         , project = 'uniswap'
         , version = '3'

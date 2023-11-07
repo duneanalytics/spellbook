@@ -1,4 +1,4 @@
-{% macro dex_fork_v2_base_trades(
+{% macro dex_fork_v2_trades(
     blockchain = null
     , project = null
     , version = null
@@ -48,7 +48,7 @@ SELECT
 FROM dexs
 {% endmacro %}
 
-{% macro dex_fork_v3_base_trades(
+{% macro dex_fork_v3_trades(
     blockchain = null
     , project = null
     , version = null
