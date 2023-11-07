@@ -118,5 +118,7 @@ from (
     ,('mintfun','mint.fun')
     ,('allo_protocol', 'allo protocol (gitcoin)')
     ,('union_protocol', 'Union Finance')
+    ,('synthetix_futuresmarket', 'Synthetix')
+    ,('synapsefees', 'Synapse')
 
     ) as temp_table (dune_name, mapped_name)
