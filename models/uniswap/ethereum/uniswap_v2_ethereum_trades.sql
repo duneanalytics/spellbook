@@ -50,7 +50,7 @@ WITH dexs AS
         {{feg_eth_wash_trading_pair}})
     AND (amount0Out > UINT256 '0' OR amount1In > UINT256 '0')
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc("day", now() - interval '1 week')
+    AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
     UNION ALL
