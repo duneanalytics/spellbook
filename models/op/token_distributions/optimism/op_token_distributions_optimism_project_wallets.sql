@@ -242,6 +242,8 @@ FROM (values
     ,(0x1535eC8C7477d38066326189f5b1C695c2846479, 'Arrakis Finance', 'Partner Fund')
     ,(0x43667563725040fEBE9BF5164a38B7258105a210, 'Arrakis Finance', 'Partner Fund')
 
+    ,(0xd301bcc5d3229a0a6400f1030c382a5d503931e1, 'Kwenta', 'MultipleMerkleDistributor')
+
     ,(0x09992dd7b32f7b35d347de9bdaf1919a57d38e82,'Synthetix','SNX Bridge: Hop')
     ,(0x25fb92e505f752f730cad0bd4fa17ece4a384266,'Synthetix','sUSD Bridge: Hop')
     ,(0xf42279467D821bCDf40b50E9A5d2cACCc4Cf5b30,'Quests on Coinbase Wallet','Quest 1 - DEX')
