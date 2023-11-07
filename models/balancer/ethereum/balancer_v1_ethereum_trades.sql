@@ -73,7 +73,7 @@ SELECT
     'ethereum' AS blockchain,
     'balancer' AS project,
     '1' AS version,
-    TRY_CAST(DATE_TRUNC('DAY', evt_block_time) AS date) AS block_date,
+    DATE_TRUNC('DAY', evt_block_time) AS block_date,
     TRY_CAST(DATE_TRUNC('MONTH', evt_block_time) AS date) AS block_month,
     evt_block_time AS block_time,
     erc20a.symbol AS token_bought_symbol,
