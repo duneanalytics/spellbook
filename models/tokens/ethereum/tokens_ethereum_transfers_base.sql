@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'tokens_ethereum',
         alias = 'transfers_base',
         partition_by = ['token_standard', 'block_date'],
         materialized = 'incremental',

@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'tokens_ethereum',
         alias = 'transfers',
         materialized = 'view',
 }}
