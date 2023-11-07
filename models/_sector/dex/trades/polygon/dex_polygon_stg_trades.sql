@@ -1,6 +1,6 @@
 {{ config(
     schema = 'dex_polygon',
-    alias = 'base_trades',
+    alias = 'stg_trades',
     materialized = 'view'
     )
 }}
@@ -8,7 +8,7 @@
 
 -- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_v3_polygon_base_trades')
+    ref('uniswap_v3_polygon_stg_trades')
 ] %}
 
 WITH base_union AS (

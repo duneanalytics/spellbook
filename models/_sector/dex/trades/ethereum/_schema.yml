@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v1_ethereum_base_trades
+  - name: uniswap_v1_ethereum_stg_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -34,7 +34,7 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
-  - name: uniswap_v2_ethereum_base_trades
+  - name: uniswap_v2_ethereum_stg_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -67,7 +67,7 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
-  - name: uniswap_v3_ethereum_base_trades
+  - name: uniswap_v3_ethereum_stg_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -99,7 +99,7 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw  
   
-  - name: defiswap_ethereum_base_trades
+  - name: defiswap_ethereum_stg_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -127,4 +127,4 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
             
-  - name: dex_ethereum_base_trades
+  - name: dex_ethereum_stg_trades

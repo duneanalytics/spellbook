@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_arbitrum',
-    alias = 'base_trades',
+    schema = 'dex_celo',
+    alias = 'stg_trades',
     materialized = 'view'
     )
 }}
@@ -8,7 +8,7 @@
 
 -- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_v3_arbitrum_base_trades')
+    ref('uniswap_v3_celo_stg_trades')
 ] %}
 
 WITH base_union AS (
@@ -44,4 +44,4 @@ WITH base_union AS (
     WHERE duplicates_rank = 1
 )
 
-{{ add_tx_from_and_to('base_union', 'arbitrum') }}
+{{ add_tx_from_and_to('base_union', 'celo') }}

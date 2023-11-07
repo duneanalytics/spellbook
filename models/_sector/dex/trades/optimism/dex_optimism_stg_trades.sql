@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_celo',
-    alias = 'base_trades',
+    schema = 'dex_optimism',
+    alias = 'stg_trades',
     materialized = 'view'
     )
 }}
@@ -8,7 +8,7 @@
 
 -- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_v3_celo_base_trades')
+    ref('uniswap_v3_optimism_stg_trades')
 ] %}
 
 WITH base_union AS (
@@ -44,4 +44,4 @@ WITH base_union AS (
     WHERE duplicates_rank = 1
 )
 
-{{ add_tx_from_and_to('base_union', 'celo') }}
+{{ add_tx_from_and_to('base_union', 'optimism') }}

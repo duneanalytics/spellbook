@@ -97,13 +97,13 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: dex_base_trades
+  - name: dex_stg_trades
     meta:
       blockchain: arbitrum, base, bnb, celo, ethereum, optimism, polygon
       sector: dex
       contributors: 0xRob, hosuke, jeff-dude
     config:
-      tags: [ 'dex', 'base_trades' ]
+      tags: [ 'dex' ]
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

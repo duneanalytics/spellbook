@@ -1,6 +1,6 @@
 {{ config(
     schema = 'uniswap_v3_base',
-    alias = 'base_trades',
+    alias = 'stg_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'uniswap_v3_bnb',
-    alias = 'base_trades',
+    schema = 'uniswap_v3_celo',
+    alias = 'stg_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -10,10 +10,10 @@
 
 {{
     dex_fork_v3_base_trades(
-        blockchain = 'bnb'
+        blockchain = 'celo'
         , project = 'uniswap'
         , version = '3'
-        , Pair_evt_Swap = source('uniswap_v3_bnb', 'Pair_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_v3_bnb', 'Factory_evt_PoolCreated')
+        , Pair_evt_Swap = source('uniswap_v3_celo', 'Pair_evt_Swap')
+        , Factory_evt_PoolCreated = source('uniswap_v3_celo', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
