@@ -1,7 +1,7 @@
 {{ config(
     schema = 'dex_bnb'
-    alias = 'stg_trades'
-    materialized = 'view'
+    , alias = 'stg_trades'
+    , materialized = 'view'
     )
 }}
 
