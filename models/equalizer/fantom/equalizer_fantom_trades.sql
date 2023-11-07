@@ -29,7 +29,7 @@ with dexs as (
         t.evt_tx_hash as tx_hash,
         t.evt_index
     FROM
-        {{ source('equalizer_fantom', 'Pair_evt_Swap') }} t
+        {{ source('equalizer_exchange_fantom', 'Pair_evt_Swap') }} t
         inner join {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }} f
             on f.pair = t.contract_address
     {% if is_incremental() %}
