@@ -369,7 +369,7 @@ models:
       - name: tx_to
       - name: evt_index
 
-  - name: balancer_v2_arbiturm_bpt_supply
+  - name: balancer_v2_arbitrum_bpt_supply
     meta:
       blockchain: arbiturm
       project: balancer_v2
