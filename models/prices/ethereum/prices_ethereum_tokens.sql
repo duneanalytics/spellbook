@@ -1646,4 +1646,5 @@ where contract_address not in (
     ,0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f   -- SDT
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
     ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
+    ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
 )
