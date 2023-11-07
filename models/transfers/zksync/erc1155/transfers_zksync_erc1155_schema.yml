@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: transfers_zksync_erc1155
+    meta:
+      blockchain: zksync
+      sector: transfers
+      project: erc1155
+      contributors: soispoke, dot2dotseurat, tschubotz, tomfutago, lgingerich
+    config:
+      tags: ['transfers', 'zksync', 'erc1155']
+    description: "ERC1155 Token Transfers on zksync."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - transfer_type
+            - wallet_address
+            - token_address
+            - token_id
+            - amount
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer Type: sent/received"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &token_address
+        name: token_address
+        description: "Contract address for token"
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        tests:
+          - not_null
+      - &token_id
+        name: token_id
+        description: "ID of the ERC1155 token"
+      - &amount
+        name: amount
+        description: "Amount of ERC1155 token held"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+        tests:
+          - not_null

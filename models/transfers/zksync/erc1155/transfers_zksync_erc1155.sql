@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["zksync"]\',
                                     "sector",
                                     "transfers",
-                                    \'["tomfutago", "lgingerich]\') }}') }}
+                                    \'["tomfutago", "lgingerich"]\') }}') }}
 
 with
 
@@ -22,7 +22,7 @@ transfer_batch as (
         t.evt_tx_hash, 
         a.token_id, 
         a.amount
-    from {{ source('erc1155_czksync', 'evt_transferbatch') }} t
+    from {{ source('erc1155_zksync', 'evt_transferbatch') }} t
         cross join unnest(ids, "values") as a(token_id, amount)
 ),
 
