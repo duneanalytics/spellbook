@@ -32,7 +32,7 @@ WITH transfers AS (
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
     , t.evt_index
-    , NULL AS trace_address
+    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
     , '{{token_standard_20}}' AS token_standard
     , t."from"
@@ -50,7 +50,7 @@ WITH transfers AS (
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
     , t.evt_index
-    , NULL AS trace_address
+    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
     -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
@@ -68,7 +68,7 @@ WITH transfers AS (
     , t.evt_block_number AS block_number
     , t.evt_tx_hash AS tx_hash
     , t.evt_index
-    , NULL AS trace_address
+    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
     -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
