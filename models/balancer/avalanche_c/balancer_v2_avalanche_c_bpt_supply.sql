@@ -422,8 +422,7 @@ WITH
             , blockchain AS b
             , symbol AS s
             , decimals AS d 
-        FROM {{ ref ('tokens_erc20') }} --#########################
-        WHERE blockchain = 'avalanche_c'
+        FROM {{ ref ('tokens_avlanche_c_erc20') }} --#########################
     )
 
     , data_table_1 AS (

@@ -422,8 +422,7 @@ WITH
             , blockchain AS b
             , symbol AS s
             , decimals AS d 
-        FROM {{ ref ('tokens_erc20') }} --#########################
-        WHERE blockchain = 'optimism'
+        FROM {{ ref ('tokens_optimism_erc20') }} --#########################
     )
 
     , data_table_1 AS (
