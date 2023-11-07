@@ -25,6 +25,7 @@ WITH
     ,'TradingV3_evt_PositionClosed'
     ,'TradingV4_evt_PositionClosed'
     ,'TradingV5_evt_PositionClosed'
+    ,'TradingV6_evt_PositionClosed'
 ] %}
 
 close_position_v1 AS (
