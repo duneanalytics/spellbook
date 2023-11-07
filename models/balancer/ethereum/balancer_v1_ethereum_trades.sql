@@ -100,7 +100,7 @@ SELECT
     evt_tx_hash AS tx_hash,
     tx."from" AS tx_from,
     tx.to AS tx_to,
-    evt_index
+    CAST(evt_index as BIGINT) as evt_index
 FROM v1 trades
 INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON trades.evt_tx_hash = tx.hash
