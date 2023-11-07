@@ -425,7 +425,6 @@ models:
       - *contract_address_not_null
       - *blockchain_not_null
 
-
   - name: oneinch_methods
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
@@ -461,11 +460,106 @@ models:
         name: receiver
       - *signature
 
+  - name: oneinch_lop
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'lop', 'calls']
+    description: >
+        1inch limit order protocol calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - *blockchain_not_null
+      - *block_time
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_to
+      - *tx_success
+      - *contract_name
+      - &protocol_version
+        name: protocol_version
+      - *method
+      - *call_from
+      - *call_to
+      - *call_trace_address_not_null
+      - *call_selector
+      - &maker
+        name: maker
+      - &maker_asset
+        name: maker_asset
+      - &making_amount
+        name: making_amount
+      - &taker
+        name: taker
+      - &taker_asset
+        name: taker_asset
+      - &taking_amount
+        name: taking_amount
+      - &order_hash
+        name: order_hash
+      - *call_success
+      - &call_gas_used
+        name: call_gas_used
+      - *call_output
+      - *minute
+      - *block_month_not_null
 
-
-
-
-
-
-
-
+  - name: oneinch_lop_own_trades
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'lop', 'trades']
+    description: >
+        1inch limit order protocol trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain_not_null
+      - *project
+      - *version
+      - &block_date
+        name: block_date
+      - *block_month_not_null
+      - *block_time
+      - &token_bought_symbol
+        name: token_bought_symbol
+      - &token_sold_symbol
+        name: token_sold_symbol
+      - &token_pair
+        name: token_pair
+      - &token_bought_amount
+        name: token_bought_amount
+      - &token_sold_amount
+        name: token_sold_amount
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+      - &amount_usd
+        name: amount_usd
+      - &token_bought_address
+        name: token_bought_address
+      - &token_sold_address
+        name: token_sold_address
+      - *taker
+      - *maker
+      - &project_contract_address
+        name: project_contract_address
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_to
+      - &evt_index
+        name: evt_index

@@ -1,0 +1,106 @@
+{{  
+    config(
+        schema = 'oneinch',
+        alias = 'lop_own_trades',
+        materialized = 'view'
+    )
+}}
+
+
+
+with
+    
+    orders as (
+        select
+            blockchain
+            , block_time
+            , date(block_time) as block_date
+            , block_month
+            , minute
+            , tx_hash
+            , tx_from
+            , tx_to
+            , call_to as project_contract_address
+            , protocol_version as version
+            , call_trace_address
+            , maker
+            , maker_asset as src_token_address
+            , making_amount as src_amount
+            , call_from as taker
+            , taker_asset as dst_token_address
+            , taking_amount as dst_amount
+            , '1inch LOP' as project
+        from (
+            select * from {{ ref('oneinch_lop') }}
+            {% if is_incremental() %}
+                where {{ incremental_predicate('block_time') }}
+            {% endif %}
+        )
+        left join (
+            select blockchain, contract_address as call_from, true as fusion
+            from {{ ref('oneinch_fusion_settlements') }}
+        ) using(blockchain, call_from)
+        where tx_success and call_success and fusion is null -- exclude orders that were called by Fusion settlement contracts
+        
+    )
+
+    , prices_src as (
+        select
+            blockchain
+            , contract_address as src_token_address
+            , minute
+            , symbol as src_symbol
+            , decimals as src_decimals
+            , price as src_price
+        from {{ source('prices', 'usd') }}
+        {% if is_incremental() %}
+            where {{ incremental_predicate('minute') }}
+        {% endif %}
+    )
+
+    , prices_dst as (
+        select
+            blockchain
+            , contract_address as dst_token_address
+            , minute
+            , symbol as dst_symbol
+            , decimals as dst_decimals
+            , price as dst_price
+        from {{ source('prices', 'usd') }}
+        {% if is_incremental() %}
+            where {{ incremental_predicate('minute') }}
+        {% endif %}
+    )
+
+    , additions as (
+        select
+            blockchain
+            , project
+            , version
+            , block_date
+            , block_month
+            , block_time
+            , coalesce(dst_symbol, '') as token_bought_symbol
+            , coalesce(src_symbol, '') as token_sold_symbol
+            , coalesce(src_symbol, '') || '-' || coalesce(dst_symbol, '') as token_pair
+            , cast(dst_amount as double) / pow(10, dst_decimals) as token_bought_amount
+            , cast(src_amount as double) / pow(10, src_decimals) as token_sold_amount
+            , dst_amount as token_bought_amount_raw
+            , src_amount as token_sold_amount_raw
+            , coalesce(cast(src_amount as double) / pow(10, src_decimals) * src_price, cast(dst_amount as double) / pow(10, dst_decimals) * dst_price) as amount_usd
+            , dst_token_address as token_bought_address
+            , src_token_address as token_sold_address
+            , taker
+            , maker
+            , project_contract_address
+            , tx_hash
+            , tx_from
+            , tx_to
+            , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
+        from orders
+        left join prices_src using(blockchain, src_token_address, minute)
+        left join prices_dst using(blockchain, dst_token_address, minute)
+    )
+
+select *
+from additions
