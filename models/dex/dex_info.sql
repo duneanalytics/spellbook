@@ -51,7 +51,7 @@ FROM (VALUES
     , ('zigzag', 'ZigZag Exchange', 'Direct', 'ZigZagExchange')
     , ('integral', 'Integral', 'Direct', 'IntegralHQ')
     , ('wigoswap', 'Wigo Ecosystem', 'Direct', 'WigoSwap')
-    , ('equalizer_exchange', 'Equalizer', 'Direct', 'Equalizer0x')
+    , ('equalizer', 'Equalizer', 'Direct', 'Equalizer0x')
     , ('zipswap', 'ZipSwap', 'Direct', 'Zip_swap')
     , ('iziswap', 'iZUMi Finance', 'Direct', 'izumi_Finance')
     , ('spartacus_exchange', 'Spartacus', 'Direct', 'Spartacus_Fi')

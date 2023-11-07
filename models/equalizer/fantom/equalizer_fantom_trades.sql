@@ -7,15 +7,15 @@
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     ,post_hook='{{ expose_spells(\'["fantom"]\',
                                       "project",
-                                      "equalizer_exchange",
+                                      "equalizer",
                                     \'["Henrystats"]\') }}'
     )
 }}
 
-{% set project_start_date = '2022-11-03' %} -- min(evt_block_time) from equalizer_exchange_fantom.Pair_evt_Swap
+{% set project_start_date = '2022-11-03' %} -- min(evt_block_time) from equalizer_fantom.Pair_evt_Swap
 
 with dexs as (
-    -- equalizer_exchange
+    -- equalizer
     SELECT
         t.evt_block_time as block_time,
         t.to as taker,
@@ -29,8 +29,8 @@ with dexs as (
         t.evt_tx_hash as tx_hash,
         t.evt_index
     FROM
-        {{ source('equalizer_exchange_fantom', 'Pair_evt_Swap') }} t
-        inner join {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }} f
+        {{ source('equalizer_fantom', 'Pair_evt_Swap') }} t
+        inner join {{ source('equalizer_fantom', 'PairFactory_evt_PairCreated') }} f
             on f.pair = t.contract_address
     {% if is_incremental() %}
     WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -38,7 +38,7 @@ with dexs as (
 )
 select
     'fantom' as blockchain,
-    'equalizer_exchange' as project,
+    'equalizer' as project,
     '1' as version,
     TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
