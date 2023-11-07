@@ -78,6 +78,7 @@ FROM (values
     ,(0x0BeBD2FcA9854F657329324aA7dc90F656395189, 'Rotki', 'Multisig')
     ,(0x634977e11C823a436e587C1a1Eca959588C64287, 'Giveth', 'Grants Wallet')
     ,(0x4D9339dd97db55e3B9bCBE65dE39fF9c04d1C2cd, 'Giveth', 'Multisig')
+    ,(0x4d728e92394e3d04cfadf58e075ce84c14949077, 'Velodrome', 'Multisig')
 
     --quix - should come from CB
     ,(0x5Ad4A019F77e82940f6Dd15A5215362AF061A742,'Quix','Distributor')
@@ -243,6 +244,8 @@ FROM (values
     ,(0x43667563725040fEBE9BF5164a38B7258105a210, 'Arrakis Finance', 'Partner Fund')
 
     ,(0xd301bcc5d3229a0a6400f1030c382a5d503931e1, 'Kwenta', 'MultipleMerkleDistributor')
+    ,(0x3bb38b77a266fceb4fa5659e0ecb5ecf6aeac28d, 'Lyra', 'Distributor')
+    ,(0xb24dc81f8be7284c76c7cf865b803807b3c2ef55, 'xToken', 'Rewarder')
 
     ,(0x09992dd7b32f7b35d347de9bdaf1919a57d38e82,'Synthetix','SNX Bridge: Hop')
     ,(0x25fb92e505f752f730cad0bd4fa17ece4a384266,'Synthetix','sUSD Bridge: Hop')
