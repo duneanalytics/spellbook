@@ -9,7 +9,7 @@
 }}
 
 {{
-    uniswap_v3_forked_base_trades(
+    dex_fork_v3_base_trades(
         blockchain = 'base'
         , project = 'uniswap'
         , version = '3'
