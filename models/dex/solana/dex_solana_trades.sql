@@ -1,8 +1,8 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'dex_solana',
-        alias = alias('trades'),
+        alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
@@ -13,6 +13,7 @@
 {% set solana_dexes = [
     ref('orca_whirlpool_trades')
     , ref('raydium_v3_trades')
+    , ref('raydium_v4_trades')
     , ref('phoenix_v1_trades')
     , ref('lifinity_v1_trades')
     , ref('lifinity_v2_trades')

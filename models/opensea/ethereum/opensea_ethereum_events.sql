@@ -1,7 +1,7 @@
 {{ config(
-        tags=['dunesql'],
+        
           schema = 'opensea_ethereum',        
-          alias = alias('events')
+          alias = 'events'
 )
 }}
 

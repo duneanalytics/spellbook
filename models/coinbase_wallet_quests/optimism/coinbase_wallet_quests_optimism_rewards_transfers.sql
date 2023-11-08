@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('rewards_transfers'),
-    tags=['dunesql'],
+    alias = 'rewards_transfers',
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

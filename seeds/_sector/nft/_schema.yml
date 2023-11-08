@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: archipelago_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -16,7 +15,6 @@ seeds:
 
   - name: foundation_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -29,7 +27,6 @@ seeds:
 
   - name: superrare_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -42,7 +39,6 @@ seeds:
 
   - name: blur_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -55,7 +51,6 @@ seeds:
 
   - name: blur_seaport_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -68,7 +63,6 @@ seeds:
 
   - name: blur_v2_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -81,7 +75,6 @@ seeds:
 
   - name: element_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -94,7 +87,6 @@ seeds:
 
   - name: x2y2_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -107,7 +99,6 @@ seeds:
 
   - name: zora_v1_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -120,7 +111,6 @@ seeds:
 
   - name: zora_v2_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -133,7 +123,6 @@ seeds:
 
   - name: zora_v3_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -146,7 +135,6 @@ seeds:
 
   - name: cryptopunks_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -159,7 +147,6 @@ seeds:
 
   - name: looksrare_v1_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -172,7 +159,6 @@ seeds:
 
   - name: looksrare_v2_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -185,7 +171,6 @@ seeds:
 
   - name: looksrare_seaport_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -198,7 +183,6 @@ seeds:
 
   - name: collectionswap_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary
@@ -211,7 +195,6 @@ seeds:
 
   - name: sudoswap_ethereum_base_trades_seed
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         buyer: varbinary

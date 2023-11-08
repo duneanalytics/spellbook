@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft_base',
-        alias = alias('transfers'),
+        alias = 'transfers',
         partition_by=['block_month'],
         materialized='incremental',
         file_format = 'delta',

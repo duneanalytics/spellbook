@@ -1,7 +1,7 @@
 {{ config(
         schema = 'tornado_cash_ethereum',
-        alias = alias('deposits'),
-        tags = ['dunesql'],
+        alias = 'deposits',
+        
         materialized='incremental',
         partition_by=['block_date'],
         file_format = 'delta',

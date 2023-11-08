@@ -1,7 +1,7 @@
 {{
     config(
-        tags = ['dunesql'],
-        alias = alias('celo'),
+        
+        alias = 'celo',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

@@ -41,35 +41,30 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        run: "dbt compile $PROFILE --select tag:dunesql"
+        run: "dbt compile $PROFILE"
 
       - name: check schemas
         run: |
           test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state .)
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
-      - name: check tags
-        run: |
-          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select state:modified --exclude tag:legacy tag:dunesql --output path --state .)
-          [[ -z "$test" ]] && { echo "Success: No models without a tag"; exit 0; } || { echo "Found models with no dunesql or legacy tag:"; echo "$test"; exit 1; }
-
       - name: dbt seed
-        run: "dbt seed $PROFILE --select state:modified,tag:dunesql --exclude tag:prod_exclude tag:remove --state ."
+        run: "dbt seed $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --state ."
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified,tag:dunesql --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new,tag:dunesql state:modified,tag:dunesql --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: Set environment variable for incremental model count
         run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental,tag:dunesql --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
+          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental,tag:dunesql --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state ."
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental,tag:dunesql --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state ."

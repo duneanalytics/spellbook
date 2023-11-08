@@ -1,9 +1,9 @@
 {{ config(
         schema='prices_ethereum',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql']
+        tags = ['static']
         )
 }}
 SELECT
@@ -1522,7 +1522,6 @@ FROM
     ('doge-1-satellite-doge-1', 'ethereum', 'DOGE-1', 0xc5b0251daCFaB74bc2deBaa52072a2A4c939c105, 9),
     ('eww-endlesswebworlds', 'ethereum', 'EWW', 0x3d38F87BeF0123f5764635C7E11048027E0721a8, 9),
     ('jcg-justcarbon-governance-token', 'ethereum', 'JCG', 0xbE601dD49da9EE1d2F64D422c4AECf8EB83c119f, 18),
-    ('pwrc-pwrcash', 'ethereum', 'PWRC', 0x6Aa40D02115090D40Dc33C7C5F3Cf05112fA4f83, 18),
     ('toku-toku', 'ethereum', 'TOKU', 0x9eEC1A4814323a7396c938bc86aeC46b97F1BD82, 18),
     ('tyrant-fable-of-the-dragon', 'ethereum', 'TYRANT', 0x8EE325AE3E54e83956eF2d5952d3C8Bc1fa6ec27, 9),
     ('zipt-zippie', 'ethereum', 'ZIPT', 0xEDD7c94FD7B4971b916d15067Bc454b9E1bAD980, 18),
@@ -1622,7 +1621,11 @@ FROM
     ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
     ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18),
     ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18),
-    ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18)
+    ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18),
+    ('val-valeria', 'ethereum', 'VAL', 0x011e128ec62840186f4a07e85e3ace28858c5606, 18),
+    ('propc-propchain', 'ethereum', 'PROPC', 0x9ff58067bd8d239000010c154c6983a325df138e, 18),
+    ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
+    ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1642,4 +1645,5 @@ where contract_address not in (
     ,0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f   -- SDT
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
     ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
+    ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
 )
