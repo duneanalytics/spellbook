@@ -5,7 +5,17 @@
     )
 %}
 
-WITH prices AS (
+WITH stg as (
+    SELECT
+        *
+    FROM
+        {{ stg_trades }}
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
+)
+, prices AS (
     SELECT
         blockchain
         , contract_address
@@ -20,60 +30,56 @@ WITH prices AS (
 )
 , enrichments AS (
     SELECT
-        base.blockchain
-        , base.project
-        , base.version
-        , base.block_month
-        , base.block_date
-        , base.block_time
-        , base.block_number
+        stg.blockchain
+        , stg.project
+        , stg.version
+        , stg.block_month
+        , stg.block_date
+        , stg.block_time
+        , stg.block_number
         , erc20_bought.symbol AS token_bought_symbol
         , erc20_sold.symbol AS token_sold_symbol
         , case
             when lower(erc20_bought.symbol) > lower(erc20_sold.symbol) then concat(erc20_sold.symbol, '-', erc20_bought.symbol)
             else concat(erc20_bought.symbol, '-', erc20_sold.symbol)
             end AS token_pair
-        , base.token_bought_amount_raw / power(10, erc20_bought.decimals) AS token_bought_amount
-        , base.token_sold_amount_raw / power(10, erc20_sold.decimals) AS token_sold_amount
-        , base.token_bought_amount_raw
-        , base.token_sold_amount_raw
+        , stg.token_bought_amount_raw / power(10, erc20_bought.decimals) AS token_bought_amount
+        , stg.token_sold_amount_raw / power(10, erc20_sold.decimals) AS token_sold_amount
+        , stg.token_bought_amount_raw
+        , stg.token_sold_amount_raw
         , coalesce(
-                base.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price,
-                base.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
+                stg.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price,
+                stg.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
             ) AS amount_usd
-        , base.token_bought_address
-        , base.token_sold_address
-        , coalesce(base.taker, base.tx_from) AS taker
-        , base.maker
-        , base.project_contract_address
-        , base.tx_hash
-        , base.tx_from
-        , base.tx_to
-        , base.evt_index
+        , stg.token_bought_address
+        , stg.token_sold_address
+        , coalesce(stg.taker, stg.tx_from) AS taker
+        , stg.maker
+        , stg.project_contract_address
+        , stg.tx_hash
+        , stg.tx_from
+        , stg.tx_to
+        , stg.evt_index
     FROM
-        {{ stg_trades }} base
+        stg as stg
     LEFT JOIN
-        {{ tokens_erc20_model }} erc20_bought
-        ON erc20_bought.contract_address = base.token_bought_address
-        AND erc20_bought.blockchain = base.blockchain
+        {{ tokens_erc20_model }} as erc20_bought
+        ON erc20_bought.contract_address = stg.token_bought_address
+        AND erc20_bought.blockchain = stg.blockchain
     LEFT JOIN
-        {{ tokens_erc20_model }} erc20_sold
-        ON erc20_sold.contract_address = base.token_sold_address
-        AND erc20_sold.blockchain = base.blockchain
+        {{ tokens_erc20_model }} as erc20_sold
+        ON erc20_sold.contract_address = stg.token_sold_address
+        AND erc20_sold.blockchain = stg.blockchain
     LEFT JOIN
         prices as p_bought
-        ON p_bought.minute = date_trunc('minute', base.block_time)
-        AND p_bought.contract_address = base.token_bought_address
-        AND p_bought.blockchain = base.blockchain
+        ON p_bought.minute = date_trunc('minute', stg.block_time)
+        AND p_bought.contract_address = stg.token_bought_address
+        AND p_bought.blockchain = stg.blockchain
     LEFT JOIN
         prices as p_sold
-        ON p_sold.minute = date_trunc('minute', base.block_time)
-        AND p_sold.contract_address = base.token_sold_address
-        AND p_sold.blockchain = base.blockchain
-    {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('base.block_time') }}
-    {% endif %}
+        ON p_sold.minute = date_trunc('minute', stg.block_time)
+        AND p_sold.contract_address = stg.token_sold_address
+        AND p_sold.blockchain = stg.blockchain
 )
 
 select
