@@ -1,5 +1,6 @@
 {{ config(
     
+    schema = 'equalizer',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
