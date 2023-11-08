@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: metadata_test
+          fetch-depth: 0
       
       - name: Setup variables
         run: |
