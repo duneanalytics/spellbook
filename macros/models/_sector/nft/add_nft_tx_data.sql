@@ -1,4 +1,4 @@
-{% macro add_tx_from_and_to(
+{% macro add_nft_tx_data(
     model_cte
     ,blockchain
     )
