@@ -14,7 +14,7 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v2
         with:
-          ref: metadata_test
+          ref: main
           fetch-depth: 0
       
       - name: Setup variables
@@ -23,9 +23,6 @@ jobs:
       
       - name: dbt dependencies
         run: "dbt deps"
-      
-      - name: Blame test
-        run: "git blame models/_sector/nft/aggregators/chains/nft_ethereum_aggregators_gem.sql"
 
       - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
         run: "./scripts/ensure_cluster.sh"
