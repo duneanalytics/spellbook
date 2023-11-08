@@ -11,7 +11,7 @@
     ,"created_time"
     ,"created_month"
     ,"created_block_number"
-    ,"creation_tx_hash"
+    ,"created_tx_hash"
     ,"top_level_tx_hash"
     ,"top_level_block_number"
     ,"top_level_time"
@@ -41,7 +41,7 @@ WITH unified_contract_sources AS (
     ,created_month
     ,source
     ,top_level_time
-    ,creation_tx_hash
+    ,created_tx_hash
     ,created_block_number
     ,top_level_tx_hash
     ,top_level_block_number
@@ -83,7 +83,7 @@ WITH unified_contract_sources AS (
       ,created_time as top_level_time
       ,CAST(NULL AS varbinary) as top_level_tx_hash
       ,cast(NULL as bigint) as top_level_block_number
-      ,CAST(NULL AS varbinary) as creation_tx_hash
+      ,CAST(NULL AS varbinary) as created_tx_hash
       ,cast(NULL as bigint) as created_block_number
       ,CAST(NULL AS varbinary) as top_level_tx_from
       ,CAST(NULL AS varbinary) as top_level_tx_to
@@ -123,7 +123,7 @@ WITH unified_contract_sources AS (
   --   ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) as top_level_time
   --   ,CAST(NULL AS varbinary) as top_level_tx_hash
   --   ,cast(NULL as bigint) as top_level_block_number
-  --   ,CAST(NULL AS varbinary) as creation_tx_hash
+  --   ,CAST(NULL AS varbinary) as created_tx_hash
   --   ,cast(NULL as bigint) as created_block_number
   --   ,CAST(NULL AS varbinary) as top_level_tx_from
   --   ,CAST(NULL AS varbinary) as top_level_tx_to
@@ -184,7 +184,7 @@ WITH unified_contract_sources AS (
     ,c.created_time 
     ,c.created_month
 
-    ,c.creation_tx_hash
+    ,c.created_tx_hash
     ,c.created_block_number
     ,c.created_tx_from
     ,c.created_tx_to
@@ -281,7 +281,7 @@ SELECT
   , u.token_symbol
   , u.contract_name, u.creator_address, u.deployer_address, u.created_time
   , u.is_self_destruct
-  , u.creation_tx_hash, u.created_block_number, u.created_tx_from
+  , u.created_tx_hash, u.created_block_number, u.created_tx_from
   , u.created_tx_to, u.created_tx_method_id, u.created_tx_index
   , u.top_level_time, u.top_level_tx_hash, u.top_level_block_number
   , u.top_level_tx_from, u.top_level_tx_to , u.top_level_tx_method_id
@@ -322,7 +322,7 @@ FROM (
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
   , is_self_destruct
-  , creation_tx_hash, created_block_number, created_tx_from
+  , created_tx_hash, created_block_number, created_tx_from
   , created_tx_to, created_tx_method_id, created_tx_index
   , top_level_time, top_level_tx_hash, top_level_block_number
   , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
@@ -356,7 +356,7 @@ FROM (
       ,c.deployer_address
       ,c.created_time
       ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
-      ,c.creation_tx_hash
+      ,c.created_tx_hash
       ,COALESCE(c.created_block_number,0) AS created_block_number
       ,c.created_tx_from
       ,c.created_tx_to
@@ -385,7 +385,7 @@ FROM (
     left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
       on c.contract_address = sd.contract_address
       AND c.blockchain = sd.blockchain
-      and c.creation_tx_hash = sd.creation_tx_hash
+      and c.created_tx_hash = sd.created_tx_hash
       AND c.created_block_number = sd.created_block_number
   ) f
 ) u

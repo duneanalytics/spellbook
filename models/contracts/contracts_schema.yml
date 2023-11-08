@@ -65,8 +65,8 @@ models:
       - &is_self_destruct
         name: is_self_destruct
         description: "Flag if it is a self destruct contract"
-      - &creation_tx_hash
-        name: creation_tx_hash
+      - &created_tx_hash
+        name: created_tx_hash
         description: "Contract creation transaction hash"
       - &created_block_number
         name: created_block_number
@@ -148,7 +148,7 @@ models:
       - *deployer_address
       - *created_time
       - *is_self_destruct
-      - *creation_tx_hash
+      - *created_tx_hash
       - &source
         name: source
         description: "Where the Predeploy contract was sourced from"
@@ -196,7 +196,7 @@ models:
       - *blockchain
       - *created_time
       - *created_block_number
-      - *creation_tx_hash
+      - *created_tx_hash
       - *contract_address
       - &destructed_time
         name: destructed_time
