@@ -9,5 +9,5 @@
 {{transfers_enrich(
     blockchain='arbitrum',
     transfers_base = ref('tokens_arbitrum_transfers_base'),
-    native_symbol = 'null'
+    native_symbol = 'ETH'
 )}}

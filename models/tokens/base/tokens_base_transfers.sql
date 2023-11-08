@@ -9,5 +9,5 @@
 {{transfers_enrich(
     blockchain='base',
     transfers_base = ref('tokens_base_transfers_base'),
-    native_symbol = 'null'
+    native_symbol = 'ETH'
 )}}

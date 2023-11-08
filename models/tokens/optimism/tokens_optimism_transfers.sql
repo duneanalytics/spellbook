@@ -9,5 +9,5 @@
 {{transfers_enrich(
     blockchain='optimism',
     transfers_base = ref('tokens_optimism_transfers_base'),
-    native_symbol = 'null'
+    native_symbol = 'ETH'
 )}}

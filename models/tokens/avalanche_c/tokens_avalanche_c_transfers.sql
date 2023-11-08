@@ -9,5 +9,5 @@
 {{transfers_enrich(
     blockchain='avalanche_c',
     transfers_base = ref('tokens_avalanche_c_transfers_base'),
-    native_symbol = 'null'
+    native_symbol = 'AVAX'
 )}}

@@ -9,5 +9,5 @@
 {{transfers_enrich(
     blockchain='celo',
     transfers_base = ref('tokens_celo_transfers_base'),
-    native_symbol = 'null'
+    native_symbol = 'CELO'
 )}}

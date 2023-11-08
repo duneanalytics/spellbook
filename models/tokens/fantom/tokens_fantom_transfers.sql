@@ -9,5 +9,5 @@
 {{transfers_enrich(
     blockchain='fantom',
     transfers_base = ref('tokens_fantom_transfers_base'),
-    native_symbol = 'null'
+    native_symbol = 'FTM'
 )}}
