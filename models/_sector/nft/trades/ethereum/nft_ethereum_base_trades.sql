@@ -70,4 +70,4 @@ where duplicates_rank = 1
 )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_tx_from_and_to('base_union', 'ethereum') }}
+{{ add_nft_tx_data('base_union', 'ethereum') }}

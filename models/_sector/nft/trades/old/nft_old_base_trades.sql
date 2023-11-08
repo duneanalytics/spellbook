@@ -82,6 +82,7 @@ SELECT * FROM  (
         royalty_fee_receive_address as royalty_fee_address,
         tx_from,
         tx_to,
+        cast(null as varbinary) as tx_data_marker,                                                  -- forwarc compatibility with aggregator marker matching
         row_number() over (partition by tx_hash order by unique_trade_id) as sub_tx_trade_id,       -- intermediate fix to fill this column
         row_number() over (partition by tx_hash, unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}

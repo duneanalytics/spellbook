@@ -44,7 +44,8 @@ SELECT * FROM  (
         royalty_fee_address,
         sub_tx_trade_id,
         tx_from,
-        tx_to
+        tx_to,
+        tx_data_marker
     FROM {{ nft_model }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
