@@ -107,7 +107,6 @@ models:
           - not_null
       - *contract_project
 
-
   - name: contracts_optimism_self_destruct_contracts
     meta:
       blockchain: optimism
@@ -123,19 +122,6 @@ models:
       - *contract_address
       - name: trace_element
         description: "First item in the `trace_address` array"
-    
-  - name: contracts_optimism_deterministic_contract_creators
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['optimism', 'contracts', 'addresses']
-    description: "A list of contract creator addresses that are non-deterministic (i.e. standard factories), and should not be used for contract mapping."
-    columns:
-      - *creator_address
-      - name: creator_name
-        description: "Name of the creator, indicating why we shouldn't use it for mapping."
   
   - name: contracts_optimism_disperse_contracts
     meta:
