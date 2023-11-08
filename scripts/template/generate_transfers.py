@@ -11,11 +11,11 @@ class Blockchain:
 
 # TODO: Put these into a global config file at some point
 blockchains = [
-    Blockchain("arbitrum", "'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'"),
-    Blockchain("avalanche_c"),
-    Blockchain("base"),
+    Blockchain("arbitrum", native_symbol="ETH"),
+    Blockchain("avalanche_c", native_symbol="AVAX"),
+    Blockchain("base", native_symbol="ETH"),
     Blockchain("bnb", None, "source('bnb_bnb.WBNB_evt_Deposit')", "source('bnb_bnb.WBNB_evt_Withdrawal')", "BNB"),
-    Blockchain("celo"),
+    Blockchain("celo", native_symbol="CELO"),
     Blockchain(
         "ethereum",
         "'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'",
@@ -23,9 +23,9 @@ blockchains = [
         "source('zeroex_ethereum', 'weth9_evt_withdrawal')",
         "ETH",
     ),
-    Blockchain("fantom"),
-    Blockchain("gnosis"),
-    Blockchain("optimism"),
+    Blockchain("fantom", native_symbol="FTM"),
+    Blockchain("gnosis", native_symbol="xDAI"),
+    Blockchain("optimism", native_symbol="ETH"),
     Blockchain(
         "polygon",
         None,
@@ -33,7 +33,7 @@ blockchains = [
         "source('mahadao_polygon', 'wmatic_evt_withdrawal')",
         "MATIC",
     ),
-    Blockchain("zksync"),
+    Blockchain("zksync", native_symbol="ETH"),
 ]
 
 if_null = lambda x: x if x else "null"
