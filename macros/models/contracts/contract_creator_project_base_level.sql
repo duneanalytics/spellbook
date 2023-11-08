@@ -11,7 +11,7 @@ SELECT
         ,created_time
         ,cast( DATE_TRUNC('month',created_time) as date) AS created_month
         ,created_block_number
-        ,creation_tx_hash
+        ,created_tx_hash
         ,created_tx_from
         ,created_tx_to
         ,created_tx_method_id
@@ -41,7 +41,7 @@ SELECT
 
     ,created_time
     ,created_block_number
-    ,creation_tx_hash
+    ,created_tx_hash
     ,created_tx_from
     ,created_tx_to
     ,created_tx_method_id
@@ -82,7 +82,7 @@ SELECT
             ,ct.address as contract_address
             ,ct.block_time as created_time
             ,ct.block_number as created_block_number
-            ,ct.tx_hash as creation_tx_hash
+            ,ct.tx_hash as created_tx_hash
             ,t.block_time as top_level_time
             ,t.block_number as top_level_block_number
             ,t.hash as top_level_tx_hash
@@ -129,7 +129,7 @@ SELECT
       ,t.contract_address
       ,t.created_time
       ,t.created_block_number
-      ,t.creation_tx_hash
+      ,t.created_tx_hash
       -- If the creator becomes marked as deterministic, we want to re-map
       ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
         ELSE t.top_level_time END AS top_level_time
@@ -137,7 +137,7 @@ SELECT
       ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
         ELSE t.top_level_block_number END AS top_level_block_number
 
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.creation_tx_hash
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_tx_hash
         ELSE t.top_level_tx_hash END AS top_level_tx_hash
 
       ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from

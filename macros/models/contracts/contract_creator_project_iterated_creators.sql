@@ -33,7 +33,7 @@ with level0
       ,b.created_time
       ,b.created_month
       ,b.created_block_number
-      ,b.creation_tx_hash
+      ,b.created_tx_hash
       ,b.created_tx_from
       ,b.created_tx_to
       ,b.created_tx_method_id
@@ -128,7 +128,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,f.contract_address
     ,f.created_time
     ,f.created_month
-    ,f.creation_tx_hash
+    ,f.created_tx_hash
     ,f.created_block_number
     ,f.top_level_time
     ,f.top_level_tx_hash
@@ -167,7 +167,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,cc.created_month
     ,'creator contracts' as source
     ,cc.top_level_time
-    ,cc.creation_tx_hash
+    ,cc.created_tx_hash
     ,cc.created_block_number
     ,cc.top_level_tx_hash
     ,cc.top_level_block_number
