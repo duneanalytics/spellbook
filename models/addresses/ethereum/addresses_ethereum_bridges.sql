@@ -137,4 +137,13 @@ FROM (VALUES (0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc20 Bridge Pr
   ,(0x5a7749f83b81b301cab5f48eb8516b986daef23d, 'Optimism', 'Optimism: L1ERC721BridgeProxy')
 
   ,(0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon', 'ERC20 Bridge')
+  
+  ,(0xabea9132b05a70803a4e85094fd0e1800777fbef, 'zkSync', 'zkSync Lite Bridge')
+  ,(0x32400084c286cf3e17e7b677ea9583e60a000324, 'zkSync', 'zkSync Era Bridge')
+
+  ,(0xae0ee0a63a2ce6baeeffe56e7714fb4efe48d419, 'StarkNet', 'StarkGate Bridge')
+
+  ,(0x49048044d57e1c92a77f79988d21fa8faf74e97e, 'Base', 'Base Portal')
+
+  ,(0x1a0ad011913a150f69f6a19df447a0cfd9551054, 'Zora', 'Zora: Bridge')
   ) AS x (address, bridge_name, description)
