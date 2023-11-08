@@ -21,7 +21,7 @@
 
 UNION ALL
 
-{{transfers_wrapped_token(
+{{transfers_base_wrapped_token(
     blockchain='ethereum',
     transactions = source('ethereum','transactions'),
     wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
