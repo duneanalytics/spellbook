@@ -144,6 +144,18 @@ WITH
         GROUP BY 1, 2, 3
         ORDER BY 2 DESC, 3
     )
+    
+    , liq AS (
+        SELECT 
+            day
+            , bytearray_substring(pool_id, 1, 20) AS pool_address
+            , sum(protocol_liquidity_usd) AS pool_liq 
+        FROM {{ ref('balancer_v2_polygon_liquidity') }} 
+        {% if is_incremental() %}
+        WHERE day >= date_trunc('day', now() - interval '7' day)
+        {% endif %} 
+        GROUP BY 1, 2
+    )
 
 SELECT
     blockchain,
