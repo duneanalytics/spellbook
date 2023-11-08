@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'moola_v1_celo',
-        alias = 'borrow_stg',
+        alias = 'stg_borrow',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

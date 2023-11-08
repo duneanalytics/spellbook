@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'aave_v3_base',
-    alias = 'borrow_stg',
+    schema = 'aave_v3_polygon',
+    alias = 'stg_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,7 +11,7 @@
 
 {{
   lending_aave_v3_fork_borrow(
-    blockchain = 'base',
+    blockchain = 'polygon',
     project = 'aave',
     version = '3'
   )

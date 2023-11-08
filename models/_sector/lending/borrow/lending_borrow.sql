@@ -16,6 +16,6 @@
 
 {{
   lending_enrich_borrow(
-    model = ref('_lending_borrow_stg')
+    model = ref('stg__lending_borrow')
   )
 }}

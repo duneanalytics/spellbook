@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'aave_v2_polygon',
-    alias = 'borrow_stg',
+    alias = 'stg_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: aave_v1_ethereum_borrow_stg
+  - name: stg_aave_v1_ethereum_borrow
     meta:
       blockchain: ethereum
       sector: lending
@@ -79,7 +79,7 @@ models:
         tests:
           - not_null
 
-  - name: aave_v2_ethereum_borrow_stg
+  - name: stg_aave_v2_ethereum_borrow
     meta:
       blockchain: ethereum
       sector: lending
@@ -111,7 +111,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_v3_ethereum_borrow_stg
+  - name: stg_aave_v3_ethereum_borrow
     meta:
       blockchain: ethereum
       sector: lending
@@ -143,39 +143,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_ethereum_borrow_stg
-    meta:
-      blockchain: ethereum
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'borrow', 'aave', 'ethereum']
-    description: "All Aave transactions involving borrow transactions on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: moola_v1_celo_borrow_stg
+  - name: stg_moola_v1_celo_borrow
     meta:
       blockchain: celo
       sector: lending
@@ -207,39 +175,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: moola_celo_borrow_stg
-    meta:
-      blockchain: celo
-      sector: lending
-      project: moola
-      contributors: tomfutago
-    config:
-      tags: ['lending', 'borrow', 'moola', 'celo']
-    description: "All Moola transactions involving borrow transactions on Celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: aave_v2_polygon_borrow_stg
+  - name: stg_aave_v2_polygon_borrow
     meta:
       blockchain: polygon
       sector: lending
@@ -271,7 +207,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_v3_polygon_borrow_stg
+  - name: stg_aave_v3_polygon_borrow
     meta:
       blockchain: polygon
       sector: lending
@@ -303,39 +239,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_polygon_borrow_stg
-    meta:
-      blockchain: polygon
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'borrow', 'aave', 'polygon']
-    description: "All Aave transactions involving borrow transactions on polygon"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: aave_v3_optimism_borrow_stg
+  - name: stg_aave_v3_optimism_borrow
     meta:
       blockchain: optimism
       sector: lending
@@ -367,39 +271,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_optimism_borrow_stg
-    meta:
-      blockchain: optimism
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'borrow', 'aave', 'optimism']
-    description: "All Aave transactions involving borrow transactions on optimism"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: aave_v3_base_borrow_stg
+  - name: stg_aave_v3_base_borrow
     meta:
       blockchain: base
       sector: lending
@@ -431,39 +303,7 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_base_borrow_stg
-    meta:
-      blockchain: base
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'borrow', 'aave', 'base']
-    description: "All Aave transactions involving borrow transactions on base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: aave_v3_arbitrum_borrow_stg
+  - name: stg_aave_v3_arbitrum_borrow
     meta:
       blockchain: arbitrum
       sector: lending
@@ -472,38 +312,6 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'aave_v3', 'arbitrum']
     description: "All Aave v3 transactions involving borrow transactions on arbitrum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-
-  - name: aave_arbitrum_borrow_stg
-    meta:
-      blockchain: arbitrum
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'borrow', 'aave', 'arbitrum']
-    description: "All Aave transactions involving borrow transactions on arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
