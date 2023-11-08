@@ -17,6 +17,15 @@
     transactions = source('ethereum','transactions'),
     erc20_transfers = source('erc20_ethereum','evt_Transfer'),
     native_contract_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+)}}
+
+UNION ALL
+SELECT * FROM
+(
+{{transfers_base_wrapped_token(
+    blockchain='ethereum',
+    transactions = source('ethereum','transactions'),
     wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
     wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
 )}}
+)

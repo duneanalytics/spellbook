@@ -1,28 +1,12 @@
 version: 2
 
 sources:
-  - name: oneinch_ethereum
-    description: "decoded events and function calls for 1inch on ethereum"
+  - name: oneinch_bnb
+    description: "decoded events and function calls for 1inch on bnb"
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
-      - name: ExchangeV1_call_aggregate
-        loaded_at_field: call_block_time
-      - name: ExchangeV2_call_aggregate
-        loaded_at_field: call_block_time
-      - name: ExchangeV3_call_aggregate
-        loaded_at_field: call_block_time
-      - name: ExchangeV4_call_aggregate
-        loaded_at_field: call_block_time
-      - name: ExchangeV5_call_aggregate
-        loaded_at_field: call_block_time
-      - name: ExchangeV6_call_aggregate
-        loaded_at_field: call_block_time
-      - name: ExchangeV7_call_swap
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV1_call_swap
-        loaded_at_field: call_block_time
       - name: AggregationRouterV2_evt_Swapped
         loaded_at_field: evt_block_time
       - name: AggregationRouterV3_evt_Swapped
@@ -103,26 +87,3 @@ sources:
         loaded_at_field: call_block_time
       - name: LimitOrderProtocolV2_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
-      - name: MerkleDistributor_evt_Claimed
-        loaded_at_field: evt_block_time
-
-  - name: onesplit_ethereum
-    description: "decoded events and function calls for onesplit on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: OneSplit_call_swap
-        loaded_at_field: call_block_time
-      - name: OneSplit_call_goodSwap
-        loaded_at_field: call_block_time
-
-
-  - name: oneproto_ethereum
-    description: "decoded events and function calls for oneproto on ethereum"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
-    tables:
-      - name: OneSplitAudit_evt_Swapped
-        loaded_at_field: evt_block_time
