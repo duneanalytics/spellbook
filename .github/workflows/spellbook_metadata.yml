@@ -27,7 +27,9 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
       
       - name: Install Python dependencies
-        run: "pip install requests"
+        run: |
+          pip install requests
+          pip install pyyaml
       
       - name: Create Manifest
         run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql"
