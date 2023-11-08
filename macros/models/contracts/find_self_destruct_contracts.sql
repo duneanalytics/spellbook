@@ -1,12 +1,12 @@
 {% macro find_self_destruct_contracts_by_chain( chain ) %}
 
 SELECT
-blockchain, created_time, created_block_number, creation_tx_hash, contract_address
+blockchain, created_time, created_block_number, created_tx_hash, contract_address
   , destructed_time, destructed_block_number, destructed_tx_hash
 FROM (
 
   SELECT
-  blockchain, created_time, created_block_number, creation_tx_hash, contract_address
+  blockchain, created_time, created_block_number, created_tx_hash, contract_address
     , destructed_time, destructed_block_number, destructed_tx_hash
     , ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY created_block_number DESC) as rn
   FROM (
@@ -16,7 +16,7 @@ FROM (
       '{{chain}}' as blockchain
       ,cr.block_time as created_time 
       ,cr.block_number as created_block_number
-      ,cr.tx_hash as creation_tx_hash 
+      ,cr.tx_hash as created_tx_hash 
       ,cr.address as contract_address
       ,sd.block_time as destructed_time
       ,sd.block_number as destructed_block_number
@@ -49,7 +49,7 @@ FROM (
       '{{chain}}' as blockchain
       ,cr.block_time as created_time 
       ,cr.block_number ascreated_block_number
-      ,cr.tx_hash as creation_tx_hash 
+      ,cr.tx_hash as created_tx_hash 
       ,cr.address as contract_address 
       ,sds.block_time as destructed_time
       ,sds.block_number as destructed_block_number
