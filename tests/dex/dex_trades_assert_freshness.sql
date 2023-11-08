@@ -75,6 +75,12 @@
      'blockchain': 'optimism',
      'schema': 'openocean_v2_optimism',
      'table_name': 'OpenOceanExchangeProxy_evt_Swapped',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'odos',
+     'blockchain': 'optimism',
+     'schema': 'odos_optimism',
+     'table_name': 'OdosRouter_evt_Swapped',
      'time_column': 'evt_block_time'}
 ] %}
 
