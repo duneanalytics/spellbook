@@ -419,7 +419,7 @@ WITH
     -- Get token info
         SELECT 
             contract_address AS c
-            , blockchain AS b
+            --, blockchain AS b
             , symbol AS s
             , decimals AS d 
         FROM {{ ref ('tokens_optimism_erc20') }} --#########################
@@ -514,7 +514,7 @@ WITH
         ORDER BY block_number ASC, action_index ASC, pool_id
     )
 
-SELECT 
+SELECT DISTINCT
     block_time
     , block_number
     , lp_virtual_supply_raw
