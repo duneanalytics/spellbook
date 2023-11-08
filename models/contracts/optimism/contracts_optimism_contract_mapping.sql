@@ -20,5 +20,4 @@ SELECT
   , top_level_time, top_level_tx_hash, top_level_block_number, top_level_tx_from, top_level_tx_to, top_level_tx_method_id
   , code_bytelength, token_standard, code_deploy_rank_by_chain as code_deploy_rank, is_eoa_deployed
 
-  FROM {{ ref('contracts_contract_mapping')}}
-  WHERE lower(blockchain) IN ( 'optimism', 'op mainnet' ) --maintain compatability in case we change this
+  FROM {{ ref('contracts_optimism_contract_creator_project_mapping')}}
