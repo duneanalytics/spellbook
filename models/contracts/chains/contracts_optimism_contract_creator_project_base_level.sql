@@ -1,7 +1,7 @@
  {{
-  config(     
-        schema = 'contracts_base',
-        alias = 'creator_project_mapping',
+  config(
+        schema = 'contracts_optimism',
+        alias = 'contract_creator_project_base_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -10,6 +10,6 @@
   )
 }}
 
-{{contract_creator_project_mapping_by_chain(
-    chain='base'
+{{contract_creator_project_base_level(
+    chain='optimism'
 )}}

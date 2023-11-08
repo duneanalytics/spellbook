@@ -1,6 +1,6 @@
  {{
-  config(     
-        schema = 'contracts_base',
+  config(      
+        schema = 'contracts_optimism',
         alias = 'creator_project_mapping',
         materialized ='incremental',
         file_format ='delta',
@@ -11,5 +11,5 @@
 }}
 
 {{contract_creator_project_mapping_by_chain(
-    chain='base'
+    chain='optimism'
 )}}
