@@ -1,9 +1,9 @@
 {{ config( alias = 'erc20',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo", "zksync"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich"]\') }}')}}
 
 SELECT 'arbitrum' as blockchain, contract_address, symbol, decimals FROM  {{ ref('tokens_arbitrum_erc20') }}
 UNION ALL
@@ -26,3 +26,5 @@ UNION ALL
 SELECT 'base' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_base_erc20') }}
 UNION ALL
 SELECT 'celo' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_celo_erc20') }}
+UNION ALL
+SELECT 'zksync' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_zksync_erc20') }}

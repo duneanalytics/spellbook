@@ -22,7 +22,8 @@ WITH
     'TradingV2_evt_FeesDistributed',
     'TradingV3_evt_FeesDistributed',
     'TradingV4_evt_FeesDistributed',
-    'TradingV5_evt_FeesDistributed'
+    'TradingV5_evt_FeesDistributed',
+    'TradingV6_evt_FeesDistributed'
 ] %}
 
 fees_v1 AS (
