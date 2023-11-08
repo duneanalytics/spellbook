@@ -416,7 +416,7 @@ WITH
     -- Get token info
         SELECT 
             contract_address AS c
-            , blockchain AS b
+            --, blockchain AS b
             , symbol AS s
             , decimals AS d 
         FROM {{ ref ('tokens_base_erc20') }} --#########################
