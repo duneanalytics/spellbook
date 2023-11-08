@@ -143,12 +143,12 @@ WITH
         )
         GROUP BY 1, 2, 3
         ORDER BY 2 DESC, 3
-    ),
+    )
 
     -- A new BPT price formula is used here and unioned to the forumla
     -- constructed above. This forumla uses liquidity and BPT supply to
     -- return a price.
---     liq AS (
+--     , liq AS (
 --         SELECT 
 --             day
 --             , bytearray_substring(pool_id, 1, 20) AS pool_address
