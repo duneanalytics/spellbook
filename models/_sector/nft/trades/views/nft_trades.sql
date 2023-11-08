@@ -1,7 +1,7 @@
 {{ config(
         schema = 'nft',
-        alias = alias('trades'),
-        tags = ['dunesql'],
+        alias = 'trades',
+        
         materialized = 'view',
         post_hook='{{ expose_spells(\'["ethereum","solana","bnb", "optimism","arbitrum","polygon"]\',
                                     "sector",

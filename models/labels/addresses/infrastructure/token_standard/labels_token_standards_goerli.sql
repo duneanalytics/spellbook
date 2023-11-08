@@ -1,5 +1,5 @@
-{{config(tags=['dunesql'],
-    alias = alias('token_standards_goerli'),
+{{config(
+    alias = 'token_standards_goerli',
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
                                     "labels",

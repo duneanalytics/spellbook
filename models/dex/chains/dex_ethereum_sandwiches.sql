@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'dex_ethereum',
-        alias = alias('sandwiches'),
+        alias = 'sandwiches',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

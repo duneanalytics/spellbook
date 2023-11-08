@@ -1,7 +1,7 @@
 {{ config(
         schema='prices',
-        alias = alias('usd_latest_historical'),
-        tags= ['dunesql'],
+        alias = 'usd_latest_historical',
+        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

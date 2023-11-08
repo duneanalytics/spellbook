@@ -1,7 +1,7 @@
 {{ config(
     schema='layerzero',
-    alias = alias('chain_list'),
-    tags = ['static','dunesql']
+    alias = 'chain_list',
+    tags = ['static']
     )
 }}
 

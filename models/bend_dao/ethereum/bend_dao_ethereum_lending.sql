@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('lending'),
+    
+    alias = 'lending',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
