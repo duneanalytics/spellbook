@@ -70,6 +70,10 @@ WITH prices AS (
         ON p_sold.minute = date_trunc('minute', base.block_time)
         AND p_sold.contract_address = base.token_sold_address
         AND p_sold.blockchain = base.blockchain
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('base.block_time') }}
+    {% endif %}
 )
 
 select
