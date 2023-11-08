@@ -18,8 +18,8 @@ blockchains = [
     Blockchain(
         "bnb",
         None,
-        "source('bnb_bnb.WBNB_evt_Deposit')",
-        "source('bnb_bnb.WBNB_evt_Withdrawal')",
+        "source('bnb_bnb', 'WBNB_evt_Deposit')",
+        "source('bnb_bnb', 'WBNB_evt_Withdrawal')",
         "BNB",
     ),
     Blockchain("celo", native_symbol="CELO"),

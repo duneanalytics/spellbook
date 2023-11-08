@@ -17,7 +17,7 @@
     transactions = source('bnb','transactions'),
     erc20_transfers = source('bep20_bnb','evt_transfer'),
     native_contract_address = null,
-    wrapped_token_deposit = source('bnb_bnb.WBNB_evt_Deposit'),
-    wrapped_token_withdrawal = source('bnb_bnb.WBNB_evt_Withdrawal'),
+    wrapped_token_deposit = source('bnb_bnb', 'WBNB_evt_Deposit'),
+    wrapped_token_withdrawal = source('bnb_bnb', 'WBNB_evt_Withdrawal'),
 )
 }}
