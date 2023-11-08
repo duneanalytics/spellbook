@@ -9,12 +9,19 @@ class Blockchain:
     wrapped_token_withdrawal: str = None
     native_symbol: str = None
 
+
 # TODO: Put these into a global config file at some point
 blockchains = [
     Blockchain("arbitrum", native_symbol="ETH"),
     Blockchain("avalanche_c", native_symbol="AVAX"),
     Blockchain("base", native_symbol="ETH"),
-    Blockchain("bnb", None, "source('bnb_bnb.WBNB_evt_Deposit')", "source('bnb_bnb.WBNB_evt_Withdrawal')", "BNB"),
+    Blockchain(
+        "bnb",
+        None,
+        "source('bnb_bnb.WBNB_evt_Deposit')",
+        "source('bnb_bnb.WBNB_evt_Withdrawal')",
+        "BNB",
+    ),
     Blockchain("celo", native_symbol="CELO"),
     Blockchain(
         "ethereum",
@@ -33,7 +40,11 @@ blockchains = [
         "source('mahadao_polygon', 'wmatic_evt_withdrawal')",
         "MATIC",
     ),
-    Blockchain("zksync", native_contract_address="'0x000000000000000000000000000000000000800a'" native_symbol="ETH"),
+    Blockchain(
+        "zksync",
+        native_contract_address="'0x000000000000000000000000000000000000800a'",
+        native_symbol="ETH",
+    ),
 ]
 
 if_null = lambda x: x if x else "null"
@@ -104,7 +115,9 @@ def generate_transfers_base(
 
 
 def generate_transfers_enrich(blockchain: str, native_symbol: str = None):
-    output = transfers_enrich.format(blockchain=blockchain, native_symbol=if_null(native_symbol))
+    output = transfers_enrich.format(
+        blockchain=blockchain, native_symbol=if_null(native_symbol)
+    )
 
     with open(f"{PATH}{blockchain}/tokens_{blockchain}_transfers.sql", "w") as f:
         f.write(output)
