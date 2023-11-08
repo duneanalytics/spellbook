@@ -1,7 +1,7 @@
 {{ config(
     tags = ['dunesql'],
     schema = 'odos_optimism_trades',
-    alias = alias('odos_optimism_trades'),
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
