@@ -22,6 +22,9 @@ jobs:
       
       - name: dbt dependencies
         run: "dbt deps"
+      
+      - name: Blame test
+        run: "git blame models/_sector/nft/aggregators/chains/nft_ethereum_aggregators_gem.sql"
 
       - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
         run: "./scripts/ensure_cluster.sh"
