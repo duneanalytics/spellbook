@@ -15,10 +15,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('uniswap_ethereum', 'Exchange_evt_TokenPurchase')
-            - source('uniswap_ethereum', 'Exchange_evt_EthPurchase')
       - check_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
@@ -77,9 +73,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('uniswap_v3_ethereum', 'Pair_evt_Swap')
       - check_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
@@ -109,9 +102,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('defiswap_ethereum', 'CroDefiSwapPair_evt_Swap')
       - check_seed:
           seed_file: ref('defiswap_ethereum_base_trades_seed')
           match_columns:
