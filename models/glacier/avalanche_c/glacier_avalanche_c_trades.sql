@@ -1,20 +1,17 @@
 {{ config(
-    alias = 'trades'
-    ,partition_by = ['block_month']
-    ,materialized = 'incremental'
-    ,file_format = 'delta'
-    ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-    ,post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                      "project",
-                                      "glacier",
-                                    \'["discochuck"]\') }}'
+    schema = 'glacier_avalanche_c'
+    , alias = 'trades'
+    , partition_by = ['block_month']
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
 {% set glacier_avalanche_c_models = [
-ref('glacier_v3_avalanche_c_trades'),
-ref('glacier_v2_avalanche_c_trades')
+    ref('glacier_v3_avalanche_c_trades')
+    , ref('glacier_v2_avalanche_c_trades')
 ] %}
 
 

@@ -1,11 +1,11 @@
-{{ config(tags=['dunesql']
-    ,schema = 'glacier_v2_avalanche_c'
-    ,alias = 'trades'
-    ,partition_by = ['block_month']
-    ,materialized = 'incremental'
-    ,file_format = 'delta'
-    ,incremental_strategy = 'merge'
-    ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+{{ config(
+    schema = 'glacier_v2_avalanche_c'
+    , alias = 'trades'
+    , partition_by = ['block_month']
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -32,11 +32,11 @@ with dexs as (
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
-select 'avalanche_c'                                             as blockchain,
-       'glacier'                                                 as project,
-       '2'                                                       as version,
-       cast(date_trunc('DAY', dexs.block_time) as date)      as block_date,
-       cast(date_trunc('month', dexs.block_time) as date)        as block_month,
+select 'avalanche_c'                                                as blockchain,
+       'glacier'                                                    as project,
+       '2'                                                          as version,
+       cast(date_trunc('DAY', dexs.block_time) as date)             as block_date,
+       cast(date_trunc('month', dexs.block_time) as date)           as block_month,
        dexs.block_time,
        erc20a.symbol                                             as token_bought_symbol,
        erc20b.symbol                                             as token_sold_symbol,

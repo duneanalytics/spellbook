@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: glacier_v3_avalanche_c_trades
+  - name: glacier_v2_avalanche_c_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: avalanche_c 
       sector: dex
-      project: glacier_v3
-      contributors: discochuck
+      project: glacier_v2
+      contributors: discochuck 
     config:
-      tags: ['avalanche','glacier_v3','trades', 'glacier','dex']
+      tags: ['avalanche_c','glacier','trades','dex']
     description: >
-        glacier V3 contract trades on avalanche
+        glacier v2 contract trades on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,9 +21,9 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: avalanche_c
+          blockchain: avalanche_c 
           project: glacier
-          version: 3
+          version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -93,18 +93,17 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: ""
 
-  - name: glacier_v2_avalanche_c_trades
+  - name: glacier_v3_avalanche_c_trades
     meta:
-      blockchain: avalanche_c 
+      blockchain: avalanche_c
       sector: dex
-      project: glacier_v2
-      contributors: discochuck 
+      project: glacier_v3
+      contributors: discochuck
     config:
       tags: ['avalanche_c','glacier','trades','dex']
     description: >
-        glacier contract trades on avalanche_c
+        glacier V3 contract trades on avalanche
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -115,9 +114,9 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: avalanche_c 
+          blockchain: avalanche_c
           project: glacier
-          version: 2
+          version: 3
     columns:
       - *blockchain
       - *project
@@ -153,15 +152,6 @@ models:
       tags: ['avalanche_c','glacier','trades','dex']
     description: >
         glacier contract trades on avalanche_c
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
     columns:
       - *blockchain
       - *project

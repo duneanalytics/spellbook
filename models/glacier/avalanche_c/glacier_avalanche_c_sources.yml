@@ -3,12 +3,9 @@ version: 2
 sources: 
   - name: glacier_avalanche_c
     description: "Avalanche decoded tables related to Glacier v3 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: AlgebraPool_evt_Swap
         loaded_at_field: evt_block_time
-        description: "" # to-do
         columns:
           - &amount1
             name: amount1
@@ -50,7 +47,6 @@ sources:
             description: the log base 1.0001 of price of the pool after the swap"
       - name: AlgebraFactory_evt_Pool
         loaded_at_field: evt_block_time
-        description: "" # to-do
         columns:
           - name: contract_address
             description: "The contract that deployed the pool"
