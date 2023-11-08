@@ -1,8 +1,8 @@
 {{
     config(
         materialized='incremental',
-        tags = ['dunesql'],
-        alias= alias('safes'),
+        schema = 'safe_zksync',
+        alias = 'safes',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address'],
         on_schema_change='fail',

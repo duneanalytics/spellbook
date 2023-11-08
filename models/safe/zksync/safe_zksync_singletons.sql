@@ -1,8 +1,8 @@
 {{
     config(
         materialized='table',
-        tags = ['dunesql'],
-        alias= alias('singletons'),
+        schema = 'safe_zksync',
+        alias = 'singletons',
         post_hook='{{ expose_spells(\'["zksync"]\',
                                     "project",
                                     "safe",
