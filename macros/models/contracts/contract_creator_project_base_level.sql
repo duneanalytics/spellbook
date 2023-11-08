@@ -104,7 +104,6 @@ SELECT
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
             {% if is_incremental() %}
-            AND {{ incremental_predicate('t.block_time') }}
             AND {{ incremental_predicate('ct.block_time') }}
             {% endif %}
           left join {{ ref('evm_smart_account_method_ids') }} aa 
@@ -112,7 +111,7 @@ SELECT
           where 
             1=1
             {% if is_incremental() %}
-            AND {{ incremental_predicate('ct.block_time') }}
+            AND {{ incremental_predicate('t.block_time') }}
             {% endif %} -- incremental filter
       )
     SELECT * FROM incremental_contracts
