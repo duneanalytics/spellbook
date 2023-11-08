@@ -16,6 +16,10 @@ jobs:
         with:
           ref: main
       
+      - name: Setup variables
+        run: |
+            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+      
       - name: dbt dependencies
         run: "dbt deps"
 
