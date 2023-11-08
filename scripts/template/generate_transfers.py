@@ -33,7 +33,7 @@ blockchains = [
         "source('mahadao_polygon', 'wmatic_evt_withdrawal')",
         "MATIC",
     ),
-    Blockchain("zksync", native_symbol="ETH"),
+    Blockchain("zksync", native_contract_address="'0x000000000000000000000000000000000000800a'" native_symbol="ETH"),
 ]
 
 if_null = lambda x: x if x else "null"
