@@ -20,6 +20,7 @@
 )}}
 
 UNION ALL
+SELECT * FROM
 (
 {{transfers_base_wrapped_token(
     blockchain='ethereum',
