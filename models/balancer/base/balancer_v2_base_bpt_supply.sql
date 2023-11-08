@@ -511,7 +511,7 @@ WITH
         ORDER BY block_number ASC, action_index ASC, pool_id
     )
 
-SELECT 
+SELECT distinct
     block_time
     , block_number
     , lp_virtual_supply_raw
