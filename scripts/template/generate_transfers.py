@@ -14,7 +14,7 @@ blockchains = [
     Blockchain("arbitrum", "'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'"),
     Blockchain("avalanche_c"),
     Blockchain("base"),
-    Blockchain("bnb"),
+    Blockchain("bnb", None, "source('bnb_bnb.WBNB_evt_Deposit')", "source('bnb_bnb.WBNB_evt_Withdrawal')", "BNB"),
     Blockchain("celo"),
     Blockchain(
         "ethereum",
