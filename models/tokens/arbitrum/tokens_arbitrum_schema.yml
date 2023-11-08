@@ -84,13 +84,13 @@ models:
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
 
-  - name: tokens_ethereum_transfers_base
+  - name: tokens_arbitrum_transfers_base
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: tokens
       contributors: aalan3
     config:
-      tags: ['tokens','transfers', 'ethereum']
+      tags: ['tokens','transfers', 'arbitrum']
     description: >
       Token transfers
     tests:
@@ -130,13 +130,13 @@ models:
       - name: amount_raw
         description: "The raw amount of the transfer"
 
-  - name: tokens_ethereum_transfers
+  - name: tokens_arbitrum_transfers
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: tokens
       contributors: aalan3
     config:
-      tags: ['tokens','transfers', 'ethereum']
+      tags: ['tokens','transfers', 'arbitrum']
     description: >
       Token transfers
     columns:
