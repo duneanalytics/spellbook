@@ -178,10 +178,9 @@ def generate_project_commit_file():
 
 if __name__ == '__main__':
     authors = main()
-    print(authors)
-    # generate_table("loc",authors)
-    # generate_table("commit",authors)
-    # generate_project_commit_file()
-    # get_all_commits()
-    # get_all_commits_stats()
-    # get_projects_and_sectors()
+    generate_table("loc",authors)
+    generate_table("commit",authors)
+    generate_project_commit_file()
+    get_all_commits()
+    get_all_commits_stats()
+    get_projects_and_sectors()
