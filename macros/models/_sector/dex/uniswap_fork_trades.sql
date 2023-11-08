@@ -1,4 +1,4 @@
-{% macro dex_fork_v2_trades(
+{% macro uniswap_fork_v2_trades(
     blockchain = null
     , project = null
     , version = null
@@ -52,7 +52,7 @@ FROM
     dexs
 {% endmacro %}
 
-{% macro dex_fork_v3_trades(
+{% macro uniswap_fork_v3_trades(
     blockchain = null
     , project = null
     , version = null

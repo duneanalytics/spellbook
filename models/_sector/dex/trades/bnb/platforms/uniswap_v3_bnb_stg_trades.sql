@@ -9,7 +9,7 @@
 }}
 
 {{
-    dex_fork_v3_trades(
+    uniswap_fork_v3_trades(
         blockchain = 'bnb'
         , project = 'uniswap'
         , version = '3'
