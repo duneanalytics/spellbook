@@ -32,7 +32,7 @@ jobs:
           pip install pyyaml
       
       - name: Create Manifest
-        run: "dbt compile --target-path . --profiles-dir $HOME/.dbt --profile dunesql"
+        run: "dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
 
       - name: Upload translation status CSV to Dune
         env:
