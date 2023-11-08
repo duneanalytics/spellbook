@@ -696,13 +696,21 @@ WITH curated_list AS (
   ) as temp_table (creator_address, contract_project)
 )
 
+, filtered_list as (
+  SELECT 
+    creator_address, contract_project
+    FROM curated_list f
+    --filter out creators that we never want to map
+    WHERE f.creator_address NOT IN (
+      SELECT creator_address FROM {{ ref('contracts_deterministic_contract_creators') }}
+      )
 
-SELECT 
-  creator_address, contract_project
-  FROM curated_list f
-  --filter out creators that we never want to map
-  WHERE f.creator_address NOT IN (
-    SELECT creator_address FROM {{ ref('contracts_deterministic_contract_creators') }}
-    )
+  GROUP BY 1,2
+)
 
-GROUP BY 1,2
+-- Enforce consistent project name mapping to contracts_project_name_mappings.sql
+SELECT list.creator_address,
+  Coalesce(mapping.mapped_name, list.contract_project) AS contract_project
+  FROM filtered_list list
+  LEFT JOIN {{ ref('contracts_project_name_mappings') }} mapping
+  ON Lower(list.contract_project) = Lower(mapping.dune_name)
