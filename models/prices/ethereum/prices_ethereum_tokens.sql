@@ -1522,7 +1522,6 @@ FROM
     ('doge-1-satellite-doge-1', 'ethereum', 'DOGE-1', 0xc5b0251daCFaB74bc2deBaa52072a2A4c939c105, 9),
     ('eww-endlesswebworlds', 'ethereum', 'EWW', 0x3d38F87BeF0123f5764635C7E11048027E0721a8, 9),
     ('jcg-justcarbon-governance-token', 'ethereum', 'JCG', 0xbE601dD49da9EE1d2F64D422c4AECf8EB83c119f, 18),
-    ('pwrc-pwrcash', 'ethereum', 'PWRC', 0x6Aa40D02115090D40Dc33C7C5F3Cf05112fA4f83, 18),
     ('toku-toku', 'ethereum', 'TOKU', 0x9eEC1A4814323a7396c938bc86aeC46b97F1BD82, 18),
     ('tyrant-fable-of-the-dragon', 'ethereum', 'TYRANT', 0x8EE325AE3E54e83956eF2d5952d3C8Bc1fa6ec27, 9),
     ('zipt-zippie', 'ethereum', 'ZIPT', 0xEDD7c94FD7B4971b916d15067Bc454b9E1bAD980, 18),
@@ -1646,4 +1645,5 @@ where contract_address not in (
     ,0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f   -- SDT
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
     ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
+    ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
 )
