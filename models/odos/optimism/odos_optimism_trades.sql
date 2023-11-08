@@ -1,5 +1,6 @@
 {{ config(
     tags=['prod_exclude'],
+    schema = 'odos_optimism',
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
