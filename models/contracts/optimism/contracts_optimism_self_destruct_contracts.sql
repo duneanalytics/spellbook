@@ -16,6 +16,7 @@
 
 SELECT 
   created_time, created_block_number, created_tx_hash as creation_tx_hash
-  , contract_address, NULL AS trace_element
+  , contract_address
+  , array[cast( null as varbinary)] AS trace_element
 
   FROM {{ ref('contracts_optimism_find_self_destruct_contracts')}}
