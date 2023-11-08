@@ -9,7 +9,7 @@ class Blockchain:
     wrapped_token_withdrawal: str = None
     native_symbol: str = None
 
-
+# TODO: Put these into a global config file at some point
 blockchains = [
     Blockchain("arbitrum", "'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'"),
     Blockchain("avalanche_c"),
