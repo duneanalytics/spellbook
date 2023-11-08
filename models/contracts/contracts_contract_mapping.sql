@@ -1,6 +1,5 @@
  {{
-  config(
-        tags = ['prod_exclude'],        
+  config(   
         schema = 'contracts',
         alias = 'contract_mapping',
         materialized ='incremental',
