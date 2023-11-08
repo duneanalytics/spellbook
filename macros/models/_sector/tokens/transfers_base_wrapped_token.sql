@@ -1,29 +1,19 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
-{%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
-{# denormalized tables are not yet in use #}
-{%- set denormalized = True if blockchain in ['base'] else False -%}
-
-WITH transfers AS (
-    SELECT block_time
-    , block_number
-    , tx_hash
-    , cast(NULL as bigint) AS evt_index
-    , trace_address
-    {% if native_contract_address%}
-    , {{native_contract_address}} AS contract_address
-    {% else %}
-    , CAST(NULL AS varbinary) AS contract_address
-    {% endif %}
-    , 'native' AS token_standard
-    , "from"
-    , to
-    , value AS amount_raw
-    FROM {{ traces }}
-    WHERE success
-    AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
-    AND value > UINT256 '0'
+{% macro transfers_base_wrapped_token(blockchain, transactions, wrapped_token_deposit, wrapped_token_withdrawal) %}
+with transfers AS (
+    SELECT t.evt_block_time AS block_time
+    , t.evt_block_number AS block_number
+    , t.evt_tx_hash AS tx_hash
+    , t.evt_index
+    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
+    , t.contract_address
+    -- technically this is not a standard 20 token, but we use it for consistency
+    , '{{token_standard_20}}' AS token_standard
+    , 0x0000000000000000000000000000000000000000 as "from"  -- TODO: change to variable
+    , t.dst as "to"
+    , t.wad AS amount_raw -- is this safe cross chain?
+    FROM {{ wrapped_token_deposit }} t
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     UNION ALL
@@ -34,11 +24,12 @@ WITH transfers AS (
     , t.evt_index
     , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
+    -- technically this is not a standard 20 token, but we use it for consistency
     , '{{token_standard_20}}' AS token_standard
-    , t."from"
-    , t.to
-    , t.value AS amount_raw
-    FROM {{ erc20_transfers }} t
+    , t.src as "from"
+    , 0x0000000000000000000000000000000000000000 as "to"  -- TODO: change to variable
+    , t.wad AS amount_raw -- is this safe cross chain?
+    FROM {{ wrapped_token_withdrawal }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
