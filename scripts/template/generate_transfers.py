@@ -14,6 +14,7 @@ blockchains = [
     Blockchain("arbitrum", "'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'"),
     Blockchain("avalanche_c"),
     Blockchain("base"),
+    Blockchain("bnb"),
     Blockchain("celo"),
     Blockchain(
         "ethereum",
