@@ -32,7 +32,6 @@ FROM (
       and sd.type = 'suicide'
       {% if is_incremental() %}
       AND {{ incremental_predicate('sd.block_time') }}
-      and cr.address NOT IN (SELECT contract_address FROM {{this}} ) --ensure no duplicates
       {% endif %}
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
@@ -64,7 +63,6 @@ FROM (
       AND sds.address IS NOT NULL
       {% if is_incremental() %}
       AND {{ incremental_predicate('sds.block_time') }}
-      and cr.address NOT IN (SELECT contract_address FROM {{this}} th WHERE th.blockchain = '{{chain}}' ) --ensure no duplicates
       {% endif %}
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
