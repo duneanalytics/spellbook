@@ -1,7 +1,7 @@
 {{
     config(
-        tags=['dunesql', 'prod_exclude'],
-        alias = alias('trader_portfolios_ethereum'),
+        tags=[ 'prod_exclude'],
+        alias = 'trader_portfolios_ethereum',
     )
 }}
 

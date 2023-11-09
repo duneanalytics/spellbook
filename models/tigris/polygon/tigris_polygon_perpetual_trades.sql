@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('perpetual_trades'),
+    
+    alias = 'perpetual_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -93,6 +93,8 @@ all_fees as (
 
     SELECT * FROM excluded_trades
 )
+
+-- use to reload 
 
 SELECT 
     t.blockchain, 

@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('erc721_noncompliant')
+tags=['prod_exclude'],
+        alias = 'erc721_noncompliant'
 ) 
 }}
 

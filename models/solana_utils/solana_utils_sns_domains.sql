@@ -1,9 +1,9 @@
  {{
   config(
         schema = 'solana_utils',
-        alias = alias('sns_domains'),
+        alias = 'sns_domains',
         materialized='table',
-        tags = ['dunesql'],
+        
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",

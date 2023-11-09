@@ -1,6 +1,6 @@
 {{ config(
-    alias = alias('nft_mints'),
-    tags=['dunesql'],
+    alias = 'nft_mints',
+    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

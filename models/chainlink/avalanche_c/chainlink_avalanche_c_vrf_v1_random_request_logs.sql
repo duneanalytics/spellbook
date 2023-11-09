@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('vrf_v1_random_request_logs'),
+    
+    alias='vrf_v1_random_request_logs',
     materialized='view'
   )
 }}

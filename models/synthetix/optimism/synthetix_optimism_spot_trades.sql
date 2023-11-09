@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'synthetix_optimism',
-    alias = alias('spot_trades'),
+    alias = 'spot_trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

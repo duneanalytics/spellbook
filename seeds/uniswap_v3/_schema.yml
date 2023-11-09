@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: uniswap_v3_proposals_seed
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         proposal_id: uint256
@@ -11,7 +10,6 @@ seeds:
 
   - name: uniswap_v3_votes_seed
     config:
-      tags: dunesql
       column_types:
         blockchain: varchar
         proposal_id: uint256

@@ -1,6 +1,6 @@
-{{ config (tags=['dunesql', 'static'],
+{{ config (tags=[ 'static'],
     schema='tokemak_ethereum',
-    alias = alias('tokemak_addresses'),
+    alias = 'tokemak_addresses',
     post_hook = '{{ expose_spells(\'["ethereum"]\',
         "project", 
             "Tokemak",
