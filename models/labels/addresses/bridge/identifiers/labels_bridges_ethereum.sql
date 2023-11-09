@@ -134,4 +134,5 @@ FROM (VALUES
     , ('ethereum', 0x6571d6be3d8460cf5f7d6711cd9961860029d85f, 'Synapse Bridge Zap 3', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x2a3dd3eb832af982ec71669e178424b10dca2ede, 'Polygon: zkEVM Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0xd5f0f8db993d26f5df89e70a83d32b369dccdaa0, 'Symbiosis Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
