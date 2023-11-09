@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: uniswap_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v1']
+    description: "uniswap ethereum v1 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            blockchain: ethereum
+            project: uniswap
+            version: 1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: uniswap_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            blockchain: ethereum
+            project: uniswap
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: uniswap_v3_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap ethereum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            blockchain: ethereum
+            project: uniswap
+            version: 3
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw  
+  
+  - name: defiswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: defiswap
+      contributors: pandajackson42, 0xRob, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'defiswap' ]
+    description: "Defiswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('defiswap_ethereum_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+            
+  - name: dex_ethereum_base_trades
