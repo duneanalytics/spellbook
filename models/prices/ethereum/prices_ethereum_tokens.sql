@@ -1627,7 +1627,7 @@ FROM
     ('propc-propchain', 'ethereum', 'PROPC', 0x9ff58067bd8d239000010c154c6983a325df138e, 18),
     ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
     ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18),
-    ('tokamak-network-token', 'ethereum', 'TON', 0x2be5e8c109e2197D077D13A82dAead6a9b3433C5, 18)
+    ('ton-tokamak-network', 'ethereum', 'TON', 0x2be5e8c109e2197D077D13A82dAead6a9b3433C5, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
