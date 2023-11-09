@@ -5537,4 +5537,5 @@ SELECT contract_address, symbol, decimals
 ,(0xc7d31a6d7aa357066c37bf383e4a7028083a46d4, 'XPEPE', 18)
 ,(0x0565805ca3a4105faee51983b0bd8ffb5ce1455c, 'GUILD', 18)
 ,(0x14778860E937f509e651192a90589dE711Fb88a9, 'CYBER', 18)
+,(0x40af3827f39d0eacbf4a168f8d4ee67c121d11c9, 'TUSD', 18)
 ) AS temp_table (contract_address, symbol, decimals)

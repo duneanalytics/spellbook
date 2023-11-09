@@ -67,8 +67,8 @@ SELECT  a.blockchain
       , '0x API'  as project
       , cast(null as varchar(10)) as version
       , a.block_date
-      , a.block_time
       , CAST(date_trunc('month', a.block_time) as DATE) as block_month 
+      , a.block_time
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol
       , CASE
