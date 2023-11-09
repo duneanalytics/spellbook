@@ -2,9 +2,7 @@
   config(
         schema = 'contracts_ethereum',
         alias = 'contract_creator_project_iterated_creators',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
+        materialized ='table',
         unique_key='contract_address',
         partition_by = ['created_month']
   )
