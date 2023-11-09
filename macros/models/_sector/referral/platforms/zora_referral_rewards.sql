@@ -15,11 +15,9 @@ select
     ,evt_tx_hash as tx_hash
     ,'NFT' as category
     ,case
-        when mintReferralReward = uint256 '0'
-        or mintReferral = zora
-        or mintReferral = tx."from"
+        when mintReferral = zora or mintReferral is null
         then 0x0000000000000000000000000000000000000000 else mintReferral end as referrer_address
-    ,cast(null as varbinary) as referee_address     -- will be overwritten as tx_from
+    ,tx."from" as referee_address
     ,{{ var("ETH_ERC20_ADDRESS") }} as currency_contract
     ,mintReferralReward as reward_amount_raw
     ,e."from" as project_contract_address     -- the drop contract
