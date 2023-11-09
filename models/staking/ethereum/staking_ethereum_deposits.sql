@@ -92,4 +92,4 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
     OR (ete.tx_from IS NOT NULL AND et."from"=ete.tx_from)
     OR (ete.pubkey IS NOT NULL AND d.pubkey=ete.pubkey)
     OR (ete.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=ete.withdrawal_credentials))
-LEFT JOIN {{ ref('staking_ethereum_batch_contracts')}} bc ON bc.address=et.depositor_address
+LEFT JOIN {{ ref('staking_ethereum_batch_contracts')}} bc ON bc.address=ett.depositor_address
