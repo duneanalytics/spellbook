@@ -3,7 +3,7 @@
           post_hook='{{ expose_spells(\'["ethereum"]\',
           "sector",
           "addresses",
-          \'["hildobby","msilb7"]\') }}') }}
+          \'["hildobby","msilb7","rantum"]\') }}') }}
 
 SELECT address as address, bridge_name, description
 FROM (VALUES (0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc20 Bridge Proxy')
