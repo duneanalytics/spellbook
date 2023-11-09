@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
-                                    \'["soispoke"]\') }}')}}
+                                    \'["soispoke", "rantum"]\') }}')}}
 
 SELECT address, dex_name, distinct_name
 FROM (VALUES
