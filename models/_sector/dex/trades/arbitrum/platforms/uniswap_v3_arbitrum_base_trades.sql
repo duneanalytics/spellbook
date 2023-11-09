@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'uniswap_v3_ethereum'
-    , alias = 'stg_trades'
+    schema = 'uniswap_v3_arbitrum'
+    , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -10,11 +10,11 @@
 }}
 
 {{
-    uniswap_fork_v3_trades(
-        blockchain = 'ethereum'
+    uniswap_compatible_v3_trades(
+        blockchain = 'arbitrum'
         , project = 'uniswap'
         , version = '3'
-        , Pair_evt_Swap = source('uniswap_v3_ethereum', 'Pair_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated')
+        , Pair_evt_Swap = source('uniswap_v3_arbitrum', 'Pair_evt_Swap')
+        , Factory_evt_PoolCreated = source('uniswap_v3_arbitrum', 'Factory_evt_PoolCreated')
     )
 }}

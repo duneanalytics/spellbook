@@ -1,6 +1,6 @@
 {{ config(
     schema = 'uniswap_v3_bnb'
-    , alias = 'stg_trades'
+    , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_fork_v3_trades(
+    uniswap_compatible_v3_trades(
         blockchain = 'bnb'
         , project = 'uniswap'
         , version = '3'

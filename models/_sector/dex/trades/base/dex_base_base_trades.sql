@@ -1,14 +1,12 @@
 {{ config(
-    schema = 'dex_bnb'
-    , alias = 'stg_trades'
+    schema = 'dex_base'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
-
--- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_v3_bnb_stg_trades')
+    ref('uniswap_v3_base_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -41,4 +39,4 @@ WITH base_union AS (
     )
 )
 
-{{ add_tx_from_and_to('base_union', 'bnb') }}
+{{ add_tx_from_and_to('base_union', 'base') }}

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v3_bnb_stg_trades
+  - name: uniswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
       sector: dex
@@ -16,4 +16,4 @@ models:
             - tx_hash
             - evt_index
             
-  - name: dex_bnb_stg_trades
+  - name: dex_bnb_base_trades

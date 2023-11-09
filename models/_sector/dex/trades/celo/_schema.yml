@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v3_celo_stg_trades
+  - name: uniswap_v3_celo_base_trades
     meta:
       blockchain: celo
       sector: dex
@@ -16,4 +16,4 @@ models:
             - tx_hash
             - evt_index
             
-  - name: dex_celo_stg_trades
+  - name: dex_celo_base_trades

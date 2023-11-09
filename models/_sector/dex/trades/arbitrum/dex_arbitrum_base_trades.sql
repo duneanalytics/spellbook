@@ -1,15 +1,12 @@
 {{ config(
-    schema = 'dex_ethereum'
-    , alias = 'stg_trades'
+    schema = 'dex_arbitrum'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('defiswap_ethereum_stg_trades')
-    , ref('uniswap_v1_ethereum_stg_trades')
-    , ref('uniswap_v2_ethereum_stg_trades')
-    , ref('uniswap_v3_ethereum_stg_trades')
+    ref('uniswap_v3_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -33,7 +30,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM 
+        FROM
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
@@ -42,4 +39,4 @@ WITH base_union AS (
     )
 )
 
-{{ add_tx_from_and_to('base_union', 'ethereum') }}
+{{ add_tx_from_and_to('base_union', 'arbitrum') }}

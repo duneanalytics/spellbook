@@ -1,6 +1,6 @@
 {{ config(
     schema = 'dex'
-    , alias = 'stg_trades'
+    , alias = 'base_trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -11,13 +11,13 @@
 }}
 
 {% set models = [
-    ref('dex_arbitrum_stg_trades')
-    , ref('dex_base_stg_trades')
-    , ref('dex_bnb_stg_trades')
-    , ref('dex_celo_stg_trades')
-    , ref('dex_ethereum_stg_trades')
-    , ref('dex_optimism_stg_trades')
-    , ref('dex_polygon_stg_trades')
+    ref('dex_arbitrum_base_trades')
+    , ref('dex_base_base_trades')
+    , ref('dex_bnb_base_trades')
+    , ref('dex_celo_base_trades')
+    , ref('dex_ethereum_base_trades')
+    , ref('dex_optimism_base_trades')
+    , ref('dex_polygon_base_trades')
 ] %}
 
 

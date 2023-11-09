@@ -97,7 +97,7 @@ models:
         name: evt_index
         description: "Index of the corresponding trade event"
 
-  - name: dex_stg_trades
+  - name: dex_base_trades
     meta:
       blockchain: arbitrum, base, bnb, celo, ethereum, optimism, polygon
       sector: dex

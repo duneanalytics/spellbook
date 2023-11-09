@@ -1,6 +1,6 @@
 {{ config(
     schema = 'uniswap_v2_ethereum'
-    , alias = 'stg_trades'
+    , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -16,7 +16,7 @@
 WITH dexs AS
 (
     {{
-    uniswap_fork_v2_trades(
+    uniswap_compatible_v2_trades(
         blockchain = 'ethereum'
         , project = 'uniswap'
         , version = '2'

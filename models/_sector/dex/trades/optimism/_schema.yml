@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v3_optimism_stg_trades
+  - name: uniswap_v3_optimism_base_trades
     meta:
       blockchain: optimism
       sector: dex
@@ -16,4 +16,4 @@ models:
             - tx_hash
             - evt_index
             
-  - name: dex_optimism_stg_trades
+  - name: dex_optimism_base_trades

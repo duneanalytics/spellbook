@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'dex_polygon'
-    , alias = 'stg_trades'
+    schema = 'dex_celo'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_polygon_stg_trades')
+    ref('uniswap_v3_celo_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -39,4 +39,4 @@ WITH base_union AS (
     )
 )
 
-{{ add_tx_from_and_to('base_union', 'polygon') }}
+{{ add_tx_from_and_to('base_union', 'celo') }}

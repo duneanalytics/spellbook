@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v3_arbitrum_stg_trades
+  - name: uniswap_v3_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
@@ -16,4 +16,4 @@ models:
             - tx_hash
             - evt_index
             
-  - name: dex_arbitrum_stg_trades
+  - name: dex_arbitrum_base_trades

@@ -1,16 +1,16 @@
 {{ config(
-    schema = 'dex_base'
-    , alias = 'stg_trades'
+    schema = 'dex_optimism'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_base_stg_trades')
+    ref('uniswap_v3_optimism_base_trades')
 ] %}
 
 WITH base_union AS (
-    SELECT *
+    SELECT * 
     FROM (
         {% for base_model in base_models %}
         SELECT
@@ -39,4 +39,4 @@ WITH base_union AS (
     )
 )
 
-{{ add_tx_from_and_to('base_union', 'base') }}
+{{ add_tx_from_and_to('base_union', 'optimism') }}
