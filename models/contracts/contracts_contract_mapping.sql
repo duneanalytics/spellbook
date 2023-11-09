@@ -2,9 +2,7 @@
   config(   
         schema = 'contracts',
         alias = 'contract_mapping',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
+        materialized ='table',
         unique_key=['blockchain','contract_address'],
         partition_by=['blockchain'],
         post_hook='{{ expose_spells(\'["ethereum", "base"]\',
@@ -37,11 +35,7 @@ FROM (
     SELECT
           *
     FROM {{ chain_model }}
-    {% if is_incremental() %}
-    WHERE
-      {{ incremental_predicate('created_time') }}
-    OR is_updated_in_last_run = 1 --flag we use to see if contract metadata is new
-    {% endif %}
+    
     {% if not loop.last %}
     UNION ALL
     {% endif %}
