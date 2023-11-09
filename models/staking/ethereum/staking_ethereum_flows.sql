@@ -38,6 +38,8 @@ WITH invalid_pubkeys AS (
     , d.block_number
     , d.amount_staked
     , d.depositor_address
+    , d.batch_contract_entity
+    , d.batch_contract_entity_unique_name
     , d.entity
     , d.entity_unique_name
     , d.entity_category
@@ -59,6 +61,8 @@ SELECT block_time
 , block_number
 , amount_staked
 , depositor_address
+, batch_contract_entity
+, batch_contract_entity_unique_name
 , entity
 , entity_unique_name
 , entity_category
@@ -83,6 +87,8 @@ SELECT w.block_time
 , w.block_number
 , 0 AS amount_staked
 , NULL AS depositor_address
+, NULL AS batch_contract_entity
+, NULL AS batch_contract_entity_unique_name
 , i.entity
 , i.entity_unique_name
 , i.entity_category

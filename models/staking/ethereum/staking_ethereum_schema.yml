@@ -75,6 +75,10 @@ models:
         description: "Amount of ETH staked in transaction"
       - name: depositor_address
         description: "Address of depositor"
+      - name: batch_contract_entity
+        description: "Name of batch contract if identified"
+      - name: batch_contract_entity_unique_name
+        description: "Unique name of batch contract if identified"
       - name: entity
         description: "Name of depositor if identified"
       - name: entity_unique_name
@@ -117,6 +121,10 @@ models:
         description: "Amount of ETH staked in transaction"
       - name: depositor_address
         description: "Address of depositor"
+      - name: batch_contract_entity
+        description: "Name of batch contract if identified"
+      - name: batch_contract_entity_unique_name
+        description: "Unique name of batch contract if identified"
       - name: entity
         description: "Name of depositor if identified"
       - name: entity_unique_name
