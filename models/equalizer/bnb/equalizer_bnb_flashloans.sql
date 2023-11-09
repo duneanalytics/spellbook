@@ -1,6 +1,6 @@
 {{ config(
       partition_by = ['block_month']
-      , schema = 'equalizer'
+      , schema = 'equalizer_bnb'
       , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'

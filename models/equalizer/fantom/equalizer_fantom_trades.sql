@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'equalizer'
+    schema = 'equalizer_fantom'
     , alias = 'trades'
     ,partition_by = ['block_month']
     ,materialized = 'incremental'

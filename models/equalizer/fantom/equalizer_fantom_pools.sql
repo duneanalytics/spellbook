@@ -1,6 +1,6 @@
 {{ config(
     
-    schema = 'equalizer',
+    schema = 'equalizer_fantom',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
