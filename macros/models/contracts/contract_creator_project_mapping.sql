@@ -286,32 +286,12 @@ SELECT
   , u.top_level_time, u.top_level_tx_hash, u.top_level_block_number
   , u.top_level_tx_from, u.top_level_tx_to , u.top_level_tx_method_id
   , u.code_bytelength
-  {% if is_incremental() %}
-  , COALESCE(u.token_standard, th.token_standard) AS token_standard
-  {% else -%}
   , u.token_standard
-  {% endif %}
   , u.code
   , u.code_deploy_rank_by_chain
   , u.is_eoa_deployed
   , u.is_smart_wallet_deployed
   , u.is_deterministic_deployer_deployed
-
-  ,
-  {% if is_incremental() %}
-  CASE WHEN
-    th.contract_address IS NULL -- did not exist
-    -- check if a major field was updated
-    OR u.contract_project<>th.contract_project
-    OR u.token_symbol<>th.token_symbol
-    OR u.contract_name<>th.contract_name
-    OR u.creator_address<>th.creator_address
-    OR u.token_standard<>th.token_standard
-  THEN 1 ELSE 0 END
-  {% else -%}
-  1
-  {% endif %}
-  AS is_updated_in_last_run
 
 FROM (
   SELECT
@@ -389,13 +369,5 @@ FROM (
       AND c.created_block_number = sd.created_block_number
   ) f
 ) u
-
-{% if is_incremental() %}
-left join {{this}} th -- see if this was updated or not
-  ON th.contract_address = u.contract_address
-  AND th.blockchain = u.blockchain
-  AND th.created_block_number = u.created_block_number
-  AND th.created_time = u.created_time
-{% endif %}
 
 {% endmacro %}

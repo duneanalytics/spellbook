@@ -111,10 +111,6 @@ models:
         name: is_deterministic_deployer_deployed
         description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
 
-      - &is_updated_on_last_run
-        name: is_updated_on_last_run
-        description: "Was this contract updated on the last run (used for incremental table building)"
-
   - name: contracts_ethereum_find_self_destruct_contracts
     meta:
       blockchain: ethereum
@@ -258,7 +254,6 @@ models:
       - *is_eoa_deployed
       - *is_smart_wallet_deployed
       - *is_deterministic_deployer_deployed
-      - *is_updated_on_last_run
 
   - name: contracts_base_find_self_destruct_contracts
     meta:
