@@ -49,7 +49,7 @@ FROM (
     DATE_TRUNC('day',r.evt_block_time) AS block_date, 
     r.evt_block_time, r.evt_block_number, r.evt_index,
         tf."from" AS from_address, tf.to AS to_address, tx.to AS tx_to_address, tx."from" AS tx_from_address, r.evt_tx_hash,
-        'Project' as from_label, 'Parter Fund' AS from_type, 'Aave' AS from_name, 
+        'Project' as from_label, 'Partner Fund' AS from_type, 'Aave' AS from_name, 
         tf.to as user_address
             ,'Aave - Liquidity Mining' AS to_type
             ,COALESCE(
