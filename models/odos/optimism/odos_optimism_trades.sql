@@ -41,8 +41,8 @@ dexs_raw as (
 dexs as (
         SELECT 
             *, 
-            CAST(data_value:receiver as string) as taker, 
-            CAST(data_value:tokenAddress as string) as token_bought_address
+            CAST(data_value -> 'receiver' as string) as taker, 
+            CAST(data_value -> 'tokenAddress' as string) as token_bought_address
         FROM 
         dexs_raw
 )
