@@ -14,7 +14,8 @@ WITH
 
 {% set close_position_tables = [
     'options_evt_TradeClosed',
-    'Options_V2_evt_TradeClosed'
+    'Options_V2_evt_TradeClosed',
+    'Options_V3_evt_TradeClosed'
 ] %}
 
 close_position_v2 AS (
