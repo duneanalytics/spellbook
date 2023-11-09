@@ -8,6 +8,7 @@ select
     model.*
     , tx."from" as tx_from
     , tx."to" as tx_to
+    --test comment to run CI and find all models using htis macro
 from {{model_cte}} model
 inner join {{source(blockchain, 'transactions')}} tx
     on model.block_number = tx.block_number
