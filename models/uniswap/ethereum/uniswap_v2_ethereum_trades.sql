@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'token_bought_address', 'token_sold_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "uniswap_v2",
