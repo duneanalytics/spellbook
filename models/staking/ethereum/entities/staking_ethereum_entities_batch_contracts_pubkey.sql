@@ -17,7 +17,7 @@ WITH tagged_entities AS (
 
 SELECT d.pubkey
 , e.entity
-, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
+, CONCAT(e.entity, ' ', CAST(ROW_NUMBER() OVER (PARTITION BY e.entity ORDER BY MIN(traces.block_time)) AS VARCHAR)) AS entity_unique_name
 , e.category
 FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
 INNER JOIN {{ source('ethereum', 'traces') }} dep ON dep.to = 0x00000000219ab540356cbb839cbe05303d7705fa
