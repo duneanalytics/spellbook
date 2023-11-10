@@ -2,7 +2,11 @@
     config(
         schema = 'oneinch',
         alias = 'lop_own_trades',
-        materialized = 'view'
+        partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'tx_hash', 'evt_index']
     )
 }}
 
@@ -49,8 +53,6 @@ with
             blockchain
             , contract_address as src_token_address
             , minute
-            , symbol as src_symbol
-            , decimals as src_decimals
             , price as src_price
         from {{ source('prices', 'usd') }}
         {% if is_incremental() %}
@@ -63,8 +65,6 @@ with
             blockchain
             , contract_address as dst_token_address
             , minute
-            , symbol as dst_symbol
-            , decimals as dst_decimals
             , price as dst_price
         from {{ source('prices', 'usd') }}
         {% if is_incremental() %}
@@ -80,14 +80,17 @@ with
             , block_date
             , block_month
             , block_time
-            , coalesce(dst_symbol, '') as token_bought_symbol
-            , coalesce(src_symbol, '') as token_sold_symbol
-            , coalesce(src_symbol, '') || '-' || coalesce(dst_symbol, '') as token_pair
-            , cast(dst_amount as double) / pow(10, dst_decimals) as token_bought_amount
-            , cast(src_amount as double) / pow(10, src_decimals) as token_sold_amount
+            , coalesce(erc20_dst.symbol, '') as token_bought_symbol
+            , coalesce(erc20_src.symbol, '') as token_sold_symbol
+            , array_concat(array_sort(array[coalesce(src_symbol, ''), coalesce(dst_symbol, '')]), '-') as token_pair
+            , cast(dst_amount as double) / pow(10, erc20_dst.decimals) as token_bought_amount
+            , cast(src_amount as double) / pow(10, erc20_src.decimals) as token_sold_amount
             , dst_amount as token_bought_amount_raw
             , src_amount as token_sold_amount_raw
-            , coalesce(cast(src_amount as double) / pow(10, src_decimals) * src_price, cast(dst_amount as double) / pow(10, dst_decimals) * dst_price) as amount_usd
+            , coalesce(
+                cast(src_amount as double) / pow(10, erc20_src.decimals) * src_price, 
+                cast(dst_amount as double) / pow(10, erc20_dst.decimals) * dst_price
+            ) as amount_usd
             , dst_token_address as token_bought_address
             , src_token_address as token_sold_address
             , taker
@@ -100,6 +103,8 @@ with
         from orders
         left join prices_src using(blockchain, src_token_address, minute)
         left join prices_dst using(blockchain, dst_token_address, minute)
+        left join ref('tokens_erc20') erc20_src using(blockchain, src_token_address)
+        left join ref('tokens_erc20') erc20_dst using(blockchain, dst_token_address)
     )
 
 select *
