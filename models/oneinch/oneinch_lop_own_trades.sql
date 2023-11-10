@@ -25,7 +25,7 @@ with
             , tx_from
             , tx_to
             , call_to as project_contract_address
-            , protocol_version as version
+            , if(lower(protocol_version) like '%rfq%', protocol_version||' RFQ', protocol_version) as version
             , call_trace_address
             , maker
             , maker_asset as src_token_address
@@ -72,6 +72,24 @@ with
         {% endif %}
     )
 
+    , tokens_src as (
+        select 
+            blockchain
+            , contract_address as src_token_address
+            , symbol
+            , decimals
+        from {{ ref('tokens_erc20') }}
+    )
+
+    , tokens_dst as (
+        select 
+            blockchain
+            , contract_address as dst_token_address
+            , symbol
+            , decimals
+        from {{ ref('tokens_erc20') }}
+    )
+
     , additions as (
         select
             blockchain
@@ -80,16 +98,16 @@ with
             , block_date
             , block_month
             , block_time
-            , coalesce(erc20_dst.symbol, '') as token_bought_symbol
-            , coalesce(erc20_src.symbol, '') as token_sold_symbol
-            , array_concat(array_sort(array[coalesce(src_symbol, ''), coalesce(dst_symbol, '')]), '-') as token_pair
-            , cast(dst_amount as double) / pow(10, erc20_dst.decimals) as token_bought_amount
-            , cast(src_amount as double) / pow(10, erc20_src.decimals) as token_sold_amount
+            , coalesce(tokens_dst.symbol, '') as token_bought_symbol
+            , coalesce(tokens_src.symbol, '') as token_sold_symbol
+            , concat(array_sort(array[coalesce(tokens_src.symbol, ''), coalesce(tokens_dst.symbol, '')]), '-') as token_pair
+            , cast(dst_amount as double) / pow(10, tokens_dst.decimals) as token_bought_amount
+            , cast(src_amount as double) / pow(10, tokens_src.decimals) as token_sold_amount
             , dst_amount as token_bought_amount_raw
             , src_amount as token_sold_amount_raw
             , coalesce(
-                cast(src_amount as double) / pow(10, erc20_src.decimals) * src_price, 
-                cast(dst_amount as double) / pow(10, erc20_dst.decimals) * dst_price
+                cast(src_amount as double) / pow(10, tokens_src.decimals) * src_price, 
+                cast(dst_amount as double) / pow(10, tokens_dst.decimals) * dst_price
             ) as amount_usd
             , dst_token_address as token_bought_address
             , src_token_address as token_sold_address
@@ -103,8 +121,8 @@ with
         from orders
         left join prices_src using(blockchain, src_token_address, minute)
         left join prices_dst using(blockchain, dst_token_address, minute)
-        left join ref('tokens_erc20') erc20_src using(blockchain, src_token_address)
-        left join ref('tokens_erc20') erc20_dst using(blockchain, dst_token_address)
+        left join tokens_src using(blockchain, src_token_address)
+        left join tokens_dst using(blockchain, dst_token_address)
     )
 
 select *
