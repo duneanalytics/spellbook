@@ -32,7 +32,7 @@ WITH v3_trades as (
         FROM {{ source('zora_v3_ethereum','AsksV1_1_evt_ExchangeExecuted') }}
     )
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
     UNION ALL
     SELECT
@@ -63,7 +63,7 @@ WITH v3_trades as (
         FROM {{ source('zora_v3_ethereum','ReserveAuctionListingErc20_evt_AuctionEnded') }}
     )
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
     UNION ALL
     SELECT
@@ -81,7 +81,7 @@ WITH v3_trades as (
         , evt_index AS sub_tx_trade_id
     FROM {{ source('zora_v3_ethereum','AsksPrivateEth_evt_AskFilled') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
     UNION ALL
     SELECT
@@ -99,7 +99,7 @@ WITH v3_trades as (
         , evt_index AS sub_tx_trade_id
     FROM {{ source('zora_v3_ethereum','AsksCoreEth_evt_AskFilled') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
     )
 
@@ -141,14 +141,17 @@ WITH v3_trades as (
         )
         WHERE cast(amount as uint256) > uint256 '0'
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('evt_block_time')}}
         {% endif %}
     )
     GROUP BY 1,2,3,4
 )
 
 SELECT
-      block_time
+      'ethereum' as blockchain
+    , 'zora' as project
+    , 'v3' as project_version
+    , block_time
     , block_number
     , project_contract_address
     , tx_hash
