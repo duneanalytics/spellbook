@@ -26,7 +26,7 @@ select
     try_cast(date_trunc('day', evt_block_time) as date) as block_date,
     CAST(date_trunc('month', evt_block_time) as DATE) as block_month,
     evt_block_time as creation_time,
-    evt_tx_hash
+    evt_tx_hash as tx_hash
 from {{ source('gnosis_safe_zksync', 'GnosisSafeProxyFactoryv1_3_0_evt_ProxyCreation') }}
 where 
     {% if not is_incremental() %}
