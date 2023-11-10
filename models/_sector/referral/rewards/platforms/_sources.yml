@@ -10,6 +10,9 @@ sources:
   - name: zora_base
     tables:
       - name: ProtocolRewards_evt_RewardsDeposit
+  - name: zora_zora
+    tables:
+      - name: ProtocolRewards_evt_RewardsDeposit
   - name: rabbithole_arbitrum
     tables:
       - name: QuestFactory_evt_MintFeePaid
