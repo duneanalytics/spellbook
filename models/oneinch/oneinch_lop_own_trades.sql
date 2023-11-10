@@ -25,7 +25,7 @@ with
             , tx_from
             , tx_to
             , call_to as project_contract_address
-            , if(lower(protocol_version) like '%rfq%', protocol_version||' RFQ', protocol_version) as version
+            , if(lower(method) like '%rfq%', protocol_version||' RFQ', protocol_version) as version
             , call_trace_address
             , maker
             , maker_asset as src_token_address
