@@ -8,22 +8,22 @@ models:
       project: governance
       contributors: chain_l
     config:
-      tags: ['optimism','agora_snapshot','test_proposals ','governance']
+      tags: ['optimism','agora','snapshot','governance','proposals ']
     description: >
-        analysis of test proposals available on agora and snapshot platform 
+        analysis of optimism governance proposals available on agora and snapshot platform 
     columns:
       - &proposal_id
         name: proposal_id
         description: "The unique identifier of the proposal"
-      
+
       - &proposal_type
         name: proposal_type
         description: "The type of proposal"
-      
+
       - &proposal_description
         name: proposal_description
         description: "A brief description of the proposal"
-      
+
       - &start_block
         name: start_block
         description: "The block timestamp for proposal voting start date"
@@ -39,7 +39,7 @@ models:
       - &end_date
         name: end_date
         description: "The date and time when the proposal voting ended"
-      
+
       - &platform
         name: platform
         description: "The decentralized governance platform on which the proposal was created (e.g., Agora, Snapshot)"
@@ -51,7 +51,7 @@ models:
       - &corresponding_voting_weightage
         name: corresponding_voting_weightage
         description: "The corresponding voting weight of the voter's"
-      
+
       - &corresponding_choices
         name: corresponding_choices
         description: "voter's voting choices(corresponding) for the proposal"
@@ -71,11 +71,11 @@ models:
       - &highest_weighted_voter_percentage
         name: highest_weighted_voter_percentage
         description: "The percentage of the total voting weight that the highest weight voter has"
-      
+
       - &total_for_votingWeightage
         name: total_for_votingWeightage
         description: "The total voting weight of all the votes in favor of the proposal"
-      
+
       - &total_abstain_votingWeightage
         name: total_abstain_votingWeightage
         description: "The total voting weight of all the votes that abstained on the proposal"
@@ -83,11 +83,11 @@ models:
       - &total_against_votingWeightage
         name: total_against_votingWeightage
         description: "The total voting weight of all the votes against the proposal"
-      
+
       - &unique_for_votes
         name: unique_for_votes
         description: "The unique number of votes in favor of the proposal"
-      
+
       - &unique_abstain_votes
         name: unique_abstain_votes
         description: "The unique number of votes that abstained on the proposal"
@@ -107,7 +107,7 @@ models:
       - &proposal_status
         name: proposal_status
         description: "The current status of the proposal"
-  
+
   - name: governor_v5_proposals
     meta:
       blockchain: optimism
@@ -115,14 +115,14 @@ models:
       project: governance
       contributors: chain_l
     config:
-      tags: ['optimism','agora_snapshot','multiple_options_proposals ','governance']
+      tags: ['optimism','governor_v5','agora','proposals ','governance']
     description: >
-        analysis of multiple options proposals available on agora and snapshot platform 
+        analysis of optimism governance proposals available on agora platform 
     columns:
       - *proposal_id
 
       - *proposal_type
-      
+
       - *proposal_description
 
       - *start_block
@@ -132,7 +132,7 @@ models:
       - *end_block
 
       - *end_date
-      
+
       - *platform
 
       - *voters
@@ -150,7 +150,7 @@ models:
       - *highest_weighted_voter_percentage
 
       - *total_for_votingWeightage
-      
+
       - *total_abstain_votingWeightage
 
       - *total_against_votingWeightage
@@ -166,7 +166,7 @@ models:
       - *total_votes_casted
 
       - *proposal_status
-  
+
   - name: snapshot_proposals
     meta:
       blockchain: optimism
@@ -174,14 +174,14 @@ models:
       project: governance
       contributors: chain_l
     config:
-      tags: ['optimism','agora_snapshot','for_against_proposals ','governance']
+      tags: ['optimism','snapshot','proposals ','governance']
     description: >
-        analysis of for_against proposals available on agora and snapshot platform 
+        analysis of optimism governance proposals available on snapshot platform 
     columns:
       - *proposal_id
 
       - *proposal_type
-      
+
       - *proposal_description
 
       - *start_block
@@ -191,7 +191,7 @@ models:
       - *end_block
 
       - *end_date
-      
+
       - *platform
 
       - *voters
@@ -209,7 +209,7 @@ models:
       - *highest_weighted_voter_percentage
 
       - *total_for_votingWeightage
-      
+
       - *total_abstain_votingWeightage
 
       - *total_against_votingWeightage
@@ -225,5 +225,3 @@ models:
       - *total_votes_casted
 
       - *proposal_status
-  
-  

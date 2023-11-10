@@ -353,7 +353,7 @@ GROUP BY
   p.platform
   
   UNION ALL
-
+  
   SELECT
   p.proposal_id,
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
