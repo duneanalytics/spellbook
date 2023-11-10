@@ -90,32 +90,7 @@ with
 
 orders as (
     {% for contract, contract_data in cfg.items() if blockchain in contract_data['blockchains'] %}
-        select
-            '{{ blockchain }}' as blockchain
-            , block_time
-            , tx_hash
-            , tx_from
-            , tx_to
-            , tx_success
-            , contract_name
-            , protocol_version
-            , method
-            , call_from
-            , call_to
-            , call_trace_address
-            , call_selector
-            , maker
-            , maker_asset
-            , making_amount
-            , taker_asset
-            , taking_amount
-            , order_hash
-            , call_success
-            , call_gas_used
-            , call_output
-            , date_trunc('minute', block_time) as minute
-            , date(date_trunc('month', block_time)) as block_month
-        from ({% for method, method_data in contract_data.methods.items() %}
+        select * from ({% for method, method_data in contract_data.methods.items() %}
             select
                 call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
@@ -130,6 +105,8 @@ orders as (
                 , {{ method_data.get("making_amount", "output_0") }} as making_amount
                 , {{ method_data.get("taking_amount", "output_1") }} as taking_amount
                 , {{ method_data.get("order_hash", "null") }} as order_hash
+                , call_block_number as block_number
+                , call_block_time as block_time
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -139,21 +116,6 @@ orders as (
             )
             {% if not loop.last %} union all {% endif %}
         {% endfor %})
-        join (
-            select
-                block_time
-                , hash as tx_hash
-                , "from" as tx_from
-                , "to" as tx_to
-                , success as tx_success
-            from {{ source(blockchain, 'transactions') }}
-            where 
-                {% if is_incremental() %} 
-                    {{ incremental_predicate('block_time') }}
-                {% else %} 
-                    block_time >= timestamp '{{ contract_data['start'] }}' 
-                {% endif %}
-        ) using(tx_hash)
         join (
             select
                 tx_hash
@@ -175,7 +137,40 @@ orders as (
     {% endfor %}
 )
 
-select *
-from orders
+
+select
+    '{{ blockchain }}' as blockchain
+    , block_time
+    , tx_hash
+    , tx_from
+    , tx_to
+    , tx_success
+    , contract_name
+    , protocol_version
+    , method
+    , call_from
+    , call_to
+    , call_trace_address
+    , call_selector
+    , maker
+    , maker_asset
+    , making_amount
+    , taker_asset
+    , taking_amount
+    , order_hash
+    , call_success
+    , call_gas_used
+    , call_output
+    , date_trunc('minute', block_time) as minute
+    , date(date_trunc('month', block_time)) as block_month 
+from (
+    {{
+        add_tx_columns(
+            model_cte = 'orders'
+            , blockchain = blockchain
+            , columns = ['from', 'to', 'success']
+        )
+    }}
+)
 
 {% endmacro %}
