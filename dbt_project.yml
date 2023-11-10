@@ -1380,10 +1380,3 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
-      
-    gyroscope:
-      +schema: gyroscope
-      ethereum:
-        +schema: gyroscope_ethereum
-      polygon:
-        +schema: gyroscope_polygon
