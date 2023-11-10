@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('events_add_margin'),
+    alias = 'events_add_margin',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -25,6 +25,7 @@ WITH
     ,'TradingV3_evt_AddToPosition'
     , 'TradingV4_evt_AddToPosition'
     , 'TradingV5_evt_AddToPosition'
+    , 'TradingV6_evt_AddToPosition'
 ] %}
 
 {% set add_margin_v1_call_tables = [
@@ -49,7 +50,7 @@ add_margin_events AS (
             ap.contract_address as project_contract_address
         FROM {{ source('tigristrade_arbitrum', add_margin_trading_evt) }} ap
         {% if is_incremental() %}
-        WHERE ap.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -67,7 +68,7 @@ add_margin_calls AS (
             ap._addMargin/1e18 as margin_change
         FROM {{ source('tigristrade_arbitrum', add_margin_trading_call) }} ap
         {% if is_incremental() %}
-        WHERE ap.call_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

@@ -20,10 +20,6 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_seed:
-          blockchain: ethereum
-          project: kyberswap
-          version: elastic
     columns:
       - &blockchain
         name: blockchain

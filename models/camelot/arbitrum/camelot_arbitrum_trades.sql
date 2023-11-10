@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-        alias = alias('trades'),
+{{ config(
+        alias = 'trades',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "camelot",
@@ -8,7 +8,8 @@
 }}
 
 {% set camelot_models = [
-ref('camelot_v1_arbitrum_trades')
+ref('camelot_v1_arbitrum_trades'),
+ref('camelot_v3_arbitrum_trades')
 ] %}
 
 

@@ -1,11 +1,11 @@
 {{
     config(
         schema = 'oneinch',
-        alias = alias('fusion_executors'),
+        alias = 'fusion_executors',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['resolver_executor', 'chain_id'],
-        tags = ['dunesql']
+        
     )
 }}
 

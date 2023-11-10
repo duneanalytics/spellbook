@@ -1,7 +1,7 @@
 {{ config(
-	tags=['dunesql'],
+	
     schema = 'tigris_arbitrum',
-    alias = alias('events_limit_cancel'),
+    alias = 'events_limit_cancel',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -25,6 +25,7 @@ WITH
     ,'TradingV3_evt_LimitCancelled'
     ,'TradingV4_evt_LimitCancelled'
     ,'TradingV5_evt_LimitCancelled'
+    ,'TradingV6_evt_LimitCancelled'
 ] %}
 
 limit_orders_v1 AS (
@@ -42,7 +43,7 @@ limit_orders_v1 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_arbitrum', limit_cancel_trading_evt) }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL

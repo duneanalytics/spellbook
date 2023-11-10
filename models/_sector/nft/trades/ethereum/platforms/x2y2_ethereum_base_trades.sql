@@ -1,8 +1,7 @@
 {{ config(
     schema = 'x2y2_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -16,17 +15,16 @@
 
 WITH src_evt_inventory as (
     SELECT
-     cast(date_trunc('month',evt_block_time) as date) as block_date
-    ,evt_block_time as block_time
+     evt_block_time as block_time
     ,evt_block_number as block_number
     ,evt_tx_hash as tx_hash
     ,contract_address as project_contract_address
-    ,case when intent = cast(1 as uint256) then taker else maker end as buyer
-    ,case when intent = cast(1 as uint256) then maker else taker end as seller
+    ,case when intent = uint256 '1' then taker else maker end as buyer
+    ,case when intent = uint256 '1' then maker else taker end as seller
     ,from_hex(substring(JSON_EXTRACT_SCALAR(inv.item, '$.data'), 155, 40)) as nft_contract_address
     ,bytearray_to_uint256(from_hex(substring(JSON_EXTRACT_SCALAR(inv.item, '$.data'), 195,64))) as nft_token_id
-    ,CAST(1 AS UINT256) AS nft_amount
-    ,case when intent = cast(1 as uint256) then 'Buy' else 'Offer Accepted' end as trade_category
+    ,UINT256 '1' AS nft_amount
+    ,case when intent = uint256 '1' then 'Buy' else 'Offer Accepted' end as trade_category
     ,'secondary' as trade_type
     ,currency as currency_contract
     ,cast(JSON_EXTRACT_SCALAR(inv.item, '$.price') as UINT256) as price_raw
@@ -62,8 +60,7 @@ WITH src_evt_inventory as (
 
 -- results
 SELECT
-  block_date
-, block_time
+  block_time
 , block_number
 , tx_hash
 , project_contract_address

@@ -1,11 +1,18 @@
 {{ config(
-        alias = alias('erc721_latest'),
+tags=['prod_exclude'],
+        alias = 'erc721_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",
                                             \'["hildobby","soispoke","dot2dotseurat"]\') }}'
         )
 }}
+
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
+
 SELECT
     'ethereum' as blockchain,
     b.wallet_address,

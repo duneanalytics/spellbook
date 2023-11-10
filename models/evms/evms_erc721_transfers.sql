@@ -1,8 +1,8 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc721_transfers'),
+        
+        alias = 'erc721_transfers',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,6 +20,8 @@
      , ('arbitrum', source('erc721_arbitrum', 'evt_transfer'))
      , ('celo', source('erc721_celo', 'evt_transfer'))
      , ('base', source('erc721_base', 'evt_transfer'))
+     , ('goerli', source('erc721_goerli', 'evt_transfer'))
+     , ('zksync', source('erc721_zksync', 'evt_transfer'))
 ] %}
 
 SELECT *

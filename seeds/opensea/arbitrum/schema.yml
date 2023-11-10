@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: opensea_arbitrum_seaport_trades_samples
     config:
-      tags: dunesql
       column_types:
         token_id: uint256
         tx_hash: varbinary

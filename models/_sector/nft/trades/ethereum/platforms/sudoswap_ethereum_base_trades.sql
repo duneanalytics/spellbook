@@ -1,8 +1,7 @@
 {{ config(
     schema = 'sudoswap_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -180,7 +179,7 @@ WITH
                     ELSE int256 '0' END)
                 ELSE ( -- caller sells, AMM buys
                     CASE WHEN tr."from" = sb.pair_address THEN cast(value as int256) -- all ETH leaving the pool, nothing should be coming in on a sell.
-                    ELSE cast(0 as int256) END)
+                    ELSE int256 '0' END)
                 END ) as uint256) as trade_price -- what the buyer paid (incl all fees)
             , SUM(
                 CASE WHEN (tr.to = sb.protocolfee_recipient) THEN cast(value as uint256)
@@ -224,8 +223,7 @@ WITH
 
     ,swaps_cleaned as (
         SELECT
-             cast(date_trunc('month', call_block_time) as date) AS block_date
-            , call_block_time as block_time
+             call_block_time as block_time
             , call_block_number as block_number
             , nft_token_id
             , cardinality(nft_token_id) as number_of_items
@@ -250,8 +248,7 @@ WITH
     )
 
 SELECT
-      block_date
-    , block_time
+      block_time
     , block_number
     , tx_hash
     , project_contract_address
@@ -259,13 +256,13 @@ SELECT
     , seller
     , nft_contract_address
     , one_nft_token_id as nft_token_id --nft.trades prefers each token id be its own row
-    , cast(1 as uint256) as nft_amount
+    , uint256 '1' as nft_amount
     , trade_type
     , trade_category
     , currency_contract
     , cast(price_raw/number_of_items as uint256) as price_raw
     , cast(platform_fee_amount_raw/number_of_items as uint256) as platform_fee_amount_raw
-    , cast(0 as uint256) as royalty_fee_amount_raw
+    , uint256 '0' as royalty_fee_amount_raw
     , cast(pool_fee_amount_raw/number_of_items as uint256) as pool_fee_amount_raw
     , protocolfee_recipient as platform_fee_address
     , cast(null as varbinary) as royalty_fee_address

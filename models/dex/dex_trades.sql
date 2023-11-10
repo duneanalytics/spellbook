@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('trades'),
+        
+        alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -73,6 +73,9 @@
 ,ref('ubeswap_celo_trades')
 ,ref('opx_finance_optimism_trades')
 ,ref('mauve_trades')
+,ref('openxswap_optimism_trades')
+,ref('wardenswap_optimism_trades')
+,ref('openocean_optimism_trades')
 ] %}
 
 

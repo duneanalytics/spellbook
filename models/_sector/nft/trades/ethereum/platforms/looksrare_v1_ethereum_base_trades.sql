@@ -1,8 +1,7 @@
 {{ config(
     schema = 'looksrare_v1_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
-    partition_by = ['block_date'],
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -95,8 +94,7 @@ WITH looksrare_trades AS (
 
 
 SELECT
-  cast(date_trunc('month', lr.block_time) as date) AS block_date
-, lr.block_time
+  lr.block_time
 , lr.block_number
 , lr.tx_hash
 , lr.project_contract_address
@@ -110,7 +108,7 @@ SELECT
 , lr.currency_contract
 , lr.price_raw
 , CAST(COALESCE((pf.fee_percentage/100)*CAST(lr.price_raw as uint256),  DOUBLE '0') as UINT256) AS platform_fee_amount_raw
-, COALESCE(roy.amount, cast(0 as uint256)) AS royalty_fee_amount_raw
+, COALESCE(roy.amount, uint256 '0') AS royalty_fee_amount_raw
 , cast(null as varbinary) as platform_fee_address
 , roy.royaltyRecipient AS royalty_fee_address
 , lr.evt_index AS sub_tx_trade_id

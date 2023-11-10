@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: raydium_clmm_solana
+    description: "raydium_clmm_solana v3 decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: amm_v3_call_createPool
+        loaded_at_field: call_block_time
+      - name: amm_v3_call_swap
+        loaded_at_field: call_block_time
+      - name: amm_v3_call_swapV2
+        loaded_at_field: call_block_time
+  - name: raydium_amm_solana
+    description: "raydium_amm_solana v4 decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: raydium_amm_call_initialize2
+        loaded_at_field: call_block_time
+      - name: raydium_amm_call_initialize
+        loaded_at_field: call_block_time
+      - name: raydium_amm_call_swapBaseOut
+        loaded_at_field: call_block_time
+      - name: raydium_amm_call_swapBaseIn
+        loaded_at_field: call_block_time

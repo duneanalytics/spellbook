@@ -15,7 +15,7 @@ WITH base_union as (
         '{{ blockchain }}' as blockchain,
         '{{ nft_model[0] }}' as project,
         '{{ nft_model[1] }}' as project_version,
-        block_date,
+        cast(date_trunc('day', block_time) as date) as block_date,
         cast(date_trunc('month', block_time) as date) as block_month,
         block_time,
         block_number,

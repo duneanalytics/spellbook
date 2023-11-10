@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: magiceden_polygon_sample_trades
     config:
-      tags: dunesql
       column_types:
         tx_hash: varbinary
         nft_contract_address: varbinary

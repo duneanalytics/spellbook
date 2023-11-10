@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('events_liquidate_position'),
+    alias = 'events_liquidate_position',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -32,6 +32,7 @@ WITH
     ,'TradingV3_evt_PositionLiquidated'
     ,'TradingV4_evt_PositionLiquidated'
     ,'TradingV5_evt_PositionLiquidated'
+    ,'TradingV6_evt_PositionLiquidated'
 ] %}
 
 liquidate_position_v1_1 AS (
@@ -49,7 +50,7 @@ liquidate_position_v1_1 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_polygon', liquidate_position_trading_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -73,7 +74,7 @@ liquidate_position_v1_2 AS (
             _trader as trader
         FROM {{ source('tigristrade_polygon', liquidate_position_trading_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE 1 = 0 
         {% endif %}
         {% if not loop.last %}
         UNION ALL
