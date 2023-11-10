@@ -21,7 +21,7 @@ select
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
     -CAST(et.value AS INT256) as amount_raw,
-    et.tx_hash,
+    et.tx_hash as traces_tx_hash, --different to the tx hash in block explorer and zksync.transactions
     array_join(et.trace_address, ',') as trace_address
 from {{ source('zksync', 'traces') }} et
 join {{ ref('safe_zksync_safes') }} s on et."from" = s.address
@@ -45,7 +45,7 @@ select
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
     CAST(et.value AS INT256) as amount_raw,
-    et.tx_hash,
+    et.tx_hash as traces_tx_hash, --different to the tx hash in block explorer and zksync.transactions
     array_join(et.trace_address, ',') as trace_address
 from {{ source('zksync', 'traces') }} et
 join {{ ref('safe_zksync_safes') }} s on et.to = s.address
