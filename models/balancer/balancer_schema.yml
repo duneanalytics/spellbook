@@ -222,7 +222,7 @@ models:
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
-      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
