@@ -1,6 +1,6 @@
 {{config(alias = 'dex',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "addresses",
                                     \'["rantum"]\') }}')}}
