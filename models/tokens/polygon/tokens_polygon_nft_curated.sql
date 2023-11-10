@@ -1633,11 +1633,6 @@ FROM (VALUES
         (0x26676a456bca88e418f9ea4b33a707364c0b5876, 'Parcel MVFW Wearables', 'DCL-PRCLMVFWWRBLS'),
         (0x267190a7aa1a6bc15581be91944eea06efbc56ad, 'Jetpack Minook', 'SWEDC'),
         (0x267c938e47ea166fe246f4c2526c1d9e2a3d7af8, 'G.G. Bomber Jacket', 'DCL-G.G.BMBRJCKT'),
-"        (0x267f691bdedce66ace069913635bf32afc8f9658, 'function _abstract(val, env) {
-    return ""["".concat(env.toUpperCase(), ""] "").concat(val.toString().split('' '').map(function (s) {
-      return s.substring(0, 2);
-    }).join('' ''), "" "").concat((0, auth_1.createRandomNumericString)(6));
-  }11', '[DEVELOPMENT] Ma Ha 077583'),"
         (0x267f7be23760743f0e415a28f56da5129ea11aa9, 'Hypernet.ID', 'Pseudo-anonymous identity verifica'),
         (0x267fc8a77c2642b7e28ac2dbe90a1c0e0db32df9, 'ALIENZNBOTZ', 'ABZ'),
         (0x2688857dbe8e4d6d94f529c159d4710e25054022, 'Huggy Wuggy', 'SWEDC'),
@@ -3478,8 +3473,7 @@ FROM (VALUES
         (0x50d4d74db3d17a314031fae985493825679aad39, 'Skyverse Metaverse', 'SV'),
         (0x50d5d8e83bb24cd9ea0f883d5b9c40627554b6cf, 'Small Bros OfficiaI', 'SMA'),
         (0x50dca82583e8e14c92b9ee855c0ba2c104a9c251, 'CryptoMonsters', 'MNSTRS'),
-"        (0x50e06e0e61f34cc8fc3fe57f31c95a6511f41a75, 'Perp Finance
-', 'Perp'),"
+        (0x50e06e0e61f34cc8fc3fe57f31c95a6511f41a75, 'Perp Finance', 'Perp'),
         (0x50e82c74a5efeec364835b77759388a607cd5869, 'Universe Of Blacks', 'UOB'),
         (0x50eae59e791eb7512915aaf9fdabe1a7f2bf969d, 'Aeron_Treasures', 'DCL-ARN_TRSRS'),
         (0x50ebbeb9fe6a4f206f2c44f1e36748400b0b774a, 'Project Galaxy Space Expedition', 'Project Galaxy Space Expedition'),
@@ -6180,11 +6174,6 @@ FROM (VALUES
         (0x8d74f47352f22f8bc87fceaf4cb4db0a31f02c39, 'YukiAzumaTokyoCollectableClub', 'TCC'),
         (0x8d78fbca686cdb3ef39fe70988a3f2ac4eb8a9b4, 'DrMayhem', 'RXHAM'),
         (0x8d7f6deb1934c9be72088699ff54baaf50609852, 'Ent NFT', 'ENT'),
-"        (0x8d879f5f0fc1f01f102098b072fa501f2692f551, 'function _abstract(val, env) {
-    return ""["".concat(env.toUpperCase(), ""] "").concat(val.toString().split('' '').map(function (s) {
-      return s.substring(0, 2);
-    }).join('' ''), "" "").concat((0, auth_1.createRandomNumericString)(6));
-  }8', '[DEVELOPMENT] Jo Ta 495124'),"
         (0x8d8c7545836c36f4052503bfb3d16484897de2d5, 'The Council Of Ronin NFT Genesis Collection', 'CoR'),
         (0x8d94e013ca2f1be0574ae38b2cdfb74b4fb91069, 'Hostile Squirrel', 'HS'),
         (0x8d98345a8f3071b002d919dad005472954347d71, 'DazzlingDucks', 'DZD'),
@@ -7277,8 +7266,7 @@ FROM (VALUES
         (0xa690c89558a39709e1f0dde0f8825a83d438fce4, 'OSIS MetaBadges', 'Genesis'),
         (0xa6a4041268f035d4edc63aaa6ad2938031560fbc, 'BLACKROSE AI ART', 'BLACKROSE'),
         (0xa6a59f7a7b1401670ea09dc5554b55757163e20d, 'Bored Vibes Black Hoodies', 'DCL-BRDVBSBLCKHDS'),
-"        (0xa6a80989a8d479527591544b2ea5b6b37c622c60, 'Perp Finance
-', 'Perp'),"
+        (0xa6a80989a8d479527591544b2ea5b6b37c622c60, 'Perp Finance', 'Perp'),
         (0xa6ad0f3e1b293414fe498fdd92bff317ec57b3c7, 'DinkyTurtles', 'DT'),
         (0xa6b0eef8c87fb1544689b05d22e3fd55e4fe369b, 'Billionaire Zombies Club - Skeleton Keys 3D', 'BZC-SK'),
         (0xa6baa493fe25984c57bf940542a54460a5a65f47, 'Tony Emotions', 'TE'),
@@ -7495,11 +7483,6 @@ FROM (VALUES
         (0xabddfa8a589379175bc039dcb925aebddd8c0317, 'Baskerville Club', 'Basker'),
         (0xabde439a20dc4ded77dcb374581e573dcf251b2f, 'Warline ART', 'PP'),
         (0xabe3bcff1187da0abfe803300210177d93c89b05, 'NFT Diario', 'NFTD'),
-"        (0xabe95ff0218d919184702b437d6ae689d6acf1c7, 'function _abstract(val, env) {
-    return ""["".concat(env.toUpperCase(), ""] "").concat(val.toString().split('' '').map(function (s) {
-      return s.substring(0, 2);
-    }).join('' ''), "" "").concat((0, auth_1.createRandomNumericString)(6));
-  }15', '[DEVELOPMENT] Ju Br 391645'),"
         (0xabee8e0448008215ec4a714f73107ec44d29143d, 'BubbleBrosLEC', 'BBLEC'),
         (0xabf479e9f33676cf3ec03babf3aa80482bbd306a, 'GossApe Girl Official Polygon', 'GAG'),
         (0xac09e465e2b05f4441a95938a478772dc539a6c3, 'Mint Couture', 'DCL-MNTCTR'),

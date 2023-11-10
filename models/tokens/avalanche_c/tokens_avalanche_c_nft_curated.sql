@@ -9784,7 +9784,7 @@ FROM (VALUES
         (0xc8c5241eb197ec4413738a477115d65548bf5710, 'Cleveland Indians® Aaron Civale Rookie and Future Phenoms Facsimile Signature White 12 Rare', 'MLB-INC21-R-RC12-WHT'),
         (0xc8c7afe1e6f2037b1b7dfaa696d66709507288af, 'Los Angeles Dodgers® Clayton Kershaw Super Short Print White 41 Super Rare', 'MLB-22S1-S-SSP4-M-WHI'),
         (0xc8d2e8968d199fbe23c08b8979f523b7296ac990, 'Atlanta Braves™ Dansby Swanson Champs Gold 4 Legendary', 'MLB-21POST-L-C4-M-GOL'),
-"        (0xc8d6f3895cf672c5656f03a30764119d529a631f, 'Знаряддя народовладдя	(Tools of nation power)', 'nation'),"
+        (0xc8d6f3895cf672c5656f03a30764119d529a631f, 'Знаряддя народовладдя	(Tools of nation power)', 'nation'),
         (0xc8d7bfecbe36263086157cbadd10ad6301267bbe, 'Tag Team of Terror (1973) Moment Color 2 Uncommon', 'GDZ-GVG22-U-M2-V-COL'),
         (0xc8e027d92413c7be36f5395202342d5f26ff22bc, 'Houston Astros® Chas McCormick Base Independence Day RWB 135 Rare', 'MLB-22S1-R-B134-M-RWB'),
         (0xc8e043e9749587289e427a74907829598c48127f, 'Uncommon Comic 1 1-1 Bazooka Joe 2021 NFT', 'BZK-U-1C'),
