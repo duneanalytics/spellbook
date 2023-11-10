@@ -54,7 +54,7 @@ SELECT contract_address, symbol, decimals
 ,(0x250632378e573c6be1ac2f97fcdf00515d0aa91b, 'BETH', 18)
 ,(0x81859801b01764d4f0fa5e64729f5a6c3b91435b, 'BFI', 18)
 ,(0xca3f508b8e4dd382ee878a314789373d80a5190a, 'BIFI', 18)
-,(0x63870a18b6e42b01ef1ad8a2302ef50b7132054f, 'BLK', 6)
+,(0x63870a18b6e42b01ef1ad8a2302ef50b7132054f, 'blink', 6)
 ,(0x935a544bf5816e3a7c13db2efe3009ffda0acda2, 'BLZ', 18)
 ,(0x08ba0619b1e7a582e0bce5bbe9843322c954c340, 'BMON', 18)
 ,(0x4131b87f74415190425ccd873048c708f8005823, 'bMXX', 18)
@@ -5720,7 +5720,6 @@ SELECT contract_address, symbol, decimals
 (0x0da0160a39bc2c17edc824cbd7b93188dd223063, 'Cake-LP', 18),
 (0x0dae8daceaef3a0cc23bb059831b01be2c1ba832, 'OBA', 18),
 (0x0dc44e742941d4c935d6113a3b643656c5092d93, 'TLP', 18),
-(0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82, 'Cake', 18),
 (0x0e2319e30798c04d48796d1e0ddbe11402f4ef15, 'SLP', 18),
 (0x0e3473d3731c59bc47eed65365ce52873519cf11, 'OMG-V2', 18),
 (0x0e6deeec6c11b80826c7eb271f14ba62c569cb8a, 'SDLP', 18),
@@ -6954,7 +6953,6 @@ SELECT contract_address, symbol, decimals
 (0x6330c052e35f23ad219ad9afbaddf53a68f2b2b2, 'BLP', 18),
 (0x634ebe317efb0c09d9e8fa4818c560296086ffd8, 'BPT', 18),
 (0x63507869588c3578cb15f4d05b494658c024a262, 'BLP', 18),
-(0x63870a18b6e42b01ef1ad8a2302ef50b7132054f, 'blink', 6),
 (0x639d7e3e71559cf1f0a3fd9e939b02fc1b082a40, 'WBNB_BUSD_LP', 18),
 (0x63a2cef28904956552714ddb226cee96c3f0c9ef, 'mooDOT', 18),
 (0x63ac9a6637d2d15ccccdf85d496e6c0e71193389, 'BCTK', 6),

@@ -721,6 +721,5 @@ FROM (VALUES
         (0xfc1acf07202f6fac951947427b79284d86a965d2, 'SLP', 18),
         (0xfec5cf70565fd5751cc92cdfc951effb1320ac42, 'SLP', 18),
         (0xff13348778cc2ced614f6f73a8e488ac11292f25, 'SLP', 18),
-        (0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'FIAT', 6),
         (0xffa7d5144373dd0b9b5987386a02fef9b7593559, 'BTC-USDC-20211008-LINK', 18)
      ) AS temp_table (contract_address, symbol, decimals)
