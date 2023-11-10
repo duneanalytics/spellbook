@@ -2119,8 +2119,7 @@ FROM (VALUES
         (0x0eae03098d9b5d6159b5628e73505f2b374b0201, 'Adventure collection', '#1'),
         (0x0eb9812ffa3f85a53efafe4b7a7a6c314a3489a7, 'Tampa Bay Rays™ Vidal Brujan Base Glitch 25 Uncommon', 'MLB-22S1-U-B25-M-GLI'),
         (0x0ebe407294c60edd07788328e2e8b6d793fd3647, 'BlockLeader User', 'BLU'),
-"        (0x0ec3f4997d054988998549ee339fa457a320135d, 'Atlanta Braves™ Dansby Swanson/
-Jorge Soler Topps NOW White 1026 Rare', 'MLB-21NOW-R-TN1026-WHI'),"
+        (0x0ec3f4997d054988998549ee339fa457a320135d, 'Atlanta Braves™ Dansby Swanson/Jorge Soler Topps NOW White 1026 Rare', 'MLB-21NOW-R-TN1026-WHI'),
         (0x0ece57a677d5e72d1ad45774239e23463cf1d743, 'Coin98 NFT Mint', 'C98NFTMint'),
         (0x0ed3504a674fbc0c826119a0980dca22e8039e22, 'Los Angeles Dodgers® David Price P Base Static Gold 416 Uncommon', 'MLB-S221-U-B416-GOL'),
         (0x0ee3d7cd1003933236e0155bb01f076c369296a4, 'AVAX PDX x st0ked 2022', 'st0ked'),
@@ -10665,8 +10664,7 @@ Jorge Soler Topps NOW White 1026 Rare', 'MLB-21NOW-R-TN1026-WHI'),"
         (0xde5f97ad128cb41309528eaa62bdfcbb6b518210, '8-bit leopards', '8BITLEO'),
         (0xde63c3ecd958ba42885cb4f4c32a22eca608b7bb, 'Borussia Dortmund Thorgan Hazard Base Players Gold 10 Rare', 'BUND-SC21-R-BP10-GLD'),
         (0xde687f3c1bc2855222d9b7aa5566d3e70734fa7c, 'St. Louis Cardinals® Paul Goldschmidt Pure Power Facsimile Signature Reward White 3307 Legendary', 'MLB-22PRICR-L-PPR3-M-WHI'),
-"        (0xde6acfc5a7628a2e7d6af893c15b89d4b7bd2bf8, 'Atlanta Braves™ Dansby Swanson/
-Jorge Soler WS Redemption Gold 1026 Rare', 'MLB-21NOW-R-WS1026-GOL'),"
+        (0xde6acfc5a7628a2e7d6af893c15b89d4b7bd2bf8, 'Atlanta Braves™ Dansby Swanson/Jorge Soler WS Redemption Gold 1026 Rare', 'MLB-21NOW-R-WS1026-GOL'),
         (0xde6eaded3093d84fa40f1cbcb04a22886f221f3c, 'Philadelphia Phillies® Rhys Hoskins Facsimile Signature Gold 3021 Super Rare', 'MLB-22PRI-S-FS43-M-GLD'),
         (0xde6fa48a61f3732c32ed21df6d997210fa341164, 'TriPod-X', 'TriPod-X'),
         (0xde73103c53b82a5071225c1a5b53b0dc75c76ac5, 'JohannesBeavers', 'JBV'),
