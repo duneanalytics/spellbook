@@ -8,7 +8,7 @@ models:
       project: tokenlon
       contributors: izayl
     config:
-      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
+      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
       Tokenlon AMM v1 trades
     tests:

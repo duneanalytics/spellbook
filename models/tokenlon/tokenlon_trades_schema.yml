@@ -8,7 +8,7 @@ models:
       project: tokenlon
       contributors: izayl
     config:
-      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
+      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
       Tokenlon aggregator trades on all chains across all contracts and versions. This table will load dex_aggregator trades downstream.
     columns:
