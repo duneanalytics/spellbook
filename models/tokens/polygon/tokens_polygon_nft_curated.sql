@@ -11080,4 +11080,4 @@ FROM (VALUES
         (0xffe2958d1fb73533e107f1889d31e3a9d93d68c2, 'Phetta From Phettaverse', 'DCL-PHTTFRMPHTTVRS'),
         (0xffe32ad63e4df4924d2389345fecb3aaa40c1c7e, 'Azuki Polygon', 'OPP'),
         (0xffe90453584d1e7cb66f52ec32cce9e7093b057d, 'HalfSucker', 'HSNFT')
-) as temp_table (contract_address, name)
+) as temp_table (contract_address, name, symbol)
