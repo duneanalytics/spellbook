@@ -1117,7 +1117,7 @@ FROM (VALUES
         (0xf33acad4513dc35399d6d12aff331f2a7f4c8306, 'InesAranda', 'Ine'),
         (0xf360cab55aabe40b5ec772ab258bb2ae85a60610, 'ArbiworldPirateShipsNFT', 'WHEAT'),
         (0xf3705b17b59de05c5a48af4a3888e603afeeb7b3, 'Camelot staking position NFT', 'spNFT'),
-        (0xf377d9f65be908545ea877887eec55a53d4cc37b, 'Zorro's DeFi Squad', 'Zorro's DeFi Squad Member'),
+        (0xf377d9f65be908545ea877887eec55a53d4cc37b, 'Zorro''s DeFi Squad', 'Zorro''s DeFi Squad Member'),
         (0xf3ba0ef58f5574d6231f0c896b623a81fe3079bb, 'Twoge NFTs', 'Twoge'),
         (0xf3dc804f51e37cc1a05b9ca3fa7e9912cc7be8b8, 'Bard', 'B'),
         (0xf3e32f8a7723d5f284206f28885615dd32e1354d, 'Camelot staking position NFT', 'spNFT'),
