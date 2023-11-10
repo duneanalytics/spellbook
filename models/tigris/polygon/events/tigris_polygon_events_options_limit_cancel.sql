@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('options_limit_cancel'),
+    alias = 'options_limit_cancel',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +14,8 @@ WITH
 
 {% set limit_cancel_tables = [
     'options_evt_OptionsLimitCancelled',
-    'Options_V2_evt_OptionsLimitCancelled'
+    'Options_V2_evt_OptionsLimitCancelled',
+    'Options_V3_evt_OptionsLimitCancelled'
 ] %}
 
 limit_cancel_v2 AS (

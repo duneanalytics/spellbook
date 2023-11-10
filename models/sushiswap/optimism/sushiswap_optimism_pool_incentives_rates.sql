@@ -1,6 +1,5 @@
 {{ config(
-    tags=['dunesql']
-    , alias = alias('pool_incentives_rates')
+     alias = 'pool_incentives_rates'
     , materialized = 'table'
     )
 }}

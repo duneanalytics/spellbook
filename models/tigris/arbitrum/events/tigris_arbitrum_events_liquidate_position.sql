@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('events_liquidate_position'),
+    alias = 'events_liquidate_position',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -25,6 +25,7 @@ WITH
     ,'TradingV3_evt_PositionLiquidated'
     ,'TradingV4_evt_PositionLiquidated'
     ,'TradingV5_evt_PositionLiquidated'
+    ,'TradingV6_evt_PositionLiquidated'
 ] %}
 
 liquidate_position_v1 AS (

@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('trades'),
+        
+        alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -42,7 +42,7 @@
 ,ref('spookyswap_fantom_trades')
 ,ref('beethoven_x_trades')
 ,ref('rubicon_trades')
-,ref('equalizer_exchange_fantom_trades')
+,ref('equalizer_fantom_trades')
 ,ref('wigoswap_fantom_trades')
 ,ref('arbswap_trades')
 ,ref('spiritswap_fantom_trades')

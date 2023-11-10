@@ -1,6 +1,6 @@
 {{
-    config(tags=['dunesql'],
-        alias = alias('contract_deployers_goerli'),
+    config(
+        alias = 'contract_deployers_goerli',
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
                                     "labels",

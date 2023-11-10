@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('options_trades'),
+    alias = 'options_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -177,6 +177,8 @@ limit_cancel as (
     WHERE op.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
+
+-- use to reload
 
 SELECT * FROM open_position
 

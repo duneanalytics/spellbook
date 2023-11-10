@@ -1,5 +1,7 @@
 version: 2
 
+models:version: 2
+
 models:
   - name: staking_ethereum_entities
     meta:
@@ -15,13 +17,32 @@ models:
             - depositor_address
             - tx_from
             - pubkey
+            - withdrawal_credentials
     columns:
       - name: depositor_address
-        description: "Address of indentified depositor entity"
+        description: "Address of identified depositor entity"
+        tests:
+          - unique:
+              config:
+                where: "depositor_address is not null"
       - name: tx_from
         description: "Address that initiated the ETH staking deposit"
+        tests:
+          - unique:
+              config:
+                where: "tx_from is not null"
       - name: pubkey
-        description: "Pubkey of indentified validator"
+        description: "Pubkey of identified validator"
+        tests:
+          - unique:
+              config:
+                where: "pubkey is not null"
+      - name: withdrawal_credentials
+        description: "Withdrawal Credentials of identified validator"
+        tests:
+          - unique:
+              config:
+                where: "withdrawal_credentials is not null"
       - name: entity
         description: "Identified entity name"
       - name: entity_unique_name
@@ -30,7 +51,7 @@ models:
         description: "Category of entity"
         tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pools', 'Liquid Staking', 'Independent Staker', 'Batch Staking Contract', 'Others']
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
 
   - name: staking_ethereum_deposits
     meta:

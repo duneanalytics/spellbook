@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: dex_offers_seed
     config:
-      tags: dunesql
       column_types:
         block_date: date
         version: varchar

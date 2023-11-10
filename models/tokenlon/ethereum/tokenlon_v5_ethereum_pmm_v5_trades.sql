@@ -1,7 +1,7 @@
 {{ config(
     schema = 'tokenlon_v5_ethereum',
-    tags=['dunesql'],
-    alias = alias('pmm_v5_trades'),
+    
+    alias = 'pmm_v5_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
