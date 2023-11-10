@@ -1,5 +1,6 @@
 {{ config(
     
+    schema = 'equalizer_fantom',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
@@ -7,13 +8,13 @@
     unique_key = ['pool'],
     post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
-                                "equalizer_exchange",
+                                "equalizer",
                                 \'["Henrystats"]\') }}'
     )
 }}
 
 SELECT 'fantom' AS blockchain
-, 'equalizer_exchange' AS project
+, 'equalizer' AS project
 , '1' AS version
 , pair AS pool
 , CASE WHEN stable = true THEN CAST(0.02 as decimal) ELSE CAST(0.2 as decimal) END as fee 

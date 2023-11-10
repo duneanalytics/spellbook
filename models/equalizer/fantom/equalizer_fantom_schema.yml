@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: equalizer_exchange_fantom_trades
+  - name: equalizer_fantom_trades
     meta:
       blockchain: fantom
       sector: dex
-      project: equalizer_exchange
+      project: equalizer
       contributors: Henrystats
     config:
-      tags: ['fantom','equalizer_exchange','trades','dex']
+      tags: ['fantom','equalizer','trades','dex']
     description: >
-        equalizer_exchange contract trades on fantom
+        equalizer contract trades on fantom
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -22,7 +22,7 @@ models:
             - evt_index
       - check_dex_seed:
           blockchain: fantom
-          project: equalizer_exchange
+          project: equalizer
           version: 1
     columns:
       - &blockchain
@@ -95,7 +95,7 @@ models:
         name: evt_index
         description: ""
 
-  - name: equalizer_exchange_fantom_pools
+  - name: equalizer_fantom_pools
     meta:
       blockchain: fantom
       sector: dex
@@ -124,3 +124,4 @@ models:
         description: "Block number of pool creation"
       - name: contract_address
         description: "Contract address used to create the pool"
+        
