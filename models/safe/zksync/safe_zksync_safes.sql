@@ -30,8 +30,8 @@ select
 from {{ source('gnosis_safe_zksync', 'GnosisSafeProxyFactoryv1_3_0_evt_ProxyCreation') }}
 where 
     {% if not is_incremental() %}
-    and et.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
+    et.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
-    and et.block_time > date_trunc('day', now() - interval '7' day)
+    {{ incremental_predicate('et.block_time') }}
     {% endif %}
