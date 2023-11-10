@@ -1,12 +1,10 @@
-{{ config(
-        alias = 'erc20'
-        , tags=['static']
-        , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["hosuke", "tomfutago"]\') }}'
-        )
+{{
+    config(
+        schema = 'tokens_celo',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
 }}
 
 SELECT
@@ -548,5 +546,15 @@ FROM (VALUES
         (0xc6686060a1bfa583566ebca400a2c8771b20cb8c, 'RFP', 18),
         (0x5f25b65813885f4b6e22d83df217412c240f0433, 'UKKN', 2),
         (0xccdf6eaa55350c7aa8e22393784d64942f8097e8, 'RMD', 9),
-        (0xeda0a92877c9607b5b75ee2be012b4bce2599c81, 'TGNT', 18)
+        (0xeda0a92877c9607b5b75ee2be012b4bce2599c81, 'TGNT', 18),
+        (0x1e123e47158bfc135a5050b5c086c0893d7f5a90, 'stkETHIX', 18),
+        (0xe33c7d39f6721ef0fc8fFc59c8e2f313e774073a, 'stkANEPAAN', 18),
+        (0x8181d3B933228C3E70496d11F057610E78582c7C, 'stkCoRi', 18),
+        (0x0306f70D3E69E30F49d28cB0eD33fD9d439043A8, 'stkFABEDI', 18),
+        (0x6Ed2471b09a0A3b35c7e5C977E8A4E00EA5000F7, 'stkSUSTENTA', 18),
+        (0x2FFA2c9678C75a7e1324C3fB67Ac28676306389A, 'stkSANMARCOS', 18),
+        (0x18843ec5c23a290E1C866fAd9acaFB6160Ab9693, 'stkRESERVA', 18),
+        (0xCc0d68B5E9C0E92E8d7426fB585052442EA9EEF7, 'stkFUNDADORES', 18),
+        (0x51246AE0ba74696a66f0DC9e5f214d1C48eF1F55, 'stkCOSTALCAMPESINO', 18),
+        (0x7D413D46aDAE770DFF0E478F566B5539853D2FA1, 'stkSIERRAAZUL', 18)
 ) AS temp_table (contract_address, symbol, decimals)
