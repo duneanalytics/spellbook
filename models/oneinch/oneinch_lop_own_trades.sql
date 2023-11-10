@@ -100,7 +100,7 @@ with
             , block_time
             , coalesce(tokens_dst.symbol, '') as token_bought_symbol
             , coalesce(tokens_src.symbol, '') as token_sold_symbol
-            , concat(array_sort(array[coalesce(tokens_src.symbol, ''), coalesce(tokens_dst.symbol, '')]), '-') as token_pair
+            , array_join(array_sort(array[coalesce(tokens_src.symbol, ''), coalesce(tokens_dst.symbol, '')]), '-') as token_pair
             , cast(dst_amount as double) / pow(10, tokens_dst.decimals) as token_bought_amount
             , cast(src_amount as double) / pow(10, tokens_src.decimals) as token_sold_amount
             , dst_amount as token_bought_amount_raw
