@@ -29,9 +29,11 @@ hardcoded_positions as ( -- harcoding the position contracts since there's no ev
             (0x486bafa7D418896C67dCCAB0612589f208aa3249, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.3', 'polygon'),
             (0xa80aa05437112BA844628eE73AcfE94c31f8fe28, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.4', 'polygon'),
             (0x278a29098ef8c2af6b948d079c32b54188b618f0, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.5', 'polygon'),
+            (0xA35eabB4be62Ed07E88c2aF73234fe7dD48a73D4, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.5', 'polygon'),
         -- v2 options contracts 
             (0x28969ded75cf3bce9f2b6bd49ac92d8ba8dfc3d1, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.1', 'polygon'),
-            (0x87e0df5ac8a657af9f1472995354a09a4f9c381a, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.2', 'polygon')
+            (0x87e0df5ac8a657af9f1472995354a09a4f9c381a, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.2', 'polygon'),
+            (0xfeabec2cac8a1a2f1c0c181572aa88c8b91288b2, 0xb60F2011d30b5b901d55a701C58f63aB34b4C23f, 'v2.3', 'polygon')
         ) as temp_table (trading_contract, positions_contract, trading_contract_version, blockchain)
 )
 

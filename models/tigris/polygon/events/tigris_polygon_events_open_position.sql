@@ -38,7 +38,8 @@ pairs as (
     'TradingV2_evt_PositionOpened',
     'TradingV3_evt_PositionOpened',
     'TradingV4_evt_PositionOpened',
-    'TradingV5_evt_PositionOpened'
+    'TradingV5_evt_PositionOpened',
+    'TradingV6_evt_PositionOpened'
 ] %} 
 
 open_position_v1_1 AS (

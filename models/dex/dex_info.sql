@@ -80,7 +80,7 @@ FROM (VALUES
     , ('euler', 'Euler', 'Flashloans', 'eulerfinance')
     , ('synapse', 'Synapse', 'Flashloans', 'SynapseProtocol')
     , ('maker', 'Maker', 'Flashloans', 'MakerDAO')
-    , ('fiatdao', 'Fiat DAO', 'Flashloans', 'fiatdao')
+    , ('fiat_dao', 'Fiat DAO', 'Flashloans', 'fiatdao')
     , ('dydx', 'dYdX', 'Flashloans', 'dYdX')
     , ('aave', 'Aave', 'Flashloans', 'AaveAave')
     , ('openxswap', 'OpenXSwap', 'Direct', 'OpenXSwap')
