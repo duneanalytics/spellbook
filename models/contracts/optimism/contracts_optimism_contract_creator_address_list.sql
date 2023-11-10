@@ -675,6 +675,7 @@ WITH curated_list AS (
       ,(0xE824ff5D7A5De844ea11F5ac5EbE2B6F02b7c511, 'MCT-XENFT')
       ,(0x3c6D5c150EE29B698c6C821B53886C41d239669c, 'Uniswap')
       ,(0x5ee2b0fd8d964cb50e787db4ff176d7bbb0fd180, 'Layer Zero')
+      ,(0x18dc1fccea2f4f6dd22ddbf0bed638bc358db625, 'Uniswap')
 
   ) as temp_table (creator_address, contract_project)
 )
