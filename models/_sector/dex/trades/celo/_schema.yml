@@ -15,5 +15,35 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            
+
+  - name: mento_v1_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: mento
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'mento']
+    description: "Mento trades on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: mento_v2_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: mento
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'mento']
+    description: "Mento trades on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: dex_celo_base_trades

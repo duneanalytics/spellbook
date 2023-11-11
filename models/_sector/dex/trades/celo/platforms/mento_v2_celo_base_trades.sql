@@ -1,8 +1,13 @@
 {{
   config(
-    schema = 'mento_celo',
-    alias = 'trades_v2_dex',
-    tags = ['dunesql']
+    schema = 'mento_v2_celo',
+    alias = 'base_trades',
+    tags = ['dunesql'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
