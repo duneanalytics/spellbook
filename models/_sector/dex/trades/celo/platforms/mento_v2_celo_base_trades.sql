@@ -13,7 +13,13 @@
 
 --Mento v2
 select
+  'celo' as blockchain,
+  'mento' as project,
+  '2' as version,
+  cast(date_trunc('month', t.evt_block_time) as date) as block_month,
+  cast(t.evt_block_time as date) as block_date,
   t.evt_block_time as block_time,
+  t.evt_block_number as block_number,
   t.trader as taker,
   cast(null as varbinary) as maker,
   t.amountOut as token_bought_amount_raw,
