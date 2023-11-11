@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: uniswap_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, mtitus6
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap arbitrum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: dex_arbitrum_base_trades

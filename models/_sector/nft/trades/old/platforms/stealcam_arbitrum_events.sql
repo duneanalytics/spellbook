@@ -52,15 +52,15 @@ SELECT 'arbitrum' AS blockchain
 , sc.evt_tx_hash AS tx_hash
 , at."from" AS tx_from
 , at.to AS tx_to
-, CAST(0.1*surplus_value AS uint256) AS platform_fee_amount_raw
-, CAST(0.1*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount
-, CAST(pu.price*0.1*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount_usd
-, CAST(coalesce(100*(0.1*surplus_value/sc.value),0) AS double) AS platform_fee_percentage
+, CAST(double '0.1'*surplus_value AS uint256) AS platform_fee_amount_raw
+, CAST(double '0.1'*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount
+, CAST(pu.price*double '0.1'*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount_usd
+, CAST(coalesce(100*(double '0.1'*surplus_value/sc.value),0) AS double) AS platform_fee_percentage
 , 'ETH' as royalty_fee_currency_symbol
-, CAST(0.45*surplus_value AS uint256) AS royalty_fee_amount_raw
-, CAST(0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount
-, CAST(pu.price*0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount_usd
-, CAST(coalesce(100*(0.45*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
+, CAST(double '0.45'*surplus_value AS uint256) AS royalty_fee_amount_raw
+, CAST(double '0.45'*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount
+, CAST(pu.price*double '0.45'*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount_usd
+, CAST(coalesce(100*(double '0.45'*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
 , sc.evt_index
 , 'arbitrum-stealcam-' || cast(sc.evt_tx_hash as varchar)|| '-' || cast(sc.evt_index as varchar) AS unique_trade_id
