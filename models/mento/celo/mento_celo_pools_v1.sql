@@ -1,8 +1,8 @@
 {{
   config(
-    tags = ['dunesql', 'static'],
     schema = 'mento_celo',
-    alias = alias('pools_v1'),
+    alias = 'pools_v1',
+    tags = ['dunesql', 'static'],
     materialized = 'table'
   )
 }}

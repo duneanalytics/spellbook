@@ -1,8 +1,8 @@
 {{
   config(
-    tags = ['dunesql'],
     schema = 'mento_celo',
-    alias = alias('pools'),
+    alias = 'pools',
+    tags = ['dunesql'],
     post_hook = '{{ expose_spells(\'["celo"]\',
                                 "project",
                                 "mento",

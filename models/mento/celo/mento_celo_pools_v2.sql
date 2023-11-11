@@ -1,8 +1,8 @@
 {{
   config(
-    tags = ['dunesql'],
     schema = 'mento_celo',
-    alias = alias('pools_v2'),
+    alias = 'pools_v2',
+    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -29,6 +29,6 @@ from {{ source('mento_celo', 'BiPoolManager_evt_ExchangeCreated') }} ec
   left join {{ ref('tokens_erc20') }} erc20a on ec.asset0 = erc20a.contract_address and erc20a.blockchain = 'celo'
   left join {{ ref('tokens_erc20') }} erc20b on ec.asset1 = erc20b.contract_address and erc20b.blockchain = 'celo'
 {% if is_incremental() %}
-where ec.evt_block_time >= date_trunc('day', now() - interval '7' day)
-   or ed.evt_block_time >= date_trunc('day', now() - interval '7' day)
+where {{ incremental_predicate('ec.evt_block_time') }}
+   or {{ incremental_predicate('ed.evt_block_time') }}
 {% endif %}

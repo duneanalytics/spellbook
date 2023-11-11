@@ -1,10 +1,15 @@
 {{
   config(
-    tags = ['dunesql'],
     schema = 'mento_celo',
-    alias = alias('trades_v1_dex')
+    alias = 'trades_v1_dex',
+    tags = ['dunesql']
   )
 }}
+
+{% set CELO = 0x471EcE3750Da237f93B8E339c536989b8978a438 %}
+{% set cUSD = 0x765DE816845861e75A25fCA122bb6898B8B1282a %}
+{% set cEUR = 0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73 %}
+{% set cREAL = 0xe8537a3d056da446677b9e9d6c5db704eaab4787 %}
 
 --Mento v1
 select
@@ -14,20 +19,14 @@ select
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
   cast(null as double) as amount_usd,
-  case
-    when t.soldGold then 0x765DE816845861e75A25fCA122bb6898B8B1282a -- cUSD
-    else 0x471EcE3750Da237f93B8E339c536989b8978a438                 -- CELO
-  end as token_bought_address,
-  case
-    when t.soldGold then 0x471EcE3750Da237f93B8E339c536989b8978a438 -- CELO
-    else 0x765DE816845861e75A25fCA122bb6898B8B1282a                 -- cUSD
-  end as token_sold_address,
+  if(t.soldGold, cUSD, CELO) as token_bought_address,
+  if(t.soldGold, CELO, cUSD) as token_sold_address,
   t.contract_address as project_contract_address,
   t.evt_tx_hash as tx_hash,
   t.evt_index
 from {{ source('mento_celo', 'Exchange_evt_Exchanged') }} t
 {% if is_incremental() %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+where {{ incremental_predicate('t.evt_block_time') }}
 {% endif %}
 
 union all
@@ -39,20 +38,14 @@ select
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
   cast(null as double) as amount_usd,
-  case
-    when t.soldGold then 0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73 -- cEUR
-    else 0x471EcE3750Da237f93B8E339c536989b8978a438                 -- CELO
-  end as token_bought_address,
-  case
-    when t.soldGold then 0x471EcE3750Da237f93B8E339c536989b8978a438 -- CELO
-    else 0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73                 -- cEUR
-  end as token_sold_address,
+  if(t.soldGold, cEUR, CELO) as token_bought_address,
+  if(t.soldGold, CELO, cEUR) as token_sold_address,
   t.contract_address as project_contract_address,
   t.evt_tx_hash as tx_hash,
   t.evt_index
 from {{ source('mento_celo', 'ExchangeEUR_evt_Exchanged') }} t
 {% if is_incremental() %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+where {{ incremental_predicate('t.evt_block_time') }}
 {% endif %}
 
 union all
@@ -64,18 +57,12 @@ select
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
   cast(null as double) as amount_usd,
-  case
-    when t.soldGold then 0xe8537a3d056da446677b9e9d6c5db704eaab4787 -- cREAL
-    else 0x471EcE3750Da237f93B8E339c536989b8978a438                 -- CELO
-  end as token_bought_address,
-  case
-    when t.soldGold then 0x471EcE3750Da237f93B8E339c536989b8978a438 -- CELO
-    else 0xe8537a3d056da446677b9e9d6c5db704eaab4787                 -- cREAL
-  end as token_sold_address,
+  if(t.soldGold, cREAL, CELO) as token_bought_address,
+  if(t.soldGold, CELO, cREAL) as token_sold_address,
   t.contract_address as project_contract_address,
   t.evt_tx_hash as tx_hash,
   t.evt_index
 from {{ source('mento_celo', 'ExchangeBRL_evt_Exchanged') }} t
 {% if is_incremental() %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+where {{ incremental_predicate('t.evt_block_time') }}
 {% endif %}

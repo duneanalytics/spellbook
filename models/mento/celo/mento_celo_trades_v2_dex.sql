@@ -1,8 +1,8 @@
 {{
   config(
-    tags = ['dunesql'],
     schema = 'mento_celo',
-    alias = alias('trades_v2_dex')
+    alias = 'trades_v2_dex',
+    tags = ['dunesql']
   )
 }}
 
