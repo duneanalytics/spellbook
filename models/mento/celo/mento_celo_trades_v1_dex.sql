@@ -19,8 +19,8 @@ select
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
   cast(null as double) as amount_usd,
-  if(t.soldGold, cUSD, CELO) as token_bought_address,
-  if(t.soldGold, CELO, cUSD) as token_sold_address,
+  if(t.soldGold, {{cUSD}}, {{CELO}}) as token_bought_address,
+  if(t.soldGold, {{CELO}}, {{cUSD}}) as token_sold_address,
   t.contract_address as project_contract_address,
   t.evt_tx_hash as tx_hash,
   t.evt_index
@@ -38,8 +38,8 @@ select
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
   cast(null as double) as amount_usd,
-  if(t.soldGold, cEUR, CELO) as token_bought_address,
-  if(t.soldGold, CELO, cEUR) as token_sold_address,
+  if(t.soldGold, {{cEUR}}, {{CELO}}) as token_bought_address,
+  if(t.soldGold, {{CELO}}, {{cEUR}}) as token_sold_address,
   t.contract_address as project_contract_address,
   t.evt_tx_hash as tx_hash,
   t.evt_index
@@ -57,8 +57,8 @@ select
   t.buyAmount as token_bought_amount_raw,
   t.sellAmount as token_sold_amount_raw,
   cast(null as double) as amount_usd,
-  if(t.soldGold, cREAL, CELO) as token_bought_address,
-  if(t.soldGold, CELO, cREAL) as token_sold_address,
+  if(t.soldGold, {{cREAL}}, {{CELO}}) as token_bought_address,
+  if(t.soldGold, {{CELO}}, {{cREAL}}) as token_sold_address,
   t.contract_address as project_contract_address,
   t.evt_tx_hash as tx_hash,
   t.evt_index
