@@ -78,7 +78,7 @@ with base_trades as (
   {% endif %}
 )
 
-select§
+select
   'celo' as blockchain,
   'mento' as project,
   '1' as version,
