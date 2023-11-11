@@ -75,7 +75,7 @@
 ,ref('openxswap_optimism_trades')
 ,ref('wardenswap_optimism_trades')
 ,ref('openocean_optimism_trades')
-,ref('odos_optimism_trades')
+,ref('woofi_optimism_trades')
 ] %}
 
 

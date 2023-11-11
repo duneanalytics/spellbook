@@ -77,10 +77,10 @@
      'table_name': 'OpenOceanExchangeProxy_evt_Swapped',
      'time_column': 'evt_block_time'},
 
-    {'project': 'odos',
+    {'project': 'woofi',
      'blockchain': 'optimism',
-     'schema': 'odos_optimism',
-     'table_name': 'OdosRouter_evt_Swapped',
+     'schema': 'woofi_optimism',
+     'table_name': 'WooPPV2_evt_WooSwap',
      'time_column': 'evt_block_time'}
 ] %}
 
