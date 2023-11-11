@@ -6,10 +6,10 @@
   )
 }}
 
-{% set CELO = 0x471EcE3750Da237f93B8E339c536989b8978a438 %}
-{% set cUSD = 0x765DE816845861e75A25fCA122bb6898B8B1282a %}
-{% set cEUR = 0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73 %}
-{% set cREAL = 0xe8537a3d056da446677b9e9d6c5db704eaab4787 %}
+{% set CELO = '0x471EcE3750Da237f93B8E339c536989b8978a438' %}
+{% set cUSD = '0x765DE816845861e75A25fCA122bb6898B8B1282a' %}
+{% set cEUR = '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73' %}
+{% set cREAL = '0xe8537a3d056da446677b9e9d6c5db704eaab4787' %}
 
 --Mento v1
 select
