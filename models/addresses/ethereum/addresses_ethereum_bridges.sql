@@ -3,7 +3,7 @@
           post_hook='{{ expose_spells(\'["ethereum"]\',
           "sector",
           "addresses",
-          \'["hildobby","msilb7"]\') }}') }}
+          \'["hildobby","msilb7","rantum"]\') }}') }}
 
 SELECT address as address, bridge_name, description
 FROM (VALUES (0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc20 Bridge Proxy')
@@ -135,15 +135,17 @@ FROM (VALUES (0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc20 Bridge Pr
   ,(0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Optimism: L1StandardBridge Proxy')
   ,(0x4afdd3a48e13b305e98d9eead67b1b5867e370df, 'Optimism', 'Optimism: L1ERC721Bridge')
   ,(0x5a7749f83b81b301cab5f48eb8516b986daef23d, 'Optimism', 'Optimism: L1ERC721BridgeProxy')
-
   ,(0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon', 'ERC20 Bridge')
-  
   ,(0xabea9132b05a70803a4e85094fd0e1800777fbef, 'zkSync', 'zkSync Lite Bridge')
   ,(0x32400084c286cf3e17e7b677ea9583e60a000324, 'zkSync', 'zkSync Era Bridge')
-
   ,(0xae0ee0a63a2ce6baeeffe56e7714fb4efe48d419, 'StarkNet', 'StarkGate Bridge')
-
   ,(0x49048044d57e1c92a77f79988d21fa8faf74e97e, 'Base', 'Base Portal')
-
   ,(0x1a0ad011913a150f69f6a19df447a0cfd9551054, 'Zora', 'Zora: Bridge')
+  ,(0x296f55f8fb28e498b858d0bcda06d955b2cb3f97, 'Stargate', 'Stargate: Bridge')
+  ,(0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole', 'Wormhole: Portal Token Bridge')
+  ,(0x95fc37a27a2f68e3a647cdc081f0a89bb47c3012, 'Mantle', 'Mantle: L1 Standard Bridge Proxy')
+  ,(0x3b95bc951ee0f553ba487327278cac44f29715e5, 'Manta', 'Manta Pacific Bridge')
+  ,(0x6571d6be3d8460cf5f7d6711cd9961860029d85f, 'Synapse', 'Synapse Bridge Zap 3')
+  ,(0x2a3dd3eb832af982ec71669e178424b10dca2ede, 'Polygon', 'Polygon: zkEVM Bridge')
+  ,(0xd5f0f8db993d26f5df89e70a83d32b369dccdaa0, 'Symbiosis', 'Symbiosis Bridge')
   ) AS x (address, bridge_name, description)

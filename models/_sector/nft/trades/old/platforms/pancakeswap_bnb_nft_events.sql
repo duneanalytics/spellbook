@@ -23,7 +23,7 @@ WITH events AS (
         buyer AS buyer,
         seller AS seller,
         askPrice AS amount_raw,
-        0.02 AS platform_fee_percentage,
+        double '0.02' AS platform_fee_percentage,
         case when askPrice > uint256 '0' and (netPrice/cast(askPrice as double))<0.98 then (askPrice-netPrice)/cast(askPrice as double) - 0.02 else 0.0 end AS royalty_fee_percentage,
         0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c AS currency_contract,
         CASE when withBNB then 'BNB' else 'WBNB' end AS currency_symbol,
