@@ -32,5 +32,5 @@ select
   t.evt_index
 from {{ source('mento_celo', 'Broker_evt_Swap') }} t
 {% if is_incremental() %}
-where t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+where {{ incremental_predicate('t.evt_block_time') }}
 {% endif %}

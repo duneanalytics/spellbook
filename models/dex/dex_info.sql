@@ -89,4 +89,5 @@ FROM (VALUES
     , ('ubeswap', 'Ubeswap', 'Direct', 'ubeswap')
     , ('mauve', 'Mauve', 'Direct', 'mauve_org')
     , ('xchange', 'X7 Finance', 'Direct', 'X7_Finance')
+    , ('mento', 'Mento', 'Direct', 'mento')
     ) AS temp_table (project, name, marketplace_type, x_username)
