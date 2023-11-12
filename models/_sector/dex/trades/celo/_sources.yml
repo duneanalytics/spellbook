@@ -9,3 +9,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: SushiV2Factory_evt_PairCreated
+  - name: ubeswap_celo
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UbeswapFactory_evt_PairCreated
