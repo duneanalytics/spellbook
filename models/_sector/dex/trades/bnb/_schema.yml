@@ -17,3 +17,6 @@ models:
             - evt_index
             
   - name: dex_bnb_base_trades
+    tests:
+      - check_dex_seed:
+          blockchain: bnb
