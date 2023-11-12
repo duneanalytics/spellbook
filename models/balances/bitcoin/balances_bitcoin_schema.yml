@@ -21,19 +21,27 @@ models:
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
-      - name: amount_raw
+      - &amount_raw
+        name: amount_raw
         description: "The number of Satoshis in the wallet"
-      - name: amount
+      - &amount
+        name: amount
         description: "The number of Bitcoins in the wallet"
-      - name: price_btc
+      - &price_btc
+        name: price_btc
         description: "Price of btc at day"
-      - name: profit
+      - &profit
+        name: profit
         description: "Profit by USD of the wallet"
       - &amount_usd
         name: amount_usd
         description: "USD balance of the wallet"
-      - name: total_asset
+      - &total_asset
+        name: total_asset
         description: "Total asset by USD of the wallet"
+      - &updated_at
+        name: updated_at
+        description: "When the balances were last updated"
   - name: latest_balances_bitcoin_satoshi_day
     meta:
       blockchain: bitcoin
@@ -45,27 +53,13 @@ models:
     description: >
       Latest token balances of Satoshi Bitcoin per wallet
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain name"
-      - &day
-        name: day
-        description: "UTC event block time truncated to the day mark"
-      - &wallet_address
-        name: wallet_address
-        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
-      - name: amount_raw
-        description: "The number of Satoshis in the wallet"
-      - name: amount
-        description: "The number of Bitcoins in the wallet"
-      - name: price_btc
-        description: "Price of btc at day"
-      - name: profit
-        description: "Profit by USD of the wallet"
-      - &amount_usd
-        name: amount_usd
-        description: "USD balance of the wallet"
-      - name: total_asset
-        description: "Total asset by USD of the wallet"
-      - name: updated_at
-        description: "When balances were updated for the last time"
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *amount_raw
+      - *amount
+      - *price_btc
+      - *profit
+      - *amount_usd
+      - *total_asset
+      - *updated_at
