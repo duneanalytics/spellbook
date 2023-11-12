@@ -5,3 +5,7 @@ sources:
   - name: curvefi_celo
     tables:
       - name: StableSwap_evt_TokenExchange
+  - name: sushi_celo
+    tables:
+      - name: Pair_evt_Swap
+      - name: SushiV2Factory_evt_PairCreated
