@@ -2,3 +2,6 @@ version: 2
 
 sources:
   - name: uniswap_v3_celo
+  - name: curvefi_celo
+    tables:
+      - name: StableSwap_evt_TokenExchange
