@@ -2,7 +2,7 @@
   config(
     schema = 'mento_celo',
     alias = 'pools_v1',
-    tags = ['dunesql', 'static'],
+    tags = ['static'],
     materialized = 'table'
   )
 }}

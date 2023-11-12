@@ -2,7 +2,6 @@
   config(
     schema = 'mento_celo',
     alias = 'pools_v2',
-    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

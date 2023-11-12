@@ -2,7 +2,6 @@
   config(
     schema = 'mento_v2_celo',
     alias = 'base_trades',
-    tags = ['dunesql'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

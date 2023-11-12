@@ -2,11 +2,7 @@
   config(
     schema = 'mento_celo',
     alias = 'pools',
-    tags = ['dunesql'],
-    post_hook = '{{ expose_spells(\'["celo"]\',
-                                "project",
-                                "mento",
-                                \'["tomfutago"]\') }}'
+    materialized = 'view'
   )
 }}
 
