@@ -39,4 +39,10 @@ WITH base_union AS (
     )
 )
 
-{{ add_tx_from_and_to('base_union', 'avalanche_c') }}
+{{
+    add_tx_columns(
+        model_cte = 'base_union'
+        , blockchain = 'avalanche_c'
+        , columns = ['from', 'to', 'index']
+    )
+}}
