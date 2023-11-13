@@ -4,7 +4,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['block_time', 'call_tx_id', 'source', 'destination', 'stake', 'authority', 'call_outer_instruction_index']
+    , unique_key = ['block_time', 'tx_id', 'source', 'destination', 'stake', 'authority', 'outer_instruction_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     , post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
@@ -15,7 +15,10 @@
 with
     aa as (
         SELECT
-            *
+            address
+            , block_slot
+            , tx_id
+            , balance_change
         FROM
             {{ source('solana', 'account_activity') }}
         WHERE 
