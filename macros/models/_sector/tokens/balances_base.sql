@@ -45,7 +45,8 @@ aggregate_transfers as (
         tx_to,
         wallet_address,
         token_address,
-        try(sum(amount_raw)) as amount_raw
+        -- TODO: We have to temporarily cast as double because there is no way to catch overflows in sum()
+        try(sum(cast(amount_raw as double))) as amount_raw
     FROM transfers
     WHERE amount_raw is not null
     group by 1,2,3,4,5,6,7,8,9,10
