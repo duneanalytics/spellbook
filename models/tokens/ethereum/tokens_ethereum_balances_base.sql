@@ -10,6 +10,12 @@
 }}
 
 select * from {{ref('tokens_ethereum_balances_base_erc20')}}
+{% if is_incremental() %}
+where {{incremental_predicate('block_time')}}
+{% endif %}
 
 UNION ALL
 select * from {{ref('tokens_ethereum_balances_base_native')}}
+{% if is_incremental() %}
+where {{incremental_predicate('block_time')}}
+{% endif %}
