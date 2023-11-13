@@ -14,6 +14,9 @@ WITH transfers  as (
         try_cast(amount_raw as int256) as amount_raw
     FROM {{ transfers_base }}
     WHERE token_standard = '{{token_standard}}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 
     UNION ALL
 
@@ -31,7 +34,31 @@ WITH transfers  as (
         -try_cast(amount_raw as int256) as amount_raw
     FROM {{ transfers_base }}
     WHERE token_standard = '{{token_standard}}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 ),
+{% if is_incremental() %}
+existing_balances as (
+    SELECT
+        blockchain,
+        block_time,
+        block_number,
+        tx_hash,
+        tx_index,
+        token_standard,
+        tx_from,
+        tx_to,
+        wallet_address,
+        token_address,
+        max_by(balance_raw, (block_time, tx_index)) as existing_balance_raw
+    FROM {{this}}
+    -- TODO: Perhaps a macro here?
+    WHERE block_time < date_trunc('{{var("DBT_ENV_INCREMENTAL_TIME_UNIT")}}', now() - interval '{{var('DBT_ENV_INCREMENTAL_TIME')}}' {{var('DBT_ENV_INCREMENTAL_TIME_UNIT')}})
+    GROUP BY 1,2,3,4,5,6,7,8,9,10
+),
+{% endif %}
+
 aggregate_transfers as (
     -- aggregate on transaction level
     SELECT
@@ -64,6 +91,12 @@ SELECT
     t.wallet_address,
     t.token_address,
     t.amount_raw as change_amount_raw,
-    try_cast(sum(amount_raw) over (partition by token_standard, token_address, wallet_address order by block_number, tx_index) as uint255) as balance_raw
-FROM aggregate_transfers t
+    {% if is_incremental() %}
+    try(cast(e.existing_balances_raw + sum(amount_raw) over (partition by t.token_standard, t.token_address, t.wallet_address order by t.block_number, t.tx_index) as uint256)) as balance_raw
+    FROM aggregate_transfers t, existing_balances e
+    {% else %}
+    try(cast(sum(amount_raw) over (partition by t.token_standard, t.token_address, t.wallet_address order by t.block_number, t.tx_index) as uint256)) as balance_raw
+    FROM aggregate_transfers t
+    {% endif %}
+
 {% endmacro %}
