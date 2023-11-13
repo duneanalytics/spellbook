@@ -47,6 +47,7 @@ aggregate_transfers as (
         token_address,
         try(sum(amount_raw)) as amount_raw
     FROM transfers
+    WHERE amount_raw is not null
     group by 1,2,3,4,5,6,7,8,9,10
 )
 SELECT
