@@ -15,6 +15,7 @@ with
             `to` as wallet_address,
             contract_address as token_address,
             evt_block_time,
+        evt_tx_hash,
             value as amount_raw
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
@@ -27,6 +28,7 @@ with
         `from` as wallet_address,
         contract_address as token_address,
         evt_block_time,
+         evt_tx_hash,
         '-' || CAST(value AS VARCHAR(100)) as amount_raw
         from
             {{ source('erc20_ethereum', 'evt_transfer') }}
@@ -39,6 +41,7 @@ with
             dst as wallet_address,
             contract_address as token_address,
             evt_block_time,
+         evt_tx_hash,
             wad as amount_raw
         from
             {{ source('zeroex_ethereum', 'weth9_evt_deposit') }}
@@ -51,19 +54,20 @@ with
             src as wallet_address,
             contract_address as token_address,
             evt_block_time,
+         evt_tx_hash,
             '-' || CAST(wad AS VARCHAR(100)) as amount_raw
         from
             {{ source('zeroex_ethereum', 'weth9_evt_withdrawal') }}
     )
     
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time,  evt_tx_hash, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from sent_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time,  evt_tx_hash, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from received_transfers
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time,  evt_tx_hash, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from deposited_weth
 union
-select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
+select unique_transfer_id, 'ethereum' as blockchain, wallet_address, token_address, evt_block_time,  evt_tx_hash, CAST(amount_raw AS VARCHAR(100)) as amount_raw
 from withdrawn_weth
