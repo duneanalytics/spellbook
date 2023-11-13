@@ -23,6 +23,7 @@ WITH dexs as
           , toToken AS token_sold_address
           , contract_address AS project_contract_address
           , evt_tx_hash AS tx_hash
+          , evt_block_number as block_number
           , evt_index
     FROM
          {{ source('woofi_optimism', 'WooPPV2_evt_WooSwap')}}
@@ -47,6 +48,7 @@ WITH dexs as
          , toToken AS token_sold_address
          , contract_address AS project_contract_address
          , evt_tx_hash AS tx_hash
+         , evt_block_number as block_number
          , evt_index
     FROM
         {{ source('woofi_optimism', 'WooRouterV2_evt_WooRouterSwap')}}
@@ -63,6 +65,7 @@ SELECT
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , dexs.block_time
+    , dexs.block_number
     , dexs.token_bought_amount_raw
     , dexs.token_sold_amount_raw
     , dexs.token_bought_address
