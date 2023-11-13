@@ -24,14 +24,14 @@ select
     ,sender as referee_address
     ,{{ var("ETH_ERC20_ADDRESS") }} as currency_contract
     ,case
-            when length(url_encode(slug)) = 1 then 1 / 2.0e0
-            when length(url_encode(slug)) = 2 then 0.5 / 2.0e0
-            when length(url_encode(slug)) = 3 then 0.25 / 2.0e0
-            when length(url_encode(slug)) = 4 then 0.1 / 2.0e0
-            when length(url_encode(slug)) = 5 then 0.05 / 2.0e0
-            when length(url_encode(slug)) = 6 then 0.03 / 2.0e0
-            when length(url_encode(slug)) = 7 then 0.02 / 2.0e0
-            else 0.01 / 2.0e0
+            when length(url_encode(slug)) = 1 then 500000000000000000
+            when length(url_encode(slug)) = 2 then 250000000000000000
+            when length(url_encode(slug)) = 3 then 125000000000000000
+            when length(url_encode(slug)) = 4 then 50000000000000000
+            when length(url_encode(slug)) = 5 then 25000000000000000
+            when length(url_encode(slug)) = 6 then 15000000000000000
+            when length(url_encode(slug)) = 7 then 10000000000000000
+            else 5000000000000000
         end as reward_amount_raw
     ,contract_address as project_contract_address
     ,evt_index as sub_tx_id
