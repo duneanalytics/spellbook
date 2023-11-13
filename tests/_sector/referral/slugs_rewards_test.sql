@@ -4,11 +4,7 @@ WITH unit_test AS (
         test.is_referral = actual.is_referral AS is_referral_test
     FROM {{ ref('slugs_optimism_rewards') }} AS actual
     INNER JOIN {{ ref('slugs_optimism_rewards_seed') }} AS test
-    ON LOWER(
-        actual.tx_hash
-    ) = LOWER(
-        test.tx_hash
-    )
+    ON actual.tx_hash = test.tx_hash
 )
 
 SELECT
