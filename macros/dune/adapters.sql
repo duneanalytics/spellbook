@@ -4,7 +4,11 @@
     {%- do _properties.update({'partitioned_by': "ARRAY['" + (config.get('partition_by') | join("', '") )  + "']"}) -%}
   {%- endif -%}
   create or replace table {{ relation }}
-    {{ create_table_properties(_properties, relation) }}
+    {% if temporary%}
+      {{ create_table_properties(_properties, relation) }}
+    {% else %}
+      {{ properties(_properties) }}
+    {% endif %}
   as (
     {{ sql }}
   );
