@@ -1,4 +1,4 @@
 version: 2
 
 sources:
-  - name: uniswap_v3_arbitrum
+  - name: uniswap_v3_avalanche_c
