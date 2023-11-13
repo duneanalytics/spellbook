@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: uniswap_v3_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, tomfutago
+    config:
+      tags: [ 'celo', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap celo v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: dex_celo_base_trades

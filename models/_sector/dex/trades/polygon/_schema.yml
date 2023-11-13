@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: uniswap_v3_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: uniswap
+      contributors: Henrystats, hosuke
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap polygon v3 trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: dex_polygon_base_trades
