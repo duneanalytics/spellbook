@@ -21,9 +21,7 @@ WITH
                   , max_by(aa.token_balance_owner, aa.block_time) as token_balance_owner --some account created before and then again after token owner schema change, so then it created dupes.
                   , min(aa.block_time) as created_at 
             FROM {{ source('solana','account_activity') }} aa
-            LEFT JOIN {{ this }} old ON old.address = aa.address AND old.token_mint_address = aa.token_mint_address
             WHERE aa.token_mint_address is not null
-            AND old.address is null --don't include accounts we already have
             {% if is_incremental() %}
             AND {{incremental_predicate('aa.block_time')}}
             {% endif %}
