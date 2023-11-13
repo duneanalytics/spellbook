@@ -93,6 +93,7 @@
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
+        --force
     )
     
 SELECT
