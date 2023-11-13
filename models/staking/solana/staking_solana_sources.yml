@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: stake_program_solana
+    freshness:
+      warn_after: { count: 72, period: hour }
+      error_after: { count: 120, period: hour }
+    tables:
+      - name: stake_call_DelegateStake
+        loaded_at_field: evt_block_time
+      - name: stake_call_Merge
+        loaded_at_field: evt_block_time
+      - name: stake_call_Withdraw
+        loaded_at_field: evt_block_time
+      - name: stake_call_Split
+        loaded_at_field: evt_block_time
