@@ -2,10 +2,10 @@
     schema = 'balancer',
     alias = 'bpt_prices',
     
-    post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis", "optimism","avalanche_c"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis", "optimism","avalanche_c", "base"]\',
                             "project",
                             "balancer",
-                            \'["thetroyharris"]\') }}'
+                            \'["thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
@@ -15,7 +15,8 @@
     ref('balancer_v2_polygon_bpt_prices'),
     ref('balancer_v2_gnosis_bpt_prices'),
     ref('balancer_v2_optimism_bpt_prices'),
-    ref('balancer_v2_avalanche_c_bpt_prices')
+    ref('balancer_v2_avalanche_c_bpt_prices'),
+    ref('balancer_v2_base_bpt_prices')    
 ] %}
 
 SELECT *
