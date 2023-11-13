@@ -21,7 +21,9 @@ WITH
             SELECT poolAddress, poolId 
             FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} --#########################
         ) y
-        ON x.contract_address in (0x8df317a729fcaa260306d7de28888932cb579b88) -- CSP v5 factory
+        ON x.contract_address in (
+            0x8df317a729fcaa260306d7de28888932cb579b88   -- CSP v5 factory
+        )
             AND x.pool = y.poolAddress
     )
     -- Return CSP creation info.
@@ -132,9 +134,8 @@ WITH
                             WHERE to = 0x0000000000000000000000000000000000000000
                         )
                     ) AS lp_token_burned
-                FROM {{ ref('evms_erc20_transfers') }}  --#########################
-                WHERE blockchain = 'base'
-                    AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools) 
+                FROM {{ source('erc20_base', 'evt_transfer') }}  --#########################
+                WHERE evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools) 
                     AND (to = 0x0000000000000000000000000000000000000000 
                         OR "from" = 0x0000000000000000000000000000000000000000
                     )
@@ -153,9 +154,8 @@ WITH
                 , index AS tx_index
                 , "from" AS tx_from
                 , "to" AS tx_to
-            FROM {{ ref('evms_transactions') }} --#########################
-            WHERE blockchain = 'base'
-                AND block_number >= (SELECT min(evt_block_number) FROM sub_pools)
+            FROM {{ source('base', 'transactions') }} --#########################
+            WHERE block_number >= (SELECT min(evt_block_number) FROM sub_pools)
         ) l
         ON l.block_number = x.evt_block_number
             AND l.tx_hash = x.evt_tx_hash
@@ -237,9 +237,8 @@ WITH
                     , index AS tx_index
                     , "from" AS tx_from
                     , "to" AS tx_to
-                FROM {{ ref('evms_transactions') }} --#########################
-                WHERE  blockchain = 'base'
-                    AND block_number >= (SELECT min(evt_block_number) FROM sub_pools)
+                FROM {{ source('base', 'transactions') }} --#########################
+                WHERE block_number >= (SELECT min(evt_block_number) FROM sub_pools)
             ) txns
             ON txns.block_number = swaps.evt_block_number
                 AND txns.tx_hash     = swaps.evt_tx_hash
@@ -265,9 +264,8 @@ WITH
                             WHERE to = 0x0000000000000000000000000000000000000000
                         )
                     ) AS lp_token_burned
-                FROM {{ ref('evms_erc20_transfers') }}  --#########################
-                WHERE blockchain = 'base'
-                    AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools) 
+                FROM {{ source('erc20_base', 'evt_transfer') }}  --#########################
+                WHERE evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools) 
                     AND (to = 0x0000000000000000000000000000000000000000 
                         OR "from" = 0x0000000000000000000000000000000000000000
                     )
@@ -345,9 +343,8 @@ WITH
                     , evt_index
                     , evt_tx_hash
                     , CAST(value AS int256) AS transfer_value 
-                FROM {{ ref('evms_erc20_transfers') }} --#########################
-                WHERE blockchain = 'base'
-                    AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools)
+                FROM {{ source('erc20_base', 'evt_transfer') }} --#########################
+                WHERE evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools)
                     AND "to" = 0xba12222222228d8ba445958a75a0704d566bf2c8
                 UNION ALL
                 SELECT 
@@ -358,9 +355,8 @@ WITH
                     , evt_index
                     , evt_tx_hash
                     , -CAST(value AS int256) AS transfer_value 
-                FROM {{ ref('evms_erc20_transfers') }} --#########################
-                WHERE blockchain = 'base'
-                    AND evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools)
+                FROM {{ source('erc20_base', 'evt_transfer') }} --#########################
+                WHERE evt_block_number >= (SELECT min(evt_block_number) FROM sub_pools)
                     AND "from" = 0xba12222222228d8ba445958a75a0704d566bf2c8
             ) y
             ON y.evt_tx_hash = x.evt_tx_hash
