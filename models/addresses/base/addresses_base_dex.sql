@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'addresses_base',
     alias = 'dex',
     tags = ['static']
 ) }}
