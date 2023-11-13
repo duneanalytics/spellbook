@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "addresses",
-                                    \'["soispoke"]\') }}')}}
+                                    \'["soispoke", "rantum"]\') }}')}}
 
 SELECT address, dex_name, distinct_name
 FROM (VALUES
@@ -45,5 +45,39 @@ FROM (VALUES
       (0x619b188b3f02605e289771e0001f9c313b8436a0, 'Uniswap', 'V2 Aggregator'),
       (0x81c46feca27b31f3adc2b91ee4be9717d1cd3dd7, 'Vyper', 'Vyper contract'),
       (0x31efc4aeaa7c39e54a33fdc3c46ee2bd70ae0a09, 'xPollinate', 'Transaction Manager'),
-      (0x775ee938186fddc13bd7c89d24820e1b0758f91d, 'Zapper.fi', 'Old Uniswap V2 Zap In 2')
+      (0x775ee938186fddc13bd7c89d24820e1b0758f91d, 'Zapper.fi', 'Old Uniswap V2 Zap In 2'),
+      (0xf164fc0ec4e93095b804a4795bbe1e041497b92a, 'Uniswap', 'Router01'),
+      (0xef1c6e67703c7bd7107eed8303fbe6ec2554bf6b, 'Uniswap', 'Universal Router'),
+      (0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad, 'Uniswap', 'Universal Router'),
+      (0x6000da47483062a0d734ba3dc7576ce6a0b645c4, 'Uniswap', 'UniswapX'),
+      (0x83c8f28c26bf6aaca652df1dbbe0e1b56f8baba2, 'GemSwap', 'GemSwap'),
+      (0xd9e1ce17f2641f24ae83637ab66a2cca9c378b9f, 'SushiSwap', 'Router02'),
+      (0x03f7724180aa6b939894b5ca4314783b0b36b329, 'ShibaSwap', 'UniswapV2Router02'),
+      (0x76f4eed9fe41262669d0250b2a97db79712ad855, 'Odos', 'Odos'),
+      (0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7, 'Curvefi', 'threepool_swap'),
+      (0xdc24316b9ae028f1497c275eb9192a3ea0f67022, 'Curvefi', 'steth_swap'),
+      (0xc30141b657f4216252dc59af2e7cdb9d8792e1b0, 'Socket', ''),
+      (0xa2398842f37465f89540430bdc00219fa9e4d28a, 'DODO', 'DODORouteProxy'),
+      (0x00000000009726632680fb29d3f7a9734e3010e2, 'Rainbow', 'RainbowRouter'),
+      (0x03f34be1bf910116595db1b11e9d1b2ca5d59659, 'Tokenlon', 'Tokenlon'),
+      (0x617dee16b86534a5d792a4d7a62fb491b544111e, 'Kyber', 'MetaAggregationRouter'),
+      (0xb9960d9bca016e9748be75dd52f02188b9d0829f, 'Swapr', 'Swapr'),
+      (0x9d0950c595786aba7c26dfddf270d66a8b18b4fa, 'Dfx Finance', 'Router'),
+      (0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX DEX', 'OKX DEX'),
+      (0x6352a56caadc4f1e25cd6c75970fa768a3304e64, 'OpenOcean', 'OpenOceanExchangeProxy'),
+      (0x6131b5fae19ea4f9d964eac0408e4408b66337b5, 'Kyber', 'MetaAggregationRouterV2'),
+      (0x92e929d8b2c8430bcaf4cd87654789578bb2b786, 'Swftswap', 'SwftSwap'),
+      (0x7782046601e7b9b05ca55a3899780ce6ee6b8b2b, 'AnySwap', 'AnyswapV6Router'),
+      (0x99a58482bd75cbab83b27ec03ca68ff489b5788f, 'Curvefi', 'swap_router'),
+      (0x0c17e776cd218252adfca8d4e761d3fe757e9778, 'Saita', 'SaitaSwapRouter'),
+      (0x13f4ea83d0bd40e75c8222255bc855a974568dd4, 'PancakeSwap', 'SmartRouter'),
+      (0xe4c577bdec9ce0f6c54f2f82aed5b1913b71ae2f, '1inch', 'exchangeV1'),
+      (0x0000000006adbd7c01bc0738cdbfc3932600ad63, '1inch', 'exchangeV2'),
+      (0x0000000053d411becdb4a82d8603edc6d8b8b3bc, '1inch', 'exchangeV3'),
+      (0x000005edbbc1f258302add96b5e20d3442e5dd89, '1inch', 'exchangeV4'),
+      (0x0000000f8ef4be2b7aed6724e893c1b674b9682d, '1inch', 'exchangeV5'),
+      (0x111112549cfedf7822eb11fbd8fd485d8a10f93f, '1inch', 'exchangeV6'),
+      (0x111111254b08ceeee8ad6ca827de9952d2a46781, '1inch', 'exchangeV7'),
+      (0x111111125434b319222cdbf8c261674adb56f3ae, '1inch', 'AggregationRouterV2'),
+      (0x1111111254eeb25477b68fb85ed929f73a960582, '1inch', 'AggregationRouterV5')
     ) AS x (address, dex_name, distinct_name)
