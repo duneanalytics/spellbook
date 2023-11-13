@@ -149,8 +149,7 @@ WITH
         -- Join transactions to get additional data
         INNER JOIN (
             SELECT
-                blockchain
-                , block_number
+                block_number
                 , hash AS tx_hash
                 , index AS tx_index
                 , "from" AS tx_from
@@ -337,8 +336,7 @@ WITH
             ) x
             INNER JOIN (
                 SELECT 
-                    blockchain
-                    , "to"
+                    "to"
                     , "from"
                     , contract_address
                     , evt_index
@@ -349,8 +347,7 @@ WITH
                     AND "to" = 0xba12222222228d8ba445958a75a0704d566bf2c8
                 UNION ALL
                 SELECT 
-                    blockchain
-                    , "to"
+                    "to"
                     , "from"
                     , contract_address
                     , evt_index
