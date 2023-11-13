@@ -10,13 +10,12 @@
 }}
 
 {% set entities_identifiers_models = [
-     -- generic:
      ('tx_from', ref('staking_ethereum_entities_batch_contracts_tx_from'))
      , ('pubkey', ref('staking_ethereum_entities_batch_contracts_pubkey'))
      , ('depositor_address', ref('staking_ethereum_entities_depositor_addresses'))
      , ('tx_from', ref('staking_ethereum_entities_tx_from_addresses'))
      , ('withdrawal_credentials', ref('staking_ethereum_entities_withdrawal_credentials'))
-     -- entity specific:
+     
      , ('depositor_address', ref('staking_ethereum_entities_contracts'))
      , ('depositor_address', ref('staking_ethereum_entities_coinbase'))
      , ('depositor_address', ref('staking_ethereum_entities_binance'))
