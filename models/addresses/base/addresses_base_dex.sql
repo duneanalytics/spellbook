@@ -5,7 +5,7 @@
 
 SELECT address, dex_name, distinct_name
 FROM (VALUES
-      (0x2626664c2603336e57b271c5c0b26f421741e481, '0x', 'Exchange Proxy Flash Wallet'),
+      (0x22f9dcf4647084d6c31b2765f6910cd85c178c18, '0x', 'Exchange Proxy Flash Wallet'),
       (0x2626664c2603336e57b271c5c0b26f421741e481, 'Uniswap', 'SwapRouter02'),
       (0x198ef79f1f515f02dfe9e3115ed9fc07183f02fc, 'Uniswap', 'UniversalRouter'),
       (0xec8b0f7ffe3ae75d7ffab09429e3675bb63503e4, 'Uniswap', 'UniversalRouter'),
