@@ -8,4 +8,3 @@ seeds:
         referrer_address: varbinary
         referee_address: varbinary
         reward_amount_raw: uint256
-        is_referral: boolean
