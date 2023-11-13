@@ -44,3 +44,22 @@ models:
           - unique
       - name: vault_name
         description: "Fee vault type"
+        d
+  - name: addresses_optimism_dex
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: addresses
+      contributors: rantum
+    config:
+      tags: ['table', 'dex', 'addresses', 'optimism']
+    description: "Known decentralised exchange addresses"
+    columns:
+      - name: address
+        description: "Address of known DEX"
+        tests:
+          - unique
+      - name: dex_name
+        description: "Name of decentralised exchange"
+      - name: distinct_name
+        description: "Distinct name of decentralised exchange address"
