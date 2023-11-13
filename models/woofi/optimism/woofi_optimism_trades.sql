@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['dunesql'],
     schema = 'woofi_optimism',
     alias = 'trades',
     partition_by = ['block_month'],
