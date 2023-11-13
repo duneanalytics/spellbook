@@ -44,6 +44,7 @@ inner join {{ source('optimism', 'transactions') }} tx
     {% if is_incremental() %}
     and {{incremental_predicate('tx.block_time')}}
     {% endif %}
+where "isCustom" = true
 {% if is_incremental() %}
-where {{incremental_predicate('evt_block_time')}}
+and {{ incremental_predicate('evt_block_time') }}
 {% endif %}
