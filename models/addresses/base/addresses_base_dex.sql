@@ -1,9 +1,7 @@
-{{config(alias = 'dex',
-        tags=['static'],
-        post_hook='{{ expose_spells(\'["base"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["rantum"]\') }}')}}
+{{ config(
+    alias = 'dex',
+    tags = ['static']
+) }}
 
 SELECT address, dex_name, distinct_name
 FROM (VALUES
