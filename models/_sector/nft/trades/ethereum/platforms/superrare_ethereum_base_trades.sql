@@ -170,13 +170,13 @@ SELECT
     end as trade_type,
     case
         when a.seller = coalesce(minter.to, minter_superrare.to)
-        then cast(ROUND((0.03+0.15) * (a.price_raw)) as uint256) -- superrare takes fixed 3% fee + 15% commission on primary sales
-        else cast(ROUND(0.03 * (a.price_raw)) as uint256)    -- fixed 3% fee
+        then cast(ROUND((double '0.03' + double '0.15') * (a.price_raw)) as uint256) -- superrare takes fixed 3% fee + 15% commission on primary sales
+        else cast(ROUND(double '0.03' * (a.price_raw)) as uint256)    -- fixed 3% fee
     end as platform_fee_amount_raw,
     case
         when a.seller = coalesce(minter.to, minter_superrare.to)
         then uint256 '0'
-        else cast(ROUND(0.10 * (a.price_raw)) as uint256)  -- fixed 10% royalty fee on secondary sales
+        else cast(ROUND(double '0.10' * (a.price_raw)) as uint256)  -- fixed 10% royalty fee on secondary sales
     end as royalty_fee_amount_raw,
     cast(NULL as varbinary) as royalty_fee_address,
     cast(NULL as varbinary) as platform_fee_address,

@@ -1,16 +1,15 @@
 version: 2
 
 models:
-  - name: equalizer_exchange_fantom_trades
+  - name: maverick_v1_zksync_trades
     meta:
-      blockchain: fantom
-      sector: dex
-      project: equalizer_exchange
-      contributors: Henrystats
+      blockchain: zksync
+      project: maverick
+      contributors: gte620v
     config:
-      tags: ['fantom','equalizer_exchange','trades','dex']
+      tags: ["maverick", "zksync", "mav", "dex"]
     description: >
-        equalizer_exchange contract trades on fantom
+      A table containing all trades of Maverick on zksync
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,8 +20,8 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: fantom
-          project: equalizer_exchange
+          blockchain: zksync
+          project: maverick
           version: 1
     columns:
       - &blockchain
@@ -34,12 +33,12 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -93,34 +92,5 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "Index of the corresponding trade event"
 
-  - name: equalizer_exchange_fantom_pools
-    meta:
-      blockchain: fantom
-      sector: dex
-      contributors: Henrystats
-    config:
-      tags: ['fantom']
-    description: >
-      Equalizer Exchange DEX pools
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - name: pool
-        description: "DEX pool smart contract address"
-        tests:
-          - unique
-      - name: fee
-        description: "Defined fee"
-      - name: token0
-        description: "First token in pool"
-      - name: token1
-        description: "Second token in pool"
-      - name: creation_block_time
-        description: "Block time of pool creation"
-      - name: creation_block_number
-        description: "Block number of pool creation"
-      - name: contract_address
-        description: "Contract address used to create the pool"

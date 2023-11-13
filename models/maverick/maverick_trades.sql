@@ -1,6 +1,6 @@
 {{ config(
     alias = 'trades',
-    post_hook='{{ expose_spells(\'["bnb","ethereum"]\',
+    post_hook='{{ expose_spells(\'["bnb","ethereum","base","zksync"]\',
                                 "project",
                                 "maverick",
                                 \'["gte620v", "chef_seaweed"]\') }}'
@@ -10,6 +10,8 @@
 {% set maverick_models = [
     ref('maverick_v1_ethereum_trades')
 ,   ref('maverick_v1_bnb_trades')
+,   ref('maverick_v1_base_trades')
+,   ref('maverick_v1_zksync_trades')
 ] %}
 
 
