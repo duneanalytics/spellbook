@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'trades'
+    schema = 'equalizer_fantom'
+    , alias = 'trades'
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
@@ -7,7 +8,7 @@
     ,unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     ,post_hook='{{ expose_spells(\'["fantom"]\',
                                       "project",
-                                      "equalizer_exchange",
+                                      "equalizer",
                                     \'["Henrystats"]\') }}'
     )
 }}
@@ -15,7 +16,7 @@
 {% set project_start_date = '2022-11-03' %} -- min(evt_block_time) from equalizer_exchange_fantom.Pair_evt_Swap
 
 with dexs as (
-    -- equalizer_exchange
+    -- equalizer
     SELECT
         t.evt_block_time as block_time,
         t.to as taker,
@@ -38,7 +39,7 @@ with dexs as (
 )
 select
     'fantom' as blockchain,
-    'equalizer_exchange' as project,
+    'equalizer' as project,
     '1' as version,
     TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
