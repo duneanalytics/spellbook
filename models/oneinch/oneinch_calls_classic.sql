@@ -64,7 +64,7 @@
 {% set group_columns = group_columns | join(', ') %}
 
 
-
+with u as (
 {% for blockchain in blockchains %}
     select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
     group by {{ group_columns }}
@@ -72,6 +72,7 @@
         union all
     {% endif %}
 {% endfor %}
+)
 
 
 select

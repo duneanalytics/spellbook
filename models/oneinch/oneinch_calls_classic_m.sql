@@ -65,6 +65,7 @@
 
 
 
+with u as (
 {% for blockchain in blockchains %}
     select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
     group by {{ group_columns }}
@@ -72,7 +73,7 @@
         union all
     {% endif %}
 {% endfor %}
-
+)
 
 select
     -- count(*) over(), blockchain, block_time, tx_hash, tx_from, tx_to, tx_success, call_success, call_trace_address, call_from, call_to, call_selector, protocol, call_input, call_output
