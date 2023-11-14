@@ -15,9 +15,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address
-            - exchange_id
-            - block_time_created
-            - is_active
+            - pool
+            - creation_block_time
     columns:
       - &blockchain
         name: blockchain
@@ -28,36 +27,27 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &pool
+        name: pool
+        description: "exchange address"
+      - &fee
+        name: fee
+        description: "fee (blank column to keep in synch with dex_pools)"
+      - &token0
+        name: token0
+        description: "First token in the pool"
+      - &token1
+        name: token1
+        description: "Second token in the pool"
+      - &creation_block_time
+        name: creation_block_time
+        description: "UTC event block time when pool created"
+      - &creation_block_number
+        name: creation_block_number
+        description: "Block number when pool created"
       - &contract_address
         name: contract_address
         description: "Contract address used to create the pool"
-      - &token_pair
-        name: token_pair
-        description: "Token pair symbols for each token in the pool"
-      - &asset0
-        name: asset0
-        description: "First token in the pool"
-      - &asset1
-        name: asset1
-        description: "Second token in the pool"
-      - &exchange_id
-        name: exchange_id
-        description: "Unique exchange ID"
-      - &is_active
-        name: is_active
-        description: "Is pool active flag (0/1)"
-      - &block_time_created
-        name: block_time_created
-        description: "UTC event block time when pool created"
-      - &block_number_created
-        name: block_number_created
-        description: "Block number when pool created"
-      - &block_time_destroyed
-        name: block_time_destroyed
-        description: "UTC event block time when pool destroyed"
-      - &block_number_destroyed
-        name: block_number_destroyed
-        description: "Block number when pool destroyed"
   
   - name: mento_celo_pools_v1
     meta:
@@ -73,16 +63,13 @@ models:
       - *blockchain
       - *project
       - *version
+      - *pool
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
       - *contract_address
-      - *token_pair
-      - *asset0
-      - *asset1
-      - *exchange_id
-      - *is_active
-      - *block_time_created
-      - *block_number_created
-      - *block_time_destroyed
-      - *block_number_destroyed
 
   - name: mento_celo_pools_v2
     meta:
@@ -98,14 +85,11 @@ models:
       - *blockchain
       - *project
       - *version
+      - *pool
+      - *fee
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
       - *contract_address
-      - *token_pair
-      - *asset0
-      - *asset1
-      - *exchange_id
-      - *is_active
-      - *block_time_created
-      - *block_number_created
-      - *block_time_destroyed
-      - *block_number_destroyed
 

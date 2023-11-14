@@ -16,16 +16,13 @@ select
   blockchain,
   project,
   version,
-  contract_address,
-  token_pair,
-  asset0,
-  asset1,
-  exchange_id,
-  is_active,
-  block_time_created,
-  block_number_created,
-  block_time_destroyed,
-  block_number_destroyed
+  pool,
+  fee,
+  token0,
+  token1,
+  creation_block_time,
+  creation_block_number,
+  contract_address
 from {{ pool_model }}
 {% if not loop.last %}
 union all
