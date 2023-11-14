@@ -2,7 +2,7 @@
         
         alias = 'erc1155_approvalsforall',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -22,6 +22,7 @@
      , ('base', source('erc1155_base', 'evt_ApprovalForAll'))
      , ('goerli', source('erc1155_goerli', 'evt_ApprovalForAll'))
      , ('zksync', source('erc1155_zksync', 'evt_ApprovalForAll'))
+     , ('zora', source('erc1155_zora', 'evt_ApprovalForAll'))
 ] %}
 
 SELECT *
