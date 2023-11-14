@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_classic',
+        alias = 'calls_union',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -33,21 +33,19 @@
         'blockchain':'group',
         'block_time':'group',
         'tx_hash':'group',
-        'tx_from':'group',
-        'tx_to':'group',
+        'tx_from':'any_value',
+        'tx_to':'any_value',
         'tx_success':'group',
         'call_success':'group',
         'call_trace_address':'group',
-        'call_from':'group',
-        'call_to':'group',
-        'call_selector':'group',
-        'protocol':'group',
-        'call_input':'group',
-        'call_output':'group'
+        'call_from':'any_value',
+        'call_to':'any_value',
+        'call_selector':'any_value',
+        'protocol':'any_value',
+        'call_input':'any_value',
+        'call_output':'any_value'
     }
 %}
-
-
 
 {% set select_columns = [] %}
 {% set group_columns = [] %}
@@ -65,13 +63,16 @@
 
 
 with u as (
+    select {{ select_columns }} from (
     {% for blockchain in blockchains %}
-        select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
-        group by {{ group_columns }}
+        select * from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
+        
         {% if not loop.last %}
             union all
         {% endif %}
     {% endfor %}    
+    )
+    group by {{ group_columns }}
 )
 
 
@@ -98,5 +99,7 @@ where block_time >= timestamp '2023-02-01'
     ) or substr(call_input, 1, 1) = 0xaa)
 group by 1
 order by 2 desc
+
+
 
 
