@@ -217,7 +217,7 @@ models:
       - name: amount_usd
         description: "The USD amount of the transfer"
 
-  - name: token_ethereum_base_balances_erc20
+  - name: tokens_ethereum_base_balances_erc20
     meta:
       blockchain: ethereum
       sector: tokens
@@ -239,7 +239,7 @@ models:
       - name: change_amount_raw
       - name: balance_raw
 
-  - name: token_ethereum_base_balances_native
+  - name: tokens_ethereum_base_balances_native
     meta:
       blockchain: ethereum
       sector: tokens
@@ -261,7 +261,7 @@ models:
       - name: change_amount_raw
       - name: balance_raw
 
-  - name: token_ethereum_base_balances
+  - name: tokens_ethereum_base_balances
     meta:
       blockchain: ethereum
       sector: tokens
@@ -283,7 +283,7 @@ models:
       - name: change_amount_raw
       - name: balance_raw
 
-  - name: token_ethereum_balances
+  - name: tokens_ethereum_balances
     meta:
       blockchain: ethereum
       sector: tokens
