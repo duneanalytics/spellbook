@@ -216,3 +216,69 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
+
+  - name: token_ethereum_base_balances_erc20
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token Balances itermediary table for erc20"
+    columns:
+      - name: blockchain
+      - name: block_date
+      - name: block_number
+      - name: tx_hash
+      - name: tx_index
+      - name: tx_from
+      - name: tx_to
+      - name: token_standard
+      - name: token_address
+      - name: wallet_address
+      - name: change_amount_raw
+      - name: balance_raw
+
+  - name: token_ethereum_base_balances_native
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token Balances itermediary table for native ETH"
+    columns:
+      - name: blockchain
+      - name: block_date
+      - name: block_number
+      - name: tx_hash
+      - name: tx_index
+      - name: tx_from
+      - name: tx_to
+      - name: token_standard
+      - name: token_address
+      - name: wallet_address
+      - name: change_amount_raw
+      - name: balance_raw
+
+  - name: token_ethereum_base_balances
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances base"
+    columns:
+      - name: blockchain
+      - name: block_date
+      - name: block_number
+      - name: tx_hash
+      - name: tx_index
+      - name: tx_from
+      - name: tx_to
+      - name: token_standard
+      - name: token_address
+      - name: wallet_address
+      - name: change_amount_raw
+      - name: balance_raw
