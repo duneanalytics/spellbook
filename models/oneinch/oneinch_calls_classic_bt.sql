@@ -31,7 +31,7 @@
 {% 
     set columns = {
         'blockchain':'group',
-        'block_time':'max',
+        'block_time':'group',
         'tx_hash':'group',
         'tx_from':'max',
         'tx_to':'max',
