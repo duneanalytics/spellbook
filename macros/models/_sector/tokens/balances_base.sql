@@ -86,7 +86,8 @@ SELECT
     try_cast(t.amount_raw as int256) as change_amount_raw,
     {% if is_incremental() %}
     try(cast(e.existing_balance_raw + sum(amount_raw) over (partition by t.token_standard, t.token_address, t.wallet_address order by t.block_number, t.tx_index) as uint256)) as balance_raw
-    FROM aggregate_transfers t, existing_balances e
+    FROM aggregate_transfers t
+    left join existing_balances e on e.token_address = t.token_address and e.wallet_address = t.wallet_address
     {% else %}
     try(cast(sum(amount_raw) over (partition by t.token_standard, t.token_address, t.wallet_address order by t.block_number, t.tx_index) as uint256)) as balance_raw
     FROM aggregate_transfers t
