@@ -1,7 +1,7 @@
  {{
-  config(
+  config(     
         schema = 'contracts_base',
-        alias = 'contract_creator_project_mapping',
+        alias = 'creator_project_mapping',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
