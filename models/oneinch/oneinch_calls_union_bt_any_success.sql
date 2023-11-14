@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_classic_group_any_success',
+        alias = 'calls_union_bt_any_success',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -33,17 +33,17 @@
         'blockchain':'group',
         'block_time':'group',
         'tx_hash':'group',
-        'tx_from':'group',
-        'tx_to':'group',
+        'tx_from':'any_value',
+        'tx_to':'any_value',
         'tx_success':'group',
         'call_success':'group',
         'call_trace_address':'group',
-        'call_from':'group',
-        'call_to':'group',
-        'call_selector':'group',
-        'protocol':'group',
-        'call_input':'group',
-        'call_output':'group'
+        'call_from':'any_value',
+        'call_to':'any_value',
+        'call_selector':'any_value',
+        'protocol':'any_value',
+        'call_input':'any_value',
+        'call_output':'any_value'
     }
 %}
 
@@ -63,13 +63,15 @@
 
 
 with u as (
-    {% for blockchain in blockchains %}
-        select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
-        group by {{ group_columns }}
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}    
+    select {{ select_columns }} from (
+        {% for blockchain in blockchains %}
+            select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
+            {% if not loop.last %}
+                union all
+            {% endif %}
+        {% endfor %}    
+    )
+    group by {{ group_columns }}
 )
 
 
