@@ -17,7 +17,8 @@
  ref('rabbithole_optimism_rewards'),
  ref('rabbithole_polygon_rewards'),
  ref('soundxyz_ethereum_rewards'),
- ref('soundxyz_optimism_rewards')
+ ref('soundxyz_optimism_rewards'),
+ ref('slugs_optimism_rewards')
 ] %}
 
 SELECT *
