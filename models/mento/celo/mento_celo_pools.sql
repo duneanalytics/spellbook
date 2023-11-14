@@ -7,8 +7,8 @@
 }}
 
 {% set pool_models = [
-  ref('mento_celo_pools_v1'),
-  ref('mento_celo_pools_v2')
+  ref('mento_v1_celo_pools'),
+  ref('mento_v2_celo_pools')
 ] %}
 
 {% for pool_model in pool_models %}

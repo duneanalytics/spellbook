@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'mento_celo',
-    alias = 'pools_v1',
+    schema = 'mento_v1_celo',
+    alias = 'pools',
     materialized = 'table'
   )
 }}
@@ -9,7 +9,7 @@
 select
   'celo' as blockchain,
   'mento' as project,
-  'v1' as version,
+  '1' as version,
   e.contract_address as pool,
   cast(null as decimal(38,1)) as fee,
   e.asset0 as token0,

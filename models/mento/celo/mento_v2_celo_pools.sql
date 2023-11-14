@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'mento_celo',
-    alias = 'pools_v2',
+    schema = 'mento_v2_celo',
+    alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,7 +12,7 @@
 select
   'celo' as blockchain,
   'mento' as project,
-  'v2' as version,
+  '2' as version,
   ec.exchangeId as pool,
   cast(null as decimal(38,1)) as fee,
   ec.asset0 as token0,

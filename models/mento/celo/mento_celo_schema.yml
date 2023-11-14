@@ -49,7 +49,7 @@ models:
         name: contract_address
         description: "Contract address used to create the pool"
   
-  - name: mento_celo_pools_v1
+  - name: mento_v1_celo_pools
     meta:
       blockchain: celo
       sector: dex
@@ -71,7 +71,7 @@ models:
       - *creation_block_number
       - *contract_address
 
-  - name: mento_celo_pools_v2
+  - name: mento_v2_celo_pools
     meta:
       blockchain: celo
       sector: dex
