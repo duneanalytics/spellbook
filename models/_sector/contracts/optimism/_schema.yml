@@ -244,7 +244,8 @@ models:
       - *top_level_tx_method_id
       - *code_bytelength
       - *token_standard
-      - *code_deploy_rank
+      - &code_deploy_rank
+        name: code_deploy_rank
       - *is_eoa_deployed
 
   - name: contracts_optimism_contract_creator_address_list
