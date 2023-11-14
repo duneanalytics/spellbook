@@ -16,7 +16,8 @@ with
         content.metadata.orderClass.orderClass as order_class,
         content.metadata.quote,
         content.metadata.referrer,
-        content.metadata.utm
+        content.metadata.utm,
+        content.metadata.widget
     from {{ source('cowswap', 'raw_app_data') }}
   ),
   unpacked_referrer_app_data as (
@@ -28,7 +29,8 @@ with
         quote,
         -- different app data versions put referrer in two possible places.
         from_hex(coalesce(referrer.address, referrer.referrer)) as referrer,
-        utm
+        utm,
+        widget
     from partially_unpacked_app_content
   ),
   results as (
@@ -37,9 +39,17 @@ with
         app_code,
         environment,
         order_class,
-        from_hex(referrer) as referrer,
+        referrer,
         cast(quote.slippageBips as integer) as slippage_bips,
-        utm
+        utm,
+        utm.utmSource as utm_source,
+        utm.utmSource as utm_source,
+        utm.utmMedium as utm_medium,
+        utm.utmContent as utm_content,
+        utm.utmCampaign as utm_campaign,
+        utm.utmTerm as utm_term,
+        widget.appCode as widget_app_code,
+        widget.environment as widget_environment
     from unpacked_referrer_app_data
 )
 select * from results
