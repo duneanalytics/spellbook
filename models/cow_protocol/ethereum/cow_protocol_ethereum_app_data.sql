@@ -43,7 +43,6 @@ with
         cast(quote.slippageBips as integer) as slippage_bips,
         utm,
         utm.utmSource as utm_source,
-        utm.utmSource as utm_source,
         utm.utmMedium as utm_medium,
         utm.utmContent as utm_content,
         utm.utmCampaign as utm_campaign,
