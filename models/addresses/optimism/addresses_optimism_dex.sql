@@ -1,5 +1,6 @@
 {{config(alias = 'dex',
-        tags=['static']
+        tags=['static'])
+        }}
 
 SELECT address, dex_name, distinct_name
 FROM (VALUES
