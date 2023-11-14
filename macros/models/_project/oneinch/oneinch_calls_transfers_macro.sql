@@ -32,6 +32,7 @@ methods as (
         , calls.call_success
         , call_selector
         , protocol
+        , call_suffix
         , calls.call_input
         , calls.call_output
         , transactions.block_time
@@ -59,6 +60,7 @@ methods as (
             , "from" as call_from
             , success as call_success
             , {{ selector }} as call_selector
+            , substr(input, len(input) - 3) as call_suffix
             , input as call_input
             , output as call_output
             , "to" as call_to
@@ -91,6 +93,7 @@ methods as (
         , calls.call_to
         , calls.call_selector
         , calls.protocol
+        , calls.call_suffix
         -- transfer
         , transfers.trace_address as transfer_trace_address
         , transfers.contract_address
