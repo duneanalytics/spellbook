@@ -1,6 +1,6 @@
  {{
   config(
-        
+        schema = 'contracts_optimism',
         alias = 'contract_mapping',
         materialized ='incremental',
         file_format ='delta',

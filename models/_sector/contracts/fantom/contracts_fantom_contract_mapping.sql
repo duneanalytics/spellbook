@@ -1,5 +1,6 @@
 {{
   config(
+        schema = 'contracts_fantom',
         alias = 'contract_mapping',
         tags=[ 'static'],
         post_hook='{{ expose_spells(\'["fantom"]\',

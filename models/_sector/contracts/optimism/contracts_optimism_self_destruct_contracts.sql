@@ -1,6 +1,6 @@
  {{
   config(
-        
+        schema = 'contracts_optimism',
         alias = 'self_destruct_contracts',
         materialized ='incremental',
         file_format ='delta',

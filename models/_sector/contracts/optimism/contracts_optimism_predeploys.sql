@@ -1,6 +1,6 @@
  {{
   config(
-        
+        schema = 'contracts_optimism',
         alias = 'predeploys',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
