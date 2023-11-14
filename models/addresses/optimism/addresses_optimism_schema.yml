@@ -44,7 +44,7 @@ models:
           - unique
       - name: vault_name
         description: "Fee vault type"
-        d
+  
   - name: addresses_optimism_dex
     meta:
       blockchain: optimism
