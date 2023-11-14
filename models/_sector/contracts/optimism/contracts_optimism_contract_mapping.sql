@@ -1,6 +1,6 @@
  {{
   config(
-        
+        schema = 'contracts_optimism',
         alias = 'contract_mapping',
         unique_key='contract_address',
         post_hook='{{ expose_spells(\'["optimism"]\',

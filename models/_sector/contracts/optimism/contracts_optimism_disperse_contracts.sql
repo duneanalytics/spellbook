@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'contracts_optimism',
     alias = 'disperse_contracts'
     )
 }}
