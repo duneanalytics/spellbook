@@ -89,7 +89,7 @@ select
     , count(distinct tx_to) as tx_to
     -- , call_input
 from u
-where block_time >= timestamp '2022-11-01'
+where block_time >= timestamp '2021-11-01'
     and tx_success and call_success
 group by 1
 order by 2 desc
