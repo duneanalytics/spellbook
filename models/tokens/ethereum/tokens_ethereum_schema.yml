@@ -184,7 +184,7 @@ models:
     columns:
       - name: blockchain
         description: "The blockchain of the transfers"
-      - name: block_datetime
+      - name: block_date
         description: "The date of the block"
       - name: block_number
         description: "The block number"
