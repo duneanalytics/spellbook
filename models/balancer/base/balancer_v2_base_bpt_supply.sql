@@ -3,10 +3,6 @@
     materialized = 'table',
     file_format = 'delta',
     alias = 'bpt_supply',
-    post_hook = '{{ expose_spells(\'["base"]\',
-                                "project",
-                                "balancer_v2",
-                                \'["thetroyharris"]\') }}'
     )
 }}
 
