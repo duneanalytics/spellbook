@@ -1,4 +1,5 @@
 {{config(alias = 'dex',
+        schema = 'addresses_polygon',
         tags=['static'])
         }}
 
@@ -54,7 +55,7 @@ FROM (VALUES
       ('0xa102072a4c07f06ec3b4900fdc4c7b80b6c57429', 'Dfyn', 'Router'),
       ('0xc0788a3ad43d79aa53b09c2eacc313a787d1d607', 'ApeSwap', 'Router')
 
-)
+
       
       
     ) AS x (address, dex_name, distinct_name)
