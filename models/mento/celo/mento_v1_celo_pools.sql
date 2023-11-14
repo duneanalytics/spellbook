@@ -2,6 +2,7 @@
   config(
     schema = 'mento_v1_celo',
     alias = 'pools',
+    tags = ['static'],
     materialized = 'table'
   )
 }}
