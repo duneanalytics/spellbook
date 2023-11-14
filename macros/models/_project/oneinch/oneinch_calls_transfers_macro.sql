@@ -60,7 +60,7 @@ methods as (
             , "from" as call_from
             , success as call_success
             , {{ selector }} as call_selector
-            , substr(input, len(input) - 3) as call_suffix
+            , substr(input, length(input) - 3) as call_suffix
             , input as call_input
             , output as call_output
             , "to" as call_to
