@@ -1,6 +1,6 @@
 {{ config(
+        schema = 'tokens_ethereum',
         alias = 'base_balances_erc20',
-        tags=['dunesql'],
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,10 +10,13 @@
         )
 }}
 
-select * from (
-{{balances_base(
-    blockchain='ethereum',
-    transfers_base = ref('tokens_ethereum_transfers_base'),
-    token_standard = 'erc20',
-)}}
+select *
+from (
+    {{
+        balances_base(
+            blockchain='ethereum',
+            transfers_base = ref('tokens_ethereum_transfers_base'),
+            token_standard = 'erc20'
+    )
+    }}
 )

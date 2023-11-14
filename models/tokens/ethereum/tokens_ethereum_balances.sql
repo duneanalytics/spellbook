@@ -1,10 +1,12 @@
 {{ config(
+        schema = 'tokens_ethereum',
         alias = 'balances',
-        tags=['dunesql'],
-        materialized = 'view',
+        materialized = 'view'
         )
 }}
 
-{{balances_enrich(
-    balances_base = ref('tokens_ethereum_base_balances'),
-)}}
+{{
+    balances_enrich(
+        balances_base = ref('tokens_ethereum_base_balances')
+    )
+}}

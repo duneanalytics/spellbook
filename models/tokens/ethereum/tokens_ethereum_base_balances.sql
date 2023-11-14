@@ -1,6 +1,6 @@
 {{ config(
+        schema = 'tokens_ethereum',
         alias = 'base_balances',
-        tags=['dunesql'],
         partition_by = ['token_standard', 'block_date'],
         materialized = 'incremental',
         file_format = 'delta',

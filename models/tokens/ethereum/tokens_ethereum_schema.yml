@@ -225,6 +225,13 @@ models:
     config:
       tags: ['tokens','balances', 'ethereum']
     description: "Token Balances itermediary table for erc20"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - token_address
+            - wallet_address
     columns:
       - name: blockchain
       - name: block_date
@@ -247,6 +254,13 @@ models:
     config:
       tags: ['tokens','balances', 'ethereum']
     description: "Token Balances itermediary table for native ETH"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - token_address
+            - wallet_address
     columns:
       - name: blockchain
       - name: block_date
@@ -269,6 +283,14 @@ models:
     config:
       tags: ['tokens','balances', 'ethereum']
     description: "Token balances base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_standard
+            - block_number
+            - tx_index
+            - token_address
+            - wallet_address
     columns:
       - name: blockchain
       - name: block_date
