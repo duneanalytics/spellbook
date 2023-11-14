@@ -89,7 +89,7 @@ select
     , count(distinct tx_to) as tx_to
     -- , call_input
 from u
-where block_time >= timestamp '2023-02-01'
+where block_time >= timestamp '2022-07-01'
     and tx_success and call_success
     and (substr(call_input, length(call_input) - 3) in (
         0x13dbfa98, 0x51d40aca, 0x8d5e558f
