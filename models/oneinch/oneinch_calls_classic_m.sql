@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_classic_bt_any_success',
+        alias = 'calls_classic_m',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -28,6 +28,7 @@
 
 
 
+
 {% 
     set columns = {
         'blockchain':'group',
@@ -47,6 +48,8 @@
     }
 %}
 
+
+
 {% set select_columns = [] %}
 {% set group_columns = [] %}
 {% for key, value in columns.items() %}
@@ -62,15 +65,13 @@
 
 
 
-with u as (
-    {% for blockchain in blockchains %}
-        select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
-        group by {{ group_columns }}
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}    
-)
+{% for blockchain in blockchains %}
+    select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
+    group by {{ group_columns }}
+    {% if not loop.last %}
+        union all
+    {% endif %}
+{% endfor %}
 
 
 select
@@ -96,7 +97,3 @@ where block_time >= timestamp '2022-07-01'
     ) or substr(call_input, 1, 1) = 0xaa)
 group by 1
 order by 2 desc
-
-
-
-

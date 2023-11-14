@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_union',
+        alias = 'calls_classic',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -28,15 +28,16 @@
 
 
 
+
 {% 
     set columns = {
         'blockchain':'group',
-        'block_time':'group',
+        'block_time':'any_value',
         'tx_hash':'group',
         'tx_from':'any_value',
         'tx_to':'any_value',
-        'tx_success':'group',
-        'call_success':'group',
+        'tx_success':'any_value',
+        'call_success':'any_value',
         'call_trace_address':'group',
         'call_from':'any_value',
         'call_to':'any_value',
@@ -46,6 +47,8 @@
         'call_output':'any_value'
     }
 %}
+
+
 
 {% set select_columns = [] %}
 {% set group_columns = [] %}
@@ -62,18 +65,13 @@
 
 
 
-with u as (
-    select {{ select_columns }} from (
-    {% for blockchain in blockchains %}
-        select * from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
-        
-        {% if not loop.last %}
-            union all
-        {% endif %}
-    {% endfor %}    
-    )
+{% for blockchain in blockchains %}
+    select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
     group by {{ group_columns }}
-)
+    {% if not loop.last %}
+        union all
+    {% endif %}
+{% endfor %}
 
 
 select
@@ -99,7 +97,3 @@ where block_time >= timestamp '2022-07-01'
     ) or substr(call_input, 1, 1) = 0xaa)
 group by 1
 order by 2 desc
-
-
-
-
