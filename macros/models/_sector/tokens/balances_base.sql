@@ -41,21 +41,13 @@ WITH transfers  as (
 {% if is_incremental() %}
 existing_balances as (
     SELECT
-        blockchain,
-        block_time,
-        block_number,
-        tx_hash,
-        tx_index,
-        token_standard,
-        tx_from,
-        tx_to,
         wallet_address,
         token_address,
         max_by(balance_raw, (block_time, tx_index)) as existing_balance_raw
     FROM {{this}}
     -- TODO: Perhaps a macro here?
     WHERE block_time < date_trunc('{{var("DBT_ENV_INCREMENTAL_TIME_UNIT")}}', now() - interval '{{var('DBT_ENV_INCREMENTAL_TIME')}}' {{var('DBT_ENV_INCREMENTAL_TIME_UNIT')}})
-    GROUP BY 1,2,3,4,5,6,7,8,9,10
+    GROUP BY 1,2
 ),
 {% endif %}
 
