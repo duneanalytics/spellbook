@@ -1,4 +1,5 @@
 {{config(alias = 'dex',
+        schema = 'addresses_arbitrum',
         tags=['static'])
         }}
 
