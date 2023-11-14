@@ -19,8 +19,7 @@
         'fantom',
         'gnosis',
         'optimism',
-        'polygon',
-        'zksync'
+        'polygon'
     ]
 %}
 
