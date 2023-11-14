@@ -1,14 +1,15 @@
 version: 2
 
 models:
-  - name: contracts_optimism_contract_creator_project_mapping
+
+  - name: contracts_base_contract_creator_project_mapping
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on optimism."
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on base."
               
     columns:
       - &created_month
@@ -111,9 +112,9 @@ models:
         name: is_deterministic_deployer_deployed
         description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
 
-  - name: contracts_optimism_find_self_destruct_contracts
+  - name: contracts_base_find_self_destruct_contracts
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -135,14 +136,14 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_optimism_contract_creator_project_base_level
+  - name: contracts_base_contract_creator_project_base_level
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Base Level for mapping of contracts to its creators and names on optimism."
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on base."
       
     columns:
       - *blockchain
@@ -175,14 +176,14 @@ models:
         name: is_new_contract
         description: "Is this a new contract"
   
-  - name: contracts_optimism_contract_creator_project_iterated_creators
+  - name: contracts_base_contract_creator_project_iterated_creators
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Iterated creators for mapping of contracts to its creators and names on optimism."
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on base."
 
     columns:
       - *blockchain
@@ -210,107 +211,3 @@ models:
       - &source
         name: source
         description: "How the contract was picked up"
-
-  - name: contracts_optimism_contract_mapping
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['optimism', 'contracts', 'addresses']
-    description: "View for backwards query compatability"
-    columns:
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - &creation_tx_hash
-        name: creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - *code_deploy_rank
-      - *is_eoa_deployed
-
-  - name: contracts_optimism_contract_creator_address_list
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['optimism', 'contracts', 'addresses']
-    description: "View for backwards query compatability"
-    columns:
-      - name: creator_address
-        description: "Contract creator address"
-        tests:
-          - unique
-          - not_null
-      - *contract_project
-
-  - name: contracts_optimism_self_destruct_contracts
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['optimism', 'contracts', 'addresses']
-    description: "View for backwards query compatability"
-    columns:
-      - *created_time
-      - *created_block_number
-      - *creation_tx_hash
-      - *contract_address
-      - name: trace_element
-        description: "First item in the `trace_address` array"
-  
-  - name: contracts_optimism_disperse_contracts
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: msilb7
-    config:
-      tags: ['optimism','op','contracts','disperse']
-    description: >
-        A table containing mappings for disperse contract wallets that we want to map distributions with
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-    columns:
-      - *contract_address
-      - *contract_name
-  
-  - name: contracts_optimism_system_predeploys
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: msilb7
-    config:
-      tags: ['optimism','op','contracts','predeploy','system']
-    description: >
-        A table containing mappings for predeploy system contracts
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-    columns:
-      - name: project_name
-        description: "Project name associated with the predeploy."
-      - *contract_address
-      - *contract_name
