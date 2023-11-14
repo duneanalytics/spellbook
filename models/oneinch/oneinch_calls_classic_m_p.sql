@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_classic',
+        alias = 'calls_classic_m_p',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -32,19 +32,19 @@
 {% 
     set columns = {
         'blockchain':'group',
-        'block_time':'max',
+        'block_time':'group',
         'tx_hash':'group',
-        'tx_from':'max',
-        'tx_to':'max',
-        'tx_success':'max',
-        'call_success':'max',
+        'tx_from':'any_value',
+        'tx_to':'any_value',
+        'tx_success':'group',
+        'call_success':'group',
         'call_trace_address':'group',
-        'call_from':'max',
-        'call_to':'max',
-        'call_selector':'max',
-        'protocol':'max',
-        'call_input':'max',
-        'call_output':'max'
+        'call_from':'any_value',
+        'call_to':'any_value',
+        'call_selector':'any_value',
+        'protocol':'group',
+        'call_input':'any_value',
+        'call_output':'any_value'
     }
 %}
 
@@ -64,6 +64,7 @@
 {% set group_columns = group_columns | join(', ') %}
 
 
+
 with u as (
 {% for blockchain in blockchains %}
     select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
@@ -73,7 +74,6 @@ with u as (
     {% endif %}
 {% endfor %}
 )
-
 
 select
     -- count(*) over(), blockchain, block_time, tx_hash, tx_from, tx_to, tx_success, call_success, call_trace_address, call_from, call_to, call_selector, protocol, call_input, call_output
