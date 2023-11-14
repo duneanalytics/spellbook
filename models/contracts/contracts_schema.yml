@@ -3,7 +3,7 @@ version: 2
 models:
   - name: contracts_project_name_mappings
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zksync
       sector: contracts
       contributors: chuxin, msilb7
     config:
