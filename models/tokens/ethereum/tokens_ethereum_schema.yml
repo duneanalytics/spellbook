@@ -282,3 +282,28 @@ models:
       - name: wallet_address
       - name: change_amount_raw
       - name: balance_raw
+
+  - name: token_ethereum_balances
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances enriched"
+    columns:
+      - name: blockchain
+      - name: block_date
+      - name: block_number
+      - name: tx_hash
+      - name: tx_index
+      - name: tx_from
+      - name: tx_to
+      - name: token_standard
+      - name: token_address
+      - name: wallet_address
+      - name: change_amount_raw
+      - name: change_amount_usd
+      - name: balance_raw
+      - name: balance_usd
+      - name: price_rate
