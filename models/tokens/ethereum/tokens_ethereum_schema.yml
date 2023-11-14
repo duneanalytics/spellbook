@@ -29,7 +29,7 @@ models:
     config:
       tags: ['table', 'erc20', 'rebase']
     description: >
-      Ethereum Rebase Token Addresses and Symbols. 
+      Ethereum Rebase Token Addresses and Symbols.
       A Rebase Token is a cryptocurrency with an algorithmically adjusted supply that controls its price.
     columns:
       - name: contract_address
@@ -81,7 +81,7 @@ models:
           - accepted_values:
               values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
         description: >
-            The token standard. This is the set of rules that the contract must respect 
+            The token standard. This is the set of rules that the contract must respect
             to be compatible with the common standards. Accepted values are presently standards represented.
             If you are adding a token with a new standard, remember to add it the accepted values list.
 
@@ -126,3 +126,93 @@ models:
           - accepted_values:
               values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
 
+  - name: tokens_ethereum_transfers_base
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','transfers', 'ethereum']
+    description: >
+      Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+            - trace_address
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfers"
+      - name: block_datetime
+        description: "The date of the block"
+      - name: block_number
+        description: "The block number"
+      - name: tx_hash
+        description: "The transaction hash"
+      - name: tx_index
+        description: "The transaction index"
+      - name: tx_from
+        description: "The transaction sender"
+      - name: tx_to
+        description: "The transaction receiver"
+      - name: evt_index
+        description: "The log event index of the transfer if any"
+      - name: trace_address
+        description: "The trace address of the transfer if any"
+      - name: token_standard
+        description: "The token standard of the transfer"
+      - name: contract_address
+        description: "The contract address of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: from
+        description: "The sender of the transfer"
+      - name: amount_raw
+        description: "The raw amount of the transfer"
+
+  - name: tokens_ethereum_transfers
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','transfers', 'ethereum']
+    description: >
+      Token transfers
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfers"
+      - name: block_datetime
+        description: "The date of the block"
+      - name: block_number
+        description: "The block number"
+      - name: tx_hash
+        description: "The transaction hash"
+      - name: tx_index
+        description: "The transaction index"
+      - name: tx_from
+        description: "The transaction sender"
+      - name: tx_to
+        description: "The transaction receiver"
+      - name: evt_index
+        description: "The log event index of the transfer if any"
+      - name: trace_address
+        description: "The trace address of the transfer if any"
+      - name: token_standard
+        description: "The token standard of the transfer"
+      - name: contract_address
+        description: "The contract address of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: from
+        description: "The sender of the transfer"
+      - name: amount_raw
+        description: "The raw amount of the transfer"
+      - name: amount
+        description: "The formatted amount of the transfer"
+      - name: usd_price
+        description: "The USD price used to calculate the amount_usd"
+      - name: amount_usd
+        description: "The USD amount of the transfer"
