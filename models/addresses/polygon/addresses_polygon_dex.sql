@@ -50,12 +50,6 @@ FROM (VALUES
       ('0x817eb46d60762442da3d931ff51a30334ca39b74', 'WooFi', 'WooRouter'),
       ('0xca9c89410025f2bc3befb07ce57529f26ad69093', 'Metavault', 'Router'),
       ('0xBA12222222228d8Ba445958a75a0704d566BF2C8', 'Balancer', 'Vault'),
-      ('0x39f45038d763dd88791ce9bde8d6c18081c7d522', 'CurveFi', 'Router'),
-      ('0x10f4a785f458bc144e3706575924889954946639', 'Meshswap', 'Router'),
-      ('0xa102072a4c07f06ec3b4900fdc4c7b80b6c57429', 'Dfyn', 'Router'),
-      ('0xc0788a3ad43d79aa53b09c2eacc313a787d1d607', 'ApeSwap', 'Router')
-
-
-      
+      ('0x39f45038d763dd88791ce9bde8d6c18081c7d522', 'CurveFi', 'Router')
       
     ) AS x (address, dex_name, distinct_name)
