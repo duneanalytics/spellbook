@@ -31,19 +31,19 @@
 {% 
     set columns = {
         'blockchain':'group',
-        'block_time':'max',
+        'block_time':'group',
         'tx_hash':'group',
-        'tx_from':'max',
-        'tx_to':'max',
-        'tx_success':'max',
-        'call_success':'max',
+        'tx_from':'group',
+        'tx_to':'group',
+        'tx_success':'group',
+        'call_success':'group',
         'call_trace_address':'group',
-        'call_from':'max',
-        'call_to':'max',
-        'call_selector':'max',
-        'protocol':'max',
-        'call_input':'max',
-        'call_output':'max'
+        'call_from':'group',
+        'call_to':'group',
+        'call_selector':'group',
+        'protocol':'group',
+        'call_input':'group',
+        'call_output':'group'
     }
 %}
 
