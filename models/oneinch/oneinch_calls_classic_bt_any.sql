@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_classic',
+        alias = 'calls_classic_bt_any',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -31,22 +31,21 @@
 {% 
     set columns = {
         'blockchain':'group',
-        'block_time':'max',
+        'block_time':'group',
         'tx_hash':'group',
-        'tx_from':'max',
-        'tx_to':'max',
-        'tx_success':'max',
-        'call_success':'max',
+        'tx_from':'any_value',
+        'tx_to':'any_value',
+        'tx_success':'any_value',
+        'call_success':'any_value',
         'call_trace_address':'group',
-        'call_from':'max',
-        'call_to':'max',
-        'call_selector':'max',
-        'protocol':'max',
-        'call_input':'max',
-        'call_output':'max'
+        'call_from':'any_value',
+        'call_to':'any_value',
+        'call_selector':'any_value',
+        'protocol':'any_value',
+        'call_input':'any_value',
+        'call_output':'any_value'
     }
 %}
-
 
 {% set select_columns = [] %}
 {% set group_columns = [] %}
@@ -90,7 +89,7 @@ select
     , count(distinct tx_to) as tx_to
     -- , call_input
 from u
-where block_time >= timestamp '2023-06-01'
+where block_time >= timestamp '2023-11-01'
     and tx_success and call_success
 group by 1
 order by 2 desc
