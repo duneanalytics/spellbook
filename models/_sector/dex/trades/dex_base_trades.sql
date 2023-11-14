@@ -12,6 +12,7 @@
 
 {% set models = [
     ref('dex_arbitrum_base_trades')
+    , ref('dex_avalanche_c_base_trades')
     , ref('dex_base_base_trades')
     , ref('dex_bnb_base_trades')
     , ref('dex_celo_base_trades')

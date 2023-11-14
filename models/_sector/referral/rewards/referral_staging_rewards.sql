@@ -11,6 +11,7 @@
  ref('zora_ethereum_rewards'),
  ref('zora_optimism_rewards'),
  ref('zora_base_rewards'),
+ ref('zora_zora_rewards'),
  ref('rabbithole_arbitrum_rewards'),
  ref('rabbithole_base_rewards'),
  ref('rabbithole_optimism_rewards'),

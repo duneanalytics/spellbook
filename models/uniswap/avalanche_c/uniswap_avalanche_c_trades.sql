@@ -1,20 +1,16 @@
 {{ config(
-    alias = 'trades',
-    
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-        "project",
-        "tokenlon",
-        \'["izayl"]\') }}'
-    )
+        schema = 'uniswap_avalanche_c',
+        alias = 'trades'
+        )
 }}
 
-{% set tokenlon_models = [
-    ref('tokenlon_ethereum_trades')
+{% set uniswap_avalanche_c_models = [
+'uniswap_v3_avalanche_c_trades'
 ] %}
 
 SELECT *
 FROM (
-    {% for dex_model in tokenlon_models %}
+    {% for dex_model in uniswap_avalanche_c_models %}
     SELECT
         blockchain,
         project,
@@ -38,9 +34,8 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
         evt_index
-    FROM {{ dex_model }}
+    FROM {{ ref(dex_model) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
