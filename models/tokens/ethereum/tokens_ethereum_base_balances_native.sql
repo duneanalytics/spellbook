@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'balances_base_native',
+        alias = 'base_balances_native',
         tags=['dunesql'],
         partition_by = ['block_date'],
         materialized = 'incremental',

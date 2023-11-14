@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'balances_base',
+        alias = 'base_balances',
         tags=['dunesql'],
         partition_by = ['token_standard', 'block_date'],
         materialized = 'incremental',
@@ -10,13 +10,13 @@
         )
 }}
 
-select * from {{ref('tokens_ethereum_balances_base_erc20')}}
+select * from {{ref('tokens_ethereum_base_balances_erc20')}}
 {% if is_incremental() %}
 where {{incremental_predicate('block_time')}}
 {% endif %}
 
 UNION ALL
-select * from {{ref('tokens_ethereum_balances_base_native')}}
+select * from {{ref('tokens_ethereum_base_balances_native')}}
 {% if is_incremental() %}
 where {{incremental_predicate('block_time')}}
 {% endif %}

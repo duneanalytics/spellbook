@@ -1,5 +1,5 @@
 {{ config(
-        alias = 'balances_base_erc20',
+        alias = 'base_balances_erc20',
         tags=['dunesql'],
         partition_by = ['block_date'],
         materialized = 'incremental',
