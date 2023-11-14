@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: uniswap_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, mtitus6
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap avalanche_c v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: avalanche_c
+          project: uniswap
+          version: 3
+          
+  - name: dex_avalanche_c_base_trades
