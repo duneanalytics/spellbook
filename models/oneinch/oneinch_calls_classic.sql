@@ -93,6 +93,9 @@ select
 from u
 where block_time >= timestamp '2018-11-01'
     and tx_success and call_success
+    and (substr(call_input, length(call_input) - 3) in (
+        0x13dbfa98, 0x51d40aca, 0x8d5e558f
+    ) or substr(call_input, 1, 1) = 0xaa)
 group by 1
 order by 2 desc
 
