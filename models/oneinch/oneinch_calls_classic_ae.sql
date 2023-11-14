@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'calls_classic',
+        alias = 'calls_classic_ae',
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['suffix'],
@@ -32,17 +32,17 @@
 {% 
     set columns = {
         'blockchain':'group',
-        'block_time':'any_value',
+        'block_time':'group',
         'tx_hash':'group',
-        'tx_from':'any_value',
-        'tx_to':'any_value',
-        'tx_success':'any_value',
-        'call_success':'any_value',
+        'tx_from':'group',
+        'tx_to':'group',
+        'tx_success':'group',
+        'call_success':'group',
         'call_trace_address':'group',
-        'call_from':'any_value',
-        'call_to':'any_value',
-        'call_selector':'any_value',
-        'protocol':'any_value',
+        'call_from':'group',
+        'call_to':'group',
+        'call_selector':'group',
+        'protocol':'group',
         'call_input':'any_value',
         'call_output':'any_value'
     }
