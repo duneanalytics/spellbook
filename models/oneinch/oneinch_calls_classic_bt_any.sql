@@ -28,6 +28,8 @@
 
 
 
+
+
 {% 
     set columns = {
         'blockchain':'group',
@@ -46,6 +48,19 @@
         'call_output':'any_value'
     }
 %}
+
+{% set select_columns = [] %}
+{% set group_columns = [] %}
+{% for key, value in columns.items() %}
+    {% if value == "group" %}
+        {% set select_columns = select_columns.append(key) %}
+        {% set group_columns = group_columns.append(key) %}
+    {% else %}
+        {% set select_columns = select_columns.append(value + '(' + key + ') as ' + key) %}
+    {% endif %}
+{% endfor %}
+{% set select_columns = select_columns | join(', ') %}
+{% set group_columns = group_columns | join(', ') %}
 
 
 with u as (
