@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: contracts_zksync_project_name_mappings
+    meta:
+      blockchain: zksync
+      sector: contracts
+      contributors: lgingerich
+    config:
+      tags: ['zksync', 'contracts', 'addresses']
+    description: "A list of contract name mapping from Dune name to cleaned name."
+    columns:
+      - name: dune_name
+        description: "Contract name decoded by Dune"
+        tests:
+          - unique
+          - not_null
+      - name: mapped_name
+        description: "Mapped contract name"
