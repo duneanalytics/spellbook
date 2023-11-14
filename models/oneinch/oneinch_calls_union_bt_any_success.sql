@@ -65,7 +65,7 @@
 with u as (
     select {{ select_columns }} from (
         {% for blockchain in blockchains %}
-            select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
+            select * from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
             {% if not loop.last %}
                 union all
             {% endif %}
