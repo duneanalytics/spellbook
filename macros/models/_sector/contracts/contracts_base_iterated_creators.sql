@@ -76,7 +76,7 @@ with level0
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
     
-    WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
+    -- WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through --terate through everything because base_level doesn't know of mappings
 )
 {%- endfor %}
 
