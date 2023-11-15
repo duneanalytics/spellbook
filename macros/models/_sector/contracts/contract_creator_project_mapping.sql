@@ -326,12 +326,13 @@ FROM (
               co.contract_project
               ,dnm.mapped_name
               ,c.contract_project
+              , CASE WHEN cdc.creator_name IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END
             ),
           '_',
           ' '
       ) as varchar) as contract_project
       ,c.token_symbol
-      ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
+      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name) as varchar) as contract_name
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
@@ -362,6 +363,8 @@ FROM (
       on lower(c.contract_project) = lower(dnm.dune_name)
     left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
       on c.contract_address = co.contract_address
+    left join {{ ref('contracts_deterministic_contract_creators') }} as cdc --map deterministic deployers
+      on c.contract_address = cdc.contract_address
     left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
       on c.contract_address = sd.contract_address
       AND c.blockchain = sd.blockchain
