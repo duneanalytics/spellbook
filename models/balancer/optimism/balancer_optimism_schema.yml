@@ -434,7 +434,7 @@ models:
         description: "Fee collected in the pool in USD"
       - name: treasury_share
         description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
-      - name: treasury_revenue
+      - name: treasury_revenue_usd
         description: "Total revenue directed to Balancer DAO's treasury"
 
   - name: balancer_v2_optimism_bpt_supply
