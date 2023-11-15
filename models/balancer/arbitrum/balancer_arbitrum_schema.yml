@@ -232,7 +232,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon, viniabussafi
+      contributors: victorstefenon, viniabussafi, thetroyharris
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
     description: >
@@ -247,8 +247,13 @@ models:
       - name: day
         description: 'UTC event block time truncated to the day mark'
       - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'

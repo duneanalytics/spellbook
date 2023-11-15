@@ -241,7 +241,7 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: victorstefenon, viniabussafi
+      contributors: victorstefenon, viniabussafi, thetroyharris
     config:
       tags: ['gnosis', 'balancer', 'pools', 'liquidity']
     description: >
@@ -255,12 +255,14 @@ models:
     columns:
       - name: day
         description: 'UTC event block time truncated to the day mark'
-      - name: pool_id
-        description: 'ID of the Pool'
+      - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - *blockchain      
       - name: token_address
-        description: 'ID of the Token'
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw

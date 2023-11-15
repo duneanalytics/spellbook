@@ -352,6 +352,21 @@ sources:
           - name: contract_address
             description: ''
           - *token
+      
+      - name: BPool_call_setSwapFee
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - name: swapFee
+            description: ''
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
 
   - name: balancer_ethereum
     description: >
