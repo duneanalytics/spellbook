@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: contracts_optimism_contract_creator_project_mapping
+  - name: contracts_optimism_contract_mapping
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on optimism."
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on base."
               
     columns:
       - &created_month
@@ -113,7 +113,7 @@ models:
 
   - name: contracts_optimism_find_self_destruct_contracts
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -135,14 +135,14 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_optimism_contract_creator_project_base_starting_level
+  - name: contracts_optimism_base_starting_level
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Base Level for mapping of contracts to its creators and names on optimism."
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on base."
       
     columns:
       - *blockchain
@@ -175,14 +175,14 @@ models:
         name: is_new_contract
         description: "Is this a new contract"
   
-  - name: contracts_optimism_contract_creator_project_base_iterated_creators
+  - name: contracts_optimism_base_iterated_creators
     meta:
-      blockchain: optimism
+      blockchain: base
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Iterated creators for mapping of contracts to its creators and names on optimism."
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on base."
 
     columns:
       - *blockchain
@@ -207,84 +207,10 @@ models:
       - *code_bytelength
       - *code_deploy_rank_by_chain
       - *code
-      - &source
-        name: source
-        description: "How the contract was picked up"
+      - &token_standard_erc20
+        name: token_standard_erc20
+        description: "Token Standard ERC20 Only"
 
-  - name: contracts_optimism_contract_creator_project_base_project_mapping
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'optimism', 'contracts', 'addresses']
-    description: "Intermediate table for mapping of contracts to its creators."
-
-    columns:
-      - *blockchain
-      - *trace_creator_address
-      - *creator_address
-      - *deployer_address
-      - *contract_address
-      - *contract_project
-      - *contract_name
-      - *created_time
-      - *created_month
-      - *source
-      - *top_level_time
-      - *created_tx_hash
-      - *created_block_number
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *code_bytelength
-      - *code_deploy_rank_by_chain
-      - *code
-      - *token_standard
-      - *map_rank
-
-  - name: contracts_optimism_contract_mapping
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['optimism', 'contracts', 'addresses']
-    description: "View for backwards query compatability"
-    columns:
-      - *trace_creator_address
-      - *contract_address
-      - *contract_project
-      - *token_symbol
-      - *contract_name
-      - *creator_address
-      - *created_time
-      - *contract_creator_if_factory
-      - *is_self_destruct
-      - &creation_tx_hash
-        name: creation_tx_hash
-      - *created_block_number
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *top_level_time
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *code_bytelength
-      - *token_standard
-      - &code_deploy_rank
-        name: code_deploy_rank
-      - *is_eoa_deployed
 
   - name: contracts_optimism_contract_creator_address_list
     meta:

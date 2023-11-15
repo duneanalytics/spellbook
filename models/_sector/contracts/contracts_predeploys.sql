@@ -16,9 +16,8 @@
     ,"contract_name"
     ,"creator_address"
     ,"created_time"
-    ,"contract_factory"
     ,"is_self_destruct"
-    ,"creation_tx_hash"
+    ,"created_tx_hash"
     ,"source"
 ] %}
 
@@ -32,14 +31,13 @@ FROM (
     '{{chain}}' as blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
-    ,cast(NULL as varbinary) as contract_factory
     ,contract_address
     ,'ovm' as contract_project
     ,contract_name
     ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct
     ,'system predeploys' as source
-    ,cast(NULL as varbinary) as creation_tx_hash
+    ,cast(NULL as varbinary) as created_tx_hash
     , 1 as pref_rnk
   from {{ ref('contracts_optimism_system_predeploys') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
@@ -62,7 +60,7 @@ FROM (
     ,from_iso8601_timestamp( created_time ) AS created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
-    ,cast(NULL as varbinary) as creation_tx_hash
+    ,cast(NULL as varbinary) as created_tx_hash
     , 2 as pref_rnk
   from {{ source('ovm1_optimism', 'contracts') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11
@@ -81,7 +79,7 @@ FROM (
     ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct
     ,'ovm1 synthetix contracts' as source
-    ,cast(NULL as varbinary) as creation_tx_hash
+    ,cast(NULL as varbinary) as created_tx_hash
     , 3 as pref_rnk
   from {{ source('ovm1_optimism', 'synthetix_genesis_contracts') }} as snx
 
@@ -101,7 +99,7 @@ FROM (
     ,from_iso8601_timestamp( '2021-11-11' ) as created_time
     ,false as is_self_destruct
     ,'ovm1 uniswap pools' as source
-    ,cast(NULL as varbinary) as creation_tx_hash
+    ,cast(NULL as varbinary) as created_tx_hash
     , 4 as pref_rnk
   from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
 
@@ -128,7 +126,7 @@ SELECT
   initcap(contract_project) AS contract_project
   --
 , contract_name, creator_address, created_time, contract_creator_if_factory
-, is_self_destruct, creation_tx_hash, source
+, is_self_destruct, created_tx_hash, source
 FROM (
   select 
     blockchain
@@ -152,7 +150,7 @@ FROM (
     ,coalesce(c.created_time, from_iso8601_timestamp(ovm1c.created_time) ) as created_time
     ,c.contract_factory as contract_creator_if_factory
     ,coalesce(c.is_self_destruct, false) as is_self_destruct
-    ,c.creation_tx_hash
+    ,c.created_tx_hash
     ,c.source
   from cleanup as c 
 

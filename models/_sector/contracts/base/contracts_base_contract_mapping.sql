@@ -1,11 +1,11 @@
  {{
   config(     
         schema = 'contracts_base',
-        alias = 'contract_creator_project_mapping',
+        alias = 'contract_mapping',
         unique_key='contract_address'
   )
 }}
 
-{{contract_creator_project_mapping_by_chain(
+{{contracts_contract_mapping(
     chain='base'
 )}}

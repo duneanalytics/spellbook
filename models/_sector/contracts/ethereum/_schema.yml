@@ -2,7 +2,7 @@ version: 2
 
 models:
 
-  - name: contracts_ethereum_contract_creator_project_mapping
+  - name: contracts_ethereum_contract_mapping
     meta:
       blockchain: ethereum
       sector: contracts
@@ -136,7 +136,7 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_ethereum_contract_creator_project_base_starting_level
+  - name: contracts_ethereum_base_starting_level
     meta:
       blockchain: ethereum
       sector: contracts
@@ -176,7 +176,7 @@ models:
         name: is_new_contract
         description: "Is this a new contract"
   
-  - name: contracts_ethereum_contract_creator_project_base_iterated_creators
+  - name: contracts_ethereum_base_iterated_creators
     meta:
       blockchain: ethereum
       sector: contracts
@@ -208,44 +208,6 @@ models:
       - *code_bytelength
       - *code_deploy_rank_by_chain
       - *code
-      - &source
-        name: source
-        description: "How the contract was picked up"
-
-  - name: contracts_ethereum_contract_creator_project_base_project_mapping
-    meta:
-      blockchain: ethereum
-      sector: contracts
-      contributors: chuxin, msilb7
-    config:
-      tags: ['evm', 'ethereum', 'contracts', 'addresses']
-    description: "Intermediate table for mapping of contracts to its creators."
-
-    columns:
-      - *blockchain
-      - *trace_creator_address
-      - *creator_address
-      - *deployer_address
-      - *contract_address
-      - *contract_project
-      - *contract_name
-      - *created_time
-      - *created_month
-      - *source
-      - *top_level_time
-      - *created_tx_hash
-      - *created_block_number
-      - *top_level_tx_hash
-      - *top_level_block_number
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
-      - *created_tx_from
-      - *created_tx_to
-      - *created_tx_method_id
-      - *created_tx_index
-      - *code_bytelength
-      - *code_deploy_rank_by_chain
-      - *code
-      - *token_standard
-      - *map_rank
+      - &token_standard_erc20
+        name: token_standard_erc20
+        description: "Token Standard ERC20 Only"

@@ -1,4 +1,4 @@
-{% macro contract_creator_project_base_iterated_creators( chain ) %}
+{% macro contracts_base_iterated_creators( chain ) %}
 
 -- maybe split out contract naming mappings in to a separate thing
 -- do token and name mappings at the end
@@ -158,33 +158,39 @@ SELECT * FROM level{{max_levels - 1}}
  )
 
   select 
-    cc.blockchain
-    ,cc.trace_creator_address
-    ,cc.creator_address
-    ,cc.deployer_address
-    ,cc.contract_address
-    ,cc.created_time
-    ,cc.created_month
+    blockchain
+    ,trace_creator_address
+    ,creator_address
+    ,deployer_address
+    ,u.contract_address
+    ,created_time
+    ,created_month
     ,'creator contracts' as source
-    ,cc.top_level_time
-    ,cc.created_tx_hash
-    ,cc.created_block_number
-    ,cc.top_level_tx_hash
-    ,cc.top_level_block_number
-    ,cc.top_level_tx_from
-    ,cc.top_level_tx_to
-    ,cc.top_level_tx_method_id
-    ,cc.created_tx_from
-    ,cc.created_tx_to
-    ,cc.created_tx_method_id
-    ,cc.created_tx_index
-    ,cc.code_bytelength
-    ,cc.code_deploy_rank_by_chain
-    ,cc.code
-  from creator_contracts as cc 
-  left join {{ source( chain , 'contracts') }} as oc 
-    on cc.contract_address = oc.address 
-  WHERE cc.blockchain = '{{chain}}'
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
+    ,top_level_time
+    ,created_tx_hash
+    ,created_block_number
+    ,top_level_tx_hash
+    ,top_level_block_number
+    ,top_level_tx_from
+    ,top_level_tx_to
+    ,top_level_tx_method_id
+    ,created_tx_from
+    ,created_tx_to
+    ,created_tx_method_id
+    ,created_tx_index
+    ,code_bytelength
+    ,code_deploy_rank_by_chain
+    ,code
+    ,token_standard_erc20 --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
 
+    FROM creator_contracts u
+    left join (
+            -- We have an all NFTs table, but don't yet hand an all ERC20s table
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
+            FROM {{source('erc20_' + chain, 'evt_transfer')}} r
+            WHERE 1=1
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
+            group by 1
+          ) ts 
+  ON u.contract_address = ts.contract_address
 {% endmacro %}

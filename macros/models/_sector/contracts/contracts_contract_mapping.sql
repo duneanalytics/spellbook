@@ -1,4 +1,4 @@
-{% macro contract_creator_project_mapping_by_chain( chain ) %}
+{% macro contracts_contract_mapping( chain ) %}
 
 -- set column names to loop through
 {% set cols = [
@@ -43,10 +43,10 @@ WITH get_contracts as (
     c.blockchain
     ,c.trace_creator_address
     ,c.contract_address
+    ,coalesce(cc.contract_project, ccd.contract_project, cctr.contract_project, c.contract_project, oc.namespace) as contract_project
+    ,COALESCE(c.contract_name, oc.contract_name) AS contract_name
     ,t_mapped.symbol as token_symbol
     ,c.creator_address
-    ,c.contract_project
-    ,c.contract_name
     ,c.deployer_address
     ,c.created_time 
     ,c.created_month
@@ -69,9 +69,43 @@ WITH get_contracts as (
     ,COALESCE(t_mapped.token_standard, c.token_standard) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
-    ,MIN(c.map_rank) AS map_rank
 
-  from {{ ref('contracts_' + chain + '_contract_creator_project_intermediate_contracts') }} as c 
+  from 
+    (
+      SELECT
+      blockchain, trace_creator_address. contract_address, creator_address, deployer_address,created_time, created_month
+      ,created_tx_hash, created_block_number, created_tx_from, created_tx_to, created_tx_method_id, created_tx_index
+      ,top_level_time, top_level_tx_hash, top_level_block_number, top_level_tx_from, top_level_tx_to, top_level_tx_method_id
+      ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain
+      , CAST(NULL as varchar) AS contract_project, cast(NULL as varchar) AS contract_name
+      ,1 as map_rank
+      FROM {{ ref('contracts_' + chain + '_iterated_creators') }}
+      UNION ALL 
+
+      SELECT
+      '{{chain}}' AS blockchain, trace_creator_address, contract_address, creator_address, creator_address AS deployer_address, created_time, DATE_TRUNC('month',created_time) AS created_month
+      ,created_tx_hash, 0 AS created_block_number, NULL AS created_tx_from, NULL AS created_tx_to, NULL AS created_tx_method_id, NULL AS created_tx_index
+      ,NULL AS top_level_time, NULL AS top_level_tx_hash, NULL AS top_level_block_number, NULL AS top_level_tx_from, NULL AS top_level_tx_to, NULL AS top_level_tx_method_id
+      ,bytearray_length(oc.code) AS code_bytelength, NULL AS token_standard, oc.code, NULL AS code_deploy_rank_by_chain
+      , p.contract_project, p.contract_name
+      ,2 as map_rank
+
+      FROM {{ ref('contracts_predeploys')}} p
+        LEFT JOIN {{ source(chain,'contracts')}} oc
+          ON p.contract_address = oc.address
+      WHERE p.blockchain = '{{chain}}'
+
+    ) c
+  left join {{ ref('contracts_contract_creator_address_list') }} as cc 
+    on c.creator_address = cc.creator_address
+  left join {{ ref('contracts_contract_creator_address_list') }} as ccd
+    on c.trace_creator_address = ccd.creator_address
+    AND cc.creator_address IS NULL
+  left join {{ ref('contracts_contract_creator_address_list') }} as cctr
+    on c.deployer_address = cctr.creator_address
+    AND ccd.creator_address IS NULL
+  left join {{ source(chain,'contracts')}} oc
+      ON c.contract_address = oc.address
   left join (
         select
           '{{chain}}' as blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
@@ -148,12 +182,13 @@ FROM (
               ,dnm.mapped_name
               ,c.contract_project
               ,(CASE WHEN cdc.creator_address IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END)
+              ,oc.namespace
             ),
           '_',
           ' '
       ) as varchar) as contract_project
       ,c.token_symbol
-      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name) as varchar) as contract_name
+      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name, oc.name) as varchar) as contract_name
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
