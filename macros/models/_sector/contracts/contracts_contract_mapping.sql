@@ -83,7 +83,7 @@ WITH get_contracts as (
       UNION ALL 
 
       SELECT
-      '{{chain}}' AS blockchain, cast(trace_creator_address as varbinary) AS trace_creator_address, contract_address, creator_address, creator_address AS deployer_address, created_time, DATE_TRUNC('month',created_time) AS created_month
+      p.blockchain, trace_creator_address, contract_address, creator_address, creator_address AS deployer_address, created_time, DATE_TRUNC('month',created_time) AS created_month
       ,created_tx_hash, 0 AS created_block_number, NULL AS created_tx_from, NULL AS created_tx_to, NULL AS created_tx_method_id, NULL AS created_tx_index
       ,NULL AS top_level_time, NULL AS top_level_tx_hash, NULL AS top_level_block_number, NULL AS top_level_tx_from, NULL AS top_level_tx_to, NULL AS top_level_tx_method_id
       ,bytearray_length(oc.code) AS code_bytelength, NULL AS token_standard, oc.code, NULL AS code_deploy_rank_by_chain
