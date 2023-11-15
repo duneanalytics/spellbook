@@ -14,3 +14,6 @@ FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_2_evt_Name
 UNION 
 SELECT *
 FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_3_evt_NameRegistered')}}
+UNION 
+SELECT *
+FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_4_evt_NameRegistered')}}
