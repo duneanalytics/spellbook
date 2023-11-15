@@ -623,7 +623,7 @@ models:
       - *day
       - *pool_id
       - name: pool_address
-      - *pool_symbol
+      - name: pool_symbol
       - *blockchain
       - *token_address
       - name: token_symbol
