@@ -326,7 +326,7 @@ FROM (
               co.contract_project
               ,dnm.mapped_name
               ,c.contract_project
-              ,(CASE WHEN cdc.creator_name IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END)
+              ,(CASE WHEN cdc.creator_address IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END)
             ),
           '_',
           ' '
@@ -364,7 +364,7 @@ FROM (
     left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
       on c.contract_address = co.contract_address
     left join {{ ref('contracts_deterministic_contract_creators') }} as cdc --map deterministic deployers
-      on c.contract_address = cdc.contract_address
+      on c.contract_address = cdc.creator_address
     left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
       on c.contract_address = sd.contract_address
       AND c.blockchain = sd.blockchain
