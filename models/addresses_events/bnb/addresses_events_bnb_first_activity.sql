@@ -1,7 +1,7 @@
 {{ config(
     schema = 'addresses_events_bnb'
-    , tags = ['dunesql']
-    , alias = alias('first_activity')
+    
+    , alias = 'first_activity'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'append'

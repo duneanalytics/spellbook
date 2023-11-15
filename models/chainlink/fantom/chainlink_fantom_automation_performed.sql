@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('automation_performed'),
+    
+    alias='automation_performed',
     materialized='view'
   )
 }}

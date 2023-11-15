@@ -3,6 +3,5 @@ version: 2
 seeds:
   - name: opensea_solana_trades_solscan
     config:
-      tags: dunesql
       column_types:
         tx_hash: varchar

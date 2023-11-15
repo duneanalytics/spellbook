@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('ldo_referral_payment'),
-        tags = ['dunesql'], 
+        alias = 'ldo_referral_payment',
+         
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',

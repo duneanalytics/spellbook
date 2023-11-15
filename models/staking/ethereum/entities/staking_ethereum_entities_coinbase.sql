@@ -1,7 +1,7 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_coinbase'),
-    tags = ['dunesql'],
+    alias = 'entities_coinbase',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

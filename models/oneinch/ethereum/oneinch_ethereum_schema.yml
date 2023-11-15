@@ -1078,9 +1078,9 @@ models:
         name: block_number
         description: "Block number of transaction"
       - *project
-      - &airdrop_identifier
-        name: airdrop_identifier
-        description: "Airdrop identifier name"
+      - &airdrop_number
+        name: airdrop_number
+        description: "Airdrop identifier number"
       - &recipient
         name: recipient
         description: "Airdrop recipient"
@@ -1172,43 +1172,56 @@ models:
           - unique
           - not_null
 
-
-
-
-
-
-  - name: oneinch_ethereum_ar_calls_transfers
+  - name: oneinch_ethereum_lop
     meta:
       blockchain: ['ethereum']
       sector: oneinch
-      contributors: ['grkhr']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'lop', 'calls']
     description: >
-        oneinch ethereum calls & transfers
+        1inch limit order protocol calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
     columns:
-      - *blockchain
+      - *blockchain_not_null
       - *block_time
-      - *tx_hash
+      - *tx_hash_not_null
       - *tx_from
+      - *tx_to
       - *tx_success
-      - *call_success
-      - *call_trace_address
-      - &caller
-        name: caller
+      - &contract_name
+        name: contract_name
+      - &protocol_version
+        name: protocol_version
+      - &method
+        name: method
+      - *call_from
+      - *call_to
+      - &call_trace_address_not_null
+        name: call_trace_address
+        tests:
+          - not_null
       - *call_selector
-      - *transfer_trace_address
-      - *contract_address
-      - *amount
-      - *native_token
-      - *transfer_from
-      - *transfer_to
-      - &rn_ta_asc
-        name: rn_ta_asc
-      - &rn_ta_desc
-        name: rn_ta_desc
+      - *maker
+      - &maker_asset
+        name: maker_asset
+      - &making_amount
+        name: making_amount
+      - *taker
+      - &taker_asset
+        name: taker_asset
+      - &taking_amount
+        name: taking_amount
+      - &order_hash
+        name: order_hash
+      - *call_success
+      - &call_gas_used
+        name: call_gas_used
       - *call_output
-      - *call_input
       - *minute
       - *block_month
-      - *unique_call_transfer_id

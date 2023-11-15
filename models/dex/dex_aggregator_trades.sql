@@ -1,8 +1,8 @@
 
 {{ config(
-        tags=['dunesql'],
+        
         schema ='dex_aggregator',
-        alias = alias('trades'),
+        alias = 'trades',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -31,6 +31,7 @@ spells with issues, to be excluded in short term:
     ,ref('dodo_aggregator_trades')
     ,ref('zeroex_trades')
     ,ref('kyberswap_aggregator_trades')
+    ,ref('tokenlon_trades')
 ] %}
 
 {% for aggregator_model in dex_aggregator_models %}

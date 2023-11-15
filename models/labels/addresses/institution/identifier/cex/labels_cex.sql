@@ -1,6 +1,6 @@
 {{config(
-    tags = ['dunesql'],
-    alias = alias('cex')
+    
+    alias = 'cex'
 )}}
 
 

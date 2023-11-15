@@ -159,11 +159,11 @@ models:
 
   - name: balancer_bpt_prices
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
       sector: dex
-      contributors: thetroyharris, victorstefenon
+      contributors: thetroyharris, victorstefenon, viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis']
+      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base']
     description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -222,7 +222,7 @@ models:
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
-      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

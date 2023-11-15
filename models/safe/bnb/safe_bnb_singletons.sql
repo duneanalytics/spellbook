@@ -1,8 +1,8 @@
 {{ 
     config(
         materialized='table',
-        tags = ['dunesql'],
-        alias = alias('singletons'),
+        
+        alias = 'singletons',
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "safe",

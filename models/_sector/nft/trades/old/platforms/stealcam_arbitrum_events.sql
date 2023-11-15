@@ -1,7 +1,7 @@
 {{ config(
     schema = 'stealcam_arbitrum',
-    alias = alias('events'),
-    tags = ['dunesql'],
+    alias = 'events',
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -15,7 +15,7 @@
 with stealcam as (
 select
     *
-    ,case when value > cast(0 as uint256) then cast((value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) as uint256) else cast(0 as uint256) end as surplus_value
+    ,case when value > uint256 '0' then cast((value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) as uint256) else uint256 '0' end as surplus_value
 FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -33,14 +33,14 @@ SELECT 'arbitrum' AS blockchain
 , sc.evt_block_number AS block_number
 , 'Single Item Trade' AS trade_type
 , 'Buy' AS trade_category
-, CASE WHEN sc.value=cast(0 as uint256) THEN 'Mint' ELSE 'Trade' END AS evt_type
+, CASE WHEN sc.value=uint256 '0' THEN 'Mint' ELSE 'Trade' END AS evt_type
 , sc."from" AS seller
 , sc.to AS buyer
 , sc.contract_address AS nft_contract_address
 , 'Stealcam' AS collection
 , sc.id AS token_id
 , 'erc721' AS token_standard
-, CAST(1 AS uint256) AS number_of_items
+, uint256 '1' AS number_of_items
 , 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 AS currency_contract
 , 'ETH' AS currency_symbol
 , sc.value AS amount_raw
@@ -52,15 +52,15 @@ SELECT 'arbitrum' AS blockchain
 , sc.evt_tx_hash AS tx_hash
 , at."from" AS tx_from
 , at.to AS tx_to
-, CAST(0.1*surplus_value AS uint256) AS platform_fee_amount_raw
-, CAST(0.1*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount
-, CAST(pu.price*0.1*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount_usd
-, CAST(coalesce(100*(0.1*surplus_value/sc.value),0) AS double) AS platform_fee_percentage
+, CAST(double '0.1'*surplus_value AS uint256) AS platform_fee_amount_raw
+, CAST(double '0.1'*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount
+, CAST(pu.price*double '0.1'*surplus_value/POWER(10, 18) AS double) AS platform_fee_amount_usd
+, CAST(coalesce(100*(double '0.1'*surplus_value/sc.value),0) AS double) AS platform_fee_percentage
 , 'ETH' as royalty_fee_currency_symbol
-, CAST(0.45*surplus_value AS uint256) AS royalty_fee_amount_raw
-, CAST(0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount
-, CAST(pu.price*0.45*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount_usd
-, CAST(coalesce(100*(0.45*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
+, CAST(double '0.45'*surplus_value AS uint256) AS royalty_fee_amount_raw
+, CAST(double '0.45'*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount
+, CAST(pu.price*double '0.45'*surplus_value/POWER(10, 18) AS double) AS royalty_fee_amount_usd
+, CAST(coalesce(100*(double '0.45'*surplus_value/sc.value),0) AS double) AS royalty_fee_percentage
 , m._creator AS royalty_fee_receive_address
 , sc.evt_index
 , 'arbitrum-stealcam-' || cast(sc.evt_tx_hash as varchar)|| '-' || cast(sc.evt_index as varchar) AS unique_trade_id

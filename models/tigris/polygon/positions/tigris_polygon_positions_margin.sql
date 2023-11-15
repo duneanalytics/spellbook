@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('positions_margin')
+    alias = 'positions_margin'
     )
  }}
 
