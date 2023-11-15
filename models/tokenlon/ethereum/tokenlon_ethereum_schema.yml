@@ -8,7 +8,7 @@ models:
       project: tokenlon
       contributors: izayl
     config:
-      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
+      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
       Tokenlon AMM v1 trades
     tests:
@@ -30,6 +30,8 @@ models:
         description: 'Version of the contract built and deployed by the DEX project'
       - name: block_date
         description: 'UTC event block date of each DEX trade'
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: 'UTC event block time of each DEX trade'
       - name: token_bought_symbol

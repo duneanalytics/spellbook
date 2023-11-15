@@ -2,3 +2,9 @@ version: 2
 
 sources:
   - name: uniswap_v3_celo
+  - name: mento_celo
+    tables:
+      - name: Exchange_evt_Exchanged
+      - name: ExchangeEUR_evt_Exchanged
+      - name: ExchangeBRL_evt_Exchanged
+      - name: Broker_evt_Swap
