@@ -1,15 +1,10 @@
 {{ config(
     schema = 'gyroscope_polygon',
     alias = 'trades',
-    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'tx_hash', 'evt_index'],
-    post_hook = '{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "gyroscope",
-                                \'["fmarrr"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'tx_hash', 'evt_index']
     )
 }}
 

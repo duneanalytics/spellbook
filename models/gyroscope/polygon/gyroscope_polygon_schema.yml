@@ -1,28 +1,22 @@
 version: 2
 
 models:
-
   - name: gyroscope_polygon_trades
-
     meta:
-
       blockchain: polygon
       project: gyroscope
       contributors: fmarrr
-
     config:
-
       tags: ["polygon", "gyroscope", "trades"]
-
     description: trades on gyroscope E-CLP pools on polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - token_bought_amount
-            - token_sold_amount
+            - blockchain
+            - project
             - tx_hash
-             
+            - evt_index          
     columns:
       - &blockchain 
         name: blockchain        
