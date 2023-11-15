@@ -118,7 +118,7 @@ WITH pool_labels AS (
             WHEN day >= DATE '2023-07-24' THEN 0.175
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2022-01-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
-    ),
+    )
 
 
     SELECT
