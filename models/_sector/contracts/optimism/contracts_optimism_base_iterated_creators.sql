@@ -2,7 +2,7 @@
   config(
         schema = 'contracts_optimism',
         alias = 'base_iterated_creators',
-        materialized ='table'
+        materialized ='table',
         unique_key='contract_address',
         partition_by = ['created_month']
   )

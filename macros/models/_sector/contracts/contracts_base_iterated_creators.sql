@@ -60,14 +60,14 @@ with level0
       ,b.is_new_contract
 
     {% if loop.first -%}
-    from {{ref('contracts_' + chain + '_contract_creator_project_base_level') }} as b
-    left join {{ref('contracts_' + chain + '_contract_creator_project_base_level') }} as u --get info about the contract that created this contract
+    from {{ref('contracts_' + chain + '_base_starting_level') }} as b
+    left join {{ref('contracts_' + chain + '_base_starting_level') }} as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
     {% else -%}
     from level{{i-1}} as b
-    left join {{ref('contracts_' + chain + '_contract_creator_project_base_level') }} as u --get info about the contract that created this contract
+    left join {{ref('contracts_' + chain + '_base_starting_level') }} as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
@@ -93,7 +93,7 @@ SELECT * FROM level{{max_levels - 1}}
     , code
     , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
 
-  FROM {{ref('contracts_' + chain + '_contract_creator_project_base_level') }}
+  FROM {{ref('contracts_' + chain + '_base_starting_level') }}
   WHERE is_new_contract = 1
   )
 
@@ -102,7 +102,7 @@ SELECT * FROM level{{max_levels - 1}}
       blockchain
       , code
       , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
-    FROM {{ref('contracts_' + chain + '_contract_creator_project_base_level') }}
+    FROM {{ref('contracts_' + chain + '_base_starting_level') }}
     WHERE is_new_contract = 0 AND code IS NOT NULL
     AND code IN (SELECT code from new_contracts)
     GROUP BY 1,2
@@ -146,7 +146,7 @@ SELECT * FROM level{{max_levels - 1}}
   from (
     SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
-    SELECT {{max_levels}} as level, * FROM {{ref('contracts_' + chain + '_contract_creator_project_base_level') }} WHERE to_iterate_creators = 0 --get legacy contracts
+    SELECT {{max_levels}} as level, * FROM {{ref('contracts_' + chain + '_base_starting_level') }} WHERE to_iterate_creators = 0 --get legacy contracts
   ) f
   
   LEFT JOIN code_ranks cr --code ranks for new contracts

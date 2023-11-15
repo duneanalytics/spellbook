@@ -79,7 +79,7 @@ WITH get_contracts as (
       ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain
       , CAST(NULL as varchar) AS contract_project, cast(NULL as varchar) AS contract_name
       ,1 as map_rank
-      FROM {{ ref('contracts_' + chain + '_iterated_creators') }}
+      FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }}
       UNION ALL 
 
       SELECT
