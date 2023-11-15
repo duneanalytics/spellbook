@@ -12,10 +12,10 @@ models:
     description: "Mapping of contracts to its creators and names on base."
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - created_tx_hash  
+        combination_of_columns:
+          - blockchain
+          - contract_address
+          - created_tx_hash  
     columns:
       - &created_month
         name: created_month
@@ -124,10 +124,10 @@ models:
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - created_tx_hash  
+        combination_of_columns:
+          - blockchain
+          - contract_address
+          - created_tx_hash  
       columns:
       - *blockchain
       - *created_time
@@ -154,10 +154,10 @@ models:
     description: "Base Level for mapping of contracts to its creators and names on base."
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - created_tx_hash    
+        combination_of_columns:
+          - blockchain
+          - contract_address
+          - created_tx_hash    
     columns:
       - *blockchain
       - *trace_creator_address
@@ -199,10 +199,10 @@ models:
     description: "Iterated creators for mapping of contracts to its creators and names on base."
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-            - created_tx_hash  
+        combination_of_columns:
+          - blockchain
+          - contract_address
+          - created_tx_hash  
     columns:
       - *blockchain
       - *trace_creator_address
