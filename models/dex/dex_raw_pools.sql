@@ -5,7 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'pool'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora"]\',
                                 "sector",
                                 "dex",
                                 \'["grkhr"]\') }}'
@@ -45,24 +45,48 @@
 
 
 
+{% 
+    set blockchains = [
+        "ethereum", 
+        "polygon", 
+        "bnb", 
+        "avalanche_c", 
+        "gnosis", 
+        "fantom", 
+        "optimism", 
+        "arbitrum", 
+        "celo", 
+        "base", 
+        "zksync",
+        "zora",
+    ]
+%}
+
+
+
 with 
 
 
 pool_created_logs as (
-    {% for topic0, data in config.items() %}
-        select 
-            blockchain
-            , '{{ data['type'] }}' as type
-            , '{{ data['version'] }}' as version
-            , substr(data, {{ config[topic0]['pool_position'] }}, 20) as pool
-            , substr(topic1, 13) as token0
-            , substr(topic2, 13) as token1
-            , block_number
-            , block_time
-            , contract_address
-            , tx_hash
-        from {{ ref('evms_logs') }}
-        where topic0 = {{ topic0 }}
+    {% for blockchain in blockchains %}
+        {% for topic0, data in config.items() %}
+            select 
+                '{{ blockchain }}' as blockchain
+                , '{{ data['type'] }}' as type
+                , '{{ data['version'] }}' as version
+                , substr(data, {{ config[topic0]['pool_position'] }}, 20) as pool
+                , substr(topic1, 13) as token0
+                , substr(topic2, 13) as token1
+                , block_number
+                , block_time
+                , contract_address
+                , tx_hash
+            from {{ source(blockchain, 'logs') }}
+            where topic0 = {{ topic0 }}
+            {% if not loop.last %}
+                union all
+            {% endif %}
+        {% endfor %}
         {% if not loop.last %}
             union all
         {% endif %}
@@ -71,13 +95,18 @@ pool_created_logs as (
 
 
 , creation_traces as (
-    select
-        blockchain
-        , address as pool
-        , block_time
-        , block_number
-        , tx_hash
-    from {{ ref('evms_creation_traces') }}
+    {% for blockchain in blockchains %}
+        select
+            '{{ blockchain }}' as blockchain
+            , address as pool
+            , block_time
+            , block_number
+            , tx_hash
+        from {{ source(blockchain, 'creation_traces') }}
+        {% if not loop.last %}
+            union all
+        {% endif %}
+    {% endfor %}
 )
 
 
@@ -93,7 +122,6 @@ select
     , contract_address
 from pool_created_logs
 join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
-where blockchain not in ('goerli') -- skip test chains due to incorrect data
 {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
 {% endif %} 

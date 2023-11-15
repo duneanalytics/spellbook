@@ -244,7 +244,7 @@ models:
 
   - name: dex_raw_pools
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
       sector: dex
       contributors: grkhr
     config:
