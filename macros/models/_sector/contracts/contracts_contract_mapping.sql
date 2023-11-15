@@ -69,7 +69,7 @@ WITH get_contracts as (
     ,COALESCE(t_mapped.token_standard, c.token_standard) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
-
+    ,map_rank
   from 
     (
       SELECT
