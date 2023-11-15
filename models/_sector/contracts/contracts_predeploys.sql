@@ -56,7 +56,7 @@ FROM (
     ,contract_address
     ,contract_project
     ,contract_name
-    ,from_iso8601_timestamp( created_time ) AS created_time
+    ,from_iso8601_timestamp( coalesce(created_time, '2021-07-06' ) ) AS created_time
     ,false as is_self_destruct
     ,'ovm1 contracts' as source
     ,cast(NULL as varbinary) as created_tx_hash
