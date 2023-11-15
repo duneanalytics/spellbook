@@ -119,11 +119,15 @@ FROM (
 )
 
 SELECT distinct
-  blockchain, trace_creator_address,  contract_address, 
+  blockchain, cast(trace_creator_address as varbinary) AS trace_creator_address
+  , cast(contract_address as varbinary) AS contract_address, 
   initcap(contract_project) AS contract_project
   --
-, contract_name, creator_address, created_time
-, is_self_destruct, created_tx_hash, source
+, contract_name
+, cast(creator_address as varbinary) AS creator_address
+, created_time, is_self_destruct
+, cast(created_tx_hash as varbinary) AS created_tx_hash
+, source
 FROM (
   select 
     blockchain
