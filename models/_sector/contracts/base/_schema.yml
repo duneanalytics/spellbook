@@ -211,3 +211,39 @@ models:
       - &source
         name: source
         description: "How the contract was picked up"
+
+  - name: contracts_base_contract_creator_project_intermediate_contracts
+    meta:
+      blockchain: base
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['evm', 'base', 'contracts', 'addresses']
+    description: "Intermediate table for mapping of contracts to its creators."
+
+    columns:
+      - *blockchain
+      - *trace_creator_address
+      - *creator_address
+      - *deployer_address
+      - *contract_address
+      - *contract_project
+      - *contract_name
+      - *created_time
+      - *created_month
+      - *source
+      - *top_level_time
+      - *created_tx_hash
+      - *created_block_number
+      - *top_level_tx_hash
+      - *top_level_block_number
+      - *top_level_tx_from
+      - *top_level_tx_to
+      - *top_level_tx_method_id
+      - *created_tx_from
+      - *created_tx_to
+      - *created_tx_method_id
+      - *created_tx_index
+      - *code_bytelength
+      - *code_deploy_rank_by_chain
+      - *code

@@ -28,140 +28,7 @@
     ,"code_deploy_rank_by_chain"
 ] %}
 
-WITH unified_contract_sources AS (
-  select 
-    blockchain
-    ,trace_creator_address
-    ,ic.creator_address
-    ,deployer_address
-    ,contract_address
-    ,COALESCE(al.contract_project, ald.contract_project, oc.namespace) AS contract_project
-    ,oc.name as contract_name 
-    ,created_time
-    ,created_month
-    ,source
-    ,top_level_time
-    ,created_tx_hash
-    ,created_block_number
-    ,top_level_tx_hash
-    ,top_level_block_number
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
-    ,created_tx_from
-    ,created_tx_to
-    ,created_tx_method_id
-    ,created_tx_index
-    ,code_bytelength
-    ,code_deploy_rank_by_chain
-    ,ic.code
-    ,1 as map_rank
-  from {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }} ic
-  -- map creator here
-    LEFT JOIN {{ref('contracts_contract_creator_address_list')}} al 
-      ON ic.creator_address = al.creator_address
-    LEFT JOIN {{ref('contracts_contract_creator_address_list')}} ald
-      ON ic.deployer_address = ald.creator_address
-    left join {{ source( chain , 'contracts') }} as oc 
-      ON ic.contract_address = oc.address
----
--- predeploys
----
-  union all
-  
-  select 
-      blockchain
-      ,trace_creator_address
-      ,creator_address
-      ,creator_address AS deployer_address
-      ,contract_address
-      ,contract_project
-      ,contract_name
-      ,created_time
-      ,cast( DATE_TRUNC('month',created_time) as date) AS created_month
-      ,source
-      ,created_time as top_level_time
-      ,CAST(NULL AS varbinary) as top_level_tx_hash
-      ,cast(NULL as bigint) as top_level_block_number
-      ,CAST(NULL AS varbinary) as created_tx_hash
-      ,cast(NULL as bigint) as created_block_number
-      ,CAST(NULL AS varbinary) as top_level_tx_from
-      ,CAST(NULL AS varbinary) as top_level_tx_to
-      ,CAST(NULL AS varbinary) as top_level_tx_method_id
-      ,CAST(NULL AS varbinary) as created_tx_from
-      ,CAST(NULL AS varbinary) as created_tx_to
-      ,CAST(NULL AS varbinary) as created_tx_method_id
-      ,cast(NULL as bigint) AS created_tx_index
-      ,cast(NULL as bigint) as code_bytelength --todo
-      ,1 as code_deploy_rank_by_chain
-      ,CAST(NULL AS varbinary) AS code
-      ,2 as map_rank
-
-    FROM {{ ref('contracts_predeploys') }} pre
-    where 
-    1=1
-    and pre.blockchain = '{{chain}}'
-    GROUP BY 1,2,3,4,5,6,7,8,9,10,11
-
-  -- ---
-  -- -- missing contracts
-  -- ---
-
-  -- union all
-  
-  -- select 
-  --   '{{chain}}' AS blockchain
-  --   ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS trace_creator_address
-  --   ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS creator_address
-  --   ,COALESCE(ct."from",oc."from",0xdeaddeaddeaddeaddeaddeaddeaddeaddead0006) AS deployer_address
-  --   ,l.contract_address
-  --   ,oc.namespace as contract_project 
-  --   ,oc.name as contract_name 
-  --   ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) AS created_time
-  --   ,cast( DATE_TRUNC('month',COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) ) as date) AS created_month
-  --   ,'missing contracts' as source
-  --   ,COALESCE(ct.block_time, oc.created_at, MIN(l.block_time)) as top_level_time
-  --   ,CAST(NULL AS varbinary) as top_level_tx_hash
-  --   ,cast(NULL as bigint) as top_level_block_number
-  --   ,CAST(NULL AS varbinary) as created_tx_hash
-  --   ,cast(NULL as bigint) as created_block_number
-  --   ,CAST(NULL AS varbinary) as top_level_tx_from
-  --   ,CAST(NULL AS varbinary) as top_level_tx_to
-  --   ,CAST(NULL AS varbinary) as top_level_tx_method_id
-  --   ,CAST(NULL AS varbinary) as created_tx_from
-  --   ,CAST(NULL AS varbinary) as created_tx_to
-  --   ,CAST(NULL AS varbinary) as created_tx_method_id
-  --   ,l.tx_index AS created_tx_index
-  --   ,bytearray_length(oc.code) as code_bytelength
-  --   ,1 as code_deploy_rank_by_chain
-  --   ,oc.code
-  --   ,3 as map_rank
-  -- from {{ source( chain , 'logs') }} as l
-  --   left join {{ source( chain , 'creation_traces') }} as ct 
-  --     ON l.contract_address = ct.address
-  --   left join {{ source( chain , 'contracts') }} as oc 
-  --     ON l.contract_address = oc.address
-  -- WHERE
-  --   l.contract_address NOT IN
-  --                       (SELECT contract_address
-  --                         FROM {{ref('contracts_' + chain + '_contract_creator_project_iterated_creators') }}
-  --                         WHERE blockchain = '{{chain}}'
-  --                       )
-  --   AND l.contract_address NOT IN
-  --                       (
-  --                         SELECT contract_address FROM {{ ref('contracts_predeploys') }}
-  --                         WHERE blockchain = '{{chain}}'
-  --                       )
-    
-  --   {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-  --     AND {{ incremental_predicate('l.block_time') }}
-  --   {% endif %}
-
-  -- GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, ct.block_time, oc.created_at, l.tx_index, oc.code
-  
-)
-
-, get_contracts as (
+WITH get_contracts as (
   --grab the first non-null value for each, i.e. if we have the contract via both contract mapping and optimism.contracts
   select
     blockchain
@@ -204,18 +71,18 @@ WITH unified_contract_sources AS (
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
 
-  from unified_contract_sources as c 
+  from {{ ref('contracts_' + chain + '_contract_creator_project_intermediate_contracts') }} as c 
   left join (
         select
-          e.blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
-        FROM {{ ref('tokens_erc20')}} e --note: This doesn't yet contain all ERC20 tokens
-        WHERE e.blockchain = '{{chain}}'
+          '{{chain}}' as blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
+        FROM {{ ref('tokens_' + chain + '_erc20')}} e --note: This doesn't yet contain all ERC20 tokens
+        -- WHERE e.blockchain = '{{chain}}'
         GROUP BY 1,2,3,4
       UNION ALL
         select 
-          t.blockchain ,t.contract_address ,t.name as symbol, standard AS token_standard
-        from {{ ref('tokens_nft') }} as t
-        WHERE t.blockchain = '{{chain}}'
+          '{{chain}}' as bblockchain ,t.contract_address ,t.name as symbol, standard AS token_standard
+        from {{ ref('tokens_' + chain + '_nft') }} as t --chain-specific NFT model
+        -- WHERE t.blockchain = '{{chain}}'
         group by 1, 2, 3, 4
       ) as t_mapped
     on c.contract_address = t_mapped.contract_address
@@ -225,33 +92,7 @@ WITH unified_contract_sources AS (
             , MIN(min_block_number) AS min_block_number
             , MAX_BY(token_standard, LENGTH(token_standard)) AS token_standard
           FROM (
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
-            FROM {{source('erc1155_' + chain, 'evt_transfersingle')}} r
-            WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND {{ incremental_predicate('r.evt_block_time') }}
-            {% endif %}
-            group by 1
-          UNION ALL
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc1155' as token_standard
-            FROM {{source('erc1155_' + chain, 'evt_transferbatch')}} r
-            WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND {{ incremental_predicate('r.evt_block_time') }}
-            {% endif %}
-            group by 1
-          UNION ALL
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc721' as token_standard
-            FROM {{source('erc721_' + chain, 'evt_transfer')}} r
-            WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_nft')}} WHERE  blockchain = '{{chain}}')
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND {{ incremental_predicate('r.evt_block_time') }}
-            {% endif %}
-            group by 1
-          UNION ALL
+            -- We have an all NFTs table, but don't yet hand an all ERC20s table
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r
             WHERE 1=1
@@ -336,7 +177,9 @@ FROM (
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
-      ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
+      ,CASE WHEN is_self_destruct = true then is_self_destruct ELSE
+          (CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END)
+        END as is_self_destruct
       ,c.created_tx_hash
       ,COALESCE(c.created_block_number,0) AS created_block_number
       ,c.created_tx_from
@@ -370,6 +213,9 @@ FROM (
       AND c.blockchain = sd.blockchain
       and c.created_tx_hash = sd.created_tx_hash
       AND c.created_block_number = sd.created_block_number
+      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
+      AND {{ incremental_predicate('sd.created_block_time') }}
+      {% endif %}
   ) f
 ) u
 
