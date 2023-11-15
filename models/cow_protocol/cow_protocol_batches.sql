@@ -1,6 +1,6 @@
 {{ config(
-        alias = alias('batches'),
-        tags=['dunesql'],
+        alias = 'batches',
+        
         post_hook='{{ expose_spells(\'["ethereum", "gnosis"]\',
                                     "project",
                                     "cow_protocol",

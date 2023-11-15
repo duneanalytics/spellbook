@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('current_listings'),
+        
+        alias = 'current_listings',
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

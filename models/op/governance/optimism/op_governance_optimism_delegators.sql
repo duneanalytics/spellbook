@@ -1,7 +1,6 @@
 {{ config(
-        tags=['dunesql']
-        , schema = 'op_governance_optimism'
-        , alias = alias('delegators')
+     schema = 'op_governance_optimism'
+        , alias = 'delegators'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'

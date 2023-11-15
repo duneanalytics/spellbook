@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: uniswap_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: uniswap
+      contributors: wuligy
+    config:
+      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap base v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+           
+  - name: dex_base_base_trades

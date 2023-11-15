@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
-        alias = alias('info'),
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli"]\',
+        tags = [ 'static'],
+        alias = 'info',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}')
@@ -20,9 +20,9 @@ FROM (VALUES
         , (5, 'goerli', 'Goerli', 'Testnet', NULL, 'GTH', 0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6, 'https://goerli.etherscan.io/', timestamp '2015-07-30 03:26', NULL, NULL)
         , (42220, 'celo', 'Celo', 'Layer 1', NULL, 'CELO', 0xe452e6ea2ddeb012e20db73bf5d3863a3ac8d77a, 'https://celoscan.io/', timestamp '2020-04-22 16:00', NULL, NULL)
         , (8453, 'base', 'Base', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://basescan.org/', timestamp '2023-06-15 00:35', 'OP Stack', 'ethereum')
-        , (7777777, 'zora', 'ZORA Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.zora.energy/', timestamp '2023-06-14 00:03', 'OP Stack', 'ethereum')
+        , (7777777, 'zora', 'ZORA', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.zora.energy/', timestamp '2023-06-14 00:03', 'OP Stack', 'ethereum')
         , (424, 'pgn', 'Public Goods Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.publicgoods.network/', timestamp '2023-07-11 22:18', 'OP Stack', 'ethereum')
-        , (324, 'zksync', 'zkSync Era', 'Layer 2', 'ZK Rollup', 'ETH', NULL , 'https://explorer.zksync.io/', timestamp '2023-02-14 15:22', 'zkSync', 'ethereum')
+        , (324, 'zksync', 'zkSync Era', 'Layer 2', 'ZK Rollup', 'ETH', 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91, 'https://explorer.zksync.io/', timestamp '2023-02-14 15:22', 'zkSync', 'ethereum')
         , (1101, 'polygonzkevm', 'Polygon zkEVM', 'Layer 2', 'ZK Rollup', 'ETH', NULL, 'https://zkevm.polygonscan.com/', timestamp '2023-03-24 05:30', 'Polygon', 'ethereum')
         , (1088, 'metis_andromeda', 'Metis Andromeda', NULL, NULL, NULL, NULL, 'https://andromeda-explorer.metis.io/', timestamp '2021-11-18 22:19', 'Optimistic Virtual Machine', 'ethereum')
         , (5000, 'mantle', 'Mantle', 'Layer 2', 'Optimistic Rollup', 'MNT', NULL, 'https://explorer.mantle.xyz/', timestamp '2023-07-02 18:21', NULL, 'ethereum')

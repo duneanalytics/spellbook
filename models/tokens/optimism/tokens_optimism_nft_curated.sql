@@ -1,4 +1,4 @@
-{{ config(alias = alias('nft_curated'), tags=['static', 'dunesql']) }}
+{{ config(alias = 'nft_curated', tags=['static']) }}
 
 SELECT
   contract_address, name, cast(NULL as varchar) as symbol

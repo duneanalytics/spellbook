@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'aztec_v2_ethereum',
-    alias = alias('daily_bridge_activity'),
+    alias = 'daily_bridge_activity',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "aztec_v2",

@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('options_fees_distributed'),
+    alias = 'options_fees_distributed',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -13,7 +13,8 @@
 WITH 
 {% set fees_distributed_v2_evt_tables = [
     'options_evt_OptionsFeesDistributed',
-    'Options_V2_evt_OptionsFeesDistributed'
+    'Options_V2_evt_OptionsFeesDistributed',
+    'Options_V3_evt_OptionsFeesDistributed'
 ] %}
 
 fees_v2 AS (
