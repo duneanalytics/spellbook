@@ -79,7 +79,8 @@ WITH get_contracts as (
       ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain
       , CAST(NULL as varchar) AS contract_project, cast(NULL as varchar) AS contract_name
       ,1 as map_rank
-      FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }}
+      FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }} b
+
       UNION ALL 
 
       SELECT
@@ -104,7 +105,7 @@ WITH get_contracts as (
   left join {{ ref('contracts_contract_creator_address_list') }} as cctr
     on c.deployer_address = cctr.creator_address
     AND ccd.creator_address IS NULL
-  left join {{ source(chain,'contracts')}} oc
+  left join {{ source(chain,'contracts') }} oc
     ON c.contract_address = oc.address
   left join (
         select
@@ -182,7 +183,6 @@ FROM (
               ,dnm.mapped_name
               ,c.contract_project
               ,(CASE WHEN cdc.creator_address IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END)
-              ,oc.namespace
             ),
           '_',
           ' '
