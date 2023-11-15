@@ -118,7 +118,7 @@ FROM (
   group by 1,2
 )
 
-SELECT
+SELECT distinct
   blockchain, trace_creator_address,  contract_address, 
   initcap(contract_project) AS contract_project
   --
