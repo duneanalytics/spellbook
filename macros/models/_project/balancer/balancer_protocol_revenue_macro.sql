@@ -7,8 +7,8 @@
 WITH pool_labels AS (
         SELECT * FROM (
             SELECT
-                address AS pool_id,
-                name AS pool_symbol,
+                address,
+                name,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
             FROM {{ ref('labels_balancer_v2_pools') }}
             WHERE blockchain = '{{blockchain}}'
