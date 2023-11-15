@@ -19,8 +19,6 @@ models:
           blockchain: celo
           project: uniswap
           version: 3
-            
-  - name: dex_celo_base_trades
       - check_seed:
           seed_file: ref('uniswap_celo_base_trades_seed')
           filter:
