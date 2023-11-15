@@ -694,6 +694,7 @@ WITH curated_list AS (
       ,(0x4e1f7ede4c1647abc50d412ac5a7be52ea4423d3, 'Hedgey Finance')
       ,(0x1fd06f088c720ba3b7a3634a8f021fdd485dca42, 'Allo Protocol (Gitcoin)')
       ,(0x42571b8414c68b63a2729146ce93f23639d25399, 'Pancakeswap')
+      ,(0x3af75af6F056d4D72c1675dA919aebF908A109D6, 'Pancakeswap')
   ) as temp_table (creator_address, contract_project)
 )
 
