@@ -1,7 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
         schema = 'dex_optimism',
-        alias = alias('crossdomain_mev'),
+        alias = 'crossdomain_mev',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
