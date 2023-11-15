@@ -75,12 +75,10 @@
             {{ create_table_as(False, target_relation, compiled_code, language) }}
         {%- endcall -%}
     {% elif full_refresh_mode %}
-        {#- - Can't replace a table - we must drop --#}
-        {# {% do adapter.drop_relation(existing_relation) %} #}
-        {# {{ log("TEST " ~ target_relation) }} #}
-        {# {%- call statement("main", language=language) -%} #}
-        {# {{ create_table_as(False, target_relation, compiled_code, language) }} #}
-        {# {%- endcall -%} #}
+        -- Full Refresh happens here. The original dbt-trino implementation drops the table before recreating it, 
+        -- which causes downtime + data loss if the job crashes while recreating.
+        -- Instead, we use a temporary table to store the new data, then rename it to the target table.
+        -- Which is the logic used for materialized table recreation.
         {%- set intermediate_relation = make_intermediate_relation(target_relation) -%}
         -- the intermediate_relation should not already exist in the database;
         -- get_relation
@@ -103,11 +101,13 @@
         {{ drop_relation_if_exists(preexisting_intermediate_relation) }}
         {{ drop_relation_if_exists(preexisting_backup_relation) }}
 
+        -- Execute full refresh in intermediate table
         {% call statement("main") -%}
             {{ create_table_as(False, intermediate_relation, sql) }}
         {%- endcall %}
 
         {#- - cleanup #}
+        -- renaming the table to the backup name
         {% if existing_relation is not none %}
             {{ adapter.rename_relation(existing_relation, backup_relation) }}
         {% endif %}
