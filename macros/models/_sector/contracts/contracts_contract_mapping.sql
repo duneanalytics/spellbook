@@ -192,9 +192,7 @@ FROM (
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
-      ,CASE WHEN is_self_destruct = true then is_self_destruct ELSE
-          (CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END)
-        END as is_self_destruct
+      ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
       ,c.created_tx_hash
       ,COALESCE(c.created_block_number,0) AS created_block_number
       ,c.created_tx_from
