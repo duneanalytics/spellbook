@@ -2,7 +2,7 @@
         tags=['static'],
           ) }}
 
-SELECT blockhain, address as address, bridge_name, description
+SELECT blockchain, address as address, bridge_name, description
 FROM (VALUES 
   'base' as blockchain, (0x4200000000000000000000000000000000000010, 'Base', 'L2StandardBridge')
   ,'base' as blockchain, (0x4200000000000000000000000000000000000014, 'Base', 'L2ERC721Bridge')
