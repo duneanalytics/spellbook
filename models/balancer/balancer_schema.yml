@@ -293,7 +293,7 @@ models:
       - name: pool_address
       - name: pool_symbol
       - *blockchain
-      - *token_address
+      - name: token_address
       - name: token_symbol
         description: "Symbol of the token"
       - name: token_balance_raw
