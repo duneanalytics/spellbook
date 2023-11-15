@@ -101,7 +101,7 @@ WITH pool_labels AS (
             AND p2.day = d.day
         LEFT JOIN bpt_prices p3
             ON p3.token = CAST(d.token_address AS VARCHAR)
-            AS p3.day = d.day
+            AND p3.day = d.day
         LEFT JOIN {{ ref('tokens_erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
