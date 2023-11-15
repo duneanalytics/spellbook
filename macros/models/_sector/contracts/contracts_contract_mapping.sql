@@ -73,7 +73,7 @@ WITH get_contracts as (
   from 
     (
       SELECT
-      blockchain, trace_creator_address. contract_address, creator_address, deployer_address,created_time, created_month
+      blockchain, trace_creator_address, contract_address, creator_address, deployer_address,created_time, created_month
       ,created_tx_hash, created_block_number, created_tx_from, created_tx_to, created_tx_method_id, created_tx_index
       ,top_level_time, top_level_tx_hash, top_level_block_number, top_level_tx_from, top_level_tx_to, top_level_tx_method_id
       ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain
