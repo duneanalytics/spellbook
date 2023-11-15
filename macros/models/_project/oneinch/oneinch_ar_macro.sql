@@ -392,40 +392,20 @@ pools as (
     from (
     {% for method, method_data in contract_data.methods.items() if blockchain in method_data.blockchains %}
     {% if method_data.type == 'generic' %}
-        select
-            block_number
-            , block_time
-            , tx_hash
-            , '{{ contract }}' as contract_name
-            , '{{ contract_data['version'] }}' as protocol_version
-            , method
-            , call_from
-            , call_to
-            , call_trace_address
-            , call_success
-            , call_selector
-            , receiver
-            , src_token_address
-            , dst_token_address
-            , src_receiver
-            , dst_receiver
-            , src_amount
-            , dst_amount
-            , dst_amount_min
-            , null as ordinary
-            , null as pools
-            , 'generic' as router
-            , call_gas_used
-            , call_output
+        select *
         from (
             select
                 call_block_number as block_number
                 , call_block_time as block_time
                 , call_tx_hash as tx_hash
+                , '{{ contract }}' as contract_name
+                , '{{ contract_data['version'] }}' as protocol_version
                 , '{{ method }}' as method
-                , call_trace_address
+                , call_from
                 , contract_address as call_to
+                , call_trace_address
                 , call_success
+                , call_selector
                 , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
@@ -434,6 +414,12 @@ pools as (
                 , {{ method_data.get("src_amount", "null") }} as src_amount
                 , {{ method_data.get("dst_amount", "null") }} as dst_amount
                 , {{ method_data.get("dst_amount_min", "null") }} as dst_amount_min
+                , call_gas_used
+                , call_output
+                , null as ordinary
+                , null as pools
+                , bytearray_to_uint256(substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1)) as remains
+                , 'generic' as router
             from (
                 select *, {{ method_data.get("kit", "null") }} as kit
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -441,25 +427,27 @@ pools as (
                     where {{ incremental_predicate('call_block_time') }}
                 {% endif %}
             )
+            join (
+                select
+                    block_number as call_block_number
+                    , tx_hash as call_tx_hash
+                    , trace_address as call_trace_address
+                    , "from" as call_from
+                    , substr(input, 1, 4) as call_selector
+                    , gas_used as call_gas_used
+                    , input as call_input
+                    , length(input) as call_input_length
+                    , output as call_output
+                from {{ source(blockchain, 'traces') }}
+                where
+                    {% if is_incremental() %}
+                        {{ incremental_predicate('block_time') }}
+                    {% else %}
+                        block_time >= timestamp '{{ contract_data['start'] }}'
+                    {% endif %}
+                    and call_type = 'call'
+            ) using(call_block_number, call_tx_hash, call_trace_address)
         )
-        join (
-            select
-                block_number
-                , tx_hash
-                , trace_address as call_trace_address
-                , "from" as call_from
-                , substr(input, 1, 4) as call_selector
-                , gas_used as call_gas_used
-                , output as call_output
-            from {{ source(blockchain, 'traces') }}
-            where 
-                {% if is_incremental() %} 
-                    {{ incremental_predicate('block_time') }}
-                {% else %} 
-                    block_time >= timestamp '{{ contract_data['start'] }}' 
-                {% endif %}
-                and call_type = 'call'
-        ) using(block_number, tx_hash, call_trace_address)
     {% elif method_data.type == 'unoswap' %}
         select
             block_number
@@ -467,7 +455,7 @@ pools as (
             , tx_hash
             , '{{ contract }}' as contract_name
             , '{{ contract_data['version'] }}' as protocol_version
-            , method
+            , '{{ method }}' as method
             , call_from
             , call_to
             , call_trace_address
@@ -481,24 +469,22 @@ pools as (
             , src_amount
             , dst_amount
             , dst_amount_min
-            , ordinary
-            , pools
-            , 'unoswap' as router
             , call_gas_used
             , call_output
+            , ordinary
+            , pools
+            , remains
+            , 'unoswap' as router
         from (
             select
                 call_block_number as block_number
                 , call_block_time as block_time
                 , call_tx_hash as tx_hash
-                , '{{ method }}' as method
-                , call_trace_address
-                , contract_address as call_to
                 , call_from
-                , call_selector
-                , call_gas_used
-                , call_output
+                , contract_address as call_to
+                , call_trace_address
                 , call_success
+                , call_selector
                 , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
@@ -507,21 +493,28 @@ pools as (
                 , {{ method_data.get("src_amount", "null") }} as src_amount
                 , {{ method_data.get("dst_amount", "null") }} as dst_amount
                 , {{ method_data.get("dst_amount_min", "null") }} as dst_amount_min
+                , call_gas_used
+                , call_output
                 , if(cardinality(poolss) > 0, true, false) as ordinary
                 , if(cardinality(poolss) > 0
                     , try(substr(cast(poolss[1] as varbinary), 13))
                     , substr(call_input, call_input_length - 20 - mod(call_input_length - 4, 32) + 1, 20)
                 ) as first_pool
-                , if(cardinality(poolss) > 1, try(substr(cast(poolss[cardinality(poolss)] as varbinary), 13))) as last_pool
+                , if(cardinality(poolss) > 1
+                    , try(substr(cast(poolss[cardinality(poolss)] as varbinary), 13))
+                ) as last_pool
                 , if(cardinality(poolss) > 0
                     , try(cast(substr(to_base(bytearray_to_bigint(substr(cast(poolss[1] as varbinary), 1, 1)), 2), 1, 1) as int))
                     , try(cast(substr(to_base(bytearray_to_bigint(substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 1)), 2), 1, 1) as int))
                 ) as first_direction
-                , if(cardinality(poolss) > 1, try(cast(substr(to_base(bytearray_to_bigint(substr(cast(poolss[cardinality(poolss)] as varbinary), 1, 1)), 2), 1, 1) as int))) as last_direction
+                , if(cardinality(poolss) > 1
+                    , try(cast(substr(to_base(bytearray_to_bigint(substr(cast(poolss[cardinality(poolss)] as varbinary), 1, 1)), 2), 1, 1) as int))
+                ) as last_direction
                 , if(cardinality(poolss) > 0
                     , transform(poolss, x -> cast(x as varbinary))
                     , array[substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32)]
                 ) as pools
+                , bytearray_to_uint256(substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1)) as remains
             from (
                 select *, {{ method_data["pools"] }} as poolss
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -541,11 +534,11 @@ pools as (
                     , length(input) as call_input_length
                     , output as call_output
                 from {{ source(blockchain, 'traces') }}
-                where 
-                    {% if is_incremental() %} 
+                where
+                    {% if is_incremental() %}
                         {{ incremental_predicate('block_time') }}
-                    {% else %} 
-                        block_time >= timestamp '{{ contract_data['start'] }}' 
+                    {% else %}
+                        block_time >= timestamp '{{ contract_data['start'] }}'
                     {% endif %}
                     and call_type = 'call'
             ) using(call_block_number, call_tx_hash, call_trace_address)
@@ -588,6 +581,7 @@ select
     , router
     , call_success
     , call_gas_used
+    , remains
     , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
