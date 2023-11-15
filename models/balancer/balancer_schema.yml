@@ -306,3 +306,26 @@ models:
         description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
       - name: treasury_revenue
         description: "Total revenue directed to Balancer DAO's treasury"
+
+  - name: balancer_bpt_supply
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: thetroyharris
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+    description: >
+      The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - lp_virtual_supply_raw
+            - pool_id
+    columns:
+      - name: blockchain
+      - name: block_time
+      - name: block_number
+      - name: lp_virtual_supply_raw
+      - name: lp_virtual_supply
+      - name: pool_id
