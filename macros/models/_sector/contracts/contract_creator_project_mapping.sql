@@ -326,7 +326,7 @@ FROM (
               co.contract_project
               ,dnm.mapped_name
               ,c.contract_project
-              , CASE WHEN cdc.creator_name IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END
+              ,(CASE WHEN cdc.creator_name IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END)
             ),
           '_',
           ' '
