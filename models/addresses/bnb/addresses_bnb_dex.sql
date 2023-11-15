@@ -52,8 +52,8 @@ FROM (VALUES
     'bnb' as blockchain, (0x11111112542d85b3ef69ae05771c2dccff4faa26, '1inch', 'AggregationRouterV3'),
     'bnb' as blockchain, (0x1111111254fb6c44bac0bed2854e76f90643097d, '1inch', 'AggregationRouterV4'),
     'bnb' as blockchain, (0x1111111254eeb25477b68fb85ed929f73a960582, '1inch', 'AggregationRouterV5'),
-    'bnb' as blockchain, (0x26e6C47682FfC1824d7aC5512752FC671dA5e607, 'Morphex', 'Router'),
-    'bnb' as blockchain, (0xD53a9f3FAe2bd46D35E9a30bA58112A585542869, 'Maverick', 'Router'),
+    'bnb' as blockchain, (0x26e6c47682ffc1824d7ac5512752fc671da5e607, 'Morphex', 'Router'),
+    'bnb' as blockchain, (0xd53a9f3fae2bd46d35e9a30ba58112a585542869, 'Maverick', 'Router'),
     'bnb' as blockchain, (0xc9a0f685f39d05d835c369036251ee3aeaaf3c47, 'BabyDoge', 'Router')
 
     ) AS x (blockchain, address, dex_name, distinct_name)
