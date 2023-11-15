@@ -27,7 +27,7 @@ WITH received_by_builder AS (
     {% if is_incremental() %}
     WHERE b.time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
     )
 
 
