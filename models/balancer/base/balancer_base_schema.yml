@@ -364,12 +364,12 @@ models:
             - pool_id
             - token_address
     columns:
-      - *day
-      - *pool_id
+      - name: day
+      - name: pool_id
       - name: pool_address
       - name: pool_symbol
-      - *blockchain
-      - *token_address
+      - name: blockchain
+      - name: token_address
       - name: token_symbol
         description: "Symbol of the token"
       - name: token_balance_raw
