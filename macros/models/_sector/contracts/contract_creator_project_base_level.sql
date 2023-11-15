@@ -30,6 +30,7 @@ SELECT
         ,code
         
         ,is_new_contract
+        
   FROM (
   select 
     blockchain
