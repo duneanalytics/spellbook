@@ -87,11 +87,16 @@ WITH pool_labels AS (
     decorated_protocol_fee AS (
         SELECT 
             d.day, 
-            pool_id, 
-            token_address, 
-            SUM(protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals))) AS protocol_fee_collected_usd
+            d.pool_id, 
+            d.token_address, 
+            SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
+            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals))) AS token_amount,
+            CASE 
+                WHEN BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) = d.token_address -- fees paid in BPTs
+                    THEN 0
+                ELSE 
+                    SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals))) 
+            END AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
             ON p1.token = d.token_address
