@@ -297,3 +297,5 @@ models:
         tests:
           - accepted_values:
               values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
+              

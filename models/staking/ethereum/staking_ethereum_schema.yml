@@ -197,3 +197,4 @@ models:
         description: "Entity name"
       - name: entity_unique_name
         description: "Unique name of entity"
+
