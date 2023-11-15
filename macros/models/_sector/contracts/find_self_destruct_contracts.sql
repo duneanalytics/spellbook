@@ -1,4 +1,4 @@
-{% macro find_self_destruct_contracts_by_chain( chain ) %}
+{% macro find_self_destruct_contracts( chain ) %}
 
 SELECT
 blockchain, created_time, created_block_number, created_tx_hash, contract_address

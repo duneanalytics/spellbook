@@ -9,6 +9,6 @@
   )
 }}
 
-{{find_self_destruct_contracts_by_chain(
+{{find_self_destruct_contracts(
     chain='optimism'
 )}}
