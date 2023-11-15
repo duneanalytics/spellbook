@@ -5,6 +5,7 @@ seeds:
     config:
       column_types:
         blockchain: varchar
+        project: varchar
         version: varchar
         tx_hash: varbinary
         evt_index: uint256
