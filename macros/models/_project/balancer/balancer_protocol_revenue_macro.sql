@@ -80,7 +80,7 @@ WITH pool_labels AS (
         JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
-            AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F
+            AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F --ProtocolFeesCollector address, which is the same across all chains
         GROUP BY 1, 2, 3
     ),
 
