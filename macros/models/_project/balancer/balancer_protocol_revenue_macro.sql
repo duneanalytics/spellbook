@@ -12,7 +12,7 @@ WITH pool_labels AS (
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
             FROM {{ ref('labels_balancer_v2_pools') }}
             WHERE blockchain = '{{blockchain}}'
-            GROUP BY 1, 2) 1 
+            GROUP BY 1, 2) 
         WHERE num = 1
     ),
 
