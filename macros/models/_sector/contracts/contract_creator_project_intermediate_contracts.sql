@@ -2,8 +2,7 @@
 
 WITH unified_contract_sources AS (
 SELECT
-*
-  , ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY map_rank ASC) AS rn
+* , ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY map_rank ASC) AS rn
 
 FROM (
   select 
@@ -120,6 +119,9 @@ FROM (
   GROUP BY ct."from",oc."from", l.contract_address, oc.namespace, oc.name, ct.block_time, oc.created_at, l.tx_index, oc.code
   
 )
+
+)
+
 SELECT
     blockchain
     ,trace_creator_address
@@ -146,7 +148,17 @@ SELECT
     ,code_bytelength
     ,code_deploy_rank_by_chain
     ,code
-FROM unified_contract_sources
+    ,token_standard --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
+FROM unified_contract_sources u 
+left join (
+            -- We have an all NFTs table, but don't yet hand an all ERC20s table
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
+            FROM {{source('erc20_' + chain, 'evt_transfer')}} r
+            WHERE 1=1
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
+            group by 1
+          ) ts 
+  ON u.contract_address = ts.contract_address
 WHERE rn = 1
 
 {% endmacro %}

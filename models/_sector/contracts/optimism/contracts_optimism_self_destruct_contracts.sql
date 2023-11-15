@@ -2,11 +2,7 @@
   config(
         schema = 'contracts_optimism',
         alias = 'self_destruct_contracts',
-        unique_key='contract_address',
-        post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "contracts",
-                                    \'["msilb7", "chuxin"]\') }}'
+        unique_key='contract_address'
   )
 }}
 

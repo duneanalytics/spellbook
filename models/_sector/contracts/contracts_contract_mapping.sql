@@ -2,9 +2,7 @@
   config(     
         schema = 'contracts',
         alias = 'contract_mapping',
-        materialized ='table',
         unique_key=['blockchain','contract_address'],
-        partition_by=['blockchain'],
         post_hook='{{ expose_spells(\'["ethereum", "base", "optimism"]\',
                                     "sector",
                                     "contracts",

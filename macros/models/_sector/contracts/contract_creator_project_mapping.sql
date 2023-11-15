@@ -66,7 +66,7 @@ WITH get_contracts as (
     ,c.top_level_tx_method_id
 
     ,c.code_bytelength
-    ,COALESCE(t_mapped.token_standard, t_raw.token_standard) AS token_standard
+    ,COALESCE(t_mapped.token_standard, c.token_standard) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
     ,MIN(c.map_rank) AS map_rank
@@ -87,26 +87,6 @@ WITH get_contracts as (
       ) as t_mapped
     on c.contract_address = t_mapped.contract_address
     AND c.blockchain = t_mapped.blockchain
-  left join ( --ideally, we have an 'all tokens spell' to read from (pending Dune team?), until then:
-          SELECT contract_address
-            , MIN(min_block_number) AS min_block_number
-            , MAX_BY(token_standard, LENGTH(token_standard)) AS token_standard
-          FROM (
-            -- We have an all NFTs table, but don't yet hand an all ERC20s table
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
-            FROM {{source('erc20_' + chain, 'evt_transfer')}} r
-            WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-            AND {{ incremental_predicate('r.evt_block_time') }}
-            {% endif %}
-            group by 1
-          ) ts 
-          GROUP BY 1
-        ) as t_raw
-        on c.contract_address = t_raw.contract_address
-        AND c.created_block_number <= t_raw.min_block_number
-        AND t_mapped.contract_address IS NULL
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
   ) a
   where contract_address is not NULL 
@@ -211,11 +191,9 @@ FROM (
     left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
       on c.contract_address = sd.contract_address
       AND c.blockchain = sd.blockchain
-      and c.created_tx_hash = sd.created_tx_hash
+      AND c.created_tx_hash = sd.created_tx_hash
       AND c.created_block_number = sd.created_block_number
-      {% if is_incremental() %} -- this filter will only be applied on an incremental run 
-      AND {{ incremental_predicate('sd.created_block_time') }}
-      {% endif %}
+      AND c.created_block_time = sd.created_block_time
   ) f
 ) u
 
