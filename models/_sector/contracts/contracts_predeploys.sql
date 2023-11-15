@@ -53,7 +53,6 @@ FROM (
     'optimism' as blockchain
     ,creator_address AS trace_creator_address
     ,creator_address
-    ,cast(NULL as varbinary) as contract_factory
     ,contract_address
     ,contract_project
     ,contract_name
@@ -72,7 +71,6 @@ FROM (
     'optimism' as blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
-    ,cast(NULL as varbinary) as contract_factory
     ,snx.contract_address
     ,'Synthetix' as contract_project
     ,contract_name
@@ -92,7 +90,6 @@ FROM (
     'optimism' as blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
-    ,cast(NULL as varbinary) as contract_factory
     ,newaddress as contract_address
     ,'Uniswap' as contract_project
     ,'Pair' as contract_name
@@ -125,7 +122,7 @@ SELECT
   blockchain, trace_creator_address,  contract_address, 
   initcap(contract_project) AS contract_project
   --
-, contract_name, creator_address, created_time, contract_creator_if_factory
+, contract_name, creator_address, created_time
 , is_self_destruct, created_tx_hash, source
 FROM (
   select 
@@ -148,7 +145,6 @@ FROM (
     ,cast( coalesce(co.contract_name, c.contract_name) as varchar) as contract_name
     ,coalesce(c.creator_address, ovm1c.creator_address) as creator_address
     ,coalesce(c.created_time, from_iso8601_timestamp(ovm1c.created_time) ) as created_time
-    ,c.contract_factory as contract_creator_if_factory
     ,coalesce(c.is_self_destruct, false) as is_self_destruct
     ,c.created_tx_hash
     ,c.source
