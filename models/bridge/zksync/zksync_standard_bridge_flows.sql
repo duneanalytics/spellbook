@@ -26,6 +26,8 @@ WITH bridge_events AS (
         ,bridged_token_amount_raw
         ,source_chain_id
         ,destination_chain_id
+        ,source_chain_name
+        ,destination_chain_name
     FROM (
         -- Deposit ERC-20
         SELECT
@@ -38,6 +40,8 @@ WITH bridge_events AS (
             ,bytearray_to_uint256(l.data) as bridged_token_amount_raw
             ,UINT256 '1' AS source_chain_id
             ,UINT256 '324' AS destination_chain_id
+            ,'Ethereum' AS source_chain_name
+            ,'zkSync Era' AS destination_chain_name
         FROM {{ source ('zksync', 'logs') }} l
         WHERE topic0 = 0xb84fba9af218da60d299dc177abd5805e7ac541d2673cbee7808c10017874f63 
         AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
@@ -58,6 +62,8 @@ WITH bridge_events AS (
             ,bytearray_to_uint256(l.data) as bridged_token_amount_raw
             ,UINT256 '324' AS source_chain_id
             ,UINT256 '1' AS destination_chain_id
+            ,'zkSync Era' AS source_chain_name
+            ,'Ethereum' AS destination_chain_name
         FROM {{ source ('zksync', 'logs') }} l
         WHERE topic0 = 0x2fc3848834aac8e883a2d2a17a7514dc4f2d3dd268089df9b9f5d918259ef3b0 
         AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
@@ -77,6 +83,8 @@ WITH bridge_events AS (
             ,bytearray_to_int256(l.data) AS bridged_token_amount_raw
             ,UINT256 '324' AS source_chain_id
             ,UINT256 '1' AS destination_chain_id
+            ,'zkSync Era' AS source_chain_name
+            ,'Ethereum' AS destination_chain_name
         FROM zksync.logs l
         WHERE l.topic0 = 0x2717ead6b9200dd235aad468c9809ea400fe33ac69b5bfaa6d3e90fc922b6398
         AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (data IS NOT NULL)
@@ -138,8 +146,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     {% if is_incremental() %}
     AND p.minute >= (NOW() - interval '14' Day)
     {% endif %}
-    
-LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_source
-    ON cid_source.chain_id =  tf.source_chain_id
-LEFT JOIN {{ ref('chain_info_chain_ids') }} cid_dest
-    ON cid_dest.chain_id = tf.destination_chain_id
