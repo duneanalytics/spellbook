@@ -96,7 +96,7 @@ WITH get_contracts as (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r
             WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_erc20')}} WHERE  blockchain = '{{chain}}')
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
             {% if is_incremental() %} -- this filter will only be applied on an incremental run 
             AND {{ incremental_predicate('r.evt_block_time') }}
             {% endif %}
