@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'contracts_base',
-        alias = '_base_starting_level',
+        alias = 'base_starting_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
