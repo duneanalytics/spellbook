@@ -43,7 +43,30 @@ WITH bridge_events AS (
         AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
         {% if is_incremental() %}
         AND block_time > NOW() - interval '14' Day
-        {% endif %}       
+        {% endif %}
+
+        UNION ALL
+
+        -- Withdraw ETH
+        SELECT
+             l.block_time
+            ,l.block_number
+            ,bytearray_substring(l.topic1, 13, 20) AS sender
+            ,bytearray_substring(l.topic2, 13, 20) AS receiver
+            ,'0x000000000000000000000000000000000000800a' AS bridged_token_address
+            ,bytearray_to_int256(l.data) AS bridged_token_amount_raw
+            ,UINT256 '324' AS source_chain_id
+            ,UINT256 '1' AS destination_chain_id
+        FROM zksync.logs l
+        WHERE l.topic0 = 0x2717ead6b9200dd235aad468c9809ea400fe33ac69b5bfaa6d3e90fc922b6398
+        AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (data IS NOT NULL)
+        {% if is_incremental() %}
+        AND block_time > NOW() - interval '14' Day
+        {% endif %}
+
+
+
+
         ) a
 )
 
