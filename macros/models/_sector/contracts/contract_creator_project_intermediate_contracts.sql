@@ -1,10 +1,7 @@
 {% macro contract_creator_project_intermediate_contracts( chain ) %}
 
 WITH unified_contract_sources AS (
-SELECT
-* , ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY map_rank ASC) AS rn
 
-FROM (
   select 
     blockchain
     ,trace_creator_address
@@ -120,8 +117,6 @@ FROM (
   
 )
 
-)
-
 SELECT
     blockchain
     ,trace_creator_address
@@ -149,6 +144,7 @@ SELECT
     ,code_deploy_rank_by_chain
     ,code
     ,token_standard --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
+    ,map_rank
 FROM unified_contract_sources u 
 left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
@@ -159,6 +155,5 @@ left join (
             group by 1
           ) ts 
   ON u.contract_address = ts.contract_address
-WHERE rn = 1
 
 {% endmacro %}

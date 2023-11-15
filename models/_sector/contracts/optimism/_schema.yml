@@ -247,6 +247,7 @@ models:
       - *code_deploy_rank_by_chain
       - *code
       - *token_standard
+      - *map_rank
 
   - name: contracts_optimism_contract_mapping
     meta:
