@@ -14,7 +14,7 @@
 }}
 
 {{ 
-    balancer_protocol_fees_macro(
+    balancer_protocol_revenue_macro(
         blockchain = blockchain,
     )
 }}
