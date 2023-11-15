@@ -139,3 +139,5 @@ WITH pool_labels AS (
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
     GROUP BY 1, 2, 3, 4, 5, 9
+
+{% endmacro %}
