@@ -47,7 +47,7 @@ FROM (
     select
       '{{chain}}' as blockchain
       ,cr.block_time as created_time 
-      ,cr.block_number ascreated_block_number
+      ,cr.block_number as created_block_number
       ,cr.tx_hash as created_tx_hash 
       ,cr.address as contract_address 
       ,sds.block_time as destructed_time

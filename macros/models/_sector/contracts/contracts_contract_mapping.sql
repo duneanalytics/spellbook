@@ -228,7 +228,7 @@ FROM (
       AND c.blockchain = sd.blockchain
       AND c.created_tx_hash = sd.created_tx_hash
       AND c.created_block_number = sd.created_block_number
-      AND c.created_block_time = sd.created_block_time
+      AND c.created_time = sd.created_time
   ) f
 ) u
 
