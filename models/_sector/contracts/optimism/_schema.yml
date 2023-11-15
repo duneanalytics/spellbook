@@ -9,7 +9,12 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on base."
-              
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash          
     columns:
       - &created_month
         name: created_month
@@ -23,9 +28,6 @@ models:
       - &contract_address
         name: contract_address
         description: "Address of the contract"
-        tests:
-          - not_null
-          - unique
       - &contract_project
         name: contract_project
         description: "Project name of the contract"
@@ -119,6 +121,12 @@ models:
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash  
     columns:
       - *blockchain
       - *created_time
@@ -143,7 +151,12 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on base."
-      
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash   
     columns:
       - *blockchain
       - *trace_creator_address
@@ -183,7 +196,12 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on base."
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash  
     columns:
       - *blockchain
       - *trace_creator_address
