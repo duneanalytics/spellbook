@@ -127,7 +127,7 @@ SELECT
     ,trace_creator_address
     ,creator_address
     ,deployer_address
-    ,contract_address
+    ,u.contract_address
     ,contract_project
     ,contract_name
     ,created_time
