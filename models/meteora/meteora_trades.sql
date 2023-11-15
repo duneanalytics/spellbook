@@ -68,14 +68,22 @@
             , COALESCE(tk_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
             , trs_2.account_source as token_bought_vault
             , trs_1.account_destination as token_sold_vault
-        FROM {{ source('meteora_pools_solana', 'amm_call_swap') }} sp
+        FROM (
+            SELECT 
+                sp.*
+                , dp.call_inner_instruction_index as deposit_index
+                , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index order by dp.call_inner_instruction_index asc) as first_deposit
+            FROM {{ source('meteora_pools_solana', 'amm_call_swap') }} sp
+            LEFT JOIN {{ source('meteora_vault_solana', 'vault_call_deposit') }} dp ON sp.call_tx_id = dp.call_tx_id 
+                AND sp.call_block_slot = dp.call_block_slot
+                AND sp.call_outer_instruction_index = dp.call_outer_instruction_index 
+                and COALESCE(sp.call_inner_instruction_index, 0) < dp.call_inner_instruction_index
+        ) sp
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_1 
             ON trs_1.call_tx_id = sp.call_tx_id 
             AND trs_1.call_block_time = sp.call_block_time
             AND trs_1.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND trs_1.call_inner_instruction_index = 3) 
-                OR (sp.call_is_inner = true AND trs_1.call_inner_instruction_index = sp.call_inner_instruction_index + 3)
-                )
+            AND trs_1.call_inner_instruction_index = sp.deposit_index + 1
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.call_block_time')}}
             {% else %}
@@ -85,9 +93,7 @@
             ON trs_2.call_tx_id = sp.call_tx_id 
             AND trs_2.call_block_time = sp.call_block_time
             AND trs_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND trs_2.call_inner_instruction_index = 6)
-                OR (sp.call_is_inner = true AND trs_2.call_inner_instruction_index = sp.call_inner_instruction_index + 6)
-                )
+            AND trs_2.call_inner_instruction_index = sp.deposit_index + 4
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.call_block_time')}}
             {% else %}
@@ -99,7 +105,8 @@
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = tk_1.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = tk_2.token_mint_address
         WHERE 1=1
-       {% if is_incremental() %}
+        and first_deposit = 1 --keep only the first deposit after swap invoke
+        {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
