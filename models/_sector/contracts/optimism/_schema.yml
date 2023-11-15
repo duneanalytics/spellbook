@@ -135,7 +135,7 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_optimism_contract_creator_project_base_level
+  - name: contracts_optimism_contract_creator_project_base_starting_level
     meta:
       blockchain: optimism
       sector: contracts
@@ -175,7 +175,7 @@ models:
         name: is_new_contract
         description: "Is this a new contract"
   
-  - name: contracts_optimism_contract_creator_project_iterated_creators
+  - name: contracts_optimism_contract_creator_project_base_iterated_creators
     meta:
       blockchain: optimism
       sector: contracts

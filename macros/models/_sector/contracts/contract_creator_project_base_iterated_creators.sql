@@ -1,4 +1,4 @@
-{% macro contract_creator_project_iterated_creators( chain ) %}
+{% macro contract_creator_project_base_iterated_creators( chain ) %}
 
 -- maybe split out contract naming mappings in to a separate thing
 -- do token and name mappings at the end

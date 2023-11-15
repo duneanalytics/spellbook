@@ -136,7 +136,7 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_base_contract_creator_project_base_level
+  - name: contracts_base_contract_creator_project_base_starting_level
     meta:
       blockchain: base
       sector: contracts
@@ -176,7 +176,7 @@ models:
         name: is_new_contract
         description: "Is this a new contract"
   
-  - name: contracts_base_contract_creator_project_iterated_creators
+  - name: contracts_base_contract_creator_project_base_iterated_creators
     meta:
       blockchain: base
       sector: contracts

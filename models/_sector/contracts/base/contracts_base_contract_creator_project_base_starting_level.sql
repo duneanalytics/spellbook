@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'contracts_base',
-        alias = 'contract_creator_project_base_level',
+        alias = 'contract_creator_project_base_starting_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -10,6 +10,6 @@
   )
 }}
 
-{{contract_creator_project_base_level(
+{{contract_creator_project_base_starting_level(
     chain='base'
 )}}

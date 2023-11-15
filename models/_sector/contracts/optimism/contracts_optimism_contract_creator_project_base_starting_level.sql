@@ -1,7 +1,7 @@
  {{
   config(
-        schema = 'contracts_ethereum',
-        alias = 'contract_creator_project_base_level',
+        schema = 'contracts_optimism',
+        alias = 'contract_creator_project_base_starting_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -10,6 +10,6 @@
   )
 }}
 
-{{contract_creator_project_base_level(
-    chain='ethereum'
+{{contract_creator_project_base_starting_level(
+    chain='optimism'
 )}}
