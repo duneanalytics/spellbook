@@ -8,7 +8,7 @@ models:
       project: tokenlon
       contributors: izayl
     config:
-      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
+      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
       Tokenlon aggregator trades on all chains across all contracts and versions. This table will load dex_aggregator trades downstream.
     columns:
@@ -24,6 +24,9 @@ models:
       - &block_date
         name: block_date
         description: 'UTC event block date of each DEX trade'
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: 'UTC event block time of each DEX trade'
