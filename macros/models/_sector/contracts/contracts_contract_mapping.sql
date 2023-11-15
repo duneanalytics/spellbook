@@ -188,7 +188,7 @@ FROM (
           ' '
       ) as varchar) as contract_project
       ,c.token_symbol
-      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name, oc.name) as varchar) as contract_name
+      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name) as varchar) as contract_name
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
