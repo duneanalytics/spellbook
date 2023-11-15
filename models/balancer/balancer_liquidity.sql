@@ -11,7 +11,8 @@
 }}
 
 {% set balancer_models = [
-ref('balancer_v2_ethereum_liquidity')
+ref('balancer_v1_ethereum_liquidity')
+, ref('balancer_v2_ethereum_liquidity')
 , ref('balancer_v2_optimism_liquidity')
 , ref('balancer_v2_arbitrum_liquidity')
 , ref('balancer_v2_polygon_liquidity')
@@ -27,7 +28,9 @@ FROM (
     SELECT
     day,
     pool_id,
+    pool_address,
     pool_symbol,
+    version,
     blockchain,
     token_address,
     token_symbol,
