@@ -288,7 +288,7 @@ models:
             - pool_id
             - token_address
     columns:
-      - *day
+      - name: day
       - *pool_id
       - name: pool_address
       - name: pool_symbol
