@@ -19,5 +19,16 @@ models:
           blockchain: arbitrum
           project: uniswap
           version: 3
+      - check_seed:
+          seed_file: ref('dex_base_trades_seed')
+          filter:
+            blockchain: arbitrum
+            project: uniswap
+            version: 3
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
             
   - name: dex_arbitrum_base_trades

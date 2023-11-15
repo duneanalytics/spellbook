@@ -1,2 +1,0 @@
-blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_bought_amount,token_sold_address,token_sold_amount,block_number
-gnosis,balancer,2,2023-01-20,0x70a7380d73bd8dc96aa2a2ec338f6a660df54e797bab507b5ee04c27e6433844,20,0xe91d153e0b41518a2ce8dd3d7944fa863463a97d,2.811201702694398,0xddafbb505ad214d7b80b1f830fccc89b60fb7a83,2.811563,26059328
