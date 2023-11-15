@@ -2,6 +2,7 @@
 
 WITH received_by_builder AS (
     SELECT b.number AS block_number
+    , txs.index AS tx_index
     , b.time AS block_time
     , array_distinct(COALESCE(array_agg(traces."from"), NULL) || COALESCE(array_agg(erc."from"), NULL)) AS senders
     FROM {{blocks}} b
@@ -17,6 +18,11 @@ WITH received_by_builder AS (
         AND erc.value > UINT256 '0'
         {% if is_incremental() %}
         AND erc.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    LEFT JOIN {{transactions}} txs ON txs.block_number=b.number
+        AND txs.hash=traces.tx_hash
+        {% if is_incremental() %}
+        AND txs.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
     {% if is_incremental() %}
     WHERE b.time >= date_trunc('day', now() - interval '7' day)
@@ -54,6 +60,7 @@ INNER JOIN received_by_builder rbb ON rbb.block_time=dt.block_time
     AND (contains(rbb.senders, dt.tx_from) OR contains(rbb.senders, dt.taker))
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
+    AND txs.index BETWEEN rbb.tx_index - 1 AND rbb.tx_index + 1
     {% if is_incremental() %}
     AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
