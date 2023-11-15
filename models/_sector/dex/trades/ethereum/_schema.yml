@@ -29,10 +29,6 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-      - check_dex_seed:
-          blockchain: ethereum
-          project: uniswap
-          version: 1
 
   - name: uniswap_v2_ethereum_base_trades
     meta:
@@ -62,10 +58,6 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-      - check_dex_seed:
-          blockchain: ethereum
-          project: uniswap
-          version: 2
 
   - name: uniswap_v3_ethereum_base_trades
     meta:
@@ -95,10 +87,6 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-      - check_dex_seed:
-          blockchain: ethereum
-          project: uniswap
-          version: 3
   
   - name: defiswap_ethereum_base_trades
     meta:
@@ -124,9 +112,5 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-      - check_dex_seed:
-          blockchain: ethereum
-          project: defiswap
-          version: 1
             
   - name: dex_ethereum_base_trades
