@@ -1256,8 +1256,6 @@ models:
       - *call_trace_address_not_null
       - *call_selector
 
-      - &receiver
-        name: receiver
       - &src_token_address
         name: src_token_address
       - &dst_token_address

@@ -252,6 +252,35 @@
                     'blockchains': ["bnb", "polygon"],
                     'type': 'generic'
                 },
+                'clipperSwap': {
+                    'src_token_address': "srcToken",
+                    'dst_token_address': "dstToken",
+                    'src_amount': "amount",
+                    'dst_amount': 'output_returnAmount',
+                    'dst_amount_min': "minReturn",
+                    'blockchains': ["ethereum"],
+                    'type': 'clipper'
+                },
+                'clipperSwapTo': {
+                    'src_token_address': "srcToken",
+                    'dst_token_address': "dstToken",
+                    'dst_receiver': "recipient",
+                    'src_amount': "amount",
+                    'dst_amount': 'output_returnAmount',
+                    'dst_amount_min': "minReturn",
+                    'blockchains': ["ethereum"],
+                    'type': 'clipper'
+                },
+                'clipperSwapToWithPermit': {
+                    'src_token_address': "srcToken",
+                    'dst_token_address': "dstToken",
+                    'dst_receiver': "recipient",
+                    'src_amount': "amount",
+                    'dst_amount': 'output_returnAmount',
+                    'dst_amount_min': "minReturn",
+                    'blockchains': ["ethereum"],
+                    'type': 'clipper'
+                },
                 'unoswap': {
                     'pools': "pools",
                     'src_token_address': "srcToken",
@@ -280,6 +309,7 @@
                 },
                 'uniswapV3SwapTo': {
                     'pools': "pools",
+                    'dst_receiver': "recipient",
                     'src_amount': "amount",
                     'dst_amount': "output_returnAmount",
                     'dst_amount_min': "minReturn",
@@ -288,6 +318,7 @@
                 },
                 'uniswapV3SwapToWithPermit': {
                     'pools': "pools",
+                    'dst_receiver': "recipient",
                     'src_amount': "amount",
                     'dst_amount': "output_returnAmount",
                     'dst_amount_min': "minReturn",
@@ -313,6 +344,35 @@
                     'blockchains': ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
                     'type': 'generic'
                 },
+                'clipperSwap': {
+                    'src_token_address': "srcToken",
+                    'dst_token_address': "dstToken",
+                    'src_amount': "inputAmount",
+                    'dst_amount': 'output_returnAmount',
+                    'dst_amount_min': "goodUntil",
+                    'blockchains': ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
+                    'type': 'clipper'
+                },
+                'clipperSwapTo': {
+                    'src_token_address': "srcToken",
+                    'dst_token_address': "dstToken",
+                    'dst_receiver': "recipient",
+                    'src_amount': "inputAmount",
+                    'dst_amount': 'output_returnAmount',
+                    'dst_amount_min': "goodUntil",
+                    'blockchains': ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
+                    'type': 'clipper'
+                },
+                'clipperSwapToWithPermit': {
+                    'src_token_address': "srcToken",
+                    'dst_token_address': "dstToken",
+                    'dst_receiver': "recipient",
+                    'src_amount': "inputAmount",
+                    'dst_amount': 'output_returnAmount',
+                    'dst_amount_min': "goodUntil",
+                    'blockchains': ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
+                    'type': 'clipper'
+                },
                 'unoswap': {
                     'pools': "pools",
                     'src_token_address': "srcToken",
@@ -325,6 +385,7 @@
                 'unoswapTo': {
                     'pools': "pools",
                     'src_token_address': "srcToken",
+                    'dst_receiver': "recipient",
                     'src_amount': "amount",
                     'dst_amount': "output_returnAmount",
                     'dst_amount_min': "minReturn",
@@ -334,6 +395,7 @@
                 'unoswapToWithPermit': {
                     'pools': "pools",
                     'src_token_address': "srcToken",
+                    'dst_receiver': "recipient",
                     'src_amount': "amount",
                     'dst_amount': "output_returnAmount",
                     'dst_amount_min': "minReturn",
@@ -350,6 +412,7 @@
                 },
                 'uniswapV3SwapTo': {
                     'pools': "pools",
+                    'dst_receiver': "recipient",
                     'src_amount': "amount",
                     'dst_amount': "output_returnAmount",
                     'dst_amount_min': "minReturn",
@@ -358,6 +421,7 @@
                 },
                 'uniswapV3SwapToWithPermit': {
                     'pools': "pools",
+                    'dst_receiver': "recipient",
                     'src_amount': "amount",
                     'dst_amount': "output_returnAmount",
                     'dst_amount_min': "minReturn",
@@ -391,7 +455,7 @@ pools as (
     select *
     from (
     {% for method, method_data in contract_data.methods.items() if blockchain in method_data.blockchains %}
-    {% if method_data.type == 'generic' %}
+    {% if method_data.type in ['generic', 'clipper'] %}
         select *
         from (
             select
@@ -406,7 +470,6 @@ pools as (
                 , call_trace_address
                 , call_success
                 , call_selector
-                , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
                 , {{ method_data.get("src_receiver", "null") }} as src_receiver
@@ -419,7 +482,7 @@ pools as (
                 , null as ordinary
                 , null as pools
                 , bytearray_to_uint256(substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1)) as remains
-                , 'generic' as router
+                , '{{ method_data.type }}' as router
             from (
                 select *, {{ method_data.get("kit", "null") }} as kit
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -448,7 +511,7 @@ pools as (
                     and call_type = 'call'
             ) using(call_block_number, call_tx_hash, call_trace_address)
         )
-    {% elif method_data.type == 'unoswap' %}
+    {% elif method_data.type in ['unoswap'] %}
         select
             block_number
             , block_time
@@ -461,7 +524,6 @@ pools as (
             , call_trace_address
             , call_success
             , call_selector
-            , receiver
             , if(src_token_address is null, if(first_direction = 0, first_token0, first_token1), src_token_address) as src_token_address
             , if(last_direction is null, if(first_direction = 0, first_token1, first_token0), if(last_direction = 0, last_token1, last_token0)) as dst_token_address
             , src_receiver
@@ -474,7 +536,7 @@ pools as (
             , ordinary
             , pools
             , remains
-            , 'unoswap' as router
+            , '{{ method_data.type }}' as router
         from (
             select
                 call_block_number as block_number
@@ -485,7 +547,6 @@ pools as (
                 , call_trace_address
                 , call_success
                 , call_selector
-                , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("src_token_address", "null") }} as src_token_address
                 , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
                 , {{ method_data.get("src_receiver", "null") }} as src_receiver
@@ -568,7 +629,6 @@ select
     , call_to
     , call_trace_address
     , call_selector
-    , receiver
     , src_token_address
     , dst_token_address
     , src_receiver
