@@ -1,7 +1,7 @@
  {{
   config(     
         schema = 'contracts_base',
-        alias = 'creator_project_mapping',
+        alias = 'contract_creator_project_mapping',
         unique_key='contract_address'
   )
 }}

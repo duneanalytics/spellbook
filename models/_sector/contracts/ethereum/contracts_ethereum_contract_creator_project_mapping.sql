@@ -1,7 +1,7 @@
  {{
   config(     
         schema = 'contracts_ethereum',
-        alias = 'creator_project_mapping',
+        alias = 'contract_creator_project_mapping',
         unique_key='contract_address'
   )
 }}

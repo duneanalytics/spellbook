@@ -1,13 +1,13 @@
  {{
   config(
         schema = 'contracts_optimism',
-        alias = 'contract_creator_project_intermediate_contracts',
+        alias = 'contract_creator_project_base_project_mapping',
         materialized ='table',
         unique_key='contract_address',
         partition_by = ['created_month']
   )
 }}
 
-{{contract_creator_project_intermediate_contracts(
+{{contract_creator_project_base_project_mapping(
     chain='optimism'
 )}}

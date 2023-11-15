@@ -212,7 +212,7 @@ models:
         name: source
         description: "How the contract was picked up"
 
-  - name: contracts_base_contract_creator_project_intermediate_contracts
+  - name: contracts_base_contract_creator_project_base_project_mapping
     meta:
       blockchain: base
       sector: contracts

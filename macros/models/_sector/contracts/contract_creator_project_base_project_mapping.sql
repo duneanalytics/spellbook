@@ -1,4 +1,4 @@
-{% macro contract_creator_project_intermediate_contracts( chain ) %}
+{% macro contract_creator_project_base_project_mapping( chain ) %}
 
 WITH unified_contract_sources AS (
 
