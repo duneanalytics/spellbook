@@ -47,6 +47,26 @@ WITH bridge_events AS (
 
         UNION ALL
 
+        -- Withdraw ERC-20
+        SELECT
+             l.block_time
+            ,l.block_number
+            ,l.tx_hash
+            ,bytearray_substring(l.topic1, 13, 20) as sender
+            ,bytearray_substring(l.topic2, 13, 20) as receiver
+            ,bytearray_substring(l.topic3, 13, 20) as bridged_token_address
+            ,bytearray_to_uint256(l.data) as bridged_token_amount_raw
+            ,UINT256 '324' AS source_chain_id
+            ,UINT256 '1' AS destination_chain_id
+        FROM {{ source ('zksync', 'logs') }} l
+        WHERE topic0 = 0x2fc3848834aac8e883a2d2a17a7514dc4f2d3dd268089df9b9f5d918259ef3b0 
+        AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
+        {% if is_incremental() %}
+        AND block_time > NOW() - interval '14' Day
+        {% endif %}
+
+        UNION ALL
+
         -- Withdraw ETH
         SELECT
              l.block_time
@@ -63,9 +83,6 @@ WITH bridge_events AS (
         {% if is_incremental() %}
         AND block_time > NOW() - interval '14' Day
         {% endif %}
-
-
-
 
         ) a
 )
