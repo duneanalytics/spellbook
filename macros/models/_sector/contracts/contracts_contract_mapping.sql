@@ -44,7 +44,7 @@ WITH get_contracts as (
     ,c.trace_creator_address
     ,c.contract_address
     ,coalesce(cc.contract_project, ccd.contract_project, cctr.contract_project, c.contract_project, oc.namespace) as contract_project
-    ,COALESCE(c.contract_name, oc.contract_name) AS contract_name
+    ,COALESCE(c.contract_name, oc.name) AS contract_name
     ,t_mapped.symbol as token_symbol
     ,c.creator_address
     ,c.deployer_address
@@ -105,7 +105,7 @@ WITH get_contracts as (
     on c.deployer_address = cctr.creator_address
     AND ccd.creator_address IS NULL
   left join {{ source(chain,'contracts')}} oc
-      ON c.contract_address = oc.address
+    ON c.contract_address = oc.address
   left join (
         select
           '{{chain}}' as blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
