@@ -186,7 +186,7 @@ SELECT * FROM level{{max_levels - 1}}
     FROM creator_contracts u
     left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard_erc20
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
