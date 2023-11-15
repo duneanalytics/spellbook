@@ -145,7 +145,6 @@ models:
       - *contract_project
       - *contract_name
       - *creator_address
-      - *deployer_address
       - *created_time
       - *is_self_destruct
       - *created_tx_hash
