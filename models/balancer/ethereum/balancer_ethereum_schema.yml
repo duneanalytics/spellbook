@@ -622,7 +622,7 @@ models:
     columns:
       - *day
       - *pool_id
-      - *pool_address
+      - name: pool_address
       - *pool_symbol
       - *blockchain
       - *token_address
