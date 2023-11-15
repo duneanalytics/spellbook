@@ -44,4 +44,3 @@ models:
           - unique
       - name: vault_name
         description: "Fee vault type"
-        
