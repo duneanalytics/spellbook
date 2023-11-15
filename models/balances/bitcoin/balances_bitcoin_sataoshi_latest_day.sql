@@ -1,7 +1,7 @@
 {{ config(
         schema = 'balances_bitcoin',
         alias = 'satoshi_latest_day',
-        materialized='table',
+        materialized='view',
 
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                         "sector",

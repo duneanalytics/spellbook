@@ -42,7 +42,7 @@ models:
       - &updated_at
         name: updated_at
         description: "When the balances were last updated"
-  - name: latest_balances_bitcoin_satoshi_day
+  - name: balances_bitcoin_satoshi_latest_day
     meta:
       blockchain: bitcoin
       sector: balances
