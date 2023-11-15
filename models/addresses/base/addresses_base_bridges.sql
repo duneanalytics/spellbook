@@ -13,5 +13,6 @@ FROM (VALUES
   ,'base' as blockchain, (0x13e46b2a3f8512ed4682a8fb8b560589fe3c2172, 'Orbiter Finance', 'Bridge 4')
   ,'base' as blockchain, (0x45a318273749d6eb00f5f6ca3bc7cd3de26d642a, 'Owlto Finance', 'Bridge')
   ,'base' as blockchain, (0x00000000000007736e2f9aa5630b8c812e1f3fc9, 'ChainEye', 'MiniBridge')
+  ,'base' as blockchain, (0x269727f088f16e1aea52cf5a97b1cd41daa3f02d, 'Across', 'SpokePoolVerifier')
 
-  ) AS x (address, bridge_name, description)
+  ) AS x (blockchain, address, bridge_name, description)
