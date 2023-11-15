@@ -123,5 +123,5 @@ select
 from pool_created_logs
 join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
 {% if is_incremental() %}
-    and {{ incremental_predicate('block_time') }}
+    where {{ incremental_predicate('block_time') }}
 {% endif %} 
