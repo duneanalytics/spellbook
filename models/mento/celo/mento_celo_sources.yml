@@ -1,0 +1,91 @@
+version: 2
+
+sources:
+  - name: mento_celo
+    description: "Celo decoded tables related to Mento Protocol contacts"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Exchange_evt_StableTokenSet
+        loaded_at_field: evt_block_time
+        description: "Mento v1 cUSD"
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "Exchange contract address"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - name: stable
+            description: "cUSD token address"
+          
+      - name: ExchangeEUR_evt_StableTokenSet
+        loaded_at_field: evt_block_time
+        description: "Mento v1 cEUR"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: stable
+            description: "cEUR token address"
+      
+      - name: ExchangeBRL_evt_StableTokenSet
+        loaded_at_field: evt_block_time
+        description: "Mento v1 cREAL"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: stable
+            description: "cREAL token address"
+      
+      - name: BiPoolManager_evt_ExchangeCreated
+        loaded_at_field: evt_block_time
+        description: "Mento v2 BiPoolManager - exchange created event"
+        columns:
+          - &asset0
+            name: asset0
+            description: "First of the two tokens in the pool"
+          - &asset1
+            name: asset1
+            description: "Second of the two tokens in the pool"
+          - name: contract_address
+            description: "Contract that deployed the pool"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &exchangeId
+            name: exchangeId
+            description: "Unique exchange ID"
+          - &pricingModule
+            name: pricingModule
+            description: "vAMM pricing module contract address"
+      
+      - name: BiPoolManager_evt_ExchangeDestroyed
+        loaded_at_field: evt_block_time
+        description: "Mento v2 BiPoolManager - exchange destroyed event"
+        columns:
+          - *asset0
+          - *asset1
+          - name: contract_address
+            description: "Contract that destroyed the pool"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *exchangeId
+          - *pricingModule
