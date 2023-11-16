@@ -24,7 +24,11 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+        AND minute >= DATE_TRUNC('day', NOW() - interval '7' day)
+        {% endif %}           
         GROUP BY 1, 2, 3
+
     ),
 
     dex_prices_1 AS (
@@ -34,6 +38,9 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
+        {% if is_incremental() %}
+        WHERE hour >= DATE_TRUNC('day', NOW() - interval '7' day)
+        {% endif %}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -56,6 +63,9 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+        AND hour >= DATE_TRUNC('day', NOW() - interval '7' day)
+        {% endif %}
         GROUP BY 1, 2
     ),
 
@@ -67,6 +77,9 @@ WITH pool_labels AS (
             SUM(protocol_fees) AS protocol_fee_amount_raw
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)
+        {% if is_incremental() %}
+        WHERE b.day >= DATE_TRUNC('day', NOW() - interval '7' day)
+        {% endif %}        
         GROUP BY 1, 2, 3 
 
         UNION ALL          
@@ -81,6 +94,9 @@ WITH pool_labels AS (
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
             AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F --ProtocolFeesCollector address, which is the same across all chains
+        {% if is_incremental() %}
+        WHERE t.evt_block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
+        {% endif %}     
         GROUP BY 1, 2, 3
     ),
 
