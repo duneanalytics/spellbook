@@ -18,7 +18,7 @@ models:
             - version
             - transaction_type
             - token_address
-            - evt_tx_hash
+            - tx_hash
             - evt_index
     columns:
       - &blockchain
