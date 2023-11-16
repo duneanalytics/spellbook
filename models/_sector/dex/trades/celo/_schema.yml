@@ -16,7 +16,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('uniswap_celo_base_trades')
+          seed_file: ref('uniswap_celo_base_trades_seed')
           match_columns:
             - tx_hash
             - evt_index
