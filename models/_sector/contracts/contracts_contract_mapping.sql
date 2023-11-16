@@ -2,7 +2,6 @@
   config(     
         schema = 'contracts',
         alias = 'contract_mapping',
-        unique_key=['blockchain','contract_address'],
         post_hook='{{ expose_spells(\'["ethereum", "base", "optimism"]\',
                                     "sector",
                                     "contracts",
