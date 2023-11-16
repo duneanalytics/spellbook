@@ -12,7 +12,7 @@
             'version': '0.1',
             'blockchains': ["ethereum"],
             'start': '2019-06-03',
-            'last': '2020-09-18',
+            'end': '2020-09-18',
             'methods': {
                 'aggregate': {
                     'src_token_address': 'fromToken',
@@ -29,7 +29,7 @@
             'version': '0.2',
             'blockchains': ["ethereum"],
             'start': '2019-06-10',
-            'last': '2020-09-18',
+            'end': '2020-09-18',
             'methods': {
                 'aggregate': {
                     'src_token_address': 'fromToken',
@@ -46,7 +46,7 @@
             'version': '0.3',
             'blockchains': ["ethereum"],
             'start': '2019-06-18',
-            'last': '2020-09-18',
+            'end': '2020-09-18',
             'methods': {
                 'aggregate': {
                     'src_token_address': 'fromToken',
@@ -63,7 +63,7 @@
             'version': '0.4',
             'blockchains': ["ethereum"],
             'start': '2019-07-18',
-            'last': '2020-09-18',
+            'end': '2020-09-18',
             'methods': {
                 'aggregate': {
                     'src_token_address': 'fromToken',
@@ -80,7 +80,7 @@
             'version': '0.5',
             'blockchains': ["ethereum"],
             'start': '2019-07-18',
-            'last': '2020-09-18',
+            'end': '2020-09-18',
             'methods': {
                 'aggregate': {
                     'src_token_address': 'fromToken',
@@ -97,7 +97,7 @@
             'version': '0.6',
             'blockchains': ["ethereum"],
             'start': '2019-07-19',
-            'last': '2020-09-18',
+            'end': '2020-09-18',
             'methods': {
                 'aggregate': {
                     'src_token_address': 'fromToken',
@@ -114,7 +114,7 @@
             'version': '0.7',
             'blockchains': ["ethereum"],
             'start': '2019-09-17',
-            'last': '2019-09-29',
+            'end': '2019-09-29',
             'methods': {
                 'swap': {
                     'src_token_address': 'fromToken',
@@ -481,7 +481,7 @@ pools as (
                 , call_output
                 , null as ordinary
                 , null as pools
-                , bytearray_to_uint256(substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1)) as remains
+                , if(length(remains) > 4, transform(sequence(1, length(remains), 4), x -> bytearray_to_uint256(substr(remains, length(remains) - (x + 3) + 1, 4))), array[bytearray_to_uint256(remains)]) as remains
                 , '{{ method_data.type }}' as router
             from (
                 select *, {{ method_data.get("kit", "null") }} as kit
@@ -498,8 +498,7 @@ pools as (
                     , "from" as call_from
                     , substr(input, 1, 4) as call_selector
                     , gas_used as call_gas_used
-                    , input as call_input
-                    , length(input) as call_input_length
+                    , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                     , output as call_output
                 from {{ source(blockchain, 'traces') }}
                 where
@@ -575,7 +574,7 @@ pools as (
                     , transform(poolss, x -> cast(x as varbinary))
                     , array[substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32)]
                 ) as pools
-                , bytearray_to_uint256(substr(call_input, call_input_length - mod(call_input_length - 4, 32) + 1)) as remains
+                , if(length(remains) > 4, transform(sequence(1, length(remains), 4), x -> bytearray_to_uint256(substr(remains, length(remains) - (x + 3) + 1, 4))), array[bytearray_to_uint256(remains)]) as remains
             from (
                 select *, {{ method_data["pools"] }} as poolss
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -593,6 +592,7 @@ pools as (
                     , gas_used as call_gas_used
                     , input as call_input
                     , length(input) as call_input_length
+                    , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                     , output as call_output
                 from {{ source(blockchain, 'traces') }}
                 where
