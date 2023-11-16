@@ -43,8 +43,6 @@ SELECT
   ,code
   ,code_deploy_rank_by_chain
   ,code_bytelength
-  ,to_iterate_creators
-  ,is_new_contract
       -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
   , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
 
@@ -106,7 +104,6 @@ with level0
       ,b.code_deploy_rank_by_chain
       ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
       ,b.code
-      ,b.is_new_contract
 
     {% if loop.first -%}
     from base_level as b
@@ -126,7 +123,7 @@ with level0
     -- is the creator deterministic?
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
-    -- WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through --terate through everything because base_level doesn't know of mappings
+
 )
 {%- endfor %}
 
@@ -193,11 +190,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,f.code_bytelength
     ,f.code
     ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
-  from (
-    SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
-    UNION ALL
-    SELECT {{max_levels}} as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
-  ) f
+  from levels f
   
   LEFT JOIN code_ranks cr --code ranks for new contracts
     ON cr.blockchain = f.blockchain

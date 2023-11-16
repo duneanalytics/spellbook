@@ -179,12 +179,6 @@ models:
       - *code_bytelength
       - *code_deploy_rank_by_chain
       - *code
-      - &to_iterate_creators
-        name: to_iterate_creators
-        description: "Is this a new contract (or new mapping) that needs to be iterated to get the creator)"
-      - &is_new_contract
-        name: is_new_contract
-        description: "Is this a new contract"
 
   - name: contracts_base_base_iterated_creators
     meta:

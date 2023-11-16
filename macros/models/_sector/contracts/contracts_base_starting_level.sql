@@ -25,8 +25,6 @@
             ,ct.code
             ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
             ,bytearray_length(ct.code) AS code_bytelength
-            ,1 AS to_iterate_creators
-            ,1 AS is_new_contract
           from {{ source( chain , 'transactions') }} as t 
           inner join  {{ source( chain , 'creation_traces') }} as ct 
             ON t.hash = ct.tx_hash
@@ -44,7 +42,7 @@
             {% endif %}
 
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
 
 
 {% endmacro %}
