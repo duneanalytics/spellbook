@@ -129,8 +129,8 @@ FROM (
     , creator_address_lineage AS creator_address_lineage_intermediate
     , tx_method_id_lineage AS tx_method_id_lineage_intermediate
     , CASE
-        WHEN contains(creator_address_lineage, (SELECT creator_address FROM {{ref('contracts_deterministic_contract_creators')}} ) ) THEN 1--check deterministic creators
-        WHEN contains(tx_method_id_lineage, (SELECT method_id FROM {{ref('base_evm_smart_account_method_ids')}} ) )
+        WHEN arrays_overlap(creator_address_lineage, (SELECT array_agg(creator_address) FROM {{ref('contracts_deterministic_contract_creators')}} ) ) THEN 1--check deterministic creators
+        WHEN arrays_overlap(tx_method_id_lineage, (SELECT array_agg(method_id) FROM {{ref('base_evm_smart_account_method_ids')}} ) )
               -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
               THEN 1 -- array contains smart account and creator = trace creator
         ELSE 0
