@@ -142,7 +142,7 @@ FROM (
           ) aa 
         ON aa.method_id = b.created_tx_method_id
 ) filtered
-WHERE reinit_rank = 1
+WHERE reinit_rank = 1 --get most recent time the creator contract was created
 )
 
 , levels as (
@@ -205,6 +205,7 @@ with level0
         END AS tx_method_id_lineage
       , b.to_iterate_creators
       , b.is_new_contract
+      , CASE WHEN u.contract_address IS NOT NULL THEN 1 ELSE 0 END AS loop_again --if it's contract created, then 1 (we loop), else 0 (we're done)
 
     {% if loop.first -%}
     from base_level as b
@@ -212,14 +213,13 @@ with level0
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
-      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
-      on b.creator_address = u.contract_address
+      ON b.loop_again = 1 --don't search if we already hit the top
+      AND b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
-      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
