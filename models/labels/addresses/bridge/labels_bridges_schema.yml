@@ -94,3 +94,23 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+  - name: labels_bridges_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'arbitrum', 'bridges']
+    description: "Known bridges addresses on Arbitrum"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
