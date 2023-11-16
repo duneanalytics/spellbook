@@ -23,11 +23,11 @@ select
   liquidator,
   amount,
   usd_amount,
-  evt_tx_hash,
-  evt_index,
-  evt_block_month,
-  evt_block_time,
-  evt_block_number
+  block_month,
+  block_time,
+  block_number,
+  tx_hash,
+  evt_index
 from {{ ref('lending_borrow') }}
 where blockchain = 'ethereum'
   and project = 'aave'
