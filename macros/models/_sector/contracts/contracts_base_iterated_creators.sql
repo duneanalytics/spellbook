@@ -129,7 +129,8 @@ FROM (
     , CASE
         WHEN contains(creator_address_lineage, (SELECT creator_address FROM {{ref('contracts_deterministic_contract_creators')}} ) ) THEN 1--check deterministic creators
         WHEN contains(tx_method_id_lineage, (SELECT method_id FROM {{ref('base_evm_smart_account_method_ids')}} ) )
-              AND trace_creator_address = creator_address THEN 1 -- array contains smart account and creator = trace creator
+              -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
+              THEN 1 -- array contains smart account and creator = trace creator
         ELSE 0 END
       END AS to_iterate_creators
     , 0 AS is_new_contract
