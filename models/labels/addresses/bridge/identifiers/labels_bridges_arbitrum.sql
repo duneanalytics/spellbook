@@ -5,8 +5,7 @@
                                     "labels",
                                     \'["rantum"]\') }}')}}
 
-SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
-FROM (VALUES
+
    SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
     ('arbitrum', 0xe35e9842fceaca96570b734083f4a58e8f7c5f2a, 'Across Protocol: Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
