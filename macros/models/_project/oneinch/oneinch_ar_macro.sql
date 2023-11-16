@@ -481,7 +481,7 @@ pools as (
                 , call_output
                 , null as ordinary
                 , null as pools
-                , if(length(remains) > 4, transform(sequence(1, length(remains), 4), x -> bytearray_to_uint256(substr(remains, length(remains) - (x + 3) + 1, 4))), array[bytearray_to_uint256(remains)]) as remains
+                , remains
                 , '{{ method_data.type }}' as router
             from (
                 select *, {{ method_data.get("kit", "null") }} as kit
@@ -574,7 +574,7 @@ pools as (
                     , transform(poolss, x -> cast(x as varbinary))
                     , array[substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32)]
                 ) as pools
-                , if(length(remains) > 4, transform(sequence(1, length(remains), 4), x -> bytearray_to_uint256(substr(remains, length(remains) - (x + 3) + 1, 4))), array[bytearray_to_uint256(remains)]) as remains
+                , remains
             from (
                 select *, {{ method_data["pools"] }} as poolss
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -641,7 +641,7 @@ select
     , router
     , call_success
     , call_gas_used
-    , remains
+    , concat(length(remains), if(length(remains) > 4, transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(substr(remains, length(remains) - least(x + 3, length(remains)) + 1, least(length(remains) - x + 1, 4)))), array[bytearray_to_bigint(remains)])) as remains
     , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
