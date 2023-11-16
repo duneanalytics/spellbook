@@ -17,5 +17,15 @@ UNION
 SELECT *
 FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_3_evt_NameRegistered')}}
 UNION 
-SELECT *
+SELECT 
+contract_address
+,evt_tx_hash
+,evt_index
+,evt_block_time
+,evt_block_number
+,baseCost
+,expires
+,label
+,name
+,owner
 FROM {{source('ethereumnameservice_ethereum','ETHRegistrarController_4_evt_NameRegistered')}}
