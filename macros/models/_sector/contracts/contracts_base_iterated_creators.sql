@@ -21,6 +21,18 @@ with base_level AS (
 SELECT *
 FROM (
 SELECT *
+  --map special contract creator types here
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
+      -- --Gnosis Safe Logic
+      WHEN aa.contract_project = 'Gnosis Safe' THEN b.top_level_tx_to --smart wallet
+      -- -- AA Wallet Logic
+      -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
+      --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
+      --     ELSE bytearray_substring(t.data, 145,20) END
+      --     )
+      -- -- Else
+      ELSE trace_creator_address
+    END as creator_address
   -- get code deployed rank
   , CASE WHEN is_new_contract = 0
       THEN code_deploy_rank_by_chain_intermediate
@@ -35,18 +47,6 @@ FROM (
   SELECT
     blockchain
     ,trace_creator_address
-    --map special contract creator types here
-    ,CASE WHEN nd.creator_address IS NOT NULL THEN s.created_tx_from
-      -- --Gnosis Safe Logic
-      WHEN aa.contract_project = 'Gnosis Safe' THEN top_level_tx_to --smart wallet
-      -- -- AA Wallet Logic
-      -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
-      --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
-      --     ELSE bytearray_substring(t.data, 145,20) END
-      --     )
-      -- -- Else
-      ELSE trace_creator_address
-    END as creator_address
     ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
     ,contract_address
     ,created_time
@@ -94,18 +94,6 @@ FROM (
   SELECT
     blockchain
     ,trace_creator_address
-    --map special contract creator types here
-    ,CASE WHEN nd.creator_address IS NOT NULL THEN s.created_tx_from
-      -- --Gnosis Safe Logic
-      WHEN aa.contract_project = 'Gnosis Safe' THEN top_level_tx_to --smart wallet
-      -- -- AA Wallet Logic
-      -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
-      --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
-      --     ELSE bytearray_substring(t.data, 145,20) END
-      --     )
-      -- -- Else
-      ELSE trace_creator_address
-    END as creator_address
     ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
     ,contract_address
     ,created_time
@@ -138,24 +126,23 @@ FROM (
     , 0 AS is_new_contract
 
   FROM {{ this }} s
-  left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-        ON nd.creator_address = s.trace_creator_address
-  left join (
-            SELECT method_id, contract_project
-            FROM {{ ref('base_evm_smart_account_method_ids') }}
-            GROUP BY 1,2
-          ) aa 
-        ON aa.method_id = s.created_tx_method_id
   WHERE 
       1=1
       AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
 
   {% endif %}
 
-) base
+) b
+  left join {{ref('contracts_deterministic_contract_creators')}} as nd 
+        ON nd.creator_address = b.trace_creator_address
+  left join (
+            SELECT method_id, contract_project
+            FROM {{ ref('base_evm_smart_account_method_ids') }}
+            GROUP BY 1,2
+          ) aa 
+        ON aa.method_id = b.created_tx_method_id
 ) filtered
 WHERE reinit_rank = 1
-AND to_iterate_creators = 1
 )
 
 , levels as (
@@ -221,18 +208,18 @@ with level0
 
     {% if loop.first -%}
     from base_level as b
-    left join {{ this }} as u --get info about the contract that created this contract
+    left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
-      AND (NOT {{ incremental_predicate('u.created_time') }} ) --don't pick up incrementals
+      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% else -%}
     from level{{i-1}} as b
-    left join {{ this }} as u --get info about the contract that created this contract
+    left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
-      AND (NOT {{ incremental_predicate('u.created_time') }} ) --don't pick up incrementals
+      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
