@@ -5,6 +5,9 @@
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
+        incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month']
         )
 }}
 
@@ -72,14 +75,17 @@
                 AND sp.call_block_slot = dp.call_block_slot
                 AND sp.call_outer_instruction_index = dp.call_outer_instruction_index 
                 and COALESCE(sp.call_inner_instruction_index, 0) < dp.call_inner_instruction_index
+                {% if is_incremental() %}
+                AND {{incremental_predicate('dp.call_block_time')}}
+                {% else %}
+                AND dp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
             WHERE 1=1 
-            {% if is_incremental() %}
-            AND {{incremental_predicate('sp.call_block_time')}}
-            AND {{incremental_predicate('dp.call_block_time')}}
-            {% else %}
-            AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-            AND dp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
+                {% if is_incremental() %}
+                AND {{incremental_predicate('sp.call_block_time')}}
+                {% else %}
+                AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
         ) sp
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_1 
             ON trs_1.call_tx_id = sp.call_tx_id 
