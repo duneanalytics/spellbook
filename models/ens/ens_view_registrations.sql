@@ -6,6 +6,8 @@
                                     "ens",
                                     \'["antonio-mendes","mewwts"]\') }}'
 )}}
+
+
 SELECT *
 FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_1_evt_NameRegistered')}}
 UNION 
@@ -16,4 +18,4 @@ SELECT *
 FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_3_evt_NameRegistered')}}
 UNION 
 SELECT *
-FROM {{source('ethereumnameservice_ethereum', 'ETHRegistrarController_4_evt_NameRegistered')}}
+FROM {{source('ethereumnameservice_ethereum','ETHRegistrarController_4_evt_NameRegistered')}}
