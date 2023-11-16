@@ -6,7 +6,7 @@
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
 {% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use deployer_address if this is too poor.
 
-base_level AS (
+with base_level AS (
 SELECT
   '{{chain}}' AS blockchain
   ,trace_creator_address
