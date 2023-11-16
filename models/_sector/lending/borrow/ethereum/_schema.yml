@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aave_v3_polygon_polygon_borrow
+  - name: aave_v1_ethereum_base_borrow
     meta:
-      blockchain: polygon
+      blockchain: ethereum
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v3', 'polygon']
-    description: "Aave v3 borrow transactions on Polygon"
+      tags: ['lending', 'borrow', 'aave', 'v1', 'ethereum']
+    description: "Aave v1 borrow transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -79,15 +79,79 @@ models:
         tests:
           - not_null
 
-  - name: lending_polygon_polygon_borrow
+  - name: aave_v2_ethereum_base_borrow
     meta:
-      blockchain: polygon
+      blockchain: ethereum
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'polygon']
-    description: "All Aave borrow transactions on Polygon"
+      tags: ['lending', 'borrow', 'aave', 'v2', 'ethereum']
+    description: "Aave v2 borrow transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_v3_ethereum_base_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'v3', 'ethereum']
+    description: "Aave v3 borrow transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: lending_ethereum_base_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'ethereum']
+    description: "All Aave borrow transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
