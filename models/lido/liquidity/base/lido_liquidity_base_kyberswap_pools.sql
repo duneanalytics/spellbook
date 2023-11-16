@@ -71,7 +71,7 @@ from (
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    and DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) 
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) 
     {% endif %}
       and date_trunc('day', minute) < current_date 
       and blockchain = 'ethereum'

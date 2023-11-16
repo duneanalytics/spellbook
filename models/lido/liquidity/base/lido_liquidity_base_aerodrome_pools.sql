@@ -60,7 +60,7 @@ FROM {{source('prices','usd')}} p
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}' 
 {% else %}
-and DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) --?
+WHERE  DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) --?
 {% endif %}
 
   and date_trunc('day', minute) < current_date
@@ -80,7 +80,7 @@ FROM {{source('prices','usd')}} p
  {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}' 
  {% else %}
- and DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) 
+WHERE  DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) 
  {% endif %}
   and date_trunc('day', minute) < current_date
   and blockchain = 'ethereum'
@@ -128,7 +128,7 @@ select distinct
      {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
      {% else %}
-      and DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
      {% endif %}
 
       and blockchain = 'ethereum' and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
@@ -155,7 +155,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- and DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  
  and m.contract_address in (select address from pools)
@@ -175,7 +175,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- and DATE_TRUNC('day', b.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  
  and b.contract_address in (select address from pools)
@@ -196,7 +196,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- and DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  
  and s.contract_address in (select address from pools)
@@ -217,7 +217,7 @@ select
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- and DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
  {% endif %}
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
