@@ -9,8 +9,6 @@
         )
 }}
 
-{% macro nft_mints(blockchain, base_contracts, base_traces, eth_address, erc20_transfer, base_transactions ) %}
-
 {{nft_mints(
     blockchain='base'
     , base_contracts = source('base','contracts')
