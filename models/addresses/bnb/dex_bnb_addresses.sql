@@ -1,5 +1,5 @@
-{{config(alias = 'dex',
-       schema = 'addresses_bnb',
+{{config(alias = 'addresses',
+       schema = 'dex_bnb',
         tags=['static'])
         }}
 

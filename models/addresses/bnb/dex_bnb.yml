@@ -2,7 +2,7 @@ version: 2
 
 models:
   
-  - name: addresses_bnb_dex
+  - name: dex_bnb_addressses
     meta:
       blockchain: bnb
       sector: dex
