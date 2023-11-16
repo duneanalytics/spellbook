@@ -23,7 +23,7 @@ SELECT
  p.end_block,
  e.time AS end_date,
  p.platform,
- ARRAY_AGG(v.voter ORDER BY v.voter) AS voters,
+ ARRAY_AGG(v.voter ORDER BY v.voter) AS voter_address,
  ARRAY_AGG(TRY_CAST(v.votingWeightage AS DOUBLE) ORDER BY v.voter) AS corresponding_voting_weightage,
  ARRAY_AGG(TRY_CAST(v.support AS varchar) ORDER BY v.voter) AS corresponding_choices,
  ARRAY_AGG(v.status ORDER BY v.voter) AS corresponding_choices_name,
