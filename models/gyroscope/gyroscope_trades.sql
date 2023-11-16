@@ -2,6 +2,7 @@
     
     schema = 'gyroscope',
     alias = 'trades',
+    materialized = 'view',
     post_hook='{{ expose_spells(\'["arbitrum", "ethereum", "optimism", "polygon"]\',
                                 "project",
                                 "gyroscope",
