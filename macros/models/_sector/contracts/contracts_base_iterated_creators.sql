@@ -74,14 +74,6 @@ FROM (
     , 1 AS is_new_contract
 
   FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
-  left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-        ON nd.creator_address = s.trace_creator_address
-  left join (
-            SELECT method_id, contract_project
-            FROM {{ ref('base_evm_smart_account_method_ids') }}
-            GROUP BY 1,2
-          ) aa 
-        ON aa.method_id = s.created_tx_method_id
   WHERE 
       1=1
       {% if is_incremental() %}
