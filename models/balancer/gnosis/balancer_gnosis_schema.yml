@@ -241,7 +241,7 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: victorstefenon, viniabussafi, thetroyharris
+      contributors: victorstefenon, viniabussafi
     config:
       tags: ['gnosis', 'balancer', 'pools', 'liquidity']
     description: >
@@ -255,14 +255,12 @@ models:
     columns:
       - name: day
         description: 'UTC event block time truncated to the day mark'
-      - *pool_id
-      - name: pool_address
+      - name: pool_id
+        description: 'ID of the Pool'
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - name: version
-        description: 'Version of Balancer in which pool was deployed'
-      - *blockchain      
       - name: token_address
+        description: 'ID of the Token'
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
@@ -351,6 +349,41 @@ models:
         name: value
         description: 'Amount of BPT transferred in transfer event'
 
+  - name: balancer_v2_gnosis_protocol_revenue
+    meta:
+      blockchain: gnosis
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['gnosis', 'revenue', 'fees']
+    description: >
+      Daily swap Fees and Yield revenues by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: blockchain
+      - name: token_address
+      - name: token_symbol
+        description: "Symbol of the token"
+      - name: token_balance_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_balance
+        description: "Raw amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+      - name: treasury_share
+        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - name: treasury_revenue
+        description: "Total revenue directed to Balancer DAO's treasury"
+        
   - name: balancer_v2_gnosis_bpt_supply
     meta:
       blockchain: gnosis
@@ -378,5 +411,3 @@ models:
         name: lp_virtual_supply
         description: "The scaled supply of a BPT token."
       - *pool_id
-
-
