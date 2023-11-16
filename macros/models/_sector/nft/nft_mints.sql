@@ -167,10 +167,10 @@ FROM
         WHERE 1=1
         {% endif %}
         AND nft_mints."from"= 0x0000000000000000000000000000000000000000
+        AND nft_mints.blockchain = '{{blockchain}}'
         {%- if blockchain == 'ethereum' %}
         AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
         {%- endif -%}
-         AND nft_mints.blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         {{incremental_predicate('nft_mints.block_time')}}
         {% endif %}
