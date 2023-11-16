@@ -1,6 +1,5 @@
 {{ config(
     schema = 'nft',
-    tags = ['dunesql'],
     alias = 'trades_beta',
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
