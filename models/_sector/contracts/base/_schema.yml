@@ -190,10 +190,7 @@ models:
       - &is_new_contract
         name: is_new_contract
         description: "Is this a new contract"
-      - &reinit_rank
-        name: reinit_rank
-        description: "Used to make sure we don't double map self-destruct contracts that are created multiple times"
-  
+
   - name: contracts_base_base_iterated_creators
     meta:
       blockchain: base
