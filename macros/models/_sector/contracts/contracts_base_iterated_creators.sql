@@ -6,7 +6,7 @@
     ,'contract_address', 'created_time', 'created_month', 'created_block_number', 'created_tx_hash'
     ,'top_level_time', 'top_level_block_number', 'top_level_tx_hash', 'top_level_tx_from', 'top_level_tx_to', 'top_level_tx_method_id'
     ,'created_tx_from', 'created_tx_to', 'created_tx_method_id', 'created_tx_index'
-    ,'code', 'code_bytelength', 'code_deploy_rank_by_chain'
+    ,'code', 'code_bytelength', 'token_standard_erc20','code_deploy_rank_by_chain'
     ,'creator_address_lineage', 'tx_method_id_lineage'
   ] %}
 
@@ -65,6 +65,7 @@ FROM (
     ,created_tx_index
     ,code
     ,code_bytelength
+    , NULL AS token_standard_erc20
     , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
     , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage
     , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage
@@ -123,6 +124,7 @@ FROM (
     ,created_tx_index
     ,code
     ,code_bytelength
+    , token_standard_erc20
     , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
     , creator_address_lineage
     , tx_method_id_lineage
@@ -204,6 +206,7 @@ with level0
       ,b.code_bytelength
       ,b.code_deploy_rank_by_chain
       ,b.code
+      ,b.token_standard_erc20
       , CASE WHEN u.creator_address IS NOT NULL THEN 
             b.creator_address_lineage || ARRAY[u.creator_address]
           ELSE b.creator_address_lineage
@@ -270,7 +273,7 @@ SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
     ,code
     ,creator_address_lineage
     ,tx_method_id_lineage
-    ,token_standard_erc20 --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
+    ,COALESCE(u.token_standard_erc20,ts.token_standard_erc20) AS token_standard_erc20 --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
 
     FROM levels u
     left join (
@@ -279,6 +282,9 @@ SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
+            {% if is_incremental() %}
+              AND {{ incremental_predicate('r.evt_block_time') }}
+            {% endif %}
             group by 1
           ) ts 
   ON u.contract_address = ts.contract_address
