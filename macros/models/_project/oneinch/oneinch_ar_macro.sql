@@ -439,14 +439,11 @@ with
 
 pools as (
     select
-        substr(data, if(topic3 is null, 13, 45), 20) as pool_address
-        , substr(topic1, 13) as token0
-        , substr(topic2, 13) as token1
-    from {{ source(blockchain, 'logs') }}
-    where topic0 in (
-              0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9 -- PairCreated -- uniswapV2
-            , 0x783cca1c0412dd0d695e784568c96da2e9c22ff989357a2e8b1d9b2b4e6b7118 -- PoolCreated -- uniswapV3
-        )
+        pool as pool_address
+        , token0
+        , token1
+    from {{ ref('dex_raw_pools') }}
+    where 'type' = 'uniswap_compatible'
     group by 1, 2, 3
 )
 
