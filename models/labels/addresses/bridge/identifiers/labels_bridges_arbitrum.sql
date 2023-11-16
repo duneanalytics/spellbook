@@ -1,9 +1,9 @@
 {{config(
-        alias = 'bridges_ethereum',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        alias = 'bridges_arbitrum',
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
                                     "labels",
-                                    \'["hildobby","rantum"]\') }}')}}
+                                    \'["rantum"]\') }}')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
