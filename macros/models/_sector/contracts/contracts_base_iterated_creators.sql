@@ -27,6 +27,7 @@ SELECT
   ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
   ,contract_address
   ,created_time
+  ,created_month
   ,created_block_number
   ,created_tx_hash
   ,top_level_time
