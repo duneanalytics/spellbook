@@ -6,8 +6,56 @@
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
 {% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use deployer_address if this is too poor.
 
+with base_level AS (
+SELECT
+  '{{chain}}' AS blockchain
+  ,trace_creator_address
 
-WITH levels as (
+  --map special contract creator types here
+  ,CASE WHEN nd.creator_address IS NOT NULL THEN s.created_tx_from
+    -- --Gnosis Safe Logic
+    WHEN aa.contract_project = 'Gnosis Safe' THEN top_level_tx_to --smart wallet
+    -- -- AA Wallet Logic
+    -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
+    --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
+    --     ELSE bytearray_substring(t.data, 145,20) END
+    --     )
+    -- -- Else
+    ELSE trace_creator_address
+  END as creator_address
+
+  ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
+  ,contract_address
+  ,created_time
+  ,created_block_number
+  ,created_tx_hash
+  ,top_level_time
+  ,top_level_block_number
+  ,top_level_tx_hash
+  ,top_level_tx_from
+  ,top_level_tx_to
+  ,top_level_tx_method_id
+  ,created_tx_from
+  ,created_tx_to
+  ,created_tx_method_id
+  ,created_tx_index
+  ,code
+  ,code_deploy_rank_by_chain
+  ,code_bytelength
+  ,to_iterate_creators
+  ,is_new_contract
+      -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
+  , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
+
+
+FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
+left join {{ref('contracts_deterministic_contract_creators')}} as nd 
+      ON nd.creator_address = s.creator_address
+left join {{ ref('evm_smart_account_method_ids') }} aa 
+      ON aa.method_id = bytearray_substring(s.created_tx_method_id)
+)
+
+, levels as (
 -- starting from 0 
 -- u = next level up contract (i.e. the factory)
 -- b = base-level contract
@@ -23,6 +71,18 @@ with level0
       {{i}} as level 
       ,b.blockchain
       ,b.trace_creator_address -- get the original contract creator address
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from --tx sender
+              -- --Gnosis Safe Logic
+              WHEN aa.contract_project = 'Gnosis Safe' THEN t.to --smart wallet
+              -- -- AA Wallet Logic
+              -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
+              --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
+              --     ELSE bytearray_substring(t.data, 145,20) END
+              --     )
+              -- -- Else
+              ELSE ct."from"
+            END as creator_address
+
       ,case when nd.creator_address IS NOT NULL
         THEN b.created_tx_from --when deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
@@ -60,23 +120,24 @@ with level0
       ,b.is_new_contract
 
     {% if loop.first -%}
-    from {{ref('contracts_' + chain + '_base_starting_level') }} as b
-    left join {{ref('contracts_' + chain + '_base_starting_level') }} as u --get info about the contract that created this contract
+    from base_level as b
+    left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
+      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% else -%}
     from level{{i-1}} as b
-    left join {{ref('contracts_' + chain + '_base_starting_level') }} as u --get info about the contract that created this contract
+    left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
+      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = b.creator_address
-    
-    WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through
+    -- WHERE b.to_iterate_creators=1 --only run contracts that we want to iterate through --terate through everything because base_level doesn't know of mappings
 )
 {%- endfor %}
 
@@ -93,7 +154,7 @@ SELECT * FROM level{{max_levels - 1}}
     , code
     , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
 
-  FROM {{ref('contracts_' + chain + '_base_starting_level') }}
+  FROM base_level
   WHERE is_new_contract = 1
   )
 
@@ -102,7 +163,7 @@ SELECT * FROM level{{max_levels - 1}}
       blockchain
       , code
       , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
-    FROM {{ref('contracts_' + chain + '_base_starting_level') }}
+    FROM base_level
     WHERE is_new_contract = 0 AND code IS NOT NULL
     AND code IN (SELECT code from new_contracts)
     GROUP BY 1,2
@@ -146,7 +207,7 @@ SELECT * FROM level{{max_levels - 1}}
   from (
     SELECT * FROM levels WHERE to_iterate_creators = 1 --get mapped contracts
     UNION ALL
-    SELECT {{max_levels}} as level, * FROM {{ref('contracts_' + chain + '_base_starting_level') }} WHERE to_iterate_creators = 0 --get legacy contracts
+    SELECT {{max_levels}} as level, * FROM base_level WHERE to_iterate_creators = 0 --get legacy contracts
   ) f
   
   LEFT JOIN code_ranks cr --code ranks for new contracts
@@ -193,4 +254,6 @@ SELECT * FROM level{{max_levels - 1}}
             group by 1
           ) ts 
   ON u.contract_address = ts.contract_address
+
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 {% endmacro %}

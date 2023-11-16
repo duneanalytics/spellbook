@@ -1,8 +1,7 @@
  {{
   config(     
         schema = 'contracts_ethereum',
-        alias = 'contract_mapping',
-        unique_key='contract_address'
+        alias = 'contract_mapping'
   )
 }}
 

@@ -79,7 +79,8 @@ WITH get_contracts as (
       ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain
       , CAST(NULL as varchar) AS contract_project, cast(NULL as varchar) AS contract_name
       ,1 as map_rank
-      FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }}
+      FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }} b
+
       UNION ALL 
 
       SELECT
@@ -104,7 +105,7 @@ WITH get_contracts as (
   left join {{ ref('contracts_contract_creator_address_list') }} as cctr
     on c.deployer_address = cctr.creator_address
     AND ccd.creator_address IS NULL
-  left join {{ source(chain,'contracts')}} oc
+  left join {{ source(chain,'contracts') }} oc
     ON c.contract_address = oc.address
   left join (
         select
@@ -121,7 +122,7 @@ WITH get_contracts as (
       ) as t_mapped
     on c.contract_address = t_mapped.contract_address
     AND c.blockchain = t_mapped.blockchain
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
   ) a
   where contract_address is not NULL 
   group by 1,2
@@ -182,19 +183,16 @@ FROM (
               ,dnm.mapped_name
               ,c.contract_project
               ,(CASE WHEN cdc.creator_address IS NOT NULL THEN 'Deterministic Deployer' ELSE NULL END)
-              ,oc.namespace
             ),
           '_',
           ' '
       ) as varchar) as contract_project
       ,c.token_symbol
-      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name, oc.name) as varchar) as contract_name
+      ,cast( coalesce(co.contract_name, c.contract_name, cdc.creator_name) as varchar) as contract_name
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
-      ,CASE WHEN is_self_destruct = true then is_self_destruct ELSE
-          (CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END)
-        END as is_self_destruct
+      ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
       ,c.created_tx_hash
       ,COALESCE(c.created_block_number,0) AS created_block_number
       ,c.created_tx_from
@@ -228,7 +226,7 @@ FROM (
       AND c.blockchain = sd.blockchain
       AND c.created_tx_hash = sd.created_tx_hash
       AND c.created_block_number = sd.created_block_number
-      AND c.created_block_time = sd.created_block_time
+      AND c.created_time = sd.created_time
   ) f
 ) u
 

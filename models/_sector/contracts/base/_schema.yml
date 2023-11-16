@@ -10,7 +10,13 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on base."
-              
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
+            - created_tx_index
     columns:
       - &created_month
         name: created_month
@@ -24,9 +30,6 @@ models:
       - &contract_address
         name: contract_address
         description: "Address of the contract"
-        tests:
-          - not_null
-          - unique
       - &contract_project
         name: contract_project
         description: "Project name of the contract"
@@ -45,9 +48,6 @@ models:
       - &created_time
         name: created_time
         description: "contract creation time"
-      - &contract_creator_if_factory
-        name: contracts_creator_if_factory
-        description: "Contract creator address if it is a factory contract"
       - &is_self_destruct
         name: is_self_destruct
         description: "Flag if it is a self destruct contract"
@@ -120,6 +120,12 @@ models:
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
     columns:
       - *blockchain
       - *created_time
@@ -144,12 +150,16 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on base."
-      
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
+            - created_tx_index
     columns:
       - *blockchain
       - *trace_creator_address
-      - *creator_address
-      - *deployer_address
       - *contract_address
         
       - *created_time
@@ -175,7 +185,7 @@ models:
       - &is_new_contract
         name: is_new_contract
         description: "Is this a new contract"
-  
+
   - name: contracts_base_base_iterated_creators
     meta:
       blockchain: base
@@ -184,7 +194,13 @@ models:
     config:
       tags: ['evm', 'base', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on base."
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
+            - created_tx_index
     columns:
       - *blockchain
       - *trace_creator_address

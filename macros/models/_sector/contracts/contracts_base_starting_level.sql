@@ -1,84 +1,13 @@
 {% macro contracts_base_starting_level( chain ) %}
 
-
-SELECT 
-         blockchain
-        ,trace_creator_address
-        ,creator_address
-        ,deployer_address
-        ,contract_address
-        
-        ,created_time
-        ,cast( DATE_TRUNC('month',created_time) as date) AS created_month
-        ,created_block_number
-        ,created_tx_hash
-        ,created_tx_from
-        ,created_tx_to
-        ,created_tx_method_id
-        ,created_tx_index
-
-        ,top_level_time
-        ,top_level_block_number
-        ,top_level_tx_hash
-        ,top_level_tx_from
-        ,top_level_tx_to
-        ,top_level_tx_method_id
-
-        ,code_bytelength
-        ,code_deploy_rank_by_chain
-        ,to_iterate_creators
-        ,code
-        
-        ,is_new_contract
-  FROM (
   select 
-    blockchain
-    ,trace_creator_address -- get the original contract creator address
-    ,creator_address --top level creator, where we iterate up through factories
-    ,COALESCE(deployer_address --if already mapped, pull deployer. else this is the intermediate creator
-            , creator_address) as deployer_address -- deployer from the trace - does not iterate up
-    ,contract_address
-
-    ,created_time
-    ,created_block_number
-    ,created_tx_hash
-    ,created_tx_from
-    ,created_tx_to
-    ,created_tx_method_id
-    ,created_tx_index
-
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
-
-    ,code_bytelength
-    ,code_deploy_rank_by_chain
-    ,to_iterate_creators
-    ,code
-    
-    ,is_new_contract
-    ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number ASC, is_new_contract DESC ) AS contract_order -- to ensure no dupes
-
+    *
+    ,cast( DATE_TRUNC('month',created_time) as date) AS created_month
   from (
-    WITH incremental_contracts AS (
+
         select 
             '{{chain}}' AS blockchain
             ,ct."from" as trace_creator_address
-            ,CASE WHEN ct."from" IN (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN t."from" --tx sender
-              -- --Gnosis Safe Logic
-              WHEN aa.contract_project = 'Gnosis Safe' THEN t.to --smart wallet
-              -- -- AA Wallet Logic
-              -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
-              --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
-              --     ELSE bytearray_substring(t.data, 145,20) END
-              --     )
-              -- -- Else
-              ELSE ct."from"
-            END as creator_address
-            ,CAST(NULL AS varbinary) as deployer_address -- deployer from the trace - does not iterate up
             ,ct.address as contract_address
             ,ct.block_time as created_time
             ,ct.block_number as created_block_number
@@ -104,85 +33,18 @@ SELECT
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
             {% if is_incremental() %}
-            AND {{ incremental_predicate('t.block_time') }}
             AND {{ incremental_predicate('ct.block_time') }}
+            AND {{ incremental_predicate('t.block_time') }}
             {% endif %}
-          left join {{ ref('evm_smart_account_method_ids') }} aa 
-            ON aa.method_id = bytearray_substring(t.data,1,4)
           where 
             1=1
             {% if is_incremental() %}
             AND {{ incremental_predicate('ct.block_time') }}
-            {% endif %} -- incremental filter
-      )
-    SELECT * FROM incremental_contracts
-
-    {% if is_incremental() %}
-    -- to get existing history of contract mapping / only select those we want to re-run
-    union all 
-
-    select 
-      t.blockchain
-      ,t.trace_creator_address
-      ,t.creator_address
-      ,t.deployer_address
-      ,t.contract_address
-      ,t.created_time
-      ,t.created_block_number
-      ,t.created_tx_hash
-      -- If the creator becomes marked as deterministic, we want to re-map
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_time
-        ELSE t.top_level_time END AS top_level_time
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_block_number
-        ELSE t.top_level_block_number END AS top_level_block_number
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN t.created_tx_hash
-        ELSE t.top_level_tx_hash END AS top_level_tx_hash
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_from
-        ELSE t.top_level_tx_from END AS top_level_tx_from
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_to
-        ELSE t.top_level_tx_to END AS top_level_tx_to
-
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN created_tx_method_id
-        ELSE t.top_level_tx_method_id END AS top_level_tx_method_id
-      ---
-      ,t.created_tx_from
-      ,t.created_tx_to
-      ,t.created_tx_method_id
-      ,t.created_tx_index
-      ,t.code
-      ,t.code_deploy_rank_by_chain
-      ,t.code_bytelength
-      , CASE
-        WHEN nd.creator_address IS NOT NULL THEN 1
-        ELSE 0 END AS to_iterate_creators
-      , 0 AS is_new_contract
-    from {{ this }} t
-
-    -- If the creator becomes marked as deterministic, we want to re-run it.
-    left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-      ON nd.creator_address = t.creator_address -- creator is not deterministic
-      OR ( --somewhere in the flow up was not deterministic
-          nd.creator_address = t.trace_creator_address
-          AND 
-          t.creator_address != t.created_tx_from
-        )
-
-    
-    WHERE t.blockchain = '{{chain}}'
-
-
-
-    {% endif %} -- incremental filter
+            AND {{ incremental_predicate('t.block_time') }}
+            {% endif %}
 
   ) as x
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
-) y 
---Don't run the same contract twice (i.e. incremental and existing)
-WHERE contract_order = 1
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 
 
 {% endmacro %}
