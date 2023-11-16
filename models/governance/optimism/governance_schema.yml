@@ -137,7 +137,7 @@ models:
 
       - *platform
 
-      - *voters
+      - *voter_address
 
       - *corresponding_voting_weightage
 
@@ -196,7 +196,7 @@ models:
 
       - *platform
 
-      - *voters
+      - *voter_address
 
       - *corresponding_voting_weightage
 
