@@ -32,9 +32,13 @@ methods as (
         , calls.call_success
         , call_selector
         , protocol
-        , call_suffix
         , calls.call_input
         , calls.call_output
+        , if(
+            length(_remains) > 4, 
+            transform(sequence(1, length(_remains), 4), x -> bytearray_to_bigint(substr(_remains, length(_remains) - (x + 3) + 1, 4))), 
+            array[bytearray_to_bigint(_remains)]
+        ) as call_remains
         , transactions.block_time
     from (
         select 
@@ -60,10 +64,10 @@ methods as (
             , "from" as call_from
             , success as call_success
             , {{ selector }} as call_selector
-            , substr(input, length(input) - 3) as call_suffix
             , input as call_input
             , output as call_output
             , "to" as call_to
+            , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as _remains
         from {{ source(blockchain, 'traces') }}
         where 
             {% if is_incremental() %}
@@ -93,7 +97,6 @@ methods as (
         , calls.call_to
         , calls.call_selector
         , calls.protocol
-        , calls.call_suffix
         -- transfer
         , transfers.trace_address as transfer_trace_address
         , transfers.contract_address
@@ -110,6 +113,7 @@ methods as (
         -- ext
         , calls.call_output 
         , calls.call_input
+        , calls.call_remains
         , date_trunc('minute', calls.block_time) as minute
         , date(date_trunc('month', calls.block_time)) as block_month
     from calls
