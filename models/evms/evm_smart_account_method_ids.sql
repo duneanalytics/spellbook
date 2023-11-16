@@ -20,8 +20,8 @@ FROM (
     SELECT '{{chain}}' AS blockchain, method_id, method_descriptor, contract_project
     FROM {{ ref('base_evm_smart_account_method_ids') }} r
     WHERE
-        r.blockchains IS NULL --If Null, make an entry for all chains
-        OR r.blockchains = '{{chain}}'
+        r.blockchain IS NULL --If Null, make an entry for all chains
+        OR r.blockchain = '{{chain}}'
     {% if not loop.last %}
     UNION ALL
     {% endif %}
