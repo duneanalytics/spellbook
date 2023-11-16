@@ -28,8 +28,9 @@ where (token0 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452
  , pool_fee as (
 select pool, max(cast(f1.output_0 as double)/100) as fee
 from {{source('aerodrome_base','PoolFactory_call_getFee')}} f1
-where  f1.call_block_time = (select max(f2.call_block_time) from aerodrome_base.PoolFactory_call_getFee f2 where f2.pool = f1.pool)
-  and f1. pool in (select address from pools)
+where  f1.call_block_time = (select max(f2.call_block_time) 
+    from {{source('aerodrome_base','PoolFactory_call_getFee')}} f2 where f2.pool = f1.pool)
+and f1. pool in (select address from pools)
 group by 1
 )
 

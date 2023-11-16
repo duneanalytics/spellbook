@@ -29,7 +29,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: Pool_evt_Burn
         loaded_at_field: evt_block_time 
-      - name: PoolFactory_call_getFee  
+      - name: PoolFactory_call_getFee
         loaded_at_field: call_block_time 
       - name: Pool_evt_Fees
         loaded_at_field: evt_block_time 
