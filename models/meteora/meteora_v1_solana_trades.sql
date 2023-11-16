@@ -29,6 +29,7 @@
         FROM {{ source('meteora_pools_solana', 'amm_call_initialize') }} ip 
         LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_tokenAMint
         LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_tokenBMint
+        --force
     )
 
     , all_swaps as (
