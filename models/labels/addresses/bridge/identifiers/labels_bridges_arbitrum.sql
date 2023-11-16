@@ -28,8 +28,8 @@ FROM (VALUES
     ('arbitrum', 0x3a23f943181408eac424116af7b7790c94cb97a5, 'Socket: Gateway', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
     ('arbitrum', 0x6f4e8eba4d337f874ab57478acc2cb5bacdc19c9, 'Synapse: Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
     ('arbitrum', 0x375e9252625bdb10b457909157548e1d047089f9, 'Synapse: Bridge Zap', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
-    ('arbitrum', 0xcf4d2994088a8cde52fb584fe29608b63ec063b2, 'xPollinate: Transaction Manager', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier')
-    ('arbitrum', 0xEE9deC2712cCE65174B561151701Bf54b99C24C8, 'connext', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier')
+    ('arbitrum', 0xcf4d2994088a8cde52fb584fe29608b63ec063b2, 'xPollinate: Transaction Manager', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
+    ('arbitrum', 0xEE9deC2712cCE65174B561151701Bf54b99C24C8, 'connext', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
     ('arbitrum', 0x3749c4f034022c39ecaffaba182555d4508caccc, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
     ('arbitrum', 0x25fb92e505f752f730cad0bd4fa17ece4a384266, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
     ('arbitrum', 0x0e0e3d2c5c292161999474247956ef542cabf8dd, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_arbitrum', 'identifier'),
