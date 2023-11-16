@@ -48,9 +48,6 @@ models:
       - &created_time
         name: created_time
         description: "contract creation time"
-      - &contract_creator_if_factory
-        name: contracts_creator_if_factory
-        description: "Contract creator address if it is a factory contract"
       - &is_self_destruct
         name: is_self_destruct
         description: "Flag if it is a self destruct contract"
