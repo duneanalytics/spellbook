@@ -641,7 +641,10 @@ select
     , router
     , call_success
     , call_gas_used
-    , concat(length(remains), if(length(remains) > 4, transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(substr(remains, length(remains) - least(x + 3, length(remains)) + 1, least(length(remains) - x + 1, 4)))), array[bytearray_to_bigint(remains)])) as remains
+    , concat(cast(length(remains) as bigint), if(length(remains) > 0
+        , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
+        , array[bigint '0']
+    )) as remains
     , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
