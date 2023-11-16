@@ -1,18 +1,11 @@
  {{
   config(
-        schema = 'meteora',
+        schema = 'meteora_v1_solana',
         alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
-        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "meteora",
-                                    \'["ilemi"]\') }}')
+        )
 }}
 
 {% set project_start_date = '2021-03-21' %} --grabbed program deployed at time (account created at).
@@ -34,8 +27,8 @@
             , ip.call_tx_id as init_tx
             , ip.call_block_time as init_time
         FROM {{ source('meteora_pools_solana', 'amm_call_initialize') }} ip 
-        LEFT JOIN tokens_solana.fungible tkA ON tkA.token_mint_address = ip.account_tokenAMint
-        LEFT JOIN tokens_solana.fungible tkB ON tkB.token_mint_address = ip.account_tokenBMint
+        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_tokenAMint
+        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_tokenBMint
     )
 
     , all_swaps as (
@@ -78,6 +71,14 @@
                 AND sp.call_block_slot = dp.call_block_slot
                 AND sp.call_outer_instruction_index = dp.call_outer_instruction_index 
                 and COALESCE(sp.call_inner_instruction_index, 0) < dp.call_inner_instruction_index
+            WHERE 1=1 
+            {% if is_incremental() %}
+            AND {{incremental_predicate('sp.call_block_time')}}
+            AND {{incremental_predicate('dp.call_block_time')}}
+            {% else %}
+            AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND dp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
         ) sp
         INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_1 
             ON trs_1.call_tx_id = sp.call_tx_id 
@@ -106,11 +107,6 @@
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = tk_2.token_mint_address
         WHERE 1=1
         and first_deposit = 1 --keep only the first deposit after swap invoke
-        {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
-        {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
     )
     
 SELECT
