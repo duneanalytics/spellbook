@@ -93,7 +93,7 @@ from (
         and contract_address in (select address from tokens)
         
       
-)
+))
 
 , swap_events as (
     select
