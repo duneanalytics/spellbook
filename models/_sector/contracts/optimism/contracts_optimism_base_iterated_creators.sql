@@ -3,7 +3,7 @@
         schema = 'contracts_optimism',
         alias = 'base_iterated_creators',
         materialized ='table',
-        unique_key = ['blockchain', 'contract_address', 'created_tx_hash'],
+        unique_key = ['blockchain', 'contract_address'],
         partition_by = ['created_month']
   )
 }}

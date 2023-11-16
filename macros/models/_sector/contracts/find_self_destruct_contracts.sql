@@ -72,6 +72,6 @@ FROM (
   ) inter
 
 ) a 
-WHERE rn = 1
+WHERE rn = 1 --ensures one row per contract
 
 {% endmacro %}
