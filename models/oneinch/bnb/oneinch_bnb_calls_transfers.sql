@@ -11,8 +11,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['unique_call_transfer_id'],
-        tags=['prod_exclude']
+        unique_key = ['unique_call_transfer_id']
     )
 }}
 
