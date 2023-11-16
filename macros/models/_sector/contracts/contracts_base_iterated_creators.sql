@@ -42,7 +42,7 @@ SELECT b.*
   , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
   , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
   -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
-  , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY to_iterate_creators DESC, created_block_number DESC, created_tx_index DESC) AS reinit_rank
+  , SUM(reinit_rank) OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
 FROM (
   SELECT
     blockchain
@@ -72,12 +72,14 @@ FROM (
     , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
     , 1 AS to_iterate_creators
     , 1 AS is_new_contract
+    , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
 
   FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
   WHERE 
       1=1
       {% if is_incremental() %}
       AND {{ incremental_predicate('s.created_time') }}
+      AND {{ incremental_predicate('s.created_month') }}
       {% endif %}
   
   {% if is_incremental() %}
@@ -118,6 +120,7 @@ FROM (
         ELSE 0
       END AS to_iterate_creators
     , 0 AS is_new_contract
+    , 1 AS reinit_rank
 
   FROM {{ this }} s
   WHERE 
@@ -128,7 +131,7 @@ FROM (
 
 ) b
   left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-        ON nd.creator_address = b.trace_creator_address
+        ON nd.creator_address = b.creator_address_intermediate
   left join (
             SELECT method_id, contract_project
             FROM {{ ref('base_evm_smart_account_method_ids') }}
