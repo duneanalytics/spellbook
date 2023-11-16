@@ -42,7 +42,7 @@ SELECT b.*
   , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
   , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
   -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
-  , SUM(reinit_rank) OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
+  , SUM(reinit_rank_intermediate) OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
 FROM (
   SELECT
     blockchain
@@ -72,7 +72,7 @@ FROM (
     , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
     , 1 AS to_iterate_creators
     , 1 AS is_new_contract
-    , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
+    , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank_intermediate
 
   FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
   WHERE 
@@ -120,7 +120,7 @@ FROM (
         ELSE 0
       END AS to_iterate_creators
     , 0 AS is_new_contract
-    , 1 AS reinit_rank
+    , 1 AS reinit_rank_intermediate
 
   FROM {{ this }} s
   WHERE 
