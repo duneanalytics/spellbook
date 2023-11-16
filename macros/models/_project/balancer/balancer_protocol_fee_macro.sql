@@ -1,5 +1,5 @@
 {% macro 
-    balancer_protocol_revenue_macro(
+    balancer_protocol_fee_macro(
         blockchain
     ) 
 %}

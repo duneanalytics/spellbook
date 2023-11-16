@@ -348,7 +348,7 @@ models:
       - name: contract_address
       - name: block_month
 
-  - name: balancer_v2_avalanche_c_protocol_revenue
+  - name: balancer_v2_avalanche_c_protocol_fee
     meta:
       blockchain: avalanche_c
       project: balancer_v2
@@ -356,7 +356,7 @@ models:
     config:
       tags: ['avalanche_c', 'revenue', 'fees']
     description: >
-      Daily swap Fees and Yield revenues by pool on Balancer, an automated portfolio manager and trading platform.
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -1,12 +1,12 @@
-{% set blockchain = 'gnosis' %}
+{% set blockchain = 'polygon' %}
 
 {{
     config(
-        schema='balancer_v2_gnosis',
-        alias = 'protocol_revenue', 
+        schema='balancer_v2_' + blockchain,
+        alias = 'protocol_fee', 
         materialized = 'table',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["gnosis"]\',
+        post_hook='{{ expose_spells(\'["polygon"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["viniabussafi"]\') }}'
@@ -14,7 +14,7 @@
 }}
 
 {{ 
-    balancer_protocol_revenue_macro(
+    balancer_protocol_fee_macro(
         blockchain = blockchain,
     )
 }}

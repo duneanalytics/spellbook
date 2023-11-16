@@ -1,12 +1,12 @@
-{% set blockchain = 'avalanche_c' %}
+{% set blockchain = 'base' %}
 
 {{
     config(
-        schema='balancer_v2_avalanche_c',
-        alias = 'protocol_revenue', 
+        schema='balancer_v2_' + blockchain,
+        alias = 'protocol_fee', 
         materialized = 'table',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["base"]\',
                                     "project",
                                     "balancer_v2",
                                     \'["viniabussafi"]\') }}'
@@ -14,7 +14,7 @@
 }}
 
 {{ 
-    balancer_protocol_revenue_macro(
+    balancer_protocol_fee_macro(
         blockchain = blockchain,
     )
 }}

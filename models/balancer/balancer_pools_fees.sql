@@ -25,7 +25,6 @@ FROM (
     {% for model in balancer_models %}
     SELECT
       blockchain
-      , day
       , contract_address
       , tx_hash
       , index

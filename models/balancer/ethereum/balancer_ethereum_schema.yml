@@ -604,7 +604,7 @@ models:
         name: median_price
         description: "BPT median price"
 
-  - name: balancer_v2_ethereum_protocol_revenue
+  - name: balancer_v2_ethereum_protocol_fee
     meta:
       blockchain: ethereum
       project: balancer_v2
@@ -612,7 +612,7 @@ models:
     config:
       tags: ['ethereum', 'revenue', 'fees']
     description: >
-      Daily swap Fees and Yield revenues by pool on Balancer, an automated portfolio manager and trading platform.
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

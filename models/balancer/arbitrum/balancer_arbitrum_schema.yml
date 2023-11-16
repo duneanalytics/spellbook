@@ -374,7 +374,7 @@ models:
       - name: tx_to
       - name: evt_index
 
-  - name: balancer_v2_arbitrum_protocol_revenue
+  - name: balancer_v2_arbitrum_protocol_fee
     meta:
       blockchain: arbitrum
       project: balancer_v2
@@ -382,7 +382,7 @@ models:
     config:
       tags: ['arbitrum', 'revenue', 'fees']
     description: >
-      Daily swap Fees and Yield revenues by pool on Balancer, an automated portfolio manager and trading platform.
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
