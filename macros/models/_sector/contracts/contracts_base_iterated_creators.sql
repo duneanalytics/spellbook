@@ -50,7 +50,7 @@ SELECT
 
 FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
 left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-      ON nd.creator_address = s.creator_address
+      ON nd.creator_address = s.trace_creator_address
 left join {{ ref('evm_smart_account_method_ids') }} aa 
       ON aa.method_id = bytearray_substring(s.created_tx_method_id)
 )
