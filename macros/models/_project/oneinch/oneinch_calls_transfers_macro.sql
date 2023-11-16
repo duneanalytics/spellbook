@@ -5,7 +5,8 @@
     ) 
 %}
 
-{% set project_start_date = "timestamp '" + project_start_date_str + "'" %} 
+-- {% set project_start_date = "timestamp '" + project_start_date_str + "'" %} 
+{% set project_start_date = "timestamp '2023-11-14'" %} 
 {% set lookback_days = -7 %}
 {% set transfer_selector = '0xa9059cbb' %}
 {% set transfer_from_selector = '0x23b872dd' %}
