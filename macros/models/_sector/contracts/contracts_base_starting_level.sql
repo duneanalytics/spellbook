@@ -30,6 +30,8 @@ SELECT
         ,code
         
         ,is_new_contract
+
+        ,reinit_rank
   FROM (
   select 
     blockchain
@@ -60,6 +62,9 @@ SELECT
     ,code
     
     ,is_new_contract
+
+    -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
+    , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_block_number DESC) AS reinit_rank
 
   from (
 

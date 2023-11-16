@@ -65,12 +65,14 @@ with level0
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
+      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% else -%}
     from level{{i-1}} as b
     left join {{ref('contracts_' + chain + '_base_starting_level') }} as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
+      AND u.reinit_rank = 1 --get most recent time the creator contract was created
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 

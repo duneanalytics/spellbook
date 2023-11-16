@@ -16,6 +16,7 @@ models:
             - blockchain
             - contract_address
             - created_tx_hash
+            - created_tx_index
     columns:
       - &created_month
         name: created_month
@@ -158,6 +159,7 @@ models:
             - blockchain
             - contract_address
             - created_tx_hash
+            - created_tx_index
     columns:
       - *blockchain
       - *trace_creator_address
@@ -203,6 +205,7 @@ models:
             - blockchain
             - contract_address
             - created_tx_hash
+            - created_tx_index
     columns:
       - *blockchain
       - *trace_creator_address
