@@ -20,7 +20,7 @@
 with base_level AS (
 SELECT *
 FROM (
-SELECT *
+SELECT b.*
   --map special contract creator types here
     ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
       -- --Gnosis Safe Logic
