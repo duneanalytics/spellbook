@@ -16,15 +16,15 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('dex_base_trades_seed')
-          filter:
-            blockchain: arbitrum
-            project: uniswap
-            version: 3
+          seed_file: ref('uniswap_arbitrum_base_trades')
           match_columns:
             - tx_hash
             - evt_index
           check_columns:
             - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
             
   - name: dex_arbitrum_base_trades
