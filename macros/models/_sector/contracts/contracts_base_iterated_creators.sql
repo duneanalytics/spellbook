@@ -31,7 +31,7 @@ SELECT *
       --     ELSE bytearray_substring(t.data, 145,20) END
       --     )
       -- -- Else
-      ELSE trace_creator_address
+      ELSE creator_address_intermediate
     END as creator_address
   -- get code deployed rank
   , CASE WHEN is_new_contract = 0
@@ -39,14 +39,15 @@ SELECT *
       ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
     END AS code_deploy_rank_by_chain
   -- get lineage (or starting lineage)
-  , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address]) AS creator_address_lineage
-  , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address]) AS tx_method_id_lineage
+  , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
+  , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
   -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
   , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY to_iterate_creators DESC, created_block_number DESC, created_tx_index DESC) AS reinit_rank
 FROM (
   SELECT
     blockchain
     ,trace_creator_address
+    ,trace_creator_address AS creator_address_intermediate
     ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
     ,contract_address
     ,created_time
@@ -94,6 +95,7 @@ FROM (
   SELECT
     blockchain
     ,trace_creator_address
+    ,creator_address AS creator_address_intermediate
     ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
     ,contract_address
     ,created_time
