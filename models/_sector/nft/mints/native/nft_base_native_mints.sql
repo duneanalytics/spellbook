@@ -13,6 +13,6 @@
     blockchain='base'
     , base_contracts = source('base','contracts')
     , base_traces = source('base','traces')
-    , erc20_transfer = source('erc20_base','evt_Transfer')
+    , erc20_transfer = source('erc20_base','evt_transfer')
     , base_transactions = source('base','transactions')
 )}}
