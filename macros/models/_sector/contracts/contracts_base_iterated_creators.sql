@@ -155,6 +155,7 @@ FROM (
 ) base
 ) filtered
 WHERE reinit_rank = 1
+AND to_iterate_creators = 1
 )
 
 , levels as (
@@ -220,18 +221,18 @@ with level0
 
     {% if loop.first -%}
     from base_level as b
-    left join base_level as u --get info about the contract that created this contract
+    left join {{ this }} as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
-      AND u.reinit_rank = 1 --get most recent time the creator contract was created
+      AND (NOT {{ incremental_predicate('u.created_time') }} ) --don't pick up incrementals
     {% else -%}
     from level{{i-1}} as b
-    left join base_level as u --get info about the contract that created this contract
+    left join {{ this }} as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
       AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
-      AND u.reinit_rank = 1 --get most recent time the creator contract was created
+      AND (NOT {{ incremental_predicate('u.created_time') }} ) --don't pick up incrementals
     {% endif %}
     -- is the creator deterministic?
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
