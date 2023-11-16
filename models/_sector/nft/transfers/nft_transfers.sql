@@ -27,6 +27,7 @@
 ,ref('nft_goerli_transfers')
 ,ref('nft_base_transfers')
 ,ref('nft_zksync_transfers')
+,ref('nft_zora_transfers')
 ,ref('nft_celo_transfers')
 ] %}
 
