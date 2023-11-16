@@ -22,7 +22,7 @@ SELECT
   p.end_block,
   p.end_date,
   p.platform,
-  ARRAY_AGG(v.voter ORDER BY v.voter) AS voters,
+  ARRAY_AGG(v.voter ORDER BY v.voter) AS voter_address,
   ARRAY_AGG(v.votingWeightage ORDER BY v.voter) AS corresponding_voting_weightage,
   ARRAY_AGG(v.choice ORDER BY v.voter) AS corresponding_choices,
   ARRAY_AGG(v.status ORDER BY v.voter) AS corresponding_choices_name,
