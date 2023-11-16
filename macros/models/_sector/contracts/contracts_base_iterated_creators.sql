@@ -50,9 +50,12 @@ SELECT
 FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
 left join {{ref('contracts_deterministic_contract_creators')}} as nd 
       ON nd.creator_address = s.trace_creator_address
-left join {{ ref('evm_smart_account_method_ids') }} aa 
+left join (
+          SELECT method_id, contract_project
+          FROM {{ ref('base_evms_non_app_method_ids') }}
+          GROUP BY 1,2
+        ) aa 
       ON aa.method_id = s.created_tx_method_id
-      AND aa.blockchain = s.blockchain
 )
 
 , levels as (
