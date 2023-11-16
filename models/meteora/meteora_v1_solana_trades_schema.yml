@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: meteora_v1_solana
+  - name: meteora_v1_solana_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
