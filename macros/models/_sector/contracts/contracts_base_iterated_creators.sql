@@ -9,7 +9,7 @@
 base_level AS (
 SELECT
   '{{chain}}' AS blockchain
-  ,ct."from" as trace_creator_address
+  ,trace_creator_address
 
   --map special contract creator types here
   ,CASE WHEN nd.creator_address IS NOT NULL THEN s.created_tx_from
@@ -24,7 +24,7 @@ SELECT
     ELSE trace_creator_address
   END as creator_address
 
-  ,deployer_address -- deployer from the trace - does not iterate up
+  ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
   ,contract_address
   ,created_time
   ,created_block_number

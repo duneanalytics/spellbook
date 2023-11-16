@@ -162,8 +162,6 @@ models:
     columns:
       - *blockchain
       - *trace_creator_address
-      - *creator_address
-      - *deployer_address
       - *contract_address
         
       - *created_time

@@ -8,8 +8,6 @@
         select 
             '{{chain}}' AS blockchain
             ,ct."from" as trace_creator_address
-            ,ct."from" as creator_address
-            ,CAST(NULL AS varbinary) as deployer_address -- deployer from the trace - does not iterate up
             ,ct.address as contract_address
             ,ct.block_time as created_time
             ,ct.block_number as created_block_number
