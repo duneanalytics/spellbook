@@ -34,9 +34,9 @@ SELECT *
 FROM (
     {% for chain_model in chain_models %}
     SELECT * FROM {{ chain_model }}
-    {% if is_incremental() %}
-    WHERE destructed_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+      {% if is_incremental() %}
+      WHERE {{ incremental_predicate('destructed_time') }}
+      {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
