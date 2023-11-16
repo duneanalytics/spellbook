@@ -8,7 +8,8 @@ models:
       project: governance
       contributors: chain_l
     config:
-      tags: ['optimism','agora','snapshot','governance','proposals ']
+      tags: ['optimism','agora','snapshot','governance','proposals']
+
     description: >
         analysis of optimism governance proposals available on agora and snapshot platform 
     columns:
