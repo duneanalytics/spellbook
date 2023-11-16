@@ -13,11 +13,11 @@ select
   borrow.liquidator,
   borrow.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
   borrow.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as usd_amount,
-  borrow.evt_tx_hash,
-  borrow.evt_index,
-  borrow.evt_block_month,
-  borrow.evt_block_time,
-  borrow.evt_block_number
+  borrow.block_month,
+  borrow.block_time,
+  borrow.block_number,
+  borrow.tx_hash,
+  borrow.evt_index
 from {{ model }} borrow
   left join {{ ref('tokens_erc20') }} erc20
     on borrow.token_address = erc20.contract_address

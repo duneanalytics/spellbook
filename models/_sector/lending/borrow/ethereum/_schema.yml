@@ -1,24 +1,21 @@
 version: 2
 
 models:
-  - name: lending_borrow
+  - name: aave_v3_polygon_polygon_borrow
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum
+      blockchain: polygon
       sector: lending
-      project: aave, moola
-      contributors: tomfutago
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'moola', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum']
-    description: "All lending transactions involving borrow transactions"
+      tags: ['lending', 'borrow', 'aave', 'v3', 'polygon']
+    description: "Aave v3 borrow transactions on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - transaction_type
             - token_address
-            - evt_tx_hash
+            - tx_hash
             - evt_index
     columns:
       - &blockchain
@@ -41,9 +38,6 @@ models:
         description: "Transaction type"
         tests:
           - not_null
-      - &symbol
-        name: symbol
-        description: "Token symbol"
       - &token_address
         name: token_address
         description: "Token contract address"
@@ -61,12 +55,9 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
       - &block_month
         name: block_month
-        description: "Block Month column used to partition data in this table"
+        description: "Block month column used to partition data in this table"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -87,3 +78,35 @@ models:
         description: "Event index"
         tests:
           - not_null
+
+  - name: lending_polygon_polygon_borrow
+    meta:
+      blockchain: polygon
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'polygon']
+    description: "All Aave borrow transactions on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
