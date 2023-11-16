@@ -211,14 +211,12 @@ with level0
     from base_level as b
     left join base_level as u --get info about the contract that created this contract
       on b.creator_address = u.contract_address
-      AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
     {% else -%}
     from level{{i-1}} as b
     left join base_level as u --get info about the contract that created this contract
       ON b.loop_again = 1 --don't search if we already hit the top
       AND b.creator_address = u.contract_address
-      AND ( b.created_time >= u.created_time OR u.created_time IS NULL) --base level was created on or after its creator
       AND b.blockchain = u.blockchain
     {% endif %}
     -- is the creator deterministic?
