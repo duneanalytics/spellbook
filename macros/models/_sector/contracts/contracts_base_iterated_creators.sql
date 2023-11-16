@@ -211,8 +211,8 @@ with level0
             b.creator_address_lineage || ARRAY[u.creator_address]
           ELSE b.creator_address_lineage
         END AS creator_address_lineage
-      , CASE WHEN u.tx_method_id IS NOT NULL THEN 
-            b.tx_method_id_lineage || ARRAY[u.tx_method_id]
+      , CASE WHEN u.created_tx_method_id IS NOT NULL THEN 
+            b.tx_method_id_lineage || ARRAY[u.created_tx_method_id]
           ELSE b.tx_method_id_lineage
         END AS tx_method_id_lineage
       , b.to_iterate_creators
