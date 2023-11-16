@@ -8,7 +8,7 @@
 
 with base_level AS (
 SELECT
-  '{{chain}}' AS blockchain
+  blockchain
   ,trace_creator_address
 
   --map special contract creator types here
@@ -52,6 +52,7 @@ left join {{ref('contracts_deterministic_contract_creators')}} as nd
       ON nd.creator_address = s.trace_creator_address
 left join {{ ref('evm_smart_account_method_ids') }} aa 
       ON aa.method_id = s.created_tx_method_id
+      AND aa.blockchain = s.blockchain
 )
 
 , levels as (
