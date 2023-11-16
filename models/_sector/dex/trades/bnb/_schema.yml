@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: uniswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap
+      contributors: chrispearcx
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap bnb v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            
+  - name: dex_bnb_base_trades

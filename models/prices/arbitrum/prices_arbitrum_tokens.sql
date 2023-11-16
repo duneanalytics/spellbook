@@ -107,6 +107,7 @@ FROM
     ('winr-winr-protocol','arbitrum','WINR',0xd77b108d4f6cefaa0cae9506a934e825becca46e,18),
     ('ram-ramses-exchange','arbitrum','RAM',0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418,18),
     ('lusd-liquity-usd','arbitrum','LUSD',0x93b346b6BC2548dA6A1E7d98E9a421B42541425b,18),
+    ('grt-the-graph','arbitrum','GRT',0x9623063377ad1b27544c965ccd7342f7ea7e88c7,18),
     ('grail-camelot-token','arbitrum','GRAIL',0x3d9907f9a368ad0a51be60f7da3b97cf940982d8,18),
     ('pnp-penpie','arbitrum','PNP',0x2ac2b254bc18cd4999f64773a966e4f4869c34ee,18),
     ('premia-premia','arbitrum','PREMIA',0x51fc0f6660482ea73330e414efd7808811a57fa2,18),

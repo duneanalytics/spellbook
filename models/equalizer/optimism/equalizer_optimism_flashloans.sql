@@ -1,5 +1,6 @@
 {{ config(
-     partition_by = ['block_month']
+      partition_by = ['block_month']
+      , schema = 'equalizer_optimism'
       , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
