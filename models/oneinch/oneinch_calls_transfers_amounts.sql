@@ -29,7 +29,7 @@
 
 {% for blockchain in blockchains %}
     select 
-        calls.blockchain
+        blockchain
         , block_time
         , tx_hash
         , tx_from
