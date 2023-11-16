@@ -3,7 +3,7 @@
     ,alias = 'snapshot_proposals'
     ,materialized = 'incremental'
     ,file_format = 'delta'
-    ,schema = 'governor_optimism_snapshot_proposals'
+    ,schema = 'governance_optimism_snapshot_proposals'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
