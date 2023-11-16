@@ -27,8 +27,8 @@ SELECT *
     ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
     END AS code_deploy_rank_by_chain
   -- get lineage (or starting lineage)
-  , COALESCE(creator_address_lineage, ARRAY[creator_address]) AS creator_address_lineage
-  , COALESCE(tx_method_id_lineage, ARRAY[creator_address]) AS tx_method_id_lineage
+  , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address]) AS creator_address_lineage
+  , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address]) AS tx_method_id_lineage
   -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
   , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY to_iterate_creators DESC, created_block_number DESC, created_tx_index DESC) AS reinit_rank
 FROM (
@@ -67,8 +67,8 @@ FROM (
     ,code_bytelength
     , NULL AS token_standard_erc20
     , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
-    , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage
-    , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage
+    , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage_intermediate
+    , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
     , 1 AS to_iterate_creators
     , 1 AS is_new_contract
 
@@ -126,8 +126,8 @@ FROM (
     ,code_bytelength
     , token_standard_erc20
     , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
-    , creator_address_lineage
-    , tx_method_id_lineage
+    , creator_address_lineage AS creator_address_lineage_intermediate
+    , tx_method_id_lineage AS tx_method_id_lineage_intermediate
     , CASE
         WHEN contains(creator_address_lineage, (SELECT creator_address FROM {{ref('contracts_deterministic_contract_creators')}} ) ) THEN 1--check deterministic creators
         WHEN contains(tx_method_id_lineage, (SELECT method_id FROM {{ref('base_evm_smart_account_method_ids')}} ) )
