@@ -1,7 +1,6 @@
 {{ config(
     schema = 'nft_old',
     alias = 'base_trades',
-    tags = ['dunesql'],
     materialized = 'view'
     )
 }}
@@ -86,9 +85,6 @@ SELECT * FROM  (
         row_number() over (partition by tx_hash order by unique_trade_id) as sub_tx_trade_id,       -- intermediate fix to fill this column
         row_number() over (partition by tx_hash, unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
