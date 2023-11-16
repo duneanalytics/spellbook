@@ -71,18 +71,6 @@ with level0
       {{i}} as level 
       ,b.blockchain
       ,b.trace_creator_address -- get the original contract creator address
-      ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from --tx sender
-              -- --Gnosis Safe Logic
-              WHEN aa.contract_project = 'Gnosis Safe' THEN t.to --smart wallet
-              -- -- AA Wallet Logic
-              -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
-              --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
-              --     ELSE bytearray_substring(t.data, 145,20) END
-              --     )
-              -- -- Else
-              ELSE ct."from"
-            END as creator_address
-
       ,case when nd.creator_address IS NOT NULL
         THEN b.created_tx_from --when deterministic creator, we take the tx sender
         ELSE coalesce(u.creator_address, b.creator_address)
