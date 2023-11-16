@@ -177,7 +177,6 @@ models:
       - *top_level_tx_to
       - *top_level_tx_method_id
       - *code_bytelength
-      - *code_deploy_rank_by_chain
       - *code
 
   - name: contracts_base_base_iterated_creators

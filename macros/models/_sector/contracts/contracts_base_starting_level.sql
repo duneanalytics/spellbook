@@ -23,7 +23,6 @@
             ,bytearray_substring(t.data,1,4) AS created_tx_method_id
             ,t.index as created_tx_index
             ,ct.code
-            ,CAST(NULL AS bigint) as code_deploy_rank_by_chain
             ,bytearray_length(ct.code) AS code_bytelength
           from {{ source( chain , 'transactions') }} as t 
           inner join  {{ source( chain , 'creation_traces') }} as ct 

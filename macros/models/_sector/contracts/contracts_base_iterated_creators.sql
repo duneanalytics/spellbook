@@ -41,8 +41,8 @@ SELECT
   ,created_tx_method_id
   ,created_tx_index
   ,code
-  ,code_deploy_rank_by_chain
   ,code_bytelength
+  , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain
       -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
   , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
 
@@ -102,7 +102,6 @@ with level0
 
       ,b.code_bytelength
       ,b.code_deploy_rank_by_chain
-      ,b.to_iterate_creators --check if base needs to be iterated, keep the base option
       ,b.code
 
     {% if loop.first -%}
@@ -131,75 +130,6 @@ SELECT * FROM level{{max_levels - 1}}
 
 )
 
-, code_ranks AS ( --generate code deploy rank without ranking over all prior contracts (except for initial builds)
-  WITH new_contracts AS (
-  SELECT
-    blockchain
-    , contract_address
-    , created_block_number
-    , code
-    , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC) AS code_deploy_rank_by_chain_intermediate
-
-  FROM base_level
-  WHERE is_new_contract = 1
-  )
-
-  , existing_contracts_by_chain AS (
-    SELECT
-      blockchain
-      , code
-      , MAX_BY(code_deploy_rank_by_chain, code) AS max_code_deploy_rank_by_chain
-    FROM base_level
-    WHERE is_new_contract = 0 AND code IS NOT NULL
-    AND code IN (SELECT code from new_contracts)
-    GROUP BY 1,2
-  )
-
-
-  SELECT 
-  nc.blockchain, nc.contract_address, nc.code, nc.created_block_number
-    , COALESCE(cbc.max_code_deploy_rank_by_chain,0) + nc.code_deploy_rank_by_chain_intermediate AS code_deploy_rank_by_chain
-  FROM new_contracts nc 
-    LEFT JOIN existing_contracts_by_chain cbc
-      ON cbc.code = nc.code
-      AND cbc.blockchain = nc.blockchain
-
-)
-
-,creator_contracts as (
-  select 
-    f.blockchain
-    ,f.trace_creator_address
-    ,f.creator_address
-    ,f.deployer_address
-    ,f.contract_address
-    ,f.created_time
-    ,f.created_month
-    ,f.created_tx_hash
-    ,f.created_block_number
-    ,f.top_level_time
-    ,f.top_level_tx_hash
-    ,f.top_level_block_number
-    ,f.top_level_tx_from
-    ,f.top_level_tx_to
-    ,f.top_level_tx_method_id
-    ,f.created_tx_from
-    ,f.created_tx_to
-    ,f.created_tx_method_id
-    ,f.created_tx_index
-    ,f.code_bytelength
-    ,f.code
-    ,COALESCE(f.code_deploy_rank_by_chain, cr.code_deploy_rank_by_chain) AS code_deploy_rank_by_chain
-  from levels f
-  
-  LEFT JOIN code_ranks cr --code ranks for new contracts
-    ON cr.blockchain = f.blockchain
-    AND cr.contract_address = f.contract_address
-    AND cr.created_block_number = f.created_block_number
-  
-  where f.contract_address is not null
- )
-
   select 
     blockchain
     ,trace_creator_address
@@ -226,7 +156,7 @@ SELECT * FROM level{{max_levels - 1}}
     ,code
     ,token_standard_erc20 --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
 
-    FROM creator_contracts u
+    FROM levels u
     left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard_erc20
