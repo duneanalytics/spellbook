@@ -23,8 +23,8 @@ FROM (
 SELECT *
   -- get code deployed rank
   , CASE WHEN is_new_contract = 0
-    THEN code_deploy_rank_by_chain_intermediate
-    ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
+      THEN code_deploy_rank_by_chain_intermediate
+      ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
     END AS code_deploy_rank_by_chain
   -- get lineage (or starting lineage)
   , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address]) AS creator_address_lineage
@@ -133,7 +133,7 @@ FROM (
         WHEN contains(tx_method_id_lineage, (SELECT method_id FROM {{ref('base_evm_smart_account_method_ids')}} ) )
               -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
               THEN 1 -- array contains smart account and creator = trace creator
-        ELSE 0 END
+        ELSE 0
       END AS to_iterate_creators
     , 0 AS is_new_contract
 
