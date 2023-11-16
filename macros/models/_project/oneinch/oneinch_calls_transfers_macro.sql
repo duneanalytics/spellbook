@@ -35,9 +35,9 @@ methods as (
         , calls.call_input
         , calls.call_output
         , if(
-            length(remains) > 0
-            , concat(cast(length(remains) as bigint), transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4)))))
-            , null
+            length(_remains) > 0
+            , concat(cast(length(_remains) as bigint), transform(sequence(1, length(_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(_remains), x, 4)))))
+            , array[bigint '0', bigint '0']
         ) as call_remains
         , transactions.block_time
     from (
