@@ -217,6 +217,12 @@ models:
       - *code_bytelength
       - *code_deploy_rank_by_chain
       - *code
+      - &creator_address_lineage
+        name: creator_address_lineage
+        description: "array of the lineage of creator addresses until the top-level creator"
+      - &tx_method_id_lineage
+        name: tx_method_id_lineage
+        description: "array of the lineage of tx method ids until the top-level creator"
       - &token_standard_erc20
         name: token_standard_erc20
         description: "Token Standard ERC20 Only"
