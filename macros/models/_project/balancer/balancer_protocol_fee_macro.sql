@@ -78,7 +78,7 @@ WITH pool_labels AS (
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)
         {% if is_incremental() %}
-        WHERE b.day >= DATE_TRUNC('day', NOW() - interval '7' day)
+        WHERE b.evt_block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}        
         GROUP BY 1, 2, 3 
 
