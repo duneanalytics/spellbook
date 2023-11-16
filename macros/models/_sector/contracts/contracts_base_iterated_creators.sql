@@ -95,7 +95,7 @@ FROM (
     blockchain
     ,trace_creator_address
     --map special contract creator types here
-    ,CASE WHEN contains, nd.creator_address IS NOT NULL THEN s.created_tx_from
+    ,CASE WHEN nd.creator_address IS NOT NULL THEN s.created_tx_from
       -- --Gnosis Safe Logic
       WHEN aa.contract_project = 'Gnosis Safe' THEN top_level_tx_to --smart wallet
       -- -- AA Wallet Logic
