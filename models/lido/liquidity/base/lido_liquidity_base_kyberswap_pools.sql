@@ -21,8 +21,9 @@ with pools as (
     'kyberswap' as project, 
     max(cast(swapFeeUnits as double))/1000 as fee
     from {{source('kyber_base', 'Factory_evt_PoolCreated')}}
-    where token0 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 
-       or token1 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452
+    where (token0 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 
+       or token1 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
+       and pool != 0x645f3db18b9eae19018cde0dd329a2a6785eb26a
     group by 1,2,3   
 )
 
@@ -57,27 +58,8 @@ from (
     and date_trunc('day', minute) < current_date
     and blockchain = 'base'
     and contract_address in (select address from tokens) 
-    and contract_address not in ( 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
     group by 1,2,3,4
-    union all
-
-    select distinct 
-          DATE_TRUNC('day', minute) AS time,
-           0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 AS token,
-          symbol,
-          decimals,
-          AVG(price) AS price
-    FROM {{source('prices','usd')}} p
-    {% if not is_incremental() %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
-    {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) 
-    {% endif %}
-      and date_trunc('day', minute) < current_date 
-      and blockchain = 'ethereum'
-      and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
-    group by 1,2,3,4
-    
+        
     union all
     
     SELECT distinct
@@ -90,23 +72,7 @@ from (
     WHERE date_trunc('day', minute) = current_date
     and blockchain = 'base'
     and contract_address in (select address from tokens)
-    and contract_address not in ( 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
-    
-     union all
-  
-    select distinct
-      DATE_TRUNC('day', minute),
-      0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 AS token,
-      symbol,
-      decimals,      
-      LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('day', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
-    FROM
-      {{source('prices','usd')}}
-    WHERE
-      DATE_TRUNC('day', minute) = current_date
-      and blockchain = 'ethereum'
-      and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
-    
+      
 )
 
 , tokens_prices_hourly AS (
@@ -125,23 +91,7 @@ from (
         WHERE date_trunc('day', minute) >= DATE '{{ project_start_date }}'
         and blockchain = 'base'
         and contract_address in (select address from tokens)
-        and contract_address not in ( 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
         
-         union all
-      
-        select distinct
-          DATE_TRUNC('hour', minute),
-          0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 AS token,
-          symbol,
-          decimals,      
-          LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('hour', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
-        FROM
-          {{source('prices','usd')}}
-        WHERE
-          DATE_TRUNC('day', minute) >= DATE '{{ project_start_date }}'
-          and blockchain = 'ethereum'
-          and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
-    )
       
 )
 

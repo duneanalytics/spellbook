@@ -22,7 +22,6 @@ select pool AS address,
 from {{source('aerodrome_base', 'PoolFactory_evt_PoolCreated')}}
 where (token0 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452
       OR token1 = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
-      and pool != 0x82a0c1a0d4EF0c0cA3cFDA3AD1AA78309Cc6139b 
 )      
 
  , pool_fee as (
@@ -65,28 +64,11 @@ WHERE  DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day
 
   and date_trunc('day', minute) < current_date
   and blockchain = 'base'
-  and contract_address IN (select token from tokens)
-  and contract_address not in ( 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
+  and contract_address IN (select token from tokens)  
 group by 1,2,3,4
+
 union all
---wstETH price from mainnet
-select distinct 
-      DATE_TRUNC('day', minute) AS time,
-      0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 AS token,
-      symbol,
-      decimals,
-      AVG(price) AS price
-FROM {{source('prices','usd')}} p
- {% if not is_incremental() %}
-WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}' 
- {% else %}
-WHERE  DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) 
- {% endif %}
-  and date_trunc('day', minute) < current_date
-  and blockchain = 'ethereum'
-  and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
-group by 1,2,3,4
-union all
+
 select distinct
       DATE_TRUNC('day', minute),
       contract_address AS token,
@@ -99,22 +81,6 @@ select distinct
       DATE_TRUNC('day', minute) = current_date
       and blockchain = 'base'
   and contract_address IN (select token from tokens) 
-  and contract_address not in ( 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452)
- 
-  union all
-  --wstETH price from mainnet
-select distinct
-      DATE_TRUNC('day', minute),
-      0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452 AS token,
-      symbol,
-      decimals,      
-      LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('day', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
-    FROM
-      {{source('prices','usd')}}
-    WHERE
-      DATE_TRUNC('day', minute) = current_date
-      and blockchain = 'ethereum'
-      and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
  )
 
  , wsteth_prices_hourly AS (
@@ -130,8 +96,7 @@ select distinct
      {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
      {% endif %}
-
-      and blockchain = 'ethereum' and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
+    and blockchain = 'base' and contract_address = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452
     
 ) 
 
