@@ -524,10 +524,14 @@ models:
               - method_id
     columns:
       - *blockchain
-      - *method_id
-      - *method_descriptor 
+      - &method_id 
+        name: method_id
+        description: "Method ID (first 4 bytes of calldata), in '0x....' format"
+      - &method_descriptor 
+        name: method_descriptor
+        description: "Manual descriptor of the method ID."  
   
-  - name: base_evm_smart_account_method_ids
+  - name: evm_smart_account_method_ids
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
       project: method_ids
@@ -535,7 +539,7 @@ models:
     config:
       tags: ['method_ids','methods','function','signature']
     description: >
-        A base table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
+        A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -548,8 +552,7 @@ models:
       - &contract_project 
         name: contract_project
         description: "Project associated with the method"
-
-
+        
   - name: evm_smart_account_method_ids
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
