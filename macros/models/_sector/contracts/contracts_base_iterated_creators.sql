@@ -241,7 +241,7 @@ with level0
 {%- endfor %}
 
 
-SELECT {{ column_list | join(', ') }}  FROM base_level WHERE b.to_iterate_creators = 0
+SELECT {{ column_list | join(', ') }}  FROM base_level WHERE to_iterate_creators = 0
 UNION ALL
 SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
 
