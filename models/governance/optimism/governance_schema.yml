@@ -28,7 +28,7 @@ models:
 
       - &start_block
         name: start_block
-        description: "The block timestamp for proposal voting start date"
+        description: "The block number when the voting started"
 
       - &start_date
         name: start_date
@@ -36,7 +36,7 @@ models:
 
       - &end_block
         name: end_block
-        description: "The block timestamp for proposal voting end date"
+        description: "The block number when the voting ended"
 
       - &end_date
         name: end_date
@@ -46,8 +46,8 @@ models:
         name: platform
         description: "The decentralized governance platform on which the proposal was created (e.g., Agora, Snapshot)"
 
-      - &voters
-        name: voters
+      - &voter_address
+        name: voter_address
         description: "The unique identifier of the voters who voted on particular proposals"
 
       - &corresponding_voting_weightage
@@ -117,7 +117,7 @@ models:
       project: governance
       contributors: chain_l
     config:
-      tags: ['optimism','governor_v5','agora','proposals ','governance']
+      tags: ['optimism','governor_v5','agora','proposals','governance']
     description: >
         analysis of optimism governance proposals available on agora platform 
     columns:
@@ -176,7 +176,7 @@ models:
       project: governance
       contributors: chain_l
     config:
-      tags: ['optimism','snapshot','proposals ','governance']
+      tags: ['optimism','snapshot','proposals','governance']
     description: >
         analysis of optimism governance proposals available on snapshot platform 
     columns:
@@ -227,3 +227,4 @@ models:
       - *total_votes_casted
 
       - *proposal_status
+      
