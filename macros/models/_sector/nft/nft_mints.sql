@@ -117,7 +117,7 @@ FROM
         , nft_mints.evt_index
         FROM {{ ref('nft_transfers') }} nft_mints
         LEFT JOIN nfts_per_tx nft_count ON nft_count.tx_hash=nft_mints.tx_hash
-        LEFT JOIN{{ base_traces }} et ON et.block_time=nft_mints.block_time
+        LEFT JOIN {{ base_traces }} et ON et.block_time=nft_mints.block_time
             AND et.tx_hash=nft_mints.tx_hash
             AND et."from"=nft_mints.to
             AND (et.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR et.call_type IS NULL)
@@ -170,7 +170,7 @@ FROM
         {%- if blockchain == 'ethereum' %}
         AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
         {%- endif -%}
-        AND nft_mints.blockchain = '{{blockchain}}'
+         AND nft_mints.blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         {{incremental_predicate('nft_mints.block_time')}}
         {% endif %}
