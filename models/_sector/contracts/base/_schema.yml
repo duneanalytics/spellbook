@@ -12,10 +12,10 @@ models:
     description: "Mapping of contracts to its creators and names on base."
     tests:
       - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - blockchain
-          - contract_address
-          - created_tx_hash  
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
     columns:
       - &created_month
         name: created_month
@@ -124,25 +124,25 @@ models:
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
     tests:
       - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - blockchain
-          - contract_address
-          - created_tx_hash  
-      columns:
-        - *blockchain
-        - *created_time
-        - *created_block_number
-        - *created_tx_hash
-        - *contract_address
-        - &destructed_time
-          name: destructed_time
-          description: "Block Time when contract was destructed"
-        - &destructed_block_number
-          name: destructed_block_number
-          description: "Block Number when contract was destructed"
-        - &destructed_tx_hash
-          name: destructed_tx_hash
-          description: "Tx Hash where contract was destructed"
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
+    columns:
+      - *blockchain
+      - *created_time
+      - *created_block_number
+      - *created_tx_hash
+      - *contract_address
+      - &destructed_time
+        name: destructed_time
+        description: "Block Time when contract was destructed"
+      - &destructed_block_number
+        name: destructed_block_number
+        description: "Block Number when contract was destructed"
+      - &destructed_tx_hash
+        name: destructed_tx_hash
+        description: "Tx Hash where contract was destructed"
 
   - name: contracts_base_base_starting_level
     meta:
@@ -154,10 +154,10 @@ models:
     description: "Base Level for mapping of contracts to its creators and names on base."
     tests:
       - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - blockchain
-          - contract_address
-          - created_tx_hash    
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
     columns:
       - *blockchain
       - *trace_creator_address
@@ -199,10 +199,10 @@ models:
     description: "Iterated creators for mapping of contracts to its creators and names on base."
     tests:
       - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - blockchain
-          - contract_address
-          - created_tx_hash  
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - created_tx_hash
     columns:
       - *blockchain
       - *trace_creator_address
