@@ -24,7 +24,7 @@ SELECT *
   -- get code deployed rank
   , CASE WHEN is_new_contract = 0
     THEN code_deploy_rank_by_chain_intermediate
-    ELSE lag(code,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
+    ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
     END AS code_deploy_rank_by_chain
   -- get lineage (or starting lineage)
   , COALESCE(creator_address_lineage, ARRAY[creator_address]) AS creator_address_lineage
