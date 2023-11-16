@@ -42,7 +42,7 @@
             ,ct.code
             ,bytearray_length(ct.code) AS code_bytelength
             --handle for OP allowlist issue
-            ,ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY block_number DESC, created_tx_index DESC) AS revision
+            ,ROW_NUMBER() OVER (PARTITION BY ct.address ORDER BY ct.block_number DESC, t.index DESC) AS revision
           from {{ source( chain , 'transactions') }} as t 
           inner join  {{ source( chain , 'creation_traces') }} as ct 
             ON t.hash = ct.tx_hash
