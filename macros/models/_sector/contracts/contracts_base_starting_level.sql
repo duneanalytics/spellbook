@@ -19,7 +19,7 @@
     , created_tx_index
     , code
     , code_bytelength
-    ,cast( DATE_TRUNC('month',created_time) as date) AS created_month
+    , cast( DATE_TRUNC('month',created_time) as date) AS created_month
   from (
 
         select 
@@ -32,12 +32,12 @@
             ,t.block_time as top_level_time
             ,t.block_number as top_level_block_number
             ,t.hash as top_level_tx_hash
-    , top_level_tx_from
-     , top_level_tx_to
-    , top_level_tx_method_id
-    , created_tx_from
-     , created_tx_to
-    , created_tx_method_id
+            ,t."from" AS top_level_tx_from
+            ,t.to AS top_level_tx_to
+            ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
+            ,t."from" AS created_tx_from
+            ,t.to AS created_tx_to
+            ,bytearray_substring(t.data,1,4) AS created_tx_method_id
             ,t.index as created_tx_index
             ,ct.code
             ,bytearray_length(ct.code) AS code_bytelength
