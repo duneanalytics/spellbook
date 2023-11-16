@@ -19,9 +19,9 @@ select
 from {{ balances_base }} balances
 left join {{ ref('tokens_erc20') }}  erc20_tokens on
     erc20_tokens.blockchain = balances.blockchain
-    erc20_tokens.contract_address = balances.token_address
+    and erc20_tokens.contract_address = balances.token_address
 left join {{ source('prices', 'usd') }} prices on
     prices.blockchain = balances.blockchain
     and prices.contract_address = balances.token_address
-    and prices.minute = date_trunc('minute', balances.evt_block_time)
+    and prices.minute = date_trunc('minute', balances.block_time)
 {% endmacro %}
