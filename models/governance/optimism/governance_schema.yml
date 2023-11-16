@@ -11,7 +11,8 @@ models:
       tags: ['optimism','agora','snapshot','governance','proposals']
 
     description: >
-        analysis of optimism governance proposals available on agora and snapshot platform 
+        A table containing Optimism governance proposals available on Agora and Snapshot platforms.
+
     columns:
       - &proposal_id
         name: proposal_id
