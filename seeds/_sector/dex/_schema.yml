@@ -1,6 +1,6 @@
 version: 2
 seeds:
-  - name: dex_base_trades_seed
+  - name: oneinch_arbitrum_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -15,24 +15,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: dex_base_trades_seed_extended
-    config:
-      column_types:
-        blockchain: varchar
-        project: varchar
-        version: varchar
-        tx_hash: varbinary
-        evt_index: uint256
-        block_number: uint256
-        token_bought_address: varbinary
-        token_sold_address: varbinary
-        token_bought_amount_raw: uint256
-        token_sold_amount_raw: uint256
-        token_bought_amount: double
-        token_sold_amount: double
-        block_date: timestamp
-
-  - name: 1inch_arbitrum_base_trades_seed
+  - name: oneinch_avalanche_c_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -47,7 +30,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_avalanche_c_base_trades_seed
+  - name: oneinch_base_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -62,7 +45,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_base_base_trades_seed
+  - name: oneinch_bnb_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -77,7 +60,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_bnb_base_trades_seed
+  - name: oneinch_ethereum_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -92,7 +75,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_ethereum_base_trades_seed
+  - name: oneinch_fantom_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -107,7 +90,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_fantom_base_trades_seed
+  - name: oneinch_gnosis_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -122,7 +105,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_gnosis_base_trades_seed
+  - name: oneinch_optimism_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -137,7 +120,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_optimism_base_trades_seed
+  - name: oneinch_polygon_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -152,22 +135,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: 1inch_polygon_base_trades_seed
-    config:
-      column_types:
-        blockchain: varchar
-        project: varchar
-        version: varchar
-        tx_hash: varbinary
-        evt_index: uint256
-        block_number: uint256
-        token_bought_address: varbinary
-        token_sold_address: varbinary
-        token_bought_amount_raw: uint256
-        token_sold_amount_raw: uint256
-        block_date: timestamp
-
-  - name: 1inch_zksync_base_trades_seed
+  - name: oneinch_zksync_base_trades_seed
     config:
       column_types:
         blockchain: varchar
