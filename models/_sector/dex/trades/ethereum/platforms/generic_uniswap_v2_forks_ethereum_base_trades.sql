@@ -1,12 +1,13 @@
 {{ config(
         
-        schema = 'dex_ethereum',
-        alias = 'generic_uniswap_v2_forks',
+        schema = 'generic_uniswap_v2_forks_ethereum',
+        alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index']
+        unique_key = ['tx_hash', 'evt_index', 'token_bought_address', 'token_sold_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         )
 }}
 

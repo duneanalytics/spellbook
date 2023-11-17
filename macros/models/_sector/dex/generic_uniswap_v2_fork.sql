@@ -1,6 +1,10 @@
-{% macro generic_uniswap_v2_fork(blockchain, transactions, logs, contracts) %}
-
-{% set project_start_date = '2020-05-05' %}
+{% macro generic_uniswap_v2_fork(
+    blockchain = null
+    , transactions = null
+    , logs = null
+    , contracts = null
+    )
+%}
 
 with decoding_raw_forks as 
 (
@@ -23,104 +27,91 @@ from  {{logs}}
 ,dexs AS
 (
 -- Uniswap v2
-SELECT
-    t.evt_block_time AS block_time
-    ,t.to AS taker
-    ,CAST(NULL as VARBINARY) as maker
-    ,CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-    ,NULL AS amount_usd
-    ,CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
-    ,CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
-    ,t.contract_address as project_contract_address
-    ,t.evt_tx_hash AS tx_hash
-    ,t.evt_index
-    ,f.contract_address as deployed_by_contract_address
-FROM decoding_raw_forks t
-INNER JOIN (Select 
-             contract_address
-             ,tx_hash
-             ,index
-             ,block_time
-             ,block_number
-             ,VARBINARY_SUBSTRING(data, 13,20) as pair
-             ,VARBINARY_SUBSTRING(topic1, 13, 20) AS token0
-             ,VARBINARY_SUBSTRING(topic2, 13, 20) AS token1 
-         from  {{logs}}
-         where topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9 --topic0 for uniswap_v2 factory event Pair_created
-         ) f 
- ON f.pair = t.contract_address
-WHERE t.contract_address NOT IN (SELECT address FROM {{contracts}}) --excluding already decoded contracts to avoid duplicates in dex.trades
+    SELECT
+        t.evt_block_number AS block_number
+        , t.evt_block_time AS block_time
+        , t.to AS taker
+        , t.contract_address AS maker
+        , amount0Out AS token_bought_amount_raw
+        , amount1In AS token_sold_amount_raw
+        , f.token0 AS token_bought_address
+        , f.token1 AS token_sold_address
+        , t.contract_address AS project_contract_address
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index AS evt_index
+        , f.factory_address 
+    FROM decoding_raw_forks t
+    INNER JOIN (Select 
+                contract_address as factory_address
+                 ,VARBINARY_SUBSTRING(data, 13,20) as pair
+                 ,VARBINARY_SUBSTRING(topic1, 13, 20) AS token0
+                 ,VARBINARY_SUBSTRING(topic2, 13, 20) AS token1 
+                from  {{logs}}
+                where topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9 --topic0 for uniswap_v2 factory event Pair_created
+             ) f
+     ON f.pair = t.contract_address
+        WHERE   (amount0Out > UINT256 '0' OR amount1In > UINT256 '0')
+        AND t.contract_address NOT IN (SELECT address FROM {{contracts}}) --excluding already decoded contracts to avoid duplicates in dex.trades
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('t.evt_block_time') }}
+        {% endif %}
+
+UNION ALL
+
+    SELECT
+        t.evt_block_number AS block_number
+        , t.evt_block_time AS block_time
+        , t.to AS taker
+        , t.contract_address AS maker
+        , amount1Out AS token_bought_amount_raw
+        , amount0In AS token_sold_amount_raw
+        , f.token1 AS token_bought_address
+        , f.token0 AS token_sold_address
+        , t.contract_address AS project_contract_address
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index AS evt_index
+        , f.factory_address 
+    FROM
+        decoding_raw_forks t
+    INNER JOIN (Select 
+                contract_address as factory
+                 ,VARBINARY_SUBSTRING(data, 13,20) as pair
+                 ,VARBINARY_SUBSTRING(topic1, 13, 20) AS token0
+                 ,VARBINARY_SUBSTRING(topic2, 13, 20) AS token1 
+                from  {{logs}}
+                where topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9 --topic0 for uniswap_v2 factory event Pair_created
+             ) f
+    ON f.pair = t.contract_address
+        WHERE   (amount1Out > UINT256 '0' OR amount0In > UINT256 '0')
+        AND t.contract_address NOT IN (SELECT address FROM {{contracts}}) --excluding already decoded contracts to avoid duplicates in dex.trades
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('t.evt_block_time') }}
+        {% endif %}
 )
+
+
 SELECT
-    '{{blockchain}}' AS blockchain
-    ,coalesce(fac.project,'unknown_uniswap_v2_fork') AS project
-    ,'2' AS version
-    ,CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-    ,CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
-    ,dexs.block_time
-    ,erc20a.symbol AS token_bought_symbol
-    ,erc20b.symbol AS token_sold_symbol
-    ,case
-        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-        else concat(erc20a.symbol, '-', erc20b.symbol)
-    end as token_pair
-    ,dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount
-    ,dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount
-    ,dexs.token_bought_amount_raw  AS token_bought_amount_raw
-    ,dexs.token_sold_amount_raw AS token_sold_amount_raw
-    ,coalesce(
-        dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price
-        ,(dexs.token_sold_amount_raw / power(10, p_sold.decimals)) * p_sold.price
-    ) AS amount_usd
-    ,dexs.token_bought_address
-    ,dexs.token_sold_address
-    ,coalesce(dexs.taker, tx."from") AS taker -- subqueries rely on this COALESCE to avoid redundant joins with the transactions table
-    ,dexs.maker
-    ,dexs.project_contract_address
-    ,dexs.tx_hash
-    ,tx."from" AS tx_from
-    ,tx.to AS tx_to
-    ,dexs.evt_index
-    ,deployed_by_contract_address
-FROM dexs
-INNER JOIN {{transactions}} tx
-    ON tx.hash = dexs.tx_hash
-    {% if not is_incremental() %}
-    AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
-    ON erc20a.contract_address = dexs.token_bought_address
-    AND erc20a.blockchain = '{{blockchain}}'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
-    ON erc20b.contract_address = dexs.token_sold_address
-    AND erc20b.blockchain = '{{blockchain}}'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought
-    ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = '{{blockchain}}'
-    {% if not is_incremental() %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
-    ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = '{{blockchain}}'
-    {% if not is_incremental() %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+    '{{ blockchain }}' AS blockchain
+    , '{{ project }}' AS project
+    , '{{ version }}' AS version
+    , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
+    , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
+    , dexs.block_time
+    , dexs.block_number
+    , CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
+    , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
+    , dexs.token_bought_address
+    , dexs.token_sold_address
+    , dexs.taker
+    , dexs.maker
+    , dexs.project_contract_address
+    , dexs.tx_hash
+    , dexs.evt_index
+FROM
+    dexs
 LEFT JOIN {{ref('dex_uniswap_v2_fork_mapping') }} fac
     ON dexs.deployed_by_contract_address = fac.factory_address
+
 {% endmacro %}
 
 
