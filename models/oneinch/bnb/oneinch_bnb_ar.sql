@@ -11,6 +11,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        tags=['prod_exclude'],
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address']
     )
 }}
