@@ -1,7 +1,8 @@
-{{config(alias = 'addresses',
+{{config(
         schema = 'dex_arbitrum',
+        alias = 'addresses',
         tags=['static'])
-        }}
+}}
 
 SELECT blockchain, address, dex_name, distinct_name
 FROM (VALUES
