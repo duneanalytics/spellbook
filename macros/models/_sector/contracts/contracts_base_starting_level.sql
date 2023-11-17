@@ -92,7 +92,7 @@ SELECT *
               INNER JOIN new_contracts nc 
                 ON nc.contract_address = old.contract_address
             WHERE 1=1
-              AND (NOT {{ incremental_predicate('ct.created_time') }})
+              AND (NOT {{ incremental_predicate('old.created_time') }})
             {% endif %}
 
     ) x
