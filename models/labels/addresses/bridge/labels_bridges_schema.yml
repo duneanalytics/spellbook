@@ -94,3 +94,24 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_bridges_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridges
+      contributors: Henrystats
+    config:
+      tags: ['labels', 'optimism', 'bridges']
+    description: "Known bridges addresses on optimism"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
