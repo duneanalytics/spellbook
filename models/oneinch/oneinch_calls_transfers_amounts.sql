@@ -52,7 +52,7 @@
         , rn_tta_desc
         , call_output 
         , call_input
-        -- , call_remains
+        , call_remains
         , minute
         , block_month
         , unique_call_transfer_id
