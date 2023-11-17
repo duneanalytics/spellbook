@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: addresses_base_dex
+  - name: dex_ethereum_addresses
     meta:
-      blockchain: base
+      blockchain: ethereum
       sector: dex
       project: addresses
-      contributors: rantum
+      contributors: soispoke
     config:
-      tags: ['table', 'dex', 'addresses', 'base']
+      tags: ['table', 'dex', 'addresses', 'ethereum']
     description: "Known decentralised exchange addresses"
     columns:
       - name: address
