@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_v3_arbitrum',
+    schema = 'aave_v3_fantom',
     alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,7 +12,7 @@
 
 {{
   lending_aave_v3_compatible_borrow(
-    blockchain = 'arbitrum',
+    blockchain = 'fantom',
     project = 'aave',
     version = '3'
   )
