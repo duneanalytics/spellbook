@@ -85,4 +85,82 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
+  - name: curvefi_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: curvefi
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'curvefi']
+    description: "Curvefi Celo base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('curvefi_celo_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw            
+
+  - name: sushiswap_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'sushiswap']
+    description: "Sushiswap Celo base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sushiswap_celo_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw            
+
+  - name: ubeswap_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: ubeswap
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'ubeswap']
+    description: "Ubeswap Celo base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('ubeswap_celo_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw            
+
   - name: dex_celo_base_trades
