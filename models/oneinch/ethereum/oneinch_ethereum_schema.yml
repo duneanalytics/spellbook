@@ -1160,6 +1160,8 @@ models:
         name: call_output
       - &call_input
         name: call_input
+      - &call_remains
+        name: call_remains
       - &minute
         name: minute
       - &block_month_not_null
