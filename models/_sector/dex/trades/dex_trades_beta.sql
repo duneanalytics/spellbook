@@ -11,6 +11,7 @@
 }}
 
 -- macros/models/sector/dex
+
 {{
     enrich_dex_trades(
         base_trades = ref('dex_base_trades')

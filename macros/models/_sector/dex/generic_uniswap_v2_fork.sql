@@ -92,8 +92,8 @@ UNION ALL
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , '{{ project }}' AS project
-    , '{{ version }}' AS version
+    , concat(fac.project, concat(substring(dexs.factory_address, 1,5), '-unidentified_univ2_fork' )) AS project
+    , '2' AS version -- should maybe be tracked in mapping table, but hard to maintain
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , dexs.block_time
