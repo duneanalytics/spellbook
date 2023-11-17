@@ -8,5 +8,3 @@ sources:
     tables:
       - name: StableSwap_call_coins
         loaded_at_field: call_block_time
-      - name: StableSwap_evt_TokenExchange
-        loaded_at_field: evt_block_time
