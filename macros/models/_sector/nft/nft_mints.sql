@@ -1,4 +1,4 @@
-{% macro nft_mints(blockchain, base_contracts, base_traces, erc20_transfer, base_transactions ) %}
+{% macro nft_mints(blockchain, base_contracts, base_traces, erc20_transfer, base_transactions, eth_currency_contract ) %}
 
 WITH namespaces AS (
     SELECT 
@@ -96,7 +96,7 @@ FROM
         , COALESCE(SUM(CAST(et.value as DOUBLE))/POWER(10, 18), SUM(CAST(erc20s.value as DOUBLE))/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_original
         , COALESCE(pu_eth.price*SUM(CAST(et.value as DOUBLE))/POWER(10, 18), pu_erc20s.price*SUM(CAST(erc20s.value as DOUBLE))/POWER(10, pu_erc20s.decimals))*(nft_mints.amount/nft_count.nfts_minted_in_tx) AS amount_usd
         , CASE WHEN et.success THEN 'ETH' ELSE pu_erc20s.symbol END AS currency_symbol
-        , CASE WHEN et.success THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE erc20s.contract_address END AS currency_contract
+        , CASE WHEN et.success THEN {{eth_currency_contract}} ELSE erc20s.contract_address END AS currency_contract
         , nft_mints.contract_address AS nft_contract_address
         , etxs.to AS project_contract_address
         , agg.name AS aggregator_name
