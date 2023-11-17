@@ -129,10 +129,13 @@ FROM (
     , 0 AS is_new_contract
 
   FROM {{ this }} s
-    , deterministic_deployers dd, smart_account_methods sam
+  LEFT JOIN new_contracts nc 
+    ON nc.contract_address = s.contract_address
+  , deterministic_deployers dd, smart_account_methods sam
   WHERE 
       1=1
       AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
+      AND nc.contract_address IS NULL -- don't pick up contracts that were reinitialized
 
   {% endif %}
 
