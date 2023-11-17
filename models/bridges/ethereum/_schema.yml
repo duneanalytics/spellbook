@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: bridges_base_addresses
+  - name: bridges_ethereum_addresses
     meta:
-      blockchain: base
+      blockchain: ethereum
       sector: bridges
       project: addresses
-      contributors: rantum
+      contributors: hildobby, msilb7, rantum
     config:
-      tags: ['table', 'bridges', 'addresses', 'base']
+      tags: ['table', 'bridges', 'addresses', 'ethereum']
     description: "Known bridge addresses"
     columns:
       - name: blockchain 
