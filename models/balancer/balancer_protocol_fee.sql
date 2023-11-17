@@ -28,7 +28,7 @@ FROM (
         pool_address,
         pool_symbol,
         blockchain,
-        token_address,
+       -- token_address,
         token_amount_raw,
         token_amount,
         protocol_fee_collected_usd, 
