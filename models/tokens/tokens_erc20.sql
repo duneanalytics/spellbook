@@ -29,4 +29,4 @@ SELECT 'celo' as blockchain, contract_address, symbol, decimals FROM {{ ref('tok
 UNION ALL
 SELECT 'zksync' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_zksync_erc20') }}
 UNION ALL
-SELECT 'zksync' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_zora_erc20') }}
+SELECT 'zora' as blockchain, contract_address, symbol, decimals FROM {{ ref('tokens_zora_erc20') }}
