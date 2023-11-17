@@ -1,0 +1,42 @@
+{{ config(alias = 'addresses',
+        schema = 'bridges_optimism',
+        tags=['static'],
+          ) }}
+
+SELECT blockchain, address as address, bridge_name, description
+FROM (VALUES 
+('optimism', 0x4200000000000000000000000000000000000010, 'Optimism', 'Bridge'),
+      ('optimism', 0x3f87ff1de58128ef8fcb4c807efd776e1ac72e51, 'Optimism', 'Bridge 2'),
+      ('optimism', 0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Gateway'),
+      ('optimism', 0x9d39fc627a6d9d9f8c831c16995b209548cc3401, 'Celer Network', 'Bridge'),
+      ('optimism', 0xe7351fd770a37282b91d153ee690b63579d6dd7f, 'Din', 'Destination'),
+      ('optimism', 0x3c2269811836af69497e5f486a85d7316753cf62, 'Layer Zero', 'Optimism'),
+      ('optimism', 0xc10ef9f491c9b59f936957026020c321651ac078, 'Multichain', 'anyCall v6'),
+      ('optimism', 0xdc42728b0ea910349ed3c6e1c9dc06b5fb591f98, 'Multichain', 'Router v6'),
+      ('optimism', 0xaf41a65f786339e7911f4acdad6bd49426f2dc6b, 'Synapse', 'Bridge'),
+      ('optimism', 0x11111112542d85b3ef69ae05771c2dccff4faa26, '1inch', 'AggregationRouterV3'),
+      ('optimism', 0x1111111254760f7ab3f16433eea9304126dcd199, '1inch', 'AggregationRouterV4'),
+      ('optimism', 0x1111111254eeb25477b68fb85ed929f73a960582, '1inch', 'AggregationRouterV5'),
+      ('optimism', 0x00c0184c0b5d42fba6b7ca914b31239b419ab80b, 'Slingshot Finance', 'Swap'),
+      ('optimism', 0x8b396ddf906d552b2f98a8e7d743dd58cd0d920f, 'SushiSwap', 'SushiXSwap'),
+      ('optimism', 0x4c5d5234f232bd2d76b96aa33f5ae4fcf0e4bfab, 'SushiSwap', 'RouteProcessor3'),
+      ('optimism', 0xe592427a0aece92de3edee1f18e0157c05861564, 'Uniswap', 'SwapRouter'),
+      ('optimism', 0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45, 'Uniswap', 'SwapRouter02'),
+      ('optimism', 0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad, 'Uniswap', 'UniversalRouter'),
+      ('optimism', 0xdef1abe32c034e558cdd535791643c58a13acc10, 'ZeroEx', 'ExchangeProxy'),
+      ('optimism', 0x5130f6ce257b8f9bf7fac0a0b519bd588120ed40, 'Clipper', 'ClipperPackedVerifiedExchange'),
+      ('optimism', 0xa132dab612db5cb9fc9ac426a0cc215a3423f9c9, 'Velodrome', 'Router'),
+      ('optimism', 0x9c12939390052919af3155f41bf4160fd3666a6f, 'Velodrome', 'Router'),
+      ('optimism', 0xc30141b657f4216252dc59af2e7cdb9d8792e1b0, 'Socket', 'Registry'),
+      ('optimism', 0x69dd38645f7457be13571a847ffd905f9acbaf6d, 'Odos', 'OdosRouter'),
+      ('optimism', 0xeaf1ac8e89ea0ae13e0f03634a4ff23502527024, 'WooFi', 'WooRouter'),
+      ('optimism', 0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae, 'LiFi', 'LiFiDiamond_v2'),
+      ('optimism', 0x777777773fdd8b28bb03377d10fcea75ad9768da, 'Via router', 'ViaRouter'),
+      ('optimism', 0x82ac2ce43e33683c58be4cdc40975e73aa50f459, 'Perp', 'ClearingHouse'),
+      ('optimism', 0xdef171fe48cf0115b1d80b88dc8eab59176fee57, 'Paraswap', 'AugustusSwapper'),
+      ('optimism', 0x0c6134abc08a1eafc3e2dc9a5ad023bb08da86c3, 'Firebird', 'FireBirdRouter'),
+      ('optimism', 0x6352a56caadc4f1e25cd6c75970fa768a3304e64, 'OpenOcean', 'OpenOceanExchangeProxy')
+
+
+
+      ) AS x (blockchain, address, bridge_name, description)
