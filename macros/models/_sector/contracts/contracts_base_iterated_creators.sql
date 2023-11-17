@@ -33,7 +33,7 @@ WITH deterministic_deployers AS (
       ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
         -- --Gnosis Safe Logic
         WHEN aa.contract_project = 'Gnosis Safe' THEN b.top_level_tx_to --smart wallet
-        -- -- AA Wallet Logic
+        -- -- AA Wallet Logic - Commented out until we figure it out - this logic is wrong
         -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
         --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
         --     ELSE bytearray_substring(t.data, 145,20) END
@@ -210,16 +210,16 @@ WITH deterministic_deployers AS (
         ,b.code
         ,b.token_standard_erc20
         , CASE WHEN u.creator_address IS NOT NULL THEN 
-              b.creator_address_lineage || ARRAY[u.creator_address]
+              b.creator_address_lineage || u.creator_address
             ELSE b.creator_address_lineage
           END AS creator_address_lineage
         , CASE WHEN u.created_tx_method_id IS NOT NULL THEN 
-              b.tx_method_id_lineage || ARRAY[u.created_tx_method_id]
+              b.tx_method_id_lineage || u.created_tx_method_id
             ELSE b.tx_method_id_lineage
           END AS tx_method_id_lineage
         , b.to_iterate_creators
         , b.is_new_contract
-        , CASE WHEN u.contract_address IS NOT NULL THEN 1 ELSE 0 END AS loop_again --if it's contract created, then 1 (we loop), else 0 (we're done)
+        , CASE WHEN u.contract_address IS NULL THEN 0 ELSE 1 END AS loop_again --if it's contract created, then 1 (we loop), else 0 (we're done)
 
       {% if loop.first -%}
       from base_level as b
