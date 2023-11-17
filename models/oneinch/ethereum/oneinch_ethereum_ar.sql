@@ -6,6 +6,7 @@
     config( 
         schema = 'oneinch_' + blockchain,
         alias = 'ar',
+        depends_on=['dex_raw_pools'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

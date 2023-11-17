@@ -205,13 +205,13 @@
 
 with
 
-pools as (
+pools_list as (
     select
         pool as pool_address
         , token0
         , token1
     from {{ ref('dex_raw_pools') }}
-    where 'type' = 'uniswap_compatible'
+    where type = 'uniswap_compatible'
     group by 1, 2, 3
 )
 
@@ -242,7 +242,7 @@ pools as (
 
     select *
     from (
-    {% for method, method_data in contract_data.methods.items() if blockchains not in method_data or blockchain in method_data.blockchains %}
+    {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}
         {% if method_data.router_type in ['generic', 'clipper'] %}
         -------------------------------- GENERIC & CLIPPER START --------------------------------
             select
@@ -363,8 +363,8 @@ pools as (
                 )
                 join traces using(call_block_number, call_tx_hash, call_trace_address)
             )
-            left join (select pool_address as first_pool, token0 as first_token0, token1 as first_token1 from pools) using(first_pool)
-            left join (select pool_address as last_pool, token0 as last_token0, token1 as last_token1 from pools) using(last_pool)
+            left join (select pool_address as first_pool, token0 as first_token0, token1 as first_token1 from pools_list) using(first_pool)
+            left join (select pool_address as last_pool, token0 as last_token0, token1 as last_token1 from pools_list) using(last_pool)
         -------------------------------- UNOSWAP END --------------------------------
         {% endif %}
     {% if not loop.last %} union all {% endif %}

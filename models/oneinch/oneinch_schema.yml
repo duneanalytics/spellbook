@@ -548,5 +548,3 @@ models:
       - *call_output
       - *minute
       - *block_month_not_null
-
-BREAK
