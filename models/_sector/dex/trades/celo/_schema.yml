@@ -100,7 +100,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('curvefi_celo_base_trades_seed')
+          seed_file: ref('curve_celo_base_trades_seed')
           filter:
             blockchain: celo
             project: curvefi
