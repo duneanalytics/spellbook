@@ -96,34 +96,34 @@ WITH deterministic_deployers AS (
     UNION ALL
 
     SELECT
-      blockchain
-      ,trace_creator_address
-      ,creator_address AS creator_address_intermediate
-      ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
-      ,contract_address
-      ,created_time
-      ,created_month
-      ,created_block_number
-      ,created_tx_hash
-      ,top_level_time
-      ,top_level_block_number
-      ,top_level_tx_hash
-      ,top_level_tx_from
-      ,top_level_tx_to
-      ,top_level_tx_method_id
-      ,created_tx_from
-      ,created_tx_to
-      ,created_tx_method_id
-      ,created_tx_index
-      ,code
-      ,code_bytelength
-      , token_standard_erc20
-      , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
-      , creator_address_lineage AS creator_address_lineage_intermediate
-      , tx_method_id_lineage AS tx_method_id_lineage_intermediate
+      s.blockchain
+      ,s.trace_creator_address
+      ,s.creator_address AS creator_address_intermediate
+      ,s.deployer_address -- deployer from the trace - does not iterate up
+      ,s.contract_address
+      ,s.created_time
+      ,s.created_month
+      ,s.created_block_number
+      ,s.created_tx_hash
+      ,s.top_level_time
+      ,s.top_level_block_number
+      ,s.top_level_tx_hash
+      ,s.top_level_tx_from
+      ,s.top_level_tx_to
+      ,s.top_level_tx_method_id
+      ,s.created_tx_from
+      ,s.created_tx_to
+      ,s.created_tx_method_id
+      ,s.created_tx_index
+      ,s.code
+      ,s.code_bytelength
+      ,s.token_standard_erc20
+      ,s.code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
+      ,s.creator_address_lineage AS creator_address_lineage_intermediate
+      ,s.tx_method_id_lineage AS tx_method_id_lineage_intermediate
       , CASE
-          WHEN arrays_overlap(creator_address_lineage, dd.creator_address_array ) THEN 1--check deterministic creators
-          WHEN arrays_overlap(tx_method_id_lineage, sm.method_id_array )
+          WHEN arrays_overlap(s.creator_address_lineage, dd.creator_address_array ) THEN 1--check deterministic creators
+          WHEN arrays_overlap(s.tx_method_id_lineage, sm.method_id_array )
                 -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
                 THEN 1 -- array contains smart account and creator = trace creator
           ELSE 0
