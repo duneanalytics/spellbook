@@ -17,211 +17,217 @@
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
 {% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use deployer_address if this is too poor.
 
-with base_level AS (
-SELECT *
-FROM (
-SELECT b.*
-  --map special contract creator types here
-    ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
-      -- --Gnosis Safe Logic
-      WHEN aa.contract_project = 'Gnosis Safe' THEN b.top_level_tx_to --smart wallet
-      -- -- AA Wallet Logic
-      -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
-      --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
-      --     ELSE bytearray_substring(t.data, 145,20) END
-      --     )
-      -- -- Else
-      ELSE creator_address_intermediate
-    END as creator_address
-  -- get code deployed rank
-  , CASE WHEN is_new_contract = 0
-      THEN code_deploy_rank_by_chain_intermediate
-      ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
-    END AS code_deploy_rank_by_chain
-  -- get lineage (or starting lineage)
-  , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
-  , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
-  -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
-  , SUM(reinit_rank_intermediate) OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank
-FROM (
-  SELECT
-    blockchain
-    ,trace_creator_address
-    ,trace_creator_address AS creator_address_intermediate
-    ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
-    ,contract_address
-    ,created_time
-    ,created_month
-    ,created_block_number
-    ,created_tx_hash
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
-    ,created_tx_from
-    ,created_tx_to
-    ,created_tx_method_id
-    ,created_tx_index
-    ,code
-    ,code_bytelength
-    , NULL AS token_standard_erc20
-    , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_time ASC, created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
-    , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage_intermediate
-    , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
-    , 1 AS to_iterate_creators
-    , 1 AS is_new_contract
-    , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank_intermediate
+WITH deterministic_deployers AS (
+    SELECT array_agg(creator_address) AS creator_address_array FROM {{ref('contracts_deterministic_contract_creators')}}
+    )
 
-  FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
-  WHERE 
-      1=1
-      {% if is_incremental() %}
-      AND {{ incremental_predicate('s.created_time') }}
-      AND {{ incremental_predicate('s.created_month') }}
-      {% endif %}
-  
-  {% if is_incremental() %}
-
-  UNION ALL
-
-  SELECT
-    blockchain
-    ,trace_creator_address
-    ,creator_address AS creator_address_intermediate
-    ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
-    ,contract_address
-    ,created_time
-    ,created_month
-    ,created_block_number
-    ,created_tx_hash
-    ,top_level_time
-    ,top_level_block_number
-    ,top_level_tx_hash
-    ,top_level_tx_from
-    ,top_level_tx_to
-    ,top_level_tx_method_id
-    ,created_tx_from
-    ,created_tx_to
-    ,created_tx_method_id
-    ,created_tx_index
-    ,code
-    ,code_bytelength
-    , token_standard_erc20
-    , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
-    , creator_address_lineage AS creator_address_lineage_intermediate
-    , tx_method_id_lineage AS tx_method_id_lineage_intermediate
-    , CASE
-        WHEN arrays_overlap(creator_address_lineage, (SELECT array_agg(creator_address) FROM {{ref('contracts_deterministic_contract_creators')}} ) ) THEN 1--check deterministic creators
-        WHEN arrays_overlap(tx_method_id_lineage, (SELECT array_agg(method_id) FROM {{ref('base_evm_smart_account_method_ids')}} ) )
-              -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
-              THEN 1 -- array contains smart account and creator = trace creator
-        ELSE 0
-      END AS to_iterate_creators
-    , 0 AS is_new_contract
-    , 1 AS reinit_rank_intermediate
-
-  FROM {{ this }} s
-  WHERE 
-      1=1
-      AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
-
-  {% endif %}
-
-) b
-  left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-        ON nd.creator_address = b.creator_address_intermediate
-  left join (
-            SELECT method_id, contract_project
-            FROM {{ ref('base_evm_smart_account_method_ids') }}
-            GROUP BY 1,2
-          ) aa 
-        ON aa.method_id = b.created_tx_method_id
-) filtered
-WHERE reinit_rank = 1 --get most recent time the creator contract was created
-)
+, smart_account_methods AS (
+    SELECT array_agg(method_id) AS method_id_array FROM {{ref('base_evm_smart_account_method_ids')}}
+    )
 
 , levels as (
--- starting from 0 
--- u = next level up contract (i.e. the factory)
--- b = base-level contract
-{% for i in range(max_levels) -%}
 
-{% if i == 0 %}
-with level0
-{% else %}
-,level{{i}}
-{% endif %}
-  as (
-    select
-      {{i}} as level 
-      ,b.blockchain
-      ,b.trace_creator_address -- get the original contract creator address
-      ,case when nd.creator_address IS NOT NULL
-        THEN b.created_tx_from --when deterministic creator, we take the tx sender
-        ELSE coalesce(u.creator_address, b.creator_address)
-      END as creator_address -- get the highest-level creator we know of
-      ,b.deployer_address
-      ,b.contract_address
-      -- store the raw created data
-      ,b.created_time
-      ,b.created_month
-      ,b.created_block_number
-      ,b.created_tx_hash
-      ,b.created_tx_from
-      ,b.created_tx_to
-      ,b.created_tx_method_id
-      ,b.created_tx_index
+  with base_level AS (
+  SELECT b.*
+    --map special contract creator types here
+      ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
+        -- --Gnosis Safe Logic
+        WHEN aa.contract_project = 'Gnosis Safe' THEN b.top_level_tx_to --smart wallet
+        -- -- AA Wallet Logic
+        -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
+        --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
+        --     ELSE bytearray_substring(t.data, 145,20) END
+        --     )
+        -- -- Else
+        ELSE creator_address_intermediate
+      END as creator_address
+    -- get code deployed rank
+    , CASE WHEN is_new_contract = 0
+        THEN code_deploy_rank_by_chain_intermediate
+        ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
+      END AS code_deploy_rank_by_chain
+    -- get lineage (or starting lineage)
+    , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
+    , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
+    -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
+  FROM (
+    WITH new_contracts AS (
+      SELECT
+        blockchain
+        ,trace_creator_address
+        ,trace_creator_address AS creator_address_intermediate
+        ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
+        ,contract_address
+        ,created_time
+        ,created_month
+        ,created_block_number
+        ,created_tx_hash
+        ,top_level_time
+        ,top_level_block_number
+        ,top_level_tx_hash
+        ,top_level_tx_from
+        ,top_level_tx_to
+        ,top_level_tx_method_id
+        ,created_tx_from
+        ,created_tx_to
+        ,created_tx_method_id
+        ,created_tx_index
+        ,code
+        ,code_bytelength
+        , NULL AS token_standard_erc20
+        , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
+        , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage_intermediate
+        , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
+        , 1 AS to_iterate_creators
+        , 1 AS is_new_contract
 
-      -- when deterministic, pull the tx-level data
-      ,case when nd.creator_address IS NOT NULL
-        then b.top_level_time ELSE COALESCE(u.top_level_time, b.top_level_time ) END AS top_level_time
-      ,case when nd.creator_address IS NOT NULL
-        then b.top_level_block_number else COALESCE(u.top_level_block_number, b.top_level_block_number ) end AS top_level_block_number
-      ,case when nd.creator_address IS NOT NULL
-        then b.top_level_tx_hash else COALESCE(u.top_level_tx_hash, b.top_level_tx_hash ) end AS top_level_tx_hash
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_from ELSE COALESCE(u.created_tx_from, b.created_tx_from ) END AS top_level_tx_from
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
-      ,case when nd.creator_address IS NOT NULL
-        then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
+      FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
+      WHERE 
+          1=1
+          {% if is_incremental() %}
+          AND {{ incremental_predicate('s.created_time') }}
+          AND {{ incremental_predicate('s.created_month') }}
+          {% endif %}
+    )
 
-      ,b.code_bytelength
-      ,b.code_deploy_rank_by_chain
-      ,b.code
-      ,b.token_standard_erc20
-      , CASE WHEN u.creator_address IS NOT NULL THEN 
-            b.creator_address_lineage || ARRAY[u.creator_address]
-          ELSE b.creator_address_lineage
-        END AS creator_address_lineage
-      , CASE WHEN u.created_tx_method_id IS NOT NULL THEN 
-            b.tx_method_id_lineage || ARRAY[u.created_tx_method_id]
-          ELSE b.tx_method_id_lineage
-        END AS tx_method_id_lineage
-      , b.to_iterate_creators
-      , b.is_new_contract
-      , CASE WHEN u.contract_address IS NOT NULL THEN 1 ELSE 0 END AS loop_again --if it's contract created, then 1 (we loop), else 0 (we're done)
+    SELECT * FROM new_contracts
+    {% if is_incremental() %}
 
-    {% if loop.first -%}
-    from base_level as b
-    left join base_level as u --get info about the contract that created this contract
-      on b.creator_address = u.contract_address
-      AND b.blockchain = u.blockchain
-    {% else -%}
-    from level{{i-1}} as b
-    left join base_level as u --get info about the contract that created this contract
-      ON b.loop_again = 1 --don't search if we already hit the top
-      AND b.creator_address = u.contract_address
-      AND b.blockchain = u.blockchain
+    UNION ALL
+
+    SELECT
+      blockchain
+      ,trace_creator_address
+      ,creator_address AS creator_address_intermediate
+      ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
+      ,contract_address
+      ,created_time
+      ,created_month
+      ,created_block_number
+      ,created_tx_hash
+      ,top_level_time
+      ,top_level_block_number
+      ,top_level_tx_hash
+      ,top_level_tx_from
+      ,top_level_tx_to
+      ,top_level_tx_method_id
+      ,created_tx_from
+      ,created_tx_to
+      ,created_tx_method_id
+      ,created_tx_index
+      ,code
+      ,code_bytelength
+      , token_standard_erc20
+      , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
+      , creator_address_lineage AS creator_address_lineage_intermediate
+      , tx_method_id_lineage AS tx_method_id_lineage_intermediate
+      , CASE
+          WHEN arrays_overlap(creator_address_lineage, dd.creator_address_array ) THEN 1--check deterministic creators
+          WHEN arrays_overlap(tx_method_id_lineage, sm.method_id_array )
+                -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
+                THEN 1 -- array contains smart account and creator = trace creator
+          ELSE 0
+        END AS to_iterate_creators
+      , 0 AS is_new_contract
+
+    FROM {{ this }} s
+    LEFT JOIN new_contracts nc 
+      ON nc.contract_address = s.contract_address
+      AND nc.blockchain = s.blockchain
+    , deterministic_deployers dd, smart_account_methods sam
+    WHERE 
+        1=1
+        AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
+        AND nc.contract_address IS NULL -- don't pick up contracts that were reinitialized
+
     {% endif %}
-    -- is the creator deterministic?
+
+  ) b
     left join {{ref('contracts_deterministic_contract_creators')}} as nd 
-      ON nd.creator_address = b.creator_address
-    WHERE b.to_iterate_creators = 1
-)
-{%- endfor %}
+          ON nd.creator_address = b.creator_address_intermediate
+    left join (
+              SELECT method_id, contract_project
+              FROM {{ ref('base_evm_smart_account_method_ids') }}
+              GROUP BY 1,2
+            ) aa 
+          ON aa.method_id = b.created_tx_method_id
+
+  )
+  -- starting from 0 
+  -- u = next level up contract (i.e. the factory)
+  -- b = base-level contract
+  {% for i in range(max_levels) -%}
+
+  ,level{{i}}
+    as (
+      select
+        {{i}} as level 
+        ,b.blockchain
+        ,b.trace_creator_address -- get the original contract creator address
+        ,case when nd.creator_address IS NOT NULL
+          THEN b.created_tx_from --when deterministic creator, we take the tx sender
+          ELSE coalesce(u.creator_address, b.creator_address)
+        END as creator_address -- get the highest-level creator we know of
+        ,b.deployer_address
+        ,b.contract_address
+        -- store the raw created data
+        ,b.created_time
+        ,b.created_month
+        ,b.created_block_number
+        ,b.created_tx_hash
+        ,b.created_tx_from
+        ,b.created_tx_to
+        ,b.created_tx_method_id
+        ,b.created_tx_index
+
+        -- when deterministic, pull the tx-level data
+        ,case when nd.creator_address IS NOT NULL
+          then b.top_level_time ELSE COALESCE(u.top_level_time, b.top_level_time ) END AS top_level_time
+        ,case when nd.creator_address IS NOT NULL
+          then b.top_level_block_number else COALESCE(u.top_level_block_number, b.top_level_block_number ) end AS top_level_block_number
+        ,case when nd.creator_address IS NOT NULL
+          then b.top_level_tx_hash else COALESCE(u.top_level_tx_hash, b.top_level_tx_hash ) end AS top_level_tx_hash
+        ,case when nd.creator_address IS NOT NULL
+          then b.created_tx_from ELSE COALESCE(u.created_tx_from, b.created_tx_from ) END AS top_level_tx_from
+        ,case when nd.creator_address IS NOT NULL
+          then b.created_tx_to else COALESCE(u.created_tx_to, b.created_tx_to ) end AS top_level_tx_to
+        ,case when nd.creator_address IS NOT NULL
+          then b.created_tx_method_id else COALESCE(u.created_tx_method_id, b.created_tx_method_id ) end AS top_level_tx_method_id
+
+        ,b.code_bytelength
+        ,b.code_deploy_rank_by_chain
+        ,b.code
+        ,b.token_standard_erc20
+        , CASE WHEN u.creator_address IS NOT NULL THEN 
+              b.creator_address_lineage || ARRAY[u.creator_address]
+            ELSE b.creator_address_lineage
+          END AS creator_address_lineage
+        , CASE WHEN u.created_tx_method_id IS NOT NULL THEN 
+              b.tx_method_id_lineage || ARRAY[u.created_tx_method_id]
+            ELSE b.tx_method_id_lineage
+          END AS tx_method_id_lineage
+        , b.to_iterate_creators
+        , b.is_new_contract
+        , CASE WHEN u.contract_address IS NOT NULL THEN 1 ELSE 0 END AS loop_again --if it's contract created, then 1 (we loop), else 0 (we're done)
+
+      {% if loop.first -%}
+      from base_level as b
+      left join base_level as u --get info about the contract that created this contract
+        on b.creator_address = u.contract_address
+        AND b.blockchain = u.blockchain
+      {% else -%}
+      from level{{i-1}} as b
+      left join base_level as u --get info about the contract that created this contract
+        ON b.loop_again = 1 --don't search if we already hit the top
+        AND b.creator_address = u.contract_address
+        AND b.blockchain = u.blockchain
+      {% endif %}
+      -- is the creator deterministic?
+      left join {{ref('contracts_deterministic_contract_creators')}} as nd 
+        ON nd.creator_address = b.creator_address
+      WHERE b.to_iterate_creators = 1
+  )
+  {%- endfor %}
 
 
 SELECT {{ column_list | join(', ') }}  FROM base_level WHERE to_iterate_creators = 0
