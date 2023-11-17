@@ -42,7 +42,8 @@
         'call_selector':'any_value',
         'protocol':'any_value',
         'call_input':'any_value',
-        'call_output':'any_value'
+        'call_output':'any_value',
+        'call_remains':'any_value'
     }
 %}
 
