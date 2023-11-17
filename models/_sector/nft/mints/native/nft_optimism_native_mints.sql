@@ -8,7 +8,6 @@
         unique_key = ['tx_hash','evt_index','token_id','number_of_items']
         )
 }}
-{% set eth_address = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' %}
 
 {{nft_mints(
     blockchain='optimism'
