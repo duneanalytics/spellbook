@@ -1,7 +1,8 @@
-{{config(alias = 'addresses',
-       schema = 'dex_bnb',
-        tags=['static'])
-        }}
+{{config(
+    schema = 'dex_bnb',
+    alias = 'addresses',
+    tags=['static'])
+}}
 
 SELECT blockchain, address, dex_name, distinct_name
 FROM (VALUES
