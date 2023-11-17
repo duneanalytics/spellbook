@@ -26,8 +26,6 @@ WITH deterministic_deployers AS (
     )
 
 , base_level AS (
-SELECT *
-FROM (
 SELECT b.*
   --map special contract creator types here
     ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
@@ -74,7 +72,6 @@ FROM (
       ,created_tx_index
       ,code
       ,code_bytelength
-      , reinitialize_rank
       , NULL AS token_standard_erc20
       , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
       , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage_intermediate
@@ -118,7 +115,6 @@ FROM (
     ,created_tx_index
     ,code
     ,code_bytelength
-    , reinitialize_rank
     , token_standard_erc20
     , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
     , creator_address_lineage AS creator_address_lineage_intermediate
@@ -149,8 +145,7 @@ FROM (
             GROUP BY 1,2
           ) aa 
         ON aa.method_id = b.created_tx_method_id
-) filtered
-WHERE reinitialize_rank = 1 --get most recent time the creator contract was created
+
 )
 
 , levels as (
