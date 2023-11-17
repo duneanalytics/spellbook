@@ -696,6 +696,7 @@ WITH curated_list AS (
       ,(0x42571b8414c68b63a2729146ce93f23639d25399, 'Pancakeswap')
       ,(0x3af75af6F056d4D72c1675dA919aebF908A109D6, 'Pancakeswap')
       ,(0x8Efd976d78f2126BaAf0622d2c1C4A06AfC2eD3d, 'Dackieswap')
+      ,(0xcb25434b91fdF41bAD435ab116DBfE3F455657aa, 'Duel Arena')
   ) as temp_table (creator_address, contract_project)
 )
 
