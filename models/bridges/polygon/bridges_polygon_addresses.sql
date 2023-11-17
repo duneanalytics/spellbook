@@ -48,5 +48,4 @@ FROM (VALUES
     ('polygon', 0xce16f69375520ab01377ce7b88f5ba8c48f8d666, 'Squid', ''),
     ('polygon', 0xd5f0f8db993d26f5df89e70a83d32b369dccdaa0, 'Symbiosis', '')
 
-
-    ) AS x (blockchain, address as address, bridge_name, description)
+  ) AS x (blockchain, address, bridge_name, description)
