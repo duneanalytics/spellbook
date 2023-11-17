@@ -1,5 +1,5 @@
-{{config(alias = 'dex',
-        schema = 'addresses_optimism',
+{{config(alias = 'addresses',
+        schema = 'dex_optimism',
         tags=['static'])
         }}
 
