@@ -1,4 +1,5 @@
-{{ config(alias = 'bridges',
+{{ config(alias = 'addresses',
+        schema = 'bridges_base',
         tags=['static'],
           ) }}
 
