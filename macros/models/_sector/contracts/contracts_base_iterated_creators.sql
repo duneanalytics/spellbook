@@ -123,7 +123,7 @@ WITH deterministic_deployers AS (
       ,s.tx_method_id_lineage AS tx_method_id_lineage_intermediate
       , CASE
           WHEN arrays_overlap(s.creator_address_lineage, dd.creator_address_array ) THEN 1--check deterministic creators
-          WHEN arrays_overlap(s.tx_method_id_lineage, sm.method_id_array )
+          WHEN arrays_overlap(s.tx_method_id_lineage, sam.method_id_array )
                 -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
                 THEN 1 -- array contains smart account and creator = trace creator
           ELSE 0
