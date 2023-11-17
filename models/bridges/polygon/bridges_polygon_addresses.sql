@@ -1,6 +1,6 @@
 {{ config(alias = 'addresses',
         schema = 'bridges_polygon',
-        tags=['static'],
+        tags=['static']
           ) }}
 
 SELECT blockchain, address as address, bridge_name, description
