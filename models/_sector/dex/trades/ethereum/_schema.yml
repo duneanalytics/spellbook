@@ -43,6 +43,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+            - token_bought_address
+            - token_sold_address
       - check_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
@@ -99,6 +101,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+            - token_bought_address
+            - token_sold_address
       - check_seed:
           seed_file: ref('defiswap_ethereum_base_trades_seed')
           match_columns:
