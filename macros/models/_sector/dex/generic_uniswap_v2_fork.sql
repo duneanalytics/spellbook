@@ -74,7 +74,7 @@ UNION ALL
     FROM
         decoding_raw_forks t
     INNER JOIN (Select 
-                contract_address as factory
+                contract_address as factory_address
                  ,VARBINARY_SUBSTRING(data, 13,20) as pair
                  ,VARBINARY_SUBSTRING(topic1, 13, 20) AS token0
                  ,VARBINARY_SUBSTRING(topic2, 13, 20) AS token1 
