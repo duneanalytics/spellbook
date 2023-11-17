@@ -177,8 +177,8 @@ models:
         name: ordinary
       - &pools
         name: pools
-      - &router
-        name: router
+      - &router_type
+        name: router_type
       - *call_success
       - *call_gas_used
       - &remains
