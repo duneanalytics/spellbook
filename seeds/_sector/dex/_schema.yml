@@ -465,7 +465,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: curve_avalanche_c_base_trades_seed
+  - name: curvefi_avalanche_c_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -480,7 +480,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: curve_celo_base_trades_seed
+  - name: curvefi_celo_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -495,7 +495,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: curve_ethereum_base_trades_seed
+  - name: curvefi_ethereum_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -510,7 +510,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: curve_fantom_base_trades_seed
+  - name: curvefi_fantom_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -525,7 +525,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: curve_optimism_base_trades_seed
+  - name: curvefi_optimism_base_trades_seed
     config:
       column_types:
         blockchain: varchar
