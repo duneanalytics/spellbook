@@ -218,6 +218,7 @@ pools_list as (
 , calls as (
     {% for contract, contract_data in contracts.items() if blockchain in contract_data.blockchains %}
     
+    select * from (
     with traces as (
         select
             block_number as call_block_number
@@ -240,8 +241,7 @@ pools_list as (
             and call_type = 'call'
     )
 
-    select *
-    from (
+   
     {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %}
         {% if method_data.router_type in ['generic', 'clipper'] %}
         -------------------------------- GENERIC & CLIPPER START --------------------------------
