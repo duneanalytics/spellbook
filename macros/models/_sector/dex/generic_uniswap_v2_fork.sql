@@ -107,10 +107,11 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
+    , dexs.factory_address 
 FROM
     dexs
 LEFT JOIN {{ref('dex_uniswap_v2_fork_mapping') }} fac
-    ON dexs.deployed_by_contract_address = fac.factory_address
+    ON dexs.factory_address = fac.factory_address
 
 {% endmacro %}
 
