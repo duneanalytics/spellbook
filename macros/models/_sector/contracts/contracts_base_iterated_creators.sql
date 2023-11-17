@@ -159,7 +159,6 @@ WITH deterministic_deployers AS (
   {% for i in range(max_levels) -%}
 
   ,level{{i}}
-  {% endif %}
     as (
       select
         {{i}} as level 
