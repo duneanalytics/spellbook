@@ -1,5 +1,5 @@
-{{config(alias = 'dex',
-        schema = 'addresses_arbitrum',
+{{config(alias = 'addresses',
+        schema = 'dex_arbitrum',
         tags=['static'])
         }}
 

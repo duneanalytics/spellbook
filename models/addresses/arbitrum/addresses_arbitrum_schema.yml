@@ -2,7 +2,7 @@ version: 2
 
 models:
   
-  - name: addresses_arbitrum_dex
+  - name: dex_arbitrum_addresses
     meta:
       blockchain: arbitrum
       sector: dex
