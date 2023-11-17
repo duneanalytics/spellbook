@@ -16,7 +16,7 @@ FROM (VALUES
     ('polygon', 0x43dE2d77BF8027e25dBD179B491e8d64f38398aA, 'deBridgeGate', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
     ('polygon', 0x29494C1673903e608352020CF8F545af70111Ad4, 'DeFi Basket: AaveV2 Deposit Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
     ('polygon', 0x4789499ed6D3c9E9b874E7E02AB8139779A51704, 'DeFi Basket: Autofarm Deposit Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
-    ('polygon', 0x89Db516B50819593f058040F781BfF9880ca81a8, 'DeFi Basket: Quickswap Liquidity Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier')
+    ('polygon', 0x89Db516B50819593f058040F781BfF9880ca81a8, 'DeFi Basket: Quickswap Liquidity Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
     ('polygon', 0x840eA78f667B73853F4baEcE4a5EBe212C4039C1, 'Evodefi: Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
     ('polygon', 0xDF774A4F3EA5095535f5B8f5b9149caF90FF75Bd, 'Gains Network: Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
     ('polygon', 0xa33f7069f075A54481868e4C0b8D26925A218362, 'Gains Network: Locking Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-15', now(), 'bridges_polygon', 'identifier'),
