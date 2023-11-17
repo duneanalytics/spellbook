@@ -148,7 +148,7 @@ WITH pool_labels AS (
         BYTEARRAY_SUBSTRING(f.pool_id,1,20) as pool_address,
         l.name AS pool_symbol,
         '{{blockchain}}' as blockchain,
-        f.token_address,
+        --f.token_address,
         SUM(f.token_amount_raw) as token_amount_raw,
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
