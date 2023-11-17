@@ -38,4 +38,5 @@ FROM (VALUES
 ('arbitrum', 0x000039ddcf1f63cf3555e62a8d32a11bd1e7e1e1, 'Meson', '')
 
 
-    ) AS x (blockchain, address as address, bridge_name, description)
+
+      ) AS x (blockchain, address, bridge_name, description)
