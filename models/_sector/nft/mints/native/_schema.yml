@@ -91,3 +91,26 @@ models:
       - *token_id
       - *number_of_items
       - *amount_usd
+
+  - name: nft_zora_native_mints
+    meta:
+      blockchain: zora
+      sector: nft
+      contributors: chuxin
+    config:
+      tags: [ 'nft','zora' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
