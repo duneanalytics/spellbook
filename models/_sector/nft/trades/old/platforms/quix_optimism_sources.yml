@@ -132,8 +132,6 @@ sources:
 
 
   - name: quixotic_optimism
-    freshness:
-      warn_after: { count: 24, period: hour }
     tables:
       - name: Seaport_evt_OrderFulfilled
       - name: Seaport_call_matchOrders
