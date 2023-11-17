@@ -236,7 +236,7 @@ pools_list as (
                 {% if is_incremental() %}
                     {{ incremental_predicate('block_time') }}
                 {% else %}
-                    block_time >= timestamp '{{ contract_data['start'] }}'
+                    block_time >= timestamp '2023-11-01'
                 {% endif %}
                 and call_type = 'call'
         )
@@ -275,6 +275,8 @@ pools_list as (
                     from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                     {% if is_incremental() %} 
                         where {{ incremental_predicate('call_block_time') }}
+                    {% else %}
+                        where call_block_time >= timestamp '2023-11-01'
                     {% endif %}
                 )
                 join traces using(call_block_number, call_tx_hash, call_trace_address)
@@ -359,6 +361,8 @@ pools_list as (
                         from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                         {% if is_incremental() %}
                             where {{ incremental_predicate('call_block_time') }}
+                        {% else %}
+                            where call_block_time >= timestamp '2023-11-01'
                         {% endif %}
                     )
                     join traces using(call_block_number, call_tx_hash, call_trace_address)
