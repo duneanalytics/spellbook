@@ -50,10 +50,6 @@ SELECT b.*
   , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
   , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
   -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
-  , CASE WHEN is_new_contract = 1 --for new, we need to sum over. For old, we already have them handled for.
-      THEN SUM(reinit_rank_intermediate) OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC)
-      ELSE reinit_rank_intermediate
-      END AS reinit_rank
 FROM (
   WITH new_contracts AS (
     SELECT
@@ -78,13 +74,13 @@ FROM (
       ,created_tx_index
       ,code
       ,code_bytelength
+      , reinitialize_rank
       , NULL AS token_standard_erc20
       , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
       , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage_intermediate
       , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
       , 1 AS to_iterate_creators
       , 1 AS is_new_contract
-      , ROW_NUMBER() OVER (PARTITION BY contract_address ORDER BY created_block_number DESC, created_tx_index DESC) AS reinit_rank_intermediate
 
     FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
     WHERE 
@@ -94,7 +90,7 @@ FROM (
         AND {{ incremental_predicate('s.created_month') }}
         {% endif %}
   )
-  
+
   SELECT * FROM new_contracts
   {% if is_incremental() %}
 
@@ -122,6 +118,7 @@ FROM (
     ,created_tx_index
     ,code
     ,code_bytelength
+    , reinitialize_rank
     , token_standard_erc20
     , code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
     , creator_address_lineage AS creator_address_lineage_intermediate
@@ -134,11 +131,8 @@ FROM (
         ELSE 0
       END AS to_iterate_creators
     , 0 AS is_new_contract
-    , CASE WHEN nc.new_contract_address IS NOT NULL THEN 99 ELSE 1 END AS reinit_rank_intermediate
 
   FROM {{ this }} s
-    left join (SELECT contract_address AS new_contract_address FROM new_contracts group by 1) nc 
-      ON s.contract_address = nc.new_contract_address
     , deterministic_deployers dd, smart_account_methods sam
   WHERE 
       1=1
@@ -156,7 +150,7 @@ FROM (
           ) aa 
         ON aa.method_id = b.created_tx_method_id
 ) filtered
-WHERE reinit_rank = 1 --get most recent time the creator contract was created
+WHERE reinitialize_rank = 1 --get most recent time the creator contract was created
 )
 
 , levels as (

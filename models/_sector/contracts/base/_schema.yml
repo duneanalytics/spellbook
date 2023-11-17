@@ -178,6 +178,9 @@ models:
       - *top_level_tx_method_id
       - *code_bytelength
       - *code
+      - &reinitialize_rank
+        name: reinitialize_rank
+        description: "Rank of the same contract being deployed in descending order - used to only ensure we get the most recent contract instance (allowlist & self-destructs can cause duplicates)."
 
   - name: contracts_base_base_iterated_creators
     meta:
