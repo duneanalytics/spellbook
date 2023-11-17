@@ -6,7 +6,7 @@
     ,'contract_address', 'created_time', 'created_month', 'created_block_number', 'created_tx_hash'
     ,'top_level_time', 'top_level_block_number', 'top_level_tx_hash', 'top_level_tx_from', 'top_level_tx_to', 'top_level_tx_method_id'
     ,'created_tx_from', 'created_tx_to', 'created_tx_method_id', 'created_tx_index'
-    ,'code', 'code_bytelength', 'token_standard_erc20','code_deploy_rank_by_chain'
+    ,'code', 'code_bytelength', 'token_standard_erc20','code_deploy_rank_by_chain', 'is_self_destruct'
     ,'creator_address_lineage', 'tx_method_id_lineage'
   ] %}
 
@@ -41,15 +41,19 @@ WITH deterministic_deployers AS (
         -- -- Else
         ELSE creator_address_intermediate
       END as creator_address
+
     -- get code deployed rank
     , CASE WHEN is_new_contract = 0
         THEN code_deploy_rank_by_chain_intermediate
         ELSE lag(code_deploy_rank_by_chain_intermediate,1,0) OVER (PARTITION BY code ORDER BY code_deploy_rank_by_chain_intermediate DESC) + code_deploy_rank_by_chain_intermediate
       END AS code_deploy_rank_by_chain
+
+    ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
     -- get lineage (or starting lineage)
     , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
     , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
     -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
+    
   FROM (
     WITH new_contracts AS (
       SELECT
@@ -139,6 +143,7 @@ WITH deterministic_deployers AS (
         1=1
         AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
         AND nc.contract_address IS NULL -- don't pick up contracts that were reinitialized
+        AND s.is_self_destruct = false --help the joins by ignoring self-destructed contracts - we already have these in the table
 
     {% endif %}
 
@@ -151,6 +156,11 @@ WITH deterministic_deployers AS (
               GROUP BY 1,2
             ) aa 
           ON aa.method_id = b.created_tx_method_id
+    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
+      on b.contract_address = sd.contract_address
+      AND b.blockchain = sd.blockchain
+      AND b.created_tx_hash = sd.created_tx_hash
+      AND b.created_block_number = sd.created_block_number
 
   )
   -- starting from 0 

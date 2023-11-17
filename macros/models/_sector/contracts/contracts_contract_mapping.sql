@@ -26,6 +26,7 @@
     ,"token_standard"
     ,"code"
     ,"code_deploy_rank_by_chain"
+    ,"is_self_destruct"
 ] %}
 
 WITH get_contracts as (
@@ -69,6 +70,7 @@ WITH get_contracts as (
     ,COALESCE(t_mapped.token_standard, c.token_standard) AS token_standard
     ,c.code
     ,c.code_deploy_rank_by_chain
+    ,c.is_self_destruct
     ,map_rank
   from 
     (
@@ -76,7 +78,7 @@ WITH get_contracts as (
       blockchain, trace_creator_address, contract_address, creator_address, deployer_address,created_time, created_month
       ,created_tx_hash, created_block_number, created_tx_from, created_tx_to, created_tx_method_id, created_tx_index
       ,top_level_time, top_level_tx_hash, top_level_block_number, top_level_tx_from, top_level_tx_to, top_level_tx_method_id
-      ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain
+      ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain, is_self_destruct
       , CAST(NULL as varchar) AS contract_project, cast(NULL as varchar) AS contract_name
       ,1 as map_rank
       FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }} b
@@ -87,7 +89,7 @@ WITH get_contracts as (
       p.blockchain, trace_creator_address, contract_address, creator_address, creator_address AS deployer_address, created_time, DATE_TRUNC('month',created_time) AS created_month
       ,created_tx_hash, 0 AS created_block_number, NULL AS created_tx_from, NULL AS created_tx_to, NULL AS created_tx_method_id, NULL AS created_tx_index
       ,NULL AS top_level_time, NULL AS top_level_tx_hash, NULL AS top_level_block_number, NULL AS top_level_tx_from, NULL AS top_level_tx_to, NULL AS top_level_tx_method_id
-      ,bytearray_length(oc.code) AS code_bytelength, NULL AS token_standard, oc.code, NULL AS code_deploy_rank_by_chain
+      ,bytearray_length(oc.code) AS code_bytelength, NULL AS token_standard, oc.code, NULL AS code_deploy_rank_by_chain, NULL AS is_self_destruct
       , p.contract_project, p.contract_name
       ,2 as map_rank
 
@@ -157,7 +159,6 @@ FROM (
   , initcap(contract_project) AS contract_project
   , token_symbol
   , contract_name, creator_address, deployer_address, created_time
-  , is_self_destruct
   , created_tx_hash, created_block_number, created_tx_from
   , created_tx_to, created_tx_method_id, created_tx_index
   , top_level_time, top_level_tx_hash, top_level_block_number
@@ -165,6 +166,7 @@ FROM (
   , code_bytelength , token_standard 
   , code
   , code_deploy_rank_by_chain
+  , is_self_destruct
   , is_eoa_deployed
   , is_smart_wallet_deployed
   , is_deterministic_deployer_deployed
@@ -192,7 +194,7 @@ FROM (
       ,c.creator_address
       ,c.deployer_address
       ,c.created_time
-      ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
+      ,c.is_self_destruct
       ,c.created_tx_hash
       ,COALESCE(c.created_block_number,0) AS created_block_number
       ,c.created_tx_from
@@ -221,12 +223,6 @@ FROM (
       on c.contract_address = co.contract_address
     left join {{ ref('contracts_deterministic_contract_creators') }} as cdc --map deterministic deployers
       on c.contract_address = cdc.creator_address
-    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
-      on c.contract_address = sd.contract_address
-      AND c.blockchain = sd.blockchain
-      AND c.created_tx_hash = sd.created_tx_hash
-      AND c.created_block_number = sd.created_block_number
-      AND c.created_time = sd.created_time
   ) f
 ) u
 

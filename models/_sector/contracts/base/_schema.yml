@@ -220,6 +220,7 @@ models:
       - *code_bytelength
       - *code_deploy_rank_by_chain
       - *code
+      - *is_self_destruct
       - &creator_address_lineage
         name: creator_address_lineage
         description: "array of the lineage of creator addresses until the top-level creator"
