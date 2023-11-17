@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: ethereumnameservice_ethereum
-    freshness:
     tables:
       - name: BaseRegistrarImplementation_evt_NameRegistered
         freshness:
@@ -15,6 +14,7 @@ sources:
       - name: ETHRegistrarController_1_evt_NameRegistered
       - name: ETHRegistrarController_2_evt_NameRegistered
       - name: ETHRegistrarController_3_evt_NameRegistered
+      - name: ETHRegistrarController_4_evt_NameRegistered
         freshness:
           warn_after: { count: 12, period: hour }
         loaded_at_field: evt_block_time
@@ -26,6 +26,7 @@ sources:
       - name: ETHRegistrarController_1_evt_NameRenewed
       - name: ETHRegistrarController_2_evt_NameRenewed
       - name: ETHRegistrarController_3_evt_NameRenewed
+      - name: ETHRegistrarController_4_evt_NameRenewed
         freshness:
           warn_after: { count: 12, period: hour }
         loaded_at_field: evt_block_time
@@ -34,6 +35,7 @@ sources:
       - name: ReverseRegistrar_v2_call_setName
       - name: PublicResolver_call_setName
       - name: ReverseRegistrar_v1_call_setName
+      - name: ReverseRegistrar_v3_call_setName
       - name: BaseRegistrarImplementation_call_reclaim
       - name: PublicResolver_evt_AddrChanged
         freshness:
@@ -45,12 +47,6 @@ sources:
         loaded_at_field: evt_block_time
       - name: PublicResolver_evt_AddressChanged
       - name: OldBaseRegistrar_evt_NameRegistered
-
-  - name: ethereumnameservice_ethereum
-    description: "Ethereum decoded tables related to Gitcoin contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
-    tables:
       - name: ENSGovernor_evt_VoteCast
         loaded_at_field: evt_block_time
         columns:

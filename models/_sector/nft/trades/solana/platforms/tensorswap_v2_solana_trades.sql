@@ -21,7 +21,10 @@ cnft_base as (
         -- mint https://solscan.io/tx/61LqYDXKBYxsZEJoRBCaP8mvbeKGfbezZ54YUj1JZxPN7hGgr1t5rqseTQzxvkTu72YxkeFWq4bcFpcJBTCBNcfs
         -- trade https://solscan.io/tx/22jXeGFXSvSnnGtVMnt17Ve7Z462A8yUxMeni3617jv3BoTLYRY2LVb3fzMHT9wwrrMYdDYwbhrgM3dfcY48GF65
         SELECT
-            cast(maxAmount as double) as price
+            case when call_block_time >= timestamp '2023-10-26 16:40' --there is something that changed where decimals are now much larger. Founder did not know why, this is a temporary fix.
+                then cast(maxAmount as double)/1e9
+                else cast(maxAmount as double)
+                end as price
             , cast(maxAmount as double)*0.014 as taker_fee --taker fee is 1.4% right now.
             , 0 as maker_fee --maker fee goes back to users
             , cast(maxAmount as double)*sellerFeeBasisPoints/10000 as royalty_fee
