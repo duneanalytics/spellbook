@@ -18,13 +18,12 @@ models:
       - check_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
-            blockchain: ethereum
-            project: uniswap
             version: 1
           match_columns:
             - tx_hash
             - evt_index
           check_columns:
+            - block_number
             - token_bought_address
             - token_sold_address
             - token_bought_amount_raw
@@ -47,13 +46,12 @@ models:
       - check_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
-            blockchain: ethereum
-            project: uniswap
             version: 2
           match_columns:
             - tx_hash
             - evt_index
           check_columns:
+            - block_number
             - token_bought_address
             - token_sold_address
             - token_bought_amount_raw
@@ -76,17 +74,16 @@ models:
       - check_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
-            blockchain: ethereum
-            project: uniswap
             version: 3
           match_columns:
             - tx_hash
             - evt_index
           check_columns:
+            - block_number
             - token_bought_address
             - token_sold_address
             - token_bought_amount_raw
-            - token_sold_amount_raw  
+            - token_sold_amount_raw
   
   - name: defiswap_ethereum_base_trades
     meta:
@@ -108,6 +105,7 @@ models:
             - tx_hash
             - evt_index
           check_columns:
+            - block_number
             - token_bought_address
             - token_sold_address
             - token_bought_amount_raw
