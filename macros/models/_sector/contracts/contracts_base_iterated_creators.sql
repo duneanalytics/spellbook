@@ -206,6 +206,7 @@ WITH deterministic_deployers AS (
 
         ,b.code_bytelength
         ,b.code_deploy_rank_by_chain
+        ,b.is_self_destruct
         ,b.code
         ,b.token_standard_erc20
         , CASE WHEN u.creator_address IS NOT NULL THEN 
@@ -254,6 +255,7 @@ SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
     ,u.contract_address
     ,created_time
     ,created_month
+    ,is_self_destruct
     ,'creator contracts' as source
     ,top_level_time
     ,created_tx_hash
@@ -288,5 +290,5 @@ SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
           ) ts 
   ON u.contract_address = ts.contract_address
 
-  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
 {% endmacro %}
