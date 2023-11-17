@@ -6,6 +6,8 @@
         alias = 'protocol_fee', 
         materialized = 'incremental',
         file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'pool_id'],
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
