@@ -362,7 +362,6 @@ models:
           combination_of_columns:
             - day
             - pool_id
-            - token_address
     columns:
       - name: day
       - name: pool_id
@@ -370,10 +369,10 @@ models:
       - name: pool_symbol
       - name: blockchain
       - name: token_address
-      - name: token_balance_raw
+      - name: token_amount_raw
         description: "Raw amount of revenues of the token in the pool"
-      - name: token_balance
-        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
       - name: protocol_fee_collected_usd
         description: "Fee collected in the pool in USD"
       - name: treasury_share

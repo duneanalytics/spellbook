@@ -90,7 +90,7 @@ WITH pool_labels AS (
             b.poolAddress AS token_address,
             sum(value) AS protocol_fee_amount_raw
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolRegistered') }} b
-        JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
+        INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
             AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F --ProtocolFeesCollector address, which is the same across all chains
@@ -155,7 +155,7 @@ WITH pool_labels AS (
         r.treasury_share,
         SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_revenue_usd
     FROM decorated_protocol_fee f
-    LEFT JOIN revenue_share r
+    INNER JOIN revenue_share r
         ON r.day = f.day
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
