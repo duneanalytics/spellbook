@@ -20,6 +20,7 @@
  ,ref('equalizer_fantom_pools')
  ,ref('wigoswap_fantom_pools')
  ,ref('spartacus_exchange_fantom_pools')
+ ,ref('mento_celo_pools')
 ] %}
 
 

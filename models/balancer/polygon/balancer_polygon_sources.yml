@@ -229,3 +229,35 @@ sources:
 
       - name: Vault_evt_FlashLoan
         loaded_at_field: evt_block_time
+
+      - name: ComposableStablePoolFactory_evt_PoolCreated
+        description: >
+          Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Composable Stable Pool Factory contract address.'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: pool
+            description: 'Ethereum address for the Composable Stable Pool created in the transaction.'
+
+      - name: Vault_evt_TokensRegistered
+        description: >
+          Decoded table of tokens registered by pool with the Balancer Vault contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: poolId
+            description: 'Unique encoded identifier that refers to each pool'
+          - *tokens
+          - name: assetManager
+            description: 'Address of the contract which managed the asset from the vault'
+
