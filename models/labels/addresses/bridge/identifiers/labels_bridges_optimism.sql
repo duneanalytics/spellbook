@@ -30,7 +30,7 @@ FROM (VALUES
     ('optimism', 0xa132dab612db5cb9fc9ac426a0cc215a3423f9c9, 'Velodrome Router', 'Router', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
     ('optimism', 0x9c12939390052919af3155f41bf4160fd3666a6f, 'Velodrome Router', 'Router', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
     ('optimism', 0xc30141b657f4216252dc59af2e7cdb9d8792e1b0, 'Socket Registry', 'Aggregator of Aggregators', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
-    ('optimism', 0x69dd38645f7457be13571a847ffd905f9acbaf6d 'Odos OdosRouter', 'Aggregator', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
+    ('optimism', 0x69dd38645f7457be13571a847ffd905f9acbaf6d, 'Odos OdosRouter', 'Aggregator', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
     ('optimism', 0xeaf1ac8e89ea0ae13e0f03634a4ff23502527024, 'WooFi WooRouter', 'Aggregator', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
     ('optimism', 0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae, 'LiFi LiFiDiamond_v2', 'Aggregator of Aggregators', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
     ('optimism', 0x777777773fdd8b28bb03377d10fcea75ad9768da, 'Via router ViaRouter', 'Aggregator of Aggregators', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
