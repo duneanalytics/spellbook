@@ -15,5 +15,5 @@
     , base_traces = source('optimism','traces')
     , erc20_transfer = source('erc20_optimism','evt_transfer')
     , base_transactions = source('optimism','transactions')
-    , eth_currency_contract = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000 -- ETH contract on OP Mainnet
+    , eth_currency_contract = 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
 )}}
