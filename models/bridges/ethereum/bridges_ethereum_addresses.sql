@@ -1,5 +1,6 @@
-{{ config(alias = 'bridges',
+{{ config(alias = 'addresses',
         tags=['static'],
+           schema = 'bridges_ethereum',
           post_hook='{{ expose_spells(\'["ethereum"]\',
           "sector",
           "addresses",

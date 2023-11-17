@@ -102,8 +102,8 @@ models:
       project: bridges
       contributors: rantum
     config:
-      tags: ['labels', 'fantom', 'bridges']
-    description: "Known bridges addresses on Fantom"
+      tags: ['labels', 'base', 'bridges']
+    description: "Known bridges addresses"
     columns:
       - *blockchain
       - *address
