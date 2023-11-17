@@ -8,7 +8,10 @@
 {% set base_models = [
     ref('uniswap_v3_celo_base_trades'),
     ref('mento_v1_celo_base_trades'),
-    ref('mento_v2_celo_base_trades')
+    ref('mento_v2_celo_base_trades'),
+    ref('curvefi_celo_base_trades'),
+    ref('sushiswap_celo_base_trades'),
+    ref('ubeswap_celo_base_trades')
 ] %}
 
 WITH base_union AS (
