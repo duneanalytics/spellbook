@@ -1,5 +1,5 @@
-{{config(alias = 'dex',
-        schema = 'addresses_polygon',
+{{config(alias = 'addresses',
+        schema = 'dex_polygon',
         tags=['static'])
         }}
 

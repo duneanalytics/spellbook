@@ -2,7 +2,7 @@ version: 2
 
 models:
   
-  - name: addresses_polygon_dex
+  - name: dex_polygon_addresses
     meta:
       blockchain: polygon
       sector: dex
