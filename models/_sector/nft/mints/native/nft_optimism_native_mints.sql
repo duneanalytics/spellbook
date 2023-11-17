@@ -139,6 +139,7 @@ left join {{ ref('tokens_optimism_nft_bridged_mapping') }} as bm
 left join {{ ref('transfers_optimism_eth') }} as tr
     on nft_mints.tx_hash = tr.tx_hash
     and nft_mints.block_number = tr.tx_block_number
+    and tr."from" = nft_mints.to
     and tr.value_decimal > 0
 left join {{ source('prices','usd') }} as pu_eth
     on pu_eth.blockchain='optimism'

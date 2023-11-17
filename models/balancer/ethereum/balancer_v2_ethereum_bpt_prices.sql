@@ -162,3 +162,4 @@ SELECT
     END AS median_price
 FROM price_formulation
 ORDER BY 2 DESC, 3
+
