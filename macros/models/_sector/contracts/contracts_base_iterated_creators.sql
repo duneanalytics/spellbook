@@ -131,6 +131,7 @@ FROM (
   FROM {{ this }} s
   LEFT JOIN new_contracts nc 
     ON nc.contract_address = s.contract_address
+    AND nc.blockchain = s.blockchain
   , deterministic_deployers dd, smart_account_methods sam
   WHERE 
       1=1
