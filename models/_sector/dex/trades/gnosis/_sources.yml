@@ -1,8 +1,7 @@
 version: 2
 
 sources:
-  - name: uniswap_v3_bnb
-  - name: sushi_bnb
+  - name: sushiswap_gnosis
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated

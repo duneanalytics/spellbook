@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'sushiswap_arbitrum',
+        schema = 'sushiswap_v1_fantom',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'arbitrum',
+        blockchain = 'fantom',
         project = 'sushiswap',
         version = '1',
-        Pair_evt_Swap = source('sushi_arbitrum', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('sushi_arbitrum', 'Factory_evt_PairCreated')
+        Pair_evt_Swap = source('sushi_fantom', 'Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('sushi_fantom', 'SushiV2Factory_evt_PairCreated')
     )
 }}

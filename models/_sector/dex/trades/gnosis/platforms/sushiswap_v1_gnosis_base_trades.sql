@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'sushiswap_avalanche_c',
+        schema = 'sushiswap_v1_gnosis',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'avalanche_c',
+        blockchain = 'gnosis',
         project = 'sushiswap',
         version = '1',
-        Pair_evt_Swap = source('sushiswap_v2_avalanche_c', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('sushiswap_v2_avalanche_c', 'SushiV2Factory_evt_PairCreated')
+        Pair_evt_Swap = source('sushiswap_gnosis', 'UniswapV2Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('sushiswap_gnosis', 'UniswapV2Factory_evt_PairCreated')
     )
 }}

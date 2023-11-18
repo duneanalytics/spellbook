@@ -16,7 +16,7 @@ models:
             - tx_hash
             - evt_index
 
-  - name: sushiswap_arbitrum_base_trades
+  - name: sushiswap_v1_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex

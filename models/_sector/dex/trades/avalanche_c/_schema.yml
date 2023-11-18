@@ -27,7 +27,7 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
-  - name: sushiswap_avalanche_c_base_trades
+  - name: sushiswap_v1_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
       sector: dex

@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'sushiswap_bnb',
+        schema = 'sushiswap_v1_avalanche_c',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'bnb',
+        blockchain = 'avalanche_c',
         project = 'sushiswap',
         version = '1',
-        Pair_evt_Swap = source('sushi_bnb', 'UniswapV2Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('sushi_bnb', 'UniswapV2Factory_evt_PairCreated')
+        Pair_evt_Swap = source('sushiswap_v2_avalanche_c', 'Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('sushiswap_v2_avalanche_c', 'SushiV2Factory_evt_PairCreated')
     )
 }}

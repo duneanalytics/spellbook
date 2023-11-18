@@ -1,13 +1,12 @@
 {{ config(
-    schema = 'dex_avalanche_c'
+    schema = 'dex_gnosis'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_avalanche_c_base_trades'),
-    ref('sushiswap_v1_avalanche_c_base_trades')
+    ref('sushiswap_v1_gnosis_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -43,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'avalanche_c'
+        , blockchain = 'gnosis'
         , columns = ['from', 'to', 'index']
     )
 }}

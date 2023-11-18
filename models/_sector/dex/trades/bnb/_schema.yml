@@ -16,7 +16,7 @@ models:
             - tx_hash
             - evt_index
 
-  - name: sushiswap_bnb_base_trades
+  - name: sushiswap_v1_bnb_base_trades
     meta:
       blockchain: bnb
       sector: dex

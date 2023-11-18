@@ -3,3 +3,6 @@ version: 2
 sources:
   - name: uniswap_v3_arbitrum
   - name: sushi_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
