@@ -94,6 +94,25 @@ WITH deterministic_deployers AS (
           {% endif %}
     )
 
+
+    , inc_contracts AS (
+      SELECT contract_address
+      FROM (
+        SELECT s.contract_address
+        FROM {{this}} s
+        JOIN new_contracts nc ON s.contract_address = nc.creator_address
+        WHERE s.is_self_destruct = false --help the joins by ignoring self-destructed contracts
+        UNION
+        -- Select addresses from creator_address_lineage where contract_address matches creator_address in new_contracts
+        SELECT lineage_address
+        FROM {{this}} s
+        CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
+        JOIN new_contracts nc ON s.contract_address = nc.creator_address
+        WHERE s.is_self_destruct = false --help the joins by ignoring self-destructed contracts
+      ) a
+      GROUP BY 1
+    )
+
     SELECT * FROM new_contracts
     {% if is_incremental() %}
 
@@ -134,16 +153,11 @@ WITH deterministic_deployers AS (
         END AS to_iterate_creators
       , 0 AS is_new_contract
 
-    FROM {{ this }} s
-    LEFT JOIN new_contracts nc 
-      ON nc.contract_address = s.contract_address
-      AND nc.blockchain = s.blockchain
-    , deterministic_deployers dd, smart_account_methods sam
+    FROM {{ this }} s, deterministic_deployers dd, smart_account_methods sam
     WHERE 
         1=1
         AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
-        AND nc.contract_address IS NULL -- don't pick up contracts that were reinitialized
-        AND s.is_self_destruct = false --help the joins by ignoring self-destructed contracts - we already have these in the table
+        AND s.contract_address IN (SELECT contract_address FROM inc_contracts)
 
     {% endif %}
 
