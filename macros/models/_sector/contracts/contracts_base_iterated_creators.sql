@@ -50,8 +50,8 @@ WITH deterministic_deployers AS (
 
     ,CASE WHEN sd.contract_address IS NOT NULL THEN true ELSE false END as is_self_destruct
     -- get lineage (or starting lineage)
-    , COALESCE(creator_address_lineage_intermediate, ARRAY[creator_address_intermediate]) AS creator_address_lineage
-    , COALESCE(tx_method_id_lineage_intermediate, ARRAY[creator_address_intermediate]) AS tx_method_id_lineage
+    , creator_address_lineage_intermediate AS creator_address_lineage
+    , tx_method_id_lineage_intermediate AS tx_method_id_lineage
     -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
     
   FROM (
@@ -80,8 +80,8 @@ WITH deterministic_deployers AS (
         ,code_bytelength
         , NULL AS token_standard_erc20
         , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
-        , ARRAY[cast(NULL as varbinary)] AS creator_address_lineage_intermediate
-        , ARRAY[cast(NULL as varbinary)] AS tx_method_id_lineage_intermediate
+        , ARRAY[creator_address_intermediate] AS creator_address_lineage_intermediate
+        , ARRAY[created_tx_method_id] AS tx_method_id_lineage_intermediate
         , 1 AS to_iterate_creators
         , 1 AS is_new_contract
 
@@ -100,10 +100,8 @@ WITH deterministic_deployers AS (
     , inc_contracts AS (
       SELECT contract_address
       FROM (
-        ---- Select addresses directly from where they match new_contracts
-        SELECT s.contract_address
-        FROM {{this}} s
-        JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
+        ---- Select creators in this iteration
+        SELECT nc.creator_address_intermediate as contract_address FROM new_contracts nc
 
         UNION --this was faster than union all'ing distincts
         ---- Select addresses from creator_address_lineage where contract_address matches creator_address in new_contracts
