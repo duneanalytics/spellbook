@@ -80,7 +80,7 @@ WITH deterministic_deployers AS (
         ,code_bytelength
         , NULL AS token_standard_erc20
         , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
-        , ARRAY[creator_address_intermediate] AS creator_address_lineage_intermediate
+        , ARRAY[trace_creator_address] AS creator_address_lineage_intermediate
         , ARRAY[created_tx_method_id] AS tx_method_id_lineage_intermediate
         , 1 AS to_iterate_creators
         , 1 AS is_new_contract
