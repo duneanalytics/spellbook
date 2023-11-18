@@ -94,7 +94,7 @@ WITH deterministic_deployers AS (
           {% endif %}
     )
 
-
+    {% if is_incremental() %}
     , inc_contracts AS (
       SELECT contract_address
       FROM (
@@ -112,7 +112,8 @@ WITH deterministic_deployers AS (
       ) a
       GROUP BY 1
     )
-
+    {% endif %}
+    
     SELECT * FROM new_contracts
     {% if is_incremental() %}
 
