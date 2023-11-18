@@ -26,7 +26,6 @@ models:
             - evt_index
           check_columns:
             - block_number
-            - token_address
             - borrower
             - amount
     columns:
