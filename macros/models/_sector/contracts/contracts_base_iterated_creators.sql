@@ -95,6 +95,7 @@ WITH deterministic_deployers AS (
     )
 
     {% if is_incremental() %}
+    -- pre-generate the list of contracts we need to pull to help speed up the process
     , inc_contracts AS (
       SELECT contract_address
       FROM (
