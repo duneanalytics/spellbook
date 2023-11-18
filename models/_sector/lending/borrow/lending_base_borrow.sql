@@ -17,7 +17,9 @@
     ref('lending_celo_base_borrow'),
     ref('lending_ethereum_base_borrow'),
     ref('lending_optimism_base_borrow'),
-    ref('lending_polygon_base_borrow')
+    ref('lending_polygon_base_borrow'),
+    ref('lending_avalanche_c_base_borrow'),
+    ref('lending_fantom_base_borrow')
   ]
 %}
 

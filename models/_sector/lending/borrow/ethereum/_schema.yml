@@ -17,6 +17,19 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_ethereum_base_borrow_seed')
+          filter:
+            version: 1
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - borrower
+            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -95,6 +108,19 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_ethereum_base_borrow_seed')
+          filter:
+            version: 2
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - borrower
+            - amount
     columns:
       - *blockchain
       - *project
@@ -127,6 +153,19 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_ethereum_base_borrow_seed')
+          filter:
+            version: 3
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - borrower
+            - amount
     columns:
       - *blockchain
       - *project

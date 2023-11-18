@@ -3,12 +3,12 @@ version: 2
 models:
   - name: lending_borrow
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom
       sector: lending
       project: aave, moola
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'moola', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum']
+      tags: ['lending', 'borrow', 'aave', 'moola', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom']
     description: "All lending transactions involving borrow transactions"
     tests:
       - dbt_utils.unique_combination_of_columns:
