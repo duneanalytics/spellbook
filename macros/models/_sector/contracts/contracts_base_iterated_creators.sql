@@ -100,20 +100,20 @@ WITH deterministic_deployers AS (
       FROM (
         SELECT s.contract_address
         FROM {{this}} s
-        JOIN new_contracts nc ON s.contract_address = nc.creator_address
+        JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
         WHERE s.is_self_destruct = false --help the joins by ignoring self-destructed contracts
         UNION
         -- Select addresses from creator_address_lineage where contract_address matches creator_address in new_contracts
         SELECT lineage_address
         FROM {{this}} s
         CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
-        JOIN new_contracts nc ON s.contract_address = nc.creator_address
+        JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
         WHERE s.is_self_destruct = false --help the joins by ignoring self-destructed contracts
       ) a
       GROUP BY 1
     )
     {% endif %}
-    
+
     SELECT * FROM new_contracts
     {% if is_incremental() %}
 
