@@ -2,3 +2,4 @@ version: 2
 
 sources:
   - name: uniswap_v3_bnb
+  - name: sushi_bnb

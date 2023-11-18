@@ -15,5 +15,20 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            
+
+  - name: sushiswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: sushiswap
+      contributors: chrispearcx, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v1' ]
+    description: "sushiswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: dex_bnb_base_trades
