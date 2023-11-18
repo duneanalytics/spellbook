@@ -7,7 +7,7 @@
     ,schema = 'governance_optimism_proposals'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
-    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_block')]
+    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_date')]
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
@@ -53,7 +53,7 @@ WITH all_proposals AS (
             {{ model }}
         {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('start_block') }}
+            {{ incremental_predicate('start_date') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
