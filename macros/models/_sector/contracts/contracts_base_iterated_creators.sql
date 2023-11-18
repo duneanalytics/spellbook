@@ -105,7 +105,7 @@ WITH deterministic_deployers AS (
         FROM {{this}} s
         JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
 
-        UNION
+        UNION ALL
         -- Select addresses from creator_address_lineage where contract_address matches creator_address in new_contracts
         SELECT lineage_address
         FROM {{this}} s
