@@ -157,7 +157,7 @@ WITH deterministic_deployers AS (
     WHERE 
         1=1
         AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
-        AND s.contract_address IN (SELECT contract_address FROM inc_contracts)
+        AND s.contract_address IN (SELECT contract_address FROM inc_contracts) --is this a contract we need to iterate through
 
     {% endif %}
 
