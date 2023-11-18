@@ -13,4 +13,4 @@ seeds:
         transaction_type: varchar
         token_address: varbinary
         borrower: varbinary
-        amount: uint256
+        amount: double
