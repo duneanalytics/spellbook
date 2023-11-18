@@ -341,7 +341,8 @@ FROM (VALUES
     , ('ethereum', 0xc61b9bb3a7a0767e3179713f3a5c7a9aedce193c, 'Bitfinex', 'Bitfinex MultiSig 3', 'hildobby', date '2022-08-28')
     , ('ethereum', 0xcafb10ee663f465f9d10588ac44ed20ed608c11e, 'Bitfinex', 'Bitfinex Old Address 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x7180eb39a6264938fdb3effd7341c4727c382153, 'Bitfinex', 'Bitfinex Old Address 2', 'hildobby', date '2022-08-28')
-    , ('ethereum', 0x5754284f345afc66a98fbb0a0afe71e0f007b949, 'Bitfinex', 'Tether Treasury', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0x5754284f345afc66a98fbb0a0afe71e0f007b949, 'Bitfinex', 'Bitfinex Tether Treasury', 'hildobby', date '2022-08-28')
+    , ('ethereum', 0xf4b51b14b9ee30dc37ec970b50a486f37686e2a8, 'Bitfinex', 'Bitfinex Cold Storage', 'hildobby', date '2023-11-17')
     -- Bitget, source: https://raw.githubusercontent.com/js-kingdata/indicators_factory/fefe53bca88ecf331a71fc59e34aab319f3415c5/crawlers/address_tags/cex/bitget_address.txt
     , ('ethereum', 0x0639556f03714a74a5feeaf5736a4a64ff70d206, 'Bitget', 'Bitget 1', 'hildobby', date '2023-04-06')
     , ('ethereum', 0x97b9d2102a9a65a26e1ee82d59e42d1b73b68689, 'Bitget', 'Bitget 2', 'hildobby', date '2023-04-06')
@@ -356,7 +357,6 @@ FROM (VALUES
     , ('ethereum', 0xe6a421f24d330967a3af2f4cdb5c34067e7e4d75, 'Bitget', 'Bitget 11', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xe80623a9d41f2f05780d9cd9cea0f797fd53062a, 'Bitget', 'Bitget 12', 'hildobby', date '2023-04-06')
     , ('ethereum', 0xf646d9b7d20babe204a89235774248ba18086dae, 'Bitget', 'Bitget 13', 'hildobby', date '2023-04-06')
-    , ('ethereum', 0xf4b51b14b9ee30dc37ec970b50a486f37686e2a8, 'Bitget', 'Bitget: Cold Storage', 'hildobby', date '2023-09-09')
     -- KuCoin, Source: https://etherscan.io/accounts/label/kucoin
     , ('ethereum', 0x2b5634c42055806a59e9107ed44d43c426e58258, 'KuCoin', 'KuCoin 1', 'hildobby', date '2022-08-28')
     , ('ethereum', 0x689c56aef474df92d44a1b70850f808488f9769c, 'KuCoin', 'KuCoin 2', 'hildobby', date '2022-08-28')
