@@ -14,6 +14,7 @@
         'arbitrum',
         'avalanche_c',
         'base',
+        'ethereum',
         'fantom',
         'gnosis',
         'optimism',
