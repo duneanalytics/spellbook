@@ -8,6 +8,7 @@ SELECT address, entity, entity_unique_name
 FROM (VALUES
     (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270, 'Kiln', 'Kiln 1')
     , (0x9b8c989ff27e948f55b53bb19b3cc1947852e394, 'Kiln', 'Kiln 2')
+    , (0xC63d9F0040d35F328274312fc8771a986fc4bA86, 'Kiln', 'Kiln 3')
     , (0xf2be95116845252a28bd43661651917dc183dab1, 'Figment', 'Figment 1')
     , (0x37ab162ab59e106d6072eb7a7bd4c4c2973455a7, 'Figment', 'Figment 2')
     , (0xb4e2e925d75793c33f5f94cd652f6c464665c76b, 'Figment', 'Figment 3')
