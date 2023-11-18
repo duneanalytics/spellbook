@@ -26,5 +26,20 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-           
+
+  - name: sushiswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: sushiswap
+      contributors: wuligy, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'sushiswap', 'v2' ]
+    description: "sushiswap base v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: dex_base_base_trades

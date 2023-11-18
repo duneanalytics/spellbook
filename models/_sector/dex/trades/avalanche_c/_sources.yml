@@ -2,3 +2,4 @@ version: 2
 
 sources:
   - name: uniswap_v3_avalanche_c
+  - name: sushiswap_v2_avalanche_c

@@ -2,3 +2,5 @@ version: 2
 
 sources:
   - name: uniswap_v3_base
+  - name: sushiswap_base
+  - name: sushiswap_v3_base
