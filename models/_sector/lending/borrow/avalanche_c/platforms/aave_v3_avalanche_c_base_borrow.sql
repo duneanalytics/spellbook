@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_v3_polygon',
+    schema = 'aave_v3_avalanche_c',
     alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,7 +12,7 @@
 
 {{
   lending_aave_v3_compatible_borrow(
-    blockchain = 'polygon',
+    blockchain = 'avalanche_c',
     project = 'aave',
     version = '3'
   )

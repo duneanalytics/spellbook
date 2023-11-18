@@ -17,6 +17,18 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_arbitrum_base_borrow_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_address
+            - borrower
+            - amount
     columns:
       - &blockchain
         name: blockchain

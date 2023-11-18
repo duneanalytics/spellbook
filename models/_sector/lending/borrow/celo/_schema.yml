@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: aave_v3_moola_base_borrow
+  - name: moola_celo_base_borrow
     meta:
       blockchain: moola
       sector: lending
