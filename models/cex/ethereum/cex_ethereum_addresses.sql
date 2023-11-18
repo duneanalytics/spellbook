@@ -141,7 +141,6 @@ FROM (VALUES
     , ('ethereum', 0xceB69F6342eCE283b2F5c9088Ff249B5d0Ae66ea, 'Coinbase', 'Coinbase Prime 2', 'hildobby', date '2023-11-17')
     , ('ethereum', 0x1E7016f7C23859d097668C27B72C170eD7129A10, 'Coinbase', 'Coinbase Prime 3', 'hildobby', date '2023-11-17')
     , ('ethereum', 0xA86309988947559b6E72Ef716C5058F479386C0F, 'Coinbase', 'Coinbase Prime Deposit Funder', 'hildobby', date '2023-11-17')
-    , ('ethereum', , 'Coinbase', 'Coinbase Prime 1', 'hildobby', date '2023-11-17')
     , ('ethereum', 0xbe3c68821d585cf1552214897a1c091014b1eb0a, 'Coinbase', 'Coinbase Account Blacklister', 'hildobby', date '2023-08-31')
     -- OKX, Source: https://etherscan.io/accounts/label/okx
     , ('ethereum', 0x6cc5f688a315f3dc28a7781717a9a798a59fda7b, 'OKX', 'OKX', 'hildobby', date '2022-08-28')
@@ -486,8 +485,6 @@ FROM (VALUES
     , ('ethereum', 0xc94ebb328ac25b95db0e0aa968371885fa516215, 'Roobet', 'Roobet 1', 'hildobby', date '2023-11-15')
     -- Bitsten
     , ('ethereum', 0xbDeF6e20692c302044B98284090922F683F3b523, 'Bitsten', 'Bitsten 1', 'hildobby', date '2023-11-17')
-    , ('ethereum', , 'Bitsten', 'Bitsten 1', 'hildobby', date '2023-11-17')
-    , ('ethereum', , 'Bitsten', 'Bitsten 1', 'hildobby', date '2023-11-17')
     , ('ethereum', 0xfe0cb30AFCb0EB1c27Ae33D11Be7ef749Ed25072, 'Bitsten', 'Bitsten Deployer', 'hildobby', date '2023-11-17')
     -- BitPay
     , ('ethereum', 0xF2a14015EaA3F9cC987f2c3b62FC93Eee41aA5d0, 'BitPay', 'BitPay 1', 'hildobby', date '2023-11-17')
