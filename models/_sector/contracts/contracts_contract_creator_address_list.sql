@@ -701,8 +701,8 @@ WITH curated_list AS (
       ,(0x4db5ed285ae33cfd0d6a6ab9ec775f7350f55e6d, 'Slugs')
       ,(0xE824ff5D7A5De844ea11F5ac5EbE2B6F02b7c511, 'MCT')
       ,(0x18dc1fccea2f4f6dd22ddbf0bed638bc358db625, 'Uniswap')
-      ,(0x23b072aa98f0a20b88b6571d08ff365a9ff7a5aa, 'Circle')
-      ,(0x1f5d295778796a8b9f29600a585ab73d452acb1c, 'Sound.xyz')
+      ,(0x23b072aa98f0a20b88b6571d08ff365a9ff7a5aa, 'Circle') --CCTP
+      ,(0x19bc0d149b8a8d437932c0ada81f7d8eb823e17e, 'Circle') --CCTP
       ,(0x299707e127cc77de01b9fd968bc0ff475f3c6342, 'Farcaster')
       ,(0x226e71e2165249494532c0bde6303e7c025e30cd, 'PoolTogether')
       ,(0x90dd83e62396d7385b1d70166aafb8a9e528e813, 'Paraswap')
@@ -710,6 +710,18 @@ WITH curated_list AS (
       ,(0xd6820e85b60e11c7d2c1279c583edfb51e90717d, 'Kwenta')
       ,(0x6Ed7D526b020780f694f3c10Dfb25E1b134D3215, 'Delegate')
       ,(0xA256661Ca438e102Ec27ac49FA107308D7F992bF, 'Via Protocol')
+      ,(0xFD027ac96Ed5fBdd4F0462fEde2B82Df4748173E, 'Eco') --Beam Eco
+      ,(0x48969a38a1744ba88c521a01533f7c0910fee549, 'Namebase')
+      ,(0x044764C4e03bd080f7400E255654002e2D751d45, 'Woo Network')
+      ,(0xF35dC3505B2b150369BB267ca48a8eAC36B9217c, 'Interport Finance')
+      ,(0x9747Fa1bfaB2690562406D150F173E3c4a2d5Aa6, 'MOBOX')
+      ,(0x38Bb8d7b04c3b7Dc249b0b1c9A4e3aCb382900a1, 'Kyberswap')
+      ,(0xE6B328e141EF304739892A864CebFe148a04353e, 'Curve')
+      ,(0xe91b49A652671AEF1B9416A2DA6994DBDde23054, 'Sushi')
+      ,(0x75821Aa80D67C344a1976D77C2D13C6D18bce20D, 'Rubic')
+      ,(0x71E7D05bE74fF748c45402c06A941c822d756dc5, 'Gamma')
+      ,(0x089775364ea24957da94348cf740375826ed3330, 'Balancer')
+      ,(0x3e3290a1cf0a845bde14e842e9f2e5687f434c8b, 'PWN DAO')
   ) as temp_table (creator_address, contract_project)
 )
 
