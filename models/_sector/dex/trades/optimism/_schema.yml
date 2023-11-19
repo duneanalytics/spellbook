@@ -44,7 +44,8 @@ models:
       - check_seed:
           seed_file: ref('sushiswap_optimism_base_trades_seed')
           filter:
-            version: 1
+            version: trident-cpp
+            version: trident-sp
           match_columns:
             - tx_hash
             - evt_index
