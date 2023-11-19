@@ -71,6 +71,7 @@
         },
     }
 %}
+-- direction_bit: the number of the bit on the left in 32 bytes with pool address that indicates the direction of exchange
 
 
 
