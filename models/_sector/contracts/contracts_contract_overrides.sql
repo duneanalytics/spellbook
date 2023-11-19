@@ -40,6 +40,7 @@ from
     ,(0x3cc6CddA760b79bAfa08dF41ECFA224f810dCeB6, 'OpenSea', 'OperatorFilterRegistry')
     ,(0xca11bde05977b3631167028862be2a173976ca11, 'Multicall3', 'Multicall3')
     ,(0xfc2d34a2a545dbe210ad0d8cc0e0e943aacff621, 'first.lol', 'first.lol') --Zora
+    ,(0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7, 'Gnosis Safe', 'Safe Singleton Factory')
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
     ,(0xf332761c673b59B21fF6dfa8adA44d78c12dEF09, 'OKX', 'OKX DEX')
