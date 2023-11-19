@@ -8,6 +8,27 @@
 %}
 WITH dexs AS
 (
+{% if blockchain == 'optimism' %}
+    SELECT
+        t.evt_block_number AS block_number,
+        t.evt_block_time AS block_time,
+        t.recipient AS taker,
+        CAST(NULL AS VARBINARY) AS maker,
+        t.amountOut AS token_bought_amount_raw,
+        t.amountIn AS token_sold_amount_raw,
+        null AS amount_usd,
+        t.tokenOut AS token_bought_address,
+        t.tokenIn AS token_sold_address,
+        t.contract_address AS project_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        t.evt_index
+    FROM {{ Pair_evt_Swap }} t
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('t.evt_block_time') }}
+    {% endif %}
+
+{% else %}
+
     SELECT
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
@@ -29,6 +50,8 @@ WITH dexs AS
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
+
+{% endif %}
 )
 
 SELECT
