@@ -39,7 +39,7 @@ select
 from (
     select *, {{ method_data.get("kit", "null") }} as kit
     from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-    {% if is_incremental() %} 
+    {% if is_incremental() %}
         where {{ incremental_predicate('call_block_time') }}
     {% endif %}
 )
