@@ -12,6 +12,7 @@
 -- (project, project_version, model)
 {% set base_models = [
      ('aurem',    'v1',   ref('aurem_polygon_base_trades'))
+    ,('dew',    'v1',   ref('dew_polygon_base_trades'))
 ] %}
 
 WITH cte_prices_patch as (
