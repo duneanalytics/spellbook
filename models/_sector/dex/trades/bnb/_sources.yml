@@ -6,3 +6,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: sushi_v2_bnb
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated

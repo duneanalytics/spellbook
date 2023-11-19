@@ -6,3 +6,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: SushiV2Factory_evt_PairCreated
+  - name: sushi_v2_avalanche_c
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
