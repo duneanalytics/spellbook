@@ -43,5 +43,4 @@ sources:
   - name: gashero_polygon
     tables:
       - name: MOOAR_evt_OrderFulfilled
-      - name: MOOAR_call_matchOrders
-      - name: MOOAR_call_matchAdvancedOrders
+      - name: MOOAR_evt_OrdersMatched
