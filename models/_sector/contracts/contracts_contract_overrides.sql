@@ -44,5 +44,7 @@ from
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
     ,(0xf332761c673b59B21fF6dfa8adA44d78c12dEF09, 'OKX', 'OKX DEX')
+    --WETH
+    ,(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2, 'WETH', 'WETH')
     
     ) as temp_table(contract_address, contract_project, contract_name)
