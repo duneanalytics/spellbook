@@ -21,5 +21,5 @@ FROM (VALUES
       ('optimism', 0xa81d244a1814468c734e5b4101f7b9c0c577a8fc, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
       ('optimism', 0x46ae9bab8cea96610807a275ebd36f8e916b5c61, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
       ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism Cross Domain Messenger', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
-      ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism Aliased L1 Cross Domain Messenger', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier')
+      ('optimism', 0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Optimism Aliased L1 Cross Domain Messenger', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier')
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)
