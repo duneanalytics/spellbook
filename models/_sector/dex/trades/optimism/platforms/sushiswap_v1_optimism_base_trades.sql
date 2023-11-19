@@ -10,8 +10,9 @@
     )
 }}
 
-with dexs as (
-    -- Constant Product Pool
+with
+
+ConstantProductPool as (
     {{
         uniswap_compatible_v2_trades(
             blockchain = 'optimism',
@@ -20,10 +21,9 @@ with dexs as (
             Pair_evt_Swap = source('sushi_optimism', 'ConstantProductPool_evt_Swap')
         )
     }}
+),
 
-    union all
-
-    -- Stable Pool
+StablePool as (
     {{
         uniswap_compatible_v2_trades(
             blockchain = 'optimism',
@@ -34,4 +34,6 @@ with dexs as (
     }}
 )
 
-select * from dexs
+select * from ConstantProductPool
+union all
+select * from StablePool
