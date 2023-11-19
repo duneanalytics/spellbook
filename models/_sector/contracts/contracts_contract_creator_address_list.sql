@@ -709,6 +709,7 @@ WITH curated_list AS (
       ,(0x8b395bb4d7f458df7b83246bc81c74af655b87f1, 'Perpetual Protocol')
       ,(0xd6820e85b60e11c7d2c1279c583edfb51e90717d, 'Kwenta')
       ,(0x6Ed7D526b020780f694f3c10Dfb25E1b134D3215, 'Delegate')
+      ,(0xA256661Ca438e102Ec27ac49FA107308D7F992bF, 'Via Protocol')
   ) as temp_table (creator_address, contract_project)
 )
 
