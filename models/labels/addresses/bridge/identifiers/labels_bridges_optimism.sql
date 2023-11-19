@@ -18,6 +18,8 @@ FROM (VALUES
       ('optimism', 0xaf41a65f786339e7911f4acdad6bd49426f2dc6b, 'Synapse', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
       ('optimism', 0x83f6244bd87662118d96d9a6d44f09dfff14b30e, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
       ('optimism', 0x7191061d5d4c60f598214cc6913502184baddf18, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
-      ('optimism', 0xa81d244a1814468c734e5b4101f7b9c0c577a8fc, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier')
-
+      ('optimism', 0xa81d244a1814468c734e5b4101f7b9c0c577a8fc, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
+      ('optimism', 0x46ae9bab8cea96610807a275ebd36f8e916b5c61, 'Hop', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
+      ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism Cross Domain Messenger', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier'),
+      ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism Aliased L1 Cross Domain Messenger', 'bridge', 'rantum', 'static', DATE '2023-11-17', now(), 'bridges_polygon', 'identifier')
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

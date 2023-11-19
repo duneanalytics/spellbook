@@ -5,7 +5,9 @@
 
 SELECT blockchain, address as address, bridge_name, description
 FROM (VALUES 
-('optimism', 0x4200000000000000000000000000000000000010, 'Optimism', 'Bridge'),
+      ('optimism', 0x4200000000000000000000000000000000000010, 'Optimism', 'Bridge'),
+      ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism', 'Cross Domain Messenger'),
+      ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism', 'Aliased L1 Cross Domain Messenger'),
       ('optimism', 0x3f87ff1de58128ef8fcb4c807efd776e1ac72e51, 'Optimism', 'Bridge 2'),
       ('optimism', 0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Gateway'),
       ('optimism', 0x9d39fc627a6d9d9f8c831c16995b209548cc3401, 'Celer Network', 'Bridge'),
