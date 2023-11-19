@@ -698,6 +698,7 @@ WITH curated_list AS (
       ,(0x8Efd976d78f2126BaAf0622d2c1C4A06AfC2eD3d, 'Dackieswap')
       ,(0xcb25434b91fdF41bAD435ab116DBfE3F455657aa, 'Cambria Duels')
       ,(0x5F3146D3D700245E998660dBCAe97DcD7a554c05, 'Curta')
+      ,(0x4db5ed285ae33cfd0d6a6ab9ec775f7350f55e6d, 'Slugs')
   ) as temp_table (creator_address, contract_project)
 )
 
