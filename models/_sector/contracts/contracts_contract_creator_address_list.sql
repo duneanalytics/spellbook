@@ -722,6 +722,7 @@ WITH curated_list AS (
       ,(0x71E7D05bE74fF748c45402c06A941c822d756dc5, 'Gamma')
       ,(0x089775364ea24957da94348cf740375826ed3330, 'Balancer')
       ,(0x3e3290a1cf0a845bde14e842e9f2e5687f434c8b, 'PWN DAO')
+      ,(0x27193862848D9009Ab6d01941Ceb9FC86B17ab27, 'Blackbird')
   ) as temp_table (creator_address, contract_project)
 )
 
@@ -739,7 +740,7 @@ WITH curated_list AS (
 
 -- Enforce consistent project name mapping to contracts_project_name_mappings.sql
 SELECT list.creator_address,
-  Coalesce(mapping.mapped_name, list.contract_project) AS contract_project
+  COALESCE(mapping.mapped_name, list.contract_project) AS contract_project
   FROM filtered_list list
   LEFT JOIN {{ ref('contracts_project_name_mappings') }} mapping
-  ON Lower(list.contract_project) = Lower(mapping.dune_name)
+  ON LOWER(list.contract_project) = LOWER(mapping.dune_name)
