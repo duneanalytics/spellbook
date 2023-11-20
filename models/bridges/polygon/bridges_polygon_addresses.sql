@@ -31,7 +31,6 @@ FROM (VALUES
     ('polygon', 0xa489b8981ae5652C9Dd6515848cB8Dbecae5E1B0, 'Optics', 'ETH Helper'),
     ('polygon', 0xec52a30e4bfe2d6b0ba1d0dbf78f265c0a119286, 'Rubic Exchange', ''),
     ('polygon', 0x8f5bbb2bb8c2ee94639e55d5f41de9b4839c1280, 'Synapse', 'Bridge Zap 1'),
-    ('polygon', 0xeC52A30E4bFe2D6B0ba1D0dbf78f265c0a119286, 'Wormhole', 'Polygon Core Bridge'),
     ('polygon', 0x1c6aE197fF4BF7BA96c66C5FD64Cb22450aF9cC8, 'Wormhole', 'Token Bridge'),
     ('polygon', 0x90BBd86a6Fe93D3bc3ed6335935447E75fAb7fCf, 'xPollinate', 'Transaction Manager'),
     ('polygon', 0x5a58505a96D1dbf8dF91cB21B54419FC36e93fdE, 'xPollinate', 'Transaction Manager 2'),
