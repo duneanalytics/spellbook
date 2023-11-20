@@ -127,7 +127,7 @@ WITH pool_labels AS (
         LEFT JOIN {{ ref('tokens_erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3
+        GROUP BY 1, 2, 3, 4
     ),
 
     revenue_share as(
@@ -151,7 +151,7 @@ WITH pool_labels AS (
         '{{blockchain}}' as blockchain,
         f.token_address,
         f.token_symbol,
-        UM(f.token_amount_raw) as token_amount_raw,
+        SUM(f.token_amount_raw) as token_amount_raw,
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
         r.treasury_share,
