@@ -1,6 +1,9 @@
 {{config(
         alias = 'bridges_bnb',
-        
+        post_hook='{{ expose_spells(\'["bnb"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["rantum"]\') }}')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
