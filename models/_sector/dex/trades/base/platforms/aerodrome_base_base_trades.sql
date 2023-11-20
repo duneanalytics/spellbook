@@ -16,6 +16,7 @@
         project = 'aerodrome',
         version = '1',
         Pair_evt_Swap = source('aerodrome_base', 'Pool_evt_Swap'),
-        Factory_evt_PairCreated = source('aerodrome_base', 'PoolFactory_evt_PoolCreated')
+        Factory_evt_PairCreated = source('aerodrome_base', 'PoolFactory_evt_PoolCreated'),
+        pair_column_name = 'pool'
     )
 }}
