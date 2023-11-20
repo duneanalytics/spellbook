@@ -467,8 +467,6 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
-          - unique
       - name: dex_name
         description: "Name of decentralised exchange"
       - name: distinct_name
