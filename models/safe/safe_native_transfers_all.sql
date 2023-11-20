@@ -15,7 +15,6 @@
 ,ref('safe_bnb_bnb_transfers')
 ,ref('safe_celo_eth_transfers')
 ,ref('safe_ethereum_eth_transfers')
-,ref('safe_fantom_eth_transfers')
 ,ref('safe_gnosis_eth_transfers')
 ,ref('safe_goerli_eth_transfers')
 ,ref('safe_optimism_eth_transfers')
