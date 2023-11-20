@@ -14,11 +14,7 @@
                                     \'["tschubotz", "hosuke"]\') }}'
     ) 
 }}
-select
-    t.*,
-    p.price * t.amount_raw / 1e18 AS amount_usd
 
-from (
     select
         'gnosis' as blockchain,
         et."from" as address,
@@ -56,8 +52,3 @@ from (
         {% if is_incremental() %}
         and et.block_time > date_trunc('day', now() - interval '7' day)
         {% endif %}
-) t
-
-left join {{ source('prices', 'usd') }} p on p.blockchain is null
-    and p.symbol = t.symbol
-    and p.minute = date_trunc('minute', t.block_time)
