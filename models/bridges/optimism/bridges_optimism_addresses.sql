@@ -1,9 +1,9 @@
 {{ config(alias = 'addresses',
         schema = 'bridges_optimism',
-        tags=['static'],
+        tags=['static']
           ) }}
 
-SELECT blockchain, address as address, bridge_name, description
+SELECT blockchain, address, bridge_name, description
 FROM (VALUES 
       ('optimism', 0x4200000000000000000000000000000000000010, 'Optimism', 'Bridge'),
       ('optimism', 0x4200000000000000000000000000000000000007, 'Optimism', 'Cross Domain Messenger'),
