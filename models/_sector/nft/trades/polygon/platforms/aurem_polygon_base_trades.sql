@@ -36,7 +36,7 @@ with trade_detail as (
         , cast(NULL as varbinary) as platform_fee_address
         , o.evt_index as sub_tx_trade_id
     FROM {{ source('aurem_polygon','Exchange_evt_OrderFilled') }} o
-    INNER JOIN erc721_polygon.evt_Transfer t ON o.evt_tx_hash = t.evt_tx_hash
+    INNER JOIN {{ source('erc721_polygon', 'evt_transfer') }} t ON o.evt_tx_hash = t.evt_tx_hash
         AND o.maker = t."from"
         AND o.taker = t."to"
         AND o.tokenId = t.tokenId
@@ -54,7 +54,7 @@ payment_detail as (
     SELECT t.contract_address as currency_contract
         , d.tx_hash
         , d.sub_tx_trade_id
-    FROM erc20_polygon.evt_Transfer t
+    FROM {{ source('erc20_polygon', 'evt_transfer') }} t
     INNER JOIN trade_detail d ON t.evt_tx_hash = d.tx_hash
         AND t."from" = d.buyer
         AND t."to" = 0x547eb9ab69f2e4438845839fd08792c326995ea6 -- Aurem Exchange
