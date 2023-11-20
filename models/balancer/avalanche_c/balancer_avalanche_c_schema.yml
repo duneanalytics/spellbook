@@ -362,6 +362,7 @@ models:
           combination_of_columns:
             - day
             - pool_id
+            - token_address
     columns:
       - name: day
       - name: pool_id

@@ -287,11 +287,13 @@ models:
           combination_of_columns:
             - day
             - pool_id
+            - token_address
     columns:
       - name: day
       - *pool_id
       - name: pool_address
       - name: pool_symbol
+      - *version
       - *blockchain
       - name: token_address
       - name: token_symbol
