@@ -60,7 +60,7 @@ WITH deterministic_deployers AS (
         blockchain
         ,trace_creator_address
         ,trace_creator_address AS creator_address_intermediate
-        ,trace_creator_address AS deployer_address_intermediate -- deployer from the trace - does not iterate up
+        ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
         ,contract_address
         ,created_time
         ,created_month
@@ -128,7 +128,7 @@ WITH deterministic_deployers AS (
       s.blockchain
       ,s.trace_creator_address
       ,s.creator_address AS creator_address_intermediate
-      ,s.deployer_address AS deployer_address_intermediate
+      ,s.deployer_address AS deployer_address
       ,s.contract_address
       ,s.created_time
       ,s.created_month
