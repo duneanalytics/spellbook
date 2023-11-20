@@ -8,25 +8,21 @@ WITH namespaces AS (
 	GROUP BY address
 	)
 
-, nfts_per_tx_tmp AS (
+, nfts_per_tx AS (
     SELECT 
         tx_hash
         , sum(amount) AS nfts_minted_in_tx
     FROM {{ ref('nft_transfers') }}
     WHERE 
         blockchain = '{{blockchain}}'
+        AND "from"= 0x0000000000000000000000000000000000000000
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {% endif %}
     GROUP BY tx_hash
+    HAVING sum(amount) > 0
     )
 
-, nfts_per_tx as (
-    SELECT
-        tx_hash
-        , case when nfts_minted_in_tx = UINT256 '0' THEN UINT256 '1' ELSE nfts_minted_in_tx END as nfts_minted_in_tx
-    FROM nfts_per_tx_tmp
-)
 SELECT
     blockchain
     , project
