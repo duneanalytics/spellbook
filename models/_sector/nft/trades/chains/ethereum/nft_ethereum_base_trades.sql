@@ -1,7 +1,6 @@
 {{ config(
     schema = 'nft_ethereum',
     alias = 'base_trades',
-    tags = ['dunesql'],
     materialized = 'view'
     )
 }}
@@ -58,9 +57,6 @@ SELECT * FROM  (
 --        tx_to,                -- not yet available in the base event tables
         row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank   -- duplicates protection
     FROM {{ nft_model }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

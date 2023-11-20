@@ -221,20 +221,55 @@ models:
       - *blockchain
       - *project
       - *version
-      - name: pool
+      - &pool
+        name: pool
         description: "DEX pool smart contract address"
-      - name: fee
+      - &fee
+        name: fee
         description: "Defined fee"
-      - name: token0
+      - &token0
+        name: token0
         description: "First token in pool"
-      - name: token1
+      - &token1
+        name: token1
         description: "Second token in pool"
-      - name: creation_block_time
+      - &creation_block_time
+        name: creation_block_time
         description: "Block time of pool creation"
-      - name: creation_block_number
+      - &creation_block_number
+        name: creation_block_number
         description: "Block number of pool creation"
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: dex_raw_pools
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
+      sector: dex
+      contributors: grkhr
+    config:
+      tags: ['dex', 'cross-chain', 'pools']
+    description: >
+      DEX raw pools on all chains across all contracts and versions parsed from logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - &type
+        name: type
+        description: "Pool implementation standard"
+      - *version
+      - *pool
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
+      
 
   - name: dex_offers
     meta:
