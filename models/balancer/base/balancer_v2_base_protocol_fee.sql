@@ -7,7 +7,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['day', 'pool_id'],
+        unique_key = ['day', 'pool_id', 'token_address'],
         post_hook='{{ expose_spells(\'["base"]\',
                                     "project",
                                     "balancer_v2",
@@ -18,5 +18,6 @@
 {{ 
     balancer_protocol_fee_macro(
         blockchain = blockchain,
+        version = '2'
     )
 }}

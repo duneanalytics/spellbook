@@ -371,6 +371,7 @@ models:
       - name: pool_id
       - name: pool_address
       - name: pool_symbol
+      - name: version
       - name: blockchain
       - name: token_address
       - name: token_symbol

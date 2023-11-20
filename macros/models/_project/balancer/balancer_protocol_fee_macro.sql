@@ -1,6 +1,6 @@
 {% macro 
     balancer_protocol_fee_macro(
-        blockchain
+        blockchain, version
     ) 
 %}
 
@@ -148,6 +148,7 @@ WITH pool_labels AS (
         f.pool_id,
         BYTEARRAY_SUBSTRING(f.pool_id,1,20) as pool_address,
         l.name AS pool_symbol,
+        '{{version}}' as version,
         '{{blockchain}}' as blockchain,
         f.token_address,
         f.token_symbol,
