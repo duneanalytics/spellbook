@@ -19,6 +19,7 @@ select
   t.evt_block_time as block_time,
   t.evt_block_number as block_number,
   t.account as taker,
+  cast(null as varbinary) as maker,
   t.amountOut as token_bought_amount_raw,
   t.amountIn as token_sold_amount_raw,
   t.tokenOut as token_bought_address,
