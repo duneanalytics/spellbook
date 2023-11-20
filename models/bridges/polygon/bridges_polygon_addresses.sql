@@ -3,7 +3,7 @@
         tags=['static']
           ) }}
 
-SELECT blockchain, address as address, bridge_name, description
+SELECT blockchain, address, bridge_name, description
 FROM (VALUES 
     ('polygon', 0xBBbD1BbB4f9b936C3604906D7592A644071dE884, 'Allbridge', 'Bridge'),
     ('polygon', 0xF78765bd14B4E8527d9E4E5c5a5c11A44ad12F47, 'Biconomy', 'Hyphen Bridge'),
