@@ -10,7 +10,7 @@
   )
 }}
 
-select
+select 
   'celo' as blockchain,
   'carbonhood' as project,
   '1' as version,
