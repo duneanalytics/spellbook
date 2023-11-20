@@ -1,12 +1,8 @@
 {{ config(alias = 'addresses',
         tags=['static'],
-           schema = 'bridges_ethereum',
-          post_hook='{{ expose_spells(\'["ethereum"]\',
-          "sector",
-          "addresses",
-          \'["hildobby","msilb7","rantum"]\') }}') }}
+           schema = 'bridges_ethereum') }}
 
-SELECT address as blockchain, address, bridge_name, description
+SELECT blockchain, address, bridge_name, description
 FROM (VALUES ('ethereum', 0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc20 Bridge Proxy')
   ,('ethereum', 0x0ac2d6f5f5afc669d3ca38f830dad2b4f238ad3f, '0x', 'Eth2Dai Bridge')
   ,('ethereum', 0xa6baaed2053058a3c8f11e0c7a9716304454b09e, '0x', 'Uniswap Bridge')

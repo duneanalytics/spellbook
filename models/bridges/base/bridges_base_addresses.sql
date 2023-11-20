@@ -1,9 +1,9 @@
 {{ config(alias = 'addresses',
         schema = 'bridges_base',
-        tags=['static'],
+        tags=['static']
           ) }}
 
-SELECT blockchain, address as address, bridge_name, description
+SELECT blockchain, address, bridge_name, description
 FROM (VALUES 
   ('base', 0x4200000000000000000000000000000000000010, 'Base', 'L2StandardBridge')
   ,('base', 0x4200000000000000000000000000000000000014, 'Base', 'L2ERC721Bridge')
