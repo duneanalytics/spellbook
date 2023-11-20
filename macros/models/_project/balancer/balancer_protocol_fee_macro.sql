@@ -105,6 +105,7 @@ WITH pool_labels AS (
             d.day, 
             d.pool_id, 
             d.token_address, 
+            t.symbol AS token_symbol,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
             SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals))) AS token_amount,
             CASE 
@@ -148,8 +149,9 @@ WITH pool_labels AS (
         BYTEARRAY_SUBSTRING(f.pool_id,1,20) as pool_address,
         l.name AS pool_symbol,
         '{{blockchain}}' as blockchain,
-        --f.token_address,
-        SUM(f.token_amount_raw) as token_amount_raw,
+        f.token_address,
+        f.token_symbol,
+        UM(f.token_amount_raw) as token_amount_raw,
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
         r.treasury_share,
@@ -159,6 +161,6 @@ WITH pool_labels AS (
         ON r.day = f.day
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
-    GROUP BY 1, 2, 3, 4, 5, 9
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 11
 
 {% endmacro %}
