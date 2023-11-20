@@ -23,8 +23,7 @@ class TokenChecker:
                             "fantom": "ftm-fantom",
                             "celo": "celo-celo",
                             "base": "base-base",
-                            "zksync": "zksync-zksync",
-                            "zora": "zora-zora"
+                            "zksync": "zksync-zksync"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
