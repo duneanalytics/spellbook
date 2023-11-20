@@ -10,7 +10,6 @@
     ,'creator_address_lineage', 'tx_method_id_lineage'
   ] %}
 
-
 -- maybe split out contract naming mappings in to a separate thing
 -- do token and name mappings at the end
 
