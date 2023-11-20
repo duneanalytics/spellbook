@@ -40,7 +40,7 @@ FROM (VALUES
 
         ---
         ,(0x6F54Ca6F6EdE96662024Ffd61BFd18f3f4e34DFf, 'Zora Network', 'L1BatchInbox','to_address','Bedrock','Zora Network: L1BatchInbox')
-        ,(0x48247032092e7b0ecf5dEF611ad89eaf3fC888Dd, 'Zora Network', 'L1BatchInbox','from_address','Bedrock','Zora Network: L1BatchInbox')
+        ,(0x625726c858dbf78c0125436c943bf4b4be9d9033, 'Zora Network', 'L1BatchInbox','from_address','Bedrock','Zora Network: L1BatchInbox')
 
         ,(0x9eedde6b4d3263b97209ba860edf3fc6a8fb6a44, 'Zora Network', 'L2OutputOracle','to_address','Bedrock','Zora Network: L2OutputOracle')
         ,(0x9E6204F750cD866b299594e2aC9eA824E2e5f95c, 'Zora Network', 'L2OutputOracleProxy','to_address','Bedrock','Zora Network: L2OutputOracleProxy')
