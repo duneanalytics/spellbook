@@ -152,8 +152,6 @@ WITH deterministic_deployers AS (
       , 0 AS is_new_contract -- since we rebuild initial on static ref updates, we don't need to iterate on this.
 
     FROM {{ this }} s
-      LEFT JOIN this_iterate_contracts ti
-        ON ti.contract_address = s.contract_address
     WHERE 
         1=1
         AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
