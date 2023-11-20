@@ -10,30 +10,61 @@
     )
 }}
 
-with
+with dexs AS (
+    -- Constant Product Pool
+    SELECT
+        'trident-cpp' AS version,
+        t.evt_block_time AS block_time,
+        t.recipient AS taker,
+        CAST(NULL AS VARBINARY)as maker,
+        t.amountOut AS token_bought_amount_raw,
+        t.amountIn AS token_sold_amount_raw,
+        t.tokenOut AS token_bought_address,
+        t.tokenIn AS token_sold_address,
+        t.contract_address AS project_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        t.evt_index
+    FROM {{ source('sushi_optimism', 'ConstantProductPool_evt_Swap') }} t
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('t.evt_block_time') }}
+    {% endif %}
 
-ConstantProductPool as (
-    {{
-        uniswap_compatible_v2_trades(
-            blockchain = 'optimism',
-            project = 'sushiswap',
-            version = 'trident-cpp',
-            Pair_evt_Swap = source('sushi_optimism', 'ConstantProductPool_evt_Swap')
-        )
-    }}
-),
+    UNION ALL
 
-StablePool as (
-    {{
-        uniswap_compatible_v2_trades(
-            blockchain = 'optimism',
-            project = 'sushiswap',
-            version = 'trident-sp',
-            Pair_evt_Swap = source('sushi_optimism', 'StablePool_evt_Swap')
-        )
-    }}
+    -- Stable Pool
+    SELECT
+        'trident-sp' AS version,
+        t.evt_block_time AS block_time,
+        t.recipient AS taker,
+        CAST(NULL AS VARBINARY)as maker,
+        t.amountOut AS token_bought_amount_raw,
+        t.amountIn AS token_sold_amount_raw,
+        t.tokenOut AS token_bought_address,
+        t.tokenIn AS token_sold_address,
+        t.contract_address AS project_contract_address,
+        t.evt_tx_hash AS tx_hash,
+        t.evt_index
+    FROM {{ source('sushi_optimism', 'StablePool_evt_Swap') }} t
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('t.evt_block_time') }}
+    {% endif %}
 )
 
-select * from ConstantProductPool
-union all
-select * from StablePool
+SELECT
+    'optimism' AS blockchain,
+    'sushiswap' AS project,
+    dexs.version,
+    CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
+    dexs.block_time,
+    dexs.block_number,
+    dexs.token_bought_amount_raw,
+    dexs.token_sold_amount_raw,
+    dexs.token_bought_address,
+    dexs.token_sold_address,
+    dexs.taker,
+    dexs.maker,
+    dexs.project_contract_address,
+    dexs.tx_hash,
+    dexs.evt_index
+FROM dexs
