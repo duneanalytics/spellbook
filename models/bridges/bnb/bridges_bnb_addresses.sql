@@ -1,9 +1,9 @@
 {{ config(alias = 'addresses',
-        schema = 'bridges_optimism',
+        schema = 'bridges_bnb',
         tags=['static'],
           ) }}
 
-SELECT blockchain, address as address, bridge_name, description
+SELECT blockchain, address, bridge_name, description
 FROM (VALUES 
       ('bnb', 0xBBbD1BbB4f9b936C3604906D7592A644071dE884, 'Allbridge', 'Bridge')
     ,('bnb', 0x6F817a0cE8F7640Add3bC0c1C2298635043c2423, 'Anyswap', 'anyETH Token')
@@ -36,8 +36,5 @@ FROM (VALUES
     ,('bnb', 0x31eFc4AeAA7c39e54A33FDc3C46ee2Bd70ae0A09, 'xPollinate', 'Transaction Manager')
     ,('bnb', 0xcb9Cc9d0f8f4Ac451a523D3C064553dD33Ea39E3, 'Zeroswap', 'BSC Bridge')
     ,('bnb', 0x6694340fc020c5e6b96567843da2df01b2ce1eb6, 'Stargate Finance: Bridge', 'Bridge')
-
-
-
 
       ) AS x (blockchain, address, bridge_name, description)
