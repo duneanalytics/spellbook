@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_polygon',
-    alias = alias('events_asset_added')
+    alias = 'events_asset_added'
     )
  }}
 

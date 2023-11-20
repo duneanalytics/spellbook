@@ -1,6 +1,7 @@
 {{ config(
+tags=['prod_exclude'],
         schema = 'opensea',
-        alias = alias('events')
+        alias = 'events'
 )
 }}
 

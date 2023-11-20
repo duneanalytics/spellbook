@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('trades'),
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -384,6 +384,8 @@ limit_cancel as (
     WHERE lc.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
+
+-- use to reload 
 
 SELECT 
     'arbitrum' as blockchain, 

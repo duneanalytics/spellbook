@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('events_fees_distributed'),
+    alias = 'events_fees_distributed',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -22,7 +22,8 @@ WITH
     'TradingV2_evt_FeesDistributed',
     'TradingV3_evt_FeesDistributed',
     'TradingV4_evt_FeesDistributed',
-    'TradingV5_evt_FeesDistributed'
+    'TradingV5_evt_FeesDistributed',
+    'TradingV6_evt_FeesDistributed'
 ] %}
 
 fees_v1 AS (

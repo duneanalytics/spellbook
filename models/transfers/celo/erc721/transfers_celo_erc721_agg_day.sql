@@ -1,7 +1,7 @@
 {{ 
     config(
-        tags = ['dunesql'],
-        alias = alias('erc721_agg_day'),
+        
+        alias = 'erc721_agg_day',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

@@ -1,6 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('pools'),
+        
+        alias = 'pools',
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
                                 "project",
                                 "uniswap",

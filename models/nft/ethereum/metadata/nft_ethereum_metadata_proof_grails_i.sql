@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['static','dunesql']
+        tags = ['static']
         ,schema = 'nft_ethereum_metadata'
-        ,alias = alias('proof_grails_i')
+        ,alias = 'proof_grails_i'
         )
 }}
 select contract_address, project_id, project_id_base_value, collection_name, artist_name, grails_season, grail_id, art_collection_unique_id
