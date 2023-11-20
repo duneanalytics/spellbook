@@ -33,6 +33,7 @@ WITH deterministic_deployers AS (
       ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
         -- --Gnosis Safe Logic
         WHEN aa.contract_project = 'Gnosis Safe' THEN b.top_level_tx_to --smart wallet
+        WHEN to_iterate_creators = 1 THEN trace_creator_address
         -- -- AA Wallet Logic - Commented out until we figure it out - this logic is wrong
         -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
         --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
@@ -96,6 +97,17 @@ WITH deterministic_deployers AS (
 
     {% if is_incremental() %}
     -- pre-generate the list of contracts we need to pull to help speed up the process
+    
+    -- Get list of contracts that we may need to re-iterate over
+    , this_iterate_contracts AS (
+      SELECT contract_address, creator_address_lineage
+        FROM {{ this }} s, deterministic_deployers dd
+          WHERE arrays_overlap(s.creator_address_lineage, dd.creator_address_array )
+      UNION 
+      SELECT contract_address,
+        FROM {{ this }} s, smart_account_methods sam
+          WHERE arrays_overlap(s.tx_method_id_lineage, sam.method_id_array )
+    )
     -- Logic checked here: https://dune.com/queries/3210612
     , inc_contracts AS (
       SELECT contract_address
@@ -109,6 +121,18 @@ WITH deterministic_deployers AS (
         FROM {{this}} s
         CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
         JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
+
+        -- Select creators we need to iterate over from prior iterations
+        UNION
+
+        SELECT ti.creator_address_intermediate as contract_address FROM this_iterate_contracts ti
+
+        UNION --this was faster than union all'ing distincts
+        ---- Select addresses from creator_address_lineage where contract_address matches creator_address in this_iterate_contracts
+        SELECT lineage_address
+        FROM {{this}} s
+        CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
+        JOIN this_iterate_contracts ti ON s.contract_address = ti.creator_address_intermediate)
 
       ) a
       WHERE contract_address IS NOT NULL
@@ -147,15 +171,14 @@ WITH deterministic_deployers AS (
       ,s.creator_address_lineage AS creator_address_lineage_intermediate
       ,s.tx_method_id_lineage AS tx_method_id_lineage_intermediate
       , CASE
-          WHEN arrays_overlap(s.creator_address_lineage, dd.creator_address_array ) THEN 1--check deterministic creators
-          WHEN arrays_overlap(s.tx_method_id_lineage, sam.method_id_array )
-                -- AND (How do we know if this method_id needs to be remapped? Until then re-map everything)
-                THEN 1 -- array contains smart account and creator = trace creator
+          WHEN ti.contract_address IS NOT NULL THEN 1
           ELSE 0
         END AS to_iterate_creators
       , 0 AS is_new_contract
 
-    FROM {{ this }} s, deterministic_deployers dd, smart_account_methods sam
+    FROM {{ this }} s
+      LEFT JOIN this_iterate_contracts ti
+        ON ti.contract_address = s.contract_address
     WHERE 
         1=1
         AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
