@@ -125,14 +125,14 @@ WITH deterministic_deployers AS (
         -- Select creators we need to iterate over from prior iterations
         UNION
 
-        SELECT ti.creator_address_intermediate as contract_address FROM this_iterate_contracts ti
+        SELECT ti.creator_address as contract_address FROM this_iterate_contracts ti
 
         UNION --this was faster than union all'ing distincts
         ---- Select addresses from creator_address_lineage where contract_address matches creator_address in this_iterate_contracts
         SELECT lineage_address
         FROM {{this}} s
         CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
-        JOIN this_iterate_contracts ti ON s.contract_address = ti.creator_address_intermediate
+        JOIN this_iterate_contracts ti ON s.contract_address = ti.creator_address
 
       ) a
       WHERE contract_address IS NOT NULL
