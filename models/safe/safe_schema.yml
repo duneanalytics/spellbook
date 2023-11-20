@@ -44,7 +44,8 @@ models:
     columns:
       - *blockchain
       - *block_date
-      - *block_month
+      - &block_month
+        name: block_month
       - &block_time
         name: block_time
         description: "Datetime of block"
