@@ -33,7 +33,6 @@ WITH deterministic_deployers AS (
       ,CASE WHEN nd.creator_address IS NOT NULL THEN b.created_tx_from
         -- --Gnosis Safe Logic
         WHEN aa.contract_project = 'Gnosis Safe' THEN b.top_level_tx_to --smart wallet
-        WHEN to_iterate_creators = 1 THEN trace_creator_address
         -- -- AA Wallet Logic - Commented out until we figure it out - this logic is wrong
         -- WHEN aa.contract_project = 'ERC4337' THEN ( --smart wallet sender
         --     CASE WHEN bytearray_substring(t.data, 145,18) = 0x000000000000000000000000000000000000 THEN bytearray_substring(t.data, 49,20)
@@ -83,7 +82,6 @@ WITH deterministic_deployers AS (
         , ROW_NUMBER() OVER (PARTITION BY code ORDER BY created_block_number ASC, created_tx_index ASC) AS code_deploy_rank_by_chain_intermediate
         , ARRAY[trace_creator_address] AS creator_address_lineage_intermediate
         , ARRAY[created_tx_method_id] AS tx_method_id_lineage_intermediate
-        , 1 AS to_iterate_creators
         , 1 AS is_new_contract
 
       FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
@@ -98,16 +96,6 @@ WITH deterministic_deployers AS (
     {% if is_incremental() %}
     -- pre-generate the list of contracts we need to pull to help speed up the process
     
-    -- Get list of contracts that we may need to re-iterate over
-    , this_iterate_contracts AS (
-      SELECT contract_address, creator_address, creator_address_lineage
-        FROM {{ this }} s, deterministic_deployers dd
-          WHERE arrays_overlap(s.creator_address_lineage, dd.creator_address_array )
-      UNION 
-      SELECT contract_address, creator_address, creator_address_lineage
-        FROM {{ this }} s, smart_account_methods sam
-          WHERE arrays_overlap(s.tx_method_id_lineage, sam.method_id_array )
-    )
     -- Logic checked here: https://dune.com/queries/3210612
     , inc_contracts AS (
       SELECT contract_address
@@ -122,17 +110,9 @@ WITH deterministic_deployers AS (
         CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
         JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
 
-        -- Select creators we need to iterate over from prior iterations
-        UNION
-
-        SELECT ti.creator_address as contract_address FROM this_iterate_contracts ti
-
-        UNION --this was faster than union all'ing distincts
-        ---- Select addresses from creator_address_lineage where contract_address matches creator_address in this_iterate_contracts
-        SELECT lineage_address
-        FROM {{this}} s
-        CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
-        JOIN this_iterate_contracts ti ON s.contract_address = ti.creator_address
+        -- We don't need to select creators from prior iterations because we well reinitialize
+        -- the incremental build on any updates to deterministic deployer & smart account methods
+        -- Keeping the raw code below (commented out) in case we do need this however.
 
       ) a
       WHERE contract_address IS NOT NULL
@@ -170,11 +150,7 @@ WITH deterministic_deployers AS (
       ,s.code_deploy_rank_by_chain AS code_deploy_rank_by_chain_intermediate
       ,s.creator_address_lineage AS creator_address_lineage_intermediate
       ,s.tx_method_id_lineage AS tx_method_id_lineage_intermediate
-      , CASE
-          WHEN ti.contract_address IS NOT NULL THEN 1
-          ELSE 0
-        END AS to_iterate_creators
-      , 0 AS is_new_contract
+      , 0 AS is_new_contract -- since we rebuild initial on static ref updates, we don't need to iterate on this.
 
     FROM {{ this }} s
       LEFT JOIN this_iterate_contracts ti
@@ -256,7 +232,6 @@ WITH deterministic_deployers AS (
               b.tx_method_id_lineage || u.created_tx_method_id
             ELSE b.tx_method_id_lineage
           END AS tx_method_id_lineage
-        , b.to_iterate_creators
         , b.is_new_contract
         , CASE WHEN u.contract_address IS NULL THEN 0 ELSE 1 END AS loop_again --if it's contract created, then 1 (we loop), else 0 (we're done)
 
@@ -275,12 +250,12 @@ WITH deterministic_deployers AS (
       -- is the creator deterministic?
       left join {{ref('contracts_deterministic_contract_creators')}} as nd 
         ON nd.creator_address = b.creator_address
-      WHERE b.to_iterate_creators = 1
+      WHERE b.is_new_contract = 1
   )
   {%- endfor %}
 
 
-SELECT {{ column_list | join(', ') }}  FROM base_level WHERE to_iterate_creators = 0
+SELECT {{ column_list | join(', ') }}  FROM base_level WHERE is_new_contract = 0
 UNION ALL
 SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
 
