@@ -19,6 +19,8 @@
 {% set project_start_date = '2021-06-20' %}
 
 select
+    'celo' as blockchain,
+    'CELO' as symbol,
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
@@ -43,6 +45,8 @@ where et.block_time > date_trunc('day', now() - interval '10' day)
 union all
 
 select
+    'celo' as blockchain,
+    'CELO' as symbol,
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,

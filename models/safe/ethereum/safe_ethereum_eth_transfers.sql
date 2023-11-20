@@ -16,6 +16,8 @@
 }}
 
 select 
+    'ethereum' as blockchain,
+    'ETH' as symbol,
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
@@ -40,6 +42,8 @@ where et.block_time > date_trunc('day', now() - interval '7' day)
 union all
     
 select 
+    'ethereum' as blockchain,
+    'ETH' as symbol,
     s.address, 
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,

@@ -18,6 +18,8 @@
 {% set project_start_date = '2021-11-17' %}
 
 select 
+    'optimism' as blockchain,
+    'ETH' as symbol,
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
@@ -42,6 +44,8 @@ where et.block_time > date_trunc('day', now() - interval '10' day)
 union all
     
 select 
+    'optimism' as blockchain,
+    'ETH' as symbol,
     s.address, 
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
@@ -67,6 +71,8 @@ union all
 --ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
 
 select 
+    'optimism' as blockchain,
+    'ETH' as symbol,
     s.address, 
     try_cast(date_trunc('day', r.evt_block_time) as date) as block_date,
     CAST(date_trunc('month', r.evt_block_time) as DATE) as block_month,
@@ -91,6 +97,8 @@ where
 union all
 
 select 
+    'optimism' as blockchain,
+    'ETH' as symbol,
     s.address, 
     try_cast(date_trunc('day', r.evt_block_time) as date) as block_date,
     CAST(date_trunc('month', r.evt_block_time) as DATE) as block_month,

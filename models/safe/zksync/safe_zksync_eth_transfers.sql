@@ -16,6 +16,8 @@
 }}
 
 select
+    'zksync' as blockchain,
+    'ETH' as symbol,
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
@@ -40,6 +42,8 @@ where {{ incremental_predicate('et.block_time') }}
 union all
 
 select
+    'zksync' as blockchain,
+    'ETH' as symbol,
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
