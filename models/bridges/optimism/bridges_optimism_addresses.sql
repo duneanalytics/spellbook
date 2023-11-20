@@ -16,7 +16,7 @@ FROM (VALUES
       ('optimism', 0xc10ef9f491c9b59f936957026020c321651ac078, 'Multichain', 'anyCall v6'),
       ('optimism', 0xdc42728b0ea910349ed3c6e1c9dc06b5fb591f98, 'Multichain', 'Router v6'),
       ('optimism', 0xaf41a65f786339e7911f4acdad6bd49426f2dc6b, 'Synapse', 'Bridge'),
-      ('optimism', 0xaf41a65f786339e7911f4acdad6bd49426f2dc6b, 'Across', 'Bridge'),
+      ('optimism', 0xa420b2d1c0841415a695b81e5b867bcd07dff8c9, 'Across', 'Bridge'),
       ('optimism', 0x83f6244bd87662118d96d9a6d44f09dfff14b30e, 'Hop', 'bridge' ),
       ('optimism', 0x7191061d5d4c60f598214cc6913502184baddf18, 'Hop', 'bridge' ),
       ('optimism', 0xa81d244a1814468c734e5b4101f7b9c0c577a8fc, 'Hop', 'bridge' ),
