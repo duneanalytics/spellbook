@@ -104,7 +104,7 @@ WITH deterministic_deployers AS (
         FROM {{ this }} s, deterministic_deployers dd
           WHERE arrays_overlap(s.creator_address_lineage, dd.creator_address_array )
       UNION 
-      SELECT contract_address,
+      SELECT contract_address, creator_address_lineage
         FROM {{ this }} s, smart_account_methods sam
           WHERE arrays_overlap(s.tx_method_id_lineage, sam.method_id_array )
     )
