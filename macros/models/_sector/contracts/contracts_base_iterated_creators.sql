@@ -132,7 +132,7 @@ WITH deterministic_deployers AS (
         SELECT lineage_address
         FROM {{this}} s
         CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
-        JOIN this_iterate_contracts ti ON s.contract_address = ti.creator_address_intermediate)
+        JOIN this_iterate_contracts ti ON s.contract_address = ti.creator_address_intermediate
 
       ) a
       WHERE contract_address IS NOT NULL
