@@ -18,10 +18,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - token_bought_amount
-            - token_sold_amount
-            - tx_hash      
+            - block_time
+            - blockchain
+            - tx_hash
+            - evt_index     
     columns:
       - &blockchain 
         name: blockchain        
