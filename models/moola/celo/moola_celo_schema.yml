@@ -84,40 +84,6 @@ models:
         name: evt_block_number
         description: "Event block number"
 
-  - name: moola_celo_borrow
-    meta:
-      blockchain: celo
-      sector: lending
-      project: moola
-      contributors: tomfutago
-    config:
-      tags: ['celo', 'moola', 'borrow', 'lending', 'aave_v2']
-    description: "All Moola transactions involving borrow transactions on Celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - *evt_block_month
-      - *transaction_type
-      - *symbol
-      - *token_address
-      - &borrower
-        name: borrower
-        description: "Borrower wallet address"
-      - &repayer
-        name: repayer
-        description: "Repayer wallet address"
-      - *liquidator
-      - *amount
-      - *amount_usd
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_time
-      - *evt_block_number
-
   - name: moola_celo_flashloans
     meta:
      blockchain: celo
