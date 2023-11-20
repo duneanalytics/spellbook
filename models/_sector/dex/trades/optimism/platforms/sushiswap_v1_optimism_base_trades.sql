@@ -14,6 +14,7 @@ with dexs AS (
     -- Constant Product Pool
     SELECT
         'trident-cpp' AS version,
+        t.evt_block_number AS block_number,
         t.evt_block_time AS block_time,
         t.recipient AS taker,
         CAST(NULL AS VARBINARY)as maker,
@@ -34,6 +35,7 @@ with dexs AS (
     -- Stable Pool
     SELECT
         'trident-sp' AS version,
+        t.evt_block_number AS block_number,
         t.evt_block_time AS block_time,
         t.recipient AS taker,
         CAST(NULL AS VARBINARY)as maker,
