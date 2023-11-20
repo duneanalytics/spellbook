@@ -3,7 +3,7 @@ version: 2
 models:
   - name: bridges_bnb_addresses
     meta:
-      blockchain: arbitrum
+      blockchain: bnb
       sector: bridges
       project: addresses
       contributors: rantum
