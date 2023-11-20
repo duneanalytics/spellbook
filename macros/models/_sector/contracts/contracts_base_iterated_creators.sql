@@ -60,7 +60,7 @@ WITH deterministic_deployers AS (
         blockchain
         ,trace_creator_address
         ,trace_creator_address AS creator_address_intermediate
-        ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
+        ,trace_creator_address AS deployer_address_intermediate -- deployer from the trace - does not iterate up
         ,contract_address
         ,created_time
         ,created_month
@@ -128,7 +128,7 @@ WITH deterministic_deployers AS (
       s.blockchain
       ,s.trace_creator_address
       ,s.creator_address AS creator_address_intermediate
-      ,s.deployer_address -- deployer from the trace - does not iterate up
+      ,s.deployer_address AS deployer_address_intermediate
       ,s.contract_address
       ,s.created_time
       ,s.created_month
@@ -193,7 +193,7 @@ WITH deterministic_deployers AS (
           THEN b.created_tx_from --when deterministic creator, we take the tx sender
           ELSE coalesce(u.creator_address, b.creator_address)
         END as creator_address -- get the highest-level creator we know of
-        ,b.deployer_address
+        ,b.creator_address AS deployer_address -- deployer from the trace - does not iterate up
         ,b.contract_address
         -- store the raw created data
         ,b.created_time
