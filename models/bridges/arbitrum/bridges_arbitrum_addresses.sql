@@ -1,9 +1,9 @@
 {{ config(alias = 'addresses',
         schema = 'bridges_arbitrum',
-        tags=['static'],
+        tags=['static']
           ) }}
 
-SELECT blockchain, address as address, bridge_name, description
+SELECT blockchain, address, bridge_name, description
 FROM (VALUES 
 ('arbitrum', 0xe35e9842fceaca96570b734083f4a58e8f7c5f2a, 'Across Protocol', 'Bridge'),
 ('arbitrum', 0xd8c6dd978a3768f7ddfe3a9aad2c3fd75fa9b6fd, 'Across Protocol', 'Deposit Box'),
