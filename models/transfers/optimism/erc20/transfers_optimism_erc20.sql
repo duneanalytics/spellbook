@@ -15,7 +15,7 @@ with
             to as wallet_address,
             contract_address as token_address,
             evt_block_time,
-        evt_tx_hash,
+            evt_tx_hash,
             value as amount_raw
         from
             {{ source('erc20_optimism', 'evt_transfer') }}
