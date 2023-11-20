@@ -24,6 +24,7 @@ WITH fee_wallets as (
      ,alternative_token_address = '0x0000000000000000000000000000000000001010'
      ,native_token_symbol = 'MATIC'
      ,start_date = '2023-08-18'
+     ,Seaport_order_contracts = ['0xaaaaaaaa33d3520a2266ce508bc079fcfe82c8e3']
     )
   }}
 )
