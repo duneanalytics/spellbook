@@ -90,11 +90,11 @@ models:
         tests:
           - not_null
 
-  - name: lending_moola_base_borrow
+  - name: lending_celo_base_borrow
     meta:
-      blockchain: moola
+      blockchain: celo
       sector: lending
-      project: aave
+      project: moola
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'moola']
