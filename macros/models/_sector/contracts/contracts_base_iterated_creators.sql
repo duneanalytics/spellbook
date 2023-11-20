@@ -100,11 +100,11 @@ WITH deterministic_deployers AS (
     
     -- Get list of contracts that we may need to re-iterate over
     , this_iterate_contracts AS (
-      SELECT contract_address, creator_address_lineage
+      SELECT contract_address, creator_address, creator_address_lineage
         FROM {{ this }} s, deterministic_deployers dd
           WHERE arrays_overlap(s.creator_address_lineage, dd.creator_address_array )
       UNION 
-      SELECT contract_address, creator_address_lineage
+      SELECT contract_address, creator_address, creator_address_lineage
         FROM {{ this }} s, smart_account_methods sam
           WHERE arrays_overlap(s.tx_method_id_lineage, sam.method_id_array )
     )
