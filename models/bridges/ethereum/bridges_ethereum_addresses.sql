@@ -104,7 +104,7 @@ FROM (VALUES ('ethereum', 0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc
   ,('ethereum', 0x4e67df0f232c3bc985f8a63326d80ce3d9a40400, 'Multichain', 'Shiden Network Bridge')
   ,('ethereum', 0x8cc49fe67a4bd7a15674c4ffd4e969d94304bbbf, 'Multichain', 'Syscoin Bridge')
   ,('ethereum', 0x57ed6bd35a6ce815079855cd0b21331d1d5d0a0e, 'Multichain', 'Telos Bridge')
-\
+
   ,('ethereum', 0xcd9d4988c0ae61887b075ba77f08cbfad2b65068, 'Optimism', 'Synthetix: L2 Deposit')
   ,('ethereum', 0x5fd79d46eba7f351fe49bff9e87cdea6c821ef9f, 'Optimism', 'Synthetix: L2 Deposit Escrow')
   -- ,('ethereum', 0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Optimism: Gateway') --duplicate & renamed
