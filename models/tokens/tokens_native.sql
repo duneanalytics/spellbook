@@ -10,6 +10,8 @@ SELECT chain, symbol, price_symbol, price_address, decimals
 FROM (VALUES
          ('ethereum', 'ETH', 'WETH', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 18)
          , ('optimism', 'ETH', 'WETH', 0x4200000000000000000000000000000000000006, 18)
+         , ('base', 'ETH', 'WETH', 0x4200000000000000000000000000000000000006, 18)
+         , ('zora', 'ETH', 'WETH', 0x4200000000000000000000000000000000000006, 18)
          , ('polygon', 'MATIC', 'MATIC', 0x0000000000000000000000000000000000001010, 18)
          , ('arbitrum', 'ETH', 'WETH', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1, 18)
          , ('avalanche_c', 'AVAX', 'WAVAX', 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7, 18)
