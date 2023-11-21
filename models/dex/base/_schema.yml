@@ -11,6 +11,8 @@ models:
       tags: ['table', 'dex', 'addresses', 'base']
     description: "Known decentralised exchange addresses"
     columns:
+      - name: blockchain
+        description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
         tests:
