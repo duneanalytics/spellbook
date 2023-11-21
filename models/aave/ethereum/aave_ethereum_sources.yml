@@ -77,64 +77,64 @@ sources:
           description: "Wallet address where the tokens are withdrawn and transferred"
         - *user
         
-      - name: LendingPool_evt_LiquidationCall
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving liquidation for aave v2 on ethereum"
-        columns:
-        - name: collateralAsset
-          description: "Token address of the collateral asset"      
-        - *contract_address 
-        - name: debtAsset
-          description: "Token address of the debt asset"
-        - name: debtToCover
-          description: "Amount of debt to be covered through liquidation"  
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash 
-        - name: liquidatedCollateralAmount
-          description: "Amount of liquidated collateral asset"  
-        - name: liquidator
-          description: "Liquidator wallet address"
-        - name: receiveAToken
-          description: "Shows if the liquidator will receive atokens or not"
-        - *user
-        
-      - name: LendingPool_evt_Borrow
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving borrows for aave v2 on ethereum"
-        columns:
-        - *reserve
-        - *user
-        - *amount     
-        - name: borrowRate
-          description: "The rate at which the tokens are borrowed"
-        - name: borrowRateMode
-          description: "The borrowing mode of the debt"  
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash 
-        - name: onBehalfOf
-          description: "The user wallet address if the token is borrowed on behalf of another wallet"
-        - name: referral
-          description: "Borrow referral number"  
-          
-      - name: LendingPool_evt_Repay
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving repays for aave v2 on ethereum"
-        columns:
-        - *amount     
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash
-        - name: repayer
-          description: "Wallet address of the repayer" 
-        - *reserve
-        - *user       
+#      - name: LendingPool_evt_LiquidationCall
+#        loaded_at_field: evt_block_time
+#        description: "Contians all the transactions involving liquidation for aave v2 on ethereum"
+#        columns:
+#        - name: collateralAsset
+#          description: "Token address of the collateral asset"      
+#        - *contract_address 
+#        - name: debtAsset
+#          description: "Token address of the debt asset"
+#        - name: debtToCover
+#          description: "Amount of debt to be covered through liquidation"  
+#        - *evt_block_number
+#        - *evt_block_time
+#        - *evt_index
+#        - *evt_tx_hash 
+#        - name: liquidatedCollateralAmount
+#          description: "Amount of liquidated collateral asset"  
+#        - name: liquidator
+#          description: "Liquidator wallet address"
+#        - name: receiveAToken
+#          description: "Shows if the liquidator will receive atokens or not"
+#        - *user
+#        
+#      - name: LendingPool_evt_Borrow
+#        loaded_at_field: evt_block_time
+#        description: "Contians all the transactions involving borrows for aave v2 on ethereum"
+#        columns:
+#        - *reserve
+#        - *user
+#        - *amount     
+#        - name: borrowRate
+#          description: "The rate at which the tokens are borrowed"
+#        - name: borrowRateMode
+#          description: "The borrowing mode of the debt"  
+#        - *contract_address 
+#        - *evt_block_number
+#        - *evt_block_time
+#        - *evt_index
+#        - *evt_tx_hash 
+#        - name: onBehalfOf
+#          description: "The user wallet address if the token is borrowed on behalf of another wallet"
+#        - name: referral
+#          description: "Borrow referral number"  
+#          
+#      - name: LendingPool_evt_Repay
+#        loaded_at_field: evt_block_time
+#        description: "Contians all the transactions involving repays for aave v2 on ethereum"
+#        columns:
+#        - *amount     
+#        - *contract_address 
+#        - *evt_block_number
+#        - *evt_block_time
+#        - *evt_index
+#        - *evt_tx_hash
+#        - name: repayer
+#          description: "Wallet address of the repayer" 
+#        - *reserve
+#        - *user       
 
       - name: DefaultReserveInterestRateStrategy_call_calculateInterestRates
 
@@ -187,63 +187,63 @@ sources:
         - *evt_index
         - *evt_tx_hash       
         
-      - name: LendingPool_evt_LiquidationCall
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving liquidations for aave v1 on ethereum"
-        columns:
-        - *_amount
-        - *_reserve
-        - *_timestamp
-        - *_user
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash           
-        
-      - name: LendingPool_evt_Borrow
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving borrows for aave v1 on ethereum"
-        columns:
-        - *_amount
-        - &_borrowBalanceIncrease
-          name: _borrowBalanceIncrease 
-          description: "Amount of increase in the total debt"  
-        - name: _borrowRate 
-          description: "The rate at which debt is borrowed"   
-        - name: _borrowRateMode 
-          description: "The borrowing mode"   
-        - name: _originationFee
-          description: "Origination fee of the debt"  
-        - *_referral  
-        - *_reserve
-        - *_timestamp
-        - *_user
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash           
-        
-      - name: LendingPool_evt_Repay
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving repays for aave v1 on ethereum"
-        columns:
-        - name: _amountMinusFees
-          description: "The borrowed amount minus fees"  
-        - *_borrowBalanceIncrease 
-        - name: _fees
-          description: "The fees for the given debt"   
-        - name: _repayer 
-          description: "Wallet address of the repayer"   
-        - *_reserve
-        - *_timestamp
-        - *_user
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash              
+#      - name: LendingPool_evt_LiquidationCall
+#        loaded_at_field: evt_block_time
+#        description: "Contians all the transactions involving liquidations for aave v1 on ethereum"
+#        columns:
+#        - *_amount
+#        - *_reserve
+#        - *_timestamp
+#        - *_user
+#        - *contract_address 
+#        - *evt_block_number
+#        - *evt_block_time
+#        - *evt_index
+#        - *evt_tx_hash           
+#        
+#      - name: LendingPool_evt_Borrow
+#        loaded_at_field: evt_block_time
+#        description: "Contians all the transactions involving borrows for aave v1 on ethereum"
+#        columns:
+#        - *_amount
+#        - &_borrowBalanceIncrease
+#          name: _borrowBalanceIncrease 
+#          description: "Amount of increase in the total debt"  
+#        - name: _borrowRate 
+#          description: "The rate at which debt is borrowed"   
+#        - name: _borrowRateMode 
+#          description: "The borrowing mode"   
+#        - name: _originationFee
+#          description: "Origination fee of the debt"  
+#        - *_referral  
+#        - *_reserve
+#        - *_timestamp
+#        - *_user
+#        - *contract_address 
+#        - *evt_block_number
+#        - *evt_block_time
+#        - *evt_index
+#        - *evt_tx_hash           
+#        
+#      - name: LendingPool_evt_Repay
+#        loaded_at_field: evt_block_time
+#        description: "Contians all the transactions involving repays for aave v1 on ethereum"
+#        columns:
+#        - name: _amountMinusFees
+#          description: "The borrowed amount minus fees"  
+#        - *_borrowBalanceIncrease 
+#        - name: _fees
+#          description: "The fees for the given debt"   
+#        - name: _repayer 
+#          description: "Wallet address of the repayer"   
+#        - *_reserve
+#        - *_timestamp
+#        - *_user
+#        - *contract_address 
+#        - *evt_block_number
+#        - *evt_block_time
+#        - *evt_index
+#        - *evt_tx_hash              
 
       - name: AaveGovernanceV2_evt_VoteEmitted
         loaded_at_field: evt_block_time
