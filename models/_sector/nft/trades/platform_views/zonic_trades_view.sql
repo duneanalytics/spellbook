@@ -1,8 +1,8 @@
 
 {{ config(
         schema = 'zonic',
-        alias = alias('trades'),
-        tags = ['dunesql'],
+        alias = 'trades',
+        
         materialized = 'view',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",

@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: dex_base_addresses
+    meta:
+      blockchain: base
+      sector: dex
+      project: addresses
+      contributors: rantum
+    config:
+      tags: ['table', 'dex', 'addresses', 'base']
+    description: "Known decentralised exchange addresses"
+    columns:
+      - name: blockchain
+        description: "Name of blockchain"
+      - name: address
+        description: "Address of known DEX"
+        tests:
+          - unique
+      - name: dex_name
+        description: "Name of decentralised exchange"
+      - name: distinct_name
+        description: "Distinct name of decentralised exchange address"

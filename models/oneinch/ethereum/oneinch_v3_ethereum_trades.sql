@@ -1,7 +1,7 @@
 {{  config(
-        tags = ['dunesql'],
+        
         schema='oneinch_v3_ethereum',
-        alias = alias('trades'),
+        alias = 'trades',
         partition_by = ['block_month'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
@@ -46,7 +46,7 @@ WITH oneinch_events AS
         evt_index,
         contract_address
     FROM
-        {{ source('oneinch_v3_ethereum', 'AggregationRouterV3_evt_Swapped') }}
+        {{ source('oneinch_ethereum', 'AggregationRouterV3_evt_Swapped') }}
     {% if is_incremental() %}
     WHERE
         evt_block_time >= date_trunc('day', now() - interval '7' DAY)

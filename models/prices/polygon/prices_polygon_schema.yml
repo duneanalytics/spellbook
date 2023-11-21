@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       sector: prices
-      contributors: aalan3, jeff-dude
+      contributors: aalan3, jeff-dude, rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'polygon']
     description: "Price tokens on polygon chain"

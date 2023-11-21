@@ -109,15 +109,15 @@ models:
             - evt_index
       - check_dex_seed:
           blockchain: arbitrum
-          project: DODO
+          project: dodo
           version: 1
       - check_dex_seed:
           blockchain: arbitrum
-          project: DODO
+          project: dodo
           version: 2_dvm
       - check_dex_seed:
           blockchain: arbitrum
-          project: DODO
+          project: dodo
           version: 2_dsp
     columns:
       - *blockchain

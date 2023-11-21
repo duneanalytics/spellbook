@@ -27,17 +27,23 @@ methods as (
         , calls.call_from
         , call_to
         , transactions.tx_from
+        , transactions.tx_to
         , transactions.tx_success
         , calls.call_success
         , call_selector
         , protocol
         , calls.call_input
         , calls.call_output
+        , concat(cast(length(_remains) as bigint), if(length(_remains) > 0
+            , transform(sequence(1, length(_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(_remains), x, 4))))
+            , array[bigint '0']
+        )) as call_remains
         , transactions.block_time
     from (
         select 
             '{{ blockchain }}' as blockchain
             , "from" as tx_from
+            , "to" as tx_to
             , "hash" as tx_hash
             , success as tx_success
             , block_time
@@ -60,6 +66,7 @@ methods as (
             , input as call_input
             , output as call_output
             , "to" as call_to
+            , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as _remains
         from {{ source(blockchain, 'traces') }}
         where 
             {% if is_incremental() %}
@@ -80,6 +87,7 @@ methods as (
         -- tx
         , calls.tx_hash
         , calls.tx_from
+        , calls.tx_to
         , calls.tx_success
         -- call
         , calls.call_success
@@ -95,16 +103,16 @@ methods as (
         , transfers.native_token
         , transfers.transfer_from
         , transfers.transfer_to
-        , not contains(transform(array_remove(transfers.trf, transfers.trace_address), x -> if(slice(transfers.trace_address, 1, cardinality(x)) = x, 'sub', 'root')), 'sub') as transfer_top_level
         , if(
             coalesce(transfers.transfer_from, transfers.transfer_to) is not null
-            , count(*) over(partition by calls.blockchain, calls.tx_hash, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
+            , count(*) over(partition by calls.blockchain, calls.tx_hash, calls.start, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
         ) as transfers_between_players
         , rn_tta_asc
         , rn_tta_desc
         -- ext
         , calls.call_output 
         , calls.call_input
+        , calls.call_remains
         , date_trunc('minute', calls.block_time) as minute
         , date(date_trunc('month', calls.block_time)) as block_month
     from calls
@@ -119,8 +127,6 @@ methods as (
             , amount
             , transfer_from
             , transfer_to
-            , 1 as transfers_between_players  
-            , trf
             , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
         from (
@@ -144,7 +150,6 @@ methods as (
                     when {{ selector }} = {{ transfer_from_selector }} then substr(input, 49, 20)
                     when value > uint256 '0' then "to"
                 end as transfer_to
-                , array_agg(if(value > uint256 '0', null, trace_address)) over(partition by tx_hash) as trf
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %}

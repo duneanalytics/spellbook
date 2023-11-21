@@ -1,8 +1,8 @@
 {{ 
   config(
-    tags = ['dunesql','static'],
+    tags = ['static'],
     schema = 'contracts',
-    alias = alias('project_name_mappings'),
+    alias = 'project_name_mappings',
     unique_key='dune_name',
     post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
                               "sector",
@@ -118,5 +118,6 @@ from (
     ,('mintfun','mint.fun')
     ,('allo_protocol', 'allo protocol (gitcoin)')
     ,('union_protocol', 'Union Finance')
+    ,('gyroscope', 'Gyroscope')
 
     ) as temp_table (dune_name, mapped_name)

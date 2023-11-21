@@ -1,7 +1,11 @@
 {{ config(
-        alias = alias('erc721_rolling_hour'))
+tags=['prod_exclude'],
+        alias = 'erc721_rolling_hour')
 }}
-
+/*
+    note: this spell has not been migrated to dunesql, therefore is only a view on spark
+        please migrate to dunesql to ensure up-to-date logic & data
+*/
         select
             'ethereum' as blockchain,
             hour,

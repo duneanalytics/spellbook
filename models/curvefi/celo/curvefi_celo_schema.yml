@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  - name: curvefi_celo_pools
+    meta:
+      blockchain: celo
+      project: curvefi
+      contributors: tomfutago
+    config:
+      tags: ['celo','curvefi','curve','dex']
+    description: >
+        A table containing all known pools of curvefi on Celo. Additional types should be monitored to ensure they're accurately shown.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - version
+              - tokenid
+              - token
+              - pool
+    columns:
+      - &version
+        name: version
+        description: "Versions of the pool: Basic Pool, Meta Pool, etc"
+        tests:
+          - not_null
+      - &tokenid
+        name: tokenid
+        description: "ID of the token in the pool"
+        tests:
+          - not_null
+      - &token
+        name: token
+        description: "Token Address"
+        tests:
+          - not_null
+      - &pool
+        name: pool
+        description: "Pool contract address"
+        tests:
+          - not_null
+
+  - name: curvefi_celo_trades
+    meta:
+      blockchain: celo
+      project: curvefi
+      contributors: tomfutago
+    config:
+      tags: ['celo','curvefi','curve','dex']
+    description: >
+        A table containing all trades of curvefi on celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - project
+              - version
+              - tx_hash
+              - evt_index
+      - check_dex_seed:
+          blockchain: celo
+          project: curve
+          version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project 
+        name: project
+        description: "Project name of the DEX"  
+      - name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the transaction"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the transaction"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the transaction"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the transaction"
+      - &evt_index
+        name: evt_index
+        description: ""
+      - &pool_type
+        name: pool_type
+        description: "What model the pool follows (i.e. meta pool, stable pool)"

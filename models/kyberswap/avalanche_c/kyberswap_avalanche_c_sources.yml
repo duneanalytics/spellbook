@@ -15,6 +15,10 @@ sources:
         loaded_at_field: evt_block_time
       - name: Elastic_Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Swap
+        loaded_at_field: evt_block_time
+      - name: ElasticFactoryV2_evt_PoolCreated
+        loaded_at_field: evt_block_time
       - name: AggregationRouter_evt_Swapped
         loaded_at_field: evt_block_time
       - name: MetaAggregationRouter_evt_Swapped

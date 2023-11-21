@@ -1,15 +1,6 @@
 version: 2
 
 models:
-  - name: test_dependent_view
-    description: "integration test for a view dependent on another model"
-    config:
-      tags: ['integration_test']
-      columns:
-        - name: blockchain
-          tests:
-            - not_null
-
   - name: test_incremental_table
     description: "integration test for an incremental model"
     config:

@@ -1,8 +1,7 @@
 {{ config(
-        tags=['dunesql']
-      , partition_by = ['block_month']
+     partition_by = ['block_month']
       , schema = 'balancer_v2_avalanche_c'
-      , alias = alias('flashloans')
+      , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'
@@ -33,7 +32,7 @@ WITH flashloans AS (
     )
 
 SELECT 'avalanche_c' AS blockchain
-, 'Balancer' AS project
+, 'balancer' AS project
 , '2' AS version
 , CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time

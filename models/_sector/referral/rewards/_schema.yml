@@ -1,0 +1,74 @@
+version: 2
+
+models:
+
+  - name: referral_rewards
+    meta:
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
+      sector: nft
+      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
+    config:
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
+    description: >
+        NFT mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: project
+        description: "Project"
+        tests:
+          - not_null
+      - name: version
+        description: "Project version"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"
+      - name: block_month
+        description: "block number"
+      - name: tx_hash
+        description: "transaction hash"
+        tests:
+          - not_null
+      - name: tx_from
+        description: "transaction sender"
+      - name:  tx_to
+        description: "transaction receiver"
+      - name:  category
+        description: "project category (NFT/AMM/Staking/...)"
+      - name:  referrer_address
+        description: "address of the person making the referral"
+      - name:  referee_address
+        description: "address of the person being referred"
+      - name: is_referral
+        description: "whether or not the a referral was made (and payed out)"
+        tests:
+          - accepted_values:
+              values: [ true, false ]
+              quote: false
+      - name:  currency_contract
+        description: "contract address of the currency"
+      - name:  reward_amount_raw
+        description: "raw reward amount"
+      - name:  reward_amount
+        description: "reward amount corrected with the correct decimals"
+      - name:  reward_amount_usd
+        description: "USD value of the referral reward at time of execution"
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000 # $1m is an arbitrary number, intended to flag outlier amounts early
+      - name:  project_contract_address
+        description: "project contract address"
+      - name: sub_tx_id
+        description: "id to distinguish multiple rewards in 1 transaction. Often the event index"
+        tests:
+          - not_null
+

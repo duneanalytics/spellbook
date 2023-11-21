@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: op_governance_optimism_delegates
+    meta:
+      blockchain: optimism
+      project: op_governance_optimism
+      contributors: kaiblade
+
+    config:
+      tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
+    description: "Tracks OP delegates voting power and delegating addresses data over time"
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+            
+    columns:
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &delegate
+        name: delegate
+        description: "Optimism addresses of delegates"
+      - &current_voting_power
+        name: current_voting_power
+        description: "Latest voting power of delegates"
+      - &previous_voting_power
+        name: previous_voting_power
+        description: "Previous voting power of delegates"
+      - &power_diff
+        name: power_diff
+        description: "The difference between current_voting_power and previous_voting_power"
+      - &voting_power_change
+        name: voting_power_change
+        description: "Percentage change of delegates voting power over time"
+      - &total_voting_power
+        name: total_voting_power
+        description: "Total votable supply"
+      - &voting_power_share
+        name: voting_power_share
+        description: "Share of the total voting power expressed in percentage"
+      - &number_of_delegators
+        name: number_of_delegators
+        description: "Number of addresses delegating voting power to the delegate"
+      - &total_delegators
+        name: total_delegators 
+        description: "Total number of addresses delegating voting power to delegates"
+      - &total_delegators_share
+        name: total_delegators_share
+        description: "Share of the total delegating addresses expressed in percentage"
+  
+  - name: op_governance_optimism_delegators
+    meta:
+      blockchain: optimism
+      project: op_governance_optimism
+      contributors: kaiblade
+
+    config:
+      tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
+    description: "Incremental model related to delegators"
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+            
+    columns:
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - &fromDelegate
+        name: fromDelegate
+        description: "Delegate from which voting power is redelegated"
+      - &toDelegate
+        name: toDelegate
+        description: "Delegate to which voting power is redelegated"
+
+  - name: op_governance_optimism_voting_power
+    meta:
+      blockchain: optimism
+      project: op_governance_optimism
+      contributors: kaiblade
+
+    config:
+      tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
+    description: "Incremental model related to delegates' voting power"
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+            
+    columns:
+      - *block_time
+      - *tx_hash
+      - *evt_index
+      - *delegate
+      - &newBalance
+        name: newBalance
+        description: "Latest voting power of delegates"
+      - &previousBalance
+        name: previousBalance
+        description: "Previous voting power of delegates"
+      - *power_diff
+  
+  - name: op_governance_optimism_delegates_addresses
+    meta:
+      blockchain: optimism
+      project: op_governance_optimism
+      contributors: kaiblade
+
+    config:
+      tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
+    description: "OP delegates addresses info including address name and ens"
+
+    columns:
+      - &address
+        name: address
+        description: "Addresses of delegates"
+        tests:
+          - unique
+          - not_null
+      - &name
+        name: name
+        description: "Name associated with each of the delegate addresses"
+      - &ens
+        name: ens
+        description: "Ethereum Name Service ID associated with the delegates addresses"
+
+
+
+     
+      
