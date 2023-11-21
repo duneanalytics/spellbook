@@ -35,7 +35,7 @@ src_LendingPool_evt_LiquidationCall as (
   {% endif %}
 ),
 
-base_deposit as (
+base_supply as (
   select
     'deposit' as transaction_type,
     case
@@ -93,14 +93,14 @@ select
   token_address,
   depositor,
   withdrawn_to,
-  withdrawn_to,
+  liquidator,
   amount,
   cast(date_trunc('month', evt_block_time) as date) as block_month,
   evt_block_time as block_time,
   evt_block_number as block_number,
   evt_tx_hash as tx_hash,
   evt_index
-from base_deposit
+from base_supply
 
 {% endmacro %}
 
@@ -141,7 +141,7 @@ src_LendingPool_evt_LiquidationCall as (
   {% endif %}
 ),
 
-base_deposit as (
+base_supply as (
   select
     'deposit' as transaction_type,
     reserve as token_address,
@@ -197,7 +197,7 @@ select
   evt_block_number as block_number,
   evt_tx_hash as tx_hash,
   evt_index
-from base_deposit
+from base_supply
 
 {% endmacro %}
 
@@ -240,7 +240,7 @@ src_LendingPool_evt_LiquidationCall as (
   {% endif %}
 ),
 
-base_deposit as (
+base_supply as (
   select
     'deposit' as transaction_type,
     reserve as token_address,
@@ -296,6 +296,6 @@ select
   evt_block_number as block_number,
   evt_tx_hash as tx_hash,
   evt_index
-from base_deposit
+from base_supply
 
 {% endmacro %}
