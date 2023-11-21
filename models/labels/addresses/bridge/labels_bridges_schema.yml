@@ -94,27 +94,16 @@ models:
       - *updated_at
       - *model_name
       - *label_type
-<<<<<<< HEAD
       
   - name: labels_bridges_polygon
     meta:
       blockchain: polygon
-=======
-  - name: labels_bridges_arbitrum
-    meta:
-      blockchain: arbitrum
->>>>>>> arb-bridge
       sector: labels
       project: bridges
       contributors: rantum
     config:
-<<<<<<< HEAD
       tags: ['labels', 'polygon', 'bridges']
     description: "Known bridges addresses on polygon"
-=======
-      tags: ['labels', 'arbitrum', 'bridges']
-    description: "Known bridges addresses on Arbitrum"
->>>>>>> arb-bridge
     columns:
       - *blockchain
       - *address
@@ -125,7 +114,6 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-<<<<<<< HEAD
       - *label_type  
       
   - name: labels_bridges_base
@@ -147,12 +135,47 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-<<<<<<< HEAD
       - *label_type  
-      
-=======
-      - *label_type
->>>>>>> poly-bridges
-=======
-      - *label_type
->>>>>>> arb-bridge
+
+  - name: labels_bridges_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'optimism', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+  
+  - name: labels_bridges_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'arbitrum', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+  
