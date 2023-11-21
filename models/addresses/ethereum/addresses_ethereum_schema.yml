@@ -1,23 +1,6 @@
 version: 2
 
 models:
-  - name: addresses_ethereum_bridges
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'bridges', 'addresses', 'ethereum']
-    description: "Known bridge addresses"
-    columns:
-      - name: address
-        description: "Address of known Bridges"
-      - name: bridge_name
-        description: "Name of protocol behind the bridge"
-      - name: description
-        description: "Description of the bridge"
-
   - name: addresses_ethereum_ofac_sanctioned
     meta:
       blockchain: ethereum
