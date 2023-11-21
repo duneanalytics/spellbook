@@ -1,7 +1,7 @@
 {% macro nft_mints(blockchain, base_contracts, base_traces, erc20_transfer, base_transactions, eth_currency_contract ) %}
 
 WITH namespaces AS (
-    SELECT 
+    SELECT
         address
         , min_by(namespace, created_at) AS namespace
 	FROM {{ base_contracts }}
@@ -9,11 +9,11 @@ WITH namespaces AS (
 	)
 
 , nfts_per_tx AS (
-    SELECT 
+    SELECT
         tx_hash
         , sum(amount) AS nfts_minted_in_tx
     FROM {{ ref('nft_transfers') }}
-    WHERE 
+    WHERE
         blockchain = '{{blockchain}}'
         AND "from"= 0x0000000000000000000000000000000000000000
         {% if is_incremental() %}
@@ -122,7 +122,7 @@ FROM
             {% if is_incremental() %}
             AND {{incremental_predicate('et.block_time')}}
             {% endif %}
-        LEFT JOIN {{ source('prices','usd') }} pu_eth 
+        LEFT JOIN {{ source('prices','usd') }} pu_eth
             ON pu_eth.blockchain IS NULL
             AND pu_eth.minute=date_trunc('minute', et.block_time)
             AND pu_eth.symbol = 'ETH'
@@ -147,15 +147,15 @@ FROM
             {% if is_incremental() %}
             AND {{incremental_predicate('etxs.block_time')}}
             {% endif %}
-        LEFT JOIN {{ ref('nft_aggregators') }} agg 
+        LEFT JOIN {{ ref('nft_aggregators') }} agg
             ON etxs.to=agg.contract_address
             AND agg.blockchain = '{{blockchain}}'
-        LEFT JOIN {{ ref('tokens_nft') }} tok 
+        LEFT JOIN {{ ref('tokens_nft') }} tok
             ON tok.contract_address=nft_mints.contract_address
             and tok.blockchain = '{{blockchain}}'
         LEFT JOIN namespaces ec ON etxs.to=ec.address
-        {% if is_incremental() %}
-        LEFT JOIN {{this}} anti_txs 
+        {% if is_incremental() and false %} -- temp disabling this incremental block to test CI error
+        LEFT JOIN {{this}} anti_txs
             ON anti_txs.block_time=nft_mints.block_time
             AND anti_txs.tx_hash=nft_mints.tx_hash
         WHERE anti_txs.tx_hash IS NULL
