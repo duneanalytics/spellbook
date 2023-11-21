@@ -154,7 +154,7 @@ FROM
             ON tok.contract_address=nft_mints.contract_address
             and tok.blockchain = '{{blockchain}}'
         LEFT JOIN namespaces ec ON etxs.to=ec.address
-        {% if is_incremental() and false %} -- temp disabling this incremental block to test CI error
+        {% if is_incremental() %}
         LEFT JOIN {{this}} anti_txs
             ON anti_txs.block_time=nft_mints.block_time
             AND anti_txs.tx_hash=nft_mints.tx_hash
@@ -168,7 +168,7 @@ FROM
         AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
         {%- endif -%}
         {% if is_incremental() %}
-        {{incremental_predicate('nft_mints.block_time')}}
+        AND {{incremental_predicate('nft_mints.block_time')}}
         {% endif %}
         GROUP BY nft_mints.block_time, nft_mints.block_number, nft_mints.token_id, nft_mints.token_standard
         , nft_mints.amount, nft_mints."from", nft_mints.to, nft_mints.contract_address, etxs.to, nft_mints.evt_index
