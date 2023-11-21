@@ -162,7 +162,7 @@ FROM ( values
 ,('Setheum'	,'Setheum'	,'SETM'	,'258'	,'258'	,'https://setheum.xyz'	,'')
 ,('SUR Blockchain Network'	,'SUR'	,'SRN'	,'262'	,'1'	,'https://surnet.org'	,'https://explorer.surnet.org')
 ,('High Performance Blockchain'	,'HPB'	,'HPB'	,'269'	,'269'	,'https://hpb.io'	,'https://hscan.org')
-,('zkSync alpha testnet'	,'ETH'	,'ETH'	,'280'	,'280'	,'https://v2-docs.zksync.io/'	,'https://zksync2-testnet.zkscan.io')
+,('zkSync Era'	,'ETH'	,'ETH'	,'324'	,'324'	,'https://era.zksync.io/docs'	,'https://explorer.zksync.io')
 ,('Boba Network'	,'ETH'	,'ETH'	,'288'	,'288'	,'https://boba.network'	,'https://bobascan.com')
 ,('Optimism on Gnosis'	,'OGC'	,'xDAI'	,'300'	,'300'	,'https://www.xdaichain.com/for-developers/optimism-optimistic-rollups-on-gc'	,'https://blockscout.com/xdai/optimism')
 ,('Filecoin - Mainnet'	,'FIL'	,'FIL'	,'314'	,'314'	,'https://filecoin.io'	,'https://filfox.info/en')
