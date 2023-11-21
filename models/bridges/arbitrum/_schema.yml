@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: bridges_arbitrum_addresses
+    meta:
+      blockchain: arbitrum
+      sector: bridges
+      project: addresses
+      contributors: rantum
+    config:
+      tags: ['table', 'bridges', 'addresses', 'arbitrum']
+    description: "Known bridge addresses"
+    columns:
+      - name: blockchain 
+        description: "Name of blockchain"
+      - name: address
+        description: "Address of known Bridges"
+        tests:
+          - unique
+      - name: bridge_name
+        description: "Name of protocol behind the bridge"
+      - name: description
+        description: "Description of the bridge"

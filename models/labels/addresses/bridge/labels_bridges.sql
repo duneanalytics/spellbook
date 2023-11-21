@@ -2,15 +2,23 @@
     alias = 'bridge',
     materialized = 'table',
     file_format = 'delta',
+<<<<<<< HEAD
     post_hook='{{ expose_spells(\'["ethereum", "fantom", "base", "polygon"]\',
                                 "sector",
                                 "labels",
                                 \'["ilemi", "rantum"]\') }}')
+=======
+    post_hook='{{ expose_spells(\'["ethereum", "fantom", "arbitrum"]\',
+                                "sector",
+                                "labels",
+                                \'["ilemi","rantum"]\') }}')
+>>>>>>> arb-bridge
 }}
 
 {% set bridges_models = [
  ref('labels_bridges_ethereum')
  , ref('labels_bridges_fantom')
+ , ref('labels_bridges_arbitrum')
 ] %}
 
 SELECT *
