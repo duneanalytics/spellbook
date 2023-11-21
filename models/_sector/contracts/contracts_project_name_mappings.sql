@@ -119,5 +119,6 @@ from (
     ,('allo_protocol', 'allo protocol (gitcoin)')
     ,('union_protocol', 'Union Finance')
     ,('rubic_crosschain', 'Rubic')
+    ,('gyroscope', 'Gyroscope')
 
     ) as temp_table (dune_name, mapped_name)
