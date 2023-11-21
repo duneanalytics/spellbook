@@ -94,7 +94,28 @@ models:
       - *updated_at
       - *model_name
       - *label_type
-
+      
+  - name: labels_bridges_polygon
+    meta:
+      blockchain: polygon
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'polygon', 'bridges']
+    description: "Known bridges addresses on polygon"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+      
   - name: labels_bridges_base
     meta:
       blockchain: base
@@ -114,5 +135,9 @@ models:
       - *created_at
       - *updated_at
       - *model_name
+<<<<<<< HEAD
       - *label_type  
       
+=======
+      - *label_type
+>>>>>>> poly-bridges
