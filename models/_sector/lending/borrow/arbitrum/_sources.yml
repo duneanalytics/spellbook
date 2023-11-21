@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: aave_v3_arbitrum
+    tables:
+      - name: L2Pool_evt_Borrow
+      - name: L2Pool_evt_Repay
+      - name: L2Pool_evt_LiquidationCall
