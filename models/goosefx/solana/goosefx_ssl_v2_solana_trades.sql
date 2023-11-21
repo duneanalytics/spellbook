@@ -30,8 +30,8 @@
             , ip.call_tx_id as init_tx
             , ip.call_block_time as init_time
         FROM {{ source('goosefx_solana', 'gfx_ssl_v2_call_createPair') }} ip 
-        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_tokenAMint
-        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_tokenBMint
+        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_mintOne
+        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_mintTwo
     )
 
     , all_swaps as (
