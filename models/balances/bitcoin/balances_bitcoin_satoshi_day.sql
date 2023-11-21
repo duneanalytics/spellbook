@@ -1,7 +1,7 @@
 {{ config(
         schema = 'balances_bitcoin',
         alias = 'satoshi_day',
-        
+
         partition_by = ['day'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                         "sector",
@@ -36,7 +36,8 @@ SELECT
     p.price as price_btc,
     b.amount_transfer_usd as profit,
     b.amount * p.price as amount_usd,
-    b.amount * p.price + b.amount_transfer_usd as total_asset
+    b.amount * p.price + b.amount_transfer_usd as total_asset,
+    now() as updated_at
 FROM daily_balances b
 INNER JOIN days d ON b.day <= d.day AND d.day < b.next_day
 LEFT JOIN {{ source('prices', 'usd') }} p
