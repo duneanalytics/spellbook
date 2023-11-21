@@ -31,11 +31,12 @@ WITH unified_mappings AS (
                         
                 ) a (proposal_name, project_name)
 
-                UNION ALL
+                -- Commenting out for runtime, but future versions should move these refs later
+                -- UNION ALL
 
-                SELECT
-                dune_name AS proposal_name, mapped_name AS project_name
-                FROM {{ ref('contracts_optimism_project_name_mappings') }}
+                -- SELECT
+                -- dune_name AS proposal_name, mapped_name AS project_name
+                -- FROM contracts_project_name_mappings
 
         ) u
 )
