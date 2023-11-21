@@ -41,7 +41,7 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        run: "dbt compile $PROFILE"
+        run: "dbt --warn-error compile $PROFILE"
 
       - name: check schemas
         run: |
