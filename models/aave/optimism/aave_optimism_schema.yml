@@ -110,41 +110,41 @@ models:
         name: evt_block_number
         description: "Event block number"
 
-  - name: aave_v3_optimism_borrow
-    meta:
-      blockchain: optimism
-      sector: lending
-      project: aave_v3
-      contributors: batwayne, chuxin
-    config:
-      tags: ['ethereum', 'aave_v3', 'borrow', 'aave', 'lending']
-    description: "All aave v3 transactions involving borrow transactions on optimism"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - version
-            - token_address
-            - evt_tx_hash
-            - evt_block_number
-            - evt_index
-    columns:
-      - *version
-      - *transaction_type
-      - *symbol
-      - *token_address
-      - &borrower
-        name: borrower
-        description: "Borrower wallet address"
-      - &repayer
-        name: repayer
-        description: "Repayer wallet address"
-      - *liquidator
-      - *amount
-      - *usd_amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_time
-      - *evt_block_number
+#  - name: aave_v3_optimism_borrow
+#    meta:
+#      blockchain: optimism
+#      sector: lending
+#      project: aave_v3
+#      contributors: batwayne, chuxin
+#    config:
+#      tags: ['ethereum', 'aave_v3', 'borrow', 'aave', 'lending']
+#    description: "All aave v3 transactions involving borrow transactions on optimism"
+#    tests:
+#      - dbt_utils.unique_combination_of_columns:
+#          combination_of_columns:
+#            - version
+#            - token_address
+#            - evt_tx_hash
+#            - evt_block_number
+#            - evt_index
+#    columns:
+#      - *version
+#      - *transaction_type
+#      - *symbol
+#      - *token_address
+#      - &borrower
+#        name: borrower
+#        description: "Borrower wallet address"
+#      - &repayer
+#        name: repayer
+#        description: "Repayer wallet address"
+#      - *liquidator
+#      - *amount
+#      - *usd_amount
+#      - *evt_tx_hash
+#      - *evt_index
+#      - *evt_block_time
+#      - *evt_block_number
 
   - name: aave_optimism_supply
     meta:
@@ -170,29 +170,29 @@ models:
       - *evt_block_time
       - *evt_block_number
 
-  - name: aave_optimism_borrow
-    meta:
-      blockchain: optimism
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin
-    config:
-      tags: ['optimism', 'aave', 'borrow', 'aave', 'lending']
-    description: "All aave v1 transactions involving borrow transactions on optimism"
-    columns:
-      - *version
-      - *transaction_type
-      - *symbol
-      - *token_address
-      - *borrower
-      - *repayer
-      - *liquidator
-      - *amount
-      - *usd_amount
-      - *evt_tx_hash
-      - *evt_index
-      - *evt_block_time
-      - *evt_block_number    
+#  - name: aave_optimism_borrow
+#    meta:
+#      blockchain: optimism
+#      sector: lending
+#      project: aave
+#      contributors: batwayne, chuxin
+#    config:
+#      tags: ['optimism', 'aave', 'borrow', 'aave', 'lending']
+#    description: "All aave v1 transactions involving borrow transactions on optimism"
+#    columns:
+#      - *version
+#      - *transaction_type
+#      - *symbol
+#      - *token_address
+#      - *borrower
+#      - *repayer
+#      - *liquidator
+#      - *amount
+#      - *usd_amount
+#      - *evt_tx_hash
+#      - *evt_index
+#      - *evt_block_time
+#      - *evt_block_number    
 
   - name: aave_v3_optimism_flashloans
     meta:
@@ -255,4 +255,3 @@ models:
         - name: recipient
         - name: contract_address
         - name: block_month
-        
