@@ -821,8 +821,6 @@ models:
       polygon:
         +schema: chainlink_polygon
 
-    contracts:
-      +schema: contracts
 
     clipper:
       +schema: clipper

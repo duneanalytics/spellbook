@@ -3,12 +3,12 @@ version: 2
 models:
   - name: contracts_optimism_contract_mapping
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on base."
+      tags: ['evm', 'optimism', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on op mainnet."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -113,7 +113,7 @@ models:
 
   - name: contracts_optimism_find_self_destruct_contracts
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -143,12 +143,12 @@ models:
 
   - name: contracts_optimism_base_starting_level
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Base Level for mapping of contracts to its creators and names on base."
+      tags: ['evm', 'optimism', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on op mainnet."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -183,12 +183,12 @@ models:
 
   - name: contracts_optimism_base_iterated_creators
     meta:
-      blockchain: base
+      blockchain: optimism
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Iterated creators for mapping of contracts to its creators and names on base."
+      tags: ['evm', 'optimism', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on op mainnet."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
