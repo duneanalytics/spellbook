@@ -134,12 +134,12 @@ WITH pool_labels AS (
         SELECT
         day,
         CASE 
-            WHEN day < DATE '2022-07-03' THEN 1
-            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25
-            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35
-            WHEN day >= DATE '2023-07-24' THEN 0.175
+            WHEN day < DATE '2022-07-03' THEN 0.25 -- veBAL release
+            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 -- BIP 19
+            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 -- BIP 161
+            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371
         END AS treasury_share
-    FROM UNNEST(SEQUENCE(DATE '2022-01-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
+    FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
 
 
