@@ -40,8 +40,8 @@ jobs:
       - name: Activate DuneSQL Cluster
         run: "./scripts/ensure_cluster.sh"
 
-      - name: dbt compile to create manifest to compare to
-        run: "dbt compile $PROFILE"
+      - name: dbt compile to create manifest to compare to, fail on warnings to help clean prior to merge
+        run: "dbt --warn-error compile $PROFILE"
 
       - name: check schemas
         run: |
