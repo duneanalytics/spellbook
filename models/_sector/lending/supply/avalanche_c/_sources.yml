@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: aave_v2_avalanche_c
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_RedeemUnderlying
+
+  - name: aave_v3_avalanche_c
+    tables:
+      - name: Pool_evt_Deposit
+      - name: Pool_evt_RedeemUnderlying
