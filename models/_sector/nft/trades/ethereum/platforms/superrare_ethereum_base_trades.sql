@@ -26,7 +26,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_Sold') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -43,7 +43,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRare_evt_Sold') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -60,7 +60,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareMarketAuction_evt_AcceptBid') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -77,7 +77,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRare_evt_AcceptBid') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -94,7 +94,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AcceptOffer') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -111,7 +111,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_AuctionSettled') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -128,7 +128,7 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareBazaar_evt_Sold') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 
     union all
@@ -146,11 +146,14 @@ with all_superrare_sales as (
             , evt_index as sub_tx_trade_id
     from {{ source('superrare_ethereum','SuperRareAuctionHouse_evt_AuctionSettled') }}
     {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
+    where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 )
 
 SELECT
+    'ethereum' as blockchain,
+    'superrare' as project,
+    'v1' as project_version,
     a.block_time,
     a.block_number,
     a.nft_token_id,
@@ -186,7 +189,7 @@ left join {{ source('erc721_ethereum','evt_transfer') }} minter on minter.contra
     and minter.tokenId = a.nft_token_id
     and minter."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
-    and minter.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    and minter.{{incremental_predicate('evt_block_time')}}
     {% else %}
     and minter.evt_block_time >= {{ project_start_date }}
     {% endif %}
@@ -195,7 +198,7 @@ left join {{ source('erc20_ethereum','evt_transfer') }} minter_superrare on mint
     and minter_superrare.value = a.nft_token_id
     and minter_superrare."from" = 0x0000000000000000000000000000000000000000
     {% if is_incremental() %}
-    and minter_superrare.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    and minter_superrare.{{incremental_predicate('evt_block_time')}}
     {% else %}
     and minter_superrare.evt_block_time >= {{ project_start_date }}
     {% endif %}
