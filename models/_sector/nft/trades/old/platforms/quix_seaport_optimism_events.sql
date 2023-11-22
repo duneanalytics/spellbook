@@ -15,7 +15,7 @@ WITH fee_wallets as (
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
-    {{ seaport_fork_trades(
+    {{ seaport_v3_fork_trades(
      blockchain = 'optimism'
      ,source_transactions = source('optimism','transactions')
      ,Seaport_evt_OrderFulfilled = source('quixotic_optimism','Seaport_evt_OrderFulfilled')

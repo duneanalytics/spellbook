@@ -1,4 +1,4 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, wrapped_token_deposit = null, wrapped_token_withdrawal = null) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 {# denormalized tables are not yet in use #}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
@@ -42,44 +42,6 @@ WITH transfers AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
-
-    {% if wrapped_token_deposit and wrapped_token_withdrawal %}
-    UNION ALL
-
-    SELECT t.evt_block_time AS block_time
-    , t.evt_block_number AS block_number
-    , t.evt_tx_hash AS tx_hash
-    , t.evt_index
-    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
-    , t.contract_address
-    -- technically this is not a standard 20 token, but we use it for consistency
-    , '{{token_standard_20}}' AS token_standard
-    , 0x0000000000000000000000000000000000000000 as "from"  -- TODO: change to variable
-    , t.dst as "to"
-    , t.wad AS amount_raw -- is this safe cross chain?
-    FROM {{ wrapped_token_deposit }} t
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
-    {% endif %}
-
-    UNION ALL
-
-    SELECT t.evt_block_time AS block_time
-    , t.evt_block_number AS block_number
-    , t.evt_tx_hash AS tx_hash
-    , t.evt_index
-    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
-    , t.contract_address
-    -- technically this is not a standard 20 token, but we use it for consistency
-    , '{{token_standard_20}}' AS token_standard
-    , t.src as "from"
-    , 0x0000000000000000000000000000000000000000 as "to"  -- TODO: change to variable
-    , t.wad AS amount_raw -- is this safe cross chain?
-    FROM {{ wrapped_token_withdrawal }} t
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
-    {% endif %}
-{% endif %}
     )
 
 SELECT '{{blockchain}}' as blockchain

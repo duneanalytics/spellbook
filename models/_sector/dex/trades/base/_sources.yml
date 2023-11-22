@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_base
+  - name: aerodrome_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated

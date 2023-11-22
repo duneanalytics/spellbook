@@ -229,10 +229,10 @@ with events_raw as (
         ,er.block_number
         ,tx."from" as tx_from
         ,tx.to as tx_to
-        ,cast((2.5*(er.amount_raw)/100)as uint256) as platform_fee_amount_raw
-        ,2.5*((er.amount_raw / power(10,t1.decimals)))/100 AS platform_fee_amount
-        ,2.5*(((er.amount_raw / power(10,t1.decimals))* p1.price))/100 AS platform_fee_amount_usd
-        ,CAST(2.5 AS DOUBLE) AS platform_fee_percentage
+        ,cast((double '2.5'*(er.amount_raw)/100)as uint256) as platform_fee_amount_raw
+        ,double '2.5'*((er.amount_raw / power(10,t1.decimals)))/100 AS platform_fee_amount
+        ,double '2.5'*(((er.amount_raw / power(10,t1.decimals))* p1.price))/100 AS platform_fee_amount_usd
+        ,CAST(double '2.5' AS DOUBLE) AS platform_fee_percentage
         ,CAST(tr.value as uint256) as royalty_fee_amount_raw
         ,tr.value / power(10, t1.decimals) as royalty_fee_amount
         ,tr.value / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
