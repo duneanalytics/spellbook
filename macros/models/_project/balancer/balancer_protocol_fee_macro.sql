@@ -158,7 +158,7 @@ WITH pool_labels AS (
         r.treasury_share,
         SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_revenue_usd
     FROM decorated_protocol_fee f
-    INNER JOIN revenue_share r
+    INNER JOIN revenue_share r 
         ON r.day = f.day
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
