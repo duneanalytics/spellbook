@@ -15,14 +15,14 @@
     )
 }}
 
-select
+select distinct --distinct to deduplicate traces that appear to be duplicates, with same trace address (just one has an extra 0 at the end)
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
     -CAST(et.value AS INT256) as amount_raw,
     et.tx_hash as tx_hash, --different to the tx hash in block explorer and zksync.transactions
-    array_join(et.trace_address, ',') as trace_address
+    case when element_at(trace_address, -1) = 0 then array_join(trim_array(trace_address, 1), ',') else array_join(et.trace_address, ',') end as trace_address
 from {{ source('zksync', 'traces') }} et
 join {{ ref('safe_zksync_safes') }} s on et."from" = s.address
     and et."from" != et.to -- exclude calls to self to guarantee unique key property
@@ -39,14 +39,14 @@ where {{ incremental_predicate('et.block_time') }}
 
 union all
 
-select
+select distinct --distinct to deduplicate traces that appear to be duplicates, with same trace address (just one has an extra 0 at the end)
     s.address,
     try_cast(date_trunc('day', et.block_time) as date) as block_date,
     CAST(date_trunc('month', et.block_time) as DATE) as block_month,
     et.block_time,
     CAST(et.value AS INT256) as amount_raw,
     et.tx_hash as tx_hash, --different to the tx hash in block explorer and zksync.transactions
-    array_join(et.trace_address, ',') as trace_address
+    case when element_at(trace_address, -1) = 0 then array_join(trim_array(trace_address, 1), ',') else array_join(et.trace_address, ',') end as trace_address
 from {{ source('zksync', 'traces') }} et
 join {{ ref('safe_zksync_safes') }} s on et.to = s.address
     and et."from" != et.to -- exclude calls to self to guarantee unique key property
