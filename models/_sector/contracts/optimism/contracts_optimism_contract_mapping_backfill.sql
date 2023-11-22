@@ -1,7 +1,11 @@
  {{
   config(
         schema = 'contracts_optimism',
-        alias = 'contract_mapping'
+        alias = 'contract_mapping',
+        post_hook='{{ expose_spells(\'["optimism"]\',
+                                    "sector",
+                                    "contracts",
+                                    \'["msilb7", "chuxin"]\') }}'
   )
 }}
 
