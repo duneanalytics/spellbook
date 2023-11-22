@@ -110,7 +110,7 @@ FROM
     , (0x2d4F5E4982F980BC61aA571AE63f66bF3577618C, 'BlockFi', 'BlockFi 1', 'CEX')
     , (0xB61428Db947a9eE049B966fb0536CB00579753eD, 'Korbit', 'Korbit 1', 'CEX')
     , (0x8d874F5A07dF691bC8e56818Ca1eBc6027B60d51, 'Paxos', 'Paxos 1', 'CEX')
-    , (0xC44b7316936E2F004E688fD53a95e060Df1811C3, 'Revolut', 'Revolut 1', 'CEX')
+    , (0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 1', 'CEX')
     , (0x4757d97449aca795510b9f3152c6a9019a3545c3, 'Daniel Wang', 'wangdong.eth',   'Solo Staker')
     , (0x69aa0361dbb0527d4f1e5312403bd41788fe61fe, 'Daniel Wang', 'danielwang.eth', 'Solo Staker')
     , (0xa12baeb64d4de260ed48a3ab5de8d5cbea1acdbd, 'Daniel Wang', 'Daniel Wang 1',  'Solo Staker')
