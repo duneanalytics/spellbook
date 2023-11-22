@@ -61,4 +61,15 @@ SELECT
     , d.royalty_fee_address
     , d.platform_fee_address
     , d.sub_tx_trade_id
+    , tx."from" as tx_from
+    , tx."to" as tx_to
+    , bytearray_reverse(bytearray_substring(bytearray_reverse(tx.data),1,32))  as tx_data_marker
 FROM trade_detail d
+INNER JOIN {{source('polygon', 'transactions')}} tx
+    ON d.block_number = tx.block_number
+    AND d.tx_hash = tx.hash
+    {% if is_incremental() %}
+        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+        AND tx.block_time >= {{project_start_date}}
+    {% endif %}

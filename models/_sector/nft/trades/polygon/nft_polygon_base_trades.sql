@@ -1,20 +1,13 @@
 {{ config(
-    schema = 'nft',
+    schema = 'nft_polygon',
     alias = 'base_trades',
-    partition_by = ['blockchain','project','block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['project','project_version','tx_hash','sub_tx_trade_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    materialized = 'view'
     )
 }}
-
-
+-- (project, project_version, model)
 {% set nft_models = [
- ref('nft_ethereum_base_trades')
- ,ref('nft_polygon_base_trades')
- ,ref('nft_old_base_trades')
+     ('aurem',    'v1',   ref('aurem_polygon_base_trades'))
+    ,('dew',    'v1',   ref('dew_polygon_base_trades'))
 ] %}
 
 with base_union as (

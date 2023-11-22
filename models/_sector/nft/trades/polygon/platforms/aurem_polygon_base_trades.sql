@@ -9,7 +9,7 @@
     )
 }}
 
-{% set project_start_date = "cast('2023-10-14' as timestamp)" %}
+{% set project_start_date = "cast('2023-10-01' as timestamp)" %}
 
 with trade_detail as (
     SELECT
@@ -17,7 +17,7 @@ with trade_detail as (
         , o.evt_block_number AS block_number
         , t.contract_address AS nft_contract_address
         , o.tokenId AS nft_token_id
-        , uint256 '1' AS nft_amount
+        , t.amount AS nft_amount
         , o.maker AS seller
         , o.taker AS buyer
         , CASE WHEN o.orderType = CAST(0 AS uint256) THEN 'Buy'
@@ -36,16 +36,16 @@ with trade_detail as (
         , cast(NULL as varbinary) as platform_fee_address
         , o.evt_index as sub_tx_trade_id
     FROM {{ source('aurem_polygon','Exchange_evt_OrderFilled') }} o
-    INNER JOIN {{ source('erc721_polygon', 'evt_transfer') }} t ON o.evt_tx_hash = t.evt_tx_hash
+    INNER JOIN {{ ref('nft_polygon_transfers') }} t ON o.evt_tx_hash = t.tx_hash
         AND o.maker = t."from"
         AND o.taker = t."to"
-        AND o.tokenId = t.tokenId
+        AND o.tokenId = t.token_id
     {% if is_incremental() %}
     WHERE o.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
     WHERE o.evt_block_time >= {{project_start_date}}
-        AND t.evt_block_time >= {{project_start_date}}
+        AND t.block_time >= {{project_start_date}}
     {% endif %}
 ),
 
@@ -85,6 +85,17 @@ SELECT
     , d.royalty_fee_address
     , d.platform_fee_address
     , d.sub_tx_trade_id
+    , tx."from" as tx_from
+    , tx."to" as tx_to
+    , bytearray_reverse(bytearray_substring(bytearray_reverse(tx.data),1,32))  as tx_data_marker
 FROM trade_detail d
+INNER JOIN {{source('polygon', 'transactions')}} tx
+    ON d.block_number = tx.block_number
+    AND d.tx_hash = tx.hash
+    {% if is_incremental() %}
+        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+        AND tx.block_time >= {{project_start_date}}
+    {% endif %}
 LEFT JOIN payment_detail p ON d.tx_hash = p.tx_hash
     AND d.sub_tx_trade_id = p.sub_tx_trade_id
