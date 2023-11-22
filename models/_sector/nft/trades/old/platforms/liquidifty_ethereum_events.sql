@@ -5,7 +5,7 @@
     incremental_strategy = 'merge',
     unique_key = ['block_number', 'unique_trade_id'],
     alias = 'events',
-    
+
 )}}
 
 {% set weth_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
@@ -46,7 +46,7 @@ with v2 as (
 ),
 stack as (
     select
-        cast(null as varchar) as version,
+        'v2' as version,
         evt_block_time as block_time,
         cast(null as uint256) as token_id,
         'erc721' as token_standard,
@@ -101,9 +101,9 @@ v3 as (
         cast(json_extract_scalar(currency, '$.amount') as uint256) as amount_raw,
         case
             when json_extract_scalar(currency, '$.assetType') = '0' then {{ weth_address }}
-            else cast(json_extract_scalar(currency, '$.collection') as varbinary)
+            else from_hex(json_extract_scalar(currency, '$.collection'))
         end as currency_contract,
-        cast(json_extract_scalar(nft, '$.collection') as varbinary) as nft_contract_address,
+        from_hex(json_extract_scalar(nft, '$.collection')) as nft_contract_address,
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
