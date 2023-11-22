@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_avalanche_c',
+    schema = 'lending_polygon',
     alias = 'base_supply',
     materialized = 'view'
   )
@@ -8,8 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v2_avalanche_c_base_supply'),
-    ref('aave_v3_avalanche_c_base_supply')
+    ref('aave_v2_polygon_base_supply'),
+    ref('aave_v3_polygon_base_supply')
   ]
 %}
 
