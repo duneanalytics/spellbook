@@ -40,3 +40,7 @@ sources:
     tables:
       - name: ERC721NFTMarketV1_evt_Trade
 
+  - name: gashero_polygon
+    tables:
+      - name: MOOAR_evt_OrderFulfilled
+      - name: MOOAR_evt_OrdersMatched
