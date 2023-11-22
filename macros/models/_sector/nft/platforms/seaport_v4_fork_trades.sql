@@ -1,19 +1,24 @@
-{% macro seaport_fork_trades(
+{# /*
+ 0x00000000000001ad428e4906ae43d8f9852d0dd6 Seaport v1.4
+ 0x00000000000000adc04c56bf30ac9d3c0aaf14dc Seaport v1.5
+ */ #}
+{% macro seaport_v4_fork_trades(
      blockchain
      ,source_transactions
      ,Seaport_evt_OrderFulfilled
-     ,Seaport_call_matchAdvancedOrders
-     ,Seaport_call_matchOrders
+     ,Seaport_evt_OrdersMatched
      ,fee_wallet_list_cte
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0x0000000000000000000000000000000000000000'
      ,native_token_symbol = 'ETH'
      ,start_date = '2023-02-01'
-     ,seaport_fork_address = '0x00000000006c3852cbef3e08e8df289169ede581'
+     ,Seaport_order_contracts = [
+        '0x00000000000001ad428e4906ae43d8f9852d0dd6'
+        ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc'
+     ]
      ,project = 'seaport_fork'
      ,version = 'seaport'
 ) %}
---This macro is a copy of seaport_v3_trades with support for a different contract address
 
 with source_ethereum_transactions as (
     select *
@@ -54,6 +59,28 @@ with source_ethereum_transactions as (
     {% if is_incremental() %}
       and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+)
+,iv_orders_matched AS (
+    select om_block_time
+    , om_tx_hash
+    , om_evt_index
+    , om_order_hash
+    , min(om_order_id) as om_order_id
+    from(
+    select evt_block_time as om_block_time
+          ,evt_tx_hash as om_tx_hash
+          ,evt_index as om_evt_index
+          ,om_order_id
+          ,om_order_hash
+      from {{ Seaport_evt_OrdersMatched }}
+      cross join unnest(orderhashes) with ordinality as foo(om_order_hash,om_order_id)
+     where 1=1
+     {% if Seaport_order_contracts %}
+         and contract_address in ({% for order_contract in Seaport_order_contracts %}
+            {{order_contract}}{%- if not loop.last -%},{%- endif -%}
+         {% endfor %})
+     {% endif %}
+    ) group by 1,2,3,4  -- deduplicate order hash re-use in advanced matching
 )
 ,fee_wallet_list as (
     select wallet_address, wallet_name
@@ -117,8 +144,12 @@ with source_ethereum_transactions as (
             , offer_item
         from {{ Seaport_evt_OrderFulfilled }}
         cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
-        where contract_address = {{ seaport_fork_address }}    -- seaport v1.1
-         and recipient != 0x0000000000000000000000000000000000000000
+        where 1=1
+        {% if Seaport_order_contracts %}
+            and contract_address in ({% for order_contract in Seaport_order_contracts %}
+                {{order_contract}}{%- if not loop.last -%},{%- endif -%}
+            {% endfor %})
+        {% endif %}
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
@@ -184,8 +215,12 @@ with source_ethereum_transactions as (
             , consideration_idx
         from {{ Seaport_evt_OrderFulfilled }}
         cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
-       where contract_address = {{ seaport_fork_address }} -- Seaport v1.1
-         and recipient != 0x0000000000000000000000000000000000000000
+       where 1=1
+        {% if Seaport_order_contracts %}
+            and contract_address in ({% for order_contract in Seaport_order_contracts %}
+                {{order_contract}}{%- if not loop.last -%},{%- endif -%}
+            {% endfor %})
+        {% endif %}
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
         {% endif %}
@@ -194,117 +229,12 @@ with source_ethereum_transactions as (
         {% endif %}
     )
 )
-,iv_match_output as (
-    select block_time
-          ,block_number
-          ,tx_hash
-          ,evt_index
-          ,sub_type
-          ,sub_idx
-          ,case offer_first_item
-                when '0' then 'native'
-                when '1' then 'erc20'
-                when '2' then 'erc721'
-                when '3' then 'erc1155'
-                when '4' then 'erc721'
-                when '5' then 'erc1155'
-                else 'etc'
-           end as offer_first_item_type
-          ,case consider_first_item
-                when '0' then 'native'
-                when '1' then 'erc20'
-                when '2' then 'erc721'
-                when '3' then 'erc1155'
-                when '4' then 'erc721'
-                when '5' then 'erc1155'
-                else 'etc'
-           end as consideration_first_item_type
-          ,offerer
-          ,receiver as recipient
-          ,sender
-          ,receiver
-          ,zone
-          ,token_contract_address
-          ,cast(original_amount as uint256) as original_amount
-          ,case item_type_code
-                when '0' then 'native'
-                when '1' then 'erc20'
-                when '2' then 'erc721'
-                when '3' then 'erc1155'
-                when '4' then 'erc721'
-                when '5' then 'erc1155'
-                else 'etc'
-           end as item_type
-          ,token_id
-          ,platform_contract_address
-          ,1 as offer_cnt
-          ,1 as consideration_cnt
-          ,NULL as order_hash
-          ,false as is_private
-      from (select call_block_time as block_time
-                  ,call_block_number as block_number
-                  ,call_tx_hash as tx_hash
-                  ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
-                  ,'match_adv_ord' as sub_type
-                  ,execution_idx as sub_idx
-                  ,from_hex(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.zone')) as zone
-                  ,from_hex(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.offerer')) as offerer
-                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
-                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(advancedOrders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
-                  ,from_hex(json_extract_scalar(execution,'$.offerer')) as sender
-                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
-                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
-                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.itemType') as item_type_code
-                  ,cast(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as uint256) as token_id
-                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
-                  ,contract_address as platform_contract_address
-            from (select *
-                    from {{ Seaport_call_matchAdvancedOrders }}
-                    cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
-                   where call_success
-                     and contract_address = {{ seaport_fork_address }}  -- Seaport v1.1
-                 {% if not is_incremental() %}
-                     and call_block_time >= timestamp '{{start_date}}'  -- seaport first txn
-                 {% else %}
-                     and call_block_time >= date_trunc('day', now() - interval '7' day)
-                 {% endif %}
-                )
-            union all
-            select call_block_time as block_time
-                  ,call_block_number as block_number
-                  ,call_tx_hash as tx_hash
-                  ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
-                  ,'match_ord' as sub_type
-                  ,execution_idx as sub_idx
-                  ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.zone')) as zone
-                  ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offerer')) as offerer
-                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
-                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
-                  ,from_hex(json_extract_scalar(execution,'$.offerer')) as sender
-                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
-                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
-                  ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.itemType') as item_type_code
-                  ,cast(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.identifier') as uint256) as token_id
-                  ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.recipient')) as receiver
-                  ,contract_address as platform_contract_address
-            from (select *
-                    from {{ Seaport_call_matchOrders }}
-                    cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
-                   where call_success
-                     and contract_address = {{ seaport_fork_address }}  -- Seaport v1.1
-                 {% if not is_incremental() %}
-                     and call_block_time >= timestamp '{{start_date}}'  -- seaport first txn
-                  {% else %}
-                     and call_block_time >= date_trunc('day', now() - interval '7' day)
-                 {% endif %}
-                )
-    )
-)
+
 ,iv_base_pairs as (
     select a.block_time
             ,a.block_number
             ,a.tx_hash
-            ,a.evt_index
+            ,coalesce(a.om_evt_index, a.evt_index) as evt_index  -- when order_matched exists, then replace evt_index to its
             ,a.sub_type
             ,a.sub_idx
             ,a.offer_first_item_type
@@ -323,6 +253,8 @@ with source_ethereum_transactions as (
             ,a.consideration_cnt
             ,a.order_hash
             ,a.is_private
+            ,a.om_evt_index
+            ,a.om_order_id
             ,a.is_self_trans
             ,a.is_platform_fee
             ,a.eth_erc_idx
@@ -330,128 +262,37 @@ with source_ethereum_transactions as (
             ,a.erc721_cnt
             ,a.erc1155_cnt
             ,case when offer_first_item_type = 'erc20' then 'offer accepted'
-                  when offer_first_item_type in ('erc721','erc1155') then 'buy'
-                  else 'etc' -- some txns has no nfts
-             end as order_type
-            ,case when offer_first_item_type = 'erc20' and sub_type = 'offer' and item_type = 'erc20' then true
-                  when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('native','erc20') then true
-                  else false
-             end is_price
-            ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 0 then true  -- offer accepted has no price at all. it has to be calculated.
-                  when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 1 then true
-                  else false
-             end is_netprice
+                when offer_first_item_type in ('erc721','erc1155') then 'buy'
+                else 'etc' -- some txns has no nfts
+            end as order_type
+            ,case when om_order_id % 2 = 0 then false
+                when offer_first_item_type = 'erc20' and sub_type = 'offer' and item_type = 'erc20' then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('native','erc20') then true
+                else false
+            end is_price
+            ,case when om_order_id % 2 = 0 then false
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx = 0 then true  -- offer accepted has no price at all. it has to be calculated.
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx = 1 then true
+                else false
+            end is_netprice
             ,case when is_platform_fee then false
-                  when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then true
-                  when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then true
-                  else false
-             end is_creator_fee
+                when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then true
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then true
+                when om_order_id % 2 = 0 and item_type = 'erc20' then true  -- hard code for order-matched joined additional creator fee, condition : 2nd order + erc20
+                else false
+            end is_creator_fee
             ,sum(case when is_platform_fee then null
-                      when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then 1
-                      when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then 1
-                 end) over (partition by tx_hash, evt_index order by eth_erc_idx) as creator_fee_idx
+                    when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then 1
+                    when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then 1
+                    when om_order_id % 2 = 0 and item_type = 'erc20' then 1
+                end) over (partition by tx_hash, coalesce(om_evt_index, evt_index) order by evt_index, eth_erc_idx) as creator_fee_idx
             ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
-                  when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true
-                  else false
-             end is_traded_nft
+                when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true
+                else false
+            end is_traded_nft
             ,case when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
-                  else false
-             end is_moved_nft
-            ,fee_wallet_name
-    from (select a.block_time
-                ,a.block_number
-                ,a.tx_hash
-                ,a.evt_index
-                ,a.sub_type
-                ,a.sub_idx
-                ,a.offer_first_item_type
-                ,a.consideration_first_item_type
-                ,a.offerer
-                ,a.recipient
-                ,a.sender
-                ,a.receiver
-                ,a.zone
-                ,a.token_contract_address
-                ,a.original_amount
-                ,a.item_type
-                ,a.token_id
-                ,a.platform_contract_address
-                ,a.offer_cnt
-                ,a.consideration_cnt
-                ,a.order_hash
-                ,a.is_private
-                ,f.wallet_name as fee_wallet_name
-                ,case when sender = receiver then true else false end is_self_trans
-                ,case when f.wallet_address is not null then true else false end as is_platform_fee
-                ,case when item_type in ('native','erc20')
-                    then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx)
-                end as eth_erc_idx
-              ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
-                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
-                  end) over (partition by tx_hash, evt_index) as nft_cnt
-              ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721') then 1
-                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721') then 1
-                  end) over (partition by tx_hash, evt_index) as erc721_cnt
-              ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc1155') then 1
-                        when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
-                  end) over (partition by tx_hash, evt_index) as erc1155_cnt
-          from iv_offer_consideration a
-              left join fee_wallet_list f on f.wallet_address = a.receiver
-          ) a
-    where not is_self_trans
-    -- match orders
-    union all
-    select a.block_time
-            ,a.block_number
-            ,a.tx_hash
-            ,a.evt_index
-            ,a.sub_type
-            ,a.sub_idx
-            ,a.offer_first_item_type
-            ,a.consideration_first_item_type
-            ,a.offerer
-            ,a.recipient
-            ,a.sender
-            ,a.receiver
-            ,a.zone
-            ,a.token_contract_address
-            ,a.original_amount
-            ,a.item_type
-            ,a.token_id
-            ,a.platform_contract_address
-            ,a.offer_cnt
-            ,a.consideration_cnt
-            ,a.order_hash
-            ,a.is_private
-            ,a.is_self_trans
-            ,a.is_platform_fee
-            ,a.eth_erc_idx
-            ,a.nft_cnt
-            ,a.erc721_cnt
-            ,a.erc1155_cnt
-            ,case when offer_first_item_type in ('erc20','native') then 'offer accepted'
-                  when offer_first_item_type in ('erc721','erc1155') then 'buy'
-                  else 'etc' -- some txns has no nfts
-             end as order_type
-            ,case when item_type in ('native','erc20') then true
-                  else false
-             end is_price
-            ,false as is_netprice -- it has to be calculated.
-            ,case when is_platform_fee then false -- to os fee wallet has to be excluded
-                  when offer_first_item_type in ('erc721','erc1155') and eth_erc_idx = 1 then false  -- buy = first transfer is is profit
-                  when offer_first_item_type in ('erc20','native') and eth_erc_idx = eth_erc_cnt then false  -- offer_accepted = last transfer is is profit
-                  when eth_erc_idx > 0 then true  -- else is all creator fees
-                  else false
-             end is_creator_fee
-            ,sum(case when is_platform_fee then null -- to os fee wallet has to be excluded
-                      when offer_first_item_type in ('erc721','erc1155') and eth_erc_idx = 1 then null  -- buy = first transfer is is profit
-                      when offer_first_item_type in ('erc20','native') and eth_erc_idx = eth_erc_cnt then null  -- offer_accepted = last transfer is is profit
-                      when eth_erc_idx > 0 then 1  -- else is all creator fees
-                 end) over (partition by tx_hash, evt_index order by eth_erc_idx) as creator_fee_idx
-            ,case when item_type in ('erc721','erc1155') then true
-                  else false
-             end is_traded_nft
-            ,false as is_moved_nft
+                else false
+            end is_moved_nft
             ,fee_wallet_name
     from  (select a.block_time
                 ,a.block_number
@@ -475,18 +316,27 @@ with source_ethereum_transactions as (
                 ,a.consideration_cnt
                 ,a.order_hash
                 ,a.is_private
+                ,b.om_evt_index
+                ,b.om_order_id
                 ,f.wallet_name as fee_wallet_name
                 ,case when sender = receiver then true else false end is_self_trans
                 ,case when f.wallet_address is not null then true else false end as is_platform_fee
                 ,case when item_type in ('native','erc20')
                     then sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index, sub_type order by sub_idx)
                 end as eth_erc_idx
-                ,sum(case when item_type in ('erc721','erc1155') then 1 end) over (partition by tx_hash, evt_index) as nft_cnt
-                ,sum(case when item_type in ('erc721') then 1 end) over (partition by tx_hash, evt_index) as erc721_cnt
-                ,sum(case when item_type in ('erc1155') then 1 end) over (partition by tx_hash, evt_index) as erc1155_cnt
-                ,sum(case when item_type in ('native','erc20') then 1 end) over (partition by tx_hash, evt_index) as eth_erc_cnt
-          from iv_match_output a
-               left join fee_wallet_list f on f.wallet_address = a.receiver
+                ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then 1
+                            when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then 1
+                    end) over (partition by tx_hash, evt_index) as nft_cnt
+                ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721') then 1
+                            when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721') then 1
+                    end) over (partition by tx_hash, evt_index) as erc721_cnt
+                ,sum(case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc1155') then 1
+                            when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc1155') then 1
+                    end) over (partition by tx_hash, evt_index) as erc1155_cnt
+            from iv_offer_consideration a
+                    left join fee_wallet_list f on f.wallet_address = a.receiver
+                    left join iv_orders_matched b on b.om_tx_hash = a.tx_hash
+                                                    and b.om_order_hash = a.order_hash
           ) a
     where not is_self_trans
 )
@@ -630,6 +480,8 @@ with source_ethereum_transactions as (
     and p.minute = date_trunc('minute', a.block_time)
   left join ref_nft_aggregators agg on agg.contract_address = t.to
   left join ref_nft_aggregators_marks agg_m on bytearray_starts_with(bytearray_reverse(t.data), bytearray_reverse(agg_m.hash_marker))
+  where t."from" != 0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd -- this is a special address which transact English Auction, will handle later. test comment to force CI
+
 )
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.

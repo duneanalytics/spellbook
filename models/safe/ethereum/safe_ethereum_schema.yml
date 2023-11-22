@@ -50,6 +50,10 @@ models:
             - tx_hash
             - trace_address
     columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
       - *address
       - *block_date
       - *block_month
@@ -62,6 +66,9 @@ models:
       - *tx_hash
       - &trace_address
         name: trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"
 
   - name: safe_ethereum_singletons
     meta:
