@@ -1,30 +1,50 @@
 {{ config(
-tags=['prod_exclude'],
-        alias = 'erc721_latest',
+
+        partition_by=['wallet_address, token_address'],
+        materialized='incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['token_address', 'token_id'],
+        alias = 'erc721_by_tokenId_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
                                             "balances",
-                                            \'["hildobby","soispoke","dot2dotseurat"]\') }}'
+                                            \'["hildobby","soispoke","dot2dotseurat","denz-e"]\') }}'
         )
 }}
 
-/*
-    note: this spell has not been migrated to dunesql, therefore is only a view on spark
-        please migrate to dunesql to ensure up-to-date logic & data
-*/
+WITH
 
-SELECT
-    'ethereum' as blockchain,
-    b.wallet_address,
-    b.token_address,
-    b.tokenId,
-    nft_tokens.name as collection,
-    b.updated_at
-FROM {{ ref('transfers_ethereum_erc721_rolling_day') }} b
-LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = b.token_address
-AND nft_tokens.blockchain = 'ethereum'
-LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }}  as nc
-    ON b.token_address = nc.token_address
-WHERE recency_index = 1
-AND amount = 1
-AND nc.token_address IS NULL 
+    erc721_transfers AS (
+        SELECT
+            tr.blockchain,
+            tr.to AS wallet_address,
+            tr.contract_address AS token_address,
+            tr.token_id AS tokenId,
+            nft_tokens.name AS collection,
+            cast(current_timestamp AS timestamp) AS updated_at,
+            row_number() over (partition by tr.contract_address, tr.token_id order by tr.block_time desc, tr.evt_index desc) as recency_index
+        FROM {{ ref('nft_transfers') }} tr
+        LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = tr.contract_address
+            AND nft_tokens.blockchain = 'ethereum'
+        LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }} nc ON nc.token_address = tr.contract_address
+            AND nc.tokenId = tr.token_id
+        WHERE TRUE
+            AND tr.blockchain = 'ethereum'
+            AND tr.token_standard = 'erc721'
+            AND nc.token_address IS NULL
+            {% if is_incremental() %}
+            AND {{incremental_predicate('tr.block_time')}}
+            {% endif %}
+
+    )
+
+    SELECT
+        blockchain,
+        wallet_address,
+        token_address,
+        tokenId,
+        collection,
+        updated_at
+    FROM erc721_transfers
+    WHERE recency_index = 1

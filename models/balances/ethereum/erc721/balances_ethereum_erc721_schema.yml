@@ -58,12 +58,12 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc721
-      contributors: soispoke, dot2dotseurat, hildobby, 0xRob
+      contributors: soispoke, dot2dotseurat, hildobby, 0xRob, denz-e
     config:
-      tags: ['balances', 'ethereum', 'erc721', 'latest', 'soispoke', 'dot2dotseurat', 'hildobby']
+      tags: ['balances', 'ethereum', 'erc721', 'latest', 'soispoke', 'dot2dotseurat', 'hildobby', 'denz-e']
     description: >
-        Latest token balances of ERC721 Ethereum tokens per wallet and contract address pair.
-        Depends on erc721_ethereum_transfers.
+        Latest owners of ERC721 Ethereum tokens per contract address and tokenId pair.
+        Depends on nft_transfers.
     columns:
       - *blockchain
       - *wallet_address
