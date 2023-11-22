@@ -110,7 +110,7 @@ with tx_batch_appends as (
             MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l2_output_oracle_from_address",
             MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l2_output_oracle_to_address"
         FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-        WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo')
+        WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora', 'Aevo', 'Mode', 'Lyra', 'Orderly Network')
         GROUP BY protocol_name
       ) as op ON (
           t."from" = op.l1_batch_inbox_from_address
