@@ -6,8 +6,8 @@
 }}
 -- (project, project_version, model)
 {% set nft_models = [
-     ('aurem',    'v1',   ref('aurem_polygon_base_trades'))
-    ,('dew',    'v1',   ref('dew_polygon_base_trades'))
+     ref('aurem_polygon_base_trades')
+    ,ref('dew_polygon_base_trades')
 ] %}
 
 with base_union as (
