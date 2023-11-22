@@ -1,10 +1,7 @@
 {{config(
-        tags = ['static'],
-        alias = 'addresses',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "cex",
-                                    \'["hildobby", "soispoke", "web3_data"]\') }}')}}
+        schema = 'cex_ethereum',
+        alias = 'addresses'
+        )}}
 
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
@@ -1207,6 +1204,10 @@ FROM (VALUES
     , ('ethereum', 0x6cf6a8488D70b1743134d6D69950cDa60325A42F, 'Sideshift', 'Sideshift 2', 'hildobby', date '2023-11-16')
     , ('ethereum', 0x722b33b843BAca81aa70cEf29C9512de7B3f8767, 'Sideshift', 'Sideshift Staking Reserve', 'hildobby', date '2023-11-16')
     , ('ethereum', 0x3808708e761B988d23Ae011Ed0e12674Fb66bD62, 'Sideshift', 'Sideshift Token Vault', 'hildobby', date '2023-11-16')
+    -- Revolut
+    , ('ethereum', 0xb23360CCDd9Ed1b15D45E5d3824Bb409C8D7c460, 'Revolut', 'Revolut 1', 'hildobby', date '2023-11-22')
+    , ('ethereum', 0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 2', 'hildobby', date '2023-11-22')
+    , ('ethereum', 0x9b0c45d46D386cEdD98873168C36efd0DcBa8d46, 'Revolut', 'Revolut 3', 'hildobby', date '2023-11-22')
     -- Beldex
     , ('ethereum', 0x258b7b9a1ba92f47f5f4f5e733293477620a82cb, 'Beldex', 'Beldex 1', 'hildobby', date '2022-08-28') -- https://etherscan.io/address/0x258b7b9a1ba92f47f5f4f5e733293477620a82cb
     -- SouthXchange

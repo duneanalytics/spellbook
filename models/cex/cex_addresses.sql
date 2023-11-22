@@ -9,13 +9,7 @@
 
 
 {% set cex_models = [
-ref('cex_arbitrum_addresses')
-, ref('cex_avalanche_c_addresses')
-, ref('cex_bnb_addresses')
-, ref('cex_ethereum_addresses')
-, ref('cex_fantom_addresses')
-, ref('cex_optimism_addresses')
-, ref('cex_polygon_addresses')
+ref('cex_evms_addresses')
 ] %}
 
 SELECT *
