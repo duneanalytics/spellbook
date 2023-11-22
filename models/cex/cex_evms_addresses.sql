@@ -997,7 +997,8 @@ FROM (VALUES
     -- TopBTC
     , (0xb2cc3cdd53fc9a1aeaf3a68edeba2736238ddc5d, 'TopBTC', 'TopBTC 1', 'hildobby', date '2022-08-28')
     -- Ramp
-    , (0x98DB3a41bF8bF4DeD2C92A84ec0705689DdEEF8B, 'Ramp', 'Ramp 1', 'hildobby', date '2023-11-22')
+    , (0x98DB3a41bF8bF4DeD2C92A84ec0705689DdEEF8B, 'Ramp', 'Ramp UK 1', 'hildobby', date '2023-11-22')
+    , (0x8a37F0290AE85D08522d2A605617e76128Fd0712, 'Ramp', 'Ramp US 1', 'hildobby', date '2023-11-22')
     -- BingX
     , (0x4597a8206978c5de22173432b2f0cb899eef9fa3, 'BingX', 'BingX 1', 'hildobby', date '2023-09-12')
     , (0xefa02443139f31e0336608e5a2f99d26784e4bfd, 'BingX', 'BingX 2', 'hildobby', date '2023-09-12')
