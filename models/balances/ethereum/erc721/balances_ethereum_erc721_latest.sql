@@ -1,6 +1,5 @@
 {{ config(
 
-        partition_by=['wallet_address', 'token_address'],
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
