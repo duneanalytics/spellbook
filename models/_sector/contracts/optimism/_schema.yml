@@ -298,3 +298,49 @@ models:
         description: "Project name associated with the predeploy."
       - *contract_address
       - *contract_name
+  
+  - name: contracts_optimism_contract_mapping_backfill
+    meta:
+      blockchain: optimism
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['evm', 'optimism', 'contracts', 'addresses']
+    description: "Backwards Compatability with Columns - Mapping of contracts to its creators and names on op mainnet."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - created_tx_hash
+            
+    columns:
+      - *trace_creator_address
+      - *contract_address
+      - *contract_project
+      - *token_symbol
+      - *contract_name
+      - *creator_address
+      - *created_time
+      - &contract_creator_if_factory
+        name: contract_creator_if_factory
+      - *is_self_destruct
+      - &creation_tx_hash
+        name: creation_tx_hash
+      - *created_block_number
+      - *created_tx_from
+      - *created_tx_to
+      - *created_tx_method_id
+      - *created_tx_index
+      - *top_level_time
+      - *top_level_tx_hash
+      - *top_level_block_number
+      - *top_level_tx_from
+      - *top_level_tx_to
+      - *top_level_tx_method_id
+      - *code_bytelength
+      - *token_standard
+      
+      - *is_eoa_deployed
+      - &code_deploy_rank
+        name: code_deploy_rank
+        description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed by chain? (1 = 1st). This can be used for spam filtering."
