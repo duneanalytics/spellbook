@@ -3,6 +3,6 @@ version: 2
 sources:
   - name: aave_v3_arbitrum
     tables:
-      - name: L2Pool_evt_Deposit
+      - name: L2Pool_evt_Supply
       - name: L2Pool_evt_Withdraw
       - name: L2Pool_evt_RedeemUnderlying
