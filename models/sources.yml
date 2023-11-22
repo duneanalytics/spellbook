@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: tokens
+    description: "tokens.erc20 from tokens dbt project"
+    tables:
+      - name: erc20
+  - name: tokens_ethereum
+    description: "tokens_ethereum.erc20 from tokens dbt project"
+    tables:
+      - name: erc20
+  
