@@ -3,7 +3,7 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['token_address', 'token_id'],
+        unique_key = ['token_address', 'tokenId'],
         alias = 'erc721_by_tokenId_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                             "sector",
