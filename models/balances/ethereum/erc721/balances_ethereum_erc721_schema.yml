@@ -79,11 +79,12 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc721
-      contributors: Henrystats, 0xBoxer
+      contributors: Henrystats, 0xBoxer, denz-e
     config:
-      tags: ['balances', 'ethereum', 'erc721', 'noncompliant', 'Henrystats']
+      tags: ['balances', 'ethereum', 'erc721', 'noncompliant', 'Henrystats', 'denz-e']
     description: >
-        ERC721 NFT contract addresses that allow multiple minting(from 0x000..000) of the same tokenId.
-        Depends on erc721_ethereum_transfers.
+        ERC721 NFT contract address and tokenId pairs with multiple owners.
+        Depends on nft_transfers.
     columns:
       - *token_address
+      - *tokenId

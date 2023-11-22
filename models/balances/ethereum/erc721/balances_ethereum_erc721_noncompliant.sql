@@ -1,27 +1,31 @@
 {{ config(
-tags=['prod_exclude'],
         alias = 'erc721_noncompliant'
 ) 
 }}
 
-/*
-    note: this spell has not been migrated to dunesql, therefore is only a view on spark
-        please migrate to dunesql to ensure up-to-date logic & data
-*/
+WITH
 
-WITH 
+    erc721_transfers AS (
+        SELECT
+            tr.blockchain,
+            tr.to AS wallet_address,
+            tr.contract_address AS token_address,
+            tr.token_id AS tokenId,
+            row_number() over (partition by tr.contract_address, tr.token_id order by tr.block_time desc, tr.evt_index desc) as recency_index
+        FROM {{ ref('nft_transfers') }} tr
+        WHERE TRUE
+            AND tr.blockchain = 'ethereum'
+            AND tr.token_standard = 'erc721'
+    )
 
-multiple_owners as (
-    select 
-        blockchain,
-        token_address,
-        tokenId,
-        count(wallet_address) as holder_count --should always be 1
-    from {{ ref('transfers_ethereum_erc721_rolling_day') }}
-    WHERE recency_index = 1
-    AND amount = 1
-    group by blockchain, token_address, tokenId
-    having count(wallet_address) > 1
-)
+    , multiple_owners AS (
+        SELECT DISTINCT
+            token_address,
+            tokenId
+        FROM erc721_transfers
+        WHERE recency_index = 1
+        GROUP BY blockchain, token_address, tokenId
+        HAVING COUNT(wallet_address) > 1
+    )
 
-select distinct token_address as token_address FROM multiple_owners
+    SELECT * FROM multiple_owners
