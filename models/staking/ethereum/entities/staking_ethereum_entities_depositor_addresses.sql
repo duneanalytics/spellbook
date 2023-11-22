@@ -80,6 +80,8 @@ FROM
     , (0xfcd50905214325355a57ae9df084c5dd40d5d478, 'Sigma Prime Team', 'Sigma Prime Team', 'Solo Staker')
     , (0x7badde47f41ceb2c0889091c8fc69e4d9059fb19, 'Prysm Team', 'Prysm Team', 'Solo Staker')
     , (0x43a0927a6361258e6cbaed415df275a412c543b5, 'Teku Team', 'Teku Team', 'Solo Staker')
+    , (0x5bbe36152d3cd3eb7183a82470b39b29eedf068b, 'Hord', 'Hord', 'Liquid Staking')
+    , (0x349405b80c8bafd74da9d4308f3c7b60b4bf10e5, 'ClayStack', 'ClayStack', 'Staking Pool')
     , (0x5efaefd5f8a42723bb095194c9202bf2b83d8eb6, 'Nimbus Team', 'Nimbus Team', 'Solo Staker')
     , (0x4ca21e4d3a86e7399698f88686f5596dbe74adeb, 'P2P.org', 'P2P.org 1', 'Staking Pool')
     , (0x8e76a33f1aFf7EB15DE832810506814aF4789536, 'P2P.org', 'P2P.org 2', 'Staking Pool')

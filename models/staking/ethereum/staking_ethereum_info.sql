@@ -68,6 +68,8 @@ FROM (VALUES
     , ('Nimbus Team', 'ethnimbus')
     , ('RockX', 'rockx_official')
     , ('Bifrost', 'Bifrost')
+    , ('Hord', 'HordApp')
+    , ('ClayStack', 'ClayStack_HQ')
     , ('MintDice.com', 'MintDice')
     , ('DxPool', 'dxpoolOfficial')
     --, ('Blox Staking', '')
