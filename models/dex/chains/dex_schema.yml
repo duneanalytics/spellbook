@@ -17,6 +17,8 @@ models:
             - tx_hash
             - project_contract_address
             - evt_index
+            - token_bought_address
+            - token_sold_address
     columns: 
       - &blockchain
         name: blockchain
