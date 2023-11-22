@@ -1,7 +1,7 @@
 {{ config(
     schema = 'liquidifty_bnb',
     alias = 'events',
-    
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -83,7 +83,7 @@ v2 as (
 ),
 stack as (
     select
-        cast(null as varchar) as version,
+        'v2' as version,
         evt_block_time as block_time,
         cast(null as uint256) as token_id,
         'erc721' as token_standard,
