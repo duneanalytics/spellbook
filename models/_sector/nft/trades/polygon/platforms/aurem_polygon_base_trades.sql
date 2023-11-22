@@ -27,7 +27,7 @@ with trade_detail as (
             END AS trade_category
         , 'secondary' AS trade_type
         , o.price AS price_raw
-        , 0x0000000000000000000000000000000000000000 AS currency_contract
+        , 0x0000000000000000000000000000000000001010 AS currency_contract
         , o.contract_address AS project_contract_address
         , o.evt_tx_hash AS tx_hash
         , uint256 '0' AS platform_fee_amount_raw

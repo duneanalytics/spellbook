@@ -26,7 +26,8 @@ with trade_detail as (
             END AS trade_category
         , 'secondary' AS trade_type
         , f.price AS price_raw
-        , f.currency AS currency_contract
+        , CASE WHEN f.currency = 0x0000000000000000000000000000000000000000 then 0x0000000000000000000000000000000000001010
+            ELSE f.currency END AS currency_contract
         , f.contract_address AS project_contract_address
         , f.evt_tx_hash AS tx_hash
         , uint256 '0' AS platform_fee_amount_raw
