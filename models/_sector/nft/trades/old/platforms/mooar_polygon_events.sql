@@ -14,7 +14,7 @@ WITH fee_wallets as (
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
-    {{ seaport_v4_trades(
+    {{ seaport_v4_fork_trades(
      blockchain = 'polygon'
      ,source_transactions = source('polygon','transactions')
      ,Seaport_evt_OrderFulfilled = source('gashero_polygon','MOOAR_evt_OrderFulfilled')
@@ -25,6 +25,8 @@ WITH fee_wallets as (
      ,native_token_symbol = 'MATIC'
      ,start_date = '2023-08-18'
      ,Seaport_order_contracts = ['0xaaaaaaaa33d3520a2266ce508bc079fcfe82c8e3']
+     ,project = 'mooar'
+     ,version = 'v1'
     )
   }}
 )
