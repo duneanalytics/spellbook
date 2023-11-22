@@ -29,60 +29,6 @@ models:
       - &variable_borrow_apy
         name: variable_borrow_apy
         description: "Hourly variable borrow interest rate value of the reserve"
-        
-  - name: moola_celo_supply
-    meta:
-      blockchain: celo
-      sector: lending
-      project: moola
-      contributors: tomfutago
-    config:
-      tags: ['celo', 'moola', 'supply', 'lending', 'aave_v2']
-    description: "All Moola transactions involving supply transactions on celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - &evt_block_month
-        name: evt_block_month
-        description: "Block Month column used to partition data in this table"
-      - &transaction_type
-        name: transaction_type
-        description: "Transaction type"
-      - *symbol
-      - &token_address
-        name: token_address
-        description: "Moola reserve contract address"  
-      - &depositor
-        name: depositor
-        description: "Depositor wallet address"
-      - &withdrawn_to
-        name: withdrawn_to
-        description: "The wallet address where the tokens are withdrawn"
-      - &liquidator
-        name: liquidator
-        description: "Liquidator wallet address"
-      - &amount
-        name: amount
-        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
-      - &amount_usd
-        name: amount_usd
-        description: "Token amount in USD" 
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: "Transaction hash of the event"
-      - &evt_index
-        name: evt_index
-        description: "Event index"   
-      - &evt_block_time
-        name: evt_block_time
-        description: "Timestamp for block event time in UTC"
-      - &evt_block_number
-        name: evt_block_number
-        description: "Event block number"
 
   - name: moola_celo_flashloans
     meta:
@@ -98,16 +44,32 @@ models:
             - evt_tx_hash
             - evt_index
     columns:
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
-      - *amount
-      - *amount_usd
-      - *evt_tx_hash
-      - *evt_index
+      - &evt_block_month
+        name: evt_block_month
+        description: "Block Month column used to partition data in this table"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event block number"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
+      - &amount_usd
+        name: amount_usd
+        description: "Token amount in USD"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
       - name: fee
         description: "Flashloan fee"
-      - *token_address
+      - &token_address
+        name: token_address
+        description: "Moola reserve contract address"
       - *symbol
       - name: recipient
         description: "Flashloan recipient"

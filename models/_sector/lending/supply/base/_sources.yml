@@ -4,4 +4,5 @@ sources:
   - name: aave_v3_base
     tables:
       - name: Pool_evt_Deposit
+      - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying

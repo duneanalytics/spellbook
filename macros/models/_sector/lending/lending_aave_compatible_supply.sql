@@ -19,7 +19,7 @@ src_LendingPool_evt_Deposit as (
   {% endif %}
 ),
 
-src_LendingPool_evt_RedeemUnderlying as (
+src_LendingPool_evt_Withdraw as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_RedeemUnderlying') }}
   {% if is_incremental() %}
@@ -66,7 +66,7 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_LendingPool_evt_RedeemUnderlying
+  from src_LendingPool_evt_Withdraw
   union all
   select
     'deposit_liquidation' as transaction_type,
@@ -125,9 +125,9 @@ src_LendingPool_evt_Deposit as (
   {% endif %}
 ),
 
-src_LendingPool_evt_RedeemUnderlying as (
+src_LendingPool_evt_Withdraw as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_RedeemUnderlying') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Withdraw') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -166,7 +166,7 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_LendingPool_evt_RedeemUnderlying
+  from src_LendingPool_evt_Withdraw
   union all
   select
     'deposit_liquidation' as transaction_type,
@@ -224,9 +224,9 @@ src_LendingPool_evt_Deposit as (
   {% endif %}
 ),
 
-src_LendingPool_evt_RedeemUnderlying as (
+src_LendingPool_evt_Withdraw as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_RedeemUnderlying') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Withdraw') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -265,7 +265,7 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_LendingPool_evt_RedeemUnderlying
+  from src_LendingPool_evt_Withdraw
   union all
   select
     'deposit_liquidation' as transaction_type,

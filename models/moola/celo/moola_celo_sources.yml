@@ -40,42 +40,6 @@ sources:
           description: "Variable borrow index value of the reserve"
         - name: variableBorrowRate
           description: "Variable borrow rate value of the reserve" 
-          
-      - name: LendingPool_evt_Deposit
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving deposits for Moola on Celo"
-        columns:
-        - &amount
-          name: amount
-          description: "The token transafer amount"       
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash 
-        - name: onBehalfOf
-          description: "The user wallet address if the token is deposited on behalf of another wallet"
-        - name: referral
-          description: "Deposit referral number"  
-        - *reserve
-        - &user
-          name: user
-          description: "The user wallet address"   
-          
-      - name: LendingPool_evt_Withdraw
-        loaded_at_field: evt_block_time
-        description: "Contians all the transactions involving withdrawals for Moola on Celo"
-        columns:
-        - *amount       
-        - *contract_address 
-        - *evt_block_number
-        - *evt_block_time
-        - *evt_index
-        - *evt_tx_hash 
-        - *reserve
-        - name: to
-          description: "Wallet address where the tokens are withdrawn and transferred"
-        - *user
 
       - name: LendingPool_evt_FlashLoan
         loaded_at_field: evt_block_time
