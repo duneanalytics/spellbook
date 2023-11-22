@@ -139,7 +139,7 @@ INNER JOIN
     AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
-{{ ref('tokens_erc20') }} er 
+{{ source('tokens', 'erc20', True) }} er 
     ON t.margin_asset = er.contract_address 
     AND er.blockchain = 'arbitrum'
 

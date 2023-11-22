@@ -78,7 +78,7 @@ with
             , contract_address as src_token_address
             , symbol
             , decimals
-        from {{ ref('tokens_erc20') }}
+        from {{ source('tokens', 'erc20', True) }}
     )
 
     , tokens_dst as (
@@ -87,7 +87,7 @@ with
             , contract_address as dst_token_address
             , symbol
             , decimals
-        from {{ ref('tokens_erc20') }}
+        from {{ source('tokens', 'erc20', True) }}
     )
 
     , additions as (

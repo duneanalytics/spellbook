@@ -39,7 +39,7 @@ FROM (
             AND tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
-        LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
+        LEFT JOIN {{source('tokens_ethereum', 'erc20', True)}} t
             ON t.contract_address = c1._l1Token
 
         WHERE call_success = true
@@ -61,7 +61,7 @@ FROM (
             AND tc.evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
 
-        LEFT JOIN {{ref('tokens_ethereum_erc20')}} t
+        LEFT JOIN {{source('tokens_ethereum', 'erc20', True)}} t
             ON t.contract_address = c2._l1Token
 
         WHERE call_success = true

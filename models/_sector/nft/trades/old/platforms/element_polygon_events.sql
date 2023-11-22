@@ -160,7 +160,7 @@ SELECT alet.blockchain
 , alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.seller as varchar) || cast(alet.buyer as varchar) || cast(alet.nft_contract_address as varchar) || cast(alet.token_id as varchar) || cast(alet.evt_index as varchar) AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='polygon'
-LEFT JOIN {{ ref('tokens_erc20') }} polygon_bep20_tokens ON polygon_bep20_tokens.contract_address=alet.currency_contract AND polygon_bep20_tokens.blockchain='polygon'
+LEFT JOIN {{ source('tokens', 'erc20', True) }} polygon_bep20_tokens ON polygon_bep20_tokens.contract_address=alet.currency_contract AND polygon_bep20_tokens.blockchain='polygon'
 LEFT JOIN {{ ref('tokens_nft') }} polygon_nft_tokens ON polygon_nft_tokens.contract_address=alet.currency_contract AND polygon_nft_tokens.blockchain='polygon'
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND (prices.contract_address=alet.currency_contract AND prices.blockchain=alet.blockchain)

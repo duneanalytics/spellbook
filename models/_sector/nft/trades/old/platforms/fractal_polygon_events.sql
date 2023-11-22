@@ -112,7 +112,7 @@ INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.bl
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
+LEFT JOIN {{ source('tokens', 'erc20', True) }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'polygon'
     AND p.contract_address = a.currency_contract
     AND p.minute = date_trunc('minute', a.evt_block_time)
