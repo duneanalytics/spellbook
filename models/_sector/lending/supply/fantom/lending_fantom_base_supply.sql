@@ -18,7 +18,6 @@ select
   project,
   version,
   transaction_type,
-  loan_type,
   token_address,
   depositor,
   withdrawn_to,

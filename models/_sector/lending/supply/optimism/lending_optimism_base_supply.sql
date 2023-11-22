@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_ethereum',
+    schema = 'lending_optimism',
     alias = 'base_supply',
     materialized = 'view'
   )
@@ -8,9 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v1_ethereum_base_supply'),
-    ref('aave_v2_ethereum_base_supply'),
-    ref('aave_v3_ethereum_base_supply')
+    ref('aave_v3_optimism_base_supply')
   ]
 %}
 
