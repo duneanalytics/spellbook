@@ -28,7 +28,7 @@ WITH blur_v2_trades AS (
     , NULL AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721Packed') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
@@ -51,7 +51,7 @@ WITH blur_v2_trades AS (
     , bytearray_substring(cast(makerFeeRecipientRate as varbinary),13,20) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721MakerFeePacked') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
@@ -74,14 +74,17 @@ WITH blur_v2_trades AS (
     , bytearray_substring(cast(takerFeeRecipientRate as varbinary),13,20) AS royalty_fee_address
     FROM {{ source('blur_v2_ethereum','BlurPool_evt_Execution721TakerFeePacked') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
     )
 
 SELECT
-  bt.block_time
+ 'ethereum' as blockchain
+, 'blur' as project
+, 'v2' as project_version
+, bt.block_time
 , bt.block_number
 , bt.tx_hash
 , bt.evt_index AS sub_tx_trade_id
@@ -100,10 +103,11 @@ SELECT
 , CAST(ROUND(bt.price_raw * bt.fee) AS UINT256) AS royalty_fee_amount_raw
 , bt.royalty_fee_address
 FROM blur_v2_trades bt
+-- todo: remove the join on transactions here
 INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.block_number
     AND txs.hash=bt.tx_hash
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('txs.block_time')}}
     {% else %}
     AND txs.block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
