@@ -15,8 +15,6 @@
     traces = source('fantom','traces'),
     transactions = source('fantom','transactions'),
     erc20_transfers = source('erc20_fantom','evt_transfer'),
-    native_contract_address = null,
-    wrapped_token_deposit = null,
-    wrapped_token_withdrawal = null,
+    native_contract_address = null
 )
 }}
