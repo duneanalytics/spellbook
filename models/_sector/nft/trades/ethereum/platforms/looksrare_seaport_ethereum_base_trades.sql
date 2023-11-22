@@ -12,7 +12,10 @@
 {% set looksrare_seaport_start_date = "cast('2023-06-28' as timestamp)" %}
 
 SELECT
-  s.evt_block_time AS block_time
+ 'ethereum' as blockchain
+, 'looksrare' as project
+, 'seaport' as project_version
+, s.evt_block_time AS block_time
 , s.evt_block_number AS block_number
 , s.evt_tx_hash AS tx_hash
 , s.offerer AS seller
@@ -35,7 +38,7 @@ WHERE s.contract_address = 0x00000000000000adc04c56bf30ac9d3c0aaf14dc
 AND s.zone = 0x0000000000000000000000000000000000000000
 AND try(from_hex(json_extract_scalar(s.consideration[2], '$.recipient')))  = 0x1838de7d4e4e42c8eb7b204a91e28e9fad14f536
 {% if is_incremental() %}
-AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+AND {{incremental_predicate('evt_block_time')}}
 {% else %}
 AND evt_block_time >= {{looksrare_seaport_start_date}}
 {% endif %}
