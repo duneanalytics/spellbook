@@ -17,9 +17,8 @@ WITH prices_patch as (
         ,price
         ,symbol
     FROM {{ ref('prices_usd_forward_fill') }}
-    WHERE blockchain = 'ethereum'
     {% if is_incremental() %}
-    AND {{incremental_predicate('minute')}}
+    WHERE {{incremental_predicate('minute')}}
     {% endif %}
     UNION ALL
     SELECT
