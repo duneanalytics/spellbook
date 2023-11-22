@@ -15,8 +15,18 @@
     traces = source('polygon','traces'),
     transactions = source('polygon','transactions'),
     erc20_transfers = source('erc20_polygon','evt_transfer'),
-    native_contract_address = null,
-    wrapped_token_deposit = source('mahadao_polygon', 'wmatic_evt_deposit'),
-    wrapped_token_withdrawal = source('mahadao_polygon', 'wmatic_evt_withdrawal'),
+    native_contract_address = null
 )
 }}
+
+UNION ALL
+
+SELECT * FROM
+(
+{{transfers_base_wrapped_token(
+    blockchain='polygon',
+    transactions = source('polygon','transactions'),
+    wrapped_token_deposit = source('mahadao_polygon', 'wmatic_evt_deposit'),
+    wrapped_token_withdrawal = source('mahadao_polygon', 'wmatic_evt_withdrawal')
+)}}
+)
