@@ -14,8 +14,6 @@ models:
           combination_of_columns:
             - address
     columns:
-      - name: blockchain
-        description: "Blockchain"
       - name: address
         description: "Address"
       - name: cex_name
