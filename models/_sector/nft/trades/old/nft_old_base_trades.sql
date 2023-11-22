@@ -1,15 +1,12 @@
 {{ config(
-    schema = 'nft',
-    alias = 'events_old',
-    
-    partition_by = ['blockchain','project','block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id', 'blockchain'])
+    schema = 'nft_old',
+    alias = 'base_trades',
+    materialized = 'view'
+    )
 }}
 
 
+-- while we refactor more marketplace models, they should be removed here and added to the chain specific base_trades unions.
 {% set nft_models = [
  ref('aavegotchi_polygon_events')
 ,ref('element_bnb_events')
@@ -54,60 +51,43 @@
 ,ref('zonic_optimism_events')
 ,ref('decentraland_polygon_events')
 ] %}
---missing still
---
 
-SELECT *
-FROM (
-    {% for nft_model in nft_models %}
+
+-- we have to do some column wrangling here to convert the old schema to the new base_trades schema
+SELECT * FROM  (
+{% for nft_model in nft_models %}
     SELECT
         blockchain,
         project,
-        version,
+        version as project_version,
         cast(date_trunc('day', block_time) as date) as block_date,
         cast(date_trunc('month', block_time) as date) as block_month,
         block_time,
-        token_id,
-        collection,
-        amount_usd,
-        token_standard,
-        trade_type,
-        number_of_items,
-        trade_category,
-        evt_type,
-        seller,
-        buyer,
-        amount_original,
-        amount_raw,
-        currency_symbol,
-        currency_contract,
-        nft_contract_address,
-        project_contract_address,
-        aggregator_name,
-        aggregator_address,
-        tx_hash,
         block_number,
+        tx_hash,
+        project_contract_address,
+        trade_category,
+        case when evt_type = 'Mint' then 'primary' else 'secondary' end as trade_type,
+        buyer,
+        seller,
+        nft_contract_address,
+        token_id as nft_token_id,
+        number_of_items as nft_amount,
+        amount_raw as price_raw,
+        currency_contract,
+        platform_fee_amount_raw,
+        royalty_fee_amount_raw,
+        cast(null as varbinary) as platform_fee_address,
+        royalty_fee_receive_address as royalty_fee_address,
         tx_from,
         tx_to,
-        platform_fee_amount_raw,
-        platform_fee_amount,
-        platform_fee_amount_usd,
-        platform_fee_percentage,
-        royalty_fee_receive_address,
-        royalty_fee_currency_symbol,
-        royalty_fee_amount_raw,
-        royalty_fee_amount,
-        royalty_fee_amount_usd,
-        royalty_fee_percentage,
-        unique_trade_id,
-        row_number() over (partition by unique_trade_id order by tx_hash) as duplicates_rank
+        cast(null as varbinary) as tx_data_marker,                                                  -- forwarc compatibility with aggregator marker matching
+        row_number() over (partition by tx_hash order by unique_trade_id) as sub_tx_trade_id,       -- intermediate fix to fill this column
+        row_number() over (partition by tx_hash, unique_trade_id order by tx_hash) as duplicates_rank
     FROM {{ nft_model }}
-    {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-)
-WHERE duplicates_rank = 1
+    )
+where duplicates_rank = 1

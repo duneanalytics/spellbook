@@ -1,5 +1,5 @@
 {{ config(
-        
+
         schema = 'nft_ethereum',
         alias = 'aggregators_markers',
 		materialized = 'table',
@@ -105,7 +105,10 @@
     ) AS temp_table (hash_marker ,aggregator_name, router_name)
   )
 
-  SELECT *
-    ,length(hash_marker) as hash_marker_size
+  SELECT
+    bytearray_reverse(bytearray_substring(bytearray_reverse(hash_marker),1,32)) as hash_marker  -- limit to 32 bytes, there should not be any collisions.
+    , aggregator_name
+    , router_name
+    , length(hash_marker) as hash_marker_size
   FROM all_markers
 
