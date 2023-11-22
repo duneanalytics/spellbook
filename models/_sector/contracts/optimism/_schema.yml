@@ -299,7 +299,7 @@ models:
       - *contract_address
       - *contract_name
   
-  - name: contracts_optimism_contract_mapping_backfill
+  - name: contracts_optimism_contract_mapping_backwards_compat
     meta:
       blockchain: optimism
       sector: contracts
