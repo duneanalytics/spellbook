@@ -8,23 +8,5 @@
 }}
 
 
-{% set cex_models = [
-ref('cex_evms_addresses')
-] %}
-
-SELECT *
-FROM (
-    {% for cex_model in cex_models %}
-    SELECT
-        blockchain, 
-        address,
-        cex_name,
-        distinct_name,
-        added_by,
-        added_date
-    FROM {{ cex_model }}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
-)
+SELECT 'evms' AS blockchain, address, cex_name, distinct_name, added_by, added_date
+FROM {{ ref('cex_evms_addresses') }}
