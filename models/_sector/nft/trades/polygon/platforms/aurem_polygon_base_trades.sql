@@ -66,8 +66,10 @@ payment_detail as (
     {% endif %}
 )
 
-SELECT
-      d.block_time
+SELECT 'polygon' as blockchain
+    , 'aurem' as project
+    , 'v1' as project_version
+    , d.block_time
     , d.block_number
     , d.nft_contract_address
     , d.nft_token_id
