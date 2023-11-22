@@ -27,6 +27,7 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
+
   - name: woofi_optimism_base_trades
     meta:
       blockchain: optimism
@@ -111,4 +112,4 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
-- name: dex_optimism_base_trades
+  - name: dex_optimism_base_trades
