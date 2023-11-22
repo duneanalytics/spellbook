@@ -15,7 +15,7 @@ WITH fee_wallets as (
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
-    {{ seaport_fork_trades(
+    {{ seaport_v3_fork_trades(
      blockchain = 'polygon'
      ,source_transactions = source('polygon','transactions')
      ,Seaport_evt_OrderFulfilled = source('oneplanet_polygon','Seaport_evt_OrderFulfilled')

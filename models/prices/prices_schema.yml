@@ -3,9 +3,9 @@ version: 2
 models:
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora
       sector: prices
-      contributors: aalan3
+      contributors: aalan3, hildobby
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
@@ -28,7 +28,7 @@ models:
 
   - name: prices_native_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora
       sector: prices
       contributors: aalan3, jeff-dude
     config:
