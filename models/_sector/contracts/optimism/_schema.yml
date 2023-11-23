@@ -311,7 +311,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address
-            - created_tx_hash
+            - creation_tx_hash
             
     columns:
       - *trace_creator_address
