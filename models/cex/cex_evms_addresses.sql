@@ -1183,10 +1183,10 @@ FROM (VALUES
     , (0x17bc58b788808dab201a9a90817ff3c168bf3d61, 'BigONE', 'BigONE 2', 'hildobby', date '2023-09-09')
     -- Circle
     , (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
-    , (0x166716C2838e182d64886135a96f1AABCA9A9756, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
-    , (0x55FE002aefF02F77364de339a1292923A15844B8, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
-    , (0xc4922d64a24675E16e1586e3e3Aa56C06fABe907, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
-    , (0xBF14DB80D9275FB721383a77C00Ae180fc40ae98, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
+    , (0x166716C2838e182d64886135a96f1AABCA9A9756, 'Circle', 'Circle 2', 'hildobby', date '2023-11-23')
+    , (0x55FE002aefF02F77364de339a1292923A15844B8, 'Circle', 'Circle 3', 'hildobby', date '2023-11-23')
+    , (0xc4922d64a24675E16e1586e3e3Aa56C06fABe907, 'Circle', 'Circle 4', 'hildobby', date '2023-11-23')
+    , (0xBF14DB80D9275FB721383a77C00Ae180fc40ae98, 'Circle', 'Circle 5', 'hildobby', date '2023-11-23')
     , (0x420F5035fd5dC62a167E7e7f08B604335aE272b8, 'Circle', 'Circle Token Minter 1', 'hildobby', date '2023-11-23')
     , (0x7F5c764cBc14f9669B88837ca1490cCa17c31607, 'Circle', 'Circle USD Coin 1', 'hildobby', date '2023-11-23')
     -- Allbit
