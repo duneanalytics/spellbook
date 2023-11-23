@@ -7,6 +7,7 @@
 
 {% set base_models = [
     ref('uniswap_v3_avalanche_c_base_trades')
+    , ref('airswap_avalanche_c_base_trades')
 ] %}
 
 WITH base_union AS (
