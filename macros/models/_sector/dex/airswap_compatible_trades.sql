@@ -1,7 +1,7 @@
 {% macro airswap_compatible_trades(
     blockchain = null,
     project = null,
-    sources = null
+    sources = []
     )
 %}
 
