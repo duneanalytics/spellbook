@@ -129,6 +129,10 @@ models:
             - tx_hash
             - trace_address
     columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
       - name: address
         description: "Safe contract address"
       - *block_date
@@ -139,3 +143,6 @@ models:
         description: "Raw amount of transferred ETH"
       - *tx_hash
       - *trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"
