@@ -1233,14 +1233,6 @@ FROM (VALUES
     -- Delta Exchange
     , (0xc07b9DDC7F87e76E682a7a4F3859586eEF1c7efd, 'Delta Exchange', 'Delta Exchange 1', 'hildobby', date '2023-11-23')
     , (0x50a3F3B8855c2DA88e56C7B0EF6E0e4A79F853f9, 'Delta Exchange', 'Delta Exchange Binance Deposit 1', 'hildobby', date '2023-11-23')
-    -- Coinmetro
-    , (0x4CF2220105995F006813923019f02BE1CCcA8132, 'Coinmetro', 'Coinmetro 1', 'hildobby', date '2023-11-23')
-    , (0x706Ee6cF36a4bF95ec7Fe5d468571B9E9e63FBB6, 'Coinmetro', 'Coinmetro 2', 'hildobby', date '2023-11-23')
-    , (0x7C1C73Bf60fEb40cBCF0F12324200238ee23BB54, 'Coinmetro', 'Coinmetro 3', 'hildobby', date '2023-11-23')
-    , (0xa270F3ad1a7a82E6a3157F12a900f1E25BC4FbFD, 'Coinmetro', 'Coinmetro 4', 'hildobby', date '2023-11-23')
-    , (0x46a189C7F37953b91E5bd75D0E608efdAfefAF1C, 'Coinmetro', 'Coinmetro 5', 'hildobby', date '2023-11-23')
-    , (0x1E7b450322E42b53D55ABC795913537fD680fe0c, 'Coinmetro', 'Coinmetro 6', 'hildobby', date '2023-11-23')
-    , (0x0BC7b31BF8ffAc8213E496102167FE73Fc30937a, 'Coinmetro', 'Coinmetro 7', 'hildobby', date '2023-11-23')
     -- Kuna Exchange
     , (0x9030a104a49141459F4B419BD6f56E4bA6fcd800, 'Kuna Exchange', 'Kuna Exchange 1', 'hildobby', date '2023-11-23')
     -- BW 
