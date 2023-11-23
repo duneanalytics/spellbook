@@ -8,3 +8,7 @@ sources:
   - name: sushiswap_v3_base
     tables:
       - name: UniswapV3Pool_evt_Swap
+  - name: aerodrome_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
