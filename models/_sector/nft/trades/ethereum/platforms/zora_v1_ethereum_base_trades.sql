@@ -10,7 +10,10 @@
 }}
 
 SELECT
-      bf.evt_block_time AS block_time
+     'ethereum' as blockchain
+    , 'zora' as project
+    , 'v1' as project_version
+    , bf.evt_block_time AS block_time
     , bf.evt_block_number AS block_number
     , bf.contract_address AS project_contract_address
     , bf.evt_tx_hash AS tx_hash
@@ -42,6 +45,6 @@ LEFT JOIN {{ source('zora_ethereum','Media_evt_Transfer') }} mt
     AND from_hex(JSON_EXTRACT_SCALAR(bf.bid, '$.bidder')) = mt.to
 WHERE from_hex(JSON_EXTRACT_SCALAR(bf.bid, '$.bidder')) != 0xe468ce99444174bd3bbbed09209577d25d1ad673   -- these are sells through the auction house which are included in V2
 {% if is_incremental() %}
-AND bf.evt_block_time >= date_trunc('day', now() - interval '7' day)
-AND mt.evt_block_time >= date_trunc('day', now() - interval '7' day)
+AND {{incremental_predicate('bf.evt_block_time')}}
+AND {{incremental_predicate('mt.evt_block_time')}}
 {% endif %}
