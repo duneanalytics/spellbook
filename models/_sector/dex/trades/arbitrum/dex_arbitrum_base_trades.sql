@@ -7,6 +7,8 @@
 
 {% set base_models = [
     ref('uniswap_v3_arbitrum_base_trades')
+    , ref('camelot_v2_arbitrum_base_trades')
+    , ref('camelot_v3_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
