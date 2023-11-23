@@ -1242,8 +1242,8 @@ FROM (VALUES
     , (0x1b8a38ea02cEDA9440E00C1Aeba26eE2DC570423, 'BitStorage', 'BitStorage 1', 'hildobby', date '2023-04-06')
     -- Coinzix
     , (0x4f50226BBc651EEB8E766591c4Dac762ad832de2, 'Coinzix', 'Coinzix 1', 'hildobby', date '2023-11-23')
-    , (0x9eE23657e6764f6DbAE17af8a8191ea3c29A6D1D, 'Coinzix', 'Coinzix 1', 'hildobby', date '2023-11-23')
-    , (0x48077400FAF11183c043Feb5184a13ea628Bb0DB, 'Coinzix', 'Coinzix 1', 'hildobby', date '2023-11-23')
+    , (0x9eE23657e6764f6DbAE17af8a8191ea3c29A6D1D, 'Coinzix', 'Coinzix 2', 'hildobby', date '2023-11-23')
+    , (0x48077400FAF11183c043Feb5184a13ea628Bb0DB, 'Coinzix', 'Coinzix 3', 'hildobby', date '2023-11-23')
     , (0x014C18ad92838E8bB62b0135a0Cf3f5CDD5Bd6F4, 'Coinzix', 'Coinzix Deployer 1', 'hildobby', date '2023-11-23')
     -- Nominex
     , (0xDbF1B10FE3e05397Cd454163F6F1eD0c1181C3B3, 'Nominex', 'Nominex Staking Service 1', 'hildobby', date '2023-11-23')
