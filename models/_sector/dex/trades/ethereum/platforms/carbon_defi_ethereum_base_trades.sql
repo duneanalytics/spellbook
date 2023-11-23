@@ -14,6 +14,7 @@
 
 WITH dexs AS (
     SELECT
+        t.evt_block_number AS block_number,
         t.evt_block_time AS block_time,
         t.trader AS taker,
         CAST(NULL as VARBINARY) as maker,
