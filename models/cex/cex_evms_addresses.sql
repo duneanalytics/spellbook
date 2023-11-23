@@ -622,6 +622,7 @@ FROM (VALUES
     , (0xdd07813c45CA55731dd12f6e5De59Ce9FE5304ad, 'KuCoin', 'KuCoin Deposit Funder 4', 'hildobby', date '2023-11-23')
     , (0x00F3e09Abe73AeC2D6AD7B8820049B60eBc73f94, 'KuCoin', 'KuCoin Deposit Funder 5', 'hildobby', date '2023-11-23')
     , (0xcB014880de8b1E5f6c90CBcD2c232970cF3Aec32, 'KuCoin', 'KuCoin Deposit Funder 6', 'hildobby', date '2023-11-23')
+    , (0xA1CE37506eadf62d2Be3741C644AA52a009d3A8b, 'KuCoin', 'KuCoin Deposit Funder 7', 'hildobby', date '2023-11-23')
     -- Crypto.com
     , (0x6262998ced04146fa42253a5c0af90ca02dfd2a3, 'Crypto.com', 'Crypto.com 1', 'hildobby', date '2022-08-28')
     , (0x46340b20830761efd32832a74d7169b29feb9758, 'Crypto.com', 'Crypto.com 2', 'hildobby', date '2022-08-28')
@@ -963,6 +964,8 @@ FROM (VALUES
     , (0xfa6cf22527d88270eea37f45af1808adbf3c1b17, 'Hotbit', 'Hotbit 14', 'hildobby', date '2022-08-28')
     , (0x6be61833FC4381990e82D7D4a9F4c9B3F67eA941, 'Hotbit', 'Hotbit 15', 'hildobby', date '2023-11-22')
     , (0x4b81c7Ff6912856AFBb40ACb32084A41F019B433, 'Hotbit', 'Hotbit 16', 'hildobby', date '2023-11-22')
+    , (0x66F7Bbf25c07e5D407A80010B0e9Ba96bF5A2A3E, 'Hotbit', 'Hotbit Deposit Funder 1', 'hildobby', date '2023-11-23')
+    , (0x5Ecddc1AC099074ae965D140A7c62bd71B7Fc80a, 'Hotbit', 'Hotbit Deposit Funder 2', 'hildobby', date '2023-11-23')
     -- CoinTiger
     , (0x5Dd697c77E80C7Fda3dA1cccd5214c3a75503727, 'CoinTiger', 'CoinTiger 1', 'hildobby', date '2023-11-18')
     , (0xe9d2AFFF18F08375D5B7a8A804e272b6c81Ceb9F, 'CoinTiger', 'CoinTiger 2', 'hildobby', date '2023-11-18')
@@ -1118,6 +1121,7 @@ FROM (VALUES
     , (0x40E832C3Df9562DfaE5A86A4849F27F687A9B46B, 'BtcTurk', 'BtcTurk 6', 'hildobby', date '2023-11-23')
     , (0x8C54EbDD960056d2CfF5998df5695dACA1FC0190, 'BtcTurk', 'BtcTurk 7', 'hildobby', date '2023-11-23')
     , (0xD2589c4061bF45a9a5212846AA72C2eD46377145, 'BtcTurk', 'BtcTurk 8', 'hildobby', date '2023-11-23')
+    , (0x16769E533352798deB664bA570230A758346Ca1A, 'BtcTurk', 'BtcTurk 9', 'hildobby', date '2023-11-23')
     , (0x46f80018211D5cBBc988e853A8683501FCA4ee9b, 'BtcTurk', 'BtcTurk Cold 1', 'hildobby', date '2023-11-23')
     , (0x9FCaFcca8aec0367abB35fBd161c241f7b79891B, 'BtcTurk', 'BtcTurk Deprecated 1', 'hildobby', date '2023-11-23')
     -- Trade.io
@@ -1143,6 +1147,7 @@ FROM (VALUES
     , (0xdFDaCDab40bc0b339E15EDAEcDaF120C389D4dAe, 'Bit-Z', 'Bit-Z 4', 'hildobby', date '2023-11-15')
     , (0x0DE4b2BE45Ae233D5F782a5C70dFc8BFAB736528, 'Bit-Z', 'Bit-Z 5', 'hildobby', date '2023-11-15')
     , (0xCF3618D4680817AF786a1D93465a19aB4225E69e, 'Bit-Z', 'Bit-Z 6', 'hildobby', date '2023-11-15')
+    , (0xb6F8b42396B012DC124c61012D5E9354966DB9ef, 'Bit-Z', 'Bit-Z Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Bitzlato 
     , (0x00cdc153aa8894d08207719fe921fff964f28ba3, 'Bitzlato', 'Bitzlato 1', 'hildobby', date '2022-08-28')
     -- Cobinhood
@@ -1313,6 +1318,12 @@ FROM (VALUES
     , (0xF27e7FA401B991A593A9E83AA6f23f2A212A9aC4, 'CoinW', 'CoinW 9', 'hildobby', date '2023-11-15')
     , (0x9f8646A35db0f466aC9322e2D194cc18f209Fc75, 'CoinW', 'CoinW 10', 'hildobby', date '2023-11-15')
     , (0xe3Be8206E74773Dbc4902480344ae1F94323170b, 'CoinW', 'CoinW 11', 'hildobby', date '2023-11-15')
+    , (0xa20f10289248717374e9B7776dC368aa526cb6F2, 'CoinW', 'CoinW 12', 'hildobby', date '2023-11-23')
+    , (0xDC8f0f2Aef01EB3a11b7F73B087A2F6A2eE3067f, 'CoinW', 'CoinW 13', 'hildobby', date '2023-11-23')
+    , (0x87B748aC0a8eAe308882F13522fa81f384588Cb1, 'CoinW', 'CoinW 14', 'hildobby', date '2023-11-23')
+    , (0x46499f2dff9f551bC71646a0448396B1C4702343, 'CoinW', 'CoinW 15', 'hildobby', date '2023-11-23')
+    , (0xDcc06BB2a55169a897E8b4148f151D7574EfF66C, 'CoinW', 'CoinW Deposit Funder 1', 'hildobby', date '2023-11-23')
+    
     -- Cryptopia
     , (0x5baeac0a0417a05733884852aa068b706967e790, 'Cryptopia', 'Cryptopia 1', 'hildobby', date '2022-08-28')
     , (0x2984581ece53a4390d1f568673cf693139c97049, 'Cryptopia', 'Cryptopia 2', 'hildobby', date '2022-08-28')
