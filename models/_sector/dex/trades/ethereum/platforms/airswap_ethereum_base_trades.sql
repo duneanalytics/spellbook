@@ -102,6 +102,7 @@ WITH dexs AS
         e.signerToken AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
+        evt_block_number AS block_number,
         evt_index
     FROM {{ source('airswap_ethereum', 'SwapERC20_v4_evt_SwapERC20')}} e
     {% if is_incremental() %}
