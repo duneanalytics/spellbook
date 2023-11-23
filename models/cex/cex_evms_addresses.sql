@@ -339,8 +339,6 @@ FROM (VALUES
     , (0xb9656d0393015f92bA642C3A344061E8E2478599, 'OKX', 'OKX Deposit Funder 9', 'hildobby', date '2023-11-20')
     , (0x4A8F1F5B2A3652131eAc54a6f183A4a2cF44A9A6, 'OKX', 'OKX Deposit Funder 10', 'hildobby', date '2023-11-23')
     , (0xE7F344E7b95c8A19d7d77eA27B86EE2fD6D776CF, 'OKX', 'OKX Deposit Funder 11', 'hildobby', date '2023-11-23')
-    , (0xb9656d0393015f92bA642C3A344061E8E2478599, 'OKX', 'OKX Deposit Funder 12', 'hildobby', date '2023-11-23')
-    , (0xE7F344E7b95c8A19d7d77eA27B86EE2fD6D776CF, 'OKX', 'OKX Deposit Funder 13', 'hildobby', date '2023-11-23')
     -- Cobo
     , (0xA9C7d31BB1879BfF8BE25EaD2F59B310a52b7c5a, 'Cobo', 'Cobo 1', 'hildobby', date '2023-11-16')
     , (0xBF957e1c121FA769580D29bF320Ee8BfF138Ad12, 'Cobo', 'Cobo 2', 'hildobby', date '2023-11-16')
@@ -446,8 +444,7 @@ FROM (VALUES
     , (0x07ef60deca209ea0f3f3f08c1ad21a6db5ef9d33, 'HTX', 'HTX Deposit Funder 5', 'hildobby', date '2023-08-31')
     , (0x119346062a580Ee98774DF7F0c1C5D1dd7f1AdC0, 'HTX', 'HTX Deposit Funder 6', 'hildobby', date '2023-11-23')
     , (0x5BD5EdcCa85c0c035C9B2F5b4e22683FE37F6677, 'HTX', 'HTX Deposit Funder 7', 'hildobby', date '2023-11-23')
-    , (0x119346062a580Ee98774DF7F0c1C5D1dd7f1AdC0, 'HTX', 'HTX Deposit Funder 8', 'hildobby', date '2023-11-23')
-    , (0xdFCCd61E2E919489062224989A54AC6E59F832aa, 'HTX', 'HTX Deposit Funder 9', 'hildobby', date '2023-11-23')
+    , (0xdFCCd61E2E919489062224989A54AC6E59F832aa, 'HTX', 'HTX Deposit Funder 8', 'hildobby', date '2023-11-23')
     -- LBank
     , (0x356dc48d74f107cfbfd61790b0808cda6a0d364f, 'LBank', 'LBank 1', 'hildobby', date '2023-09-12')
     , (0xc06e0513a150a021104fdcdd20ce362fa593ba1f, 'LBank', 'LBank 2', 'hildobby', date '2023-09-12')
@@ -1331,9 +1328,6 @@ FROM (VALUES
     , (0xCEED7802EA80992aF9dA3811c455fD7BAA3f644C, 'Cryptopia', 'Cryptopia Bankruptcy Sweep', 'hildobby', date '2023-11-18')
     -- CoinDhan
     , (0xbf1a97d8d4229d61b031214d5bbe9a5cb1e737f9, 'CoinDhan', 'CoinDhan 1', 'hildobby', date '2022-08-28')
-    -- BIKI
-    , (0x6eff3372fa352b239bb24ff91b423a572347000d, 'BIKI', 'BIKI 1', 'hildobby', date '2022-08-28')
-    , (0x6efb20f61b80f6a7ebe7a107bace58288a51fb34, 'BIKI', 'BIKI Old Address', 'hildobby', date '2022-08-28')
     -- Liqui
     , (0x8271b2e8cbe29396e9563229030c89679b9470db, 'Liqui', 'Liqui 1', 'hildobby', date '2022-08-28')
     , (0x5e575279bf9f4acf0a130c186861454247394c06, 'Liqui', 'Liqui 2', 'hildobby', date '2022-08-28')
@@ -1439,6 +1433,7 @@ FROM (VALUES
     , (0x96fc4553a00c117c5b0bed950dd625d1c16dc894, 'Changelly', 'Changelly 1', 'hildobby', date '2023-04-06')
     -- BiKi
     , (0x6efF3372fa352b239Bb24ff91b423A572347000D, 'BiKi', 'BiKi 1', 'hildobby', date '2023-11-23')
+    , (0x6eFb20f61B80F6a7ebe7a107baCe58288a51FB34, 'BiKi', 'BiKi 2', 'hildobby', date '2023-11-23')
     , (0xF71CBF6758aaAaF06eBCcA5447019c31bB145782, 'BiKi', 'BiKi Deposit Funder 1', 'hildobby', date '2023-11-23')
     , (0xfd736FAA01073D35c148B61093E6AE562B2f8544, 'BiKi', 'BiKi Deposit Funder 2', 'hildobby', date '2023-11-23')
     -- Coindelta
