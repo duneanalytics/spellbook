@@ -2,3 +2,9 @@ version: 2
 
 sources:
   - name: uniswap_v3_arbitrum
+  - name: arbswap_arbitrum
+    tables:
+      - name: SwapPair_evt_Swap
+      - name: SwapFactory_evt_PairCreated
+      - name: ArbswapStableSwapTwoPool_evt_TokenExchange
+      - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
