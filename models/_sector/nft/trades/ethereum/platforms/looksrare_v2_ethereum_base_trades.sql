@@ -31,7 +31,7 @@ WITH looksrare_v2_trades AS (
 --    , JSON_EXTRACT_SCALAR(l.nonceInvalidationParameters, '$.orderHash') AS order_hash
     FROM {{ source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerAsk') }} l
     {% if is_incremental() %}
-    WHERE l.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE l.{{incremental_predicate('evt_block_time')}}
     {% else %}
     WHERE l.evt_block_time >= {{looksrare_v2_start_date}}
     {% endif %}
@@ -57,14 +57,17 @@ WITH looksrare_v2_trades AS (
 --    , JSON_EXTRACT_SCALAR(l.nonceInvalidationParameters, '$.orderHash') AS order_hash
     FROM {{ source('looksrare_v2_ethereum','LooksRareProtocol_evt_TakerBid') }} l
     {% if is_incremental() %}
-    WHERE l.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE l.{{incremental_predicate('evt_block_time')}}
     {% else %}
     WHERE l.evt_block_time >= {{looksrare_v2_start_date}}
     {% endif %}
     )
 
 SELECT
-  block_time
+ 'ethereum' as blockchain
+, 'looksrare' as project
+, 'v2' as project_version
+, block_time
 , block_number
 , tx_hash
 , project_contract_address
