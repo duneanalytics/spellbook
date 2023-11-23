@@ -545,6 +545,7 @@ FROM (VALUES
     , (0xe9f7ecae3a53d2a67105292894676b00d1fab785, 'Kraken', 'Kraken Hot Wallet', 'hildobby', date '2022-08-28')
     , (0xD4039ECC40AedA0582036437cf3ec02845DA4C13, 'Kraken', 'Kraken ETH Staking', 'hildobby', date '2023-11-20')
     , (0xa40dFEE99E1C85DC97Fdc594b16A460717838703, 'Kraken', 'Kraken ETH Staking Depositor', 'hildobby', date '2023-11-20')
+    , (0xa24787320ede4CC19D800bf87B41Ab9539c4dA9D, 'Kraken', 'Kraken Proxy 1', 'hildobby', date '2023-11-23')
     -- Bitfinex
     , (0x77134cbc06cb00b66f4c7e623d5fdbf6777635ec, 'Bitfinex', 'Bitfinex Hot Wallet', 'soispoke', date '2022-10-19')
     , (0x1151314c646ce4e0efd76d1af4760ae66a9fe30f, 'Bitfinex', 'Bitfinex 1', 'hildobby', date '2022-08-28')
@@ -639,6 +640,7 @@ FROM (VALUES
     , (0x92BD687953Da50855AeE2Df0Cff282cC2d5F226b, 'Crypto.com', 'Crypto.com 16', 'hildobby', date '2023-11-19')
     , (0x187b2d576ba7ec2141c180A96eDd0f202492f36B, 'Crypto.com', 'Crypto.com 17', 'hildobby', date '2023-11-19')
     , (0x9a552417cfc942A5C88Ab474756d3D9962f917C0, 'Crypto.com', 'Crypto.com 18', 'hildobby', date '2023-11-19')
+    , (0xA0b73E1Ff0B80914AB6fe0444E65848C4C34450b, 'Crypto.com', 'Crypto.com 19', 'hildobby', date '2023-11-19')
     , (0xae45a8240147e6179ec7c9f92c5a18f9a97b3fca, 'Crypto.com', 'Crypto.com Deposit Funder', 'hildobby', date '2023-11-15')
     -- Wirex
     , (0x2f13d388b85e0ecd32e7c3d7f36d1053354ef104, 'Wirex', 'Wirex 1', 'hildobby', date '2023-11-19')
@@ -1179,6 +1181,14 @@ FROM (VALUES
     -- BigONE
     , (0xa30d8157911ef23c46c0eb71889efe6a648a41f7, 'BigONE', 'BigONE 1', 'hildobby', date '2022-08-28')
     , (0x17bc58b788808dab201a9a90817ff3c168bf3d61, 'BigONE', 'BigONE 2', 'hildobby', date '2023-09-09')
+    -- Circle
+    , (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
+    , (0x166716C2838e182d64886135a96f1AABCA9A9756, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
+    , (0x55FE002aefF02F77364de339a1292923A15844B8, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
+    , (0xc4922d64a24675E16e1586e3e3Aa56C06fABe907, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
+    , (0xBF14DB80D9275FB721383a77C00Ae180fc40ae98, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
+    , (0x420F5035fd5dC62a167E7e7f08B604335aE272b8, 'Circle', 'Circle Token Minter 1', 'hildobby', date '2023-11-23')
+    , (0x7F5c764cBc14f9669B88837ca1490cCa17c31607, 'Circle', 'Circle USD Coin 1', 'hildobby', date '2023-11-23')
     -- Allbit
     , (0xdc1882f350b42ac9a23508996254b1915c78b204, 'Allbit', 'Allbit 1', 'hildobby', date '2022-08-28')
     , (0xff6b1cdfd2d3e37977d7938aa06b6d89d6675e27, 'Allbit', 'Allbit 2', 'hildobby', date '2022-08-28')
