@@ -7,7 +7,7 @@
 
 {% set base_models = [
     ref('uniswap_v3_polygon_base_trades')
-    , ref('ape_swap_polygon_base_trades')
+    , ref('apeswap_polygon_base_trades')
 ] %}
 
 WITH base_union AS (
