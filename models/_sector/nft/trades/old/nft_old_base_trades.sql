@@ -20,6 +20,7 @@
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
 ,ref('nftrade_bnb_events')
+,ref('mooar_polygon_events')
 ,ref('oneplanet_polygon_events')
 ,ref('opensea_v3_arbitrum_events')
 ,ref('opensea_v4_arbitrum_events')

@@ -94,7 +94,28 @@ models:
       - *updated_at
       - *model_name
       - *label_type
-
+      
+  - name: labels_bridges_polygon
+    meta:
+      blockchain: polygon
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'polygon', 'bridges']
+    description: "Known bridges addresses on polygon"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+      
   - name: labels_bridges_base
     meta:
       blockchain: base
@@ -115,3 +136,46 @@ models:
       - *updated_at
       - *model_name
       - *label_type  
+
+  - name: labels_bridges_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'optimism', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+  
+  - name: labels_bridges_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'arbitrum', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+  
