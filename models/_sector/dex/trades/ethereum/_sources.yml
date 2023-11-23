@@ -5,3 +5,6 @@ sources:
   - name: uniswap_ethereum
   - name: uniswap_v2_ethereum
   - name: uniswap_v3_ethereum
+  - name: carbon_defi_ethereum
+    tables:
+      - name: CarbonController_evt_TokensTraded
