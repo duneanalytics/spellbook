@@ -29,7 +29,6 @@ with dexs AS (
             evt_block_number        AS block_number,
             evt_index
         FROM {{ evt_trade_table }}
-        WHERE 1=1
         {% if is_incremental() %}
         AND {{incremental_predicate('evt_block_time')}}
         {% endif %}
