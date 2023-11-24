@@ -154,6 +154,10 @@ FROM
             ON tok.contract_address=nft_mints.contract_address
             and tok.blockchain = '{{blockchain}}'
         LEFT JOIN namespaces ec ON etxs.to=ec.address
+        {%- if blockchain == 'optimism' %}
+        LEFT JOIN {{ ref('tokens_optimism_nft_bridged_mapping') }} as bm
+            ON bm.contract_address=nft_mints.contract_address
+        {%- endif -%}
         {% if is_incremental() %}
         LEFT JOIN {{this}} anti_txs
             ON anti_txs.block_time=nft_mints.block_time
@@ -166,6 +170,10 @@ FROM
         AND nft_mints.blockchain = '{{blockchain}}'
         {%- if blockchain == 'ethereum' %}
         AND nft_mints.contract_address NOT IN (SELECT address FROM {{ ref('addresses_ethereum_defi') }})
+        {%- endif -%}
+        {%- if blockchain == 'optimism' %}
+        -- to exclude bridged L1 NFT collections to L2
+        AND bm.contract_address is null
         {%- endif -%}
         {% if is_incremental() %}
         AND {{incremental_predicate('nft_mints.block_time')}}
