@@ -44,6 +44,10 @@ models:
       tags: ['safe', 'transfers', 'base']
     description: "Eth transfers for safes"
     columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
       - *address
       - *block_date
       - *block_month
@@ -52,10 +56,13 @@ models:
         description: "Date of Eth transfer"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of transfered Eth"
+        description: "Raw amount of transferred ETH"
       - *tx_hash
       - &trace_address
         name: trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"
 
   - name: safe_base_singletons
     meta:
