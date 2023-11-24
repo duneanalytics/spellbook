@@ -1,7 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
-    alias = alias('entities_binance'),
-    tags = ['dunesql'],
+    alias = 'entities_binance',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -16,6 +15,10 @@ FROM (
     SELECT 0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18 AS address
     UNION ALL
     SELECT 0x2f47a1c2db4a3b78cda44eade915c3b19107ddcc AS address
+    UNION ALL
+    SELECT 0x6bf05f66EE2CDAf19811bE8Ee9dbE2beE7C06555 AS address
+    UNION ALL
+    SELECT 0xd897df5690a186F92970d5e42d16599136308257 AS address
     UNION ALL
     SELECT distinct to AS address
     FROM {{ source('ethereum', 'transactions') }}

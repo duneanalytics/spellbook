@@ -1,7 +1,7 @@
 {{ config(
     schema = 'blur_seaport_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -9,10 +9,13 @@
     )
 }}
 
-{% set seaport_usage_start_date = "cast('2023-01-25' as timestamp)" %}
+{% set seaport_usage_start_date = "2023-01-25" %}
 
 SELECT
-      s.evt_block_time AS block_time
+      'ethereum' as blockchain
+    , 'blur' as project
+    , 'seaport' as project_version
+    , s.evt_block_time AS block_time
     , s.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(s.offer[1], '$.token')) AS nft_contract_address
     , cast(JSON_EXTRACT_SCALAR(s.offer[1], '$.identifier') as uint256) AS nft_token_id
@@ -25,7 +28,7 @@ SELECT
     , from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.token')) AS currency_contract
     , s.contract_address AS project_contract_address
     , s.evt_tx_hash AS tx_hash
-    , CAST(0 AS uint256) AS platform_fee_amount_raw -- Hardcoded 0% platform fee
+    , uint256 '0' AS platform_fee_amount_raw -- Hardcoded 0% platform fee
     , LEAST(CAST(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.amount') AS uint256), CAST(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.amount') AS uint256)) AS royalty_fee_amount_raw
     , CASE WHEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))!=s.recipient THEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))
         ELSE from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.recipient'))
@@ -35,7 +38,7 @@ SELECT
 FROM {{ source('seaport_ethereum','Seaport_evt_OrderFulfilled') }} s
 WHERE s.zone=0x0000000000d80cfcb8dfcd8b2c4fd9c813482938
     {% if is_incremental() %}
-    AND s.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('s.evt_block_time')}}
     {% else %}
-    AND s.evt_block_time >= {{seaport_usage_start_date}}
+    AND s.evt_block_time >= timestamp '{{seaport_usage_start_date}}'
     {% endif %}

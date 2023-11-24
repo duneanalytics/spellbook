@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'models/prices/**/*.sql'
+      - 'models/prices/*/*.sql'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

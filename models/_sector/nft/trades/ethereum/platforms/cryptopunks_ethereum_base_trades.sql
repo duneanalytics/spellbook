@@ -1,7 +1,7 @@
 {{ config(
     schema = 'cryptopunks_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -24,12 +24,16 @@ with accepted_bid_prices as (
         and call.punkIndex = bid.punkIndex
     WHERE call_success
     {% if is_incremental() %}
-    AND call.call_block_time >= date_trunc('day', now() - interval '7' day)
+    AND call.{{incremental_predicate('call_block_time')}}
     {% endif %}
     group by 1,2,3
 )
 
-select    evt.evt_block_time as block_time
+select
+         'ethereum' as blockchain
+        , 'cryptopunks' as project
+        , 'v1' as project_version
+        , evt.evt_block_time as block_time
         , evt.evt_block_number as block_number
         , evt.evt_tx_hash as tx_hash
         , evt.contract_address as project_contract_address
@@ -45,8 +49,8 @@ select    evt.evt_block_time as block_time
         , evt.contract_address as nft_contract_address
         , cast(coalesce(call.latest_bid, evt.value) as UINT256) as price_raw
         , {{ var("ETH_ERC20_ADDRESS") }} AS currency_contract -- all trades are in ETH
-        , cast(0 as UINT256) as platform_fee_amount_raw
-        , cast(0 as UINT256) as royalty_fee_amount_raw
+        , UINT256 '0' as platform_fee_amount_raw
+        , UINT256 '0' as royalty_fee_amount_raw
         , cast(null as varbinary) as platform_fee_address
         , cast(null as varbinary) as royalty_fee_address
 from {{ source('cryptopunks_ethereum','CryptoPunksMarket_evt_PunkBought') }} evt
@@ -57,5 +61,5 @@ on evt.evt_block_number = call.call_block_number
 where evt.evt_tx_hash not in (0x92488a00dfa0746c300c66a716e6cc11ba9c0f9d40d8c58e792cc7fcebf432d0 -- flash loan https://twitter.com/cryptopunksnfts/status/1453903818308083720
                      )
 {% if is_incremental() %}
-and evt.evt_block_time >= date_trunc('day', now() - interval '7' day)
+and evt.{{incremental_predicate('evt_block_time')}}
 {% endif %}

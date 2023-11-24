@@ -1,7 +1,7 @@
 {{ config(
     schema = 'referral',
-    alias = alias('staging_rewards'),
-    tags = ['dunesql'],
+    alias = 'staging_rewards',
+
     materialized = 'view'
     )
 }}
@@ -11,14 +11,15 @@
  ref('zora_ethereum_rewards'),
  ref('zora_optimism_rewards'),
  ref('zora_base_rewards'),
+ ref('zora_zora_rewards'),
  ref('rabbithole_arbitrum_rewards'),
  ref('rabbithole_base_rewards'),
  ref('rabbithole_optimism_rewards'),
  ref('rabbithole_polygon_rewards'),
  ref('soundxyz_ethereum_rewards'),
- ref('soundxyz_optimism_rewards')
+ ref('soundxyz_optimism_rewards'),
+ ref('slugs_optimism_rewards')
 ] %}
-
 
 SELECT *
 FROM (

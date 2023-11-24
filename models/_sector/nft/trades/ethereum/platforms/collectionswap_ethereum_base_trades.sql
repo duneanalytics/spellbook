@@ -1,7 +1,7 @@
 {{ config(
     schema = 'collectionswap_ethereum',
-    tags = ['dunesql'],
-    alias = alias('base_trades'),
+
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -9,7 +9,7 @@
     )
 }}
 
-{%- set project_start_date = "TIMESTAMP '2023-03-29'" %}
+{%- set project_start_date = "2023-03-29" %}
 
 WITH
 raw_trades as (
@@ -18,7 +18,7 @@ raw_trades as (
     from(
         select
             block_number, block_time, evt_index, tx_hash, buyer, seller,
-            cast(1 as uint256) as nft_amount,
+            uint256 '1' as nft_amount,
             price_raw/number_of_items as price_raw,
             platform_fee_amount_raw/number_of_items as platform_fee_amount_raw,
             royalty_fee_amount_raw/number_of_items as royalty_fee_amount_raw,
@@ -49,9 +49,9 @@ raw_trades as (
                 ,contract_address as project_contract_address
             from {{ source('collectionswap_ethereum','CollectionPool_evt_SwapNFTOutPool') }} e
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% else %}
-            WHERE evt_block_time >= {{project_start_date}}
+            WHERE evt_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             union all
             select
@@ -76,9 +76,9 @@ raw_trades as (
                 contract_address AS project_contract_address
             from {{ source('collectionswap_ethereum','CollectionPool_evt_SwapNFTInPool') }} e
             {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{incremental_predicate('evt_block_time')}}
             {% else %}
-            WHERE evt_block_time >= {{project_start_date}}
+            WHERE evt_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             )
         CROSS JOIN UNNEST(nft_id_array)
@@ -98,7 +98,10 @@ base_trades as (
 
 -- results
 SELECT
-  block_time
+ 'ethereum' as blockchain
+, 'collectionswap' as project
+, 'v1' as project_version
+, block_time
 , block_number
 , tx_hash
 , project_contract_address

@@ -1,8 +1,8 @@
 {{
     config(
         schema='balancer_v2_arbitrum',
-        alias = alias('liquidity'),
-        tags = ['dunesql'],
+        alias = 'liquidity',
+        
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
@@ -217,8 +217,10 @@ WITH pool_labels AS (
 SELECT
     b.day,
     b.pool_id,
+    BYTEARRAY_SUBSTRING(b.pool_id, 1, 20) AS pool_address,
     p.pool_symbol,
-    'arbitrum' as blockchain,
+    '2' AS version,
+    'arbitrum' AS blockchain,
     token AS token_address,
     token_symbol,
     token_balance_raw,

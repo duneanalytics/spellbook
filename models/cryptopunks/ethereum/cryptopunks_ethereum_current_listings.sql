@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('current_listings'),
+        
+        alias = 'current_listings',
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -33,7 +33,7 @@ with all_listing_events as (
             , sub_tx_trade_id as evt_index
             , block_time as evt_block_time
             , tx_hash as evt_tx_hash
-    from {{ ref('nft_ethereum_trades_beta') }}
+    from {{ ref('cryptopunks_ethereum_base_trades') }}
     where project = 'cryptopunks'
 )
 , all_transfers as (

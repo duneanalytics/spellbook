@@ -371,11 +371,6 @@ models:
       bnb:
         +schema: babyswap_bnb
 
-    oneplanet:
-      +schema: oneplanet
-      polygon:
-        +schema: oneplanet_polygon
-
     opensea:
       +schema: opensea
       ethereum:
@@ -625,11 +620,6 @@ models:
       ethereum:
         +schema: sudoswap_ethereum
 
-    equalizer_exchange:
-      +schema: equalizer_exchange
-      fantom:
-        +schema: equalizer_exchange_fantom
-
     safe:
       +schema: safe
       ethereum:
@@ -765,17 +755,6 @@ models:
       ethereum:
         +schema: integral_ethereum
 
-    equalizer:
-      +schema: equalizer
-      bnb:
-        +schema: equalizer_bnb
-      ethereum:
-        +schema: equalizer_ethereum
-      optimism:
-        +schema: equalizer_optimism
-      polygon:
-        +schema: equalizer_polygon
-
     curvefi:
       +schema: curvefi
       ethereum:
@@ -842,14 +821,6 @@ models:
       polygon:
         +schema: chainlink_polygon
 
-    contracts:
-      +schema: contracts
-      optimism:
-        +schema: contracts_optimism
-      bnb:
-        +schema: contracts_bnb
-      fantom:
-        +schema: contracts_fantom
 
     clipper:
       +schema: clipper
@@ -1001,11 +972,6 @@ models:
       +schema: nexusmutual
       ethereum:
         +schema: nexusmutual_ethereum
-
-    quix:
-      +schema: quix
-      optimism:
-        +schema: quix_optimism
 
     zeroex:
       +schema: zeroex
@@ -1258,11 +1224,6 @@ models:
       +schema: oneinch
       ethereum:
         +schema: oneinch_ethereum
-
-    nftearth:
-      +schema: nftearth
-      optimism:
-        +schema: nftearth_optimism
 
     pooltogether:
       +schema: pooltogether

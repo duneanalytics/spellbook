@@ -1,7 +1,7 @@
 {{
     config(
-        alias =alias('eth'),
-        tags = ['dunesql'],
+        alias ='eth',
+        
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

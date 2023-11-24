@@ -1,6 +1,6 @@
 {{config(
-        tags = ['dunesql'],
-        alias = alias('addresses_gnosis'))}}
+        
+        alias = 'addresses_gnosis')}}
 
 
 {% set addresses_models = [

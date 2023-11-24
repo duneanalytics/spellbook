@@ -19,6 +19,5 @@ models:
       - name: blockchain
       - name: contract_address
         description: "Aggregator project's contract address"
-        tests:
       - name: name
         description: "Aggregator project's name"

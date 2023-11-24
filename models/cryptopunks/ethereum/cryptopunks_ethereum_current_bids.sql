@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql'],
-        alias = alias('current_bids'),
+        
+        alias = 'current_bids',
         unique_key='punk_id',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -46,12 +46,12 @@ with combined_events_table as (
                 , seller as transfer_from
                 , buyer as transfer_to
                 , nft_token_id as punk_id
-                , price as eth_amount
+                , price_raw/pow(10,18) as eth_amount
                 , block_time
                 , block_number
                 , sub_tx_trade_id as evt_index
                 , tx_hash
-        from  {{ ref('nft_ethereum_trades_beta') }}
+        from  {{ ref('cryptopunks_ethereum_base_trades') }}
         WHERE project = 'cryptopunks'
     ) a
 )

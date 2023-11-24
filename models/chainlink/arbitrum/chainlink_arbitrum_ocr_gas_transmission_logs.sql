@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('ocr_gas_transmission_logs'),
+    
+    alias='ocr_gas_transmission_logs',
     materialized='view',
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
