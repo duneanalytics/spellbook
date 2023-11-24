@@ -81,12 +81,6 @@
      'blockchain': 'optimism',
      'schema': 'woofi_optimism',
      'table_name': 'WooPPV2_evt_WooSwap',   
-     'time_column': 'evt_block_time'},
-    
-    {'project': 'mummy_finance',
-     'blockchain': 'optimism',
-     'schema': 'mummy_finance_optimism',
-     'table_name': 'Router_evt_Swap',
      'time_column': 'evt_block_time'}
 ] %}
 
