@@ -70,7 +70,7 @@ with
 src_LendingPool_evt_FlashLoan as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_FlashLoan') }}
-  where cast(_amount as double) > 0
+  where cast(amount as double) > 0
   {% if is_incremental() %}
     and {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -128,7 +128,7 @@ with
 src_LendingPool_evt_FlashLoan as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_FlashLoan') }}
-  where cast(_amount as double) > 0
+  where cast(amount as double) > 0
   {% if is_incremental() %}
     and {{ incremental_predicate('evt_block_time') }}
   {% endif %}
