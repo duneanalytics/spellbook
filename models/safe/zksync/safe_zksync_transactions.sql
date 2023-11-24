@@ -44,10 +44,10 @@ with transactions as (
         bytearray_substring(t.data, 1, 4) = 0x6a761202 -- execTransaction
         and t.success = true
         {% if not is_incremental() %}
-        and tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
+        and t.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
         {% endif %}
         {% if is_incremental() %}
-        and tr.block_time > date_trunc('day', now() - interval '7' day)
+        and t.block_time > date_trunc('day', now() - interval '7' day)
         {% endif %}
 ),
 
