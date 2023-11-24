@@ -284,7 +284,7 @@ models:
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'keen' ]
     description: >
-      Tokenlon RFQ v2 trades 
+      Tokenlon RFQ v2 trades
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

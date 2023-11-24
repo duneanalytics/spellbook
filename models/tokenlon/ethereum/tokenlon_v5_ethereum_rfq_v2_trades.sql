@@ -34,7 +34,7 @@ WITH dexs AS (
         CAST(ARRAY[] as array<bigint>) AS trace_address,
         evt_index
     FROM
-        {{ source('tokenlon_v5_ethereum', 'RFQv2_evt_FillOrder') }}
+        {{ source('tokenlon_v5_ethereum', 'RFQv2_evt_FilledRFQ') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day) 
     {% endif %}
