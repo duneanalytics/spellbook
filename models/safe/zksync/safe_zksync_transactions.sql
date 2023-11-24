@@ -44,7 +44,7 @@ with transactions as (
     and t.success = true
 ),
 
-with traces as (
+traces as (
 select distinct --to remove duplicated traces
     'zksync' as blockchain,
     try_cast(date_trunc('day', tr.block_time) as date) as block_date,
