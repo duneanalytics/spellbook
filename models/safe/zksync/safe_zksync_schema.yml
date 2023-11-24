@@ -135,9 +135,7 @@ models:
       - &sub_traces
         name: sub_traces
         description: "Null - retrievable in traces"
-      - &trace_address
-        name: trace_address
-        description: "Null - retrievable in traces"
+      - *trace_address
       - &success
         name: success
         description: "Success state of transaction"
