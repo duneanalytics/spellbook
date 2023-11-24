@@ -42,7 +42,7 @@ with transactions as (
         on s.address = t.to --zksync execTransactions recorded as tx "to" the Safe, not "from"
     where bytearray_substring(t.data, 1, 4) = 0x6a761202 -- execTransaction
     and t.success = true
-)
+),
 
 with traces as (
 select distinct --to remove duplicated traces
