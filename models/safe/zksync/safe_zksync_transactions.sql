@@ -90,18 +90,18 @@ select
     t.block_number,
     t.tx_hash,
     t.address,
-    cast(t.to as varbinary), --for other chains, this is the singleton address, but not available in zksync.transactions or zksync.traces so keeping as null for consistency
+    cast(t.to as varbinary) as "to", --for other chains, this is the singleton address, but not available in zksync.transactions or zksync.traces so keeping as null for consistency
     tr.value, --get value from traces (0 in transactions table)
     t.gas,
     t.gas_used,
     t.tx_index,
-    cast(tr.sub_traces as bigint),
-    cast(tr.trace_address as array(bigint)),
+    cast(tr.sub_traces as bigint) as sub_traces,
+    cast(tr.trace_address as array(bigint)) as trace_address,
     t.success,
     tr.error,
     tr.code,
     t.input, --get input from transactions (because contains the methodID)
-    cast(t.output as varbinary),
+    cast(t.output as varbinary) as "output",
     t.method,
     tr.tx_hash as trace_tx_hash --save the trace_tx_hash to match back on
     from transactions t
