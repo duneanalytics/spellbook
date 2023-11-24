@@ -40,8 +40,15 @@ with transactions as (
     from {{ source('zksync', 'transactions') }} t
     join {{ ref('safe_zksync_safes') }} s
         on s.address = t.to --zksync execTransactions recorded as tx "to" the Safe, not "from"
-    where bytearray_substring(t.data, 1, 4) = 0x6a761202 -- execTransaction
-    and t.success = true
+    where 
+        bytearray_substring(t.data, 1, 4) = 0x6a761202 -- execTransaction
+        and t.success = true
+        {% if not is_incremental() %}
+        and tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
+        {% endif %}
+        {% if is_incremental() %}
+        and tr.block_time > date_trunc('day', now() - interval '7' day)
+        {% endif %}
 ),
 
 traces as (
@@ -68,10 +75,10 @@ join {{ ref('safe_zksync_singletons') }} ss
     on tr.to = ss.address
 where
     {% if not is_incremental() %}
-    and tr.block_time > TIMESTAMP '2021-03-07' -- for initial query optimisation
+    tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
-    and tr.block_time > date_trunc('day', now() - interval '7' day)
+    tr.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
