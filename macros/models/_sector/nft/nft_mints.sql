@@ -15,7 +15,6 @@ WITH namespaces AS (
     FROM {{ ref('nft_transfers') }}
     WHERE
         blockchain = '{{blockchain}}'
-        AND "from"= 0x0000000000000000000000000000000000000000
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {% endif %}
