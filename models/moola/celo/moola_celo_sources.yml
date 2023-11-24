@@ -76,6 +76,3 @@ sources:
         - name: to
           description: "Wallet address where the tokens are withdrawn and transferred"
         - *user
-
-      - name: LendingPool_evt_FlashLoan
-        loaded_at_field: evt_block_time

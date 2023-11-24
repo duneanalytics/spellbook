@@ -4,7 +4,7 @@ select
   flashloans.blockchain,
   flashloans.project,
   flashloans.version,
-  flashloans.currency_contract,
+  flashloans.token_address,
   erc20.symbol,
   flashloans.recipient,
   flashloans.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
@@ -17,12 +17,12 @@ select
   flashloans.evt_index
 from {{ model }} flashloans
   left join {{ ref('tokens_erc20') }} erc20
-    on flashloans.currency_contract = erc20.contract_address
+    on flashloans.token_address = erc20.contract_address
     and flashloans.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 
     on date_trunc('minute', flashloans.block_time) = p.minute
     and erc20.symbol = p.symbol
-    and flashloans.currency_contract = p.contract_address
+    and flashloans.token_address = p.contract_address
     and flashloans.blockchain = p.blockchain
     {% if is_incremental() %}
     and {{ incremental_predicate('p.minute') }}

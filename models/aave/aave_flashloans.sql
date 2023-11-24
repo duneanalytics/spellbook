@@ -5,10 +5,10 @@
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['blockchain', 'tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "optimism", "ethereum", "polygon", "fantom"]\',
+      , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "optimism", "ethereum", "polygon", "fantom", "base"]\',
                                   "project",
                                   "aave",
-                                  \'["hildobby"]\') }}'
+                                  \'["hildobby", "tomfutago"]\') }}'
   )
 }}
 
@@ -19,6 +19,7 @@ ref('aave_arbitrum_flashloans')
 , ref('aave_ethereum_flashloans')
 , ref('aave_polygon_flashloans')
 , ref('aave_fantom_flashloans')
+, ref('aave_base_flashloans')
 ] %}
 
 SELECT *

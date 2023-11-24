@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: aave_v2_polygon
+    tables:
+      - name: LendingPool_evt_FlashLoan
+
+  - name: aave_v3_polygon
+    tables:
+      - name: Pool_evt_FlashLoan
