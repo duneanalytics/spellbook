@@ -21,17 +21,17 @@ cnft_base as (
         -- mint https://solscan.io/tx/61LqYDXKBYxsZEJoRBCaP8mvbeKGfbezZ54YUj1JZxPN7hGgr1t5rqseTQzxvkTu72YxkeFWq4bcFpcJBTCBNcfs
         -- trade https://solscan.io/tx/22jXeGFXSvSnnGtVMnt17Ve7Z462A8yUxMeni3617jv3BoTLYRY2LVb3fzMHT9wwrrMYdDYwbhrgM3dfcY48GF65
         SELECT
-            case when call_block_time >= timestamp '2023-10-26 16:40' --there is something that changed where decimals are now much larger. Founder did not know why, this is a temporary fix.
+            case when call_tx_id = 'BDmz29bRCdist8ZX2LZHa9Lbsygfp7JpC9UaMpNWCQgDiRfMqvs9PR9b1Sghkg1yUUPn7oN71tYG3TxTkBMhsaC' --there is something weird where this one tx has an inflated value.
                 then cast(maxAmount as double)/1e9
                 else cast(maxAmount as double)
                 end as price
-            , (case when call_block_time >= timestamp '2023-10-26 16:40'
+            , (case when call_tx_id = 'BDmz29bRCdist8ZX2LZHa9Lbsygfp7JpC9UaMpNWCQgDiRfMqvs9PR9b1Sghkg1yUUPn7oN71tYG3TxTkBMhsaC'
                 then cast(maxAmount as double)/1e9
                 else cast(maxAmount as double)
                 end)
                 *0.014 as taker_fee --taker fee is 1.4% right now.
             , 0 as maker_fee --maker fee goes back to users
-            , (case when call_block_time >= timestamp '2023-10-26 16:40' --there is something that changed where decimals are now much larger. Founder did not know why, this is a temporary fix.
+            , (case when call_tx_id = 'BDmz29bRCdist8ZX2LZHa9Lbsygfp7JpC9UaMpNWCQgDiRfMqvs9PR9b1Sghkg1yUUPn7oN71tYG3TxTkBMhsaC'
                 then cast(maxAmount as double)/1e9
                 else cast(maxAmount as double)
                 end)
