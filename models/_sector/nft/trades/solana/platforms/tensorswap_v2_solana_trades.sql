@@ -25,9 +25,17 @@ cnft_base as (
                 then cast(maxAmount as double)/1e9
                 else cast(maxAmount as double)
                 end as price
-            , cast(maxAmount as double)*0.014 as taker_fee --taker fee is 1.4% right now.
+            , (case when call_block_time >= timestamp '2023-10-26 16:40'
+                then cast(maxAmount as double)/1e9
+                else cast(maxAmount as double)
+                end)
+                *0.014 as taker_fee --taker fee is 1.4% right now.
             , 0 as maker_fee --maker fee goes back to users
-            , cast(maxAmount as double)*sellerFeeBasisPoints/10000 as royalty_fee
+            , (case when call_block_time >= timestamp '2023-10-26 16:40' --there is something that changed where decimals are now much larger. Founder did not know why, this is a temporary fix.
+                then cast(maxAmount as double)/1e9
+                else cast(maxAmount as double)
+                end)
+                *sellerFeeBasisPoints/10000 as royalty_fee
             , call_instruction_name as instruction
             , case when call_tx_signer = account_buyer then 'buy' else 'sell' end as trade_category
             , account_merkleTree as account_merkle_tree
