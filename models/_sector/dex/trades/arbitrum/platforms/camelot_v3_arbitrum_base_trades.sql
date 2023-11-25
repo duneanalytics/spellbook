@@ -16,6 +16,7 @@
         project = 'camelot',
         version = '3',
         Pair_evt_Swap = source('camelot_v3_arbitrum', 'AlgebraPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('camelot_v3_arbitrum', 'AlgebraFactory_evt_Pool')
+        Factory_evt_PoolCreated = source('camelot_v3_arbitrum', 'AlgebraFactory_evt_Pool'),
+        optional_columns = []
     )
 }}

@@ -59,6 +59,7 @@ FROM
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
+    , optional_columns = ['f.fee']
     )
 %}
 WITH dexs AS
@@ -73,7 +74,9 @@ WITH dexs AS
         , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address as project_contract_address
-        --, f.fee
+        {% if optional_columns %}
+        , {{ optional_columns[0] }} -- basic solution, might need extending with a loop once list of optional columns grows
+        {% endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
     FROM
