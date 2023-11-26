@@ -21,30 +21,23 @@
     ,"source"
 ] %}
 
-{% set op_chains = all_op_chains() %} --macro: all_op_chains.sql
-
 with get_contracts AS (
 SELECT *, ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY pref_rnk ASC) AS c_rank
 FROM (
-  {% for chain in op_chains %} --op chain predeploys
   select 
-    '{{chain}}' as blockchain
+     blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
     ,contract_address
-    ,'ovm' as contract_project
+    ,contract_project
     ,contract_name
     ,from_iso8601_timestamp( '2021-07-06' ) as created_time
     ,false as is_self_destruct
     ,'system predeploys' as source
     ,cast(NULL as varbinary) as created_tx_hash
     , 1 as pref_rnk
-  from {{ ref('contracts_optimism_system_predeploys') }} as c
+  from {{ ref('contracts_system_predeploys') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
-  {% if not loop.last %}
-  UNION ALL
-  {% endif %}
-  {% endfor %}
 
   union all
   -- ovm 1.0 contracts
