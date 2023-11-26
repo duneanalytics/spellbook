@@ -1627,7 +1627,14 @@ FROM
     ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
     ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18),
     ('ton-tokamak-network', 'ethereum', 'TON', 0x2be5e8c109e2197D077D13A82dAead6a9b3433C5, 18),
-    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18)
+    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18),
+    ('fxs-frax-share', 'ethereum', 'FXS', 0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0, 18),
+    ('cvx-convex-finance', 'ethereum', 'CVX', 0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b, 18),
+    ('frax-frax', 'ethereum', 'FRAX', 0x853d955acef822db058eb8505911ed77f175b99e, 18),
+    ('blusd-boosted-lusd', 'ethereum', 'BLUSD', 0xb9d7dddca9a4ac480991865efef82e01273f79c3, 18),
+    ('gear-gearbox', 'ethereum', 'GEAR', 0xBa3335588D9403515223F109EdC4eB7269a9Ab5D, 18),
+    ('lusd-liquity-usd', 'ethereum', 'LUSD', 0x5f98805A4E8be255a32880FDeC7F6728C6568bA0, 18),
+    ('onebtc-onebtc', 'ethereum', 'ONEBTC', 0xec4325f0518584f0774b483c215f65474eabd27f, 18)      
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
