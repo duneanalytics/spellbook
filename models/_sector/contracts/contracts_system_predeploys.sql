@@ -14,7 +14,7 @@
 
 -- https://github.com/ethereum-optimism/optimism/blob/c93958755b4f6ab7f95cc0b2459f39ca95c06684/specs/predeploys.md?plain=1#L48
 WITH op_stack_predeploys AS (
-	SELECT project_name, contract_name, contract_address
+	SELECT contract_project, contract_name, contract_address
 	FROM (values
 		 ('OVM',	'LegacyMessagePasser',			0x4200000000000000000000000000000000000000)
 		,('OVM',	'DeployerWhitelist',				0x4200000000000000000000000000000000000002)
@@ -38,7 +38,7 @@ WITH op_stack_predeploys AS (
 		,('EAS',	'EAS',					0x4200000000000000000000000000000000000021)
 		,('EAS',	'SchemaRegistry',				0x4200000000000000000000000000000000000020)
 
-	) a (project_name, contract_name, contract_address)
+	) a (contract_project, contract_name, contract_address)
 
 )
 
@@ -46,7 +46,7 @@ WITH op_stack_predeploys AS (
 
 	select 
 		'{{chain}}' as blockchain
-		, project_name
+		, contract_project
 		, contract_name
 		, contract_address
 		FROM op_stack_predeploys

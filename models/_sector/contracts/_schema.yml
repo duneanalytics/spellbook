@@ -255,5 +255,6 @@ models:
               - blockchain
     columns:
       - *blockchain
+      - *contract_project
       - *contract_address
       - *contract_name
