@@ -52,7 +52,7 @@ WITH src_evt_inventory as (
     ,evt_index as sub_tx_trade_id
     FROM {{ source('x2y2_ethereum','X2Y2_r1_evt_EvInventory') }} inv
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% else %}
     WHERE evt_block_time >= {{project_start_date}}
     {% endif %}
@@ -60,7 +60,10 @@ WITH src_evt_inventory as (
 
 -- results
 SELECT
-  block_time
+ 'ethereum' as blockchain
+, 'x2y2' as project
+, 'ethereum' as project_version
+, block_time
 , block_number
 , tx_hash
 , project_contract_address

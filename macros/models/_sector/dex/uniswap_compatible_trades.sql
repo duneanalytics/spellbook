@@ -4,6 +4,7 @@
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
+    , pair_column_name = 'pair'
     )
 %}
 WITH dexs AS
@@ -24,7 +25,7 @@ WITH dexs AS
         {{ Pair_evt_Swap }} t
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
-        ON f.pair = t.contract_address
+        ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
