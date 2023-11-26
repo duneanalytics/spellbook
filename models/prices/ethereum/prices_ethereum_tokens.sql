@@ -1633,8 +1633,7 @@ FROM
     ('frax-frax', 'ethereum', 'FRAX', 0x853d955acef822db058eb8505911ed77f175b99e, 18),
     ('blusd-boosted-lusd', 'ethereum', 'BLUSD', 0xb9d7dddca9a4ac480991865efef82e01273f79c3, 18),
     ('gear-gearbox', 'ethereum', 'GEAR', 0xBa3335588D9403515223F109EdC4eB7269a9Ab5D, 18),
-    ('lusd-liquity-usd', 'ethereum', 'LUSD', 0x5f98805A4E8be255a32880FDeC7F6728C6568bA0, 18),
-    ('onebtc-onebtc', 'ethereum', 'ONEBTC', 0xec4325f0518584f0774b483c215f65474eabd27f, 18)      
+    ('lusd-liquity-usd', 'ethereum', 'LUSD', 0x5f98805A4E8be255a32880FDeC7F6728C6568bA0, 18)   
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
