@@ -1,15 +1,13 @@
 {{ config(
-    schema = 'dex_base'
+    schema = 'dex_gnosis'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_base_base_trades')
-    , ref('sushiswap_v1_base_base_trades')
-    , ref('sushiswap_v2_base_base_trades')
-    , ref('aerodrome_base_base_trades')
+    ref('sushiswap_v1_gnosis_base_trades'),
+    ref('sushiswap_v2_gnosis_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -45,7 +43,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'base'
+        , blockchain = 'gnosis'
         , columns = ['from', 'to', 'index']
     )
 }}
