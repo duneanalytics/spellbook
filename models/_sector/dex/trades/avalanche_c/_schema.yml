@@ -1,6 +1,8 @@
 version: 2
 
 models:
+  - name: dex_avalanche_c_base_trades
+
   - name: uniswap_v3_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
@@ -17,6 +19,32 @@ models:
             - evt_index
       - check_seed:
           seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: airswap_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: airswap
+      contributors: tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'airswap' ]
+    description: "Airswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('airswap_avalanche_c_base_trades_seed')
           match_columns:
             - tx_hash
             - evt_index
@@ -82,5 +110,3 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-
-  - name: dex_avalanche_c_base_trades

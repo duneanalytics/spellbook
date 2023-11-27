@@ -2,6 +2,11 @@ version: 2
 
 sources:
   - name: uniswap_v3_bnb
+  - name: airswap_bnb
+    tables:
+      - name: Light_evt_Swap
+      - name: Swap_v3_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
   - name: sushi_bnb
     tables:
       - name: UniswapV2Pair_evt_Swap

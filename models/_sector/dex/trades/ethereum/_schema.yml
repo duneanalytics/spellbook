@@ -1,6 +1,8 @@
 version: 2
 
 models:
+  - name: dex_ethereum_base_trades
+
   - name: uniswap_v1_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -110,6 +112,32 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+  
+  - name: airswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: airswap
+      contributors: hosuke, jeff-dude, ivigamberdiev, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'airswap' ]
+    description: "Defiswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('airswap_ethereum_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
 
   - name: sushiswap_v1_ethereum_base_trades
     meta:
@@ -166,5 +194,3 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-
-  - name: dex_ethereum_base_trades
