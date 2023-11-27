@@ -30,7 +30,9 @@ with dexs AS (
             evt_index
         FROM {{ evt_trade_table }}
         {% if is_incremental() %}
-        AND {{incremental_predicate('evt_block_time')}}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% else %}
+        WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
 
         {% if not loop.last %}
