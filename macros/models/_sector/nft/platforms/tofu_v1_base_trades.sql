@@ -27,7 +27,7 @@ WITH tff AS (
           CROSS JOIN unnest(cast(json_extract(detail, '$.bundle') as ARRAY<VARCHAR>)) WITH ORDINALITY AS foo(bundle_item,bundle_index)
           WHERE call_success = true
               {% if is_incremental() %}
-              {{incremental_predicate('call_block_time')}}
+              and {{incremental_predicate('call_block_time')}}
               {% endif %}
          ) as tmp
 ),
@@ -50,7 +50,7 @@ WITH tff AS (
          from {{ MarketNG_evt_EvInventoryUpdate }}
          where json_extract_scalar(inventory, '$.status') = '1'
               {% if is_incremental() %}
-              {{incremental_predicate('evt_block_time')}}
+              and {{incremental_predicate('evt_block_time')}}
               {% endif %}
      )
 

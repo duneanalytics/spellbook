@@ -25,7 +25,7 @@ with all_trades as (
            bidder as buyer
     from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_BidAccepted') }}
     {% if is_incremental() %}
-    {{incremental_predicate('evt_block_time')}}
+    where {{incremental_predicate('evt_block_time')}}
     {% else %}
     where evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -45,7 +45,7 @@ with all_trades as (
            buyer
     from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV2_evt_ItemSold') }}
     {% if is_incremental() %}
-    {{incremental_predicate('evt_block_time')}}
+    where {{incremental_predicate('evt_block_time')}}
     {% else %}
     where evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

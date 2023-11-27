@@ -54,7 +54,7 @@ WHERE evt_block_time >= {{project_start_date}}
     INNER JOIN {{ source('stealcam_arbitrum', 'Stealcam_call_mint') }} m ON m.call_success
         AND m.id=sc.id
         {% if is_incremental() %}
-        {{incremental_predicate('m.call_block_time')}}
+        and {{incremental_predicate('m.call_block_time')}}
         {% endif %}
         {% if not is_incremental() %}
         AND m.call_block_time >= {{project_start_date}}

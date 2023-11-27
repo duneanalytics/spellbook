@@ -108,4 +108,12 @@ sources:
     tables:
       - name: TreasureMarketplace_evt_BidAccepted
       - name: TreasureMarketplace_evt_ItemSold
+
+  - name: liquidifty_ethereum
+    tables:
+      - name: MarketplaceV2_5_evt_Buy
+      - name: PoolSell_evt_Buy
+      - name: MarketplaceV3_call_buy
+      - name: MarketplaceV3_deprecated_call_buy
+
 #  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.

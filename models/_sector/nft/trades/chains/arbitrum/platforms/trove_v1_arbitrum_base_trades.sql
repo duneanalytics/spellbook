@@ -36,7 +36,7 @@ with base_trades as (
         evt_index as sub_tx_trade_id
     from {{ source('treasure_trove_arbitrum', 'TreasureMarketplaceV1_evt_ItemSold') }}
     {% if is_incremental() %}
-    {{incemental_predicate('evt_block_time')}}
+    where {{incemental_predicate('evt_block_time')}}
     {% else %}
     where evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
