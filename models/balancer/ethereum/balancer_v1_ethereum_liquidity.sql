@@ -33,7 +33,7 @@ prices AS (
         AND minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         GROUP BY 1, 2, 3
-    )
+    ),
 
     cumulative_balance AS (
         SELECT
