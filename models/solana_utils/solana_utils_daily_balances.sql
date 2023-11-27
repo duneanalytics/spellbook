@@ -45,7 +45,7 @@ SELECT
       , token_mint_address
       , token_balance
       , token_balance_owner
-      , {{ dbt_utils.generate_surrogate_key(['address', 'token_mint_address', 'day', 1]) }} as unique_address_key
+      , {{ dbt_utils.generate_surrogate_key(['address', 'token_mint_address', 'day']) }} as unique_address_key
       , now() as updated_at
 FROM updated_balances
 WHERE latest_balance = 1
