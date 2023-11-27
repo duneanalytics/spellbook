@@ -103,4 +103,9 @@ sources:
       - name: ReserveAuctionFindersErc20_evt_RoyaltyPayout
       - name: ReserveAuctionListingEth_evt_RoyaltyPayout
       - name: ReserveAuctionListingErc20_evt_RoyaltyPayout
+
+  - name: treasure_trove_ethereum
+    tables:
+      - name: TreasureMarketplace_evt_BidAccepted
+      - name: TreasureMarketplace_evt_ItemSold
 #  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.

@@ -1,0 +1,84 @@
+version: 2
+
+models:
+ - name: nft_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['ethereum', 'nft', 'trades']
+   description: "NFT ethereum base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['project','project_version','block_number','tx_hash','sub_tx_trade_id']
+   columns:
+     - &blockchain
+       name: blockchain
+       tests:
+        - not_null
+     - &project
+       name: project
+       tests:
+         - not_null
+     - &project_version
+       name: project_version
+       tests:
+         - not_null
+     - &tx_hash
+       name: tx_hash
+       tests:
+         - not_null
+     - &sub_tx_trade_id
+       name: sub_tx_trade_id
+       tests:
+         - not_null
+     - &trade_type
+       name: trade_type
+       tests:
+         - accepted_values:
+             values: [ 'primary', 'secondary']
+     - &trade_category
+       name: trade_category
+       tests:
+         - accepted_values:
+             values: [ 'Buy', 'Sell','Private Sale','Offer Accepted', 'Auction Settled', 'Auction', 'Bid accepted', 'Offer accepted']   #todo: standardize to buy/sell/swap/auction
+     - &price_raw
+       name: price_raw
+       tests:
+         - not_null
+     - &tx_data_marker
+         name: tx_data_marker
+         tests:
+           - not_null
+     - &currency_contract
+       name: currency_contract
+       tests:
+         - not_null
+
+ - name: nft_arbitrum_base_trades
+   meta:
+     blockchain: arbitrum
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: [ 'arbitrum', 'nft', 'trades' ]
+   description: "NFT arbitrum base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'project','project_version','block_number','tx_hash','sub_tx_trade_id' ]
+   columns:
+     - *blockchain
+     - *project
+     - *project_version
+     - *tx_hash
+     - *sub_tx_trade_id
+     - *trade_type
+     - *trade_category
+     - *price_raw
+     - *tx_data_marker
+     - *currency_contract
+
+
