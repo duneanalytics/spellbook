@@ -80,7 +80,7 @@
     {'project': 'woofi',
      'blockchain': 'optimism',
      'schema': 'woofi_optimism',
-     'table_name': 'WooPPV2_evt_WooSwap',   
+     'table_name': 'WooPPV2_evt_WooSwap',
      'time_column': 'evt_block_time'}
 ] %}
 
