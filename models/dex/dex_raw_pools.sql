@@ -54,6 +54,7 @@
         "gnosis", 
         "fantom", 
         "optimism", 
+        "optimism_legacy_ovm1",
         "arbitrum", 
         "celo", 
         "base", 
