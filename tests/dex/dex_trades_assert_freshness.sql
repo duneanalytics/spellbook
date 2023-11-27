@@ -65,7 +65,7 @@
      'table_name': 'Aggregator_evt_Swap',
      'time_column': 'evt_block_time'},
 
-      {'project': 'wardenswap',
+    {'project': 'wardenswap',
      'blockchain': 'optimism',
      'schema': 'wardenswap_optimism',
      'table_name': 'WardenRouterV2_L2_evt_Trade',
@@ -75,6 +75,12 @@
      'blockchain': 'optimism',
      'schema': 'openocean_v2_optimism',
      'table_name': 'OpenOceanExchangeProxy_evt_Swapped',
+     'time_column': 'evt_block_time'},
+
+    {'project': 'woofi',
+     'blockchain': 'optimism',
+     'schema': 'woofi_optimism',
+     'table_name': 'WooPPV2_evt_WooSwap',
      'time_column': 'evt_block_time'}
 ] %}
 
