@@ -5,3 +5,11 @@ sources:
   - name: uniswap_ethereum
   - name: uniswap_v2_ethereum
   - name: uniswap_v3_ethereum
+  - name: sushi_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sushiswap_v3_ethereum
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
