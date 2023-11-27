@@ -131,3 +131,61 @@ models:
       - *call_output
       - *minute
       - *block_month
+
+  - name: oneinch_arbitrum_ar
+    meta:
+      blockchain: ['arbitrum']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'ar', 'calls']
+    description: >
+        1inch aggregation router calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - *blockchain_not_null
+      - *block_time
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_to
+      - *tx_success
+      - *contract_name
+      - *protocol_version
+      - *method
+      - *call_from
+      - *call_to
+      - *call_trace_address_not_null
+      - *call_selector
+      - &src_token_address
+        name: src_token_address
+      - &dst_token_address
+        name: dst_token_address
+      - &src_receiver
+        name: src_receiver
+      - &dst_receiver
+        name: dst_receiver
+      - &src_amount
+        name: src_amount
+      - &dst_amount
+        name: dst_amount
+      - &dst_amount_min
+        name: dst_amount_min
+      - &ordinary
+        name: ordinary
+      - &pools
+        name: pools
+      - &router_type
+        name: router_type
+      - *call_success
+      - *call_gas_used
+      - &remains
+        name: remains
+      - *call_output
+      - *minute
+      - *block_month
+
