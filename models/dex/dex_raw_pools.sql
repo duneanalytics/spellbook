@@ -112,7 +112,7 @@ pool_created_logs as (
 
 
 select 
-    blockchain
+    replace(blockchain, 'optimism_legacy_ovm1', 'optimism') as blockchain
     , type
     , version
     , pool
