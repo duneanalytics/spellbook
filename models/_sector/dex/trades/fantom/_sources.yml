@@ -1,12 +1,11 @@
 version: 2
 
 sources:
-  - name: uniswap_v3_arbitrum
-  - name: sushi_arbitrum
+  - name: sushi_fantom
     tables:
       - name: Pair_evt_Swap
-      - name: Factory_evt_PairCreated
-  - name: sushi_v2_arbitrum
+      - name: SushiV2Factory_evt_PairCreated
+  - name: sushi_v2_fantom
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
