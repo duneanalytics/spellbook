@@ -1,5 +1,5 @@
 {{ config(
-        schema = tranfers_ethereum,
+    schema = 'tranfers_ethereum',
         alias = 'erc20_rolling_day')
 }}
 

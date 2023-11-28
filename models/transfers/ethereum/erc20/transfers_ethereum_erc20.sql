@@ -1,5 +1,5 @@
 {{ config(
-    schema = tranfers_ethereum,
+    schema = 'tranfers_ethereum',
     materialized = 'incremental',
     partition_by = ['block_month'],
     file_format = 'delta',

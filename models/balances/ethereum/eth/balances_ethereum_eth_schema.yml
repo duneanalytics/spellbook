@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balances_ethereum_ethereum_hour
+  - name: balances_ethereum_eth_hour
     meta:
       blockchain: ethereum
       sector: balances
@@ -11,7 +11,7 @@ models:
       tags: ['balances', 'ethereum', 'ethereum', 'hour', 'rantum']
     description: >
         Hourly token balances of ethereum for each address on ethereum.
-        Depends on transfers_ethereum_ethereum
+        Depends on transfers_ethereum_eth
     columns:
       - &blockchain
         name: blockchain
@@ -41,7 +41,7 @@ models:
         name: symbol
         description: "Token symbol"
 
-  - name: balances_ethereum_ethereum_day
+  - name: balances_ethereum_eth_day
     meta:
       blockchain: ethereum
       sector: balances
@@ -51,7 +51,7 @@ models:
       tags: ['balances', 'ethereum', 'ethereum', 'day', 'rantum']
     description: >
         Daily token balances of ethereum for each address on ethereum.
-        Depends on transfers_ethereum_ethereum.
+        Depends on transfers_ethereum_eth.
     columns:
       - *blockchain
       - *block_month
@@ -66,7 +66,7 @@ models:
       - *symbol
 
 
-  - name: balances_ethereum_ethereum_latest
+  - name: balances_ethereum_eth_latest
     meta:
       blockchain: ethereum
       sector: balances
@@ -76,7 +76,7 @@ models:
       tags: ['balances', 'ethereum', 'ethereum', 'latest', 'rantum']
     description: >
         Latest token balances of ethereum for each address on ethereum.
-        Depends on transfers_ethereum_ethereum.
+        Depends on transfers_ethereum_eth.
     columns:
       - *blockchain
       - &last_updated
