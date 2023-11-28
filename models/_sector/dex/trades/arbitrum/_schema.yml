@@ -17,6 +17,101 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('uniswap_arbitrum_base_trades_seed')
+          filter:
+            version: 3
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: sushiswap_v1_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['arbitrum', 'dex', 'trades', 'sushiswap', 'v1']
+    description: "Sushiswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sushiswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+    
+  - name: sushiswap_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: ['arbitrum', 'dex', 'trades', 'sushiswap', 'v2']
+    description: "Sushiswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sushiswap_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: airswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: airswap
+      contributors: tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'airswap' ]
+    description: "Airswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('airswap_arbitrum_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
 
   - name: arbswap_arbitrum_base_trades
     meta:
