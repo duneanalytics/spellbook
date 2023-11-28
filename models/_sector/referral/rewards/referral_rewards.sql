@@ -1,7 +1,6 @@
 {{ config(
     schema = 'referral',
     alias = 'rewards',
-    
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,7 +1,6 @@
 {{ config(
     schema = 'referral',
     alias = 'staging_rewards',
-
     materialized = 'view'
     )
 }}

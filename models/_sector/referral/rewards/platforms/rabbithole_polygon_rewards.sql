@@ -1,7 +1,6 @@
 {{ config(
     schema = 'rabbithole_polygon',
     alias = 'rewards',
-    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
