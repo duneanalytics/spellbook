@@ -5,7 +5,7 @@ tags=['prod_exclude'],
         file_format ='delta',
         incremental_strategy='merge',
         unique_key='unique_transfer_id'
-        )                  
+        )
 }}
 /*
     note: this spell has not been migrated to dunesql, therefore is only a view on spark
