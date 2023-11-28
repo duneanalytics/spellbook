@@ -19,7 +19,7 @@ sources:
     loaded_at_field: evt_block_time
     tables:
       - name: ERC721Drop_evt_Sale
-      - name: ZoraCreator1155Impl_evt_Purchased
+      - name: ZoraCreator1155_evt_Purchased
 
   - name: zora_ethereum
     description: "Ethereum decoded tables related to Zora"
