@@ -23,22 +23,22 @@ WITH created_collections AS (
     FROM {{ source('zora_zora', 'ZoraCreator1155_evt_SetupNewContract') }}
     )
 
-    , mints AS (
-    SELECT 'zora' AS blockchain
-    , nftt.block_time
-    , nftt.block_number
-    , nftt.token_standard
-    , nftt.token_id
-    , CAST(NULL AS double) AS total_price
-    , nftt.to AS recipient
-    , nftt.tx_hash
-    , nftt.evt_index
-    , nftt.contract_address
-    FROM {{ ref('nft_zora_transfers') }} nftt
-    INNER JOIN created_collections cc ON cc.contract_address=nftt.contract_address AND nftt.block_number>=cc.block_number
-    CROSS JOIN UNNEST(sequence(1, CAST(amount AS BIGINT))) AS t (sequence_element)
-    WHERE nftt."from"=0x0000000000000000000000000000000000000000
-    {% if is_incremental() %}
-    AND nftt.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-    )
+SELECT 'zora' AS blockchain
+, nftt.block_time
+, nftt.block_number
+, nftt.token_standard
+, nftt.token_id
+, value/1e18/amount AS total_price
+, nftt.to AS recipient
+, nftt.tx_hash
+, nftt.evt_index
+, nftt.contract_address
+FROM {{ ref('nft_zora_transfers') }} nftt
+INNER JOIN created_collections cc ON cc.contract_address=nftt.contract_address AND nftt.block_number>=cc.block_number
+INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
+        AND txs.tx_hash=nftt.tx_hash
+CROSS JOIN UNNEST(sequence(1, CAST(amount AS BIGINT))) AS t (sequence_element)
+WHERE nftt."from"=0x0000000000000000000000000000000000000000
+{% if is_incremental() %}
+AND nftt.block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
