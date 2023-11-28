@@ -17,7 +17,7 @@ select
     ,case when value > uint256 '0' then cast((value-(0.001*pow(10,18)))/11.0+(0.001*pow(10,18)) as uint256) else uint256 '0' end as surplus_value
 FROM {{ source('stealcam_arbitrum', 'Stealcam_evt_Stolen') }} sc
 {% if is_incremental() %}
-{{incremental_predicate('evt_block_time')}}
+where {{incremental_predicate('evt_block_time')}}
 {% endif %}
 {% if not is_incremental() %}
 WHERE evt_block_time >= {{project_start_date}}
@@ -32,7 +32,6 @@ WHERE evt_block_time >= {{project_start_date}}
     , sc.evt_block_time AS block_time
     , date_trunc('day',sc.evt_block_time) AS block_date
     , date_trunc('month',sc.evt_block_time) AS block_month
-    , sc.evt_block_time AS block_time
     , sc.evt_block_number AS block_number
     , 'Buy' AS trade_category
     , CASE WHEN sc.value=uint256 '0' THEN 'primary' ELSE 'secondary' END AS trade_type

@@ -98,7 +98,7 @@ v3 as (
             when orderType = '2' then 'Sell'
         end as trade_category,
         from_hex(json_extract_scalar(_order, '$.signer')) as seller,
-        cast(null as varbinary) as buyer,   #todo: replace with tx_from
+        cast(null as varbinary) as buyer,   --todo: replace with tx_from
         cast(json_extract_scalar(currency, '$.amount') as uint256) as price_raw,
         case
             when json_extract_scalar(currency, '$.assetType') = '0' then {{ weth_address }}
