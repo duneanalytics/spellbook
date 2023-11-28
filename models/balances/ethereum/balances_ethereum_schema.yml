@@ -93,7 +93,7 @@ models:
       project: erc20
       contributors: dot2dotseurat, rantum
     config:
-      tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily', 'rantum']
+      tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily', 'dot2dotseurat','rantum']
     description: >
         Helper model. This queries all of the token address with negative balances. 
         Some wiggle room is allowed for tokens with very small negative balances which
