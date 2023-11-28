@@ -51,7 +51,7 @@ with all_trades as (
     {% endif %}
 )
 
-with base_trades as (
+, base_trades as (
     select
         'ethereum' as blockchain,
         'trove' as project,
