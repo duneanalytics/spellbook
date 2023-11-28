@@ -752,6 +752,13 @@ WITH curated_list AS (
       ,(0xb5BB53E93D11876b6a49A45885b602eF0Ab286E6, 'MonkeyLeague')
       ,(0xC3F9774aF21a030Ab785CB45510BA9EdC9d0c8CD, 'Moonwell')
       ,(0x1626709C8456d5BdD4667D878CD8618ce53f5eb2, 'Newthrone')
+      ,(0x4F0D938A81343A5Fb10d6BB20BF5996E2e557586, 'RAI Finance')
+      ,(0xeee47e88a8176c0774673e0e78ed0afffd5f7fff, 'Tokepad')
+      ,(0x3c6D5c150EE29B698c6C821B53886C41d239669c, 'Uniswap')
+      ,(0x5ee2b0fd8d964cb50e787db4ff176d7bbb0fd180, 'Layer Zero')
+      ,(0x144fe9807c92c64acc4bb8e3b8917723efc0d557, 'Clearpool')
+      ,(0x3bEAAb5E79e2588D575cfBa48a74d59A9E94C4Fa, 'Clearpool')
+      ,
       
       ,(0xFe1A6056EE03235f30f7a48407A5673BBf25eD48, 'Aave')
       ,(0x2fbB0c60a41cB7Ea5323071624dCEAD3d213D0Fa, 'Aave')
