@@ -758,7 +758,6 @@ WITH curated_list AS (
       ,(0x5ee2b0fd8d964cb50e787db4ff176d7bbb0fd180, 'Layer Zero')
       ,(0x144fe9807c92c64acc4bb8e3b8917723efc0d557, 'Clearpool')
       ,(0x3bEAAb5E79e2588D575cfBa48a74d59A9E94C4Fa, 'Clearpool')
-      ,
       
       ,(0xFe1A6056EE03235f30f7a48407A5673BBf25eD48, 'Aave')
       ,(0x2fbB0c60a41cB7Ea5323071624dCEAD3d213D0Fa, 'Aave')
