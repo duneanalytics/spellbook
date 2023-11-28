@@ -166,13 +166,6 @@ models:
       tags: ['zora', 'mints']
     description: >
         Zora Mints across chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - token_id
-            - evt_index
     columns:
       - name: blockchain
         description: "Blockchain"

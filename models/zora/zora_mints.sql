@@ -1,10 +1,6 @@
 {{ config(
     schema = 'zora',
     alias = 'mints',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'tx_hash', 'token_id', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum","optimism","base","zora"]\',
                     "project",
                     "zora",
@@ -33,9 +29,6 @@ FROM (
     , evt_index
     , contract_address
     FROM {{ zora_mints_model }}
-    {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
