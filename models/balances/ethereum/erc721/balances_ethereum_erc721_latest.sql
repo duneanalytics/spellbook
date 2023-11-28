@@ -26,7 +26,6 @@ WITH
         LEFT JOIN {{ ref('tokens_nft') }} nft_tokens ON nft_tokens.contract_address = tr.contract_address
             AND nft_tokens.blockchain = 'ethereum'
         LEFT JOIN {{ ref('balances_ethereum_erc721_noncompliant') }} nc ON nc.token_address = tr.contract_address
-            AND nc.tokenId = tr.token_id
         WHERE TRUE
             AND tr.blockchain = 'ethereum'
             AND tr.token_standard = 'erc721'
