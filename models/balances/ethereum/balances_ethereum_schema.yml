@@ -6,9 +6,9 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, rantum
     config:
-      tags: ['balances', 'ethereum', 'erc20', 'hour', 'soispoke', 'dot2dotseurat']
+      tags: ['balances', 'ethereum', 'erc20', 'hour', 'soispoke', 'dot2dotseurat', 'rantum']
     description: >
         Hourly token balances of ERC20 Ethereum tokens per wallet and contract address pair.
         Depends on erc20_ethereum_transfers
@@ -43,9 +43,9 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, rantum
     config:
-      tags: ['balances', 'ethereum', 'erc20', 'day', 'soispoke', 'dot2dotseurat']
+      tags: ['balances', 'ethereum', 'erc20', 'day', 'soispoke', 'dot2dotseurat', 'rantum']
     description: >
         Daily token balances of ERC20 Ethereum tokens per wallet and contract address pair.
         Depends on erc20_ethereum_transfers.
@@ -67,9 +67,9 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: soispoke, dot2dotseurat
+      contributors: soispoke, dot2dotseurat, rantum
     config:
-      tags: ['balances', 'ethereum', 'erc20', 'latest', 'soispoke', 'dot2dotseurat']
+      tags: ['balances', 'ethereum', 'erc20', 'latest', 'soispoke', 'dot2dotseurat', 'rantum']
     description: >
         Latest token balances of ERC20 Ethereum tokens per wallet and contract address pair.
         Depends on erc20_ethereum_transfers.
@@ -91,9 +91,9 @@ models:
       blockchain: ethereum
       sector: balances
       project: erc20
-      contributors: dot2dotseurat
+      contributors: dot2dotseurat, rantum
     config:
-      tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily']
+      tags: ['view', 'erc20', 'erc20_latest', 'erc20_hourly', 'erc20_daily', 'rantum']
     description: >
         Helper model. This queries all of the token address with negative balances. 
         Some wiggle room is allowed for tokens with very small negative balances which
