@@ -14,7 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - nft_token_id
+            - token_id
             - evt_index
     columns:
       - name: blockchain
