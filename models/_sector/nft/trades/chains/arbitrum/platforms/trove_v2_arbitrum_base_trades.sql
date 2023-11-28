@@ -49,9 +49,8 @@ with all_trades as (
     {% else %}
     where evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-)
-
-with base_trades as (
+),
+base_trades as (
     select
         'arbitrum' as blockchain,
         'trove' as project,

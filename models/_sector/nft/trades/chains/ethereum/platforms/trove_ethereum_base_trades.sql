@@ -51,30 +51,29 @@ with all_trades as (
     {% endif %}
 )
 
-, base_trades as (
-    select
-        'ethereum' as blockchain,
-        'trove' as project,
-        'v2' as project_version,
-        evt_block_time as block_time,
-        date_trunc('day',evt_block_time) as block_date,
-        date_trunc('month',evt_block_time) as block_month,
-        tokenId as nft_token_id,
-        'secondary' as trade_type,
-        quantity as nft_amount,
-        trade_category,
-        seller,
-        buyer,
-        cast(pricePerItem * quantity as uint256) as price_raw,
-        paymentToken as currency_contract,
-        nftAddress as nft_contract_address,
-        contract_address as project_contract_address,
-        evt_tx_hash as tx_hash,
-        evt_block_number as block_number,
-        cast(null as uint256) as platform_fee_amount_raw,
-        cast(null as uint256) as royalty_fee_amount_raw,
-        cast(null as varbinary) as royalty_fee_address,
-        cast(null as varbinary) as platform_fee_address,
-        evt_index as sub_tx_trade_id
-    from all_trades
-)
+
+select
+    'ethereum' as blockchain,
+    'trove' as project,
+    'v2' as project_version,
+    evt_block_time as block_time,
+    date_trunc('day',evt_block_time) as block_date,
+    date_trunc('month',evt_block_time) as block_month,
+    tokenId as nft_token_id,
+    'secondary' as trade_type,
+    quantity as nft_amount,
+    trade_category,
+    seller,
+    buyer,
+    cast(pricePerItem * quantity as uint256) as price_raw,
+    paymentToken as currency_contract,
+    nftAddress as nft_contract_address,
+    contract_address as project_contract_address,
+    evt_tx_hash as tx_hash,
+    evt_block_number as block_number,
+    cast(null as uint256) as platform_fee_amount_raw,
+    cast(null as uint256) as royalty_fee_amount_raw,
+    cast(null as varbinary) as royalty_fee_address,
+    cast(null as varbinary) as platform_fee_address,
+    evt_index as sub_tx_trade_id
+from all_trades
