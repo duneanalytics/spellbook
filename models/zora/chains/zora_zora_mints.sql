@@ -28,7 +28,7 @@ SELECT 'zora' AS blockchain
 , nftt.block_number
 , nftt.token_standard
 , nftt.token_id
-, NULL AS token_price
+, CAST(NULL AS double) AS token_price
 , nftt.to AS recipient
 , nftt.tx_hash
 , nftt.evt_index
