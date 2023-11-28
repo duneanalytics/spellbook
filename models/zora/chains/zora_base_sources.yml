@@ -48,5 +48,5 @@ sources:
       error_after: { count: 24, period: hour }
     loaded_at_field: evt_block_time
     tables:
-      - name: ERC721Drop_evt_Sale
-      - name: ZoraCreator1155Impl_evt_Purchased
+      - name: ZoraNFTCreatorV1_evt_CreatedDrop
+      - name: ZoraCreator1155_evt_SetupNewContract
