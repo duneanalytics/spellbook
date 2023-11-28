@@ -1,8 +1,8 @@
 {{ config(
-        tags = ['dunesql'],
-        alias = alias('erc20_approvals'),
+        
+        alias = 'erc20_approvals',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -21,6 +21,8 @@
      , ('celo', source('erc20_celo', 'evt_approval'))
      , ('base', source('erc20_base', 'evt_Approval'))
      , ('goerli', source('erc20_goerli', 'evt_approval'))
+     , ('zksync', source('erc20_zksync', 'evt_approval'))
+     , ('zora', source('erc20_zora', 'evt_approval'))
 ] %}
 
 SELECT *

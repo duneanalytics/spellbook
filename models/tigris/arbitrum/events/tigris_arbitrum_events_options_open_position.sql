@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('options_open_position'),
+    alias = 'options_open_position',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -21,7 +21,8 @@ pairs as (
 
 {% set open_position_tables = [
     'options_evt_TradeOpened',
-    'Options_V2_evt_TradeOpened'
+    'Options_V2_evt_TradeOpened',
+    'Options_V3_evt_TradeOpened'
 ] %}
 
 open_position_v2 AS (

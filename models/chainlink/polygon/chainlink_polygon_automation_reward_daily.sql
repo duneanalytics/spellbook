@@ -1,7 +1,7 @@
 {{
   config(
-    tags=['dunesql'],
-    alias=alias('automation_reward_daily'),
+    
+    alias='automation_reward_daily',
     partition_by = ['date_month'],
     materialized = 'incremental',
     file_format = 'delta',

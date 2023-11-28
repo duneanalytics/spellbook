@@ -1,8 +1,8 @@
 {{
     config(
         schema='balancer_v1_ethereum',
-        alias = alias('pools_tokens_weights'),
-        tags = ['dunesql'],
+        alias = 'pools_tokens_weights',
+        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -119,7 +119,7 @@ norm_weights AS (
     SELECT
         settings.pool AS pool_address,
         token AS token_address,
-        denorm / sum_denorm AS normalized_weight
+        CAST(denorm as DOUBLE) / CAST(sum_denorm AS DOUBLE) AS normalized_weight
     FROM settings
     INNER JOIN sum_denorm ON settings.pool = sum_denorm.pool
 )

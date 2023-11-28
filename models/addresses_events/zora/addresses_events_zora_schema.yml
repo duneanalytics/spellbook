@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: addresses_events_zora_first_funded_by
+    meta:
+      blockchain: zora
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'zora']
+    description: "Table showing who first funded each zora address in ETH"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed')
+          filter:
+            blockchain: zora
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_number
+            - tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned zora address"
+        tests:
+          - unique
+      - name: first_funded_by
+        description: "Which zora address first funded the address with ETH"
+      - name: block_time
+        description: "The block time on which the address was first funded with ETH"
+      - name: block_number
+        description: "The block number on which the address was first funded with ETH"
+      - name: tx_hash
+        description: "The transaction hash on which the address was first funded with ETH"
+
+  - name: addresses_events_zora_first_activity
+    meta:
+      blockchain: zora
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'activity', 'addresses_events', 'zora']
+    description: "Table showing first activity of each zora Mainnet address"
+    tests:
+      - check_seed:
+          seed_file: ref('first_activity_seed')
+          filter:
+            blockchain: zora
+          match_columns:
+            - address
+          check_columns:
+            - first_activity_to
+            - first_block_number
+            - first_tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned zora Mainnet address"
+        tests:
+          - unique
+      - name: first_activity_to
+        description: "First transaction activity to address"
+      - name: first_block_time
+        description: "The block time on which the address made it's first activity"
+      - name: first_block_number
+        description: "The block number on which the address made it's first activity"
+      - name: first_tx_hash
+        description: "The transaction hash on which the address made it's first activity"
+      - name: first_function
+        description: "first function called by address"
+      - name: first_eth_transferred
+        description: "ETH transferred in transaction"

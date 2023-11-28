@@ -1,7 +1,6 @@
 {{ config(
-        tags=['dunesql']
-        , schema = 'op_chains'
-        , alias = alias('chain_list')
+     schema = 'op_chains'
+        , alias = 'chain_list'
         , unique_key = ['blockchain', 'chain_id']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",

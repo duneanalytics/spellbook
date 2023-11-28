@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = [ 'static'],
         schema='nft',
-        alias = alias('marketplaces_info'),
+        alias = 'marketplaces_info',
         unique_key = ['codename'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
                                     "sector",

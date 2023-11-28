@@ -1,5 +1,5 @@
-{{config(tags=['dunesql'],
-    alias = alias('validators_solana'))}}
+{{config(
+    alias = 'validators_solana')}}
 
 SELECT distinct
     'solana' as blockchain,

@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: staking_solana_stake_actions
+    meta:
+      blockchain: solana
+      sector: staking
+      contributors: ilemi
+    config:
+      tags: ['solana', 'staking', 'actions']
+    description: Solana Stake11111 program actions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - call_tx_id
+            - source
+            - destination
+            - stake
+            - authority
+            - call_outer_instruction_index
+    columns:
+      - name: stake
+        description: amount in stake moved
+        tests:
+          - not_null
+      - name: action
+        description: withdraw, merge, or split stake
+      - name: source
+        description: the account SOL was moved to
+      - name: destination
+        description: the account SOL was moved from
+      - name: authority
+        description: the account that owns the stake account
+      - name: block_slot
+      - name: block_time
+      - name: outer_instruction_index
+      - name: inner_instruction_index
+      - name: tx_id

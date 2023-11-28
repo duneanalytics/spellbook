@@ -1,7 +1,7 @@
 {{ config(
-        tags=['dunesql'],
+        
         schema='dex',
-        alias = alias('sandwiches'),
+        alias = 'sandwiches',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -46,7 +46,7 @@ FROM (
         , tx_to
         , project_contract_address
         , token_pair
-        , index
+        , tx_index
         , token_sold_amount_raw
         , token_bought_amount_raw
         , token_sold_amount

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer_v2_gnosis',
-    tags = ['dunesql'],
-    alias = alias('trades'),
+    
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

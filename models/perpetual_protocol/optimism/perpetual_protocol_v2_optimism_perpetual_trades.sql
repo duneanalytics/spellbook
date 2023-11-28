@@ -1,7 +1,7 @@
 {{ config(
-	tags=['dunesql'],
+	
 	schema = 'perpetual_protocol_v2_optimism',
-	alias = alias('perpetual_trades'),
+	alias = 'perpetual_trades',
 	partition_by = ['block_month'],
 	materialized = 'incremental',
 	file_format = 'delta',
