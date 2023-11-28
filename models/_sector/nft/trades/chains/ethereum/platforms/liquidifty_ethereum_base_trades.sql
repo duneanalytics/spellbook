@@ -31,8 +31,8 @@ with v2 as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        cast(null as uint256) as platform_fee_price_raw,
-        cast(null as uint256) as royalty_fee_price_raw,
+        cast(null as uint256) as platform_fee_amount_raw,
+        cast(null as uint256) as royalty_fee_amount_raw,
         cast(null as varbinary) as platform_fee_address,
         cast(null as varbinary) as royalty_fee_address,
         evt_index as sub_tx_trade_id
@@ -48,8 +48,7 @@ stack as (
         'v2' as project_version,
         evt_block_time as block_time,
         cast(null as uint256) as nft_token_id,
-        'erc721' as token_standard,
-        'Bundle Trade' as trade_type,
+        'secondary' as trade_type,
         CAST(amount as uint256) as nft_amount,
         'Buy' as trade_category,
         owner as seller,
@@ -63,12 +62,11 @@ stack as (
         contract_address  as project_contract_address,
         evt_tx_hash as tx_hash,
         evt_block_number as block_number,
-        evt_index as sub_tx_trade_id,
-        case
-            when currency = 0x0000000000000000000000000000000000000000 then 'native'
-            else 'erc20'
-        end as currency_token_standard,
-        '1' as orderType
+        cast(null as uint256) as platform_fee_amount_raw,
+        cast(null as uint256) as royalty_fee_amount_raw,
+        cast(null as varbinary) as platform_fee_address,
+        cast(null as varbinary) as royalty_fee_address,
+        evt_index as sub_tx_trade_id
     from {{ source('liquidifty_ethereum', 'PoolSell_evt_Buy') }}
     {% if is_incremental() %}
     where {{incremental_predicate('evt_block_time')}}
@@ -81,16 +79,7 @@ v3 as (
         'v3' as project_version,
         call_block_time as block_time,
         cast(json_extract_scalar(nft, '$.id') as uint256) as nft_token_id,
-        case
-            when json_extract_scalar(nft, '$.assetType') = '0' then 'native'
-            when json_extract_scalar(nft, '$.assetType') = '1' then 'erc20'
-            when json_extract_scalar(nft, '$.assetType') = '2' then 'erc721'
-            when json_extract_scalar(nft, '$.assetType') = '3' then 'erc1155'
-        end as token_standard,
-        case
-            when cardinality(orders) > 1 then 'Bundle Trade'
-            else 'Single Item Trade'
-        end as trade_type,
+        'secondary' as trade_type,
         CAST(JSON_EXTRACT_SCALAR(nft, '$.amount') as uint256) as nft_amount,
         case
             when orderType = '0' then 'Swap'
@@ -108,6 +97,10 @@ v3 as (
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
+        cast(null as uint256) as platform_fee_amount_raw,
+        cast(null as uint256) as royalty_fee_amount_raw,
+        cast(null as varbinary) as platform_fee_address,
+        cast(null as varbinary) as royalty_fee_address,
         row_number() over (partition by call_tx_hash order by call_trace_address asc) as sub_tx_trade_id
     from (
         select *,
@@ -144,48 +137,7 @@ v3 as (
 
 
 select
-    'ethereum' as blockchain,
-    'liquidifty' as project,
-    buys.project_version,
-    buys.block_time,
-    buys.nft_token_id,
-    nft_tokens.name as collection,
-    buys.price_raw / power(10, erc20.decimals) * prices.price as amount_usd,
-    buys.token_standard as token_standard,
-    buys.trade_type,
-    buys.nft_amount,
-    buys.trade_category,
-    'Trade' as evt_type,
-    buys.seller,
-    case
-        when buys.project_version = 'v3' then transactions."from"
-        else buys.buyer
-    end as buyer,
-    buys.price_raw / power(10, erc20.decimals) as amount_original,
-    buys.price_raw as price_raw,
-    erc20.symbol as currency_symbol,
-    buys.currency_contract,
-    buys.nft_contract_address,
-    buys.project_contract_address,
-    cast(null as varchar) as aggregator_name,
-    cast(null as varbinary) as aggregator_address,
-    buys.tx_hash,
-    buys.block_number,
-    transactions."from" as tx_from,
-    transactions.to as tx_to,
-    cast(null as uint256) as platform_fee_price_raw,
-    cast(null as double) as platform_fee_amount,
-    cast(null as double) as platform_fee_amount_usd,
-    cast(null as double) as platform_fee_percentage,
-    cast(null as uint256) as royalty_fee_price_raw,
-    cast(null as double) as royalty_fee_amount,
-    cast(null as double) as royalty_fee_amount_usd,
-    cast(null as double) as royalty_fee_percentage,
-    cast(null as varbinary) as royalty_fee_receive_address,
-    erc20.symbol as royalty_fee_currency_symbol,
-    concat(cast(buys.block_number as varchar), '-',cast(buys.tx_hash as varchar),'-', cast(sub_tx_trade_id as varchar)) as unique_trade_id,
-    buys.currency_token_standard,
-    buys.orderType as order_type
+    *
 from (
     select * from v2
     union all
