@@ -68,6 +68,10 @@ models:
             - tx_hash
             - trace_address
     columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: MATIC"
       - name: address
         description: "Safe contract address"
       - *block_date
@@ -80,6 +84,9 @@ models:
       - *tx_hash
       - name: trace_address
         description: ""
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred MATIC"
 
   - name: safe_polygon_transactions
     meta:

@@ -17,7 +17,6 @@ FROM
     VALUES
     ('aave-new','polygon','AAVE',0xd6df932a45c0f255f85145f286ea0b292b21c90b,18),
     ('ageur-ageur','polygon','agEUR',0xe0b52e49357fd4daf2c15e02058dce6bc0057db4,18),
-    ('axlusdc-axelar-usd-coin', 'polygon', 'axlUSDC', 0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed, 6),
     ('axlusdt-axelar-usd-tether', 'polygon', 'axlUSDT', 0xceed2671d8634e3ee65000edbbee66139b132fbf, 6),
     ('axlatom-axelar-wrapped-atom', 'polygon', 'axlATOM', 0x33f8a5029264bcfb66e39157af3fea3e2a8a5067, 6),
     ('bal-balancer','polygon','BAL',0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3,18),
@@ -83,5 +82,6 @@ FROM
     ('woo-wootrade','polygon','WOO',0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603,18),
     ('route-router-protocol','polygon','ROUTE',0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4,18),
     ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
-    ('comp-compoundd', 'polygon', 'COMP', 0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18)
+    ('comp-compoundd', 'polygon', 'COMP', 0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18),
+    ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
