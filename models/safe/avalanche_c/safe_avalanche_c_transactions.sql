@@ -46,7 +46,7 @@ join {{ ref('safe_avalanche_c_safes') }} s
     on s.address = tr."from"
 join {{ ref('safe_avalanche_c_singletons') }} ss
     on tr.to = ss.address
-left join {{ source('safe_avalanche_c', 'transactions') }} et
+left join {{ source('avalanche_c', 'transactions') }} et
     on tr.tx_hash = et.hash
 where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
