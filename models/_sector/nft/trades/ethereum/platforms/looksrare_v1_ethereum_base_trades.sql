@@ -29,7 +29,7 @@ WITH looksrare_trades AS (
         , ta.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerAsk') }} ta
         {% if is_incremental() %}
-        WHERE ta.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE ta.{{incremental_predicate('evt_block_time')}}
         {% endif %}
 
         UNION ALL
@@ -50,7 +50,7 @@ WITH looksrare_trades AS (
         , tb.strategy
         FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_TakerBid') }} tb
         {% if is_incremental() %}
-        WHERE tb.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE tb.{{incremental_predicate('evt_block_time')}}
         {% endif %}
         )
     )
@@ -66,7 +66,7 @@ WITH looksrare_trades AS (
     , ROW_NUMBER() OVER (PARTITION BY evt_tx_hash, collection, tokenId ORDER BY evt_index ASC) AS id
     FROM {{ source('looksrare_ethereum','LooksRareExchange_evt_RoyaltyPayment') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
     )
 
@@ -94,7 +94,10 @@ WITH looksrare_trades AS (
 
 
 SELECT
-  lr.block_time
+ 'ethereum' as blockchain
+, 'looksrare' as project
+, 'v1' as project_version
+, lr.block_time
 , lr.block_number
 , lr.tx_hash
 , lr.project_contract_address

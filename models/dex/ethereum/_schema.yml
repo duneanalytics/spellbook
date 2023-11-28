@@ -6,11 +6,13 @@ models:
       blockchain: ethereum
       sector: dex
       project: addresses
-      contributors: soispoke
+      contributors: soispoke, rantum
     config:
       tags: ['table', 'dex', 'addresses', 'ethereum']
     description: "Known decentralised exchange addresses"
     columns:
+      - name: blockchain
+        description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
         tests:
