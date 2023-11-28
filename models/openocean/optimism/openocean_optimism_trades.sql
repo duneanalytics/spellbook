@@ -1,5 +1,4 @@
 {{ config(
-    
     schema = 'openocean_optimism',
     alias = 'trades',
     partition_by = ['block_month'],
