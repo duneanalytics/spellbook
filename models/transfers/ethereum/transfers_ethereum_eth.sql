@@ -23,7 +23,7 @@ select
     ,cast(r.value as double)/1e18 as value_decimal
     ,r.tx_hash
     ,r.trace_address
-    ,r.block_time as tx_block_time 
+    ,r.block_time as block_time 
     ,r.block_number as tx_block_number 
     ,bytearray_substring(t.data, 1, 4) as tx_method_id
     ,t.to AS tx_to
