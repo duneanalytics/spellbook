@@ -30,6 +30,16 @@
             'version': 'v2',
             'pool_position': 13,
         },
+        '0x3541d8fea55be35f686281f975bf8b7ab8fbb500c1c7ddd6c4e714655e9cd4e2': {
+            'type': 'uniswap_compatible',
+            'version': 'v2',
+            'pool_position': 13,
+        },
+        '0x41f8736f924f57e464ededb08bf71f868f9d142885bbc73a1516db2be21fc428': {
+            'type': 'uniswap_compatible',
+            'version': 'v2',
+            'pool_position': 13,
+        },
         '0xc4805696c66d7cf352fc1d6bb633ad5ee82f6cb577c453024b6e0eb8306c6fc9': {
             'type': 'uniswap_compatible',
             'version': 'v2',
