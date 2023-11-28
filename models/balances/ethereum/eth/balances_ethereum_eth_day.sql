@@ -1,7 +1,7 @@
 {{ config(
-        
+        schema = 'balances_ethereum',
         alias = 'eth_day',
-        post_hook='{{ expose_spells(\'["eth"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "balances",
                                     \'["rantum"]\') }}'

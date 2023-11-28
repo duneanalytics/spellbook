@@ -1,5 +1,5 @@
 {{ config(
-        
+         schema = 'balances_ethereum',
         alias = 'ethereum_hour',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",

@@ -1,7 +1,7 @@
 {{ 
     config(
         alias = 'eth', 
-        
+        schema = 'transfers_ethereum',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
