@@ -802,6 +802,7 @@ WITH curated_list AS (
       ,(0x76d266dfd3754f090488ae12f6bd115cd7e77ebd, 'Vesper')
       ,(0x96d55bd9c8c4706fed243c1e15825ff7854920fa, 'Worldcoin')
       ,(0xf69fec6d858c77e969509843852178bd24cad2b6, 'Zora')
+      ,(0x05950b4e68f103d5abef20364de219a247e59c23, 'Contango')
 
       
       ,(0xFe1A6056EE03235f30f7a48407A5673BBf25eD48, 'Aave')
@@ -879,6 +880,22 @@ WITH curated_list AS (
       ,(0x36928500Bc1dCd7af6a2B4008875CC336b927D57, 'Tether') --Bitfinex Deployer
       ,(0xa82cbE54d2dAe403f7B3385aA2afA03E7AF0591A, 'XEN Crypto')
       ,(0x95Ba4cF87D6723ad9C0Db21737D862bE80e93911, 'Circle')
+
+      ,(0x855e321ad155D45B64475EEe946D8fA492A7f3F3, 'StableBase')
+      ,(0x3885226c26c467B342220132ec9d0b311b2DD43c, 'Base')
+      ,(0x5c146cd18fa53914580573c9b9604588529406ca, 'Scale')
+      ,(0x5aab1dae1ef9d93b7095d9de9c0ebb150d0c37f0, 'Overtime Markets')
+      ,(0xec219699d2faeb3f416c116de60cdb4aaf2f8d7c, 'Maverick')
+      ,(0x5b540d168e2468270a3b5c66dd1a6e4ece6be593, 'Aave')
+      ,(0xdfa1a2df1ff153ab2afc327661e8414f2d04b3e3, 'Pancakeswap')
+      ,(0xdd3705a1c50fc84b6d31394aa8f4d568b98a8ad5, 'Alienbase')
+      ,(0x6647da1da67bcab3af15c0eb9f7983b3c574b08e, 'Vela Exchange')
+      ,(0x33eb4dea4931e5d607531fb08bd393944aa01faa, 'Seamless Protocol')
+      ,(0xe7affdb964178261df49b86bfdba78e9d768db6d, 'Loot2')
+      ,(0x30109f25428cbe2aa7fd33646a097bfbecf17365, 'USDV')
+      ,(0x02f086dbc384d69b3041bc738f0a8af5e49da181, 'Parallel')
+      ,(0x3073fcad986fbe9f94cc6caa44f76c12e34516d4, 'Moonwell')
+      ,(0xa7a5e47d3959bf134e3ecdeb1f62e054f0d58a18, 'Reserve Protocol')
 
   ) as temp_table (creator_address, contract_project)
 )
