@@ -108,7 +108,7 @@ v3 as (
         contract_address  as project_contract_address,
         call_tx_hash as tx_hash,
         call_block_number as block_number,
-        row_number() over (partition by call_tx_hash order by call_trace_address asc) as sub_tx_trade_id,
+        row_number() over (partition by call_tx_hash order by call_trace_address asc) as sub_tx_trade_id
     from (
         select *,
             case
