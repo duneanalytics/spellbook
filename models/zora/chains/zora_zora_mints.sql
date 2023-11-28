@@ -63,7 +63,6 @@ FROM {{ ref('nft_zora_transfers') }} nftt
 INNER JOIN erc1155_created_collections cc ON cc.contract_address=nftt.contract_address AND nftt.block_number>=cc.block_number
 INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
         AND txs.hash=nftt.tx_hash
-CROSS JOIN UNNEST(sequence(1, CAST(amount AS BIGINT))) AS t (sequence_element)
 WHERE nftt."from"=0x0000000000000000000000000000000000000000
 {% if is_incremental() %}
 AND nftt.block_time >= date_trunc('day', now() - interval '7' day)
