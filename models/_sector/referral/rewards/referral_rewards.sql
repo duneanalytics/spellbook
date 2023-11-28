@@ -12,7 +12,7 @@
                     "referral",
                     \'["0xRob"]\') }}')
 }}
-
+-- CI counter (change to include in CI run) = 1
 
 {{ enrich_referral_rewards (
     model = ref('referral_staging_rewards')
