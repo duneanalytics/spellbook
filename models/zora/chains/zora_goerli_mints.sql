@@ -1,14 +1,20 @@
 {{ config(
-        tags = ['dunesql'],
         schema = 'zora_goerli',
         alias =alias('mints'),
         partition_by=['block_date'],
         materialized='incremental',
         file_format = 'delta',
-        unique_key = ['block_number', 'tx_hash', 'nft_token_id', 'evt_index']
+        unique_key = ['tx_hash', 'token_id', 'evt_index']
 )
 }}
 
+{{zora_mints(
+    blockchain = 'goerli'
+    , erc721_mints = source('zora_goerli', 'ERC721Drop_evt_Sale')
+    , erc1155_mints = source('zora_goerli', 'ZoraCreator1155Impl_evt_Purchased')
+)}}
+
+/*
 {{zora_mints(
     blockchain = 'goerli'
     , erc721_mints = source('zora_goerli', 'ERC721Drop_evt_Sale')
@@ -18,3 +24,4 @@
     , erc1155_royalties = source('zora_goerli', 'ZoraCreator1155Impl_evt_UpdatedRoyalties')
     , zora_protocol_rewards = source('zora_goerli', 'ProtocolRewards_call_depositRewards')
 )}}
+*/

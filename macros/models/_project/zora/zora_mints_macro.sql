@@ -1,7 +1,42 @@
 {% macro 
-    zora_mints(blockchain, erc721_mints, erc721_fee, erc721_zora_transfers, erc1155_mints, erc1155_royalties, zora_protocol_rewards) 
+    zora_mints(blockchain, erc721_mints, erc1155_mints) 
 %}
 
+SELECT '{{blockchain}}' AS blockchain
+, evt_block_time AS block_time
+, evt_block_number AS block_number
+, 'erc721' AS token_standard
+, firstPurchasedTokenId + sequence_element AS token_id
+, pricePerToken/1e18/quantity AS token_price
+, to AS recipient
+, evt_tx_hash AS tx_hash
+, evt_index
+, contract_address
+FROM {{erc721_mints}}
+CROSS JOIN UNNEST(sequence(1, CAST(quantity AS BIGINT))) AS t (sequence_element)
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
+
+UNION ALL
+
+SELECT '{{blockchain}}' AS blockchain
+, evt_block_time AS block_time
+, evt_block_number AS block_number
+, 'erc1155' AS token_standard
+, tokenId AS token_id
+, value/1e18/quantity AS token_price
+, sender AS recipient
+, evt_tx_hash AS tx_hash
+, evt_index
+, contract_address
+FROM {{erc1155_mints}}
+CROSS JOIN UNNEST(sequence(1, CAST(quantity AS BIGINT))) AS t (sequence_element)
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
+
+/*
 WITH zora_mints AS (
     SELECT 'erc721' AS nft_type
     , s.evt_block_time AS block_time
@@ -103,5 +138,6 @@ LEFT JOIN {{zora_protocol_rewards}} deps ON deps.call_block_number=m.block_numbe
     AND deps.creator != 0x0000000000000000000000000000000000000000
 LEFT JOIN {{ source(blockchain, 'transactions') }} txs ON txs.block_number=m.block_number
     AND txs.hash=m.tx_hash
+*/
 
 {% endmacro %}
