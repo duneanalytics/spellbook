@@ -83,8 +83,7 @@ models:
     config:
       tags: ['balances', 'ethereum', 'erc721', 'noncompliant', 'Henrystats', 'denz-e']
     description: >
-        ERC721 NFT contract address and tokenId pairs with multiple owners.
+        ERC721 NFT contract addresses where there are multiple owners of the same tokenId.
         Depends on nft_transfers.
     columns:
       - *token_address
-      - *tokenId

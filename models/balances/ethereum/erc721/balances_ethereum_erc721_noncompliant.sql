@@ -28,4 +28,4 @@ WITH
         HAVING COUNT(wallet_address) > 1
     )
 
-    SELECT * FROM multiple_owners
+    SELECT distinct token_address FROM multiple_owners
