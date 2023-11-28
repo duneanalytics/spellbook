@@ -88,7 +88,6 @@ WITH deterministic_deployers AS (
           1=1
           {% if is_incremental() %}
           AND {{ incremental_predicate('s.created_time') }}
-          AND {{ incremental_predicate('s.created_month') }}
           {% endif %}
     )
 
