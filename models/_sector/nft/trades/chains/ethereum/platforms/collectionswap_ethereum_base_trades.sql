@@ -86,7 +86,7 @@ raw_trades as (
     )
 ),
 
-base_trades as (
+base_trades_pre as (
     select
     t.*,
     p.nft_contract_address,
@@ -119,7 +119,7 @@ SELECT
 , cast(null as varbinary) as platform_fee_address
 , royalty_fee_address
 , sub_tx_trade_id
-FROM base_trades
+FROM base_trades_pre
 
 )
 -- this will be removed once tx_from and tx_to are available in the base event tables
