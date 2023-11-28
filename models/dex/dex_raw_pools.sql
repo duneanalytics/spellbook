@@ -54,7 +54,6 @@
         "gnosis", 
         "fantom", 
         "optimism", 
-        "optimism_legacy_ovm1",
         "arbitrum", 
         "celo", 
         "base", 
@@ -112,7 +111,7 @@ pool_created_logs as (
 
 
 select 
-    replace(blockchain, 'optimism_legacy_ovm1', 'optimism') as blockchain
+    blockchain
     , type
     , version
     , pool
