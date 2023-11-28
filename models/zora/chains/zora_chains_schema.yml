@@ -27,6 +27,8 @@ models:
         description: "Token standard"
       - name: token_id
         description: "Token ID"
+      - name: total_price
+        description: "Total price paid"
       - name: recipient
         description: "Recipient"
       - name: tx_hash
@@ -62,6 +64,8 @@ models:
         description: "Token standard"
       - name: token_id
         description: "Token ID"
+      - name: total_price
+        description: "Total price paid"
       - name: recipient
         description: "Recipient"
       - name: tx_hash
@@ -97,6 +101,8 @@ models:
         description: "Token standard"
       - name: token_id
         description: "Token ID"
+      - name: total_price
+        description: "Total price paid"
       - name: recipient
         description: "Recipient"
       - name: tx_hash
@@ -132,6 +138,8 @@ models:
         description: "Token standard"
       - name: token_id
         description: "Token ID"
+      - name: total_price
+        description: "Total price paid"
       - name: recipient
         description: "Recipient"
       - name: tx_hash

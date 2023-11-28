@@ -21,32 +21,16 @@
 SELECT *
 FROM (
     {% for zora_mints_model in zora_mints_models %}
-    SELECT
-          blockchain
-        , block_date
-        , block_time
-        , block_number
-        , minter
-        , nft_recipient
-        , nft_type
-        , nft_contract_address
-        , nft_token_id
-        , amount
-        , price
-        , tx_hash
-        , marketplace_fee
-        , marketplace_fee_recipient
-        , creator_fee
-        , creator_fee_recipient
-        , create_referral_reward
-        , create_referral_reward_recipient
-        , first_minter_reward
-        , first_minter_reward_recipient
-        , mint_referral_reward
-        , mint_referral_reward_recipient
-        , evt_index
-        , contract_address
-        , rewards_version
+    SELECT blockchain
+    , block_time
+    , block_number
+    , token_standard
+    , token_id
+    , price
+    , recipient
+    , tx_hash
+    , evt_index
+    , contract_address
     FROM {{ zora_mints_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)

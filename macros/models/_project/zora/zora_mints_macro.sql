@@ -7,7 +7,7 @@ SELECT '{{blockchain}}' AS blockchain
 , evt_block_number AS block_number
 , 'erc721' AS token_standard
 , firstPurchasedTokenId + sequence_element AS token_id
-, pricePerToken/1e18/quantity AS token_price
+, pricePerToken/1e18/quantity AS total_price
 , to AS recipient
 , evt_tx_hash AS tx_hash
 , evt_index
@@ -25,7 +25,7 @@ SELECT '{{blockchain}}' AS blockchain
 , evt_block_number AS block_number
 , 'erc1155' AS token_standard
 , tokenId AS token_id
-, value/1e18/quantity AS token_price
+, value/1e18/quantity AS total_price
 , sender AS recipient
 , evt_tx_hash AS tx_hash
 , evt_index
