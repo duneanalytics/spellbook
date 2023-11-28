@@ -13,7 +13,7 @@
 ,ref('trove_v2_arbitrum_base_trades')
 ] %}
 
-with base_union as (
+
 SELECT * FROM  (
 {% for nft_model in nft_models %}
     SELECT
@@ -51,4 +51,3 @@ SELECT * FROM  (
     {% endfor %}
     )
 where duplicates_rank = 1
-)
