@@ -901,6 +901,11 @@ WITH curated_list AS (
       ,(0x1885b7c7a3ae1f35ba71c0392c13153a95c4914f, 'Hats Finance')
       ,(0x0ae6af9c58d2830c2721ebd06f89a73bff19fb26, 'Jarvis Network')
       ,(0xA825fc60eB4B1269F1dF0f6E574b953d2b5f7EFc, 'Keep3r Network')
+      ,(0x0ff213846d42528a4ca24f8079f85b8044acfa7b, 'DMail')
+      ,(0x63B81972320b5B8d1C1fC90E29F145380b5B9bD4, 'OpenSea')
+      ,(0x8281B589Ea0c0B126aF00df3FAe781140920500a, 'PancakeSwap')
+      ,(0xfE351F5Ed699fd5eA80b906F89DfdAd2f885A46C, 'Basedmarkets')
+      ,(0x7a906107E2E0c9Db9a991Eaa8Ac8D50764460E85, 'TagDotTech')
 
   ) as temp_table (creator_address, contract_project)
 )
