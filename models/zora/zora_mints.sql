@@ -26,7 +26,7 @@ FROM (
     , block_number
     , token_standard
     , token_id
-    , price
+    , total_price
     , recipient
     , tx_hash
     , evt_index
