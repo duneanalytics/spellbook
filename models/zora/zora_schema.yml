@@ -27,6 +27,8 @@ models:
         description: "Token standard"
       - name: token_id
         description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
       - name: total_price
         description: "Total price paid"
       - name: recipient
