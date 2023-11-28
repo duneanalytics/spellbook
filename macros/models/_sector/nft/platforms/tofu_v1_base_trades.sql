@@ -53,7 +53,7 @@ WITH tff AS (
               and {{incremental_predicate('evt_block_time')}}
               {% endif %}
      )
-
+,
 base_trades as (
 SELECT '{{blockchain}}'                      as blockchain
      , 'tofu'                                as project
