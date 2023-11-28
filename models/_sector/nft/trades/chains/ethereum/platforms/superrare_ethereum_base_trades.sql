@@ -1,6 +1,6 @@
 {{ config(
     schema = 'superrare_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -149,7 +149,7 @@ with all_superrare_sales as (
     where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 )
-
+, base_trades as (
 SELECT
     'ethereum' as blockchain,
     'superrare' as project,
@@ -203,3 +203,6 @@ left join {{ source('erc20_ethereum','evt_transfer') }} minter_superrare on mint
     and minter_superrare.evt_block_time >= {{ project_start_date }}
     {% endif %}
 
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

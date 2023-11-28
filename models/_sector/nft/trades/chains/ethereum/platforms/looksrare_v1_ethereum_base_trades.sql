@@ -1,6 +1,6 @@
 {{ config(
     schema = 'looksrare_v1_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -92,7 +92,7 @@ WITH looksrare_trades AS (
     FROM {{ source('looksrare_ethereum','StrategyAnyItemFromCollectionForFixedPriceV1B_call_viewProtocolFee') }}
     )
 
-
+, base_trades as (
 SELECT
  'ethereum' as blockchain
 , 'looksrare' as project
@@ -122,3 +122,7 @@ LEFT JOIN royalties roy ON roy.block_time=lr.block_time
     AND roy.nft_token_id=lr.nft_token_id
     AND roy.id = lr.id
 LEFT JOIN platform_fees pf ON pf.contract_address=lr.strategy
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'looksrare_v2_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -62,7 +62,7 @@ WITH looksrare_v2_trades AS (
     WHERE l.evt_block_time >= {{looksrare_v2_start_date}}
     {% endif %}
     )
-
+, base_trades as (
 SELECT
  'ethereum' as blockchain
 , 'looksrare' as project
@@ -86,3 +86,7 @@ SELECT
 , CAST(null as varbinary) as platform_fee_address
 , evt_index as sub_tx_trade_id
 FROM looksrare_v2_trades
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

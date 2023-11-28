@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zora_v2_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,7 +8,7 @@
     unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
-
+, base_trades as (
 SELECT
       'ethereum' as blockchain
     , 'zora' as project
@@ -35,3 +35,7 @@ FROM {{ source('zora_ethereum','AuctionHouse_evt_AuctionEnded') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

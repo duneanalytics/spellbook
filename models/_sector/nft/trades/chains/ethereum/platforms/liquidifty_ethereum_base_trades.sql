@@ -135,7 +135,7 @@ v3 as (
     )
 )
 
-
+,base_trades as (
 select
     *
 from (
@@ -145,3 +145,7 @@ from (
     union all
     select * from v3
 ) buys
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

@@ -1,5 +1,5 @@
 {{ config(
-    
+
     schema = 'foundation_ethereum',
     alias = 'base_trades',
     materialized = 'incremental',
@@ -100,7 +100,7 @@ WITH all_foundation_trades AS (
      WHERE f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
      {% endif %}
     )
-
+, base_trades as (
 SELECT
  'ethereum' as blockchain
 , 'foundation' as project
@@ -124,3 +124,7 @@ SELECT
 , cast(NULL as varbinary) AS platform_fee_address
 , t.sub_tx_trade_id
 FROM all_foundation_trades t
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

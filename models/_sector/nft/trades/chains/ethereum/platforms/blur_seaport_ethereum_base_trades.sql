@@ -1,6 +1,6 @@
 {{ config(
     schema = 'blur_seaport_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,7 +10,7 @@
 }}
 
 {% set seaport_usage_start_date = "2023-01-25" %}
-
+with base_trades as (
 SELECT
       'ethereum' as blockchain
     , 'blur' as project
@@ -42,3 +42,7 @@ WHERE s.zone=0x0000000000d80cfcb8dfcd8b2c4fd9c813482938
     {% else %}
     AND s.evt_block_time >= timestamp '{{seaport_usage_start_date}}'
     {% endif %}
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

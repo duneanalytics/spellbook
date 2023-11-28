@@ -1,6 +1,6 @@
 {{ config(
     schema = 'x2y2_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -57,7 +57,7 @@ WITH src_evt_inventory as (
     WHERE evt_block_time >= {{project_start_date}}
     {% endif %}
 )
-
+, base_trades as (
 -- results
 SELECT
  'ethereum' as blockchain
@@ -83,3 +83,6 @@ SELECT
 , sub_tx_trade_id
 FROM src_evt_inventory
 
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

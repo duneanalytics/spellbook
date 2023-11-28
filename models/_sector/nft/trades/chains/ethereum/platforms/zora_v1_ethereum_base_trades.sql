@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zora_v1_ethereum',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -8,7 +8,7 @@
     unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
-
+, base_trades as (
 SELECT
      'ethereum' as blockchain
     , 'zora' as project
@@ -48,3 +48,7 @@ WHERE from_hex(JSON_EXTRACT_SCALAR(bf.bid, '$.bidder')) != 0xe468ce99444174bd3bb
 AND {{incremental_predicate('bf.evt_block_time')}}
 AND {{incremental_predicate('mt.evt_block_time')}}
 {% endif %}
+
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}

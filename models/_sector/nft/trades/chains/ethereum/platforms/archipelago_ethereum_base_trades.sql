@@ -44,7 +44,7 @@ fee_events as (
     {% endif %}
     GROUP BY evt_block_number, tradeId
 )
-
+, base_trades as (
 SELECT
     'ethereum' as blockchain
     ,'archipelago' as project
@@ -74,4 +74,7 @@ ON trade.evt_block_number = tok.evt_block_number
 LEFT JOIN fee_events fee
 ON trade.evt_block_number = fee.evt_block_number
     AND trade.tradeId = fee.tradeId
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'ethereum') }}
 

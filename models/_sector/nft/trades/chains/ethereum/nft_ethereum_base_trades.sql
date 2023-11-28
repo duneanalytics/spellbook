@@ -26,7 +26,6 @@
 ,ref('looksrare_seaport_ethereum_base_trades')
 ] %}
 
-with base_union as (
 SELECT * FROM  (
 {% for nft_model in nft_models %}
     SELECT
@@ -63,7 +62,4 @@ SELECT * FROM  (
     {% endfor %}
     )
 where duplicates_rank = 1
-)
 
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_union', 'ethereum') }}
