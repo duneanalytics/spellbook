@@ -14,7 +14,8 @@
 }}
 
 select 
-    r."from"
+    'ethereum' as blockchain,
+    ,r."from"
     ,r.to
     --Using the ETH placeholder address to match with prices tables
     ,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as contract_address
