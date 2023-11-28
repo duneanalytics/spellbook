@@ -1,13 +1,11 @@
 {{ config(
-    tags = ['dunesql'],
     schema = 'zora',
-    partition_by=['block_date'],
-    alias = alias('mints'),
+    alias = 'mints',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'tx_hash', 'token_id', 'evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum","optimism","base","goerli"]\',
+    post_hook='{{ expose_spells(\'["ethereum","optimism","base","zora"]\',
                     "project",
                     "zora",
                     \'["hildobby"]\') }}')
@@ -17,7 +15,7 @@
  ref('zora_ethereum_mints')
 ,ref('zora_optimism_mints')
 ,ref('zora_base_mints')
-,ref('zora_goerli_mints')
+,ref('zora_zora_mints')
 ] %}
 
 SELECT *
