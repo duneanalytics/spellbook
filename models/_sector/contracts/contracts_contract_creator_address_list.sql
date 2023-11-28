@@ -896,6 +896,11 @@ WITH curated_list AS (
       ,(0x02f086dbc384d69b3041bc738f0a8af5e49da181, 'Parallel')
       ,(0x3073fcad986fbe9f94cc6caa44f76c12e34516d4, 'Moonwell')
       ,(0xa7a5e47d3959bf134e3ecdeb1f62e054f0d58a18, 'Reserve Protocol')
+      ,(0x38f2ad967328f246763d052cea13ebde47d54518, 'Elk Finance')
+      ,(0x2a069e21395dc7f89f780f8cf5383a0ff598b672, 'Hats Protocol')
+      ,(0x1885b7c7a3ae1f35ba71c0392c13153a95c4914f, 'Hats Finance')
+      ,(0x0ae6af9c58d2830c2721ebd06f89a73bff19fb26, 'Jarvis Network')
+      ,(0xA825fc60eB4B1269F1dF0f6E574b953d2b5f7EFc, 'Keep3r Network')
 
   ) as temp_table (creator_address, contract_project)
 )
