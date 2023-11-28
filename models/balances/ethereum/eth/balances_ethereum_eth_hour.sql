@@ -1,20 +1,18 @@
 {{ config(
         
-        alias = 'bnb_hour',
-        post_hook='{{ expose_spells(\'["bnb"]\',
+        alias = 'ethereum_hour',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "balances",
-                                    \'["Henrystats"]\') }}'
+                                    \'["rantum"]\') }}'
         )
 }}
 
 WITH 
 
--- credits @tomfutago - https://dune.com/queries/2988360
-
 years as (
     select year
-    from (values (sequence(timestamp '2020-08-29', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+    from (values (sequence(timestamp '2015-07-15', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
       cross join unnest(year_array) as d(year)
 ),
 
@@ -36,7 +34,7 @@ hourly_balances as (
         symbol,
         LEAD(hour, 1, current_timestamp) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) AS next_hour
     FROM 
-    {{ ref('transfers_bnb_bnb_rolling_hour') }}
+    {{ ref('transfers_ethereum_eth_rolling_hour') }}
 )
 
 SELECT
@@ -59,5 +57,5 @@ LEFT JOIN
 {{ source('prices', 'usd') }} p
     ON p.contract_address = b.token_address
     AND d.block_hour = p.minute
-    AND p.blockchain = 'bnb'
+    AND p.blockchain = 'ethereum'
 
