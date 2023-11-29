@@ -75,7 +75,9 @@ WITH dexs AS
         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address as project_contract_address
         {% if optional_columns %}
-        , {{ optional_columns[0] }} -- basic solution, might need extending with a loop once list of optional columns grows
+            {% for optional_column in optional_columns %}
+            , {{ optional_column }}
+            {% endfor %}
         {% endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
