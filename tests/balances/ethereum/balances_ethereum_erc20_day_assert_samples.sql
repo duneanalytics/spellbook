@@ -5,7 +5,7 @@ with sampled_wallets as
      select *
      from {{ ref('balances_ethereum_erc20_day') }} bal
      where wallet_address in (select distinct wallet_address from {{ ref('balances_ethereum_erc20_daily_entries')  }})
-     and bal.day > cast('2021-12-30' as date) and bal.day < cast('2022-01-01' as date)
+     and bal.block_day > cast('2021-12-30' as date) and bal.block_day < cast('2022-01-01' as date)
  )
 
 , unit_tests as
