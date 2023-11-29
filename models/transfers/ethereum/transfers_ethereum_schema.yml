@@ -160,6 +160,4 @@ models:
       - &trace_address
         name: trace_address
         description: "Trace index"
-      - &amount_raw
-        name: amount_raw
-        description: "Raw amount of bnb token held *before* taking into account token decimals"
+      - *amount_raw
