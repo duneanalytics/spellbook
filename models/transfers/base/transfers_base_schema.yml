@@ -278,19 +278,17 @@ models:
   
 
 
-        - name: transfers_base_erc20_agg_hour
+  - name: transfers_base_erc20_agg_hour
     meta:
       blockchain: base
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, rantum
+      contributors: rantum
     config:
-      tags: ['transfers', 'base', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'rantum']
+      tags: ['transfers', 'base', 'erc20', 'agg_hour','rantum']
     columns:
       - *blockchain
-      - &hour
-        name: hour
-        description: "UTC event block time truncated to the hour mark."
+      - *block_hour
       - *wallet_address
       - *token_address
       - name: symbol

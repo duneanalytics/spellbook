@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = 'ethereum_rolling_hour')
+        alias = 'base_rolling_hour')
 }}
 
         SELECT
@@ -14,4 +14,4 @@
             SUM(amount_raw) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount_raw, 
             SUM(amount) OVER (PARTITION BY token_address, wallet_address ORDER BY hour) as amount          
         FROM 
-        {{ ref('transfers_ethereum_eth_agg_hour') }}
+        {{ ref('transfers_base_eth_agg_hour') }}

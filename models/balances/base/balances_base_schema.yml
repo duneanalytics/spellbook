@@ -114,33 +114,17 @@ models:
         Hourly token balances of base for each address on base.
         Depends on transfers_base_eth
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - *blockchain
       - &block_month
         name: block_month
         description: "UTC event block time truncated to the month mark"
-      - &block_hour
-        name: block_hour
-        description: "UTC event block time truncated to the hour mark"
-      - &wallet_address
-        name: wallet_address
-        description: "Address of the wallet holding base"
-      - &token_address
-        name: token_address
-        description: "base Dead Address on base"
-      - &amount_raw
-        name: amount_raw
-        description: "Raw amount of base token held *before* taking into account token decimals"
-      - &amount
-        name: amount
-        description: "Raw amount of base token held *after* taking into account token decimals"
-      - &amount_usd
-        name: amount_usd
-        description: "Amount of base token held in USD if we have it"
-      - &symbol
-        name: symbol
-        description: "Token symbol"
+      - *block_hour
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
 
   - name: balances_base_eth_day
     meta:
@@ -156,9 +140,7 @@ models:
     columns:
       - *blockchain
       - *block_month
-      - &block_day
-        name: block_day
-        description: "UTC event block time truncated to the day mark"
+      - *block_day
       - *wallet_address
       - *token_address
       - *amount_raw
@@ -180,9 +162,7 @@ models:
         Depends on transfers_base_eth.
     columns:
       - *blockchain
-      - &last_updated
-        name: last_updated
-        description: "UTC timestamp when data was last updated"
+      - *last_updated
       - *wallet_address
       - *token_address
       - *amount_raw

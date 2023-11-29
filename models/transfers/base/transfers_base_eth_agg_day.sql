@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = 'ethereum_agg_day',
+        alias = 'base_agg_day',
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',
@@ -15,11 +15,11 @@ select
     block_month,
     tr.wallet_address,
     tr.token_address,
-    'ethereum' as symbol,
+    'base' as symbol,
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, 18)) as amount
 FROM 
-{{ ref('transfers_ethereum_eth') }} tr
+{{ ref('transfers_base_eth') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE tr.block_time >= date_trunc('day', now() - interval '3' Day)
