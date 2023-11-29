@@ -12,5 +12,5 @@
     blockchain = 'optimism'
     , erc721_mints = source('zora_optimism', 'ERC721Drop_evt_Sale')
     , erc1155_mints = source('zora_optimism', 'ZoraCreator1155Impl_evt_Purchased')
-    , transactions = tef('optimism', 'transactions')
+    , transactions = source('optimism', 'transactions')
 )}}
