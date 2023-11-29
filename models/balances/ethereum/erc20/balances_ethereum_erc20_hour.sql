@@ -14,7 +14,7 @@ WITH
 
 years as (
     select year
-    from (values (sequence(timestamp '2021-05-29', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+    from (values (sequence(timestamp '2015-05-29', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
       cross join unnest(year_array) as d(year)
 ),
 
