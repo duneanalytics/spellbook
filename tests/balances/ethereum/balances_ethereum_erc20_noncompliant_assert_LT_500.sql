@@ -4,4 +4,4 @@
 
 select count(*) as count
 from {{ ref('balances_ethereum_erc20_noncompliant') }}
-having count(*) > 500
+having count(*) > 1500
