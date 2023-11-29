@@ -1,5 +1,5 @@
 {% macro 
-    zora_mints(blockchain, erc721_mints, erc1155_mints) 
+    zora_mints(blockchain, erc721_mints, erc1155_mints, transactions) 
 %}
 
 SELECT '{{blockchain}}' AS blockchain

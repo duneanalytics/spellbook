@@ -12,4 +12,5 @@
     blockchain = 'base'
     , erc721_mints = source('zora_base', 'ERC721Drop_evt_Sale')
     , erc1155_mints = source('zora_base', 'ZoraCreator1155_evt_Purchased')
+    , transactions = tef('base', 'transactions')
 )}}
