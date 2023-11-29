@@ -10,13 +10,12 @@
     )
 }}
 
-
 {{
-    uniswap_compatible_v3_trades(
-        blockchain = 'polygon'
-        , project = 'quickswap'
-        , version = '2'
-        , Pair_evt_Swap = source('quickswap_v3_polygon', 'AlgebraPool_evt_Swap')
-        , Factory_evt_PoolCreated = source('quickswap_v3_polygon', 'AlgebraPool_evt_Swap')
+    uniswap_compatible_v2_trades(
+        blockchain = 'polygon',
+        project = 'quickswap',
+        version = '2',
+        Pair_evt_Swap = source('quickswap_polygon', 'UniswapV2Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('quickswap_polygon', 'UniswapV2Factory_evt_PairCreated')
     )
 }}
