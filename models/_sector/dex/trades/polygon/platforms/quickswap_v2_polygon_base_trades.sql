@@ -13,7 +13,7 @@
 {%
     set config_sources = [
         {'version': 'quickswap_v3_polygon', 'source': 'AlgebraPool_evt_Swap'},
-        {'version': 'quickswap_v3_polygon', 'source': 'AlgebraFactory_evt_Pool'},
+        {'version': 'quickswap_v3_polygon', 'source': 'AlgebraFactory_evt_Pool'}
     ]
 %}
 
