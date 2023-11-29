@@ -3,8 +3,13 @@
 
 select amount
 from {{ ref('balances_ethereum_erc20_day') }} bal
+LEFT JOIN {{ ref('balances_ethereum_erc20_noncompliant') }} nc
+    ON rh.token_address = nc.token_address
+
 where round(amount/power(10, 18), 6) < 0
+and token_address not in (select )
 -- limiting to a selection of tokens because we haven't filtered out all non-compliant tokens
 and symbol in ('AAVE', 'DAI', 'UNI', 'LINK')
 and bal.block_day > now() - interval '2' day
+AND nc.token_address IS NULL
 
