@@ -46,7 +46,7 @@ INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.bloc
         AND txs.hash=nftt.tx_hash
 INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='zora'
         AND pu.contract_address=0x4200000000000000000000000000000000000006
-        AND pu.minute=date_trunc('minute', mints.evt_block_time)
+        AND pu.minute=date_trunc('minute', nftt.block_time)
 CROSS JOIN UNNEST(sequence(1, CAST(amount AS BIGINT))) AS t (sequence_element)
 WHERE nftt."from"=0x0000000000000000000000000000000000000000
 {% if is_incremental() %}
@@ -75,7 +75,7 @@ INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.bloc
         AND txs.hash=nftt.tx_hash
 INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='zora'
         AND pu.contract_address=0x4200000000000000000000000000000000000006
-        AND pu.minute=date_trunc('minute', mints.evt_block_time)
+        AND pu.minute=date_trunc('minute', nftt.block_time)
 WHERE nftt."from"=0x0000000000000000000000000000000000000000
 {% if is_incremental() %}
 AND nftt.block_time >= date_trunc('day', now() - interval '7' day)
