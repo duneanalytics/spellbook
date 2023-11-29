@@ -1,5 +1,5 @@
 {{ config(
-            schema = 'tranfers_base',
+        schema = 'tranfers_base',
         alias = 'erc20_rolling_hour')
 }}
 
