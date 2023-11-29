@@ -10,18 +10,13 @@
     )
 }}
 
-{%
-    set config_sources = [
-        {'version': 'quickswap_v3_polygon', 'source': 'AlgebraPool_evt_Swap'},
-        {'version': 'quickswap_v3_polygon', 'source': 'AlgebraFactory_evt_Pool'}
-    ]
-%}
 
 {{
-    quickswap_compatible_trades(
-        blockchain = 'polygon',
-        project = 'quickswap',
-        version = '2',
-        sources = config_sources
+    uniswap_compatible_v3_trades(
+        blockchain = 'polygon'
+        , project = 'quickswap'
+        , version = '2'
+        , Pair_evt_Swap = source('quickswap_v3_polygon', 'AlgebraPool_evt_Swap')
+        , Factory_evt_PoolCreated = source('quickswap_v3_polygon', 'AlgebraPool_evt_Swap')
     )
 }}
