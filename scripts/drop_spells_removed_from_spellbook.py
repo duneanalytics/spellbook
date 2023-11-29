@@ -15,7 +15,7 @@ def generate_tables_query(env):
             WHERE t."OWNER_TYPE" = 'USER'
                 AND t."OWNER" = 'admin'
                 AND t."TBL_TYPE" = 'EXTERNAL_TABLE'
-                AND d."NAME" LIKE 'dbt_jeff_dude_carbonhood_%';
+                AND d."NAME" LIKE 'dbt_jeff_dude_dex%';
         """
     elif env == PROD_ENV:
         return """
@@ -41,7 +41,7 @@ def generate_views_query(env):
             WHERE t."OWNER_TYPE" = 'USER'
                 AND t."OWNER" = 'admin'
                 AND t."TBL_TYPE" = 'VIRTUAL_VIEW'
-                AND d."NAME" LIKE 'dbt_jeff_dude_carbonhood_%';
+                AND d."NAME" LIKE 'dbt_jeff_dude_dex%';
         """
     elif env == PROD_ENV:
         return """
@@ -95,6 +95,7 @@ env = DEV_ENV  # Change this based on your needs
 
 # Step 1: List dbt models and output in JSON format
 dbt_command = ['dbt', 'ls', '--resource-type', 'model', '--output', 'json']
+# dbt_command = ['dbt', 'ls', '--resource-type', 'model', '--output', 'json', '--exclude', 'dex_trades_beta']
 dbt_output_bytes = subprocess.check_output(dbt_command)
 dbt_output_str = dbt_output_bytes.decode('utf-8')
 dbt_lines = dbt_output_str.splitlines()
