@@ -14,8 +14,8 @@ with sampled_wallets as
 FROM {{ ref('balances_ethereum_erc20_latest_entries') }} as test_data
 JOIN sampled_wallets as token_balances
 ON test_data.timestamp = token_balances.hour
-AND cast(test_data.wallet_address as varbinary) = token_balances.wallet_address
-AND cast(test_data.token_address as varbinary) = token_balances.token_address)
+AND cast(test_data.wallet_address as varbinary) = cast(token_balances.wallet_address as varbinary)
+AND cast(test_data.token_address as varbinary) = cast(token_balances.token_address as varbinary))
 
 select count(case when amount_raw_test = false then 1 else null end)/count(*) as pct_mismatch, count(*) as count_rows
 from unit_tests

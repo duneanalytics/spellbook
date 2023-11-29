@@ -4,7 +4,7 @@
 select amount
 from {{ ref('balances_ethereum_erc20_day') }} bal
 LEFT JOIN {{ ref('balances_ethereum_erc20_noncompliant') }} nc
-    ON rh.token_address = nc.token_address
+    ON bal.token_address = nc.token_address
 
 where round(amount/power(10, 18), 6) < 0
 
