@@ -1,0 +1,60 @@
+version: 2
+
+models:
+ - name: aurem_polygon_base_trades
+   meta:
+     blockchain: polygon
+     sector: nft
+     project: aurem
+     contributors: springzh
+   config:
+     tags: ['polygon', 'nft', 'trades', 'aurem']
+   description: "Aurem base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('aurem_polygon','Exchange_evt_OrderFilled')
+     - check_seed:
+         seed_file: ref('aurem_polygon_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+
+ - name: dew_polygon_base_trades
+   meta:
+     blockchain: polygon
+     sector: nft
+     project: dew
+     contributors: springzh
+   config:
+     tags: ['polygon', 'nft', 'trades', 'dew']
+   description: "Dew base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('dew_polygon','dew_market_evt_Fulfilled')
+     - check_seed:
+         seed_file: ref('dew_polygon_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
