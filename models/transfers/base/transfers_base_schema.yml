@@ -58,7 +58,7 @@ models:
       blockchain: base
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz, rantum
+      contributors: soispoke, dot2dotseurat, tschubotz
     config:
       tags: ['transfers', 'base', 'erc20']
     description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
@@ -110,16 +110,17 @@ models:
       blockchain: base
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, rantum
+      contributors: rantum
     description: "ERC20 Token Transfers on base per hour."
     config:
-      tags: ['transfers', 'base', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'rantum']
+      tags: ['transfers', 'base', 'erc20', 'rolling_hour']
     columns:
       - *blockchain
-      - *hour
+      - *block_hour
       - *wallet_address
       - *token_address
-      - name: symbol
+      - *symbol
+        name: symbol
         description: "ERC20 token symbol"
       - *amount_raw
       - name: amount
