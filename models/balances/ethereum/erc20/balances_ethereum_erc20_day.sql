@@ -12,7 +12,7 @@ WITH
 time_seq AS (
     SELECT 
         sequence(
-        CAST('2021-05-29' as timestamp),
+        CAST('2015-05-29' as timestamp),
         date_trunc('day', cast(now() as timestamp)),
         interval '1' day
         ) AS time 

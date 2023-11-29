@@ -5,6 +5,9 @@ select amount
 from {{ ref('balances_ethereum_erc20_hour') }} bal
 where round(amount/power(10, 18), 6) < 0
 -- limiting to a selection of tokens because we haven't filtered out all non-compliant tokens
-and symbol in ('AAVE', 'DAI', 'UNI', 'LINK')
+and bal.token_address in (0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9, 
+                        0x6b175474e89094c44da98b954eedeac495271d0f,
+                        0x1f9840a85d5af5bf1d1762f925bdaddc4201f984,
+                         0xe41d2489571d322189246dafa5ebde1f4699f498) --'AAVE', 'DAI', 'UNI', 'LINK'
 and bal.block_hour > now() - interval '2' day
 

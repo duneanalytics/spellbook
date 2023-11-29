@@ -5,7 +5,10 @@ with sampled_wallets as
      select *
      from {{ ref('balances_ethereum_erc20_hour') }} bal
      where wallet_address in (select distinct wallet_address from {{ ref('balances_ethereum_erc20_latest_entries') }})
-     and symbol in ('USDT', 'LINK', 'DAI', 'USDC')
+     and bal.token_address in (0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9, 
+                        0x6b175474e89094c44da98b954eedeac495271d0f,
+                        0x1f9840a85d5af5bf1d1762f925bdaddc4201f984,
+                         0xe41d2489571d322189246dafa5ebde1f4699f498) --'AAVE', 'DAI', 'UNI', 'LINK'
      and bal.block_hour > cast('2022-05-04' as date) and bal.block_hour < cast('2022-05-06' as date)
  )
 
