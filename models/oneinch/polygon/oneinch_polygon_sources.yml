@@ -9,6 +9,10 @@ sources:
     tables:
       - name: AggregationRouterV3_evt_Swapped
         loaded_at_field: evt_block_time
+      - name: AggregationRouterV3_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV3_call_discountedSwap
+        loaded_at_field: call_block_time
       - name: AggregationRouterV3_call_unoswap
         loaded_at_field: call_block_time
       - name: AggregationRouterV3_call_unoswapWithPermit
@@ -18,6 +22,8 @@ sources:
       - name: AggregationRouterV4_call_unoswapWithPermit
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_discountedSwap
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_uniswapV3Swap
         loaded_at_field: call_block_time
@@ -40,6 +46,8 @@ sources:
       - name: AggregationRouterV5_call_swap
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapTo
         loaded_at_field: call_block_time
       - name: AggregationRouterV5_call_unoswapToWithPermit
         loaded_at_field: call_block_time

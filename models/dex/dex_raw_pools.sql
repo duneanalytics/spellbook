@@ -110,6 +110,27 @@ pool_created_logs as (
 )
 
 
+-- hardcoded OP legacy pools
+, _optimism_ovm1_legacy as (
+    select 
+        'optimism' as blockchain
+        , 'uniswap_compatible' as type
+        , 'v3' as version
+        , pool
+        , token0
+        , token1 
+        , creation_block_time
+        , creation_block_number
+        , contract_address
+    from (
+        select oldaddress as pool, * from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
+        union all
+        select newaddress as pool, * from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
+    )
+)
+
+
+
 select 
     blockchain
     , type
@@ -125,3 +146,7 @@ join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
 {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
 {% endif %} 
+
+union all
+
+select * from _optimism_ovm1_legacy
