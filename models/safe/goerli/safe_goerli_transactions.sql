@@ -46,8 +46,9 @@ join {{ ref('safe_goerli_safes') }} s
     on s.address = tr."from"
 join {{ ref('safe_goerli_singletons') }} ss
     on tr.to = ss.address
-left join {{ source('goerli', 'transactions') }} et
+join {{ source('goerli', 'transactions') }} et
     on tr.tx_hash = et.hash
+    and tr.block_number = et.block_number
 where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
         0x468721a7, -- execTransactionFromModule
