@@ -45,7 +45,7 @@ INNER JOIN erc721_created_collections cc ON cc.contract_address=nftt.contract_ad
 INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
         AND txs.hash=nftt.tx_hash
 INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='zora'
-        AND pu.contract_address=info.wrapped_native_token_address
+        AND pu.contract_address=0x4200000000000000000000000000000000000006
         AND pu.minute=date_trunc('minute', mints.evt_block_time)
 CROSS JOIN UNNEST(sequence(1, CAST(amount AS BIGINT))) AS t (sequence_element)
 WHERE nftt."from"=0x0000000000000000000000000000000000000000
@@ -74,7 +74,7 @@ INNER JOIN erc1155_created_collections cc ON cc.contract_address=nftt.contract_a
 INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
         AND txs.hash=nftt.tx_hash
 INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='zora'
-        AND pu.contract_address=info.wrapped_native_token_address
+        AND pu.contract_address=0x4200000000000000000000000000000000000006
         AND pu.minute=date_trunc('minute', mints.evt_block_time)
 WHERE nftt."from"=0x0000000000000000000000000000000000000000
 {% if is_incremental() %}
