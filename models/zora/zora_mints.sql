@@ -27,6 +27,7 @@ FROM (
     , token_id
     , quantity
     , total_price
+    , total_price_usd
     , recipient
     , tx_hash
     , evt_index
