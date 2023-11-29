@@ -3,6 +3,7 @@
     blockchain = '',
     project = '',
     version = '',
+    ctokens = '',
     sources = []
   )
 %}
@@ -18,7 +19,8 @@ src_Borrow as (
     {% endif %}
     {% if not loop.last %}
     union all
-  {% endif %}
+    {% endif %}
+  {% endfor %}
 ),
 
 src_Repay as (
@@ -30,7 +32,8 @@ src_Repay as (
     {% endif %}
     {% if not loop.last %}
     union all
-  {% endif %}
+    {% endif %}
+  {% endfor %}
 ),
 
 src_LiquidationCall as (
@@ -42,7 +45,12 @@ src_LiquidationCall as (
     {% endif %}
     {% if not loop.last %}
     union all
-  {% endif %}
+    {% endif %}
+  {% endfor %}
+),
+
+ctokens as (
+  {{ ctokens }}
 ),
 
 base_borrow as (
@@ -103,7 +111,7 @@ select
   base_borrow.evt_tx_hash as tx_hash,
   base_borrow.evt_index
 from base_borrow
-  left join {{ ref('compound_v2_' ~ blockchain ~ '_ctokens') }} on base_borrow.ctoken_address = ctokens.ctoken_address
+  left join ctokens on base_borrow.ctoken_address = ctokens.ctoken_address
 
 {% endmacro %}
 
