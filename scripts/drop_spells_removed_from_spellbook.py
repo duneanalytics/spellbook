@@ -15,7 +15,7 @@ def generate_tables_query(env):
             WHERE t."OWNER_TYPE" = 'USER'
                 AND t."OWNER" = 'admin'
                 AND t."TBL_TYPE" = 'EXTERNAL_TABLE'
-                AND d."NAME" LIKE 'dbt_jeff_dude_%';
+                AND d."NAME" LIKE 'dbt_jeff_dude_carbonhood_%';
         """
     elif env == PROD_ENV:
         return """
@@ -41,7 +41,7 @@ def generate_views_query(env):
             WHERE t."OWNER_TYPE" = 'USER'
                 AND t."OWNER" = 'admin'
                 AND t."TBL_TYPE" = 'VIRTUAL_VIEW'
-                AND d."NAME" LIKE 'dbt_jeff_dude_%';
+                AND d."NAME" LIKE 'dbt_jeff_dude_carbonhood_%';
         """
     elif env == PROD_ENV:
         return """
@@ -91,7 +91,7 @@ def run_psql_command(sql_query, env):
     return result_lines
 
 # Main script
-env = PROD_ENV  # Change this based on your needs
+env = DEV_ENV  # Change this based on your needs
 
 # Step 1: List dbt models and output in JSON format
 dbt_command = ['dbt', 'ls', '--resource-type', 'model', '--output', 'json']
