@@ -4,7 +4,6 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        partition_by = 'block_month',
         unique_key = ['tx_hash', 'token_id', 'evt_index']
 )
 }}
