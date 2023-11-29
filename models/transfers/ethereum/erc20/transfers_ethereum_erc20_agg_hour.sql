@@ -26,4 +26,4 @@ left join {{ ref('tokens_ethereum_erc20') }} t on t.contract_address = tr.token_
 -- this filter will only be applied on an incremental run
 where tr.evt_block_time >= date_trunc('hour', now() - interval '1 week')
 {% endif %}
-group by 1, 2, 3, 4, 5, 6
+group by 1, 2, 3, 4, 5, 6 
