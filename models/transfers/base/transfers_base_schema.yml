@@ -119,8 +119,7 @@ models:
       - *block_hour
       - *wallet_address
       - *token_address
-      - *symbol
-        name: symbol
+      - name: symbol
         description: "ERC20 token symbol"
       - *amount_raw
       - name: amount
@@ -129,7 +128,9 @@ models:
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-      - *block_month
+      - &block_month
+        name: block_month
+        description: "UTC event block time truncated to the month mark."
 
   - name: transfers_base_erc20_agg_day
     meta:
@@ -163,7 +164,7 @@ models:
       tags: ['transfers', 'base', 'erc20', 'rolling_day']
     columns:
       - *blockchain
-      - *day
+      - *block_day
       - *wallet_address
       - *token_address
       - name: symbol
