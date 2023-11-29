@@ -4,7 +4,7 @@ with sampled_wallets as
  (
      select *
      from {{ ref('balances_ethereum_erc20_day') }} bal
-     where wallet_address in (select distinct cast(wallet_address as varchar) from {{ ref('balances_ethereum_erc20_daily_entries')  }})
+     where wallet_address in (select distinct cast(wallet_address as varbinary) from {{ ref('balances_ethereum_erc20_daily_entries')  }})
      and bal.block_day > cast('2021-12-30' as date) and bal.block_day < cast('2022-01-01' as date)
  )
 
@@ -12,7 +12,7 @@ with sampled_wallets as
 (SELECT case when round(test_data.amount_raw/power(10, 18), 4) = round(token_balances.amount_raw/power(10, 18), 4) then True else False end as amount_raw_test
 FROM {{ ref('balances_ethereum_erc20_daily_entries') }} as test_data
 JOIN sampled_wallets as token_balances
-ON test_data.timestamp = token_balances.day
+ON test_data.timestamp = token_balances.block_day
 AND cast(test_data.wallet_address as varbinary) = cast(token_balances.wallet_address as varbinary)
 AND cast(test_data.token_address as varbinary) = cast(token_balances.token_address as varbinary))
 

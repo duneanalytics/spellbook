@@ -16,7 +16,7 @@ with sampled_wallets as
 (SELECT case when round(test_data.amount_raw/power(10, 22), 3) = round(token_balances.amount_raw/power(10, 22), 3) then True else False end as amount_raw_test
 FROM {{ ref('balances_ethereum_erc20_latest_entries') }} as test_data
 JOIN sampled_wallets as token_balances
-ON test_data.timestamp = token_balances.hour
+ON test_data.timestamp = token_balances.block_hour
 AND cast(test_data.wallet_address as varbinary) = cast(token_balances.wallet_address as varbinary)
 AND cast(test_data.token_address as varbinary) = cast(token_balances.token_address as varbinary))
 
