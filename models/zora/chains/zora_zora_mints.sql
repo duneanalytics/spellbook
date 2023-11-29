@@ -32,7 +32,8 @@ SELECT 'zora' AS blockchain
 , nftt.token_standard
 , nftt.token_id
 , 1 AS quantity
-, value/1e18/amount AS total_price
+, txs.value/1e18/nftt.amount AS total_price
+, pu.price*(txs.value/1e18/nftt.amount) AS total_price_usd
 , nftt.to AS recipient
 , nftt.tx_hash
 , nftt.evt_index
@@ -43,6 +44,9 @@ FROM {{ ref('nft_zora_transfers') }} nftt
 INNER JOIN erc721_created_collections cc ON cc.contract_address=nftt.contract_address AND nftt.block_number>=cc.block_number
 INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
         AND txs.hash=nftt.tx_hash
+INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='zora'
+        AND pu.contract_address=info.wrapped_native_token_address
+        AND pu.minute=date_trunc('minute', mints.evt_block_time)
 CROSS JOIN UNNEST(sequence(1, CAST(amount AS BIGINT))) AS t (sequence_element)
 WHERE nftt."from"=0x0000000000000000000000000000000000000000
 {% if is_incremental() %}
