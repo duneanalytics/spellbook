@@ -3,6 +3,7 @@
         alias = 'mints',
         materialized='incremental',
         file_format = 'delta',
+        incremental_strategy = 'merge',
         unique_key = ['tx_hash', 'token_id', 'evt_index']
 )
 }}

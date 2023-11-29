@@ -27,7 +27,7 @@ SELECT '{{blockchain}}' AS blockchain
 , 'erc1155' AS token_standard
 , tokenId AS token_id
 , quantity
-, value/1e18/quantity AS total_price
+, value/1e18 AS total_price
 , sender AS recipient
 , evt_tx_hash AS tx_hash
 , evt_index
