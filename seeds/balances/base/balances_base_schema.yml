@@ -2,10 +2,28 @@ version: 2
 
 seeds:
   - name: balances_base_erc20_latest_entries
-    description: Legacy values from Postgres for hourly token balances. Sampled on May 5th, 2022.
+    description: sample entries
+    config:
+      column_types:
+        amount_raw: double
+        timestamp: timestamp
+        wallet_address: varbinary
+        token_address: varbinary
 
   - name: balances_base_erc20_specific_wallet
-    description: Legacy values from Postgres for hourly token balances. Single wallet address.
+    description: sample entries
+    config:
+      column_types:
+        amount_raw: double
+        timestamp: timestamp
+        wallet_address: varbinary
+        token_address: varbinary
 
   - name: balances_base_erc20_daily_entries
-    description: Legacy values from Postgres for daily token balances. Sampled on December 31st, 2021.
+    description: sample entries
+    config:
+      column_types:
+        amount_raw: double
+        timestamp: timestamp
+        wallet_address: varbinary
+        token_address: varbinary
