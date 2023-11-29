@@ -28,6 +28,7 @@ select
     ,bytearray_substring(t.data, 1, 4) as tx_method_id
     ,t.to AS tx_to
     ,t."from" AS tx_from
+    , CAST(date_trunc('month', r.block_time) as date) as block_month
 from {{ source('ethereum', 'traces') }} as r 
 join {{ source('ethereum', 'transactions') }} as t 
     on r.tx_hash = t.hash
