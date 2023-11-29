@@ -1,0 +1,15 @@
+-- Check for negative balances
+-- Some balances are very small negative numbers due to loss of precision from large ints
+
+select amount
+from {{ ref('balances_base_erc20_day') }} bal
+LEFT JOIN {{ ref('balances_base_erc20_noncompliant') }} nc
+    ON bal.token_address = nc.token_address
+
+where round(amount/power(10, 18), 6) < 0
+
+-- limiting to a selection of tokens because we haven't filtered out all non-compliant tokens
+and symbol in ('AAVE', 'DAI', 'UNI', 'LINK')
+and bal.block_day > now() - interval '2' day
+AND nc.token_address IS NULL
+
