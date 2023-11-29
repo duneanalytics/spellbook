@@ -16,10 +16,10 @@
 select 
     'ethereum' as blockchain
     ,r."from"
-    ,r.to
+    ,r.to as wallet_address
     --Using the ETH placeholder address to match with prices tables
     ,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as contract_address
-    ,r.value AS value
+    ,CAST(r.value as double) as amount_raw
     ,cast(r.value as double)/1e18 as value_decimal
     ,r.tx_hash
     ,r.trace_address
