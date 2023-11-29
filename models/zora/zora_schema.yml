@@ -39,6 +39,10 @@ models:
         description: "Event index"
       - name: contract_address
         description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
 
   - name: zora_optimism_mints
     meta:
@@ -78,6 +82,10 @@ models:
         description: "Event index"
       - name: contract_address
         description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
 
   - name: zora_base_mints
     meta:
@@ -117,6 +125,10 @@ models:
         description: "Event index"
       - name: contract_address
         description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
 
   - name: zora_zora_mints
     meta:
@@ -156,6 +168,10 @@ models:
         description: "Event index"
       - name: contract_address
         description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
 
   - name: zora_mints
     meta:
@@ -189,3 +205,7 @@ models:
         description: "Event index"
       - name: contract_address
         description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"

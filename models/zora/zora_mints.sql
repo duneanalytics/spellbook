@@ -31,6 +31,8 @@ FROM (
     , tx_hash
     , evt_index
     , contract_address
+    , tx_from
+    , tx_to
     FROM {{ zora_mints_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)

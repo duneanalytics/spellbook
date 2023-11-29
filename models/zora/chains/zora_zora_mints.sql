@@ -37,6 +37,8 @@ SELECT 'zora' AS blockchain
 , nftt.tx_hash
 , nftt.evt_index
 , nftt.contract_address
+, txs."from" AS tx_from
+, txs.to AS tx_to
 FROM {{ ref('nft_zora_transfers') }} nftt
 INNER JOIN erc721_created_collections cc ON cc.contract_address=nftt.contract_address AND nftt.block_number>=cc.block_number
 INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
@@ -60,6 +62,8 @@ SELECT 'zora' AS blockchain
 , nftt.tx_hash
 , nftt.evt_index
 , nftt.contract_address
+, txs."from" AS tx_from
+, txs.to AS tx_to
 FROM {{ ref('nft_zora_transfers') }} nftt
 INNER JOIN erc1155_created_collections cc ON cc.contract_address=nftt.contract_address AND nftt.block_number>=cc.block_number
 INNER JOIN {{ source('zora', 'transactions')}} txs ON txs.block_number=nftt.block_number
