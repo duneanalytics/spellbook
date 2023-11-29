@@ -18,7 +18,7 @@ select
     ,r."from"
     ,r.to as wallet_address
     --Using the ETH placeholder address to match with prices tables
-    ,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as contract_address
+    ,0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address
     ,CAST(r.value as double) as amount_raw
     ,cast(r.value as double)/1e18 as value_decimal
     ,r.tx_hash
