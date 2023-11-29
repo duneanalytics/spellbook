@@ -6,7 +6,6 @@ seeds:
     config:
       column_types:
         amount_raw: double
-        timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
 
@@ -15,7 +14,6 @@ seeds:
     config:
       column_types:
         amount_raw: double
-        timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
 
@@ -24,6 +22,5 @@ seeds:
     config:
       column_types:
         amount_raw: double
-        timestamp: timestamp
         wallet_address: varbinary
         token_address: varbinary
