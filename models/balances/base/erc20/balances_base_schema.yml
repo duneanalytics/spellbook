@@ -61,7 +61,6 @@ models:
       - *amount_usd
       - *symbol
 
-
   - name: balances_base_erc20_latest
     meta:
       blockchain: base
