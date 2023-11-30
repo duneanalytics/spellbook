@@ -7,7 +7,7 @@ with sampled_wallets as
      select *
      from {{ ref('balances_base_erc20_day') }} bal
      where wallet_address in (select distinct cast(wallet_address as varbinary) from {{ ref('balances_base_erc20_daily_entries')  }})
-     and bal.block_day > cast('2023-09-04' as date) and bal.block_hour < cast('2023-09-06' as date)
+     and bal.block_day > cast('2023-09-04' as date) and bal.block_day < cast('2023-09-06' as date)
  )
 
 , unit_tests as
