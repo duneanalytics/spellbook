@@ -40,6 +40,13 @@ WITH pools AS (
 
   UNION ALL
 
+  SELECT
+    pool_id,
+    zip.tokens AS token_address,
+    zip.weights / pow(10, 18) AS normalized_weight,
+    symbol,
+    pool_type
+  FROM (
     SELECT
       c.poolId AS pool_id,
       t.tokens,
