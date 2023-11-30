@@ -38,6 +38,7 @@ with
             , false as fusion
             , false as contracts_only
             , false as second_side
+            , explorer_link
         from {{ ref('oneinch_ar') }}
         join {{ ref('evms_info') }} using(blockchain)
         where
@@ -68,6 +69,7 @@ with
             , coalesce(fusion, false) as fusion
             , position('RFQ' in method) > 0 as contracts_only
             , false as second_side
+            , explorer_link
         from {{ ref('oneinch_lop') }}
         join {{ ref('evms_info') }} using(blockchain)
         left join settlements using(blockchain, call_from)
@@ -99,6 +101,7 @@ with
             , false as fusion
             , false as contracts_only
             , true as second_side
+            , explorer_link
         from {{ ref('oneinch_lop') }}
         join {{ ref('evms_info') }} using(blockchain)
         where
@@ -148,7 +151,9 @@ with
             , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
             , min(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
             , min(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
-            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as usd_amount
+            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
+            , max(amount * price / pow(10, decimals)) as transfers_usd_amount
+            , min(explorer_link) as explorer_link
         from (
             select
                 blockchain
@@ -166,9 +171,35 @@ with
             from {{ ref('oneinch_calls_transfers_amounts') }}
         )
         join calls using(blockchain, tx_hash, call_trace_address)
-        join prices using(blockchain, contract_address, minute)
+        left join prices using(blockchain, contract_address, minute)
         group by 1, 2, 3
     )
 
-select *
+select
+    blockchain
+    , tx_hash
+    , call_trace_address
+    , block_time
+    , tx_from
+    , tx_to
+    , contract_name
+    , protocol
+    , protocol_version
+    , method
+    , user
+    -- , receiver -- to add next
+    , fusion
+    , contracts_only
+    , second_side
+    , remains
+    , src_token_address
+    , dst_token_address
+    , src_amount
+    , dst_amount
+    , src_token_symbol
+    , dst_token_symbol
+    , coalesce(sources_usd_amount, transfers_usd_amount) as usd_amount
+    , sources_usd_amount
+    , transfers_usd_amount
+    , explorer_link
 from trades

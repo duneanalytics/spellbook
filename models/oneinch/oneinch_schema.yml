@@ -597,4 +597,10 @@ models:
         name: dst_token_symbol
       - &usd_amount
         name: usd_amount
+      - &sources_usd_amount
+        name: sources_usd_amount
+      - &transfers_usd_amount
+        name: transfers_usd_amount
+      - &explorer_link
+        name: explorer_link
 
