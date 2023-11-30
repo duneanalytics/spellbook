@@ -1,69 +1,58 @@
 {{ config(
-tags=['prod_exclude'],materialized='view', alias = 'erc20',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+    schema = 'tranfers_optimism',
+    materialized = 'incremental',
+    partition_by = ['block_month'],
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
+    alias = 'erc20',
+    post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}') }}
-/*
-    note: this spell has not been migrated to dunesql, therefore is only a view on spark
-        please migrate to dunesql to ensure up-to-date logic & data
-*/
-with
-    sent_transfers as (
-        select
-            'send-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' || CAST(to AS VARCHAR(100)) as unique_transfer_id,
-            to as wallet_address,
-            contract_address as token_address,
-            evt_block_time,
-            value as amount_raw
-        from
-            {{ source('erc20_optimism', 'evt_transfer') }}
-    )
+                                    \'["soispoke", "dot2dotseurat", "tschubotz","rantum"]\') }}') }}
+WITH 
 
-    ,
-    received_transfers as (
-        select
-        'receive-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' || CAST("from" AS VARCHAR(100)) as unique_transfer_id,
-        "from" as wallet_address,
-        contract_address as token_address,
-        evt_block_time,
-        '-' || CAST(value AS VARCHAR(100)) as amount_raw
-        from
-            {{ source('erc20_optimism', 'evt_transfer') }}
-    )
-
-    ,
-    deposited_weth as (
-        select
-            'deposit-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' ||  CAST(dst AS VARCHAR(100)) as unique_transfer_id,
-            dst as wallet_address,
-            contract_address as token_address,
+erc20_transfers  as (
+        SELECT 
+            'receive' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
             evt_block_time,
-            wad as amount_raw
-        from
-            {{ source('weth_optimism', 'weth9_evt_deposit') }}
-    )
-
-    ,
-    withdrawn_weth as (
-        select
-            'withdraw-' || cast(evt_tx_hash as varchar(100)) || '-' || cast (evt_index as varchar(100)) || '-' ||  CAST(src AS VARCHAR(100)) as unique_transfer_id,
-            src as wallet_address,
+            to as wallet_address, 
             contract_address as token_address,
+            CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_optimism', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+
+        UNION ALL 
+
+        SELECT 
+            'send' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
             evt_block_time,
-            '-' || CAST(wad AS VARCHAR(100)) as amount_raw
-        from
-            {{ source('weth_optimism', 'weth9_evt_withdrawal') }}
-    )
-    
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from sent_transfers
-union
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from received_transfers
-union
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from deposited_weth
-union
-select unique_transfer_id, 'optimism' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS VARCHAR(100)) as amount_raw
-from withdrawn_weth
+            "from" as wallet_address, 
+            contract_address as token_address,
+            -CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_optimism', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+)
+
+SELECT
+    'optimism' as blockchain, 
+    transfer_type,
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+erc20_transfers
