@@ -10,7 +10,7 @@
 }}
 
 {{
-    traderjoe_compatible_v2_1_trades(
+    trader_joe_compatible_v2_1_trades(
         blockchain = 'arbitrum'
         , project = 'trader_joe'
         , version = '2.1'
