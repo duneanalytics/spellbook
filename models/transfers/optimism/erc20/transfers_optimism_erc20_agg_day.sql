@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'tranfers_ethereum',
+        schema = 'tranfers_optimism',
         alias = 'erc20_agg_day',
         materialized ='incremental',
         partition_by = ['block_month'],
@@ -19,9 +19,9 @@ select
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, t.decimals)) as amount
 FROM 
-{{ ref('transfers_ethereum_erc20') }} tr
+{{ ref('transfers_optimism_erc20') }} tr
 LEFT JOIN 
-{{ ref('tokens_ethereum_erc20') }} t on t.contract_address = tr.token_address
+{{ ref('tokens_optimism_erc20') }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE tr.evt_block_time >= date_trunc('day', now() - interval '3' Day)
