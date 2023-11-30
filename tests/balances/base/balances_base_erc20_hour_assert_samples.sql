@@ -33,4 +33,4 @@ SELECT
     COUNT(*) AS count_rows
 FROM unit_tests
 -- Having mismatches less than 5% of rows
-HAVING COUNT(CASE WHEN amount_raw_test = FALSE THEN 1 ELSE NULL END) > COUNT(*) * 0.05;
+HAVING COUNT(CASE WHEN amount_raw_test = FALSE THEN 1 ELSE NULL END) > COUNT(*) * 0.05
