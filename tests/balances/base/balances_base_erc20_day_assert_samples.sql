@@ -1,3 +1,7 @@
+-- Bootstrapped correctness test against legacy Caladan values.
+
+
+
 with sampled_wallets as
  (
      select *
@@ -25,7 +29,7 @@ having count(case when amount_raw_test = false then 1 else null end) > count(*)*
                         0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,
                          0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913) --'DAI', 'USDbc', 'USDC'
      and bal.block_hour > cast('2023-09-04' as date) and bal.block_hour < cast('2023-09-06' as date)
- )
+ 
 
 , unit_tests as
 (SELECT case when round(test_data.amount_raw/power(10, 22), 3) = round(token_balances.amount_raw/power(10, 22), 3) then True else False end as amount_raw_test
