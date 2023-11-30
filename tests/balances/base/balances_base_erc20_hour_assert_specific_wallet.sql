@@ -19,8 +19,8 @@ WITH unit_tests AS (
 )
 
 SELECT
-    COUNT(CASE WHEN amount_raw_test = FALSE THEN 1 ELSE NULL END) / COUNT(*) AS pct_mismatch,
+    AVG(CAST(amount_raw_test AS DOUBLE)) AS pct_mismatch,
     COUNT(*) AS count_rows
 FROM unit_tests
 -- Having mismatches less than 1% of rows
-HAVING COUNT(CASE WHEN amount_raw_test = FALSE THEN 1 ELSE NULL END) > COUNT(*) * 0.01
+HAVING AVG(CAST(amount_raw_test AS DOUBLE)) < 0.99;
