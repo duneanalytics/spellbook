@@ -21,13 +21,21 @@ cnft_base as (
         -- mint https://solscan.io/tx/61LqYDXKBYxsZEJoRBCaP8mvbeKGfbezZ54YUj1JZxPN7hGgr1t5rqseTQzxvkTu72YxkeFWq4bcFpcJBTCBNcfs
         -- trade https://solscan.io/tx/22jXeGFXSvSnnGtVMnt17Ve7Z462A8yUxMeni3617jv3BoTLYRY2LVb3fzMHT9wwrrMYdDYwbhrgM3dfcY48GF65
         SELECT
-            case when call_block_time >= timestamp '2023-10-26 16:40' --there is something that changed where decimals are now much larger. Founder did not know why, this is a temporary fix.
+            case when maxAmount/1e9 > 1e5 --there is something weird in decoding where sometimes the maxAmount is decoded wrong https://solscan.io/tx/BDmz29bRCdist8ZX2LZHa9Lbsygfp7JpC9UaMpNWCQgDiRfMqvs9PR9b1Sghkg1yUUPn7oN71tYG3TxTkBMhsaC
                 then cast(maxAmount as double)/1e9
                 else cast(maxAmount as double)
                 end as price
-            , cast(maxAmount as double)*0.014 as taker_fee --taker fee is 1.4% right now.
+            , (case when maxAmount/1e9 > 1e5
+                then cast(maxAmount as double)/1e9
+                else cast(maxAmount as double)
+                end)
+                *0.014 as taker_fee --taker fee is 1.4% right now.
             , 0 as maker_fee --maker fee goes back to users
-            , cast(maxAmount as double)*sellerFeeBasisPoints/10000 as royalty_fee
+            , (case when maxAmount/1e9 > 1e5
+                then cast(maxAmount as double)/1e9
+                else cast(maxAmount as double)
+                end)
+                *sellerFeeBasisPoints/10000 as royalty_fee
             , call_instruction_name as instruction
             , case when call_tx_signer = account_buyer then 'buy' else 'sell' end as trade_category
             , account_merkleTree as account_merkle_tree
