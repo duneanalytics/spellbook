@@ -6,7 +6,7 @@ models:
       blockchain: base
       sector: transfers
       project: eth
-      contributors: msilb7, chuxin, rantum
+      contributors: msilb7, chuxin
     config:
       tags: ["transfers", "base", "eth"]
     description: "Events of native ETH transfers on Base."
@@ -58,7 +58,7 @@ models:
       blockchain: base
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz
+      contributors: soispoke, dot2dotseurat, tschubotz, rantum
     config:
       tags: ['transfers', 'base', 'erc20']
     description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
