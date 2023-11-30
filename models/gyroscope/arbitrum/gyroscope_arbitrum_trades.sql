@@ -5,7 +5,11 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'blockchain', 'tx_hash', 'evt_index'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "gyroscope",
+                                \'["fmarrr"]\') }}'
     )
 }}
 
