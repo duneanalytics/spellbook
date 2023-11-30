@@ -1,7 +1,5 @@
 # Runbook to add a new chain
 
-This is a long process. Ideally we figure out a solution where we don't need to do one per chain, and instead can unify all chains (please help).
-
 1. Add new files for the chain (can copy from ethereum) in `contracts/<blockchain>/contract_creator_project_mapping/`
 2. Add this new chain alias to `contracts/<blockchain>/_schema.sql`
 3. Add refs to the models to `contracts/contracts_contract_mapping.sql` & `contracts/contracts_self_destruct_contracts.sql`
