@@ -151,6 +151,10 @@ models:
       - *token_address
       - *block_time
       - *block_month
-      - *tx_hash
-      - *trace_address
+      - &tx_hash
+        name: tx_hash
+        description: Transaction hash of the tranfer 
+      - &trace_address
+        name: trace_address
+        description: Trace address of the transfer
       - *amount_raw
