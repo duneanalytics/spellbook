@@ -6,7 +6,7 @@ models:
       blockchain: base
       sector: transfers
       project: eth
-      contributors: msilb7, chuxin
+      contributors: msilb7, chuxin, rantum
     config:
       tags: ["transfers", "base", "eth"]
     description: "Events of native ETH transfers on Base."
