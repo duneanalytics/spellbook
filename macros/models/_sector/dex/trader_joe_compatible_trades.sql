@@ -3,7 +3,7 @@
     , project = null
     , version = null
     , Pair_evt_Swap = null
-    , Factory_evt_PairCreated = null
+    , Factory_evt_PoolCreated = null
     , pair_column_name = 'LBPair'
     )
 %}
@@ -28,7 +28,7 @@ WITH dexs AS
         FROM {{ Pair_evt_Swap }} a   
         ) t
     INNER JOIN
-        {{ Factory_evt_PairCreated }} f
+        {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
