@@ -1,0 +1,108 @@
+version: 2
+
+models:
+
+  - name: aavegotchi_polygon_events
+    meta:
+      blockchain: polygon
+      project: aavegotchi
+      contributors: springzh
+    config:
+      tags: ['polygon','aavegotchi','events']
+    description: >
+        Aavegotchi events on Polygon
+    tests:
+      - check_columns_nft_old_events
+
+  - name: element_avalanche_c_events
+    meta:
+      blockchain: avalanche_c
+      project: element
+      contributors: hildobby
+    config:
+      tags: [ 'avalanche_c','element','events' ]
+    description: >
+      Element events on Avalanche
+    tests:
+      - check_columns_nft_old_events
+
+  - name: element_bnb_events
+    meta:
+      blockchain: bnb
+      project: element
+      contributors: hildobby
+    config:
+      tags: [ 'bnb','element','events' ]
+    description: >
+      Element events on BNB
+    tests:
+      - check_columns_nft_old_events
+
+  - name: nftearth_optimism_events
+    meta:
+      blockchain: optimism
+      project: nftearth
+      contributors: chuxin
+    config:
+      tags: [ 'optimism','seaport','nftearth', events','chuxin' ]
+    description: >
+      NFTEarth Seaport events on Optimism.
+    tests:
+      - check_columns_nft_old_events
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+
+  - name: mooar_polygon_events
+    meta:
+      blockchain: polygon
+      project: mooar
+      contributors: springzh
+    config:
+      tags: [ 'polygon','mooar','events','springzh' ]
+    description: >
+      Mooar events on Polygon
+    tests:
+      - check_columns_nft_old_events
+
+  - name: oneplanet_polygon_events
+    meta:
+      blockchain: polygon
+      project: oneplanet
+      contributors: springzh
+    config:
+      tags: [ 'polygon','oneplanet','events','springzh' ]
+    description: >
+      OnePlanet events on Polygon
+    tests:
+      - check_columns_nft_old_events
+
+  - name: pancakeswap_bnb_nft_events
+    meta:
+      blockchain: bnb
+      project: pancakeswap
+      contributors: thb0301, 0xRob
+    config:
+      tags: [ 'bnb','pancakeswap','events' ]
+    description: >
+      Pancakeswap nft events on BNB smart chain
+    tests:
+      - check_columns_nft_old_events
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+      - check_seed:
+          seed_file: ref('pancakeswap_nft_trades_samples')
+          match_columns:
+            - block_time
+            - tx_hash
+            - token_id
+          check_columns:
+            - amount_original
+            - buyer
+            - seller

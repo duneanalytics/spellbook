@@ -3,10 +3,10 @@ version: 2
 models:
   - name: curvefi_trades
     meta:
-      blockchain: ethereum, avalanche_c, optimism, fantom
+      blockchain: ethereum, avalanche_c, optimism, fantom, celo
       sector: dex
       project: curvefi
-      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7,ilemi,agaperste]
+      contributors: [jeff-dude, dsalv, yulesa, Henrystats, msilb7,ilemi,agaperste, tomfutago]
     config:
       tags: ['ethereum', 'avalanche_c', 'optimism', 'fantom', 'curvefi','trades', 'dex', 'cross-chain']
     description: >

@@ -1,21 +1,6 @@
 version: 2
 
 models:
-  - name: nft_aggregators
-    meta:
-      blockchain: avalanche_c, bnb, ethereum, polygon
-      sector: nft
-      contributors: hildobby, soispoke
-    config:
-      tags: ['nft','aggregators', 'avalanche_c', 'bnb','ethereum', 'polygon']
-    description: >
-        NFT aggregators
-    columns:
-      - name: contract_address
-        description: "Aggregator project's contract address"
-      - name: name
-        description: "Aggregator project's name"
-
   - name: nft_linked_addresses
     meta:
       blockchain: ethereum, solana

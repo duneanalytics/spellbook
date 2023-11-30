@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris_arbitrum',
-    alias = alias('events_add_margin'),
+    alias = 'events_add_margin',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -25,6 +25,7 @@ WITH
     ,'TradingV3_evt_AddToPosition'
     , 'TradingV4_evt_AddToPosition'
     , 'TradingV5_evt_AddToPosition'
+    , 'TradingV6_evt_AddToPosition'
 ] %}
 
 {% set add_margin_v1_call_tables = [

@@ -1,7 +1,7 @@
 {{ config(
-    tags = ['dunesql']
-      , partition_by = ['block_month']
-      , alias = alias('flashloans')
+      partition_by = ['block_month']
+      , schema = 'equalizer_bnb'
+      , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
       , incremental_strategy = 'merge'

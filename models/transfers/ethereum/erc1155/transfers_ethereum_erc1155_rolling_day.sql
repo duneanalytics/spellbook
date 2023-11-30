@@ -1,5 +1,6 @@
 {{ config(
-        alias = alias('erc1155_rolling_day')
+tags=['prod_exclude'],
+        alias = 'erc1155_rolling_day'
         )
 }}
 /*

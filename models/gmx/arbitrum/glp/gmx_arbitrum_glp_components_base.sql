@@ -1,5 +1,6 @@
 {{ config(
-    alias = alias('glp_components_base'),
+tags=['prod_exclude'],
+    alias = 'glp_components_base',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

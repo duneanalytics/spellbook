@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('balances'),
+    
+    alias = 'balances',
     materialized = 'table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',

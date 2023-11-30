@@ -1,7 +1,7 @@
 {{ config(
-    tags=['dunesql'],
+    
     schema = 'tigris',
-    alias = alias('trades_pnl'),
+    alias = 'trades_pnl',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -168,5 +168,5 @@ close_liquidate_pnl as (
         AND cl.evt_tx_hash = p.evt_tx_hash 
         AND cl.blockchain = p.blockchain
 )
--- use to reload 
+-- use to reload x
 SELECT * FROM close_liquidate_pnl

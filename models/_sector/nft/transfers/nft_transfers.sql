@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql'],
+        
         schema = 'nft',
-        alias =alias('transfers'),
+        alias ='transfers',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -27,6 +27,7 @@
 ,ref('nft_goerli_transfers')
 ,ref('nft_base_transfers')
 ,ref('nft_zksync_transfers')
+,ref('nft_zora_transfers')
 ,ref('nft_celo_transfers')
 ] %}
 

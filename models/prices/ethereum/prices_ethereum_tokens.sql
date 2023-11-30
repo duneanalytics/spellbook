@@ -1,9 +1,9 @@
 {{ config(
         schema='prices_ethereum',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql']
+        tags = ['static']
         )
 }}
 SELECT
@@ -1156,7 +1156,6 @@ FROM
     ('collar-dog-collar', 'ethereum', 'COLLAR', 0x9783b81438c24848f85848f8df31845097341771, 18),
     ('cora-corrafinance', 'ethereum', 'CORA', 0x0077d27cb82ff12322987b225bfce0bb6e8931b4, 18),
     ('cxo-cargox', 'ethereum', 'CXO', 0xb6ee9668771a79be7967ee29a63d4184f8097143, 18),
-    ('dar-dalarnia', 'ethereum', 'DAR', 0x081131434f93063751813c619ecca9c4dc7862a3, 6),
     ('ddos-disbalancer', 'ethereum', 'DDOS', 0x7fbec0bb6a7152e77c30d005b5d49cbc08a602c3, 18),
     ('epk-epik-protocol', 'ethereum', 'EPK', 0xdaf88906ac1de12ba2b1d2f7bfc94e9638ac40c4, 18),
     ('equad-quadrantprotocol', 'ethereum', 'EQUAD', 0xc28e931814725bbeb9e670676fabbcb694fe7df2, 18),
@@ -1522,7 +1521,6 @@ FROM
     ('doge-1-satellite-doge-1', 'ethereum', 'DOGE-1', 0xc5b0251daCFaB74bc2deBaa52072a2A4c939c105, 9),
     ('eww-endlesswebworlds', 'ethereum', 'EWW', 0x3d38F87BeF0123f5764635C7E11048027E0721a8, 9),
     ('jcg-justcarbon-governance-token', 'ethereum', 'JCG', 0xbE601dD49da9EE1d2F64D422c4AECf8EB83c119f, 18),
-    ('pwrc-pwrcash', 'ethereum', 'PWRC', 0x6Aa40D02115090D40Dc33C7C5F3Cf05112fA4f83, 18),
     ('toku-toku', 'ethereum', 'TOKU', 0x9eEC1A4814323a7396c938bc86aeC46b97F1BD82, 18),
     ('tyrant-fable-of-the-dragon', 'ethereum', 'TYRANT', 0x8EE325AE3E54e83956eF2d5952d3C8Bc1fa6ec27, 9),
     ('zipt-zippie', 'ethereum', 'ZIPT', 0xEDD7c94FD7B4971b916d15067Bc454b9E1bAD980, 18),
@@ -1549,7 +1547,6 @@ FROM
     ('fanc-fanc', 'ethereum', 'FANC', 0xbB126042235E6bD38B17744cb31a8bF4A206c045, 18),
     ('gob-goons-of-balatroon', 'ethereum', 'GOB', 0xd6929179D752d5D25c5efe2d9729eb77D7138A80, 18),
     ('jar-jarvis', 'ethereum', 'JAR', 0xa249DE6948022783765Fee4850d7b85E43118FCc, 18),
-    ('oath-oath-token', 'ethereum', 'OATH', 0x6F9C26Fa731C7Ea4139Fa669962Cf8F1CE6C8b0B, 18),
     ('totm-totemfi', 'ethereum', 'TOTM', 0x6FF1BFa14A57594a5874B37ff6AC5efbD9F9599A, 18),
     ('bucc-buccaneer-v2', 'ethereum', 'BUCC', 0xd5a7d515Fb8B3337ACb9B053743E0BC18f50C855, 10),
     ('folo-follow', 'ethereum', 'FOLO', 0xB2a63A5Dd36C91eC2DA59B188ff047F66fac122a, 18),
@@ -1612,7 +1609,7 @@ FROM
     ('imgnai-imgnai', 'ethereum', 'IMGNAI', 0xA735A3AF76CC30791C61c10d585833829d36CBe0, 9),
     ('woxen-wrapped-oxen', 'ethereum', 'WOXEN', 0xd1e2d5085b39B80C9948AeB1b9aA83AF6756bcc5, 9),
     ('xrio-realio-network-utility-token-exchangable', 'ethereum', 'XRIO', 0x0B4AC2BA3D4924C9A06D9C1d08D7867059A39cC1, 18),
-    ('weth-weth', 'ethereum', 'bpETH', 0x0000000000a39bb272e79075ade125fd351887ac, 18),  
+    ('weth-weth', 'ethereum', 'bpETH', 0x0000000000a39bb272e79075ade125fd351887ac, 18),
     ('grain-granary','ethereum','GRAIN',0xf88baf18fab7e330fa0c4f83949e23f52fececce,18),
     ('verse-verse-token', 'ethereum', 'VERSE', 0x249ca82617ec3dfb2589c4c17ab7ec9765350a18, 18),
     ('mc-merit-circle', 'ethereum', 'MC', 0x949d48eca67b17269629c7194f4b727d4ef9e5d6, 18),
@@ -1622,7 +1619,13 @@ FROM
     ('crvusd-curvefi-usd-stablecoin', 'ethereum', 'CRVUSD', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 18),
     ('mav-maverick-token', 'ethereum', 'MAV', 0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd, 18),
     ('pepe-pepe', 'ethereum', 'PEPE', 0x6982508145454Ce325dDbE47a25d4ec3d2311933, 18),
-    ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18)
+    ('wld-worldcoin', 'ethereum', 'WLD', 0x163f8c2467924be0ae7b5347228cabf260318753, 18),
+    ('val-valeria', 'ethereum', 'VAL', 0x011e128ec62840186f4a07e85e3ace28858c5606, 18),
+    ('propc-propchain', 'ethereum', 'PROPC', 0x9ff58067bd8d239000010c154c6983a325df138e, 18),
+    ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
+    ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18),
+    ('ton-tokamak-network', 'ethereum', 'TON', 0x2be5e8c109e2197D077D13A82dAead6a9b3433C5, 18),
+    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1642,4 +1645,5 @@ where contract_address not in (
     ,0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f   -- SDT
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
     ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
+    ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
 )

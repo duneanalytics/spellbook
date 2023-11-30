@@ -1,6 +1,6 @@
 {{ config(
-    tags=['dunesql'],
-    alias = alias('standard_bridge_flows'),
+    
+    alias = 'standard_bridge_flows',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

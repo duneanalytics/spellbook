@@ -1,4 +1,4 @@
-{% test dex_trades_token_bought(model, column_name, dex_trades_seed_legacy) %}
+{% test dex_trades_token_bought(model, column_name, dex_trades_seed) %}
 
     with unit_test as
     (
@@ -9,7 +9,7 @@
                 else False
             end as token_bought_test
         from {{ model }} m
-        inner join {{ dex_trades_seed_legacy }} seed
+        inner join {{ dex_trades_seed }} seed
             on m.tx_hash = seed.tx_hash
             and m.evt_index = seed.evt_index
             and m.block_date = seed.block_date

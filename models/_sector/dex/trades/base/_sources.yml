@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_base
+  - name: sushiswap_base
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: sushiswap_v3_base
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+  - name: aerodrome_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
