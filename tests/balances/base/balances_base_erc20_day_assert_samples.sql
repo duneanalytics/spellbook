@@ -1,8 +1,3 @@
--- Bootstrapped correctness test against legacy Caladan values.
-
-with sampled_wallets as
- (-- Bootstrapped correctness test against legacy Caladan values.
-
 with sampled_wallets as
  (
      select *
