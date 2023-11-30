@@ -47,7 +47,7 @@ erc20_transfers  as (
 SELECT
     'optimism' as blockchain, 
     transfer_type,
-    evt_tx_hash, 
+    evt_tx_hash tx_hash, 
     evt_index,
     evt_block_time,
     CAST(date_trunc('month', evt_block_time) as date) as block_month,

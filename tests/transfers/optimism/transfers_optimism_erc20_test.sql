@@ -3,7 +3,7 @@
 with test_data as (
     select count(*) as total
     from {{ ref('transfers_optimism_erc20') }}
-    where evt_block_time between '2023-01-01' and '2023-02-01'
+    where evt_block_time between (cast '2023-01-01' as date) and cast('2023-02-01' as date)
 ),
 
 test_result as (
