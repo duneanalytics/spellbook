@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke","dot2dotseurat","tschubotz,"rantum"]\') }}') }}
+                                    \'["soispoke","dot2dotseurat","tschubotz","rantum"]\') }}') }}
 WITH 
 
 erc20_transfers  as (
