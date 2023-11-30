@@ -269,6 +269,8 @@ models:
       - *token0
       - *token1
       - *tx_hash
+      - &call_trace_address
+        name: call_trace_address
 
   - name: dex_raw_pool_creations
     meta:
