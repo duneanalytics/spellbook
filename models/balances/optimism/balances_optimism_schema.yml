@@ -1,3 +1,6 @@
+version: 2
+
+models:  
   - name: balances_optimism_erc20_hour
     meta:
       blockchain: optimism
