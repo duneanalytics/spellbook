@@ -41,7 +41,7 @@ select * from (
             , substr(input, 17, 20) token0
             , substr(input, 49, 20) token1
             , tx_hash
-            , call_trace_address
+            , trace_address call_trace_address
         from {{ source(blockchain, 'traces') }}
         where 
             substr(input, 1, 4) = 0x485cc955 
