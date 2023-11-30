@@ -83,5 +83,6 @@ FROM
     ('route-router-protocol','polygon','ROUTE',0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4,18),
     ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
     ('comp-compoundd', 'polygon', 'COMP', 0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18),
+    ('voxel-voxies','polygon','VOXEL',0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F,18),
     ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
