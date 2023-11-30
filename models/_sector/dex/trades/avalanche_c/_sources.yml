@@ -15,6 +15,3 @@ sources:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
   - name: trader_joe_v2_1_avalanche_c
-    tables:
-      - name: LBPair_evt_Swap
-      - name: LBFactory_evt_LBPairCreated
