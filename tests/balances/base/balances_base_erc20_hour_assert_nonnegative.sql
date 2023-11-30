@@ -4,7 +4,7 @@
 select amount
 from {{ ref('balances_base_erc20_hour') }} bal
 
-where round(amount/power(10, 18), 6) < 0
+WHERE ROUND(CAST(amount AS DOUBLE) / POWER(10, 18), 6) < 0
 
 -- limiting to a selection of tokens because we haven't filtered out all non-compliant tokens
 and bal.token_address in ( 0x50c5725949a6f0c72e6c4a641f24049a917db0cb,

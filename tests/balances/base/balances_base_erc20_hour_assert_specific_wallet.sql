@@ -23,4 +23,4 @@ SELECT
     COUNT(*) AS count_rows
 FROM unit_tests
 -- Having mismatches less than 1% of rows
-HAVING AVG(CAST(amount_raw_test AS DOUBLE)) < 0.99;
+HAVING AVG(CAST(amount_raw_test AS DOUBLE)) < 0.99
