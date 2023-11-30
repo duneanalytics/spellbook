@@ -1,5 +1,5 @@
 {% macro 
-    zora_mints(blockchain, erc721_mints, erc1155_mints, transactions) 
+    zora_mints(blockchain, wrapped_native_token_address, erc721_mints, erc1155_mints, transactions) 
 %}
 
 SELECT '{{blockchain}}' AS blockchain
@@ -19,13 +19,18 @@ SELECT '{{blockchain}}' AS blockchain
 FROM {{erc721_mints}} mints
 INNER JOIN {{transactions}} txs ON txs.block_number=mints.evt_block_number
         AND txs.hash=mints.evt_tx_hash
-INNER JOIN {{ ref('evms_info') }} info ON info.blockchain='{{blockchain}}'
+        {% if is_incremental() %}
+        AND {{incremental_predicate('txs.block_time')}}
+        {% endif %}
 INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='{{blockchain}}'
-        AND pu.contract_address=info.wrapped_native_token_address
+        AND pu.contract_address= {{wrapped_native_token_address}}
         AND pu.minute=date_trunc('minute', mints.evt_block_time)
+        {% if is_incremental() %}
+        AND {{incremental_predicate('pu.minute')}}
+        {% endif %}
 CROSS JOIN UNNEST(sequence(1, CAST(quantity AS BIGINT))) AS t(sequence_element)
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('mints.evt_block_time')}}
 {% endif %}
 
 UNION ALL
@@ -47,12 +52,17 @@ SELECT '{{blockchain}}' AS blockchain
 FROM {{erc1155_mints}} mints
 INNER JOIN {{transactions}} txs ON txs.block_number=mints.evt_block_number
         AND txs.hash=mints.evt_tx_hash
-INNER JOIN {{ ref('evms_info') }} info ON info.blockchain='{{blockchain}}'
+        {% if is_incremental() %}
+        AND {{incremental_predicate('txs.block_time')}}
+        {% endif %}
 INNER JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain='{{blockchain}}'
-        AND pu.contract_address=info.wrapped_native_token_address
+        AND pu.contract_address= {{wrapped_native_token_address}}
         AND pu.minute=date_trunc('minute', mints.evt_block_time)
+        {% if is_incremental() %}
+        AND {{incremental_predicate('pu.minute')}}
+        {% endif %}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('mints.evt_block_time')}}
 {% endif %}
 
 {% endmacro %}

@@ -4,10 +4,10 @@
     materialized='incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    post_hook='{{ expose_spells(\'["ethereum","optimism","base","zora"]\',
+    post_hook='{{ expose_spells(\'["ethereum","optimism","base","zora","goerli"]\',
                     "project",
                     "zora",
-                    \'["hildobby"]\') }}')
+                    \'["hildobby", "jeff-dude"]\') }}')
 }}
 
 {% set zora_mints_models = [
@@ -15,6 +15,7 @@
 ,ref('zora_optimism_mints')
 ,ref('zora_base_mints')
 ,ref('zora_zora_mints')
+,ref('zora_goerli_mints')
 ] %}
 
 SELECT *
@@ -36,7 +37,7 @@ FROM (
     , tx_to
     FROM {{ zora_mints_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('block_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
