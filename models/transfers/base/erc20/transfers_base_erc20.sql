@@ -1,90 +1,58 @@
 {{ config(
-    alias = 'erc20',
     schema = 'tranfers_base',
-    materialized ='incremental',
-    file_format ='delta',
-    incremental_strategy='merge',
-    unique_key='unique_transfer_id',
-        post_hook='{{ expose_spells(\'["base"]\',
+    materialized = 'incremental',
+    partition_by = ['block_month'],
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transfer_type', 'evt_tx_hash', 'evt_index', 'wallet_address'], 
+    alias = 'erc20',
+    post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
-                                    \'["soispoke", "dot2dotseurat", "tschubotz"]\') }}') }}
+                                    \'["soispoke","dot2dotseurat","tschubotz,"rantum"]\') }}') }}
+WITH 
 
-with
-    sent_transfers as (
-        select
-            'send-' || cast(evt_tx_hash as varchar) || '-' || cast (evt_index as varchar) || '-' || CAST(to AS varchar) as unique_transfer_id,
-            to as wallet_address,
-            contract_address as token_address,
+erc20_transfers  as (
+        SELECT 
+            'receive' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
             evt_block_time,
-            cast(value as double) as amount_raw
-        from
-            {{ source('erc20_base', 'evt_transfer') }}
-            where 1=1
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and evt_block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-    )
-
-    ,
-    received_transfers as (
-        select
-        'receive-' || cast(evt_tx_hash as varchar) || '-' || cast (evt_index as varchar) || '-' || CAST("from" AS varchar) as unique_transfer_id,
-        "from" as wallet_address,
-        contract_address as token_address,
-        evt_block_time,
-        (-1) * CAST(value AS double) as amount_raw
-        from
-            {{ source('erc20_base', 'evt_transfer') }}
-            where 1=1
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and evt_block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-
-    )
-
-    ,
-    deposited_weth as (
-        select
-            'deposit-' || cast(tx_hash as varchar) || '-' || cast (index as varchar) || '-' ||  CAST(bytearray_substring(topic1,13,20) AS varchar) as unique_transfer_id,
-            bytearray_substring(topic1,13,20) as wallet_address,
+            to as wallet_address, 
             contract_address as token_address,
-            block_time as evt_block_time,
-            cast( bytearray_to_uint256(data) as double) as amount_raw
-        from
-            {{ source('base', 'logs') }}
-            WHERE contract_address = 0x4200000000000000000000000000000000000006
-            AND topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c --deposit
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-    )
+            CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_base', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
 
-    ,
-    withdrawn_weth as (
-        select
-            'withdraw-' || cast(tx_hash as varchar) || '-' || cast (index as varchar) || '-' ||  CAST(bytearray_substring(topic1,13,20) AS varchar) as unique_transfer_id,
-            bytearray_substring(topic1,13,20) as wallet_address,
+        UNION ALL 
+
+        SELECT 
+            'send' as transfer_type, 
+            evt_tx_hash,
+            evt_index, 
+            evt_block_time,
+            "from" as wallet_address, 
             contract_address as token_address,
-            block_time as evt_block_time,
-            (-1)* cast( bytearray_to_uint256(data) as double) as amount_raw
-        from
-            {{ source('base', 'logs') }}
-            WHERE contract_address = 0x4200000000000000000000000000000000000006
-            AND topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 --withdrawal
-            {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-    )
+            -CAST(value as double) as amount_raw
+        FROM 
+        {{ source('erc20_base', 'evt_transfer') }}
+        {% if is_incremental() %}
+            WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        {% endif %}
+)
 
-select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
-from sent_transfers
-union all
-select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
-from received_transfers
-union all
-select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
-from deposited_weth
-union all
-select unique_transfer_id, 'base' as blockchain, wallet_address, token_address, evt_block_time, CAST(amount_raw AS varchar) as amount_raw
-from withdrawn_weth
+SELECT
+    'base' as blockchain, 
+    transfer_type,
+    evt_tx_hash, 
+    evt_index,
+    evt_block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+erc20_transfers

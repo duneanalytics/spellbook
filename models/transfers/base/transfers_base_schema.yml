@@ -58,7 +58,7 @@ models:
       blockchain: base
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz
+      contributors: soispoke, dot2dotseurat, tschubotz, rantum
     config:
       tags: ['transfers', 'base', 'erc20']
     description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
@@ -83,96 +83,3 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
-
-  - name: transfers_base_erc20_agg_hour
-    meta:
-      blockchain: base
-      sector: transfers
-      project: erc20
-      contributors: rantum
-    config:
-      tags: ['transfers', 'base', 'erc20', 'agg_hour']
-    columns:
-      - *blockchain
-      - &block_hour
-        name: hour
-        description: "UTC event block time truncated to the hour mark."
-      - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
-      - *amount_raw
-      - name: amount
-        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
-
-  - name: transfers_base_erc20_rolling_hour
-    meta:
-      blockchain: base
-      sector: transfers
-      project: erc20
-      contributors: rantum
-    description: "ERC20 Token Transfers on base per hour."
-    config:
-      tags: ['transfers', 'base', 'erc20', 'rolling_hour']
-    columns:
-      - *blockchain
-      - *block_hour
-      - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
-      - *amount_raw
-      - name: amount
-        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: updated_at
-        description: "UTC timestamp when table was last updated"
-      - name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-      - &block_month
-        name: block_month
-        description: "UTC event block time truncated to the month mark."
-
-  - name: transfers_base_erc20_agg_day
-    meta:
-      blockchain: base
-      sector: transfers
-      project: erc20
-      contributors: rantum
-    config:
-      tags: ['transfers', 'base', 'erc20', 'agg_day']
-    columns:
-      - *blockchain
-      - &block_day
-        name: day
-        description: "UTC event block time truncated to the day mark."
-      - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
-      - *amount_raw
-      - name: amount
-        description: "Raw amount of ERC20 token held *after* taking into account token decimals"
-
-  - name: transfers_base_erc20_rolling_day
-    meta:
-      blockchain: base
-      sector: transfers
-      project: erc20
-      contributors: rantum
-    description: "ERC20 Token Transfers on base per day."
-    config:
-      tags: ['transfers', 'base', 'erc20', 'rolling_day']
-    columns:
-      - *blockchain
-      - *block_day
-      - *wallet_address
-      - *token_address
-      - name: symbol
-        description: "ERC20 token symbol"
-      - *amount_raw
-      - name: amount
-        description: "Rolling sum of raw amount of ERC20 token held *after* taking into account token decimals"
-      - name: last_updated
-        description: "UTC timestamp when table was last updated"
-      - name: recency_index
-        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
