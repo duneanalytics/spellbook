@@ -33,7 +33,7 @@ select * from (
     {% for blockchain in blockchains %}
         -- only v2. re-initialization is restricted on v3
         select
-            blockchain
+            '{{blockchain}}' as blockchain
             , 'uniswap_compatible' as type
             , 'v2' as version
             , block_time
