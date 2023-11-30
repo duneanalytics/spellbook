@@ -1,6 +1,6 @@
 {{ config(
     alias = 'erc20',
-    schema = 'tranfers_base',
+    
     materialized ='incremental',
     file_format ='delta',
     incremental_strategy='merge',
