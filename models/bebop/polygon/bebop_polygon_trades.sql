@@ -34,23 +34,30 @@ bebop_raw_data AS (
         json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.taker_tokens')), '$[0]')) as taker_length,
         json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.maker_tokens')), '$[0]')) as maker_length
     FROM
-        (SELECT * FROM {{ source('bebop_v3_polygon', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
+        (SELECT
+            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
+         FROM {{ source('bebop_v3_polygon', 'BebopAggregationContract_evt_AggregateOrderExecuted') }}
          UNION ALL
-         SELECT * FROM {{ source('bebop_v4_polygon', 'BebopSettlement_evt_AggregateOrderExecuted') }}) evt
+         SELECT
+            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
+         FROM {{ source('bebop_v4_polygon', 'BebopSettlement_evt_AggregateOrderExecuted') }}) evt
     LEFT JOIN
         (SELECT
-        call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
+            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_v3_polygon', 'BebopAggregationContract_call_SettleAggregateOrder') }}
         UNION ALL
         SELECT
-        call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
+            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_v4_polygon', 'BebopSettlement_call_SettleAggregateOrder') }}
         UNION ALL
         SELECT
-        call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
+            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_v4_polygon', 'BebopSettlement_call_SettleAggregateOrderWithTakerPermits') }}
         ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash
+        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE
     {% if is_incremental() %}
     AND evt.evt_block_time >= date_trunc('day', now() - interval '7' Day)
