@@ -26,6 +26,26 @@ WITH transfers AS (
     AND {{incremental_predicate('block_time')}}
     {% endif %}
 
+    SELECT t.block_time
+    , t.block_number
+    , t.tx_hash
+    , cast(NULL as bigint) AS evt_index
+    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
+    {% if native_contract_address%}
+    , {{native_contract_address}} AS contract_address
+    {% else %}
+    , CAST(NULL AS varbinary) AS contract_address
+    {% endif %}
+    , 'native' AS token_standard
+    , "from"
+    , to --?
+    , t.gas_price * t.gas_used AS amount_raw
+    FROM {{ transactions }} t
+    WHERE value > 0
+    {% if is_incremental() %}
+    AND {{incremental_predicate('t.block_time')}}
+    {% endif %}
+
     UNION ALL
 
     SELECT t.evt_block_time AS block_time
