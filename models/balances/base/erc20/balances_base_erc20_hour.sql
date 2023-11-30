@@ -11,9 +11,8 @@
 WITH 
 
 years as (
-    select year
-    from (values (sequence(timestamp '2023-06-15', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
-      cross join unnest(year_array) as d(year)
+   SELECT date_add('year', CAST(n AS INTEGER), CAST(date '2023-06-15' AS TIMESTAMP)) AS year
+    FROM UNNEST(sequence(0, date_diff('year', date '2023-06-15', current_date) )) AS t(n);
 ),
 
 hours as (
