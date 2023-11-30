@@ -10,11 +10,9 @@
 
 WITH 
 
--- credits @tomfutago - https://dune.com/queries/2988360
-
 years as (
     select year
-    from (values (sequence(timestamp '2023-08-01', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
+    from (values (sequence(timestamp '2023-06-15', cast(date_trunc('year', now()) as timestamp), interval '1' year))) s(year_array)
       cross join unnest(year_array) as d(year)
 ),
 

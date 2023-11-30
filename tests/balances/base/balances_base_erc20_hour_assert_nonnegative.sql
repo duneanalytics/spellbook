@@ -9,4 +9,4 @@ AND bal.token_address IN (
     0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,
     0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
 ) --'DAI', 'USDbc', 'USDC'
-AND bal.block_hour > NOW() - INTERVAL '2' DAY;
+AND bal.block_hour > NOW() - INTERVAL '2' DAY
