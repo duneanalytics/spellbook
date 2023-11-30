@@ -1,35 +1,6 @@
 version: 2
 
 models:
-  - name: transfers_base_eth
-    meta:
-      blockchain: base
-      sector: transfers
-      project: eth
-      contributors: msilb7, chuxin, rantum
-    config:
-      tags: ["transfers", "base", "eth"]
-    description: "Events of native ETH transfers on Base."
-    columns:
-      - *blockchain
-      - &transfer_type
-        name: transfer_type
-        description: "Transfer type needed for unique test"
-      - *wallet_address
-      - *token_address
-      - &block_time
-        name: block_time
-        description: "Timestamp for block event time in UTC"
-      - &block_month
-        name: block_month
-        description: "Block time truncated to month used for partitioning"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash"
-      - &trace_address
-        name: trace_address
-        description: "Trace index"
-      - *amount_raw
           
   - name: transfers_base_erc20
     meta:
@@ -61,6 +32,36 @@ models:
       - &amount_raw
         name: amount_raw
         description: "Raw amount of ERC20 token held *before* taking into account token decimals"
+
+  - name: transfers_base_eth
+    meta:
+      blockchain: base
+      sector: transfers
+      project: eth
+      contributors: msilb7, chuxin, rantum
+    config:
+      tags: ["transfers", "base", "eth"]
+    description: "Events of native ETH transfers on Base."
+    columns:
+      - *blockchain
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type needed for unique test"
+      - *wallet_address
+      - *token_address
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month used for partitioning"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &trace_address
+        name: trace_address
+        description: "Trace index"
+      - *amount_raw
 
   - name: transfers_base_eth_agg_hour
     meta:
@@ -106,9 +107,7 @@ models:
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
-      - &block_month
-        name: block_month
-        description: "UTC event block time truncated to the month mark."
+      - *block_month
 
   - name: transfers_base_eth_agg_day
     meta:
