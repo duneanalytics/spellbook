@@ -28,9 +28,18 @@ with contract_list AS (
 
 , trace_txs AS (
 
-  SELECT '{{chain}}' as blockchain, 
-  block_date,
-  r.to AS contract_address
+  SELECT
+    '{{chain}}' as blockchain
+  , block_date
+  , r.to AS contract_address
+  ---
+  , COUNT(DISTINCT tx_hash) AS num_trace_txs
+  , COUNT(*) AS num_trace_calls
+  ---
+  , COUNT(DISTINCT tx_from) AS num_trace_tx_senders
+  , COUNT(DISTINCT "from") AS num_trace_call_senders
+  ---
+  , SUM(r.gas_used) AS sum_trace_gas_used
 
   FROM {{ source(chain,'traces') }} r
   INNER JOIN  contract_list cl
@@ -38,18 +47,27 @@ with contract_list AS (
   
   WHERE 1=1
     AND r.type = 'call'
+    AND r.success AND r.tx_success
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
     {% endif %}
+  GROUP BY 1,2,3
 
 
 )
 
 , log_txs AS (
 
-  SELECT '{{chain}}' as blockchain, 
-  block_date,
-  l.contract_address AS contract_address
+  SELECT
+    '{{chain}}' as blockchain
+  , block_date
+  , l.contract_address AS contract_address
+  ---
+  , COUNT(DISTINCT tx_hash) AS num_log_txs
+  , COUNT(*) AS num_log_events
+  ---
+  , COUNT(DISTINCT tx_from) AS num_log_tx_senders
+  
 
   FROM {{ source(chain,'logs') }} l
   INNER JOIN  contract_list cl
@@ -59,6 +77,7 @@ with contract_list AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
     {% endif %}
+  GROUP BY 1,2,3
 
 )
 
