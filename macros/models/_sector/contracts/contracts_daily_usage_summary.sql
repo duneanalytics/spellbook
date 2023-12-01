@@ -42,7 +42,7 @@ SELECT
   ) AS sum_to_tx_calldata_gas
   FROM {{ source(chain,'transactions') }} t
   INNER JOIN contract_list cl
-          ON r.to = cl.contract_address
+          ON t.to = cl.contract_address
   WHERE {{ incremental_predicate('t.block_date') }} 
   GROUP BY 1,2,3
 )
