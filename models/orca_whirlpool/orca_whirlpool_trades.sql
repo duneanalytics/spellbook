@@ -37,14 +37,13 @@ with
 
     , whirlpools as (
     with 
+        --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
         fee_updates as (
             SELECT 
                 ip.account_whirlpool as whirlpool_id
                 , ip.call_block_time as update_time
-                , fee.account_feeTier as fee_tier
-                , fee.defaultFeeRate as fee_tier --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
+                , ip.account_feeTier as fee_tier
             FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
-            LEFT JOIN {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }} fee ON ip.account_feeTier = fee.account_feeTier
             
             UNION all
             

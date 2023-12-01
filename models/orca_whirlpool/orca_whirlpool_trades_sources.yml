@@ -9,8 +9,6 @@ sources:
     tables:
       - name: whirlpool_call_initializePool
         loaded_at_field: call_block_time
-      - name: whirlpool_call_initializeFeeTier
-        loaded_at_field: call_block_time
       - name: whirlpool_call_setFeeRate
         loaded_at_field: call_block_time
       - name: whirlpool_call_swap
