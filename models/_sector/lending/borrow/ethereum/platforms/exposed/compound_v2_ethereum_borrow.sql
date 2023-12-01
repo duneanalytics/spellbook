@@ -31,4 +31,4 @@ select
 from {{ ref('lending_borrow') }}
 where blockchain = 'ethereum'
   and project = 'compound'
-  and version = 2
+  and version = '2'
