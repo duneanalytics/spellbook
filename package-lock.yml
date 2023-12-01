@@ -1,4 +1,5 @@
 packages:
 - package: dbt-labs/dbt_utils
   version: 1.1.1
-sha1_hash: 23451c207c1d4dd71b5925f12a5cd66f2ebb2b3b
+- local: tokens-package
+sha1_hash: 260b35df85cdb83ff9592aecf004646754d21ed6
