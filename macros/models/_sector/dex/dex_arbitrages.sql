@@ -87,7 +87,6 @@ WITH multi_trade_txs AS (
 -- Step 6: Only keep trades that form a loop
 SELECT pst.block_time
 , txs.block_number
-, date_trunc('month', pst.block_time) AS block_month
 , pst.tx_hash
 , pst.evt_index
 , pst.blockchain
