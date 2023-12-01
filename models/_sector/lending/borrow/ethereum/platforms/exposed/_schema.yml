@@ -59,3 +59,30 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
+
+  - name: compound_v2_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: bizzyvinci, hosuke, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'compound', 'v2', 'ethereum']
+    description: "All Compound v2 transactions involving borrow transactions on Ethereum"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
