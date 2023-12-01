@@ -18,12 +18,30 @@
 {% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 
 with 
-    whirlpools as (
+    fee_tiers_defaults as (
+        --this is a pattern on Solana, where "fee rates" are stored on accounts. Fee rates are updated on accounts, that then impact the pools.
+        SELECT 
+        ft.account_feeTier as fee_tier
+        , ft.defaultfeeRate as fee_rate
+        , call_block_time as fee_time
+        FROM whirlpool_solana.whirlpool_call_initializeFeeTier ft
+
+        UNION ALL 
+
+        SELECT
+        account_feeTier as fee_tier
+        , defaultfeeRate as fee_rate
+        , call_block_time as fee_time
+        FROM whirlpool_solana.whirlpool_call_setDefaultFeeRate
+    )
+
+    , whirlpools as (
     with 
         fee_updates as (
             SELECT 
                 ip.account_whirlpool as whirlpool_id
                 , ip.call_block_time as update_time
+                , fee.account_feeTier as fee_tier
                 , fee.defaultFeeRate as fee_tier --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
             FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
             LEFT JOIN {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }} fee ON ip.account_feeTier = fee.account_feeTier
@@ -33,7 +51,7 @@ with
              SELECT 
                 account_whirlpool as whirlpool_id
                 , call_block_time as update_time
-                , feeRate as fee_tier
+                , fee.account_feeTier as fee_tier
             FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
         )
         
@@ -190,7 +208,25 @@ with
             AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination
-        
+    )
+
+    , fee_rate_sorted as (
+        SELECT 
+            *
+        FROM (
+        SELECT 
+            a_s.*
+            , ftd.fee_rate
+            --this gives us all the fee tiers that have been set on the pool since before the swap time
+            , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
+            --this gives us all the fee tier updates that have been set on the fee tier since before the swap time
+            , row_number() OVER (partition by a_s.fee_tier, tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_fee_update
+        FROM all_swaps a_s
+        LEFT JOIN fee_tiers_defaults ftd ON ftd.fee_tier = a_s.fee_tier AND ftd.update_time <= a_s.block_time 
+        )
+        --get latest fee tier and latest defaultFeeRate on the fee_tier
+        WHERE recent_update = 1
+        AND recent_fee_update = 1
     )
     
 SELECT
@@ -208,8 +244,8 @@ SELECT
     , tb.token_sold_amount
     , tb.token_sold_amount_raw
     , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
-    , cast(tb.fee_tier as double)/1000000 as fee_tier
-    , cast(tb.fee_tier as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
+    , cast(tb.fee_rate as double)/1000000 as fee_tier
+    , cast(tb.fee_rate as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
     , tb.token_sold_vault
@@ -221,14 +257,7 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
     , recent_update
-FROM
-    (
-    SELECT 
-        *
-        , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
-    FROM all_swaps
-    )
-    tb
+FROM fee_rate_sorted tb
 LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
@@ -245,4 +274,3 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% else %}
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-WHERE recent_update = 1
