@@ -92,7 +92,6 @@ SELECT pst.block_time
 , pst.blockchain
 , pst.project
 , pst.version
-, pst.block_date
 , pst.block_month
 , pst.token_sold_symbol
 , pst.token_bought_symbol
