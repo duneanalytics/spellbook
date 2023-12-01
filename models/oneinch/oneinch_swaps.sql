@@ -188,7 +188,7 @@ with
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
         join prices using(blockchain, contract_address, minute)
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
     )
 
 select
