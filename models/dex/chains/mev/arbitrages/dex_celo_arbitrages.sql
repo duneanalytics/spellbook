@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'dex_polygon',
+        schema = 'dex_celo',
         alias = 'arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -10,7 +10,6 @@
 }}
 
 {{dex_arbitrages(
-        blockchain='polygon'
-        , transactions = source('polygon','transactions')
-        , fungible_transfers = ref('fungible_arbitrum_transfers')
+        blockchain='celo'
+        , transactions = source('celo','transactions')
 )}}

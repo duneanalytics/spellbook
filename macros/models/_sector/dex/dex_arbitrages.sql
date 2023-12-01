@@ -1,4 +1,4 @@
-{% macro dex_arbitrages(blockchain, transactions, fungible_transfers) %}
+{% macro dex_arbitrages(blockchain, transactions) %}
 
 -- Step 1: Check that the transaction contains at least 2 trades
 WITH multi_trade_txs AS (
@@ -122,8 +122,8 @@ MATCH_RECOGNIZE (
         , B AS token_sold_address = PREV(token_bought_address)
         , D AS FIRST(token_sold_address) = LAST(token_bought_address)
     )
-INNER JOIN {{transactions}} txs ON fmtt.block_time=txs.block_time
-    AND fmtt.tx_hash=txs.hash
+INNER JOIN {{transactions}} txs ON pst.block_time=txs.block_time
+    AND pst.tx_hash=txs.hash
     {% if is_incremental() %}
     AND txs.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}

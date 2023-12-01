@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'dex_bnb',
+        schema = 'dex_gnosis',
         alias = 'arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -10,7 +10,6 @@
 }}
 
 {{dex_arbitrages(
-        blockchain='bnb'
-        , transactions = source('bnb','transactions')
-        , fungible_transfers = ref('fungible_bnb_transfers')
+        blockchain='gnosis'
+        , transactions = source('gnosis','transactions')
 )}}

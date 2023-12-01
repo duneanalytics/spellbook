@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'dex_gnosis',
+        schema = 'dex_optimism',
         alias = 'arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -10,7 +10,6 @@
 }}
 
 {{dex_arbitrages(
-        blockchain='gnosis'
-        , transactions = source('gnosis','transactions')
-        , fungible_transfers = ref('fungible_gnosis_transfers')
+        blockchain='optimism'
+        , transactions = source('optimism','transactions')
 )}}

@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'dex_avalanche_c',
+        schema = 'dex_bnb',
         alias = 'arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -10,7 +10,6 @@
 }}
 
 {{dex_arbitrages(
-        blockchain='avalanche_c'
-        , transactions = source('avalanche_c','transactions')
-        , fungible_transfers = ref('fungible_avalanche_c_transfers')
+        blockchain='bnb'
+        , transactions = source('bnb','transactions')
 )}}

@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'dex_optimism',
+        schema = 'dex_avalanche_c',
         alias = 'arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -10,7 +10,6 @@
 }}
 
 {{dex_arbitrages(
-        blockchain='optimism'
-        , transactions = source('optimism','transactions')
-        , fungible_transfers = ref('fungible_polygon_transfers')
+        blockchain='avalanche_c'
+        , transactions = source('avalanche_c','transactions')
 )}}
