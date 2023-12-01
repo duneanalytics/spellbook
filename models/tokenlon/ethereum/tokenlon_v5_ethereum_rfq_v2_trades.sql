@@ -22,7 +22,7 @@
 WITH dexs AS (
     SELECT 
         evt_block_time        AS block_time,
-        "user"                AS taker,
+        user                AS taker,
         "maker"               AS maker,
         "takerTokenAmount"    AS token_sold_amount_raw,
         "makerTokenAmount"    AS token_bought_amount_raw,
@@ -31,12 +31,12 @@ WITH dexs AS (
         "makerToken"          AS token_bought_address,
         contract_address      AS project_contract_address,
         evt_tx_hash           AS tx_hash,
-        CAST(ARRAY[] as array<bigint>) AS trace_address,
+        CAST(ARRAY[-1] as array<bigint>) as trace_address,
         evt_index
     FROM
         {{ source('tokenlon_v5_ethereum', 'RFQv2_evt_FilledRFQ') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day) 
+    WHERE {{ incremental_predicate('evt_block_time') }} 
     {% endif %}
 )
 
