@@ -566,6 +566,7 @@ models:
             - blockchain
             - tx_hash
             - call_trace_address
+            - second_side
     columns:
       - *blockchain_not_null
       - *tx_hash_not_null
@@ -580,7 +581,7 @@ models:
       - *method
       - &user
         name: user
-      # - *receiver
+      - *receiver
       - &fusion
         name: fusion
       - &contracts_only
