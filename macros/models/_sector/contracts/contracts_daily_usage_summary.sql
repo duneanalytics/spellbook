@@ -14,6 +14,10 @@ Stats:
 - # of Tx Senders Calling (Transaction From - When Trace)
 - # of Tx Senders Emitting (Transaction From - When Log)
 
+
+This should only be joined to other contracts tables at the query stage; however, we may read from
+the `base` spell unified with `predeploys`, as our identifier for the total set of contracts to evaluate
+, or keep this spell agnostic to contracts vs EOAs, and determine this at the query level.
 */
 
 {% endmacro %}
