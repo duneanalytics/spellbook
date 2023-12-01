@@ -551,15 +551,15 @@ models:
       - *minute
       - *block_month_not_null
 
-  - name: oneinch_trades
+  - name: oneinch_swaps
     meta:
       blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'trades']
+      tags: ['oneinch', 'swaps']
     description: >
-        1inch trades
+        1inch swaps
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -571,6 +571,7 @@ models:
       - *tx_hash_not_null
       - *call_trace_address_not_null
       - *block_time
+      - *minute
       - *tx_from
       - *tx_to
       - *contract_name

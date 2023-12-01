@@ -1,11 +1,17 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'trades',
+        alias = 'swaps',
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address']
     )
 }}
+
+
+
+{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+
+
 
 with
 
@@ -28,25 +34,24 @@ with
             , protocol_version
             , method
             , tx_from as user
-            -- , dst_receiver as receiver -- to add next
-            , if(src_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), wrapped_native_token_address, src_token_address) as src_token_address
-            , if(src_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), native_token_symbol) as src_native
+            , dst_receiver as receiver
+            , if(src_token_address in {{native_addresses}}, wrapped_native_token_address, src_token_address) as src_token_address
+            , if(src_token_address in {{native_addresses}}, native_token_symbol) as src_native
             , src_amount
-            , if(dst_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), wrapped_native_token_address, dst_token_address) as dst_token_address
-            , if(dst_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), native_token_symbol) as dst_native
+            , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as dst_token_address
+            , if(dst_token_address in {{native_addresses}}, native_token_symbol) as dst_native
             , dst_amount
             , false as fusion
             , false as contracts_only
             , false as second_side
             , explorer_link
+            , minute
         from {{ ref('oneinch_ar') }}
         join {{ ref('evms_info') }} using(blockchain)
         where
             tx_success
             and call_success
-            {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-            {% endif %}
+
 
         union all
         -- LOP calls - first side (when a direct call LOP method => users from two sides)
@@ -59,27 +64,26 @@ with
             , protocol_version
             , method
             , maker as user
-            -- , receiver -- to add next
-            , if(maker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), wrapped_native_token_address, maker_asset) as src_token_address
-            , if(maker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), native_token_symbol) as src_native
+            , receiver
+            , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as src_token_address
+            , if(maker_asset in {{native_addresses}}, native_token_symbol) as src_native
             , making_amount as src_amount
-            , if(taker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), wrapped_native_token_address, taker_asset) as dst_token_address
-            , if(taker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), native_token_symbol) as dst_native
+            , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as dst_token_address
+            , if(taker_asset in {{native_addresses}}, native_token_symbol) as dst_native
             , taking_amount as dst_amount
             , coalesce(fusion, false) as fusion
             , position('RFQ' in method) > 0 as contracts_only
             , false as second_side
             , explorer_link
+            , minute
         from {{ ref('oneinch_lop') }}
         join {{ ref('evms_info') }} using(blockchain)
         left join settlements using(blockchain, call_from)
         where
             tx_success
             and call_success
-            {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-            {% endif %}
-        
+
+
         union all
         -- LOP calls - second side (when a direct call LOP method => users from two sides)
         select
@@ -91,26 +95,24 @@ with
             , protocol_version
             , method
             , tx_from as user
-            -- , receiver -- to add next
-            , if(taker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), wrapped_native_token_address, taker_asset) as src_token_address
-            , if(taker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), native_token_symbol) as src_native
+            , receiver 
+            , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as src_token_address
+            , if(taker_asset in {{native_addresses}}, native_token_symbol) as src_native
             , taking_amount as src_amount
-            , if(maker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), wrapped_native_token_address, maker_asset) as dst_token_address
-            , if(maker_asset in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee), native_token_symbol) as dst_native
+            , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as dst_token_address
+            , if(maker_asset in {{native_addresses}}, native_token_symbol) as dst_native
             , making_amount as dst_amount
             , false as fusion
             , false as contracts_only
             , true as second_side
             , explorer_link
+            , minute
         from {{ ref('oneinch_lop') }}
         join {{ ref('evms_info') }} using(blockchain)
         where
             tx_success
             and call_success
             and cardinality(call_trace_address) = 0
-            {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-            {% endif %}
     )
 
     , prices as (
@@ -122,9 +124,22 @@ with
             , decimals
             , symbol
         from {{ source('prices', 'usd') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('minute') }}
-        {% endif %}
+
+        union all 
+
+        -- performance optimization
+        select 
+            blockchain
+            , contract_address
+            , minute
+            , null as price
+            , null as decimals
+            , null as symbol 
+        from {{ ref('oneinch_calls_transfers_amounts') }} as cta
+        where not exists (
+            select blockchain, contract_address, minute from {{ source('prices', 'usd') }} as pu
+            where cta.blockchain = pu.blockchain and cta.contract_address = pu.contract_address and cta.minute = pu.minute
+        )
     )
 
     , trades as (
@@ -132,28 +147,29 @@ with
             blockchain
             , tx_hash
             , call_trace_address
-            , min(block_time) as block_time
-            , min(tx_from) as tx_from
-            , min(tx_to) as tx_to
-            , min(contract_name) as contract_name
-            , min(protocol) as protocol
-            , min(protocol_version) as protocol_version
-            , min(method) as method
-            , min(user) as user
-            -- , min(receiver) as receiver -- to add next
-            , min(fusion) as fusion
-            , min(contracts_only) as contracts_only
-            , min(second_side) as second_side
-            , min(call_remains) as remains
-            , min(src_token_address) filter(where contract_address = src_token_address) as src_token_address
-            , min(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
+            , block_time
+            , minute
+            , protocol
+            , tx_from
+            , tx_to
+            , contract_name
+            , protocol_version
+            , method
+            , user
+            , receiver
+            , fusion
+            , contracts_only
+            , second_side
+            , call_remains as remains
+            , any_value(explorer_link) as explorer_link
+            , any_value(src_token_address) filter(where contract_address = src_token_address) as src_token_address
+            , any_value(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
             , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
             , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
-            , min(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
-            , min(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
+            , any_value(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
+            , any_value(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
             , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
             , max(amount * price / pow(10, decimals)) as transfers_usd_amount
-            , min(explorer_link) as explorer_link
         from (
             select
                 blockchain
@@ -170,9 +186,9 @@ with
                 , call_remains
             from {{ ref('oneinch_calls_transfers_amounts') }}
         )
-        join calls using(blockchain, tx_hash, call_trace_address)
-        left join prices using(blockchain, contract_address, minute)
-        group by 1, 2, 3
+        join calls using(blockchain, tx_hash, call_trace_address, minute)
+        join prices using(blockchain, contract_address, minute)
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
     )
 
 select
@@ -180,6 +196,7 @@ select
     , tx_hash
     , call_trace_address
     , block_time
+    , minute
     , tx_from
     , tx_to
     , contract_name
@@ -187,7 +204,7 @@ select
     , protocol_version
     , method
     , user
-    -- , receiver -- to add next
+    , receiver
     , fusion
     , contracts_only
     , second_side
