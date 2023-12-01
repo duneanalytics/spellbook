@@ -31,29 +31,43 @@ with contract_list AS (
   SELECT
     '{{chain}}' as blockchain
   , block_date
-  , r.to AS contract_address
+  , a.to AS contract_address
   ---
+  , COUNT(DISTINCT block_number) AS num_trace_blocks
   , COUNT(DISTINCT tx_hash) AS num_trace_txs
   , COUNT(*) AS num_trace_calls
   ---
   , COUNT(DISTINCT tx_from) AS num_trace_tx_senders
   , COUNT(DISTINCT "from") AS num_trace_call_senders
   ---
-  , SUM(r.gas_used) AS sum_trace_gas_used
+  , SUM(a.gas_used) AS sum_trace_gas_used
+  /* maybe add the trace gas with subtraces removed here? */
+  , SUM(CASE WHEN trace_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_trace_tx_gas_used
 
-  FROM {{ source(chain,'traces') }} r
-  INNER JOIN  contract_list cl
-    ON r.to = cl.contract_address
-  
-  WHERE 1=1
-    AND r.type = 'call'
-    AND r.success AND r.tx_success
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('block_date') }}
-    {% endif %}
+  FROM (
+      SELECT r.block_date, r.block_number, r.to, r.tx_hash, r.tx_from, r."from"
+        , r.gas_used, t.gas_used as tx_gas_used
+        , ROW_NUMBER() OVER (PARTITION BY r.tx_hash) AS trace_number --reindex trace to ensure single count
+
+        FROM {{ source(chain,'traces') }} r
+        INNER JOIN  {{ source(chain,'transactions') }} t 
+          ON t.hash = r.tx_hash
+          AND t.block_number = r.tx_block_number
+          AND t.block_date = r.block_date
+          AND {{ incremental_predicate('t.block_date') }} 
+        INNER JOIN contract_list cl
+          ON r.to = cl.contract_address
+        
+        WHERE 1=1
+          AND r.type = 'call'
+          AND r.success AND r.tx_success
+          {% if is_incremental() %}
+          AND {{ incremental_predicate('r.block_date') }}
+          AND {{ incremental_predicate('t.block_date') }}
+          {% endif %}
+      GROUP BY 1,2,3,4,5,6,7,8
+    ) a
   GROUP BY 1,2,3
-
-
 )
 
 , log_txs AS (
@@ -63,22 +77,67 @@ with contract_list AS (
   , block_date
   , l.contract_address AS contract_address
   ---
+  , COUNT(DISTINCT block_number) AS num_log_blocks
   , COUNT(DISTINCT tx_hash) AS num_log_txs
   , COUNT(*) AS num_log_events
   ---
   , COUNT(DISTINCT tx_from) AS num_log_tx_senders
+  , SUM(CASE WHEN log_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_log_tx_gas_used
   
 
-  FROM {{ source(chain,'logs') }} l
-  INNER JOIN  contract_list cl
-    ON l.contract_address = cl.contract_address
-  
-  WHERE 1=1
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('block_date') }}
-    {% endif %}
+  FROM (
+      SELECT l.block_date, l.block_number, l.contract_address, l.tx_hash, l.tx_from,
+        , t.gas_used as tx_gas_used
+        , ROW_NUMBER() OVER (PARTITION BY l.tx_hash) AS log_number --reindex log to ensure single count
+
+        FROM {{ source(chain,'logs') }} l
+        INNER JOIN  {{ source(chain,'transactions') }} t 
+          ON t.hash = r.tx_hash
+          AND t.block_number = l.tx_block_number
+          AND t.block_date = l.block_date
+          AND {{ incremental_predicate('t.block_date') }} 
+        INNER JOIN contract_list cl
+          ON l.contract_address = cl.contract_address
+        
+        WHERE 1=1
+          AND r.type = 'call'
+          AND r.success AND r.tx_success
+          {% if is_incremental() %}
+          AND {{ incremental_predicate('l.block_date') }}
+          AND {{ incremental_predicate('t.block_date') }}
+          {% endif %}
+      GROUP BY 1,2,3,4,5,6
+    ) a
   GROUP BY 1,2,3
 
 )
+
+SELECT
+  COALESCE(tr.blockchain, lo.blockchain) AS blockchain
+, COALESCE(tr.block_date, lo.block_date) AS block_date
+, COALESCE(tr.contract_address, lo.contract_address) AS contract_address
+---
+, COALESCE(num_trace_blocks, 0) AS num_trace_blocks
+, COALESCE(num_trace_txs, 0) AS num_trace_txs
+, COALESCE(num_trace_calls, 0) AS num_trace_calls
+
+, COALESCE(num_trace_tx_senders, 0) AS num_trace_tx_senders
+, COALESCE(num_trace_call_senders, 0) AS num_trace_call_senders
+
+, COALESCE(sum_trace_gas_used, 0) AS sum_trace_gas_used
+, COALESCE(sum_trace_tx_gas_used, 0) AS sum_trace_tx_gas_used
+--
+, COALESCE(num_log_blocks, 0) AS num_log_blocks
+, COALESCE(num_log_txs, 0) AS num_log_txs
+, COALESCE(num_log_events, 0) AS num_log_events
+
+, COALESCE(num_log_tx_senders, 0) AS num_log_tx_senders
+, COALESCE(sum_log_tx_gas_used, 0) AS sum_log_tx_gas_used
+
+FROM trace_txs tr
+FULL OUTER JOIN log_txs lo
+  ON tr.blockchain = lo.blockchain
+  AND tr.block_date = lo.block_date
+  AND tr.contract_address = lo.contract_address
 
 {% endmacro %}
