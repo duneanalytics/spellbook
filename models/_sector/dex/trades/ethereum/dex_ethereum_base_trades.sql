@@ -11,6 +11,9 @@
     , ref('uniswap_v2_ethereum_base_trades')
     , ref('uniswap_v3_ethereum_base_trades')
     , ref('apeswap_ethereum_base_trades')
+    , ref('airswap_ethereum_base_trades')
+    , ref('sushiswap_v1_ethereum_base_trades')
+    , ref('sushiswap_v2_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (
