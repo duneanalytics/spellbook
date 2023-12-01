@@ -17,6 +17,8 @@
 {% set native_mints = [
  ref('nft_ethereum_native_mints')
 ,ref('nft_optimism_native_mints')
+,ref('nft_base_native_mints')
+,ref('nft_zora_native_mints')
 ] %}
 
 
