@@ -134,7 +134,6 @@ SELECT
           ON l.contract_address = cl.contract_address
         
         WHERE 1=1
-          AND r.type = 'call'
           AND t.success
           {% if is_incremental() %}
           AND 'l.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
