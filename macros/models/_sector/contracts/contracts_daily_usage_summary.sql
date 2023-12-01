@@ -28,16 +28,38 @@ with contract_list AS (
 
 , trace_txs AS (
 
+  SELECT '{{chain}}' as blockchain, 
+  block_date,
+  r.to AS contract_address
+
   FROM {{ source(chain,'traces') }} r
   INNER JOIN  contract_list cl
     ON r.to = cl.contract_address
+  
+  WHERE 1=1
+    AND r.type = 'call'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('block_date') }}
+    {% endif %}
+
+
 )
 
 , log_txs AS (
-  
+
+  SELECT '{{chain}}' as blockchain, 
+  block_date,
+  l.contract_address AS contract_address
+
   FROM {{ source(chain,'logs') }} l
   INNER JOIN  contract_list cl
-    ON l.to = cl.contract_address
+    ON l.contract_address = cl.contract_address
+  
+  WHERE 1=1
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('block_date') }}
+    {% endif %}
+
 )
 
 {% endmacro %}
