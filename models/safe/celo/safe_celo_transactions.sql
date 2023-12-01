@@ -26,7 +26,8 @@ select
     tr.to,
     tr.value,
     tr.gas,
-    tr.gas_used,
+    tr.gas_used as execution_gas_used,
+    et.gas_used as total_gas_used,
     tr.tx_index,
     tr.sub_traces,
     tr.trace_address,
@@ -46,6 +47,9 @@ join {{ ref('safe_celo_safes') }} s
     on s.address = tr."from"
 join {{ ref('safe_celo_singletons') }} ss
     on tr.to = ss.address
+join {{ source('ethereum', 'transactions') }} et
+    on tr.tx_hash = et.hash
+    and tr.block_number = et.block_number
 where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
         0x468721a7, -- execTransactionFromModule
