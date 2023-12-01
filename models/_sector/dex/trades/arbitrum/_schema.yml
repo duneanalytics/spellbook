@@ -113,6 +113,62 @@ models:
             - token_bought_amount_raw
             - token_sold_amount_raw
 
+  - name: camelot_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: camelot
+      contributors: ytoast, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'camelot', 'uniswap', 'v2' ]
+    description: "Camelot Arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('camelot_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: camelot_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: camelot
+      contributors: whale_hunter, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'camelot', 'uniswap', 'v3' ]
+    description: "Camelot Arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('camelot_arbitrum_base_trades_seed')
+          filter:
+            version: 3
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
   - name: arbswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
