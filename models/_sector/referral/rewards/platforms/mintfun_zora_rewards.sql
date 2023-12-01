@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'rabbithole_base',
+    schema = 'mint_fun_zora',
     alias = 'rewards',
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,8 +9,8 @@
     )
 }}
 
-{{rabbithole_referral_rewards(
-        blockchain = "base"
-        ,QuestFactory_evt_MintFeePaid = source('rabbithole_base','QuestFactory_evt_MintFeePaid')
+{{mintfun_referral_rewards(
+        blockchain = "zora"
+        ,MintPayout_evt_MintDeposit = source('mint_fun_zora','MintPayout_evt_MintDeposit')
         )
     }}
