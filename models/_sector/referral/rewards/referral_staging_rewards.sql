@@ -1,7 +1,6 @@
 {{ config(
     schema = 'referral',
     alias = 'staging_rewards',
-
     materialized = 'view'
     )
 }}
@@ -18,7 +17,11 @@
  ref('rabbithole_polygon_rewards'),
  ref('soundxyz_ethereum_rewards'),
  ref('soundxyz_optimism_rewards'),
- ref('slugs_optimism_rewards')
+ ref('slugs_optimism_rewards'),
+ ref('mintfun_ethereum_rewards'),
+ ref('mintfun_optimism_rewards'),
+ ref('mintfun_base_rewards'),
+ ref('mintfun_zora_rewards')
 ] %}
 
 SELECT *

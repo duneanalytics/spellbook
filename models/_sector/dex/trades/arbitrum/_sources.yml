@@ -2,3 +2,21 @@ version: 2
 
 sources:
   - name: uniswap_v3_arbitrum
+  - name: airswap_arbitrum
+    tables:
+      - name: swap_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
+  - name: sushi_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sushi_v2_arbitrum
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: arbswap_arbitrum
+    tables:
+      - name: SwapPair_evt_Swap
+      - name: SwapFactory_evt_PairCreated
+      - name: ArbswapStableSwapTwoPool_evt_TokenExchange
+      - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
