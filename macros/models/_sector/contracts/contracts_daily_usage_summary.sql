@@ -20,4 +20,24 @@ the `base` spell unified with `predeploys`, as our identifier for the total set 
 , or keep this spell agnostic to contracts vs EOAs, and determine this at the query level.
 */
 
+with contract_list AS (
+  SELECT contract_address FROM {{ref('contracts_' + chain + '_base_starting_level') }}
+    UNION ALL
+  SELECT contract_address FROM {{ ref('contracts_predeploys') }} WHERE blockchain = '{{chain}}'
+)
+
+, trace_txs AS (
+
+  FROM {{ source(chain,'traces') }} r
+  INNER JOIN  contract_list cl
+    ON r.to = cl.contract_address
+)
+
+, log_txs AS (
+  
+  FROM {{ source(chain,'logs') }} l
+  INNER JOIN  contract_list cl
+    ON l.to = cl.contract_address
+)
+
 {% endmacro %}
