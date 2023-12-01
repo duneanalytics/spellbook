@@ -51,7 +51,7 @@ WITH dexs AS (
 SELECT
   '{{blockchain}}' AS blockchain,
   'camelot' AS project,
-  '1' AS version,
+  '2' AS version,
   TRY_CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
   CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
   dexs.block_time,
