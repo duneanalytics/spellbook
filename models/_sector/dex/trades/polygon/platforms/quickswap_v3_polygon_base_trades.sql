@@ -18,5 +18,6 @@
         , version = '3'
         , Pair_evt_Swap = source('quickswap_v3_polygon', 'AlgebraPool_evt_Swap')
         , Factory_evt_PoolCreated = source('quickswap_v3_polygon', 'AlgebraFactory_evt_Pool')
+        , optional_columns = null
     )
 }}
