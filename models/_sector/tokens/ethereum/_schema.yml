@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       sector: tokens
-      contributors: aalan3
+      contributors: aalan3, jeff-dude
     config:
       tags: ['tokens','transfers', 'ethereum']
     description: >
@@ -51,7 +51,7 @@ models:
     meta:
       blockchain: ethereum
       sector: tokens
-      contributors: aalan3
+      contributors: aalan3, jeff-dude
     config:
       tags: ['tokens','transfers', 'ethereum']
     description: >

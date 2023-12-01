@@ -2,6 +2,10 @@ version: 2
 
 sources:
   - name: uniswap_v3_polygon
+  - name: airswap_polygon
+    tables:
+      - name: Swap_v3_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
   - name: sushi_polygon
     tables:
       - name: UniswapV2Pair_evt_Swap
