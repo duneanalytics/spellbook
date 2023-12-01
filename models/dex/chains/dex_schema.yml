@@ -473,7 +473,9 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in block"
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -516,7 +518,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -559,7 +561,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -602,7 +604,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -645,7 +647,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -688,7 +690,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -731,7 +733,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -774,7 +776,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
@@ -817,7 +819,93 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - *index
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_celo_arbitrages
+    meta: 
+      blockchain: celo
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'celo']
+    description: >
+      DEX MEV Arbitrage Trades on Celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_zksync_arbitrages
+    meta: 
+      blockchain: zksync
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'arbitrages', 'zksync']
+    description: >
+      DEX MEV Arbitrage Trades on zkSync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
