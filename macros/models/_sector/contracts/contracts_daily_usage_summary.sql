@@ -112,7 +112,7 @@ SELECT
   
 
   FROM (
-      SELECT l.block_date, l.block_number, l.contract_address, l.tx_hash, l.tx_from,
+      SELECT l.block_date, l.block_number, l.contract_address, l.tx_hash, l.tx_from
         , t.gas_used as tx_gas_used
         , ROW_NUMBER() OVER (PARTITION BY l.tx_hash) AS log_number --reindex log to ensure single count
 
