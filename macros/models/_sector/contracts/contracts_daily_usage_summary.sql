@@ -75,7 +75,10 @@ SELECT
           ON t.hash = r.tx_hash
           AND t.block_number = r.tx_block_number
           AND t.block_date = r.block_date
-          AND {{ incremental_predicate('t.block_date') }} 
+          {% if is_incremental() %}
+          AND 't.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+          {# AND [[ incremental_predicate('t.block_date') ]]  #}
+          {% endif %}
         INNER JOIN contract_list cl
           ON r.to = cl.contract_address
         
@@ -83,8 +86,10 @@ SELECT
           AND r.type = 'call'
           AND r.success AND r.tx_success
           {% if is_incremental() %}
-          AND {{ incremental_predicate('r.block_date') }}
-          AND {{ incremental_predicate('t.block_date') }}
+          AND 'r.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+          AND 't.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+          -- AND [[ incremental_predicate('r.block_date') ]]
+          -- AND [[ incremental_predicate('t.block_date') ]]
           {% endif %}
       GROUP BY 1,2,3,4,5,6,7,8
     ) a
@@ -116,7 +121,11 @@ SELECT
           ON t.hash = r.tx_hash
           AND t.block_number = l.tx_block_number
           AND t.block_date = l.block_date
-          AND {{ incremental_predicate('t.block_date') }} 
+          {% if is_incremental() %}
+          AND 't.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+          -- AND [[ incremental_predicate('t.block_date') ]]
+          {% endif %}
+           
         INNER JOIN contract_list cl
           ON l.contract_address = cl.contract_address
         
@@ -124,8 +133,10 @@ SELECT
           AND r.type = 'call'
           AND r.success AND r.tx_success
           {% if is_incremental() %}
-          AND {{ incremental_predicate('l.block_date') }}
-          AND {{ incremental_predicate('t.block_date') }}
+          AND 'l.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+          AND 't.block_date' >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+          -- AND [[ incremental_predicate('l.block_date') ]]
+          -- AND [[ incremental_predicate('t.block_date') ]]
           {% endif %}
       GROUP BY 1,2,3,4,5,6
     ) a
