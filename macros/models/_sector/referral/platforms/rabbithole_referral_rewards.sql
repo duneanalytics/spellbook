@@ -1,6 +1,7 @@
 {% macro rabbithole_referral_rewards(
     blockchain
     ,QuestFactory_evt_MintFeePaid
+    ,native_currency_contract = var('ETH_ERC20_ADDRESS')
     )
 %}
 
@@ -17,7 +18,7 @@ select
     ,'Quest' as category
     ,referrerAddress as referrer_address
     ,tx."from" as referee_address     -- will be overwritten as tx_from
-    ,{{var('ETH_ERC20_ADDRESS')}} as currency_contract
+    ,{{native_currency_contract}} as currency_contract
     ,referrerAmountWei as reward_amount_raw
     ,contract_address as project_contract_address     -- the drop contract
     ,evt_index as sub_tx_id
