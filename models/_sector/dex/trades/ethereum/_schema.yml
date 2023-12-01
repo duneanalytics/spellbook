@@ -194,3 +194,29 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: carbon_defi_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: carbon_defi
+      contributors: tiagofilipenunes, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'carbon_defi' ]
+    description: "Carbon_defi ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('carbon_defi_ethereum_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
