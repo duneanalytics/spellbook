@@ -19,12 +19,12 @@
 
 with 
     fee_tiers_defaults as (
-        --this is a pattern on Solana, where "fee rates" are stored on accounts. Fee rates are updated on accounts, that then impact the pools.
+        --this is a common fee pattern on Solana, where "fee rates" are stored on accounts. Fee rates are updated on accounts, that then impact the pools.
         SELECT 
-        ft.account_feeTier as fee_tier
-        , ft.defaultfeeRate as fee_rate
+        account_feeTier as fee_tier
+        , defaultfeeRate as fee_rate
         , call_block_time as fee_time
-        FROM whirlpool_solana.whirlpool_call_initializeFeeTier ft
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }}
 
         UNION ALL 
 
@@ -32,7 +32,7 @@ with
         account_feeTier as fee_tier
         , defaultfeeRate as fee_rate
         , call_block_time as fee_time
-        FROM whirlpool_solana.whirlpool_call_setDefaultFeeRate
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultFeeRate') }}
     )
 
     , whirlpools as (
