@@ -111,7 +111,7 @@ SELECT pst.block_time
 , pst.tx_from
 , pst.tx_to
 , txs.index AS tx_index
-FROM positive_sum_trades pst
+FROM positive_sum_trades
 MATCH_RECOGNIZE (
     PARTITION BY block_time, tx_hash
     ORDER BY evt_index
@@ -121,7 +121,7 @@ MATCH_RECOGNIZE (
         A AS TRUE 
         , B AS token_sold_address = PREV(token_bought_address)
         , D AS FIRST(token_sold_address) = LAST(token_bought_address)
-    )
+    ) pst
 INNER JOIN {{transactions}} txs ON pst.block_time=txs.block_time
     AND pst.tx_hash=txs.hash
     {% if is_incremental() %}
