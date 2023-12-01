@@ -31,7 +31,7 @@ SELECT *
 FROM (
         {% for arbitrages_model in arbitrages_models %}
         SELECT block_time
-        , txs.block_number
+        , block_number
         , tx_hash
         , evt_index
         , blockchain
