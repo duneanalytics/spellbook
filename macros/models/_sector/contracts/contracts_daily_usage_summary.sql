@@ -26,6 +26,27 @@ with contract_list AS (
   SELECT contract_address FROM {{ ref('contracts_predeploys') }} WHERE blockchain = '{{chain}}'
 )
 
+, to_txs AS (
+SELECT
+    '{{chain}}' as blockchain
+  , block_date
+  , t.to AS contract_address
+  , COUNT(DISTINCT block_number) AS num_to_blocks
+  , COUNT(*) AS num_to_txs
+  , COUNT(DISTINCT "from") AS num_to_tx_senders
+  , SUM(gas_used) AS sum_to_tx_gas_used
+  , SUM(bytearray_length(t.data)) AS sum_to_tx_calldata_bytes
+  , SUM(
+    16 * ( bytearray_length(data) - (length(from_utf8(data)) - length(replace(from_utf8(data), chr(0), ''))) ) --nonzero bytes
+    + 4 * ( (length(from_utf8(data)) - length(replace(from_utf8(data), chr(0), ''))) )
+  ) AS sum_to_tx_calldata_gas
+  FROM {{ source(chain,'transactions') }} t
+  INNER JOIN contract_list cl
+          ON r.to = cl.contract_address
+  WHERE {{ incremental_predicate('t.block_date') }} 
+  GROUP BY 1,2,3
+)
+
 , trace_txs AS (
 
   SELECT
@@ -112,32 +133,48 @@ with contract_list AS (
 
 )
 
-SELECT
-  COALESCE(tr.blockchain, lo.blockchain) AS blockchain
-, COALESCE(tr.block_date, lo.block_date) AS block_date
-, COALESCE(tr.contract_address, lo.contract_address) AS contract_address
----
-, COALESCE(num_trace_blocks, 0) AS num_trace_blocks
-, COALESCE(num_trace_txs, 0) AS num_trace_txs
-, COALESCE(num_trace_calls, 0) AS num_trace_calls
+SELECT 
+  DATE_TRUNC('month', block_date ) AS block_month
+  , *
+FROM (
+  SELECT
+    COALESCE(tr.blockchain, lo.blockchain) AS blockchain
+  , COALESCE(tr.block_date, lo.block_date) AS block_date
+  , COALESCE(tr.contract_address, lo.contract_address) AS contract_address
+  ---
+  , COALESCE(num_to_blocks, 0) AS num_to_blocks
+  , COALESCE(num_to_txs, 0) AS num_to_txs
+  , COALESCE(num_to_tx_senders, 0) AS num_to_tx_senders
+  , COALESCE(sum_to_tx_gas_used, 0) AS sum_to_tx_gas_used
+  , COALESCE(sum_to_tx_calldata_bytes, 0) AS sum_to_tx_calldata_bytes
+  , COALESCE(sum_to_tx_calldata_gas, 0) AS sum_to_tx_calldata_gas
+  ---
+  , COALESCE(num_trace_blocks, 0) AS num_trace_blocks
+  , COALESCE(num_trace_txs, 0) AS num_trace_txs
+  , COALESCE(num_trace_calls, 0) AS num_trace_calls
 
-, COALESCE(num_trace_tx_senders, 0) AS num_trace_tx_senders
-, COALESCE(num_trace_call_senders, 0) AS num_trace_call_senders
+  , COALESCE(num_trace_tx_senders, 0) AS num_trace_tx_senders
+  , COALESCE(num_trace_call_senders, 0) AS num_trace_call_senders
 
-, COALESCE(sum_trace_gas_used, 0) AS sum_trace_gas_used
-, COALESCE(sum_trace_tx_gas_used, 0) AS sum_trace_tx_gas_used
---
-, COALESCE(num_log_blocks, 0) AS num_log_blocks
-, COALESCE(num_log_txs, 0) AS num_log_txs
-, COALESCE(num_log_events, 0) AS num_log_events
+  , COALESCE(sum_trace_gas_used, 0) AS sum_trace_gas_used
+  , COALESCE(sum_trace_tx_gas_used, 0) AS sum_trace_tx_gas_used
+  --
+  , COALESCE(num_log_blocks, 0) AS num_log_blocks
+  , COALESCE(num_log_txs, 0) AS num_log_txs
+  , COALESCE(num_log_events, 0) AS num_log_events
 
-, COALESCE(num_log_tx_senders, 0) AS num_log_tx_senders
-, COALESCE(sum_log_tx_gas_used, 0) AS sum_log_tx_gas_used
+  , COALESCE(num_log_tx_senders, 0) AS num_log_tx_senders
+  , COALESCE(sum_log_tx_gas_used, 0) AS sum_log_tx_gas_used
 
-FROM trace_txs tr
-FULL OUTER JOIN log_txs lo
-  ON tr.blockchain = lo.blockchain
-  AND tr.block_date = lo.block_date
-  AND tr.contract_address = lo.contract_address
-
+  FROM trace_txs tr
+  LEFT JOIN to_txs tt -- all txs to have an associated trace
+    ON tr.blockchain = tt.blockchain
+    AND tr.block_date = tt.block_date
+    AND tr.contract_address = tt.contract_address
+  FULL OUTER JOIN log_txs lo
+    ON tr.blockchain = lo.blockchain
+    AND tr.block_date = lo.block_date
+    AND tr.contract_address = lo.contract_address
+  
+  ) a
 {% endmacro %}
