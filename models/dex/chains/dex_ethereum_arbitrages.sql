@@ -1,7 +1,6 @@
 {{ config(
-        tags = ['dunesql'],
         schema = 'dex_ethereum',
-        alias = alias('arbitrages'),
+        alias = 'arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
