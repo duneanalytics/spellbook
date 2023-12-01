@@ -22,7 +22,7 @@
 WITH dexs AS (
     SELECT 
         evt_block_time        AS block_time,
-        "user"                AS taker,
+        user                AS taker,
         "maker"               AS maker,
         "takerTokenAmount"    AS token_sold_amount_raw,
         "makerTokenAmount"    AS token_bought_amount_raw,
