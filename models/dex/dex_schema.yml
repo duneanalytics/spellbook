@@ -508,9 +508,7 @@ models:
       - *project_contract_address
       - *trace_address
       - *token_pair
-      - &tx_index
-        name: tx_index
-        description: "Index of the transaction in block"
+      - *tx_index
       - *token_sold_amount_raw
       - *token_bought_amount_raw
       - *token_sold_amount
