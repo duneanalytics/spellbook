@@ -13,6 +13,8 @@
     , ref('sushiswap_v1_arbitrum_base_trades')
     , ref('sushiswap_v2_arbitrum_base_trades')
     , ref('arbswap_arbitrum_base_trades')
+    , ref('pancakeswap_v2_arbitrum_base_trades')
+    , ref('pancakeswap_v3_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
