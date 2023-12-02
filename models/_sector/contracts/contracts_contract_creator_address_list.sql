@@ -930,7 +930,7 @@ WITH curated_list AS (
       ,(0x4fed5491693007f0cd49f4614ffc38ab6a04b619, 'Beefy Finance')
       ,(0x06263e1a856b36e073ba7a50d240123411501611, 'Giveth')
       ,(0x7f3b192ab3220940d66236792f3ebdb0e4e74138, 'Biconomy')
-      ,(0xaaa6640f36ae35d61ce5e6f2a3c8975d07d1ab90, 'Equalizer Finance')
+      ,(0xaaa6640f36ae35d61ce5e6f2a3c8975d07d1ab90, 'Equalizer Finance') --different from exchange
       ,(0x7396f133baa2543ea7917ba3254e61fea3028288, 'Fuse')
       ,(0xa2ec022d89b0a80012c2446b0e8e5ff12f88dfc1, 'Wagmi')
       ,(0x246e20bf778b3e16cb71eca535f40f8c4e6c4185, 'Aave')
