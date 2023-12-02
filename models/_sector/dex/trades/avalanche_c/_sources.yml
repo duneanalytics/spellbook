@@ -14,3 +14,7 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: fraxswap_avalanche_c
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
