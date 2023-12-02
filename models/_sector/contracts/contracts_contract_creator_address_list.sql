@@ -927,6 +927,21 @@ WITH curated_list AS (
       ,(0xeee7fb850d28f5cabd5f1edf540646b5bea17ce5, 'Liquity')
       ,(0x6aaff8af0ae8017725312c388ba3745dfe91185b, 'Circle')
 
+      ,(0x4fed5491693007f0cd49f4614ffc38ab6a04b619, 'Beefy Finance')
+      ,(0x06263e1a856b36e073ba7a50d240123411501611, 'Giveth')
+      ,(0x7f3b192ab3220940d66236792f3ebdb0e4e74138, 'Biconomy')
+      ,(0xaaa6640f36ae35d61ce5e6f2a3c8975d07d1ab90, 'Equalizer Finance')
+      ,(0x7396f133baa2543ea7917ba3254e61fea3028288, 'Fuse')
+      ,(0xa2ec022d89b0a80012c2446b0e8e5ff12f88dfc1, 'Wagmi')
+      ,(0x246e20bf778b3e16cb71eca535f40f8c4e6c4185, 'Aave')
+      ,(0x0d7effefdb084dfeb1621348c8c70cc4e871eba4, 'Tellor')
+      ,(0xc42705a210f082ff29e6beac80f56c41f0a54091, 'Aave')
+      ,(0x31b8939c6e55a4ddaf0d6479320a0dfd9766ee9d, 'T Protocol')
+      ,(0xd31f9113fdb5bd97d7ddf969f15956808db4a6fb, 'TrueUSD')
+      ,(0x3a326de86fbc731fc3e0823da5a46a23be65c836, 'dHEDGE')
+      ,(0xfdf6fa86058d1eacb441adb5acfc143672e59a58, 'MetalSwap')
+      ,(0x27e80db1f5a975f4c43c5ec163114e796cdb603d, 'Rocket Pool')
+
   ) as temp_table (creator_address, contract_project)
 )
 
