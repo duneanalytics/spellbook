@@ -129,6 +129,10 @@ models:
             - evt_index
       - check_seed:
           seed_file: ref('pancakeswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+            version: mmpool
+            version: stableswap
           match_columns:
             - tx_hash
             - evt_index
