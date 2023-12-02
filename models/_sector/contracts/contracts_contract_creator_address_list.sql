@@ -884,7 +884,7 @@ WITH curated_list AS (
 
       ,(0x855e321ad155D45B64475EEe946D8fA492A7f3F3, 'StableBase')
       ,(0x3885226c26c467B342220132ec9d0b311b2DD43c, 'Base')
-      ,(0x5c146cd18fa53914580573c9b9604588529406ca, 'Scale')
+      ,(0x5c146cd18fa53914580573c9b9604588529406ca, 'Equalizer Exchange')
       ,(0x5aab1dae1ef9d93b7095d9de9c0ebb150d0c37f0, 'Overtime Markets')
       ,(0xec219699d2faeb3f416c116de60cdb4aaf2f8d7c, 'Maverick')
       ,(0x5b540d168e2468270a3b5c66dd1a6e4ece6be593, 'Aave')
