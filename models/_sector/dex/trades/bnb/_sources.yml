@@ -15,3 +15,7 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: babyswap_bnb
+    tables:
+      - name: BabyPair_evt_Swap
+      - name: BabyFactory_evt_PairCreated
