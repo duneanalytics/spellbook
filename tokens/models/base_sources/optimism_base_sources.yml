@@ -1,0 +1,101 @@
+version: 2
+
+sources:
+  # Base Tables
+  - name: optimism
+    description: "Optimism raw tables including transactions, traces and logs."
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: transactions
+        loaded_at_field: block_time
+        description: "An Optimism transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
+        
+
+      - name: traces
+        loaded_at_field: block_time
+        description: "An Optimism trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        
+
+      - name: traces_decoded
+        loaded_at_field: block_time
+        description: "An Optimism trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+        
+
+      - name: logs
+        loaded_at_field: block_time
+        description: "An Optimism log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        
+
+      - name: logs_decoded
+        loaded_at_field: block_time
+        description: "An Optimism log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+        
+
+      - name: blocks
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: time
+        description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+        
+
+      - name: contracts
+        freshness:
+          warn_after: { count: 1, period: day }
+          error_after: { count: 3, period: day }
+        loaded_at_field: created_at
+        description: "A view keeping track of what contracts are decoded on Dune on Optimism; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        
+          
+      - name: creation_traces
+        loaded_at_field: block_time
+        description: "Optimism creation traces"
+        
+
+
+  # ERC Transfer Tables
+  - name: erc20_optimism
+    description: "Transfers events for ERC20 tokens on Optimism."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        
+
+  - name: erc1155_optimism
+    description: "Transfers events for ERC1155 tokens on Optimism."
+    tables:
+      - name: evt_transfersingle
+        loaded_at_field: evt_block_time
+        description: "Single transfers events for ERC1155 tokens on Optimism."
+        
+
+      - name: evt_transferbatch
+        loaded_at_field: evt_block_time
+        description: "Batch transfers events for ERC1155 tokens on Optimism."
+        
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC1155 tokens on Optimism."
+        
+
+  - name: erc721_optimism
+    description: "Transfers events for ERC721 tokens on Optimism."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC721 tokens on Optimism."
+        
+
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC721 tokens on Optimism."
+        
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC721 tokens on Optimism."
+        

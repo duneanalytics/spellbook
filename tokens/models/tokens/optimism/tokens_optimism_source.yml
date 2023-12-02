@@ -55,3 +55,15 @@ sources:
       - name: L2ERC721Bridge_evt_ERC721BridgeFinalized
         loaded_at_field: evt_block_time
         description: "Optimism NFT bridge transactions finalized on L2"
+
+  # - name: erc20_optimism
+  #   description: "Transfers events for ERC20 tokens on Optimism."
+  #   tables:
+  #     - name: evt_transfer
+  #       loaded_at_field: evt_block_time
+  #       description: "Transfers events for ERC20 tokens on Optimism."
+        
+  #     - name: evt_Approval
+  #       loaded_at_field: evt_block_time
+  #       description: "Approval events for ERC20 tokens on Optimism."
+        
