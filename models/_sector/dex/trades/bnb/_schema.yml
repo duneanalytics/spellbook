@@ -84,7 +84,7 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
-    
+
   - name: sushiswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -103,6 +103,62 @@ models:
           seed_file: ref('sushiswap_bnb_base_trades_seed')
           filter:
             version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: biswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'uniswap', 'v2' ]
+    description: "biswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('biswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: biswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'v3' ]
+    description: "biswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('biswap_bnb_base_trades_seed')
+          filter:
+            version: 3
           match_columns:
             - tx_hash
             - evt_index
