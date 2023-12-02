@@ -603,6 +603,8 @@ models:
         name: sources_usd_amount
       - &transfers_usd_amount
         name: transfers_usd_amount
+      - &transfers
+        name: transfers
       - &explorer_link
         name: explorer_link
 

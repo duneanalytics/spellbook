@@ -95,7 +95,7 @@ with
             , protocol_version
             , method
             , tx_from as user
-            , receiver 
+            , receiver
             , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as src_token_address
             , if(taker_asset in {{native_addresses}}, native_token_symbol) as src_native
             , taking_amount as src_amount
@@ -170,6 +170,7 @@ with
             , any_value(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
             , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
             , max(amount * price / pow(10, decimals)) as transfers_usd_amount
+            , count(*) as transfers
         from (
             select
                 blockchain
@@ -218,5 +219,6 @@ select
     , coalesce(sources_usd_amount, transfers_usd_amount) as usd_amount
     , sources_usd_amount
     , transfers_usd_amount
+    , transfers
     , explorer_link
 from trades
