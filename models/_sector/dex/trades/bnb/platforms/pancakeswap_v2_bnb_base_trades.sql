@@ -65,9 +65,9 @@ dexs AS (
         t.evt_index
     FROM
         (
-        SELECT * FROM {{ source('pancakeswap_v2_bnb', 'PancakeStableSwap_evt_TokenExchange') }}
-        UNION ALL
-        SELECT * FROM {{ source('pancakeswap_v2_bnb', 'PancakeStableSwapTwoPool_evt_TokenExchange') }}   
+            SELECT * FROM {{ source('pancakeswap_v2_bnb', 'PancakeStableSwap_evt_TokenExchange') }}
+            UNION ALL
+            SELECT * FROM {{ source('pancakeswap_v2_bnb', 'PancakeStableSwapTwoPool_evt_TokenExchange') }}   
         ) t
     INNER JOIN (
             SELECT a.*
