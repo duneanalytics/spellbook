@@ -23,9 +23,9 @@ WITH chain_names AS (
 )
 
 SELECT 
-        i.blockchain,
-        i.name as blockchain_name,
-        i.chain_id,
+        c.chain_dune_name as blockchain,
+        cast(i.name as varchar) as blockchain_name,
+        cast(i.chain_id as int) AS chain_id,
         cast(i.first_block_time AS date) AS start_date,
         c.is_superchain
 
