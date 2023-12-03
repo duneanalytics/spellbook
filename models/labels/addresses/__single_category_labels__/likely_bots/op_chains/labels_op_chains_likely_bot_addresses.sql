@@ -1,6 +1,11 @@
 {{
     config(
         alias = 'op_chains_likely_bot_addresses',
+        materialized ='incremental',
+        file_format ='delta',
+        incremental_strategy='merge',
+        unique_key = ['blockchain', 'address', 'name'],
+        partition_by = ['blockchain'],
         post_hook='{{ expose_spells(\'["optimism","base","zora"]\', 
         "sector", 
         "labels", 
@@ -14,6 +19,21 @@
 -- the core of this logic is on transaction frequency and sender concentration The "sender concentration" piece will get tested by mutlisigs / smart contract wallets.
 
 WITH sender_transfer_rates AS (
+    {% if is_incremental() %}
+        WITH address_list AS (
+            {% for chain in op_chains %}
+            SELECT "from" AS from_address 
+            FROM {{ source(chain ,'transactions') }} t
+            WHERE 
+                1=1
+                AND {{ incremental_predicate('s.created_time') }}
+            {% if not loop.last %}
+            UNION ALL
+            {% endif %}
+            {% endfor %}
+        )
+    {% endif %}
+
     {% for chain in op_chains %}
     -- For each transaction sender, get their hourly transaction data
     SELECT  '{{chain}}' as blockchain
@@ -35,7 +55,10 @@ WITH sender_transfer_rates AS (
             , SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_trades') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.block_month = DATE_TRUNC('month',r.block_time) AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_trade_txs
             
             FROM {{ source( chain ,'transactions') }} t
-            
+            {% if is_incremental() %}
+                INNER JOIN address_list al 
+                    ON t."from" = al.from_address
+            {% endif %}
 
         GROUP BY 1,2,3
 

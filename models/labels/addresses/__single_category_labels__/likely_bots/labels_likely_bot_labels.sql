@@ -1,7 +1,6 @@
 {{
     config(
         alias = 'likely_bot_labels',
-        
         post_hook='{{ expose_spells(\'["optimism","base","zora"]\', 
         "sector", 
         "labels", 
