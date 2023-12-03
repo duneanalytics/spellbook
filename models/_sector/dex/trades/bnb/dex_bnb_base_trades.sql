@@ -12,6 +12,7 @@
     , ref('airswap_bnb_base_trades')
     , ref('sushiswap_v1_bnb_base_trades')
     , ref('sushiswap_v2_bnb_base_trades')
+    , ref('mdex_bnb_base_trades')
 ] %}
 
 WITH base_union AS (
