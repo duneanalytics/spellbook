@@ -14,7 +14,7 @@
 WITH chain_names AS (
         {% for chain in op_chains %}
                 SELECT
-                        chain AS chain_dune_name -- name of the chain's dune database
+                        '{{chain}}' AS chain_dune_name -- name of the chain's dune database
                         , 1 as is_superchain --op chains macro should only contain superchain chains (forks would be a different macro)
         {% if not loop.last %}
                 UNION ALL
