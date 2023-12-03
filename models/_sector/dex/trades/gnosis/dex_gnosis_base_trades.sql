@@ -6,8 +6,9 @@
 }}
 
 {% set base_models = [
-    ref('sushiswap_v1_gnosis_base_trades'),
-    ref('sushiswap_v2_gnosis_base_trades')
+    ref('sushiswap_v1_gnosis_base_trades')
+    , ref('sushiswap_v2_gnosis_base_trades')
+    , ref('honeyswap_v2_gnosis_base_trades')
 ] %}
 
 WITH base_union AS (

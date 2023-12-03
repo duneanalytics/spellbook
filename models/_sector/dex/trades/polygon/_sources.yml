@@ -14,3 +14,7 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
+  - name: honeyswap_polygon
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
