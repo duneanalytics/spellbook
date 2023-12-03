@@ -1,8 +1,7 @@
 {{
     config(
         alias = 'op_chains_likely_bot_contracts',
-        
-        post_hook='{{ expose_spells(\'["optimism","base"]\', 
+        post_hook='{{ expose_spells(\'["optimism","base","zora"]\', 
         "sector", 
         "labels", 
         \'["msilb7"]\') }}'
@@ -29,15 +28,15 @@ FROM (
             '{{chain}}' as blockchain,
             to AS contract, 
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' + chain,'evt_transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 ELSE 0 END) AS num_erc20_tfer_txs,
-            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_tfer_txs,
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_' + chain + '_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number) THEN 1 ELSE 0 END) AS num_nft_tfer_txs,
             
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' + chain,'evt_transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1 
-                    WHEN EXISTS (SELECT 1 FROM {{ ref('nft_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.blockchain = '{{chain}}') THEN 1
+                    WHEN EXISTS (SELECT 1 FROM {{ ref('nft_' + chain + '_transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number ) THEN 1
                 ELSE 0 END) AS num_token_tfer_txs,
                 
-            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('dex_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_dex_trade_txs,
-            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('perpetual_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_perp_trade_txs,
-            0 /*SUM(CASE WHEN EXISTS (SELECT 1 FROM [[ ref('nft_trades') ]] r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1 ELSE 0 END)*/ AS num_nft_trade_txs,
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('dex_trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_dex_trade_txs,
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('perpetual_trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_perp_trade_txs,
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('nft_trades') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_trade_txs,
         COUNT(*) AS num_txs, COUNT(DISTINCT "from") AS num_senders, COUNT(*)/COUNT(DISTINCT "from") AS txs_per_sender,
         
         cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) as double) / 
@@ -54,24 +53,28 @@ FROM (
         
         -- search for various potential bot indicators
         HAVING
-        -- early bots: > 25 txs / hour per address
-        (COUNT(*) >= 100 AND
-        cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 25 
-        )
-        OR
-        -- established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
-            (COUNT(*) >= 2500 AND COUNT(DISTINCT "from") <=30
-            AND cast(COUNT(*) as double) / 
-                ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
-            )
-            OR 
-        -- wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
+        COUNT(*) >= 100 --prefilter, req 100 txs
+        AND 
+        (
+            -- early bots: > 25 txs / hour per address
             (
-            COUNT(*) >= 2500 AND cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) >= 1000
-            AND cast(COUNT(*) as double) / 
-            ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+            cast(cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) as double) / 
+                ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 25 
             )
+            OR
+            -- established bots: less than 30 senders & > 2.5k txs & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
+                (COUNT(*) >= 2500 AND COUNT(DISTINCT "from") <=30
+                AND cast(COUNT(*) as double) / 
+                    ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+                )
+                OR 
+            -- wider distribution bots: > 2.5k txs and > 1k txs per sender & > 0.5 txs / hr (to make sure we don't accidently catch active multisigs)
+                (
+                COUNT(*) >= 2500 AND cast(COUNT(*) as double)/cast(COUNT(DISTINCT "from") as double) >= 1000
+                AND cast(COUNT(*) as double) / 
+                ( cast( date_DIFF('second', MIN(block_time), MAX(block_time)) as double) / (60.0*60.0) ) >= 0.5
+                )
+        )
 
         {% if not loop.last %}
         UNION ALL
