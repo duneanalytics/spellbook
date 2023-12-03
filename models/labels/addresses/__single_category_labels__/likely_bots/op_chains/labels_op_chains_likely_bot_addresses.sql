@@ -106,7 +106,7 @@ SELECT *,
     
 FROM (
         SELECT
-            '{{chain}}' AS blockchain
+             blockchain
             , sender, MAX(wk_txs) AS max_wk_txs, MAX(max_hr_txs) AS max_hr_txs, AVG(wk_txs) AS avg_wk_txs
             ,MIN(min_block_time) AS min_block_time
             ,MAX(max_block_time) AS max_block_time
