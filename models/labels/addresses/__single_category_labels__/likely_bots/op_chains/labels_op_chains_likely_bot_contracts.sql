@@ -1,10 +1,7 @@
 {{
     config(
         alias = 'op_chains_likely_bot_contracts',
-        materialized ='incremental',
-        file_format ='delta',
-        incremental_strategy='merge',
-        unique_key = ['blockchain', 'address', 'name'],
+        materialized ='table',
         partition_by = ['blockchain'],
         post_hook='{{ expose_spells(\'["optimism","base","zora"]\', 
         "sector", 
@@ -18,20 +15,6 @@
 -- This could/should become a spell with some kind of modular logic approach so that we can plug in new detection logic over time (i.e. many of X method, or Y project's contracts)
 -- the core of this logic is on transaction frequency and sender concentration The "sender concentration" piece will get tested by mutlisigs / smart contract wallets.
 WITH first_contracts AS (
-    {% if is_incremental() %}
-        WITH address_list AS (
-            {% for chain in op_chains %}
-            SELECT '{{chain}}' as chain, to AS to_address 
-            FROM {{ source(chain ,'transactions') }} t
-            WHERE 
-                1=1
-                AND {{ incremental_predicate('t.block_time') }}
-            {% if not loop.last %}
-            UNION ALL
-            {% endif %}
-            {% endfor %}
-        )
-    {% endif %}
 SELECT *,
     cast(num_erc20_tfer_txs as double) / cast( num_txs as double) AS pct_erc20_tfer_txs,
     cast(num_nft_tfer_txs as double) / cast( num_txs as double) AS pct_nft_tfer_txs,
@@ -67,11 +50,6 @@ FROM (
 
         -- SUM( CASE WHEN substring(data from 1 for 10) = mode(substring(data from 1 for 10) THEN 1 ELSE 0 END) ) AS method_dupe
         FROM {{ source(chain ,'transactions') }} t
-        {% if is_incremental() %}
-            INNER JOIN address_list al
-                ON t.to = al.to_address
-                AND al.chain = '{{chain}}'
-        {% endif %}
         GROUP BY 1,2
         
         -- search for various potential bot indicators
