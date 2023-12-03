@@ -26,7 +26,7 @@ WITH sender_transfer_rates AS (
             FROM {{ source(chain ,'transactions') }} t
             WHERE 
                 1=1
-                AND {{ incremental_predicate('s.created_time') }}
+                AND {{ incremental_predicate('t.block_time') }}
             {% if not loop.last %}
             UNION ALL
             {% endif %}
