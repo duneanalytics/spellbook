@@ -13,7 +13,9 @@
 
 WITH chain_names AS (
         {% for chain in op_chains %}
-                SELECT chain AS chain_dune_name -- name of the chain's dune database
+                SELECT
+                        chain AS chain_dune_name -- name of the chain's dune database
+                        , 1 as is_superchain --op chains macro should only contain superchain chains (forks would be a different macro)
         {% if not loop.last %}
                 UNION ALL
         {% endif %}
@@ -21,11 +23,11 @@ WITH chain_names AS (
 )
 
 SELECT 
-        blockchain,
-        name as blockchain_name,
-        chain_id,
-        cast(first_block_time AS date) AS start_date,
-        1 as is_superchain
+        i.blockchain,
+        i.name as blockchain_name,
+        i.chain_id,
+        cast(i.first_block_time AS date) AS start_date,
+        c.is_superchain
 
 FROM chain_names c
         LEFT JOIN {{ ref('evms_info') }} i 
