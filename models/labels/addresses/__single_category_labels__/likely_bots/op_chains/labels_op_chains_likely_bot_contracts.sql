@@ -21,7 +21,7 @@ WITH first_contracts AS (
     {% if is_incremental() %}
         WITH address_list AS (
             {% for chain in op_chains %}
-            SELECT to AS to_address 
+            SELECT '{{chain}}' as chain, to AS to_address 
             FROM {{ source(chain ,'transactions') }} t
             WHERE 
                 1=1
@@ -68,8 +68,9 @@ FROM (
         -- SUM( CASE WHEN substring(data from 1 for 10) = mode(substring(data from 1 for 10) THEN 1 ELSE 0 END) ) AS method_dupe
         FROM {{ source(chain ,'transactions') }} t
         {% if is_incremental() %}
-            INNER JOIN address_list a 
-                ON t.to = a.to_address
+            INNER JOIN address_list al
+                ON t.to = al.to_address
+                AND al.chain = '{{chain}}'
         {% endif %}
         GROUP BY 1,2
         

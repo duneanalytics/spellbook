@@ -22,7 +22,7 @@ WITH sender_transfer_rates AS (
     {% if is_incremental() %}
         WITH address_list AS (
             {% for chain in op_chains %}
-            SELECT "from" AS from_address 
+            SELECT '{{chain}}' as chain, "from" AS from_address 
             FROM {{ source(chain ,'transactions') }} t
             WHERE 
                 1=1
@@ -58,6 +58,7 @@ WITH sender_transfer_rates AS (
             {% if is_incremental() %}
                 INNER JOIN address_list al 
                     ON t."from" = al.from_address
+                    AND al.chain = '{{chain}}'
             {% endif %}
 
         GROUP BY 1,2,3
