@@ -69,7 +69,7 @@
             ON trs_1.call_tx_id = sp.call_tx_id 
             AND trs_1.call_block_time = sp.call_block_time
             AND trs_1.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_1.call_inner_instruction_index = sp.deposit_index + 1
+            AND trs_1.call_inner_instruction_index = coalesce(sp.call_inner_instruction_index,0) + 1
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.call_block_time')}}
             {% else %}
@@ -79,7 +79,7 @@
             ON trs_2.call_tx_id = sp.call_tx_id 
             AND trs_2.call_block_time = sp.call_block_time
             AND trs_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_2.call_inner_instruction_index = sp.deposit_index + 2
+            AND trs_2.call_inner_instruction_index = coalesce(sp.call_inner_instruction_index,0) + 2
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.call_block_time')}}
             {% else %}
