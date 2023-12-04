@@ -9,7 +9,7 @@ WITH multi_trade_txs AS (
     AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     GROUP BY 1, 2
-    HAVING COUNT(*) > 1f
+    HAVING COUNT(*) > 1
     )
 
 -- Step 2: Fetch more columns from the trades table
