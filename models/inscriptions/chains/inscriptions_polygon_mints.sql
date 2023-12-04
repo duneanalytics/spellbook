@@ -13,4 +13,6 @@
 {{inscriptions_mints(
         blockchain='polygon'
         , transactions = source('polygon','transactions')
+        , first_inscription_block = 44047666
 )}}
+-- First inscription block is 44047666, 2023-06-18 10:05: https://dune.com/queries/3253953

@@ -13,4 +13,6 @@
 {{inscriptions_mints(
         blockchain='zora'
         , transactions = source('zora','transactions')
+        , first_inscription_block = 
 )}}
+-- First inscription block is , : 

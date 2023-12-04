@@ -1,4 +1,4 @@
-{% macro inscriptions_mints(blockchain, transactions) %}
+{% macro inscriptions_mints(blockchain, transactions, first_inscription_block) %}
 
 WITH raw_inscriptions AS (
     SELECT block_time
@@ -12,6 +12,7 @@ WITH raw_inscriptions AS (
     FROM {{transactions}}
     WHERE ("LEFT"(from_utf8(data), 8)='data:,{"') = TRUE
     AND success
+    AND block_number >= {{first_inscription_block}}
     {% if is_incremental() %}
     AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -21,7 +22,6 @@ SELECT '{{blockchain}}' AS blockchain
 , block_time
 , block_number
 , tx_hash
-, tx_index
 , tx_from
 , tx_to
 , tx_index
