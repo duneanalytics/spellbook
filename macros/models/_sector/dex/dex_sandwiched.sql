@@ -57,7 +57,7 @@ INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
-AND front.block_time >= date_trunc('day', now() - interval '7' day)
+AND dt.block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 
 {% endmacro %}
