@@ -90,6 +90,5 @@ FROM (VALUES
     , ('mauve', 'Mauve', 'Direct', 'mauve_org')
     , ('xchange', 'X7 Finance', 'Direct', 'X7_Finance')
     , ('mento', 'Mento', 'Direct', 'mento')
-    , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('firebird_finance', 'Firebird Finance', 'Aggregator', 'FinanceFirebird')
     ) AS temp_table (project, name, marketplace_type, x_username)
