@@ -39,13 +39,33 @@ FROM (VALUES
         ,(0x69968Ce0E92d9c101BAd81de55EFbcb69603cFe3, 'Public Goods Network', 'L2OutputOracle','from_address','Bedrock','Public Goods Network: L2OutputOracle')
 
         ---
-        ,(0x6F54Ca6F6EdE96662024Ffd61BFd18f3f4e34DFf, 'Zora Network', 'L1BatchInbox','to_address','Bedrock','Zora Network: L1BatchInbox')
-        ,(0x48247032092e7b0ecf5dEF611ad89eaf3fC888Dd, 'Zora Network', 'L1BatchInbox','from_address','Bedrock','Zora Network: L1BatchInbox')
+        ,(0x6F54Ca6F6EdE96662024Ffd61BFd18f3f4e34DFf, 'Zora', 'L1BatchInbox','to_address','Bedrock','Zora: L1BatchInbox')
+        ,(0x625726c858dbf78c0125436c943bf4b4be9d9033, 'Zora', 'L1BatchInbox','from_address','Bedrock','Zora: L1BatchInbox')
 
-        ,(0x9eedde6b4d3263b97209ba860edf3fc6a8fb6a44, 'Zora Network', 'L2OutputOracle','to_address','Bedrock','Zora Network: L2OutputOracle')
-        ,(0x9E6204F750cD866b299594e2aC9eA824E2e5f95c, 'Zora Network', 'L2OutputOracleProxy','to_address','Bedrock','Zora Network: L2OutputOracleProxy')
-        ,(0x48247032092e7b0ecf5dEF611ad89eaf3fC888Dd, 'Zora Network', 'L2OutputOracle','from_address','Bedrock','Zora Network: L2OutputOracle')
-        
+        ,(0x9eedde6b4d3263b97209ba860edf3fc6a8fb6a44, 'Zora', 'L2OutputOracle','to_address','Bedrock','Zora: L2OutputOracle')
+        ,(0x9E6204F750cD866b299594e2aC9eA824E2e5f95c, 'Zora', 'L2OutputOracleProxy','to_address','Bedrock','Zora: L2OutputOracleProxy')
+        ,(0x48247032092e7b0ecf5dEF611ad89eaf3fC888Dd, 'Zora', 'L2OutputOracle','from_address','Bedrock','Zora: L2OutputOracle')
+        ---
+        ,(0x24E59d9d3Bd73ccC28Dc54062AF7EF7bFF58Bd67, 'Mode', 'L1BatchInbox','to_address','Bedrock','Mode: L1BatchInbox')
+        ,(0x99199a22125034c808ff20f377d91187E8050F2E, 'Mode', 'L1BatchInbox','from_address','Bedrock','Mode: L1BatchInbox')
+
+        ,(0x6093023a4A7E6873EDFb02B4bCE48c53FD310EEc, 'Mode', 'L2OutputOracle','to_address','Bedrock','Mode: L2OutputOracle')
+        ,(0x4317ba146D4933D889518a3e5E11Fe7a53199b04, 'Mode', 'L2OutputOracleProxy','to_address','Bedrock','Mode: L2OutputOracleProxy')
+        ,(0x674F64D64Ddc198db83cd9047dF54BF89cCD0ddB, 'Mode', 'L2OutputOracle','from_address','Bedrock','Mode: L2OutputOracle')
+        ---
+        ,(0x08aA34cC843CeEBcC88A627F18430294aA9780be, 'Orderly Network', 'L1BatchInbox','to_address','Bedrock','Orderly Network: L1BatchInbox')
+        ,(0xf8dB8Aba597fF36cCD16fECfbb1B816B3236E9b8, 'Orderly Network', 'L1BatchInbox','from_address','Bedrock','Orderly Network: L1BatchInbox')
+
+        ,(0x334251f91a3795c043663172CB59a963a9029aed, 'Orderly Network', 'L2OutputOracle','to_address','Bedrock','Orderly Network: L2OutputOracle')
+        ,(0x5e76821C3c1AbB9fD6E310224804556C61D860e0, 'Orderly Network', 'L2OutputOracleProxy','to_address','Bedrock','Orderly Network: L2OutputOracleProxy')
+        ,(0x74BaD482a7f73C8286F50D8Aa03e53b7d24A5f3B, 'Orderly Network', 'L2OutputOracle','from_address','Bedrock','Orderly Network: L2OutputOracle')
+        ---
+        ,(0x5f7f7f6DB967F0ef10BdA0678964DBA185d16c50, 'Lyra', 'L1BatchInbox','to_address','Bedrock','Lyra: L1BatchInbox')
+        ,(0x14e4E97bDc195d399Ad8E7FC14451C279FE04c8e, 'Lyra', 'L1BatchInbox','from_address','Bedrock','Lyra: L1BatchInbox')
+
+        ,(0xad206309916Fe08A27221133dde05a8F30f75e29, 'Lyra', 'L2OutputOracle','to_address','Bedrock','Lyra: L2OutputOracle')
+        ,(0x1145E7848c8B64c6cab86Fd6D378733385c5C3Ba, 'Lyra', 'L2OutputOracleProxy','to_address','Bedrock','Lyra: L2OutputOracleProxy')
+        ,(0x03e820562ffd2e0390787caD706EaF1FF98C2608, 'Lyra', 'L2OutputOracle','from_address','Bedrock','Lyra: L2OutputOracle')
         ---
 
         ,(0xa4b10ac61e79ea1e150df70b8dda53391928fd14, 'Arbitrum','SequencerInbox','from_address','','Arbitrum: Sequencer')
