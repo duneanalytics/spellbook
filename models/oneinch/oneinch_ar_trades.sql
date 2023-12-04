@@ -144,7 +144,7 @@ select
     , dst_token_address as token_bought_address
     , src_token_address as token_sold_address
     , user as taker
-    , null as maker
+    , cast(null as varbinary) as maker
     , call_to as project_contract_address
     , tx_hash
     , tx_from
