@@ -24,7 +24,7 @@ WITH multi_trade_txs AS (
     INNER JOIN multi_trade_txs pa USING (block_time, tx_hash)
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND dt.block_time >= date_trunc('day', now() - interval '7' day)
+    AND block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     )
 
