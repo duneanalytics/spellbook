@@ -1,0 +1,36 @@
+{% macro inscriptions_mints(blockchain, transactions) %}
+
+WITH raw_inscriptions AS (
+    SELECT block_time
+    , block_number
+    , hash AS tx_hash
+    , index AS tx_index
+    , "from" AS tx_from
+    , index AS tx_index
+    , to AS tx_to
+    , substring(from_utf8(data), position('{' IN from_utf8(data))) AS data_filtered
+    FROM {{transactions}}
+    WHERE ("LEFT"(from_utf8(data), 8)='data:,{"') = TRUE
+    AND success
+    {% if is_incremental() %}
+    AND block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+    )
+
+SELECT '{{blockchain}}' AS blockchain
+, block_time
+, block_number
+, tx_hash
+, tx_index
+, tx_from
+, tx_to
+, tx_index
+, json_extract_scalar(data_filtered, '$.a') AS action
+, json_extract_scalar(data_filtered, '$.p') AS inscription_standard
+, json_extract_scalar(data_filtered, '$.op') AS operation
+, json_extract_scalar(data_filtered, '$.tick') AS inscription_symbol
+, try_cast(json_extract_scalar(data_filtered, '$.amt') AS UINT256) AS amount
+, data_filtered AS full_inscription
+FROM raw_inscriptions
+
+{% endmacro %}
