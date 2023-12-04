@@ -1,7 +1,6 @@
 {{ config(
     schema = 'post_tech_arbitrum',
-    tags = ['dunesql'],
-    alias = alias('base_trades')
+    alias = 'base_trades'
     )
 }}
 
