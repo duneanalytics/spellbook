@@ -6,8 +6,8 @@ WITH sandwich_bounds AS (
     , back.evt_index AS max_evt_index
     , front.token_bought_address
     , front.token_sold_address
-    FROM {{ 'sandwiches' }} front
-    INNER JOIN {{ 'sandwiches' }} back ON front.block_time=back.block_time
+    FROM {{sandwiches}} front
+    INNER JOIN {{sandwiches}} back ON front.block_time=back.block_time
         AND front.tx_from=back.tx_from
         AND front.tx_hash!=back.tx_hash
         AND front.token_sold_address=back.token_bought_address
@@ -27,7 +27,6 @@ SELECT DISTINCT dt.blockchain
 , dt.block_time
 , txs.block_number
 , dt.block_month
-, dt.block_number
 , dt.token_sold_address
 , dt.token_bought_address
 , dt.token_sold_symbol
@@ -39,7 +38,6 @@ SELECT DISTINCT dt.blockchain
 , dt.tx_to
 , dt.project_contract_address
 , dt.token_pair
-, dt.tx_index
 , dt.token_sold_amount_raw
 , dt.token_bought_amount_raw
 , dt.token_sold_amount
@@ -52,8 +50,11 @@ INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
     AND sb.token_bought_address=dt.token_bought_address
     AND sb.token_sold_address=dt.token_sold_address
     AND dt.evt_index BETWEEN sb.min_evt_index AND sb.max_evt_index
-INNER JOIN {{ 'transactions' }} txs ON txs.block_time=dt.block_time
-    AND txs.tx_hash=dt.tx_hash
+INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
+    AND txs.hash=dt.tx_hash
+    {% if is_incremental() %}
+    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND front.block_time >= date_trunc('day', now() - interval '7' day)
