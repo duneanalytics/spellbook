@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'dex_base',
-        alias = 'arbitrages',
+        schema = 'dex_polygon',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_arbitrages(
-        blockchain='base'
-        , transactions = source('base','transactions')
+{{dex_atomic_arbitrages(
+        blockchain='polygon'
+        , transactions = source('polygon','transactions')
 )}}

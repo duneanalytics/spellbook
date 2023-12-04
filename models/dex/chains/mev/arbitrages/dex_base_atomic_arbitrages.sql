@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'dex_gnosis',
-        alias = 'arbitrages',
+        schema = 'dex_base',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_arbitrages(
-        blockchain='gnosis'
-        , transactions = source('gnosis','transactions')
+{{dex_atomic_arbitrages(
+        blockchain='base'
+        , transactions = source('base','transactions')
 )}}

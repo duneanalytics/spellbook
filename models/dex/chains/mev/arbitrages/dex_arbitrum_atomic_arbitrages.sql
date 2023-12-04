@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_arbitrum',
-        alias = 'arbitrages',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_arbitrages(
+{{dex_atomic_arbitrages(
         blockchain='arbitrum'
         , transactions = source('arbitrum','transactions')
 )}}

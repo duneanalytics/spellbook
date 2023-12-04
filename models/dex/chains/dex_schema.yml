@@ -438,7 +438,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_ethereum_arbitrages
+  - name: dex_ethereum_atomic_arbitrages
     meta: 
       blockchain: ethereum
       sector: dex
@@ -482,7 +482,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_arbitrum_arbitrages
+  - name: dex_arbitrum_atomic_arbitrages
     meta: 
       blockchain: arbitrum
       sector: dex
@@ -524,7 +524,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_avalanche_c_arbitrages
+  - name: dex_avalanche_c_atomic_arbitrages
     meta: 
       blockchain: avalanche_c
       sector: dex
@@ -566,7 +566,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_bnb_arbitrages
+  - name: dex_bnb_atomic_arbitrages
     meta: 
       blockchain: bnb
       sector: dex
@@ -608,7 +608,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_fantom_arbitrages
+  - name: dex_fantom_atomic_arbitrages
     meta: 
       blockchain: fantom
       sector: dex
@@ -650,7 +650,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_gnosis_arbitrages
+  - name: dex_gnosis_atomic_arbitrages
     meta: 
       blockchain: gnosis
       sector: dex
@@ -692,7 +692,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_optimism_arbitrages
+  - name: dex_optimism_atomic_arbitrages
     meta: 
       blockchain: optimism
       sector: dex
@@ -734,7 +734,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_polygon_arbitrages
+  - name: dex_polygon_atomic_arbitrages
     meta: 
       blockchain: polygon
       sector: dex
@@ -776,7 +776,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_base_arbitrages
+  - name: dex_base_atomic_arbitrages
     meta: 
       blockchain: base
       sector: dex
@@ -818,7 +818,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_celo_arbitrages
+  - name: dex_celo_atomic_arbitrages
     meta: 
       blockchain: celo
       sector: dex
@@ -860,7 +860,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_zksync_arbitrages
+  - name: dex_zksync_atomic_arbitrages
     meta: 
       blockchain: zksync
       sector: dex

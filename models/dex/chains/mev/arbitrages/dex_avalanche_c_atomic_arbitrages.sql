@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_avalanche_c',
-        alias = 'arbitrages',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_arbitrages(
+{{dex_atomic_arbitrages(
         blockchain='avalanche_c'
         , transactions = source('avalanche_c','transactions')
 )}}

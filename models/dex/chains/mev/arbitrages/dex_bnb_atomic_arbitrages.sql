@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_bnb',
-        alias = 'arbitrages',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_arbitrages(
+{{dex_atomic_arbitrages(
         blockchain='bnb'
         , transactions = source('bnb','transactions')
 )}}

@@ -1,4 +1,4 @@
-{% macro dex_arbitrages(blockchain, transactions) %}
+{% macro dex_atomic_arbitrages(blockchain, transactions) %}
 
 -- Step 1: Check that the transaction contains at least 2 trades
 WITH multi_trade_txs AS (

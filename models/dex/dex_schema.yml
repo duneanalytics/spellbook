@@ -471,7 +471,7 @@ models:
       - name: distinct_name
         description: "Distinct name of decentralised exchange address"
 
-  - name: dex_arbitrages
+  - name: dex_atomic_arbitrages
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync
       sector: dex

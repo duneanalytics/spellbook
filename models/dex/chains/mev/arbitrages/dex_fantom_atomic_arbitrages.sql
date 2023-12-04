@@ -1,6 +1,7 @@
 {{ config(
-        schema = 'dex_optimism',
-        alias = 'arbitrages',
+        tags = ['dunesql'],
+        schema = 'dex_fantom',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +10,7 @@
 )
 }}
 
-{{dex_arbitrages(
-        blockchain='optimism'
-        , transactions = source('optimism','transactions')
+{{dex_atomic_arbitrages(
+        blockchain='fantom'
+        , transactions = source('fantom','transactions')
 )}}
