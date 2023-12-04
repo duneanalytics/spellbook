@@ -1,7 +1,6 @@
 {{ config(
     schema = 'balancer',
     alias = 'protocol_fee',
-    
     post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis", "optimism","avalanche_c", "base"]\',
                             "project",
                             "balancer",
