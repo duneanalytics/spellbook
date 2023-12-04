@@ -8,10 +8,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_id', 'token_address'],
-        post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "balancer_v2",
-                                    \'["viniabussafi"]\') }}'
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
 
