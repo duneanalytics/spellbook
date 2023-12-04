@@ -5,7 +5,7 @@
 
 SELECT
     'optimism' AS blockchain,
-    DISTINCT(creator) AS address,
+    creator AS address,
     'Attestation Attester' AS name,
     'op_attestationstation' AS category,
     'kaiblade' AS contributor,
@@ -16,3 +16,5 @@ SELECT
     'persona' AS label_type
 FROM
     {{ source('attestationstation_optimism', 'AttestationStation_evt_AttestationCreated') }}
+
+GROUP BY creator
