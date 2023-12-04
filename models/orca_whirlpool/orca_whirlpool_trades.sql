@@ -18,39 +18,52 @@
 {% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 
 with 
-    fee_tiers_defaults as (
-        --this is a common fee pattern on Solana, where "fee rates" are stored on accounts. Fee rates are updated on accounts, that then impact the pools.
-        SELECT 
-        account_feeTier as fee_tier
-        , defaultfeeRate as fee_rate
-        , call_block_time as fee_time
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }}
-
-        UNION ALL 
-
-        SELECT
-        account_feeTier as fee_tier
-        , defaultfeeRate as fee_rate
-        , call_block_time as fee_time
-        FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultFeeRate') }}
-    )
-
-    , whirlpools as (
-    with 
-        --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
-        fee_updates as (
+    whirlpools as (
+    with     
+        fee_tiers_defaults as (
+            --the fee tier has defaults that can be changed. Once the pool is initialized, the fee tier is set to the default fee tier.
             SELECT 
-                account_whirlpool as whirlpool_id
-                , call_block_time as update_time
-                , account_feeTier as fee_tier
-            FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }}
+            account_feeTier as fee_tier
+            , defaultfeeRate as fee_rate
+            , call_block_time as fee_time
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_initializeFeeTier') }}
+
+            UNION ALL 
+
+            SELECT
+            account_feeTier as fee_tier
+            , defaultfeeRate as fee_rate
+            , call_block_time as fee_time
+            FROM {{ source('whirlpool_solana', 'whirlpool_call_setDefaultFeeRate') }}
+        )
+
+        --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
+        , fee_updates as (
+            SELECT 
+                whirlpool_id
+                , update_time
+                , fee_rate
+            FROM (
+                --get defaultFeeRate at time of pool init based on account_feeTier
+                SELECT 
+                    fi.account_whirlpool as whirlpool_id
+                    , fi.call_block_time as update_time
+                    , fi.account_feeTier as fee_tier
+                    , ftd.fee_time
+                    , ftd.fee_rate
+                    , row_number() over (partition by fi.account_whirlpool order by ftd.fee_time desc) as recent_update
+                FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} fi
+                LEFT JOIN fee_tiers_defaults ftd ON ftd.fee_tier = account_feeTier AND ftd.fee_time <= fi.call_block_time
+            )
+            WHERE recent_update = 1
             
             UNION all
             
-             SELECT 
+            --after being initialized, the fee rate can be set manually using setFeeRate on the pool (does not update with defaultFeeRate)
+            SELECT 
                 account_whirlpool as whirlpool_id
                 , call_block_time as update_time
-                , account_feeTier as fee_tier
+                , feeRate as fee_rate
             FROM {{ source('whirlpool_solana', 'whirlpool_call_setFeeRate') }}
         )
         
@@ -66,7 +79,7 @@ with
         , ip.tickSpacing
         , ip.account_whirlpool as whirlpool_id
         , fu.update_time
-        , fu.fee_tier
+        , fu.fee_rate
         , ip.call_tx_id as init_tx
     FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
     LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
@@ -129,7 +142,7 @@ with
                 end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
             , tr_1.amount/pow(10,case when tk_1.token_mint_address = wp.tokenA then wp.tokenA_decimals else tokenB_decimals end) as token_sold_amount
-            , wp.fee_tier
+            , wp.fee_rate
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
@@ -209,25 +222,6 @@ with
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination
     )
 
-    , fee_rate_sorted as (
-        SELECT 
-            *
-        FROM (
-        SELECT 
-            a_s.*
-            , ftd.fee_rate
-            --this gives us all the fee tiers that have been set on the pool since before the swap time
-            , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
-            --this gives us all the fee tier updates that have been set on the fee tier since before the swap time
-            , row_number() OVER (partition by a_s.fee_tier, tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_fee_update
-        FROM all_swaps a_s
-        LEFT JOIN fee_tiers_defaults ftd ON ftd.fee_tier = a_s.fee_tier AND ftd.update_time <= a_s.block_time 
-        )
-        --get latest fee tier and latest defaultFeeRate on the fee_tier
-        WHERE recent_update = 1
-        AND recent_fee_update = 1
-    )
-    
 SELECT
     tb.blockchain
     , tb.project 
@@ -256,7 +250,13 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
     , recent_update
-FROM fee_rate_sorted tb
+FROM (
+    SELECT 
+        *
+        , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
+    FROM all_swaps
+    )
+    tb
 LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
