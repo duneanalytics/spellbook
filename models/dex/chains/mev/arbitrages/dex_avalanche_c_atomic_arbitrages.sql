@@ -1,15 +1,17 @@
+{% set blockchain = 'avalanche_c' %}
+
 {{ config(
-        schema = 'dex_avalanche_c',
+        schema = 'dex_' + blockchain,
         alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'evt_index']
+        unique_key = ['tx_hash', 'evt_index']
 )
 }}
 
 {{dex_atomic_arbitrages(
-        blockchain='avalanche_c'
-        , transactions = source('avalanche_c','transactions')
+        blockchain = blockchain
+        , transactions = source(blockchain,'transactions')
 )}}

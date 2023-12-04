@@ -1,15 +1,17 @@
+{% set blockchain = 'polygon' %}
+
 {{ config(
-        schema = 'dex_polygon',
+        schema = 'dex_' + blockchain,
         alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'evt_index']
+        unique_key = ['tx_hash', 'evt_index']
 )
 }}
 
 {{dex_atomic_arbitrages(
-        blockchain='polygon'
-        , transactions = source('polygon','transactions')
+        blockchain = blockchain
+        , transactions = source(blockchain,'transactions')
 )}}
