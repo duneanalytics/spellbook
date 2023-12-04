@@ -6,7 +6,7 @@ WITH multi_trade_txs AS (
     FROM {{ ref('dex_trades') }}
     WHERE blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     GROUP BY 1, 2
     HAVING COUNT(*) > 1
@@ -24,7 +24,7 @@ WITH multi_trade_txs AS (
     INNER JOIN multi_trade_txs pa USING (block_time, tx_hash)
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     )
 
@@ -80,7 +80,7 @@ WITH multi_trade_txs AS (
         AND CONTAINS(wt.token_addresses, dt.token_bought_address)
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
-    AND dt.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('dt.block_time') }}
     {% endif %}
     )
 
@@ -123,7 +123,7 @@ MATCH_RECOGNIZE (
 INNER JOIN {{transactions}} txs ON pst.block_time=txs.block_time
     AND pst.tx_hash=txs.hash
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('txs.block_time') }}
     {% endif %}
 
 {% endmacro %}
