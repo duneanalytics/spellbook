@@ -16,10 +16,10 @@ WITH sandwich_bounds AS (
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index+1 < back.evt_index
         {% if is_incremental() %}
-        AND back.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     {% if is_incremental() %}
-    WHERE front.block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('front.block_time') }}
     {% endif %}
     )
 
@@ -56,11 +56,11 @@ INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('txs.block_time') }}
     {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
-AND dt.block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 
 {% endmacro %}

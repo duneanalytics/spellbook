@@ -1,17 +1,20 @@
+{% set blockchain = 'fantom' %}
+
 {{ config(
         
-        schema = 'dex_fantom',
+        schema = 'dex_' + blockchain,
         alias = 'sandwiched',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index']
+        unique_key = ['blockchain', 'tx_hash', 'evt_index'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
 )
 }}
 
 {{dex_sandwiched(
-        blockchain='fantom'
-        , transactions = source('fantom','transactions')
-        , sandwiches = ref('dex_arbitrum_sandwiches')
+        blockchain = blockchain
+        , transactions = source(blockchain,'transactions')
+        , sandwiches = ref('dex_' + blockchain + '_sandwiches')
 )}}
