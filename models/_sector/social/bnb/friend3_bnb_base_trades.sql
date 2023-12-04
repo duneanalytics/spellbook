@@ -1,6 +1,11 @@
 {{ config(
     schema = 'friend3_bnb',
-    alias = 'base_trades'
+    alias = 'base_trades',
+    partition_by = ['block_month'],
+    file_format = 'delta',
+    materialized = 'incremental',
+    incremental_strategy = 'merge',
+    unique_key = ['tx_hash','evt_index']
     )
 }}
 

@@ -1,6 +1,11 @@
 {{ config(
     schema = 'cipher_arbitrum',
-    alias = 'base_trades'
+    alias = 'base_trades',
+    partition_by = ['block_month'],
+    file_format = 'delta',
+    materialized = 'incremental',
+    incremental_strategy = 'merge',
+    unique_key = ['tx_hash','evt_index']
     )
 }}
 
@@ -25,7 +30,7 @@ SELECT 'arbitrum' AS blockchain
 , contract_address
 FROM {{source('cipher_arbitrum', 'Cipher_evt_Trade')}}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{ incremental_predicate('evt_block_time') }}
 {% else %}
 WHERE evt_block_time >= TIMESTAMP '{{cipher_start_date}}'
 {% endif %}
