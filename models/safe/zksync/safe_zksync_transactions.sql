@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        
+        schema = 'safe_zksync',
         alias = 'transactions',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'], 
@@ -105,7 +105,7 @@ select
     t.method,
     tr.tx_hash as trace_tx_hash --save the trace_tx_hash to match back on
     from transactions t
-    left join traces tr ON 
+    inner join traces tr ON 
         tr.block_number = t.block_number
         AND tr.success = t.success
         AND tr.address = t.address --matching on safe address
