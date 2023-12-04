@@ -105,6 +105,11 @@ models:
       error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'zksync']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - value
     description: "Safe transactions"
     columns:
       - *blockchain

@@ -82,7 +82,7 @@ where
     {% endif %}
 )
 
-select
+select distinct
     t.blockchain,
     t.block_date,
     t.block_month,
