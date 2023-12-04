@@ -1,7 +1,6 @@
 {{ config(
     schema = 'social_avalanche_c',
     alias = 'trades',
-    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

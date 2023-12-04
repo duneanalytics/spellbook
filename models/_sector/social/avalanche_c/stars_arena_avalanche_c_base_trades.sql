@@ -1,7 +1,6 @@
 {{ config(
     schema = 'stars_arena_avalanche_c',
     alias = 'base_trades',
-    partition_by = ['block_month'],
     file_format = 'delta',
     materialized = 'incremental',
     incremental_strategy = 'merge',

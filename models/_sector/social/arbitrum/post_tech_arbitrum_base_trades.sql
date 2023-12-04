@@ -1,7 +1,6 @@
 {{ config(
     schema = 'post_tech_arbitrum',
     alias = 'base_trades',
-    partition_by = ['block_month'],
     file_format = 'delta',
     materialized = 'incremental',
     incremental_strategy = 'merge',

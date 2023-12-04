@@ -1,7 +1,6 @@
 {{ config(
     schema = 'friend3_bnb',
     alias = 'base_trades',
-    partition_by = ['block_month'],
     file_format = 'delta',
     materialized = 'incremental',
     incremental_strategy = 'merge',
