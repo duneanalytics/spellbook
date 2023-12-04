@@ -29,8 +29,8 @@ FROM {{ base_trades_model }} t
 INNER JOIN {{raw_transactions}} txs ON txs.block_number=t.block_number
     AND  txs.hash=t.tx_hash
     {% if is_incremental() %}
-    AND t.block_time >= date_trunc('day', now() - interval '7' day)
-    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('t.block_time') }}
+    AND {{ incremental_predicate('txs.block_time') }}
     {% endif %}
 INNER JOIN {{ref('evms_info')}} info ON info.blockchain='{{ blockchain }}'
 LEFT JOIN {{ref('tokens_erc20')}} tok ON tok.blockchain='{{ blockchain }}'

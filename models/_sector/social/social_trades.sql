@@ -1,7 +1,6 @@
 {{ config(
     schema = 'social',
-    tags = ['dunesql'],
-    alias = alias('trades'),
+    alias = 'trades',
     post_hook='{{ expose_spells(\'["base", "avalanche_c", "arbitrum", "bnb"]\',
                                 "sector",
                                 "social",

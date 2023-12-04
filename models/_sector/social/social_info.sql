@@ -1,7 +1,7 @@
 {{ config(
-        tags = ['dunesql', 'static'],
+        tags = ['static'],
         schema='social',
-        alias = alias('info'),
+        alias = 'info',
         post_hook='{{ expose_spells(\'["bnb", "avalanche_c", "arbitrum", "base"]\',
                                     "sector",
                                     "social",

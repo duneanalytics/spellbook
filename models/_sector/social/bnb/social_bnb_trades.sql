@@ -1,7 +1,6 @@
 {{ config(
-    schema = 'social_avalanche_c',
-    tags = ['dunesql'],
-    alias = alias('trades'),
+    schema = 'social_bnb',
+    alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -11,11 +10,11 @@
 }}
 
 {% set base_models = [
-     (ref('stars_arena_avalanche_c_base_trades'))
+    (ref('friend3_bnb_base_trades'))
 ] %}
 
 WITH trades AS (
-    {{enrich_social_trades('avalanche_c', base_models, source('avalanche_c', 'transactions'))}}
+    {{enrich_social_trades('bnb', base_models, source('bnb', 'transactions'))}}
     )
 
 SELECT *

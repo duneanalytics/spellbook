@@ -1,7 +1,6 @@
 {{ config(
     schema = 'stars_arena_avalanche_c',
-    tags = ['dunesql'],
-    alias = alias('base_trades')
+    alias = 'base_trades'
     )
 }}
 
@@ -24,14 +23,14 @@ SELECT 'avalanche_c' AS blockchain
 , logs.index AS evt_index
 , txs.to AS contract_address
 FROM {{ source('avalanche_c', 'transactions') }} txs
-LEFT JOIN {{ source('avalanche_c', 'logs') }} logs ON logs.block_number = txs.block_number
+INNER JOIN {{ source('avalanche_c', 'logs') }} logs ON logs.block_number = txs.block_number
     AND logs.tx_hash = txs.hash
+    AND logs.topic0 = 0xc9d4f93ded9b42fa24561e02b2a40f720f71601eb1b3f7b3fd4eff20877639ee
     AND txs.to = 0xa481b139a1a654ca19d2074f174f17d7534e8cec
     AND txs.success
-WHERE logs.topic0 = 0xc9d4f93ded9b42fa24561e02b2a40f720f71601eb1b3f7b3fd4eff20877639ee
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
-    AND logs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('txs.block_time') }}
+    AND {{ incremental_predicate('logs.block_time') }}
     {% else %}
     AND txs.block_time >= TIMESTAMP '{{stars_arena_start_date}}'
     AND logs.block_time >= TIMESTAMP '{{stars_arena_start_date}}'
