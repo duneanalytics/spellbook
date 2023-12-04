@@ -22,6 +22,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_number
         name: block_number
         description: "the block number of the block that the offer was created in"
@@ -73,6 +76,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -103,6 +107,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -133,6 +138,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -163,6 +169,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -193,6 +200,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -223,6 +231,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -253,6 +262,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -283,6 +293,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -313,6 +324,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -343,6 +355,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index
@@ -373,6 +386,7 @@ models:
     columns: 
       - *blockchain
       - *block_time
+      - *block_month
       - *block_number
       - *tx_hash
       - *tx_index

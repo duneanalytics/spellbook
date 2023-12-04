@@ -34,6 +34,7 @@ FROM (
         {% for sandwiches_model in sandwiches_models %}
         SELECT blockchain
         , block_time
+        , block_month
         , block_number
         , tx_hash
         , tx_from
