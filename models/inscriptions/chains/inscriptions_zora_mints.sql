@@ -1,18 +1,21 @@
+{% set blockchain = 'zora' %}
+
 {{ config(
         
-        schema = 'inscriptions_zora',
+        schema = 'inscriptions_' + blockchain,
         alias = 'sandwiches',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain','tx_hash']
+        unique_key = ['blockchain','tx_hash'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
 )
 }}
 
 {{inscriptions_mints(
-        blockchain='zora'
-        , transactions = source('zora','transactions')
+        blockchain = blockchain
+        , transactions = source(blockchain,'transactions')
         , first_inscription_block = 2137565
 )}}
 -- First inscription block is 2137565, 2023-08-02 09:36: https://dune.com/queries/3254037
