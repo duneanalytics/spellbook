@@ -13,7 +13,7 @@ WITH raw_inscriptions AS (
     AND success
     AND block_number >= {{first_inscription_block}}
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     )
 
