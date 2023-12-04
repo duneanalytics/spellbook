@@ -29,8 +29,12 @@
             'start': '2021-11-26',
             'methods': {
                 'fillOrder': {},
-                'fillOrderTo': {},
-                'fillOrderToWithPermit': {},
+                'fillOrderTo': {
+                    'receiver': "from_hex(order_map['receiver'])"
+                },
+                'fillOrderToWithPermit': {
+                    'receiver': "from_hex(order_map['receiver'])"
+                },
                 'fillOrderRFQ': {},
                 'fillOrderRFQTo': {},
                 'fillOrderRFQToWithPermit': {}
@@ -58,10 +62,12 @@
                     'order': '"order_"',
                     'making_amount': 'output_actualMakingAmount',
                     'taking_amount': 'output_actualTakingAmount',
-                    'order_hash': 'output_orderHash'
+                    'order_hash': 'output_orderHash',
+                    'receiver': "from_hex(order_map['receiver'])"
                 },
                 'fillOrderToWithPermit': {
-                    'order_hash': 'output_2'
+                    'order_hash': 'output_2',
+                    'receiver': "from_hex(order_map['receiver'])"
                 },
                 'fillOrderRFQ': {
                     'order_hash': 'output_2'
@@ -102,6 +108,7 @@ orders as (
                 , from_hex(order_map['makerAsset']) as maker_asset
                 , from_hex(order_map['takerAsset']) as taker_asset
                 , {{ method_data.get("maker", "from_hex(order_map['maker'])") }} as maker
+                , {{ method_data.get("receiver", "null") }} as receiver
                 , {{ method_data.get("making_amount", "output_0") }} as making_amount
                 , {{ method_data.get("taking_amount", "output_1") }} as taking_amount
                 , {{ method_data.get("order_hash", "null") }} as order_hash
@@ -123,6 +130,7 @@ orders as (
                 , "from" as call_from
                 , substr(input, 1, 4) as call_selector
                 , gas_used as call_gas_used
+                , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
                 , block_number
             from {{ source(blockchain, 'traces') }}
@@ -154,6 +162,7 @@ select
     , call_trace_address
     , call_selector
     , maker
+    , receiver
     , maker_asset
     , making_amount
     , taker_asset
@@ -161,6 +170,10 @@ select
     , order_hash
     , call_success
     , call_gas_used
+    , concat(cast(length(remains) as bigint), if(length(remains) > 0
+        , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
+        , array[bigint '0']
+    )) as remains
     , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month 
