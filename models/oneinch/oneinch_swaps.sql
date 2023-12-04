@@ -142,17 +142,19 @@ with
         )
     )
 
-    , trades as (
+    , swaps as (
         select
             blockchain
             , tx_hash
             , call_trace_address
             , block_time
             , minute
-            , protocol
             , tx_from
             , tx_to
+            , call_from
+            , call_to
             , contract_name
+            , protocol
             , protocol_version
             , method
             , user
@@ -179,17 +181,17 @@ with
                 , block_time
                 , tx_from
                 , tx_to
+                , call_from
+                , call_to
                 , contract_address
                 , minute
                 , amount
-                , transfer_from
-                , transfer_to
                 , call_remains
             from {{ ref('oneinch_calls_transfers_amounts') }}
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
         join prices using(blockchain, contract_address, minute)
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
     )
 
 select
@@ -200,6 +202,8 @@ select
     , minute
     , tx_from
     , tx_to
+    , call_from
+    , call_to
     , contract_name
     , protocol
     , protocol_version
@@ -221,4 +225,4 @@ select
     , transfers_usd_amount
     , transfers
     , explorer_link
-from trades
+from swaps
