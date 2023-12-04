@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: aave_v3_base
-    tables:
-      - name: Pool_evt_Borrow
-      - name: Pool_evt_Repay
-      - name: Pool_evt_LiquidationCall
