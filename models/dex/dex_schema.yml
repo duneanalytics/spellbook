@@ -430,6 +430,48 @@ models:
         description: "USD value of the trade at time of execution"
       - *evt_index
 
+  - name: dex_sandwiched
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiched']
+    description: >
+      DEX MEV Sandwiched Trades across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
   - name: dex_info
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
