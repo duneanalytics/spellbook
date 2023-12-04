@@ -1,9 +1,9 @@
 {{ config(
         schema='prices_polygon',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
-        tags = ['static', 'dunesql']
+        tags = ['static']
         )
 }}
 SELECT
@@ -17,7 +17,6 @@ FROM
     VALUES
     ('aave-new','polygon','AAVE',0xd6df932a45c0f255f85145f286ea0b292b21c90b,18),
     ('ageur-ageur','polygon','agEUR',0xe0b52e49357fd4daf2c15e02058dce6bc0057db4,18),
-    ('axlusdc-axelar-usd-coin', 'polygon', 'axlUSDC', 0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed, 6),
     ('axlusdt-axelar-usd-tether', 'polygon', 'axlUSDT', 0xceed2671d8634e3ee65000edbbee66139b132fbf, 6),
     ('axlatom-axelar-wrapped-atom', 'polygon', 'axlATOM', 0x33f8a5029264bcfb66e39157af3fea3e2a8a5067, 6),
     ('bal-balancer','polygon','BAL',0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3,18),
@@ -37,9 +36,9 @@ FROM
     ('link-chainlink', 'polygon', 'LINK', 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39, 18),
     ('ghst-aavegotchi', 'polygon', 'GHST', 0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7, 18),
     ('gltr-gax-liquidity-token-reward', 'polygon', 'GLTR', 0x3801C3B3B5c98F88a9c9005966AA96aa440B9Afc, 18),
-    ('fud-fud', 'polygon', 'FUD', 0x403E967b044d4Be25170310157cB1A4Bf10bdD0f, 18),
+    ('fud-fud', 'polygon', 'FUD', 0x403e967b044d4be25170310157cb1a4bf10bdd0f, 18),
     ('fomo-fomo', 'polygon', 'FOMO', 0x44A6e0BE76e1D9620A7F76588e4509fE4fa8E8C8, 18),
-    ('alpha-alpha', 'polygon', 'ALPHA', 0x6a3E7C3c6EF65Ee26975b12293cA1AAD7e1dAeD2, 18),
+    ('alpha-alpha', 'polygon', 'ALPHA', 0x6a3e7c3c6ef65ee26975b12293ca1aad7e1daed2, 18),
     ('crv-curve-dao-token', 'polygon', 'CRV', 0x172370d5cd63279efa6d502dab29171933a610af, 18),
     ('mimatic-mimatic', 'polygon', 'MIMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1, 18),
     ('kom-kommunitas', 'polygon', 'KOM', 0xc004e2318722ea2b15499d6375905d75ee5390b8, 8),
@@ -67,5 +66,23 @@ FROM
     ('tetu-tetu-reward-token','polygon','TETU',0x255707B70BF90aa112006E1b07B9AeA6De021424,18),
     ('quick-quickswap','polygon','QUICK',0x831753dd7087cac61ab5644b308642cc1c33dc13,18),
     ('dimo-dimo','polygon','DIMO',0xe261d618a959afffd53168cd07d12e37b26761db,18),
-    ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18)
+    ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18),
+    ('val-valeria','polygon','VAL',0x456f931298065b1852647de005dd27227146d8b9,18),
+    ('truehn-true-human-nature','polygon','TRUEHN',0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9),
+    ('stg-stargatetoken','polygon','STG',0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590,18),
+    ('titan-iron-titanium-token','polygon','IRON ',0xaaa5b9e6c589642f98a1cda99b9d024b8407285a,18),
+    ('grt-the-graph','polygon','GRT',0x5fe2b58c013d7601147dcdd68c143a77499f5531,18),
+    ('snx-synthetix-network-token','polygon','SNX',0x50b728d8d964fd00c2d0aad81718b71311fef68a,18),
+    ('sff-sunflower-farm','polygon','SFF',0xdf9b4b57865b403e08c85568442f95c26b7896b0,18),
+    ('dino-dinoswap','polygon','DINO',0xaa9654becca45b5bdfa5ac646c939c62b527d394,18),
+    ('xend-xend-finance','polygon','XEND',0x86775d0b80b3df266af5377db34ba8f318d715ec,18),
+    ('mst-idle-mystic','polygon','MST',0xa353deb6fb81df3844d8bd614d33d040fdbb8188,18),
+    ('makerx-makerx','polygon','MAKERX',0x1ed02954d60ba14e26c230eec40cbac55fa3aeea,18),
+    ('champ-ultimate-champions','polygon','CHAMP',0xed755dba6ec1eb520076cec051a582a6d81a8253,18),
+    ('woo-wootrade','polygon','WOO',0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603,18),
+    ('route-router-protocol','polygon','ROUTE',0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4,18),
+    ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
+    ('comp-compoundd', 'polygon', 'COMP', 0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18),
+    ('voxel-voxies','polygon','VOXEL',0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F,18),
+    ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -3,7 +3,6 @@ version: 2
 seeds:
   - name: tessera_ethereum_vault_deploy_test_data
     config:
-      tags: dunesql
       column_types:
         deployer: varbinary
         origin: varbinary

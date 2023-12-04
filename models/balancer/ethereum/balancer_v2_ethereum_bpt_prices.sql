@@ -1,8 +1,8 @@
 {{
     config(
         schema = 'balancer_v2_ethereum',
-        alias = alias('bpt_prices'),
-        tags = ['dunesql'],
+        alias = 'bpt_prices',
+        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -162,3 +162,4 @@ SELECT
     END AS median_price
 FROM price_formulation
 ORDER BY 2 DESC, 3
+

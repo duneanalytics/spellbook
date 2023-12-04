@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: defiswap_ethereum
+  - name: uniswap_ethereum
+  - name: uniswap_v2_ethereum
+  - name: uniswap_v3_ethereum
+  - name: carbon_defi_ethereum
+    tables:
+      - name: CarbonController_evt_TokensTraded
+  - name: airswap_ethereum
+    tables:
+      - name: Light_evt_Swap
+      - name: Light_v0_evt_Swap
+      - name: swap_evt_Swap
+      - name: Swap_v3_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
+  - name: sushi_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sushiswap_v3_ethereum
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated

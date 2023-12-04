@@ -1,8 +1,8 @@
  {{
   config(
-        tags = ['dunesql'],
+        
         schema = 'dex_solana',
-        alias = alias('trades'),
+        alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
@@ -17,6 +17,8 @@
     , ref('phoenix_v1_trades')
     , ref('lifinity_v1_trades')
     , ref('lifinity_v2_trades')
+    , ref('meteora_v1_solana_trades')
+    , ref('goosefx_ssl_v2_solana_trades')   
 ] %}
 
 {% for dex in solana_dexes %}

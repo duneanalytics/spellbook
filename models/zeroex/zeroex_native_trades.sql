@@ -1,5 +1,5 @@
-{{ config(tags=['dunesql'],
-        alias = alias('native_trades'),
+{{ config(
+        alias = 'native_trades',
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","bnb"]\',
                                 "project",
                                 "zeroex",

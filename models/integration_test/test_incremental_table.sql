@@ -1,6 +1,6 @@
 {{ config(
-        tags=['dunesql', 'prod_exclude'],
-        alias = alias('test_incremental_table'),
+        tags=[ 'prod_exclude'],
+        alias = 'test_incremental_table',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

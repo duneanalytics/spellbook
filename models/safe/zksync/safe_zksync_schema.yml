@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: safe_zksync_safes
+    meta:
+      blockchain: zksync
+      project: safe
+      contributors: ['danielpartida' , 'kryptaki']
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'zksync']
+    description: "Safe addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "The blockchain on which the Safe is deployed"
+      - &address
+        name: address
+        description: "Safe contract address"
+      - &creation_version
+        name: creation_version
+        description: "Version of initially created safe"
+      - &block_date
+        name: block_date
+      - &block_month
+        name: block_month
+      - &creation_time
+        name: creation_time
+        description: "Date/time of safe creation"
+      - &tx_hash
+        name: tx_hash
+
+  - name: safe_zksync_eth_transfers
+    meta:
+      blockchain: zksync
+      project: safe
+      contributors: ['danielpartida' , 'kryptaki']
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'zksync']
+    description: "Eth transfers for safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
+            - amount_raw
+    columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
+      - *address
+      - *block_date
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Date of Eth transfer"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred ETH"
+      - *tx_hash
+      - &trace_address
+        name: trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"
+
+
+  - name: safe_zksync_singletons
+    meta:
+      blockchain: zksync
+      project: safe
+      contributors: ['danielpartida' , 'kryptaki']
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'zksync']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+        tests:
+          - unique
+          - not_null

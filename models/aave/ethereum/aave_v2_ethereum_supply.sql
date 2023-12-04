@@ -1,7 +1,6 @@
 {{ config(
-    tags = ['dunesql']
-    , schema = 'aave_v2_ethereum'
-    , alias = alias('supply')
+     schema = 'aave_v2_ethereum'
+    , alias = 'supply'
   )
 }}
 
