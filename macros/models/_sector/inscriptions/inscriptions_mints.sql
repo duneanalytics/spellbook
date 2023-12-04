@@ -6,7 +6,6 @@ WITH raw_inscriptions AS (
     , hash AS tx_hash
     , index AS tx_index
     , "from" AS tx_from
-    , index AS tx_index
     , to AS tx_to
     , substring(from_utf8(data), position('{' IN from_utf8(data))) AS data_filtered
     FROM {{transactions}}
