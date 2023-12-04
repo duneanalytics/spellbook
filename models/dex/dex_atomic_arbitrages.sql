@@ -1,6 +1,6 @@
 {{ config(
         schema='dex',
-        alias = 'arbitrages',
+        alias = 'atomic_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,17 +14,17 @@
 }}
 
 {% set arbitrages_models = [
-     (ref('dex_arbitrum_arbitrages'))
-     , (ref('dex_avalanche_c_arbitrages'))
-     , (ref('dex_bnb_arbitrages'))
-     , (ref('dex_ethereum_arbitrages'))
-     , (ref('dex_fantom_arbitrages'))
-     , (ref('dex_gnosis_arbitrages'))
-     , (ref('dex_optimism_arbitrages'))
-     , (ref('dex_polygon_arbitrages'))
-     , (ref('dex_base_arbitrages'))
-     , (ref('dex_celo_arbitrages'))
-     , (ref('dex_zksync_arbitrages'))
+     (ref('dex_arbitrum_atomic_arbitrages'))
+     , (ref('dex_avalanche_c_atomic_arbitrages'))
+     , (ref('dex_bnb_atomic_arbitrages'))
+     , (ref('dex_ethereum_atomic_arbitrages'))
+     , (ref('dex_fantom_atomic_arbitrages'))
+     , (ref('dex_gnosis_atomic_arbitrages'))
+     , (ref('dex_optimism_atomic_arbitrages'))
+     , (ref('dex_polygon_atomic_arbitrages'))
+     , (ref('dex_base_atomic_arbitrages'))
+     , (ref('dex_celo_atomic_arbitrages'))
+     , (ref('dex_zksync_atomic_arbitrages'))
 ] %}
 
 SELECT *

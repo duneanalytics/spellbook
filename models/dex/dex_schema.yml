@@ -477,7 +477,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages']
     description: >
       DEX MEV Arbitrage Trades across all Chains
     tests:

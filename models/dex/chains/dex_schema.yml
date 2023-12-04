@@ -444,7 +444,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'ethereum']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'ethereum']
     description: >
       DEX MEV Arbitrage Trades on Ethereum
     tests:
@@ -488,7 +488,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'arbitrum']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'arbitrum']
     description: >
       DEX MEV Arbitrage Trades on Arbitrum
     tests:
@@ -530,7 +530,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'avalanche_c']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'avalanche_c']
     description: >
       DEX MEV Arbitrage Trades on Avalanche
     tests:
@@ -572,7 +572,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'bnb']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'bnb']
     description: >
       DEX MEV Arbitrage Trades on BNB
     tests:
@@ -614,7 +614,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'fantom']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'fantom']
     description: >
       DEX MEV Arbitrage Trades on Fantom
     tests:
@@ -656,7 +656,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'gnosis']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'gnosis']
     description: >
       DEX MEV Arbitrage Trades on Gnosis
     tests:
@@ -698,7 +698,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'optimism']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'optimism']
     description: >
       DEX MEV Arbitrage Trades on Optimism
     tests:
@@ -740,7 +740,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'polygon']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'polygon']
     description: >
       DEX MEV Arbitrage Trades on Polygon
     tests:
@@ -782,7 +782,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'base']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'base']
     description: >
       DEX MEV Arbitrage Trades on Base
     tests:
@@ -824,7 +824,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'celo']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'celo']
     description: >
       DEX MEV Arbitrage Trades on Celo
     tests:
@@ -866,7 +866,7 @@ models:
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'mev', 'arbitrages', 'zksync']
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'zksync']
     description: >
       DEX MEV Arbitrage Trades on zkSync
     tests:
