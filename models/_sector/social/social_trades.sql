@@ -5,7 +5,7 @@
     file_format = 'delta',
     materialized = 'incremental',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain','tx_hash','evt_index']
+    unique_key = ['blockchain','tx_hash','evt_index'],
     post_hook='{{ expose_spells(\'["base", "avalanche_c", "arbitrum", "bnb"]\',
                                 "sector",
                                 "social",
