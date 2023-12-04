@@ -54,7 +54,7 @@
             , COALESCE(dec_1.symbol, dec_1.token_mint_address) as token_sold_symbol 
             , trs_1.amount as token_sold_amount_raw
             , trs_1.amount/pow(10,COALESCE(dec_1.decimals,9)) as token_sold_amount
-            , account_pool as pool_id --p.pool_id
+            , account_swap as pool_id --p.pool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
             , sp.call_outer_instruction_index as outer_instruction_index
