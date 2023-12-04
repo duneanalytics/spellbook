@@ -1,6 +1,6 @@
 {{ config(
     schema = 'balancer_base',
-    alias = 'trades',
+    alias = 'trades'
     )
 }}
 
