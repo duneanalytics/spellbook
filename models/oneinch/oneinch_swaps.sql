@@ -1,6 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
+        tags=['prod_exclude'],
         alias = 'swaps',
         materialized = 'incremental',
         file_format = 'delta',
