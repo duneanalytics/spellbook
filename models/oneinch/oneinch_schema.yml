@@ -420,6 +420,7 @@ models:
       - *call_selector
       - &maker
         name: maker
+      - *receiver
       - &maker_asset
         name: maker_asset
       - &making_amount
@@ -435,6 +436,8 @@ models:
       - *call_success
       - &call_gas_used
         name: call_gas_used
+      - &remains
+        name: remains
       - *call_output
       - *minute
       - *block_month_not_null
@@ -543,8 +546,65 @@ models:
         name: router_type
       - *call_success
       - *call_gas_used
-      - &remains
-        name: remains
+      - *remains
       - *call_output
       - *minute
       - *block_month_not_null
+
+  - name: oneinch_swaps
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'swaps']
+    description: >
+        1inch swaps
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+            - second_side
+    columns:
+      - *blockchain_not_null
+      - *tx_hash_not_null
+      - *call_trace_address_not_null
+      - *block_time
+      - *minute
+      - *tx_from
+      - *tx_to
+      - *contract_name
+      - *protocol_not_null
+      - *protocol_version
+      - *method
+      - &user
+        name: user
+      - *receiver
+      - &fusion
+        name: fusion
+      - &contracts_only
+        name: contracts_only
+      - &second_side
+        name: second_side
+      - *remains
+      - *src_token_address
+      - *dst_token_address
+      - *src_amount
+      - *dst_amount
+      - &src_token_symbol
+        name: src_token_symbol
+      - &dst_token_symbol
+        name: dst_token_symbol
+      - &usd_amount
+        name: usd_amount
+      - &sources_usd_amount
+        name: sources_usd_amount
+      - &transfers_usd_amount
+        name: transfers_usd_amount
+      - &transfers
+        name: transfers
+      - &explorer_link
+        name: explorer_link
+
