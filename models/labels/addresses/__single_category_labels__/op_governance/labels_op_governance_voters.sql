@@ -53,18 +53,16 @@ ELSE 'Casual Optimism Voter'
 END) AS label
 FROM votes_count),
 
-SELECT
-    'optimism' AS blockchain,
+SELECT 'optimism' AS blockchain,
     address,
     label AS name,
-    'op_attestationstation' AS category,
+    'op_governance' AS category,
     'kaiblade' AS contributor,
     'query' AS source,
-    TIMESTAMP '2023-12-04' AS created_at,
+    TIMESTAMP '2023-12-05' AS created_at,
     NOW() AS updated_at,
-    'op_attestationstation_creators' AS model_name,
+    'op_governance_voters' AS model_name,
     'persona' AS label_type
 FROM
     optimism_voters
-
 GROUP BY address, label
