@@ -89,10 +89,10 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - &lim
-        name: lim
+      - &mint_limit
+        name: mint_limit
         description: "Limit"
-      - &max
-        name: max
+      - &max_supply
+        name: max_supply
         description: "Maximum supply"
       - *full_inscription

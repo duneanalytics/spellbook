@@ -28,8 +28,8 @@ SELECT '{{blockchain}}' AS blockchain
 , json_extract_scalar(data_filtered, '$.p') AS inscription_standard
 , json_extract_scalar(data_filtered, '$.op') AS operation
 , json_extract_scalar(data_filtered, '$.tick') AS inscription_symbol
-, try_cast(json_extract_scalar(data_filtered, '$.max') AS UINT256) AS max
-, try_cast(json_extract_scalar(data_filtered, '$.lim') AS UINT256) AS lim
+, try_cast(json_extract_scalar(data_filtered, '$.max') AS UINT256) AS max_supply
+, try_cast(json_extract_scalar(data_filtered, '$.lim') AS UINT256) AS mint_limit
 , data_filtered AS full_inscription
 FROM raw_inscriptions
 WHERE json_extract_scalar(data_filtered, '$.op') = 'deploy'

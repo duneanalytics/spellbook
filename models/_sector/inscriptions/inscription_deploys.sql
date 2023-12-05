@@ -42,8 +42,8 @@ FROM (
         , inscription_standard
         , operation
         , inscription_symbol
-        , max
-        , lim
+        , max_supply
+        , mint_limit
         , full_inscription
         
         FROM {{ deploys_model }}

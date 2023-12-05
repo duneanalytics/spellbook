@@ -49,11 +49,11 @@ models:
       - &operation
         name: operation
         description: "Operation"
-      - &lim
-        name: lim
+      - &mint_limit
+        name: mint_limit
         description: "Limit"
-      - &max
-        name: max
+      - &max_supply
+        name: max_supply
         description: "Maximum supply"
       - &full_inscription
         name: full_inscription
@@ -86,8 +86,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_avalanche_c_deploys
@@ -117,8 +117,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_bnb_deploys
@@ -148,8 +148,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_fantom_deploys
@@ -179,8 +179,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_gnosis_deploys
@@ -210,8 +210,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_optimism_deploys
@@ -241,8 +241,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_polygon_deploys
@@ -272,8 +272,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_base_deploys
@@ -303,8 +303,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_celo_deploys
@@ -334,8 +334,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_zksync_deploys
@@ -365,8 +365,8 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
 
   - name: inscription_zora_deploys
@@ -396,7 +396,7 @@ models:
       - *inscription_standard
       - *operation
       - *inscription_symbol
-      - *lim
-      - *max
+      - *mint_limit
+      - *max_supply
       - *full_inscription
       
