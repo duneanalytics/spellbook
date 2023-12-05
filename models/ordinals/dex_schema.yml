@@ -40,9 +40,6 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
-      - &action
-        name: action 
-        description: "Action taken in transaction"
       - &ordinal_standard
         name: ordinal_standard
         description: "Ordinal standard"

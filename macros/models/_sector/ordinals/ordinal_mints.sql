@@ -25,7 +25,6 @@ SELECT '{{blockchain}}' AS blockchain
 , tx_from
 , tx_to
 , tx_index
-, json_extract_scalar(data_filtered, '$.a') AS action
 , json_extract_scalar(data_filtered, '$.p') AS ordinal_standard
 , json_extract_scalar(data_filtered, '$.op') AS operation
 , json_extract_scalar(data_filtered, '$.tick') AS ordinal_symbol
