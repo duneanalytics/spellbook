@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: inscription_ethereum_deploys
+  - name: inscription_ethereum_all
     meta: 
       blockchain: ethereum
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'ethereum']
+      tags: ['inscriptions', 'all', 'ethereum']
     description: >
-      Inscription deploys on Ethereum
+      All inscriptions on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -40,34 +40,19 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
-      - &inscription_standard
-        name: inscription_standard
-        description: "Inscription standard"
-      - &inscription_symbol
-        name: inscription_symbol
-        description: "Symbol of inscription"
-      - &operation
-        name: operation
-        description: "Operation"
-      - &mint_limit
-        name: mint_limit
-        description: "Limit"
-      - &max_supply
-        name: max_supply
-        description: "Maximum supply"
       - &full_inscription
         name: full_inscription
         description: "Full inscription information as found in the transaction's call data"
 
-  - name: inscription_arbitrum_deploys
+  - name: inscription_arbitrum_all
     meta: 
       blockchain: arbitrum
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'arbitrum']
+      tags: ['inscriptions', 'all', 'arbitrum']
     description: >
-      Inscription deploys on Arbitrum
+      All inscriptions on Arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -82,23 +67,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_avalanche_c_deploys
+  - name: inscription_avalanche_c_all
     meta: 
       blockchain: avalanche_c
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'avalanche_c']
+      tags: ['inscriptions', 'all', 'avalanche_c']
     description: >
-      Inscription deploys on Avalanche
+      All inscriptions on Avalanche
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -113,23 +92,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_bnb_deploys
+  - name: inscription_bnb_all
     meta: 
       blockchain: bnb
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'bnb']
+      tags: ['inscriptions', 'all', 'bnb']
     description: >
-      Inscription deploys on BNB
+      All inscriptions on BNB
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -144,23 +117,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_fantom_deploys
+  - name: inscription_fantom_all
     meta: 
       blockchain: fantom
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'fantom']
+      tags: ['inscriptions', 'all', 'fantom']
     description: >
-      Inscription deploys on Fantom
+      All inscriptions on Fantom
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -175,23 +142,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_gnosis_deploys
+  - name: inscription_gnosis_all
     meta: 
       blockchain: gnosis
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'gnosis']
+      tags: ['inscriptions', 'all', 'gnosis']
     description: >
-      Inscription deploys on Gnosis
+      All inscriptions on Gnosis
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -206,23 +167,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_optimism_deploys
+  - name: inscription_optimism_all
     meta: 
       blockchain: optimism
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'optimism']
+      tags: ['inscriptions', 'all', 'optimism']
     description: >
-      Inscription deploys on Optimism
+      All inscriptions on Optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -237,23 +192,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_polygon_deploys
+  - name: inscription_polygon_all
     meta: 
       blockchain: polygon
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'polygon']
+      tags: ['inscriptions', 'all', 'polygon']
     description: >
-      Inscription deploys on Polygon
+      All inscriptions on Polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -268,23 +217,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_base_deploys
+  - name: inscription_base_all
     meta: 
       blockchain: base
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'base']
+      tags: ['inscriptions', 'all', 'base']
     description: >
-      Inscription deploys on Base
+      All inscriptions on Base
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -299,23 +242,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_celo_deploys
+  - name: inscription_celo_all
     meta: 
       blockchain: celo
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'celo']
+      tags: ['inscriptions', 'all', 'celo']
     description: >
-      Inscription deploys on Celo
+      All inscriptions on Celo
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -330,23 +267,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_zksync_deploys
+  - name: inscription_zksync_all
     meta: 
       blockchain: zksync
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'zksync']
+      tags: ['inscriptions', 'all', 'zksync']
     description: >
-      Inscription deploys on zkSync
+      All inscriptions on zkSync
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -361,23 +292,17 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
 
-  - name: inscription_zora_deploys
+  - name: inscription_zora_all
     meta: 
       blockchain: zora
       sector: inscription
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'deploys', 'zora']
+      tags: ['inscriptions', 'all', 'zora']
     description: >
-      Inscription deploys on Zora Network
+      All inscriptions on Zora Network
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -392,11 +317,5 @@ models:
       - *tx_index
       - *tx_from
       - *tx_to
-      - *tx_index
-      - *inscription_standard
-      - *operation
-      - *inscription_symbol
-      - *mint_limit
-      - *max_supply
       - *full_inscription
       

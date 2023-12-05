@@ -13,7 +13,7 @@
 
 {{inscription_deploys(
         blockchain = blockchain
-        , transactions = source(blockchain,'transactions')
+        , all_inscriptions = ref('inscription_' + blockchain + '_all')
         , first_inscription_block = 105741421
 )}}
 -- First inscription block is 105741421, 2023-06-18 09:46: https://dune.com/queries/3253991

@@ -3,7 +3,7 @@
 {{ config(
         
         schema = 'inscription_' + blockchain,
-        alias = 'mints',
+        alias = 'all',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -11,9 +11,9 @@
 )
 }}
 
-{{inscription_mints(
+{{inscription_all(
         blockchain = blockchain
-        , all_inscriptions = ref('inscription_' + blockchain + '_all')
+        , transactions = source(blockchain,'transactions')
         , first_inscription_block = 64995274
 )}}
 -- First inscription block is 64995274, 2023-07-01 22:55: https://dune.com/queries/3254002

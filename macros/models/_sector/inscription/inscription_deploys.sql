@@ -1,21 +1,4 @@
-{% macro inscription_deploys(blockchain, transactions, first_inscription_block) %}
-
-WITH raw_inscriptions AS (
-    SELECT block_time
-    , block_number
-    , hash AS tx_hash
-    , index AS tx_index
-    , "from" AS tx_from
-    , to AS tx_to
-    , substring(from_utf8(data), position('{' IN from_utf8(data))) AS data_filtered
-    FROM {{transactions}}
-    WHERE ("LEFT"(from_utf8(data), 8)='data:,{"') = TRUE
-    AND success
-    AND block_number >= {{first_inscription_block}}
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
-    {% endif %}
-    )
+{% macro inscription_deploys(blockchain, all_inscriptions, first_inscription_block) %}
 
 SELECT '{{blockchain}}' AS blockchain
 , block_time
@@ -25,13 +8,13 @@ SELECT '{{blockchain}}' AS blockchain
 , tx_from
 , tx_to
 , tx_index
-, json_extract_scalar(data_filtered, '$.p') AS inscription_standard
-, json_extract_scalar(data_filtered, '$.op') AS operation
-, json_extract_scalar(data_filtered, '$.tick') AS inscription_symbol
-, try_cast(json_extract_scalar(data_filtered, '$.max') AS UINT256) AS max_supply
-, try_cast(json_extract_scalar(data_filtered, '$.lim') AS UINT256) AS mint_limit
-, data_filtered AS full_inscription
-FROM raw_inscriptions
-WHERE json_extract_scalar(data_filtered, '$.op') = 'deploy'
+, json_extract_scalar(full_inscription, '$.p') AS inscription_standard
+, json_extract_scalar(full_inscription, '$.op') AS operation
+, json_extract_scalar(full_inscription, '$.tick') AS inscription_symbol
+, try_cast(json_extract_scalar(full_inscription, '$.max') AS UINT256) AS max_supply
+, try_cast(json_extract_scalar(full_inscription, '$.lim') AS UINT256) AS mint_limit
+, full_inscription
+FROM {{all_inscriptions}}
+WHERE json_extract_scalar(full_inscription, '$.op') = 'deploy'
 
 {% endmacro %}
