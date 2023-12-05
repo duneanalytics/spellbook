@@ -44,8 +44,6 @@ FROM (
         , inscription_symbol
         , amount
         , full_inscription
-        , vin
-        , vout
         FROM {{ mints_model }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
