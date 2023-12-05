@@ -1,6 +1,6 @@
-{% macro ordinal_mints(blockchain, transactions, first_ordinal_block) %}
+{% macro inscription_mints(blockchain, transactions, first_inscription_block) %}
 
-WITH raw_ordinals AS (
+WITH raw_inscriptions AS (
     SELECT block_time
     , block_number
     , hash AS tx_hash
@@ -11,7 +11,7 @@ WITH raw_ordinals AS (
     FROM {{transactions}}
     WHERE ("LEFT"(from_utf8(data), 8)='data:,{"') = TRUE
     AND success
-    AND block_number >= {{first_ordinal_block}}
+    AND block_number >= {{first_inscription_block}}
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -25,13 +25,13 @@ SELECT '{{blockchain}}' AS blockchain
 , tx_from
 , tx_to
 , tx_index
-, json_extract_scalar(data_filtered, '$.p') AS ordinal_standard
+, json_extract_scalar(data_filtered, '$.p') AS inscription_standard
 , json_extract_scalar(data_filtered, '$.op') AS operation
-, json_extract_scalar(data_filtered, '$.tick') AS ordinal_symbol
+, json_extract_scalar(data_filtered, '$.tick') AS inscription_symbol
 , try_cast(json_extract_scalar(data_filtered, '$.amt') AS UINT256) AS amount
 , REGEXP_EXTRACT(data_filtered, '"vin":(\\[.*?\\])') AS vin
 , REGEXP_EXTRACT(data_filtered, '"vout":(\\[.*?\\])') AS vout
 , data_filtered AS full_inscription
-FROM raw_ordinals
+FROM raw_inscriptions
 
 {% endmacro %}

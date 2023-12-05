@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: ordinals_mints
+  - name: inscription_mints
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'ordinals', 'mints']
+      tags: ['dex', 'inscriptions', 'mints']
     description: >
-      Ordinal mints across chains
+      Inscriptions across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -40,18 +40,18 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
-      - &ordinal_standard
-        name: ordinal_standard
-        description: "Ordinal standard"
-      - &ordinal_symbol
-        name: ordinal_symbol
-        description: "Symbol of ordinal"
+      - &inscription_standard
+        name: inscription_standard
+        description: "Inscription standard"
+      - &inscription_symbol
+        name: inscription_symbol
+        description: "Symbol of inscription"
       - &operation
         name: operation
         description: "Operation"
       - &amount
         name: amount
-        description: "Amount of ordinals"
+        description: "Amount of inscriptions"
       - &full_inscription
         name: full_inscription
         description: "Full inscription information as found in the transaction's call data"
