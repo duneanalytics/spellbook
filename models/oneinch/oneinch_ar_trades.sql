@@ -84,10 +84,10 @@ with
 
 
 
-select *, date(date_trunc('month', minute)) block_month, minute as trace_address, contract_address as tx_hash
+select date(date_trunc('month', minute)) block_month, minute as trace_address, contract_address as tx_hash, blockchain
 from prices 
 where blockchain = 'base'
-
+group by 1, 2, 3, 4
 
 --     , trades as (
 --         select
