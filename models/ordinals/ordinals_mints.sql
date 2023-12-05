@@ -39,7 +39,6 @@ FROM (
         , tx_from
         , tx_to
         , tx_index
-        , action
         , ordinal_standard
         , operation
         , ordinal_symbol
