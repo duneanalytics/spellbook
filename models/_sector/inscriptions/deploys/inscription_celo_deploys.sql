@@ -13,4 +13,4 @@
 
 {{inscription_deploys(
         all_inscriptions = ref('inscription_' + blockchain + '_all')
-)}}es/3254010
+)}}
