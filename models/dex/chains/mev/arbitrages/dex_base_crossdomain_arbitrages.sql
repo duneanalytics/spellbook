@@ -17,4 +17,5 @@
         , blocks = source(blockchain,'blocks')
         , traces = source(blockchain,'traces')
         , transactions = source(blockchain,'transactions')
+        , erc20_transfers = source('erc20_' + blockchain,'evt_transfer')
 )}}
