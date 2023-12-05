@@ -50,31 +50,120 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  # - name: labels_op_attestationstation_creators
-  #   meta:
-  #     blockchain: optimism
-  #     sector: labels
-  #     project: op_attestationstation
-  #     contributors: kaiblade
-  #   config:
-  #     tags: ['labels', 'optimism', 'attestation']
-  #   description: 'Attestationstation attesters on Optimism.'
-  #   tests:
-  #     - dbt_utils.unique_combination_of_columns:
-  #         combination_of_columns:
-  #           - address
-  #           - name
-  #           - category
-  #           - model_name
-  #           - blockchain
-  #   columns:
-  #     - *blockchain
-  #     - *address
-  #     - *name
-  #     - *category
-  #     - *contributor
-  #     - *source
-  #     - *created_at
-  #     - *updated_at
-  #     - *model_name
-  #     - *label_type
+  - name: labels_op_governance_delegators
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'delegators', 'governance']
+    description: 'OP delegators on Optimism.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_op_governance_retropgf_proposal_submitters
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'retropgf', 'proposal submitters', 'governance']
+    description: 'RetroPGF proposal submitters on Optimism.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+
+  - name: labels_op_governance_retropgf_voters
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'retropgf', 'voters', 'governance']
+    description: 'RetroPGF proposal voters on Optimism.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+
+  - name: labels_op_governance_derived_archetype
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'derived archetype', 'governance']
+    description: 'Address labels derived from labels associated with other op_governance models'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
