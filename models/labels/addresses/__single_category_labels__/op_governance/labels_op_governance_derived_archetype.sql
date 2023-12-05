@@ -13,22 +13,23 @@ WITH address_count AS
 (SELECT address, COUNT(address) AS address_count
 FROM
 (SELECT *
-FROM ref('labels_op_governance_delegators')
+FROM {{ref('labels_op_governance_delegators')}}
 
 UNION
 
 SELECT *
-FROM ref('labels_op_governance_retropgf_proposal_submitters')
+FROM {{ref('labels_op_governance_retropgf_proposal_submitters')}}}}
 
 UNION 
 
 SELECT *
-FROM ref('labels_op_governance_retropgf_voters')
+FROM {{ref('labels_op_governance_retropgf_voters')}}
 
 UNION 
 
 SELECT *
-FROM ref('labels_op_governance_voters')
+FROM {{ref('labels_op_governance_voters')}}
+
 )
 GROUP BY address
 ),
