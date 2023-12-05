@@ -44,47 +44,50 @@ with
     )
 
 
-select *, date(date_trunc('month', minute)) block_month, call_trace_address as trace_address from calls 
+    , prices as (
+        select
+            blockchain
+            , contract_address
+            , minute
+            , price
+            , decimals
+            , symbol
+        from {{ source('prices', 'usd') }}
+        {% if is_incremental() %}
+            where {{ incremental_predicate('minute') }}
+        {% endif %}
+
+        union all 
+
+        -- performance optimization
+        select 
+            blockchain
+            , contract_address
+            , minute
+            , null as price
+            , null as decimals
+            , null as symbol 
+        from {{ ref('oneinch_calls_transfers_amounts') }} as cta
+        where
+            not exists (
+                select blockchain, contract_address, minute
+                from {{ source('prices', 'usd') }} as pu
+                where
+                    cta.blockchain = pu.blockchain
+                    and cta.contract_address = pu.contract_address
+                    and cta.minute = pu.minute
+            )
+            {% if is_incremental() %}
+                and {{ incremental_predicate('minute') }}
+            {% endif %}
+    )
+
+
+
+select *, date(date_trunc('month', minute)) block_month, price as trace_address, contract_address as tx_hash
+from prices 
 where blockchain = 'base'
 
-
---     , prices as (
---         select
---             blockchain
---             , contract_address
---             , minute
---             , price
---             , decimals
---             , symbol
---         from {{ source('prices', 'usd') }}
---         {% if is_incremental() %}
---             where {{ incremental_predicate('minute') }}
---         {% endif %}
-
---         union all 
-
---         -- performance optimization
---         select 
---             blockchain
---             , contract_address
---             , minute
---             , null as price
---             , null as decimals
---             , null as symbol 
---         from {{ ref('oneinch_calls_transfers_amounts') }} as cta
---         where
---             not exists (
---                 select blockchain, contract_address, minute
---                 from {{ source('prices', 'usd') }} as pu
---                 where
---                     cta.blockchain = pu.blockchain
---                     and cta.contract_address = pu.contract_address
---                     and cta.minute = pu.minute
---             )
---             {% if is_incremental() %}
---                 and {{ incremental_predicate('minute') }}
---             {% endif %}
---     )
 
 --     , trades as (
 --         select
