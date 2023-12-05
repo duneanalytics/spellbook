@@ -2,9 +2,9 @@
 name: Drop Deprecated Spells
 
 on:
-  {# push:
+  push:
     branches:
-      - drop-inactive-spells  # Trigger the workflow on pushes to the feature branch #}
+      - drop-inactive-spells  # Trigger the workflow on pushes to the feature branch
   pull_request:
     branches:
       - drop-inactive-spells  # Trigger the workflow on pull requests targeting the feature branch
