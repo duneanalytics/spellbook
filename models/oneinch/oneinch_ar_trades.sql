@@ -2,7 +2,6 @@
     config(
         schema = 'oneinch',
         alias = 'ar_trades',
-        tags=['prod_exclude'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
