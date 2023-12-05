@@ -24,8 +24,8 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('trader_joe_bnb', 'LBPair_evt_Swap') }} t
-    INNER JOIN {{ source('trader_joe_bnb', 'LBFactory_evt_LBPairCreated') }} f
+        {{ source('trader_joe_v2_bnb', 'LBPair_evt_Swap') }} t
+    INNER JOIN {{ source('trader_joe_v2_bnb', 'LBFactory_evt_LBPairCreated') }} f
         ON f.LBPair = t.contract_address
     {% if is_incremental() %}  -- comment to accomodate additions to prices.usd and force full reload
     WHERE {{ incremental_predicate('t.evt_block_time') }}
