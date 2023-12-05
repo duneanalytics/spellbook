@@ -48,13 +48,19 @@ SELECT
     CAST(date_trunc('month', dexs.block_time) AS date)          AS block_month,
     dexs.block_time,
     erc20a.symbol                                               AS token_bought_symbol,
-    erc20b.symbol                                               AS token_sold_symbol,
     CASE
-        WHEN lower(erc20a.symbol) > lower(erc20b.symbol) THEN concat(erc20b.symbol, '-', erc20a.symbol)
+        WHEN dexs.token_sold_address = 0x0000000000000000000000000000000000000000 THEN 'ETH'
+        ELSE erc20b.symbol
+    END                                                         AS token_sold_symbol,
+    CASE
+        WHEN dexs.token_sold_address = 0x0000000000000000000000000000000000000000 THEN concat(erc20a.symbol, '-', 'ETH')
         ELSE concat(erc20a.symbol, '-', erc20b.symbol)
     END                                                         AS token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount,
-    dexs.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount,
+    CASE
+        WHEN dexs.token_sold_address = 0x0000000000000000000000000000000000000000 THEN dexs.token_sold_amount_raw / power(10, 18)
+        ELSE dexs.token_sold_amount_raw / power(10, erc20b.decimals)
+    END                                                         AS token_sold_amount,
     CAST(dexs.token_bought_amount_raw AS UINT256)        AS token_bought_amount_raw,
     CAST(dexs.token_sold_amount_raw AS UINT256)          AS token_sold_amount_raw,
     coalesce(dexs.
