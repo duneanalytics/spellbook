@@ -1,4 +1,4 @@
-{% macro dex_crossdomain_mev(blockchain, blocks, traces, transactions) %}
+{% macro dex_crossdomain_arbitrages(blockchain, blocks, traces, transactions) %}
 
 WITH received_by_builder AS (
     SELECT b.number AS block_number

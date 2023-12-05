@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_bnb',
-        alias = 'crossdomain_mev',
+        alias = 'crossdomain_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_crossdomain_mev(
+{{dex_crossdomain_arbitrages(
         blockchain='bnb'
         , blocks = source('bnb','blocks')
         , traces = source('bnb','traces')

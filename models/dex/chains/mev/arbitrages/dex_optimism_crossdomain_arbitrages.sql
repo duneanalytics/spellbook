@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_optimism',
-        alias = 'crossdomain_mev',
+        alias = 'crossdomain_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_crossdomain_mev(
+{{dex_crossdomain_arbitrages(
         blockchain='optimism'
         , blocks = source('optimism','blocks')
         , traces = source('optimism','traces')

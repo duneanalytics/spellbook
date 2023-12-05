@@ -1,7 +1,7 @@
 {{ config(
         tags = ['dunesql'],
         schema = 'dex_ethereum',
-        alias = 'crossdomain_mev',
+        alias = 'crossdomain_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,7 +10,7 @@
         )
 }}
 
-{{dex_crossdomain_mev(
+{{dex_crossdomain_arbitrages(
         blockchain='ethereum'
         , blocks = source('ethereum','blocks')
         , traces = source('ethereum','traces')

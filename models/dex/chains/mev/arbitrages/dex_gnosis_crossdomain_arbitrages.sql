@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dex_gnosis',
-        alias = 'crossdomain_mev',
+        alias = 'crossdomain_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -9,7 +9,7 @@
 )
 }}
 
-{{dex_crossdomain_mev(
+{{dex_crossdomain_arbitrages(
         blockchain='gnosis'
         , blocks = source('gnosis','blocks')
         , traces = source('gnosis','traces')
