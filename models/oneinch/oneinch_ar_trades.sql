@@ -135,39 +135,22 @@ with
 select *, date_trunc('month', block_time) as block_month, call_trace_address as trace_address 
 
 from (
-
     select
-            blockchain
-            , tx_hash
-            , call_trace_address
-            , block_time
-            , minute
-            , tx_from
-            , tx_to
-            , protocol_version
-            , call_to
-            , user
-        from (
-            select
-                blockchain
-                , tx_hash
-                , call_trace_address
-                , block_time
-                , tx_from
-                , tx_to
-                , contract_address
-                , call_from
-                , call_to
-                , minute
-                , amount
-            from {{ ref('oneinch_calls_transfers_amounts') }}
-            {% if is_incremental() %}
-                where {{ incremental_predicate('block_time') }}
-            {% endif %}
-        )
-        join calls using(blockchain, tx_hash, call_trace_address, minute)
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-
+        blockchain
+        , tx_hash
+        , call_trace_address
+        , block_time
+        , tx_from
+        , tx_to
+        , contract_address
+        , call_from
+        , call_to
+        , minute
+    from {{ ref('oneinch_calls_transfers_amounts') }}
+    {% if is_incremental() %}
+        where {{ incremental_predicate('block_time') }}
+    {% endif %}
+    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
 )
 where blockchain = 'base'
