@@ -609,6 +609,8 @@ models:
         name: transfers
       - &explorer_link
         name: explorer_link
+      - *block_month_not_null
+      
 
   - name: oneinch_ar_trades
     meta:

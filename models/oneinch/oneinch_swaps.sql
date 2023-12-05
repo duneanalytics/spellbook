@@ -2,9 +2,15 @@
     config(
         schema = 'oneinch',
         alias = 'swaps',
-        materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side']
-    )
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        partition_by = ['block_month'],
+        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side'],
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "base"]\',
+                                "sector",
+                                "dex",
+                                \'["grkhr", "max-morrow"]\') }}'
 }}
 
 
@@ -225,4 +231,5 @@ select
     , transfers_usd_amount
     , transfers
     , explorer_link
+    , date(date_trunc('month', block_time)) as block_month
 from swaps
