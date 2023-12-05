@@ -6,6 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
+        tags=['prod_exclude'],
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "base"]\',
                                 "sector",
