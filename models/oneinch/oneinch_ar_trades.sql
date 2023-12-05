@@ -152,4 +152,3 @@ select
     , call_trace_address as trace_address
     , -1 as evt_index
 from trades
-where blockchain = 'fantom'
