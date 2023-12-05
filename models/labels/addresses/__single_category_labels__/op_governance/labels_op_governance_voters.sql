@@ -51,7 +51,7 @@ WHEN votes_count >= (SELECT "0.95p" FROM percentile_values_voters) THEN 'Avid Op
 WHEN votes_count >= (SELECT "0.65p" FROM percentile_values_voters) THEN 'Active Optimism Voter'
 ELSE 'Casual Optimism Voter'
 END) AS label
-FROM votes_count),
+FROM votes_count)
 
 SELECT 'optimism' AS blockchain,
     address,
