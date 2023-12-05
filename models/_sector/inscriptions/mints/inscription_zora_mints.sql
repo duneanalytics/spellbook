@@ -12,8 +12,5 @@
 }}
 
 {{inscription_mints(
-        blockchain = blockchain
-        , all_inscriptions = ref('inscription_' + blockchain + '_all')
-        , first_inscription_block = 2137565
+        all_inscriptions = ref('inscription_' + blockchain + '_all')
 )}}
--- First inscription block is 2137565, 2023-08-02 09:36: https://dune.com/queries/3254037

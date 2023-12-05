@@ -1,6 +1,6 @@
-{% macro inscription_deploys(blockchain, all_inscriptions, first_inscription_block) %}
+{% macro inscription_deploys(all_inscriptions) %}
 
-SELECT '{{blockchain}}' AS blockchain
+SELECT blockchain
 , block_time
 , date_trunc('month', block_time) AS block_month
 , block_number
