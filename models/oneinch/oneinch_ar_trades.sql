@@ -135,7 +135,7 @@ select
     , block_time
     , coalesce(dst_token_symbol, '') as token_bought_symbol
     , coalesce(src_token_symbol, '') as token_sold_symbol
-    , coalesce(src_token_symbol, '') || '-' || coalesce(dst_token_symbol, '') as token_pair
+    , array_join(array_sort(array[coalesce(src_token_symbol, ''), coalesce(dst_token_symbol, '')]), '-') as token_pair
     , dst_amount_decimals as token_bought_amount
     , src_amount_decimals as token_sold_amount
     , dst_amount as token_bought_amount_raw
