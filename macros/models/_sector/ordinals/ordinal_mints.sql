@@ -30,8 +30,8 @@ SELECT '{{blockchain}}' AS blockchain
 , json_extract_scalar(data_filtered, '$.op') AS operation
 , json_extract_scalar(data_filtered, '$.tick') AS ordinal_symbol
 , try_cast(json_extract_scalar(data_filtered, '$.amt') AS UINT256) AS amount
-, try_cast(JSON_EXTRACT(avalanche_c, '$.vin')) AS vin
-, try_cast(JSON_EXTRACT(avalanche_c, '$.vout')) AS vout
+, try_cast(JSON_EXTRACT(data_filtered, '$.vin')) AS vin
+, try_cast(JSON_EXTRACT(data_filtered, '$.vout')) AS vout
 , data_filtered AS full_inscription
 FROM raw_ordinals
 
