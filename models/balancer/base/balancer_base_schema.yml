@@ -350,6 +350,41 @@ models:
       - name: contract_address
       - name: block_month
 
+  - name: balancer_v2_base_protocol_fee
+    meta:
+      blockchain: base
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: token_symbol
+      - name: token_amount_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+      - name: treasury_share
+        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - name: treasury_revenue_usd
+        description: "Total revenue directed to Balancer DAO's treasury"
+
   - name: balancer_v2_base_bpt_supply
     meta:
       blockchain: base
@@ -377,5 +412,3 @@ models:
         name: lp_virtual_supply
         description: "The scaled supply of a BPT token."
       - *pool_id
-
-
