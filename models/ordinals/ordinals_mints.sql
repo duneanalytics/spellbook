@@ -1,6 +1,6 @@
 {{ config(
         
-        schema='inscriptions',
+        schema='ordinals',
         alias = 'mints',
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,18 +14,18 @@
 }}
 
 {% set sandwiches_models = [
-     (ref('inscriptions_arbitrum_mints'))
-     , (ref('inscriptions_avalanche_c_mints'))
-     , (ref('inscriptions_bnb_mints'))
-     , (ref('inscriptions_ethereum_mints'))
-     , (ref('inscriptions_fantom_mints'))
-     , (ref('inscriptions_gnosis_mints'))
-     , (ref('inscriptions_optimism_mints'))
-     , (ref('inscriptions_polygon_mints'))
-     , (ref('inscriptions_base_mints'))
-     , (ref('inscriptions_celo_mints'))
-     , (ref('inscriptions_zora_mints'))
-     , (ref('inscriptions_zksync_mints'))
+     (ref('ordinals_arbitrum_mints'))
+     , (ref('ordinals_avalanche_c_mints'))
+     , (ref('ordinals_bnb_mints'))
+     , (ref('ordinals_ethereum_mints'))
+     , (ref('ordinals_fantom_mints'))
+     , (ref('ordinals_gnosis_mints'))
+     , (ref('ordinals_optimism_mints'))
+     , (ref('ordinals_polygon_mints'))
+     , (ref('ordinals_base_mints'))
+     , (ref('ordinals_celo_mints'))
+     , (ref('ordinals_zora_mints'))
+     , (ref('ordinals_zksync_mints'))
 ] %}
 
 SELECT *
@@ -40,10 +40,11 @@ FROM (
         , tx_to
         , tx_index
         , action
-        , inscription_standard
+        , ordinal_standard
         , operation
-        , inscription_symbol
+        , ordinal_symbol
         , amount
+        , full_inscription
         FROM {{ sandwiches_model }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}

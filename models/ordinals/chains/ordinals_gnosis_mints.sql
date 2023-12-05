@@ -1,8 +1,8 @@
-{% set blockchain = 'optimism' %}
+{% set blockchain = 'gnosis' %}
 
 {{ config(
         
-        schema = 'inscriptions_' + blockchain,
+        schema = 'ordinals_' + blockchain,
         alias = 'sandwiches',
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,9 +11,9 @@
 )
 }}
 
-{{inscriptions_mints(
+{{ordinal_mints(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-        , first_inscription_block = 105741421
+        , first_ordinal_block = 28732751
 )}}
--- First inscription block is 105741421, 2023-06-18 09:46: https://dune.com/queries/3253991
+-- First ordinal block is 28732751, 2023-07-01 16:09: https://dune.com/queries/3253998

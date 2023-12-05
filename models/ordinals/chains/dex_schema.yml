@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: inscriptions_ethereum_mints
+  - name: ordinals_ethereum_mints
     meta: 
       blockchain: ethereum
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'ethereum']
+      tags: ['ordinals', 'mints', 'ethereum']
     description: >
       Inscription mints on Ethereum
     tests:
@@ -43,29 +43,29 @@ models:
       - &action
         name: action 
         description: "Action taken in transaction"
-      - &inscription_standard
-        name: inscription_standard
-        description: "Inscrption standard"
-      - &inscription_symbol
-        name: inscription_symbol
+      - &ordinal_standard
+        name: ordinal_standard
+        description: "Ordinal standard"
+      - &ordinal_symbol
+        name: ordinal_symbol
         description: "Symbol of inscription"
       - &operation
         name: operation
         description: "Operation"
       - &amount
         name: amount
-        description: "Amount of inscriptions"
+        description: "Amount of ordinals"
       - &full_inscription
         name: full_inscription
         description: "Full inscription information as found in the transaction's call data"
 
-  - name: inscriptions_arbitrum_mints
+  - name: ordinals_arbitrum_mints
     meta: 
       blockchain: arbitrum
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'arbitrum']
+      tags: ['ordinals', 'mints', 'arbitrum']
     description: >
       Inscription mints on Arbitrum
     tests:
@@ -84,19 +84,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_avalanche_c_mints
+  - name: ordinals_avalanche_c_mints
     meta: 
       blockchain: avalanche_c
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'avalanche_c']
+      tags: ['ordinals', 'mints', 'avalanche_c']
     description: >
       Inscription mints on Avalanche
     tests:
@@ -115,19 +115,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_bnb_mints
+  - name: ordinals_bnb_mints
     meta: 
       blockchain: bnb
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'bnb']
+      tags: ['ordinals', 'mints', 'bnb']
     description: >
       Inscription mints on BNB
     tests:
@@ -146,19 +146,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_fantom_mints
+  - name: ordinals_fantom_mints
     meta: 
       blockchain: fantom
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'fantom']
+      tags: ['ordinals', 'mints', 'fantom']
     description: >
       Inscription mints on Fantom
     tests:
@@ -177,19 +177,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_gnosis_mints
+  - name: ordinals_gnosis_mints
     meta: 
       blockchain: gnosis
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'gnosis']
+      tags: ['ordinals', 'mints', 'gnosis']
     description: >
       Inscription mints on Gnosis
     tests:
@@ -208,19 +208,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_optimism_mints
+  - name: ordinals_optimism_mints
     meta: 
       blockchain: optimism
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'optimism']
+      tags: ['ordinals', 'mints', 'optimism']
     description: >
       Inscription mints on Optimism
     tests:
@@ -239,19 +239,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_polygon_mints
+  - name: ordinals_polygon_mints
     meta: 
       blockchain: polygon
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'polygon']
+      tags: ['ordinals', 'mints', 'polygon']
     description: >
       Inscription mints on Polygon
     tests:
@@ -270,19 +270,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_base_mints
+  - name: ordinals_base_mints
     meta: 
       blockchain: base
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'base']
+      tags: ['ordinals', 'mints', 'base']
     description: >
       Inscription mints on Base
     tests:
@@ -301,19 +301,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_celo_mints
+  - name: ordinals_celo_mints
     meta: 
       blockchain: celo
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'celo']
+      tags: ['ordinals', 'mints', 'celo']
     description: >
       Inscription mints on Celo
     tests:
@@ -332,19 +332,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_zksync_mints
+  - name: ordinals_zksync_mints
     meta: 
       blockchain: zksync
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'zksync']
+      tags: ['ordinals', 'mints', 'zksync']
     description: >
       Inscription mints on zkSync
     tests:
@@ -363,19 +363,19 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
 
-  - name: inscriptions_zora_mints
+  - name: ordinals_zora_mints
     meta: 
       blockchain: zora
       sector: dex
       contributors: hildobby
     config:
-      tags: ['inscriptions', 'mints', 'zora']
+      tags: ['ordinals', 'mints', 'zora']
     description: >
       Inscription mints on Zora Network
     tests:
@@ -394,9 +394,9 @@ models:
       - *tx_to
       - *tx_index
       - *action
-      - *inscription_standard
+      - *ordinal_standard
       - *operation
-      - *inscription_symbol
+      - *ordinal_symbol
       - *amount
       - *full_inscription
       
