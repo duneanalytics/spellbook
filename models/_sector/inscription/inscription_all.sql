@@ -36,16 +36,10 @@ FROM (
         , block_month
         , block_number
         , tx_hash
+        , tx_index
         , tx_from
         , tx_to
-        , tx_index
-        , inscription_standard
-        , operation
-        , inscription_symbol
-        , amount
         , full_inscription
-        , vin
-        , vout
         FROM {{ all_model }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
