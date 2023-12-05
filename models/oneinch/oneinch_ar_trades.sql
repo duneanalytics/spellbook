@@ -76,6 +76,9 @@ with
                     cta.blockchain = pu.blockchain
                     and cta.contract_address = pu.contract_address
                     and cta.minute = pu.minute
+                    {% if is_incremental() %}
+                        and {{ incremental_predicate('minute') }}
+                    {% endif %}
             )
             {% if is_incremental() %}
                 and {{ incremental_predicate('minute') }}
