@@ -251,10 +251,16 @@ WITH deterministic_deployers AS (
   )
   {%- endfor %}
 
-
-SELECT {{ column_list | join(', ') }}  FROM base_level WHERE is_new_contract = 0
-UNION ALL
-SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
+  SELECT {{ column_list | join(', ') }}
+  FROM (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY contract_address, blockchain ORDER BY created_block_number DESC) AS init_rank
+    FROM (
+      SELECT {{ column_list | join(', ') }}  FROM base_level WHERE is_new_contract = 0
+      UNION ALL
+      SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
+    ) uni
+  ) filtered
+  WHERE init_rank = 1
 
 )
 
