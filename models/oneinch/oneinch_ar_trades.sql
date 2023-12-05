@@ -44,7 +44,7 @@ with
     )
 
 
-select *, date(date_trunc('month', minute)) block_month from calls 
+select *, date(date_trunc('month', minute)) block_month, call_trace_address as trace_address from calls 
 where blockchain = 'base'
 
 
