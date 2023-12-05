@@ -41,5 +41,3 @@ SELECT 'optimism' AS blockchain,
     'persona' AS label_type
 FROM
     governance_junkie
-GROUP BY address, label
-
