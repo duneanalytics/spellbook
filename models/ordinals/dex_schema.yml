@@ -58,3 +58,9 @@ models:
       - &full_inscription
         name: full_inscription
         description: "Full inscription information as found in the transaction's call data"
+      - &vin
+        name: vin
+        description: "Input of transaction"
+      - &vout
+        name: vout
+        description: "Output of transaction"

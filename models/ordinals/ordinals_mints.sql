@@ -45,6 +45,8 @@ FROM (
         , ordinal_symbol
         , amount
         , full_inscription
+        , vin
+        , vout
         FROM {{ sandwiches_model }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}

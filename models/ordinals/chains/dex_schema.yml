@@ -58,6 +58,12 @@ models:
       - &full_inscription
         name: full_inscription
         description: "Full inscription information as found in the transaction's call data"
+      - &vin
+        name: vin
+        description: "Input of transaction"
+      - &vout
+        name: vout
+        description: "Output of transaction"
 
   - name: ordinals_arbitrum_mints
     meta: 
@@ -89,6 +95,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_avalanche_c_mints
     meta: 
@@ -120,6 +128,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_bnb_mints
     meta: 
@@ -151,6 +161,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_fantom_mints
     meta: 
@@ -182,6 +194,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_gnosis_mints
     meta: 
@@ -213,6 +227,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_optimism_mints
     meta: 
@@ -244,6 +260,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_polygon_mints
     meta: 
@@ -275,6 +293,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_base_mints
     meta: 
@@ -306,6 +326,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_celo_mints
     meta: 
@@ -337,6 +359,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_zksync_mints
     meta: 
@@ -368,6 +392,8 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
 
   - name: ordinals_zora_mints
     meta: 
@@ -399,4 +425,6 @@ models:
       - *ordinal_symbol
       - *amount
       - *full_inscription
+      - *vin
+      - *vout
       
