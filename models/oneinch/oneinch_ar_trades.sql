@@ -87,8 +87,56 @@ with
 
 
 
-    , trades as (
-        select
+    -- , trades as (
+    --     select
+    --         blockchain
+    --         , tx_hash
+    --         , call_trace_address
+    --         , block_time
+    --         , minute
+    --         , tx_from
+    --         , tx_to
+    --         , protocol_version
+    --         , call_to
+    --         , user
+    --         , any_value(src_token_address) filter(where contract_address = src_token_address) as src_token_address
+    --         , any_value(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
+    --         , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
+    --         , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
+    --         , max(cast(amount as double) / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount_decimals
+    --         , max(cast(amount as double) / pow(10, decimals)) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount_decimals
+    --         , any_value(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
+    --         , any_value(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
+    --         , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
+    --         , max(amount * price / pow(10, decimals)) as transfers_usd_amount
+    --     from (
+    --         select
+    --             blockchain
+    --             , tx_hash
+    --             , call_trace_address
+    --             , block_time
+    --             , tx_from
+    --             , tx_to
+    --             , contract_address
+    --             , call_from
+    --             , call_to
+    --             , minute
+    --             , amount
+    --         from {{ ref('oneinch_calls_transfers_amounts') }}
+    --         {% if is_incremental() %}
+    --             where {{ incremental_predicate('block_time') }}
+    --         {% endif %}
+    --     )
+    --     join calls using(blockchain, tx_hash, call_trace_address, minute)
+    --     join prices using(blockchain, contract_address, minute)
+    --     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    -- )
+
+select *, date_trunc('month', block_time) as block_month, call_trace_address as trace_address 
+
+from (
+
+    select
             blockchain
             , tx_hash
             , call_trace_address
@@ -99,16 +147,6 @@ with
             , protocol_version
             , call_to
             , user
-            , any_value(src_token_address) filter(where contract_address = src_token_address) as src_token_address
-            , any_value(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
-            , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
-            , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
-            , max(cast(amount as double) / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount_decimals
-            , max(cast(amount as double) / pow(10, decimals)) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount_decimals
-            , any_value(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
-            , any_value(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
-            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
-            , max(amount * price / pow(10, decimals)) as transfers_usd_amount
         from (
             select
                 blockchain
@@ -128,11 +166,10 @@ with
             {% endif %}
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
-        join prices using(blockchain, contract_address, minute)
         group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    )
 
-select *, date_trunc('month', block_time) as block_month, call_trace_address as trace_address from trades
+
+)
 where blockchain = 'base'
 
 -- select
