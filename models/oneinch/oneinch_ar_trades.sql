@@ -142,13 +142,12 @@ from (
         , block_time
         , tx_from
         , tx_to
-        , contract_address
         , minute
     from {{ ref('oneinch_calls_transfers_amounts') }}
     {% if is_incremental() %}
         where {{ incremental_predicate('block_time') }}
     {% endif %}
-    group by 1, 2, 3, 4, 5, 6, 7, 8
+    group by 1, 2, 3, 4, 5, 6, 7
 
 )
 where blockchain = 'base'
