@@ -1,9 +1,9 @@
-{% set blockchain = 'arbitrum' %}
+{% set blockchain = 'zora' %}
 
 {{ config(
         
         schema = 'inscription_' + blockchain,
-        alias = 'sandwiches',
+        alias = 'mints',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,6 +14,6 @@
 {{inscription_mints(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-        , first_inscription_block = 102376455
+        , first_inscription_block = 2137565
 )}}
--- First inscription block is 102376455, 2023-06-18 09:35: https://dune.com/queries/3253988
+-- First inscription block is 2137565, 2023-08-02 09:36: https://dune.com/queries/3254037

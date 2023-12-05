@@ -1,9 +1,9 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'base' %}
 
 {{ config(
         
         schema = 'inscription_' + blockchain,
-        alias = 'sandwiches',
+        alias = 'mints',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,6 +14,6 @@
 {{inscription_mints(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-        , first_inscription_block = 29257005
+        , first_inscription_block = 2041131
 )}}
--- First inscription block is 29257005, 2023-06-20 04:37: https://dune.com/queries/3254013
+-- First inscription block is 2041131, 2023-08-01 06:33: https://dune.com/queries/3254019

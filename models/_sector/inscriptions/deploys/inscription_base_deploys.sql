@@ -1,9 +1,9 @@
-{% set blockchain = 'polygon' %}
+{% set blockchain = 'base' %}
 
 {{ config(
         
         schema = 'inscription_' + blockchain,
-        alias = 'sandwiches',
+        alias = 'deploys',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -11,9 +11,9 @@
 )
 }}
 
-{{inscription_mints(
+{{inscription_deploys(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-        , first_inscription_block = 44047666
+        , first_inscription_block = 2041131
 )}}
--- First inscription block is 44047666, 2023-06-18 10:05: https://dune.com/queries/3253953
+-- First inscription block is 2041131, 2023-08-01 06:33: https://dune.com/queries/3254019

@@ -13,7 +13,7 @@
         )
 }}
 
-{% set sandwiches_models = [
+{% set mints_models = [
      (ref('inscription_arbitrum_mints'))
      , (ref('inscription_avalanche_c_mints'))
      , (ref('inscription_bnb_mints'))
@@ -30,7 +30,7 @@
 
 SELECT *
 FROM (
-        {% for sandwiches_model in sandwiches_models %}
+        {% for mints_model in mints_models %}
         SELECT blockchain
         , block_time
         , block_month
@@ -46,7 +46,7 @@ FROM (
         , full_inscription
         , vin
         , vout
-        FROM {{ sandwiches_model }}
+        FROM {{ mints_model }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
         {% endif %}

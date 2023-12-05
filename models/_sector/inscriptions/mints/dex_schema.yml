@@ -4,7 +4,7 @@ models:
   - name: inscription_ethereum_mints
     meta: 
       blockchain: ethereum
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'ethereum']
@@ -65,7 +65,7 @@ models:
   - name: inscription_arbitrum_mints
     meta: 
       blockchain: arbitrum
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'arbitrum']
@@ -97,7 +97,7 @@ models:
   - name: inscription_avalanche_c_mints
     meta: 
       blockchain: avalanche_c
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'avalanche_c']
@@ -129,7 +129,7 @@ models:
   - name: inscription_bnb_mints
     meta: 
       blockchain: bnb
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'bnb']
@@ -161,7 +161,7 @@ models:
   - name: inscription_fantom_mints
     meta: 
       blockchain: fantom
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'fantom']
@@ -193,7 +193,7 @@ models:
   - name: inscription_gnosis_mints
     meta: 
       blockchain: gnosis
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'gnosis']
@@ -225,7 +225,7 @@ models:
   - name: inscription_optimism_mints
     meta: 
       blockchain: optimism
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'optimism']
@@ -257,7 +257,7 @@ models:
   - name: inscription_polygon_mints
     meta: 
       blockchain: polygon
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'polygon']
@@ -289,7 +289,7 @@ models:
   - name: inscription_base_mints
     meta: 
       blockchain: base
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'base']
@@ -321,7 +321,7 @@ models:
   - name: inscription_celo_mints
     meta: 
       blockchain: celo
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'celo']
@@ -353,7 +353,7 @@ models:
   - name: inscription_zksync_mints
     meta: 
       blockchain: zksync
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'zksync']
@@ -385,7 +385,7 @@ models:
   - name: inscription_zora_mints
     meta: 
       blockchain: zora
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
       tags: ['inscriptions', 'mints', 'zora']

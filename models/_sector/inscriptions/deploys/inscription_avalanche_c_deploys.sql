@@ -1,19 +1,19 @@
-{% set blockchain = 'zksync' %}
+{% set blockchain = 'avalanche_c' %}
 
 {{ config(
         
         schema = 'inscription_' + blockchain,
-        alias = 'sandwiches',
+        alias = 'deploys',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain','tx_hash']
+        unique_key = ['blockchain', 'tx_hash']
 )
 }}
 
-{{inscription_mints(
+{{inscription_deploys(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-        , first_inscription_block = 6359996
+        , first_inscription_block = 31918263
 )}}
--- First inscription block is 6359996, 2023-06-18 09:38: https://dune.com/queries/3253996
+-- First inscription block is 31918263, 2023-06-28 16:17: https://dune.com/queries/3254018

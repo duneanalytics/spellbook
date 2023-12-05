@@ -1,9 +1,9 @@
-{% set blockchain = 'avalanche_c' %}
+{% set blockchain = 'polygon' %}
 
 {{ config(
         
         schema = 'inscription_' + blockchain,
-        alias = 'sandwiches',
+        alias = 'mints',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -14,6 +14,6 @@
 {{inscription_mints(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-        , first_inscription_block = 31918263
+        , first_inscription_block = 44047666
 )}}
--- First inscription block is 31918263, 2023-06-28 16:17: https://dune.com/queries/3254018
+-- First inscription block is 44047666, 2023-06-18 10:05: https://dune.com/queries/3253953

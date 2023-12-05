@@ -4,12 +4,12 @@ models:
   - name: inscription_mints
     meta: 
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora
-      sector: dex
+      sector: inscription
       contributors: hildobby
     config:
-      tags: ['dex', 'inscriptions', 'mints']
+      tags: ['inscriptions', 'mints']
     description: >
-      Inscriptions across chains
+      Inscription mints across chains
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -61,3 +61,38 @@ models:
       - &vout
         name: vout
         description: "Output of transaction"
+
+  - name: inscription_deploys
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys']
+    description: >
+      Inscription deploys across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - &lim
+        name: lim
+        description: "Limit"
+      - &max
+        name: max
+        description: "Maximum supply"
+      - *full_inscription
