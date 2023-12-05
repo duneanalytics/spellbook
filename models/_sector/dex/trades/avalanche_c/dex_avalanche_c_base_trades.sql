@@ -11,6 +11,7 @@
     , ref('sushiswap_v1_avalanche_c_base_trades')
     , ref('sushiswap_v2_avalanche_c_base_trades')
     , ref('trader_joe_v1_avalanche_c_base_trades')
+    , ref('trader_joe_v2_avalanche_c_base_trades')
     , ref('trader_joe_v2_1_avalanche_c_base_trades')
 ] %}
 
