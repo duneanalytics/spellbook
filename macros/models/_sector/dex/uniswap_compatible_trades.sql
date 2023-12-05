@@ -4,6 +4,7 @@
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
+    , pair_column_name = 'pair'
     )
 %}
 WITH dexs AS
@@ -24,7 +25,7 @@ WITH dexs AS
         {{ Pair_evt_Swap }} t
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
-        ON f.pair = t.contract_address
+        ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
@@ -58,6 +59,7 @@ FROM
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
+    , optional_columns = ['f.fee']
     )
 %}
 WITH dexs AS
@@ -72,7 +74,11 @@ WITH dexs AS
         , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address as project_contract_address
-        , f.fee
+        {% if optional_columns %}
+            {% for optional_column in optional_columns %}
+            , {{ optional_column }}
+            {% endfor %}
+        {% endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
     FROM

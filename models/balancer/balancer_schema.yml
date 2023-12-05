@@ -178,10 +178,10 @@ models:
       - name: contract_address
       - name: median_price
 
-  - name: balancer_v2_liquidity
+  - name: balancer_liquidity
     meta:
       blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
-      project: balancer_v2
+      project: balancer
       contributors: viniabussafi
     config:
       tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base']
@@ -201,7 +201,8 @@ models:
       - *pool_id
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - *blockchain
+      - *version
+      - *blockchain     
       - name: token_address
         description: 'Contract address for the token'
       - name: token_symbol
@@ -271,3 +272,61 @@ models:
       - name: block_time
       - name: block_number
       - name: swap_fee_percentage
+
+  - name: balancer_protocol_fee
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - *pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - *version
+      - *blockchain
+      - name: token_address
+      - name: token_symbol
+      - name: token_amount_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+      - name: treasury_share
+        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - name: treasury_revenue_usd
+        description: "Total revenue directed to Balancer DAO's treasury"
+
+  - name: balancer_bpt_supply
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: thetroyharris
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+    description: >
+      The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - lp_virtual_supply_raw
+            - pool_id
+    columns:
+      - name: blockchain
+      - name: block_time
+      - name: block_number
+      - name: lp_virtual_supply_raw
+      - name: lp_virtual_supply
+      - name: pool_id

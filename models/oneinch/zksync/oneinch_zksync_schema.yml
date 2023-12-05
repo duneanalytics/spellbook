@@ -62,6 +62,8 @@ models:
         name: call_output
       - &call_input
         name: call_input
+      - &call_remains
+        name: call_remains
       - &minute
         name: minute
       - &block_month
@@ -111,6 +113,8 @@ models:
       - *call_selector
       - &maker
         name: maker
+      - &receiver
+        name: receiver
       - &maker_asset
         name: maker_asset
       - &making_amount
@@ -126,6 +130,8 @@ models:
       - *call_success
       - &call_gas_used
         name: call_gas_used
+      - &remains
+        name: remains
       - *call_output
       - *minute
       - *block_month
