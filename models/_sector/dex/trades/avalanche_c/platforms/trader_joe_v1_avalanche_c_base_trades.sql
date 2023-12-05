@@ -15,6 +15,6 @@
         , project = 'trader_joe'
         , version = '1'
         , Pair_evt_Swap = source('trader_joe_avalanche_c', 'JoePair_evt_Swap')
-        , Factory_evt_PoolCreated = source('trader_joe_avalanche_c', 'JoeFactory_evt_PairCreated')
+        , Factory_evt_PairCreated = source('trader_joe_avalanche_c', 'JoeFactory_evt_PairCreated')
     )
 }}
