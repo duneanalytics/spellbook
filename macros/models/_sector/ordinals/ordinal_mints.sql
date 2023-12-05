@@ -29,8 +29,8 @@ SELECT '{{blockchain}}' AS blockchain
 , json_extract_scalar(data_filtered, '$.op') AS operation
 , json_extract_scalar(data_filtered, '$.tick') AS ordinal_symbol
 , try_cast(json_extract_scalar(data_filtered, '$.amt') AS UINT256) AS amount
-, try(JSON_EXTRACT(data_filtered, '$.vin')) AS vin
-, try(JSON_EXTRACT(data_filtered, '$.vout')) AS vout
+,, REGEXP_EXTRACT(data_filtered, '"vin":(\\[.*?\\])') AS vin
+, REGEXP_EXTRACT(data_filtered, '"vout":(\\[.*?\\])') AS vout
 , data_filtered AS full_inscription
 FROM raw_ordinals
 
