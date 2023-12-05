@@ -1,17 +1,20 @@
+{% set blockchain = 'polygon' %}
+
 {{ config(
-        schema = 'dex_polygon',
+        schema = 'dex_' + blockchain,
         alias = 'crossdomain_arbitrages',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index']
+        unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
 
 {{dex_crossdomain_arbitrages(
-        blockchain='polygon'
-        , blocks = source('polygon','blocks')
-        , traces = source('polygon','traces')
-        , transactions = source('polygon','transactions')
+        blockchain=blockchain
+        , blocks = source(blockchain,'blocks')
+        , traces = source(blockchain,'traces')
+        , transactions = source(blockchain,'transactions')
 )}}

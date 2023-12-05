@@ -11,21 +11,21 @@ WITH received_by_builder AS (
         AND traces.success
         AND traces.value > UINT256 '0'
         {% if is_incremental() %}
-        AND traces.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('traces.block_time') }}
         {% endif %}
     LEFT JOIN {{source('erc20_' + blockchain, 'evt_transfer')}}  erc ON erc.evt_block_number=b.number
         AND b.miner=erc.to
         AND erc.value > UINT256 '0'
         {% if is_incremental() %}
-        AND erc.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('erc.evt_block_time') }}
         {% endif %}
     LEFT JOIN {{transactions}} txs ON txs.block_number=b.number
         AND txs.hash=traces.tx_hash
         {% if is_incremental() %}
-        AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('txs.block_time') }}
         {% endif %}
     {% if is_incremental() %}
-    WHERE b.time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('b.time') }}
     {% endif %}
     GROUP BY 1, 2, 3
     )
@@ -62,11 +62,11 @@ INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
     AND txs.index BETWEEN rbb.tx_index - 1 AND rbb.tx_index + 1
     {% if is_incremental() %}
-    AND txs.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('txs.block_time') }}
     {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
-AND dt.block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 
 {% endmacro %}
