@@ -18,7 +18,7 @@ FROM {{ref('labels_op_governance_delegators')}}
 UNION
 
 SELECT *
-FROM {{ref('labels_op_governance_retropgf_proposal_submitters')}}}}
+FROM {{ref('labels_op_governance_retropgf_proposal_submitters')}}
 
 UNION 
 
