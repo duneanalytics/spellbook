@@ -2,6 +2,18 @@
 name: Drop Deprecated Spells
 
 on:
+  {# push:
+    branches:
+      - drop-inactive-spells  # Trigger the workflow on pushes to the feature branch #}
+  pull_request:
+    branches:
+      - drop-inactive-spells  # Trigger the workflow on pull requests targeting the feature branch
+  schedule:
+    - cron: '0 14 * * 1'  # At 9 AM EST every Monday (14:00 UTC)
+  workflow_dispatch:
+
+
+on:
   schedule:
     - cron: '0 14 * * 1'  # At 9 AM EST every Monday (14:00 UTC)
   workflow_dispatch:
