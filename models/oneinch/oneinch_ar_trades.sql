@@ -15,39 +15,38 @@
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
 
 
-select 
-    date(timestamp '2023-01-01') as block_month
-    , 'test' as blockchain
-    , 0x2c606b33f2e1250f22fa8ed901e9e448f753c2e7697390cb39d7897cb4a7e0a8 as tx_hash
-    , 0 as trace_address
+
+with
+
+    calls as (
+        -- AR calls
+        select
+            blockchain
+            , tx_hash
+            , call_trace_address
+            , protocol_version
+            , tx_from as user
+            , if(src_token_address in {{native_addresses}}, wrapped_native_token_address, src_token_address) as src_token_address
+            , if(src_token_address in {{native_addresses}}, native_token_symbol) as src_native
+            , src_amount
+            , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as dst_token_address
+            , if(dst_token_address in {{native_addresses}}, native_token_symbol) as dst_native
+            , dst_amount
+            , minute
+        from {{ ref('oneinch_ar') }}
+        join {{ ref('evms_info') }} using(blockchain)
+        where
+            tx_success
+            and call_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
+    )
 
 
--- with
+select *, date(date_trunc('month', minute)) block_month from calls 
+where blockchain = 'base'
 
---     calls as (
---         -- AR calls
---         select
---             blockchain
---             , tx_hash
---             , call_trace_address
---             , protocol_version
---             , tx_from as user
---             , if(src_token_address in {{native_addresses}}, wrapped_native_token_address, src_token_address) as src_token_address
---             , if(src_token_address in {{native_addresses}}, native_token_symbol) as src_native
---             , src_amount
---             , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as dst_token_address
---             , if(dst_token_address in {{native_addresses}}, native_token_symbol) as dst_native
---             , dst_amount
---             , minute
---         from {{ ref('oneinch_ar') }}
---         join {{ ref('evms_info') }} using(blockchain)
---         where
---             tx_success
---             and call_success
---             {% if is_incremental() %}
---                 and {{ incremental_predicate('block_time') }}
---             {% endif %}
---     )
 
 --     , prices as (
 --         select
