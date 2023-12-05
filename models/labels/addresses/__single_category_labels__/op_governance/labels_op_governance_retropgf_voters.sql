@@ -27,7 +27,7 @@ SELECT 'optimism' AS blockchain,
     'op_governance_retropgf_voters' AS model_name,
     'persona' AS label_type
 FROM
-    optimism_voters
+    retropgf_voter
 GROUP BY address, label
 
 
