@@ -127,6 +127,8 @@ models:
             - evt_index
       - check_seed:
           seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+          filter:
+            version: 2.1
           match_columns:
             - tx_hash
             - evt_index
