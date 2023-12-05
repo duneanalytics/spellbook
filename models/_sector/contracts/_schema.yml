@@ -3,7 +3,7 @@ version: 2
 models:
   - name: contracts_project_name_mappings
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -21,7 +21,7 @@ models:
 
   - name: contracts_contract_mapping
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -134,7 +134,7 @@ models:
   
   - name: contracts_predeploys
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -156,7 +156,7 @@ models:
 
   - name: contracts_contract_creator_address_list
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -173,7 +173,7 @@ models:
 
   - name: contracts_contract_overrides
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -187,7 +187,7 @@ models:
 
   - name: contracts_self_destruct_contracts
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -211,7 +211,7 @@ models:
     
   - name: contracts_deterministic_contract_creators
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -224,7 +224,7 @@ models:
   
   - name: contracts_disperse_contracts
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: msilb7
     config:
@@ -241,7 +241,7 @@ models:
   
   - name: contracts_system_predeploys
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: msilb7
     config:
