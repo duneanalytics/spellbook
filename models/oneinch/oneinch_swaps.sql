@@ -59,6 +59,9 @@ with
         where
             tx_success
             and call_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
 
 
         union all
@@ -90,6 +93,9 @@ with
         where
             tx_success
             and call_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
 
 
         union all
@@ -121,6 +127,9 @@ with
             tx_success
             and call_success
             and cardinality(call_trace_address) = 0
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
     )
 
     , prices as (
@@ -132,22 +141,9 @@ with
             , decimals
             , symbol
         from {{ source('prices', 'usd') }}
-
-        union all 
-
-        -- performance optimization
-        select 
-            blockchain
-            , contract_address
-            , minute
-            , null as price
-            , null as decimals
-            , null as symbol 
-        from {{ ref('oneinch_calls_transfers_amounts') }} as cta
-        where not exists (
-            select blockchain, contract_address, minute from {{ source('prices', 'usd') }} as pu
-            where cta.blockchain = pu.blockchain and cta.contract_address = pu.contract_address and cta.minute = pu.minute
-        )
+        {% if is_incremental() %}
+            where {{ incremental_predicate('minute') }}
+        {% endif %}
     )
 
     , swaps as (
@@ -196,9 +192,12 @@ with
                 , amount
                 , call_remains
             from {{ ref('oneinch_calls_transfers_amounts') }}
+            {% if is_incremental() %}
+                where {{ incremental_predicate('block_time') }}
+            {% endif %}
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
-        join prices using(blockchain, contract_address, minute)
+        left join prices using(blockchain, contract_address, minute)
         group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
     )
 
