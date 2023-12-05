@@ -9,7 +9,7 @@
  ,ref('labels_op_governance_voters')
 ] %}
 
-address_count AS
+WITH address_count AS
 (SELECT address, COUNT(address) AS address_count
 FROM
 {% for model in op_governance_labels_models %}
@@ -37,7 +37,7 @@ SELECT 'optimism' AS blockchain,
     'query' AS source,
     TIMESTAMP '2023-12-05' AS created_at,
     NOW() AS updated_at,
-    'op_governance_combined_archetype' AS model_name,
+    'op_governance_derived_archetype' AS model_name,
     'persona' AS label_type
 FROM
     governance_junkie

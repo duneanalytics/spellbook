@@ -2,9 +2,10 @@
      alias = 'op_governance_delegators'
 )}}
 
-op_delegators AS
+WITH op_delegators AS
 (SELECT DISTINCT(delegator) AS address, 'OP Delegator' AS label
-FROM op_optimism.GovernanceToken_evt_DelegateChanged
+-- FROM op_optimism.GovernanceToken_evt_DelegateChanged
+FROM {{ source('op_optimism', 'GovernanceToken_evt_DelegateChanged') }}
 WHERE toDelegate != 0x0000000000000000000000000000000000000000
 )
 
