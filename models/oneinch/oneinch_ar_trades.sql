@@ -65,7 +65,7 @@ with
             , minute
             , null as price
             , null as decimals
-            , null as symbol 
+            , null as symbol
         from {{ ref('oneinch_calls_transfers_amounts') }} as cta
         where
             not exists (
