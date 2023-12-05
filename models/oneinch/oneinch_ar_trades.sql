@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'ar_trades_main',
+        alias = 'ar_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
