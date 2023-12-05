@@ -47,7 +47,7 @@ models:
       - *decimals
       - *token_type
       - *token_mapping_source
-  
+
   - name: tokens_optimism_erc20_generated
     meta:
       blockchain: optimism
@@ -63,7 +63,7 @@ models:
       - *decimals
       - *token_type
       - *token_mapping_source
-    
+
   - name: tokens_optimism_erc20_transfer_source
     meta:
       blockchain: optimism
@@ -116,9 +116,9 @@ models:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
-          The token standard. This is the set of rules that the contract must respect 
+          The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.
-          If you are adding a token with a new standard, remember to add it the accepted values list.   
+          If you are adding a token with a new standard, remember to add it the accepted values list.
 
   - name: tokens_optimism_nft_bridged_mapping
     meta:
@@ -218,7 +218,7 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
-  
+
   - name: tokens_optimism_nft_generated
     meta:
       blockchain: optimism

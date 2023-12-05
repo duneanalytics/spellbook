@@ -1,6 +1,5 @@
 {{ config(
     schema = 'balancer_v1_ethereum',
-    
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
