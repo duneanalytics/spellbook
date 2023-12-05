@@ -257,7 +257,6 @@ FROM
     ('nkn-nkn', 'ethereum', 'NKN', 0x5cf04716ba20127f1e2297addcf4b5035000c9eb, 18),
     ('nmr-numeraire', 'ethereum', 'NMR', 0x1776e1f26f98b1a5df9cd347953a26dd3cb46671, 18),
     ('noah-noah-coin', 'ethereum', 'NOAH', 0x58a4884182d9e835597f405e5f258290e46ae7c2, 18),
-    ('npxs-pundi-x', 'ethereum', 'NPXS', 0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3, 18),
     ('nrg-energi', 'ethereum', 'NRG', 0x1416946162b1c2c871a73b07e932d2fb6c932069, 18),
     ('ntvrk-netvrk', 'ethereum', 'NTVRK', 0xfc0d6cf33e38bce7ca7d89c0e292274031b7157a, 18),
     ('ntx-nunet', 'ethereum', 'NTX', 0xf0d33beda4d734c72684b5f9abbebf715d0a7935, 6),
@@ -1646,4 +1645,5 @@ where contract_address not in (
     ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
     ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
+    ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
 )
