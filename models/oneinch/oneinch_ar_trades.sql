@@ -57,32 +57,32 @@ with
             where {{ incremental_predicate('minute') }}
         {% endif %}
 
-        union all 
+        -- union all 
 
-        -- performance optimization
-        select 
-            blockchain
-            , contract_address
-            , minute
-            , null as price
-            , null as decimals
-            , null as symbol 
-        from {{ ref('oneinch_calls_transfers_amounts') }} as cta
-        where
-            not exists (
-                select blockchain, contract_address, minute
-                from {{ source('prices', 'usd') }} as pu
-                where
-                    cta.blockchain = pu.blockchain
-                    and cta.contract_address = pu.contract_address
-                    and cta.minute = pu.minute
-                    {% if is_incremental() %}
-                        and {{ incremental_predicate('minute') }}
-                    {% endif %}
-            )
-            {% if is_incremental() %}
-                and {{ incremental_predicate('minute') }}
-            {% endif %}
+        -- -- performance optimization
+        -- select 
+        --     blockchain
+        --     , contract_address
+        --     , minute
+        --     , null as price
+        --     , null as decimals
+        --     , null as symbol 
+        -- from {{ ref('oneinch_calls_transfers_amounts') }} as cta
+        -- where
+        --     not exists (
+        --         select blockchain, contract_address, minute
+        --         from {{ source('prices', 'usd') }} as pu
+        --         where
+        --             cta.blockchain = pu.blockchain
+        --             and cta.contract_address = pu.contract_address
+        --             and cta.minute = pu.minute
+        --             {% if is_incremental() %}
+        --                 and {{ incremental_predicate('minute') }}
+        --             {% endif %}
+        --     )
+        --     {% if is_incremental() %}
+        --         and {{ incremental_predicate('minute') }}
+        --     {% endif %}
     )
 
 
