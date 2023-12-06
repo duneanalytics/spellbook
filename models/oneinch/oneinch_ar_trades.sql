@@ -13,6 +13,7 @@
 
 
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
 
@@ -69,6 +70,8 @@ with
             , protocol_version
             , call_to
             , user
+            , src_native
+            , dst_native
             , any_value(src_token_address) filter(where contract_address = src_token_address) as src_token_address
             , any_value(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
             , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
@@ -99,7 +102,7 @@ with
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
         left join prices using(blockchain, contract_address, minute)
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
     )
 
 select
@@ -117,8 +120,8 @@ select
     , dst_amount as token_bought_amount_raw
     , src_amount as token_sold_amount_raw
     , coalesce(sources_usd_amount, transfers_usd_amount) as amount_usd
-    , dst_token_address as token_bought_address
-    , src_token_address as token_sold_address
+    , if(dst_native is not null, {{true_native_address}}, dst_token_address) as token_bought_address
+    , if(src_native is not null, {{true_native_address}}, src_token_address) as token_sold_address
     , user as taker
     , cast(null as varbinary) as maker
     , call_to as project_contract_address
