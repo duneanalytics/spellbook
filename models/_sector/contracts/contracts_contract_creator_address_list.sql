@@ -943,6 +943,7 @@ WITH curated_list AS (
       ,(0x27e80db1f5a975f4c43c5ec163114e796cdb603d, 'Rocket Pool')
       ,(0xfcc8c70a7ea0f588135b7b8892995ada7c0117b2, 'Galleon')
 
+
   ) as temp_table (creator_address, contract_project)
 )
 
