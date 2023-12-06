@@ -256,10 +256,10 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+    LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    AND w.blockchain = '{{blockchain}}'
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
-    WHERE w.blockchain = '{{blockchain}}'
 
     {% endmacro %}
