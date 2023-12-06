@@ -187,8 +187,8 @@ v1_stableswap as (
             'curvefi_ethereum',
             'crvUSD_StableswapFactory_evt_PlainPoolDeployed'
         ) }} dp
-        ON p.evt_block_time = dp.call_block_time
-        AND p.evt_tx_hash = dp.call_tx_hash
+        ON p.call_block_time = dp.evt_block_time
+        AND p.call_block_time = dp.evt_block_time
 
 )
 
