@@ -45,7 +45,7 @@ WITH pool_labels AS (
         {% if is_incremental() %}
         AND minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        GROUP BY 1, 2, 3
+        GROUP BY 1
     ),
 
     cumulative_balance AS (
