@@ -375,5 +375,5 @@ models:
     columns:
       - *blockchain
       - *pool_id
-      - *token_address
+      - name: token_address
       - name: normalized_weight
