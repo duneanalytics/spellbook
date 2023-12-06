@@ -84,6 +84,7 @@ LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.acc
 
 UNION ALL 
 
+--for the reader, note that SOL is special and can be transferred without calling the transfer instruction. It is also minted and burned without instructions. So to get balances, use daily_balances or account_activity instead of transfers.
 SELECT
     call_block_time as block_time
     , 'transfer' as action
