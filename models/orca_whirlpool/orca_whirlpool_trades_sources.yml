@@ -9,14 +9,17 @@ sources:
     tables:
       - name: whirlpool_call_initializePool
         loaded_at_field: call_block_time
-      - name: whirlpool_call_initializeFeeTier
-        loaded_at_field: call_block_time
       - name: whirlpool_call_setFeeRate
         loaded_at_field: call_block_time
       - name: whirlpool_call_swap
         loaded_at_field: call_block_time
       - name: whirlpool_call_twoHopSwap
         loaded_at_field: call_block_time
+      - name: whirlpool_call_initializeFeeTier
+        loaded_at_field: call_block_time
+      - name: whirlpool_call_setDefaultFeeRate
+        loaded_at_field: call_block_time
+        
   - name: spl_token_solana
     description: "spl_token decoded tables"
     freshness: # default freshness
