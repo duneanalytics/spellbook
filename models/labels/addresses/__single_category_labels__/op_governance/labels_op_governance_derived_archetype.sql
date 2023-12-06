@@ -35,8 +35,8 @@
 -- ),
 
 WITH joined_gov_labels AS
-{% for model in op_governance_labels_models %}
-(SELECT blockchain
+({% for model in op_governance_labels_models %}
+    SELECT blockchain
          , address
          , name
          , category
@@ -48,7 +48,7 @@ WITH joined_gov_labels AS
          , label_type
 FROM {{model}}
 {% if not loop.last %}
-UNION ALL
+UNION
 {% endif %}
 {% endfor %}
 ),
