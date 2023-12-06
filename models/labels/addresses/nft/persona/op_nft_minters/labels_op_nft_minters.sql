@@ -6,7 +6,7 @@ WITH erc721_mints AS
 (
 SELECT "from" AS minter, COUNT("from") AS mint_count
 FROM (SELECT nft.evt_tx_hash, tx."from"
-FROM {{ source('erc721_optimism', 'evt_Transfer') }}
+FROM {{ source('erc721_optimism', 'evt_Transfer') }} nft
 JOIN {{ source('optimism', 'transactions') }} tx
 ON nft.evt_tx_hash = tx.hash
 WHERE nft."from" = 0x0000000000000000000000000000000000000000
