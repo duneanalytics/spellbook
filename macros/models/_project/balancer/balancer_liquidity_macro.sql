@@ -233,7 +233,7 @@ WITH pool_labels AS (
             e.pool_id,
             SUM(e.pool_liquidity) / MAX(e.pricing_count) AS pool_liquidity,
             SUM(e.protocol_liquidity) / MAX(e.pricing_count) AS protocol_liquidity
-    FROM pool_liquidity_estimates e
+    FROM weighted_pool_liquidity_estimates e
     GROUP BY 1,2
     )
     
