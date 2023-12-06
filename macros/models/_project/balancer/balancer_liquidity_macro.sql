@@ -249,7 +249,6 @@ WITH pool_labels AS (
         token_symbol,
         token_balance_raw,
         token_balance,
-        protocol_liquidity_usd,
         COALESCE(b.protocol_liquidity * normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
         COALESCE(b.protocol_liquidity * normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
         COALESCE(b.pool_liquidity * normalized_weight, c.pool_liquidity_usd) AS pool_liquidity_usd,
