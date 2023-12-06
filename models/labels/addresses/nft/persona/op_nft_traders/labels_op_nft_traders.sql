@@ -34,7 +34,7 @@ WHEN trades_count >= (SELECT "0.65p" FROM percentile_nft_trades) THEN 'Active NF
 ELSE 'Normie NFT Trader'
 END) AS label
 FROM nft_trades_count
-),
+)
 
 SELECT 'optimism' AS blockchain,
     address,

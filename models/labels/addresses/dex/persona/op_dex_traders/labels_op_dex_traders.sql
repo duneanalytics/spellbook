@@ -11,7 +11,7 @@ GROUP BY taker
 
 percentile_dex_trades AS
 (SELECT approx_percentile (trades_count, 0.95) AS "0.95p", approx_percentile(trades_count, 0.65) AS "0.65p"
-FROM perps_trades_count),
+FROM dex_trades_count),
 
 dex_traders AS
 (SELECT taker AS address,
