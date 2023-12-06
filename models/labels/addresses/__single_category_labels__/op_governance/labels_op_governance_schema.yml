@@ -9,7 +9,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'voters', 'governance']
-    description: 'Optimism governance voters. '
+    description: '{{ doc("op_address_archetype_labels_description") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -58,7 +58,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'delegators', 'governance']
-    description: 'OP delegators on Optimism.'
+    description: '{{ doc("op_address_archetype_labels_description") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -87,7 +87,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'retropgf', 'proposal submitters', 'governance']
-    description: 'RetroPGF proposal submitters on Optimism.'
+    description: '{{ doc("op_address_archetype_labels_description") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -117,7 +117,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'retropgf', 'voters', 'governance']
-    description: 'RetroPGF proposal voters on Optimism.'
+    description: '{{ doc("op_address_archetype_labels_description") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -147,7 +147,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'derived archetype', 'governance']
-    description: 'Address labels derived from labels associated with other op_governance models'
+    description: '{{ doc("op_address_archetype_labels_description") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

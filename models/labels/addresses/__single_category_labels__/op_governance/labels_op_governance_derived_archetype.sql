@@ -9,30 +9,6 @@
  ,ref('labels_op_governance_voters')
 ] %}
 
--- WITH address_count AS
--- (SELECT address, COUNT(address) AS address_count
--- FROM
--- (SELECT *
--- FROM {{ref('labels_op_governance_delegators')}}
-
--- UNION
-
--- SELECT *
--- FROM {{ref('labels_op_governance_retropgf_proposal_submitters')}}
-
--- UNION 
-
--- SELECT *
--- FROM {{ref('labels_op_governance_retropgf_voters')}}
-
--- UNION 
-
--- SELECT *
--- FROM {{ref('labels_op_governance_voters')}}
-
--- )
--- GROUP BY address
--- ),
 
 WITH joined_gov_labels AS
 ({% for model in op_governance_labels_models %}
@@ -53,7 +29,7 @@ GROUP BY address
 governance_junkie AS
 (SELECT address, 'OP Governance Junkie' AS label
 FROM address_count
-WHERE address_count > 1
+WHERE address_count > 2
 )
 
 SELECT 'optimism' AS blockchain,
