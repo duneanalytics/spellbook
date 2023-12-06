@@ -242,7 +242,37 @@ models:
       - name: contract_address
         description: "Contract address used to create the pool"
 
-  - name: dex_raw_pools
+  - name: dex_raw_pool_initializations
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
+      sector: dex
+      contributors: grkhr
+    config:
+      tags: ['dex', 'cross-chain', 'pools']
+    description: >
+      DEX raw pools initialization calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+            - tx_hash
+            - call_trace_address
+    columns:
+      - *blockchain
+      - &type
+        name: type
+        description: "Pool implementation standard"
+      - *version
+      - *block_time
+      - *pool
+      - *token0
+      - *token1
+      - *tx_hash
+      - &call_trace_address
+        name: call_trace_address
+
+  - name: dex_raw_pool_creations
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
       sector: dex
@@ -258,9 +288,7 @@ models:
             - pool
     columns:
       - *blockchain
-      - &type
-        name: type
-        description: "Pool implementation standard"
+      - *type
       - *version
       - *pool
       - *token0
@@ -269,7 +297,32 @@ models:
       - *creation_block_number
       - name: contract_address
         description: "Contract address used to create the pool"
-      
+
+  - name: dex_raw_pools
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
+      sector: dex
+      contributors: grkhr
+    config:
+      tags: ['dex', 'cross-chain', 'pools']
+    description: >
+      DEX raw pools on all chains across all contracts and versions parsed from logs + filtered degen pools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - *type
+      - *version
+      - *pool
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
 
   - name: dex_offers
     meta:

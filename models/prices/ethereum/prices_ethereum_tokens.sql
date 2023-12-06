@@ -257,7 +257,6 @@ FROM
     ('nkn-nkn', 'ethereum', 'NKN', 0x5cf04716ba20127f1e2297addcf4b5035000c9eb, 18),
     ('nmr-numeraire', 'ethereum', 'NMR', 0x1776e1f26f98b1a5df9cd347953a26dd3cb46671, 18),
     ('noah-noah-coin', 'ethereum', 'NOAH', 0x58a4884182d9e835597f405e5f258290e46ae7c2, 18),
-    ('npxs-pundi-x', 'ethereum', 'NPXS', 0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3, 18),
     ('nrg-energi', 'ethereum', 'NRG', 0x1416946162b1c2c871a73b07e932d2fb6c932069, 18),
     ('ntvrk-netvrk', 'ethereum', 'NTVRK', 0xfc0d6cf33e38bce7ca7d89c0e292274031b7157a, 18),
     ('ntx-nunet', 'ethereum', 'NTX', 0xf0d33beda4d734c72684b5f9abbebf715d0a7935, 6),
@@ -1271,7 +1270,6 @@ FROM
     ('ousd-origin-dollar', 'ethereum', 'OUSD', 0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 18),
     ('pin-public-index-network', 'ethereum', 'PIN', 0xc1f976b91217e240885536af8b63bc8b5269a9be, 18),
     ('quad-quadency', 'ethereum', 'QUAD', 0xab2a7b5876d707e0126b3a75ef7781c77c8877ee, 18),
-    ('ram-ramifi-protocol', 'ethereum', 'RAM', 0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5, 9),
     ('rem-remme', 'ethereum', 'REM', 0x83984d6142934bb535793a82adb0a46ef0f66b6d, 4),
     ('rice-daosquare', 'ethereum', 'RICE', 0xbd9908b0cdd50386f92efcc8e1d71766c2782df0, 18),
     ('roobee-roobee', 'ethereum', 'ROOBEE', 0xa31b1767e09f842ecfd4bc471fe44f830e3891aa, 18),
@@ -1535,7 +1533,6 @@ FROM
     ('ldn-ludena-protocol', 'ethereum', 'LDN', 0xb29663Aa4E2e81e425294193616c1B102B70a158, 18),
     ('sdex-smardex', 'ethereum', 'SDEX', 0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF, 18),
     ('bzz-bzz', 'ethereum', 'BZZ', 0x19062190B1925b5b6689D7073fDfC8c2976EF8Cb, 16),
-    ('dobe-dobermann', 'ethereum', 'DOBE', 0xe7aB45162f5979F09B0bDa1CC7DfC97C270EA3d5, 18),
     ('k9-k9', 'ethereum', 'K9', 0x2bD0FB740e403B505A3146F9aC02df883Fd5C3Fc, 18),
     ('mne-minereum', 'ethereum', 'MNE', 0x426CA1eA2406c07d75Db9585F22781c096e3d0E0, 8),
     ('ptoy-patientory', 'ethereum', 'PTOY', 0x8Ae4BF2C33a8e667de34B54938B0ccD03Eb8CC06, 8),
@@ -1647,4 +1644,7 @@ where contract_address not in (
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
     ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
     ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
+    ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
+    ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
+    ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
 )
