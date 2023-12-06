@@ -36639,5 +36639,6 @@ FROM (VALUES
         ,(0x9abfc0f085c82ec1be31d30843965fcc63053ffe, 'Q*', 9)
         ,(0x250f02a3ae700835892535eb6f9d0af96e2c0643, 'SHARE', 18)
         ,(0x5b71c444538cc0c8be0b0c909b07139b78839320, 'STILTON', 18)
+        ,(0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 'GYD', 18)
      ) AS temp_table (contract_address, symbol, decimals)
      
