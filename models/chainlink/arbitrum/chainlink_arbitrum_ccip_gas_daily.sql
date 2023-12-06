@@ -49,6 +49,7 @@ WITH
       date_start,
       cast(date_trunc('month', date_start) as date) as date_month,
       ccip_gas_daily_meta.node_address as node_address,
+      operator_name,
       fulfilled_token_amount,
       fulfilled_usd_amount,
       reverted_token_amount,
@@ -56,12 +57,14 @@ WITH
       fulfilled_token_amount + reverted_token_amount as total_token_amount,
       fulfilled_usd_amount + reverted_usd_amount as total_usd_amount
     FROM ccip_gas_daily_meta
+    LEFT JOIN {{ ref('chainlink_arbitrum_ccip_operator_meta') }} ccip_operator_meta ON ccip_operator_meta.node_address = ccip_gas_daily_meta.node_address
   )
 SELECT 
   blockchain,
   date_start,
   date_month,
   node_address,
+  operator_name,
   fulfilled_token_amount,
   fulfilled_usd_amount,
   reverted_token_amount,

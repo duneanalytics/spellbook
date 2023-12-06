@@ -27,6 +27,7 @@ FROM (
       date_start,
       date_month,
       node_address,
+      operator_name,
       fulfilled_token_amount,
       fulfilled_usd_amount,
       reverted_token_amount,

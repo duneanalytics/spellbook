@@ -65,6 +65,9 @@ models:
         description: "Date Start"
       - *date_month
       - *node_address
+      - &operator_name
+        name: operator_name
+        description: "Operator Name"
       - &fulfilled_token_amount
         name: fulfilled_token_amount
         description: "Fulfilled Token Amount"

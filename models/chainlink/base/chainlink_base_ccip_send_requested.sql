@@ -15,7 +15,7 @@ SELECT
   MAX(ccip_traces.destination) as destination_blockchain
 FROM
   {{ ref('chainlink_base_ccip_send_traces') }} ccip_traces
-  LEFT JOIN {{ source('erc20_base', 'evt_Transfer') }} reward_evt_transfer ON reward_evt_transfer.evt_tx_hash = ccip_traces.tx_hash
+  LEFT JOIN {{ source('erc20_base', 'evt_transfer') }} reward_evt_transfer ON reward_evt_transfer.evt_tx_hash = ccip_traces.tx_hash
   LEFT JOIN {{ ref('chainlink_base_ccip_token_meta') }} token_addresses ON token_addresses.token_contract = reward_evt_transfer.contract_address
   LEFT JOIN {{ ref('chainlink_base_ccip_tokens_locked_logs') }} tokens_locked ON tokens_locked.tx_hash = ccip_traces.tx_hash
 WHERE
