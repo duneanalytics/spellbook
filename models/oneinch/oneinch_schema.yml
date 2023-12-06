@@ -626,7 +626,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - evt_index
+            - trace_address
     columns:
       - *blockchain_not_null
       - *project
@@ -650,5 +650,7 @@ models:
       - *tx_hash_not_null
       - *tx_from
       - *tx_to
+      - &trace_address
+        name: trace_address
       - *evt_index
 

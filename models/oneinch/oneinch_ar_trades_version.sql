@@ -6,7 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'evt_index']
+        unique_key = ['rn']
     )
 }}
 
@@ -105,9 +105,9 @@ with
     )
 
 select
-    blockchain
+    -- blockchain
     -- , '1inch' as project
-    , 'AR V' || protocol_version as version
+    -- , 'AR V' || protocol_version as version
     -- , date_trunc('day', block_time) as block_date
     , date_trunc('month', block_time) as block_month
     -- , block_time
@@ -124,8 +124,8 @@ select
     -- , user as taker
     -- , cast(null as varbinary) as maker
     -- , call_to as project_contract_address
-    , tx_hash
+    -- , tx_hash
     -- , tx_from
     -- , tx_to
-    , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
+    , row_number() over() as rn
 from trades

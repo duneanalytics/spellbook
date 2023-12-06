@@ -7,7 +7,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'evt_index']
+        unique_key = ['blockchain', 'tx_hash', 'trace_address']
     )
 }}
 
@@ -126,5 +126,6 @@ select
     , tx_hash
     , tx_from
     , tx_to
-    , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
+    , call_trace_address as trace_address
+    , -1
 from trades
