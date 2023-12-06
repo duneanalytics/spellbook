@@ -34,9 +34,10 @@ with eth_transfers as (
               AND {{ incremental_predicate('t.block_time') }}
         {% endif %}
 
--- Handle for Pre-Bedrock OP Bridged ETH ERC20  
+
 {% if blockchain == 'optimism' %}
---ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
+-- Handle for Pre-Bedrock OP Bridged ETH ERC20  
+-- ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
     union all
     
 
