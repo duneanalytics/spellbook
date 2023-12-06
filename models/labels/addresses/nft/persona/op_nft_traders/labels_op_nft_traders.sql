@@ -11,7 +11,7 @@ WHERE blockchain = 'optimism'
 UNION ALL
 
 SELECT seller AS trader
-FROM {{ ref(nft_trades) }}
+FROM {{ ref('nft_trades') }}
 WHERE blockchain = 'optimism'
 ),
 
