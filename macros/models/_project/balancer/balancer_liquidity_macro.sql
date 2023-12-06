@@ -216,7 +216,7 @@ WITH pool_labels AS (
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
