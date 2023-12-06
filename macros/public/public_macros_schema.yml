@@ -29,5 +29,5 @@ macros:
     description: "Returns the amount of gas used by transaction data (given a data field) by EVM specification"
     arguments:
       - name: data_field
-        tpye: varbinary
+        type: varbinary
         description: "Field containing calldata"
