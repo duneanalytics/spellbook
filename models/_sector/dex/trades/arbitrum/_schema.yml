@@ -194,3 +194,59 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: trader_joe_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: trader_joe
+      contributors: hsrvc, pecio222, hosuke
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2' ]
+    description: "Trader Joe arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: trader_joe_v2_1_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+    description: "Trader Joe arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+          filter:
+            version: 2.1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
