@@ -224,14 +224,14 @@ with tx_batch_appends as (
       )
       AND (
       -- L1 transactions use these method ID's pre-Boojum
-      cast(t.data as varchar) LIKE '0x0c4dd81%' -- Commit Block
+      bytearray_substring(t.data, 1, 4) = 0x0c4dd810 -- Commit Block
       OR
-      cast(t.data as varchar) LIKE '0xce9dcf16%' -- Execute Block
+      bytearray_substring(t.data, 1, 4) = 0xce9dcf16 -- Execute Block
       OR
       -- L1 transactions use these method ID's post-Boojum
-      cast(t.data as varchar) LIKE '0x701f58c5%' -- Commit Batches
+      bytearray_substring(t.data, 1, 4) = 0x701f58c5 -- Commit Batches
       OR
-      cast(t.data as varchar) LIKE '0xc3d93e7c%' -- Execute Batches
+      bytearray_substring(t.data, 1, 4) = 0xc3d93e7c -- Execute Batches
       )
       AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}

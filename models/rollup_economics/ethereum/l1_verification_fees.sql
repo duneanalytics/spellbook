@@ -31,10 +31,10 @@ with verify_txns as (
       )
       AND (
       -- L1 transactions use these method ID's pre-Boojum
-      cast(t.data as varchar) LIKE '0x7739cbe7%' -- Prove Block
+      bytearray_substring(t.data, 1, 4) = 0x7739cbe7 -- Prove Block
       OR
       -- L1 transactions use these method ID's post-Boojum
-      cast(t.data as varchar) LIKE '0x7f61885c%' -- Prove Batches
+      bytearray_substring(t.data, 1, 4) = 0x7f61885c -- Prove Batches
       )
       AND t.block_time >= timestamp '2023-03-01'
       AND p.blockchain is null
