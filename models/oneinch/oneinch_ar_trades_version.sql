@@ -107,7 +107,7 @@ with
 
 
 select
-    date(date_trunc('month', minute)) as block_month
+    date(date_trunc('month', calls.minute)) as block_month
     , call_trace_address trace_address
     , *
 from calls 
