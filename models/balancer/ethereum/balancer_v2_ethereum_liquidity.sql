@@ -14,8 +14,9 @@
     )
 }}
 
+
 {{ 
-    balancer_protocol_revenue_macro(
+    balancer_liquidity_macro(
         blockchain = blockchain,
     )
 }}
