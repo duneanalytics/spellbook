@@ -110,6 +110,7 @@ select
     date(timestamp '2023-12-01') as block_month
     , 0xeeee as tx_hash
     , 'qqq' as blockchain
+    , array[1] trace_address
 
 
 
