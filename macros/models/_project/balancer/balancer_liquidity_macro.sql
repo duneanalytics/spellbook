@@ -261,3 +261,5 @@ WITH pool_labels AS (
     LEFT JOIN eth_prices e ON e.day = b.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     WHERE b.day = CURRENT_DATE
+
+    {% endmacro %}
