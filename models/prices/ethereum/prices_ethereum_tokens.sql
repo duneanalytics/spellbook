@@ -1161,7 +1161,7 @@ FROM
     ('equad-quadrantprotocol', 'ethereum', 'EQUAD', 0xc28e931814725bbeb9e670676fabbcb694fe7df2, 18),
     ('fnk-fnkcom', 'ethereum', 'FNK', 0xb5fe099475d3030dde498c3bb6f3854f762a48ad, 18),
     ('fyz-fyooz', 'ethereum', 'FYZ', 0x6bff2fe249601ed0db3a87424a2e923118bb0312, 18),
-    ('gmt-gomining-token', 'ethereum', 'GMT', 0x7ddc52c4de30e94be3a6a0a2b259b2850f421989, 18),
+    ('gmt-stepn', 'ethereum', 'GMT', 0xe3c408bd53c31c085a1746af401a4042954ff740, 8),
     ('hbot-hummingbot', 'ethereum', 'HBOT', 0xe5097d9baeafb89f9bcb78c9290d545db5f9e9cb, 18),
     ('lead-lead', 'ethereum', 'LEAD', 0x1dd80016e3d4ae146ee2ebb484e8edd92dacc4ce, 18),
     ('mage-metabrands', 'ethereum', 'MAGE', 0xd52aae39a2b5cc7812f7b9450ebb61dfef702b15, 18),
