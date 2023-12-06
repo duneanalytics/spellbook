@@ -7,3 +7,6 @@
                 + 4 * ( (length(from_utf8(data_field)) - length(replace(from_utf8(data_field), chr(0), ''))) )
       ;
 {% endmacro %}
+
+--run macro
+evm_get_calldata_gas_from_data()
