@@ -109,7 +109,8 @@ with
 select
     date(date_trunc('month', calls.minute)) as block_month
     , call_trace_address trace_address
-    , *
+    , calls.blockchain
+    , calls.tx_hash
 from calls 
 join prices 
     on calls.src_token_address = prices.contract_address
