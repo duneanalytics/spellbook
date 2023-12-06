@@ -206,7 +206,7 @@ WITH pool_labels AS (
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
-    pool_liquidity_estimates AS (
+    weighted_pool_liquidity_estimates AS (
         SELECT
             b.day,
             b.pool_id,
@@ -228,7 +228,7 @@ WITH pool_labels AS (
         GROUP BY 1, 2, 3, 4
     ),
     
-    pool_liquidity_estimates_2 AS(
+    weighted_pool_liquidity_estimates_2 AS(
     SELECT  e.day,
             e.pool_id,
             SUM(e.pool_liquidity) / MAX(e.pricing_count) AS pool_liquidity,
@@ -243,11 +243,11 @@ WITH pool_labels AS (
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
         p.pool_symbol,
         '2' AS version,
-        'ethereum' AS blockchain,
-        token AS token_address,
-        token_symbol,
-        token_balance_raw,
-        token_balance,
+        '{{blockchain}}' AS blockchain,
+        c.token AS token_address,
+        c.token_symbol,
+        c.token_balance_raw,
+        c.token_balance,
         c.protocol_liquidity_usd as test_prot,
         COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
         COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
