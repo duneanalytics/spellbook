@@ -12,6 +12,7 @@ WITH top_of_block AS (
     -- List who paid the block builder with native token
     SELECT b.time AS block_time
     , t."from" AS tx_from
+    , t.tx_hash
     FROM {{traces}} t
     INNER JOIN {{blocks}} b ON b.number=t.block_number
         AND t.to=b.miner
@@ -22,13 +23,14 @@ WITH top_of_block AS (
     WHERE {{ incremental_predicate('t.block_time') }}
     AND t.success
     AND (t.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR t.call_type IS null)
-    GROUP BY 1, 2
+    --GROUP BY 1, 2
     
     UNION ALL
     
     -- List who paid the block builder with ER20 tokens
     SELECT b.time AS block_time
     , t."from" AS tx_from
+    , t.evt_tx_hash AS tx_hash
     FROM {{erc20_transfers}} t
     INNER JOIN {{blocks}} b ON b.number=t.evt_block_number
         AND t.to=b.miner
@@ -39,19 +41,31 @@ WITH top_of_block AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
-    GROUP BY 1, 2
+    --GROUP BY 1, 2
     
     UNION ALL
     
     -- List all addresses behind transactions in the top of the block
     SELECT txs.block_time
     , txs."from" AS tx_from
+    , txs.hash AS tx_hash
     FROM {{transactions}} txs
     INNER JOIN top_of_block tbl ON txs.block_number=tbl.block_number
         AND txs.block_number > tbl.top_of_block_limit
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('txs.block_time') }}
     {% endif %}
+    )
+
+, distinct_transactions AS (
+    SELECT DISTINCT pb.block_time
+    , pb.tx_from
+    , pb.tx_hash
+    , txs.index AS tx_index
+    FROM paid_builder pb
+    INNER JOIN {{transactions}} txs ON txs.block_time > NOW() - interval '10' day
+        AND pb.block_time=txs.block_time
+        AND pb.tx_hash=txs.hash
     )
 
 -- Exclusively keep trades where the builder was bribed
@@ -80,8 +94,10 @@ SELECT dt.blockchain
 , dt.amount_usd
 , dt.evt_index
 FROM {{ ref('dex_trades')}} dt
-INNER JOIN paid_builder pb ON dt.block_time=pb.block_time
-    AND dt.tx_from=pb.tx_from
+INNER JOIN distinct_transactions i ON dt.block_time=i.block_time
+    AND i.tx_from=dt.tx_from
+    AND i.tx_from=txs."from"
+    AND i.tx_index IN (txs.index-1, txs.index)
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
 WHERE dt.blockchain='{{blockchain}}'
