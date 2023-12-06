@@ -106,7 +106,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
         WHERE t.i = d.i AND d.i = p.i
-        ORDER BY 1,2,3
+        ORDER BY 1, 2, 3
     ),
 
     balances_changes AS (
@@ -225,6 +225,7 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL 
         AND p.pool_type IN ('WP', 'WP2T') -- filters for weighted pools with pricing assets
+        AND w.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4
     ),
     
@@ -257,10 +258,11 @@ WITH pool_labels AS (
     FROM pool_liquidity_estimates_2 b
     LEFT JOIN cumulative_usd_balance c ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+    LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = b.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
-    WHERE b.day = CURRENT_DATE
+    WHERE b.day = CURRENT_DATE 
+    AND w.blockchain = '{{blockchain}}'
 
     {% endmacro %}
