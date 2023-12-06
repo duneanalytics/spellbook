@@ -36,16 +36,7 @@
 
 WITH joined_gov_labels AS
 ({% for model in op_governance_labels_models %}
-    SELECT blockchain
-         , address
-         , name
-         , category
-         , contributor
-         , source
-         , created_at
-         , updated_at
-         , model_name
-         , label_type
+SELECT *
 FROM {{model}}
 {% if not loop.last %}
 UNION
