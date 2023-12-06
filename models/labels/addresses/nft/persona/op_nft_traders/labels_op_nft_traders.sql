@@ -5,7 +5,7 @@
 
 WITH nft_trades_raw AS
 (SELECT buyer AS trader
-FROM {{ ref(nft_trades) }}
+FROM {{ ref('nft_trades') }}
 WHERE blockchain = 'optimism'
 
 UNION ALL

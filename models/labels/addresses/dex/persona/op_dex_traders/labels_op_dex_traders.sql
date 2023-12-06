@@ -4,7 +4,7 @@
 
 WITH dex_trades_count AS
 (SELECT taker, COUNT(taker) AS trades_count
-FROM {{ ref(dex_trades) }}
+FROM {{ ref('dex_trades') }}
 WHERE blockchain = 'optimism'
 GROUP BY taker
 ),

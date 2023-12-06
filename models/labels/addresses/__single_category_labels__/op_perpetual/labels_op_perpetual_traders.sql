@@ -5,7 +5,7 @@
 
 WITH perps_trades_count AS
 (SELECT trader, COUNT(trader) AS trades_count
-FROM {{ ref(perpetual_trades) }}
+FROM {{ ref('perpetual_trades') }}
 WHERE blockchain = 'optimism'
 GROUP BY trader
 ORDER BY trades_count DESC),
