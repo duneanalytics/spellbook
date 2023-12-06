@@ -2,20 +2,19 @@ version: 2
 
 models:
 
-  - name: contracts_base_contract_mapping
+  - name: contracts_zora_contract_mapping
     meta:
-      blockchain: base
+      blockchain: zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on base."
+      tags: ['evm', 'zora', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on zora."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - contract_address
-
             
     columns:
       - &created_month
@@ -112,9 +111,9 @@ models:
         name: is_deterministic_deployer_deployed
         description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
 
-  - name: contracts_base_find_self_destruct_contracts
+  - name: contracts_zora_find_self_destruct_contracts
     meta:
-      blockchain: base
+      blockchain: zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -142,20 +141,19 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_base_base_starting_level
+  - name: contracts_zora_base_starting_level
     meta:
-      blockchain: base
+      blockchain: zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Base Level for mapping of contracts to its creators and names on base."
+      tags: ['evm', 'zora', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on zora."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - contract_address
-
             
     columns:
       - *blockchain
@@ -182,20 +180,19 @@ models:
         name: reinitialize_rank
         description: "Rank of the same contract being deployed in descending order - used to only ensure we get the most recent contract instance (allowlist & self-destructs can cause duplicates)."
 
-  - name: contracts_base_base_iterated_creators
+  - name: contracts_zora_base_iterated_creators
     meta:
-      blockchain: base
+      blockchain: zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'base', 'contracts', 'addresses']
-    description: "Iterated creators for mapping of contracts to its creators and names on base."
+      tags: ['evm', 'zora', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on zora."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - contract_address
-
             
     columns:
       - *blockchain
