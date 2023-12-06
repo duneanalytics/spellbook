@@ -4,7 +4,7 @@
     schema = 'contracts',
     alias = 'contract_overrides',
     unique_key='contract_address',
-    post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
                               "sector",
                               "contracts",
                               \'["msilb7", "chuxin"]\') }}'

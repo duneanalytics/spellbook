@@ -3,7 +3,7 @@
         
         schema = 'contracts',
         alias = 'predeploys',
-        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin"]\') }}'
