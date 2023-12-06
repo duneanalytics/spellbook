@@ -105,7 +105,7 @@ with
 select
     blockchain
     , '1inch' as project
-    , 'AR V' || protocol_version as version
+    , 'AR v' || protocol_version as version
     , date_trunc('day', block_time) as block_date
     , date(date_trunc('month', block_time)) as block_month
     , block_time
