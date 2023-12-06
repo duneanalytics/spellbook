@@ -157,6 +157,34 @@ meta_pools_deployed AS (
     FROM
         meta_calls mc 
     LEFT JOIN regular_pools r ON r.pool_address = mc._base_pool
+
+    UNION ALL
+
+    SELECT
+        'Factory V1 Stableswap Meta' AS version,
+        _name AS name,
+        _symbol AS symbol,
+        output_0 AS pool_address,
+        _A AS A,
+        _fee AS mid_fee,
+        _fee AS out_fee,
+        output_0 AS token_address,
+        output_0 AS deposit_contract,
+        _coin AS coin0,
+        r.token_address as coin1, --reference the token address of the base pool as coin1. meta pools swap into the base pool token, and then another swap is conducted.
+        CAST(NULL as varbinary) AS coin2,
+        CAST(NULL as varbinary) AS coin3,
+        _coin AS undercoin0,
+        --Listing underlying coins for the ExchangeUnderlying function
+        r.coin0 as undercoin1,
+        r.coin1 as undercoin2,
+        r.coin2 as undercoin3
+    FROM
+        {{ source(
+            'curvefi_ethereum',
+            'crvUSD_StableswapFactory_call_deploy_metapool' 
+        ) }} mc 
+    LEFT JOIN regular_pools r ON r.pool_address = mc._base_pool
 ),
 
 v1_stableswap as (
@@ -166,8 +194,8 @@ v1_stableswap as (
         p._symbol AS symbol,
         dp.pool AS pool_address,
         p._A AS A,
-        dp._fee AS mid_fee,
-        dp._fee AS out_fee,
+        p._fee AS mid_fee,
+        p._fee AS out_fee,
         dp.pool AS token_address,
         dp.pool AS deposit_contract,
         p._coins[1] AS coin0,
@@ -189,7 +217,6 @@ v1_stableswap as (
         ) }} dp
         ON p.call_block_time = dp.evt_block_time
         AND p.call_block_time = dp.evt_block_time
-
 )
 
 , v1_pools_deployed AS (
