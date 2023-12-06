@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id','outer_instruction_index','inner_instruction_index'],
+        unique_key = ['tx_id','outer_instruction_index','inner_instruction_index','block_time'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "tokens",
@@ -30,59 +30,39 @@ SELECT
 FROM (  
       SELECT account_source, account_destination, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'transfer' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_transfer') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
 
       UNION ALL
 
       SELECT account_source, account_destination, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'transfer' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_transferChecked') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
 
       UNION ALL
 
       SELECT null, account_account as account_destination, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'mint' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_mintTo') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
 
       UNION ALL
 
       SELECT null, account_account as account_destination, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'mint' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_mintToChecked') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
 
       UNION ALL
 
       SELECT account_account as account_source, null, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'burn' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_burn') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
 
       UNION ALL
 
       SELECT account_account as account_source, null, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'burn' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_burnChecked') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
 ) tr
 --get token and accounts
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source 
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
+WHERE 1=1
+{% if is_incremental() %}
+AND {{incremental_predicate('call_block_time')}}
+{% endif %}
 -- WHERE call_block_time > now() - interval '30' day
 
 UNION ALL 
