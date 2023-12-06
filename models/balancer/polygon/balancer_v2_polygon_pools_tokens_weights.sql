@@ -6,11 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['pool_id', 'token_address'],
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                                    "project",
-                                    "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
+        unique_key = ['pool_id', 'token_address']
     )
 }}
 

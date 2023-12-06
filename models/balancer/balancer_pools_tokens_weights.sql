@@ -1,6 +1,5 @@
 {{ config(
     schema = 'balancer',
-    
     alias = 'pools_tokens_weights',
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
