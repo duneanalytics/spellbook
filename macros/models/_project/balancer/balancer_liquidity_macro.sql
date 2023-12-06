@@ -51,7 +51,8 @@ WITH pool_labels AS (
             date_trunc('day', HOUR) AS day,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS bpt_price
-        FROM {{ ref('balancer_v2_' + blockchain, '_bpt_prices') }}
+        FROM {{ ref('balancer_bpt_prices') }}
+        WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2
     ),
     
@@ -216,7 +217,7 @@ WITH pool_labels AS (
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_v2_'  + blockchain, '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
@@ -256,7 +257,7 @@ WITH pool_labels AS (
     FROM pool_liquidity_estimates_2 b
     LEFT JOIN cumulative_usd_balance c ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('balancer_v2_'  + blockchain, '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
+    LEFT JOIN {{ ref('balancer_v2_arbitrum_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = b.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
