@@ -107,13 +107,15 @@ with
 
 
 select
-    date(timestamp '2023-12-01') as block_month
-    , 0xeeee as tx_hash
-    , 'qqq' as blockchain
-    , array[1] trace_address
-
-
-
+    date(date_trunc('month', minute)) as block_month
+    , call_trace_address trace_address
+    , *
+from calls 
+join prices 
+    on calls.src_token_address = prices.contract_address
+    and calls.minute = prices.minute
+    and calls.blockchain = prices.blockchain
+where calls.blockchain = 'base' and prices.blockchain = 'base'
 -- select
 --     -- blockchain
 --     -- , '1inch' as project
