@@ -34,9 +34,7 @@
 -- GROUP BY address
 -- ),
 
-WITH address_count AS
-(SELECT address, COUNT(address) AS address_count
-FROM
+WITH joined_gov_labels AS
 {% for model in op_governance_labels_models %}
 (SELECT *
 FROM {{model}}
@@ -44,7 +42,11 @@ FROM {{model}}
 UNION ALL
 {% endif %}
 {% endfor %}
-)
+),
+
+address_count AS
+(SELECT address, COUNT(address) AS address_count
+FROM joined_gov_labels
 GROUP BY address
 ),
 
