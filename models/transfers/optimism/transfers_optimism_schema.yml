@@ -9,7 +9,12 @@ models:
       contributors: msilb7, chuxin
     config:
       tags: ["transfers", "optimism", "eth"]
-    description: "Events of native ETH transfers on Ethereum."
+    description: "Events of native ETH transfers on OP Mainnet."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - trace_address
     columns:
       - &from
         name: from
@@ -41,11 +46,6 @@ models:
       - &tx_method_id
         name: tx_method_id
         description: "Function calls specified by the first four bytes of data sent with a transaction"
-      - name: unique_transfer_id
-        description: "Unique transfer ID (used for testing for duplicates), made up with tx_hash and trace_address"
-        tests:
-          - not_null
-          - unique
       - &tx_to
         name: tx_to
         description: "To Address for the Transaction"
