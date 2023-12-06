@@ -1,4 +1,4 @@
-{% op_address_archetype_labels_description %}
+{% docs op_address_archetype_labels_description %}
 
 - Labels starting with "Avid", "Elite", "Voracious" and "Habitual" are in the top 5% of the specified dataset (e.g. minters, traders, voters e.t.c) based on transaction volume, trade volume, mint volume e.t.c.
 
