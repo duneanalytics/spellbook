@@ -13,7 +13,7 @@
 }}
 
 SELECT
-    tr.call_block_time as block_time
+    call_block_time as block_time
     , action
     , amount
     , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
@@ -21,10 +21,11 @@ SELECT
     , tk_d.token_balance_owner as to_owner
     , account_source as from_token_account
     , account_destination as to_token_account
-    , tr.call_tx_signer as tx_signer
-    , tr.call_tx_id as tx_id
-    , tr.call_outer_instruction_index as outer_instruction_index
-    , tr.call_inner_instruction_index as inner_instruction_index
+    , call_tx_signer as tx_signer
+    , call_tx_id as tx_id
+    , call_outer_instruction_index as outer_instruction_index
+    , call_inner_instruction_index as inner_instruction_index
+    , call_outer_executing_account as outer_executing_account
 FROM (  
       SELECT account_source, account_destination, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'transfer' as action, call_outer_instruction_index, call_inner_instruction_index
       FROM {{ source('spl_token_solana','spl_token_call_transfer') }}
@@ -99,8 +100,10 @@ SELECT
     , call_tx_id as tx_id
     , call_outer_instruction_index as outer_instruction_index
     , call_inner_instruction_index as inner_instruction_index
+    , call_outer_executing_account as outer_executing_account
 FROM (
-      SELECT account_from, account_to, lamports, call_tx_signer, call_block_time, call_tx_id, call_outer_executing_account, call_inner_instruction_index FROM system_program_solana.system_program_call_Transfer
+      SELECT account_from, account_to, lamports, call_tx_signer, call_block_time, call_tx_id, call_outer_instruction_index, call_inner_instruction_index, call_outer_executing_account
+      FROM {{ source('system_program_solana','system_program_call_Transfer') }}
       WHERE 1=1
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
@@ -108,7 +111,8 @@ FROM (
 
       UNION ALL 
       
-      SELECT account_funding_account, account_recipient_account, lamports, call_tx_signer, call_block_time, call_tx_id, call_outer_executing_account, call_inner_instruction_index FROM system_program_solana.system_program_call_TransferWithSeed
+      SELECT account_funding_account, account_recipient_account, lamports, call_tx_signer, call_block_time, call_tx_id, call_outer_instruction_index, call_inner_instruction_index, call_outer_executing_account
+      FROM {{ source('system_program_solana','system_program_call_TransferWithSeed') }}
       WHERE 1=1
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
