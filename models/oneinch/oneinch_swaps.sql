@@ -2,14 +2,22 @@
     config(
         schema = 'oneinch',
         alias = 'swaps',
-        materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side']
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        partition_by = ['block_month'],
+        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side'],
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "base"]\',
+                                "project",
+                                "oneinch",
+                                \'["grkhr", "max-morrow"]\') }}'
     )
 }}
 
 
 
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
 
@@ -51,6 +59,9 @@ with
         where
             tx_success
             and call_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
 
 
         union all
@@ -82,6 +93,9 @@ with
         where
             tx_success
             and call_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
 
 
         union all
@@ -113,6 +127,9 @@ with
             tx_success
             and call_success
             and cardinality(call_trace_address) = 0
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% endif %}
     )
 
     , prices as (
@@ -124,35 +141,24 @@ with
             , decimals
             , symbol
         from {{ source('prices', 'usd') }}
-
-        union all 
-
-        -- performance optimization
-        select 
-            blockchain
-            , contract_address
-            , minute
-            , null as price
-            , null as decimals
-            , null as symbol 
-        from {{ ref('oneinch_calls_transfers_amounts') }} as cta
-        where not exists (
-            select blockchain, contract_address, minute from {{ source('prices', 'usd') }} as pu
-            where cta.blockchain = pu.blockchain and cta.contract_address = pu.contract_address and cta.minute = pu.minute
-        )
+        {% if is_incremental() %}
+            where {{ incremental_predicate('minute') }}
+        {% endif %}
     )
 
-    , trades as (
+    , swaps as (
         select
             blockchain
             , tx_hash
             , call_trace_address
             , block_time
             , minute
-            , protocol
             , tx_from
             , tx_to
+            , call_from
+            , call_to
             , contract_name
+            , protocol
             , protocol_version
             , method
             , user
@@ -162,8 +168,8 @@ with
             , second_side
             , call_remains as remains
             , any_value(explorer_link) as explorer_link
-            , any_value(src_token_address) filter(where contract_address = src_token_address) as src_token_address
-            , any_value(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
+            , any_value(if(src_native is null, src_token_address, {{true_native_address}})) filter(where contract_address = src_token_address) as src_token_address
+            , any_value(if(dst_native is null, dst_token_address, {{true_native_address}})) filter(where contract_address = dst_token_address) as dst_token_address
             , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
             , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
             , any_value(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
@@ -179,17 +185,20 @@ with
                 , block_time
                 , tx_from
                 , tx_to
+                , call_from
+                , call_to
                 , contract_address
                 , minute
                 , amount
-                , transfer_from
-                , transfer_to
                 , call_remains
             from {{ ref('oneinch_calls_transfers_amounts') }}
+            {% if is_incremental() %}
+                where {{ incremental_predicate('block_time') }}
+            {% endif %}
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
-        join prices using(blockchain, contract_address, minute)
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+        left join prices using(blockchain, contract_address, minute)
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
     )
 
 select
@@ -200,6 +209,8 @@ select
     , minute
     , tx_from
     , tx_to
+    , call_from
+    , call_to
     , contract_name
     , protocol
     , protocol_version
@@ -221,4 +232,5 @@ select
     , transfers_usd_amount
     , transfers
     , explorer_link
-from trades
+    , date(date_trunc('month', block_time)) as block_month
+from swaps
