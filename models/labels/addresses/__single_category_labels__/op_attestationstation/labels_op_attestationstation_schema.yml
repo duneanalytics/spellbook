@@ -9,7 +9,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'attestation', 'attester']
-    description: '{{ doc("op_address_archetype_labels_description") }}'
+    description: Attestation attesters on Optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -58,7 +58,7 @@ models:
       contributors: kaiblade
     config:
       tags: ['labels', 'optimism', 'attestation']
-    description: '{{ doc("op_address_archetype_labels_description") }}'
+    description: Attestation creators on Optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
