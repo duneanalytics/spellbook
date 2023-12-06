@@ -238,27 +238,26 @@ WITH pool_labels AS (
     )
     
     SELECT
-        b.day,
-        b.pool_id,
-        BYTEARRAY_SUBSTRING(b.pool_id, 1, 20) AS pool_address,
-        p.pool_type,
+        c.day,
+        c.pool_id,
+        BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
         p.pool_symbol,
         '2' AS version,
         '{{blockchain}}' AS blockchain,
-        token AS token_address,
-        token_symbol,
-        token_balance_raw,
-        token_balance,
-        COALESCE(b.protocol_liquidity * normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
-        COALESCE(b.protocol_liquidity * normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
-        COALESCE(b.pool_liquidity * normalized_weight, c.pool_liquidity_usd) AS pool_liquidity_usd,
-        COALESCE(b.pool_liquidity * normalized_weight, c.pool_liquidity_usd)/e.eth_price AS pool_liquidity_eth
-    FROM pool_liquidity_estimates_2 b
-    LEFT JOIN cumulative_usd_balance c ON c.day = b.day
+        c.token AS token_address,
+        c.token_symbol,
+        c.token_balance_raw,
+        c.token_balance,
+        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
+        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
+        COALESCE(b.pool_liquidity * w.normalized_weight, c.pool_liquidity_usd) AS pool_liquidity_usd,
+        COALESCE(b.pool_liquidity * w.normalized_weight, c.pool_liquidity_usd)/e.eth_price AS pool_liquidity_eth
+    FROM cumulative_usd_balance c
+    LEFT JOIN pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
     LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
     AND w.token_address = c.token
-    LEFT JOIN eth_prices e ON e.day = b.day
+    LEFT JOIN eth_prices e ON e.day = c.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     WHERE w.blockchain = '{{blockchain}}'
 
