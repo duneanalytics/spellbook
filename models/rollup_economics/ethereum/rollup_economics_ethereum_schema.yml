@@ -25,6 +25,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of the transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of the transaction"
       - &data_length
         name: data_length
         description: "byte length of the data posted to l1"
@@ -59,6 +62,7 @@ models:
       - *name
       - *hash
       - *block_time
+      - *block_number
       - &proof_size_mb
         name: proof_size_mb
         description: "size of proofs posted to l1 in MBs"

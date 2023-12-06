@@ -90,6 +90,7 @@ with verify_txns as (
 SELECT
 txs.name,
 txs.hash,
+txs.block_number,
 bxs.time as block_time,
 txs.proof_size_mb,
 gas_spent,

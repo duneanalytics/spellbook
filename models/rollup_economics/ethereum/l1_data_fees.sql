@@ -271,6 +271,7 @@ SELECT
 txs.name,
 txs.hash,
 bxs.time as block_time,
+txs.block_number,
 txs.data_length,
 gas_spent,
 gas_spent_usd,
