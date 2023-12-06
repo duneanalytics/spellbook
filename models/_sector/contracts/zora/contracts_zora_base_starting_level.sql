@@ -1,7 +1,7 @@
  {{
   config(
-        schema = 'contracts_ethereum',
-        alias = 'base_iterated_creators',
+        schema = 'contracts_zora',
+        alias = 'base_starting_level',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -9,7 +9,8 @@
         partition_by = ['created_month']
   )
 }}
+-- depends_on: {{ ref('contracts_deterministic_contract_creators') }}
 
-{{contracts_base_iterated_creators(
-    chain='ethereum'
+{{contracts_base_starting_level(
+    chain='zora'
 )}}

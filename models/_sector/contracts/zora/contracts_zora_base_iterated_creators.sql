@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'contracts_ethereum',
+        schema = 'contracts_zora',
         alias = 'base_iterated_creators',
         materialized ='incremental',
         file_format ='delta',
@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_iterated_creators(
-    chain='ethereum'
+    chain='zora'
 )}}
