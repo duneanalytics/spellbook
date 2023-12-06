@@ -69,4 +69,4 @@ SELECT 'optimism' AS blockchain,
     'op_nft_minters' AS model_name,
     'persona' AS label_type
 FROM
-    combined_trades
+    nft_minters
