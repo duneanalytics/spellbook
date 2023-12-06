@@ -24,7 +24,7 @@ WITH dexs AS
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
-        {{ Factory_evt_PairCreated }} f
+        {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
