@@ -192,8 +192,8 @@ with
             , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
             , any_value(coalesce(src_native, src_token_symbol)) filter(where contract_address = src_token_address) as src_token_symbol
             , any_value(coalesce(dst_native, dst_token_symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
-            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
-            , max(amount * price / pow(10, decimals)) as transfers_usd_amount
+            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_amount_usd
+            , max(amount * price / pow(10, decimals)) as transfers_amount_usd
             , count(*) as transfers
         from (
             select
@@ -247,9 +247,9 @@ select
     , dst_amount
     , src_token_symbol
     , dst_token_symbol
-    , coalesce(sources_usd_amount, transfers_usd_amount) as usd_amount
-    , sources_usd_amount
-    , transfers_usd_amount
+    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd
+    , sources_amount_usd
+    , transfers_amount_usd
     , transfers
     , explorer_link
     , date(date_trunc('month', block_time)) as block_month

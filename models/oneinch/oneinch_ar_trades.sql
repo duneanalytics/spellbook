@@ -96,8 +96,8 @@ with
             , max(cast(amount as double) / pow(10, dst_decimals)) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount_decimals
             , any_value(coalesce(src_native, src_token_symbol)) filter(where contract_address = src_token_address) as src_token_symbol
             , any_value(coalesce(dst_native, dst_token_symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
-            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
-            , max(amount * price / pow(10, decimals)) as transfers_usd_amount
+            , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_amount_usd
+            , max(amount * price / pow(10, decimals)) as transfers_amount_usd
         from (
             select
                 blockchain
@@ -137,7 +137,7 @@ select
     , src_amount_decimals as token_sold_amount
     , dst_amount as token_bought_amount_raw
     , src_amount as token_sold_amount_raw
-    , coalesce(sources_usd_amount, transfers_usd_amount) as amount_usd
+    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd
     , dst_token_address as token_bought_address
     , src_token_address as token_sold_address
     , user as taker
