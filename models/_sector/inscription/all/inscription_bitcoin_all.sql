@@ -19,7 +19,7 @@ SELECT 'bitcoin' AS blockchain
 , from_hex(NULL) AS tx_from
 , from_hex(NULL) AS tx_to
 , REGEXP_EXTRACT(REGEXP_EXTRACT(from_utf8(hex), 'ord.*?\{".*?"\} ?h[A!]'), '\{".*?"\}') AS full_inscription
-FROM {{ref('bitcoin', 'transactions')}}
+FROM {{source('bitcoin', 'transactions')}}
 WHERE REGEXP_EXTRACT(REGEXP_EXTRACT(from_utf8(hex), 'ord.*?\{".*?"\} ?h[A!]'), '\{".*?"\}') IS NOT NULL
 AND block_height >= 767429
 {% if is_incremental() %}
