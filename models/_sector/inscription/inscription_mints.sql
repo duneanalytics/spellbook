@@ -8,7 +8,7 @@
         unique_key = ['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync"]\',
                                 "sector",
-                                "dex",
+                                "inscription",
                                 \'["hildobby"]\') }}'
         )
 }}

@@ -2,7 +2,7 @@
 
 SELECT '{{blockchain}}' AS blockchain
 , block_time
-, date_trunc('month', block_time) AS block_month
+, date(date_trunc('month', block_time)) AS block_month
 , block_number
 , hash AS tx_hash
 , index AS tx_index
