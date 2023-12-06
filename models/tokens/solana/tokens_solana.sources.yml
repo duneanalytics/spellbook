@@ -11,6 +11,18 @@ sources:
         loaded_at_field: call_block_time
       - name: spl_token_call_initializeMint2
         loaded_at_field: call_block_time
+      - name: spl_token_call_transfer
+        loaded_at_field: call_block_time
+      - name: spl_token_call_transferChecked
+        loaded_at_field: call_block_time
+      - name: spl_token_call_mintTo
+        loaded_at_field: call_block_time
+      - name: spl_token_call_mintToChecked
+        loaded_at_field: call_block_time
+      - name: spl_token_call_burn
+        loaded_at_field: call_block_time
+      - name: spl_token_call_burnChecked
+        loaded_at_field: call_block_time
   - name: mpl_token_metadata_solana
     description: "mpl metadata decoded tables"
     freshness: # default freshness
