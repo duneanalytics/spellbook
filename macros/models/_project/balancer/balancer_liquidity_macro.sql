@@ -105,7 +105,8 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
-        WHERE t.i = d.i AND d.i = p.i
+        WHERE t.i = d.i 
+        AND d.i = p.i
         ORDER BY 1,2,3
     ),
 
