@@ -52,7 +52,7 @@ with eth_transfers as (
         ,array[r.evt_index] as trace_address
         ,r.evt_block_time as tx_block_time
         ,r.evt_block_number as tx_block_number
-        ,bytearray_substring(to_hex(t.data), 1, 4) as tx_method_id
+        ,bytearray_substring(t.data, 1, 4) as tx_method_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
     from {{ source('erc20_' + blockchain, 'evt_transfer') }} as r
