@@ -7,10 +7,10 @@
         alias = 'liquidity',
         materialized = 'table',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["{{blockchain}}"]\',
-                                    "project",
-                                    "balancer_v2",
-                                    \'["stefenon", "viniabussafi"]\') }}'
+        post_hook='expose_spells(\'["arbitrum"]\',
+                        "project",
+                        "balancer_v2",
+                        \'["stefenon", "viniabussafi"]\')'
     )
 }}
 
