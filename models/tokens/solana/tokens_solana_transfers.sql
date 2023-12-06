@@ -24,7 +24,7 @@ SELECT
     , call_tx_signer as tx_signer
     , call_tx_id as tx_id
     , call_outer_instruction_index as outer_instruction_index
-    , call_inner_instruction_index as inner_instruction_index
+    , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
     , call_outer_executing_account as outer_executing_account
 FROM (  
       SELECT account_source, account_destination, amount, call_tx_id, call_block_time, call_outer_executing_account, call_tx_signer, 'transfer' as action, call_outer_instruction_index, call_inner_instruction_index
@@ -99,7 +99,7 @@ SELECT
     , call_tx_signer as tx_signer
     , call_tx_id as tx_id
     , call_outer_instruction_index as outer_instruction_index
-    , call_inner_instruction_index as inner_instruction_index
+    , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
     , call_outer_executing_account as outer_executing_account
 FROM (
       SELECT account_from, account_to, lamports, call_tx_signer, call_block_time, call_tx_id, call_outer_instruction_index, call_inner_instruction_index, call_outer_executing_account
