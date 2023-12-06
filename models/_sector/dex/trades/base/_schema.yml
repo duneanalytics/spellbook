@@ -110,3 +110,59 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: pancakeswap_v2_base_amm_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'base', 'dex', 'trades', 'pancakeswap', 'v2' ]
+    description: "Pancakeswap base v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('pancakeswap_base_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: pancakeswap_v3_base_amm_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'base', 'dex', 'trades', 'pancakeswap', 'v3' ]
+    description: "Pancakeswap base v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('pancakeswap_base_base_trades_seed')
+          filter:
+            version: 3
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw

@@ -28,3 +28,5 @@ sources:
       - name: SwapFactory_evt_PairCreated
       - name: ArbswapStableSwapTwoPool_evt_TokenExchange
       - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
+  - name: pancakeswap_v2_arbitrum
+  - name: pancakeswap_v3_arbitrum

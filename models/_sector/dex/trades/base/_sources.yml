@@ -14,3 +14,5 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: PoolFactory_evt_PoolCreated
+  - name: pancakeswap_v2_base
+  - name: pancakeswap_v3_base

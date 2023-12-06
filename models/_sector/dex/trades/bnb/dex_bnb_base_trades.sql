@@ -12,6 +12,10 @@
     , ref('airswap_bnb_base_trades')
     , ref('sushiswap_v1_bnb_base_trades')
     , ref('sushiswap_v2_bnb_base_trades')
+    , ref('pancakeswap_v2_bnb_amm_base_trades')
+    , ref('pancakeswap_v2_bnb_stableswap_base_trades')
+    , ref('pancakeswap_v2_bnb_mmpool_base_trades')
+    , ref('pancakeswap_v3_bnb_amm_base_trades')
 ] %}
 
 WITH base_union AS (
