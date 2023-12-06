@@ -1507,6 +1507,7 @@ FROM
     ('hachi-akita-dao', 'ethereum', 'HACHI', 0x967B0c95295ead8fAef70d26A7846AeCD349AAFf, 18),
     ('auscm-auric-network', 'ethereum', 'AUSCM', 0x1c7BBADc81E18F7177A95eb1593e5f5f35861B10, 18),
     ('gear-bitgear', 'ethereum', 'GEAR', 0x1b980e05943dE3dB3a459C72325338d327B6F5a9, 18),
+    ('gear-gearbox', 'ethereum', 'GEAR', 0xBa3335588D9403515223F109EdC4eB7269a9Ab5D, 18),
     ('myth-mythos', 'ethereum', 'MYTH', 0xBA41Ddf06B7fFD89D1267b5A93BFeF2424eb2003, 18),
     ('oddz-oddztoken-erc-20', 'ethereum', 'ODDZ', 0xCd2828fc4D8E8a0eDe91bB38CF64B1a81De65Bf6, 18),
     ('umbr-umbria-network', 'ethereum', 'UMBR', 0xa4bBE66f151B22B167127c770016b15fF97Dd35C, 18),
