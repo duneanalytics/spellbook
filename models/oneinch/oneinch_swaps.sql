@@ -167,11 +167,9 @@ with
             , contracts_only
             , second_side
             , call_remains as remains
-            , src_native
-            , dst_native
             , any_value(explorer_link) as explorer_link
-            , any_value(src_token_address) filter(where contract_address = src_token_address) as src_token_address
-            , any_value(dst_token_address) filter(where contract_address = dst_token_address) as dst_token_address
+            , any_value(if(src_native is null, src_token_address, {{true_native_address}})) filter(where contract_address = src_token_address) as src_token_address
+            , any_value(if(dst_native is null, dst_token_address, {{true_native_address}})) filter(where contract_address = dst_token_address) as dst_token_address
             , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
             , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
             , any_value(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
@@ -200,7 +198,7 @@ with
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
         left join prices using(blockchain, contract_address, minute)
-        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
+        group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
     )
 
 select
@@ -223,8 +221,8 @@ select
     , contracts_only
     , second_side
     , remains
-    , if(src_native is not null, {{true_native_address}}, src_token_address) as src_token_address
-    , if(dst_native is not null, {{true_native_address}}, dst_token_address) as dst_token_address
+    , src_token_address
+    , dst_token_address
     , src_amount
     , dst_amount
     , src_token_symbol
