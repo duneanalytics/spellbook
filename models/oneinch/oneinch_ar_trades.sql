@@ -2,7 +2,6 @@
     config(
         schema = 'oneinch',
         alias = 'ar_trades',
-        tags = ['prod_exclude'],
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -108,7 +107,7 @@ select
     , '1inch' as project
     , 'AR V' || protocol_version as version
     , date_trunc('day', block_time) as block_date
-    , date_trunc('month', block_time) as block_month
+    , date(date_trunc('month', block_time)) as block_month
     , block_time
     , coalesce(dst_token_symbol, '') as token_bought_symbol
     , coalesce(src_token_symbol, '') as token_sold_symbol
@@ -127,5 +126,7 @@ select
     , tx_from
     , tx_to
     , call_trace_address as trace_address
-    , -1
+    , -1 as evt_index
 from trades
+
+where blockchain = 'base'
