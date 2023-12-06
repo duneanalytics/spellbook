@@ -85,5 +85,5 @@ FROM
     ('comp-compoundd', 'polygon', 'COMP', 0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18),
     ('voxel-voxies','polygon','VOXEL',0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F,18),
     ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18),
-    ('gmt-stepn', 'polygon', 'GMT', 0x714db550b574b3e927af3d93e26127d15721d4c2,18)
+    ('gmt-stepn', 'polygon', 'GMT', 0x714db550b574b3e927af3d93e26127d15721d4c2,8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
