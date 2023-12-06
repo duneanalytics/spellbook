@@ -103,7 +103,7 @@ WITH pool_labels AS (
             liquidity * normalized_weight AS protocol_liquidity_usd,
             (liquidity * normalized_weight) / e.eth_price AS protocol_liquidity_eth,
             liquidity * normalized_weight AS pool_liquidity_usd,
-            (liquidity * normalized_weight) / e.eth_price AS pool_liquidity_etg
+            (liquidity * normalized_weight) / e.eth_price AS pool_liquidity_eth
         FROM pool_liquidity_estimates b
         LEFT JOIN cumulative_usd_balance c ON c.day = b.day
         AND c.pool = b.pool
