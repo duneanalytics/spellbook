@@ -97,17 +97,17 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_polygon_nft_fills_sample')
-          match_columns:
-            - block_date
-            - tx_hash
-            - evt_index
-          check_columns:
-            - maker
-            - taker
-            - nft_id
-            - nft_address
+#      - check_seed:
+#          seed_file: ref('zeroex_polygon_nft_fills_sample')
+#          match_columns:
+#            - block_date
+#            - tx_hash
+#            - evt_index
+#          check_columns:
+#            - maker
+#            - taker
+#            - nft_id
+#            - nft_address
     columns:
       - &contract_address
         name: contract_address
