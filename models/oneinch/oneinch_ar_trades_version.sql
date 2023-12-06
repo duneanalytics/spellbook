@@ -130,10 +130,12 @@ select
     , call_trace_address trace_address
     , blockchain
     , tx_hash
+    , max(block_time) as block_time
 from calls 
 join tr using(blockchain, tx_hash, call_trace_address, minute)
 join prices using(blockchain, src_token_address, minute)
 where blockchain = 'base'
+group by 1, 2, 3, 4
 -- select
 --     -- blockchain
 --     -- , '1inch' as project
