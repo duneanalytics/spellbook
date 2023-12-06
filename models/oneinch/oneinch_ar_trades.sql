@@ -58,6 +58,24 @@ with
         {% endif %}
     )
 
+    , tokens_src as (
+        select 
+            blockchain
+            , contract_address src_token_address
+            , symbol src_token_symbol
+            , decimals src_decimals
+        from {{ ref('tokens_erc20') }}
+    )
+
+    , tokens_dst as (
+        select 
+            blockchain
+            , contract_address dst_token_address
+            , symbol dst_token_symbol
+            , decimals dst_decimals
+        from {{ ref('tokens_erc20') }}
+    )
+
     , trades as (
         select
             blockchain
@@ -74,10 +92,10 @@ with
             , any_value(if(dst_native is null, dst_token_address, {{true_native_address}})) filter(where contract_address = dst_token_address) as dst_token_address
             , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
             , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
-            , max(cast(amount as double) / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount_decimals
-            , max(cast(amount as double) / pow(10, decimals)) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount_decimals
-            , any_value(coalesce(src_native, symbol)) filter(where contract_address = src_token_address) as src_token_symbol
-            , any_value(coalesce(dst_native, symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
+            , max(cast(amount as double) / pow(10, src_decimals)) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount_decimals
+            , max(cast(amount as double) / pow(10, dst_decimals)) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount_decimals
+            , any_value(coalesce(src_native, src_token_symbol)) filter(where contract_address = src_token_address) as src_token_symbol
+            , any_value(coalesce(dst_native, dst_token_symbol)) filter(where contract_address = dst_token_address) as dst_token_symbol
             , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_usd_amount
             , max(amount * price / pow(10, decimals)) as transfers_usd_amount
         from (
@@ -100,6 +118,8 @@ with
         )
         join calls using(blockchain, tx_hash, call_trace_address, minute)
         left join prices using(blockchain, contract_address, minute)
+        left join tokens_src using(blockchain, src_token_address)
+        left join tokens_dst using(blockchain, dst_token_address)
         group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     )
 
