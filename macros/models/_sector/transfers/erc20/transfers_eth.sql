@@ -1,4 +1,4 @@
-{% macro transfers_eth(blockchain, native_eth_address = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE) %}
+{% macro transfers_eth(blockchain, native_eth_address = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') %}
 
 
 
@@ -7,7 +7,7 @@ with eth_transfers as (
         r."from"
         ,r.to
         --Using the ETH deposit placeholder address to match with prices tables
-        ,{{native_eth_address}} as contract_address
+        ,from_hex('{{native_eth_address}}') as contract_address
         ,cast(r.value as double) AS value
         ,cast(r.value as double)/1e18 as value_decimal
         ,r.tx_hash
