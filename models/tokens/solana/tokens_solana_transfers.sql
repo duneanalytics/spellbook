@@ -81,6 +81,7 @@ FROM (
 --get token and accounts
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source 
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
+WHERE call_block_time > now() - interval '30' day
 
 UNION ALL 
 
@@ -113,3 +114,4 @@ FROM (
       AND {{incremental_predicate('call_block_time')}}
       {% endif %}
 )
+WHERE call_block_time > now() - interval '30' day
