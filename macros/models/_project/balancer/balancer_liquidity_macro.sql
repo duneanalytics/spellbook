@@ -106,7 +106,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
         WHERE t.i = d.i AND d.i = p.i
-        ORDER BY 1, 2, 3
+        ORDER BY 1,2,3
     ),
 
     balances_changes AS (
@@ -160,7 +160,7 @@ WITH pool_labels AS (
                     day,
                     pool_id,
                     token,
-                    CAST(delta as int256) AS amount
+                    CAST(delta AS int256) AS amount
                 FROM managed_changes
             ) balance
         GROUP BY 1, 2, 3
