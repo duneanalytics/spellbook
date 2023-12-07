@@ -75,6 +75,7 @@ models:
         get all spl and system token transfers
     columns:
       - name: block_time
+      - name: block_date
       - name: block_slot
       - name: action
       - name: token_mint_address
