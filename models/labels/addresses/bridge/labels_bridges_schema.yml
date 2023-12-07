@@ -207,7 +207,7 @@ models:
       project: bridge
       contributors: kaiblade
     config:
-      tags: ['labels', 'optimism', 'bridge', 'users', 'derived']
+      tags: ['labels', 'optimism', 'bridge', 'users']
     description: 'Persona labels attributed to users of various bridges on optimism'
     columns:
       - *blockchain
