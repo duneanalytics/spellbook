@@ -29,7 +29,6 @@ FROM wash_trades_count
 WHERE trade_count IN (SELECT "0.95p" FROM percentile_wash_trades)
 )
 
-
 SELECT 'optimism' AS blockchain,
     address,
     label AS name,
@@ -41,4 +40,4 @@ SELECT 'optimism' AS blockchain,
     'op_habitual_wash_traders' AS model_name,
     'persona' AS label_type
 FROM
-    combined_bridge_users
+    nft_wash_traders
