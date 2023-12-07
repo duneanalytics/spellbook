@@ -16,7 +16,7 @@ AND bridge.event_name = 'WithdrawalInitiated'
 celer_cbridge_users AS
 (SELECT DISTINCT("from") AS address, 'Celer cBridge User' AS label
 FROM (SELECT bridge.*, tx."from"
-FROM {{ source('celer_optimism', 'Bridge_evt_Send bridge') }} bridge
+FROM {{ source('celer_optimism', 'Bridge_evt_Send') }} bridge
 JOIN {{ source('optimism', 'transactions') }} tx
 ON bridge.evt_tx_hash = tx.hash
 )
