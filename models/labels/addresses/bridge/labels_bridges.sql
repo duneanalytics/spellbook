@@ -5,26 +5,24 @@
     post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism","bnb"]\',
                                 "sector",
                                 "labels",
-                                 \'["ilemi","rantum", "kaiblade"]\') }}')
+                                \'["ilemi","rantum"]\') }}')
 
 }}
 
 {% set bridges_models = [
  ref('labels_bridges_ethereum')
  , ref('labels_bridges_fantom')
- , ref('labels_bridges_base')
  , ref('labels_bridges_bnb')
+ , ref('labels_bridges_base')
  , ref('labels_bridges_arbitrum')
  , ref('labels_bridges_polygon')
  , ref('labels_bridges_optimism')
- , ref('labels_op_bridge_derived_archetype')
- , ref('labels_op_bridge_users')
- 
+
 ] %}
 
 SELECT *
 FROM (
-    -- {% for bridges_model in bridges_models %}
+    {% for bridges_model in bridges_models %}
     SELECT
         blockchain
         , address
@@ -36,10 +34,9 @@ FROM (
         , updated_at
         , model_name
         , label_type
-    FROM {{ ref('labels_bridges_optimism') }}
+    FROM {{ bridges_model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
-    -- {% if not loop.last %}
-    -- UNION ALL
-    -- {% endif %}
-    -- {% endfor %}
--- )
