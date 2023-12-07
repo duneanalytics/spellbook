@@ -1,6 +1,6 @@
 {{
   config(
-    alias=alias('ccip_operator_meta'),
+    alias='ccip_operator_meta',
 	materialized = 'view'
   )
 }}

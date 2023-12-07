@@ -378,3 +378,55 @@ models:
       - *block_time
       - *index
       - *tx_index
+
+  - name: chainlink_base_ccip_nop_paid_logs
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "nop", "paid", "logs", "base"]
+    description: >
+      Chainlink CCIP Nop Paid Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &nop_address
+        name: nop_address
+        description: "Nop Address"
+      - *total_tokens
+
+  - name: chainlink_base_ccip_nop_reward_daily
+    meta:
+      blockchain: "base"
+
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "nop", "reward", "daily", "base"]
+    description: >
+      Chainlink CCIP Nop Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date_start
+            - nop_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *token_amount
+      - *usd_amount
+      - *operator_name
+      - *nop_address

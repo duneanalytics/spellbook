@@ -1,6 +1,6 @@
 {{
   config(
-    alias=alias('ccip_admin_meta'),
+    alias='ccip_admin_meta',
 	materialized = 'view'
   )
 }}
