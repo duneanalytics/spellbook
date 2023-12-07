@@ -16,7 +16,6 @@
  , ref('labels_bridges_polygon')
  , ref('labels_bridges_optimism')
 
-
 ] %}
 
 
