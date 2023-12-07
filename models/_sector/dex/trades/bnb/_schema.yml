@@ -1,6 +1,8 @@
 version: 2
 
 models:
+  - name: dex_bnb_base_trades
+
   - name: uniswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
@@ -15,5 +17,154 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            
-  - name: dex_bnb_base_trades
+      - check_seed:
+          seed_file: ref('uniswap_bnb_base_trades_seed')
+          filter:
+            version: 3
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: airswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: airswap
+      contributors: tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'airswap' ]
+    description: "Airswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('airswap_bnb_base_trades_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: sushiswap_v1_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: sushiswap
+      contributors: chrispearcx, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v1' ]
+    description: "sushiswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sushiswap_bnb_base_trades_seed')
+          filter:
+            version: 1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+    
+  - name: sushiswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v2' ]
+    description: "sushiswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sushiswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: trader_joe_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: trader_joe
+      contributors: hsrvc, hosuke
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2' ]
+    description: "Trader Joe bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('trader_joe_bnb_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: trader_joe_v2_1_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+    description: "Trader Joe bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('trader_joe_bnb_base_trades_seed')
+          filter:
+            version: 2.1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw   
