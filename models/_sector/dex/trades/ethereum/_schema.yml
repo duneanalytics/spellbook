@@ -239,8 +239,8 @@ models:
           seed_file: ref('pancakeswap_ethereum_base_trades_seed')
           filter:
             version:
-              - '2'
-              - 'mmpool'
+              - 2
+              - mmpool
           match_columns:
             - tx_hash
             - evt_index
