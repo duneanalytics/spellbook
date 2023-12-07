@@ -5,7 +5,7 @@
 optimism_bridge_users AS
 (SELECT DISTINCT("from") AS address, 'Optimism Bridge User' AS label
 FROM (SELECT bridge.*, tx."from"
-FROM {{ source('optimism', 'logs_decoded bridge') }} bridge
+FROM {{ source('optimism', 'logs_decoded') }} bridge
 JOIN {{ source('optimism', 'transactions') }} tx
 ON bridge.tx_hash = tx.hash
 WHERE bridge.contract_address = 0x4200000000000000000000000000000000000010
