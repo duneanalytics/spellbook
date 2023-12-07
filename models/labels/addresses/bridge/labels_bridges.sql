@@ -5,18 +5,18 @@
     post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism","bnb"]\',
                                 "sector",
                                 "labels",
-                                \'["ilemi","rantum", "kaiblade"]\') }}')
+                                \'["ilemi","rantum"]\') }}')
 
 }}
 
 {% set bridges_models = [
-ref('labels_bridges_ethereum')
-, ref('labels_bridges_fantom')
-, ref('labels_bridges_bnb')
-, ref('labels_bridges_base')
-, ref('labels_bridges_arbitrum')
-, ref('labels_bridges_polygon')
-, ref('labels_bridges_optimism')
+ ref('labels_bridges_ethereum')
+ , ref('labels_bridges_fantom')
+ , ref('labels_bridges_bnb')
+ , ref('labels_bridges_base')
+ , ref('labels_bridges_arbitrum')
+ , ref('labels_bridges_polygon')
+ , ref('labels_bridges_optimism')
 
 ] %}
 
