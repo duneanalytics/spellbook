@@ -2,7 +2,24 @@
      alias = 'op_transfers_only'
 )}}
 
-WITH transfers_only
+WITH joined_transfers AS
+(SELECT DISTINCT("from") AS address
+FROM transfers_optimism.eth
+
+UNION
+
+SELECT DISTINCT("from") AS address
+FROM erc20_optimism.evt_Transfer
+),
+
+complete_decoded_log AS
+(SELECT decode.*, raw."from"
+FROM optimism.logs_decoded decode
+JOIN optimism.transactions raw
+ON decode.tx_hash = raw.hash
+),
+
+transfers_only AS
 (SELECT DISTINCT("from") AS address, 'Transfers Only' AS label
 FROM complete_decoded_log
 WHERE "from" NOT IN (
@@ -24,4 +41,4 @@ SELECT 'optimism' AS blockchain,
     'op_transfers_only' AS model_name,
     'persona' AS label_type
 FROM
-    nft_wash_traders
+    transfers_only
