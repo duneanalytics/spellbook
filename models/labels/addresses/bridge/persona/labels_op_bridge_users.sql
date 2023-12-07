@@ -2,7 +2,7 @@
      alias = 'op_bridge_users'
 )}}
 
-optimism_bridge_users AS
+WITH optimism_bridge_users AS
 (SELECT DISTINCT("from") AS address, 'Optimism Bridge User' AS label
 FROM (SELECT bridge.*, tx."from"
 FROM {{ source('optimism', 'logs_decoded') }} bridge
