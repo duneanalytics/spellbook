@@ -2,10 +2,11 @@
     alias = 'bridge',
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism","bnb"]\',
                                 "sector",
                                 "labels",
                                 \'["ilemi","rantum"]\') }}')
+
 }}
 
 {% set bridges_models = [
