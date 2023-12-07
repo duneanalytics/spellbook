@@ -36,7 +36,7 @@ FROM (
         , updated_at
         , model_name
         , label_type
-    FROM {{ ref('labels_bridges_bnb') }}
+    FROM {{ ref('labels_bridges_optimism') }}
     -- {% if not loop.last %}
     -- UNION ALL
     -- {% endif %}
