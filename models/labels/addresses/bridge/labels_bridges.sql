@@ -37,8 +37,9 @@ FROM (
         , model_name
         , label_type
     FROM {{ ref('labels_bridges_optimism') }}
+)
     -- {% if not loop.last %}
     -- UNION ALL
     -- {% endif %}
     -- {% endfor %}
-)
+-- )
