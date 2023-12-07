@@ -75,7 +75,7 @@ models:
         get all spl token transfers (will add in token2022 later)
     columns:
       - name: block_time
-      - name: block_date
+      # - name: block_date
       - name: block_slot
       - name: action
       - name: token_mint_address
@@ -100,7 +100,7 @@ models:
         get all system SOL (native) transfers.
     columns:
       - name: block_time
-      - name: block_date
+      # - name: block_date
       - name: block_slot
       - name: action
       - name: token_mint_address

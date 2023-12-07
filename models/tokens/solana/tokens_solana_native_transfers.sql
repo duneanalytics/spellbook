@@ -2,7 +2,7 @@
   config(
         schema = 'tokens_solana',
         alias = 'native_transfers',
-        partition_by = ['block_date'],
+      --   partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -17,7 +17,7 @@
 --for the reader, note that SOL is special and can be transferred without calling the transfer instruction. It is also minted and burned without instructions. So to get balances, use daily_balances or account_activity instead of transfers.
 SELECT
     call_block_time as block_time
-    , date_trunc('day', call_block_time) as block_date
+--     , date_trunc('day', call_block_time) as block_date
     , call_block_slot as block_slot
     , 'transfer' as action
     , lamports as amount --1e9
