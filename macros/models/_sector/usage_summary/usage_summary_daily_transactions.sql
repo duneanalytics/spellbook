@@ -1,0 +1,26 @@
+{% macro usage_summary_daily_transactions( chain ) %}
+
+SELECT
+    '{{chain}}' as blockchain
+  , block_date
+  , DATE_TRUNC('month', block_date ) AS block_month
+  , t.to AS address
+  , COUNT(DISTINCT block_number) AS num_to_blocks
+  , COUNT(*) AS num_to_txs
+  , COUNT(DISTINCT "from") AS num_to_tx_senders
+  , SUM(gas_used) AS sum_to_tx_gas_used
+  , SUM(bytearray_length(t.data)) AS sum_to_tx_calldata_bytes
+  , SUM(
+    evm_get_calldata_gas_from_data('t.data')
+  ) AS sum_to_tx_calldata_gas
+  FROM {{ source(chain,'transactions') }} t
+
+  WHERE 1=1
+    {% if is_incremental() %}
+    AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
+    -- AND [[ incremental_predicate('t.block_date') ]]
+    {% endif %}
+    AND t.success
+  GROUP BY 1,2,3,4
+
+{% endmacro %}

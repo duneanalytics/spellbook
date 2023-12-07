@@ -1,15 +1,15 @@
  {{
   config(
-        schema = 'contracts_optimism',
-        alias = 'daily_usage_summary',
+        schema = 'usage_summary_optimism',
+        alias = 'daily_logs',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['blockchain', 'contract_address', 'block_date'],
+        unique_key = ['blockchain', 'address', 'block_date'],
         partition_by = ['block_month']
   )
 }}
 
-{{contracts_daily_usage_summary(
+{{usage_summary_daily_logs(
     chain='optimism'
 )}}
