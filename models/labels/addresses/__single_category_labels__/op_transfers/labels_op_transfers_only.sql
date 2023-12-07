@@ -2,20 +2,11 @@
      alias = 'op_transfers_only'
 )}}
 
-WITH joined_transfers AS
-(SELECT DISTINCT("from") AS address
-FROM transfers_optimism.eth
 
-UNION
-
-SELECT DISTINCT("from") AS address
-FROM erc20_optimism.evt_Transfer
-),
-
-complete_decoded_log AS
+WITH complete_decoded_log AS
 (SELECT decode.*, raw."from"
-FROM optimism.logs_decoded decode
-JOIN optimism.transactions raw
+FROM {{ source('optimism', 'logs_decoded') }} decode
+JOIN {{ source('optimism', 'transactions') }} raw
 ON decode.tx_hash = raw.hash
 ),
 
