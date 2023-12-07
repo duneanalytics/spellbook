@@ -24,7 +24,7 @@
 
 SELECT *
 FROM (
-    {% for bridges_model in bridges_models %}
+    -- {% for bridges_model in bridges_models %}
     SELECT
         blockchain
         , address
@@ -36,9 +36,9 @@ FROM (
         , updated_at
         , model_name
         , label_type
-    FROM {{ bridges_model }}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
+    FROM {{ ref('labels_bridges_bnb') }}
+    -- {% if not loop.last %}
+    -- UNION ALL
+    -- {% endif %}
+    -- {% endfor %}
 )
