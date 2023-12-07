@@ -216,7 +216,7 @@ v1_stableswap as (
             'crvUSD_StableswapFactory_evt_PlainPoolDeployed'
         ) }} dp
         ON p.call_block_time = dp.evt_block_time
-        AND p.call_block_time = dp.evt_block_time
+        AND p.call_tx_hash = dp.evt_tx_hash
 )
 
 , v1_pools_deployed AS (
