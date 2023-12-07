@@ -575,6 +575,8 @@ models:
       - *minute
       - *tx_from
       - *tx_to
+      - *call_from
+      - *call_to
       - *contract_name
       - *protocol_not_null
       - *protocol_version
@@ -607,4 +609,48 @@ models:
         name: transfers
       - &explorer_link
         name: explorer_link
+      - *block_month_not_null
+      
+
+  - name: oneinch_ar_trades
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'ar', 'trades']
+    description: >
+        1inch aggregation router trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - trace_address
+    columns:
+      - *blockchain_not_null
+      - *project
+      - *version
+      - *block_date
+      - *block_month_not_null
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash_not_null
+      - *tx_from
+      - *tx_to
+      - &trace_address
+        name: trace_address
+      - *evt_index
 
