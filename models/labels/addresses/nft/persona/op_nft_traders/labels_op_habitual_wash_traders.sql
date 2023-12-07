@@ -2,7 +2,6 @@
      alias = 'op_habitual_wash_traders'
 )}}
 
-
 WITH wash_trades_count AS
 (SELECT trader, COUNT(trader) AS trade_count
 FROM (SELECT buyer AS trader
