@@ -92,9 +92,8 @@ class TokenChecker:
             raise
         # Confirm Symbol
         if token['symbol']:
-            pass 
-            # assert api_token['symbol'].lower() == token['symbol'].lower() \
-                # , f"ERROR: {token['id']} Provided symbol: {token['symbol']} does not match CoinPaprika source: {api_token['symbol']}"
+            assert api_token['symbol'].lower() == token['symbol'].lower() \
+                , f"ERROR: {token['id']} Provided symbol: {token['symbol']} does not match CoinPaprika source: {api_token['symbol']}"
         else:
             logging.warning(f"WARN: Line: {new_line} Symbol is None")
 
