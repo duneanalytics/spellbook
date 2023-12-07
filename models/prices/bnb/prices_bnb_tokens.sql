@@ -34,7 +34,7 @@ FROM
     ('betu-betu', 'bnb', 'BETU', 0x0df1b3f30865c5b324797f8db9d339514cac4e94, 18),
     ('bifi-beefyfinance', 'bnb', 'BIFI', 0xca3f508b8e4dd382ee878a314789373d80a5190a, 18),
     ('blz-bluzelle', 'bnb', 'BLZ', 0x935a544bf5816e3a7c13db2efe3009ffda0acda2, 18),
-    ('bnb-binance-coin', 'bnb', 'WBNB', 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c, 18),
+    ('bnb-binance-coin', 'bnb', 'WBNB', 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c , 18),
     ('bscpad-bscpad', 'bnb', 'BSCPAD', 0x5a3010d4d8d3b5fb49f8b6e57fb9e48063f16700, 18),
     ('btcb-binance-bitcoin', 'bnb', 'BTCB', 0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c, 18),
     ('bts-bitshares', 'bnb', 'BTS', 0xc2e1acef50ae55661855e8dcb72adb182a3cc259, 18),
