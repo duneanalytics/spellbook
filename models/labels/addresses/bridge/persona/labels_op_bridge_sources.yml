@@ -100,3 +100,13 @@ sources:
     tables:
       - name: Optimism_SpokePool_evt_TokensBridged
         loaded_at_field: evt_block_time
+  
+
+    - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: Optimism_SpokePool_evt_FundsDeposited
+        loaded_at_field: evt_block_time
