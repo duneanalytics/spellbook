@@ -2,7 +2,6 @@
   config(
         schema = 'tokens_solana',
         alias = 'native_transfers',
-      --   partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -13,6 +12,7 @@
                                     "tokens",
                                     \'["ilemi"]\') }}')
 }}
+--   partition_by = ['block_date'],
 
 --for the reader, note that SOL is special and can be transferred without calling the transfer instruction. It is also minted and burned without instructions. So to get balances, use daily_balances or account_activity instead of transfers.
 SELECT

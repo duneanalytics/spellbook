@@ -2,7 +2,6 @@
   config(
         schema = 'tokens_solana',
         alias = 'transfers',
-      --   partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -13,6 +12,7 @@
                                     "tokens",
                                     \'["ilemi"]\') }}')
 }}
+--   partition_by = ['block_date'],
 
 SELECT
     call_block_time as block_time
