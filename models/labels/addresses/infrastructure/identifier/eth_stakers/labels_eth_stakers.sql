@@ -41,5 +41,5 @@ WITH identified_stakers AS (
     )
 
 SELECT * FROM identified_stakers
-UNION 
-SELECT * FROM unidentified_stakers
+-- UNION 
+-- SELECT * FROM unidentified_stakers
