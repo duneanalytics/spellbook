@@ -6,12 +6,12 @@
 
 - Labels starting with "Normie" and "Casual" are in the bottom 65% (i.e. those not in the top 35% or top 5%) of the specified dataset based on transaction volume, trade volume, mint volume e.t.c.
 
-- "OP Governance Junkie" label is for addresses with 2 or more governance related labels (e.g. "Optimism voter" and "RetroPGF Contibutor").
+- "OP Governance Junkie" label is for addresses with 3 or more governance related labels (e.g. "Optimism voter", "RetroPGF Contibutor and "Delegator").
 
 - "Master Trader" label is for addresses with all 3 elite trader labels i.e. Elite NFT Trader", "Elite DEX Trader" and "Elite Perp Trader" labels.
 
 - "Jack of All Trades" label is for addresses that have all three trade related labels (i.e. NFT, Perp and DEX) but all are not elite trader labels.
 
-- "Prolific Bridge User" label is for addresses with 3 or nore bridge related labels. That is, addresses that have used 3 or more different bridges on Optimism.
+- "Prolific Bridge User" label is for addresses with 3 or more bridge related labels. That is, addresses that have used 3 or more different bridges on Optimism.
 
 {% enddocs %}
