@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(\'["ethereum", "fantom","base","arbitrum","polygon","optimism","bnb"]\',
                                 "sector",
                                 "labels",
-                                \'["ilemi","rantum"]\') }}')
+                                \'["ilemi","rantum", "kaiblade"]\') }}')
 
 }}
 
@@ -17,6 +17,8 @@
  , ref('labels_bridges_arbitrum')
  , ref('labels_bridges_polygon')
  , ref('labels_bridges_optimism')
+ , ref('labels_op_bridge_derived_archetype')
+ , ref('labels_op_bridge_users')
 
 ] %}
 
