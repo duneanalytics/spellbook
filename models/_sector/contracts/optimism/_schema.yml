@@ -14,7 +14,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
             
     columns:
       - &created_month
@@ -124,7 +124,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
     columns:
       - *blockchain
       - *created_time
@@ -154,7 +154,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
             
     columns:
       - *blockchain
@@ -194,7 +194,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
             
     columns:
       - *blockchain
@@ -277,24 +277,5 @@ models:
           combination_of_columns:
               - contract_address
     columns:
-      - *contract_address
-      - *contract_name
-  
-  - name: contracts_optimism_system_predeploys
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: msilb7
-    config:
-      tags: ['optimism','op','contracts','predeploy','system']
-    description: >
-        A table containing mappings for predeploy system contracts
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-    columns:
-      - name: project_name
-        description: "Project name associated with the predeploy."
       - *contract_address
       - *contract_name

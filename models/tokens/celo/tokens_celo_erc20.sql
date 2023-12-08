@@ -1,12 +1,10 @@
-{{ config(
-        alias = 'erc20'
-        , tags=['static']
-        , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["celo"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["hosuke", "tomfutago"]\') }}'
-        )
+{{
+    config(
+        schema = 'tokens_celo',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
 }}
 
 SELECT
