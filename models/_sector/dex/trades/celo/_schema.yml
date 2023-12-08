@@ -15,17 +15,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('uniswap_celo_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: mento_v1_celo_base_trades
     meta:
@@ -41,7 +33,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('mento_celo_base_trades_seed')
           filter:
             blockchain: celo
@@ -70,7 +62,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('mento_celo_base_trades_seed')
           filter:
             blockchain: celo
@@ -99,17 +91,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('curvefi_celo_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw            
+            
 
   - name: sushiswap_celo_base_trades
     meta:
@@ -125,17 +109,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('sushiswap_celo_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw            
+            
 
   - name: ubeswap_celo_base_trades
     meta:
@@ -151,17 +127,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('ubeswap_celo_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw            
+            
 
   - name: carbonhood_celo_base_trades
     meta:
@@ -177,7 +145,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_base_trades_seed:
           seed_file: ref('carbonhood_celo_base_trades_seed')
           match_columns:
             - tx_hash
