@@ -112,3 +112,59 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: trader_joe_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: trader_joe
+      contributors: hsrvc, hosuke
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2' ]
+    description: "Trader Joe bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('trader_joe_bnb_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
+
+  - name: trader_joe_v2_1_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+    description: "Trader Joe bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('trader_joe_bnb_base_trades_seed')
+          filter:
+            version: 2.1
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw   
