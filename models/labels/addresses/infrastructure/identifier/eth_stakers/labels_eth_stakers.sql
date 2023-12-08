@@ -17,8 +17,6 @@ WITH identified_stakers AS (
     , 'eth_stakers' AS model_name
     , 'identifier' as label_type
     FROM {{ ref('staking_ethereum_entities') }}
-    WHERE depositor_address IS NOT NULL
-    GROUP BY entity, depositor_address
     )
 
 , unidentified_stakers AS (
@@ -43,5 +41,5 @@ WITH identified_stakers AS (
     )
 
 SELECT * FROM identified_stakers
-UNION 
+UNION ALL
 SELECT * FROM unidentified_stakers
