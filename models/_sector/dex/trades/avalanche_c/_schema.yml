@@ -204,7 +204,12 @@ models:
     config:
       tags: ['avalanche_c', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
     description: "Fraxswap avalanche_c base trades"
-    - check_seed:
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
           seed_file: ref('fraxswap_avalanche_c_base_trades_seed')
           filter:
             version: 1
