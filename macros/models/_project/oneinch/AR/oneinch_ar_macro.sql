@@ -188,7 +188,7 @@
         },
         "AggregationRouterV5": {
             "version": "5",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
             "start": "2022-11-04",
             "methods": {
                 "swap":                      samples["swap_2"],
