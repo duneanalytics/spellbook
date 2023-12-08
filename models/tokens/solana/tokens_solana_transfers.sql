@@ -6,17 +6,17 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        partition_by = ['block_date'],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "tokens",
                                     \'["ilemi"]\') }}')
 }}
---   partition_by = ['block_date'],
 
 SELECT
     call_block_time as block_time
---     , date_trunc('day', call_block_time) as block_date
+    , cast (date_trunc('day', call_block_time) as date) as block_date
     , call_block_slot as block_slot
     , action
     , amount
@@ -66,4 +66,4 @@ WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('call_block_time')}}
 {% endif %}
-AND call_block_time > now() - interval '600' day
+-- AND call_block_time > now() - interval '600' day
