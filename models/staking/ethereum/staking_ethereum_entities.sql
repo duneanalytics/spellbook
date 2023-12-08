@@ -93,3 +93,4 @@ FROM (
         {% endif %}
         {% endfor %}
         )
+GROUP BY depositor_address,entity,entity_unique_name,category
