@@ -6,21 +6,21 @@
   , DATE_TRUNC('month', block_date ) AS block_month
   , a.to AS address
   ---
-  , COUNT(DISTINCT block_number) AS num_trace_blocks
-  , COUNT(DISTINCT tx_hash) AS num_trace_txs
-  , COUNT(*) AS num_trace_calls
+  , COUNT(DISTINCT block_number) AS num_trace_to_blocks
+  , COUNT(DISTINCT tx_hash) AS num_trace_to_txs
+  , COUNT(*) AS num_trace_to_calls
   ---
-  , COUNT(DISTINCT tx_from) AS num_trace_tx_senders
-  , COUNT(DISTINCT "from") AS num_trace_call_senders
+  , COUNT(DISTINCT tx_from) AS num_trace_to_tx_senders
+  , COUNT(DISTINCT "from") AS num_trace_to_call_senders
   ---
-  , SUM(a.gas_used) AS sum_trace_gas_used
+  , SUM(a.gas_used) AS sum_trace_to_gas_used
   /* maybe add the trace gas with subtraces removed here? */
-  , SUM(CASE WHEN trace_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_trace_tx_gas_used
+  , SUM(CASE WHEN trace_to_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_trace_to_tx_gas_used
 
   FROM (
       SELECT r.block_date, r.block_number, r.to, r.tx_hash, t."from" AS tx_from, r."from"
         , r.gas_used, t.gas_used as tx_gas_used
-        , ROW_NUMBER() OVER (PARTITION BY r.tx_hash) AS trace_number --reindex trace to ensure single count
+        , ROW_NUMBER() OVER (PARTITION BY r.tx_hash) AS trace_to_number --reindex trace to ensure single count
 
         FROM {{ source(chain,'traces') }} r
         INNER JOIN  {{ source(chain,'transactions') }} t 

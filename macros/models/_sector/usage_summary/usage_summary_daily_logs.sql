@@ -7,18 +7,18 @@
   , DATE_TRUNC('month', block_date ) AS block_month
   , contract_address AS address
   ---
-  , COUNT(DISTINCT block_number) AS num_log_blocks
-  , COUNT(DISTINCT tx_hash) AS num_log_txs
-  , COUNT(*) AS num_log_events
+  , COUNT(DISTINCT block_number) AS num_logs_emitted_blocks
+  , COUNT(DISTINCT tx_hash) AS num_logs_emitted_txs
+  , COUNT(*) AS num_logs_emitted_events
   ---
-  , COUNT(DISTINCT tx_from) AS num_log_tx_senders
-  , SUM(CASE WHEN log_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_log_tx_gas_used
+  , COUNT(DISTINCT tx_from) AS num_logs_emitted_tx_senders
+  , SUM(CASE WHEN logs_emitted_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_logs_emitted_tx_gas_used
   
 
   FROM (
       SELECT l.block_date, l.block_number, l.contract_address, l.tx_hash, l.tx_from
         , t.gas_used as tx_gas_used
-        , ROW_NUMBER() OVER (PARTITION BY l.tx_hash) AS log_number --reindex log to ensure single count
+        , ROW_NUMBER() OVER (PARTITION BY l.tx_hash) AS logs_emitted_number --reindex log to ensure single count
 
         FROM {{ source(chain,'logs') }} l
         INNER JOIN  {{ source(chain,'transactions') }} t 

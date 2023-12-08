@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: contracts_optimism_daily_usage_summary
+  - name: usage_summary_optimism
     meta:
       blockchain: optimism
       sector: contracts
@@ -29,62 +29,62 @@ models:
     - &block_date
       name: block_date
       description: "Date of the block"
-    - &num_to_blocks
+    - &num_tx_to_blocks
       name: num_to_blocks
       description: "Amount of blocks where the contract was the 'to address' for successful transactions"
-    - &num_to_txs
-      name: num_to_txs
+    - &num_tx_tos
+      name: num_tx_tos
       description: "Amount of successful transactions where the contract was the 'to address'"
-    - &num_to_tx_senders
-      name: num_to_tx_senders
+    - &num_tx_to_senders
+      name: num_tx_to_senders
       description:  "Unique amount of from addresses in transactions where the contract was the 'to address'"
-    - &sum_to_tx_gas_used
-      name: sum_to_tx_gas_used
+    - &sum_tx_to_gas_used
+      name: sum_tx_to_gas_used
       description:  "Amount of gas used by successful transactions where the contract was the 'to address'"
-    - &sum_to_tx_calldata_bytes
-      name: sum_to_tx_calldata_bytes
+    - &sum_tx_to_calldata_bytes
+      name: sum_tx_to_calldata_bytes
       description:  "Amount of calldata bytes used by successful transactions where the contract was the 'to address'"
-    - &sum_to_tx_calldata_gas
-      name: sum_to_tx_calldata_gas
+    - &sum_tx_to_calldata_gas
+      name: sum_tx_to_calldata_gas
       description:  "Amount of calldata gas used by successful transactions where the contract was the 'to address'"
-    - &num_trace_blocks
-      name: num_trace_blocks
+    - &num_trace_to_blocks
+      name: num_trace_to_blocks
       description: "Amount of blocks where the contract was called in traces for successful traces"
-    - &num_trace_txs
-      name: num_trace_txs
+    - &num_trace_to_txs
+      name: num_trace_to_txs
       description: "Amount of successful transactions where the contract was called in traces"
-    - &num_trace_calls
-      name: num_trace_calls
+    - &num_trace_to_calls
+      name: num_trace_to_calls
       description:  "Amount of successful calls where the contract was called in traces"
-    - &num_trace_tx_senders
-      name: num_trace_tx_senders
+    - &num_trace_to_tx_senders
+      name: num_trace_to_tx_senders
       description:  "Amount of from addresses for successful transactions where the contract was called in traces"
-    - &num_trace_call_senders
-      name: num_trace_call_senders
+    - &num_trace_to_call_senders
+      name: num_trace_to_call_senders
       description:  "Amount of from addresses for successful traces where the contract was called in traces"
-    - &sum_trace_gas_used
-      name: sum_trace_gas_used
+    - &sum_trace_to_gas_used
+      name: sum_trace_to_gas_used
       description:  "Amount of gas used in successful traces where the contract was called in traces (including sub-trace gas used)"
-    - &sum_trace_tx_gas_used
-      name: sum_trace_tx_gas_used
+    - &sum_trace_to_tx_gas_used
+      name: sum_trace_to_tx_gas_used
       description:   "Amount of gas used in successful transactions where the contract was called in traces"
-    - &num_log_blocks
-      name: num_log_blocks
+    - &num_logs_emitted_blocks
+      name: num_logs_emitted_blocks
       description:  "Amount of blocks where the contract was called in traces for successful event logs"
-    - &num_log_txs
-      name: num_log_txs
+    - &num_logs_emitted_txs
+      name: num_logs_emitted_txs
       description:  "Amount of successful transactions where the contract emitted an event log"
-    - &num_log_events
-      name: num_log_events
+    - &num_logs_emitted_events
+      name: num_logs_emitted_events
       description:   "Amount of successful event logs where the contract emitted an event log"
-    - &num_log_tx_senders
-      name: num_log_tx_senders
+    - &num_logs_emitted_tx_senders
+      name: num_logs_emitted_tx_senders
       description:   "Amount of from addresses for successful transactions where the contract emitted an event log"
-    - &sum_log_tx_gas_used
-      name: sum_log_tx_gas_used
+    - &sum_logs_emitted_tx_gas_used
+      name: sum_logs_emitted_tx_gas_used
       description:   "Amount of gas used by successful transactions where the contract emitted an event log"
 
-  - name: contracts_optimism_daily_usage_summary_logs
+  - name: usage_summary_optimism_daily_logs
     meta:
       blockchain: optimism
       sector: contracts
@@ -104,13 +104,13 @@ models:
     - *address
     - *block_month
     - *block_date
-    - *num_log_blocks
-    - *num_log_txs
-    - *num_log_events
-    - *num_log_tx_senders
-    - *sum_log_tx_gas_used
+    - *num_logs_emitted_blocks
+    - *num_logs_emitted_txs
+    - *num_logs_emitted_events
+    - *num_logs_emitted_tx_senders
+    - *sum_logs_emitted_tx_gas_used
 
-  - name: contracts_optimism_daily_usage_summary_traces
+  - name: usage_summary_optimism_daily_traces
     meta:
       blockchain: optimism
       sector: contracts
@@ -130,15 +130,15 @@ models:
     - *address
     - *block_month
     - *block_date
-    - *num_trace_blocks
-    - *num_trace_txs
-    - *num_trace_calls
-    - *num_trace_tx_senders
-    - *num_trace_call_senders
-    - *sum_trace_gas_used
-    - *sum_trace_tx_gas_used
+    - *num_trace_to_blocks
+    - *num_trace_to_txs
+    - *num_trace_to_calls
+    - *num_trace_to_tx_senders
+    - *num_trace_to_call_senders
+    - *sum_trace_to_gas_used
+    - *sum_trace_to_tx_gas_used
 
-  - name: contracts_optimism_daily_usage_summary_transactions
+  - name: usage_summary_optimism_daily_transactions
     meta:
       blockchain: optimism
       sector: contracts
@@ -158,10 +158,10 @@ models:
     - *address
     - *block_month
     - *block_date
-    - *num_to_blocks
-    - *num_to_txs
-    - *num_to_tx_senders
-    - *sum_to_tx_gas_used
-    - *sum_to_tx_calldata_bytes
-    - *sum_to_tx_calldata_gas
+    - *num_tx_to_blocks
+    - *num_tx_tos
+    - *num_tx_to_senders
+    - *sum_tx_to_gas_used
+    - *sum_tx_to_calldata_bytes
+    - *sum_tx_to_calldata_gas
  

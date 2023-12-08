@@ -1372,8 +1372,3 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
-    
-    usage_summary:
-      +schema: usage_summary
-      optimism:
-        +schema: usage_summary_optimism

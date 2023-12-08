@@ -10,6 +10,6 @@
   )
 }}
 
-{{contracts_daily_usage_summary(
+{{usage_summary_daily(
     chain='optimism'
 )}}

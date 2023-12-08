@@ -5,14 +5,14 @@ SELECT
   , block_date
   , DATE_TRUNC('month', block_date ) AS block_month
   , t.to AS address
-  , COUNT(DISTINCT block_number) AS num_to_blocks
-  , COUNT(*) AS num_to_txs
-  , COUNT(DISTINCT "from") AS num_to_tx_senders
-  , SUM(gas_used) AS sum_to_tx_gas_used
-  , SUM(bytearray_length(t.data)) AS sum_to_tx_calldata_bytes
+  , COUNT(DISTINCT block_number) AS num_tx_to_blocks
+  , COUNT(*) AS num_tx_tos
+  , COUNT(DISTINCT "from") AS num_tx_to_senders
+  , SUM(gas_used) AS sum_tx_to_gas_used
+  , SUM(bytearray_length(t.data)) AS sum_tx_to_calldata_bytes
   , SUM(
     evm_get_calldata_gas_from_data('t.data')
-  ) AS sum_to_tx_calldata_gas
+  ) AS sum_tx_to_calldata_gas
   FROM {{ source(chain,'transactions') }} t
 
   WHERE 1=1
