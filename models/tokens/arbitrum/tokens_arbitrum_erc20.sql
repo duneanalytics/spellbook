@@ -1,4 +1,11 @@
-{{ config( alias = 'erc20', tags=['static'])}}
+{{
+    config(
+        schema = 'tokens_arbitrum',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
+}}
 
 SELECT contract_address, symbol, decimals
 FROM (VALUES
