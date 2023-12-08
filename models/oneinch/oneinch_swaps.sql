@@ -172,26 +172,31 @@ settlements as (
 
 , swaps as (
     select
+        
         blockchain
+        , block_number
         , tx_hash
         , call_trace_address
-        , block_time
-        , minute
-        , tx_from
-        , tx_to
-        , call_from
-        , call_to
-        , contract_name
-        , protocol
-        , protocol_version
-        , method
-        , user
-        , receiver
-        , fusion
-        , contracts_only
-        , second_side
-        , call_remains as remains
-        , any_value(explorer_link) as explorer_link
+
+        , any_value(block_time) as block_time
+        , any_value(tx_from) as tx_from
+        , any_value(tx_to) as tx_to
+        , any_value(tx_nonce) as tx_nonce
+        , any_value(gas_price) as gas_price
+        , any_value(contract_name) as contract_name
+        , any_value(protocol) as protocol
+        , any_value(protocol_version) as protocol_version
+        , any_value(method) as method
+        , any_value(call_from) as call_from
+        , any_value(call_to) as call_to
+        , any_value(call_gas_used) as call_gas_used
+        , any_value(user) as user
+        , any_value(receiver) as receiver
+        , any_value(fusion) as fusion
+        , any_value(contracts_only) as contracts_only
+        , any_value(second_side) as second_side
+        , any_value(call_remains) as remains
+
         , any_value(if(src_native is null, src_token_address, {{true_native_address}})) filter(where contract_address = src_token_address) as src_token_address
         , any_value(if(dst_native is null, dst_token_address, {{true_native_address}})) filter(where contract_address = dst_token_address) as dst_token_address
         , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
@@ -201,19 +206,26 @@ settlements as (
         , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
         , count(*) as transfers
+        , any_value(explorer_link) as explorer_link
+
     from (
         select
             blockchain
+            , block_number
             , tx_hash
-            , call_trace_address
             , block_time
             , tx_from
             , tx_to
+            , tx_nonce
+            , gas_price
+            , priority_fee
+            , call_trace_address
             , call_from
             , call_to
             , contract_address
             , minute
             , amount
+            , call_gas_used
             , call_remains
         from {{ ref('oneinch_calls_transfers_amounts') }}
         {% if is_incremental() %}
@@ -222,25 +234,27 @@ settlements as (
     )
     join calls using(blockchain, tx_hash, call_trace_address, minute)
     left join prices using(blockchain, contract_address, minute)
-    group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+    group by 1, 2, 3, 4
 )
 
-
+-- output --
 
 select
     blockchain
-    , tx_hash
-    , call_trace_address
+    , block_number
     , block_time
-    , minute
+    , tx_hash
     , tx_from
     , tx_to
-    , call_from
-    , call_to
+    , tx_nonce
     , contract_name
     , protocol
     , protocol_version
     , method
+    , call_trace_address
+    , call_from
+    , call_to
+    , call_gas_used
     , user
     , receiver
     , fusion

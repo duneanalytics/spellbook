@@ -3,8 +3,7 @@
         schema = 'oneinch',
         alias = 'calls',
         materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address'],
-        
+        unique_key = ['blockchain', 'tx_hash', 'call_trace_address']
     )
 }}
 
@@ -29,21 +28,27 @@
 
 {% 
     set columns = {
-        'blockchain':'group',
-        'block_time':'group',
-        'tx_hash':'group',
-        'tx_from':'any_value',
-        'tx_to':'any_value',
-        'tx_success':'group',
-        'call_success':'group',
-        'call_trace_address':'group',
-        'call_from':'any_value',
-        'call_to':'any_value',
-        'call_selector':'any_value',
-        'protocol':'any_value',
-        'call_input':'any_value',
-        'call_output':'any_value',
-        'call_remains':'any_value'
+        'blockchain'            :'group',
+        'block_number'          :'group',
+        'block_time'            :'group',
+        'tx_hash'               :'group',
+        'tx_from'               :'any_value',
+        'tx_to'                 :'any_value',
+        'tx_success'            :'group',
+        'tx_nonce'              :'any_value',
+        'gas_price'             :'any_value',
+        'priority_fee'          :'any_value',
+        'protocol'              :'any_value',
+        'method'                :'any_value',
+        'call_selector'         :'any_value',
+        'call_success'          :'group',
+        'call_trace_address'    :'group',
+        'call_from'             :'any_value',
+        'call_to'               :'any_value',
+        'call_output'           :'any_value',
+        'call_error'            :'any_value',
+        'call_gas_used'         :'any_value',
+        'call_remains'          :'any_value'
     }
 %}
 

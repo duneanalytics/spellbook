@@ -11,42 +11,65 @@
 {% set transfer_from_selector = '0x23b872dd' %}
 {% set selector = 'substr(input, 1, 4)' %}
 
+
+
 with
 
 methods as (
-    select blockchain, contract_address as call_to, selector as call_selector, protocol
-    from {{ ref('oneinch_methods') }}
-    where blockchain = '{{ blockchain }}' and project = '1inch' and main
+    select blockchain, call_to, call_selector, method, 'AR' as protocol
+    from {{ ref('oneinch_' + blockchain + '_ar') }}
+    group by 1, 2, 3, 4, 5
+
+    union all
+
+    select blockchain, call_to, call_selector, method, 'LOP' as protocol
+    from {{ ref('oneinch_' + blockchain + '_lop') }}
+    group by 1, 2, 3, 4, 5
+)
+
+, info as (
+    select wrapped_native_token_address
+    from {{ ref('evms_info') }}
+    where blockchain = '{{ blockchain }}'
 )
 
 , calls as (
     select 
         blockchain
+        , block_number
+        , block_time
         , tx_hash
-        , calls.start
-        , calls.call_from
-        , call_to
-        , transactions.tx_from
-        , transactions.tx_to
-        , transactions.tx_success
-        , calls.call_success
-        , call_selector
+        , tx_from
+        , tx_to
+        , tx_success
+        , tx_nonce
+        , gas_price
+        , priority_fee
         , protocol
-        , calls.call_input
-        , calls.call_output
+        , method
+        , call_selector
+        , start
+        , call_from
+        , call_to
+        , call_success
+        , call_output
+        , call_error
+        , call_gas_used
         , concat(cast(length(_remains) as bigint), if(length(_remains) > 0
             , transform(sequence(1, length(_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(_remains), x, 4))))
             , array[bigint '0']
         )) as call_remains
-        , transactions.block_time
     from (
         select 
-            '{{ blockchain }}' as blockchain
+            block_number
+            , block_time
+            , "hash" as tx_hash
             , "from" as tx_from
             , "to" as tx_to
-            , "hash" as tx_hash
             , success as tx_success
-            , block_time
+            , nonce as tx_nonce
+            , gas_price
+            , priority_fee_per_gas as priority_fee
         from {{ source(blockchain, 'transactions') }}
         where
             {% if is_incremental() %}
@@ -57,18 +80,18 @@ methods as (
     ) as transactions 
     join (
         select 
-            '{{ blockchain }}' as blockchain
-            , tx_hash
+            tx_hash
             , trace_address as start
             , "from" as call_from
+            , "to" as call_to
             , success as call_success
             , {{ selector }} as call_selector
-            , input as call_input
             , output as call_output
-            , "to" as call_to
+            , error as call_error
+            , gas_used as call_gas_used
             , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as _remains
         from {{ source(blockchain, 'traces') }}
-        where 
+        where
             {% if is_incremental() %}
                 block_time >= cast(date_add('day', {{ lookback_days }}, now()) as timestamp)
             {% else %}
@@ -76,26 +99,35 @@ methods as (
             {% endif %}
             and (coalesce("to", 0x), coalesce({{ selector }}, 0x)) in (select call_to, call_selector from methods)
             and call_type = 'call'
-    ) as calls using(blockchain, tx_hash)
-    join methods using(blockchain, call_to, call_selector)
+    ) as calls using(tx_hash)
+    join methods using(call_to, call_selector)
 )
 
 , merged as (
     select 
         calls.blockchain
+        , calls.block_number
         , calls.block_time
         -- tx
         , calls.tx_hash
         , calls.tx_from
         , calls.tx_to
         , calls.tx_success
+        , calls.tx_nonce
+        , calls.gas_price
+        , calls.priority_fee
         -- call
+        , calls.protocol
+        , calls.method
+        , calls.call_selector
         , calls.call_success
         , calls.start as call_trace_address
         , calls.call_from
         , calls.call_to
-        , calls.call_selector
-        , calls.protocol
+        , calls.call_output
+        , calls.call_error
+        , calls.call_gas_used
+        , calls.call_remains
         -- transfer
         , transfers.trace_address as transfer_trace_address
         , transfers.contract_address
@@ -107,22 +139,18 @@ methods as (
             coalesce(transfers.transfer_from, transfers.transfer_to) is not null
             , count(*) over(partition by calls.blockchain, calls.tx_hash, calls.start, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
         ) as transfers_between_players
-        , rn_tta_asc
-        , rn_tta_desc
+        , transfers.rn_tta_asc
+        , transfers.rn_tta_desc
         -- ext
-        , calls.call_output 
-        , calls.call_input
-        , calls.call_remains
         , date_trunc('minute', calls.block_time) as minute
         , date(date_trunc('month', calls.block_time)) as block_month
     from calls
     left join (
 
         select 
-            blockchain
-            , tx_hash
+            tx_hash
             , trace_address
-            , if(native_token, evms.wrapped_native_token_address, contract_address) as contract_address
+            , if(native_token, wrapped_native_token_address, contract_address) as contract_address
             , native_token
             , amount
             , transfer_from
@@ -131,8 +159,7 @@ methods as (
             , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
         from (
             select 
-                '{{ blockchain }}' as blockchain
-                , tx_hash
+                tx_hash
                 , trace_address
                 , if(value > uint256 '0', 0xae, "to") as contract_address
                 , if(value > uint256 '0', true, false) as native_token
@@ -157,17 +184,22 @@ methods as (
                 {% else %}
                     block_time >= {{ project_start_date }}
                 {% endif %}
-                and ({{ selector }} in ({{ transfer_selector }}, {{ transfer_from_selector }}) or value > uint256 '0')
+                and (
+                    {{ selector }} = {{ transfer_selector }} and length(input) = 68
+                    or {{ selector }} = {{ transfer_from_selector }} and length(input) = 100
+                    or value > uint256 '0'
+                )
                 and call_type = 'call'
                 and tx_success
                 and success
         )
-        join {{ ref('evms_info') }} evms using(blockchain)
+        join info on true
         
     ) transfers on transfers.tx_hash = calls.tx_hash
         and slice(transfers.trace_address, 1, cardinality(calls.start)) = calls.start 
 )
 
+-- output --
 
 select 
     *
