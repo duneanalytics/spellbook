@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: usage_summary_optimism
+  - name: usage_summary_optimism_daily
     meta:
       blockchain: optimism
       sector: contracts
