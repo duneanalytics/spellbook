@@ -26,29 +26,29 @@ the `base` spell unified with `predeploys`, as our identifier for the total set 
   , COALESCE(tr.block_month, lo.block_month) AS block_month
   , COALESCE(tr.address, lo.address) AS address
   ---
-  , COALESCE(num_to_blocks, 0) AS num_to_blocks
-  , COALESCE(num_to_txs, 0) AS num_to_txs
-  , COALESCE(num_to_tx_senders, 0) AS num_to_tx_senders
-  , COALESCE(sum_to_tx_gas_used, 0) AS sum_to_tx_gas_used
-  , COALESCE(sum_to_tx_calldata_bytes, 0) AS sum_to_tx_calldata_bytes
-  , COALESCE(sum_to_tx_calldata_gas, 0) AS sum_to_tx_calldata_gas
+  , COALESCE(num_tx_to_blocks, 0) AS num_to_blocks
+  , COALESCE(num_tx_tos, 0) AS num_tx_tos
+  , COALESCE(num_tx_to_senders, 0) AS num_tx_to_senders
+  , COALESCE(sum_tx_to_gas_used, 0) AS sum_tx_to_gas_used
+  , COALESCE(sum_tx_to_calldata_bytes, 0) AS sum_tx_to_calldata_bytes
+  , COALESCE(sum_tx_to_calldata_gas, 0) AS sum_tx_to_calldata_gas
   ---
-  , COALESCE(num_trace_blocks, 0) AS num_trace_blocks
-  , COALESCE(num_trace_txs, 0) AS num_trace_txs
-  , COALESCE(num_trace_calls, 0) AS num_trace_calls
+  , COALESCE(num_trace_to_blocks, 0) AS num_trace_to_blocks
+  , COALESCE(num_trace_to_txs, 0) AS num_trace_to_txs
+  , COALESCE(num_trace_to_calls, 0) AS num_trace_to_calls
 
-  , COALESCE(num_trace_tx_senders, 0) AS num_trace_tx_senders
-  , COALESCE(num_trace_call_senders, 0) AS num_trace_call_senders
+  , COALESCE(num_trace_to_tx_senders, 0) AS num_trace_to_tx_senders
+  , COALESCE(num_trace_to_call_senders, 0) AS num_trace_to_call_senders
 
-  , COALESCE(sum_trace_gas_used, 0) AS sum_trace_gas_used
-  , COALESCE(sum_trace_tx_gas_used, 0) AS sum_trace_tx_gas_used
+  , COALESCE(sum_trace_to_gas_used, 0) AS sum_trace_to_gas_used
+  , COALESCE(sum_trace_to_tx_gas_used, 0) AS sum_trace_to_tx_gas_used
   --
-  , COALESCE(num_log_blocks, 0) AS num_log_blocks
-  , COALESCE(num_log_txs, 0) AS num_log_txs
-  , COALESCE(num_log_events, 0) AS num_log_events
+  , COALESCE(num_logs_emitted_blocks, 0) AS num_logs_emitted_blocks
+  , COALESCE(num_logs_emitted_txs, 0) AS num_logs_emitted_txs
+  , COALESCE(num_logs_emitted_events, 0) AS num_logs_emitted_events
 
-  , COALESCE(num_log_tx_senders, 0) AS num_log_tx_senders
-  , COALESCE(sum_log_tx_gas_used, 0) AS sum_log_tx_gas_used
+  , COALESCE(num_logs_emitted_tx_senders, 0) AS num_logs_emitted_tx_senders
+  , COALESCE(sum_logs_emitted_tx_gas_used, 0) AS sum_logs_emitted_tx_gas_used
 
   FROM {{ ref('usage_summary_' + chain + '_daily_traces') }} tr
   LEFT JOIN {{ ref('usage_summary_' + chain + '_daily_transactions') }} tt -- all txs to have an associated trace
