@@ -17,6 +17,7 @@ WITH identified_stakers AS (
     , 'eth_stakers' AS model_name
     , 'identifier' as label_type
     FROM {{ ref('staking_ethereum_entities') }}
+    WHERE depositor_address IS NOT NULL
     GROUP BY entity, depositor_address
     )
 
