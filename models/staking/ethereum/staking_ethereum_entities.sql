@@ -93,4 +93,5 @@ FROM (
         {% endif %}
         {% endfor %}
         )
-GROUP BY tx_from, pubkey, depositor_address,entity,entity_unique_name,category
+, entity
+GROUP BY tx_from, pubkey, depositor_address,entity,entity_unique_name,category, withdrawal_credentials
