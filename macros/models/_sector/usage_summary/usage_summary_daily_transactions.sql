@@ -11,7 +11,7 @@ SELECT
   , SUM(gas_used) AS sum_tx_to_gas_used
   , SUM(bytearray_length(t.data)) AS sum_tx_to_calldata_bytes
   , SUM(
-    evm_get_calldata_gas_from_data('t.data')
+    {{ evm_get_calldata_gas_from_data('t.data') }}
   ) AS sum_tx_to_calldata_gas
   FROM {{ source(chain,'transactions') }} t
 
