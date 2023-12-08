@@ -97,9 +97,9 @@ FROM {{ ref('dex_trades')}} dt
 INNER JOIN distinct_transactions i ON dt.block_time=i.block_time
     AND i.tx_from=dt.tx_from
     AND i.tx_from=dt.tx_from
-    AND i.tx_index IN (txs.index-1, txs.index)
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
+    AND i.tx_index IN (txs.index-1, txs.index)
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
