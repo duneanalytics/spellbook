@@ -66,4 +66,4 @@ WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('call_block_time')}}
 {% endif %}
--- WHERE call_block_time > now() - interval '30' day
+AND call_block_time > now() - interval '30' day
