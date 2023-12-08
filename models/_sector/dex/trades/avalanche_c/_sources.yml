@@ -18,3 +18,5 @@ sources:
     tables:
       - name: FraxswapPair_evt_Swap
       - name: FraxswapFactory_evt_PairCreated
+  - name: trader_joe_v2_1_avalanche_c
+  - name: trader_joe_avalanche_c

@@ -2,7 +2,7 @@
   config(     
         schema = 'contracts',
         alias = 'contract_mapping',
-        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
                                     "sector",
                                     "contracts",
                                     \'["msilb7", "chuxin"]\') }}'
@@ -14,18 +14,10 @@
    ref('contracts_ethereum_contract_mapping')
  , ref('contracts_base_contract_mapping')
  , ref('contracts_optimism_contract_mapping')
+ , ref('contracts_zora_contract_mapping')
 
 ] %}
---  ('contracts_arbitrum_contract_mapping')
--- ,('contracts_avalanche_c_contract_mapping')
---
--- ,('contracts_bnb_contract_mapping')
--- ,('contracts_celo_contract_mapping')
--- ,('contracts_fantom_contract_mapping')
--- ,('contracts_gnosis_contract_mapping')
--- ,('contracts_goerli_contract_mapping')
--- 
--- ,('contracts_polygon_contract_mapping')
+-- todo: add chains for all EVMs in Dune
 
 SELECT *
 FROM (
