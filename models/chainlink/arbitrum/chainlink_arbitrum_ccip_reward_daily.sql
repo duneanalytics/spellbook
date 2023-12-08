@@ -42,7 +42,7 @@ WITH
         FROM 
             {{ref('chainlink_arbitrum_ccip_send_requested_daily')}} ccip_send_requested_daily
         LEFT JOIN token_usd_daily tud ON tud.date_start = ccip_send_requested_daily.date_start AND tud.symbol = ccip_send_requested_daily.token
-        ORDER BY date_start
+        GROUP BY 1, 5
     )
 SELECT
     'arbitrum' as blockchain,

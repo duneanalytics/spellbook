@@ -18,7 +18,7 @@ SELECT
   MAX(cast(date_trunc('month', evt_block_time) AS date)) AS date_month,
   SUM(ccip_send_requested.fee_amount) as fee_amount,
   ccip_send_requested.token as token,
-  MAX(ccip_send_requested.destination_blockchain) AS destination_blockchain,
+  ccip_send_requested.destination_blockchain AS destination_blockchain,
   COUNT(ccip_send_requested.destination_blockchain) AS count
 FROM
   {{ref('chainlink_optimism_ccip_send_requested')}} ccip_send_requested
@@ -26,6 +26,6 @@ FROM
   WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
 {% endif %}      
 GROUP BY
-  2, 5
+  2, 5, 6
 ORDER BY
-  2, 5
+  2, 5, 6
