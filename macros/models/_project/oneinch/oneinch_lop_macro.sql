@@ -138,7 +138,8 @@ orders as (
                 {% if is_incremental() %} 
                     {{ incremental_predicate('block_time') }}
                 {% else %} 
-                    block_time >= timestamp '{{ contract_data['start'] }}' 
+                    -- block_time >= timestamp '{{ contract_data['start'] }}'
+                    block_time >= timestamp '2023-12-01'
                 {% endif %}
                 and call_type = 'call'
         ) using(tx_hash, call_trace_address)
