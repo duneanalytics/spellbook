@@ -74,6 +74,7 @@ info as (
         , dst_amount
         , false as fusion
         , null as order_hash
+        , wrapped_address
         , explorer_link
     from {{ ref('oneinch_' + blockchain + '_ar') }}
     join info on true
@@ -98,6 +99,7 @@ info as (
         , taking_amount as dst_amount
         , coalesce(fusion, false) as fusion
         , order_hash
+        , wrapped_address
         , explorer_link
     from {{ ref('oneinch_' + blockchain + '_lop') }}
     join info on true
@@ -119,7 +121,6 @@ info as (
             tx_hash as transfer_tx_hash
             , trace_address as transfer_trace_address
             , if(value > uint256 '0', 0xae, "to") as contract_address
-            , if(value > uint256 '0', true, false) as transfer_native
             , case {{ selector }}
                 when {{ transfer_selector }} then bytearray_to_uint256(substr(input, 37, 32))
                 when {{ transfer_from_selector }} then bytearray_to_uint256(substr(input, 69, 32))
@@ -193,9 +194,9 @@ select
     , fusion
     , order_hash
     , transfer_trace_address
-    , if(transfer_native, wrapped_address, contract_address) as contract_address
+    , if(contract_address = 0xae, wrapped_address, contract_address) as contract_address
     , amount
-    , transfer_native
+    , if(contract_address = 0xae, true, false) as transfer_native
     , transfer_from
     , transfer_to
     , if(
@@ -208,6 +209,5 @@ select
     , date(date_trunc('month', block_time)) as block_month
     , explorer_link
 from merging
-join info on true
 
 {% endmacro %}
