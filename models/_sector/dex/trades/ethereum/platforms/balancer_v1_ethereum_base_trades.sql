@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v1_ethereum',
-        alias ='base_trades',
+        alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
