@@ -209,14 +209,10 @@ models:
         name: src_receiver
       - &dst_receiver
         name: dst_receiver
-      - &src_token_address
-        name: src_token_address
-      - &dst_token_address
-        name: dst_token_address
-      - &src_amount
-        name: src_amount
-      - &dst_amount
-        name: dst_amount
+      - *src_token_address
+      - *dst_token_address
+      - *src_amount
+      - *dst_amount
       - &dst_amount_min
         name: dst_amount_min
       - &ordinary
