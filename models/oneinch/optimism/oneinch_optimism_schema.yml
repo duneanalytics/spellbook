@@ -5,12 +5,11 @@ models:
     meta:
       blockchain: ['optimism']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'raw']
     description: >
-        1inch swaps optimism calls & transfers in them
-
+        1inch swaps: success optimism calls & transfers in them
     columns:
       - &blockchain_not_null
         name: blockchain

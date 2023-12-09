@@ -23,55 +23,103 @@
         'zksync'
     ]
 %}
-
-
-
-{% 
-    set columns = {
-        'blockchain'            :'group',
-        'block_number'          :'group',
-        'block_time'            :'group',
-        'tx_hash'               :'group',
-        'tx_from'               :'any_value',
-        'tx_to'                 :'any_value',
-        'tx_success'            :'group',
-        'tx_nonce'              :'any_value',
-        'gas_price'             :'any_value',
-        'priority_fee'          :'any_value',
-        'protocol'              :'any_value',
-        'method'                :'any_value',
-        'call_selector'         :'any_value',
-        'call_success'          :'group',
-        'call_trace_address'    :'group',
-        'call_from'             :'any_value',
-        'call_to'               :'any_value',
-        'call_output'           :'any_value',
-        'call_error'            :'any_value',
-        'call_gas_used'         :'any_value',
-        'call_remains'          :'any_value'
-    }
-%}
-
-
-
-{% set select_columns = [] %}
-{% set group_columns = [] %}
-{% for key, value in columns.items() %}
-    {% if value == "group" %}
-        {% set select_columns = select_columns.append(key) %}
-        {% set group_columns = group_columns.append(key) %}
-    {% else %}
-        {% set select_columns = select_columns.append(value + '(' + key + ') as ' + key) %}
-    {% endif %}
-{% endfor %}
-{% set select_columns = select_columns | join(', ') %}
-{% set group_columns = group_columns | join(', ') %}
-
-
+{% set columns = [
+    'blockchain',
+    'block_number',
+    'block_time',
+    'tx_hash',
+    'tx_from',
+    'tx_to',
+    'tx_success',
+    'tx_nonce',
+    'gas_price',
+    'priority_fee',
+    'contract_name',
+    'protocol',
+    'protocol_version',
+    'method',
+    'call_selector',
+    'call_trace_address',
+    'call_from',
+    'call_to',
+    'call_success',
+    'call_gas_used',
+    'call_output',
+    'call_error',
+    'remains'
+] %}
+{% set columns = columns | join(', ') %}
+{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
 
 {% for blockchain in blockchains %}
-    select {{ select_columns }} from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
-    group by {{ group_columns }}
+    select *
+    from (
+        
+        with
+
+        info as (
+            select
+                wrapped_native_token_address as wrapped_address
+                , native_token_symbol as native_symbol
+                , explorer_link
+            from {{ ref('evms_info') }}
+            where blockchain = '{{ blockchain }}'
+        )
+
+        , settlements as (
+            select
+                blockchain
+                , contract_address as call_from
+                , true as fusion
+            from {{ ref('oneinch_fusion_settlements') }}
+            where blockchain = '{{ blockchain }}'
+        )
+
+        select *
+        from (
+            select
+                {{ columns }}
+                , null as maker
+                , dst_receiver as receiver
+                , if(src_token_address in {{native_addresses}}, wrapped_address, src_token_address) as src_token_address
+                , if(src_token_address in {{native_addresses}}, native_symbol) as src_native
+                , src_amount
+                , if(dst_token_address in {{native_addresses}}, wrapped_address, dst_token_address) as dst_token_address
+                , if(dst_token_address in {{native_addresses}}, native_symbol) as dst_native
+                , dst_amount
+                , false as fusion
+                , null as order_hash
+                , explorer_link
+            from {{ ref('oneinch_' + blockchain + '_ar') }}
+            join info on true
+            left join settlements using(call_from)
+            {% if is_incremental() %}
+                where {{ incremental_predicate('block_time') }}
+            {% endif %}
+
+            union all
+
+            select
+                {{ columns }}
+                , maker
+                , receiver
+                , if(maker_asset in {{native_addresses}}, wrapped_address, maker_asset) as src_token_address
+                , if(maker_asset in {{native_addresses}}, native_symbol) as src_native
+                , making_amount as src_amount
+                , if(taker_asset in {{native_addresses}}, wrapped_address, taker_asset) as dst_token_address
+                , if(taker_asset in {{native_addresses}}, native_symbol) as dst_native
+                , taking_amount as dst_amount
+                , coalesce(fusion, false) as fusion
+                , order_hash
+                , explorer_link
+            from {{ ref('oneinch_' + blockchain + '_lop') }}
+            join info on true
+            left join settlements using(call_from)
+            {% if is_incremental() %}
+                where {{ incremental_predicate('block_time') }}
+            {% endif %}
+        )
+    )
     {% if not loop.last %}
         union all
     {% endif %}

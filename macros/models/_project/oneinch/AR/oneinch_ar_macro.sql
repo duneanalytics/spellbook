@@ -227,8 +227,7 @@ pools_list as (
     select * from (
         with traces_cte as (
             select
-                block_number as call_block_number
-                , tx_hash as call_tx_hash
+                tx_hash as call_tx_hash
                 , trace_address as call_trace_address
                 , "from" as call_from
                 , substr(input, 1, 4) as call_selector
@@ -237,6 +236,7 @@ pools_list as (
                 , length(input) as call_input_length
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
+                , error as call_error
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %}
@@ -288,30 +288,35 @@ select
     , tx_from
     , tx_to
     , tx_success
+    , tx_nonce
+    , gas_price
+    , priority_fee_per_gas as priority_fee
     , contract_name
+    , 'AR' as protocol
     , protocol_version
     , method
+    , call_selector
+    , call_trace_address
     , call_from
     , call_to
-    , call_trace_address
-    , call_selector
-    , src_token_address
-    , dst_token_address
+    , call_success
+    , call_gas_used
+    , call_output
+    , call_error
     , src_receiver
     , dst_receiver
+    , src_token_address
+    , dst_token_address
     , src_amount
     , dst_amount
     , dst_amount_min
     , ordinary
     , pools
     , router_type
-    , call_success
-    , call_gas_used
     , concat(cast(length(remains) as bigint), if(length(remains) > 0
         , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
         , array[bigint '0']
     )) as remains
-    , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
 from (
@@ -319,7 +324,7 @@ from (
         add_tx_columns(
             model_cte = 'calls'
             , blockchain = blockchain
-            , columns = ['from', 'to', 'success']
+            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas']
         )
     }}
 )

@@ -6,11 +6,11 @@ models:
 
   - name: oneinch_calls
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base', 'zksync']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'calls']
     description: >
         calls all chains
     tests:
@@ -44,14 +44,16 @@ models:
         name: gas_price
       - &priority_fee
         name: priority_fee
+      - &contract_name
+        name: contract_name
       - &protocol
         name: protocol
+      - &protocol_version
+        name: protocol_version
       - &method
         name: method
       - &call_selector
         name: call_selector
-      - &call_success
-        name: call_success
       - &call_trace_address_not_null
         name: call_trace_address
         tests:
@@ -60,30 +62,56 @@ models:
         name: call_from
       - &call_to
         name: call_to
+      - &call_success
+        name: call_success
+      - &call_gas_used
+        name: call_gas_used
       - &call_output
         name: call_output
       - &call_error
         name: call_error
-      - &call_gas_used
-        name: call_gas_used
-      - &call_remains
-        name: call_remains
+      - &remains
+        name: remains
+      - &maker
+        name: maker
+      - &receiver
+        name: receiver
+      - &src_token_address
+        name: src_token_address
+      - &src_native
+        name: src_native
+      - &src_amount
+        name: src_amount
+      - &dst_token_address
+        name: dst_token_address
+      - &dst_native
+        name: dst_native
+      - &dst_amount
+        name: dst_amount
+      - &fusion
+        name: fusion
+      - &order_hash
+        name: order_hash
+      - &explorer_link
+        name: explorer_link
 
 
-  - name: oneinch_calls_transfers_amounts
+  - name: oneinch_calls_transfers
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base', 'zksync']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'calls', 'transfers']
     description: >
-        calls transfer amounts all chains
+        1inch swaps: success calls & transfers in them
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - unique_call_transfer_id
+            - tx_hash
+            - call_trace_address
+            - transfer_trace_address
     columns:
       - *blockchain_not_null
       - *block_number
@@ -94,17 +122,28 @@ models:
       - *tx_nonce
       - *gas_price
       - *priority_fee
+      - *contract_name
       - *protocol
+      - *protocol_version
       - *method
       - *call_selector
-      - *call_success
       - *call_trace_address_not_null
       - *call_from
       - *call_to
+      - *call_success
+      - *call_gas_used
       - *call_output
       - *call_error
-      - *call_gas_used
-      - *call_remains
+      - *remains
+      - *maker
+      - *receiver
+      - *src_token_address
+      - *src_native
+      - *src_amount
+      - *dst_token_address
+      - *dst_native
+      - *dst_amount
+      - *fusion
       - &transfer_trace_address
         name: transfer_trace_address
       - &contract_address
@@ -131,16 +170,12 @@ models:
         name: block_month
         tests:
           - not_null
-      - &unique_call_transfer_id
-        name: unique_call_transfer_id
-        tests:
-          - unique
-          - not_null
+      - *explorer_link
 
 
   - name: oneinch_lop
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -155,24 +190,29 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
+      - *block_number
       - *block_time
       - *tx_hash_not_null
       - *tx_from
       - *tx_to
       - *tx_success
-      - &contract_name
-        name: contract_name
-      - &protocol_version
-        name: protocol_version
+      - *tx_nonce
+      - *gas_price
+      - *priority_fee
+      - *contract_name
+      - *protocol
+      - *protocol_version
       - *method
+      - *call_selector
+      - *call_trace_address_not_null
       - *call_from
       - *call_to
-      - *call_trace_address_not_null
-      - *call_selector
-      - &maker
-        name: maker
-      - &receiver
-        name: receiver
+      - *call_success
+      - *call_gas_used
+      - *call_output
+      - *call_error
+      - *maker
+      - *receiver
       - &maker_asset
         name: maker_asset
       - &making_amount
@@ -183,20 +223,15 @@ models:
         name: taker_asset
       - &taking_amount
         name: taking_amount
-      - &order_hash
-        name: order_hash
-      - *call_success
-      - *call_gas_used
-      - &remains
-        name: remains
-      - *call_output
+      - *order_hash
+      - *remains
       - *minute
       - *block_month_not_null
 
 
   - name: oneinch_lop_own_trades
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -252,7 +287,7 @@ models:
 
   - name: oneinch_ar
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -267,30 +302,35 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
+      - *block_number
       - *block_time
       - *tx_hash_not_null
       - *tx_from
       - *tx_to
       - *tx_success
+      - *tx_nonce
+      - *gas_price
+      - *priority_fee
       - *contract_name
+      - *protocol
       - *protocol_version
       - *method
+      - *call_selector
+      - *call_trace_address_not_null
       - *call_from
       - *call_to
-      - *call_trace_address_not_null
-      - *call_selector
-      - &src_token_address
-        name: src_token_address
-      - &dst_token_address
-        name: dst_token_address
+      - *call_success
+      - *call_gas_used
+      - *call_output
+      - *call_error
+      - *src_token_address
+      - *dst_token_address
       - &src_receiver
         name: src_receiver
       - &dst_receiver
         name: dst_receiver
-      - &src_amount
-        name: src_amount
-      - &dst_amount
-        name: dst_amount
+      - *src_amount
+      - *dst_amount
       - &dst_amount_min
         name: dst_amount_min
       - &ordinary
@@ -299,17 +339,14 @@ models:
         name: pools
       - &router_type
         name: router_type
-      - *call_success
-      - *call_gas_used
       - *remains
-      - *call_output
       - *minute
       - *block_month_not_null
 
 
   - name: oneinch_ar_trades
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -352,7 +389,7 @@ models:
 
   - name: oneinch_swaps
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -376,12 +413,10 @@ models:
       - *tx_nonce
       - *gas_price
       - *contract_name
-      - &protocol_not_null
-        name: protocol
-        tests:
-          - not_null
+      - *protocol
       - *protocol_version
       - *method
+      - *call_selector
       - *call_trace_address_not_null
       - *call_from
       - *call_to
@@ -389,8 +424,7 @@ models:
       - &user
         name: user
       - *receiver
-      - &fusion
-        name: fusion
+      - *fusion
       - &contracts_only
         name: contracts_only
       - &second_side
@@ -398,28 +432,31 @@ models:
       - *remains
       - *src_token_address
       - *dst_token_address
-      - *src_amount
-      - *dst_amount
       - &src_token_symbol
         name: src_token_symbol
       - &dst_token_symbol
         name: dst_token_symbol
-      - &usd_amount
-        name: usd_amount
-      - &sources_usd_amount
-        name: sources_usd_amount
-      - &transfers_usd_amount
-        name: transfers_usd_amount
+      - &src_token_decimals
+        name: src_token_decimals
+      - &dst_token_decimals
+        name: dst_token_decimals
+      - *src_amount
+      - *dst_amount
+      - &mount_usd
+        name: amount_usd
+      - &sources_amount_usd
+        name: sources_amount_usd
+      - &transfers_amount_usd
+        name: transfers_amount_usd
       - &transfers
         name: transfers
-      - &explorer_link
-        name: explorer_link
+      - *explorer_link
       - *block_month_not_null
       
 
   - name: oneinch_fusion_settlements
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:
@@ -441,9 +478,9 @@ models:
 
   - name: oneinch_fusion_resolvers
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -472,9 +509,9 @@ models:
 
   - name: oneinch_fusion_executors
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -518,9 +555,9 @@ models:
 
   - name: oneinch_fusion_farms
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'raw']
     description: >
@@ -556,7 +593,7 @@ models:
 
   - name: oneinch_exchange_contracts
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
       sector: oneinch
       contributors: ['grkhr', 'max-morrow']
     config:

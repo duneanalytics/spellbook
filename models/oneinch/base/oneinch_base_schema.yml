@@ -5,12 +5,11 @@ models:
     meta:
       blockchain: ['base']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'raw']
     description: >
-        1inch swaps base calls & transfers in them
-
+        1inch swaps: success base calls & transfers in them
     columns:
       - &blockchain_not_null
         name: blockchain

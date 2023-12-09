@@ -1,9 +1,9 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'ar',
+        alias = 'calls_transfers',
         materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address']
+        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'transfer_trace_address']
     )
 }}
 
@@ -27,6 +27,6 @@
 
 
 {% for blockchain in blockchains %}
-    select * from {{ ref('oneinch_' + blockchain + '_ar') }}
+    select * from {{ ref('oneinch_' + blockchain + '_calls_transfers') }}
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
