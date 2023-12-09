@@ -1,5 +1,5 @@
 {% set blockchain = 'gnosis' %}
-{% set project_start_date_str = '2023-12-01' %}
+{% set project_start_date_str = '2022-01-14' %}
 
 
 

@@ -1,5 +1,5 @@
 {% set blockchain = 'ethereum' %}
-{% set project_start_date_str = '2023-12-01' %}
+{% set project_start_date_str = '2019-06-03' %}
 
 
 
