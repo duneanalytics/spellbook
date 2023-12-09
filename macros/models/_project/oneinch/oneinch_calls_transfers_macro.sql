@@ -139,7 +139,8 @@ info as (
             {% if is_incremental() %}
                 block_time >= date_add('day', {{ lookback_days }}, now())
             {% else %}
-                block_time >= {{ project_start_date }}
+                -- block_time >= {{ project_start_date }}
+                block_time >= timestamp '2023-12-01'
             {% endif %}
             and (
                 {{ selector }} = {{ transfer_selector }} and length(input) = 68
@@ -203,8 +204,8 @@ select
     ) as transfers_between_players
     , row_number() over(partition by transfer_tx_hash order by transfer_trace_address asc) as rn_tta_asc
     , row_number() over(partition by transfer_tx_hash order by transfer_trace_address desc) as rn_tta_desc
-    , date_trunc('minute', calls.block_time) as minute
-    , date(date_trunc('month', calls.block_time)) as block_month
+    , date_trunc('minute', block_time) as minute
+    , date(date_trunc('month', block_time)) as block_month
     , explorer_link
 from merging
 join info on true
