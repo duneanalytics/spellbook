@@ -160,7 +160,7 @@ info as (
                 and call_type = 'call'
                 and tx_success
                 and success
-                and (block_number, tx_hash) in (select (block_number, tx_hash) from calls)
+                and (block_number, tx_hash) in (select block_number, tx_hash from calls)
         )
         join info on true
         
