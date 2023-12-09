@@ -27,3 +27,6 @@ sources:
     tables:
       - name: BPool_evt_LOG_SWAP
       - name: BPool_call_setSwapFee
+  - name: balancer_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap

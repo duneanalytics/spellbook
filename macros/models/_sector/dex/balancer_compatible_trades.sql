@@ -87,7 +87,7 @@ FROM dexs
         version = '',
         project_decoded_as = 'balancer_v2',
         Vault_evt_Swap = '',
-        BPool_call_setSwapFee = ''
+        pools_fees = 'pools_fees'
     )
 %}
 
@@ -104,7 +104,7 @@ swap_fees AS (
             fees.swap_fee_percentage,
             ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
         FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swaps
-        LEFT JOIN {{ ref('balancer_v2_ethereum_pools_fees') }} fees
+        LEFT JOIN {{ ref(project_decoded_as ~ '_' ~ blockchain ~ '_' ~ pools_fees) }} fees
             ON fees.contract_address = bytearray_substring(swaps.poolId, 1, 20)
             AND ARRAY[fees.block_number] || ARRAY[fees.index] < ARRAY[swaps.evt_block_number] || ARRAY[swaps.evt_index]
         {% if is_incremental() %}
@@ -157,7 +157,9 @@ SELECT
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    dexs.evt_index
+    dexs.evt_index,
+    dexs.pool_id,
+    dexs.swap_fee
 FROM dexs
 
 {% endmacro %}
