@@ -101,7 +101,7 @@ info as (
         , explorer_link
     from {{ ref('oneinch_' + blockchain + '_lop') }}
     join info on true
-    left join settlements using(call_from)
+    left join settlements using(blockchain, call_from)
     where
         tx_success
         and call_success
