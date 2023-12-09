@@ -33,6 +33,8 @@ swap_fees AS (
 
 dexs AS (
     SELECT
+        CAST(NULL AS VARBINARY) AS taker,
+        CAST(NULL AS VARBINARY) AS maker,
         tokenOut AS token_bought_address,
         tokenAmountOut AS token_bought_amount_raw,
         tokenIn AS token_sold_address,
