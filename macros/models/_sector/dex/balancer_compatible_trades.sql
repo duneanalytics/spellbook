@@ -70,7 +70,9 @@ SELECT
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    dexs.evt_index
+    dexs.evt_index,
+    CAST(NULL AS varbinary) AS pool_id,
+    CAST(dexs.swap_fee_percentage AS double) AS swap_fee
 FROM dexs
 
 {% endmacro %}
