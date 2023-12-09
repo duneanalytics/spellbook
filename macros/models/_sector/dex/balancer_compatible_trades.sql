@@ -116,7 +116,7 @@ swap_fees AS (
 
 dexs AS (
     SELECT
-        swap.evt_block_number,
+        swap.evt_block_number AS block_number,
         swap.evt_block_time AS block_time,
         CAST(NULL AS VARBINARY) AS taker,
         CAST(NULL AS VARBINARY) AS maker,
