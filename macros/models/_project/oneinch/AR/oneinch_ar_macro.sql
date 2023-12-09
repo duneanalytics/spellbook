@@ -289,8 +289,8 @@ select
     , tx_to
     , tx_success
     , tx_nonce
-    , gas_price
-    , priority_fee_per_gas as priority_fee
+    , tx_gas_price as gas_price
+    , tx_priority_fee_per_gas as priority_fee
     , contract_name
     , 'AR' as protocol
     , protocol_version
