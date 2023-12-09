@@ -116,53 +116,40 @@ info as (
     join (
 
         select 
-            transfer_tx_hash
-            , transfer_trace_address
-            , if(transfer_native, wrapped_address, contract_address) as contract_address
-            , transfer_native
-            , amount
-            , transfer_from
-            , transfer_to
-            , row_number() over(partition by tx_hash order by transfer_trace_address asc) as rn_tta_asc
-            , row_number() over(partition by tx_hash order by transfer_trace_address desc) as rn_tta_desc
-        from (
-            select 
-                tx_hash as transfer_tx_hash
-                , trace_address as transfer_trace_address
-                , if(value > uint256 '0', 0xae, "to") as contract_address
-                , if(value > uint256 '0', true, false) as transfer_native
-                , case {{ selector }}
-                    when {{ transfer_selector }} then bytearray_to_uint256(substr(input, 37, 32))
-                    when {{ transfer_from_selector }} then bytearray_to_uint256(substr(input, 69, 32))
-                    else value
-                end as amount
-                , case
-                    when {{ selector }} = {{ transfer_selector }} or value > uint256 '0' then "from"
-                    when {{ selector }} = {{ transfer_from_selector }} then substr(input, 17, 20)
-                end as transfer_from
-                , case
-                    when {{ selector }} = {{ transfer_selector }} then substr(input, 17, 20)
-                    when {{ selector }} = {{ transfer_from_selector }} then substr(input, 49, 20)
-                    when value > uint256 '0' then "to"
-                end as transfer_to
-            from {{ source(blockchain, 'traces') }}
-            where
-                {% if is_incremental() %}
-                    block_time >= date_add('day', {{ lookback_days }}, now())
-                {% else %}
-                    block_time >= {{ project_start_date }}
-                {% endif %}
-                and (
-                    {{ selector }} = {{ transfer_selector }} and length(input) = 68
-                    or {{ selector }} = {{ transfer_from_selector }} and length(input) = 100
-                    or value > uint256 '0'
-                )
-                and call_type = 'call'
-                and tx_success
-                and success
-                and (block_number, tx_hash) in (select block_number, tx_hash from calls)
-        )
-        join info on true
+            tx_hash as transfer_tx_hash
+            , trace_address as transfer_trace_address
+            , if(value > uint256 '0', 0xae, "to") as contract_address
+            , if(value > uint256 '0', true, false) as transfer_native
+            , case {{ selector }}
+                when {{ transfer_selector }} then bytearray_to_uint256(substr(input, 37, 32))
+                when {{ transfer_from_selector }} then bytearray_to_uint256(substr(input, 69, 32))
+                else value
+            end as amount
+            , case
+                when {{ selector }} = {{ transfer_selector }} or value > uint256 '0' then "from"
+                when {{ selector }} = {{ transfer_from_selector }} then substr(input, 17, 20)
+            end as transfer_from
+            , case
+                when {{ selector }} = {{ transfer_selector }} then substr(input, 17, 20)
+                when {{ selector }} = {{ transfer_from_selector }} then substr(input, 49, 20)
+                when value > uint256 '0' then "to"
+            end as transfer_to
+        from {{ source(blockchain, 'traces') }}
+        where
+            {% if is_incremental() %}
+                block_time >= date_add('day', {{ lookback_days }}, now())
+            {% else %}
+                block_time >= {{ project_start_date }}
+            {% endif %}
+            and (
+                {{ selector }} = {{ transfer_selector }} and length(input) = 68
+                or {{ selector }} = {{ transfer_from_selector }} and length(input) = 100
+                or value > uint256 '0'
+            )
+            and call_type = 'call'
+            and tx_success
+            and success
+            and (block_number, tx_hash) in (select block_number, tx_hash from calls)
         
     ) transfers on transfer_tx_hash = tx_hash
         and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address
@@ -205,20 +192,21 @@ select
     , fusion
     , order_hash
     , transfer_trace_address
-    , contract_address
+    , if(transfer_native, wrapped_address, contract_address) as contract_address
     , amount
-    , native_token
+    , transfer_native
     , transfer_from
     , transfer_to
     , if(
-        coalesce(transfers.transfer_from, transfers.transfer_to) is not null
-        , count(*) over(partition by calls.blockchain, calls.tx_hash, calls.start, array_join(array_sort(array[transfers.transfer_from, transfers.transfer_to]), ''))
+        coalesce(transfer_from, transfer_to) is not null
+        , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
     ) as transfers_between_players
-    , rn_tta_asc
-    , rn_tta_desc
+    , row_number() over(partition by transfer_tx_hash order by transfer_trace_address asc) as rn_tta_asc
+    , row_number() over(partition by transfer_tx_hash order by transfer_trace_address desc) as rn_tta_desc
     , date_trunc('minute', calls.block_time) as minute
     , date(date_trunc('month', calls.block_time)) as block_month
     , explorer_link
 from merging
+join info on true
 
 {% endmacro %}

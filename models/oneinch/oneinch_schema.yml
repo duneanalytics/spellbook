@@ -153,8 +153,8 @@ models:
         name: contract_address
       - &amount
         name: amount
-      - &native_token
-        name: native_token
+      - &transfer_native
+        name: transfer_native
       - &transfer_from
         name: transfer_from
       - &transfer_to
