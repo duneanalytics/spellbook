@@ -36,8 +36,8 @@ WITH
         SELECT 
             ccip_send_requested_daily.date_start,
             cast(date_trunc('month', ccip_send_requested_daily.date_start) as date) as date_month,  
-            ccip_send_requested_daily.fee_amount as token_amount,
-            (ccip_send_requested_daily.fee_amount * tud.usd_amount) as usd_amount,
+            SUM(ccip_send_requested_daily.fee_amount) as token_amount,
+            SUM((ccip_send_requested_daily.fee_amount * tud.usd_amount)) as usd_amount,
             ccip_send_requested_daily.token as token
         FROM 
             {{ref('chainlink_polygon_ccip_send_requested_daily')}} ccip_send_requested_daily
