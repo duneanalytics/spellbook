@@ -1,0 +1,30 @@
+version: 2
+
+sources: 
+  - name: optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded optimism event logs table
+    tables:
+      - name: decoded_logs
+        loaded_at_field: evt_block_time
+
+  - name: attestationstation_v1_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for revoked Attestations
+    tables:
+      - name: EAS_evt_Revoked
+        loaded_at_field: evt_block_time
+
+  # - name: attestationstation_v1_optimism
+  #   freshness:
+  #         warn_after: { count: 12, period: hour }
+  #   description: >
+  #     Decoded event table for attested Attestations
+  #   tables:
+  #     - name: EAS_evt_Attested
+  #       loaded_at_field: evt_block_time
+
