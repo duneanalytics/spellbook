@@ -110,21 +110,21 @@ info as (
         {% endif %}
 )
 
-, merged as (
+, merging as (
     select *
     from calls
     join (
 
         select 
             transfer_tx_hash
-            , trace_address
+            , transfer_trace_address
             , if(transfer_native, wrapped_address, contract_address) as contract_address
             , transfer_native
             , amount
             , transfer_from
             , transfer_to
-            , row_number() over(partition by tx_hash order by trace_address asc) as rn_tta_asc
-            , row_number() over(partition by tx_hash order by trace_address desc) as rn_tta_desc
+            , row_number() over(partition by tx_hash order by transfer_trace_address asc) as rn_tta_asc
+            , row_number() over(partition by tx_hash order by transfer_trace_address desc) as rn_tta_desc
         from (
             select 
                 tx_hash as transfer_tx_hash
@@ -219,6 +219,6 @@ select
     , date_trunc('minute', calls.block_time) as minute
     , date(date_trunc('month', calls.block_time)) as block_month
     , explorer_link
-from merged
+from merging
 
 {% endmacro %}
