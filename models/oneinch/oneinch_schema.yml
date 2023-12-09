@@ -144,8 +144,11 @@ models:
       - *dst_native
       - *dst_amount
       - *fusion
-      - &transfer_trace_address
+      - *order_hash
+      - &transfer_trace_address_not_null
         name: transfer_trace_address
+        tests:
+          - not_null
       - &contract_address
         name: contract_address
       - &amount

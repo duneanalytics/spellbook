@@ -7,7 +7,7 @@ models:
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'calls', 'transfers']
     description: >
         1inch swaps: success fantom calls & transfers in them
     columns:
@@ -35,30 +35,58 @@ models:
         name: gas_price
       - &priority_fee
         name: priority_fee
+      - &contract_name
+        name: contract_name
       - &protocol
         name: protocol
+      - &protocol_version
+        name: protocol_version
       - &method
         name: method
       - &call_selector
         name: call_selector
-      - &call_success
-        name: call_success
-      - &call_trace_address
+      - &call_trace_address_not_null
         name: call_trace_address
+        tests:
+          - not_null
       - &call_from
         name: call_from
       - &call_to
         name: call_to
+      - &call_success
+        name: call_success
+      - &call_gas_used
+        name: call_gas_used
       - &call_output
         name: call_output
       - &call_error
         name: call_error
-      - &call_gas_used
-        name: call_gas_used
-      - &call_remains
-        name: call_remains
-      - &transfer_trace_address
+      - &remains
+        name: remains
+      - &maker
+        name: maker
+      - &receiver
+        name: receiver
+      - &src_token_address
+        name: src_token_address
+      - &src_native
+        name: src_native
+      - &src_amount
+        name: src_amount
+      - &dst_token_address
+        name: dst_token_address
+      - &dst_native
+        name: dst_native
+      - &dst_amount
+        name: dst_amount
+      - &fusion
+        name: fusion
+      - &order_hash
+        name: order_hash
+      - &transfer_trace_address_not_null
         name: transfer_trace_address
+        tests:
+          - not_null
       - &contract_address
         name: contract_address
       - &amount
@@ -81,11 +109,8 @@ models:
         name: block_month
         tests:
           - not_null
-      - &unique_call_transfer_id
-        name: unique_call_transfer_id
-        tests:
-          - unique
-          - not_null
+      - &explorer_link
+        name: explorer_link
 
   - name: oneinch_fantom_lop
     meta:
@@ -104,27 +129,29 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
+      - *block_number
       - *block_time
       - *tx_hash_not_null
       - *tx_from
       - *tx_to
       - *tx_success
-      - &contract_name
-        name: contract_name
-      - &protocol_version
-        name: protocol_version
+      - *tx_nonce
+      - *gas_price
+      - *priority_fee
+      - *contract_name
+      - *protocol
+      - *protocol_version
       - *method
+      - *call_selector
+      - *call_trace_address_not_null
       - *call_from
       - *call_to
-      - &call_trace_address_not_null
-        name: call_trace_address
-        tests:
-          - not_null
-      - *call_selector
-      - &maker
-        name: maker
-      - &receiver
-        name: receiver
+      - *call_success
+      - *call_gas_used
+      - *call_output
+      - *call_error
+      - *maker
+      - *receiver
       - &maker_asset
         name: maker_asset
       - &making_amount
@@ -135,13 +162,8 @@ models:
         name: taker_asset
       - &taking_amount
         name: taking_amount
-      - &order_hash
-        name: order_hash
-      - *call_success
-      - *call_gas_used
-      - &remains
-        name: remains
-      - *call_output
+      - *order_hash
+      - *remains
       - *minute
       - *block_month
 
@@ -162,26 +184,35 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
+      - *block_number
       - *block_time
       - *tx_hash_not_null
       - *tx_from
       - *tx_to
       - *tx_success
+      - *tx_nonce
+      - *gas_price
+      - *priority_fee
       - *contract_name
+      - *protocol
       - *protocol_version
       - *method
+      - *call_selector
+      - *call_trace_address_not_null
       - *call_from
       - *call_to
-      - *call_trace_address_not_null
-      - *call_selector
-      - &src_token_address
-        name: src_token_address
-      - &dst_token_address
-        name: dst_token_address
+      - *call_success
+      - *call_gas_used
+      - *call_output
+      - *call_error
       - &src_receiver
         name: src_receiver
       - &dst_receiver
         name: dst_receiver
+      - &src_token_address
+        name: src_token_address
+      - &dst_token_address
+        name: dst_token_address
       - &src_amount
         name: src_amount
       - &dst_amount
@@ -194,10 +225,7 @@ models:
         name: pools
       - &router_type
         name: router_type
-      - *call_success
-      - *call_gas_used
       - *remains
-      - *call_output
       - *minute
       - *block_month
 

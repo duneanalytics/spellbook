@@ -40,6 +40,7 @@ select
     , dst_amount_min
     , call_gas_used
     , call_output
+    , call_error
     , ordinary
     , pools
     , remains

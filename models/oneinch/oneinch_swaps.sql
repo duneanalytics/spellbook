@@ -39,6 +39,7 @@
     'maker',
     'receiver',
     'fusion',
+    'order_hash',
     'remains',
     'sources_amount_usd',
     'transfers_amount_usd',
@@ -97,6 +98,7 @@ tokens as (
         , any_value(maker) as maker
         , any_value(receiver) as receiver
         , any_value(fusion) as fusion
+        , any_value(order_hash) as order_hash
         , any_value(remains) as remains
 
         , any_value(if(src_native is null, src_token_address, {{true_native_address}})) filter(where contract_address = src_token_address) as src_token_address
@@ -180,6 +182,7 @@ select
     , fusion
     , contracts_only
     , second_side
+    , order_hash
     , remains
     , src_token_address
     , dst_token_address

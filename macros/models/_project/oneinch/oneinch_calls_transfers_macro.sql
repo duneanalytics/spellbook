@@ -73,6 +73,7 @@ info as (
         , if(dst_token_address in {{native_addresses}}, native_symbol) as dst_native
         , dst_amount
         , false as fusion
+        , null as order_hash
         , explorer_link
     from {{ ref('oneinch_' + blockchain + '_ar') }}
     join info on true
@@ -96,6 +97,7 @@ info as (
         , if(taker_asset in {{native_addresses}}, native_symbol) as dst_native
         , taking_amount as dst_amount
         , coalesce(fusion, false) as fusion
+        , order_hash
         , explorer_link
     from {{ ref('oneinch_' + blockchain + '_lop') }}
     join info on true
@@ -158,6 +160,7 @@ info as (
                 and call_type = 'call'
                 and tx_success
                 and success
+                and (block_number, tx_hash) in (select (block_number, tx_hash) from calls)
         )
         join info on true
         
@@ -200,6 +203,7 @@ select
     , dst_native
     , dst_amount
     , fusion
+    , order_hash
     , transfer_trace_address
     , contract_address
     , amount
