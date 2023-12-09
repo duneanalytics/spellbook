@@ -227,7 +227,8 @@ pools_list as (
     select * from (
         with traces_cte as (
             select
-                tx_hash as call_tx_hash
+                block_number as call_block_number
+                , tx_hash as call_tx_hash
                 , trace_address as call_trace_address
                 , "from" as call_from
                 , substr(input, 1, 4) as call_selector
