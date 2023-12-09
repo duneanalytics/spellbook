@@ -116,7 +116,7 @@ info as (
     join (
 
         select 
-            tx_hash
+            transfer_tx_hash
             , trace_address
             , if(transfer_native, wrapped_address, contract_address) as contract_address
             , transfer_native
