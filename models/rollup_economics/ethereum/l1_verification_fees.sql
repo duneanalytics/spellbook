@@ -69,6 +69,25 @@ with verify_txns as (
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+
+    UNION ALL SELECT
+    'scroll' AS name,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND t.to = 0xa13BAF47339d63B743e7Da8741db5456DAc1E556
+      AND cast(t.data as varchar) LIKE '0x31fa742d%' -- finalizeBatchWithProof
+      AND t.block_time >= timestamp '2023-10-07'
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 )
 
 ,block_basefees as (
