@@ -33,7 +33,9 @@
     'call_gas_used',
     'call_output',
     'call_error',
-    'remains'
+    'remains',
+    'wrapped_address',
+    'explorer_link'
 ] %}
 {% set columns = columns | join(', ') %}
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
@@ -74,8 +76,6 @@ info as (
         , dst_amount
         , false as fusion
         , null as order_hash
-        , wrapped_address
-        , explorer_link
     from {{ ref('oneinch_' + blockchain + '_ar') }}
     join info on true
     where
@@ -99,8 +99,6 @@ info as (
         , taking_amount as dst_amount
         , coalesce(fusion, false) as fusion
         , order_hash
-        , wrapped_address
-        , explorer_link
     from {{ ref('oneinch_' + blockchain + '_lop') }}
     join info on true
     left join settlements using(blockchain, call_from)
@@ -199,12 +197,15 @@ select
     , if(contract_address = 0xae, true, false) as transfer_native
     , transfer_from
     , transfer_to
-    , if(
-        coalesce(transfer_from, transfer_to) is not null
-        , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
-    ) as transfers_between_players
-    , row_number() over(partition by transfer_tx_hash order by transfer_trace_address asc) as rn_tta_asc
-    , row_number() over(partition by transfer_tx_hash order by transfer_trace_address desc) as rn_tta_desc
+    , -1 as transfers_between_players
+    , -1 as rn_tta_asc
+    , -1 as rn_tta_desc
+    -- , if(
+    --     coalesce(transfer_from, transfer_to) is not null
+    --     , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
+    -- ) as transfers_between_players
+    -- , row_number() over(partition by transfer_tx_hash order by transfer_trace_address asc) as rn_tta_asc
+    -- , row_number() over(partition by transfer_tx_hash order by transfer_trace_address desc) as rn_tta_desc
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
     , explorer_link

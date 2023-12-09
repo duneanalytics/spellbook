@@ -51,29 +51,29 @@
 {% set columns = columns | join(', ') %}
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
 
+with
+
+info as (
+    select
+        blockchain
+        , wrapped_native_token_address as wrapped_address
+        , native_token_symbol as native_symbol
+        , explorer_link
+    from {{ ref('evms_info') }}
+)
+
+, settlements as (
+    select
+        blockchain
+        , contract_address as call_from
+        , true as fusion
+    from {{ ref('oneinch_fusion_settlements') }}
+)
+
 {% for blockchain in blockchains %}
     select *
     from (
         
-        with
-
-        info as (
-            select
-                wrapped_native_token_address as wrapped_address
-                , native_token_symbol as native_symbol
-                , explorer_link
-            from {{ ref('evms_info') }}
-            where blockchain = '{{ blockchain }}'
-        )
-
-        , settlements as (
-            select
-                blockchain
-                , contract_address as call_from
-                , true as fusion
-            from {{ ref('oneinch_fusion_settlements') }}
-            where blockchain = '{{ blockchain }}'
-        )
 
         select *
         from (
@@ -91,7 +91,7 @@
                 , null as order_hash
                 , explorer_link
             from {{ ref('oneinch_' + blockchain + '_ar') }}
-            join info on true
+            join info using(blockchain)
             left join settlements using(call_from)
             {% if is_incremental() %}
                 where {{ incremental_predicate('block_time') }}
@@ -113,8 +113,8 @@
                 , order_hash
                 , explorer_link
             from {{ ref('oneinch_' + blockchain + '_lop') }}
-            join info on true
-            left join settlements using(call_from)
+            join info using(blockchain)
+            left join settlements using(blockchain, call_from)
             {% if is_incremental() %}
                 where {{ incremental_predicate('block_time') }}
             {% endif %}
