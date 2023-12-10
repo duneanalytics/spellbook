@@ -117,6 +117,24 @@ tokens as (
         , max(amount) filter(where {{ dst_condition }} and amount <= dst_amount) as dst_amount
         , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_amount or {{ dst_condition }} and amount <= dst_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
+
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as token_address_from_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as token_address_to_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as token_address_to_receiver
+        , any_value(if(transfer_native, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ src_condition }} and transfer_from = user) as token_symbol_from_user
+        , any_value(if(transfer_native, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ dst_condition }} and transfer_to = user) as token_symbol_to_user
+        , any_value(if(transfer_native, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ dst_condition }} and transfer_to = receiver) as token_symbol_to_receiver
+        , any_value(coalesce(decimals, token_decimals)) filter(where {{ src_condition }} and transfer_from = user) as token_decimals_from_user
+        , any_value(coalesce(decimals, token_decimals)) filter(where {{ dst_condition }} and transfer_to = user) as token_decimals_to_user
+        , any_value(coalesce(decimals, token_decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as token_decimals_to_receiver
+        , sum(amount) filter(where {{ src_condition }} and transfer_from = user) as amount_from_user
+        , sum(amount) filter(where {{ dst_condition }} and transfer_to = user) as amount_to_user
+        , sum(amount) filter(where {{ dst_condition }} and transfer_to = receiver) as amount_to_receiver
+        , sum(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and transfer_from = user) as amount_usd_from_user
+        , sum(amount * price / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = user) as amount_usd_to_user
+        , sum(amount * price / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as amount_usd_to_receiver
+
+        , count(distinct (contract_address, transfer_native)) as tokens
         , count(*) as transfers
         , any_value(explorer_link) as explorer_link
     from {{ ref('oneinch_calls_transfers') }}
@@ -203,6 +221,17 @@ select
     , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd
     , sources_amount_usd
     , transfers_amount_usd
+    , token_address_from_user
+    , coalesce(token_address_to_user, token_address_to_receiver) as token_address_to_user
+    , token_symbol_from_user
+    , coalesce(token_symbol_to_user, token_symbol_to_receiver) as token_symbol_to_user
+    , token_decimals_from_user
+    , coalesce(token_decimals_to_user, token_decimals_to_receiver) as token_decimals_to_user
+    , amount_from_user
+    , coalesce(amount_to_user, amount_to_receiver) as amount_to_user
+    , amount_usd_from_user
+    , coalesce(amount_usd_to_user, amount_usd_to_receiver) as amount_usd_to_user
+    , tokens
     , transfers
     , explorer_link
     , date(date_trunc('month', block_time)) as block_month

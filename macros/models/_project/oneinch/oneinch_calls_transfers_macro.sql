@@ -135,7 +135,8 @@ info as (
             {% if is_incremental() %}
                 block_time >= date_add('day', {{ lookback_days }}, now())
             {% else %}
-                block_time >= {{ project_start_date }}
+                -- block_time >= {{ project_start_date }}
+                block_time >= timestamp '2023-12-01'
             {% endif %}
             and (
                 {{ selector }} = {{ transfer_selector }} and length(input) = 68
