@@ -20,8 +20,11 @@
 {% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 {% set src_condition = '(src_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) and transfer_native or src_token_address = contract_address)' %}
 {% set dst_condition = '(dst_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) and transfer_native or dst_token_address = contract_address)' %}
+{% set user = 'coalesce(maker, tx_from)' %}
+{% set symbol = 'coalesce(symbol, token_symbol)' %}
+{% set decimals = 'coalesce(decimals, token_decimals)' %}
 {% set user_condition = 'coalesce(maker, tx_from) in (transfer_from, transfer_to)' %}
-
+{% set receiver_condition = 'receiver in (transfer_from, transfer_to)' %}
 {% set columns = [
     'blockchain',
     'block_number',
@@ -41,19 +44,16 @@
     'call_from',
     'call_to',
     'call_gas_used',
+    'remains',
     'maker',
     'receiver',
     'fusion',
     'order_hash',
-    'remains',
     'sources_amount_usd',
     'transfers_amount_usd',
-    'token_address_from_user',
-    'token_address_to_user',
-    'token_address_to_receiver',
-    'amount_usd_from_user',
-    'amount_usd_to_user',
-    'amount_usd_to_receiver',
+    '_amount_usd_from_user',
+    '_amount_usd_to_user',
+    '_amount_usd_to_receiver',
     'tokens',
     'transfers',
     'explorer_link'
@@ -110,29 +110,33 @@ tokens as (
         , any_value(call_to) as call_to
         , any_value(call_success) as call_success
         , any_value(call_gas_used) as call_gas_used
+        , any_value(remains) as remains
         , any_value(maker) as maker
         , any_value(receiver) as receiver
         , any_value(fusion) as fusion
         , any_value(order_hash) as order_hash
-        , any_value(remains) as remains
-        
-        , any_value(src_token_address) as src_token_address
-        , any_value(dst_token_address) as dst_token_address
-        , any_value(if(src_token_address in {{native_addresses}}, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ src_condition }}) as src_token_symbol
-        , any_value(if(dst_token_address in {{native_addresses}}, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ dst_condition }}) as dst_token_symbol
-        , any_value(coalesce(decimals, token_decimals)) filter(where {{ src_condition }}) as src_token_decimals
-        , any_value(coalesce(decimals, token_decimals)) filter(where {{ dst_condition }}) as dst_token_decimals
+
+        , any_value(if(src_token_address in {{native_addresses}}, {{ true_native_address }}, src_token_address)) as _src_token_address
+        , any_value(if(dst_token_address in {{native_addresses}}, {{ true_native_address }}, dst_token_address)) as _dst_token_address
+        , any_value(if(transfer_native, {{ true_native_address }}, src_token_address)) filter(where {{ src_condition }} and {{ user_condition }}) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, dst_token_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as _dst_token_address_to_user
+        , any_value(if(transfer_native, {{ true_native_address }}, dst_token_address)) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _dst_token_address_to_receiver
+        , any_value(if(src_token_address in {{native_addresses}}, native_symbol, {{ symbol }})) filter(where {{ src_condition }}) as _src_symbol
+        , any_value(if(dst_token_address in {{native_addresses}}, native_symbol, {{ symbol }})) filter(where {{ dst_condition }}) as _dst_symbol
+        , any_value(if(transfer_native, native_symbol, {{ symbol }})) filter(where {{ src_condition }} and {{ user_condition }}) as _src_symbol_true
+        , any_value(if(transfer_native, native_symbol, {{ symbol }})) filter(where {{ dst_condition }} and {{ user_condition }}) as _dst_symbol_to_user
+        , any_value(if(transfer_native, native_symbol, {{ symbol }})) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _dst_symbol_to_receiver
+
+        , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_decimals
+        , any_value({{ decimals }}) filter(where {{ dst_condition }}) as dst_decimals
         , max(amount) filter(where {{ src_condition }} and amount <= src_amount) as src_amount
         , max(amount) filter(where {{ dst_condition }} and amount <= dst_amount) as dst_amount
         , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_amount or {{ dst_condition }} and amount <= dst_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and {{ user_condition }}) as token_address_from_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as token_address_to_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as token_address_to_receiver
-        , sum(amount * if(coalesce(maker, tx_from) = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and {{ user_condition }}) as amount_usd_from_user
-        , sum(amount * if(coalesce(maker, tx_from) = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ user_condition }}) as amount_usd_to_user
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as amount_usd_to_receiver
+        , sum(amount * if({{ user }} = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and {{ user_condition }}) as _amount_usd_from_user
+        , sum(amount * if({{ user }} = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ user_condition }}) as _amount_usd_to_user
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _amount_usd_to_receiver
 
         , count(distinct (contract_address, transfer_native)) as tokens
         , count(*) as transfers
@@ -149,15 +153,15 @@ tokens as (
 , sides as (
     select
         {{ columns }}
-        , if(protocol = 'LOP', maker, tx_from) as user
-        , src_token_address
-        , src_token_symbol
-        , src_token_decimals
+        , {{ user }} as user
+        , coalesce(_src_token_address_true, _src_token_address) as src_token_address
+        , coalesce(coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver), _dst_token_address) as dst_token_address
+        , coalesce(_src_symbol_true, _src_symbol) as src_symbol
+        , coalesce(coalesce(_dst_symbol_to_user, _dst_symbol_to_receiver), _dst_symbol) as dst_symbol
         , src_amount
-        , dst_token_address
-        , dst_token_symbol
-        , dst_token_decimals
         , dst_amount
+        , src_decimals
+        , dst_decimals
         , position('RFQ' in method) > 0 as contracts_only
         , false as second_side
     from calls
@@ -167,14 +171,14 @@ tokens as (
     select
         {{ columns }}
         , tx_from as user
-        , dst_token_address as src_token_address
-        , dst_token_symbol as src_token_symbol
-        , dst_token_decimals as src_token_decimals
+        , coalesce(coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver), _dst_token_address) as src_token_address
+        , coalesce(_src_token_address_true, _src_token_address) as dst_token_address
+        , coalesce(coalesce(_dst_symbol_to_user, _dst_symbol_to_receiver), _dst_symbol) as src_symbol
+        , coalesce(_src_symbol_true, _src_symbol) as dst_symbol
         , dst_amount as src_amount
-        , src_token_address as dst_token_address
-        , src_token_symbol as dst_token_symbol
-        , src_token_decimals as dst_token_decimals
         , src_amount as dst_amount
+        , dst_decimals as src_decimals
+        , src_decimals as dst_decimals
         , false as contracts_only
         , true as second_side
     from calls
@@ -211,19 +215,17 @@ select
     , order_hash
     , remains
     , src_token_address
-    , dst_token_address
-    , src_token_symbol
-    , dst_token_symbol
-    , src_token_decimals
-    , dst_token_decimals
+    , src_symbol
     , src_amount
+    , src_decimals
+    , dst_token_address
+    , dst_symbol
     , dst_amount
+    , dst_decimals
     , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd
     , sources_amount_usd
     , transfers_amount_usd
-    , coalesce(amount_usd_from_user, coalesce(amount_usd_to_user, coalesce(amount_usd_to_receiver, coalesce(sources_amount_usd, transfers_amount_usd)))) as user_amount_usd
-    , token_address_from_user
-    , coalesce(token_address_to_user, token_address_to_receiver) as token_address_to_user
+    , greatest(_amount_usd_from_user, coalesce(_amount_usd_to_user, _amount_usd_to_receiver)) as user_amount_usd
     , tokens
     , transfers
     , explorer_link

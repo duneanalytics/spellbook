@@ -429,19 +429,20 @@ models:
         name: contracts_only
       - &second_side
         name: second_side
+      - *order_hash
       - *remains
       - *src_token_address
-      - *dst_token_address
-      - &src_token_symbol
-        name: src_token_symbol
-      - &dst_token_symbol
-        name: dst_token_symbol
-      - &src_token_decimals
-        name: src_token_decimals
-      - &dst_token_decimals
-        name: dst_token_decimals
+      - &src_symbol
+        name: src_symbol
       - *src_amount
+      - &src_decimals
+        name: src_decimals
+      - *dst_token_address
+      - &dst_symbol
+        name: dst_symbol
       - *dst_amount
+      - &dst_decimals
+        name: dst_decimals
       - &mount_usd
         name: amount_usd
       - &sources_amount_usd
@@ -450,10 +451,6 @@ models:
         name: transfers_amount_usd
       - &user_amount_usd
         name: user_amount_usd
-      - &token_address_from_user
-        name: token_address_from_user
-      - &token_address_to_user
-        name: token_address_to_user
       - &tokens
         name: tokens
       - &transfers
