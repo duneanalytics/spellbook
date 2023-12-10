@@ -55,6 +55,7 @@ tokens as (
         , any_value(tx_to) as tx_to
         , any_value(tx_nonce) as tx_nonce
         , any_value(protocol_version) as protocol_version
+        , any_value(call_to) as call_to
         
         , any_value(if(src_token_address in {{ native_addresses }}, {{ true_native_address }}, src_token_address)) as src_token_address
         , any_value(if(dst_token_address in {{ native_addresses }}, {{ true_native_address }}, dst_token_address)) as dst_token_address
