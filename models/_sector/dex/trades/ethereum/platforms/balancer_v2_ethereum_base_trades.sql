@@ -14,7 +14,6 @@
     balancer_compatible_v2_trades(
         blockchain = 'ethereum',
         project = 'balancer',
-        version = '2',
-        Vault_evt_Swap = 'Vault_evt_Swap'
+        version = '2'
     )
 }}
