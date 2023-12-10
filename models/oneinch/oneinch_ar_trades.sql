@@ -47,10 +47,10 @@ tokens as (
 , calls as (
     select
         blockchain
+        , block_time
         , tx_hash
         , call_trace_address
         
-        , any_value(block_time) as block_time
         , any_value(tx_from) as tx_from
         , any_value(tx_to) as tx_to
         , any_value(tx_nonce) as tx_nonce
