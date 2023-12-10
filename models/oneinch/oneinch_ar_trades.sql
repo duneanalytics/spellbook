@@ -44,7 +44,7 @@ tokens as (
     {% endif %}
 )
 
-, calls as (
+, trades as (
     select
         blockchain
         , block_time
