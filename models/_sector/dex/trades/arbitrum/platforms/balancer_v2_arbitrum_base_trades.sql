@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'balancer_v1_ethereum',
+        schema = 'balancer_v2_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,9 +11,9 @@
 }}
 
 {{
-    balancer_compatible_v1_trades(
-        blockchain = 'ethereum',
+    balancer_compatible_v2_trades(
+        blockchain = 'arbitrum',
         project = 'balancer',
-        version = '1'
+        version = '2'
     )
 }}

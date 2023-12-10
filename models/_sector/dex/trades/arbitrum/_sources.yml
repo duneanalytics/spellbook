@@ -30,4 +30,6 @@ sources:
       - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
   - name: trader_joe_v2_1_arbitrum
   - name: trader_joe_arbitrum
-
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: Vault_evt_Swap

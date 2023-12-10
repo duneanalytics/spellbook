@@ -3,8 +3,8 @@
         project = '',
         version = '',
         project_decoded_as = 'balancer_v1',
-        BPool_evt_LOG_SWAP = '',
-        BPool_call_setSwapFee = ''
+        BPool_evt_LOG_SWAP = 'BPool_evt_LOG_SWAP',
+        BPool_call_setSwapFee = 'BPool_call_setSwapFee'
     )
 %}
 
@@ -86,7 +86,7 @@ FROM dexs
         project = '',
         version = '',
         project_decoded_as = 'balancer_v2',
-        Vault_evt_Swap = '',
+        Vault_evt_Swap = 'Vault_evt_Swap',
         pools_fees = 'pools_fees'
     )
 %}
