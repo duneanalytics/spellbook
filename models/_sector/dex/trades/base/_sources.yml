@@ -14,3 +14,6 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: PoolFactory_evt_PoolCreated
+  - name: balancer_v2_base
+    tables:
+      - name: Vault_evt_Swap

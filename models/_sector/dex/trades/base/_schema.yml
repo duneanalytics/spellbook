@@ -110,3 +110,31 @@ models:
             - token_sold_address
             - token_bought_amount_raw
             - token_sold_amount_raw
+
+  - name: balancer_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('balancer_base_base_trades_seed')
+          filter:
+            version: 2
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw

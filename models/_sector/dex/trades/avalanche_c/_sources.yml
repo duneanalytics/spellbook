@@ -16,3 +16,6 @@ sources:
       - name: Factory_evt_PoolCreated
   - name: trader_joe_v2_1_avalanche_c
   - name: trader_joe_avalanche_c
+  - name: balancer_v2_avalanche_c
+    tables:
+      - name: Vault_evt_Swap
