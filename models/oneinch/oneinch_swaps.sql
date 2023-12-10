@@ -48,6 +48,13 @@
     'remains',
     'sources_amount_usd',
     'transfers_amount_usd',
+    'token_address_from_user',
+    'token_address_to_user',
+    'token_address_to_receiver',
+    'amount_usd_from_user',
+    'amount_usd_to_user',
+    'amount_usd_to_receiver',
+    'tokens',
     'transfers',
     'explorer_link'
 ] %}
