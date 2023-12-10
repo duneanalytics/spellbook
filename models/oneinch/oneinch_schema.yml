@@ -411,6 +411,7 @@ models:
       - *tx_to
       - *tx_nonce
       - *gas_price
+      - *priority_fee
       - *contract_name
       - *protocol
       - *protocol_version

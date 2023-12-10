@@ -91,6 +91,7 @@ tokens as (
         , any_value(tx_success) as tx_success
         , any_value(tx_nonce) as tx_nonce
         , any_value(gas_price) as gas_price
+        , any_value(priority_fee) as priority_fee
         , any_value(contract_name) as contract_name
         , any_value(protocol) as protocol
         , any_value(protocol_version) as protocol_version
@@ -174,6 +175,8 @@ select
     , tx_from
     , tx_to
     , tx_nonce
+    , gas_price
+    , priority_fee
     , contract_name
     , protocol
     , protocol_version
