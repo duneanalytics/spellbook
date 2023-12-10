@@ -5,6 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        partition_by = ['block_date'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot'],
         post_hook='{{ expose_spells(\'["solana"]\',
@@ -12,11 +13,10 @@
                                     "tokens",
                                     \'["ilemi"]\') }}')
 }}
---        partition_by = ['block_date'],
 
 SELECT
     call_block_time as block_time
---     , cast (date_trunc('day', call_block_time) as date) as block_date
+    , cast (date_trunc('day', call_block_time) as date) as block_date
     , call_block_slot as block_slot
     , action
     , amount
