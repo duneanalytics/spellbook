@@ -448,26 +448,12 @@ models:
         name: sources_amount_usd
       - &transfers_amount_usd
         name: transfers_amount_usd
+      - &user_amount_usd
+        name: user_amount_usd
       - &token_address_from_user
         name: token_address_from_user
       - &token_address_to_user
         name: token_address_to_user
-      - &token_symbol_from_user
-        name: token_symbol_from_user
-      - &token_symbol_to_user
-        name: token_symbol_to_user
-      - &token_decimals_from_user
-        name: token_decimals_from_user
-      - &token_decimals_to_user
-        name: token_decimals_to_user
-      - &amount_from_user
-        name: amount_from_user
-      - &amount_to_user
-        name: amount_to_user
-      - &amount_usd_from_user
-        name: amount_usd_from_user
-      - &amount_usd_to_user
-        name: amount_usd_to_user
       - &tokens
         name: tokens
       - &transfers

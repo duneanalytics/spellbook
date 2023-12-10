@@ -20,6 +20,8 @@
 {% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 {% set src_condition = '(src_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) and transfer_native or src_token_address = contract_address)' %}
 {% set dst_condition = '(dst_token_address in (0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) and transfer_native or dst_token_address = contract_address)' %}
+{% set user_condition = 'coalesce(maker, tx_from) in (transfer_from, transfer_to)' %}
+
 {% set columns = [
     'blockchain',
     'block_number',
@@ -118,21 +120,12 @@ tokens as (
         , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_amount or {{ dst_condition }} and amount <= dst_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as token_address_from_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as token_address_to_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as token_address_to_receiver
-        , any_value(if(transfer_native, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ src_condition }} and transfer_from = user) as token_symbol_from_user
-        , any_value(if(transfer_native, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ dst_condition }} and transfer_to = user) as token_symbol_to_user
-        , any_value(if(transfer_native, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ dst_condition }} and transfer_to = receiver) as token_symbol_to_receiver
-        , any_value(coalesce(decimals, token_decimals)) filter(where {{ src_condition }} and transfer_from = user) as token_decimals_from_user
-        , any_value(coalesce(decimals, token_decimals)) filter(where {{ dst_condition }} and transfer_to = user) as token_decimals_to_user
-        , any_value(coalesce(decimals, token_decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as token_decimals_to_receiver
-        , sum(amount) filter(where {{ src_condition }} and transfer_from = user) as amount_from_user
-        , sum(amount) filter(where {{ dst_condition }} and transfer_to = user) as amount_to_user
-        , sum(amount) filter(where {{ dst_condition }} and transfer_to = receiver) as amount_to_receiver
-        , sum(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and transfer_from = user) as amount_usd_from_user
-        , sum(amount * price / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = user) as amount_usd_to_user
-        , sum(amount * price / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as amount_usd_to_receiver
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and {{ user_condition }}) as token_address_from_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as token_address_to_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as token_address_to_receiver
+        , sum(amount * if(coalesce(maker, tx_from) = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and {{ user_condition }}) as amount_usd_from_user
+        , sum(amount * if(coalesce(maker, tx_from) = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ user_condition }}) as amount_usd_to_user
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as amount_usd_to_receiver
 
         , count(distinct (contract_address, transfer_native)) as tokens
         , count(*) as transfers
@@ -221,16 +214,9 @@ select
     , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd
     , sources_amount_usd
     , transfers_amount_usd
+    , coalesce(amount_usd_from_user, coalesce(amount_usd_to_user, coalesce(amount_usd_to_receiver, coalesce(sources_amount_usd, transfers_amount_usd)))) as user_amount_usd
     , token_address_from_user
     , coalesce(token_address_to_user, token_address_to_receiver) as token_address_to_user
-    , token_symbol_from_user
-    , coalesce(token_symbol_to_user, token_symbol_to_receiver) as token_symbol_to_user
-    , token_decimals_from_user
-    , coalesce(token_decimals_to_user, token_decimals_to_receiver) as token_decimals_to_user
-    , amount_from_user
-    , coalesce(amount_to_user, amount_to_receiver) as amount_to_user
-    , amount_usd_from_user
-    , coalesce(amount_usd_to_user, amount_usd_to_receiver) as amount_usd_to_user
     , tokens
     , transfers
     , explorer_link
