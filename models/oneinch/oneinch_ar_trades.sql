@@ -12,7 +12,10 @@
 
 
 
+{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
 {% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set src_condition = '(src_token_address in {{native_addresses}} and transfer_native or src_token_address = contract_address)' %}
+{% set dst_condition = '(dst_token_address in {{native_addresses}} and transfer_native or dst_token_address = contract_address)' %}
 
 
 
@@ -52,16 +55,16 @@ tokens as (
         , any_value(tx_to) as tx_to
         , any_value(tx_nonce) as tx_nonce
         , any_value(protocol_version) as protocol_version
-
-        , any_value(if(src_native is null, src_token_address, {{true_native_address}})) filter(where contract_address = src_token_address) as src_token_address
-        , any_value(if(dst_native is null, dst_token_address, {{true_native_address}})) filter(where contract_address = dst_token_address) as dst_token_address
-        , any_value(coalesce(src_native, coalesce(symbol, token_symbol))) filter(where contract_address = src_token_address) as src_token_symbol
-        , any_value(coalesce(dst_native, coalesce(symbol, token_symbol))) filter(where contract_address = dst_token_address) as dst_token_symbol
-        , any_value(coalesce(decimals, token_decimals)) filter(where contract_address = src_token_address) as src_token_decimals
-        , any_value(coalesce(decimals, token_decimals)) filter(where contract_address = dst_token_address) as dst_token_decimals
-        , max(amount) filter(where contract_address = src_token_address and amount <= src_amount) as src_amount
-        , max(amount) filter(where contract_address = dst_token_address and amount <= dst_amount) as dst_amount
-        , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_amount or contract_address = dst_token_address and amount <= dst_amount) as sources_amount_usd
+        
+        , any_value(if(src_token_address in {{ native_addresses }}, {{ true_native_address }}, src_token_address)) as src_token_address
+        , any_value(if(dst_token_address in {{ native_addresses }}, {{ true_native_address }}, dst_token_address)) as dst_token_address
+        , any_value(if(src_token_address in {{native_addresses}}, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ src_condition }}) as src_token_symbol
+        , any_value(if(dst_token_address in {{native_addresses}}, native_symbol, coalesce(symbol, token_symbol))) filter(where {{ dst_condition }}) as dst_token_symbol
+        , any_value(coalesce(decimals, token_decimals)) filter(where {{ src_condition }}) as src_token_decimals
+        , any_value(coalesce(decimals, token_decimals)) filter(where {{ dst_condition }}) as dst_token_decimals
+        , max(amount) filter(where {{ src_condition }} and amount <= src_amount) as src_amount
+        , max(amount) filter(where {{ dst_condition }} and amount <= dst_amount) as dst_amount
+        , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_amount or {{ dst_condition }} and amount <= dst_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
     from {{ ref('oneinch_calls_transfers') }}
     left join prices using(blockchain, contract_address, minute)

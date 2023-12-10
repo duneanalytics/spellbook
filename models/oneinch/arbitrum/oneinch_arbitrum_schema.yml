@@ -69,14 +69,10 @@ models:
         name: receiver
       - &src_token_address
         name: src_token_address
-      - &src_native
-        name: src_native
       - &src_amount
         name: src_amount
       - &dst_token_address
         name: dst_token_address
-      - &dst_native
-        name: dst_native
       - &dst_amount
         name: dst_amount
       - &fusion
@@ -109,6 +105,8 @@ models:
         name: block_month
         tests:
           - not_null
+      - &native_symbol
+        name: native_symbol
       - &explorer_link
         name: explorer_link
 

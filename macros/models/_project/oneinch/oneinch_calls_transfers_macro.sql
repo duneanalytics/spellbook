@@ -5,6 +5,8 @@
     ) 
 %}
 
+
+
 {% set project_start_date = "timestamp '" + project_start_date_str + "'" %} 
 {% set lookback_days = -7 %}
 {% set transfer_selector = '0xa9059cbb' %}
@@ -35,11 +37,10 @@
     'call_error',
     'remains',
     'wrapped_address',
+    'native_symbol',
     'explorer_link'
 ] %}
 {% set columns = columns | join(', ') %}
-{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
-{% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
 
@@ -68,11 +69,9 @@ info as (
         {{ columns }}
         , null as maker
         , dst_receiver as receiver
-        , if(src_token_address in {{native_addresses}}, wrapped_address, src_token_address) as src_token_address
-        , if(src_token_address in {{native_addresses}}, native_symbol) as src_native
+        , src_token_address
         , src_amount
-        , if(dst_token_address in {{native_addresses}}, wrapped_address, dst_token_address) as dst_token_address
-        , if(dst_token_address in {{native_addresses}}, native_symbol) as dst_native
+        , dst_token_address
         , dst_amount
         , false as fusion
         , null as order_hash
@@ -91,11 +90,9 @@ info as (
         {{ columns }}
         , maker
         , receiver
-        , if(maker_asset in {{native_addresses}}, wrapped_address, maker_asset) as src_token_address
-        , if(maker_asset in {{native_addresses}}, native_symbol) as src_native
+        , maker_asset as src_token_address
         , making_amount as src_amount
-        , if(taker_asset in {{native_addresses}}, wrapped_address, taker_asset) as dst_token_address
-        , if(taker_asset in {{native_addresses}}, native_symbol) as dst_native
+        , taker_asset as dst_token_address
         , taking_amount as dst_amount
         , coalesce(fusion, false) as fusion
         , order_hash
@@ -184,10 +181,8 @@ select
     , maker
     , receiver
     , src_token_address
-    , src_native
     , src_amount
     , dst_token_address
-    , dst_native
     , dst_amount
     , fusion
     , order_hash
@@ -209,6 +204,7 @@ select
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
     , explorer_link
+    , native_symbol
 from merging
 
 {% endmacro %}
