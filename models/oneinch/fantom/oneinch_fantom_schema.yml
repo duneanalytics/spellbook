@@ -95,10 +95,6 @@ models:
         name: transfer_to
       - &transfers_between_players
         name: transfers_between_players
-      - &rn_tta_asc
-        name: rn_tta_asc
-      - &rn_tta_desc
-        name: rn_tta_desc
       - &minute
         name: minute
       - &block_month

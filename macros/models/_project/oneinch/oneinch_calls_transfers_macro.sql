@@ -135,8 +135,7 @@ info as (
             {% if is_incremental() %}
                 block_time >= date_add('day', {{ lookback_days }}, now())
             {% else %}
-                -- block_time >= {{ project_start_date }}
-                block_time >= timestamp '2023-12-01'
+                block_time >= {{ project_start_date }}
             {% endif %}
             and (
                 {{ selector }} = {{ transfer_selector }} and length(input) = 68
@@ -192,15 +191,10 @@ select
     , if(contract_address = 0xae, true, false) as transfer_native
     , transfer_from
     , transfer_to
-    , -1 as transfers_between_players
-    , -1 as rn_tta_asc
-    , -1 as rn_tta_desc
-    -- , if(
-    --     coalesce(transfer_from, transfer_to) is not null
-    --     , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
-    -- ) as transfers_between_players
-    -- , row_number() over(partition by transfer_tx_hash order by transfer_trace_address asc) as rn_tta_asc
-    -- , row_number() over(partition by transfer_tx_hash order by transfer_trace_address desc) as rn_tta_desc
+    , if(
+        coalesce(transfer_from, transfer_to) is not null
+        , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
+    ) as transfers_between_players
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
     , explorer_link
