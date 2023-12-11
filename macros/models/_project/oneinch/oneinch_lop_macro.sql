@@ -133,6 +133,7 @@ orders as (
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
                 , error as call_error
+                , block_number as call_block_number
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %} 
@@ -141,7 +142,7 @@ orders as (
                     block_time >= timestamp '{{ contract_data['start'] }}'
                 {% endif %}
                 and call_type = 'call'
-        ) using(tx_hash, call_trace_address)
+        ) using(call_block_number, tx_hash, call_trace_address)
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
 )
