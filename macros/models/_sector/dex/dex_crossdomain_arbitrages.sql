@@ -4,7 +4,9 @@ WITH top_of_block AS (
     SELECT block_number
     , approx_percentile(index, 0.9) AS top_of_block_index_limit
     FROM {{transactions}}
+    {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
     GROUP BY 1
     )
 
