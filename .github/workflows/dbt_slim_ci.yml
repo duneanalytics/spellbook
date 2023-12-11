@@ -49,7 +49,7 @@ jobs:
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
       - name: dbt seed
-        run: "dbt seed $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --state ."
+        run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state ."
 
       - name: dbt run initial model(s)
         run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state ."
