@@ -98,7 +98,7 @@ orders as (
     {% for contract, contract_data in cfg.items() if blockchain in contract_data['blockchains'] %}
         select * from ({% for method, method_data in contract_data.methods.items() %}
             select
-                call_block_number as block_number
+                call_block_number
                 , call_block_time as block_time
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
@@ -150,7 +150,7 @@ orders as (
 
 select
     '{{ blockchain }}' as blockchain
-    , block_number
+    , call_block_number as block_number
     , block_time
     , tx_hash
     , tx_from
