@@ -17,7 +17,7 @@ FROM
     VALUES
     ('ftt-ftx-token','solana','FTT','AGFEad2et2ZJif9jaGpdMixQqvW5i81aBdvKe7PHNfz3',6),
     ('forge-blocksmith-labs-forge','solana','FORGE','FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds',9),
-    ('gmt-stepn','solana','STEPN-GMT','7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx',9),
+    ('gmt-stepn','solana','GMT','7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx',9),
     ('bonk-bonk','solana','BONK','DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263',5),
     ('rlb-rollbit-coin','solana','RLB','RLBxxFkseAZ4RgJH3Sqn8jXxhmGoz9jWxDNJMh8pL7a',6),
     ('orca-orca','solana','ORCA','orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE',6),
