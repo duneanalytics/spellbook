@@ -26,7 +26,6 @@ FROM (
       blockchain,
       date_start,
       date_month,
-      node_address,
       fulfilled_requests,
       reverted_requests,
       total_requests
