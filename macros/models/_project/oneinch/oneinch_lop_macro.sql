@@ -98,7 +98,7 @@ orders as (
     {% for contract, contract_data in cfg.items() if blockchain in contract_data['blockchains'] %}
         select * from ({% for method, method_data in contract_data.methods.items() %}
             select
-                call_block_number
+                call_block_number as block_number
                 , call_block_time as block_time
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
@@ -133,7 +133,7 @@ orders as (
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
                 , error as call_error
-                , block_number as call_block_number
+                , block_number
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %} 
@@ -142,7 +142,7 @@ orders as (
                     block_time >= timestamp '{{ contract_data['start'] }}'
                 {% endif %}
                 and call_type = 'call'
-        ) using(call_block_number, tx_hash, call_trace_address)
+        ) using(block_number, tx_hash, call_trace_address)
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
 )
@@ -150,7 +150,7 @@ orders as (
 
 select
     '{{ blockchain }}' as blockchain
-    , call_block_number as block_number
+    , block_number
     , block_time
     , tx_hash
     , tx_from
