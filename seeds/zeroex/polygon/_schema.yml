@@ -1,6 +1,26 @@
 version: 2
 
 seeds:
+  - name: zeroex_polygon_nft_fills_sample
+    config:
+      column_types:
+        block_time: timestamp
+        block_date: timestamp
+        evt_index: int
+        tx_hash: varbinary
+        maker: varbinary
+        taker: varbinary
+        matcher: int
+        nft_address: varbinary
+        nft_id: int
+        label: varchar
+        price_label: varbinary
+        token: varbinary
+        token_amount_raw: uint256
+        symbol: timestamp
+        price_usd: double
+        token_amount: uint256
+        project_name: varchar
   - name: zeroex_polygon_api_fills_sample
     config:
       column_types:
