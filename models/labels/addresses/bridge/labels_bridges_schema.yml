@@ -11,7 +11,7 @@ models:
           - model_name
           - blockchain
     meta:
-      blockchain: ethereum, fantom, base 
+      blockchain: ethereum, fantom, base, arbitrum, bnb, optimism, polygon
       sector: labels
       project: bridges
       contributors: hildobby, Henrystats, rantum
@@ -83,6 +83,28 @@ models:
     config:
       tags: ['labels', 'fantom', 'bridges']
     description: "Known bridges addresses on Fantom"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+
+  - name: labels_bridges_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'bnb', 'bridges']
+    description: "Known bridges addresses on bnb"
     columns:
       - *blockchain
       - *address
@@ -177,5 +199,5 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-      - *label_type  
-  
+      - *label_type
+      - *label_type 
