@@ -6,7 +6,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['date_start', 'node_address']
+    unique_key=['date_start']
   )
 }}
 
@@ -20,10 +20,6 @@ WITH
         cast(date_trunc('{{truncate_by}}', fulfilled.block_time) as date),
         cast(date_trunc('{{truncate_by}}', reverted.block_time) as date)
       ) AS "date_start",      
-      COALESCE(
-        fulfilled.node_address,
-        reverted.node_address
-      ) AS "node_address",
       COALESCE(COUNT(fulfilled.token_amount), 0) as fulfilled_requests,
       COALESCE(COUNT(reverted.token_amount), 0) as reverted_requests,
       COALESCE(COUNT(fulfilled.token_amount), 0) + COALESCE(COUNT(reverted.token_amount), 0) as total_requests
@@ -38,16 +34,15 @@ WITH
         OR reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
     {% endif %}
     GROUP BY
-      1, 2
+      1
     ORDER BY
-      1, 2
+      1
   ),
   ccip_request_daily AS (
     SELECT
       'optimism' as blockchain,
       date_start,
       cast(date_trunc('month', date_start) as date) as date_month,
-      ccip_request_daily_meta.node_address as node_address,
       fulfilled_requests,
       reverted_requests,
       total_requests
@@ -57,7 +52,6 @@ SELECT
   ccip_request_daily.blockchain,
   date_start,
   date_month,
-  node_address,
   fulfilled_requests,
   reverted_requests,
   total_requests
