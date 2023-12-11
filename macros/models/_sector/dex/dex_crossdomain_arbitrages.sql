@@ -2,14 +2,14 @@
 
 WITH top_of_block AS (
     SELECT block_number
-    , approx_percentile(max_priority_fee_per_gas, 0.9) AS top_of_block_limit
+    , approx_percentile(index, 0.9) AS top_of_block_index_limit
     FROM {{transactions}}
     WHERE {{ incremental_predicate('block_time') }}
     GROUP BY 1
     )
 
 , paid_builder AS (
-    -- List who paid the block builder with native token
+    -- List who tipped the block builder with native token
     SELECT b.time AS block_time
     , t."from" AS tx_from
     , t.tx_hash
@@ -20,14 +20,15 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('b.block_time') }}
         {% endif %}
-    WHERE {{ incremental_predicate('t.block_time') }}
-    AND t.success
-    AND (t.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR t.call_type IS null)
-    --GROUP BY 1, 2
+    WHERE t.success
+    AND (t.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR t.call_type IS NULL)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('b.block_time') }}
+    {% endif %}
     
     UNION ALL
     
-    -- List who paid the block builder with ER20 tokens
+    -- List who tipped the block builder with ER20 tokens
     SELECT b.time AS block_time
     , t."from" AS tx_from
     , t.evt_tx_hash AS tx_hash
@@ -41,7 +42,6 @@ WITH top_of_block AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
-    --GROUP BY 1, 2
     
     UNION ALL
     
@@ -51,7 +51,7 @@ WITH top_of_block AS (
     , txs.hash AS tx_hash
     FROM {{transactions}} txs
     INNER JOIN top_of_block tbl ON txs.block_number=tbl.block_number
-        AND txs.block_number > tbl.top_of_block_limit
+        AND txs.index <= tbl.top_of_block_index_limit
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('txs.block_time') }}
     {% endif %}
@@ -63,9 +63,11 @@ WITH top_of_block AS (
     , pb.tx_hash
     , txs.index AS tx_index
     FROM paid_builder pb
-    INNER JOIN {{transactions}} txs ON txs.block_time > NOW() - interval '10' day
-        AND pb.block_time=txs.block_time
+    INNER JOIN {{transactions}} txs ON pb.block_time=txs.block_time
         AND pb.tx_hash=txs.hash
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
     )
 
 -- Exclusively keep trades where the builder was bribed
@@ -100,6 +102,9 @@ INNER JOIN distinct_transactions i ON dt.block_time=i.block_time
 INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
     AND txs.hash=dt.tx_hash
     AND i.tx_index IN (txs.index-1, txs.index)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('txs.block_time') }}
+    {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
