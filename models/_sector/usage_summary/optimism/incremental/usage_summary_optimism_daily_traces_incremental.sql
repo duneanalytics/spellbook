@@ -11,5 +11,5 @@
 }}
 
 {{usage_summary_daily_traces(
-    chain='optimism', '2023-01-01'
+    chain='optimism', start_date='2023-01-01'
 )}}

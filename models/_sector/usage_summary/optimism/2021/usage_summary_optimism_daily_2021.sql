@@ -9,5 +9,5 @@
 }}
 
 {{usage_summary_daily(
-    chain='optimism', '_2021'
+    chain='optimism', date_string='2021'
 )}}

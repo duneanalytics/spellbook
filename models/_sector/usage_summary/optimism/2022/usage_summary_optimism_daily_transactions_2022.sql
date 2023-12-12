@@ -9,5 +9,5 @@
 }}
 
 {{usage_summary_daily_transactions(
-    chain='optimism', '2022-01-01', '2022-01-01'
+    chain='optimism', start_date='2022-01-01', end_date='2022-01-01'
 )}}

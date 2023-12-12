@@ -11,5 +11,5 @@
 }}
 
 {{usage_summary_daily(
-    chain='optimism', '_incremental'
+    chain='optimism', date_string='incremental'
 )}}
