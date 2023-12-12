@@ -4,7 +4,7 @@ SELECT
     '{{chain}}' as blockchain
   , block_date
   , DATE_TRUNC('month', block_date ) AS block_month
-  , t.to AS address
+  , COALESCE(t.to, 0x) AS address
   , COUNT(DISTINCT block_number) AS num_tx_to_blocks
   , COUNT(*) AS num_tx_tos
   , COUNT(DISTINCT "from") AS num_tx_to_senders

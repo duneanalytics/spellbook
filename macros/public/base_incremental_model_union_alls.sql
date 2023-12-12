@@ -2,7 +2,7 @@
   {% if is_incremental() %}
     {# Incremental build: Only include the incremental model #}
     
-    SELECT * FROM {{ ref(incremental_model) }};
+    SELECT * FROM {{ ref(incremental_model) }}
   {% else %}
     {# Initial build: Union all base models and the incremental model #}
     

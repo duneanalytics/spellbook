@@ -18,7 +18,8 @@
   , SUM(CASE WHEN trace_to_number = 1 THEN tx_gas_used ELSE 0 END) AS sum_trace_to_tx_gas_used
 
   FROM (
-      SELECT r.block_date, r.block_number, r.to, r.tx_hash, t."from" AS tx_from, r."from"
+      SELECT r.block_date, r.block_number
+        , COALESCE(r.to, 0x) AS to, r.tx_hash, t."from" AS tx_from, r."from"
         , r.gas_used, t.gas_used as tx_gas_used
         , ROW_NUMBER() OVER (PARTITION BY r.tx_hash) AS trace_to_number --reindex trace to ensure single count
 

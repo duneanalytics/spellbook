@@ -5,7 +5,7 @@
     '{{chain}}' as blockchain
   , block_date
   , DATE_TRUNC('month', block_date ) AS block_month
-  , contract_address AS address
+  , COALESCE(contract_address, 0x) AS address
   ---
   , COUNT(DISTINCT block_number) AS num_logs_emitted_blocks
   , COUNT(DISTINCT tx_hash) AS num_logs_emitted_txs
