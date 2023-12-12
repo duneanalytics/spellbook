@@ -17,7 +17,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_celo_base_trades_seed')
 
 
@@ -35,7 +35,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('mento_celo_base_trades_seed')
           filter:
             version: 1
@@ -54,7 +54,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('mento_celo_base_trades_seed')
           filter:
             version: 2
@@ -73,7 +73,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('curvefi_celo_base_trades_seed')
             
 
@@ -91,7 +91,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_celo_base_trades_seed')
             
 
@@ -109,7 +109,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('ubeswap_celo_base_trades_seed')
             
 
@@ -127,6 +127,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('carbonhood_celo_base_trades_seed')
 

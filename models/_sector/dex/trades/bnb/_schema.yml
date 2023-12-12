@@ -17,7 +17,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_bnb_base_trades_seed')
           filter:
             version: 3
@@ -37,7 +37,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('airswap_bnb_base_trades_seed')
 
 
@@ -55,7 +55,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_bnb_base_trades_seed')
           filter:
             version: 1
@@ -75,7 +75,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_bnb_base_trades_seed')
           filter:
             version: 2
@@ -95,7 +95,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('trader_joe_bnb_base_trades_seed')
           filter:
             version: 2
@@ -115,7 +115,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('trader_joe_bnb_base_trades_seed')
           filter:
             version: 2.1
@@ -134,7 +134,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('apeswap_bnb_base_trades_seed')
           filter:
             version: 2

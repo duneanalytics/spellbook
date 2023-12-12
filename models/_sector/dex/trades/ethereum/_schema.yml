@@ -17,7 +17,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             version: 1
@@ -37,7 +37,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             version: 2
@@ -57,7 +57,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             version: 3
@@ -77,7 +77,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('defiswap_ethereum_base_trades_seed')
 
   
@@ -95,7 +95,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('airswap_ethereum_base_trades_seed')
 
 
@@ -113,7 +113,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_ethereum_base_trades_seed')
           filter:
             version: 1
@@ -133,7 +133,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_ethereum_base_trades_seed')
           filter:
             version: 2
@@ -153,7 +153,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_ethereum_base_trades_seed')
 
   - name: apeswap_ethereum_base_trades
@@ -170,5 +170,5 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_base_trades_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('apeswap_ethereum_base_trades_seed')
