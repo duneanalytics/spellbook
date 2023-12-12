@@ -132,6 +132,7 @@ orders as (
                 , gas_used as call_gas_used
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
+                , error as call_error
                 , block_number
             from {{ source(blockchain, 'traces') }}
             where
