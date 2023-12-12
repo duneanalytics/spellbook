@@ -1,4 +1,4 @@
- {% macro usage_summary_union_alls(base_models, incremental_model) %}
+ {% macro base_incremental_model_union_alls(base_models, incremental_model) %}
   {% if is_incremental() %}
     {# Incremental build: Only include the incremental model #}
     

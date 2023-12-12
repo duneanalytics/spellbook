@@ -18,4 +18,4 @@
 {% set incremental_model_to_include = 'usage_summary_optimism_daily_logs_incremental' %}
 
 
-{{ usage_summary_union_alls(base_models_to_union, incremental_model_to_include) }}
+{{ base_incremental_model_union_alls(base_models_to_union, incremental_model_to_include) }}
