@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'usage_summary_optimism',
-        alias = 'daily_traces_incremental',
+        alias = 'daily_traces',
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',

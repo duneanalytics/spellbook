@@ -9,11 +9,11 @@
 }}
 
 {{usage_summary_daily_logs(
-    chain='optimism', start_date='2021-01-01', end_date='2022-01-01'
+    chain='optimism', start_date='2021-01-01', end_date='2021-12-31'
 )}}
 
 UNION ALL
 
 {{usage_summary_daily_logs(
-    chain='optimism_legacy', start_date='2021-01-01', end_date='2022-01-01'
+    chain='optimism_legacy_ovm1', start_date='2021-01-01', end_date='2021-12-31'
 )}}

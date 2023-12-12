@@ -9,5 +9,5 @@
 }}
 
 {{usage_summary_daily_logs(
-    chain='optimism', start_date='2022-01-01', end_date='2022-01-01'
+    chain='optimism', start_date='2022-01-01', end_date='2022-12-31'
 )}}
