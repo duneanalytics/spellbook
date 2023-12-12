@@ -119,4 +119,22 @@ models:
           seed_file: ref('trader_joe_bnb_base_trades_seed')
           filter:
             version: 2.1
-   
+
+  - name: apeswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: apeswap
+      contributors: hosuke
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'apeswap' ]
+    description: apeswap base trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_base_trades_seed:
+          seed_file: ref('apeswap_bnb_base_trades_seed')
+          filter:
+            version: 2

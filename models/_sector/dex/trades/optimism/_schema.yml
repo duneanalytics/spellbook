@@ -99,3 +99,22 @@ models:
             - evt_index
       - check_base_trades_seed:
           seed_file: ref('mummy_finance_optimism_base_trades_seed')
+
+  - name: zipswap_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: zipswap
+      contributors: msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'zipswap', 'uniswap', 'v2' ]
+    description: "Zipswap optimism trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_base_trades_seed:
+          seed_file: ref('zipswap_optimism_base_trades_seed')
+          filter:
+            version: 1
