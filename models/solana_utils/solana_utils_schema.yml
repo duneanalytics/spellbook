@@ -85,5 +85,3 @@ models:
         name: favorite_domain
       - &owned_domains
         name: owned_domains
-
-
