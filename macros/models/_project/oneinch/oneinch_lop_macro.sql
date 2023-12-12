@@ -100,8 +100,6 @@ orders as (
             select
                 call_block_number as block_number
                 , call_block_time as block_time
-                , call_block_number as block_number
-                , call_block_time as block_time
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
                 , '{{ contract_data['version'] }}' as protocol_version
@@ -140,10 +138,10 @@ orders as (
                 {% if is_incremental() %} 
                     {{ incremental_predicate('block_time') }}
                 {% else %}
-                    block_time >= date('2023-12-10') -- timestamp '{{ contract_data['start'] }}'
-                {% endif %}
+                    block_time >= timestamp '{{ contract_data['start'] }}'
+                {% endif %} {% if blockchain in ['bnb', 'ethereum'] %} and block_time >= date('2023-12-10') {% endif %}
                 and call_type = 'call'
-        ) using(tx_hash, call_trace_address, block_number)
+        ) using(block_number, tx_hash, call_trace_address)
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
 )
