@@ -6,7 +6,6 @@
   {% else %}
     {# Initial build: Union all base models and the incremental model #}
     
-    WITH usage_union AS (
       SELECT * FROM {{ ref(base_models[0]) }}
       {% for model in base_models[1:] %}
       UNION ALL
@@ -14,9 +13,7 @@
       {% endfor %}
       UNION ALL
       SELECT * FROM {{ ref(incremental_model) }}
-    )
-    
-    SELECT * FROM usage_union
+
   {% endif %}
 {% endmacro %}
 
