@@ -1,12 +1,11 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'zksync' %}
 
 
 
 {{ 
     config( 
-        tags = ['prod_exclude'],
         schema = 'oneinch_' + blockchain,
-        alias = 'lop',
+        alias = 'ar',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -18,7 +17,7 @@
 
 
 {{ 
-    oneinch_lop_macro(
+    oneinch_ar_macro(
         blockchain = blockchain
     )
 }}

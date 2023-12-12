@@ -422,6 +422,13 @@ WITH raw_token_list AS (
     ,(0xc5d43a94e26fca47a9b21cf547ae4aa0268670e1, 'FPI', 18, 'underlying')
     ,(0xc871cCf95024eFa2CbcE69B5B775D2a1DcF49c1B, 'GROW', 18, 'underlying')
     ,(0x9046D36440290FfDE54FE0DD84Db8b1CfEE9107B, 'YFI', 18, 'underlying')
+    ,(0xeB585163DEbB1E637c6D617de3bEF99347cd75c8, 'opXEN', 18, 'underlying')
+    ,(0xdbc3a41578bBfA47837a9cD8196a5Bc7F44c8041, 'BULL', 18, 'underlying')
+    ,(0x323665443CEf804A3b5206103304BD4872EA4253, 'USDV', 6, 'underlying')
+    ,(0x61445Ca401051c86848ea6b1fAd79c5527116AA1, 'MO', 4, 'underlying')
+    ,(0x20279b6d57Ba6D3eF852f34800e43e39d46d6487, 'MERK', 18, 'underlying')
+    ,(0x9cfB13E6c11054ac9fcB92BA89644F30775436e4, 'axl-wstETH', 18, 'underlying')
+    ,(0xc55E93C62874D8100dBd2DfE307EDc1036ad5434, 'mooBIFI', 18, 'receipt')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
