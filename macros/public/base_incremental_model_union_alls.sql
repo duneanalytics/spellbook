@@ -16,7 +16,7 @@
       SELECT * FROM {{ ref(incremental_model) }}
     )
     
-    SELECT * FROM usage_union;
+    SELECT * FROM usage_union
   {% endif %}
 {% endmacro %}
 
