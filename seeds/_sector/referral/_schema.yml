@@ -16,10 +16,10 @@ seeds:
         mintReferrer: varbinary 
         mint_date: date         
         total_mints: uint256
-        successful_mints: uint256t   
+        successful_mints: uint256   
         failed_mints: uint256       
         success_rate: uint256
-        total_reward: uint256   
+        total_reward: decimal
 
   - name: paragraph_polygon_rewards_seed
     config:
@@ -28,10 +28,10 @@ seeds:
         mintReferrer: varbinary 
         mint_date: date         
         total_mints: uint256
-        successful_mints: uint256t   
+        successful_mints: uint256   
         failed_mints: uint256       
         success_rate: uint256
-        total_reward: uint256 
+        total_reward: decimal
 
   - name: paragraph_base_rewards_seed
     config:
@@ -40,10 +40,10 @@ seeds:
         mintReferrer: varbinary 
         mint_date: date         
         total_mints: uint256
-        successful_mints: uint256t   
+        successful_mints: uint256   
         failed_mints: uint256       
         success_rate: uint256
-        total_reward: uint256
+        total_reward: decimal
   
   - name: paragraph_zora_rewards_seed
     config:
@@ -52,9 +52,9 @@ seeds:
         mintReferrer: varbinary 
         mint_date: date         
         total_mints: uint256
-        successful_mints: uint256t   
+        successful_mints: uint256   
         failed_mints: uint256       
         success_rate: uint256
-        total_reward: uint256
+        total_reward: decimal
 
 

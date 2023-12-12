@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'paragraph_optimism',
+    schema = 'paragraph_zora',
     alias = 'referrer_mint_stats',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,16 +12,28 @@
 WITH referrer_mint_stats AS (
     SELECT
         mintReferrer,
-        DATE(call_block_time) AS mint_date,
+        DATE(paragraph_zora.ERC721_call_mintWithReferrer.call_block_time) AS mint_date,
         COUNT(*) AS total_mints,
-        COUNT(CASE WHEN call_success THEN 1 ELSE NULL END) AS successful_mints,
-        COUNT(CASE WHEN NOT call_success THEN 1 ELSE NULL END) AS failed_mints,
-        SUM(CASE
-                WHEN mintReferrer <> '0x0000000000000000000000000000000000000000' THEN 0.000111 -- Recompensa para creator referrer
-                ELSE 0.000222 
-            END) AS total_reward
-    FROM {{ source('paragraph_zora', 'ERC721_call_mintWithReferrer') }}
-    GROUP BY mintReferrer, DATE(call_block_time)
+        COUNT(CASE WHEN paragraph_zora.ERC721_call_mintWithReferrer.call_success THEN 1 ELSE NULL END) AS successful_mints,
+        COUNT(CASE WHEN NOT paragraph_zora.ERC721_call_mintWithReferrer.call_success THEN 1 ELSE NULL END) AS failed_mints,
+        SUM(
+            CASE
+                WHEN paragraph_zora.ERC721_call_getMintFee.contract_address = paragraph_zora.ERC721_call_mintWithReferrer.contract_address 
+                     AND paragraph_zora.ERC721_call_getMintFee.output_0 > 0 THEN 
+                    CASE
+                        WHEN mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000444
+                        ELSE 0.000222
+                    END
+                ELSE -- Grátis
+                    CASE
+                        WHEN mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000333
+                        ELSE 0.000111
+                    END
+            END
+        ) AS total_reward
+    FROM paragraph_zora.ERC721_call_mintWithReferrer
+    LEFT JOIN paragraph_zora.ERC721_call_getMintFee ON paragraph_zora.ERC721_call_mintWithReferrer.contract_address = paragraph_zora.ERC721_call_getMintFee.contract_address
+    GROUP BY mintReferrer, DATE(paragraph_zora.ERC721_call_mintWithReferrer.call_block_time)
 )
 
 SELECT
@@ -33,9 +45,9 @@ SELECT
     ROUND((successful_mints * 100.0) / NULLIF(total_mints, 0), 2) AS success_rate,
     total_reward
 FROM referrer_mint_stats
-WHERE call_block_time >= (SELECT MAX(call_block_time) FROM {{ this }}) 
+WHERE referrer_mint_stats.call_block_time >= (SELECT MAX(call_block_time) FROM {{ this }}) 
 ORDER BY mint_date DESC, success_rate DESC, total_mints DESC;
 
 {% if is_incremental() %}
-    and {{ incremental_predicate('call_block_time') }}
+    {{ incremental_predicate('call_block_time') }}
 {% endif %}

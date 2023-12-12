@@ -22,7 +22,7 @@
  ref('mintfun_optimism_rewards'),
  ref('mintfun_base_rewards'),
  ref('mintfun_zora_rewards'),
- ref('paragraph_optmism_rewards'),
+ ref('paragraph_optimism_rewards'),
  ref('paragraph_base_rewards'),
  ref('paragraph_polygon_rewards'),
  ref('paragraph_zora_rewards')
