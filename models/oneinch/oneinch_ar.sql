@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'ar', askdnasjk  aksjdiosahfda
+        alias = 'ar',
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address']
     )
