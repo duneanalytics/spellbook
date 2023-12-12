@@ -8,3 +8,53 @@ seeds:
         referrer_address: varbinary
         referee_address: varbinary
         reward_amount_raw: uint256
+  
+  - name: paragraph_optimism_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary        
+        mintReferrer: varbinary 
+        mint_date: date         
+        total_mints: uint256
+        successful_mints: uint256t   
+        failed_mints: uint256       
+        success_rate: uint256
+        total_reward: uint256   
+
+  - name: paragraph_polygon_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary        
+        mintReferrer: varbinary 
+        mint_date: date         
+        total_mints: uint256
+        successful_mints: uint256t   
+        failed_mints: uint256       
+        success_rate: uint256
+        total_reward: uint256 
+
+  - name: paragraph_base_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary        
+        mintReferrer: varbinary 
+        mint_date: date         
+        total_mints: uint256
+        successful_mints: uint256t   
+        failed_mints: uint256       
+        success_rate: uint256
+        total_reward: uint256
+  
+  - name: paragraph_zora_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary        
+        mintReferrer: varbinary 
+        mint_date: date         
+        total_mints: uint256
+        successful_mints: uint256t   
+        failed_mints: uint256       
+        success_rate: uint256
+        total_reward: uint256
+
+

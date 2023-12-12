@@ -51,4 +51,17 @@ sources:
       - name: MintPayout_evt_MintDeposit
   - name: mint_fun_zora
     tables:
-      - name: MintPayout_evt_MintDeposit
+      - name: MintPayout_evt_MintDeposit  
+  - name: paragraph_optimism
+    tables:
+      - name: ERC721_call_mintWithReferrer
+  - name: paragraph_base
+    tables:
+      - name: ERC721_call_mintWithReferrer
+  - name: paragraph_polygon
+    tables:
+      - name: ERC721_call_mintWithReferrer
+  - name: paragraph_zora
+    tables:
+      - name: ERC721_call_mintWithReferrer
+
