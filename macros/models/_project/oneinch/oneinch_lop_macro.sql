@@ -100,6 +100,8 @@ orders as (
             select
                 call_block_number as block_number
                 , call_block_time as block_time
+                , call_block_number as block_number
+                , call_block_time as block_time
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
                 , '{{ contract_data['version'] }}' as protocol_version
@@ -132,7 +134,7 @@ orders as (
                 , gas_used as call_gas_used
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
-                , error as call_error
+                , block_number
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %} 
@@ -141,7 +143,7 @@ orders as (
                     block_time >= timestamp '{{ contract_data['start'] }}'
                 {% endif %}
                 and call_type = 'call'
-        ) using(tx_hash, call_trace_address)
+        ) using(tx_hash, call_trace_address, block_number)
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
 )
