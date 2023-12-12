@@ -9,31 +9,36 @@
     )
 }}
 
-WITH referrer_mint_stats AS (
+WITH mint_fee_info AS (
+    SELECT 
+        contract_address,
+        output_0 
+    FROM paragraph_polygon.ERC721_call_getMintFee
+),
+referrer_mint_stats AS (
     SELECT
-        mintReferrer,
-        DATE(paragraph_polygon.ERC721_call_mintWithReferrer.call_block_time) AS mint_date,
+        mwr.mintReferrer,
+        DATE(mwr.call_block_time) AS mint_date,
         COUNT(*) AS total_mints,
-        COUNT(CASE WHEN paragraph_polygon.ERC721_call_mintWithReferrer.call_success THEN 1 ELSE NULL END) AS successful_mints,
-        COUNT(CASE WHEN NOT paragraph_polygon.ERC721_call_mintWithReferrer.call_success THEN 1 ELSE NULL END) AS failed_mints,
+        COUNT(CASE WHEN mwr.call_success THEN 1 ELSE NULL END) AS successful_mints,
+        COUNT(CASE WHEN NOT mwr.call_success THEN 1 ELSE NULL END) AS failed_mints,
         SUM(
             CASE
-                WHEN paragraph_polygon.ERC721_call_getMintFee.contract_address = paragraph_polygon.ERC721_call_mintWithReferrer.contract_address 
-                     AND paragraph_polygon.ERC721_call_getMintFee.output_0 > 0 THEN 
+                WHEN mfi.contract_address = mwr.contract_address AND mfi.output_0 > 0 THEN 
                     CASE
-                        WHEN mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000444
+                        WHEN mwr.mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000444
                         ELSE 0.000222
                     END
-                ELSE -- Grátis
+                ELSE
                     CASE
-                        WHEN mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000333
+                        WHEN mwr.mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000333
                         ELSE 0.000111
                     END
             END
         ) AS total_reward
-    FROM paragraph_polygon.ERC721_call_mintWithReferrer
-    LEFT JOIN paragraph_polygon.ERC721_call_getMintFee ON paragraph_polygon.ERC721_call_mintWithReferrer.contract_address = paragraph_polygon.ERC721_call_getMintFee.contract_address
-    GROUP BY mintReferrer, DATE(paragraph_polygon.ERC721_call_mintWithReferrer.call_block_time)
+    FROM paragraph_polygon.ERC721_call_mintWithReferrer mwr
+    LEFT JOIN mint_fee_info mfi ON mwr.contract_address = mfi.contract_address
+    GROUP BY mwr.mintReferrer, DATE(mwr.call_block_time)
 )
 
 SELECT
