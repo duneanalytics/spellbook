@@ -1,4 +1,4 @@
-{% macro usage_summary_daily_transactions( chain ) %}
+{% macro usage_summary_daily_transactions( chain, start_date_inclusive = '2015-01-01', end_date_not_inclusive = '9999-12-31' ) %}
 
 SELECT
     '{{chain}}' as blockchain
@@ -20,6 +20,7 @@ SELECT
     AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
     -- AND [[ incremental_predicate('t.block_date') ]]
     {% endif %}
+    AND t.block_date BETWEEN cast( '{{start_date_inclusive}}' as date) AND cast( '{{end_date_not_inclusive}}' as date)
     AND t.success
   GROUP BY 1,2,3,4
 

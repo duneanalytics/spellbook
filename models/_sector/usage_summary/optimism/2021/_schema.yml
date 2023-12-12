@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: usage_summary_optimism_daily_2023
+  - name: usage_summary_optimism_daily_2021
     meta:
       blockchain: optimism
       sector: contracts
@@ -84,7 +84,7 @@ models:
       name: sum_logs_emitted_tx_gas_used
       description:   "Amount of gas used by successful transactions where the contract emitted an event log"
 
-  - name: usage_summary_optimism_daily_logs_2023
+  - name: usage_summary_optimism_daily_logs_2021
     meta:
       blockchain: optimism
       sector: contracts
@@ -110,7 +110,7 @@ models:
     - *num_logs_emitted_tx_senders
     - *sum_logs_emitted_tx_gas_used
 
-  - name: usage_summary_optimism_daily_traces_2023
+  - name: usage_summary_optimism_daily_traces_2021
     meta:
       blockchain: optimism
       sector: contracts
@@ -138,7 +138,7 @@ models:
     - *sum_trace_to_gas_used
     - *sum_trace_to_tx_gas_used
 
-  - name: usage_summary_optimism_daily_transactions_2023
+  - name: usage_summary_optimism_daily_transactions_2021
     meta:
       blockchain: optimism
       sector: contracts

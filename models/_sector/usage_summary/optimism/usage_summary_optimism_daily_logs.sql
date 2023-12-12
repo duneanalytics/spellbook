@@ -10,6 +10,12 @@
   )
 }}
 
-{{usage_summary_daily_logs(
-    chain='optimism'
-)}}
+{% set base_models_to_union = [
+                                'usage_summary_optimism_daily_logs_2021'
+                              , 'usage_summary_optimism_daily_logs_2022'
+                              ] %}
+
+{% set incremental_model_to_include = 'usage_summary_optimism_daily_logs_incremental' %}
+
+
+{{ usage_summary_union_alls(base_models_to_union, incremental_model_to_include) }}
