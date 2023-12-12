@@ -2,125 +2,119 @@
 
 WITH top_of_block AS (
     SELECT block_number
-    , approx_percentile(index, 0.9) AS top_of_block_index_limit
+    , approx_percentile(index, 0.05) AS top_of_block_index_limit
+    , approx_percentile(priority_fee_per_gas, 0.95) AS top_of_block_priority_fee
     FROM {{transactions}}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
     GROUP BY 1
+    ORDER BY 2
     )
 
 , paid_builder AS (
     -- List who tipped the block builder with native token
-    SELECT b.time AS block_time
-    , t."from" AS tx_from
-    , t.tx_hash
-    FROM {{traces}} t
-    INNER JOIN {{blocks}} b ON b.number=t.block_number
-        AND t.to=b.miner
-        AND t."from"!=0x0000000000000000000000000000000000000000
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('b.block_time') }}
-        {% endif %}
-    INNER JOIN {{transactions}} txs ON txs.block_number=t.block_number 
-        AND txs.hash=t.tx_hash 
-        AND txs."from"=t."from"
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('txs.block_time') }}
-        {% endif %}
-    WHERE t.success
-    AND (t.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR t.call_type IS NULL)
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('b.block_time') }}
-    {% endif %}
-    
-    UNION ALL
-    
-    -- List who tipped the block builder with ER20 tokens
-    SELECT b.time AS block_time
-    , t."from" AS tx_from
-    , t.evt_tx_hash AS tx_hash
-    FROM {{erc20_transfers}} t
-    INNER JOIN {{blocks}} b ON b.number=t.evt_block_number
-        AND t.to=b.miner
-        AND t."from"!=0x0000000000000000000000000000000000000000
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('traces.block_time') }}
-        {% endif %}
-    INNER JOIN {{transactions}} txs ON txs.block_number=t.evt_block_number 
-        AND txs.hash=t.evt_tx_hash 
-        AND txs."from"=t."from"
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('txs.block_time') }}
-        {% endif %}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('t.evt_block_time') }}
-    {% endif %}
-    
-    UNION ALL
-    
-    -- List all addresses behind transactions in the top of the block
-    SELECT txs.block_time
-    , txs."from" AS tx_from
-    , txs.hash AS tx_hash
-    FROM {{transactions}} txs
-    INNER JOIN top_of_block tbl ON txs.block_number=tbl.block_number
-        AND txs.index <= tbl.top_of_block_index_limit
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('txs.block_time') }}
-    {% endif %}
-    )
-
-, distinct_transactions AS (
-    SELECT DISTINCT pb.block_time
-    , pb.tx_from
-    , pb.tx_hash
+    SELECT dt.block_time
+    , dt.tx_hash
+    , dt.evt_index
     , txs.index AS tx_index
-    FROM paid_builder pb
-    INNER JOIN {{transactions}} txs ON pb.block_time=txs.block_time
-        AND pb.tx_hash=txs.hash
-        AND pb.tx_from=txs."from"
+    , txs.block_number
+    FROM {{ ref('dex_trades')}} dt
+    INNER JOIN {{blocks}} b ON b.time=dt.block_time
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('b.time') }}
+        {% endif %}
+    INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
+        AND txs.hash=dt.tx_hash
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% endif %}
+    INNER JOIN {{traces}} t ON t.block_time=dt.block_time
+        AND t.success
+        AND (t.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR t.call_type IS NULL)
+        AND t.value > 0
+        AND t.to=b.miner
+        --AND t."from"!=0x0000000000000000000000000000000000000000
+        AND t."from"=dt.tx_from
+        AND txs.index IN (t.tx_index-1, t.tx_index)
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('t.block_time') }}
+        {% endif %}
+    WHERE dt.blockchain = '{{blockchain}}'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('dt.block_time') }}
+    {% endif %}
+    
+    UNION ALL
+    
+    SELECT dt.block_time
+    , dt.tx_hash
+    , dt.evt_index
+    , txs.index AS tx_index
+    , txs.block_number
+    FROM {{ ref('dex_trades')}} dt
+    INNER JOIN {{blocks}} b ON b.time=dt.block_time
+    INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
+        AND txs.hash=dt.tx_hash
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
+    INNER JOIN {{erc20_transfers}} t ON t.evt_block_time=dt.block_time
+        AND t.value > 0
+        AND t.to=b.miner
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('t.evt_block_time') }}
+        {% endif %}
+    INNER JOIN {{transactions}} txs2 ON txs2.block_time=t.evt_block_time
+        AND txs2.index IN (txs.index-1, txs.index)
+        AND txs2."from"=dt.tx_from
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs2.block_time') }}
+        {% endif %}
+    WHERE dt.blockchain = '{{blockchain}}'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('dt.block_time') }}
+    {% endif %}
     )
 
--- Exclusively keep trades where the builder was bribed
-SELECT DISTINCT dt.blockchain
+SELECT DISTINCT i.block_time
+, i.block_number
+, i.tx_hash
+, i.evt_index
+, dt.blockchain
 , dt.project
 , dt.version
-, dt.block_time
 , dt.block_month
-, txs.block_number
-, dt.token_sold_address
-, dt.token_bought_address
 , dt.token_sold_symbol
 , dt.token_bought_symbol
-, dt.maker
-, dt.taker
-, dt.tx_hash
-, dt.tx_from
-, dt.tx_to
-, dt.project_contract_address
+, dt.token_sold_address
+, dt.token_bought_address
 , dt.token_pair
-, txs.index AS tx_index
-, dt.token_sold_amount_raw
-, dt.token_bought_amount_raw
 , dt.token_sold_amount
 , dt.token_bought_amount
+, dt.token_sold_amount_raw
+, dt.token_bought_amount_raw
 , dt.amount_usd
-, dt.evt_index
-FROM {{ ref('dex_trades')}} dt
-INNER JOIN distinct_transactions i ON dt.block_time=i.block_time
-    AND i.tx_from=dt.tx_from
-INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
-    AND i.tx_index IN (txs.index-1, txs.index)
+, dt.taker
+, dt.maker
+, dt.project_contract_address
+, dt.tx_from
+, dt.tx_to
+, i.tx_index
+FROM paid_builder
+MATCH_RECOGNIZE (
+    PARTITION BY block_time, tx_hash
+    ALL ROWS PER MATCH
+    PATTERN (A B*)
+    DEFINE
+        B AS B.tx_hash = A.tx_hash AND B.evt_index != A.evt_index
+    ) i
+INNER JOIN {{ ref('dex_trades')}} dt ON dt.blockchain = '{{blockchain}}'
+    AND dt.block_time=i.block_time
+    AND dt.tx_hash=i.tx_hash
+    AND dt.evt_index=i.evt_index
     {% if is_incremental() %}
-    AND {{ incremental_predicate('txs.block_time') }}
+    AND {{ incremental_predicate('dt.block_time') }}
     {% endif %}
-WHERE dt.blockchain='{{blockchain}}'
-{% if is_incremental() %}
-AND {{ incremental_predicate('dt.block_time') }}
-{% endif %}
 
 {% endmacro %}
