@@ -32,6 +32,7 @@ select
     , {{ method_data.get("dst_amount_min", "null") }} as dst_amount_min
     , call_gas_used
     , call_output
+    , call_error
     , null as ordinary
     , null as pools
     , remains
