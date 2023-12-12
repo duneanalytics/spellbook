@@ -881,6 +881,10 @@ WITH curated_list AS (
       ,(0x36928500Bc1dCd7af6a2B4008875CC336b927D57, 'Tether') --Bitfinex Deployer
       ,(0xa82cbE54d2dAe403f7B3385aA2afA03E7AF0591A, 'XEN Crypto')
       ,(0x95Ba4cF87D6723ad9C0Db21737D862bE80e93911, 'Circle')
+      ,(0xc4a6080fdd7525e2a4ed9e211b4e99f40a890640, 'Candide')
+      ,(0x09fd4f6088f2025427ab1e89257a44747081ed59, 'Etherspot')
+      ,(0x8d8a9cf53b7d95c148cb159384d249f8fb68db3f, 'ZeroDev')
+      ,(0x9775137314fe595c943712b0b336327dfa80ae8a, 'ZeroDev')
 
       ,(0x855e321ad155D45B64475EEe946D8fA492A7f3F3, 'StableBase')
       ,(0x3885226c26c467B342220132ec9d0b311b2DD43c, 'Base')
