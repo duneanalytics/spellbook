@@ -139,7 +139,7 @@ orders as (
                     {{ incremental_predicate('block_time') }}
                 {% else %}
                     block_time >= timestamp '{{ contract_data['start'] }}'
-                {% endif %} {% if blockchain in ['bnb', 'ethereum'] %} and block_time >= date('2023-12-10') {% endif %}
+                {% endif %}
                 and call_type = 'call'
         ) using(block_number, tx_hash, call_trace_address)
         {% if not loop.last %} union all {% endif %}
