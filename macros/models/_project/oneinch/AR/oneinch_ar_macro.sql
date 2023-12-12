@@ -243,7 +243,7 @@ pools_list as (
                 {% if is_incremental() %}
                     {{ incremental_predicate('block_time') }}
                 {% else %}
-                    block_time >= timestamp '{{ contract_data['start'] }}'
+                    block_time >= date('2023-12-10') -- timestamp '{{ contract_data['start'] }}'
                 {% endif %}
                     and call_type = 'call'
         )
