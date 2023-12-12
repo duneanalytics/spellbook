@@ -41,6 +41,12 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('traces.block_time') }}
         {% endif %}
+    INNER JOIN {{transactions}} txs ON txs.block_number=t.evt_block_number 
+        AND txs.hash=t.evt_tx_hash 
+        AND txs."from"=t."from"
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
@@ -67,6 +73,7 @@ WITH top_of_block AS (
     FROM paid_builder pb
     INNER JOIN {{transactions}} txs ON pb.block_time=txs.block_time
         AND pb.tx_hash=txs.hash
+        AND pb.tx_from=txs."from"
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% endif %}
