@@ -22,6 +22,12 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('b.block_time') }}
         {% endif %}
+    INNER JOIN {{transactions}} txs ON txs.block_number=t.block_number 
+        AND txs.hash=t.tx_hash 
+        AND txs."from"=t."from"
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
     WHERE t.success
     AND (t.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR t.call_type IS NULL)
     {% if is_incremental() %}
