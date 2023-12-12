@@ -93,32 +93,28 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
-      - name: block_number
-      - name: block_time
+      - *block_time
       - *tx_hash_not_null
-      - name: tx_from
-      - name: tx_to
-      - name: tx_success
-      - name: tx_nonce
-      - name: gas_price
-      - name: priority_fee_per_gas
-      - name: contract_name
-      - name: protocol
-      - name: protocol_version
-      - name: method
-      - name: call_selector
+      - *tx_from
+      - *tx_to
+      - *tx_success
+      - &contract_name
+        name: contract_name
+      - &protocol_version
+        name: protocol_version
+      - &method
+        name: method
+      - *call_from
+      - *call_to
       - &call_trace_address_not_null
         name: call_trace_address
         tests:
           - not_null
-      - name: call_from
-      - name: call_to
-      - name: call_success
-      - name: call_gas_used
-      - name: call_output
-      - name: call_error
-      - name: maker
-      - name: receiver
+      - *call_selector
+      - &maker
+        name: maker
+      - &receiver
+        name: receiver
       - &maker_asset
         name: maker_asset
       - &making_amount
@@ -129,10 +125,16 @@ models:
         name: taker_asset
       - &taking_amount
         name: taking_amount
-      - name: order_hash
-      - name: remains
-      - name: minute
-      - name: block_month
+      - &order_hash
+        name: order_hash
+      - *call_success
+      - &call_gas_used
+        name: call_gas_used
+      - &remains
+        name: remains
+      - *call_output
+      - *minute
+      - *block_month
 
   - name: oneinch_gnosis_ar
     meta:
@@ -151,47 +153,42 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
-      - name: block_number
-      - name: block_time
+      - *block_time
       - *tx_hash_not_null
-      - name: tx_from
-      - name: tx_to
-      - name: tx_success
-      - name: tx_nonce
-      - name: gas_price
-      - name: priority_fee_per_gas
-      - name: contract_name
-      - name: protocol
-      - name: protocol_version
-      - name: method
-      - name: call_selector
+      - *tx_from
+      - *tx_to
+      - *tx_success
+      - *contract_name
+      - *protocol_version
+      - *method
+      - *call_from
+      - *call_to
       - *call_trace_address_not_null
-      - name: call_from
-      - name: call_to
-      - name: call_success
-      - name: call_gas_used
-      - name: call_output
-      - name: call_error
+      - *call_selector
+      - &src_token_address
+        name: src_token_address
+      - &dst_token_address
+        name: dst_token_address
       - &src_receiver
         name: src_receiver
       - &dst_receiver
         name: dst_receiver
-      - name: src_token_address
-      - name: dst_token_address
-      - name: src_amount
-      - name: dst_amount
+      - &src_amount
+        name: src_amount
+      - &dst_amount
+        name: dst_amount
       - &dst_amount_min
         name: dst_amount_min
-      - name: src_token_amount
-      - name: dst_token_amount
-      - name: dst_token_amount_min
       - &ordinary
         name: ordinary
       - &pools
         name: pools
       - &router_type
         name: router_type
-      - name: remains
-      - name: minute
-      - name: block_month
+      - *call_success
+      - *call_gas_used
+      - *remains
+      - *call_output
+      - *minute
+      - *block_month
 

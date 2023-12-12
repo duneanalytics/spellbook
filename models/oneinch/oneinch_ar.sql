@@ -26,37 +26,6 @@
 
 
 {% for blockchain in blockchains %}
-    select 
-        blockchain
-        , block_number
-        , block_time
-        , tx_hash
-        , tx_from
-        , tx_to
-        , tx_success
-        , contract_name
-        , protocol_version
-        , method
-        , call_from
-        , call_to
-        , call_trace_address
-        , call_selector
-        , src_token_address
-        , dst_token_address
-        , src_receiver
-        , dst_receiver
-        , src_amount
-        , dst_amount
-        , dst_amount_min
-        , ordinary
-        , pools
-        , router_type
-        , call_success
-        , call_gas_used
-        , remains
-        , call_output
-        , minute
-        , block_month
-    from {{ ref('oneinch_' + blockchain + '_ar') }}
+    select * from {{ ref('oneinch_' + blockchain + '_ar') }}
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
