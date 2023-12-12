@@ -7,6 +7,8 @@ WITH top_of_block AS (
     FROM {{transactions}}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
+    {% else %}
+    WHERE block_time > NOW() - interval '1' year
     {% endif %}
     GROUP BY 1
     ORDER BY 2
@@ -23,11 +25,15 @@ WITH top_of_block AS (
     INNER JOIN {{blocks}} b ON b.time=dt.block_time
         {% if is_incremental() %}
         AND {{ incremental_predicate('b.time') }}
+        {% else %}
+        AND b.time > NOW() - interval '1' year
         {% endif %}
     INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
         AND txs.hash=dt.tx_hash
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
+        {% else %}
+        AND txs.block_time > NOW() - interval '1' year
         {% endif %}
     INNER JOIN {{traces}} t ON t.block_time=dt.block_time
         AND t.success
@@ -39,10 +45,14 @@ WITH top_of_block AS (
         AND txs.index IN (t.tx_index-1, t.tx_index)
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.block_time') }}
+        {% else %}
+        AND t.block_time > NOW() - interval '1' year
         {% endif %}
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
+    {% else %}
+    AND dt.block_time > NOW() - interval '1' year
     {% endif %}
     
     UNION ALL
@@ -58,22 +68,30 @@ WITH top_of_block AS (
         AND txs.hash=dt.tx_hash
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
+        {% else %}
+        AND txs.block_time > NOW() - interval '1' year
         {% endif %}
     INNER JOIN {{erc20_transfers}} t ON t.evt_block_time=dt.block_time
         AND t.value > 0
         AND t.to=b.miner
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.evt_block_time') }}
+        {% else %}
+        AND t.evt_block_time > NOW() - interval '1' year
         {% endif %}
     INNER JOIN {{transactions}} txs2 ON txs2.block_time=t.evt_block_time
         AND txs2.index IN (txs.index-1, txs.index)
         AND txs2."from"=dt.tx_from
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs2.block_time') }}
+        {% else %}
+        AND txs2.block_time > NOW() - interval '1' year
         {% endif %}
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
+    {% else %}
+    AND dt.block_time > NOW() - interval '1' year
     {% endif %}
     )
 
@@ -115,6 +133,8 @@ INNER JOIN {{ ref('dex_trades')}} dt ON dt.blockchain = '{{blockchain}}'
     AND dt.evt_index=i.evt_index
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
+    {% else %}
+    AND dt.block_time > NOW() - interval '1' year
     {% endif %}
 
 {% endmacro %}
