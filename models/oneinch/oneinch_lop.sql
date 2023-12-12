@@ -28,18 +28,27 @@
 {% for blockchain in blockchains %}
     select 
         blockchain
+        , block_number
         , block_time
         , tx_hash
         , tx_from
         , tx_to
         , tx_success
+        , tx_nonce
+        , gas_price
+        , priority_fee_per_gas
         , contract_name
+        , protocol
         , protocol_version
         , method
+        , call_selector
+        , call_trace_address
         , call_from
         , call_to
-        , call_trace_address
-        , call_selector
+        , call_success
+        , call_gas_used
+        , call_output
+        , call_error
         , maker
         , receiver
         , maker_asset
@@ -47,10 +56,7 @@
         , taker_asset
         , taking_amount
         , order_hash
-        , call_success
-        , call_gas_used
         , remains
-        , call_output
         , minute
         , block_month 
     from {{ ref('oneinch_' + blockchain + '_lop') }}
