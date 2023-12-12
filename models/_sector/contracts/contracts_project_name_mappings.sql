@@ -120,5 +120,7 @@ from (
     ,('union_protocol', 'Union Finance')
     ,('rubic_crosschain', 'Rubic')
     ,('gyroscope', 'Gyroscope')
+    ,('synthetix_futuresmarket', 'Synthetix')
+    ,('synapsefees', 'Synapse')
 
     ) as temp_table (dune_name, mapped_name)
