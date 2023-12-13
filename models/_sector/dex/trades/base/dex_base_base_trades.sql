@@ -10,6 +10,7 @@
     , ref('sushiswap_v1_base_base_trades')
     , ref('sushiswap_v2_base_base_trades')
     , ref('aerodrome_base_base_trades')
+    , ref('balancer_v2_base_base_trades')
 ] %}
 
 WITH base_union AS (
