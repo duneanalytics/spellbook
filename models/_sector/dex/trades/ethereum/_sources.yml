@@ -23,3 +23,10 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
+  - name: balancer_v1_ethereum
+    tables:
+      - name: BPool_evt_LOG_SWAP
+      - name: BPool_call_setSwapFee
+  - name: balancer_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap

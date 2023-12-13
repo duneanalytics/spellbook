@@ -137,4 +137,22 @@ models:
           seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
           filter:
             version: 2.1
-   
+
+  - name: balancer_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
