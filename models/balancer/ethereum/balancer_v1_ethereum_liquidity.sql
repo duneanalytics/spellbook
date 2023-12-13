@@ -35,34 +35,6 @@ prices AS (
         GROUP BY 1, 2, 3
     ),
 
-    dex_prices_1 AS (
-       SELECT
-            date_trunc('day', hour) AS day,
-            contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            SUM(sample_size) AS sample_size 
-        FROM {{ ref('dex_prices') }}
-        WHERE blockchain = 'ethereum'
-        {% if is_incremental() %}
-        AND hour >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-        GROUP BY 1, 2
-        HAVING SUM(sample_size) > 5
-        AND AVG(median_price) < 1e8
-    ),
-    
-    dex_prices AS (
-       SELECT
-            *,
-            LEAD(day, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    day
-            ) AS day_of_next_change
-        FROM dex_prices_1
-    ),
-
-    
     cumulative_balance AS (
         SELECT
             day,
@@ -83,14 +55,11 @@ prices AS (
             t.symbol,
             cumulative_amount as token_balance_raw,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd
         FROM cumulative_balance b
         LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = b.token
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN dex_prices p2 ON p2.day <= b.day
-        AND b.day < p2.day_of_next_change
-        AND p2.token = b.token
     ),
     
     pool_liquidity_estimates AS (
