@@ -45,9 +45,9 @@ SELECT
     ROUND((successful_mints * 100.0) / NULLIF(total_mints, 0), 2) AS success_rate,
     total_reward
 FROM referrer_mint_stats
-WHERE referrer_mint_stats.call_block_time >= (SELECT MAX(call_block_time) FROM {{ this }}) 
+WHERE mint_date >= (SELECT DATE(MAX(call_block_time)) FROM paragraph_base.ERC721_call_mintWithReferrer)
 ORDER BY mint_date DESC, success_rate DESC, total_mints DESC;
 
 {% if is_incremental() %}
-    {{ incremental_predicate('call_block_time') }}
+    AND {{ incremental_predicate('call_block_time') }}
 {% endif %}
