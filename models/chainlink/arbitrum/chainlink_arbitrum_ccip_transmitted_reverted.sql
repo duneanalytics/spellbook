@@ -37,6 +37,9 @@ WITH
     FROM
       {{ ref('chainlink_arbitrum_ccip_transmitted_logs') }} tx
       LEFT JOIN {{ source('arbitrum', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
+      {% if is_incremental() %}
+        WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
       LEFT JOIN arbitrum_usd ON date_trunc('minute', tx.block_time) = arbitrum_usd.block_time
     WHERE
       tx2.success = false
