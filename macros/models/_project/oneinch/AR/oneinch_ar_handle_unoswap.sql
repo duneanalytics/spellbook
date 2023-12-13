@@ -40,6 +40,7 @@ select
     , dst_amount_min
     , call_gas_used
     , call_output
+    , call_error
     , ordinary
     , pools
     , remains
@@ -63,6 +64,7 @@ from (
         , {{ method_data.get("dst_amount_min", "null") }} as dst_amount_min
         , call_gas_used
         , call_output
+        , call_error
         , if(cardinality(call_pools) > 0, true, false) as ordinary -- if call_pools is not empty
         , if(cardinality(call_pools) > 0
             , try(substr(cast(call_pools[1] as varbinary), 13)) -- get first pool from call_pools
