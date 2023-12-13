@@ -5,14 +5,13 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['mintReferrer', 'mint_date'],
-    incremental_predicates = [incremental_predicate('call_block_time')],
-    )
-}}
+    incremental_predicates = [incremental_predicate('call_block_time')]
+) }}
 
 WITH mint_fee_info AS (
     SELECT 
         contract_address,
-        output_0 
+        cast(output_0 as double) 
     FROM paragraph_polygon.ERC721_call_getMintFee
 ),
 referrer_mint_stats AS (
@@ -47,10 +46,13 @@ SELECT
     total_mints,
     successful_mints,
     failed_mints,
-    ROUND((successful_mints * 100.0) / NULLIF(total_mints, 0), 2) AS success_rate,
+    ROUND((cast(successful_mints as double) * 100.0) / NULLIF(total_mints, 0), 2) AS success_rate, -- Explicit conversion to double for percentage calculation
     total_reward
 FROM referrer_mint_stats
-WHERE mint_date >= (SELECT DATE(MAX(call_block_time)) FROM paragraph_polygon.ERC721_call_mintWithReferrer)
+WHERE mint_date >= (
+    SELECT DATE(MAX(call_block_time)) 
+    FROM paragraph_polygon.ERC721_call_mintWithReferrer
+)
 {% if is_incremental() %}
     AND {{ incremental_predicate('call_block_time') }}
 {% endif %}

@@ -5,9 +5,8 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['mintReferrer', 'mint_date'],
-    incremental_predicates = [incremental_predicate('call_block_time')],
-    )
-}}
+    incremental_predicates = [incremental_predicate('call_block_time')]
+) }}
 
 WITH referrer_mint_stats AS (
     SELECT
@@ -24,7 +23,7 @@ WITH referrer_mint_stats AS (
                         WHEN mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000444
                         ELSE 0.000222
                     END
-                ELSE -- Grátis
+                ELSE
                     CASE
                         WHEN mintReferrer = CAST('0x0000000000000000000000000000000000000000' AS varbinary) THEN 0.000333
                         ELSE 0.000111
@@ -42,12 +41,15 @@ SELECT
     total_mints,
     successful_mints,
     failed_mints,
-    ROUND((successful_mints * 100.0) / NULLIF(total_mints, 0), 2) AS success_rate,
+    ROUND((cast(successful_mints as double) * 100.0) / NULLIF(total_mints, 0), 2) AS success_rate, -- Explicit conversion to double for percentage calculation
     total_reward
 FROM referrer_mint_stats
-WHERE mint_date >= (SELECT DATE(MAX(call_block_time)) FROM paragraph_zora.ERC721_call_mintWithReferrer)
+WHERE mint_date >= (
+    SELECT DATE(MAX(call_block_time)) 
+    FROM paragraph_zora.ERC721_call_mintWithReferrer
+)
 ORDER BY mint_date DESC, success_rate DESC, total_mints DESC;
 
 {% if is_incremental() %}
-   AND {{ incremental_predicate('call_block_time') }}
+    AND {{ incremental_predicate('call_block_time') }}
 {% endif %}
