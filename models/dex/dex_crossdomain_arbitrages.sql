@@ -15,7 +15,7 @@
 }}
 
 {% set crossdomain_arbitrages_models = [
-     , (ref('dex_ethereum_crossdomain_arbitrages'))
+     (ref('dex_ethereum_crossdomain_arbitrages'))
 ] %}
 
 SELECT *
