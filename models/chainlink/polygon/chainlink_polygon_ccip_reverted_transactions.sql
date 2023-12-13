@@ -37,7 +37,7 @@ WITH
       {{ ref('chainlink_polygon_ccip_send_traces') }} tx
       INNER JOIN {{ source('polygon', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
       {% if is_incremental() %}
-        WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}
       LEFT JOIN polygon_usd ON date_trunc('minute', tx.block_time) = polygon_usd.block_time
     WHERE

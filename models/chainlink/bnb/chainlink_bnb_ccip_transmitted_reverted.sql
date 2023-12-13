@@ -38,7 +38,7 @@ WITH
       {{ ref('chainlink_bnb_ccip_transmitted_logs') }} tx
       LEFT JOIN {{ source('bnb', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
       {% if is_incremental() %}
-        WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}
       LEFT JOIN bnb_usd ON date_trunc('minute', tx.block_time) = bnb_usd.block_time
     WHERE
