@@ -156,6 +156,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_ethereum_base_trades_seed')
 
+
   - name: apeswap_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -171,7 +172,29 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('apeswap_ethereum_base_trades_seed')
+          seed_file: ref('apeswap_ethereum_base_trades_seed')            
+
+
+  - name: pancakeswap_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap Ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_ethereum_base_trades_seed')
+          filter:
+            version:
+              - 2
+              - mmpool
 
 
   - name: shibaswap_v1_ethereum_base_trades
@@ -192,6 +215,25 @@ models:
           seed_file: ref('shibaswap_ethereum_base_trades_seed')
           filter:
             version: 1
+
+  - name: pancakeswap_v3_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+    description: "Pancakeswap Ethereum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_ethereum_base_trades_seed')
+          filter:
+            version: 3
   
   - name: balancer_v1_ethereum_base_trades
     meta:
