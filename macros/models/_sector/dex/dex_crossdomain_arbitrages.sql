@@ -22,14 +22,14 @@ WITH top_of_block AS (
     , txs.index AS tx_index
     , txs.block_number
     FROM {{ ref('dex_trades')}} dt
-    INNER JOIN {{blocks}} b ON b.time=dt.block_time
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('b.time') }}
-        {% endif %}
     INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
         AND txs.hash=dt.tx_hash
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
+    INNER JOIN {{blocks}} b ON b.time=dt.block_time
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('b.time') }}
         {% endif %}
     INNER JOIN {{traces}} t ON t.block_time=dt.block_time
         AND t.success
@@ -55,11 +55,14 @@ WITH top_of_block AS (
     , txs.index AS tx_index
     , txs.block_number
     FROM {{ ref('dex_trades')}} dt
-    INNER JOIN {{blocks}} b ON b.time=dt.block_time
     INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
         AND txs.hash=dt.tx_hash
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
+    INNER JOIN {{blocks}} b ON b.time=dt.block_time
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('b.time') }}
         {% endif %}
     INNER JOIN {{erc20_transfers}} t ON t.evt_block_time=dt.block_time
         AND t.value > 0
