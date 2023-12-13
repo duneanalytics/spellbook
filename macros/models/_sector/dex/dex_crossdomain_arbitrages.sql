@@ -95,7 +95,19 @@ WITH top_of_block AS (
     {% endif %}
     )
 
-SELECT DISTINCT i.block_time
+, single_swap_txs AS (
+    SELECT DISTINCT block_number, tx_index, block_time, tx_hash, evt_index
+    FROM paid_builder t1
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM paid_builder t2
+        WHERE t1.block_number = t2.block_number
+        AND t1.tx_index = t2.tx_index
+        AND t1.evt_index != t2.evt_index
+        )
+    )
+
+SELECT i.block_time
 , i.block_number
 , i.tx_hash
 , i.evt_index
@@ -119,14 +131,7 @@ SELECT DISTINCT i.block_time
 , dt.tx_from
 , dt.tx_to
 , i.tx_index
-FROM paid_builder
-MATCH_RECOGNIZE (
-    PARTITION BY block_time, tx_hash
-    ALL ROWS PER MATCH
-    PATTERN (A B*)
-    DEFINE
-        B AS B.tx_hash = A.tx_hash AND B.evt_index != A.evt_index
-    ) i
+FROM single_swap_txs i
 INNER JOIN {{ ref('dex_trades')}} dt ON dt.blockchain = '{{blockchain}}'
     AND dt.block_time=i.block_time
     AND dt.tx_hash=i.tx_hash
