@@ -5,7 +5,7 @@
    SELECT
       case 
          when 'ethereum' = chain_ then 'https://etherscan.io'
-         when 'optimism' = chain_ then 'https://optimistic.etherscan.io'
+         when 'optimism' = chain_ then 'https://explorer.optimism.io'
          when 'polygon' = chain_ then 'https://polygonscan.com'
          when 'arbitrum' = chain_ then 'https://arbiscan.io'
          when 'avalanche_c' = chain_ then 'https://snowtrace.io'
