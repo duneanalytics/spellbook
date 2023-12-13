@@ -60,7 +60,7 @@ models:
           filter:
             version: 1
 
-- name: sushiswap_v2_bnb_base_trades
+  - name: sushiswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
       sector: dex
@@ -146,6 +146,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'mdex', 'uniswap', 'v2' ]
     description: "mdex bnb base trades"
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
