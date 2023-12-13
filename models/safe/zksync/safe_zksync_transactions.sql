@@ -27,7 +27,9 @@ with transactions as (
         s.address,
         t."from", --the address the Safe transacted to
         null as "to", --for other chains, this is the singleton address but on zksync this is the recipient address. Leaving this blank for now for consistency.
-        t.gas_limit as gas,
+        t.gas_limit as gas, --in other chains, this is taken from traces, here we take from transactions
+        null as execution_gas_used, --in other chains, this is taken from traces but not possible here due to duplicated traces with different estimates
+        t.gas_used as total_gas_used,
         t.gas_used,
         t.index as tx_index,
         t.success,
@@ -71,8 +73,6 @@ select distinct --to remove duplicated traces
 from {{ source('zksync', 'traces') }} tr 
 join {{ ref('safe_zksync_safes') }} s
     on s.address = tr."from"
-join {{ ref('safe_zksync_singletons') }} ss
-    on tr.to = ss.address
 where
     {% if not is_incremental() %}
     tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
