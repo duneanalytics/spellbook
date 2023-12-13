@@ -1,6 +1,16 @@
 version: 2
 
 seeds:
+  - name: zeroex_polygon_nft_fills_sample
+    config:
+      column_types:
+        block_date: timestamp
+        evt_index: int
+        tx_hash: varbinary
+        maker: varbinary
+        taker: varbinary
+        nft_address: varbinary
+        nft_id: int
   - name: zeroex_polygon_api_fills_sample
     config:
       column_types:
@@ -55,4 +65,4 @@ seeds:
         volume_usd: double
         tx_from: varbinary
         tx_to: varbinary
-        fills_within: int 
+        fills_within: int
