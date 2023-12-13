@@ -30,7 +30,6 @@ with transactions as (
         t.gas_limit as gas, --in other chains, this is taken from traces, here we take from transactions
         null as execution_gas_used, --in other chains, this is taken from traces but not possible here due to duplicated traces with different estimates
         t.gas_used as total_gas_used,
-        t.gas_used,
         t.index as tx_index,
         t.success,
         t.data as input,
@@ -93,7 +92,8 @@ select distinct
     cast(t.to as varbinary) as "to", --for other chains, this is the singleton address, but not available in zksync.transactions or zksync.traces so keeping as null for consistency
     tr.value, --get value from traces (0 in transactions table)
     t.gas,
-    t.gas_used,
+    t.execution_gas_used,
+    t.total_gas_used,
     t.tx_index,
     cast(tr.sub_traces as bigint) as sub_traces,
     cast(tr.trace_address as array(bigint)) as trace_address,
