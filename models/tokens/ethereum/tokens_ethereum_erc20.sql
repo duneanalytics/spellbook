@@ -1,8 +1,12 @@
-{{ config(
-        alias = 'erc20'
-        , tags=['static']
-        )
+{{
+    config(
+        schema = 'tokens_ethereum',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
 }}
+
 SELECT
         contract_address as contract_address
         , trim(symbol) as symbol
@@ -36641,4 +36645,3 @@ FROM (VALUES
         ,(0x5b71c444538cc0c8be0b0c909b07139b78839320, 'STILTON', 18)
         ,(0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 'GYD', 18)
      ) AS temp_table (contract_address, symbol, decimals)
-     

@@ -8,7 +8,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - Don't know where to start? The docs below will guide you, but as a summary:
   - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes. 
     - Follow the guide for [Submitting a PR](), [Setting up your dev environment]() and [Using dbt to write spells]() if you find yourself lost.
-    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/data-tables/spellbook/contributing/).
+    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/spellbook/).
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
   - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
