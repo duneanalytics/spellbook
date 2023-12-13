@@ -37,7 +37,7 @@ WITH
       {{ ref('chainlink_ethereum_ccip_send_traces') }} tx
       INNER JOIN {{ source('ethereum', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
       {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND tx2.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}
       LEFT JOIN ethereum_usd ON date_trunc('minute', tx.block_time) = ethereum_usd.block_time
     WHERE
