@@ -35,7 +35,10 @@ WITH
       MAX(avalanche_c_usd.usd_amount) as usd_amount
     FROM
       {{ ref('chainlink_avalanche_c_ccip_send_traces') }} tx
-      LEFT JOIN {{ source('avalanche_c', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
+      INNER JOIN {{ source('avalanche_c', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
+      {% if is_incremental() %}
+        WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
       LEFT JOIN avalanche_c_usd ON date_trunc('minute', tx.block_time) = avalanche_c_usd.block_time
     WHERE
       tx.tx_success = false

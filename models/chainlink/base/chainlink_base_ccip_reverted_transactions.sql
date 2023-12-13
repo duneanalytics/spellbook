@@ -35,7 +35,10 @@ WITH
       MAX(base_usd.usd_amount) as usd_amount
     FROM
       {{ ref('chainlink_base_ccip_send_traces') }} tx
-      LEFT JOIN {{ source('base', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
+      INNER JOIN {{ source('base', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
+      {% if is_incremental() %}
+        WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
       LEFT JOIN base_usd ON date_trunc('minute', tx.block_time) = base_usd.block_time
     WHERE
       tx.tx_success = false

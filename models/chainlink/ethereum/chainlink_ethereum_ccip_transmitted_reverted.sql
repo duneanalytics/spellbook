@@ -37,6 +37,9 @@ WITH
     FROM
       {{ ref('chainlink_ethereum_ccip_transmitted_logs') }} tx
       LEFT JOIN {{ source('ethereum', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
+      {% if is_incremental() %}
+        WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
       LEFT JOIN ethereum_usd ON date_trunc('minute', tx.block_time) = ethereum_usd.block_time
     WHERE
       tx2.success = false

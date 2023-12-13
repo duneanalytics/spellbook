@@ -27,6 +27,9 @@ WITH
         FROM
             {{ source('prices', 'usd') }} price
         JOIN token_meta ON price.symbol = token_meta.token_symbol
+        {% if is_incremental() %}
+            WHERE price.minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}
         GROUP BY
             1, token_meta.token_symbol
         ORDER BY
@@ -42,6 +45,9 @@ WITH
         FROM 
             {{ref('chainlink_bnb_ccip_send_requested_daily')}} ccip_send_requested_daily
         LEFT JOIN token_usd_daily tud ON tud.date_start = ccip_send_requested_daily.date_start AND tud.symbol = ccip_send_requested_daily.token
+        {% if is_incremental() %}
+            WHERE ccip_send_requested_daily.date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}  
         GROUP BY 1, 5
     )
 SELECT
