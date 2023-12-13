@@ -66,7 +66,7 @@ WITH top_of_block AS (
         AND {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
     INNER JOIN {{transactions}} txs2 ON txs2.block_time=t.evt_block_time
-        AND txs2.index IN (txs.index-1, txs.index, t.tx_index+1)
+        AND txs2.index IN (txs.index-1, txs.index, txs.tx_index+1)
         AND txs2."from"=dt.tx_from
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs2.block_time') }}
