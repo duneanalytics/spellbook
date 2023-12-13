@@ -17,6 +17,7 @@
     , ref('trader_joe_v2_1_arbitrum_base_trades')
     , ref('pancakeswap_v2_arbitrum_base_trades')
     , ref('pancakeswap_v3_arbitrum_base_trades')
+    , ref('balancer_v2_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

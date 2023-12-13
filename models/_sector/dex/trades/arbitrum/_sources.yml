@@ -38,3 +38,6 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: Vault_evt_Swap
