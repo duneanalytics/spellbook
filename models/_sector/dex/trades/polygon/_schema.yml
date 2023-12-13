@@ -151,7 +151,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('fraxswap_polygon_base_trades_seed')
           filter:
             version: 1
