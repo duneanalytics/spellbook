@@ -611,7 +611,7 @@ models:
 
   - name: dex_crossdomain_arbitrages
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base
+      blockchain: ethereum
       sector: dex
       contributors: hildobby
     config:

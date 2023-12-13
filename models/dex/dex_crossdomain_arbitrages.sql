@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -15,15 +15,7 @@
 }}
 
 {% set crossdomain_arbitrages_models = [
-     (ref('dex_arbitrum_crossdomain_arbitrages'))
-     , (ref('dex_avalanche_c_crossdomain_arbitrages'))
-     , (ref('dex_bnb_crossdomain_arbitrages'))
      , (ref('dex_ethereum_crossdomain_arbitrages'))
-     , (ref('dex_fantom_crossdomain_arbitrages'))
-     , (ref('dex_gnosis_crossdomain_arbitrages'))
-     , (ref('dex_optimism_crossdomain_arbitrages'))
-     , (ref('dex_polygon_crossdomain_arbitrages'))
-     , (ref('dex_base_crossdomain_arbitrages'))
 ] %}
 
 SELECT *
