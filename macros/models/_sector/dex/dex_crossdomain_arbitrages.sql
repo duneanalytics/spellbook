@@ -36,7 +36,7 @@ WITH top_of_block AS (
         AND t.to=b.miner
         --AND t."from"!=0x0000000000000000000000000000000000000000
         AND t."from"=dt.tx_from
-        AND txs.index IN (t.tx_index-1, t.tx_index)
+        AND txs.index IN (t.tx_index-1, t.tx_index, t.tx_index+1)
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.block_time') }}
         {% endif %}
@@ -66,7 +66,7 @@ WITH top_of_block AS (
         AND {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
     INNER JOIN {{transactions}} txs2 ON txs2.block_time=t.evt_block_time
-        AND txs2.index IN (txs.index-1, txs.index)
+        AND txs2.index IN (txs.index-1, txs.index, t.tx_index+1)
         AND txs2."from"=dt.tx_from
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs2.block_time') }}
