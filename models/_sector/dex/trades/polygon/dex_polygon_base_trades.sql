@@ -14,6 +14,7 @@
     , ref('honeyswap_v2_polygon_base_trades')
     , ref('quickswap_v2_polygon_base_trades')
     , ref('quickswap_v3_polygon_base_trades')
+    , ref('balancer_v2_polygon_base_trades')
 ] %}
 
 WITH base_union AS (
