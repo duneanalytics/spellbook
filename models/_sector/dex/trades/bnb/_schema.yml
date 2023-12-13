@@ -138,3 +138,44 @@ models:
           seed_file: ref('apeswap_bnb_base_trades_seed')
           filter:
             version: 2
+
+  - name: pancakeswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: pancakeswap
+      contributors: hosuke, chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap BNB v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_bnb_base_trades_seed')
+          filter:
+            version:
+              - 2
+              - mmpool
+              - stableswap
+
+  - name: pancakeswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+    description: "Pancakeswap BNB v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_bnb_base_trades_seed')
+          filter:
+            version: 3

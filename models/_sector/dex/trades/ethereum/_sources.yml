@@ -23,6 +23,26 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
+  - name: pancakeswap_v2_ethereum
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+      - name: PancakeSwapMMPool_evt_Swap
+  - name: pancakeswap_v3_ethereum
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: shibaswap_ethereum
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: balancer_v1_ethereum
+    tables:
+      - name: BPool_evt_LOG_SWAP
+      - name: BPool_call_setSwapFee
+  - name: balancer_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap
   - name: bancornetwork_ethereum
     tables:
       - name: BancorNetwork_v6_evt_Conversion
