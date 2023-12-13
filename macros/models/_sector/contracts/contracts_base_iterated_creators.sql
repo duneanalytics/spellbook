@@ -155,6 +155,7 @@ WITH deterministic_deployers AS (
         1=1
         AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
         AND s.contract_address IN (SELECT contract_address FROM inc_contracts) --is this a contract we need to iterate through
+        AND s.contract_address NOT IN (SELECT contract_address FROM new_contracts) --exclude contract we reinitialize
 
     {% endif %}
 
@@ -250,10 +251,16 @@ WITH deterministic_deployers AS (
   )
   {%- endfor %}
 
-
-SELECT {{ column_list | join(', ') }}  FROM base_level WHERE is_new_contract = 0
-UNION ALL
-SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
+  SELECT {{ column_list | join(', ') }}
+  FROM (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY contract_address, blockchain ORDER BY created_block_number DESC) AS init_rank
+    FROM (
+      SELECT {{ column_list | join(', ') }}  FROM base_level WHERE is_new_contract = 0
+      UNION ALL
+      SELECT {{ column_list | join(', ') }}  FROM level{{max_levels - 1}}
+    ) uni
+  ) filtered
+  WHERE init_rank = 1
 
 )
 
