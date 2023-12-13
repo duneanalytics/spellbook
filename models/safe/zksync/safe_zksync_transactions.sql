@@ -92,7 +92,7 @@ select distinct
     cast(t.to as varbinary) as "to", --for other chains, this is the singleton address, but not available in zksync.transactions or zksync.traces so keeping as null for consistency
     tr.value, --get value from traces (0 in transactions table)
     t.gas,
-    t.execution_gas_used,
+    cast(t.execution_gas_used as bigint) as execution_gas_used,
     t.total_gas_used,
     t.tx_index,
     cast(tr.sub_traces as bigint) as sub_traces,
