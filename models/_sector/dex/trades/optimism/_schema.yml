@@ -118,3 +118,22 @@ models:
           seed_file: ref('zipswap_optimism_base_trades_seed')
           filter:
             version: 1
+
+  - name: balancer_v2_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_optimism_base_trades_seed')
+          filter:
+            version: 2
