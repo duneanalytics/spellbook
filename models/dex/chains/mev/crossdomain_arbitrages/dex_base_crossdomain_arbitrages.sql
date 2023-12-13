@@ -1,4 +1,4 @@
-{% set blockchain = 'arbitrum' %}
+{% set blockchain = 'base' %}
 
 {{ config(
         schema = 'dex_' + blockchain,
@@ -7,7 +7,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain','tx_hash', 'project_contract_address', 'evt_index'],
+        unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -18,4 +18,5 @@
         , traces = source(blockchain,'traces')
         , transactions = source(blockchain,'transactions')
         , erc20_transfers = source('erc20_' + blockchain,'evt_transfer')
+        , dex_sandwiches = ref('dex_' + blockchain + '_sandwiches')
 )}}

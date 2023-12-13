@@ -1,4 +1,4 @@
-{% macro dex_crossdomain_arbitrages(blockchain, blocks, traces, transactions, erc20_transfers) %}
+{% macro dex_crossdomain_arbitrages(blockchain, blocks, traces, transactions, erc20_transfers, dex_sandwiches) %}
 
 WITH top_of_block AS (
     SELECT block_number
@@ -8,7 +8,7 @@ WITH top_of_block AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% else %}
-    WHERE block_time > NOW() - interval '1' year
+    WHERE block_time > NOW() - interval '6' month
     {% endif %}
     GROUP BY 1
     ORDER BY 2
@@ -26,14 +26,14 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('b.time') }}
         {% else %}
-        AND b.time > NOW() - interval '1' year
+        AND b.time > NOW() - interval '6' month
         {% endif %}
     INNER JOIN {{transactions}} txs ON txs.block_time=dt.block_time
         AND txs.hash=dt.tx_hash
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% else %}
-        AND txs.block_time > NOW() - interval '1' year
+        AND txs.block_time > NOW() - interval '6' month
         {% endif %}
     INNER JOIN {{traces}} t ON t.block_time=dt.block_time
         AND t.success
@@ -46,13 +46,13 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.block_time') }}
         {% else %}
-        AND t.block_time > NOW() - interval '1' year
+        AND t.block_time > NOW() - interval '6' month
         {% endif %}
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
     {% else %}
-    AND dt.block_time > NOW() - interval '1' year
+    AND dt.block_time > NOW() - interval '6' month
     {% endif %}
     
     UNION ALL
@@ -69,7 +69,7 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% else %}
-        AND txs.block_time > NOW() - interval '1' year
+        AND txs.block_time > NOW() - interval '6' month
         {% endif %}
     INNER JOIN {{erc20_transfers}} t ON t.evt_block_time=dt.block_time
         AND t.value > 0
@@ -77,7 +77,7 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.evt_block_time') }}
         {% else %}
-        AND t.evt_block_time > NOW() - interval '1' year
+        AND t.evt_block_time > NOW() - interval '6' month
         {% endif %}
     INNER JOIN {{transactions}} txs2 ON txs2.block_time=t.evt_block_time
         AND txs2.index IN (txs.index-1, txs.index)
@@ -85,13 +85,13 @@ WITH top_of_block AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs2.block_time') }}
         {% else %}
-        AND txs2.block_time > NOW() - interval '1' year
+        AND txs2.block_time > NOW() - interval '6' month
         {% endif %}
     WHERE dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
     {% else %}
-    AND dt.block_time > NOW() - interval '1' year
+    AND dt.block_time > NOW() - interval '6' month
     {% endif %}
     )
 
@@ -134,7 +134,16 @@ INNER JOIN {{ ref('dex_trades')}} dt ON dt.blockchain = '{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('dt.block_time') }}
     {% else %}
-    AND dt.block_time > NOW() - interval '1' year
+    AND dt.block_time > NOW() - interval '6' month
+    {% endif %}
+LEFT JOIN {{dex_sandwiches}} ds ON i.block_time=ds.block_time
+    AND i.tx_hash=ds.tx_hash
+    AND i.evt_index=ds.evt_index
+    AND ds.evt_index IS NULL
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('ds.block_time') }}
+    {% else %}
+    AND ds.block_time > NOW() - interval '6' month
     {% endif %}
 
 {% endmacro %}

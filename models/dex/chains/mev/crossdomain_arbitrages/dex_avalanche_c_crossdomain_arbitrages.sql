@@ -1,4 +1,4 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'avalanche_c' %}
 
 {{ config(
         schema = 'dex_' + blockchain,
@@ -18,4 +18,5 @@
         , traces = source(blockchain,'traces')
         , transactions = source(blockchain,'transactions')
         , erc20_transfers = source('erc20_' + blockchain,'evt_transfer')
+        , dex_sandwiches = ref('dex_' + blockchain + '_sandwiches')
 )}}
