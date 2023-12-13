@@ -10,11 +10,14 @@ models:
       tags: ['tokens','transfers']
     description: >
       Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - unique_key
     columns:
       - name: unique_key
         description: "Surrogate key used to identify unique transfers"
-        tests:
-          - unique
       - name: blockchain
         description: "The blockchain of the transfers"
       - name: block_date
