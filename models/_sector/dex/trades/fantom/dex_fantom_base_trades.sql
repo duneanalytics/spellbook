@@ -8,6 +8,7 @@
 {% set base_models = [
     ref('sushiswap_v1_fantom_base_trades')
     , ref('sushiswap_v2_fantom_base_trades')
+    , ref('spiritswap_fantom_base_trades')
     , ref('spookyswap_fantom_base_trades')
 ] %}
 

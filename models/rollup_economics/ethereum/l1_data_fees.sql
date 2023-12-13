@@ -19,7 +19,8 @@ with tx_batch_appends as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    length(t.data) as data_length
+    length(t.data) as data_length,
+    gas_used
     FROM
     (
       SELECT
@@ -99,7 +100,8 @@ with tx_batch_appends as (
       t.hash,
       (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
       p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
-      length(t.data) as data_length
+      length(t.data) as data_length,
+      t.gas_used
     FROM
       {{ source('ethereum','transactions') }} as t
       INNER JOIN (
@@ -110,7 +112,7 @@ with tx_batch_appends as (
             MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l2_output_oracle_from_address",
             MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l2_output_oracle_to_address"
         FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-        WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora Network', 'Aevo')
+        WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora', 'Aevo', 'Mode', 'Lyra', 'Orderly Network')
         GROUP BY protocol_name
       ) as op ON (
           t."from" = op.l1_batch_inbox_from_address
@@ -135,7 +137,8 @@ with tx_batch_appends as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    (length(t.data)) AS input_length
+    (length(t.data)) AS data_length,
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -157,7 +160,8 @@ with tx_batch_appends as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    (length(t.data)) AS input_length
+    (length(t.data)) AS data_length,
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -179,7 +183,8 @@ with tx_batch_appends as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    (length(t.data)) AS input_length
+    (length(t.data)) AS data_length,
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -204,18 +209,29 @@ with tx_batch_appends as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    (length(t.data)) AS input_length
+    (length(t.data)) AS data_length,
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
       AND p.blockchain is null
       AND p.symbol = 'ETH'
-      AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
-      AND
-      (
-      cast(t.data as varchar) LIKE '0x0c4dd81%' -- Commit Block
+      AND (
+      -- L1 transactions settle here pre-Boojum
+      t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919
+      -- L1 transactions settle here post-Boojum
+      OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
+      )
+      AND (
+      -- L1 transactions use these method ID's pre-Boojum
+      bytearray_substring(t.data, 1, 4) = 0x0c4dd810 -- Commit Block
       OR
-      cast(t.data as varchar) LIKE '0xce9dcf16%' -- Execute Block
+      bytearray_substring(t.data, 1, 4) = 0xce9dcf16 -- Execute Block
+      OR
+      -- L1 transactions use these method ID's post-Boojum
+      bytearray_substring(t.data, 1, 4) = 0x701f58c5 -- Commit Batches
+      OR
+      bytearray_substring(t.data, 1, 4) = 0xc3d93e7c -- Execute Batches
       )
       AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
@@ -228,7 +244,8 @@ with tx_batch_appends as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    (length(t.data)) AS input_length
+    (length(t.data)) AS data_length,
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -237,6 +254,46 @@ with tx_batch_appends as (
       AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
       AND cast(t.data as varchar) LIKE '0x5e9145c9%' -- sequenceBatches
       AND t.block_time >= timestamp '2023-03-01'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'linea' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length,
+    gas_used
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F
+      AND cast(t.data as varchar) LIKE '0x4165d6dd%' -- Finalize Blocks (unfortunately here the ZK proofs are also included which should rather go into table l1_verification_fees)
+      AND t.block_time >= timestamp '2023-07-12'
+    {% if is_incremental() %}
+      AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL SELECT
+    'scroll' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length,
+    gas_used
+    FROM {{ source('ethereum','transactions') }} AS t
+    INNER JOIN {{ source('prices','usd') }} p
+      ON p.minute = date_trunc('minute', t.block_time)
+      AND p.blockchain is null
+      AND p.symbol = 'ETH'
+      AND t.to = 0xa13BAF47339d63B743e7Da8741db5456DAc1E556
+      AND cast(t.data as varchar) LIKE '0x1325aca0%' -- Commit Batch
+      AND t.block_time >= timestamp '2023-10-07'
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -259,7 +316,8 @@ txs.hash,
 bxs.time as block_time,
 txs.data_length,
 gas_spent,
-gas_spent_usd
+gas_spent_usd,
+gas_used
 FROM tx_batch_appends txs
 INNER JOIN block_basefees bxs
 ON txs.block_number = bxs.block_number
