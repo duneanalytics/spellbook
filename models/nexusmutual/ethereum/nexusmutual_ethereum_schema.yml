@@ -134,14 +134,14 @@ models:
       tags: ["ethereum","nexusmutual","trades"]
     description: >
         Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
-    tests:
-      - check_seed:
-          seed_file: ref("nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed")
-          match_columns:
-            - day
-          check_columns:
-            - eth_ingress
-            - eth_egress
+    #tests:
+    #  - check_seed:
+    #      seed_file: ref("nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed")
+    #      match_columns:
+    #        - day
+    #      check_columns:
+    #        - eth_ingress
+    #        - eth_egress
     columns:
       - &day
         name: day

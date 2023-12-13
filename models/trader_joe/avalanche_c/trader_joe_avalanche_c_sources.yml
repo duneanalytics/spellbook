@@ -121,3 +121,16 @@ sources:
           - &tokenY
             name: tokenY
             description: "tokenY"
+
+  - name: trader_joe_v2_1_avalanche_c
+    description: "avalanche_c chain decoded tables related to Trader Joe contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: LBPair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Liquidity book Pair swap event decoded table" 
+
+      - name: LBFactory_evt_LBPairCreated
+        loaded_at_field: evt_block_time
+        description: "Liquidity Book Factory pair create decoded table" 
