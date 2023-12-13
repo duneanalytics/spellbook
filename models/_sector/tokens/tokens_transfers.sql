@@ -59,8 +59,10 @@ with base_union as (
             , usd_amount
         FROM
             {{ ref('tokens_' + blockchain + '_transfers') }}
+        {% if is_incremental() %}
         WHERE
             {{ incremental_predicate('block_time') }}
+        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
