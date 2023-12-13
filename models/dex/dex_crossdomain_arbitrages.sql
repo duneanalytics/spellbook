@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "zksync", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -24,8 +24,6 @@
      , (ref('dex_optimism_crossdomain_arbitrages'))
      , (ref('dex_polygon_crossdomain_arbitrages'))
      , (ref('dex_base_crossdomain_arbitrages'))
-     , (ref('dex_celo_crossdomain_arbitrages'))
-     , (ref('dex_zksync_crossdomain_arbitrages'))
 ] %}
 
 SELECT *
