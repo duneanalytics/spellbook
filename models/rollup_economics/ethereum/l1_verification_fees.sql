@@ -23,8 +23,19 @@ with verify_txns as (
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
-      AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
-      AND cast(t.data as varchar) LIKE '0x7739cbe7%' -- Prove Block
+      AND (
+      -- L1 transactions settle here pre-Boojum
+      t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919
+      -- L1 transactions settle here post-Boojum
+      OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
+      )
+      AND (
+      -- L1 transactions use these method ID's pre-Boojum
+      bytearray_substring(t.data, 1, 4) = 0x7739cbe7 -- Prove Block
+      OR
+      -- L1 transactions use these method ID's post-Boojum
+      bytearray_substring(t.data, 1, 4) = 0x7f61885c -- Prove Batches
+      )
       AND t.block_time >= timestamp '2023-03-01'
       AND p.blockchain is null
       AND p.symbol = 'ETH'
