@@ -11,6 +11,7 @@
     , ref('airswap_polygon_base_trades')
     , ref('sushiswap_v1_polygon_base_trades')
     , ref('sushiswap_v2_polygon_base_trades')
+    , ref('honeyswap_v2_polygon_base_trades')
     , ref('quickswap_v2_polygon_base_trades')
     , ref('quickswap_v3_polygon_base_trades')
     , ref('balancer_v2_polygon_base_trades')
