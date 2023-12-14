@@ -109,7 +109,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - value
+            - trace_address
     description: "Safe transactions"
     columns:
       - *blockchain
