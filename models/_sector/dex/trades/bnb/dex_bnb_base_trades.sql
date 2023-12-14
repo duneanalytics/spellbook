@@ -17,6 +17,8 @@
     , ref('trader_joe_v2_1_bnb_base_trades')
     , ref('pancakeswap_v2_bnb_base_trades')
     , ref('pancakeswap_v3_bnb_base_trades')
+    , ref('biswap_v2_bnb_base_trades')
+    , ref('biswap_v3_bnb_base_trades')
     , ref('babyswap_bnb_base_trades')
 ] %}
 
