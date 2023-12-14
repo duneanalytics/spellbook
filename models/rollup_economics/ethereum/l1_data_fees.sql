@@ -20,8 +20,7 @@ with tx_batch_appends as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     length(t.data) as data_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    gas_used
     FROM
     (
       SELECT
@@ -102,8 +101,7 @@ with tx_batch_appends as (
       (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
       p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
       length(t.data) as data_length,
-      t.gas_used,
-      {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+      t.gas_used
     FROM
       {{ source('ethereum','transactions') }} as t
       INNER JOIN (
@@ -140,8 +138,7 @@ with tx_batch_appends as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     (length(t.data)) AS data_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -164,8 +161,7 @@ with tx_batch_appends as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     (length(t.data)) AS data_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -188,8 +184,7 @@ with tx_batch_appends as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     (length(t.data)) AS data_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -215,8 +210,7 @@ with tx_batch_appends as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     (length(t.data)) AS data_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -251,8 +245,7 @@ with tx_batch_appends as (
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     (length(t.data)) AS data_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -321,12 +314,10 @@ SELECT
 txs.name,
 txs.hash,
 bxs.time as block_time,
-txs.block_number,
 txs.data_length,
 gas_spent,
 gas_spent_usd,
-gas_used,
-calldata_gas_used
+gas_used
 FROM tx_batch_appends txs
 INNER JOIN block_basefees bxs
 ON txs.block_number = bxs.block_number

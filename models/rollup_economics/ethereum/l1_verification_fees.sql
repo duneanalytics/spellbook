@@ -19,9 +19,7 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
-    t.gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -51,9 +49,7 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
-    t.gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -72,9 +68,7 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
-    t.gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -120,7 +114,6 @@ with verify_txns as (
 SELECT
 txs.name,
 txs.hash,
-txs.block_number,
 bxs.time as block_time,
 txs.proof_size_mb,
 gas_spent,
