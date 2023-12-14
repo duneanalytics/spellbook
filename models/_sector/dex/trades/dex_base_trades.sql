@@ -21,7 +21,6 @@
     , ref('dex_polygon_base_trades')
 ] %}
 
-
 with base_union as (
     SELECT *
     FROM

@@ -15,6 +15,11 @@
     , ref('airswap_ethereum_base_trades')
     , ref('sushiswap_v1_ethereum_base_trades')
     , ref('sushiswap_v2_ethereum_base_trades')
+    , ref('pancakeswap_v2_ethereum_base_trades')
+    , ref('pancakeswap_v3_ethereum_base_trades')
+    , ref('shibaswap_v1_ethereum_base_trades')
+    , ref('balancer_v1_ethereum_base_trades')
+    , ref('balancer_v2_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (
