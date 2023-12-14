@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'honeyswap_v2_polygon',
+        schema = 'spookyswap_fantom',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'polygon',
-        project = 'honeyswap',
-        version = '2',
-        Pair_evt_Swap = source('honeyswap_polygon', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('honeyswap_polygon', 'Factory_evt_PairCreated')
+        blockchain = 'fantom',
+        project = 'spookyswap',
+        version = '1',
+        Pair_evt_Swap = source('spookyswap_fantom', 'Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('spookyswap_fantom', 'UniswapV2Factory_evt_PairCreated')
     )
 }}

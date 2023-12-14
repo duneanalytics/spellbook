@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'honeyswap_v2_gnosis',
+        schema = 'babyswap_bnb',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'gnosis',
-        project = 'honeyswap',
-        version = '2',
-        Pair_evt_Swap = source('honeyswap_v2_gnosis', 'UniswapV2Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('honeyswap_v2_gnosis', 'UniswapV2Factory_evt_PairCreated')
+        blockchain = 'bnb',
+        project = 'babyswap',
+        version = '1',
+        Pair_evt_Swap = source('babyswap_bnb', 'BabyPair_evt_Swap'),
+        Factory_evt_PairCreated = source('babyswap_bnb', 'BabyFactory_evt_PairCreated')
     )
 }}
