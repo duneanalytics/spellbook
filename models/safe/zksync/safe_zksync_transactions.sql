@@ -7,6 +7,7 @@
         unique_key = ['block_date', 'tx_hash', 'trace_address'], 
         file_format ='delta',
         incremental_strategy='merge',
+        unique_key = ['unique_key'],
         post_hook='{{ expose_spells(\'["zksync"]\',
                                     "project",
                                     "safe",
@@ -97,7 +98,8 @@ select
     t.input, --get input from transactions (because contains the methodID)
     cast(t.output as varbinary) as "output",
     t.method,
-    tr.tx_hash as trace_tx_hash --save the trace_tx_hash to match back on
+    tr.tx_hash as trace_tx_hash, --save the trace_tx_hash to match back on
+    {{dbt_utils.generate_surrogate_key(['t.tx_hash', "array_join(tr.trace_address, ',')"])}} as unique_key
     from transactions t
     inner join traces tr ON 
         tr.block_number = t.block_number
