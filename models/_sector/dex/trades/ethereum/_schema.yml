@@ -172,8 +172,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('apeswap_ethereum_base_trades_seed')            
-
+          seed_file: ref('apeswap_ethereum_base_trades_seed')
 
   - name: pancakeswap_v2_ethereum_base_trades
     meta:
@@ -195,7 +194,6 @@ models:
             version:
               - 2
               - mmpool
-
 
   - name: shibaswap_v1_ethereum_base_trades
     meta:
@@ -272,3 +270,20 @@ models:
           seed_file: ref('balancer_ethereum_base_trades_seed')
           filter:
             version: 2
+
+  - name: bancor_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: bancor
+      contributors: tian7, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'bancor' ]
+    description: "Bancor ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bancor_ethereum_base_trades_seed')

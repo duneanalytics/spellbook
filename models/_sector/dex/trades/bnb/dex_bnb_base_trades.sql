@@ -19,6 +19,7 @@
     , ref('pancakeswap_v3_bnb_base_trades')
     , ref('biswap_v2_bnb_base_trades')
     , ref('biswap_v3_bnb_base_trades')
+    , ref('babyswap_bnb_base_trades')
 ] %}
 
 WITH base_union AS (

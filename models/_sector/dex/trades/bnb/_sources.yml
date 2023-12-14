@@ -37,3 +37,7 @@ sources:
     tables:
       - name: BiswapPoolV3_evt_Swap
       - name: BiswapFactoryV3_evt_NewPool
+  - name: babyswap_bnb
+    tables:
+      - name: BabyPair_evt_Swap
+      - name: BabyFactory_evt_PairCreated
