@@ -29,6 +29,14 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: biswap_bnb
+    tables:
+      - name: BiswapPair_evt_Swap
+      - name: BiswapFactory_evt_PairCreated
+  - name: biswap_v3_bnb
+    tables:
+      - name: BiswapPoolV3_evt_Swap
+      - name: BiswapFactoryV3_evt_NewPool
   - name: babyswap_bnb
     tables:
       - name: BabyPair_evt_Swap
