@@ -60,7 +60,6 @@ models:
           filter:
             version: 1
 
-    
   - name: sushiswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -196,5 +195,60 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('fraxswap_bnb_base_trades_seed')
+          
+  - name: biswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'uniswap', 'v2' ]
+    description: "biswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('biswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: biswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'v3' ]
+    description: "biswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('biswap_bnb_base_trades_seed')
+          filter:
+            version: 3
+            
+  - name: babyswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: babyswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'babyswap', 'uniswap', 'v2' ]
+    description: "babyswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('babyswap_bnb_base_trades_seed')
           filter:
             version: 1

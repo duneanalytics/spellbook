@@ -13,3 +13,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: spookyswap_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
