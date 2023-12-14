@@ -22,6 +22,7 @@ models:
           filter:
             version: 1
 
+
   - name: sushiswap_v2_gnosis_base_trades
     meta:
       blockchain: gnosis
@@ -41,6 +42,7 @@ models:
           filter:
             version: 2
 
+
   - name: balancer_v2_gnosis_base_trades
     meta:
       blockchain: gnosis
@@ -55,26 +57,16 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
+      - check_seed:
           seed_file: ref('balancer_gnosis_base_trades_seed')
           filter:
             version: 2
-
-  - name: honeyswap_v2_gnosis_base_trades
-    meta:
-      blockchain: gnosis
-      sector: dex
-      project: honeyswap
-      contributors: 0xr3x, jeff-dude, masquot, soispoke, tomfutago
-    config:
-      tags: ['gnosis', 'dex', 'trades', 'honeyswap', 'v2']
-    description: "Honeyswap gnosis base trades"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
+          match_columns:
             - tx_hash
             - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('honeyswap_gnosis_base_trades_seed')
-          filter:
-            version: 2
+          check_columns:
+            - block_number
+            - token_bought_address
+            - token_sold_address
+            - token_bought_amount_raw
+            - token_sold_amount_raw
