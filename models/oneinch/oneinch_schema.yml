@@ -388,9 +388,10 @@ models:
         name: receiver
       - *signature
 
+  
   - name: oneinch_lop
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -405,22 +406,29 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
-      - *block_time
+      - name: block_number
+      - name: block_time
       - *tx_hash_not_null
-      - *tx_from
-      - *tx_to
-      - *tx_success
-      - *contract_name
-      - &protocol_version
-        name: protocol_version
-      - *method
-      - *call_from
-      - *call_to
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: gas_price
+      - name: priority_fee
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
       - *call_trace_address_not_null
-      - *call_selector
-      - &maker
-        name: maker
-      - *receiver
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: maker
+      - name: receiver
       - &maker_asset
         name: maker_asset
       - &making_amount
@@ -431,15 +439,9 @@ models:
         name: taker_asset
       - &taking_amount
         name: taking_amount
-      - &order_hash
-        name: order_hash
-      - *call_success
-      - &call_gas_used
-        name: call_gas_used
-      - &remains
-        name: remains
-      - *call_output
-      - *minute
+      - name: order_hash
+      - name: remains
+      - name: minute
       - *block_month_not_null
 
   - name: oneinch_lop_own_trades
@@ -459,12 +461,12 @@ models:
             - evt_index
     columns:
       - *blockchain_not_null
-      - *project
-      - *version
+      - name: project
+      - name: version
       - &block_date
         name: block_date
       - *block_month_not_null
-      - *block_time
+      - name: block_time
       - &token_bought_symbol
         name: token_bought_symbol
       - &token_sold_symbol
@@ -485,19 +487,19 @@ models:
         name: token_bought_address
       - &token_sold_address
         name: token_sold_address
-      - *taker
-      - *maker
+      - name: taker
+      - name: maker
       - &project_contract_address
         name: project_contract_address
       - *tx_hash_not_null
-      - *tx_from
-      - *tx_to
+      - name: tx_from
+      - name: tx_to
       - &evt_index
         name: evt_index
 
   - name: oneinch_ar
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -512,43 +514,48 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
-      - *block_time
+      - name: block_number
+      - name: block_time
       - *tx_hash_not_null
-      - *tx_from
-      - *tx_to
-      - *tx_success
-      - *contract_name
-      - *protocol_version
-      - *method
-      - *call_from
-      - *call_to
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: gas_price
+      - name: priority_fee
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
       - *call_trace_address_not_null
-      - *call_selector
-      - &src_token_address
-        name: src_token_address
-      - &dst_token_address
-        name: dst_token_address
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: src_token_address
+      - name: dst_token_address
       - &src_receiver
         name: src_receiver
       - &dst_receiver
         name: dst_receiver
-      - &src_amount
-        name: src_amount
-      - &dst_amount
-        name: dst_amount
+      - name: src_amount
+      - name: dst_amount
       - &dst_amount_min
         name: dst_amount_min
+      - name: src_token_amount
+      - name: dst_token_amount
+      - name: dst_token_amount_min
       - &ordinary
         name: ordinary
       - &pools
         name: pools
       - &router_type
         name: router_type
-      - *call_success
-      - *call_gas_used
-      - *remains
-      - *call_output
-      - *minute
+      - name: remains
+      - name: minute
       - *block_month_not_null
 
   - name: oneinch_swaps
@@ -571,30 +578,30 @@ models:
       - *blockchain_not_null
       - *tx_hash_not_null
       - *call_trace_address_not_null
-      - *block_time
-      - *minute
-      - *tx_from
-      - *tx_to
-      - *call_from
-      - *call_to
-      - *contract_name
+      - name: block_time
+      - name: minute
+      - name: tx_from
+      - name: tx_to
+      - name: call_from
+      - name: call_to
+      - name: contract_name
       - *protocol_not_null
-      - *protocol_version
-      - *method
+      - name: protocol_version
+      - name: method
       - &user
         name: user
-      - *receiver
+      - name: receiver
       - &fusion
         name: fusion
       - &contracts_only
         name: contracts_only
       - &second_side
         name: second_side
-      - *remains
-      - *src_token_address
-      - *dst_token_address
-      - *src_amount
-      - *dst_amount
+      - name: remains
+      - name: src_token_address
+      - name: dst_token_address
+      - name: src_amount
+      - name: dst_amount
       - &src_token_symbol
         name: src_token_symbol
       - &dst_token_symbol
@@ -629,28 +636,28 @@ models:
             - trace_address
     columns:
       - *blockchain_not_null
-      - *project
-      - *version
-      - *block_date
+      - name: project
+      - name: version
+      - name: block_date
       - *block_month_not_null
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
       - *tx_hash_not_null
-      - *tx_from
-      - *tx_to
+      - name: tx_from
+      - name: tx_to
       - &trace_address
         name: trace_address
-      - *evt_index
+      - name: evt_index
 
