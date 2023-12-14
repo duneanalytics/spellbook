@@ -16,17 +16,17 @@
 
 {% set models = [
     ref('tokens_arbitrum_transfers')
-    , {{ ref('tokens_avalanche_c_transfers') }}
-    , {{ ref('tokens_base_transfers') }}
-    , {{ ref('tokens_bnb_transfers') }}
-    , {{ ref('tokens_celo_transfers') }}
-    , {{ ref('tokens_ethereum_transfers') }}
-    , {{ ref('tokens_fantom_transfers') }}
-    , {{ ref('tokens_gnosis_transfers') }}
-    , {{ ref('tokens_optimism_transfers') }}
-    , {{ ref('tokens_polygon_transfers') }}
-    , {{ ref('tokens_zksync_transfers') }}
-    , {{ ref('tokens_zora_transfers') }}
+    , ref('tokens_avalanche_c_transfers')
+    , ref('tokens_base_transfers')
+    , ref('tokens_bnb_transfers')
+    , ref('tokens_celo_transfers')
+    , ref('tokens_ethereum_transfers')
+    , ref('tokens_fantom_transfers')
+    , ref('tokens_gnosis_transfers')
+    , ref('tokens_optimism_transfers')
+    , ref('tokens_polygon_transfers')
+    , ref('tokens_zksync_transfers')
+    , ref('tokens_zora_transfers')
 ] %}
 
 with base_union as (
