@@ -25,10 +25,7 @@ with transactions as (
         t.block_number,
         t.hash as tx_hash,
         s.address,
-        t."from", --the address the Safe transacted to
         null as "to", --for other chains, this is the singleton address but on zksync this is the recipient address. Leaving this blank for now for consistency.
-        t.gas_limit as gas, --in other chains, this is taken from traces, here we take from transactions
-        null as execution_gas_used, --in other chains, this is taken from traces but not possible here due to duplicated traces with different estimates
         t.gas_used as total_gas_used,
         t.index as tx_index,
         t.success,
@@ -53,26 +50,23 @@ with transactions as (
 ),
 
 traces as (
-select distinct --to remove duplicated traces
-    'zksync' as blockchain,
-    try_cast(date_trunc('day', tr.block_time) as date) as block_date,
-    CAST(date_trunc('month', tr.block_time) as DATE) as block_month,
-    tr.block_time,
+select
     tr.block_number,
     tr.tx_hash,
     s.address,
     tr.value,
-    null as sub_traces, --remove to avoid duplicates
-    null as trace_address, --remove to avoid duplicates
+    tr.sub_traces, --may introduce some duplicates, not sure (there are duplicates for ETH transfers to Safes)
+    tr.trace_address, --see above
     tr.error,
     tr.code,
-    tr.tx_hash as "trace_tx_hash",
-    tr.to, --used for merging
-    tr.success --used for merging
+    tr.gas,
+    tr.gas_used AS execution_gas_used,
+    tr.success
 from {{ source('zksync', 'traces') }} tr 
 join {{ ref('safe_zksync_safes') }} s
     on s.address = tr."from"
 where
+    bytearray_length(bytearray_ltrim(tr.to)) > 4 AND
     {% if not is_incremental() %}
     tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
     {% endif %}
@@ -81,7 +75,7 @@ where
     {% endif %}
 )
 
-select distinct
+select
     t.blockchain,
     t.block_date,
     t.block_month,
@@ -91,12 +85,12 @@ select distinct
     t.address,
     cast(t.to as varbinary) as "to", --for other chains, this is the singleton address, but not available in zksync.transactions or zksync.traces so keeping as null for consistency
     tr.value, --get value from traces (0 in transactions table)
-    t.gas,
-    cast(t.execution_gas_used as bigint) as execution_gas_used,
+    tr.gas,
+    tr.execution_gas_used,
     t.total_gas_used,
     t.tx_index,
-    cast(tr.sub_traces as bigint) as sub_traces,
-    cast(tr.trace_address as array(bigint)) as trace_address,
+    tr.sub_traces,
+    tr.trace_address,
     t.success,
     tr.error,
     tr.code,
@@ -109,4 +103,3 @@ select distinct
         tr.block_number = t.block_number
         AND tr.success = t.success
         AND tr.address = t.address --matching on safe address
-        AND bytearray_length(bytearray_ltrim(tr.to)) > 4 --I think this identifies transactions from other traces
