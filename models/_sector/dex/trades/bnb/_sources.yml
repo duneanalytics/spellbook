@@ -29,3 +29,7 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: babyswap_bnb
+    tables:
+      - name: BabyPair_evt_Swap
+      - name: BabyFactory_evt_PairCreated
