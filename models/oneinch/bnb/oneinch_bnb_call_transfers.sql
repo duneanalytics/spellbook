@@ -4,6 +4,7 @@
 
 {{ 
     config( 
+        tags=['prod_exclude'],
         schema = 'oneinch_' + blockchain,
         alias = 'call_transfers',
         partition_by = ['block_month'],

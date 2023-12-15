@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'oneinch',
-        alias = 'meta_blockchains',
+        alias = 'blockchains',
         materialized = 'view',
         unique_key = ['blockchain'],
         
