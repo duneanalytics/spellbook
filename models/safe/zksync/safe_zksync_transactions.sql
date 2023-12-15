@@ -98,7 +98,7 @@ select
     cast(t.output as varbinary) as "output",
     t.method,
     tr.tx_hash as trace_tx_hash, --save the trace_tx_hash to match back on
-    {{dbt_utils.generate_surrogate_key(['t.tx_hash', "array_join(tr.trace_address, ',')"])}} as unique_key
+    {{dbt_utils.generate_surrogate_key(["t.tx_hash", "array_join(tr.trace_address, ',')", "gas"])}} as unique_key
     from transactions t
     inner join traces tr ON 
         tr.block_number = t.block_number
