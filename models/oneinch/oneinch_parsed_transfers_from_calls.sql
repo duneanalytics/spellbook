@@ -10,7 +10,5 @@
 
 {% for blockchain in all_evm_chains() %}
     {{ oneinch_parsed_transfers_from_calls_macro(blockchain) }}
-    {% if not loop.last %}
-        union all
-    {% endif %}
+    {% if not loop.last %}union all{% endif %}
 {% endfor %}
