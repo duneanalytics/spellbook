@@ -1,11 +1,11 @@
-{{ config(
-    
+{{ config(    
     schema = 'reservoir',
     alias = 'tokens_beta',
     post_hook = '{{ expose_dataset(\'["ethereum"]\',
                 \'[""]\') }}'
     )
 }}
+
 WITH ranked_entries AS (
   SELECT
     created_at,
@@ -27,7 +27,7 @@ WITH ranked_entries AS (
     updated_at,
     ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC, filename DESC) AS row_num
   FROM
-    delta_prod.reservoir.tokens_0010
+    {{ source('reservoir', 'tokens_0010') }}
 )
 
 SELECT
