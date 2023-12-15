@@ -6,12 +6,6 @@
 
 
 
-{% set transfer_selector = '0xa9059cbb' %}
-{% set transfer_from_selector = '0x23b872dd' %}
-{% set selector = 'substr(input, 1, 4)' %}
-
-
-
 with
 
 meta as (
