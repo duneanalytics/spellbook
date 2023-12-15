@@ -90,4 +90,5 @@ FROM (VALUES
     , ('mauve', 'Mauve', 'Direct', 'mauve_org')
     , ('xchange', 'X7 Finance', 'Direct', 'X7_Finance')
     , ('mento', 'Mento', 'Direct', 'mento')
+    , ('hashflow', 'Hashflow', 'Direct', 'hashflow')
     ) AS temp_table (project, name, marketplace_type, x_username)
