@@ -12,9 +12,11 @@
 
 
 
-select 
-    tx_hash as transfer_tx_hash
-    , block_number as transfer_block_number
+select
+    '{{ blockchain }}' as blockchain
+    , tx_hash
+    , block_number
+    , block_time
     , trace_address as transfer_trace_address
     , if(value > uint256 '0', 0xae, "to") as contract_address
     , case {{ selector }}

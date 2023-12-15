@@ -44,10 +44,21 @@ meta as (
 )
 
 , merging as (
-    select * from calls
+    select 
+        calls.blockchain
+        , calls.block_number
+        , calls.block_time
+        , calls.tx_hash
+        , call_trace_address
+        , transfer_trace_address
+        , contract_address
+        , amount
+        , transfer_from
+        , transfer_to
+    from calls
     join transfers on 
-        transfer_block_number = block_number
-        and transfer_tx_hash = tx_hash
+        calls.block_number = transfers.block_number
+        and calls.tx_hash = transfers.tx_hash
         and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address
 )
 
