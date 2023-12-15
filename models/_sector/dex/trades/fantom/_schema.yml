@@ -61,3 +61,22 @@ models:
           seed_file: ref('spiritswap_fantom_base_trades_seed')
           filter:
             version: 1
+
+  - name: spookyswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spookyswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spookyswap', 'uniswap', 'v2']
+    description: "Spookyswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spookyswap_fantom_base_trades_seed')
+          filter:
+            version: 1
