@@ -12,7 +12,7 @@ meta as (
     select 
         wrapped_native_token_address
         , first_deploy_at
-    from {{ ref('oneinch_meta_blockchains') }}
+    from {{ ref('oneinch_blockchains') }}
     where blockchain = '{{ blockchain }}'
 )
 
