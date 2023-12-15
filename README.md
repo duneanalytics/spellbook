@@ -94,7 +94,7 @@ pipenv install
 If the install fails, one likely reason is our script looks for a static python version and the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
 
 ```console
-py --version
+python --version
 ```
 
 Now use any text editor program to change the python version in the pipfile within the spellbook directory to your python version. You need to have at least python 3.9.
