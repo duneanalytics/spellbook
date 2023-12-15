@@ -19,7 +19,7 @@
     'tx_success',
     'tx_nonce',
     'gas_price',
-    'priority_fee',
+    'priority_fee_per_gas',
     'contract_name',
     'protocol',
     'protocol_version',
@@ -94,7 +94,7 @@ select
     , tx_success
     , tx_nonce
     , gas_price
-    , priority_fee
+    , priority_fee_per_gas
     , contract_name
     , protocol
     , protocol_version
