@@ -3,8 +3,7 @@
 
 
 {{ 
-    config( 
-        tags=['prod_exclude'],
+    config(
         schema = 'oneinch_' + blockchain,
         alias = 'call_transfers',
         partition_by = ['block_month'],
