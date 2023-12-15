@@ -13,6 +13,7 @@
     , ref('airswap_bnb_base_trades')
     , ref('sushiswap_v1_bnb_base_trades')
     , ref('sushiswap_v2_bnb_base_trades')
+    , ref('fraxswap_bnb_base_trades')
     , ref('trader_joe_v2_bnb_base_trades')
     , ref('trader_joe_v2_1_bnb_base_trades')
     , ref('pancakeswap_v2_bnb_base_trades')
