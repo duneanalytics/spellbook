@@ -47,5 +47,5 @@ select
     , native_token_symbol
     , wrapped_native_token_address
     , explorer_link
-    , now() - interval '7' days as  first_deploy_at -- easy dates
+    , now() - interval '7' day as  first_deploy_at -- easy dates
 from t
