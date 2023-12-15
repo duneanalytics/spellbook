@@ -661,3 +661,23 @@ models:
         name: trace_address
       - name: evt_index
 
+
+  - name: oneinch_parsed_transfers_from_calls
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base','zksync', 'celo', 'zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'internal']
+    description: >
+        1inch parsed transfers from calls
+    columns:
+      - name: blockchain
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+      - name: transfer_trace_address
+      - name: contract_address
+      - name: amount
+      - name: transfer_from
+      - name: transfer_to

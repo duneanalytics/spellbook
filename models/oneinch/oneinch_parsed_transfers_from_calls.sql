@@ -2,8 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'parsed_transfers_from_calls',
-        materialized = 'view',
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'transfer_trace_address']
+        materialized = 'view'
     )
 }}
 
