@@ -201,3 +201,45 @@ models:
       - *model_name
       - *label_type
       - *label_type 
+
+  - name: labels_op_bridge_derived_archetype
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridge
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'bridge', 'users', 'derived']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+
+  - name: labels_op_bridge_users
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridge
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'bridge', 'users']
+    description: 'Persona labels attributed to users of various bridges on optimism'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
