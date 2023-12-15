@@ -9,35 +9,6 @@
 {% set transfer_selector = '0xa9059cbb' %}
 {% set transfer_from_selector = '0x23b872dd' %}
 {% set selector = 'substr(input, 1, 4)' %}
-{% set columns = [
-    'blockchain',
-    'block_number',
-    'block_time',
-    'tx_hash',
-    'tx_from',
-    'tx_to',
-    -- 'tx_success',
-    -- 'tx_nonce',
-    -- 'gas_price',
-    -- 'priority_fee',
-    -- 'contract_name',
-    -- 'protocol',
-    -- 'protocol_version',
-    'method',
-    'call_selector',
-    'call_trace_address',
-    'call_from',
-    'call_to',
-    -- 'call_success',
-    -- 'call_gas_used',
-    -- 'call_output',
-    -- 'call_error',
-    -- 'remains',
-    -- 'wrapped_address',
-    -- 'native_symbol',
-    -- 'explorer_link'
-] %}
-{% set columns = columns | join(', ') %}
 
 
 
