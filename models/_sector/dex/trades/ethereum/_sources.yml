@@ -43,3 +43,13 @@ sources:
   - name: balancer_v2_ethereum
     tables:
       - name: Vault_evt_Swap
+  - name: bancornetwork_ethereum
+    tables:
+      - name: BancorNetwork_v6_evt_Conversion
+      - name: BancorNetwork_v7_evt_Conversion
+      - name: BancorNetwork_v8_evt_Conversion
+      - name: BancorNetwork_v9_evt_Conversion
+      - name: BancorNetwork_v10_evt_Conversion
+  - name: bancor3_ethereum
+    tables:
+      - name: BancorNetwork_evt_TokensTraded
