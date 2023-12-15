@@ -156,3 +156,22 @@ models:
           seed_file: ref('balancer_avalanche_c_base_trades_seed')
           filter:
             version: 2
+
+  - name: fraxswap_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: fraxswap
+      contributors: zhongyiio, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 1
