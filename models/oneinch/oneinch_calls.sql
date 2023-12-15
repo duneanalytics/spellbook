@@ -115,7 +115,5 @@ select
     , dst_token_address
     , dst_token_amount
     , fusion
-    , order_hash -- let's see how it goes
-    , explorer_link
+    , order_hash
 from calls
-join {{ ref('oneinch_meta_blockchains') }} using(blockchain)
