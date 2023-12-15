@@ -118,7 +118,6 @@ models:
           filter:
             version: 3
 
-
   - name: apeswap_polygon_base_trades
     meta:
       blockchain: polygon
@@ -175,3 +174,22 @@ models:
           seed_file: ref('honeyswap_polygon_base_trades_seed')
           filter:
             version: 2
+
+  - name: fraxswap_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: fraxswap
+      contributors: kndlexi, tomfutago
+    config:
+      tags: ['polygon', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_polygon_base_trades_seed')
+          filter:
+            version: 1

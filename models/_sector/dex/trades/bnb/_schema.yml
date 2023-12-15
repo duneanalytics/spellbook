@@ -179,6 +179,23 @@ models:
           filter:
             version: 3
 
+  - name: fraxswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: fraxswap
+      contributors: kndlexi, tomfutago
+    config:
+      tags: ['bnb', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_bnb_base_trades_seed')
+          
   - name: biswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
