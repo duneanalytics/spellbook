@@ -35,17 +35,16 @@ with t(
 )
 
 
-
--- select * from t
-
+select * from t
 
 
--- FOR TESTING
-select 
-    blockchain
-    , chain_id
-    , native_token_symbol
-    , wrapped_native_token_address
-    , explorer_link
-    , now() - interval '7' day as  first_deploy_at -- easy dates
-from t
+
+-- -- FOR CI
+-- select 
+--     blockchain
+--     , chain_id
+--     , native_token_symbol
+--     , wrapped_native_token_address
+--     , explorer_link
+--     , now() - interval '7' day as  first_deploy_at -- easy dates
+-- from t
