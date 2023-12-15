@@ -33,9 +33,19 @@ meta as (
         {% endif %}
 )
 
+, transfers as (
+    select * from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
+    where
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time >= (select first_deploy_at from meta)
+        {% endif %}
+)
+
 , merging as (
     select * from calls
-    join ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }}) transfers on 
+    join transfers on 
         transfer_block_number = block_number
         and transfer_tx_hash = tx_hash
         and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address
