@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
                                 "equalizer",
-                                \'["Henrystats"]\') }}'
+                                \'["Henrystats", "hildobby"]\') }}'
     )
 }}
 
@@ -27,3 +27,4 @@ FROM {{ source('equalizer_exchange_fantom', 'PairFactory_evt_PairCreated') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
 {% endif %}
+GROUP BY 4, 8, 9, 10
