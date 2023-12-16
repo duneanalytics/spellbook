@@ -62,7 +62,7 @@ FROM
     -- ('socks-unisocks', 'SOCKS', 0x514832a97f0b440567055a73fe03aa160017b990,18),
     -- ('NULL', 'MAI', 0xdfa46478f9e5ea86d57387849598dbfb2e964b02,18),
     -- ('NULL', 'QI', 0x3f56e0c36d275367b8c502090edf38289b3dea0d,18),
-    -- ('NULL', 'VELO', 0x3c8b650257cfb5f272f799f5e2b4e65093a11a05,18),
+    ('velo-velodrome-finance', 'VELO', 0x9560e827af36c94d2ac33a39bce1fe78631088db,18),
     ('bal-balancer', 'BAL', 0xfe8b128ba8c78aabc59d4c64cee7ff28e9379921,18),
     ('alusd-alchemixusd', 'alUSD', 0xcb8fa9a76b8e203d8c3797bf438d8fb81ea3326a,18),
     ('aleth-alchemix-eth', 'alETH', 0x3e29d3a9316dab217754d13b28646b76607c5f04,18),

@@ -30,4 +30,14 @@ sources:
       - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
   - name: trader_joe_v2_1_arbitrum
   - name: trader_joe_arbitrum
-
+  - name: pancakeswap_v2_arbitrum
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_arbitrum
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: Vault_evt_Swap
