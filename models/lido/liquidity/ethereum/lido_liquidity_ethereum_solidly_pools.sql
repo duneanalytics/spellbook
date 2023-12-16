@@ -74,7 +74,7 @@ group by 1
     SELECT
       pool AS address,
       'ethereum' AS blockchain,
-      'uniswap_v3' AS project,
+      'solidly' AS project,
       cast(fee as double) / CAST(10000 AS DOUBLE) AS fee,
       token0, token1
     FROM
