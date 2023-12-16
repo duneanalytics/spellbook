@@ -27,7 +27,7 @@ FROM {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-GROUP BY 4, 8, 9, 10
+GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
 
 UNION ALL
 
@@ -45,4 +45,4 @@ FROM {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
-GROUP BY 4, 8, 9, 10
+GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
