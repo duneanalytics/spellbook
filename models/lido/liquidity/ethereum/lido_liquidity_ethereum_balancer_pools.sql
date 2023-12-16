@@ -253,7 +253,7 @@ SELECT distinct
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', r.time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE DATE_TRUNC('day', r.time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
     group by 1,2,3,4
 
