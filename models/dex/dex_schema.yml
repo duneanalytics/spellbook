@@ -266,8 +266,12 @@ models:
       - *version
       - *block_time
       - *pool
-      - *token0
-      - *token1
+      - &token0
+        name: token0
+        description: "First token in pool"
+      - &token1
+        name: token1
+        description: "Second token in pool"
       - *tx_hash
       - &call_trace_address
         name: call_trace_address
