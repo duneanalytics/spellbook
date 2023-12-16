@@ -396,10 +396,10 @@ models:
           - unique
       - name: fee
         description: "Defined fee"
-      - name: token0
-        description: "First token in pool"
-      - name: token1
-        description: "Second token in pool"
+      - name: tokens
+        description: "List of tokens in pool"
+      - name: tokens_in_pool
+        description: "Number of tokens in pool"
       - name: creation_block_time
         description: "Block time of pool creation"
       - name: creation_block_number

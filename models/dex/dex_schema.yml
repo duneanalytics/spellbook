@@ -227,12 +227,12 @@ models:
       - &fee
         name: fee
         description: "Defined fee"
-      - &token0
-        name: token0
-        description: "First token in pool"
-      - &token1
-        name: token1
-        description: "Second token in pool"
+      - &tokens
+        name: tokens
+        description: "List of tokens in pool"
+      - &tokens_in_pool
+        name: tokens_in_pool
+        description: "Number of tokens in pool"
       - &creation_block_time
         name: creation_block_time
         description: "Block time of pool creation"

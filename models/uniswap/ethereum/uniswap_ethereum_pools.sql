@@ -18,8 +18,8 @@ SELECT 'ethereum' AS blockchain
 , 'v2' AS version
 , pair AS pool
 , 0.3 AS fee
-, token0
-, token1
+, array_agg(ROW(token0, token1)) AS tokens
+, 2 AS tokens_in_pool
 , evt_block_time AS creation_block_time
 , evt_block_number AS creation_block_number
 , contract_address
@@ -35,8 +35,8 @@ SELECT 'ethereum' AS blockchain
 , 'v3' AS version
 , pool
 , fee
-, token0
-, token1
+, array_agg(ROW(token0, token1)) AS tokens
+, 2 AS tokens_in_pool
 , evt_block_time AS creation_block_time
 , evt_block_number AS creation_block_number
 , contract_address
