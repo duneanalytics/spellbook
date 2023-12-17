@@ -233,7 +233,7 @@ models:
           seed_file: ref('biswap_bnb_base_trades_seed')
           filter:
             version: 3
-            
+
   - name: babyswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -250,5 +250,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('babyswap_bnb_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: wombat_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: wombat
+      contributors: umer_h_adil, hosuke, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'wombat' ]
+    description: "Wombat bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wombat_bnb_base_trades_seed')
           filter:
             version: 1
