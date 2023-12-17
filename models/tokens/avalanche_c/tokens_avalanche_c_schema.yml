@@ -62,7 +62,7 @@ models:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
-          The token standard. This is the set of rules that the contract must respect 
+          The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.
           If you are adding a token with a new standard, remember to add it the accepted values list.
 

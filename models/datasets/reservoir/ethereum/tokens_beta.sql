@@ -1,12 +1,36 @@
-{{ config(
-    
+{{ config(    
     schema = 'reservoir',
     alias = 'tokens_beta',
     post_hook = '{{ expose_dataset(\'["ethereum"]\',
                 \'[""]\') }}'
     )
 }}
-select
+
+WITH ranked_entries AS (
+  SELECT
+    created_at,
+    collection_id,
+    contract,
+    floor_ask_maker,
+    floor_ask_id,
+    owner,
+    description,
+    floor_ask_source,
+    floor_ask_valid_from,
+    floor_ask_valid_to,
+    floor_ask_value,
+    id,
+    last_sale_timestamp,
+    last_sale_value,
+    name,
+    token_id,
+    updated_at,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC, filename DESC) AS row_num
+  FROM
+    {{ source('reservoir', 'tokens_0010') }}
+)
+
+SELECT
     t.created_at,
     t.collection_id,
     from_hex(t.contract) as contract,
@@ -26,16 +50,7 @@ select
     t.name,
     t.token_id,
     t.updated_at
-from delta_prod.reservoir.tokens_0010 t
-    inner join (
-        select
-            id,
-            max(updated_at) as recent_updated_at,
-            max(filename) as last_filename
-        from
-            delta_prod.reservoir.tokens_0010
-        group by
-            id
-    ) tm on t.id = tm.id
-    and t.updated_at = tm.recent_updated_at
-    and t.filename = tm.last_filename
+FROM
+  ranked_entries t
+WHERE
+  row_num = 1

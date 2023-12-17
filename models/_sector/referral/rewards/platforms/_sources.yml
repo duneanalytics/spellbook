@@ -40,3 +40,15 @@ sources:
   - name: slugs_optimism
     tables:
       - name: Slugs_evt_NewSlug
+  - name: mint_fun_ethereum
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mint_fun_optimism
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mint_fun_base
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mint_fun_zora
+    tables:
+      - name: MintPayout_evt_MintDeposit

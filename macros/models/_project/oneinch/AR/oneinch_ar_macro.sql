@@ -188,7 +188,7 @@
         },
         "AggregationRouterV5": {
             "version": "5",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
             "start": "2022-11-04",
             "methods": {
                 "swap":                      samples["swap_2"],
@@ -237,6 +237,7 @@ pools_list as (
                 , length(input) as call_input_length
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
+                , error as call_error
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %}
@@ -288,30 +289,38 @@ select
     , tx_from
     , tx_to
     , tx_success
+    , tx_nonce
+    , tx_gas_price as gas_price
+    , tx_priority_fee_per_gas as priority_fee_per_gas
     , contract_name
+    , 'AR' as protocol
     , protocol_version
     , method
+    , call_selector
+    , call_trace_address
     , call_from
     , call_to
-    , call_trace_address
-    , call_selector
-    , src_token_address
-    , dst_token_address
+    , call_success
+    , call_gas_used
+    , call_output
+    , call_error
     , src_receiver
     , dst_receiver
-    , src_amount
-    , dst_amount
-    , dst_amount_min
+    , src_token_address
+    , dst_token_address
+    , src_amount -- will be removed soon
+    , dst_amount -- will be removed soon
+    , dst_amount_min -- will be removed soon
+    , src_amount as src_token_amount
+    , dst_amount as dst_token_amount
+    , dst_amount_min as dst_token_amount_min
     , ordinary
     , pools
     , router_type
-    , call_success
-    , call_gas_used
     , concat(cast(length(remains) as bigint), if(length(remains) > 0
         , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
         , array[bigint '0']
     )) as remains
-    , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
 from (
@@ -319,7 +328,7 @@ from (
         add_tx_columns(
             model_cte = 'calls'
             , blockchain = blockchain
-            , columns = ['from', 'to', 'success']
+            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas']
         )
     }}
 )
