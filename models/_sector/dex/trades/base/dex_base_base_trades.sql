@@ -6,8 +6,13 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_base_base_trades'),
-    ref('aerodrome_base_base_trades')
+    ref('uniswap_v3_base_base_trades')
+    , ref('sushiswap_v1_base_base_trades')
+    , ref('sushiswap_v2_base_base_trades')
+    , ref('aerodrome_base_base_trades')
+    , ref('pancakeswap_v2_base_base_trades')
+    , ref('pancakeswap_v3_base_base_trades')
+    , ref('balancer_v2_base_base_trades')
 ] %}
 
 WITH base_union AS (

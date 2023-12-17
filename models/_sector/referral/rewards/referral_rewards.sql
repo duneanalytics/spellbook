@@ -1,7 +1,6 @@
 {{ config(
     schema = 'referral',
     alias = 'rewards',
-    
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -13,7 +12,7 @@
                     "referral",
                     \'["0xRob"]\') }}')
 }}
-
+-- CI counter (change to include in CI run) = 1
 
 {{ enrich_referral_rewards (
     model = ref('referral_staging_rewards')

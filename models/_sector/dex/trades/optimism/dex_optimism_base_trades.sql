@@ -8,6 +8,11 @@
 {% set base_models = [
     ref('uniswap_v3_optimism_base_trades')
     , ref('woofi_optimism_base_trades')
+    , ref('mummy_finance_optimism_base_trades')
+    , ref('sushiswap_v1_optimism_base_trades')
+    , ref('sushiswap_v2_optimism_base_trades')
+    , ref('zipswap_optimism_base_trades')
+    , ref('balancer_v2_optimism_base_trades')
 ] %}
 
 WITH base_union AS (

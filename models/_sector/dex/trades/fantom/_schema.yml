@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: dex_fantom_base_trades
+
+  - name: sushiswap_v1_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'sushiswap', 'v1']
+    description: "Sushiswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_fantom_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: sushiswap_v2_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'sushiswap', 'v2']
+    description: "Sushiswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_fantom_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: spiritswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spiritswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spiritswap', 'uniswap', 'v2']
+    description: "Spiritswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spiritswap_fantom_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: spookyswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spookyswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spookyswap', 'uniswap', 'v2']
+    description: "Spookyswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spookyswap_fantom_base_trades_seed')
+          filter:
+            version: 1
