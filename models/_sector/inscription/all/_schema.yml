@@ -318,4 +318,29 @@ models:
       - *tx_from
       - *tx_to
       - *full_inscription
+
+  - name: inscription_goerli_all
+    meta: 
+      blockchain: goerli
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'all', 'goerli']
+    description: >
+      All inscriptions on Goerli Testnet
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *full_inscription
       
