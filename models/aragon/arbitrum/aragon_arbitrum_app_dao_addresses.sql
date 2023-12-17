@@ -12,7 +12,7 @@
 {% set project_start_date = '2023-10-29' %}
 
 SELECT 
-    'base' as blockchain,
+    'arbitrum' as blockchain,
     'aragon' as dao_creator_tool,
     bytearray_ltrim(topic1) as dao,
     bytearray_ltrim(topic1) as dao_wallet_address,
