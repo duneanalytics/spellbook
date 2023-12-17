@@ -10,23 +10,7 @@
 
 
 
-{% 
-    set blockchains = [
-        'arbitrum',
-        'avalanche_c',
-        'base',
-        'bnb',
-        'ethereum',
-        'fantom',
-        'gnosis',
-        'optimism',
-        'polygon'
-    ]
-%}
-
-
-
-{% for blockchain in blockchains %}
+{% for blockchain in oneinch_exposed_blockchains_list() %}
     select * from {{ ref('oneinch_' + blockchain + '_call_transfers') }}
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
