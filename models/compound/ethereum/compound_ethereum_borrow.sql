@@ -1,11 +1,11 @@
 {{
   config(
-    schema = 'compound_v2_ethereum',
+    schema = 'compound_ethereum',
     alias = 'borrow',
     materialized = 'view',
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
-                                    "compound_v2",
+                                    "compound",
                                     \'["bizzyvinci", "hosuke", "tomfutago"]\') }}'
   )
 }}
@@ -31,4 +31,3 @@ select
 from {{ ref('lending_borrow') }}
 where blockchain = 'ethereum'
   and project = 'compound'
-  and version = '2'

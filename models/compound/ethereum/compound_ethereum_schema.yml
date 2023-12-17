@@ -176,3 +176,33 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date"
+
+  - name: compound_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: bizzyvinci, hosuke, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'compound', 'ethereum']
+    description: "All Compound transactions involving borrow transactions on Ethereum"
+    columns:
+      - name: blockchain
+      - name: project
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - name: block_time
+      - name: block_number
+      - name: tx_hash
+      - *evt_index

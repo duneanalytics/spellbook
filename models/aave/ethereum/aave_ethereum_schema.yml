@@ -118,59 +118,7 @@ models:
      - *evt_index
      - *evt_block_time
      - *evt_block_number
-       
-# - name: aave_v2_ethereum_borrow
-#   meta:
-#     blockchain: ethereum
-#     sector: lending
-#     project: aave_v2
-#     contributors: batwayne, chuxin
-#   config:
-#     tags: ['ethereum', 'aave_v2', 'borrow', 'aave', 'lending']
-#   description: "All aave v2 transactions involving borrow transactions on ethereum"
-#   columns:
-#     - *version
-#     - *transaction_type
-#     - *symbol
-#     - *token_address
-#     - &borrower
-#       name: borrower
-#       description: "Borrower wallet address"
-#     - &repayer
-#       name: repayer
-#       description: "Repayer wallet address"
-#     - *liquidator
-#     - *amount
-#     - *usd_amount
-#     - *evt_tx_hash
-#     - *evt_index
-#     - *evt_block_time
-#     - *evt_block_number
-#       
-# - name: aave_v1_ethereum_borrow
-#   meta:
-#     blockchain: ethereum
-#     sector: lending
-#     project: aave_v1
-#     contributors: batwayne, chuxin
-#   config:
-#     tags: ['ethereum', 'aave_v1', 'borrow', 'aave', 'lending']
-#   description: "All aave v1 transactions involving borrow transactions on ethereum"
-#   columns:
-#     - *version
-#     - *transaction_type
-#     - *symbol
-#     - *token_address
-#     - *borrower
-#     - *repayer
-#     - *liquidator
-#     - *amount
-#     - *usd_amount
-#     - *evt_tx_hash
-#     - *evt_index
-#     - *evt_block_time
-#     - *evt_block_number
-       
+
  - name: aave_ethereum_supply
    meta:
      blockchain: ethereum
@@ -194,30 +142,34 @@ models:
      - *evt_index
      - *evt_block_time
      - *evt_block_number 
-       
-# - name: aave_ethereum_borrow
-#   meta:
-#     blockchain: ethereum
-#     sector: lending
-#     project: aave
-#     contributors: batwayne, chuxin
-#   config:
-#     tags: ['ethereum', 'aave', 'borrow', 'aave', 'lending']
-#   description: "All aave v1 transactions involving borrow transactions on ethereum"
-#   columns:
-#     - *version
-#     - *transaction_type
-#     - *symbol
-#     - *token_address
-#     - *borrower
-#     - *repayer
-#     - *liquidator
-#     - *amount
-#     - *usd_amount
-#     - *evt_tx_hash
-#     - *evt_index
-#     - *evt_block_time
-#     - *evt_block_number
+
+ - name: aave_ethereum_borrow
+   meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+   config:
+      tags: ['lending', 'borrow', 'aave', 'ethereum']
+   description: "All Aave transactions involving borrow transactions on Ethereum"
+   columns:
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
 
  - name: aave_ethereum_votes
    meta:
