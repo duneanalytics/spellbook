@@ -31,9 +31,8 @@ meta as (
 
 , transfers as (
     select * from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
-    where
         {% if is_incremental() %}
-            {{ incremental_predicate('block_time') }}
+        where {{ incremental_predicate('block_time') }}
         {% endif %}
 )
 
