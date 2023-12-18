@@ -12,4 +12,4 @@
 
 
 
-select * from {{ ref('oneinch_test_table') }}
+select * from {{ ref('oneinch_dict_table') }}

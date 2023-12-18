@@ -17,7 +17,7 @@
 
 select * from (
     {{ 
-        oneinch_calls_transfers_macro(
+        oneinch_test_macro(
             blockchain = blockchain
         )
     }}
