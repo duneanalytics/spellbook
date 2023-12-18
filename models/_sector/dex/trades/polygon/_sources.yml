@@ -29,3 +29,7 @@ sources:
   - name: balancer_v2_polygon
     tables:
       - name: Vault_evt_Swap
+  - name: fraxswap_polygon
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
