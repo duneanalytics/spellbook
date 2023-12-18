@@ -23,5 +23,5 @@ select * from (
     }}
 )
 where block_time >= (
-    select block_time from {{ ref('oneinch_dict_table')}}
+    select first_deploy_at from {{ ref('oneinch_dict_table')}}
 )
