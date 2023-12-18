@@ -33,7 +33,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_optimism', 'Pool_evt_LzTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         
         UNION
@@ -57,7 +57,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_optimism', 'Pool_evt_XChainTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 
@@ -92,13 +92,13 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.contract_address = cross_chain_trades.token_bought_address
     AND p_bought.blockchain = 'optimism'
     {% if is_incremental() %}
-        AND p_bought.minute >= date_trunc("day", now() - interval '1 week')
+        AND  {{ incremental_predicate('p_bought.minute') }}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', cross_chain_trades.block_time)
     AND p_sold.contract_address = cross_chain_trades.token_sold_address
     AND p_sold.blockchain = 'optimism'
     {% if is_incremental() %}
-        AND p_sold.minute >= date_trunc("day", now() - interval '1 week')
+        AND {{ incremental_predicate('p_sold.minute') }}
     {% endif %}
     
