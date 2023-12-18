@@ -1,4 +1,4 @@
-{% set blockchain = 'bnb' %}
+{% set blockchain = 'ethereum' %}
 
 
 
