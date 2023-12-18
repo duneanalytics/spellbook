@@ -1,6 +1,7 @@
 {% macro 
     oneinch_test_macro(
         blockchain
+        , const
     ) 
 %}
 
@@ -30,5 +31,8 @@ where (
     and tx_success
     and success
     and "to" = 0x1111111254EEB25477B68fb85Ed929f73A960582
+    and block_time >= (
+        select first_deploy_at from {{const}}
+    )
 
 {% endmacro %}

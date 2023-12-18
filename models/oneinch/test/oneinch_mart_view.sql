@@ -15,13 +15,9 @@
 }}
 
 
-select * from (
-    {{ 
-        oneinch_test_macro(
-            blockchain = blockchain
-        )
-    }}
-)
-where block_time >= (
-    select first_deploy_at from {{ ref('oneinch_dict_view')}}
-)
+{{ 
+    oneinch_test_macro(
+        blockchain = blockchain
+        , const = ref('oneinch_dict_view')
+    )
+}}
