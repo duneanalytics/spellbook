@@ -3,7 +3,7 @@
     alias = 'balances',
     materialized = 'table',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
