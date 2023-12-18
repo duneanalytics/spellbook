@@ -22,7 +22,6 @@ spells with issues, to be excluded in short term:
 
 {% set dex_aggregator_models = [
     ref('cow_protocol_trades')
-    ,ref('oneinch_ethereum_trades')
     ,ref('openocean_trades')
     ,ref('paraswap_trades')
     ,ref('lifi_trades')
@@ -33,6 +32,7 @@ spells with issues, to be excluded in short term:
     ,ref('kyberswap_aggregator_trades')
     ,ref('tokenlon_trades')
     ,ref('firebird_finance_optimism_trades')
+    ,ref('oneinch_ar_trades')
 ] %}
 
 {% for aggregator_model in dex_aggregator_models %}
