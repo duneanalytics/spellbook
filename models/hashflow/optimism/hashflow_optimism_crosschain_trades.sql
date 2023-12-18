@@ -1,6 +1,6 @@
 {{
     config(
-        alias = 'cross_chain_trades'
+        alias = 'crosschain_trades'
         ,schema = 'hashflow_optimism'
         ,partition_by = ['block_date']
         ,materialized='incremental'
