@@ -18,8 +18,7 @@
 select * from (
     {{ 
         oneinch_calls_transfers_macro(
-            blockchain = blockchain,
-            project_start_date_str = project_start_date_str
+            blockchain = blockchain
         )
     }}
 )
