@@ -33,6 +33,7 @@ select
   t.evt_tx_hash as tx_hash,
   t.evt_index
 from {{ source('immortalx_celo', 'Dex_evt_DecreasePosition') }} t
-{% if is_incremental() %}
-where {{ incremental_predicate('t.evt_block_time') }}
-{% endif %}
+where t.returnAmount > 0
+  {% if is_incremental() %}
+  and {{ incremental_predicate('t.evt_block_time') }}
+  {% endif %}
