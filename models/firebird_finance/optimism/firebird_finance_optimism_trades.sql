@@ -31,7 +31,7 @@ with dexs as (
             dstToken                AS token_sold_address,
             contract_address        AS project_contract_address,
             evt_tx_hash             AS tx_hash,
-            array[-1]               AS trace_address
+            array[-1]               AS trace_address,
             evt_index
         FROM {{ evt_trade_table }}
         {% if is_incremental() %}
