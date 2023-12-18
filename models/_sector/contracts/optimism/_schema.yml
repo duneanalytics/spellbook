@@ -14,7 +14,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
             
     columns:
       - &created_month
@@ -124,7 +124,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
     columns:
       - *blockchain
       - *created_time
@@ -154,7 +154,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
             
     columns:
       - *blockchain
@@ -194,7 +194,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - created_tx_hash
+
             
     columns:
       - *blockchain

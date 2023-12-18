@@ -1,4 +1,11 @@
-{{ config( alias = 'bep20', tags=['static'])}}
+{{
+    config(
+        schema = 'tokens_bnb',
+        alias = 'bep20',
+        tags = ['static'],
+        materialized = 'table'
+    )
+}}
 
 SELECT contract_address, symbol, decimals
   FROM (VALUES 

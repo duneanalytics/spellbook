@@ -4,7 +4,7 @@
     schema = 'contracts',
     alias = 'project_name_mappings',
     unique_key='dune_name',
-    post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "polygon", "bnb", "gnosis", "fantom", "base", "goerli"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
                               "sector",
                               "contracts",
                               \'["msilb7", "chuxin"]\') }}'
@@ -120,5 +120,7 @@ from (
     ,('union_protocol', 'Union Finance')
     ,('rubic_crosschain', 'Rubic')
     ,('gyroscope', 'Gyroscope')
+    ,('synthetix_futuresmarket', 'Synthetix')
+    ,('synapsefees', 'Synapse')
 
     ) as temp_table (dune_name, mapped_name)

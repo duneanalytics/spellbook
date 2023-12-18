@@ -8,3 +8,10 @@ sources:
       - name: StablePool_evt_Swap
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
+  - name: zipswap_optimism
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: balancer_v2_optimism
+    tables:
+      - name: Vault_evt_Swap
