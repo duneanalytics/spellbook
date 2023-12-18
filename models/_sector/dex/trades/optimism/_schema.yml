@@ -58,8 +58,9 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_optimism_base_trades_seed')
           filter:
-            version: trident-cpp
-            version: trident-sp
+            version:
+              - trident-cpp
+              - trident-sp
 
 
   - name: sushiswap_v2_optimism_base_trades
@@ -100,6 +101,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('mummy_finance_optimism_base_trades_seed')
 
+
   - name: zipswap_optimism_base_trades
     meta:
       blockchain: optimism
@@ -119,6 +121,7 @@ models:
           filter:
             version: 1
 
+
   - name: balancer_v2_optimism_base_trades
     meta:
       blockchain: optimism
@@ -137,25 +140,6 @@ models:
           seed_file: ref('balancer_optimism_base_trades_seed')
           filter:
             version: 2
-
-
-  - name: mummy_finance_optimism_base_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: mummy_finance
-      contributors: ARDev097
-    config:
-      tags: [ 'optimism', 'dex', 'trades', 'mummy_finance' ]
-    description: >
-        mummy_finance base trades on optimism.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('mummy_finance_optimism_base_trades_seed')
 
 
   - name: hashflow_optimism_base_trades
