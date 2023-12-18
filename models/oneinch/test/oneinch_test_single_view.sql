@@ -1,11 +1,11 @@
-{% set blockchain = 'arbitrum' %}
+{% set blockchain = 'bnb' %}
 
 
 
 {{ 
     config( 
         schema = 'oneinch_' + blockchain,
-        alias = 'test_single_table',
+        alias = 'test_single_view',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -19,6 +19,6 @@
 {{ 
     oneinch_call_transfers_macro(
         blockchain = blockchain
-        , blockchain_meta = ref('oneinch_' + blockchain + '_blockchain_table')
+        , blockchain_meta = ref('oneinch_test_dict_view')
     )
 }}
