@@ -33,7 +33,7 @@ with cross_chain_trades AS (
         FROM
             {{ source('hashflow_optimism', 'Pool_evt_LzTrade') }}
         {% if is_incremental() %}
-            WHERE evt_block_time >= date_trunc("day", now() - interval '1 week')
+            WHERE evt_block_time >= date_trunc('day', now() - interval '1 week')
         {% endif %}
         
         UNION
