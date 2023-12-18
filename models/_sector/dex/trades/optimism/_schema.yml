@@ -21,6 +21,7 @@ models:
           seed_file: ref('uniswap_optimism_base_trades_seed')
 
 
+
   - name: woofi_optimism_base_trades
     meta:
       blockchain: optimism
@@ -99,7 +100,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('mummy_finance_optimism_base_trades_seed')
 
-
   - name: zipswap_optimism_base_trades
     meta:
       blockchain: optimism
@@ -118,25 +118,6 @@ models:
           seed_file: ref('zipswap_optimism_base_trades_seed')
           filter:
             version: 1
-
-  - name: firebird_finance_optimism_base_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: firebird_finance
-      contributors: ARDev097
-    config:
-      tags: [ 'optimism', 'dex', 'trades', 'firebird_finance' ]
-    description: >
-        firebird_finance base trades on optimism.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('firebird_finance_optimism_base_trades_seed')
-      
 
   - name: balancer_v2_optimism_base_trades
     meta:
