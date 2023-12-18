@@ -94,3 +94,6 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+      - &trace_address
+        name: trace_address
+        description: ""

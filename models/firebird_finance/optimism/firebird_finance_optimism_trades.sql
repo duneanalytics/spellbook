@@ -31,7 +31,8 @@ with dexs as (
             dstToken                AS token_sold_address,
             contract_address        AS project_contract_address,
             evt_tx_hash             AS tx_hash,
-            evt_index
+            evt_index,
+            ''                      As trace_address
         FROM {{ evt_trade_table }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -77,7 +78,8 @@ SELECT
     dexs.tx_hash,
     tx."from"                                              AS tx_from,
     tx.to                                                  AS tx_to,
-    dexs.evt_index
+    dexs.evt_index,
+    dexs.trace_address
 FROM dexs
 INNER JOIN {{ source('optimism', 'transactions') }} tx
     ON dexs.tx_hash = tx.hash
