@@ -1,7 +1,8 @@
  {{
   config(     
         schema = 'contracts_arbitrum',
-        alias = 'contract_mapping'
+        alias = 'contract_mapping',
+        materialized ='table'
   )
 }}
 

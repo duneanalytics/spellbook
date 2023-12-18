@@ -1,7 +1,8 @@
  {{
   config(     
         schema = 'contracts_optimism',
-        alias = 'contract_creator_project_mapping'
+        alias = 'contract_creator_project_mapping',
+        materialized ='table'
   )
 }}
 

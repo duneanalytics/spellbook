@@ -1,7 +1,8 @@
  {{
   config(     
         schema = 'contracts_base',
-        alias = 'contract_mapping'
+        alias = 'contract_mapping',
+        materialized ='table'
   )
 }}
 
