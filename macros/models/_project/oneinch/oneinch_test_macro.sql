@@ -11,7 +11,9 @@
 {% set transfer_from_selector = '0x23b872dd' %}
 {% set selector = 'substr(input, 1, 4)' %}
 
-
+with meta as (
+    select first_deploy_at from {{const}}
+)
 
 select
     '{{ blockchain }}' as blockchain
@@ -31,8 +33,6 @@ where (
     and tx_success
     and success
     and "to" = 0x1111111254EEB25477B68fb85Ed929f73A960582
-    and block_time >= (
-        select first_deploy_at from {{const}}
-    )
+    and block_time >= (select first_deploy_at from meta)
 
 {% endmacro %}
