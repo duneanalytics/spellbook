@@ -21,7 +21,6 @@ models:
           seed_file: ref('uniswap_optimism_base_trades_seed')
 
 
-
   - name: woofi_optimism_base_trades
     meta:
       blockchain: optimism
@@ -100,6 +99,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('mummy_finance_optimism_base_trades_seed')
 
+
   - name: zipswap_optimism_base_trades
     meta:
       blockchain: optimism
@@ -114,12 +114,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+      - check_dex_base_trades_seed:
+          seed_file: ref('zipswap_optimism_base_trades_seed')
+          filter:
+            version: 1
 
   - name: firebird_finance_optimism_base_trades
     meta:
@@ -131,10 +129,14 @@ models:
       tags: [ 'optimism', 'dex', 'trades', 'firebird_finance' ]
     description: >
         firebird_finance base trades on optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('zipswap_optimism_base_trades_seed')
-          filter:
-            version: 1
+          seed_file: ref('firebird_finance_optimism_base_trades_seed')
+      
 
   - name: balancer_v2_optimism_base_trades
     meta:
@@ -150,17 +152,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('firebird_finance_optimism_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
       - check_dex_base_trades_seed:
           seed_file: ref('balancer_optimism_base_trades_seed')
           filter:
