@@ -27,8 +27,8 @@ FROM (
         , version
         , pool
         , fee
-        , token0
-        , token1
+        , tokens
+        , tokens_in_pool
         , creation_block_time
         , creation_block_number
         , contract_address
