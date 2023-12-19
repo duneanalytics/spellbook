@@ -45,6 +45,14 @@ sources:
     tables:
       - name: BabyPair_evt_Swap
       - name: BabyFactory_evt_PairCreated
+  - name: wombat_bnb
+    tables:
+      - name: Pool_evt_Swap
+      - name: HighCovRatioFeePool_evt_Swap
+      - name: DynamicPool_evt_Swap
+      - name: mWOM_Pool_evt_Swap
+      - name: qWOM_WOMPool_evt_Swap
+      - name: WMX_WOM_Pool_evt_Swap
   - name: mdex_bnb
     tables:
       - name: MdexPair_evt_Swap
