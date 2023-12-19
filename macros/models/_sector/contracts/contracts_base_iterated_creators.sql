@@ -302,7 +302,7 @@ WITH check_date AS (
     ,tx_method_id_lineage
     ,COALESCE(u.token_standard_erc20,ts.token_standard_erc20) AS token_standard_erc20 --erc20 only - this only exists until we have an ERC20 Tokens table with ALL tokens
 
-    FROM levels u, check_date cd
+    FROM levels u
     left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard_erc20
