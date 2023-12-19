@@ -99,7 +99,6 @@ models:
           filter:
             version: 2
 
-
   - name: trader_joe_v2_1_bnb_base_trades
     meta:
       blockchain: bnb
@@ -250,5 +249,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('babyswap_bnb_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: mdex_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: mdex
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'mdex', 'uniswap', 'v2' ]
+    description: "mdex bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mdex_bnb_base_trades_seed')
           filter:
             version: 1

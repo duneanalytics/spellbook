@@ -45,3 +45,7 @@ sources:
     tables:
       - name: BabyPair_evt_Swap
       - name: BabyFactory_evt_PairCreated
+  - name: mdex_bnb
+    tables:
+      - name: MdexPair_evt_Swap
+      - name: MdexFactory_evt_PairCreated
