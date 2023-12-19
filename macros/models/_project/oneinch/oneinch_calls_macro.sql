@@ -73,7 +73,7 @@ settlements as (
             , coalesce(fusion, false) as fusion
             , order_hash
         from {{ ref('oneinch_' + blockchain + '_lop') }}
-        left join settlements using(blockchain, call_from)
+        left join settlements using(call_from)
         
     )
 )
