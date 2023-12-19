@@ -24,5 +24,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-
-
