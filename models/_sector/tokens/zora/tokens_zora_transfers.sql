@@ -5,9 +5,8 @@
 )
 }}
 
-SELECT
-    *
-FROM
-    {{ ref('tokens_transfers') }}
-WHERE
-    blockchain = 'zora'
+{{transfers_enrich(
+    blockchain='zora',
+    transfers_base = ref('tokens_zora_base_transfers'),
+    native_symbol = 'ETH'
+)}}

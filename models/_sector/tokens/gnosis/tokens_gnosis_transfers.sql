@@ -5,9 +5,8 @@
 )
 }}
 
-SELECT
-    *
-FROM
-    {{ ref('tokens_transfers') }}
-WHERE
-    blockchain = 'gnosis'
+{{transfers_enrich(
+    blockchain='gnosis',
+    transfers_base = ref('tokens_gnosis_base_transfers'),
+    native_symbol = 'xDAI'
+)}}

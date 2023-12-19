@@ -5,9 +5,8 @@
 )
 }}
 
-SELECT
-    *
-FROM
-    {{ ref('tokens_transfers') }}
-WHERE
-    blockchain = 'fantom'
+{{transfers_enrich(
+    blockchain='fantom',
+    transfers_base = ref('tokens_fantom_base_transfers'),
+    native_symbol = 'FTM'
+)}}
