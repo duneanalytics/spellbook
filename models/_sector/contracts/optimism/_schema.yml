@@ -280,25 +280,6 @@ models:
       - *contract_address
       - *contract_name
   
-  - name: contracts_optimism_system_predeploys
-    meta:
-      blockchain: optimism
-      sector: contracts
-      contributors: msilb7
-    config:
-      tags: ['optimism','op','contracts','predeploy','system']
-    description: >
-        A table containing mappings for predeploy system contracts
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - contract_address
-    columns:
-      - name: project_name
-        description: "Project name associated with the predeploy."
-      - *contract_address
-      - *contract_name
-  
   - name: contracts_optimism_contract_mapping_backwards_compat
     meta:
       blockchain: optimism
