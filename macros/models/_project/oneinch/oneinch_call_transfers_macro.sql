@@ -20,7 +20,6 @@ meta as (
     where
         blockchain = '{{ blockchain }}'
         and tx_success
-        tx_success
         and call_success
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
