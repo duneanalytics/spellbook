@@ -54,7 +54,7 @@ SELECT
     , t."from"
     , t.to
     , t.contract_address
-    , {{case_when_token_standard("'evms_info.native_token_symbol'", 'tokens_erc20.symbol', 'NULL')}} AS symbol
+    , {{case_when_token_standard('evms_info.native_token_symbol', 'tokens_erc20.symbol', 'NULL')}} AS symbol
     , t.amount_raw
     , {{case_when_token_standard('t.amount_raw / power(10, 18)', 't.amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)')}} AS amount
     , prices.price AS price_usd
