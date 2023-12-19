@@ -19,3 +19,4 @@ select
     , 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as wrapped_native_token_address
     , 'https://etherscan.io'                     as explorer_link
     , timestamp '2019-06-03 20:11'               as first_deploy_at
+    , 0xa88800cd213da5ae406ce248380802bd53b47647 as fusion_settlement_address

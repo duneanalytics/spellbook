@@ -138,6 +138,7 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
+      - name: block_number
       - &block_time
         name: block_time
       - &tx_hash_not_null
@@ -150,8 +151,15 @@ models:
         name: tx_to
       - &tx_success
         name: tx_success
-      - &call_success
-        name: call_success
+      - name: tx_nonce
+      - name: gas_price
+      - name: priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - &call_selector
+        name: call_selector
       - &call_trace_address_not_null
         name: call_trace_address
         tests:
@@ -160,15 +168,21 @@ models:
         name: call_from
       - &call_to
         name: call_to
-      - &call_selector
-        name: call_selector
-      - *protocol
-      - &call_input
-        name: call_input
+      - &call_success
+        name: call_success
+      - name: call_gas_used
       - &call_output
         name: call_output
-      - &call_remains
-        name: call_remains
+      - name: call_error
+      - name: remains
+      - name: maker
+      - name: receiver
+      - name: src_token_address
+      - name: src_token_amount
+      - name: dst_token_address
+      - name: dst_token_amount
+      - name: fusion
+      - name: order_hash
 
 
 
@@ -218,8 +232,10 @@ models:
       - &rn_tta_desc
         name: rn_tta_desc
       - *call_output
-      - *call_input
-      - *call_remains
+      - &call_input
+        name: call_input
+      - &call_remains
+        name: call_remains
 
       - &minute
         name: minute

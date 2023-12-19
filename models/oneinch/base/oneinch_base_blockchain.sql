@@ -19,3 +19,4 @@ select
     , 0x4200000000000000000000000000000000000006 as wrapped_native_token_address
     , 'https://basescan.org'                     as explorer_link
     , timestamp '2023-08-08 22:19'               as first_deploy_at
+    , 0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9 as fusion_settlement_address

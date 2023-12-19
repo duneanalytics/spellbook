@@ -19,3 +19,4 @@ select
     , 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 as wrapped_native_token_address
     , 'https://snowtrace.io'                     as explorer_link
     , timestamp '2021-12-22 13:18'               as first_deploy_at
+    , 0x7731f8df999a9441ae10519617c24568dc82f697 as fusion_settlement_address

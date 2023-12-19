@@ -19,3 +19,4 @@ select
     , 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 as wrapped_native_token_address
     , 'https://arbiscan.io'                      as explorer_link
     , timestamp '2021-06-22 10:27'               as first_deploy_at
+    , 0x4bc3e539aaa5b18a82f6cd88dc9ab0e113c63377 as fusion_settlement_address

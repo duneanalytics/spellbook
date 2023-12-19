@@ -19,3 +19,4 @@ select
     , 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as wrapped_native_token_address
     , 'https://bscscan.com'                      as explorer_link
     , timestamp '2021-02-18 14:37'               as first_deploy_at
+    , 0x1d0ae300eec4093cee4367c00b228d10a5c7ac63 as fusion_settlement_address
