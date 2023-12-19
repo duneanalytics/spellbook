@@ -29,7 +29,7 @@ join contracts.contract_mapping as cm
   AND cm.blockchain = 'optimism'
   and not is_self_destruct
 where 
-  t.block_time > now() - interval '24 hours'
+  t.block_time > now() - interval '24' hour
   and t.success
 group by 1
 order by 2 desc
