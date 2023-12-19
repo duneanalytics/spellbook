@@ -1,6 +1,6 @@
 {{ config(
     schema = 'zora_v3_ethereum',
-
+    
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -146,7 +146,7 @@ WITH v3_trades as (
     )
     GROUP BY 1,2,3,4
 )
-, base_trades as (
+
 SELECT
       'ethereum' as blockchain
     , 'zora' as project
@@ -176,7 +176,4 @@ LEFT JOIN royalty_payouts roy
     AND nft_contract_address = roy.tokenContract
     AND nft_token_id = roy.tokenId
 
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}
 

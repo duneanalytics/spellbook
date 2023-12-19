@@ -86,7 +86,7 @@ raw_trades as (
     )
 ),
 
-base_trades_pre as (
+base_trades as (
     select
     t.*,
     p.nft_contract_address,
@@ -95,7 +95,7 @@ base_trades_pre as (
     left join {{ ref('collectionswap_ethereum_pools') }} p
     on t.project_contract_address = p.pool_address
 )
-, base_trades as (
+
 -- results
 SELECT
  'ethereum' as blockchain
@@ -119,8 +119,6 @@ SELECT
 , cast(null as varbinary) as platform_fee_address
 , royalty_fee_address
 , sub_tx_trade_id
-FROM base_trades_pre
+FROM base_trades
 
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}
+

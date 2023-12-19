@@ -51,7 +51,6 @@ with all_trades as (
     {% endif %}
 )
 
-, base_trades as (
 select
     'ethereum' as blockchain,
     'trove' as project,
@@ -77,7 +76,3 @@ select
     cast(null as varbinary) as platform_fee_address,
     evt_index as sub_tx_trade_id
 from all_trades
-
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'cryptopunks_ethereum',
-
+    
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -28,7 +28,7 @@ with accepted_bid_prices as (
     {% endif %}
     group by 1,2,3
 )
-, base_trades as (
+
 select
          'ethereum' as blockchain
         , 'cryptopunks' as project
@@ -63,7 +63,3 @@ where evt.evt_tx_hash not in (0x92488a00dfa0746c300c66a716e6cc11ba9c0f9d40d8c58e
 {% if is_incremental() %}
 and evt.{{incremental_predicate('evt_block_time')}}
 {% endif %}
-
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}

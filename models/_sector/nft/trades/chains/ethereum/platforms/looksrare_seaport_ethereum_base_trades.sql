@@ -1,6 +1,6 @@
 {{ config(
     schema = 'looksrare_seaport_ethereum',
-
+    
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,7 +10,7 @@
 }}
 
 {% set looksrare_seaport_start_date = "cast('2023-06-28' as timestamp)" %}
-with base_trades as (
+
 SELECT
  'ethereum' as blockchain
 , 'looksrare' as project
@@ -42,7 +42,3 @@ AND {{incremental_predicate('evt_block_time')}}
 {% else %}
 AND evt_block_time >= {{looksrare_seaport_start_date}}
 {% endif %}
-
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}

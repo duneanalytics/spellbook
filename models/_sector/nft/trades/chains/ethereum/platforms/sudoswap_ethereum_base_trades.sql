@@ -246,7 +246,7 @@ WITH
             , (trade_price-protocol_fee_amount)/(1+pool_fee)*pool_fee as pool_fee_amount_raw
         FROM swaps_w_traces
     )
-, base_trades as (
+
 SELECT
      'ethereum' as blockchain
     , 'sudoswap' as project
@@ -273,6 +273,3 @@ SELECT
 FROM swaps_cleaned
 CROSS JOIN UNNEST(nft_token_id) as foo(one_nft_token_id)
 
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}

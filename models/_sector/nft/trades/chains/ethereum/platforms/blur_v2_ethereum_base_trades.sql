@@ -1,6 +1,6 @@
 {{ config(
     schema = 'blur_v2_ethereum',
-
+    
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -79,7 +79,7 @@ WITH blur_v2_trades AS (
     WHERE evt_block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
     )
-, base_trades as (
+
 SELECT
  'ethereum' as blockchain
 , 'blur' as project
@@ -111,7 +111,3 @@ INNER JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=bt.b
     {% else %}
     AND txs.block_time >= TIMESTAMP '{{blur_v2_start_date}}'
     {% endif %}
-
-)
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'ethereum') }}
