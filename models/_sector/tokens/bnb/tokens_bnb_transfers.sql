@@ -2,7 +2,6 @@
     schema = 'tokens_bnb',
     alias = 'transfers',
     materialized = 'view',
-    tags = ['prod_exclude']
 )
 }}
 

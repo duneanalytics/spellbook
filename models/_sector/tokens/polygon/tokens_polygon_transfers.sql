@@ -2,7 +2,6 @@
     schema = 'tokens_polygon',
     alias = 'transfers',
     materialized = 'view',
-    tags = ['prod_exclude']
 )
 }}
 
