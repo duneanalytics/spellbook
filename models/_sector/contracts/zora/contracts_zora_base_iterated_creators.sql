@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_iterated_creators(
-    chain='zora'
+    chain='zora', days_forward=365
 )}}
