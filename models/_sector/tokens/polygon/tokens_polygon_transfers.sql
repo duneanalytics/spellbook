@@ -5,9 +5,8 @@
 )
 }}
 
-SELECT
-    *
-FROM
-    {{ ref('tokens_transfers') }}
-WHERE
-    blockchain = 'polygon'
+{{transfers_enrich(
+    blockchain='polygon',
+    transfers_base = ref('tokens_polygon_base_transfers'),
+    native_symbol = 'MATIC'
+)}}

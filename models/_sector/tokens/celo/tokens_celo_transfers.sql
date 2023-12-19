@@ -5,9 +5,8 @@
 )
 }}
 
-SELECT
-    *
-FROM
-    {{ ref('tokens_transfers') }}
-WHERE
-    blockchain = 'celo'
+{{transfers_enrich(
+    blockchain='celo',
+    transfers_base = ref('tokens_celo_base_transfers'),
+    native_symbol = 'CELO'
+)}}
