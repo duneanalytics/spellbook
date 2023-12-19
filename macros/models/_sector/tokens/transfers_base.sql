@@ -44,24 +44,24 @@ WITH transfers AS (
     {% endif %}
     )
 
-SELECT 
-    -- We have to create this unique key because evt_index and trace_address can be null
-    {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(t.trace_address, ',')"])}} as unique_key
-    , '{{blockchain}}' as blockchain
-    , cast(date_trunc('day', t.block_time) as date) as block_date
-    , t.block_time
-    , t.block_number
-    , t.tx_hash
-    , t.evt_index
-    , t.trace_address
-    , t.token_standard
-    , tx."from" AS tx_from
-    , tx."to" AS tx_to
-    , tx."index" AS tx_index
-    , t."from"
-    , t.to
-    , t.contract_address
-    , t.amount_raw
+SELECT '{{blockchain}}' as blockchain
+, cast(date_trunc('day', t.block_time) as date) as block_date
+, t.block_time
+, t.block_number
+, t.tx_hash
+-- method_id => first 4bytes of data
+-- We have to create this because evt_index and trace_address can be null
+, {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(trace_address, ',')"])}} as unique_key
+, t.evt_index
+, t.trace_address
+, t.token_standard
+, tx."from" AS tx_from
+, tx."to" AS tx_to
+, tx."index" AS tx_index
+, t."from"
+, t.to
+, t.contract_address
+, t.amount_raw
 FROM transfers t
 INNER JOIN {{ transactions }} tx ON
     tx.block_number = t.block_number
