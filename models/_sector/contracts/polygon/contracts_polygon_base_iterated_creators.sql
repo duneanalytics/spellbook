@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_iterated_creators(
-    chain='polygon', days_forward=180
+    chain='polygon', days_forward=365
 )}}

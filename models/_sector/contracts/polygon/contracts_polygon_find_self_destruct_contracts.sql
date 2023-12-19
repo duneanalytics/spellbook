@@ -10,5 +10,5 @@
 }}
 
 {{find_self_destruct_contracts(
-    chain='polygon', days_forward=180
+    chain='polygon', days_forward=365
 )}}
