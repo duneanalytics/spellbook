@@ -17,7 +17,7 @@
 
 
 {{ 
-    oneinch_call_transfers_macro(
+    oneinch_test_call_transfers_macro(
         blockchain = blockchain
         , blockchain_meta = ref('oneinch_test_dict_table')
     )
