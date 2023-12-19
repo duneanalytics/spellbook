@@ -26,6 +26,7 @@
      , (ref('inscription_celo_deploys'))
      , (ref('inscription_zora_deploys'))
      , (ref('inscription_zksync_deploys'))
+     , (ref('inscription_goerli_deploys'))
 ] %}
 
 SELECT *

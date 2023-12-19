@@ -10,8 +10,6 @@
 {% set transfer_from_selector = '0x23b872dd' %}
 {% set selector = 'substr(input, 1, 4)' %}
 
-
-
 with
 
 meta as (
@@ -34,8 +32,7 @@ meta as (
         {% endif %}
 )
 
-, transfers as (
-    
+, transfers as (    
     select
         '{{ blockchain }}' as blockchain
         , block_number

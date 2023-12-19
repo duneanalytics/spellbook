@@ -17,6 +17,7 @@
          when 'bitcoin' = chain_ then 'https://blockstream.info'
          when 'celo' = chain_ then 'https://celoscan.io'
          when 'goerli' = chain_ then 'https://goerli.basescan.org'
+         when 'zksync' = chain_ then 'https://explorer.zksync.io'
          else 'https://etherscan.io'
       end as explorer_url;
 {% endmacro %}
