@@ -38,13 +38,13 @@ WITH check_date AS (
           ON t.hash = r.tx_hash
           AND t.block_number = r.block_number
           AND t.block_date = r.block_date
-          AND {{ incremental_base_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
         
         WHERE 1=1
           AND r.type = 'call'
           AND r.success AND r.tx_success
-          AND {{ incremental_base_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
-          AND {{ incremental_base_forward_predicate('r.block_date', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_days_forward_predicate('r.block_date', 'cd.base_time', days_forward ) }}
       GROUP BY 1,2,3,4,5,6,7,8
     ) a
   GROUP BY 1,2,3,4
