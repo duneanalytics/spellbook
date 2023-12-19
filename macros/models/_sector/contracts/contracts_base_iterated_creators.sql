@@ -92,7 +92,7 @@ WITH check_date AS (
         , ARRAY[created_tx_method_id] AS tx_method_id_lineage_intermediate
         , 1 AS is_new_contract
 
-      FROM {{ref('contracts_' + chain + '_base_starting_level') }} s, check_date
+      FROM {{ref('contracts_' + chain + '_base_starting_level') }} s, check_date cd
       WHERE 
           1=1
 
@@ -306,7 +306,7 @@ WITH check_date AS (
     left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard_erc20
-            FROM {{source('erc20_' + chain, 'evt_transfer')}} r
+            FROM {{source('erc20_' + chain, 'evt_transfer')}} r, check_date cd
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
 
