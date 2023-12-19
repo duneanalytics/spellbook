@@ -41,7 +41,7 @@ settlements as (
     select
         fusion_settlement_address as call_from
         , true as fusion
-    from {{ oneinch_blockchain_macro(blockchain) }}, unnest(fusion_settlement_addresses) as t(fusion_settlement_address)
+    from ({{ oneinch_blockchain_macro(blockchain) }}), unnest(fusion_settlement_addresses) as t(fusion_settlement_address)
 )
 
 , calls as (
