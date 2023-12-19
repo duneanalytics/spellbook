@@ -32,9 +32,8 @@ prices as (
         , decimals
         , symbol
     from {{ source('prices', 'usd') }}
-    where minute >= now() - interval '4' day
     {% if is_incremental() %}
-        and {{ incremental_predicate('minute') }}
+        where {{ incremental_predicate('minute') }}
     {% endif %}
 )
 
@@ -104,7 +103,6 @@ prices as (
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
         {% endif %}
-        and block_time >= now() - interval '4' day
 )
 
 , calls as (
@@ -129,9 +127,8 @@ prices as (
     from _calls 
     join (
         select * from {{ ref('oneinch_call_transfers') }}
-        where block_time >= now() - interval '4' day
         {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
+            where {{ incremental_predicate('block_time') }}
         {% endif %}
     ) using(blockchain, tx_hash, call_trace_address, block_number)
     left join prices using(blockchain, contract_address, minute)
