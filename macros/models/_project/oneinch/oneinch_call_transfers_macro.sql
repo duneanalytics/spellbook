@@ -12,7 +12,7 @@ meta as (
     select 
         wrapped_native_token_address
         , first_deploy_at
-    from {{ ref('oneinch_' + blockchain + '_blockchain') }}
+    from {{ oneinch_blockchain_macro(blockchain) }}
 )
 
 , calls as (
