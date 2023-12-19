@@ -53,3 +53,7 @@ sources:
       - name: mWOM_Pool_evt_Swap
       - name: qWOM_WOMPool_evt_Swap
       - name: WMX_WOM_Pool_evt_Swap
+  - name: mdex_bnb
+    tables:
+      - name: MdexPair_evt_Swap
+      - name: MdexFactory_evt_PairCreated

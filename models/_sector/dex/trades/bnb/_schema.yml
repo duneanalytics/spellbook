@@ -60,6 +60,7 @@ models:
           filter:
             version: 1
 
+
   - name: sushiswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -119,6 +120,7 @@ models:
           filter:
             version: 2.1
 
+
   - name: apeswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -160,6 +162,7 @@ models:
               - mmpool
               - stableswap
 
+
   - name: pancakeswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
@@ -179,6 +182,7 @@ models:
           filter:
             version: 3
 
+
   - name: fraxswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -195,7 +199,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('fraxswap_bnb_base_trades_seed')
-          
+
+
   - name: biswap_v2_bnb_base_trades
     meta:
       blockchain: bnb
@@ -214,7 +219,8 @@ models:
           seed_file: ref('biswap_bnb_base_trades_seed')
           filter:
             version: 2
-            
+
+
   - name: biswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
@@ -234,6 +240,7 @@ models:
           filter:
             version: 3
 
+
   - name: babyswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -252,6 +259,26 @@ models:
           seed_file: ref('babyswap_bnb_base_trades_seed')
           filter:
             version: 1
+
+  - name: mdex_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: mdex
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'mdex', 'uniswap', 'v2' ]
+    description: "mdex bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mdex_bnb_base_trades_seed')
+          filter:
+            version: 1
+
 
   - name: wombat_bnb_base_trades
     meta:

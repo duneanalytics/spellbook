@@ -195,3 +195,35 @@ models:
       - name: minute
       - name: block_month
 
+
+  - name: oneinch_arbitrum_call_transfers
+    meta:
+      blockchain: ['arbitrum']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'calls']
+    description: >
+        1inch transfers within calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+            - transfer_trace_address
+    columns:
+      - name: blockchain
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+      - name: call_trace_address
+      - name: transfer_trace_address
+      - name: contract_address
+      - name: amount
+      - name: transfer_native
+      - name: transfer_from
+      - name: transfer_to
+      - name: transfers_between_players
+      - name: minute
+      - name: block_month
