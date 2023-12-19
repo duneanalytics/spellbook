@@ -1,4 +1,4 @@
-{% macro usage_summary_daily( chain, date_string = '' ) %}
+{% macro usage_summary_daily( chain ) %}
 
 
 /*
@@ -50,8 +50,8 @@ the `base` spell unified with `predeploys`, as our identifier for the total set 
   , COALESCE(num_logs_emitted_tx_senders, 0) AS num_logs_emitted_tx_senders
   , COALESCE(sum_logs_emitted_tx_gas_used, 0) AS sum_logs_emitted_tx_gas_used
 
-  FROM {{ ref('usage_summary_' + chain + '_daily_traces_' + date_string) }} tr
-  LEFT JOIN {{ ref('usage_summary_' + chain + '_daily_transactions_' + date_string) }} tt -- all txs to have an associated trace
+  FROM {{ ref('usage_summary_' + chain + '_daily_traces') }} tr
+  LEFT JOIN {{ ref('usage_summary_' + chain + '_daily_transactions') }} tt -- all txs to have an associated trace
     ON tr.blockchain = tt.blockchain
     AND tr.block_date = tt.block_date
     AND tr.block_month = tt.block_month
@@ -59,7 +59,7 @@ the `base` spell unified with `predeploys`, as our identifier for the total set 
     {% if is_incremental() %}
     AND tt.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
     {% endif %}
-  FULL OUTER JOIN {{ ref('usage_summary_' + chain + '_daily_logs_' + date_string) }} lo
+  FULL OUTER JOIN {{ ref('usage_summary_' + chain + '_daily_logs') }} lo
     ON tr.blockchain = lo.blockchain
     AND tr.block_date = lo.block_date
     AND tr.block_month = lo.block_month

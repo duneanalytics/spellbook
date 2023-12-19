@@ -1,4 +1,4 @@
-{% macro usage_summary_daily_logs( chain, start_date = '2015-01-01', end_date = '9999-12-31' ) %}
+{% macro usage_summary_daily_logs( chain ) %}
 
 
   SELECT
@@ -29,7 +29,6 @@
           AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
           -- AND [[ incremental_predicate('t.block_date') ]]
           {% endif %}
-          AND t.block_date BETWEEN cast( '{{start_date}}' as date) AND cast( '{{end_date}}' as date)
         
         WHERE 1=1
           AND t.success
@@ -39,8 +38,6 @@
           -- AND [[ incremental_predicate('l.block_date') ]]
           -- AND [[ incremental_predicate('t.block_date') ]]
           {% endif %}
-          AND l.block_date BETWEEN cast( '{{start_date}}' as date) AND cast( '{{end_date}}' as date)
-          AND t.block_date BETWEEN cast( '{{start_date}}' as date) AND cast( '{{end_date}}' as date)
       GROUP BY 1,2,3,4,5,6
     ) a
   GROUP BY 1,2,3,4
