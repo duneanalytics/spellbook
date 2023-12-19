@@ -62,14 +62,14 @@ FROM (
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
 
-            AND {{ incremental_base_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
-            AND {{ incremental_base_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
 
           where 
             1=1
 
-            AND {{ incremental_base_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
-            AND {{ incremental_base_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
 
         ) x
 ) y

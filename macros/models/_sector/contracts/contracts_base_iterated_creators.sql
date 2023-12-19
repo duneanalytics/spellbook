@@ -96,7 +96,7 @@ WITH check_date AS (
       WHERE 
           1=1
 
-          AND {{ incremental_base_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_days_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }}
 
     )
 
@@ -162,7 +162,7 @@ WITH check_date AS (
     FROM {{ this }} s, check_date cd
     WHERE 
         1=1
-        AND (NOT {{ incremental_base_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }} ) --don't pick up incrementals
+        AND (NOT {{ incremental_days_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }} ) --don't pick up incrementals
         AND s.contract_address IN (SELECT contract_address FROM inc_contracts) --is this a contract we need to iterate through
         AND s.contract_address NOT IN (SELECT contract_address FROM new_contracts) --exclude contract we reinitialize
 
@@ -310,7 +310,7 @@ WITH check_date AS (
             WHERE 1=1
             AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
 
-              AND {{ incremental_base_forward_predicate('r.evt_block_time', 'cd.base_time', days_forward ) }}
+              AND {{ incremental_days_forward_predicate('r.evt_block_time', 'cd.base_time', days_forward ) }}
 
             group by 1
           ) ts 

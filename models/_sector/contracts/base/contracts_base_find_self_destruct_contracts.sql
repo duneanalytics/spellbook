@@ -10,5 +10,5 @@
 }}
 
 {{find_self_destruct_contracts(
-    chain='base'
+    chain='base', days_forward=365
 )}}

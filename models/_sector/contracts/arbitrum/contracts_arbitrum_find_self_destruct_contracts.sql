@@ -10,5 +10,5 @@
 }}
 
 {{find_self_destruct_contracts(
-    chain='arbitrum'
+    chain='arbitrum', days_forward=365
 )}}
