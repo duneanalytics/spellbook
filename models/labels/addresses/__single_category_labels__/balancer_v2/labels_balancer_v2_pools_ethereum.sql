@@ -277,7 +277,26 @@ WITH pools AS (
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
     AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
+
+  UNION ALL
+
+  SELECT
+    c.poolId AS pool_id,
+    t.tokens AS token_address,
+    0 AS normalized_weight,
+    cc.symbol,
+    'ECLP' AS pool_type
+  FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('gyroscope_ethereum', 'GyroECLPPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+  {% if is_incremental() %}
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
+  {% endif %}
 ),
+
 settings AS (
   SELECT
     pool_id,
