@@ -10,17 +10,21 @@
 )
 }}
 
+/*
+    --short term, to get prod running, omit bnb/polygon, add later
+    , ref('tokens_bnb_base_transfers')
+    , ref('tokens_polygon_base_transfers')
+*/
+
 {% set models = [
     ref('tokens_arbitrum_base_transfers')
     , ref('tokens_avalanche_c_base_transfers')
     , ref('tokens_base_base_transfers')
-    , ref('tokens_bnb_base_transfers')
     , ref('tokens_celo_base_transfers')
     , ref('tokens_ethereum_base_transfers')
     , ref('tokens_fantom_base_transfers')
     , ref('tokens_gnosis_base_transfers')
     , ref('tokens_optimism_base_transfers')
-    , ref('tokens_polygon_base_transfers')
     , ref('tokens_zksync_base_transfers')
     , ref('tokens_zora_base_transfers')
 ] %}
