@@ -3,7 +3,7 @@
 WITH check_date AS (
   SELECT
   {% if is_incremental() %}
-    MAX(created_time) AS base_time FROM {{this}}
+    MAX(block_date) AS base_time FROM {{this}}
   {% else %}
     MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
   {% endif %}
