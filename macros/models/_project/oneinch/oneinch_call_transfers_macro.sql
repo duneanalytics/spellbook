@@ -16,10 +16,9 @@ meta as (
 )
 
 , calls as (
-    select * from {{ ref('oneinch_calls') }}
+    select * from ({{ oneinch_calls_macro(blockchain) }})
     where
-        blockchain = '{{ blockchain }}'
-        and tx_success
+        tx_success
         and call_success
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
@@ -32,7 +31,7 @@ meta as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= (select first_deploy_at from meta)
+            block_time >= now() - interval '4' day -- (select first_deploy_at from meta)
         {% endif %}
 )
 

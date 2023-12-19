@@ -57,7 +57,7 @@ settlements as (
             , dst_token_address
             , dst_token_amount
             , false as fusion
-            , null as order_hash
+            , cast(null as varbinary) as order_hash
         from {{ ref('oneinch_' + blockchain + '_ar') }}
 
         union all
