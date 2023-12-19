@@ -1,6 +1,6 @@
 {{ config(
     
-    alias = 'transactions_base_erc20',
+    alias = 'transactions_arbitrum_erc20',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,7 +9,7 @@
     )
 }}
 
-{% set transactions_start_date = '2023-08-02' %}
+{% set transactions_start_date = '2021-08-31' %}
 
 WITH 
 
@@ -20,7 +20,7 @@ dao_tmp as (
             dao, 
             dao_wallet_address
         FROM 
-        {{ ref('dao_addresses_base') }}
+        {{ ref('dao_addresses_arbitrum') }}
         WHERE dao_wallet_address IS NOT NULL 
         AND dao_wallet_address NOT IN (0x0000000000000000000000000000000000000001, 0x000000000000000000000000000000000000dead, 0x)
 ), 
@@ -37,7 +37,7 @@ transactions as (
             "from" as address_interacted_with,
             CAST(NULL as array<bigint>) as trace_address
         FROM 
-        {{ source('erc20_base', 'evt_transfer') }}
+        {{ source('erc20_arbitrum', 'evt_transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >= DATE '{{transactions_start_date}}'
         {% endif %}
@@ -60,7 +60,7 @@ transactions as (
             "to" as address_interacted_with,
             CAST(NULL as array<bigint>) as trace_address
         FROM 
-        {{ source('erc20_base', 'evt_transfer') }}
+        {{ source('erc20_arbitrum', 'evt_transfer') }}
         {% if not is_incremental() %}
         WHERE evt_block_time >=  DATE'{{transactions_start_date}}'
         {% endif %}
@@ -97,12 +97,12 @@ dao_tmp dt
 LEFT JOIN 
 {{ ref('tokens_erc20') }} er
     ON t.token = er.contract_address
-    AND er.blockchain = 'base'
+    AND er.blockchain = 'arbitrum'
 LEFT JOIN 
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
     AND p.contract_address = t.token
-    AND p.blockchain = 'base'
+    AND p.blockchain = 'arbitrum'
     {% if not is_incremental() %}
     AND p.minute >= DATE '{{transactions_start_date}}'
     {% endif %}
@@ -113,7 +113,7 @@ LEFT JOIN
 {{ ref('dex_prices') }} dp 
     ON dp.hour = date_trunc('hour', t.block_time)
     AND dp.contract_address = t.token 
-    AND dp.blockchain = 'base'
+    AND dp.blockchain = 'arbitrum'
     AND dp.hour >= DATE '{{transactions_start_date}}'
     {% if is_incremental() %}
     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
