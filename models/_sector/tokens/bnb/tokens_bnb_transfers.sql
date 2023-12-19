@@ -5,8 +5,9 @@
 )
 }}
 
-{{transfers_enrich(
-    blockchain='bnb',
-    transfers_base = ref('tokens_bnb_base_transfers'),
-    native_symbol = 'BNB'
-)}}
+SELECT
+    *
+FROM
+    {{ ref('tokens_transfers') }}
+WHERE
+    blockchain = 'bnb'

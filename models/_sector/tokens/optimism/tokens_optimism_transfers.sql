@@ -5,8 +5,9 @@
 )
 }}
 
-{{transfers_enrich(
-    blockchain='optimism',
-    transfers_base = ref('tokens_optimism_base_transfers'),
-    native_symbol = 'ETH'
-)}}
+SELECT
+    *
+FROM
+    {{ ref('tokens_transfers') }}
+WHERE
+    blockchain = 'optimism'
