@@ -10,6 +10,7 @@
     , ref('sushiswap_v2_fantom_base_trades')
     , ref('spiritswap_fantom_base_trades')
     , ref('spookyswap_fantom_base_trades')
+    , ref('wigoswap_fantom_base_trades')
 ] %}
 
 WITH base_union AS (
