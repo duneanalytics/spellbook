@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aragon_dao_addresses
+  - name: dao_addresses_arbitrum
     meta:
-      blockchain: polygon, ethereum, gnosis, base, arbitrum
-      project: aragon
+      blockchain: arbitrum
+      sector: dao
       contributors: Henrystats 
     config:
-      tags: [ 'polygon', 'ethereum', 'arbitrum', 'gnosis', 'base', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
+      tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats' ]
     description: >
-      wallet addresses of daos created on aragon across all products & blockchains
+      wallet addresses of daos created on arbitrum across all dao creator tools
     columns:
       - &blockchain
         name: blockchain
@@ -29,9 +29,3 @@ models:
       - &created_block_time
         name: created_block_time
         description: "UTC event block time of DAO creation"
-      - &product
-        name: product
-        description: "Aragon Product used to deploy DAO"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of DAO creation"

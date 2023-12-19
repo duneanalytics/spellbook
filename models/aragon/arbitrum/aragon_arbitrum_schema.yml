@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aragon_ethereum_client_dao_addresses
+  - name: aragon_arbitrum_app_dao_addresses
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client']
+      tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon app']
     description: >
-      wallet addresses of daos created on aragon client
+      wallet addresses of daos created on aragon app
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -47,45 +47,13 @@ models:
         name: block_month
         description: "UTC event block month of DAO creation"
 
-  - name: aragon_ethereum_app_dao_addresses
+  - name: aragon_arbitrum_dao_addresses
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'ethereum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon App']
-    description: >
-      wallet addresses of daos created on aragon app 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - created_date
-            - blockchain
-            - dao_creator_tool
-            - dao
-            - dao_wallet_address
-            - block_month
-    columns:
-      - *blockchain
-      - name: dao_creator_tool
-        description: "Name of creator tool used to create DAO"
-        tests:
-          - dao_addresses_creator_tool:
-              dao_addresses_seed: ref('dao_addresses_seed')
-      - *dao
-      - *dao_wallet_address
-      - *created_date
-      - *created_block_time
-      - *product
-      - *block_month
-
-  - name: aragon_ethereum_dao_addresses
-    meta:
-      blockchain: ethereum
-      project: aragon
-      contributors: Henrystats 
-    config:
-      tags: [ 'ethereum', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
+      tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
     description: >
       wallet addresses of daos created across all aragon products
     columns:
