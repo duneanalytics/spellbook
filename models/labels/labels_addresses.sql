@@ -25,6 +25,7 @@
     , ref('labels_likely_bot_labels')
     , ref('labels_quest_participants')
     , ref('labels_cex_users')
+    , ref('labels_op_retropgf')
     , ref('labels_op_attestationstation_attesters')
     , ref('labels_op_attestationstation_creators')
     , ref('labels_op_governance_delegators')
