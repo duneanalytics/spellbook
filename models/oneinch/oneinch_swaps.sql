@@ -62,11 +62,15 @@ prices as (
         , block_number
         , block_time
         , tx_hash
-        , call_trace_address
         , tx_from
         , tx_to
+        , tx_nonce
+        , gas_price
+        , priority_fee_per_gas
+        , call_trace_address
         , call_from
         , call_to
+        , call_gas_used
         , contract_name
         , protocol
         , protocol_version
@@ -142,9 +146,13 @@ select
     , block_number
     , block_time
     , tx_hash
-    , call_trace_address
     , tx_from
     , tx_to
+    , tx_nonce
+    , gas_price
+    , priority_fee_per_gas
+    , call_gas_used
+    , call_trace_address
     , call_from
     , call_to
     , contract_name
