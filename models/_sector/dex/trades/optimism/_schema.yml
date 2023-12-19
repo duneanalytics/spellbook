@@ -159,3 +159,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('hashflow_optimism_base_trades_seed')
+
+
+  - name: wardenswap_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: wardenswap
+      contributors: Chain_L, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'wardenswap' ]
+    description: "Wardenswap optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wardenswap_optimism_base_trades_seed')
