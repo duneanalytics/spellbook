@@ -1,4 +1,13 @@
-{% macro usage_summary_daily_traces( chain ) %}
+{% macro usage_summary_daily_traces( chain, days_forward=365 ) %}
+
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(created_time) AS base_time FROM {{this}}
+  {% else %}
+    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+  {% endif %}
+)
 
   SELECT
     '{{chain}}' as blockchain
@@ -24,24 +33,18 @@
         , ROW_NUMBER() OVER (PARTITION BY r.tx_hash) AS trace_to_number --reindex trace to ensure single count
 
         FROM {{ source(chain,'traces') }} r
+        cross join check_date cd
         INNER JOIN  {{ source(chain,'transactions') }} t 
           ON t.hash = r.tx_hash
           AND t.block_number = r.block_number
           AND t.block_date = r.block_date
-          {% if is_incremental() %}
-          AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-          {# AND [[ incremental_predicate('t.block_date') ]]  #}
-          {% endif %}
+          AND {{ incremental_base_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
         
         WHERE 1=1
           AND r.type = 'call'
           AND r.success AND r.tx_success
-          {% if is_incremental() %}
-          AND r.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-          AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-          -- AND [[ incremental_predicate('r.block_date') ]]
-          -- AND [[ incremental_predicate('t.block_date') ]]
-          {% endif %}
+          AND {{ incremental_base_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_base_forward_predicate('r.block_date', 'cd.base_time', days_forward ) }}
       GROUP BY 1,2,3,4,5,6,7,8
     ) a
   GROUP BY 1,2,3,4

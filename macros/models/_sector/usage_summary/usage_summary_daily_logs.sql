@@ -1,5 +1,13 @@
-{% macro usage_summary_daily_logs( chain ) %}
+{% macro usage_summary_daily_logs( chain, days_forward=365 ) %}
 
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(created_time) AS base_time FROM {{this}}
+  {% else %}
+    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+  {% endif %}
+)
 
   SELECT
     '{{chain}}' as blockchain
@@ -21,23 +29,18 @@
         , ROW_NUMBER() OVER (PARTITION BY l.tx_hash) AS logs_emitted_number --reindex log to ensure single count
 
         FROM {{ source(chain,'logs') }} l
+        cross join check_date cd
         INNER JOIN  {{ source(chain,'transactions') }} t 
           ON t.hash = l.tx_hash
           AND t.block_number = l.block_number
           AND t.block_date = l.block_date
-          {% if is_incremental() %}
-          AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-          -- AND [[ incremental_predicate('t.block_date') ]]
-          {% endif %}
+          AND {{ incremental_base_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
         
         WHERE 1=1
           AND t.success
-          {% if is_incremental() %}
-          AND l.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-          AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-          -- AND [[ incremental_predicate('l.block_date') ]]
-          -- AND [[ incremental_predicate('t.block_date') ]]
-          {% endif %}
+          AND {{ incremental_base_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_base_forward_predicate('l.block_date', 'cd.base_time', days_forward ) }}
+
       GROUP BY 1,2,3,4,5,6
     ) a
   GROUP BY 1,2,3,4
