@@ -5,8 +5,9 @@
 )
 }}
 
-{{transfers_enrich(
-    blockchain='avalanche_c',
-    transfers_base = ref('tokens_avalanche_c_base_transfers'),
-    native_symbol = 'AVAX'
-)}}
+SELECT
+    *
+FROM
+    {{ ref('tokens_transfers') }}
+WHERE
+    blockchain = 'avalanche_c'
