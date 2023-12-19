@@ -1344,7 +1344,7 @@ sources:
             description: "Address of the ComposableStablePoolFactory contract"
           - name: derivedECLPParams
           - name: eclpParams
-          - *name
+          - name: name
           - *output_0
           - *owner
           - name: pauseManager
