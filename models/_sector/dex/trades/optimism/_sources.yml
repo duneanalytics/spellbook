@@ -15,3 +15,6 @@ sources:
   - name: balancer_v2_optimism
     tables:
       - name: Vault_evt_Swap
+  - name: wardenswap_optimism
+    tables:
+      - name: WardenRouterV2_L2_evt_Trade

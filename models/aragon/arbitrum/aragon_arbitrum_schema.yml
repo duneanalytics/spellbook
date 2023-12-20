@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: aragon_arbitrum_app_dao_addresses
+    meta:
+      blockchain: arbitrum
+      project: aragon
+      contributors: Henrystats 
+    config:
+      tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon app']
+    description: >
+      wallet addresses of daos created on aragon app
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - created_date
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+            - block_month
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain which the DAO is deployed"
+      - name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+        tests:
+          - dao_addresses_creator_tool:
+              dao_addresses_seed: ref('dao_addresses_seed')
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &created_date
+        name: created_date
+        description: "UTC event block date of DAO creation"
+      - &created_block_time
+        name: created_block_time
+        description: "UTC event block time of DAO creation"
+      - &product
+        name: product
+        description: "Aragon Product used to deploy DAO"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of DAO creation"
+
+  - name: aragon_arbitrum_dao_addresses
+    meta:
+      blockchain: arbitrum
+      project: aragon
+      contributors: Henrystats 
+    config:
+      tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats']
+    description: >
+      wallet addresses of daos created across all aragon products
+    columns:
+      - *blockchain
+      - &dao_creator_tool
+        name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+      - *dao
+      - *dao_wallet_address
+      - *created_date
+      - *created_block_time
+      - *product
+      - *block_month
