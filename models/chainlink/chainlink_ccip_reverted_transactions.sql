@@ -25,10 +25,8 @@ FROM (
     SELECT
       blockchain,
       block_time,
-      date_month,
+      date_start,
       node_address,
-      token_amount,
-      usd_amount,
       tx_hash
     FROM {{ ref(model) }}
     {% if not loop.last %}

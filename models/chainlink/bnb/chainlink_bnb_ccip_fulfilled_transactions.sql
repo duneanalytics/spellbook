@@ -2,61 +2,39 @@
   config(
     
     alias='ccip_fulfilled_transactions',
-    partition_by=['date_month'],
+    partition_by=['date_start'],
     materialized='incremental',
     file_format='delta',
-    incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'node_address']
+    incremental_strategy='merge'
   )
 }}
 
 {% set incremental_interval = '7' %}
 
 WITH
-  bnb_usd AS (
-    SELECT
-      minute as block_time,
-      price as usd_amount
-    FROM
-      {{ source('prices', 'usd') }} price
-    WHERE
-      symbol = 'BNB'
-      {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
-  ),
   ccip_fulfilled_transactions AS (
     SELECT
       tx.hash as tx_hash,
-      tx.index as tx_index,
-      MAX(tx.block_time) as block_time,
-      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
-      tx."from" as "node_address",
-      MAX((cast((gas_used) as double) / 1e18) * gas_price) as token_amount,
-      MAX(bnb_usd.usd_amount) as usd_amount
+      tx.block_time as block_time,
+      cast(date_trunc('day', tx.block_time) as date) as date_start,
+      tx."from" as "node_address"
     FROM
-      {{ source('bnb', 'transactions') }} tx
-      RIGHT JOIN {{ ref('chainlink_bnb_ccip_send_traces') }} ccip_send_traces ON ccip_send_traces.tx_hash = tx.hash
+      {{ ref('chainlink_bnb_ccip_send_traces') }} ccip_send_traces
+      INNER JOIN {{ source('bnb', 'transactions') }} tx ON tx.hash = ccip_send_traces.tx_hash
       {% if is_incremental() %}
         AND ccip_send_traces.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}
-      LEFT JOIN bnb_usd ON date_trunc('minute', tx.block_time) = bnb_usd.block_time
-    {% if is_incremental() %}
-      WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-    {% endif %}      
-    GROUP BY
-      tx.hash,
-      tx.index,
-      tx."from"
+      WHERE
+        ccip_send_traces.tx_success = true
+        {% if is_incremental() %}
+          AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}     
   )
 SELECT
  'bnb' as blockchain,
   block_time,
-  date_month,
+  date_start,
   node_address,
-  token_amount,
-  usd_amount,
-  tx_hash,
-  tx_index
+  tx_hash
 FROM
   ccip_fulfilled_transactions

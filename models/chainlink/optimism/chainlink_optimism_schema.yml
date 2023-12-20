@@ -704,22 +704,12 @@ models:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "optimism"]
     description: >
       Chainlink CCIP Fulfilled Transactions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - tx_index
-            - node_address
     columns:
       - *blockchain
       - *block_time
       - *date_month
       - *node_address
-      - *token_amount
-      - *usd_amount
       - *tx_hash
-      - *tx_index
 
   - name: chainlink_optimism_ccip_gas_daily
     meta:
@@ -780,19 +770,11 @@ models:
       tags: ["chainlink", "ccip", "reverted", "transactions", "optimism"]
     description: >
       Chainlink CCIP Reverted Transactions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - node_address
     columns:
       - *blockchain
       - *block_time
-      - *date_month
+      - *date_start
       - *node_address
-      - *token_amount
-      - *usd_amount
       - *tx_hash
 
   - name: chainlink_optimism_ccip_reward_daily
