@@ -15,7 +15,7 @@ WITH
   ccip_reverted_transactions AS (
     SELECT
       tx.tx_hash as tx_hash,
-      MAX(tx.block_time) as block_time,
+      tx.block_time as block_time,
       cast(date_trunc('day', tx.block_time) as date) as date_start,
       tx."from" as "node_address"
     FROM
