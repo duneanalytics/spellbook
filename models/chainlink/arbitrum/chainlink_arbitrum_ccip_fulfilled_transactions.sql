@@ -20,11 +20,12 @@ WITH
       ccip_send_traces."from" as "node_address"
     FROM
       {{ ref('chainlink_arbitrum_ccip_send_traces') }} ccip_send_traces
+      WHERE
+        ccip_send_traces.tx_success = true
       {% if is_incremental() %}
         AND ccip_send_traces.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}
-      WHERE
-        ccip_send_traces.tx_success = true  
+        
   )
 SELECT
  'arbitrum' as blockchain,
