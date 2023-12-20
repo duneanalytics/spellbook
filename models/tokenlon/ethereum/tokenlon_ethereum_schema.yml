@@ -8,7 +8,7 @@ models:
       project: tokenlon
       contributors: izayl
     config:
-      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
+      tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl', 'metadata']
     description: >
       Tokenlon AMM v1 trades
     tests:
@@ -30,6 +30,8 @@ models:
         description: 'Version of the contract built and deployed by the DEX project'
       - name: block_date
         description: 'UTC event block date of each DEX trade'
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
       - name: block_time
         description: 'UTC event block time of each DEX trade'
       - name: token_bought_symbol
@@ -215,6 +217,74 @@ models:
       tags: ['ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'izayl']
     description: >
       Tokenlon RFQ v1 trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+    columns:
+      - name: blockchain
+        description: 'Blockchain which the DEX is deployed'
+      - name: project
+        description: 'Project name of the DEX'
+      - name: version
+        description: 'Version of the contract built and deployed by the DEX project'
+      - name: block_date
+        description: 'UTC event block date of each DEX trade'
+      - name: block_time
+        description: 'UTC event block time of each DEX trade'
+      - name: token_bought_symbol
+        description: 'Token symbol for token bought in the transaction'
+      - name: token_sold_symbol
+        description: 'Token symbol for token sold in the transaction'
+      - name: token_pair
+        description: 'Token symbol pair for each token involved in the transaction'
+      - name: token_bought_amount
+        description: 'Value of the token bought at time of execution in the original currency'
+      - name: token_sold_amount
+        description: 'Value of the token sold at time of execution in the original currency'
+      - name: token_bought_amount_raw
+        description: 'Raw value of the token bought at time of execution in the original currency'
+      - name: token_sold_amount_raw
+        description: 'Raw value of the token sold at time of execution in the original currency'
+      - name: amount_usd
+        description: 'USD value of the trade at time of execution'
+      - name: token_bought_address
+        description: 'Contract address of the token bought'
+      - name: token_sold_address
+        description: 'Contract address of the token sold'
+      - name: taker
+        description: 'Address of trader who purchased a token'
+      - name: maker
+        description: 'Address of trader who sold a token'
+      - name: project_contract_address
+        description: 'Project contract address which executed the trade on the blockchain'
+      - name: tx_hash
+        description: 'Unique transaction hash value tied to each transaction on the DEX'
+      - name: tx_from
+        description: 'Address which initiated the transaction'
+      - name: tx_to
+        description: 'Address which received the transaction'
+      - name: trace_address
+        description: ''
+      - name: evt_index
+        description: 'Index of the corresponding trade event'
+
+  - name: tokenlon_v5_ethereum_rfq_v2_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: tokenlon
+      contributors: keen
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'tokenlon', 'aggregator', 'keen' ]
+    description: >
+      Tokenlon RFQ v2 trades
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -23,42 +23,18 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV1_call_swap
         loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_swap
+      - name: AggregationRouterV2_call_swap
         loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_unoswap
+      - name: AggregationRouterV2_call_discountedSwap
         loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_unoswapToWithPermit
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_uniswapV3Swap
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_uniswapV3SwapTo
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_uniswapV3SwapToWithPermit
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_clipperSwap
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_clipperSwapTo
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_clipperSwapToWithPermit
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrderTo
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrderToWithPermit
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrder
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrderRFQ
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrderRFQTo
-        loaded_at_field: call_block_time
-      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
-        loaded_at_field: call_block_time
-      - name: MerkleDistributor_evt_Claimed
-        loaded_at_field: evt_block_time
       - name: AggregationRouterV2_evt_Swapped
         loaded_at_field: evt_block_time
       - name: AggregationRouterV3_evt_Swapped
         loaded_at_field: evt_block_time
+      - name: AggregationRouterV3_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV3_call_discountedSwap
+        loaded_at_field: call_block_time
       - name: AggregationRouterV3_call_unoswap
         loaded_at_field: call_block_time
       - name: AggregationRouterV3_call_unoswapWithPermit
@@ -68,6 +44,8 @@ sources:
       - name: AggregationRouterV4_call_unoswapWithPermit
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_discountedSwap
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_uniswapV3Swap
         loaded_at_field: call_block_time
@@ -87,6 +65,40 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV4_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3Swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQCompact
+        loaded_at_field: call_block_time
       - name: LimitOrderProtocolV1_call_fillOrder
         loaded_at_field: call_block_time
       - name: LimitOrderProtocolV1_call_fillOrderRFQ
@@ -103,7 +115,8 @@ sources:
         loaded_at_field: call_block_time
       - name: LimitOrderProtocolV2_call_fillOrderRFQToWithPermit
         loaded_at_field: call_block_time
-
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
 
   - name: onesplit_ethereum
     description: "decoded events and function calls for onesplit on ethereum"

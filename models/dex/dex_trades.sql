@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo"]\',
                                 "sector",
                                 "dex",
-                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith", "rantum", "mike-x7f", "0xr3x", "tomfutago"]\') }}'
+                                \'["jeff-dude", "hosuke", "0xRob", "pandajackson42", "Henrystats", "scoffie", "zhongyiio", "justabi", "umer_h_adil", "mtitus6", "dbustos20", "tian7", "bh2smith", "rantum", "mike-x7f", "0xr3x", "tomfutago", "grkhr", "max-morrow"]\') }}'
         )
 }}
 
@@ -42,7 +42,7 @@
 ,ref('spookyswap_fantom_trades')
 ,ref('beethoven_x_trades')
 ,ref('rubicon_trades')
-,ref('equalizer_exchange_fantom_trades')
+,ref('equalizer_fantom_trades')
 ,ref('wigoswap_fantom_trades')
 ,ref('arbswap_trades')
 ,ref('spiritswap_fantom_trades')
@@ -75,6 +75,10 @@
 ,ref('openxswap_optimism_trades')
 ,ref('wardenswap_optimism_trades')
 ,ref('openocean_optimism_trades')
+,ref('woofi_optimism_trades')
+,ref('oneinch_lop_own_trades')
+,ref('mummy_finance_optimism_trades')
+,ref('hashflow_optimism_trades')
 ] %}
 
 

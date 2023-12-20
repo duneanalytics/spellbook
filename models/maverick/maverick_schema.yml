@@ -3,7 +3,7 @@ version: 2
 models:
   - name: maverick_trades
     meta:
-      blockchain: ethereumm, bnb
+      blockchain: ethereumm, bnb, base, zksync
       sector: dex
       contributors: gte620v, chef_seaweed
     config:

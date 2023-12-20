@@ -53,7 +53,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: safe
-      contributors: tschubotz
+      contributors: tschubotz, danielpartida
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
@@ -82,9 +82,12 @@ models:
       - &gas
         name: gas 
         description: "Gas limit set for transaction"
-      - &gas_used
-        name: gas_used
-        description: "Gas used during transaction"
+      - &execution_gas_used
+        name: execution_gas_used
+        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+      - &total_gas_used
+        name: total_gas_used
+        description: "Total gas used during transaction"
       - &tx_index
         name: tx_index
         description: "Transaction index"
@@ -129,6 +132,10 @@ models:
             - tx_hash
             - trace_address
     columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: AVAX"
       - name: address
         description: "Safe contract address"
       - *block_date
@@ -139,3 +146,6 @@ models:
         description: "Raw amount of transferred AVAX"
       - *tx_hash
       - *trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred AVAX"

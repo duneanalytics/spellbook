@@ -34,6 +34,10 @@ methods as (
         , protocol
         , calls.call_input
         , calls.call_output
+        , concat(cast(length(_remains) as bigint), if(length(_remains) > 0
+            , transform(sequence(1, length(_remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(_remains), x, 4))))
+            , array[bigint '0']
+        )) as call_remains
         , transactions.block_time
     from (
         select 
@@ -62,6 +66,7 @@ methods as (
             , input as call_input
             , output as call_output
             , "to" as call_to
+            , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as _remains
         from {{ source(blockchain, 'traces') }}
         where 
             {% if is_incremental() %}
@@ -107,6 +112,7 @@ methods as (
         -- ext
         , calls.call_output 
         , calls.call_input
+        , calls.call_remains
         , date_trunc('minute', calls.block_time) as minute
         , date(date_trunc('month', calls.block_time)) as block_month
     from calls

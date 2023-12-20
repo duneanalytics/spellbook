@@ -29,7 +29,7 @@ models:
     config:
       tags: ['table', 'erc20', 'rebase']
     description: >
-      Ethereum Rebase Token Addresses and Symbols. 
+      Ethereum Rebase Token Addresses and Symbols.
       A Rebase Token is a cryptocurrency with an algorithmically adjusted supply that controls its price.
     columns:
       - name: contract_address
@@ -81,7 +81,7 @@ models:
           - accepted_values:
               values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
         description: >
-            The token standard. This is the set of rules that the contract must respect 
+            The token standard. This is the set of rules that the contract must respect
             to be compatible with the common standards. Accepted values are presently standards represented.
             If you are adding a token with a new standard, remember to add it the accepted values list.
 
@@ -125,4 +125,3 @@ models:
         tests:
           - accepted_values:
               values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
-

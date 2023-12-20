@@ -1,10 +1,6 @@
 {{ config(
-    
-    alias = 'trades',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+    schema = 'balancer_ethereum',
+    alias = 'trades'
     )
 }}
 

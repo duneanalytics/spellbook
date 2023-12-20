@@ -1,0 +1,112 @@
+version: 2
+
+sources: 
+
+  - name: celer_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for celer bridge transactions on Optimism
+    tables:
+      - name: Bridge_evt_Send
+        loaded_at_field: evt_block_time
+
+  - name: synapse_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for synapse bridge transactions on Optimism
+    tables:
+      - name: SynapseBridge_evt_TokenMintAndSwap
+        loaded_at_field: evt_block_time
+
+  - name: synapse_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for synapse bridge transactions on Optimism
+    tables:
+      - name: SynapseBridge_evt_TokenRedeem
+        loaded_at_field: evt_block_time
+
+  - name: synapse_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for synapse bridge transactions on Optimism
+    tables:
+      - name: SynapseBridge_evt_TokenRedeemAndRemove
+        loaded_at_field: evt_block_time
+
+  - name: synapse_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for synapse bridge transactions on Optimism
+    tables:
+      - name: SynapseBridge_evt_TokenRedeemAndSwap
+        loaded_at_field: evt_block_time
+
+  - name: across_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: OVM_OETH_BridgeDepositBox_evt_FundsDeposited
+        loaded_at_field: evt_block_time
+
+  - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: UBA_Optimism_SpokePool_evt_FundsDeposited
+        loaded_at_field: evt_block_time
+
+  - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: UBA_Optimism_SpokePool_evt_OptimismTokensBridged
+        loaded_at_field: evt_block_time
+
+  - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: UBA_Optimism_SpokePool_evt_TokensBridged
+        loaded_at_field: evt_block_time
+
+  - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: Optimism_SpokePool_evt_OptimismTokensBridged
+        loaded_at_field: evt_block_time
+
+  - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: Optimism_SpokePool_evt_TokensBridged
+        loaded_at_field: evt_block_time
+  
+
+  - name: across_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for across bridge transactions on Optimism
+    tables:
+      - name: Optimism_SpokePool_evt_FundsDeposited
+        loaded_at_field: evt_block_time

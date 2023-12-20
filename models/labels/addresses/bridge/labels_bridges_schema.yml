@@ -11,12 +11,12 @@ models:
           - model_name
           - blockchain
     meta:
-      blockchain: ethereum, fantom
+      blockchain: ethereum, fantom, base, arbitrum, bnb, optimism, polygon
       sector: labels
       project: bridges
-      contributors: hildobby, Henrystats
+      contributors: hildobby, Henrystats, rantum
     config:
-      tags: ['labels', 'ethereum', 'fantom', 'bridges']
+      tags: ['labels', 'ethereum', 'fantom', 'bridges', 'base']
     description: "Known bridges addresses across chains"
     columns:
       - &blockchain
@@ -58,7 +58,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: bridges
-      contributors: hildobby, soispoke
+      contributors: hildobby, soispoke, rantum
     config:
       tags: ['labels', 'ethereum', 'bridges']
     description: "Known bridges addresses on Ethereum"
@@ -94,3 +94,152 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+
+  - name: labels_bridges_bnb
+    meta:
+      blockchain: bnb
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'bnb', 'bridges']
+    description: "Known bridges addresses on bnb"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+      
+  - name: labels_bridges_polygon
+    meta:
+      blockchain: polygon
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'polygon', 'bridges']
+    description: "Known bridges addresses on polygon"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+      
+  - name: labels_bridges_base
+    meta:
+      blockchain: base
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'base', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+
+  - name: labels_bridges_optimism
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'optimism', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+  
+  - name: labels_bridges_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: labels
+      project: bridges
+      contributors: rantum
+    config:
+      tags: ['labels', 'arbitrum', 'bridges']
+    description: "Known bridges addresses"
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+      - *label_type 
+
+  - name: labels_op_bridge_derived_archetype
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridge
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'bridge', 'users', 'derived']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
+
+  - name: labels_op_bridge_users
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: bridge
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'bridge', 'users']
+    description: 'Persona labels attributed to users of various bridges on optimism'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type  
