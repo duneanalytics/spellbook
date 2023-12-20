@@ -1,5 +1,5 @@
 {{ config(
-    alias='trades',
+    alias='optimism_trades',
     schema='firebird_finance_optimism',
     partition_by=['block_month'],
     materialized='incremental',
