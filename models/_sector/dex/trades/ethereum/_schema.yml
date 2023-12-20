@@ -289,7 +289,7 @@ models:
           seed_file: ref('fraxswap_ethereum_base_trades_seed')
           filter:
             version: 1
-            
+
   - name: bancor_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -306,3 +306,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('bancor_ethereum_base_trades_seed')
+
+  - name: verse_dex_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: verse_dex
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'verse_dex' ]
+    description: "Verse ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('verse_dex_ethereum_base_trades_seed')

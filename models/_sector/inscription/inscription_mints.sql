@@ -26,6 +26,7 @@
      , (ref('inscription_celo_mints'))
      , (ref('inscription_zora_mints'))
      , (ref('inscription_zksync_mints'))
+     , (ref('inscription_goerli_mints'))
 ] %}
 
 SELECT *

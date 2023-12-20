@@ -22,3 +22,6 @@ sources:
   - name: carbonhood_celo
     tables:
       - name: Router_evt_Swap
+  - name: immortalx_celo
+    tables:
+      - name: Dex_evt_DecreasePosition
