@@ -20,15 +20,11 @@ WITH
       tx."from" as "node_address"
     FROM
       {{ ref('chainlink_bnb_ccip_send_traces') }} tx
-      INNER JOIN {{ source('bnb', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
-      {% if is_incremental() %}
-        AND tx2.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}
-    WHERE
-      tx.tx_success = false
       {% if is_incremental() %}
         AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+      {% endif %}
+    WHERE
+      tx.tx_success = false    
   )
 SELECT
  'bnb' as blockchain,
