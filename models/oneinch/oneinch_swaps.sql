@@ -55,6 +55,8 @@ prices as (
     from {{ ref('tokens_erc20') }}
 )
 
+
+-- base columns to not to duplicate in the union
 {% set 
     calls_base_columns = [
         'blockchain',
@@ -82,6 +84,7 @@ prices as (
     ]
 %}
 
+-- success calls & parsed tokens with native replaced by wrapped for amounts calculation
 , calls_base as (
     select 
         *
@@ -101,6 +104,7 @@ prices as (
         {% endif %}
 )
 
+-- union all calls with LOP opposite swaps
 , _calls as (
     -- AR + LOP CALLS
     select 
@@ -125,16 +129,17 @@ prices as (
         , _src_token_address as dst_token_address
         , _src_token_native as dst_token_native
         , _src_token_amount as dst_token_amount
-        , true as second_side 
+        , true as second_side -- opposite limit orders
     from calls_base
     where protocol = 'LOP' and cardinality(call_trace_address) = 0
 )
 
+-- calls with tokens metadata
 , calls as (
     select 
         *
         , if(protocol = 'AR' or second_side, tx_from, maker) as user
-        , if(protocol = 'LOP' and second_side = false and position('RFQ' in method) > 0, true, false) as contracts_only
+        , if(protocol = 'LOP' and second_side = false and position('RFQ' in method) > 0, true, false) as contracts_only -- RFQ calls
     from _calls
     left join tokens_src using(blockchain, src_token_address)
     left join tokens_dst using(blockchain, dst_token_address)
@@ -146,10 +151,16 @@ prices as (
         , tx_hash
         , call_trace_address
         , block_number
-        , max(amount) filter(where contract_address = src_token_address and amount <= src_token_amount) as src_token_amount
-        , max(amount) filter(where contract_address = dst_token_address and amount <= dst_token_amount) as dst_token_amount
-        , max(amount * price / pow(10, decimals)) filter(where contract_address = src_token_address and amount <= src_token_amount or contract_address = dst_token_address and amount <= dst_token_amount) as sources_amount_usd
-        , max(amount * price / pow(10, decimals)) as transfers_amount_usd
+        , max(amount) filter(where contract_address = src_token_address and amount <= src_token_amount) as src_token_amount -- take only amounts lte than in the call
+        , max(amount) filter(where contract_address = dst_token_address and amount <= dst_token_amount) as dst_token_amount -- take only amounts lte than in the call
+        
+        , max(amount * price / pow(10, decimals)) filter(
+            where 
+                contract_address = src_token_address and amount <= src_token_amount 
+                or contract_address = dst_token_address and amount <= dst_token_amount
+        ) as sources_amount_usd -- take only amounts lte than in the call
+        
+        , max(amount * price / pow(10, decimals)) as transfers_amount_usd -- take all amounts
 
         , sum(amount * if(transfer_from = user, price, -price) / pow(10, decimals)) filter(
             where (
@@ -157,31 +168,31 @@ prices as (
                 or src_token_address = contract_address
             )  
                 and user in (transfer_from, transfer_to)
-        ) as _amount_usd_from_user
+        ) as _amount_usd_from_user -- amount usd from user to any
         , sum(amount * if(transfer_to = user, price, -price) / pow(10, decimals)) filter(
             where (
                 dst_token_native is not null and transfer_native 
                 or dst_token_address = contract_address
             )  
                 and user in (transfer_from, transfer_to)
-        ) as _amount_usd_to_user
+        ) as _amount_usd_to_user -- amount usd to user from any
         , sum(amount * if(transfer_to = receiver, price, -price) / pow(10, decimals)) filter(
             where (
                 dst_token_native is not null and transfer_native 
                 or dst_token_address = contract_address
             )  
                 and receiver in (transfer_from, transfer_to)
-        ) as _amount_usd_to_receiver
+        ) as _amount_usd_to_receiver -- amount usd to receiver from any
 
-        , count(distinct (contract_address, transfer_native)) as tokens
-        , count(*) as transfers
+        , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
+        , count(*) as transfers -- count transfers
     from calls 
     join (
         select * from {{ ref('oneinch_call_transfers') }}
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
         {% endif %}
-    ) using(blockchain, tx_hash, call_trace_address, block_number)
+    ) using(blockchain, tx_hash, call_trace_address, block_number) -- block_number is needed for performance
     left join prices using(blockchain, contract_address, minute)
     group by 1, 2, 3, 4
 )
@@ -213,15 +224,15 @@ select
     , second_side
     , order_hash
     , remains
-    , if(src_token_native is null, src_token_address, {{true_native_address}}) as src_token_address
+    , if(src_token_native is null, src_token_address, {{true_native_address}}) as src_token_address -- replace native with true native address back
     , coalesce(src_token_native, src_token_symbol) as src_token_symbol
     , src_token_decimals
     , amounts.src_token_amount
-    , if(dst_token_native is null, dst_token_address, {{true_native_address}}) as dst_token_address
+    , if(dst_token_native is null, dst_token_address, {{true_native_address}}) as dst_token_address -- replace native with true native address back
     , coalesce(dst_token_native, dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
     , amounts.dst_token_amount
-    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd
+    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd -- sources amount first if found prices, when connector tokens
     , sources_amount_usd
     , transfers_amount_usd
     , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd
