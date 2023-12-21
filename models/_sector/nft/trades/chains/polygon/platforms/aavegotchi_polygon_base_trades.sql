@@ -72,7 +72,7 @@ SELECT
     CAST(price_raw as uint256) AS price_raw,
     currency_contract,
     nft_token_id,
-    'secondary' as trade_type
+    'secondary' as trade_type,
     contract_address AS project_contract_address,
     CASE WHEN number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
     CAST(number_of_items AS uint256) AS number_of_items,
