@@ -47,8 +47,8 @@ SELECT 'polygon' as blockchain
     , 'dew' as project
     , 'v1' as project_version
     , d.block_time
-    , cast(date_trunc('day', d.block_time) as date) as block_date,
-    , cast(date_trunc('month', d.block_time) as date) as block_month,
+    , cast(date_trunc('day', d.block_time) as date) as block_date
+    , cast(date_trunc('month', d.block_time) as date) as block_month
     , d.block_number
     , d.nft_contract_address
     , d.nft_token_id
