@@ -83,7 +83,7 @@ SELECT
     CAST(2 * price_raw / 100 AS uint256) AS platform_fee_price_raw,
     uint256 '0' AS royalty_fee_price_raw,
     CAST(NULL AS varbinary) AS royalty_fee_address,
-    CAST(NULL AS varbinary) AS platform_fee_address,
+    CAST(NULL AS varbinary) AS platform_fee_address
 FROM trades
 )
 
