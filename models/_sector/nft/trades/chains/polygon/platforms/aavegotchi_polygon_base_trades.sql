@@ -16,7 +16,7 @@ WITH trades AS (
         evt_block_number,
         evt_tx_hash,
         contract_address,
-        evt_index as sub_tx_trade_id,
+        evt_index,
         'Trade' AS evt_type,
         buyer,
         seller,
@@ -82,7 +82,8 @@ SELECT
     CAST(2 * price_raw / 100 AS uint256) AS platform_fee_amount_raw,
     uint256 '0' AS royalty_fee_amount_raw,
     CAST(NULL AS varbinary) AS royalty_fee_address,
-    CAST(NULL AS varbinary) AS platform_fee_address
+    CAST(NULL AS varbinary) AS platform_fee_address,
+    evt_index as sub_tx_trade_id
 FROM trades
 )
 

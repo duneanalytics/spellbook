@@ -53,7 +53,8 @@ SELECT
     CAST((COALESCE(price_raw, uint256 '0') * double '0.025') as uint256) as platform_fee_amount_raw,
     CAST(NULL as uint256) as royalty_fee_amount_raw,
     CAST(NULL as varbinary) as royalty_fee_address,
-    CAST(NULL as varbinary) as platform_fee_address
+    CAST(NULL as varbinary) as platform_fee_address,
+    evt_index as sub_tx_trade_id
 FROM src_data_enriched
 )
 
