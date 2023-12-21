@@ -74,14 +74,13 @@ SELECT
     nft_token_id,
     'secondary' as trade_type,
     contract_address AS project_contract_address,
-    CASE WHEN number_of_items = 1 THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
-    CAST(number_of_items AS uint256) AS number_of_items,
+    nft_amount,
     trade_category,
     buyer,
     seller,
     nft_contract_address,
-    CAST(2 * price_raw / 100 AS uint256) AS platform_fee_price_raw,
-    uint256 '0' AS royalty_fee_price_raw,
+    CAST(2 * price_raw / 100 AS uint256) AS platform_fee_amount_raw,
+    uint256 '0' AS royalty_fee_amount_raw,
     CAST(NULL AS varbinary) AS royalty_fee_address,
     CAST(NULL AS varbinary) AS platform_fee_address
 FROM trades
