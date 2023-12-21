@@ -58,3 +58,31 @@ models:
            - nft_contract_address
            - nft_token_id
            - price_raw
+
+ - name: decentraland_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: decentraland
+     contributors: Henrystats
+   config:
+     tags: [ 'polygon','decentraland','base_trades' ]
+   description: >
+     decentraland events on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+
+ - name: aavegotchi_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: aavegotchi
+     contributors: springzh
+   config:
+     tags: [ 'polygon','aavegotchi','base_trades' ]
+   description: >
+     Aavegotchi events on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
