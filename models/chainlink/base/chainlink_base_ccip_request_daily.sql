@@ -10,6 +10,8 @@
   )
 }}
 
+{% set incremental_interval = '7' %}
+
 WITH
 ethereum_agg AS (
         SELECT
@@ -21,6 +23,9 @@ ethereum_agg AS (
                     {{ ref('chainlink_base_ccip_fulfilled_transactions') }} eth
                 WHERE
                     eth.date_start = date_series.date_start
+                {% if is_incremental() %}
+                    AND eth.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                {% endif %}
             ) AS fulfilled_requests,
             (
                 SELECT
@@ -29,6 +34,9 @@ ethereum_agg AS (
                     {{ ref('chainlink_base_ccip_reverted_transactions') }} rev
                 WHERE
                     rev.date_start = date_series.date_start
+                {% if is_incremental() %}
+                    AND rev.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                {% endif %}
             ) AS reverted_requests
         FROM
             (

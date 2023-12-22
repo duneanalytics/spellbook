@@ -2,10 +2,10 @@
   config(
     
     alias='ccip_fulfilled_transactions',
-    partition_by=['date_start'],
     materialized='incremental',
     file_format='delta',
-    incremental_strategy='merge'
+    incremental_strategy='merge',
+    unique_key=['tx_hash', 'trace_address', 'node_address']
   )
 }}
 
@@ -17,7 +17,8 @@ WITH
       ccip_send_traces.tx_hash as tx_hash,
       ccip_send_traces.block_time as block_time,
       cast(date_trunc('day', ccip_send_traces.block_time) as date) as date_start,
-      ccip_send_traces."from" as "node_address"
+      ccip_send_traces."from" as "node_address",
+      ccip_send_traces.trace_address as trace_address
     FROM
       {{ ref('chainlink_bnb_ccip_send_traces') }} ccip_send_traces
       WHERE
@@ -31,6 +32,7 @@ SELECT
   block_time,
   date_start,
   node_address,
-  tx_hash
+  tx_hash,
+  trace_address
 FROM
   ccip_fulfilled_transactions

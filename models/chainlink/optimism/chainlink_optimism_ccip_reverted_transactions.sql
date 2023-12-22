@@ -2,10 +2,10 @@
   config(
     
     alias='ccip_reverted_transactions',
-    partition_by=['date_start'],
     materialized='incremental',
     file_format='delta',
-    incremental_strategy='merge'
+    incremental_strategy='merge',
+    unique_key=['tx_hash', 'trace_address', 'node_address']
   )
 }}
 
@@ -17,7 +17,8 @@ WITH
       tx.tx_hash as tx_hash,
       tx.block_time as block_time,
       cast(date_trunc('day', tx.block_time) as date) as date_start,
-      tx."from" as "node_address"
+      tx."from" as "node_address",
+      tx.trace_address as trace_address
     FROM
       {{ ref('chainlink_optimism_ccip_send_traces') }} tx
       WHERE
@@ -31,6 +32,7 @@ SELECT
   block_time,
   date_start,
   node_address,
-  tx_hash
+  tx_hash,
+  trace_address
 FROM
   ccip_reverted_transactions
