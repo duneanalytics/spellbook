@@ -1314,8 +1314,6 @@ sources:
           - name: output_0             
 
   - name: balancer_avalanche_c
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Avalanche.
     tables:
       - name: ChildChainGaugeFactory_call_create
         columns:
@@ -1329,8 +1327,6 @@ sources:
           - name: output_0    
 
   - name: balancer_base
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Base.
     tables:
       - name: ChildChainGaugeFactory_call_create
         columns:
@@ -1344,8 +1340,6 @@ sources:
           - name: output_0              
 
   - name: balancer_gnosis
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Gnosis.
     tables:
       - name: ChildChainGaugeFactory_call_create
         columns:
@@ -1359,8 +1353,6 @@ sources:
           - name: output_0    
 
   - name: balancer_optimism
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Optimism.
     tables:
       - name: ChildChainGaugeFactory_call_create
         columns:
