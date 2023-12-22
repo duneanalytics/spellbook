@@ -52,6 +52,9 @@ ethereum_agg AS (
                     ) AS date_sequence
             ) AS seq
             CROSS JOIN UNNEST (seq.date_sequence) AS t (date_start)
+            {% if is_incremental() %}
+                    WHERE date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+            {% endif %}
             ) date_series
     ),
     ccip_request_daily as (
