@@ -1299,8 +1299,6 @@ sources:
           - *tokens
 
    - name: balancer_arbitrum
-    description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Arbitrum.
     tables:
       - name: ChildChainGaugeFactory_call_create
         columns:
