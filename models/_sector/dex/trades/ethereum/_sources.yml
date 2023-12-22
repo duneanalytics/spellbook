@@ -61,3 +61,9 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: clipper_ethereum
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped
+      - name: ClipperApproximateCaravelExchange_evt_Swapped

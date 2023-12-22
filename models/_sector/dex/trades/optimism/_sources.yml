@@ -18,3 +18,8 @@ sources:
   - name: wardenswap_optimism
     tables:
       - name: WardenRouterV2_L2_evt_Trade
+  - name: clipper_optimism
+    tables:
+      - name: ClipperPackedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperCove_evt_CoveSwapped

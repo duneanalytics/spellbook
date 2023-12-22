@@ -41,3 +41,9 @@ sources:
   - name: balancer_v2_arbitrum
     tables:
       - name: Vault_evt_Swap
+  - name: clipper_arbitrum
+    tables:
+      - name: ClipperCove_evt_CoveSwapped
+      - name: ClipperCove_v2_evt_CoveSwapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_v2_evt_Swapped

@@ -33,3 +33,8 @@ sources:
     tables:
       - name: FraxswapPair_evt_Swap
       - name: FraxswapFactory_evt_PairCreated
+  - name: clipper_polygon
+    tables:
+      - name: ClipperDirectExchange_evt_Swapped
+      - name: ClipperVerifiedExchange_evt_Swapped
+      - name: ClipperCove_evt_CoveSwapped
