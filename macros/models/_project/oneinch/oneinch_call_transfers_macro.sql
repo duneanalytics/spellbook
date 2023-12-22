@@ -12,14 +12,13 @@ meta as (
     select 
         wrapped_native_token_address
         , first_deploy_at
-    from {{ ref('oneinch_' + blockchain + '_blockchain') }}
+    from ({{ oneinch_blockchain_macro(blockchain) }})
 )
 
 , calls as (
-    select * from {{ ref('oneinch_calls') }}
+    select * from ({{ oneinch_calls_macro(blockchain) }})
     where
-        blockchain = '{{ blockchain }}'
-        and tx_success
+        tx_success
         and call_success
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
