@@ -1,9 +1,7 @@
  {{
   config(     
         schema = 'contracts_ethereum',
-        alias = 'contract_mapping',
-        materialized ='table',
-        partition_by =['created_month']
+        alias = 'contract_mapping'
   )
 }}
 
