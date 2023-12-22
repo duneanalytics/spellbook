@@ -1,7 +1,9 @@
  {{
   config(     
         schema = 'contracts_zora',
-        alias = 'contract_mapping'
+        alias = 'contract_mapping',
+        materialized ='table',
+        partition_by =['created_month']
   )
 }}
 
