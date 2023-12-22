@@ -242,17 +242,6 @@ sources:
           - name: pool
           - name: streamer
 
-      - name: ChildChainGaugeFactory_call_create
-        columns:
-          - name: contract_address
-          - name: call_tx_hash
-          - name: call_success
-          - name: call_trace_address
-          - name: call_block_time
-          - name: call_block_number
-          - name: pool
-          - name: output_0
-
   - name: balancer_v2_ethereum
     tables:
       - name: InvestmentPoolFactory_call_create
@@ -872,35 +861,41 @@ sources:
           - name: recipient
           - name: relativeWeightCap
 
-      - name: AvalancheRootGaugeFactory_evt_ArbitrumRootGaugeCreated
+      - name: AvalancheRootGaugeFactory_call_create
         columns:
           - name: contract_address
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: gauge
-          - name: recipient    
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+          
+      - name: BaseRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap     
 
-      - name: BaseRootGaugeFactory_evt_ArbitrumRootGaugeCreated
+      - name: GnosisRootGaugeFactory_call_create
         columns:
           - name: contract_address
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: gauge
-          - name: recipient         
-
-      - name: GnosisRootGaugeFactory_evt_ArbitrumRootGaugeCreated
-        columns:
-          - name: contract_address
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: gauge
-          - name: recipient          
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap    
 
   - name: balancer_polygon
     description: >
@@ -1302,6 +1297,21 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens
+
+   - name: balancer_arbitrum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0             
 
   - name: balancer_avalanche_c
     description: >
