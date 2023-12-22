@@ -21,7 +21,7 @@ WITH pool_labels AS (
     FROM {{ ref('labels_balancer_v1_pools_ethereum') }}
     ),
 
-prices AS (
+    prices AS (
         SELECT
             date_trunc('day', minute) AS day,
             contract_address AS token,
@@ -33,6 +33,19 @@ prices AS (
         AND minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
         GROUP BY 1, 2, 3
+    ),
+
+    eth_prices AS(
+        SELECT
+            date_trunc('day', minute) AS day,
+            AVG(price) AS eth_price
+        FROM {{ source('prices', 'usd') }}
+        WHERE blockchain = 'ethereum'
+        AND symbol = 'ETH'
+        {% if is_incremental() %}
+        AND minute >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+        GROUP BY 1
     ),
 
     cumulative_balance AS (
@@ -88,7 +101,9 @@ prices AS (
             token_balance_raw,
             token_balance,
             liquidity * normalized_weight AS protocol_liquidity_usd,
-            liquidity * normalized_weight AS pool_liquidity_usd
+            (liquidity * normalized_weight) / e.eth_price AS protocol_liquidity_eth,
+            liquidity * normalized_weight AS pool_liquidity_usd,
+            (liquidity * normalized_weight) / e.eth_price AS pool_liquidity_eth
         FROM pool_liquidity_estimates b
         LEFT JOIN cumulative_usd_balance c ON c.day = b.day
         AND c.pool = b.pool
@@ -97,3 +112,4 @@ prices AS (
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = w.token_address
         LEFT JOIN pool_labels p ON p.address = w.pool_id
+        LEFT JOIN eth_prices e ON e.day = b.day

@@ -8,12 +8,14 @@ SELECT *
 FROM
 (
         SELECT
+                blockchain,
                 pool_id,
                 token_address,
                 CAST(normalized_weight as double) as normalized_weight
         FROM {{ ref('balancer_v1_ethereum_pools_tokens_weights') }}
         UNION
         SELECT
+                blockchain,
                 pool_id,
                 token_address,
                 CAST(normalized_weight as double) as normalized_weight
