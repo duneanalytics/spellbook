@@ -10112,6 +10112,7 @@ FROM (VALUES
         ,(0x7b69d465c0f9fb22affae56aa86149973e9b0966, 'PFI', 18)
         ,(0x7b6d838e93005bf742c9e4cc8021f14196c0dab0, 'SCC', 18)
         ,(0x7b6f71c8b123b38aa8099e0098bec7fbc35b8a13, 'NVT', 8)
+        ,(0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4, 'NPM', 18)
         ,(0x7b6fe84ba8386f03ea91d630b1a9193938340c06, 'SINU', 18)
         ,(0x7b71fb77a2f3ca98a0dec88ba7cc53871881809b, 'LIANG', 18)
         ,(0x7b771fbff5aece61baa591c22eeff5e21a663bb0, 'Z', 8)

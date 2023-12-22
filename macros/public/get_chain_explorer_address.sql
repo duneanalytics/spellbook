@@ -17,6 +17,7 @@
          when 'base' = chain_ then 'https://basescan.org/address/' || CAST(column_ AS VARCHAR)
          when 'bitcoin' = chain_ then 'https://blockstream.info/address/' || CAST(column_ AS VARCHAR)
          when 'goerli' = chain_ then 'https://goerli.basescan.org/address/' || CAST(column_ AS VARCHAR)
+         when 'zksync' = chain_ then 'https://explorer.zksync.io' || CAST(column_ AS VARCHAR)
          else 'https://etherscan.io/address/' || CAST(column_ AS VARCHAR)
       end as explorer_address_url;
 {% endmacro %}

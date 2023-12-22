@@ -37,7 +37,9 @@ FROM (
     token_balance_raw,
     token_balance,
     protocol_liquidity_usd,
-    pool_liquidity_usd
+    protocol_liquidity_eth,
+    pool_liquidity_usd,
+    pool_liquidity_eth
     FROM {{ liquidity_model }}
     {% if not loop.last %}
     UNION ALL
