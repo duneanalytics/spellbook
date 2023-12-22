@@ -80,3 +80,20 @@ models:
           seed_file: ref('spookyswap_fantom_base_trades_seed')
           filter:
             version: 1
+
+  - name: wigoswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: wigoswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'wigoswap', 'uniswap', 'v2']
+    description: "Wigoswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wigoswap_fantom_base_trades_seed')

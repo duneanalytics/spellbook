@@ -1,0 +1,124 @@
+version: 2
+
+models:
+  - name: dao_transactions_arbitrum_erc20 
+    meta:
+      blockchain: arbitrum
+      sector: dao
+      contributors: Henrystats 
+    config:
+      tags: [ 'arbitrum','erc20','dao', 'dao creator tools', 'Henrystats' ]
+    description: >
+      erc20 transactions of DAO wallets 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date 
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+            - tx_hash 
+            - tx_index
+            - tx_type
+            - address_interacted_with
+            - value 
+            - asset_contract_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which transaction happened"
+      - &dao_creator_tool
+        name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+        tests:
+          - dao_transactions_creator_tool:
+              dao_transactions_seed: ref('dao_transactions_seed')
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of tramsaction"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of transaction"
+      - &tx_type
+        name: tx_type
+        description: "transaction type (deposit or withdrawal)"
+      - &asset_contract_address
+        name: asset_contract_address
+        description: "contract address of token transferred or received"
+      - &asset
+        name: asset
+        description: "token or asset transferred or received"
+      - &raw_value
+        name: raw_value
+        description: "raw value of asset/token transferred"
+      - &value
+        name: value 
+        description: "converted value of asset/token transferred"
+      - &usd_value
+        name: usd_value
+        description: "usd value of asset/token transferred"
+      - &tx_hash
+        name: tx_hash 
+        desciption: "transaction hash"
+      - &tx_index
+        name: tx_index
+        description: "transaction index"
+      - &trace_address
+        name: trace_address
+        description: "trace address from traces table, empty for erc20 txs"
+      - &address_interacted_with
+        name: address_interacted_with
+        description: "address the dao wallet interacted with"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of tramsaction"
+
+  - name: dao_transactions_arbitrum_eth 
+    meta:
+      blockchain: arbitrum
+      sector: dao
+      contributors: Henrystats 
+    config:
+      tags: [ 'arbitrum','eth','dao', 'dao creator tools', 'Henrystats' ]
+    description: >
+      eth transactions of DAO wallets 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date 
+            - blockchain
+            - dao_creator_tool
+            - dao
+            - dao_wallet_address
+            - tx_hash 
+            - tx_index
+            - tx_type
+            - trace_address
+            - address_interacted_with
+            - value 
+            - asset_contract_address
+    columns:
+      - *blockchain
+      - *dao_creator_tool
+      - *dao
+      - *dao_wallet_address
+      - *block_date
+      - *block_time
+      - *tx_type
+      - *asset_contract_address
+      - *asset
+      - *raw_value
+      - *value
+      - *usd_value
+      - *tx_hash
+      - *tx_index
+      - *trace_address
+      - *address_interacted_with
+      - *block_month

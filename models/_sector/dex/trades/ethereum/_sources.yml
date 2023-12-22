@@ -57,3 +57,7 @@ sources:
   - name: bancor3_ethereum
     tables:
       - name: BancorNetwork_evt_TokensTraded
+  - name: verse_dex_ethereum
+    tables:
+      - name: SwapsPair_evt_Swap
+      - name: Factory_evt_PairCreated
