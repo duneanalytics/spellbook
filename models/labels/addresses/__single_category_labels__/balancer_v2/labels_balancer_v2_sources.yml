@@ -242,6 +242,17 @@ sources:
           - name: pool
           - name: streamer
 
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0
+
   - name: balancer_v2_ethereum
     tables:
       - name: InvestmentPoolFactory_call_create
@@ -538,6 +549,17 @@ sources:
           - *owner
           - *swapFeePercentage
           - *symbol
+
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0
 
   - name: balancer_v2_polygon
     tables:
@@ -850,6 +872,36 @@ sources:
           - name: recipient
           - name: relativeWeightCap
 
+      - name: AvalancheRootGaugeFactory_evt_ArbitrumRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient    
+
+      - name: BaseRootGaugeFactory_evt_ArbitrumRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient         
+
+      - name: GnosisRootGaugeFactory_evt_ArbitrumRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient          
+
   - name: balancer_polygon
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
@@ -864,6 +916,17 @@ sources:
           - name: gauge
           - name: pool
           - name: streamer
+
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0    
 
   - name: balancer_v2_gnosis
     tables:
@@ -1240,3 +1303,48 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens
+
+  - name: balancer_avalanche_c
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0    
+
+  - name: balancer_base
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0              
+
+  - name: balancer_gnosis
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0    
