@@ -27,7 +27,8 @@ FROM (
       block_time,
       date_start,
       node_address,
-      tx_hash
+      tx_hash,
+      trace_address
     FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL
