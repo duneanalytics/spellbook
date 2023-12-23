@@ -20,8 +20,8 @@ select
   t.evt_block_number as block_number,
   t.user as taker,
   cast(null as varbinary) as maker,
-  t.returnAmount as token_bought_amount_raw,
-  cast(t.decreaseMargin * 1e18 / t.decreasePrice as uint256) as token_sold_amount_raw,
+  t.decreaseSize + t.pnl - t.tradeFee as token_bought_amount_raw,
+  cast(t.decreaseSize * 1e18 / t.decreasePrice as uint256) as token_sold_amount_raw,
   0x765DE816845861e75A25fCA122bb6898B8B1282a as token_bought_address, -- cUSD
   case
     when t.marketId = 1 then 0xd629eb00deced2a080b7ec630ef6ac117e614f1b -- BTC/USD position
@@ -33,7 +33,8 @@ select
   t.evt_tx_hash as tx_hash,
   t.evt_index
 from {{ source('immortalx_celo', 'Dex_evt_DecreasePosition') }} t
-where t.returnAmount > 0
+where 1=1
+  --and t.returnAmount > 0
   {% if is_incremental() %}
   and {{ incremental_predicate('t.evt_block_time') }}
   {% endif %}
