@@ -10,53 +10,63 @@
 
 WITH
 
+{% if markets != '' %}
 markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS (
     {{ markets }}
 ),
+{% endif %}
 
+{% if sell_base_token_source != '' or buy_base_token_source != '' %}
 base_token_dexs AS (
-    -- dodo v1 sell
-    SELECT
-        '1' AS version,
-        s.evt_block_number AS block_number,
-        s.evt_block_time AS block_time,
-        s.seller AS taker,
-        CAST(NULL AS VARBINARY) AS maker,
-        s.payBase AS token_bought_amount_raw,
-        s.receiveQuote AS token_sold_amount_raw,
-        m.base_token_address AS token_bought_address,
-        m.quote_token_address AS token_sold_address,
-        s.contract_address AS project_contract_address,
-        s.evt_tx_hash AS tx_hash,
-        s.evt_index
-    FROM {{ source('dodo_' ~ blockchain, sell_base_token_source )}} s
-      LEFT JOIN markets m ON s.contract_address = m.market_contract_address
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('s.evt_block_time') }}
+    {% if sell_base_token_source != '' %}
+        -- dodo v1 sell
+        SELECT
+            '1' AS version,
+            s.evt_block_number AS block_number,
+            s.evt_block_time AS block_time,
+            s.seller AS taker,
+            CAST(NULL AS VARBINARY) AS maker,
+            s.payBase AS token_bought_amount_raw,
+            s.receiveQuote AS token_sold_amount_raw,
+            m.base_token_address AS token_bought_address,
+            m.quote_token_address AS token_sold_address,
+            s.contract_address AS project_contract_address,
+            s.evt_tx_hash AS tx_hash,
+            s.evt_index
+        FROM {{ source('dodo_' ~ blockchain, sell_base_token_source )}} s
+        LEFT JOIN markets m ON s.contract_address = m.market_contract_address
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('s.evt_block_time') }}
+        {% endif %}
     {% endif %}
 
-    UNION ALL
+    {% if sell_base_token_source != '' and buy_base_token_source != '' %}
+        UNION ALL
+    {% endif %}
 
-    -- dodo v1 buy
-    SELECT
-        '1' AS version,
-        b.evt_block_number AS block_number,
-        b.evt_block_time AS block_time,
-        b.buyer AS taker,
-        CAST(NULL AS VARBINARY) AS maker,
-        b.receiveBase AS token_bought_amount_raw,
-        b.payQuote AS token_sold_amount_raw,
-        m.base_token_address AS token_bought_address,
-        m.quote_token_address AS token_sold_address,
-        b.contract_address AS project_contract_address,
-        b.evt_tx_hash AS tx_hash,
-        b.evt_index
-    FROM {{ source('dodo_' ~ blockchain, buy_base_token_source )}} b
-      LEFT JOIN markets m ON b.contract_address = m.market_contract_address
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('b.evt_block_time') }}
+    {% if buy_base_token_source != '' %}
+        -- dodo v1 buy
+        SELECT
+            '1' AS version,
+            b.evt_block_number AS block_number,
+            b.evt_block_time AS block_time,
+            b.buyer AS taker,
+            CAST(NULL AS VARBINARY) AS maker,
+            b.receiveBase AS token_bought_amount_raw,
+            b.payQuote AS token_sold_amount_raw,
+            m.base_token_address AS token_bought_address,
+            m.quote_token_address AS token_sold_address,
+            b.contract_address AS project_contract_address,
+            b.evt_tx_hash AS tx_hash,
+            b.evt_index
+        FROM {{ source('dodo_' ~ blockchain, buy_base_token_source )}} b
+        LEFT JOIN markets m ON b.contract_address = m.market_contract_address
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('b.evt_block_time') }}
+        {% endif %}
     {% endif %}
 ),
+{% endif %}
 
 other_dexs AS (
     {% for src in other_sources %}
@@ -84,8 +94,10 @@ other_dexs AS (
 ),
 
 dexs AS (
+    {% if sell_base_token_source != '' or buy_base_token_source != '' %}
     SELECT * FROM base_token_dexs
     UNION ALL
+    {% endif %}
     SELECT * FROM other_dexs
 )
 
