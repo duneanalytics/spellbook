@@ -140,7 +140,7 @@ models:
       blockchain: base
       sector: dex
       project: dodo
-      contributors: owen05, scoffie, tomfutago
+      contributors: owen05, tomfutago
     config:
       tags: [ 'base', 'dex', 'trades', 'dodo' ]
     description: "Dodo base base trades"
