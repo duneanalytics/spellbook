@@ -361,8 +361,8 @@ FROM
     FROM
       {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
   ) AS v ON p.proposal_id = v.proposal_id
-  LEFT JOIN {{ source('optimism','blocks'}} AS s ON p.start_block = s.number
-  LEFT JOIN {{ source('optimism','blocks'}} AS e ON p.end_block = e.number
+  LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
+  LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
 GROUP BY
   p.proposal_id,
