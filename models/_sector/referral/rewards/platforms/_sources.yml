@@ -52,3 +52,9 @@ sources:
   - name: mint_fun_zora
     tables:
       - name: MintPayout_evt_MintDeposit
+  - name: mirror_optimism
+    tables:
+      - name: WritingEditions_evt_RewardsDistributed
+  - name: mirror_base
+    tables:
+      - name: WritingEditions_evt_RewardsDistributed
