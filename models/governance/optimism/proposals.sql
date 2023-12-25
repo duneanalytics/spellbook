@@ -61,4 +61,4 @@ WITH all_proposals AS (
 
 SELECT *
 FROM
-    all_proposals;
+    all_proposals
