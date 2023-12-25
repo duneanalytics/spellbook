@@ -7,7 +7,7 @@
     ,schema = 'governance_optimism_proposals'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
-    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_date')]
+    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_block')]
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
@@ -16,7 +16,7 @@
 }}
 
 {% set models = [
-    ref('governor_v5_proposals'),
+    ref('agora_proposals'),
     ref('snapshot_proposals')
 ] %}
 
@@ -26,20 +26,17 @@ WITH all_proposals AS (
         {% for model in models %}
         SELECT
             proposal_id,
+            proposal_link,
             proposal_type,
             proposal_description,
             start_block,
-            start_date,
+            start_timestamp,
             end_block,
-            end_date,
+            end_timestamp,
             platform,
-            voter_address,
-            corresponding_voting_weightage,
-            corresponding_choices,
-            corresponding_choices_name,
-            highest_weighted_vote,
-            highest_weighted_voter,
-            highest_weighted_voter_percentage,
+            highest_weightage_vote,
+            highest_weightage_voter,
+            highest_weightage_voter_percentage,
             total_for_votingWeightage,
             total_abstain_votingWeightage,
             total_against_votingWeightage,
@@ -53,7 +50,7 @@ WITH all_proposals AS (
             {{ model }}
         {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('start_date') }}
+            {{ incremental_predicate('start_block') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -64,4 +61,4 @@ WITH all_proposals AS (
 
 SELECT *
 FROM
-    all_proposals
+    all_proposals;

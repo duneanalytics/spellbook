@@ -18,19 +18,15 @@ SELECT
   'ForAgainst Proposal' AS proposal_type, -- Set the proposal type to 'ForAgainst Proposal'
   p.proposal_description,
   p.start_block,
-  p.start_date,
+  p.start_timestamp,
   p.end_block,
-  p.end_date,
+  p.end_timestamp,
   p.platform,
-  ARRAY_AGG(v.voter ORDER BY v.voter) AS voter_address,
-  ARRAY_AGG(v.votingWeightage ORDER BY v.voter) AS corresponding_voting_weightage,
-  ARRAY_AGG(v.choice ORDER BY v.voter) AS corresponding_choices,
-  ARRAY_AGG(v.status ORDER BY v.voter) AS corresponding_choices_name,
-  MAX(v.votingWeightage) AS highest_weighted_vote,
-  MAX_BY(v.voter, v.votingWeightage) AS highest_weighted_voter,
+  MAX(v.votingWeightage) AS highest_weightage_vote,
+  MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
   (
     MAX(v.votingWeightage) * 100 / SUM(v.votingWeightage)
-  ) AS highest_weighted_voter_percentage,
+  ) AS highest_weightage_voter_percentage,
   SUM(CASE WHEN v.choice = '1' THEN v.votingWeightage ELSE 0 END) AS total_for_votingWeightage,
   SUM(CASE WHEN v.choice = '3' THEN v.votingWeightage ELSE 0 END) AS total_abstain_votingWeightage,
   SUM(CASE WHEN v.choice = '2' THEN v.votingWeightage ELSE 0 END) AS total_against_votingWeightage,
@@ -42,7 +38,7 @@ SELECT
   CASE
   WHEN (SUM(CASE WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE) ELSE 0.0 END) / SUM(v.votingWeightage)) * 100 >= 50
   THEN 'success'
-  WHEN p.end_date > CURRENT_TIMESTAMP  
+  WHEN p.end_timestamp > CURRENT_TIMESTAMP  
   THEN 'active'
   ELSE 'defeated'
  END AS proposal_status
@@ -146,9 +142,9 @@ FROM (
       ) AS VARCHAR)
     ) AS proposal_description,
     start AS start_block,
-    FROM_UNIXTIME(start) AS start_date,
+    FROM_UNIXTIME(start) AS start_timestamp,
     "end" AS end_block,
-    FROM_UNIXTIME("end") AS end_date,
+    FROM_UNIXTIME("end") AS end_timestamp,
     'snapshot' AS platform
   FROM {{ source('snapshot','proposals') }}
   WHERE
@@ -180,9 +176,9 @@ GROUP BY
   p.proposal_id,
   p.proposal_description,
   p.start_block,
-  p.start_date,
+  p.start_timestamp,
   p.end_block,
-  p.end_date,
+  p.end_timestamp,
   p.platform
   
   UNION ALL
@@ -192,19 +188,15 @@ GROUP BY
   'Multiple Options Proposal' AS proposal_type, -- Set the proposal type to 'Multiple Options Proposal'
   p.proposal_description,
   p.start_block,
-  p.start_date,
+  p.start_timestamp,
   p.end_block,
-  p.end_date,
+  p.end_timestamp,
   p.platform,
-  ARRAY_AGG(v.voter ORDER BY v.voter) AS voter_address,
-  ARRAY_AGG(v.votingWeightage ORDER BY v.voter) AS corresponding_voting_weightage,
-  ARRAY_AGG(v.choice ORDER BY v.voter) AS corresponding_choices,
-  ARRAY_AGG(v.status ORDER BY v.voter) AS corresponding_choices_name,
-  MAX(v.votingWeightage) AS highest_weighted_vote,
-  MAX_BY(v.voter, v.votingWeightage) AS highest_weighted_voter,
+  MAX(v.votingWeightage) AS highest_weightage_vote,
+  MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
   (
     MAX(v.votingWeightage) * 100 / SUM(v.votingWeightage)
-  ) AS highest_weighted_voter_percentage,
+  ) AS highest_weightage_voter_percentage,
   SUM(CASE WHEN v.choice = '1' THEN v.votingWeightage ELSE 0 END) AS total_for_votingWeightage,
   SUM(CASE WHEN v.choice = '3' THEN v.votingWeightage ELSE 0 END) AS total_abstain_votingWeightage,
   SUM(CASE WHEN v.choice = '2' THEN v.votingWeightage ELSE 0 END) AS total_against_votingWeightage,
@@ -314,9 +306,9 @@ FROM (
       ) AS VARCHAR)
     ) AS proposal_description,
     start AS start_block,
-    FROM_UNIXTIME(start) AS start_date,
+    FROM_UNIXTIME(start) AS start_timestamp,
     "end" AS end_block,
-    FROM_UNIXTIME("end") AS end_date,
+    FROM_UNIXTIME("end") AS end_timestamp,
     'snapshot' AS platform
   FROM {{ source('snapshot','proposals') }}
   WHERE
@@ -347,9 +339,9 @@ GROUP BY
   p.proposal_id,
   p.proposal_description,
   p.start_block,
-  p.start_date,
+  p.start_timestamp,
   p.end_block,
-  p.end_date,
+  p.end_timestamp,
   p.platform
   
   UNION ALL
@@ -359,19 +351,15 @@ GROUP BY
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
   p.proposal_description,
   p.start_block,
-  p.start_date,
+  p.start_timestamp,
   p.end_block,
-  p.end_date,
+  p.end_timestamp,
   p.platform,
-  ARRAY_AGG(v.voter ORDER BY v.voter) AS voter_address,
-  ARRAY_AGG(v.votingWeightage ORDER BY v.voter) AS corresponding_voting_weightage,
-  ARRAY_AGG(v.choice ORDER BY v.voter) AS corresponding_choices,
-  ARRAY_AGG(v.status ORDER BY v.voter) AS corresponding_choices_name,
-  MAX(v.votingWeightage) AS highest_weighted_vote,
-  MAX_BY(v.voter, v.votingWeightage) AS highest_weighted_voter,
+  MAX(v.votingWeightage) AS highest_weightage_vote,
+  MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
   (
     MAX(v.votingWeightage) * 100 / SUM(v.votingWeightage)
-  ) AS highest_weighted_voter_percentage,
+  ) AS highest_weightage_voter_percentage,
   SUM(CASE WHEN v.choice = '1' THEN v.votingWeightage ELSE 0 END) AS total_for_votingWeightage,
   SUM(CASE WHEN v.choice = '3' THEN v.votingWeightage ELSE 0 END) AS total_abstain_votingWeightage,
   SUM(CASE WHEN v.choice = '2' THEN v.votingWeightage ELSE 0 END) AS total_against_votingWeightage,
@@ -383,7 +371,7 @@ GROUP BY
   CASE
   WHEN (SUM(CASE WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE) ELSE 0.0 END) / SUM(v.votingWeightage)) * 100 >= 50
   THEN 'success'
-  WHEN p.end_date > CURRENT_TIMESTAMP  
+  WHEN p.end_timestamp > CURRENT_TIMESTAMP  
   THEN 'active'
   ELSE 'defeated'
  END AS proposal_status
@@ -487,9 +475,9 @@ FROM (
       ) AS VARCHAR)
     ) AS proposal_description,
     start AS start_block,
-    FROM_UNIXTIME(start) AS start_date,
+    FROM_UNIXTIME(start) AS start_timestamp,
     "end" AS end_block,
-    FROM_UNIXTIME("end") AS end_date,
+    FROM_UNIXTIME("end") AS end_timestamp,
     'snapshot' AS platform
   FROM {{ source('snapshot','proposals') }}
   WHERE
@@ -520,7 +508,7 @@ GROUP BY
   p.proposal_id,
   p.proposal_description,
   p.start_block,
-  p.start_date,
+  p.start_timestamp,
   p.end_block,
-  p.end_date,
+  p.end_timestamp,
   p.platform
