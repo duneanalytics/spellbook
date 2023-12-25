@@ -138,6 +138,7 @@ models:
             - call_trace_address
     columns:
       - *blockchain_not_null
+      - name: block_number
       - &block_time
         name: block_time
       - &tx_hash_not_null
@@ -150,8 +151,15 @@ models:
         name: tx_to
       - &tx_success
         name: tx_success
-      - &call_success
-        name: call_success
+      - name: tx_nonce
+      - name: gas_price
+      - name: priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - &call_selector
+        name: call_selector
       - &call_trace_address_not_null
         name: call_trace_address
         tests:
@@ -160,15 +168,21 @@ models:
         name: call_from
       - &call_to
         name: call_to
-      - &call_selector
-        name: call_selector
-      - *protocol
-      - &call_input
-        name: call_input
+      - &call_success
+        name: call_success
+      - name: call_gas_used
       - &call_output
         name: call_output
-      - &call_remains
-        name: call_remains
+      - name: call_error
+      - name: remains
+      - name: maker
+      - name: receiver
+      - name: src_token_address
+      - name: src_token_amount
+      - name: dst_token_address
+      - name: dst_token_amount
+      - name: fusion
+      - name: order_hash
 
 
 
@@ -218,8 +232,10 @@ models:
       - &rn_tta_desc
         name: rn_tta_desc
       - *call_output
-      - *call_input
-      - *call_remains
+      - &call_input
+        name: call_input
+      - &call_remains
+        name: call_remains
 
       - &minute
         name: minute
@@ -576,18 +592,22 @@ models:
             - second_side
     columns:
       - *blockchain_not_null
-      - *tx_hash_not_null
-      - *call_trace_address_not_null
+      - name: block_number
       - name: block_time
-      - name: minute
+      - *tx_hash_not_null
       - name: tx_from
       - name: tx_to
-      - name: call_from
-      - name: call_to
+      - name: tx_nonce
+      - name: gas_price
+      - name: priority_fee_per_gas
       - name: contract_name
       - *protocol_not_null
       - name: protocol_version
       - name: method
+      - *call_trace_address_not_null
+      - name: call_from
+      - name: call_to
+      - name: call_gas_used
       - &user
         name: user
       - name: receiver
@@ -597,25 +617,23 @@ models:
         name: contracts_only
       - &second_side
         name: second_side
+      - name: order_hash
       - name: remains
       - name: src_token_address
+      - name: src_token_symbol
+      - name: src_token_decimals
+      - name: src_token_amount
       - name: dst_token_address
-      - name: src_amount
-      - name: dst_amount
-      - &src_token_symbol
-        name: src_token_symbol
-      - &dst_token_symbol
-        name: dst_token_symbol
-      - &usd_amount
-        name: usd_amount
-      - &sources_usd_amount
-        name: sources_usd_amount
-      - &transfers_usd_amount
-        name: transfers_usd_amount
-      - &transfers
-        name: transfers
-      - &explorer_link
-        name: explorer_link
+      - name: dst_token_symbol
+      - name: dst_token_decimals
+      - name: dst_token_amount
+      - name: amount_usd
+      - name: sources_amount_usd
+      - name: transfers_amount_usd
+      - name: user_amount_usd
+      - name: tokens
+      - name: transfers
+      - name: minute
       - *block_month_not_null
       
 
@@ -714,3 +732,26 @@ models:
       - name: transfers_between_players
       - name: minute
       - name: block_month
+
+
+  - name: oneinch_blockchains
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'calls', 'transfers']
+    description: >
+        1inch transfers within calls
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+          - unique
+      - name: chain_id
+      - name: native_token_symbol
+      - name: wrapped_native_token_address
+      - name: explorer_link
+      - name: first_deploy_at
+      - name: fusion_settlement_addresses
+
