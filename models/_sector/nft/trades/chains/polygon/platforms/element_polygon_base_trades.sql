@@ -112,7 +112,7 @@ WITH element_txs AS (
         {% endif %}
         )
 
-, base_trades (
+, base_trades as (
     SELECT blockchain
     , project
     , project_version

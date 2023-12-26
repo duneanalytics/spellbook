@@ -53,7 +53,7 @@ base_trades AS (
             WHEN l.currency IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
             ELSE l.currency
         END) AS currency_contract,
-        s.totalPricePaid AS price_raw
+        s.totalPricePaid AS price_raw,
         coalesce(cast(s.totalPricePaid * double '0.03' as uint256), uint256 '0') as platform_fee_amount_raw,
         uint256 '0' AS royalty_fee_amount_raw,
         CAST(null AS varbinary) AS platform_fee_address,
