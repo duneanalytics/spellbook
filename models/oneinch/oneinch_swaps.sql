@@ -210,8 +210,8 @@ select
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
     , src_token_decimals
     , _src_token_amount_true as src_token_amount
-    , coalesce(coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver), if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
-    , coalesce(coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver), _dst_token_symbol) as dst_token_symbol
+    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
+    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
     , _dst_token_amount_true as dst_token_amount
     , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens

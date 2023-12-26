@@ -29,7 +29,7 @@ delegates as (
             topic0 = 0xb2bd819aacce2076359caf6d49d9ac5252134cffdffe026bf4ad781dc3847790 -- RegisterDelegatee
             and contract_address = 0xaccfac2339e16dc80c50d2fa81b5c2b049b4f947 -- 1inch: Delegate Resolver
             {% if is_incremental() %}
-                and {{ incremental_predicate('block_time')}}
+                and {{ incremental_predicate('block_time') }}
             {% else %}
                 and block_time >= {{ project_start_date }}
             {% endif %}
@@ -44,7 +44,7 @@ delegates as (
         where
             topic0 = 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0 -- OwnershipTransferred
             {% if is_incremental() %}
-                and {{ incremental_predicate('block_time')}}
+                and {{ incremental_predicate('block_time') }}
             {% else %}
                 and block_time >= {{ project_start_date }}
             {% endif %}
@@ -62,7 +62,7 @@ delegates as (
     where
         topic0 = 0x6bff9ddd187ef283e9c7726f406ab27bcc3719a41b6bee3585c7447183cffcec -- FarmCreated (token, reward)
         {% if is_incremental() %}
-            and {{ incremental_predicate('block_time')}}
+            and {{ incremental_predicate('block_time') }}
         {% else %}
             and block_time >= {{ project_start_date }}
         {% endif %}
@@ -78,7 +78,7 @@ delegates as (
     where
         topic0 = 0xa9f739537fc57540bed0a44e33e27baa63290d865cc15f0f16cf17d38c998a4d -- DistributorChanged
         {% if is_incremental() %}
-            and {{ incremental_predicate('block_time')}}
+            and {{ incremental_predicate('block_time') }}
         {% else %}
             and block_time >= {{ project_start_date }}
         {% endif %}

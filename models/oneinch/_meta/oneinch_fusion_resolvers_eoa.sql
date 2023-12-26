@@ -33,7 +33,7 @@ executors as (
     {% for blockchain in oneinch_exposed_blockchains_list() %}
         select '{{ blockchain }}' as blockchain, tx_hash, "from", "to" from {{ source(blockchain, 'traces') }}
         {% if is_incremental() %}
-            where {{ incremental_predicate('block_time')}}
+            where {{ incremental_predicate('block_time') }}
         {% else %}
             where block_time >= {{ project_start_date }}
         {% endif %}
@@ -45,7 +45,7 @@ executors as (
     {% for blockchain in oneinch_exposed_blockchains_list() %}
         select '{{ blockchain }}' as blockchain, hash, "from" from {{ source(blockchain, 'transactions') }}
         {% if is_incremental() %}
-            where {{ incremental_predicate('block_time')}}
+            where {{ incremental_predicate('block_time') }}
         {% else %}
             where block_time >= {{ project_start_date }}
         {% endif %}
