@@ -18,14 +18,14 @@
 with
     
 executors as (
-    select blockchain, resolver_name, resolver_executor, resolver_address as "from"
+    select blockchain, name as resolver_name, resolver_executor, resolver_address
     from {{ ref('oneinch_fusion_executors') }}
     join {{ ref('oneinch_fusion_resolvers') }} on address = resolver_address
     group by 1, 2, 3, 4
 )
 
 , settlements as (
-    select blockchain, contract_address as "to"
+    select blockchain, contract_address
     from {{ ref('oneinch_blockchains') }}, unnest(fusion_settlement_addresses) as t(contract_address)
 )
 
@@ -54,17 +54,17 @@ executors as (
 )
 
 , calls as (
-    select blockchain, resolver_name, resolver_address, tx_hash as hash
+    select evms_traces.blockchain, executors.resolver_name, executors.resolver_address, evms_traces.tx_hash as hash
     from evms_traces
-    join executors using(blockchain, "from")
-    join settlements using(blockchain, "to")
+    join executors on evms_traces.blockchain = executors.blockchain and evms_traces."from" = executors.resolver_address
+    join settlements on evms_traces.blockchain = settlements.blockchain and evms_traces."to" = settlements.contract_address
     group by 1, 2, 3, 4
 )
 
 , txs as (
     select
         resolver_name
-        , "from" as resolver_eoa
+        , evms_transactions."from" as resolver_eoa
         , resolver_address
         , blockchain
     from evms_transactions
