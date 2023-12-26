@@ -2,10 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'ar_trades',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        partition_by = ['block_month'],
+        materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'trace_address']
     )
 }}

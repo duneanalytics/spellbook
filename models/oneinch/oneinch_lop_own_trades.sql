@@ -2,10 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'lop_own_trades',
-        partition_by = ['block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
+        materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'evt_index']
     )
 }}
@@ -35,7 +32,7 @@ select
     , tx_hash
     , tx_from
     , tx_to
-    , -1 as evt_index
+    , row_number() over(partition by tx_hash order by call_trace_address) as evt_index
 from {{ ref('oneinch_swaps') }}
 where
     protocol = 'LOP'
