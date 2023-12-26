@@ -40,6 +40,8 @@ base_trades AS (
         'buy' AS trade_category,
         'secondary' AS trade_type,
         s.evt_block_time as block_time,
+        cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+        cast(date_trunc('month', s.evt_block_time) as date) as block_month,
         s.evt_block_number as block_number,
         s.evt_tx_hash as tx_hash,
         s.contract_address as project_contract_address,
