@@ -86,3 +86,31 @@ models:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: element_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: element
+     contributors: Henrystats
+   config:
+     tags: [ 'polygon','element','base_trades' ]
+   description: >
+     Element events on polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: fractal_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: fractal
+     contributors: springzh
+   config:
+     tags: [ 'polygon','fractal','base_trades' ]
+   description: >
+     Fractal events on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
