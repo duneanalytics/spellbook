@@ -20,7 +20,7 @@
 
 {% set column_names = 
     "blockchain,     chain_id, native_token_symbol, wrapped_native_token_address,        explorer_link,                 first_deploy_at,              fusion_settlement_addresses"
- %}
+%}
 
 
 select * from (values

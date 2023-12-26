@@ -54,7 +54,7 @@ models:
       - name: order_hash
       - name: remains
       - name: minute
-      - name: block_month 
+      - name: block_month
 
   - name: oneinch_arbitrum_ar
     meta:
@@ -104,9 +104,6 @@ models:
       - name: dst_receiver
       - name: src_token_address
       - name: dst_token_address
-      - name: src_amount
-      - name: dst_amount
-      - name: dst_amount_min
       - name: src_token_amount
       - name: dst_token_amount
       - name: dst_token_amount_min
