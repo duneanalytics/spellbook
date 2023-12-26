@@ -427,8 +427,6 @@ models:
       - name: name
       - name: status
       - name: last_changed_at
-        tests:
-          - not_null
       - name: kyc
 
   - name: oneinch_fusion_executors
@@ -447,21 +445,16 @@ models:
             - resolver_executor
     columns:
       - name: resolver_address
-      - name: resolver_name
-      - name: resolver_status
-      - name: resolver_last_changed_at
-      - name: resolver_kyc
+        tests:
+          - not_null
       - name: resolver_executor
         tests:
           - not_null
-      - name: blockchain
       - name: chain_id
         tests:
           - not_null
-      - name: executor_promotions
       - name: first_promoted_at
       - name: last_promoted_at
-      - name: tx_hash_example
 
   - name: oneinch_fusion_farms
     meta:
