@@ -11,7 +11,7 @@
 
 
 
-{% set project_start_date = "timestamp '2022-12-25'" %} 
+{% set project_start_date = "timestamp '2023-12-25'" %} 
 
 
 
