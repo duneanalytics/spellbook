@@ -123,6 +123,7 @@ contracts as (
             , detection_source
             , namespace
             , created_at
+            , name
         from {{ source(blockchain, 'contracts') }}
     {% if not loop.last %} union all {% endif %}
     {% endfor %}
@@ -147,7 +148,6 @@ contracts as (
 )
 
 , creations as (
-    
     select
         project
         , address
@@ -158,11 +158,12 @@ contracts as (
         , namespaces
         , names
         , max(block_time) as last_created_at
-        , max(creation_traces."from") as last_creator
+        , max(evms_creation_traces."from") as last_creator
         , max(tx_hash) as last_creation_tx_hash
     from evms_creation_traces
     join contracts using(blockchain, address)
     left join descriptions using(blockchain, address)
+    group by 1, 2, 3, 4, 5, 6, 7, 8
 )
 
 
@@ -180,4 +181,3 @@ select
     , namespaces
     , names
 from creations
-order by project, created_at
