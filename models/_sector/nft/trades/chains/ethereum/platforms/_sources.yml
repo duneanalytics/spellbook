@@ -40,6 +40,7 @@ sources:
       - name: market_evt_OfferAccepted
       - name: market_evt_PrivateSaleFinalized
       - name: market_evt_SellerReferralPaid
+      - name: NFTDropMarket_evt_MintFromFixedPriceDrop
 
   - name: looksrare_ethereum
     tables:

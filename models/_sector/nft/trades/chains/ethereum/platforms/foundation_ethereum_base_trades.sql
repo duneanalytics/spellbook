@@ -177,7 +177,7 @@ WITH
       totalFees AS platform_fee_amount_raw,
       0 AS royalty_fee_amount_raw,
       evt_index as sub_tx_trade_id
-    FROM {{ source('foundation_ethereum','NFTDropMarket_evt_PrivateSaleFinalized') }} f
+    FROM {{ source('foundation_ethereum','NFTDropMarket_evt_MintFromFixedPriceDrop') }} f
        {% if is_incremental() %} -- this filter will only be applied on an incremental run
        WHERE f.{{incremental_predicate('evt_block_time')}}
        {% else %}
