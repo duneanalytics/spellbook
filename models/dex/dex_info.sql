@@ -92,4 +92,5 @@ FROM (VALUES
     , ('mento', 'Mento', 'Direct', 'mento')
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
+    , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
     ) AS temp_table (project, name, marketplace_type, x_username)
