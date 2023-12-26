@@ -10,8 +10,8 @@
     ,ref('aurem_polygon_base_trades')
     ,ref('dew_polygon_base_trades')
     ,ref('decentraland_polygon_base_trades')
-    ,ref('element_polygon_events')
-    ,ref('fractal_polygon_events')
+    ,ref('element_polygon_base_trades')
+    ,ref('fractal_polygon_base_trades')
 ] %}
 
 with base_union as (
