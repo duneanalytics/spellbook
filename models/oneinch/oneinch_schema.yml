@@ -518,3 +518,26 @@ models:
       - name: namespaces
       - name: names
 
+  - name: oneinch_fusion_resolvers_eoa
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        fusion resolvers EOA
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - blockchain
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: address
+        tests:
+          - not_null
+      - name: name
+      
