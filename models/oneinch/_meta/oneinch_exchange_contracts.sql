@@ -122,6 +122,7 @@ contracts as (
             , factory
             , detection_source
             , namespace
+            , created_at
         from {{ source(blockchain, 'contracts') }}
     {% if not loop.last %} union all {% endif %}
     {% endfor %}
