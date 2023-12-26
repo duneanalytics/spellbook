@@ -2,7 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'blockchains',
-        materialized = 'table',
+        materialized = 'view',
         unique_key = ['blockchain'],
     )
 }}
