@@ -215,7 +215,7 @@ pools_list as (
         pool as pool_address
         , token0
         , token1
-    from {{ ref('dex_raw_pools') }}
+    from ({{ dex_raw_pools() }}) -- performance optimization
     where type = 'uniswap_compatible'
     group by 1, 2, 3
 )

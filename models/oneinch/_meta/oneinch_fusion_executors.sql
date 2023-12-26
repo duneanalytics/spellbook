@@ -47,5 +47,5 @@ select
     , tx_hash_example
 from {{ ref('oneinch_fusion_resolvers') }} as fr
 join executors on fr.address = executors.resolver_address
-left join {{ ref('evms_info') }} using(chain_id)
+left join {{ ref('oneinch_blockchains') }} using(chain_id)
 order by fr.name, resolver_executor
