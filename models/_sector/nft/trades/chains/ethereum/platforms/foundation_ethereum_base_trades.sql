@@ -15,6 +15,7 @@ WITH
       f.evt_block_time AS block_time,
       f.evt_block_number AS block_number,
       c.tokenId AS nft_token_id,
+      1 as nft_amount,
       'Auction Settled' AS trade_category,
       case
         when (
@@ -52,6 +53,7 @@ WITH
       evt_block_time AS block_time,
       evt_block_number AS block_number,
       tokenId AS nft_token_id,
+      1 as nft_amount,
       'Buy' AS trade_category,
       case
         when (
@@ -88,6 +90,7 @@ WITH
       evt_block_time AS block_time,
       evt_block_number AS block_number,
       tokenId AS nft_token_id,
+      1 as nft_amount,
       'Sell' AS trade_category,
       case
         when (
@@ -124,6 +127,7 @@ WITH
       evt_block_time AS block_time,
       evt_block_number AS block_number,
       tokenId AS nft_token_id,
+      1 as nft_amount,
       'Private Sale' AS trade_category,
       case
         when (
@@ -155,6 +159,33 @@ WITH
         f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
        {% endif %}
   ),
+
+  fixed_price_mints AS (
+    SELECT
+      evt_block_time AS block_time,
+      evt_block_number AS block_number,
+      firstTokenId AS nft_token_id,
+      f."count" as nft_amount,
+      'Fixed Price Mint' AS trade_category,
+      'primary' as trade_type,
+      0x0000000000000000000000000000000000000000 as seller,
+      buyer,
+      creatorRev + totalFees AS price_raw,
+      contract_address AS project_contract_address,
+      nftContract AS nft_contract_address,
+      evt_tx_hash AS tx_hash,
+      totalFees AS platform_fee_amount_raw,
+      0 AS royalty_fee_amount_raw,
+      evt_index as sub_tx_trade_id
+    FROM {{ source('foundation_ethereum','NFTDropMarket_evt_PrivateSaleFinalized') }} f
+       {% if is_incremental() %} -- this filter will only be applied on an incremental run
+       WHERE f.{{incremental_predicate('evt_block_time')}}
+       {% else %}
+        WHERE
+        f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+       {% endif %}
+  ),
+
   all_foundation_trades AS (
     select
       *
@@ -175,6 +206,11 @@ WITH
       *
     from
       private_sales
+    UNION ALL
+    select
+      *
+    from
+      fixed_price_mints
   )
 SELECT
   'ethereum' as blockchain,
@@ -183,7 +219,7 @@ SELECT
   t.block_time,
   t.block_number,
   t.nft_token_id,
-  UINT256 '1' AS nft_amount,
+  t.nft_amount AS nft_amount,
   t.trade_category,
   t.trade_type,
   t.seller,
