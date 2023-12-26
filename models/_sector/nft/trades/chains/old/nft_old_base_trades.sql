@@ -10,8 +10,6 @@
 {% set nft_models = [
  ref('element_bnb_events')
 ,ref('element_avalanche_c_events')
-,ref('element_polygon_events')
-,ref('fractal_polygon_events')
 ,ref('liquidifty_bnb_events')
 ,ref('liquidifty_ethereum_events')
 ,ref('magiceden_polygon_events')
