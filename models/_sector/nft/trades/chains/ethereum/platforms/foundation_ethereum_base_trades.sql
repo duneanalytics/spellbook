@@ -1,5 +1,4 @@
 {{ config(
-    
     schema = 'foundation_ethereum',
     alias = 'base_trades',
     materialized = 'incremental',
@@ -190,7 +189,7 @@ SELECT
   t.seller,
   t.buyer,
   cast(t.price_raw as UINT256) as price_raw,
-  , {{var("ETH_ERC20_ADDRESS")}} AS currency_contract -- all trades are in ETH
+  {{var("ETH_ERC20_ADDRESS")}} AS currency_contract -- all trades are in ETH
 ,
   t.project_contract_address,
   t.nft_contract_address,
