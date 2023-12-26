@@ -21,7 +21,7 @@ executors as (
     select blockchain, resolver_name, resolver_executor, resolver_address as "from"
     from {{ ref('oneinch_fusion_executors') }}
     join {{ ref('oneinch_fusion_resolvers') }} on address = resolver_address
-    group by 1, 2, 3
+    group by 1, 2, 3, 4
 )
 
 , settlements as (
