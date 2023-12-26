@@ -39,8 +39,7 @@ WITH
         else f.creatorRev
       end AS royalty_fee_amount_raw,
       f.evt_index as sub_tx_trade_id
-    FROM
-      FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
+    FROM {{ source('foundation_ethereum','market_evt_ReserveAuctionFinalized') }} f
       INNER JOIN {{ source('foundation_ethereum','market_evt_ReserveAuctionCreated') }} c ON c.auctionId=f.auctionId AND c.evt_block_time<=f.evt_block_time
        {% if is_incremental() %} -- this filter will only be applied on an incremental run
        WHERE {{incremental_predicate('f.evt_block_time')}}
@@ -77,8 +76,7 @@ WITH
         else creatorRev
       end AS royalty_fee_amount_raw,
       evt_index as sub_tx_trade_id
-    FROM
-      FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
+    FROM {{ source('foundation_ethereum','market_evt_BuyPriceAccepted') }} f
        {% if is_incremental() %} -- this filter will only be applied on an incremental run
        WHERE f.{{incremental_predicate('evt_block_time')}}
        {% else %}
@@ -114,8 +112,7 @@ WITH
         else creatorRev
       end AS royalty_fee_amount_raw,
       evt_index as sub_tx_trade_id
-    FROM
-      FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
+    FROM {{ source('foundation_ethereum','market_evt_OfferAccepted') }} f
        {% if is_incremental() %} -- this filter will only be applied on an incremental run
        WHERE f.{{incremental_predicate('evt_block_time')}}
        {% else %}
@@ -151,8 +148,7 @@ WITH
         else creatorFee
       end AS royalty_fee_amount_raw,
       evt_index as sub_tx_trade_id
-    FROM
-      FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
+    FROM {{ source('foundation_ethereum','market_evt_PrivateSaleFinalized') }} f
        {% if is_incremental() %} -- this filter will only be applied on an incremental run
        WHERE f.{{incremental_predicate('evt_block_time')}}
        {% else %}
