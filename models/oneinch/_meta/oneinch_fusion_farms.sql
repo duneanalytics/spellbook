@@ -3,7 +3,6 @@
         schema = 'oneinch',
         alias = 'fusion_farms',
         materialized = 'table',
-        file_format = 'delta',
         unique_key = ['resolver_address', 'farm_address'],
         
     )

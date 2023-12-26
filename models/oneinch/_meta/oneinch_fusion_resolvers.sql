@@ -2,7 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'fusion_resolvers',
-        materialized = 'view',
+        materialized = 'table',
         unique_key = ['address']
     )
 }}
@@ -56,9 +56,6 @@ names(
         select addr, evt_block_time, 'Unregistered' as status
         from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV2_evt_Unregistered') }}
     )
-    {% if is_incremental() %}
-        where {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
     group by 1
 )
 

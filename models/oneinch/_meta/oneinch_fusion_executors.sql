@@ -2,7 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'fusion_executors',
-        materialized = 'view',
+        materialized = 'table',
         unique_key = ['resolver_address', 'resolver_executor', 'chain_id']
     )
 }}
@@ -23,9 +23,6 @@ executors as (
         select promoter, promotee, chainId, evt_block_time
         from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV2_evt_Promotion') }}
     )
-    {% if is_incremental() %}
-        where {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
     group by 1, 2, 3
 )
 
