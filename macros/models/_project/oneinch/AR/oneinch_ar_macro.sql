@@ -246,6 +246,7 @@ pools_list as (
                     block_time >= timestamp '{{ contract_data['start'] }}'
                 {% endif %}
                     and call_type = 'call'
+                    and block_time >= now() - interval '7' day
         )
 
     
