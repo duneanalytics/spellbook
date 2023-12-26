@@ -20,7 +20,7 @@ with
 executors as (
     select blockchain, resolver_name, resolver_executor, resolver_address as "from"
     from {{ ref('oneinch_fusion_executors') }}
-    join {{ ref('fusion_resolvers') }} on address = resolver_address
+    join {{ ref('oneinch_fusion_resolvers') }} on address = resolver_address
     group by 1, 2, 3
 )
 
