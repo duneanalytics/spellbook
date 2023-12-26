@@ -2,9 +2,7 @@
     config(
         schema = 'oneinch',
         alias = 'fusion_executors',
-        materialized = 'incremental',
-        incremental_strategy = 'merge',
-        file_format = 'delta',
+        materialized = 'view',
         unique_key = ['resolver_address', 'resolver_executor', 'chain_id']
     )
 }}
