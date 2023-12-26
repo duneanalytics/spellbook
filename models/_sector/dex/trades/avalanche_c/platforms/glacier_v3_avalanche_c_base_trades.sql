@@ -16,6 +16,7 @@
         project = 'glacier',
         version = '3',
         Pair_evt_Swap = source('glacier_avalanche_c', 'AlgebraPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('glacier_avalanche_c', 'AlgebraFactory_evt_Pool')
+        Factory_evt_PoolCreated = source('glacier_avalanche_c', 'AlgebraFactory_evt_Pool'),
+        optional_columns = []
     )
 }}
