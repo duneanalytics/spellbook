@@ -21,7 +21,7 @@ SELECT
     ),
     '...'
   ) AS proposal_id,
-  '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS "proposal_link",
+  '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Single-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Single-Choice Proposal'
   CONCAT(
     SUBSTRING(CAST(p.proposal_description AS VARCHAR), 1, 35),
@@ -146,7 +146,7 @@ SELECT
     ),
     '...'
   ) AS proposal_id,
-  '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS "proposal_link",
+  '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Multi-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Multi-Choice Proposal'
   CONCAT(
     SUBSTRING(CAST(p.proposal_description AS VARCHAR), 1, 35),
@@ -255,7 +255,7 @@ SELECT
     ),
     '...'
   ) AS proposal_id,
-  '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS "proposal_link",
+  '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
   CONCAT(
     SUBSTRING(CAST(p.proposal_description AS VARCHAR), 1, 35),

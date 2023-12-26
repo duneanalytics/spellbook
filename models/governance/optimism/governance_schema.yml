@@ -17,6 +17,10 @@ models:
       - &proposal_id
         name: proposal_id
         description: "The unique identifier of the proposal"
+      
+      - &proposal_link
+        name: proposal_link
+        description: "The link of the proposal on respective platform"
 
       - &proposal_type
         name: proposal_type
@@ -103,9 +107,11 @@ models:
     config:
       tags: ['optimism','agora','proposals','governance']
     description: >
-        analysis of optimism governance proposals available on agora platform 
+        Analysis of optimism governance proposals available on agora platform 
     columns:
       - *proposal_id
+
+      - *proposal_link
 
       - *proposal_type
 
@@ -154,9 +160,11 @@ models:
     config:
       tags: ['optimism','snapshot','proposals','governance']
     description: >
-        analysis of optimism governance proposals available on snapshot platform 
+        Analysis of optimism governance proposals available on snapshot platform 
     columns:
       - *proposal_id
+
+      - *proposal_link
 
       - *proposal_type
 
@@ -205,9 +213,11 @@ models:
     config:
       tags: ['optimism','snapshot','agora','proposals','governance','votes']
     description: >
-        analysis of votes for optimism governance proposals available on agora and snapshot platform 
+        Analysis of votes for optimism governance proposals available on agora and snapshot platform 
     columns:
       - *proposal_id
+
+      - *proposal_link
 
       - *platform
 
