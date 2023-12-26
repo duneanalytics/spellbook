@@ -24,7 +24,7 @@ executors as (
         select promoter, promotee, chainId, evt_block_time
         from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV2_evt_Promotion') }}
     )
-    left join {{ ref('oneinch_blockchains') }}
+    left join {{ ref('oneinch_blockchains') }} using(chain_id)
     group by 1, 2, 3, 4
 )
 
