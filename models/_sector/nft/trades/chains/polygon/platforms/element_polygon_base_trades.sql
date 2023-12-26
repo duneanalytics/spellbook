@@ -16,7 +16,7 @@ WITH element_txs AS (
         , ee.evt_block_time AS block_time
         , ee.erc721TokenId AS nft_token_id
         , 'secondary' AS trade_type
-        , 1 AS nft_amount
+        , uint256 '1' AS nft_amount
         , 'Sell' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
@@ -42,7 +42,7 @@ WITH element_txs AS (
         , ee.evt_block_time AS block_time
         , ee.erc721TokenId AS nft_token_id
         , 'secondary' AS trade_type
-        , 1 AS nft_amount
+        , uint256 '1' AS nft_amount
         , 'Buy' AS trade_category
         , ee.taker AS seller
         , ee.maker AS buyer
@@ -68,7 +68,7 @@ WITH element_txs AS (
         , ee.evt_block_time AS block_time
         , ee.erc1155TokenId AS nft_token_id
         , 'Single Item Trade' AS trade_type
-        , 1 AS nft_amount
+        , uint256 '1' AS nft_amount
         , 'Offer Accepted' AS trade_category
         , ee.maker AS seller
         , ee.taker AS buyer
@@ -94,7 +94,7 @@ WITH element_txs AS (
         , ee.evt_block_time AS block_time
         , ee.erc1155TokenId AS nft_token_id
         , 'Single Item Trade' AS trade_type
-        , 1 AS nft_amount
+        , uint256 '1' AS nft_amount
         , 'Buy' AS trade_category
         , ee.taker AS seller
         , ee.maker AS buyer
