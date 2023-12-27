@@ -186,6 +186,45 @@ WITH
        {% endif %}
   ),
 
+  dutch_auction_prices AS (
+    select
+      f.nftContract,
+      LEAST(
+        COALESCE(MIN(f.pricePaidPerNft), MIN(cp.clearingPrice))
+      ) AS price
+    FROM {{ source('foundation_ethereum', 'NFTDropMarket_evt_MintFromDutchAuction') }} f
+      left join foundation_ethereum.NFTDropMarket_evt_WithdrawCreatorRevenueFromDutchAuction cp on cp.nftContract = f.nftContract
+    group by
+      1
+  ),
+
+  dutch_auction_mints AS (
+    SELECT
+      evt_block_time AS block_time,
+      evt_block_number AS block_number,
+      firstTokenId AS nft_token_id,
+      1 as nft_amount,
+      'Dutch Auction Mint' AS trade_category,
+      'primary' as trade_type,
+      0x0000000000000000000000000000000000000000 as seller,
+      buyer,
+      p.price AS price_raw,
+      contract_address AS project_contract_address,
+      f.nftContract AS nft_contract_address,
+      evt_tx_hash AS tx_hash,
+      price * 0.15 AS platform_fee_amount_raw,
+      0 AS royalty_fee_amount_raw,
+      evt_index as sub_tx_trade_id
+    FROM {{ source('foundation_ethereum', 'NFTDropMarket_evt_MintFromDutchAuction') }} f
+      LEFT JOIN dutch_auction_prices p ON p.nftContract = f.nftContract
+    {% if is_incremental() %} -- this filter will only be applied on an incremental run
+      WHERE f.{{incremental_predicate('evt_block_time')}}
+    {% else %}
+      WHERE
+      f.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+  ),
+
   all_foundation_trades AS (
     select
       *
