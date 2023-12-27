@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum", "polygon"]\',
                                 "sector",
                                 "perpetual",
-                                \'["msilb7", "drethereum", "rplust","Henrystats", "jeff-dude"]\') }}'
+                                \'["msilb7", "drethereum", "rplust","Henrystats", "jeff-dude", "kaiblade"]\') }}'
         )
 }}
 
@@ -21,6 +21,7 @@
 ,ref('hubble_exchange_avalanche_c_perpetual_trades')
 ,ref('gmx_perpetual_trades')
 ,ref('tigris_perpetual_trades')
+,ref('mummy_finance_optimism_perpetual_trades')
 ] %}
 
 SELECT *
