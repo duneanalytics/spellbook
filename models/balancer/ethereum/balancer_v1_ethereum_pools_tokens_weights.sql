@@ -127,6 +127,7 @@ norm_weights AS (
 -- Balancer v1 Pools Tokens Weights
 --
 SELECT
+    'ethereum' AS blockchain,
     pool_address AS pool_id,
     token_address,
     normalized_weight
