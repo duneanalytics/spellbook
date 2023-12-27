@@ -7,7 +7,7 @@
     ,schema = 'governance_optimism_proposals'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
-    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_block')]
+    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_timestamp')]
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
