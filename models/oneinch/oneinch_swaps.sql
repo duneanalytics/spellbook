@@ -123,6 +123,9 @@ tokens as (
         , false as contracts_only
         , true as second_side
     from calls
+    where
+        protocol = 'LOP'
+        and cardinality(call_trace_address) = 0
 )
 
 {% set src_condition = 'contract_address = _src_token_address' %}
