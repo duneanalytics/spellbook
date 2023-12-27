@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'immortalx_celo',
-    alias = 'base_trades',
+    alias = 'perpetual_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
