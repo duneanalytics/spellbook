@@ -18,6 +18,7 @@ with dexs as (
 		case when t.sellXEarnY then t.tokenX else t.tokenY end as token_sold_address,
 		case when t.sellXEarnY then t.amountY else t.amountX end as token_bought_amount_raw,
 		case when t.sellXEarnY then t.amountX else t.amountY end as token_sold_amount_raw,
+        cast(null as varbinary) as taker,
         cast(null as varbinary) as maker,
         t.evt_tx_hash as tx_hash,
         t.evt_index,
