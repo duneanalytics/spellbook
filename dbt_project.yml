@@ -1376,3 +1376,8 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
+
+    immortalx:
+      +schema: immortalx
+      optimism:
+        +schema: immortalx_celo
