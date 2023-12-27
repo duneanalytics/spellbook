@@ -252,6 +252,11 @@ WITH
       *
     from
       fixed_price_mints
+    UNION ALL
+    select
+      *
+    from
+      dutch_auction_mints
   )
 SELECT
   'ethereum' as blockchain,
