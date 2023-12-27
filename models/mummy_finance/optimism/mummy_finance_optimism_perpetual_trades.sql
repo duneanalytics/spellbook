@@ -1,5 +1,5 @@
 {{ config(
-	
+	schema = 'mummy_finance_optimism',
 	alias = 'all_perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
