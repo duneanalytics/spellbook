@@ -243,7 +243,7 @@ models:
       contributors: ppclunghe, gregshestakovlido, tomfutago
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
-    description: "kyberswap Arbitrum v3 base trades"
+    description: "kyberswap Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -18,3 +18,11 @@ sources:
   - name: wardenswap_optimism
     tables:
       - name: WardenRouterV2_L2_evt_Trade
+  - name: kyber_optimism
+    tables:
+      - name: DMM_Pool_evt_Swap
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+  - name: kyberswap_optimism
+    tables:
+      - name: DMM_Factory_evt_PoolCreated

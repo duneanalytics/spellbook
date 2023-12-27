@@ -61,3 +61,9 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: kyber_ethereum
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated

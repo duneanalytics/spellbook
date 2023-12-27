@@ -33,3 +33,7 @@ sources:
     tables:
       - name: FraxswapPair_evt_Swap
       - name: FraxswapFactory_evt_PairCreated
+  - name: kyber_polygon
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
