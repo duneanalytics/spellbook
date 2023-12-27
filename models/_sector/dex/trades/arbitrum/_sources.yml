@@ -41,3 +41,6 @@ sources:
   - name: balancer_v2_arbitrum
     tables:
       - name: Vault_evt_Swap
+  - name: gmx_arbitrum
+    tables:
+      - name: Router_evt_Swap
