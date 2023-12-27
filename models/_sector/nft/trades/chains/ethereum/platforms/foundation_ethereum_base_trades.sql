@@ -212,6 +212,7 @@ WITH
       contract_address AS project_contract_address,
       f.nftContract AS nft_contract_address,
       evt_tx_hash AS tx_hash,
+      -- 15% take rate for dutch auctions
       price * 0.15 AS platform_fee_amount_raw,
       0 AS royalty_fee_amount_raw,
       evt_index as sub_tx_trade_id
