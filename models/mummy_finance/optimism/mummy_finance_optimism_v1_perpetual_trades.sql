@@ -102,7 +102,7 @@ SELECT
 	,CAST(date_trunc('DAY', evt_block_time) AS date) AS block_date
 	,CAST(date_trunc('MONTH', evt_block_time) AS date) AS block_month
 	,evt_block_time
-	,NULL AS virtual_asset
+	,CAST(NULL AS VARCHAR) AS virtual_asset
     ,underlying_asset
 	,market
 	,contract_address AS market_address
