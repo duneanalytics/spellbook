@@ -75,13 +75,13 @@ fee.feeUsd AS margin_fee
 FROM all_executed_positions event
 
 JOIN {{ source('optimism', 'transactions') }} trx
+ON event.evt_tx_hash = trx.hash
 {% if not is_incremental() %}
 AND evt_block_time >= DATE '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
 AND evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 {% endif %}
-ON event.evt_tx_hash = trx.hash
 
 JOIN margin_fees_info fee
 ON event.evt_tx_hash = fee.evt_tx_hash
