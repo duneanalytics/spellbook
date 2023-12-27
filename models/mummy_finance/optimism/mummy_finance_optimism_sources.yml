@@ -18,3 +18,9 @@ sources:
 
       - name: PositionRouter_evt_ExecuteIncreasePosition
         loaded_at_field: evt_block_time
+
+      - name: Vault_evt_DecreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: Vault_evt_IncreasePosition
+        loaded_at_field: evt_block_time
