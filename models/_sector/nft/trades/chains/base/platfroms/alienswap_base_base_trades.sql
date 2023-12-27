@@ -36,7 +36,7 @@ SELECT
     , s.evt_index as sub_tx_trade_id
 FROM {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
     {% if is_incremental() %}
-    AND {{incremental_predicate('s.evt_block_time')}}
+    WHERE {{incremental_predicate('s.evt_block_time')}}
     {% else %}
-    AND s.evt_block_time >= timestamp '{{alienswap_usage_start_date}}'
+    WHERE s.evt_block_time >= timestamp '{{alienswap_usage_start_date}}'
     {% endif %}
