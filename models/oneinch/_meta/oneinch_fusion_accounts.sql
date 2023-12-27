@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'oneinch',
-        alias = 'fusion_resolvers_eoa',
+        alias = 'fusion_accounts',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

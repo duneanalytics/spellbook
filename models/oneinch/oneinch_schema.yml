@@ -518,7 +518,7 @@ models:
       - name: namespaces
       - name: names
 
-  - name: oneinch_fusion_resolvers_eoa
+  - name: oneinch_fusion_accounts
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
@@ -539,5 +539,6 @@ models:
       - name: address
         tests:
           - not_null
-      - name: name
+      - name: resolver_name
+      - name: resolver_address
       
