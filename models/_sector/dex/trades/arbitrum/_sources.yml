@@ -43,5 +43,5 @@ sources:
       - name: Vault_evt_Swap
   - name: integral_size_arbitrum
     tables:
-      - name: TwapFactory_evt_PairCreated
       - name: TwapPair_evt_Swap
+      - name: TwapFactory_evt_PairCreated

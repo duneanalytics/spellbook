@@ -61,3 +61,7 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: integral_size_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
