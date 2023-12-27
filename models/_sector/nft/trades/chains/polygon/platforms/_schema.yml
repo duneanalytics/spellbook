@@ -114,3 +114,17 @@ models:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: rarible_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: rarible
+     contributors: springzh
+   config:
+     tags: [ 'polygon','rarible','base_trades' ]
+   description: >
+     Rarible events on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
