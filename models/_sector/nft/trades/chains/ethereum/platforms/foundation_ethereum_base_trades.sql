@@ -193,7 +193,8 @@ WITH
         COALESCE(MIN(f.pricePaidPerNft), MIN(cp.clearingPrice))
       ) AS price
     FROM {{ source('foundation_ethereum', 'NFTDropMarket_evt_MintFromDutchAuction') }} f
-      left join foundation_ethereum.NFTDropMarket_evt_WithdrawCreatorRevenueFromDutchAuction cp on cp.nftContract = f.nftContract
+      LEFT JOIN {{ source('foundation_ethereum', 'NFTDropMarket_evt_WithdrawCreatorRevenueFromDutchAuction') }} cp
+        ON cp.nftContract = f.nftContract
     group by
       1
   ),
