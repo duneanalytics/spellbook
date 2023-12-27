@@ -50,7 +50,7 @@ WITH all_proposals AS (
             {{ model }}
         {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('start_block') }}
+            {{ incremental_predicate('start_timestamp') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
