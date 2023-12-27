@@ -295,8 +295,8 @@ FROM
           ) AS VARCHAR
         )
       ) AS proposal_description,
-      start AS start_block,
-      FROM_UNIXTIME(start) AS start_timestamp,
+      "start" AS start_block,
+      FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
       'snapshot' AS platform
@@ -607,8 +607,8 @@ FROM
           ) AS VARCHAR
         )
       ) AS proposal_description,
-      start AS start_block,
-      FROM_UNIXTIME(start) AS start_timestamp,
+      "start" AS start_block,
+      FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
       'snapshot' AS platform
@@ -926,8 +926,8 @@ FROM
           ) AS VARCHAR
         )
       ) AS proposal_description,
-      start AS start_block,
-      FROM_UNIXTIME(start) AS start_timestamp,
+      "start" AS start_block,
+      FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
       'snapshot' AS platform
