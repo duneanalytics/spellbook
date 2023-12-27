@@ -1379,5 +1379,5 @@ models:
 
     immortalx:
       +schema: immortalx
-      optimism:
+      celo:
         +schema: immortalx_celo
