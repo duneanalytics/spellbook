@@ -1,21 +1,21 @@
 {{ config(
-	schema = 'mummy_finance_optimism',
+	schema = 'fxdx_optimism',
 	alias = 'all_perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "mummy_finance",
+                                "fxdx",
                                 \'["kaiblade"]\') }}'
 	)
 }}
 
-{% set mummy_finance_optimism_perpetual_trade_models = [
- ref('mummy_finance_optimism_v1_perpetual_trades')
+{% set fxdx_optimism_perpetual_trade_models = [
+ ref('fxdx_optimism_v2_perpetual_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for perpetual_trades in mummy_finance_optimism_perpetual_trade_models %}
+    {% for perpetual_trades in fxdx_optimism_perpetual_trade_models %}
     SELECT
 		blockchain
 		,block_date
