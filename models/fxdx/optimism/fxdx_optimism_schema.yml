@@ -89,7 +89,7 @@ models:
         description: "Event index number"
 
 
-  - name: fxdx_optimism_optimism_perpetual_trades
+  - name: fxdx_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
