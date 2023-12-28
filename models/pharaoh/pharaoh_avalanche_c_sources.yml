@@ -4,7 +4,7 @@ sources:
   - name: pharaoh_avalanche_c
     description: "Avalanche decoded tables related to pharaoh contract"
     tables:
-      - name: Pair_evt_Swap
+      - name: ClPool_evt_Swap
         loaded_at_field: evt_block_time
         columns:
           - &amount1
