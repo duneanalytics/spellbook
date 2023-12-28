@@ -243,7 +243,7 @@ WITH pool_labels AS (
         c.token_balance_raw,
         c.token_balance,
         COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
-        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
+        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
