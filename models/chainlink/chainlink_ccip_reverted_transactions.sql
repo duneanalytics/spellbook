@@ -25,11 +25,10 @@ FROM (
     SELECT
       blockchain,
       block_time,
-      date_month,
+      date_start,
       node_address,
-      token_amount,
-      usd_amount,
-      tx_hash
+      tx_hash,
+      trace_address
     FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL

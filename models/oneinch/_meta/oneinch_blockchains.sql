@@ -10,7 +10,7 @@
 
 
 {% for blockchain in oneinch_exposed_blockchains_list() %}
-    select * from {{ ref('oneinch_' + blockchain + '_blockchain') }}
+    {{ oneinch_blockchain_macro(blockchain) }}
     {% if not loop.last %}union all{% endif %}
 {% endfor %}
 
