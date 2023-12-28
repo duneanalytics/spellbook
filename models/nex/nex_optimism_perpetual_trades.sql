@@ -1,7 +1,7 @@
 {{ config(
 	
-	schema = 'fxdx_optimism',
-	alias = 'perpetual_trades_v2',
+	schema = 'nex_optimism',
+	alias = 'perpetual_trades',
 	partition_by = ['block_month'],
 	materialized = 'incremental',
 	file_format = 'delta',
@@ -9,20 +9,20 @@
 	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "fxdx",
+                                "nex",
                                 \'["kaiblade"]\') }}'
 	)
 }}
 
 
-{% set project_start_date = '2023-05-18' %}
+{% set project_start_date = '2022-09-01' %}
 
 WITH all_executed_positions AS
 (SELECT *, 
 'Open' AS trade_type
-FROM {{ source('fxdxdex_v2_optimism', 'Vault_evt_IncreasePosition') }}
+FROM {{ source('nex_optimism', 'Vault_evt_IncreasePosition') }}
 
-WHERE evt_tx_hash IN ( SELECT evt_tx_hash FROM {{ source('fxdxdex_v2_optimism', 'PositionRouter_evt_ExecuteIncreasePosition') }} )
+WHERE evt_tx_hash IN ( SELECT evt_tx_hash FROM {{ source('nex_optimism', 'PositionRouter_evt_ExecuteIncreasePosition') }} )
 {% if not is_incremental() %}
 AND evt_block_time >= DATE '{{project_start_date}}'
 {% endif %}
@@ -34,9 +34,9 @@ UNION
 
 SELECT *, 
 'Close' AS trade_type
-FROM {{ source('fxdxdex_v2_optimism', 'Vault_evt_DecreasePosition') }}
+FROM {{ source('nex_optimism', 'Vault_evt_DecreasePosition') }}
 
-WHERE evt_tx_hash IN ( SELECT evt_tx_hash FROM {{ source('fxdxdex_v2_optimism', 'PositionRouter_evt_ExecuteDecreasePosition') }} )
+WHERE evt_tx_hash IN ( SELECT evt_tx_hash FROM {{ source('nex_optimism', 'PositionRouter_evt_ExecuteDecreasePosition') }} )
 {% if not is_incremental() %}
 AND evt_block_time >= DATE '{{project_start_date}}'
 {% endif %}
@@ -48,7 +48,7 @@ AND evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 margin_fees_info AS
 (SELECT *, 
 LEAD(evt_index, 1, 1000000) OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS next_evt_index
-FROM {{ source('fxdxdex_v2_optimism', 'Vault_evt_CollectPositionTradeFees') }}
+FROM {{ source('nex_optimism', 'Vault_evt_CollectMarginFees') }}
 
 
 {% if not is_incremental() %}
@@ -62,12 +62,9 @@ WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 complete_perp_tx AS
 (SELECT *, index_token || '/USD' AS market
 FROM (SELECT event.*,
-(CASE
-WHEN collateralToken = 0xd158b0f013230659098e58b66b602dff8f7ff120 THEN 'WETH'
-ELSE tokens1.symbol
-END) AS underlying_asset,
+tokens1.symbol AS underlying_asset,
 (CASE 
-WHEN indexToken = 0xd158b0f013230659098e58b66b602dff8f7ff120 THEN 'ETH'
+WHEN tokens.symbol = 'WETH' THEN 'ETH'
 WHEN tokens.symbol = 'WBTC' THEN 'BTC'
 ELSE tokens.symbol
 END
@@ -119,9 +116,9 @@ SELECT
         WHEN isLong = true AND trade_type = 'Close' THEN 'Close Long'
      END   
     ) AS trade
-	,'FXDX' AS project
-	,'v2' AS version
-	,'FXDX' AS frontend
+	,'NEX' AS project
+	,'v1' AS version
+	,'NEX' AS frontend
 	,account AS trader
 	,sizeDelta AS volume_raw
 	,evt_tx_hash AS tx_hash
