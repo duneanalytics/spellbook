@@ -30,28 +30,6 @@ WITH pool_labels AS (
         WHERE blockchain = 'fantom'
         GROUP BY 1, 2, 3
     ),
-
-/*    dex_prices_1 AS (
-        SELECT
-            date_trunc('day', HOUR) AS DAY,
-            contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
-        GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
-    ),
-
-    dex_prices AS (
-        SELECT
-            *,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change
-        FROM dex_prices_1
-    ),*/
     
     eth_prices AS (
         SELECT 
@@ -186,8 +164,7 @@ WITH pool_labels AS (
             symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price/*, p2.price*/, 0) AS protocol_liquidity_usd,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price/*, p2.price*/, 0) AS pool_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -195,9 +172,6 @@ WITH pool_labels AS (
         AND blockchain = 'fantom'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-  /*      LEFT JOIN dex_prices p2 ON p2.day <= c.day
-        AND c.day < p2.day_of_next_change
-        AND p2.token = b.token*/
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
@@ -208,8 +182,7 @@ WITH pool_labels AS (
             q.name,
             pool_type,
             ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.pool_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
-            SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
-            SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
+            SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('beethoven_x_fantom_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
@@ -226,7 +199,6 @@ WITH pool_labels AS (
     weighted_pool_liquidity_estimates_2 AS(
     SELECT  e.day,
             e.pool_id,
-            SUM(e.pool_liquidity) / MAX(e.pricing_count) AS pool_liquidity,
             SUM(e.protocol_liquidity) / MAX(e.pricing_count) AS protocol_liquidity
     FROM weighted_pool_liquidity_estimates e
     GROUP BY 1,2
