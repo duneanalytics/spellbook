@@ -109,10 +109,10 @@ FROM all_executed_positions event
 JOIN {{ source('optimism', 'transactions') }} trx
 ON event.tx_hash = trx.hash
 {% if not is_incremental() %}
-AND block_time >= DATE '{{project_start_date}}'
+AND event.block_time >= DATE '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+AND event.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 {% endif %}
 
 JOIN margin_fees_info fees
@@ -126,15 +126,15 @@ ON event.indexToken = tokens.contract_address
 JOIN {{ ref('tokens_optimism_erc20') }} tokens1
 ON event.collateralToken = tokens1.contract_address
 
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
 )
 )
 
 SELECT
 	'optimism' AS blockchain
-	,CAST(date_trunc('DAY', evt_block_time) AS date) AS block_date
-	,CAST(date_trunc('MONTH', evt_block_time) AS date) AS block_month
-	,evt_block_time AS block_time
+	,CAST(date_trunc('DAY', block_time) AS date) AS block_date
+	,CAST(date_trunc('MONTH', block_time) AS date) AS block_month
+	, block_time
 	,CAST(NULL AS VARCHAR) AS virtual_asset
     ,underlying_asset
 	,market
@@ -149,14 +149,14 @@ SELECT
         WHEN isLong = true AND trade_type = 'Close' THEN 'Close Long'
      END   
     ) AS trade
-	,'Mummy Finance' AS project
+	,'AVT' AS project
 	,'v1' AS version
-	,'Mummy Finance' AS frontend
+	,'AVT' AS frontend
 	,account AS trader
 	,sizeDelta AS volume_raw
-	,evt_tx_hash AS tx_hash
+	,tx_hash AS tx_hash
 	,"from" AS tx_from
 	,to AS tx_to
-	,evt_index
+	,index AS evt_index
 FROM complete_perp_tx
 
