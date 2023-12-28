@@ -665,6 +665,8 @@ models:
         +schema: aragon_polygon
       base:
         +schema: aragon_base
+      arbitrum:
+        +schema: aragon_arbitrum
 
     spiritswap:
       +schema: spiritswap
@@ -808,6 +810,8 @@ models:
         +schema: chainlink_arbitrum
       avalanche_c:
         +schema: chainlink_avalanche_c
+      base:
+        +schema: chainlink_base
       bnb:
         +schema: chainlink_bnb
       ethereum:
