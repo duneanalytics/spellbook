@@ -63,9 +63,3 @@ sources:
           - &pool
             name: pool
             description: "Avalanche address for the liquidity pool created"
-		  - &tickSpacing
-			name: tickSpacing
-			description: "Tick Spacing for pool created"
-		  - &fee
-			name: fee
-			description: "Fee for pool created"
