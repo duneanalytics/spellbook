@@ -91,4 +91,4 @@ select
   pe.tx_hash,
   pe.evt_index
 from perp_events pe 
-  join celo.transactions tx on pe.tx_hash = tx.hash and pe.block_time = tx.block_time
+  join {{ source('celo', 'transactions') }} tx on pe.tx_hash = tx.hash and pe.block_time = tx.block_time
