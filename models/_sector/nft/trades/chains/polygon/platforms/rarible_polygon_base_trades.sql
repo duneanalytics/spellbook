@@ -198,61 +198,34 @@ trade_amount_summary as (
         GROUP BY 1, 2
     )
 )
-
+, base_trades as (
 SELECT
   'polygon' AS blockchain,
   'rarible' AS project,
-  'v2' AS version,
+  'v2' AS project_version,
   a.evt_tx_hash AS tx_hash,
   a.evt_block_time AS block_time,
+  cast(date_trunc('day', a.evt_block_time) as date) as block_date,
+  cast(date_trunc('month', a.evt_block_time) as date) as block_month,
   a.evt_block_number AS block_number,
-  coalesce(s.price_raw,uint256 '0') / power(10, erc.decimals) * p.price AS amount_usd,
-  coalesce(s.price_raw,uint256 '0') / power(10, erc.decimals) AS amount_original,
-  coalesce(s.price_raw,uint256 '0') as price_raw,
-  CASE WHEN erc.symbol = 'WMATIC' THEN 'MATIC' ELSE erc.symbol END AS currency_symbol,
+  coalesce(s.price_raw, uint256 '0') as price_raw,
   a.currency_contract,
-  token_id,
-  token_standard,
+  token_id as nft_token_id,
   a.contract_address AS project_contract_address,
-  evt_type,
-  CAST(NULL AS varchar) AS collection,
-  CASE WHEN nft_amount = uint256 '1' THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
+  'secondary' as trade_type,
   nft_amount,
   a.trade_category,
   a.buyer,
   a.seller,
   a.nft_contract_address,
-  agg.name AS aggregator_name,
-  agg.contract_address AS aggregator_address,
-  t."from" AS tx_from,
-  t."to" AS tx_to,
   coalesce(s.platform_fee_amount_raw,uint256 '0') as platform_fee_amount_raw,
-  CAST(coalesce(s.platform_fee_amount_raw,uint256 '0') / power(10, erc.decimals) AS double) AS platform_fee_amount,
-  CAST(coalesce(s.platform_fee_amount_raw,uint256 '0') / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  CAST(coalesce(s.platform_fee_amount_raw,uint256 '0')  / s.price_raw * 100 as double) as platform_fee_percentage,
   coalesce(s.royalty_fee_amount_raw,uint256 '0') AS royalty_fee_amount_raw,
-  CAST(coalesce(s.royalty_fee_amount_raw,uint256 '0') / power(10, erc.decimals) as double) AS royalty_fee_amount,
-  CAST(coalesce(s.royalty_fee_amount_raw,uint256 '0') / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
-  CAST(coalesce(s.royalty_fee_amount_raw,uint256 '0') / s.price_raw * 100 AS double) AS royalty_fee_percentage,
-  cast(null as varbinary) AS royalty_fee_receive_address,
-  cast(null as varchar) AS royalty_fee_currency_symbol,
-  cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_index as varchar) AS unique_trade_id
+  cast(null as varbinary) AS royalty_fee_address,
+  cast(null as varbinary) AS platform_fee_address,
+  a.evt_index as sub_tx_trade_id
 FROM trades a
-INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
-    AND a.evt_tx_hash = t.hash
-    {% if not is_incremental() %}
-    AND t.block_time >= {{nft_start_date}}
-    {% endif %}
-    {% if is_incremental() %}
-    AND t.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
 LEFT JOIN trade_amount_summary s ON a.evt_block_number = s.evt_block_number AND a.evt_tx_hash = s.evt_tx_hash
-LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract AND p.minute = date_trunc('minute', a.evt_block_time)
-    {% if not is_incremental() %}
-    AND p.minute >= {{nft_start_date}}
-    {% endif %}
-    {% if is_incremental() %}
-    AND p.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t."to"
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'polygon') }}

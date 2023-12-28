@@ -12,6 +12,8 @@
     ,ref('decentraland_polygon_base_trades')
     ,ref('element_polygon_base_trades')
     ,ref('fractal_polygon_base_trades')
+    ,ref('rarible_polygon_base_trades')
+    ,ref('tofu_polygon_base_trades')
 ] %}
 
 with base_union as (

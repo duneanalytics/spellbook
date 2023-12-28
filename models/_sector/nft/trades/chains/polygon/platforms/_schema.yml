@@ -128,3 +128,17 @@ models:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: tofu_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: tofu
+     contributors: theachenyj, sohwak
+   config:
+     tags: [ 'polygon','tofu','v1','base_trades' ]
+   description: >
+     Tofu v1 base_trades on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

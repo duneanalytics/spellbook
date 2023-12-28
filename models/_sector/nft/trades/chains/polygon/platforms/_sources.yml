@@ -32,4 +32,15 @@ sources:
     tables:
       - name: Marketplace_evt_NewSale
       - name: Marketplace_evt_ListingAdded
+
+  - name: rarible_polygon
+    tables:
+      - name: Exchange_evt_Match
+      - name: ExchangeMetaV2_call_directPurchase
+      - name: ExchangeMetaV2_call_directAcceptBid
+
+  - name: tofu_nft_polygon
+    tables:
+      - name: MarketNG_call_run
+      - name: MarketNG_evt_EvInventoryUpdate
 #  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.
