@@ -186,7 +186,7 @@ WITH pool_labels AS (
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('beethoven_x_fantom_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
-        AND b.pool_liquidity_usd > 0
+        AND b.protocol_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
