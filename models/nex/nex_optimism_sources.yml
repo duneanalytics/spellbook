@@ -8,7 +8,7 @@ sources:
       Decoded event tables for Perpetual trades on nex
     tables:
 
-      - name: Vault_evt_CollectPositionTradeFees
+      - name: Vault_evt_CollectMarginFees
         loaded_at_field: evt_block_time
 
       - name: PositionRouter_evt_ExecuteDecreasePosition
