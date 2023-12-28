@@ -102,7 +102,7 @@ models:
       project: mummy_finance
       contributors: kaiblade
     config:
-      tags: ['optimism', 'perpetual', 'perpetuals', 'perps', trades]
+      tags: ['optimism', 'mummy_finance', 'perpetuals', 'perps', trades]
     description: >
       Mummy Finance v1 perpetuals trades on Optimism
     tests:
@@ -168,7 +168,7 @@ models:
       sector: perpetual
       contributors: kaiblade
     config:
-      tags: ['optimism', 'perpetuals', 'perps']
+      tags: ['optimism', mummy_finance, 'perpetuals', 'perps']
     description: >
       All perpetual trades table on Optimism
     columns:

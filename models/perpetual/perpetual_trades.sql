@@ -23,6 +23,7 @@
 ,ref('tigris_perpetual_trades')
 ,ref('mummy_finance_optimism_perpetual_trades')
 ,ref('fxdx_optimism_perpetual_trades')
+,ref('opx_finance_optimism_perpetual_trades')
 ] %}
 
 SELECT *
