@@ -211,7 +211,7 @@ WITH pool_labels AS (
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('beethoven_x_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref('beethoven_x_fantom_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
@@ -247,7 +247,7 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('beethoven_x_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    LEFT JOIN {{ ref('beethoven_x_fantom_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
     AND w.blockchain = 'fantom'
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day 
