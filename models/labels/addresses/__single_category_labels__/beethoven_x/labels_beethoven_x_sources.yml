@@ -94,31 +94,6 @@ sources:
           - name: swapFeePercentage
           - name: symbol
 
-
-      - name: MetaStablePoolFactory_call_create
-        description: >
-          Decoded table of registered pools on the Beethoven X MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
-        columns:
-          - name: call_block_number
-          - name: call_block_time
-          - name: call_success
-          - name: call_trace_address
-          - name: call_tx_hash
-          - name: contract_address
-            description: "Address of the MetaStablePoolFactory contract"
-          - name: name
-            description: "Name of the created pool"
-          - name: oracleEnabled
-          - name: rateProviders
-          - name: priceRateCacheDuration
-          - name: output_0
-          - name: owner
-          - name: swapFeePercentage
-          - name: amplificationParameter
-          - name: symbol
-          - name: tokens
-
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Beethoven X NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
