@@ -10,30 +10,20 @@ sources:
         loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
-          - &amountIn
-            name: amountIn
-          - &amountOut
-            name: amountOut
-          - &contract_address
-            name: contract_address
-          - &evt_block_number
-            name: evt_block_number
+          - name: amountIn
+          - name: amountOut
+          - name: contract_address
+          - name: evt_block_number
             description: "Block number which processed the unique transaction hash"
-          - &evt_block_time
-            name: evt_block_time
+          - name: evt_block_time
             description: "Timestamp for block event time in UTC"
-          - &evt_index
-            name: evt_index
+          - name: evt_index
             description: "Index value of the transaction"
-          - &evt_tx_hash
-            name: evt_tx_hash
+          - name: evt_tx_hash
             description: "Primary key of the transaction"
-          - &poolId
-            name: poolId
-          - &tokenIn
-            name: tokenIn
-          - &tokenOut
-            name: tokenOut
+          - name: poolId
+          - name: tokenIn
+          - name: tokenOut
 
       - name: Vault_evt_PoolRegistered
         description: >
@@ -42,17 +32,13 @@ sources:
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
-          - &evt_tx_hash
-            name: evt_tx_hash
+          - name: evt_tx_hash
             description: 'Primary key of the transaction'
-          - &evt_index
-            name: evt_index
+          - name: evt_index
             description: 'Index value of the transaction'
-          - &evt_block_time
-            name: evt_block_time
+          - name: evt_block_time
             description: 'Timestamp for block event time in UTC'
-          - &evt_block_number
-            name: evt_block_number
+          - name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
             description: 'Arbitrum address for the liquidity pool used in transaction'
@@ -66,42 +52,31 @@ sources:
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
         loaded_at_field: call_block_time
         columns:
-          - &call_block_number
-            name: call_block_number
+          - name: call_block_number
             description: 'Block number which processed the unique transaction hash'
-          - &call_block_time
-            name: call_block_time
+          - name: call_block_time
             description: 'Timestamp for block time in which the call occurred in UTC'
-          - &call_success
-            name: call_success
+          - name: call_success
             description: 'Boolean indicating if call was successfully processed'
-          - &call_trace_address
-            name: call_trace_address
+          - name: call_trace_address
             description: ''
-          - &call_tx_hash
-            name: call_tx_hash
+          - name: call_tx_hash
             description: 'Primary key of the transaction'
           - name: contract_address
             description: 'Address of the WeightedPoolFactory contract'
           - name: name
             description: 'Name of the created pool'
-          - &output_0
-            name: output_0
+          - name: output_0
             description: 'Contract address of the created pool'
-          - &owner
-            name: owner
+          - name: owner
             description: 'Contract of the pool owner'
-          - &swapFeePercentage
-            name: swapFeePercentage
+          - name: swapFeePercentage
             description: 'Pool swap fee in percentage'
-          - &symbol
-            name: symbol
+          - name: symbol
             description: 'Symbol of the created pool'
-          - &tokens
-            name: tokens
+          - name: tokens
             description: 'Array with the address of the created pool tokens'
-          - &weights
-            name: weights
+          - name: weights
             description: 'Array with the weight of each token in the created pool'
 
       - name: WeightedPool2TokensFactory_call_create
