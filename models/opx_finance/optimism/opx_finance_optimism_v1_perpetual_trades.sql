@@ -15,7 +15,7 @@
 }}
 
 
-{% set project_start_date = '2023-03-03' %}
+{% set project_start_date = '2022-11-04' %}
 
 WITH all_executed_positions AS
 (SELECT *, 
