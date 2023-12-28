@@ -1,0 +1,259 @@
+sources:
+  - name: beethoven_x_fantom
+    tables:
+      - name: StablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X StablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the StablePoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - &amplificationParameter
+            name: amplificationParameter
+            description: "Amplification parameter of the created pool"
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+
+      - name: MetaStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X MetaStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the MetaStablePoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - &oracleEnabled
+            name: oracleEnabled
+            description: "Boolean which indicates if the oracle functionality is enabled in the created pool"
+          - &rateProviders
+            name: rateProviders
+            description: "Array with the contracts of the rate providers of the created pool"
+          - &priceRateCacheDuration
+            name: priceRateCacheDuration
+            description: "Array with the duration of the cached prices from RateProviders for each token"
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *symbol
+          - *tokens
+
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *swapEnabledOnStart
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: YearnLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X YearnLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the AaveLinearPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+
+      - name: MetaStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X MetaStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the MetaStablePoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *oracleEnabled
+          - *rateProviders
+          - *priceRateCacheDuration
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *symbol
+          - *tokens
+
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *swapEnabledOnStart
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: StablePhantomPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X StablePhantomPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the StablePhantomPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *output_0
+          - *owner
+          - *rateProviders
+          - *tokenRateCacheDurations
+          - *amplificationParameter
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+
+      - name: Vault_evt_PoolRegistered
+        description: >
+          Decoded table of registered pools on the Beethoven X Vault contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Beethoven X v2 Vault contract address'
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: 'Primary key of the transaction'
+          - &evt_index
+            name: evt_index
+            description: 'Index value of the transaction'
+          - &evt_block_time
+            name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+          - &evt_block_number
+            name: evt_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - name: poolAddress
+            description: 'Arbitrum address for the liquidity pool used in transaction'
+          - name: poolId
+            description: 'Unique encoded identifier that refers to each pool'
+          - name: specialization
+            description: 'Pool specialization'
+
+      - name: WeightedPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X WeightedPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - &call_block_number
+            name: call_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - &call_block_time
+            name: call_block_time
+            description: 'Timestamp for block time in which the call occurred in UTC'
+          - &call_success
+            name: call_success
+            description: 'Boolean indicating if call was successfully processed'
+          - &call_trace_address
+            name: call_trace_address
+            description: ''
+          - &call_tx_hash
+            name: call_tx_hash
+            description: 'Primary key of the transaction'
+          - name: contract_address
+            description: 'Address of the WeightedPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - &output_0
+            name: output_0
+            description: 'Contract address of the created pool'
+          - &owner
+            name: owner
+            description: 'Contract of the pool owner'
+          - &swapFeePercentage
+            name: swapFeePercentage
+            description: 'Pool swap fee in percentage'
+          - &symbol
+            name: symbol
+            description: 'Symbol of the created pool'
+          - &tokens
+            name: tokens
+            description: 'Array with the address of the created pool tokens'
+          - &weights
+            name: weights
+            description: 'Array with the weight of each token in the created pool'
+
+      - name: WeightedPool2TokensFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X WeightedPool2TokensFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the WeightedPool2TokensFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
