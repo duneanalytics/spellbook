@@ -162,7 +162,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: mummy_finance_optimism_perpetual_trades
+  - name: opx_finance_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual
