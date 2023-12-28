@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "soalana"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
@@ -93,4 +93,10 @@ FROM (VALUES
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Direct', 'immortalx')
+    , ('whirlpool', 'Orca', 'Direct', 'orca_so')
+    , ('phoenix', 'Phoenix', 'Direct', 'PhoenixTrade')
+    , ('raydium', 'Raydium', 'Direct', 'RaydiumProtocol')
+    , ('meteora', 'Meteora', 'Direct', 'MeteoraAG')
+    , ('lifinity', 'Lifinity', 'Direct', 'Lifinity_io')
+    , ('goosefx_ssl', 'GooseFX', 'Direct', 'GooseFX1')
     ) AS temp_table (project, name, marketplace_type, x_username)
