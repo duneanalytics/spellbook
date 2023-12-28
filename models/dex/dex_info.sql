@@ -72,7 +72,6 @@ FROM (VALUES
     , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
     , ('cow_protocol', 'CoW Swap', 'Aggregator', 'CoWSwap')
-    , ('CoW Protocol', 'CoW Swap', 'Aggregator', 'CoWSwap') -- To Fix, should be just cow_protocol
     , ('openocean', 'OpenOcean', 'Aggregator', 'OpenOceanGlobal')
     , ('lifi', 'LI.FI', 'Aggregator', 'lifiprotocol')
     , ('yield_yak', 'Yield Yak', 'Aggregator', 'yieldyak_')

@@ -12,7 +12,7 @@ FROM
 (
         SELECT
             'ethereum' AS blockchain,
-            'CoW Protocol' AS project,
+            'cow_protocol' AS project,
             '1' AS version,
             block_date,
             block_month,
@@ -42,7 +42,7 @@ FROM
 
         SELECT
             'gnosis' AS blockchain,
-            'CoW Protocol' AS project,
+            'cow_protocol' AS project,
             '1' AS version,
             block_date,
             block_month,
