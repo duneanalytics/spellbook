@@ -12,8 +12,7 @@
     ref('curvefi_celo_base_trades'),
     ref('sushiswap_celo_base_trades'),
     ref('ubeswap_celo_base_trades'),
-    ref('carbonhood_celo_base_trades'),
-    ref('immortalx_celo_base_trades')
+    ref('carbonhood_celo_base_trades')
 ] %}
 
 WITH base_union AS (
