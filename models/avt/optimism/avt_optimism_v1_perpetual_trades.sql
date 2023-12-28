@@ -38,7 +38,7 @@ FROM {{ source('optimism', 'logs') }}
 
 WHERE contract_address = 0x24ee37267842a525c66fe37cd0da749150e89866
 AND topic0 = 0x2fe68525253654c21998f35787a8d0f361905ef647c854092430ab65f2f15022
-AND tx_hash IN ( SELECT evt_tx_hash FROM {{ source('avt_optimism', 'PositionRouter_evt_ExecuteDecreasePosition') }} )
+AND tx_hash IN ( SELECT evt_tx_hash FROM {{ source('avt_optimism', 'PositionRouter_evt_ExecuteIncreasePosition') }} )
 {% if not is_incremental() %}
 AND block_time >= DATE '{{project_start_date}}'
 {% endif %}
