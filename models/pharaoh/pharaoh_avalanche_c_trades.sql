@@ -27,7 +27,7 @@ WITH dexs AS
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
-        {{ source('pharaoh_avalanche_c', 'Pair_evt_Swap') }} t
+        {{ source('pharaoh_avalanche_c', 'ClPool_evt_Swap') }} t
     INNER JOIN 
         {{ source('pharaoh_avalanche_c', 'ClPoolFactory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
