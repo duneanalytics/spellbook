@@ -181,7 +181,7 @@ WITH pool_labels AS (
             b.pool_id,
             q.name,
             pool_type,
-            ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.pool_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
+            ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.protocol_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('beethoven_x_fantom_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
