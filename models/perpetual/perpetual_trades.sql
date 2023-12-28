@@ -25,6 +25,7 @@
 ,ref('fxdx_optimism_perpetual_trades')
 ,ref('opx_finance_optimism_perpetual_trades')
 ,ref('nex_optimism_perpetual_trades')
+,ref('avt_optimism_perpetual_trades')
 ] %}
 
 SELECT *
