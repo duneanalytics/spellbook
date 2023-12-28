@@ -93,6 +93,7 @@ FROM (VALUES
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Direct', 'immortalx')
+    , ('wardenswap', 'Warden', 'Aggregator', 'WardenSwap')
     , ('whirlpool', 'Orca', 'Direct', 'orca_so')
     , ('phoenix', 'Phoenix', 'Direct', 'PhoenixTrade')
     , ('raydium', 'Raydium', 'Direct', 'RaydiumProtocol')
