@@ -26,6 +26,7 @@
 ,ref('opx_finance_optimism_perpetual_trades')
 ,ref('nex_optimism_perpetual_trades')
 ,ref('avt_optimism_perpetual_trades')
+,ref('minerva_money_optimism_perpetual_trades')
 ] %}
 
 SELECT *
