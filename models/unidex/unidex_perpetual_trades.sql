@@ -1,25 +1,23 @@
 {{ config(
     
-    alias = 'unidex_perpetual_trades',
+    alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "unidex",
                                     \'["ARDev097"]\') }}'
-        )
+    )
 }}
 
-{% set unidex_optimism_perpetual_trade_models = [
-    ref('unidex_v1_optimism_perpetual_trades')
-    , ref('unidex_v2_optimism_perpetual_trades')
-    , ref('unidex_v3_optimism_perpetual_trades')
+{% set unidex_perpetual_trade_models = [
+ ref('unidex_optimism_perpetual_trades')
 ] %}
 
 SELECT *
 FROM
 (
-    {% for unidex_perpetual_trades in unidex_optimism_perpetual_trade_models %}
+    {% for unidex_perpetual_model in unidex_perpetual_trade_models %}
     SELECT
-		blockchain
+        blockchain
 		,block_date
         ,block_month
         ,block_time
@@ -40,8 +38,8 @@ FROM
         ,tx_from
         ,tx_to
         ,evt_index
-    FROM {{ unidex_perpetual_trades }}
-    {% if not loop.last %}
+    FROM {{ unidex_perpetual_model }}
+	{% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}

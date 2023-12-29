@@ -21,6 +21,7 @@
 ,ref('hubble_exchange_avalanche_c_perpetual_trades')
 ,ref('gmx_perpetual_trades')
 ,ref('tigris_perpetual_trades')
+,ref('unidex_perpetual_trades')
 ] %}
 
 SELECT *
