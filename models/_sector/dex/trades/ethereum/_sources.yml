@@ -61,3 +61,7 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: maverick_v1_ethereum
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated

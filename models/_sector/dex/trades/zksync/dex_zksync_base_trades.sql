@@ -1,29 +1,12 @@
 {{ config(
-    schema = 'dex_ethereum'
+    schema = 'dex_zksync'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('defiswap_ethereum_base_trades')
-    , ref('uniswap_v1_ethereum_base_trades')
-    , ref('uniswap_v2_ethereum_base_trades')
-    , ref('uniswap_v3_ethereum_base_trades')
-    , ref('apeswap_ethereum_base_trades')
-    , ref('carbon_defi_ethereum_base_trades')
-    , ref('airswap_ethereum_base_trades')
-    , ref('sushiswap_v1_ethereum_base_trades')
-    , ref('sushiswap_v2_ethereum_base_trades')
-    , ref('pancakeswap_v2_ethereum_base_trades')
-    , ref('pancakeswap_v3_ethereum_base_trades')
-    , ref('shibaswap_v1_ethereum_base_trades')
-    , ref('balancer_v1_ethereum_base_trades')
-    , ref('balancer_v2_ethereum_base_trades')
-    , ref('fraxswap_ethereum_base_trades')
-    , ref('bancor_ethereum_base_trades')
-    , ref('verse_dex_ethereum_base_trades')
-    , ref('maverick_ethereum_base_trades')
+    ref('maverick_zksync_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -59,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'ethereum'
+        , blockchain = 'zksync'
         , columns = ['from', 'to', 'index']
     )
 }}
