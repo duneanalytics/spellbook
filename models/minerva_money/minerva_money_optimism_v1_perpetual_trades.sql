@@ -121,10 +121,10 @@ FROM {{ source('optimism', 'logs') }}
 WHERE topic0 = 0x5d0c0019d3d45fadeb74eff9d2c9924d146d000ac6bcf3c28bf0ac3c9baa011a
 AND contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
 {% if not is_incremental() %}
-AND event.block_time >= DATE '{{project_start_date}}'
+AND block_time >= DATE '{{project_start_date}}'
 {% endif %}
 {% if is_incremental() %}
-AND event.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 {% endif %}
 ),
 
