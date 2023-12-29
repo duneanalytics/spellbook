@@ -57,3 +57,7 @@ sources:
     tables:
       - name: MdexPair_evt_Swap
       - name: MdexFactory_evt_PairCreated
+  - name: nomiswap_bnb
+    tables:
+      - name: NomiswapPair_evt_Swap
+      - name: NomiswapFactory_evt_PairCreated
