@@ -134,7 +134,7 @@ SELECT
 	'optimism' AS blockchain
 	,CAST(date_trunc('DAY', block_time) AS date) AS block_date
 	,CAST(date_trunc('MONTH', block_time) AS date) AS block_month
-	, block_time
+	,block_time
 	,CAST(NULL AS VARCHAR) AS virtual_asset
     ,underlying_asset
 	,market
