@@ -22,6 +22,7 @@
 ,ref('gmx_perpetual_trades')
 ,ref('tigris_perpetual_trades')
 ,ref('unidex_perpetual_trades')
+,ref('vela_exchange_perpetual_trades')
 ] %}
 
 SELECT *
