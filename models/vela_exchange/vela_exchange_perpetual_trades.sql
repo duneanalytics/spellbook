@@ -1,7 +1,7 @@
 {{ config(
     
     alias = 'perpetual_trades',
-    schema = 'vela_exchange_perpetusl',
+    schema = 'vela_exchange_perpetual',
     post_hook='{{ expose_spells(\'["base"]\',
                                     "project",
                                     "vela_exchnage",
@@ -9,14 +9,14 @@
     )
 }}
 
-{% set vela_exchnage_perpetual_trade_models = [
+{% set vela_exchange_perpetual_trade_models = [
  ref('vela_exchange_base_perpetual_trades')
 ] %}
 
 SELECT *
 FROM
 (
-    {% for vela_exchnage_perpetual_model in vela_exchnage_perpetual_trade_models %}
+    {% for vela_exchange_perpetual_model in vela_exchange_perpetual_trade_models %}
     SELECT
         blockchain
 		,block_date
