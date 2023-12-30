@@ -77,10 +77,10 @@ models:
         description: "The hash of the transaction"
       - &tx_from
         name: tx_from
-        description: "The address that originated the transaction; based on the optimism.transactions table"
+        description: "The address that originated the transaction; based on the base.transactions table"
       - &tx_to
         name: tx_to
-        description: "The address receiving the transaction; based on the optimism.transactions table"
+        description: "The address receiving the transaction; based on the base.transactions table"
       - &evt_index
         name: evt_index
         description: "Event index number"
