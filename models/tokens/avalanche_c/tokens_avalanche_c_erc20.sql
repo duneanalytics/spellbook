@@ -222,5 +222,4 @@ FROM (VALUES
         ,(0x88F89BE3E9b1dc1C5F208696fb9cABfcc684bD5F,'FLD',18)
         ,(0x184ff13B3EBCB25Be44e860163A5D8391Dd568c1,'KIMBO',18)
         ,(0x420FcA0121DC28039145009570975747295f2329,'COQ',18)
-        
     ) AS temp_table (contract_address, symbol, decimals)
