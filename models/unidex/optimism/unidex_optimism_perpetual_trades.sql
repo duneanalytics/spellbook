@@ -1,7 +1,7 @@
 {{ config(
     
     alias = 'perpetual_trades',
-    schema= 'unidex_optimism_perpetual',
+    schema= 'unidex_optimism',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "unidex",
