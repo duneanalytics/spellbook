@@ -97,3 +97,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('wigoswap_fantom_base_trades_seed')
+
+  - name: spartacus_exchange_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spartacus_exchange
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spartacus_exchange', 'uniswap', 'v2']
+    description: "spartacus_exchange fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spartacus_exchange_fantom_base_trades_seed')
