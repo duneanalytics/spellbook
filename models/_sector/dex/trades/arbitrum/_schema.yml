@@ -235,6 +235,23 @@ models:
           filter:
             version: 3
 
+  - name: gmx_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'gmx' ]
+    description: "GMX Arbitrum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gmx_arbitrum_base_trades_seed')
+          
   - name: integral_arbitrum_base_trades
     meta:
       blockchain: arbitrum
