@@ -98,6 +98,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('wigoswap_fantom_base_trades_seed')
 
+  - name: equalizer_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: equalizer
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'equalizer', 'uniswap', 'v2']
+    description: "Equalizer fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('equalizer_fantom_base_trades_seed')
+          
   - name: spartacus_exchange_fantom_base_trades
     meta:
       blockchain: fantom

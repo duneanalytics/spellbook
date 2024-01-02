@@ -298,6 +298,29 @@ models:
           filter:
             version: 1
 
+  - name: dodo_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: dodo
+      contributors: owen05, scoffie, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'dodo' ]
+    description: "Dodo bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dodo_bnb_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2_dvm
+              - 2_dpp
+              - 2_dsp
+              
   - name: iziswap_bnb_base_trades
     meta:
       blockchain: bnb

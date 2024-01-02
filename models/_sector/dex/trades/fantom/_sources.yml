@@ -21,6 +21,10 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: equalizer_exchange_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
   - name: spartacus_exchange_fantom
     tables:
       - name: Pair_evt_Swap
