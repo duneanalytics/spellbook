@@ -251,3 +251,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gmx_arbitrum_base_trades_seed')
+          
+  - name: integral_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: integral
+      contributors: integralhq, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'integral', 'uniswap', 'v2' ]
+    description: "Integral Arbitrum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('integral_arbitrum_base_trades_seed')

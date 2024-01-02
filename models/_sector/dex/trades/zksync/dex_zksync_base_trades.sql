@@ -1,17 +1,12 @@
 {{ config(
-    schema = 'dex_fantom'
+    schema = 'dex_zksync'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('sushiswap_v1_fantom_base_trades')
-    , ref('sushiswap_v2_fantom_base_trades')
-    , ref('spiritswap_fantom_base_trades')
-    , ref('spookyswap_fantom_base_trades')
-    , ref('wigoswap_fantom_base_trades')
-    , ref('spartacus_exchange_fantom_base_trades')
+    ref('maverick_zksync_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -35,7 +30,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM
+        FROM 
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
@@ -47,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'fantom'
+        , blockchain = 'zksync'
         , columns = ['from', 'to', 'index']
     )
 }}

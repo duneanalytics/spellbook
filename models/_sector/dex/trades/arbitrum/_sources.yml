@@ -44,3 +44,7 @@ sources:
   - name: gmx_arbitrum
     tables:
       - name: Router_evt_Swap
+  - name: integral_size_arbitrum
+    tables:
+      - name: TwapPair_evt_Swap
+      - name: TwapFactory_evt_PairCreated
