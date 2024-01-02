@@ -12,7 +12,6 @@
 ,ref('element_avalanche_c_events')
 ,ref('liquidifty_bnb_events')
 ,ref('liquidifty_ethereum_events')
-,ref('magiceden_polygon_events')
 ,ref('magiceden_solana_events')
 ,ref('nftb_bnb_events')
 ,ref('nftearth_optimism_events')
