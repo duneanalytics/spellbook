@@ -61,6 +61,10 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: swapr_ethereum
+    tables:
+      - name: DXswapPair_evt_Swap
+      - name: DXswapFactory_evt_PairCreated
   - name: mauve_ethereum
     tables:
       - name: MauvePool_evt_Swap
