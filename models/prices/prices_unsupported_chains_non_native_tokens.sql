@@ -11,7 +11,7 @@ SELECT
     , blockchain
     , symbol
     , contract_address
-    , decimals
+    , CAST(decimals as int) as decimals
 FROM
 (
     VALUES
