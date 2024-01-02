@@ -24,6 +24,7 @@
     , ref('mdex_bnb_base_trades')
     , ref('wombat_bnb_base_trades')
     , ref('maverick_bnb_base_trades')
+    , ref('nomiswap_bnb_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -21,3 +21,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: spartacus_exchange_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: BaseV1Factory_evt_PairCreated

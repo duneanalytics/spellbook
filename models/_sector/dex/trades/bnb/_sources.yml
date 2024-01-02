@@ -61,3 +61,7 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: nomiswap_bnb
+    tables:
+      - name: NomiswapPair_evt_Swap
+      - name: NomiswapFactory_evt_PairCreated
