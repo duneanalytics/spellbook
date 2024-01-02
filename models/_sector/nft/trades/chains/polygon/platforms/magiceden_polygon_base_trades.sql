@@ -186,6 +186,8 @@ SELECT
   'v1' AS project_version,
   a.evt_tx_hash AS tx_hash,
   a.evt_block_time AS block_time,
+  cast(date_trunc('day', a.evt_block_time) as date) as block_date,
+  cast(date_trunc('month', a.evt_block_time) as date) as block_month,
   a.evt_block_number AS block_number,
   CAST(a.amount_raw as uint256) AS amount_raw,
   a.currency_contract,
