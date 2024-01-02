@@ -1,26 +1,12 @@
 {{ config(
-    schema = 'dex_arbitrum'
+    schema = 'dex_zksync'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_arbitrum_base_trades')
-    , ref('camelot_v2_arbitrum_base_trades')
-    , ref('camelot_v3_arbitrum_base_trades')
-    , ref('airswap_arbitrum_base_trades')
-    , ref('sushiswap_v1_arbitrum_base_trades')
-    , ref('sushiswap_v2_arbitrum_base_trades')
-    , ref('arbswap_arbitrum_base_trades')
-    , ref('trader_joe_v2_arbitrum_base_trades')
-    , ref('trader_joe_v2_1_arbitrum_base_trades')
-    , ref('pancakeswap_v2_arbitrum_base_trades')
-    , ref('pancakeswap_v3_arbitrum_base_trades')
-    , ref('balancer_v2_arbitrum_base_trades')
-    , ref('dodo_arbitrum_base_trades')
-    , ref('gmx_arbitrum_base_trades')
-    , ref('integral_arbitrum_base_trades')
+    ref('maverick_zksync_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -44,7 +30,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM
+        FROM 
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
@@ -56,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'arbitrum'
+        , blockchain = 'zksync'
         , columns = ['from', 'to', 'index']
     )
 }}

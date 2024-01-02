@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: maverick_v1_zksync
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated

@@ -68,3 +68,11 @@ sources:
       - name: DVM_evt_DODOSwap
       - name: DPP_evt_DODOSwap
       - name: DSP_evt_DODOSwap
+  - name: integral_size_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: maverick_v1_ethereum
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
