@@ -23,3 +23,6 @@ sources:
   - name: balancer_v2_avalanche_c
     tables:
       - name: Vault_evt_Swap
+  - name: gmx_avalanche_c
+    tables:
+      - name: Router_evt_Swap

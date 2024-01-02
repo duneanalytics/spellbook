@@ -175,3 +175,20 @@ models:
           seed_file: ref('fraxswap_avalanche_c_base_trades_seed')
           filter:
             version: 1
+
+  - name: gmx_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'gmx' ]
+    description: "GMX avalanche_c v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gmx_avalanche_c_base_trades_seed')
