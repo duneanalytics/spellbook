@@ -135,6 +135,25 @@ models:
           filter:
             version: 3
 
+  - name: dodo_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: dodo
+      contributors: owen05, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'dodo' ]
+    description: "Dodo base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dodo_base_base_trades_seed')
+          filter:
+            version: 2_dpp
+            
   - name: maverick_base_base_trades
     meta:
       blockchain: base

@@ -57,6 +57,15 @@ sources:
     tables:
       - name: MdexPair_evt_Swap
       - name: MdexFactory_evt_PairCreated
+  - name: dodoex_bnb
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DPPAdvanced_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
   - name: izumi_bnb
     tables:
       - name: iZiSwapPool_evt_Swap
