@@ -57,6 +57,9 @@ sources:
     tables:
       - name: MdexPair_evt_Swap
       - name: MdexFactory_evt_PairCreated
+  - name: izumi_bnb
+    tables:
+      - name: iZiSwapPool_evt_Swap
   - name: maverick_v1_bnb
     tables:
       - name: pool_evt_Swap
