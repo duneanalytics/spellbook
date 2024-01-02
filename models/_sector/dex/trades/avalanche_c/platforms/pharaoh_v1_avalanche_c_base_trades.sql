@@ -14,7 +14,7 @@
         blockchain = 'avalanche_c'
         , project = 'pharaoh'
         , version = '1'
-        , Pair_evt_Swap = source('pharaoh_v1_avalanche_c', 'ClPool_evt_Swap')
-        , Factory_evt_PoolCreated = source('pharaoh_v1_avalanche_c', 'ClPoolFactory_evt_PoolCreated')
+        , Pair_evt_Swap = source('pharaoh_avalanche_c', 'ClPool_evt_Swap')
+        , Factory_evt_PoolCreated = source('pharaoh_avalanche_c', 'ClPoolFactory_evt_PoolCreated')
     )
 }}
