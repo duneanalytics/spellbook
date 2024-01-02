@@ -1,30 +1,12 @@
 {{ config(
-    schema = 'dex_bnb'
+    schema = 'dex_zksync'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
-
--- (blockchain, project, project_version, model)
 {% set base_models = [
-    ref('uniswap_v3_bnb_base_trades')
-    , ref('apeswap_bnb_base_trades')
-    , ref('airswap_bnb_base_trades')
-    , ref('sushiswap_v1_bnb_base_trades')
-    , ref('sushiswap_v2_bnb_base_trades')
-    , ref('fraxswap_bnb_base_trades')
-    , ref('trader_joe_v2_bnb_base_trades')
-    , ref('trader_joe_v2_1_bnb_base_trades')
-    , ref('pancakeswap_v2_bnb_base_trades')
-    , ref('pancakeswap_v3_bnb_base_trades')
-    , ref('biswap_v2_bnb_base_trades')
-    , ref('biswap_v3_bnb_base_trades')
-    , ref('babyswap_bnb_base_trades')
-    , ref('mdex_bnb_base_trades')
-    , ref('wombat_bnb_base_trades')
-    , ref('maverick_bnb_base_trades')
-    , ref('nomiswap_bnb_base_trades')
+    ref('maverick_zksync_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -48,7 +30,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM
+        FROM 
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
@@ -60,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'bnb'
+        , blockchain = 'zksync'
         , columns = ['from', 'to', 'index']
     )
 }}

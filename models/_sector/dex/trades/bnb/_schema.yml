@@ -298,6 +298,23 @@ models:
           filter:
             version: 1
 
+  - name: maverick_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: maverick
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
+    description: "Maverick bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_bnb_base_trades_seed')
+          
   - name: nomiswap_bnb_base_trades
     meta:
       blockchain: bnb
