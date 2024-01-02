@@ -279,7 +279,6 @@ models:
           filter:
             version: 1
 
-
   - name: wombat_bnb_base_trades
     meta:
       blockchain: bnb
@@ -298,3 +297,20 @@ models:
           seed_file: ref('wombat_bnb_base_trades_seed')
           filter:
             version: 1
+
+  - name: nomiswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: nomiswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'nomiswap', 'uniswap', 'v2' ]
+    description: "NomiSwap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('nomiswap_bnb_base_trades_seed')
