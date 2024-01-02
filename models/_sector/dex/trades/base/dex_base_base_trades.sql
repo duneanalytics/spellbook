@@ -13,6 +13,7 @@
     , ref('pancakeswap_v2_base_base_trades')
     , ref('pancakeswap_v3_base_base_trades')
     , ref('balancer_v2_base_base_trades')
+    , ref('maverick_base_base_trades')
 ] %}
 
 WITH base_union AS (
