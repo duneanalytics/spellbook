@@ -189,7 +189,7 @@ SELECT
   cast(date_trunc('day', a.evt_block_time) as date) as block_date,
   cast(date_trunc('month', a.evt_block_time) as date) as block_month,
   a.evt_block_number AS block_number,
-  CAST(a.amount_raw as uint256) AS amount_raw,
+  CAST(a.amount_raw as uint256) AS price_raw,
   a.currency_contract,
   a.nft_token_id,
   a.contract_address AS project_contract_address,
