@@ -20,6 +20,22 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_avalanche_c_base_trades_seed')
 
+  - name: pharaoh_v1_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: pharaoh
+      contributors: discochuck
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'pharaoh', 'v1' ]
+    description: "pharaoh avalanche_c v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pharaoh_avalanche_c_base_trades_seed')
 
   - name: airswap_avalanche_c_base_trades
     meta:
