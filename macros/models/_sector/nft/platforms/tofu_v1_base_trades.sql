@@ -72,7 +72,7 @@ SELECT '{{blockchain}}'                                 as blockchain
            when tfe.kind = '2' then 'Sell'
            else 'Auction'
     end                                      as trade_category
-     , tfe.price     as amount_raw
+     , tfe.price     as price_raw
      , tfe.currency                                                                 as currency_contract
      , tfe.contract_address                                                         as project_contract_address
      , tff.token                                                                    as nft_contract_address
