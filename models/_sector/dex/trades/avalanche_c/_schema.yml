@@ -176,6 +176,44 @@ models:
           filter:
             version: 1
 
+  - name: glacier_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: glacier
+      contributors: discochuck, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'glacier', 'uniswap', 'v2']
+    description: "Glacier avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('glacier_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: glacier_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: glacier
+      contributors: discochuck, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'glacier', 'uniswap', 'v3']
+    description: "Glacier avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('glacier_avalanche_c_base_trades_seed')
+          filter:
+            version: 3
+            
   - name: gmx_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
@@ -192,3 +230,4 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gmx_avalanche_c_base_trades_seed')
+
