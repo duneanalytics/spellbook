@@ -60,3 +60,11 @@ sources:
   - name: izumi_bnb
     tables:
       - name: iZiSwapPool_evt_Swap
+  - name: maverick_v1_bnb
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
+  - name: nomiswap_bnb
+    tables:
+      - name: NomiswapPair_evt_Swap
+      - name: NomiswapFactory_evt_PairCreated
