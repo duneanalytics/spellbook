@@ -143,7 +143,7 @@ models:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
 
- - name: magiceden_polygon_events
+ - name: magiceden_polygon_base_trades
    meta:
      blockchain: polygon
      project: magiceden
