@@ -3,6 +3,9 @@ version: 2
 sources:
   - name: uniswap_v3_avalanche_c
   - name: pharaoh_v1_avalanche_c
+    tables:
+      - name: ClPool_evt_Swap
+      - name: ClPoolFactory_evt_PoolCreated
   - name: airswap_avalanche_c
     tables:
       - name: swap_evt_Swap
