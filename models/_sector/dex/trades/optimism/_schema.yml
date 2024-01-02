@@ -177,3 +177,25 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('wardenswap_optimism_base_trades_seed')
+
+  - name: dodo_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: dodo
+      contributors: owen05, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'dodo' ]
+    description: "Dodo optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dodo_optimism_base_trades_seed')
+          filter:
+            version:
+              - 2_dvm
+              - 2_dpp
+              - 2_dsp
