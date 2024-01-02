@@ -322,6 +322,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('verse_dex_ethereum_base_trades_seed')
 
+  - name: mauve_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: mauve
+      contributors: jeff-dude, masquot, soispoke, raphaelr, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'mauve' ]
+    description: "Mauve ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mauve_ethereum_base_trades_seed')
+          
   - name: dfx_ethereum_base_trades
     meta:
       blockchain: ethereum
