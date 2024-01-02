@@ -15,6 +15,8 @@
     , ref('trader_joe_v2_avalanche_c_base_trades')
     , ref('trader_joe_v2_1_avalanche_c_base_trades')
     , ref('balancer_v2_avalanche_c_base_trades')
+    , ref('glacier_v2_avalanche_c_base_trades')
+    , ref('glacier_v3_avalanche_c_base_trades')
     , ref('gmx_avalanche_c_base_trades')
 ] %}
 
