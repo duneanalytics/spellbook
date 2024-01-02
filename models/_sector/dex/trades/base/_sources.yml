@@ -25,6 +25,9 @@ sources:
   - name: balancer_v2_base
     tables:
       - name: Vault_evt_Swap
+  - name: dodo_base
+    tables:
+      - name: DPPOracle_evt_DODOSwap
   - name: maverick_v1_base
     tables:
       - name: pool_evt_Swap

@@ -61,6 +61,13 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: dodo_ethereum
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
   - name: integral_size_ethereum
     tables:
       - name: Pair_evt_Swap

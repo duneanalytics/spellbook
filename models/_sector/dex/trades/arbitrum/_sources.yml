@@ -41,6 +41,13 @@ sources:
   - name: balancer_v2_arbitrum
     tables:
       - name: Vault_evt_Swap
+  - name: dodo_arbitrum
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
   - name: gmx_arbitrum
     tables:
       - name: Router_evt_Swap
