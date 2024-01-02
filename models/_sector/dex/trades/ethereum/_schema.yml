@@ -322,6 +322,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('verse_dex_ethereum_base_trades_seed')
 
+  - name: integral_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: integral
+      contributors: integralhq, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'integral', 'uniswap', 'v2' ]
+    description: "Integral ethereum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('integral_ethereum_base_trades_seed')
+          
   - name: maverick_ethereum_base_trades
     meta:
       blockchain: ethereum

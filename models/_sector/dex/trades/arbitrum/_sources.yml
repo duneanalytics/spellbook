@@ -41,3 +41,7 @@ sources:
   - name: balancer_v2_arbitrum
     tables:
       - name: Vault_evt_Swap
+  - name: integral_size_arbitrum
+    tables:
+      - name: TwapPair_evt_Swap
+      - name: TwapFactory_evt_PairCreated
