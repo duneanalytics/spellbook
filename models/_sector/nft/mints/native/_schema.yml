@@ -119,7 +119,7 @@ models:
     meta:
       blockchain: polygon
       sector: nft
-      contributors: covendev.
+      contributors: covendev
     config:
       tags: [ 'nft','polygon' ]
     description: >
