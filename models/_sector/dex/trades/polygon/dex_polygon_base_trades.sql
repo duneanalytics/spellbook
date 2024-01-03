@@ -17,6 +17,7 @@
     , ref('balancer_v2_polygon_base_trades')
     , ref('fraxswap_polygon_base_trades')
     , ref('dodo_polygon_base_trades')
+    , ref('clipper_polygon_base_trades')
 ] %}
 
 WITH base_union AS (
