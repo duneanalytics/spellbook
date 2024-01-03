@@ -30,6 +30,7 @@
     , ref('integral_ethereum_base_trades')
     , ref('maverick_ethereum_base_trades')
     , ref('clipper_ethereum_base_trades')
+    , ref('mstable_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (

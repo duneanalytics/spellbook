@@ -93,3 +93,7 @@ sources:
       - name: ClipperCaravelExchange_evt_Swapped
       - name: ClipperVerifiedCaravelExchange_evt_Swapped
       - name: ClipperApproximateCaravelExchange_evt_Swapped
+  - name: mstable_ethereum
+    tables:
+      - name: Masset_evt_Swapped
+      - name: FeederPool_evt_Swapped
