@@ -49,6 +49,6 @@ FROM
     ('ust-terrausd-wormhole', 'avalanche_c', 'UST', 0xb599c3590f42f8f995ecfa0f85d2980b76862fc1, 6),
     ('ico-axelar', 'avalanche_c', 'AXL', 0x44c784266cf024a60e8acf2427b9857ace194c5d, 6),
     ('grain-granary','avalanche_c','GRAIN',0x9df4ac62f9e435dbcd85e06c990a7f0ea32739a9,18),
-    ('oath-oath','avalanche_c','OATH',0x2c69095d81305f1e3c6ed372336d407231624cea,18)
-
+    ('oath-oath','avalanche_c','OATH',0x2c69095d81305f1e3c6ed372336d407231624cea,18),
+    ('fld-fold','avalanche_c','FLD',0x88F89BE3E9b1dc1C5F208696fb9cABfcc684bD5F,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
