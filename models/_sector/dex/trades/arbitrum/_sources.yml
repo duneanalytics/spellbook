@@ -55,3 +55,10 @@ sources:
     tables:
       - name: TwapPair_evt_Swap
       - name: TwapFactory_evt_PairCreated
+
+  - name: ramses_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+      - name: RamsesV2Pool_evt_Swap
+      - name: RamsesV2Factory_evt_PoolCreated
