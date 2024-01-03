@@ -87,3 +87,7 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: mstable_ethereum
+    tables:
+      - name: Masset_evt_Swapped
+      - name: FeederPool_evt_Swapped
