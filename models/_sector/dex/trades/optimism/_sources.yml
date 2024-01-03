@@ -18,3 +18,8 @@ sources:
   - name: wardenswap_optimism
     tables:
       - name: WardenRouterV2_L2_evt_Trade
+  - name: dodo_optimism
+    tables:
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
