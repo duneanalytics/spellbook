@@ -1531,7 +1531,8 @@ FROM (VALUES
     , (0xCa604a3e8B6277492EbC558a4457B6e60e611096, 'SimpleSwap', 'SimpleSwap 6', 'hildobby', date '2023-11-17')
     , (0x7BaCd3E83522F484Bc5128EA93Bf7290f1F1B9E5, 'SimpleSwap', 'SimpleSwap 7', 'hildobby', date '2023-11-17')
     , (0xee7f2d8257aa658c5895796f070e4046ba8fb37e, 'SimpleSwap', 'SimpleSwap Binance Deposit', 'hildobby', date '2023-11-17')
-    , (0x4B0401Fe6B84C52d4F4310c371c731a2B6D0964D, 'SimpleSwap', 'SimpleSwap Deposit Funder', 'hildobby', date '2023-11-17')
+    , (0x4B0401Fe6B84C52d4F4310c371c731a2B6D0964D, 'SimpleSwap', 'SimpleSwap Deposit Funder 1', 'hildobby', date '2023-11-17')
+    , (0xd8F9Ced745e429Ea0723aA72693EFf03B5182DC7, 'SimpleSwap', 'SimpleSwap Deposit Funder 2', 'hildobby', date '2024-01-04')
     -- Alcumex Exchange
     , (0x2ddd202174a72514ed522e77972b461b03155525, 'Alcumex Exchange', 'Alcumex Exchange 1', 'hildobby', date '2023-04-06')
     -- APROBIT
@@ -1929,13 +1930,6 @@ FROM (VALUES
     , (0x5EcA044b580a86e7ab4b2076330978d6D125a270, 'AtomSolutions', 'AtomSolutions Hong Kong 1', 'hildobby', date '2024-01-04')
     , (0x2F5A7b563E6C4761d478273F5f9B4A444BDd2E3C, 'AtomSolutions', 'AtomSolutions TokenHub Exchange 1', 'hildobby', date '2024-01-04')
     , (0xA28d81bF8e4823cf4d6Cc2767507dEe271994e1A, 'AtomSolutions', 'AtomSolutions Korea 1', 'hildobby', date '2024-01-04')
-    -- SimpleSwap.io
-    , (0x7BaCd3E83522F484Bc5128EA93Bf7290f1F1B9E5, 'SimpleSwap', 'SimpleSwap 1', 'hildobby', date '2024-01-04')
-    , (0x32E9dc9968Fab4C4528165cd37B613dD5d229650, 'SimpleSwap', 'SimpleSwap 2', 'hildobby', date '2024-01-04')
-    , (0xafd99a1a7e2195a8E0fdB6e8bD45EFDff15FEadD, 'SimpleSwap', 'SimpleSwap 3', 'hildobby', date '2024-01-04')
-    , (0xd8F9Ced745e429Ea0723aA72693EFf03B5182DC7, 'SimpleSwap', 'SimpleSwap Deposit Funder 1', 'hildobby', date '2024-01-04')
-    , (0x4B0401Fe6B84C52d4F4310c371c731a2B6D0964D, 'SimpleSwap', 'SimpleSwap Deposit Funder 2', 'hildobby', date '2024-01-04')
-    , (0xeE7f2D8257Aa658c5895796f070e4046bA8Fb37e, 'SimpleSwap', 'SimpleSwap Binance Deposit 1', 'hildobby', date '2024-01-04')
     -- eToro
     , (0x2953452dF5D7285b9a3a8a1E876A4bAcb09a976E, 'eToro', 'eToro Binance Deposit 1', 'hildobby', date '2024-01-04')
     -- Bitkan
@@ -1957,7 +1951,7 @@ FROM (VALUES
     , (0x71D7cb7F3F4731Ec26E281E58d9FcE443E7B3f83, 'FINXFLO', 'FINXFLO Deployer 1', 'hildobby', date '2024-01-04')
     -- Woo Network
     , (0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4, 'Woo Network', 'Woo Network 1', 'hildobby', date '2024-01-04')
-    , (0x03Dd167D62E1DFC223Ffd7b37Fc8bF45fB973478, 'Woo Network', 'Woo Network 1', 'hildobby', date '2024-01-04')
+    , (0x03Dd167D62E1DFC223Ffd7b37Fc8bF45fB973478, 'Woo Network', 'Woo Network 2', 'hildobby', date '2024-01-04')
     , (0x1326a1f39746726fDCFE88D83Effe5451606aE85, 'Woo Network', 'Woo Network Liquidity Token Vault 1', 'hildobby', date '2024-01-04')
     , (0x0d83F81bc9f1E8252F87A4109bBF0d90171c81DF, 'Woo Network', 'Woo Network Staking Cold 1', 'hildobby', date '2024-01-04')
     , (0xF0b8660476Ea1aF0f363de8816E3E7cd1c8f1fdE, 'Woo Network', 'Woo Network Ecosystem Token Vault 1', 'hildobby', date '2024-01-04')
