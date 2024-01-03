@@ -1,11 +1,10 @@
 {{ config(
     schema = 'magiceden_polygon',
-    alias = 'events',
-    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id']
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
 
@@ -27,8 +26,8 @@ WITH erc721_trades AS (
           CASE when direction = 0 THEN taker ELSE maker END AS buyer,
           CASE when direction = 0 THEN maker ELSE taker END AS seller,
           erc721Token AS nft_contract_address,
-          erc721TokenId AS token_id,
-          uint256 '1' AS number_of_items,
+          erc721TokenId AS nft_token_id,
+          uint256 '1' AS nft_amount,
           'erc721' AS token_standard,
           CASE
                WHEN erc20Token in (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
@@ -58,8 +57,8 @@ WITH erc721_trades AS (
           CASE when direction = 0 THEN taker ELSE maker END AS buyer,
           CASE when direction = 0 THEN maker ELSE taker END AS seller,
           erc1155Token AS nft_contract_address,
-          erc1155TokenId AS token_id,
-          erc1155FillAmount AS number_of_items,
+          erc1155TokenId AS nft_token_id,
+          erc1155FillAmount AS nft_amount,
           'erc1155' AS token_standard,
           CASE
                WHEN erc20Token in (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 0x0000000000000000000000000000000000001010)
@@ -164,7 +163,7 @@ WITH erc721_trades AS (
     left join erc721_fees f1
     on t1.evt_tx_hash = f1.call_tx_hash
         and t1.nft_contract_address = f1.erc721Token
-        and t1.token_id = f1.erc721TokenId
+        and t1.nft_token_id = f1.erc721TokenId
     union all
     select
     t2.*
@@ -178,64 +177,35 @@ WITH erc721_trades AS (
     left join erc1155_fees f2
     on t2.evt_tx_hash = f2.call_tx_hash
         and t2.nft_contract_address = f2.erc1155Token
-        and t2.token_id = f2.erc1155TokenId
+        and t2.nft_token_id = f2.erc1155TokenId
 )
-
-
+, base_trades as (
 SELECT
   'polygon' AS blockchain,
   'magiceden' AS project,
-  'v1' AS version,
+  'v1' AS project_version,
   a.evt_tx_hash AS tx_hash,
   a.evt_block_time AS block_time,
+  cast(date_trunc('day', a.evt_block_time) as date) as block_date,
+  cast(date_trunc('month', a.evt_block_time) as date) as block_month,
   a.evt_block_number AS block_number,
-  a.amount_raw / power(10, erc.decimals) * p.price AS amount_usd,
-  a.amount_raw / power(10, erc.decimals) AS amount_original,
-  CAST(a.amount_raw as uint256) AS amount_raw,
-  CASE WHEN erc.symbol = 'WMATIC' THEN 'MATIC' ELSE erc.symbol END AS currency_symbol,
+  CAST(a.amount_raw as uint256) AS price_raw,
   a.currency_contract,
-  a.token_id,
-  a.token_standard,
+  a.nft_token_id,
   a.contract_address AS project_contract_address,
-  a.evt_type,
-  CAST(NULL AS varchar) AS collection,
-  CASE WHEN number_of_items = uint256 '1' THEN 'Single Item Trade' ELSE 'Bundle Trade' END AS trade_type,
-  CAST(number_of_items AS uint256) AS number_of_items,
-  CAST(NULL AS varchar) AS trade_category,
+  'secondary' AS trade_type,
+  CAST(nft_amount AS uint256) AS nft_amount,
+  trade_category,
   buyer,
   seller,
   nft_contract_address,
-  agg.name AS aggregator_name,
-  agg.contract_address AS aggregator_address,
-  t."from" AS tx_from,
-  t."to" AS tx_to,
   a.platform_fee_amount_raw,
-  CAST(a.platform_fee_amount_raw / power(10, erc.decimals) AS double) AS platform_fee_amount,
-  CAST(a.platform_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS platform_fee_amount_usd,
-  coalesce(try(CAST(a.platform_fee_amount_raw / a.amount_raw * 100 as double)), double '0.0') as platform_fee_percentage,
   CAST(a.royalty_fee_amount_raw AS uint256) AS royalty_fee_amount_raw,
-  CAST(a.royalty_fee_amount_raw / power(10, erc.decimals) AS double) AS royalty_fee_amount,
-  CAST(a.royalty_fee_amount_raw / power(10, erc.decimals) * p.price AS double) AS royalty_fee_amount_usd,
-  coalesce(try(CAST(a.royalty_fee_amount_raw / a.amount_raw * 100 AS double)), double '0.0') AS royalty_fee_percentage,
-  CAST(NULL AS varbinary) AS royalty_fee_receive_address,
-  CAST(NULL AS varchar) AS royalty_fee_currency_symbol,
-  cast(a.evt_tx_hash as varchar) || '-' || cast(a.evt_type as varchar)  || '-' || cast(a.evt_index as varchar) ||  '-' || cast(a.token_id as varchar) AS unique_trade_id
+  CAST(NULL AS varbinary) AS royalty_fee_address,
+  CAST(NULL AS varbinary) AS platform_fee_address,
+  a.evt_index as sub_tx_trade_id
 FROM trades a
-INNER JOIN {{ source('polygon','transactions') }} t ON a.evt_block_number = t.block_number
-    AND a.evt_tx_hash = t.hash
-    {% if not is_incremental() %}
-    AND t.block_time >= {{nft_start_date}}
-    {% endif %}
-    {% if is_incremental() %}
-    AND t.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'polygon' AND erc.contract_address = a.currency_contract
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.contract_address = a.currency_contract
-    AND p.minute = date_trunc('minute', a.evt_block_time)
-    {% if not is_incremental() %}
-    AND p.minute >= {{nft_start_date}}
-    {% endif %}
-    {% if is_incremental() %}
-    AND p.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t."to"
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'polygon') }}
