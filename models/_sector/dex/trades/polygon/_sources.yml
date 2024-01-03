@@ -33,3 +33,12 @@ sources:
     tables:
       - name: FraxswapPair_evt_Swap
       - name: FraxswapFactory_evt_PairCreated
+  - name: dodoex_polygon
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DPPAdvanced_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap

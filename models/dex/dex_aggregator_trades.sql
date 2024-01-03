@@ -31,6 +31,7 @@ spells with issues, to be excluded in short term:
     ,ref('zeroex_trades')
     ,ref('kyberswap_aggregator_trades')
     ,ref('tokenlon_trades')
+    ,ref('firebird_finance_optimism_trades')
     ,ref('oneinch_ar_trades')
 ] %}
 
