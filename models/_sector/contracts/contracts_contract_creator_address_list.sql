@@ -948,6 +948,7 @@ WITH curated_list AS (
       ,(0xfcc8c70a7ea0f588135b7b8892995ada7c0117b2, 'Galleon')
 
       ,(0xcB3Bb767104e0b3235520fafB182e005D7efD045, 'Wombat Exchange')
+      ,(0x8A15D5494d0F5a752f59F098adb7F03a6D4ce0c7, 'Circle')
 
 
   ) as temp_table (creator_address, contract_project)
