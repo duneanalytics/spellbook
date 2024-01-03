@@ -53,7 +53,7 @@ WITH dexs AS (
 SELECT
     'ethereum' AS blockchain,
     'mstable' AS project,
-    '1' AS version,
+    dexs.version,
     CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
     CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
     dexs.block_time,
