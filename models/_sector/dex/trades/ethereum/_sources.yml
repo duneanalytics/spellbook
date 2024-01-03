@@ -87,6 +87,12 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: clipper_ethereum
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped
+      - name: ClipperApproximateCaravelExchange_evt_Swapped
   - name: mstable_ethereum
     tables:
       - name: Masset_evt_Swapped

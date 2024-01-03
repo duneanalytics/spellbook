@@ -291,3 +291,26 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('integral_arbitrum_base_trades_seed')
+
+  - name: clipper_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: clipper
+      contributors: 0xRob, amalashkevich, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'clipper' ]
+    description: "clipper Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_arbitrum_base_trades_seed')
+          filter:
+            version:
+              - coves1
+              - coves2
+              - 1
+              - 2

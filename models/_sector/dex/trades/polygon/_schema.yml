@@ -216,3 +216,25 @@ models:
               - 2_dvm
               - 2_dpp
               - 2_dsp
+
+  - name: clipper_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: clipper
+      contributors: 0xRob, amalashkevich, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'clipper' ]
+    description: "clipper polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_polygon_base_trades_seed')
+          filter:
+            version:
+              - coves1
+              - 1
+              - 2
