@@ -53,7 +53,7 @@ WITH dexs AS (
       blockchain,
       decimals,
       AVG(price) AS price
-    FROM "delta_prod"."prices"."usd"
+    FROM {{ source('prices', 'usd') }}
     GROUP BY DATE_TRUNC('hour', minute), contract_address,blockchain,decimals
 )
 
