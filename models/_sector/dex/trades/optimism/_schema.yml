@@ -178,6 +178,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('wardenswap_optimism_base_trades_seed')
 
+
   - name: dodo_optimism_base_trades
     meta:
       blockchain: optimism
