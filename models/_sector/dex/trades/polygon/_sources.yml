@@ -42,3 +42,8 @@ sources:
       - name: DPPAdvanced_evt_DODOSwap
       - name: DPPOracle_evt_DODOSwap
       - name: DSP_evt_DODOSwap
+  - name: clipper_polygon
+    tables:
+      - name: ClipperDirectExchange_evt_Swapped
+      - name: ClipperVerifiedExchange_evt_Swapped
+      - name: ClipperCove_evt_CoveSwapped
