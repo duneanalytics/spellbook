@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "soalana"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
