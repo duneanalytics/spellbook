@@ -17,154 +17,141 @@
 {% set project_start_date = '2023-06-08' %}
 
 
-WITH execute_decrease_positions AS
-(SELECT DISTINCT(tx_hash) AS tx_hash
-FROM {{ source('optimism', 'logs') }}
-
-WHERE contract_address = 0x1dc89546bfd8827d14cce56108b397bd807862b7
-AND topic0 = 0x21435c5b618d77ff3657140cd3318e2cffaebc5e0e1b7318f56a9ba4044c3ed2
-{% if not is_incremental() %}
-AND block_time >= DATE '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-{% endif %}
+WITH execute_decrease_positions AS (
+    SELECT DISTINCT(tx_hash) AS tx_hash
+    FROM {{ source('optimism', 'logs') }}
+    WHERE contract_address = 0x1dc89546bfd8827d14cce56108b397bd807862b7
+      AND topic0 = 0x21435c5b618d77ff3657140cd3318e2cffaebc5e0e1b7318f56a9ba4044c3ed2
+        {% if not is_incremental() %}
+      AND block_time >= DATE '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+      AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+        {% endif %}
 ),
 
-execute_increase_positions AS
-(SELECT DISTINCT(tx_hash) AS tx_hash
+execute_increase_positions AS (
+SELECT DISTINCT(tx_hash) AS tx_hash
 FROM {{ source('optimism', 'logs') }}
-
 WHERE contract_address = 0x1dc89546bfd8827d14cce56108b397bd807862b7
-AND topic0 = 0x1be316b94d38c07bd41cdb4913772d0a0a82802786a2f8b657b6e85dbcdfc641
-{% if not is_incremental() %}
-AND block_time >= DATE '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-{% endif %}
+  AND topic0 = 0x1be316b94d38c07bd41cdb4913772d0a0a82802786a2f8b657b6e85dbcdfc641
+    {% if not is_incremental() %}
+  AND block_time >= DATE '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% endif %}
 ),
 
-all_executed_positions AS
-(SELECT 
-block_time,
-block_number,
-index,
-tx_hash,
-contract_address,
-bytearray_substring(data,45,20) AS account,
-bytearray_substring(data,77,20) AS collateralToken,
-bytearray_substring(data,109,20) AS indexToken,
-varbinary_to_int256(bytearray_substring(data,141,20)) AS collateralDelta,
-varbinary_to_int256(bytearray_substring(data,173,20)) AS sizeDelta,
-(CASE
-WHEN varbinary_to_int256(bytearray_substring(data,205,20)) = 1 THEN true 
-ELSE false
-END) AS isLong,
-varbinary_to_int256(bytearray_substring(data,237,20)) AS price,
-'Open' AS trade_type
+all_executed_positions AS (
+SELECT block_time,
+       block_number,
+       index,
+       tx_hash,
+       contract_address,
+       bytearray_substring(data, 45, 20)                       AS account,
+       bytearray_substring(data, 77, 20)                       AS collateralToken,
+       bytearray_substring(data, 109, 20)                      AS indexToken,
+       varbinary_to_int256(bytearray_substring(data, 141, 20)) AS collateralDelta,
+       varbinary_to_int256(bytearray_substring(data, 173, 20)) AS sizeDelta,
+       (CASE
+            WHEN varbinary_to_int256(bytearray_substring(data, 205, 20)) = 1 THEN true
+            ELSE false
+           END)                                                AS isLong,
+       varbinary_to_int256(bytearray_substring(data, 237, 20)) AS price,
+       'Open'                                                  AS trade_type
 FROM {{ source('optimism', 'logs') }}
 
 WHERE contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
-AND topic0 = 0x2fe68525253654c21998f35787a8d0f361905ef647c854092430ab65f2f15022
-AND tx_hash IN ( SELECT tx_hash FROM execute_increase_positions)
-{% if not is_incremental() %}
-AND block_time >= DATE '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-{% endif %}
+  AND topic0 = 0x2fe68525253654c21998f35787a8d0f361905ef647c854092430ab65f2f15022
+  AND tx_hash IN ( SELECT tx_hash FROM execute_increase_positions)
+    {% if not is_incremental() %}
+  AND block_time >= DATE '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% endif %}
 
 UNION
 
 SELECT 
-block_time,
-block_number,
-index,
-tx_hash,
-contract_address,
-bytearray_substring(data,45,20) AS account,
-bytearray_substring(data,77,20) AS collateralToken,
-bytearray_substring(data,109,20) AS indexToken,
-varbinary_to_int256(bytearray_substring(data,141,20)) AS collateralDelta,
-varbinary_to_int256(bytearray_substring(data,173,20)) AS sizeDelta,
-(CASE
-WHEN varbinary_to_int256(bytearray_substring(data,205,20)) = 1 THEN true 
-ELSE false
-END) AS isLong,
-varbinary_to_int256(bytearray_substring(data,237,20)) AS price,
-'Close' AS trade_type
+    block_time,
+    block_number,
+    index,
+    tx_hash,
+    contract_address,
+    bytearray_substring(data,45,20) AS account,
+    bytearray_substring(data,77,20) AS collateralToken,
+    bytearray_substring(data,109,20) AS indexToken,
+    varbinary_to_int256(bytearray_substring(data,141,20)) AS collateralDelta,
+    varbinary_to_int256(bytearray_substring(data,173,20)) AS sizeDelta,
+    (CASE
+    WHEN varbinary_to_int256(bytearray_substring(data,205,20)) = 1 THEN true
+    ELSE false
+    END) AS isLong,
+    varbinary_to_int256(bytearray_substring(data,237,20)) AS price,
+    'Close' AS trade_type
 FROM {{ source('optimism', 'logs') }}
 
 WHERE contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
-AND topic0 = 0x93d75d64d1f84fc6f430a64fc578bdd4c1e090e90ea2d51773e626d19de56d30
-AND tx_hash IN (SELECT tx_hash FROM execute_decrease_positions)
-{% if not is_incremental() %}
-AND block_time >= DATE '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-{% endif %}
-)
-
-,
-margin_fees_info AS
-(SELECT 
-block_time,
-block_number,
-index,
-tx_hash,
-varbinary_to_int256(bytearray_substring(data,45,20)) AS feeUsd,
-LEAD(index, 1, 1000000) OVER (PARTITION BY tx_hash ORDER BY index) AS next_index
+  AND topic0 = 0x93d75d64d1f84fc6f430a64fc578bdd4c1e090e90ea2d51773e626d19de56d30
+  AND tx_hash IN (SELECT tx_hash FROM execute_decrease_positions)
+    {% if not is_incremental() %}
+  AND block_time >= DATE '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% endif %}
+),
+margin_fees_info AS (
+SELECT block_time,
+       block_number,
+       index,
+       tx_hash,
+       varbinary_to_int256(bytearray_substring(data, 45, 20))             AS feeUsd,
+       LEAD(index, 1, 1000000) OVER (PARTITION BY tx_hash ORDER BY index) AS next_index
 FROM {{ source('optimism', 'logs') }}
-
 WHERE topic0 = 0x5d0c0019d3d45fadeb74eff9d2c9924d146d000ac6bcf3c28bf0ac3c9baa011a
-AND contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
-{% if not is_incremental() %}
-AND block_time >= DATE '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-{% endif %}
+  AND contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
+    {% if not is_incremental() %}
+  AND block_time >= DATE '{{project_start_date}}'
+    {% endif %}
+    {% if is_incremental() %}
+  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% endif %}
 ),
 
-complete_perp_tx AS
-(SELECT *, index_token || '/USD' AS market
+complete_perp_tx AS (
+SELECT *, index_token || '/USD' AS market
 FROM (SELECT event.*,
-tokens1.symbol AS underlying_asset,
-(CASE 
-WHEN tokens.symbol = 'WETH' THEN 'ETH'
-WHEN tokens.symbol = 'WBTC' THEN 'BTC'
-ELSE tokens.symbol
-END
-) AS index_token,
-trx."from",
-trx.to, 
-fees.feeUsd AS margin_fee
-FROM all_executed_positions event
-
-JOIN {{ source('optimism', 'transactions') }} trx
-ON event.tx_hash = trx.hash
-{% if not is_incremental() %}
-AND event.block_time >= DATE '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND event.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-{% endif %}
-
-JOIN margin_fees_info fees
-ON event.tx_hash = fees.tx_hash
-AND event.index >  fees.index
-AND event.index <  fees.next_index
-
-JOIN {{ ref('tokens_optimism_erc20') }} tokens
-ON event.indexToken = tokens.contract_address
-
-JOIN {{ ref('tokens_optimism_erc20') }} tokens1
-ON event.collateralToken = tokens1.contract_address
-
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18
-)
+             tokens1.symbol AS underlying_asset,
+             (CASE
+                  WHEN tokens.symbol = 'WETH' THEN 'ETH'
+                  WHEN tokens.symbol = 'WBTC' THEN 'BTC'
+                  ELSE tokens.symbol
+                 END
+                 )          AS index_token,
+             trx."from",
+             trx.to,
+             fees.feeUsd    AS margin_fee
+      FROM all_executed_positions event
+      JOIN {{ source('optimism', 'transactions') }} trx
+      ON event.tx_hash = trx.hash
+          {% if not is_incremental() %}
+          AND event.block_time >= DATE '{{project_start_date}}'
+          {% endif %}
+          {% if is_incremental() %}
+          AND {{ incremental_predicate('event.block_time') }}
+          {% endif %}
+      JOIN margin_fees_info fees
+          ON event.tx_hash = fees.tx_hash
+          AND event.index > fees.index
+          AND event.index < fees.next_index
+      JOIN {{ ref('tokens_optimism_erc20') }} tokens
+          ON event.indexToken = tokens.contract_address
+      JOIN {{ ref('tokens_optimism_erc20') }} tokens1
+          ON event.collateralToken = tokens1.contract_address
+      GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18)
 )
 
 
