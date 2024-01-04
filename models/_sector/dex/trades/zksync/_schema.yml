@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dex_zksync_base_trades
+
+  - name: maverick_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: maverick
+      contributors: get620v, tomfutago
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'maverick' ]
+    description: "Maverick zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_zksync_base_trades_seed')
