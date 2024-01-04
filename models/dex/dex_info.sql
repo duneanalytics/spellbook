@@ -94,4 +94,5 @@ FROM (VALUES
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Direct', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
+    , ('pharaoh', 'Pharaoh', 'Direct', 'pharaoh')
     ) AS temp_table (project, name, marketplace_type, x_username)
