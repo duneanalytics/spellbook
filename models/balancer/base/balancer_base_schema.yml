@@ -180,12 +180,13 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer pools.
     columns:
+      - *blockchain
       - *pool_id
       - &token_address
         name: token_address
@@ -198,7 +199,7 @@ models:
     meta:
       blockchain: base
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -209,6 +210,7 @@ models:
             - pool_id
             - token_address
     columns:
+      - *blockchain
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -237,7 +239,8 @@ models:
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
       - name: version
         description: 'Version of Balancer in which pool was deployed'
-      - *blockchain
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -247,8 +250,14 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'
+
+
   - name: balancer_v2_base_bpt_prices
     meta:
       blockchain: base
