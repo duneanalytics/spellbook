@@ -3,11 +3,11 @@ version: 2
 models:
   - name: aragon_dao_addresses
     meta:
-      blockchain: polygon, ethereum, gnosis, base
+      blockchain: polygon, ethereum, gnosis, base, arbitrum
       project: aragon
       contributors: Henrystats 
     config:
-      tags: [ 'polygon', 'ethereum', 'gnosis', 'base', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
+      tags: [ 'polygon', 'ethereum', 'arbitrum', 'gnosis', 'base', 'dao', 'aragon', 'dao creator tools', 'Henrystats', 'Aragon Client', 'Aragon App']
     description: >
       wallet addresses of daos created on aragon across all products & blockchains
     columns:

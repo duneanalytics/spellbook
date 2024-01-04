@@ -24,5 +24,4 @@ settlements(contract_address, blockchain) as (values
     , (0x7F069df72b7A39bCE9806e3AfaF579E54D8CF2b9, 'base')
 )
 
-select *
-from settlements
+select * from settlements

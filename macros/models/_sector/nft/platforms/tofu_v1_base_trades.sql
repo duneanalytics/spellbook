@@ -1,5 +1,5 @@
 -- Tofu NFT trades (re-usable macro for all chains)
-{% macro tofu_v1_base_trades(blockchain,MarketNG_call_run, MarketNG_evt_EvInventoryUpdate, raw_transactions, project_start_date, NATIVE_ERC20_REPLACEMENT, NATIVE_SYMBOL_REPLACEMENT) %}
+{% macro tofu_v1_base_trades(blockchain,MarketNG_call_run, MarketNG_evt_EvInventoryUpdate, project_start_date, NATIVE_ERC20_REPLACEMENT, NATIVE_SYMBOL_REPLACEMENT) %}
 
 WITH tff AS (
     SELECT call_block_time,
@@ -27,7 +27,7 @@ WITH tff AS (
           CROSS JOIN unnest(cast(json_extract(detail, '$.bundle') as ARRAY<VARCHAR>)) WITH ORDINALITY AS foo(bundle_item,bundle_index)
           WHERE call_success = true
               {% if is_incremental() %}
-              and {{incremental_predicate('call_block_time')}}
+              and call_block_time >= date_trunc('day', now() - interval '7' day)
               {% endif %}
          ) as tmp
 ),
@@ -50,43 +50,45 @@ WITH tff AS (
          from {{ MarketNG_evt_EvInventoryUpdate }}
          where json_extract_scalar(inventory, '$.status') = '1'
               {% if is_incremental() %}
-              and {{incremental_predicate('evt_block_time')}}
+              and evt_block_time >= date_trunc('day', now() - interval '7' day)
               {% endif %}
      )
-,
-base_trades as (
-SELECT '{{blockchain}}'                      as blockchain
+
+, base_trades as (
+SELECT '{{blockchain}}'                                 as blockchain
      , 'tofu'                                as project
      , 'v1'                                  as project_version
      , tfe.evt_block_time                    as block_time
-     , date_trunc('day',tfe.evt_block_time)   as block_date
-     , date_trunc('month',tfe.evt_block_time) as block_month
+     , cast(date_trunc('day', tfe.evt_block_time) as date) as block_date
+     , cast(date_trunc('month', tfe.evt_block_time) as date) as block_month
      , tfe.evt_block_number                  as block_number
-     , tfe.evt_tx_hash                       as tx_hash
-     , tfe.contract_address                  as project_contract_address
+     , tff.token_id                          as nft_token_id
+     , 'secondary'   as trade_type
+     , tff.amount    as nft_amount
+     , tfe.seller                            as seller
+     , tfe.buyer                             as buyer
      , case
            when tfe.kind = '1' then 'Buy'
            when tfe.kind = '2' then 'Sell'
            else 'Auction'
-       end                                   as trade_category
-     , 'secondary'                           as trade_type
-     , tfe.buyer                             as buyer
-     , tfe.seller                            as seller
-     , tff.token                             as nft_contract_address
-     , tff.token_id                          as nft_token_id
-     , tff.amount                            as nft_amount
-     , tfe.price                             as price_raw
-     , tfe.currency                          as currency_contract
-     , CAST(tfe.price * tff.fee_rate AS uint256)            as platform_fee_amount_raw
-     , CAST(tfe.price * tff.royalty_rate  AS uint256)       as royalty_fee_amount_raw
-     , cast(null as varbinary)                              as platform_fee_address
-     , tff.royalty_address                                  as royalty_fee_address
-     , row_number() over ( partition by tfe.evt_tx_hash order by tfe.evt_index, tff.bundle_index) as sub_tx_trade_id
-    FROM tfe
-    INNER JOIN tff
-      ON tfe.evt_tx_hash = tff.call_tx_hash
-          AND tfe.evt_block_time = tff.call_block_time
-          AND tfe.ordering = tff.ordering
+    end                                      as trade_category
+     , tfe.price     as price_raw
+     , tfe.currency                                                                 as currency_contract
+     , tfe.contract_address                                                         as project_contract_address
+     , tff.token                                                                    as nft_contract_address
+     , tfe.evt_tx_hash                                                              as tx_hash
+     , CAST(tfe.price * tff.fee_rate AS uint256)                                    as platform_fee_amount_raw
+     , CAST(tfe.price * tff.royalty_rate  AS uint256)                               as royalty_fee_amount_raw
+     , tff.royalty_address                                                          as royalty_fee_address
+     , cast(null as varbinary) as platform_fee_address
+    , tfe.evt_index as sub_tx_trade_id
+FROM tfe
+     INNER JOIN tff
+          ON tfe.evt_tx_hash = tff.call_tx_hash
+              AND tfe.evt_block_time = tff.call_block_time
+              AND tfe.ordering = tff.ordering
 )
-{{add_nft_tx_data('base_trades','arbitrum')}}
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'polygon') }}
 {% endmacro %}

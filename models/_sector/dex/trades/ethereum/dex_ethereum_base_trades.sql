@@ -23,6 +23,14 @@
     , ref('fraxswap_ethereum_base_trades')
     , ref('bancor_ethereum_base_trades')
     , ref('verse_dex_ethereum_base_trades')
+    , ref('swapr_ethereum_base_trades')
+    , ref('mauve_ethereum_base_trades')
+    , ref('dfx_ethereum_base_trades')
+    , ref('dodo_ethereum_base_trades')
+    , ref('integral_ethereum_base_trades')
+    , ref('maverick_ethereum_base_trades')
+    , ref('clipper_ethereum_base_trades')
+    , ref('mstable_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (
