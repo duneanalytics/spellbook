@@ -92,3 +92,6 @@ select
   pe.evt_index
 from perp_events pe 
   join {{ source('celo', 'transactions') }} tx on pe.tx_hash = tx.hash and pe.block_time = tx.block_time
+  {% if is_incremental() %}
+    and {{ incremental_predicate('tx.block_time') }}
+  {% endif %}
