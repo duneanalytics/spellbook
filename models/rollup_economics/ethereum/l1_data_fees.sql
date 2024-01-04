@@ -158,7 +158,7 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
-    'imx' AS chain, -- imx posts state updates to L1 which are attested to by data providers through the Data Availability Committee, meaning offchain DA
+    'imx' AS chain, -- imx state updates to L1 through the Data Availability Committee, imx uses offchain DA
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -172,9 +172,8 @@ with tx_batch_appends as (
       AND p.blockchain is null
       AND p.symbol = 'ETH'
       AND (
-            t."from" = 0x9B7f7d0d23d4CAce5A3157752D0D4e4bf25E927e -- Operator, StateUpdate poster
-            AND t.to = 0x5FDCCA53617f4d2b9134B29090C87D01058e27e9 -- StateUpdate proxy contract
-            AND cast(t.data as varchar) LIKE '0x538f9406%'
+            (t.to = 0x5FDCCA53617f4d2b9134B29090C87D01058e27e9 OR t.to = 0x16BA0f221664A5189cf2C1a7AF0d3AbFc70aA295)
+            AND (cast(t.data as varchar) LIKE '0x538f9406%' OR cast(t.data as varchar) LIKE '0x504f7f6f%') -- StateUpdate & Verify Availability Proof 
       )
       AND t.block_time >= timestamp '2021-03-24' -- mainnet launch date
     {% if is_incremental() %}
@@ -280,7 +279,7 @@ with tx_batch_appends as (
       AND p.blockchain is null
       AND p.symbol = 'ETH'
       AND t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F
-      AND cast(t.data as varchar) LIKE '0x4165d6dd%' -- Finalize Blocks (unfortunately here the ZK proofs are also included which should rather go into table l1_verification_fees)
+      AND cast(t.data as varchar) LIKE '0x4165d6dd%' -- Finalize Blocks (proof verified immediately)
       AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -322,7 +321,7 @@ with tx_batch_appends as (
       AND p.blockchain is null
       AND p.symbol = 'ETH'
       AND t.to = 0x153CdDD727e407Cb951f728F24bEB9A5FaaA8512
-      AND cast(t.data as varchar) LIKE '0xdcb2aa31%' -- submitBlocksWithCallbacks (proof is included)
+      AND cast(t.data as varchar) LIKE '0xdcb2aa31%' -- submitBlocksWithCallbacks (proof verified immediately)
       AND t.block_time >= timestamp '2021-03-23' 
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)

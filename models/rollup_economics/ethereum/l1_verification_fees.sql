@@ -19,7 +19,7 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    44*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
     t.gas_used,
     {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
@@ -51,15 +51,15 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    24*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
     t.gas_used,
     {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
       AND t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-      AND cast(t.data as varchar) LIKE '0xa50a164b%' -- proveBatches
-      AND t.block_time >= timestamp '2023-03-01'
+      AND cast(t.data as varchar) LIKE '0x2b0006fa%' -- verifyBatchesTrustedAggregator
+      AND t.block_time >= timestamp '2023-03-23'
       AND p.blockchain is null
       AND p.symbol = 'ETH'
     {% if is_incremental() %}
@@ -67,19 +67,19 @@ with verify_txns as (
     {% endif %}
 
     UNION ALL SELECT
-    'imx' AS name, -- not included here is the SHARP Verifier [0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60] as all Starkware chains share it together
+    'starkware' AS name, -- SHARPVerify used collectively by: Starknet, Sorare, ImmutableX, Apex, Myria, rhino.fi and Canvas Connect
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    652 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    456*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb, -- proof size might get longer with more chains
     t.gas_used,
     {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
-      AND t.to = 0x16BA0f221664A5189cf2C1a7AF0d3AbFc70aA295
-      AND cast(t.data as varchar) LIKE '0x504f7f6f%' -- Verify Availability Proof, imx committee
+      AND t.to = 0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60
+      AND cast(t.data as varchar) LIKE '0x9b3b76cc%' -- Verify Availability Proof, imx committee
       AND t.block_time >= timestamp '2021-03-24'
       AND p.blockchain is null
       AND p.symbol = 'ETH'
@@ -93,7 +93,7 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    3440 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    110*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
     t.gas_used,
     {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
