@@ -117,19 +117,6 @@ sources:
         loaded_at_field: call_block_time
       - name: MerkleDistributor_evt_Claimed
         loaded_at_field: evt_block_time
-      - name: FusionWhitelistRegistryV1_evt_Registered
-        loaded_at_field: evt_block_time
-      - name: FusionWhitelistRegistryV1_evt_Unregistered
-        loaded_at_field: evt_block_time
-      - name: FusionWhitelistRegistryV1_evt_Promotion
-        loaded_at_field: evt_block_time
-      - name: FusionWhitelistRegistryV2_evt_Registered
-        loaded_at_field: evt_block_time
-      - name: FusionWhitelistRegistryV2_evt_Unregistered
-        loaded_at_field: evt_block_time
-      - name: FusionWhitelistRegistryV2_evt_Promotion
-        loaded_at_field: evt_block_time
-      
 
   - name: onesplit_ethereum
     description: "decoded events and function calls for onesplit on ethereum"

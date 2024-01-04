@@ -7,10 +7,10 @@
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "base"]\',
                                 "project",
                                 "oneinch",
-                                \'["max-morrow", "grkhr"]\') }}'
+                                \'["grkhr", "max-morrow"]\') }}'
     )
 }}
 
@@ -18,6 +18,43 @@
 
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
 {% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+
+
+
+with
+
+prices as (
+    select
+        blockchain
+        , contract_address
+        , minute
+        , price
+        , decimals
+        , symbol
+    from {{ source('prices', 'usd') }}
+    {% if is_incremental() %}
+        where {{ incremental_predicate('minute') }}
+    {% endif %}
+)
+
+, tokens_src as (
+    select 
+        blockchain
+        , contract_address src_token_address
+        , symbol src_token_symbol
+        , decimals src_token_decimals
+    from {{ ref('tokens_erc20') }}
+)
+
+, tokens_dst as (
+    select 
+        blockchain
+        , contract_address dst_token_address
+        , symbol dst_token_symbol
+        , decimals dst_token_decimals
+    from {{ ref('tokens_erc20') }}
+)
+
 
 -- base columns to not to duplicate in the union
 {% set 
@@ -41,46 +78,22 @@
         'protocol_version',
         'method',
         'order_hash',
+        'receiver',
         'fusion',
         'remains',
-        'native_token_symbol'
     ]
 %}
 
-
-
-with
-
-tokens as (
+-- success calls & parsed tokens with native replaced by wrapped for amounts calculation
+, calls_base as (
     select 
-        blockchain
-        , contract_address
-        , symbol as token_symbol
-        , decimals as token_decimals
-    from {{ ref('tokens_erc20') }}
-)
-
-, prices as (
-    select
-        blockchain
-        , contract_address
-        , minute
-        , price
-        , decimals
-        , symbol
-    from {{ source('prices', 'usd') }}
-    {% if is_incremental() %}
-        where {{ incremental_predicate('minute') }}
-    {% endif %}
-)
-
-, calls as (
-    select
         *
         , if(src_token_address in {{native_addresses}}, wrapped_native_token_address, src_token_address) as _src_token_address
-        , if(src_token_address in {{native_addresses}}, true, false) as _src_token_native
+        , if(src_token_address in {{native_addresses}}, native_token_symbol) as _src_token_native
+        , src_token_amount as _src_token_amount
         , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as _dst_token_address
-        , if(dst_token_address in {{native_addresses}}, true, false) as _dst_token_native
+        , if(dst_token_address in {{native_addresses}}, native_token_symbol) as _dst_token_native
+        , dst_token_amount as _dst_token_amount
     from {{ ref('oneinch_calls') }}
     join {{ ref('oneinch_blockchains') }} using(blockchain)
     where
@@ -91,49 +104,46 @@ tokens as (
         {% endif %}
 )
 
-, swaps as (
-    -- AR & LOP calls
+-- union all calls with LOP opposite swaps
+, _calls as (
+    -- AR + LOP CALLS
     select 
         {{ calls_base_columns | join(', ') }}
-        , if(protocol = 'AR', tx_from, maker) as user
-        , receiver
-        , _src_token_address
-        , _src_token_native
-        , src_token_amount
-        , _dst_token_address
-        , _dst_token_native
-        , dst_token_amount
-        , if(position('RFQ' in method) > 0, true, false) as contracts_only -- RFQ limit orders
-        , false as second_side
-    from calls
-
+        , _src_token_address as src_token_address
+        , _src_token_native as src_token_native
+        , _src_token_amount as src_token_amount
+        , _dst_token_address as dst_token_address
+        , _dst_token_native as dst_token_native
+        , _dst_token_amount as dst_token_amount
+        , false as second_side 
+    from calls_base
+    
     union all
 
-    -- second side of LOP calls (when a direct call LOP method => users from two sides)
-    select
+    -- LOP calls - second side (when a direct call LOP method => users from two sides)
+    select 
         {{ calls_base_columns | join(', ') }}
-        , tx_from as user
-        , null as receiver
-        , _dst_token_address as _src_token_address
-        , _dst_token_native as _src_token_native
-        , dst_token_amount as src_token_amount
-        , _src_token_address as _dst_token_address
-        , _src_token_native as _dst_token_native
-        , src_token_amount as dst_token_amount
-        , false as contracts_only
-        , true as second_side
-    from calls
-    where
-        protocol = 'LOP'
-        and cardinality(call_trace_address) = 0
+        , _dst_token_address as src_token_address
+        , _dst_token_native as src_token_native
+        , _dst_token_amount as src_token_amount
+        , _src_token_address as dst_token_address
+        , _src_token_native as dst_token_native
+        , _src_token_amount as dst_token_amount
+        , true as second_side -- opposite limit orders
+    from calls_base
+    where protocol = 'LOP' and cardinality(call_trace_address) = 0
 )
 
-{% set src_condition = 'contract_address = _src_token_address' %}
-{% set dst_condition = 'contract_address = _dst_token_address' %}
-{% set user_condition = 'user in (transfer_from, transfer_to)' %}
-{% set receiver_condition = 'receiver in (transfer_from, transfer_to)' %}
-{% set symbol = 'coalesce(symbol, token_symbol)' %}
-{% set decimals = 'coalesce(decimals, token_decimals)' %}
+-- calls with tokens metadata
+, calls as (
+    select 
+        *
+        , if(protocol = 'AR' or second_side, tx_from, maker) as user
+        , if(protocol = 'LOP' and second_side = false and position('RFQ' in method) > 0, true, false) as contracts_only -- RFQ calls
+    from _calls
+    left join tokens_src using(blockchain, src_token_address)
+    left join tokens_dst using(blockchain, dst_token_address)
+)
 
 , amounts as (
     select 
@@ -141,36 +151,42 @@ tokens as (
         , tx_hash
         , call_trace_address
         , block_number
+        , max(amount) filter(where contract_address = src_token_address and amount <= src_token_amount) as src_token_amount -- take only amounts lte than in the call
+        , max(amount) filter(where contract_address = dst_token_address and amount <= dst_token_amount) as dst_token_amount -- take only amounts lte than in the call
+        
+        , max(amount * price / pow(10, decimals)) filter(
+            where 
+                contract_address = src_token_address and amount <= src_token_amount 
+                or contract_address = dst_token_address and amount <= dst_token_amount
+        ) as sources_amount_usd -- take only amounts lte than in the call
+        
+        , max(amount * price / pow(10, decimals)) as transfers_amount_usd -- take all amounts
 
-        -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and {{ user_condition }}) as _src_token_address_true
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as _dst_token_address_to_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and {{ user_condition }}) as _src_token_symbol_true
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and {{ user_condition }}) as _dst_token_symbol_to_user
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _dst_token_symbol_to_receiver
-        , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_token_decimals
-        , any_value({{ decimals }}) filter(where {{ dst_condition }}) as dst_token_decimals
-
-        -- reinsurance for symbols (when transfers from/to user are not found)
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }}) as _src_token_symbol
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }}) as _dst_token_symbol
-
-        , max(amount) filter(where {{ src_condition }} and amount <= src_token_amount) as _src_token_amount_true -- take only src token amounts less than in the call
-        , max(amount) filter(where {{ dst_condition }} and amount <= dst_token_amount) as _dst_token_amount_true -- take only dst token amounts less than in the call
-        , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
-        , max(amount * price / pow(10, decimals)) as transfers_amount_usd
-
-        -- $ amount from user to any
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and {{ user_condition }}) as _amount_usd_from_user
-        -- $ amount from any to user
-        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ user_condition }}) as _amount_usd_to_user
-        -- $ amount from any to receiver
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _amount_usd_to_receiver
+        , sum(amount * if(transfer_from = user, price, -price) / pow(10, decimals)) filter(
+            where (
+                src_token_native is not null and transfer_native 
+                or src_token_address = contract_address
+            )  
+                and user in (transfer_from, transfer_to)
+        ) as _amount_usd_from_user -- amount usd from user to any
+        , sum(amount * if(transfer_to = user, price, -price) / pow(10, decimals)) filter(
+            where (
+                dst_token_native is not null and transfer_native 
+                or dst_token_address = contract_address
+            )  
+                and user in (transfer_from, transfer_to)
+        ) as _amount_usd_to_user -- amount usd to user from any
+        , sum(amount * if(transfer_to = receiver, price, -price) / pow(10, decimals)) filter(
+            where (
+                dst_token_native is not null and transfer_native 
+                or dst_token_address = contract_address
+            )  
+                and receiver in (transfer_from, transfer_to)
+        ) as _amount_usd_to_receiver -- amount usd to receiver from any
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
-    from swaps 
+    from calls 
     join (
         select * from {{ ref('oneinch_call_transfers') }}
         {% if is_incremental() %}
@@ -178,13 +194,12 @@ tokens as (
         {% endif %}
     ) using(blockchain, tx_hash, call_trace_address, block_number) -- block_number is needed for performance
     left join prices using(blockchain, contract_address, minute)
-    left join tokens using(blockchain, contract_address)
     group by 1, 2, 3, 4
 )
 
--- output --
 
-select
+
+select 
     blockchain
     , block_number
     , block_time
@@ -209,21 +224,21 @@ select
     , second_side
     , order_hash
     , remains
-    , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
-    , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
+    , if(src_token_native is null, src_token_address, {{true_native_address}}) as src_token_address -- replace native with true native address back
+    , coalesce(src_token_native, src_token_symbol) as src_token_symbol
     , src_token_decimals
-    , _src_token_amount_true as src_token_amount
-    , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
-    , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol) as dst_token_symbol
+    , amounts.src_token_amount
+    , if(dst_token_native is null, dst_token_address, {{true_native_address}}) as dst_token_address -- replace native with true native address back
+    , coalesce(dst_token_native, dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
-    , _dst_token_amount_true as dst_token_amount
-    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens
+    , amounts.dst_token_amount
+    , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd -- sources amount first if found prices, when connector tokens
     , sources_amount_usd
     , transfers_amount_usd
-    , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd -- actual user $ amount
+    , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd
     , tokens
     , transfers
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
-from swaps
+from calls
 join amounts using(blockchain, tx_hash, call_trace_address, block_number)

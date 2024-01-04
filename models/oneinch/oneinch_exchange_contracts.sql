@@ -2,9 +2,8 @@
     config(
         schema = 'oneinch',
         alias = 'exchange_contracts',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['contract_address', 'blockchain'],
         
     )
@@ -101,35 +100,7 @@ contracts as (
     ) as c(project, address, contract_name, blockchains), unnest(blockchains) as blockchains(blockchain)
 )
 
-, evms_creation_traces as (
-    {% for blockchain in all_evm_chains() %}
-        select '{{blockchain}}' as blockchain, address, block_time, "from", tx_hash from {{ source(blockchain, 'traces') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('block_time') }}
-        {% endif %}
-        {% if not loop.last %} union all {% endif %}
-    {% endfor %}
-)
-
-, evms_contracts as (
-    {% for blockchain in all_evm_chains() %}
-        select
-            '{{blockchain}}' as blockchain
-            , address
-            , abi
-            , dynamic
-            , base
-            , factory
-            , detection_source
-            , namespace
-            , created_at
-            , name
-        from {{ source(blockchain, 'contracts') }}
-    {% if not loop.last %} union all {% endif %}
-    {% endfor %}
-)
-
-, descriptions as ( -- light table, no needs to be incremental
+, descriptions as (
     select
         blockchain
         , address
@@ -142,30 +113,30 @@ contracts as (
         ]), created_at) as params
         , array_agg(namespace) as namespaces
         , array_agg(name) as names
-    from evms_contracts
+    from {{ ref('evms_contracts') }}
     join contracts using(blockchain, address)
     group by 1, 2
 )
 
 , creations as (
+    
     select
         project
         , address
         , contract_name
         , blockchain
+        , block_time as created_at
+        , creation_traces."from" as creator
+        , tx_hash as creation_tx_hash
         , abi
         , params
         , namespaces
         , names
-        , max(block_time) as last_created_at
-        , max(evms_creation_traces."from") as last_creator
-        , max(tx_hash) as last_creation_tx_hash
-    from evms_creation_traces
+    from {{ ref('evms_creation_traces') }}
     join contracts using(blockchain, address)
     left join descriptions using(blockchain, address)
-    group by 1, 2, 3, 4, 5, 6, 7, 8
-)
 
+)
 
 select
       project
@@ -173,11 +144,12 @@ select
     , substr(address, length(address) - 1) as contract_id
     , contract_name
     , blockchain
-    , last_created_at
-    , last_creator
-    , last_creation_tx_hash
+    , created_at
+    , creator
+    , creation_tx_hash
     , abi
     , params
     , namespaces
     , names
 from creations
+order by project, created_at

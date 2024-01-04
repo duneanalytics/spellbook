@@ -3,9 +3,15 @@
         schema = 'oneinch',
         alias = 'fusion_resolvers',
         materialized = 'table',
-        unique_key = ['address']
+        file_format = 'delta',
+        unique_key = ['address', 'last_changed_at'],
+        
     )
 }}
+
+
+
+{% set project_start_date = "timestamp '2022-12-25'" %} 
 
 
 
@@ -29,7 +35,7 @@ names(
         , (0x12e5ceb5c14f3a1a9971da154f6530c1cf7274ac, 'Rosato LLC'     , true  )
         , (0xee230dd7519bc5d0c9899e8704ffdc80560e8509, 'Kinetex Labs'   , true  )
         , (0xaf3803348f4f1f527a8b6f611c30c8702bacd2af, 'Wintermute'     , true  )
-        , (0xdcdf16a03360d4971ca4c1fd9967a47125f3c995, 'Rizzolver'      , true  )
+        , (0xdcdf16a03360d4971ca4c1fd9967a47125f3c995, 'Rizzolver'      , true  ) -- Wintermute
         , (0x05d18b713dab812c34edb48c76cd9c836d56752b, 'Propeller Swap' , true  )
         , (0x1113db6080ea2b9f92b2e9937ea712b3d730b3f1, 'Clipper'        , true  )
         , (0xa6219c7d74edeb12d74a3c664f7aaeb7d01ab902, ''               , false )
@@ -40,29 +46,26 @@ names(
 
 , registrations as (
     select
-        addr as address
-        , max_by(status, evt_block_time) as status
-        , max(evt_block_time) as last_changed_at
-    from (
-        select addr, evt_block_time, 'Registered' as status
-        from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV1_evt_Registered') }}
-        union all
-        select addr, evt_block_time, 'Unregistered' as status
-        from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV1_evt_Unregistered') }}
-        union all
-        select addr, evt_block_time, 'Registered' as status
-        from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV2_evt_Registered') }}
-        union all
-        select addr, evt_block_time, 'Unregistered' as status
-        from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV2_evt_Unregistered') }}
-    )
+        substr(data, 13, 20) as address
+        , max_by(
+            case topic0
+                when 0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9 then 'Registered'
+                when 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc then 'Unregistered'
+            end
+            , block_time
+        ) as status
+        , max(block_time) as last_changed_at
+    from {{ source('ethereum', 'logs') }}
+    where
+        contract_address in (0xcb8308fcb7bc2f84ed1bea2c016991d34de5cc77, 0xF55684BC536487394B423e70567413faB8e45E26) -- WhitelistRegistry
+        and topic0 in (0x2d3734a8e47ac8316e500ac231c90a6e1848ca2285f40d07eaa52005e4b3a0e9, 0x75cd6de711483e11488a1cd9b66172abccb9e5c19572f92015a7880f0c8c0edc)
+        and block_time >= {{ project_start_date }}
     group by 1
 )
 
--- output --
 
 select
-    address
+      address
     , if(name = '', '0x' || lower(to_hex(substr(address, 1, 2))) || '..' || lower(to_hex(substr(address, 19))), coalesce(name, 'UNSPECIFIED')) as name
     , status
     , last_changed_at
