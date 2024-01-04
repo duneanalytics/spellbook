@@ -55,3 +55,9 @@ sources:
     tables:
       - name: TwapPair_evt_Swap
       - name: TwapFactory_evt_PairCreated
+  - name: clipper_arbitrum
+    tables:
+      - name: ClipperCove_evt_CoveSwapped
+      - name: ClipperCove_v2_evt_CoveSwapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
