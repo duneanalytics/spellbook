@@ -107,27 +107,6 @@ with verify_txns as (
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-
-    UNION ALL SELECT
-    'mantle' AS name, -- still under development
-    t.block_number,
-    t.hash,
-    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
-    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,  -- change me once mantle proofs are live
-    t.gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
-    FROM {{ source('ethereum','transactions') }} AS t
-    INNER JOIN {{ source('prices','usd') }} p
-      ON p.minute = date_trunc('minute', t.block_time)
-      AND t.to = 0xD1328C9167e0693B689b5aa5a024379d4e437858
-      AND cast(t.data as varchar) LIKE 'ChangeMe%' -- proveFraud function not live yet!
-      AND t.block_time >= timestamp '2023-07-02'
-      AND p.blockchain is null
-      AND p.symbol = 'ETH'
-    {% if is_incremental() %}
-      AND t.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
 )
 
 ,block_basefees as (

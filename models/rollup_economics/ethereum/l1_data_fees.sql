@@ -158,7 +158,7 @@ with tx_batch_appends as (
     {% endif %}
 
     UNION ALL SELECT
-    'imx' AS chain,
+    'imx' AS chain, -- imx posts state updates to L1 which are attested to by data providers through the Data Availability Committee, meaning offchain DA
     t.block_number,
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
@@ -324,34 +324,6 @@ with tx_batch_appends as (
       AND t.to = 0x153CdDD727e407Cb951f728F24bEB9A5FaaA8512
       AND cast(t.data as varchar) LIKE '0xdcb2aa31%' -- submitBlocksWithCallbacks (proof is included)
       AND t.block_time >= timestamp '2021-03-23' 
-    {% if is_incremental() %}
-      AND t.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-
-    UNION ALL SELECT
-    'mantle' AS chain, -- still under development, data stored through Mantle DA powered by Eigen DA
-    t.block_number,
-    t.hash,
-    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
-    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    (length(t.data)) AS input_length,
-    gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
-    FROM {{ source('ethereum','transactions') }} AS t
-    INNER JOIN {{ source('prices','usd') }} p
-      ON p.minute = date_trunc('minute', t.block_time)
-      AND p.blockchain is null
-      AND p.symbol = 'ETH'
-      AND 
-        t.to = 0xD1328C9167e0693B689b5aa5a024379d4e437858 -- createAssertionWithStateBatch
-        OR t.to = 0x291dc3819b863e19b0a9b9809F8025d2EB4aaE93 -- appendSequencerBatch
-        OR t.to = 0x50Fa427235C7C8cAA4A0C21b5009f5a0d015B23A -- confirmData, storeData
-      AND 
-        cast(t.data as varchar) LIKE '0x49cd3004%' -- createAssertionWithStateBatch
-        OR cast(t.data as varchar) LIKE '0xd0f89344%' -- appendSequencerBatch
-        OR cast(t.data as varchar) LIKE '0x4618ed87%' -- confirmData
-        OR cast(t.data as varchar) LIKE '0x5e4a3056%' -- storeData
-      AND t.block_time >= timestamp '2023-07-02' --change
     {% if is_incremental() %}
       AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
