@@ -10,64 +10,64 @@
 {%
     set samples = {
         "aggregate": {
-            "src_token_address": "fromToken",
-            "dst_token_address": "toToken",
-            "src_amount":        "tokensAmount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minTokensAmount",
-            "router_type":       "generic",
+            "src_token_address":    "fromToken",
+            "dst_token_address":    "toToken",
+            "src_token_amount":     "tokensAmount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minTokensAmount",
+            "router_type":          "generic",
         },
         "swap_1": {
-            "src_token_address": "fromToken",
-            "dst_token_address": "toToken",
-            "src_amount":        "fromTokenAmount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturnAmount",
-            "router_type":       "generic",
+            "src_token_address":    "fromToken",
+            "dst_token_address":    "toToken",
+            "src_token_amount":     "fromTokenAmount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturnAmount",
+            "router_type":          "generic",
         },
         "swap_2": {
-            "kit":               "cast(json_parse(desc) as map(varchar, varchar))",
-            "src_token_address": "from_hex(kit['srcToken'])",
-            "dst_token_address": "from_hex(kit['dstToken'])",
-            "src_receiver":      "from_hex(kit['srcReceiver'])",
-            "dst_receiver":      "from_hex(kit['dstReceiver'])",
-            "src_amount":        "cast(kit['amount'] as uint256)",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "cast(kit['minReturnAmount'] as uint256)",
-            "router_type":       "generic",
+            "kit":                  "cast(json_parse(desc) as map(varchar, varchar))",
+            "src_token_address":    "from_hex(kit['srcToken'])",
+            "dst_token_address":    "from_hex(kit['dstToken'])",
+            "src_receiver":         "from_hex(kit['srcReceiver'])",
+            "dst_receiver":         "from_hex(kit['dstReceiver'])",
+            "src_token_amount":     "cast(kit['amount'] as uint256)",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "cast(kit['minReturnAmount'] as uint256)",
+            "router_type":          "generic",
         },
         "unoswap_1": {
-            "pools":             "pools",
-            "src_token_address": "srcToken",
-            "src_amount":        "amount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturn",
-            "direction_bit":     "1",
-            "router_type":       "unoswap",
+            "pools":                "pools",
+            "src_token_address":    "srcToken",
+            "src_token_amount":     "amount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturn",
+            "direction_bit":        "1",
+            "router_type":          "unoswap",
         },
         "uniswap_1": {
-            "pools":             "pools",
-            "src_amount":        "amount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturn",
-            "direction_bit":     "1",
-            "router_type":       "unoswap",
+            "pools":                "pools",
+            "src_token_amount":     "amount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturn",
+            "direction_bit":        "1",
+            "router_type":          "unoswap",
         },
         "clipper_1": {
-            "src_token_address": "srcToken",
-            "dst_token_address": "dstToken",
-            "src_amount":        "amount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturn",
-            "router_type":       "clipper",
+            "src_token_address":    "srcToken",
+            "dst_token_address":    "dstToken",
+            "src_token_amount":     "amount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturn",
+            "router_type":          "clipper",
         },
         "clipper_2": {
-            "src_token_address": "srcToken",
-            "dst_token_address": "dstToken",
-            "src_amount":        "inputAmount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "goodUntil",
-            "router_type":       "clipper",
+            "src_token_address":    "srcToken",
+            "dst_token_address":    "dstToken",
+            "src_token_amount":     "inputAmount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "goodUntil",
+            "router_type":          "clipper",
         },
     }
 %}
@@ -308,12 +308,9 @@ select
     , dst_receiver
     , src_token_address
     , dst_token_address
-    , src_amount -- will be removed soon
-    , dst_amount -- will be removed soon
-    , dst_amount_min -- will be removed soon
-    , src_amount as src_token_amount
-    , dst_amount as dst_token_amount
-    , dst_amount_min as dst_token_amount_min
+    , src_token_amount
+    , dst_token_amount
+    , dst_token_amount_min
     , ordinary
     , pools
     , router_type
