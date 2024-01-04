@@ -26,6 +26,7 @@
      , (ref('inscription_celo_all'))
      , (ref('inscription_zora_all'))
      , (ref('inscription_zksync_all'))
+     , (ref('inscription_goerli_all'))
 ] %}
 
 SELECT *

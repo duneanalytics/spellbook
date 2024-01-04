@@ -709,17 +709,17 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - tx_index
+            - trace_address
             - node_address
     columns:
       - *blockchain
       - *block_time
       - *date_month
       - *node_address
-      - *token_amount
-      - *usd_amount
       - *tx_hash
-      - *tx_index
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
 
   - name: chainlink_optimism_ccip_gas_daily
     meta:
@@ -785,15 +785,15 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
+            - trace_address
             - node_address
     columns:
       - *blockchain
       - *block_time
-      - *date_month
+      - *date_start
       - *node_address
-      - *token_amount
-      - *usd_amount
       - *tx_hash
+      - *trace_address
 
   - name: chainlink_optimism_ccip_reward_daily
     meta:
@@ -901,6 +901,7 @@ models:
       - &destination
         name: destination
         description: "Destination"
+      - *trace_address
 
   - name: chainlink_optimism_ccip_tokens_locked_logs
     meta:
