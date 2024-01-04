@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: unidex_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on unidex dex aggregator
+    tables:
+      - name: metaaggregator_settlement_evt_Trade
+        loaded_at_field: evt_block_time
