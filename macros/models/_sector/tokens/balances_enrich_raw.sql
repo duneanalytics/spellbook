@@ -1,0 +1,33 @@
+{%- macro balances_enrich_raw(balances_base) %}
+select
+    balances.block_number,
+    balances.block_time,
+    balances.type,
+    balances.address as wallet_address,
+    balances.contract_address as token_address,
+    balances.amount as balance_raw,
+    balances.amount / power(10, erc20_tokens.decimals) as balance,
+    (balances.amount / power(10, erc20_tokens.decimals) * prices.price)  as balance_usd,
+    prices.price as price_rate,
+    erc20_tokens.symbol,
+    erc20_tokens.decimals
+from {{ source('tokens_ethereum', 'balances_ethereum_0002') }} balances
+left join {{ ref('tokens_erc20') }} erc20_tokens on
+    -- TODO: should not be hardcoded
+    erc20_tokens.blockchain = {{ blockchain }}
+    and (
+    CASE
+        WHEN type = 'erc20' THEN erc20_tokens.contract_address = balances.contract_address
+        -- TODO: should not be hardcoded
+        WHEN type = 'native' THEN erc20_tokens.contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        ELSE null
+    END)
+left join {{ source('prices', 'usd') }} prices on (
+    CASE
+        -- TODO: should not be hardcoded
+        WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = {{ blockchain }}
+        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is null
+        ELSE null
+    END)
+    and prices.minute = date_trunc('minute', balances.block_time)
+{% endmacro %}
