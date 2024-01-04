@@ -38,7 +38,6 @@
 ,ref('quix_v5_optimism_events')
 ,ref('tofu_bnb_events')
 ,ref('tofu_optimism_events')
-,ref('trove_ethereum_events')
 ,ref('zonic_optimism_events')
 ] %}
 
