@@ -198,7 +198,7 @@ models:
       - *tx_to
 
 
-  - name: soundxyz_ethereum_rewards
+  - name: soundxyz_v1_ethereum_rewards
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -218,7 +218,7 @@ models:
       - *tx_to
 
 
-  - name: soundxyz_optimism_rewards
+  - name: soundxyz_v1_optimism_rewards
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
