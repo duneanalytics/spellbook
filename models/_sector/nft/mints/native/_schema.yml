@@ -119,7 +119,7 @@ models:
     meta:
       blockchain: polygon
       sector: nft
-      contributors: covendev
+      contributors: chuxin
     config:
       tags: [ 'nft','polygon' ]
     description: >
@@ -131,9 +131,3 @@ models:
             - evt_index
             - token_id
             - number_of_items
-    columns:
-      - *tx_hash
-      - *evt_index
-      - *token_id
-      - *number_of_items
-      - *amount_usd
