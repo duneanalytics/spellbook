@@ -61,3 +61,9 @@ sources:
       - name: DMMFactory_evt_PoolCreated
       - name: Elastic_Pool_evt_swap
       - name: Elastic_Factory_evt_PoolCreated
+  - name: clipper_arbitrum
+    tables:
+      - name: ClipperCove_evt_CoveSwapped
+      - name: ClipperCove_v2_evt_CoveSwapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
