@@ -35,7 +35,7 @@ FROM
     ('eth-ethereum', null, 'ETH', null, null),
     ('ftm-fantom', null, 'FTM', null, null),
     ('hbar-hedera-hashgraph', null, 'HBAR', null, null),
-    ('icp-internet-protocol', null, 'ICP', null, null),
+    ('icp-internet-computer', null, 'ICP', null, null),
     ('icx-icon', null, 'ICX', null, null),
     ('kava-kava', null, 'KAVA', null, null),
     ('kuji-kujira', null, 'KUJI', null, null),
