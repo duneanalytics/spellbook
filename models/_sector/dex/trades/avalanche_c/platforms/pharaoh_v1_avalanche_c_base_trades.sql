@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'pharaoh_v1_avalanche_c_base_trades'
+    schema = 'pharaoh_v1_avalanche_c'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
