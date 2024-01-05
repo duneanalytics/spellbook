@@ -395,7 +395,8 @@ models:
               - 2_dvm
               - 2_dpp
               - 2_dsp
-              
+
+     
   - name: integral_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -412,7 +413,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('integral_ethereum_base_trades_seed')
-          
+
+
   - name: maverick_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -429,6 +431,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_ethereum_base_trades_seed')
+
 
   - name: clipper_ethereum_base_trades
     meta:
@@ -452,7 +455,8 @@ models:
               - 2
               - 3
               - 4
-              
+
+
   - name: mstable_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -473,3 +477,26 @@ models:
             version:
               - masset
               - feederpool
+
+
+  - name: kyberswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: kyberswap
+      contributors: ppclunghe, gregshestakovlido, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_ethereum_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic
+              - elastic_2

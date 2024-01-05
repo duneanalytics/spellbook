@@ -55,6 +55,12 @@ sources:
     tables:
       - name: TwapPair_evt_Swap
       - name: TwapFactory_evt_PairCreated
+  - name: kyber_arbitrum
+    tables:
+      - name: DMM_Pool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
   - name: clipper_arbitrum
     tables:
       - name: ClipperCove_evt_CoveSwapped

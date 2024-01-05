@@ -87,6 +87,12 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: kyber_ethereum
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
   - name: clipper_ethereum
     tables:
       - name: ClipperExchangeInterface_evt_Swapped
