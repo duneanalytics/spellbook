@@ -22,6 +22,7 @@
 with dexs AS (
     {% for evt_trade_table in mummy_finance_optimism_evt_trade_tables %}
         SELECT
+            evt_block_number        AS block_number,
             evt_block_time          AS block_time,
             account                 AS taker,
             CAST(NULL as VARBINARY) AS maker,
@@ -53,6 +54,7 @@ SELECT
     '1'                                                    AS version,
     CAST(date_trunc('DAY', dexs.block_time) AS date)       AS block_date,
     CAST(date_trunc('MONTH', dexs.block_time) AS date)     AS block_month,
+    dexs.block_number,
     dexs.block_time,
     erc20a.symbol                                          AS token_bought_symbol,
     erc20b.symbol                                          AS token_sold_symbol,
