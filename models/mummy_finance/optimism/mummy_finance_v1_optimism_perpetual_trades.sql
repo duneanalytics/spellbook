@@ -64,9 +64,9 @@ FROM (SELECT event.*,
       INNER JOIN {{ source('optimism', 'transactions') }} trx
       ON event.evt_tx_hash = trx.hash
           {% if not is_incremental() %}
-          AND evt_block_time >= DATE '{{project_start_date}}'
+          AND event.evt_block_time >= DATE '{{project_start_date}}'
           {% else %}
-          AND {{ incremental_predicate('evt_block_time') }}
+          AND {{ incremental_predicate('event.evt_block_time') }}
           {% endif %}
       INNER JOIN margin_fees_info fee
           ON event.evt_tx_hash = fee.evt_tx_hash

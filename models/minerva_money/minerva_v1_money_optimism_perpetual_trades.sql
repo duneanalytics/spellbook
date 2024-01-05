@@ -64,7 +64,7 @@ WHERE contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
   AND {{ incremental_predicate('block_time') }}
     {% endif %}
 
-UNION
+UNION ALL
 
 SELECT 
     block_time,

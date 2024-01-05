@@ -43,7 +43,6 @@ margin_fees_info AS
 LEAD(evt_index, 1, 1000000) OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS next_evt_index
 FROM {{ source('nex_optimism', 'Vault_evt_CollectMarginFees') }}
 
-
 {% if not is_incremental() %}
 WHERE evt_block_time >= DATE '{{project_start_date}}'
 {% else %}
@@ -69,9 +68,9 @@ FROM all_executed_positions event
 INNER JOIN {{ source('optimism', 'transactions') }} trx
 ON event.evt_tx_hash = trx.hash
 {% if not is_incremental() %}
-AND evt_block_time >= DATE '{{project_start_date}}'
+AND event.evt_block_time >= DATE '{{project_start_date}}'
 {% else %}
-AND {{ incremental_predicate('evt_block_time') }}
+AND {{ incremental_predicate('event.evt_block_time') }}
 {% endif %}
 
 INNER JOIN margin_fees_info fee
