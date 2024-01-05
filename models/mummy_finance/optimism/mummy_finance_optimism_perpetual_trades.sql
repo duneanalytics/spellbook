@@ -1,6 +1,6 @@
 {{ config(
 	schema = 'mummy_finance_optimism',
-	alias = 'perpetual_trades',
+	alias = 'perpetual_trades'
 	)
 }}
 

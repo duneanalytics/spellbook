@@ -1,6 +1,6 @@
 {{ config(
 	schema = 'fxdx_optimism',
-	alias = 'perpetual_trades',
+	alias = 'perpetual_trades'
 	)
 }}
 
