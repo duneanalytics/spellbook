@@ -9,7 +9,7 @@
 SELECT distinct
     'gnosis' AS blockchain,
     call.output_0 AS address,
-    'gnosis:' || pools.name AS name,
+    'gno:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
