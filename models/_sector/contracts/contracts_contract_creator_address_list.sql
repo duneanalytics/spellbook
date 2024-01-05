@@ -780,7 +780,6 @@ WITH curated_list AS (
       ,(0xcafe2ef59688187ee312c8aca10ceb798338f7e3, 'Holonym')
       ,(0x5ee2b0fd8d964cb50e787db4ff176d7bbb0fd180, 'Layer Zero')
       ,(0x2a61d3ba5030ef471c74f612962c7367eca3a62d, 'Lido')
-      ,(0x11f11121df7256c40339393b0fb045321022ce44, 'Lifi')
       ,(0x92b381515bd4851faf3d33a161f7967fd87b1227, 'Manifold')
       ,(0x687be8d213d49bc353d60298c51d8823632d8158, 'Mirror')
       ,(0xc3e9591edb56dcc951d50cd5002108e9d8968410, 'OpenOcean')
