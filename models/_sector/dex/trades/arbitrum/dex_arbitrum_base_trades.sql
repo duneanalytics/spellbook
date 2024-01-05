@@ -21,6 +21,7 @@
     , ref('dodo_arbitrum_base_trades')
     , ref('gmx_arbitrum_base_trades')
     , ref('integral_arbitrum_base_trades')
+    , ref('kyberswap_arbitrum_base_trades')
     , ref('clipper_arbitrum_base_trades')
 ] %}
 
