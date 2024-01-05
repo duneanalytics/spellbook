@@ -20,10 +20,8 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_seed:
-          blockchain: optimism
-          project: mummy_finance
-          version: 1
+      - check_dex_base_trades_seed:
+          seed_file: ref('mummy_finance_optimism_base_trades_seed')
     columns:
       - &blockchain
         name: blockchain
