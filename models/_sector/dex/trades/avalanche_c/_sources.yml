@@ -32,3 +32,11 @@ sources:
   - name: gmx_avalanche_c
     tables:
       - name: Router_evt_Swap
+  - name: kyber_avalanche_c
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticFactoryV2_evt_PoolCreated
