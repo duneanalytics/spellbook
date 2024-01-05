@@ -14,12 +14,12 @@
 }}
 
 {% set project_start_date = '2023-03-08' %}
-{% set firebird_finance_optimism_evt_trade_tables = [
+{% set unidex_optimism_evt_trade_tables = [
     source('unidex_optimism', 'metaaggregator_settlement_evt_Trade')
 ] %}
 
 with dexs as (
-    {% for evt_trade_table in firebird_finance_optimism_evt_trade_tables %}
+    {% for evt_trade_table in unidex_optimism_evt_trade_tables %}
         SELECT
             evt_block_time          AS block_time,
             owner                   AS taker,
@@ -113,5 +113,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_sold.minute') }}
     {% endif %}
