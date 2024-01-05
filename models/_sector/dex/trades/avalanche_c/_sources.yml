@@ -32,3 +32,7 @@ sources:
   - name: gmx_avalanche_c
     tables:
       - name: Router_evt_Swap
+  - name: pharaoh_avalanche_c
+    tables:
+      - name: ClPool_evt_Swap
+      - name: ClPoolFactory_evt_PoolCreated
