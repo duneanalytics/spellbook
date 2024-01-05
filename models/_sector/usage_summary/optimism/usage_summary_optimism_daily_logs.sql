@@ -11,5 +11,5 @@
 }}
 
 {{usage_summary_daily_logs(
-    chain='optimism'
+    chain='optimism', days_forward=365
 )}}

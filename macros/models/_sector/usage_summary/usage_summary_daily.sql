@@ -1,4 +1,4 @@
-{% macro usage_summary_daily( chain ) %}
+{% macro usage_summary_daily( chain, days_forward ) %}
 
 
 /*
@@ -19,6 +19,15 @@ This should only be joined to other contracts tables at the query stage; however
 the `base` spell unified with `predeploys`, as our identifier for the total set of contracts to evaluate
 , or keep this spell agnostic to contracts vs EOAs, and determine this at the query level.
 */
+
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(block_date) AS base_time FROM {{this}}
+  {% else %}
+    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+  {% endif %}
+)
 
   SELECT
     COALESCE(tr.blockchain, lo.blockchain) AS blockchain
@@ -51,26 +60,23 @@ the `base` spell unified with `predeploys`, as our identifier for the total set 
   , COALESCE(sum_logs_emitted_tx_gas_used, 0) AS sum_logs_emitted_tx_gas_used
 
   FROM {{ ref('usage_summary_' + chain + '_daily_traces') }} tr
+  cross join check_date cd
+  
   LEFT JOIN {{ ref('usage_summary_' + chain + '_daily_transactions') }} tt -- all txs to have an associated trace
     ON tr.blockchain = tt.blockchain
     AND tr.block_date = tt.block_date
     AND tr.block_month = tt.block_month
     AND tr.address = tt.address
-    {% if is_incremental() %}
-    AND tt.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-    {% endif %}
+    AND {{ incremental_days_forward_predicate('tt.block_date', 'cd.base_time', days_forward ) }}
+
   FULL OUTER JOIN {{ ref('usage_summary_' + chain + '_daily_logs') }} lo
     ON tr.blockchain = lo.blockchain
     AND tr.block_date = lo.block_date
     AND tr.block_month = lo.block_month
     AND tr.address = lo.address
-    {% if is_incremental() %}
-    AND lo.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-    {% endif %}
+    AND {{ incremental_days_forward_predicate('lo.block_date', 'cd.base_time', days_forward ) }}
   
   WHERE 1=1
-  {% if is_incremental() %}
-  AND tr.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-  {% endif %}
+    AND {{ incremental_days_forward_predicate('tr.block_date', 'cd.base_time', days_forward ) }}
 
 {% endmacro %}

@@ -17,17 +17,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_polygon_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: airswap_polygon_base_trades
     meta:
@@ -43,17 +35,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('airswap_polygon_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: sushiswap_v1_polygon_base_trades
     meta:
@@ -69,19 +53,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_polygon_base_trades_seed')
           filter:
             version: 1
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: sushiswap_v2_polygon_base_trades
     meta:
@@ -97,19 +73,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_polygon_base_trades_seed')
           filter:
             version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: quickswap_v2_polygon_base_trades
     meta:
@@ -125,19 +93,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('quickswap_polygon_base_trades_seed')    
           filter:
             version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
  
   - name: quickswap_v3_polygon_base_trades
     meta:
@@ -153,19 +113,83 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('quickswap_polygon_base_trades_seed')    
           filter:
             version: 3
-          match_columns:
+
+  - name: apeswap_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: apeswap
+      contributors: hosuke
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'apeswap' ]
+    description: apeswap base trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
             - tx_hash
             - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+      - check_dex_base_trades_seed:
+          seed_file: ref('apeswap_polygon_base_trades_seed')    
+          filter:
+            version: 2
 
+  - name: balancer_v2_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_polygon_base_trades_seed')
+          filter:
+            version: 2
 
+  - name: honeyswap_v2_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: honeyswap
+      contributors: 0xr3x, jeff-dude, masquot, soispoke, tomfutago
+    config:
+      tags: ['polygon', 'dex', 'trades', 'honeyswap', 'v2']
+    description: "Honeyswap polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('honeyswap_polygon_base_trades_seed')
+          filter:
+            version: 2
 
+  - name: fraxswap_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: fraxswap
+      contributors: kndlexi, tomfutago
+    config:
+      tags: ['polygon', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_polygon_base_trades_seed')
+          filter:
+            version: 1

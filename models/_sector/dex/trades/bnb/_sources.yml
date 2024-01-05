@@ -15,5 +15,45 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: fraxswap_bnb
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
   - name: trader_joe_v2_1_bnb
   - name: trader_joe_v2_bnb
+  - name: pancakeswap_v2_bnb
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+      - name: PancakeSwapMMPool_evt_Swap
+      - name: PancakeStableSwap_evt_TokenExchange
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
+  - name: pancakeswap_v3_bnb
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: biswap_bnb
+    tables:
+      - name: BiswapPair_evt_Swap
+      - name: BiswapFactory_evt_PairCreated
+  - name: biswap_v3_bnb
+    tables:
+      - name: BiswapPoolV3_evt_Swap
+      - name: BiswapFactoryV3_evt_NewPool
+  - name: babyswap_bnb
+    tables:
+      - name: BabyPair_evt_Swap
+      - name: BabyFactory_evt_PairCreated
+  - name: wombat_bnb
+    tables:
+      - name: Pool_evt_Swap
+      - name: HighCovRatioFeePool_evt_Swap
+      - name: DynamicPool_evt_Swap
+      - name: mWOM_Pool_evt_Swap
+      - name: qWOM_WOMPool_evt_Swap
+      - name: WMX_WOM_Pool_evt_Swap
+  - name: mdex_bnb
+    tables:
+      - name: MdexPair_evt_Swap
+      - name: MdexFactory_evt_PairCreated

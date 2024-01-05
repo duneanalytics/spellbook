@@ -23,3 +23,41 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
+  - name: pancakeswap_v2_ethereum
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+      - name: PancakeSwapMMPool_evt_Swap
+  - name: pancakeswap_v3_ethereum
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: shibaswap_ethereum
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: balancer_v1_ethereum
+    tables:
+      - name: BPool_evt_LOG_SWAP
+      - name: BPool_call_setSwapFee
+  - name: balancer_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap
+  - name: fraxswap_ethereum
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: bancornetwork_ethereum
+    tables:
+      - name: BancorNetwork_v6_evt_Conversion
+      - name: BancorNetwork_v7_evt_Conversion
+      - name: BancorNetwork_v8_evt_Conversion
+      - name: BancorNetwork_v9_evt_Conversion
+      - name: BancorNetwork_v10_evt_Conversion
+  - name: bancor3_ethereum
+    tables:
+      - name: BancorNetwork_evt_TokensTraded
+  - name: verse_dex_ethereum
+    tables:
+      - name: SwapsPair_evt_Swap
+      - name: Factory_evt_PairCreated

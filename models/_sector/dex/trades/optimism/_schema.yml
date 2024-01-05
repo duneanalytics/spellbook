@@ -17,17 +17,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_optimism_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
 
   - name: woofi_optimism_base_trades
@@ -45,17 +37,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('woofi_optimism_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: sushiswap_v1_optimism_base_trades
     meta:
@@ -71,20 +55,13 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_optimism_base_trades_seed')
           filter:
-            version: trident-cpp
-            version: trident-sp
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+            version:
+              - trident-cpp
+              - trident-sp
+
 
   - name: sushiswap_v2_optimism_base_trades
     meta:
@@ -100,19 +77,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_optimism_base_trades_seed')
           filter:
             version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: mummy_finance_optimism_base_trades
     meta:
@@ -129,14 +98,82 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('mummy_finance_optimism_base_trades_seed')
-          match_columns:
+
+
+  - name: zipswap_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: zipswap
+      contributors: msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'zipswap', 'uniswap', 'v2' ]
+    description: "Zipswap optimism trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
             - tx_hash
             - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+      - check_dex_base_trades_seed:
+          seed_file: ref('zipswap_optimism_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: balancer_v2_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_optimism_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: hashflow_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: hashflow
+      contributors: ARDev097
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'hashflow' ]
+    description: >
+        hashflow base trades on optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hashflow_optimism_base_trades_seed')
+
+
+  - name: wardenswap_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: wardenswap
+      contributors: Chain_L, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'wardenswap' ]
+    description: "Wardenswap optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wardenswap_optimism_base_trades_seed')

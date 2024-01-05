@@ -1,6 +1,8 @@
 version: 2
 
 models:
+  - name: dex_fantom_base_trades
+
   - name: sushiswap_v1_fantom_base_trades
     meta:
       blockchain: fantom
@@ -15,19 +17,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_fantom_base_trades_seed')
           filter:
             version: 1
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: sushiswap_v2_fantom_base_trades
     meta:
@@ -43,18 +37,63 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_fantom_base_trades_seed')
           filter:
             version: 2
-          match_columns:
+
+
+  - name: spiritswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spiritswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spiritswap', 'uniswap', 'v2']
+    description: "Spiritswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
             - tx_hash
             - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+      - check_dex_base_trades_seed:
+          seed_file: ref('spiritswap_fantom_base_trades_seed')
+          filter:
+            version: 1
 
-  - name: dex_fantom_base_trades
+  - name: spookyswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spookyswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spookyswap', 'uniswap', 'v2']
+    description: "Spookyswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spookyswap_fantom_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: wigoswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: wigoswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'wigoswap', 'uniswap', 'v2']
+    description: "Wigoswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wigoswap_fantom_base_trades_seed')

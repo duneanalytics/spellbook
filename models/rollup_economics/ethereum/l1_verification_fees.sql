@@ -19,12 +19,25 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
+    1408 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    t.gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
-      AND t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919 -- ValidatorTimelock
-      AND cast(t.data as varchar) LIKE '0x7739cbe7%' -- Prove Block
+      AND (
+      -- L1 transactions settle here pre-Boojum
+      t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919
+      -- L1 transactions settle here post-Boojum
+      OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
+      )
+      AND (
+      -- L1 transactions use these method ID's pre-Boojum
+      bytearray_substring(t.data, 1, 4) = 0x7739cbe7 -- Prove Block
+      OR
+      -- L1 transactions use these method ID's post-Boojum
+      bytearray_substring(t.data, 1, 4) = 0x7f61885c -- Prove Batches
+      )
       AND t.block_time >= timestamp '2023-03-01'
       AND p.blockchain is null
       AND p.symbol = 'ETH'
@@ -38,7 +51,9 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    t.gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -57,7 +72,9 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    t.gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -76,7 +93,9 @@ with verify_txns as (
     t.hash,
     (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
-    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
+    768 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb,
+    t.gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} AS t
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
@@ -103,6 +122,7 @@ with verify_txns as (
 SELECT
 txs.name,
 txs.hash,
+txs.block_number,
 bxs.time as block_time,
 txs.proof_size_mb,
 gas_spent,

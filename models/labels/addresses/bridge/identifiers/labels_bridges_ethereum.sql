@@ -134,5 +134,15 @@ FROM (VALUES
     , ('ethereum', 0x6571d6be3d8460cf5f7d6711cd9961860029d85f, 'Synapse Bridge Zap 3', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x2a3dd3eb832af982ec71669e178424b10dca2ede, 'Polygon: zkEVM Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0xd5f0f8db993d26f5df89e70a83d32b369dccdaa0, 'Symbiosis Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x4F4495243837681061C4743b74B3eEdf548D56A5, 'Axelar:Gateway', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf, 'Polygon: ERC20 Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x401F6c983eA34274ec46f84D70b31C151321188b, 'Polygon: Plasma Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x3154Cf16ccdb4C6d922629664174b904d80F2C35, 'Base Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x9de443AdC5A411E83F1878Ef24C3F52C61571e72, 'Base: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x051f1d88f0af5763fb888ec4378b4d8b29ea3319, 'Linea: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x41527B2d03844dB6b0945f25702cB958b6d55989, 'zkSynk Era: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x57891966931Eb4Bb6FB81430E6cE0A03AAbDe063, 'zkSynk Era Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x2D001d79E5aF5F65a939781FE228B267a8Ed468B, 'Mantle: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    
 
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

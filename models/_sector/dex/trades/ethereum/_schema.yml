@@ -17,19 +17,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             version: 1
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: uniswap_v2_ethereum_base_trades
     meta:
@@ -45,19 +37,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: uniswap_v3_ethereum_base_trades
     meta:
@@ -73,19 +57,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('uniswap_ethereum_base_trades_seed')
           filter:
             version: 3
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
   
   - name: defiswap_ethereum_base_trades
     meta:
@@ -101,17 +77,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('defiswap_ethereum_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
   
   - name: airswap_ethereum_base_trades
     meta:
@@ -127,17 +95,9 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('airswap_ethereum_base_trades_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: sushiswap_v1_ethereum_base_trades
     meta:
@@ -153,19 +113,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_ethereum_base_trades_seed')
           filter:
             version: 1
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: sushiswap_v2_ethereum_base_trades
     meta:
@@ -181,19 +133,11 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('sushiswap_ethereum_base_trades_seed')
           filter:
             version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+
 
   - name: carbon_defi_ethereum_base_trades
     meta:
@@ -209,14 +153,173 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_ethereum_base_trades_seed')
-          match_columns:
+
+
+  - name: apeswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: apeswap
+      contributors: hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'apeswap' ]
+    description: apeswap base trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
             - tx_hash
             - evt_index
-          check_columns:
-            - block_number
-            - token_bought_address
-            - token_sold_address
-            - token_bought_amount_raw
-            - token_sold_amount_raw
+      - check_dex_base_trades_seed:
+          seed_file: ref('apeswap_ethereum_base_trades_seed')
+
+  - name: pancakeswap_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap Ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_ethereum_base_trades_seed')
+          filter:
+            version:
+              - 2
+              - mmpool
+
+  - name: shibaswap_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: shibaswap
+      contributors: 0xRob, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'shibaswap', 'uniswap', 'v2' ]
+    description: "sushiswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('shibaswap_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: pancakeswap_v3_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+    description: "Pancakeswap Ethereum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_ethereum_base_trades_seed')
+          filter:
+            version: 3
+  
+  - name: balancer_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v1 ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: balancer_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_ethereum_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: fraxswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: fraxswap
+      contributors: kndlexi, tomfutago
+    config:
+      tags: ['ethereum', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: bancor_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: bancor
+      contributors: tian7, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'bancor' ]
+    description: "Bancor ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bancor_ethereum_base_trades_seed')
+
+  - name: verse_dex_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: verse_dex
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'verse_dex' ]
+    description: "Verse ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('verse_dex_ethereum_base_trades_seed')

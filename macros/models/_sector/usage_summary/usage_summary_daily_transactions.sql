@@ -1,10 +1,19 @@
-{% macro usage_summary_daily_transactions( chain ) %}
+{% macro usage_summary_daily_transactions( chain, days_forward=365 ) %}
+
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(block_date) AS base_time FROM {{this}}
+  {% else %}
+    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+  {% endif %}
+)
 
 SELECT
     '{{chain}}' as blockchain
   , block_date
   , DATE_TRUNC('month', block_date ) AS block_month
-  , t.to AS address
+  , COALESCE(t.to, 0x) AS address
   , COUNT(DISTINCT block_number) AS num_tx_to_blocks
   , COUNT(*) AS num_tx_tos
   , COUNT(DISTINCT "from") AS num_tx_to_senders
@@ -14,12 +23,10 @@ SELECT
     {{ evm_get_calldata_gas_from_data('t.data') }}
   ) AS sum_tx_to_calldata_gas
   FROM {{ source(chain,'transactions') }} t
+  cross join check_date cd
 
   WHERE 1=1
-    {% if is_incremental() %}
-    AND t.block_date >= DATE_TRUNC('day', NOW() - interval '1' day) --ensure we capture whole days, with 1 day buffer depending on spell runtime
-    -- AND [[ incremental_predicate('t.block_date') ]]
-    {% endif %}
+    AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
     AND t.success
   GROUP BY 1,2,3,4
 
