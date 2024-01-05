@@ -219,3 +219,47 @@ models:
         description: "Address that originated the transaction"
       - name: tx_to
         description: "Destination address of transaction"
+  - name: zora_polygon_mints
+    meta:
+      blockchain: polygon
+      project: zora
+      contributors: covendev
+    config:
+      tags: ['zora', 'polygon', 'mints']
+    description: >
+        Zora Mints on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - token_id
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_standard
+        description: "Token standard"
+      - name: token_id
+        description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
+      - name: total_price
+        description: "Total price paid"
+      - name: total_price_usd
+        description: "Total price paid in USD"
+      - name: recipient
+        description: "Recipient"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
