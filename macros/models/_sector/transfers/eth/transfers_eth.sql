@@ -1,4 +1,4 @@
-{% macro nft_mints(blockchain, eth_placeholder_contract, base_traces, base_transactions, erc20_transfer ) %}
+{% macro transfers_eth(blockchain, eth_placeholder_contract, base_traces, base_transactions, erc20_transfer ) %}
 
 with eth_transfers as (
     select
