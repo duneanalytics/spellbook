@@ -1,16 +1,11 @@
 {{ config(
-	
-	schema = 'minerva_money_optimism',
-	alias = 'perpetual_trades_v1',
+	schema = 'minerva_v1_money_optimism',
+	alias = 'perpetual_trades',
 	partition_by = ['block_month'],
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "minerva_money",
-                                \'["kaiblade"]\') }}'
+	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
 	)
 }}
 
@@ -24,9 +19,8 @@ WITH execute_decrease_positions AS (
       AND topic0 = 0x21435c5b618d77ff3657140cd3318e2cffaebc5e0e1b7318f56a9ba4044c3ed2
         {% if not is_incremental() %}
       AND block_time >= DATE '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-      AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+        {% else %}
+      AND {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
 
@@ -37,9 +31,8 @@ WHERE contract_address = 0x1dc89546bfd8827d14cce56108b397bd807862b7
   AND topic0 = 0x1be316b94d38c07bd41cdb4913772d0a0a82802786a2f8b657b6e85dbcdfc641
     {% if not is_incremental() %}
   AND block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% else %}
+  AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
 
@@ -67,9 +60,8 @@ WHERE contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
   AND tx_hash IN ( SELECT tx_hash FROM execute_increase_positions)
     {% if not is_incremental() %}
   AND block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% else %}
+  AND {{ incremental_predicate('block_time') }}
     {% endif %}
 
 UNION
@@ -98,9 +90,8 @@ WHERE contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
   AND tx_hash IN (SELECT tx_hash FROM execute_decrease_positions)
     {% if not is_incremental() %}
   AND block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% else %}
+  AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
 margin_fees_info AS (
@@ -115,9 +106,8 @@ WHERE topic0 = 0x5d0c0019d3d45fadeb74eff9d2c9924d146d000ac6bcf3c28bf0ac3c9baa011
   AND contract_address = 0x7ef6f8abac00689e057c9ec14e34ac232255a2fb
     {% if not is_incremental() %}
   AND block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% else %}
+  AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
 
@@ -135,22 +125,23 @@ FROM (SELECT event.*,
              trx.to,
              fees.feeUsd    AS margin_fee
       FROM all_executed_positions event
-      JOIN {{ source('optimism', 'transactions') }} trx
-      ON event.tx_hash = trx.hash
+      INNER JOIN {{ source('optimism', 'transactions') }} trx
+          ON event.tx_hash = trx.hash
           {% if not is_incremental() %}
           AND event.block_time >= DATE '{{project_start_date}}'
-          {% endif %}
-          {% if is_incremental() %}
+          {% else%}
           AND {{ incremental_predicate('event.block_time') }}
           {% endif %}
-      JOIN margin_fees_info fees
+      INNER JOIN margin_fees_info fees
           ON event.tx_hash = fees.tx_hash
           AND event.index > fees.index
           AND event.index < fees.next_index
-      JOIN {{ ref('tokens_optimism_erc20') }} tokens
+      INNER JOIN {{ ref('tokens_erc20') }} tokens
           ON event.indexToken = tokens.contract_address
-      JOIN {{ ref('tokens_optimism_erc20') }} tokens1
+          AND tokens.blockchain = 'optimism'
+      INNER JOIN {{ ref('tokens_erc20') }} tokens1
           ON event.collateralToken = tokens1.contract_address
+          AND tokens1.blockchain = 'optimism'
       GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18)
 )
 

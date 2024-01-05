@@ -1,15 +1,10 @@
 {{ config(
-	schema = 'opx_finance_optimism',
-	alias = 'all_perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "opx_finance",
-                                \'["kaiblade"]\') }}'
-	)
+	schema = 'opx_finance_v1_optimism',
+	alias = 'perpetual_trades',
 }}
 
 {% set opx_finance_optimism_perpetual_trade_models = [
- ref('opx_finance_optimism_v1_perpetual_trades')
+ ref('opx_finance_v1_optimism_perpetual_trades')
 ] %}
 
 

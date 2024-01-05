@@ -1,15 +1,11 @@
 {{ config(
 	schema = 'minerva_money_optimism',
-	alias = 'all_perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "minerva_money",
-                                \'["kaiblade"]\') }}'
+	alias = 'perpetual_trades'
 	)
 }}
 
 {% set opx_finance_optimism_perpetual_trade_models = [
- ref('minerva_money_optimism_v1_perpetual_trades')
+ ref('minerva_v1_money_optimism_perpetual_trades')
 ] %}
 
 

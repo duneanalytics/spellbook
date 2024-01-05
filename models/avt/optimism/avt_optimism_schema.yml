@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: avt_optimism_v1_perpetual_trades
+  - name: avt_v1_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual

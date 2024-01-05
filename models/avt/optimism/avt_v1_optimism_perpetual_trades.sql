@@ -1,16 +1,12 @@
 {{ config(
 	
-	schema = 'avt_optimism',
-	alias = 'perpetual_trades_v1',
+	schema = 'avt_v1_optimism',
+	alias = 'perpetual_trades',
 	partition_by = ['block_month'],
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "avt",
-                                \'["kaiblade"]\') }}'
+	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
 	)
 }}
 
@@ -41,12 +37,11 @@ WHERE contract_address = 0x24ee37267842a525c66fe37cd0da749150e89866
   AND tx_hash IN ( SELECT evt_tx_hash FROM {{ source('avt_optimism', 'PositionRouter_evt_ExecuteIncreasePosition') }} )
     {% if not is_incremental() %}
   AND block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% else %}
+  AND {{ incremental_predicate('block_time') }}
     {% endif %}
 
-UNION
+UNION ALL
 
 SELECT 
     block_time,
@@ -72,9 +67,8 @@ WHERE contract_address = 0x24ee37267842a525c66fe37cd0da749150e89866
   AND tx_hash IN ( SELECT evt_tx_hash FROM {{ source('avt_optimism', 'PositionRouter_evt_ExecuteDecreasePosition') }} )
     {% if not is_incremental() %}
   AND block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-  AND block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+    {% else %}
+  AND {{ incremental_predicate('block_time') }}
     {% endif %}
 ),
 margin_fees_info AS (
@@ -87,6 +81,11 @@ SELECT block_time,
 FROM {{ source('optimism', 'logs') }}
 WHERE topic0 = 0x5d0c0019d3d45fadeb74eff9d2c9924d146d000ac6bcf3c28bf0ac3c9baa011a
   AND contract_address = 0x24ee37267842a525c66fe37cd0da749150e89866
+  {% if not is_incremental() %}
+  AND block_time >= DATE '{{project_start_date}}'
+  {% else %}
+  AND {{ incremental_predicate('block_time') }}
+  {% endif %}
 ),
 
 complete_perp_tx AS (
@@ -106,19 +105,20 @@ FROM (SELECT event.*,
       INNER JOIN {{ source('optimism', 'transactions') }} trx
       ON event.tx_hash = trx.hash
           {% if not is_incremental() %}
-          AND event.block_time >= DATE '{{project_start_date}}'
-          {% endif %}
-          {% if is_incremental() %}
-          AND event.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+          AND block_time >= DATE '{{project_start_date}}'
+          {% else %}
+          AND {{ incremental_predicate('block_time') }}
           {% endif %}
       INNER JOIN margin_fees_info fees
           ON event.tx_hash = fees.tx_hash
           AND event.index > fees.index
           AND event.index < fees.next_index
-      INNER JOIN {{ ref('tokens_optimism_erc20') }} tokens
+      INNER JOIN {{ ref('tokens_erc20') }} tokens
           ON event.indexToken = tokens.contract_address
-      INNER JOIN {{ ref('tokens_optimism_erc20') }} tokens1
+          AND tokens.blockchain = 'optimism'
+      INNER JOIN {{ ref('tokens_erc20') }} tokens1
           ON event.collateralToken = tokens1.contract_address
+          AND tokens1.blockchain = 'optimism'
       GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18)
 
 )

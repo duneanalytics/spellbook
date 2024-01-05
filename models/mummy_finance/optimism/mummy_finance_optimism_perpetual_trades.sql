@@ -1,15 +1,11 @@
 {{ config(
 	schema = 'mummy_finance_optimism',
-	alias = 'all_perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "mummy_finance",
-                                \'["kaiblade"]\') }}'
+	alias = 'perpetual_trades',
 	)
 }}
 
 {% set mummy_finance_optimism_perpetual_trade_models = [
- ref('mummy_finance_optimism_v1_perpetual_trades')
+ ref('mummy_finance_v1_optimism_perpetual_trades')
 ] %}
 
 

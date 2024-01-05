@@ -95,7 +95,7 @@ models:
         name: evt_index
         description: ""
 
-  - name: opx_finance_optimism_v1_perpetual_trades
+  - name: opx_finance_v1_optimism_perpetual_trades
     meta:
       blockchain: optimism
       sector: perpetual

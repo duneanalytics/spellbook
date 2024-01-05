@@ -1,15 +1,11 @@
 {{ config(
 	schema = 'avt_optimism',
-	alias = 'all_perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "avt",
-                                \'["kaiblade"]\') }}'
+	alias = 'perpetual_trades',
 	)
 }}
 
 {% set avt_optimism_perpetual_trade_models = [
- ref('avt_optimism_v1_perpetual_trades')
+ ref('avt_v1_optimism_perpetual_trades')
 ] %}
 
 

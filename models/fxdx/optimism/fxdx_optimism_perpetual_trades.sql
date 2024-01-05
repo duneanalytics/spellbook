@@ -1,15 +1,11 @@
 {{ config(
 	schema = 'fxdx_optimism',
-	alias = 'all_perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "fxdx",
-                                \'["kaiblade"]\') }}'
+	alias = 'perpetual_trades',
 	)
 }}
 
 {% set fxdx_optimism_perpetual_trade_models = [
- ref('fxdx_optimism_v2_perpetual_trades')
+ ref('fxdx_v2_optimism_perpetual_trades')
 ] %}
 
 
