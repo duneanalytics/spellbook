@@ -7,6 +7,7 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['token_standard', 'block_number', 'tx_index', 'token_address', 'wallet_address'],
+        tags = ['prod_exclude']
         )
 }}
 

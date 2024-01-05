@@ -1,7 +1,8 @@
 {{ config(
         schema = 'tokens_ethereum',
         alias = 'balances',
-        materialized = 'view'
+        materialized = 'view',
+        tags = ['prod_exclude']
         )
 }}
 
