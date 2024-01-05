@@ -1,4 +1,4 @@
-{%- macro balances_enrich_raw(balances_base) %}
+{%- macro balances_enrich_raw(balances_base, blockchain) %}
 select
     balances.block_number,
     balances.block_time,
