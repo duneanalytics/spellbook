@@ -33,7 +33,7 @@ dexs_cl AS (
             version = '2',
             Pair_evt_Swap = source('ramses_arbitrum', 'RamsesV2Pool_evt_Swap'),
             Factory_evt_PoolCreated = source('ramses_arbitrum', 'RamsesV2Factory_evt_PoolCreated'),
-            optional_columns = []
+            optional_columns = null
         )
     }}
 )
