@@ -7,7 +7,7 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: balances_ethereum_0001
+      - name: balances_ethereum_0002
         description: "Raw balances data"
         columns:
           - name: block_number
