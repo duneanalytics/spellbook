@@ -9,7 +9,7 @@
 }}
 
 {{zora_mints(
-    blockchain = 'optimism'
+    blockchain = 'polygon'
     , wrapped_native_token_address = '0x4200000000000000000000000000000000000006'
     , erc721_mints = source('zora_polygon', 'ERC721Drop_evt_Sale')
     , erc1155_mints = source('zora_polygon', 'ZoraCreator1155Impl_evt_Purchased')
