@@ -222,3 +222,20 @@ models:
               - coves1
               - 1
               - 2
+
+  - name: opx_finance_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: opx_finance
+      contributors: kaiblade, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'opx_finance' ]
+    description: "OPX Finance optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('opx_finance_optimism_base_trades_seed')
