@@ -1,6 +1,7 @@
 {{ config(
 	schema = 'opx_finance_v1_optimism',
 	alias = 'perpetual_trades'
+	)
 }}
 
 {% set opx_finance_optimism_perpetual_trade_models = [
