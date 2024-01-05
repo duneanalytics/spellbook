@@ -26,7 +26,7 @@ SELECT
   cross join check_date cd
 
   WHERE 1=1
-    AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
+    AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward, 'day') }}
     AND t.success
   GROUP BY 1,2,3,4
 

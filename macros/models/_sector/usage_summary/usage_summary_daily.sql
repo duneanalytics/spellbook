@@ -1,4 +1,4 @@
-{% macro usage_summary_daily( chain, days_forward ) %}
+{% macro usage_summary_daily( chain, days_forward=365 ) %}
 
 
 /*
@@ -67,16 +67,16 @@ WITH check_date AS (
     AND tr.block_date = tt.block_date
     AND tr.block_month = tt.block_month
     AND tr.address = tt.address
-    AND {{ incremental_days_forward_predicate('tt.block_date', 'cd.base_time', days_forward ) }}
+    AND {{ incremental_days_forward_predicate('tt.block_date', 'cd.base_time', days_forward, 'day') }}
 
   FULL OUTER JOIN {{ ref('usage_summary_' + chain + '_daily_logs') }} lo
     ON tr.blockchain = lo.blockchain
     AND tr.block_date = lo.block_date
     AND tr.block_month = lo.block_month
     AND tr.address = lo.address
-    AND {{ incremental_days_forward_predicate('lo.block_date', 'cd.base_time', days_forward ) }}
+    AND {{ incremental_days_forward_predicate('lo.block_date', 'cd.base_time', days_forward, 'day') }}
   
   WHERE 1=1
-    AND {{ incremental_days_forward_predicate('tr.block_date', 'cd.base_time', days_forward ) }}
+    AND {{ incremental_days_forward_predicate('tr.block_date', 'cd.base_time', days_forward, 'day') }}
 
 {% endmacro %}

@@ -34,12 +34,11 @@ WITH check_date AS (
           ON t.hash = l.tx_hash
           AND t.block_number = l.block_number
           AND t.block_date = l.block_date
-          AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
+          AND t.success
+          AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward, 'day') }}
         
         WHERE 1=1
-          AND t.success
-          AND {{ incremental_days_forward_predicate('t.block_date', 'cd.base_time', days_forward ) }}
-          AND {{ incremental_days_forward_predicate('l.block_date', 'cd.base_time', days_forward ) }}
+          AND {{ incremental_days_forward_predicate('l.block_date', 'cd.base_time', days_forward, 'day') }}
 
       GROUP BY 1,2,3,4,5,6
     ) a
