@@ -29,6 +29,8 @@ with eth_transfers as (
         and {{incremental_predicate('r.block_time')}}
         and {{incremental_predicate('t.block_time')}}
         {% endif %}
+    
+    {%- if blockchain != 'ethereum' %}
 
     union all
     --ETH Transfers from deposits and withdrawals are ERC20 transfers of the 'deadeadead' ETH token. These do not appear in traces.
@@ -60,6 +62,8 @@ with eth_transfers as (
         and {{incremental_predicate('r.evt_block_time')}}
         and {{incremental_predicate('t.block_time')}}
         {% endif %}
+    
+    {%- endif -%}
 )
 select *
 from eth_transfers
