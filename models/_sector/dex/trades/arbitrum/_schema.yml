@@ -312,6 +312,8 @@ models:
             version:
               - coves1
               - coves2
+              - 1
+              - 2
 
   - name: ramses_arbitrum_base_trades
     meta:
