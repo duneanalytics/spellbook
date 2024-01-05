@@ -57,3 +57,29 @@ sources:
     tables:
       - name: MdexPair_evt_Swap
       - name: MdexFactory_evt_PairCreated
+  - name: dodoex_bnb
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DPPAdvanced_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: izumi_bnb
+    tables:
+      - name: iZiSwapPool_evt_Swap
+  - name: maverick_v1_bnb
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
+  - name: nomiswap_bnb
+    tables:
+      - name: NomiswapPair_evt_Swap
+      - name: NomiswapFactory_evt_PairCreated
+  - name: kyber_bnb
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticFactoryV2_evt_PoolCreated
