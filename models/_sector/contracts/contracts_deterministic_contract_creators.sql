@@ -38,6 +38,7 @@ FROM (values
   ,(0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2, 'xdeployer')
   ,(0x6df7bf308ABaf673f38Db316ECc97b988CE1Ca78, 'Create3Factory')
   ,(0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7, 'Safe Singleton Factory')
+  ,(0x7506248eC2A111121912B972fadF8405989f8afb, 'Create2Deployer')
   -- excluded creators
   ,(0x36BDE71C97B33Cc4729cf772aE268934f7AB70B2, 'Optimism: CDM Relay')
 
