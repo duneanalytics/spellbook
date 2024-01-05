@@ -231,3 +231,24 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('gmx_avalanche_c_base_trades_seed')
 
+  - name: kyberswap_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: kyberswap
+      contributors: zhongyiio, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_avalanche_c_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic
+              - elastic_2

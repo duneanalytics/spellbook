@@ -1,5 +1,6 @@
 version: 2
 
+
 sources:
   - name: uniswap_v3_polygon
   - name: airswap_polygon
@@ -42,6 +43,10 @@ sources:
       - name: DPPAdvanced_evt_DODOSwap
       - name: DPPOracle_evt_DODOSwap
       - name: DSP_evt_DODOSwap
+  - name: kyber_polygon
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
   - name: clipper_polygon
     tables:
       - name: ClipperDirectExchange_evt_Swapped
