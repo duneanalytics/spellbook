@@ -23,3 +23,8 @@ sources:
       - name: DVM_evt_DODOSwap
       - name: DPP_evt_DODOSwap
       - name: DSP_evt_DODOSwap
+  - name: clipper_optimism
+    tables:
+      - name: ClipperPackedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperCove_evt_CoveSwapped
