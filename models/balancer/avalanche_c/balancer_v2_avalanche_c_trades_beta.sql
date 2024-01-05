@@ -3,7 +3,7 @@
         schema = 'balancer_v2_avalanche_c',
         alias = 'trades_beta',
         materialized = 'view',
-        post_hook = '{{ expose_spells_hide_trino(\'["celo"]\',
+        post_hook = '{{ expose_spells(\'["avalanche_c"]\',
                                         "project",
                                         "balancer_v2",
                                         \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago"]\') }}'

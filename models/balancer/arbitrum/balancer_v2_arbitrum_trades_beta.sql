@@ -3,7 +3,7 @@
         schema = 'balancer_v2_arbitrum',
         alias = 'trades_beta',
         materialized = 'view',
-        post_hook = '{{ expose_spells_hide_trino(\'["celo"]\',
+        post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                         "project",
                                         "balancer_v2",
                                         \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago"]\') }}'

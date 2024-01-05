@@ -3,7 +3,7 @@
         schema = 'balancer_v2_ethereum',
         alias = 'trades_beta',
         materialized = 'view',
-        post_hook = '{{ expose_spells_hide_trino(\'["celo"]\',
+        post_hook = '{{ expose_spells(\'["ethereum"]\',
                                         "project",
                                         "balancer_v2",
                                         \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago"]\') }}'
