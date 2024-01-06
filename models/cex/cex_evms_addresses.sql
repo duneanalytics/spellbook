@@ -1567,6 +1567,7 @@ FROM (VALUES
     , (0x7915E66B491C0e0D6e4f2d00C398866332B7c167, 'Bidesk', 'Bidesk 25', 'hildobby', date '2023-11-23')
     , (0xDe528EceC4F16cc20bFAfAD23B41388343C243C4, 'Bidesk', 'Bidesk 26', 'hildobby', date '2023-11-23')
     , (0xe05b4BDf83274545E64f4f19Db75e64E6492A3b3, 'Bidesk', 'Bidesk 27', 'hildobby', date '2023-11-23')
+    , (0x8d76166c22658a144c0211d87abf152e6a2d9d95, 'Bidesk', 'Bidesk 28', 'hildobby', date '2023-11-23')
     , (0x7423931617700331FA34D2Df2b58Ee809626625B, 'Bidesk', 'Bidesk Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Bitbee
     , (0x2b49ce21ad2004cfb3d0b51b2e8ec0406d632513, 'Bitbee', 'Bitbee 1', 'hildobby', date '2023-04-06')
@@ -1633,8 +1634,6 @@ FROM (VALUES
     -- Eigen Fx
     , (0x608f94df1c1d89ea13e5984d7bf107df137a6541, 'Eigen Fx', 'Eigen Fx 1', 'hildobby', date '2023-04-06')
     , (0xeb9ebf2c624ebee42e0853da6443ddc6c8020de7, 'Eigen Fx', 'Eigen Fx 2', 'hildobby', date '2023-04-06')
-    -- Eterbase
-    , (0x8d76166c22658a144c0211d87abf152e6a2d9d95, 'Eterbase', 'Eterbase 1', 'hildobby', date '2023-04-06')
     -- Exchange A
     , (0xd3808c5d48903be1490989f3fce2a2b3890e8eb6, 'Exchange A', 'Exchange A 1', 'hildobby', date '2023-04-06')
     -- GOPAX
