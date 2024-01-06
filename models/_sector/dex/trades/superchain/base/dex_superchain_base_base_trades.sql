@@ -7,6 +7,7 @@
 
 {% set base_models = [
     ref('baseswap_base_base_trades')
+    , ref('scale_base_base_trades')
 ] %}
 
 WITH base_union AS (

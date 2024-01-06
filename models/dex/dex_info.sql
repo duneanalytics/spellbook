@@ -95,4 +95,5 @@ FROM (VALUES
     , ('immortalx', 'ImmortalX', 'Direct', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
     , ('baseswap','BaseSwap','Direct','BaseSwapDex')
+    , ('scale','Scale','Direct','Equalizer0x')
     ) AS temp_table (project, name, marketplace_type, x_username)
