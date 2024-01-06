@@ -1747,8 +1747,8 @@ FROM (VALUES
     , (0x50be13b54f3eebbe415d20250598d81280e56772, 'Phemex', 'Phemex 2', 'hildobby', date '2023-09-12')
     , (0x35d2d03607b9155b42cf673102fe58251ac4f644, 'Phemex', 'Phemex 3', 'hildobby', date '2023-09-12')
     , (0xc7eC1A730f718Fb6931D10caEBd85742184ee359, 'Phemex', 'Phemex Deposit Funder 1', 'hildobby', date '2023-09-12')
-    -- Cake DeFi
-    , (0x94fa70d079d76279e1815ce403e9b985bccc82ac, 'Cake DeFi', 'Cake DeFi 1', 'hildobby', date '2023-04-06')
+    -- Bake
+    , (0x94fa70d079d76279e1815ce403e9b985bccc82ac, 'Bake', 'Bake 1', 'hildobby', date '2023-04-06')
     -- EXMO
     , (0xd7b9a9b2f665849c4071ad5af77d8c76aa30fb32, 'EXMO', 'EXMO 1', 'hildobby', date '2023-09-12')
     , (0xc179fbddc946694d11185d4e15dbba5fd0adac0a, 'EXMO', 'EXMO 2', 'hildobby', date '2023-09-12')
