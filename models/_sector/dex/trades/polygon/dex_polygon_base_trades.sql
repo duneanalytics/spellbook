@@ -19,6 +19,7 @@
     , ref('dodo_polygon_base_trades')
     , ref('kyberswap_polygon_base_trades')
     , ref('clipper_polygon_base_trades')
+    , ref('xchange_polygon_base_trades')
 ] %}
 
 WITH base_union AS (
