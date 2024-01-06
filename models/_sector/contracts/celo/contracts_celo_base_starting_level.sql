@@ -12,6 +12,6 @@
 
 {{
     contracts_base_starting_level(
-        chain = 'celo'
+        chain = 'celo', days_forward=365
     )
 }}

@@ -13,6 +13,6 @@
 -- depends_on: {{ ref('contracts_deterministic_contract_creators') }}
 {{
     contracts_base_iterated_creators(
-        chain = 'celo'
+        chain = 'celo', days_forward=365
     )
 }}
