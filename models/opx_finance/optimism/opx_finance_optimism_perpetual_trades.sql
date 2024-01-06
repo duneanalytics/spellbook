@@ -1,5 +1,5 @@
 {{ config(
-	schema = 'opx_finance_v1_optimism',
+	schema = 'opx_finance_optimism',
 	alias = 'perpetual_trades'
 	)
 }}
