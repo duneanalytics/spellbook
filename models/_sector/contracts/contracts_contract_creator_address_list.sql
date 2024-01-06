@@ -980,6 +980,7 @@ WITH curated_list AS (
       ,(0x71c05a4ea5e9d5b1ac87bf962a043f5265d4bdc8, 'Chainlink')
       ,(0xf942dba4159cb61f8ad88ca4a83f5204e8f4a6bd, 'Sushi')
       ,(0x4cb3fd420555a09ba98845f0b816e45cfb230983, 'Lido')
+      ,(0x11ddD59C33c73C44733b4123a86Ea5ce57F6e854, 'KyberSwap')
 
       ,(0x87e7D106FE75fcD26d9aC311EF29ac1398DD4441, 'Coinbase')
 
