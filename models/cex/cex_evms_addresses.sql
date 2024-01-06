@@ -1255,14 +1255,6 @@ FROM (VALUES
     -- BigONE
     , (0xa30d8157911ef23c46c0eb71889efe6a648a41f7, 'BigONE', 'BigONE 1', 'hildobby', date '2022-08-28')
     , (0x17bc58b788808dab201a9a90817ff3c168bf3d61, 'BigONE', 'BigONE 2', 'hildobby', date '2023-09-09')
-    -- Circle
-    , (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 'Circle', 'Circle 1', 'hildobby', date '2023-11-23')
-    , (0x166716C2838e182d64886135a96f1AABCA9A9756, 'Circle', 'Circle 2', 'hildobby', date '2023-11-23')
-    , (0x55FE002aefF02F77364de339a1292923A15844B8, 'Circle', 'Circle 3', 'hildobby', date '2023-11-23')
-    , (0xc4922d64a24675E16e1586e3e3Aa56C06fABe907, 'Circle', 'Circle 4', 'hildobby', date '2023-11-23')
-    , (0xBF14DB80D9275FB721383a77C00Ae180fc40ae98, 'Circle', 'Circle 5', 'hildobby', date '2023-11-23')
-    , (0x420F5035fd5dC62a167E7e7f08B604335aE272b8, 'Circle', 'Circle Token Minter 1', 'hildobby', date '2023-11-23')
-    , (0x7F5c764cBc14f9669B88837ca1490cCa17c31607, 'Circle', 'Circle USD Coin 1', 'hildobby', date '2023-11-23')
     -- AltCoinTrader
     , (0xc58Bb74606b73c5043B75d7Aa25ebe1D5D4E7c72, 'AltCoinTrader', 'AltCoinTrader 1', 'hildobby', date '2023-11-24')
     , (0xFf2E0C46C7673ccD00cB5B59Dc1686229A483Fc8, 'AltCoinTrader', 'AltCoinTrader 2', 'hildobby', date '2023-11-24')
@@ -1399,19 +1391,19 @@ FROM (VALUES
     -- Bitrue
     , (0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21, 'Bitrue', 'Bitrue 1', 'hildobby', date '2022-08-28')
     , (0xF4C62B4f8b7b1b1c4BA88BFD3a8ea392641516e9, 'Bitrue', 'Bitrue 2', 'hildobby', date '2023-11-23')
-    -- CoinMetro
-    , (0xa270f3ad1a7a82e6a3157f12a900f1e25bc4fbfd, 'CoinMetro', 'CoinMetro 1', 'hildobby', date '2022-08-28')
+    -- Coinmetro
+    , (0xa270f3ad1a7a82e6a3157f12a900f1e25bc4fbfd, 'Coinmetro', 'Coinmetro 1', 'hildobby', date '2022-08-28')
     , (0x4CF2220105995F006813923019f02BE1CCcA8132, 'Coinmetro', 'Coinmetro 2', 'hildobby', date '2023-11-23')
     , (0x706Ee6cF36a4bF95ec7Fe5d468571B9E9e63FBB6, 'Coinmetro', 'Coinmetro 3', 'hildobby', date '2023-11-23')
     , (0x46a189C7F37953b91E5bd75D0E608efdAfefAF1C, 'Coinmetro', 'Coinmetro 4', 'hildobby', date '2023-11-23')
     , (0x1E7b450322E42b53D55ABC795913537fD680fe0c, 'Coinmetro', 'Coinmetro 5', 'hildobby', date '2023-11-23')
     , (0x0BC7b31BF8ffAc8213E496102167FE73Fc30937a, 'Coinmetro', 'Coinmetro 6', 'hildobby', date '2023-11-23')
-    , (0x7c1c73bf60feb40cbcf0f12324200238ee23bb54, 'CoinMetro', 'CoinMetro MultiSig', 'hildobby', date '2022-08-28')
-    , (0xbac7c449689a2d3c51c386d8e657338c41ab3030, 'CoinMetro', 'CoinMetro Treasury', 'hildobby', date '2022-08-28')
-    , (0xf3e35734b7413f87c2054a16ce04230d803e4dc3, 'CoinMetro', 'CoinMetro Vault Aug 2020', 'hildobby', date '2022-08-28')
-    , (0xfad672dc92c2d2db0aa093331bd1098e30249ab8, 'CoinMetro', 'CoinMetro Vault Feb 2020', 'hildobby', date '2022-08-28')
-    , (0x165fe6a10812faa49515522d685a27c6bf12dba9, 'CoinMetro', 'CoinMetro Vault Feb 2021', 'hildobby', date '2022-08-28')
-    , (0xdd06b66c76d9c6fdc41935a7b32566c646325005, 'CoinMetro', 'CoinMetro XCM Utility Vault', 'hildobby', date '2022-08-28')
+    , (0x7c1c73bf60feb40cbcf0f12324200238ee23bb54, 'Coinmetro', 'Coinmetro MultiSig', 'hildobby', date '2022-08-28')
+    , (0xbac7c449689a2d3c51c386d8e657338c41ab3030, 'Coinmetro', 'Coinmetro Treasury', 'hildobby', date '2022-08-28')
+    , (0xf3e35734b7413f87c2054a16ce04230d803e4dc3, 'Coinmetro', 'Coinmetro Vault Aug 2020', 'hildobby', date '2022-08-28')
+    , (0xfad672dc92c2d2db0aa093331bd1098e30249ab8, 'Coinmetro', 'Coinmetro Vault Feb 2020', 'hildobby', date '2022-08-28')
+    , (0x165fe6a10812faa49515522d685a27c6bf12dba9, 'Coinmetro', 'Coinmetro Vault Feb 2021', 'hildobby', date '2022-08-28')
+    , (0xdd06b66c76d9c6fdc41935a7b32566c646325005, 'Coinmetro', 'Coinmetro XCM Utility Vault', 'hildobby', date '2022-08-28')
     -- BlockTrades
     , (0x007174732705604bbbf77038332dc52fd5a5000c, 'BlockTrades', 'BlockTrades 1', 'hildobby', date '2022-08-28')
     -- Catex Exchange
