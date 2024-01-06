@@ -17,6 +17,7 @@
     , ref('wardenswap_optimism_base_trades')
     , ref('dodo_optimism_base_trades')
     , ref('clipper_optimism_base_trades')
+    , ref('odos_optimism_base_trades')
 ] %}
 
 WITH base_union AS (
