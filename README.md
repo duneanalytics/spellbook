@@ -40,6 +40,10 @@ I moved those files to the target dir with this command:
 dbt -q ls -s +tokens_erc20 +tokens_native --resource-type model --output path | xargs -I {} rsync --relative {} tokens/models/
 ```
 
+Move sources into dune_util:
+```
+find ./models -type f -name '*_sources.yml' -exec rsync --relative {} ../dune_utils/models/ \;
+```
 
 ## Notes
 

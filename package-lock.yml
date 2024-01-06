@@ -1,4 +1,9 @@
 packages:
 - package: dbt-labs/dbt_utils
   version: 1.1.1
-sha1_hash: 23451c207c1d4dd71b5925f12a5cd66f2ebb2b3b
+- local: ./dune_utils
+- package: dbt-labs/codegen
+  version: 0.12.1
+- package: starburstdata/trino_utils
+  version: 0.6.0
+sha1_hash: 2b5fdb8099e2a75d4b5e649806c768df2fb19205
