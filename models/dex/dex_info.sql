@@ -92,7 +92,7 @@ FROM (VALUES
     , ('mento', 'Mento', 'Direct', 'mento')
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
-    , ('immortalx', 'ImmortalX', 'Direct', 'immortalx')
+    , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
     , ('baseswap','BaseSwap','Direct','BaseSwapDex')
     , ('scale','Scale','Direct','Equalizer0x')

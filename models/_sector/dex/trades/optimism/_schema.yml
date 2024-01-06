@@ -201,6 +201,7 @@ models:
               - 2_dpp
               - 2_dsp
 
+
   - name: clipper_optimism_base_trades
     meta:
       blockchain: optimism
@@ -222,3 +223,26 @@ models:
               - coves1
               - 1
               - 2
+
+
+  - name: kyberswap_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: kyberswap
+      contributors: zhongyiio, msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_optimism_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic
+              - elastic_2
