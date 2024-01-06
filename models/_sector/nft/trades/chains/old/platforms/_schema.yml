@@ -2,18 +2,6 @@ version: 2
 
 models:
 
-  - name: aavegotchi_polygon_events
-    meta:
-      blockchain: polygon
-      project: aavegotchi
-      contributors: springzh
-    config:
-      tags: ['polygon','aavegotchi','events']
-    description: >
-        Aavegotchi events on Polygon
-    tests:
-      - check_columns_nft_old_events
-
   - name: element_avalanche_c_events
     meta:
       blockchain: avalanche_c
