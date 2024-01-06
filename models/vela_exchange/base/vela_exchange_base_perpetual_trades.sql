@@ -125,5 +125,5 @@ INNER JOIN {{ source('base', 'transactions') }} txns
     {% if not is_incremental() %}
     AND txns.block_time >= DATE '{{project_start_date}}'
     {% else %}
-    AND {{ incremental_predicate('tx.block_time') }}
+    AND {{ incremental_predicate('txns.block_time') }}
     {% endif %}
