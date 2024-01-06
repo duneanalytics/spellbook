@@ -1,5 +1,4 @@
 {{ config(
-    
     alias = 'perpetual_trades',
     schema = 'vela_exchnage_base_perpetual',
     partition_by = ['block_month'],
@@ -7,10 +6,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "vela_exchange",
-                                \'["ARDev097"]\') }}'
     )
 }}
 
@@ -39,9 +34,8 @@ perp_events as (
     {{ source('vela_exchange_base', 'PositionVault_evt_DecreasePosition') }}
     {% if not is_incremental() %}
     WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+    {% else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 
     UNION ALL 
@@ -66,9 +60,8 @@ perp_events as (
     {{ source('vela_exchange_base', 'PositionVault_evt_IncreasePosition') }}
     {% if not is_incremental() %}
     WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+    {% else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 
     UNION ALL 
@@ -93,9 +86,8 @@ perp_events as (
     {{ source('vela_exchange_base', 'LiquidateVault_evt_LiquidatePosition') }}
     {% if not is_incremental() %}
     WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+    {% else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 )
 
@@ -132,7 +124,6 @@ INNER JOIN {{ source('base', 'transactions') }} txns
     AND pe.block_number = txns.block_number
     {% if not is_incremental() %}
     AND txns.block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND txns.block_time >= date_trunc('day', now() - interval '7' DAY)
+    {% else %}
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}

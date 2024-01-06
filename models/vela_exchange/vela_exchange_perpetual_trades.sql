@@ -2,10 +2,6 @@
     
     alias = 'perpetual_trades',
     schema = 'vela_exchange_perpetual',
-    post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "vela_exchnage",
-                                    \'["ARDev097"]\') }}'
     )
 }}
 
