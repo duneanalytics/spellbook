@@ -49,7 +49,7 @@ seeds:
 # defining search order of macro invokation 
 dispatch:
   - macro_namespace: dbt_utils
-    search_order: ['trino_utils', 'dbt_utils']
+    search_order: ['dune_utils', 'trino_utils', 'dbt_utils']
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
