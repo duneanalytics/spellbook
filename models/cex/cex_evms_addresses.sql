@@ -1272,8 +1272,9 @@ FROM (VALUES
     -- Allbit
     , (0xdc1882f350b42ac9a23508996254b1915c78b204, 'Allbit', 'Allbit 1', 'hildobby', date '2022-08-28')
     , (0xff6b1cdfd2d3e37977d7938aa06b6d89d6675e27, 'Allbit', 'Allbit 2', 'hildobby', date '2022-08-28')
-    -- ABCC
-    , (0x05f51aab068caa6ab7eeb672f88c180f67f17ec7, 'ABCC', 'ABCC 1', 'hildobby', date '2022-08-28')
+    -- ABCC Exchange
+    , (0x05f51aab068caa6ab7eeb672f88c180f67f17ec7, 'ABCC Exchange', 'ABCC Exchange 1', 'hildobby', date '2022-08-28')
+    , (0xAA9133EeC3ae5f9440C1a1E61E2D2Cc571675527, 'ABCC Exchange', 'ABCC Exchange 2', 'hildobby', date '2024-01-04')
     -- ATAIX
     , (0x4df5f3610e2471095a130d7d934d551f3dde01ed, 'ATAIX', 'ATAIX 1', 'hildobby', date '2022-08-28')
     -- Beaxy
@@ -1852,8 +1853,6 @@ FROM (VALUES
     , (0xDDBB8d8B5Da3dFAf65D4F8FA846127ACD6A844B1, 'Prime Trust', 'Prime Trust Celsuis Lawsuit Payout 1', 'hildobby', date '2024-01-04')
     , (0xf4E11b89519EcCd988A56749f1C64aD9bFe0298f, 'Prime Trust', 'Prime Trust Legacy MultiSig 1', 'hildobby', date '2024-01-04')
     , (0x33FE7Ad77394281e43Cc82D86ad0cbb5b9e9575D, 'Prime Trust', 'Prime Trust Deposit Funder 1', 'hildobby', date '2024-01-04')
-    -- ABCC Exchange
-    , (0xAA9133EeC3ae5f9440C1a1E61E2D2Cc571675527, 'ABCC Exchange', 'ABCC Exchange 1', 'hildobby', date '2024-01-04')
     -- Digital Surge
     , (0xFb75B231C307738ce506c242bABaD2FD2e77B0bf, 'Digital Surge', 'Digital Surge 1', 'hildobby', date '2024-01-04')
     -- Thodex
