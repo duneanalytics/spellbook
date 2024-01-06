@@ -5,11 +5,7 @@
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "unidex",
-                                \'["ARDev097"]\') }}'
+	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
 	)
 }}
 
@@ -31,7 +27,7 @@ WITH positions AS (
 		,'1' AS version
 	FROM {{ source('unidex_optimism', 'trading_evt_NewOrder') }}
 	{% if is_incremental() %}
-	WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+	WHERE {{ incremental_predicate('evt_block_time') }}
 	{% endif %}
 
 	UNION ALL
@@ -51,7 +47,7 @@ WITH positions AS (
 		,'1' AS version
 	FROM {{ source('unidex_optimism', 'trading_evt_ClosePosition') }}
 	{% if is_incremental() %}
-	WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+	WHERE {{ incremental_predicate('evt_block_time') }}
 	{% endif %}
 ),
 
@@ -109,7 +105,6 @@ INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	AND perps.block_number = tx.block_number
 	{% if not is_incremental() %}
 	AND tx.block_time >= DATE '{{project_start_date}}'
-	{% endif %}
-	{% if is_incremental() %}
-	AND tx.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+	{% else %}
+	AND {{ incremental_predicate('tx.block_time') }}
 	{% endif %}
