@@ -1,1 +1,8 @@
-# superchain -> Base -> sources file
+version: 2
+
+sources:
+  - name: baseswap_base
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  
