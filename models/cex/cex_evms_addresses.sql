@@ -1815,7 +1815,7 @@ FROM (VALUES
     , (0x63DFE4e34A3bFC00eB0220786238a7C6cEF8Ffc4, 'WOO Network', 'WOO Network 2', 'hildobby', date '2023-04-07')
     , (0xE505Bf08C03cc0FA4e0FDFa2487E2c11085b3FD9, 'WOO Network', 'WOO Network 3', 'hildobby', date '2023-04-07')
     , (0xea319fd75766f5180018f8e760f51c3d3c457496, 'WOO Network', 'WOO Network 4', 'hildobby', date '2023-04-07')
-    , (0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df, 'WOO Network', 'WOO Network Staking Cold 1', 'hildobby', date '2024-001-06')
+    , (0x0d83f81bc9f1e8252f87a4109bbf0d90171c81df, 'WOO Network', 'WOO Network Staking Cold 1', 'hildobby', date '2024-01-06')
     , (0x1326a1f39746726fDCFE88D83Effe5451606aE85, 'WOO Network', 'WOO Network Liquidity Token Vault 1', 'hildobby', date '2024-01-04')
     , (0xF0b8660476Ea1aF0f363de8816E3E7cd1c8f1fdE, 'WOO Network', 'WOO Network Ecosystem Token Vault 1', 'hildobby', date '2024-01-04')
     , (0xe2933566f172D08f8C90144fEd5Ae28E9d54B1ec, 'WOO Network', 'WOO Network Team 1', 'hildobby', date '2024-01-04')
