@@ -371,3 +371,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('nomiswap_bnb_base_trades_seed')
+
+  - name: kyberswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: kyberswap
+      contributors: nhd98z, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_bnb_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic_2

@@ -1,15 +1,15 @@
 {{ config(
-        
+        schema = 'perpetual',
         alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
 	      unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum", "polygon"]\',
+        post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum", "polygon","celo"]\',
                                 "sector",
                                 "perpetual",
-                                \'["msilb7", "drethereum", "rplust","Henrystats", "jeff-dude"]\') }}'
+                                \'["msilb7", "drethereum", "rplust","Henrystats", "jeff-dude", "tomfutago"]\') }}'
         )
 }}
 
@@ -23,6 +23,7 @@
 ,ref('tigris_perpetual_trades')
 ,ref('unidex_perpetual_trades')
 ,ref('vela_exchange_perpetual_trades')
+,ref('immortalx_perpetual_trades')
 ] %}
 
 SELECT *
