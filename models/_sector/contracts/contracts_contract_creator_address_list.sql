@@ -948,6 +948,13 @@ WITH curated_list AS (
 
       ,(0xcB3Bb767104e0b3235520fafB182e005D7efD045, 'Wombat Exchange')
       ,(0x8A15D5494d0F5a752f59F098adb7F03a6D4ce0c7, 'Circle')
+      ,(0x8b08d16F8ed6D00E539a4Da896bd124828615a96, 'zkBridge')
+      ,(0x057D81B7B5AC98999AaAcBfEd742659D34c5Da70, 'Kwenta')
+      ,(0x50507E28EA5E74C36e1293Bb5331bDbAf39645d6, 'Llama')
+      ,(0x21Ab3Aa7053A3615E02d4aC517B7075b45BF524f, 'Holograph')
+      ,(0x59278F587D4cFcDCbbc08019060be7231c37ddc2, 'Wormhole')
+      ,(0xf71fc92e2949ccF6A5Fd369a0b402ba80Bc61E02, 'Aave')
+      ,(0x5acAf86Db8c7e24dA9EF91a73707dfE5f076091A, 'rhino.fi')
 
 
   ) as temp_table (creator_address, contract_project)
