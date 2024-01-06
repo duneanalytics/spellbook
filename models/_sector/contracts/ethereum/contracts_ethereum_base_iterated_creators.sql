@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_iterated_creators(
-    chain='ethereum', days_forward=365
+    chain='ethereum'
 )}}

@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_starting_level(
-    chain='base', days_forward=365
+    chain='base'
 )}}

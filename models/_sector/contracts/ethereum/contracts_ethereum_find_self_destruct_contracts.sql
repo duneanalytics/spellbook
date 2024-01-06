@@ -10,5 +10,5 @@
 }}
 
 {{find_self_destruct_contracts(
-    chain='ethereum', days_forward=365
+    chain='ethereum'
 )}}

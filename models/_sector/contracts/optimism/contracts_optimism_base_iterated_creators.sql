@@ -11,5 +11,5 @@
 }}
 
 {{contracts_base_iterated_creators(
-    chain='optimism', days_forward=365
+    chain='optimism'
 )}}
