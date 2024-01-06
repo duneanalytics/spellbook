@@ -1,4 +1,4 @@
-{% macro find_self_destruct_contracts( chain, days_forward ) %}
+{% macro find_self_destruct_contracts( chain, days_forward=365 ) %}
 
 WITH check_date AS (
   SELECT

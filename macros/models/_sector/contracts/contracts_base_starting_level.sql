@@ -1,4 +1,4 @@
-{% macro contracts_base_starting_level( chain, days_forward ) %}
+{% macro contracts_base_starting_level( chain, days_forward=365 ) %}
 
 
 WITH check_date AS (

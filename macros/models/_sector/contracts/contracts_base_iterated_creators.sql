@@ -1,4 +1,4 @@
-{% macro contracts_base_iterated_creators( chain, days_forward ) %}
+{% macro contracts_base_iterated_creators( chain, days_forward=365 ) %}
 
 
 {% set column_list = [
