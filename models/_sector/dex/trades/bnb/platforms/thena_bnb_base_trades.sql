@@ -31,7 +31,8 @@ dexs_fusion AS (
             project = 'then',
             version = 'fusion',
             Pair_evt_Swap = source('thena_bnb', 'AlgebraPool_evt_Swap'),
-            Factory_evt_PoolCreated = source('thena_fi_bnb', 'PairFactoryUpgradeable_evt_Pool')
+            Factory_evt_PoolCreated = source('thena_fi_bnb', 'PairFactoryUpgradeable_evt_Pool'),
+            optional_columns = []
         )
     }}
 )
