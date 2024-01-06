@@ -58,3 +58,15 @@ sources:
   - name: mirror_base
     tables:
       - name: WritingEditions_evt_RewardsDistributed
+  - name: paragraph_optimism
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+  - name: paragraph_base
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+  - name: paragraph_zora
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+  - name: paragraph_polygon
+    tables:
+      - name: FeeManager_evt_FeeDistributed

@@ -77,3 +77,9 @@ sources:
     tables:
       - name: NomiswapPair_evt_Swap
       - name: NomiswapFactory_evt_PairCreated
+  - name: kyber_bnb
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticFactoryV2_evt_PoolCreated
