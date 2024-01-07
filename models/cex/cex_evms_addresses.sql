@@ -1685,8 +1685,6 @@ FROM (VALUES
     , (0x7600977eb9effa627d6bd0da2e5be35e11566341, 'DEx.top', 'DEx.top 1', 'hildobby', date '2023-09-09')
     -- Vinex
     , (0xb436c96c6de1f50a160ed307317c275424dbe4f2, 'Vinex', 'Vinex 1', 'hildobby', date '2023-04-06')
-    -- Wintermute
-    , (0x0e5069514a3dd613350bab01b58fd850058e5ca4, 'Wintermute', 'Wintermute 1', 'hildobby', date '2023-04-06')
     -- ZB.com
     , (0x60d0cc2ae15859f69bf74dadb8ae3bd58434976b, 'ZB.com', 'ZB.com 1', 'hildobby', date '2023-04-06')
     , (0x734Ac651Dd95a339c633cdEd410228515F97fAfF, 'ZB.com', 'ZB.com Deposit Funder 1', 'hildobby', date '2023-11-23')
