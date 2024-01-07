@@ -968,9 +968,9 @@ FROM (VALUES
     , (0x7Ae17a0f6f8F02b5B6e76b327DB15F91306194E6, 'Remitano', 'Remitano 4', 'hildobby', date '2023-11-23')
     , (0x8365efb25d0822aaf15ee1d314147b6a7831c403, 'Remitano', 'Remitano Deposit Funder 1', 'hildobby', date '2023-08-31')
     , (0xac180b9Be764Fb542Cac26D6A2D227fa8E7792EA, 'Remitano', 'Remitano Deposit Funder 2', 'hildobby', date '2023-11-24')
-    -- WEX Exchange 
-    , (0xb3aaaae47070264f3595c5032ee94b620a583a39, 'WEX Exchange', 'WEX Exchange 1', 'hildobby', date '2022-08-28')
-    , (0x38Bb8A02eF1EDeBccA370f178F2974417Ed95F12, 'WEX Exchange', 'WEX Exchange 2', 'hildobby', date '2022-08-28')
+    -- WEX 
+    , (0xb3aaaae47070264f3595c5032ee94b620a583a39, 'WEX', 'WEX 1', 'hildobby', date '2022-08-28')
+    , (0x38Bb8A02eF1EDeBccA370f178F2974417Ed95F12, 'WEX', 'WEX 2', 'hildobby', date '2022-08-28')
     -- Galaxy Digital
     , (0x6AE55181F90c954993789546956A8453E63B0015, 'Galaxy Digital', 'Galaxy Digital 1', 'hildobby', date '2023-11-15')
     , (0x15abb66bA754F05cBC0165A64A11cDed1543dE48, 'Galaxy Digital', 'Galaxy Digital 2', 'hildobby', date '2023-11-15')
@@ -1822,9 +1822,6 @@ FROM (VALUES
     , (0x59EdC943735Aa4f2b1a1e4D7bCb46ebE09F42C8C, 'BTCEX', 'BTCEX 1', 'hildobby', date '2024-01-04')
     , (0xfa66605B88e16c2fD011622dEe6F35A976098eDb, 'BTCEX', 'BTCEX 2', 'hildobby', date '2024-01-04')
     , (0x4f26B5961210F295542B0c5C13c4887E24F0910E, 'BTCEX', 'BTCEX 3', 'hildobby', date '2024-01-04')
-    -- qmall
-    , (0x0C0511d1eE844A516B6bDa54db3bcA01E2cE2A19, 'qmall', 'qmall 1', 'hildobby', date '2024-01-04')
-    , (0xd3e5b815843C31f621f2253c836B34f84debFE29, 'qmall', 'qmall 2', 'hildobby', date '2024-01-04')
     -- GDAC
     , (0x5735fBAC26BB21CA3C5228022cc382136038087c, 'GDAC', 'GDAC 1', 'hildobby', date '2024-01-04')
     , (0x9f4745DF0d6713B08323e0d39Ab4CeF6891C11E1, 'GDAC', 'GDAC 2', 'hildobby', date '2024-01-04')
@@ -2047,6 +2044,8 @@ FROM (VALUES
     , (0xfA5ccf9FC5828B589aF6f321770a7260f31b4746, 'Emirex', 'Emirex 2', 'hildobby', date '2023-11-23')
     -- QMall
     , (0x07e551E31A793E20dc18494ff6b03095A8F8Ee36, 'QMall', 'QMall 1', 'hildobby', date '2023-11-23')
+    , (0x0C0511d1eE844A516B6bDa54db3bcA01E2cE2A19, 'QMall', 'QMall 2', 'hildobby', date '2024-01-04')
+    , (0xd3e5b815843C31f621f2253c836B34f84debFE29, 'QMall', 'QMall 3', 'hildobby', date '2024-01-04')
     , (0x2217e5921B7edfB4BB193a6228459974010D2198, 'QMall', 'QMall QMALL Token', 'hildobby', date '2023-11-23')
     , (0x5d636F90B48c9f14BD0BF9D8016d4cB0DD9e1D9f, 'QMall', 'QMall Deployer 1', 'hildobby', date '2023-11-23')
     -- Celsuis
