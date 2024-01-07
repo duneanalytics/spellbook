@@ -850,6 +850,42 @@ sources:
           - name: recipient
           - name: relativeWeightCap
 
+      - name: AvalancheRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
+      - name: BaseRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
+      - name: GnosisRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap
+
   - name: balancer_polygon
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
@@ -864,6 +900,17 @@ sources:
           - name: gauge
           - name: pool
           - name: streamer
+
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0    
 
   - name: balancer_v2_gnosis
     tables:
@@ -1240,3 +1287,78 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens
+
+  - name: balancer_arbitrum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0
+          
+  - name: balancer_optimism
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Optimism.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0
+
+  - name: balancer_avalanche_c
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Avalanche.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0
+
+  - name: balancer_base
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Base.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0
+
+  - name: balancer_gnosis
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Gnosis.
+    tables:
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0          
