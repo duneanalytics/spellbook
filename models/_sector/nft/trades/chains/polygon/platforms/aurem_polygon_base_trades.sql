@@ -1,6 +1,6 @@
 {{ config(
     schema = 'aurem_polygon',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -41,8 +41,8 @@ with trade_detail as (
         AND o.taker = t."to"
         AND o.tokenId = t.token_id
     {% if is_incremental() %}
-    WHERE o.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('o.evt_block_time')}}
+       AND {{incremental_predicate('t.block_time')}}
     {% else %}
     WHERE o.evt_block_time >= {{project_start_date}}
         AND t.block_time >= {{project_start_date}}
@@ -60,16 +60,18 @@ payment_detail as (
         AND t."to" = 0x547eb9ab69f2e4438845839fd08792c326995ea6 -- Aurem Exchange
         AND t.value = d.price_raw
     {% if is_incremental() %}
-        AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{incremental_predicate('t.evt_block_time')}}
     {% else %}
         AND t.evt_block_time >= {{project_start_date}}
     {% endif %}
 )
-
+, base_trades as (
 SELECT 'polygon' as blockchain
     , 'aurem' as project
     , 'v1' as project_version
     , d.block_time
+    , cast(date_trunc('day', d.block_time) as date) as block_date
+    , cast(date_trunc('month', d.block_time) as date) as block_month
     , d.block_number
     , d.nft_contract_address
     , d.nft_token_id
@@ -87,17 +89,10 @@ SELECT 'polygon' as blockchain
     , d.royalty_fee_address
     , d.platform_fee_address
     , d.sub_tx_trade_id
-    , tx."from" as tx_from
-    , tx."to" as tx_to
-    , bytearray_reverse(bytearray_substring(bytearray_reverse(tx.data),1,32))  as tx_data_marker
 FROM trade_detail d
-INNER JOIN {{source('polygon', 'transactions')}} tx
-    ON d.block_number = tx.block_number
-    AND d.tx_hash = tx.hash
-    {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '7' day)
-    {% else %}
-        AND tx.block_time >= {{project_start_date}}
-    {% endif %}
 LEFT JOIN payment_detail p ON d.tx_hash = p.tx_hash
     AND d.sub_tx_trade_id = p.sub_tx_trade_id
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'polygon') }}

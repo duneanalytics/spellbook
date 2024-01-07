@@ -4,7 +4,6 @@
         alias = 'call_transfers',
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'transfer_trace_address'],
-        
     )
 }}
 
