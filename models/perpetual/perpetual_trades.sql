@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["optimism","avalanche_c","arbitrum", "polygon","celo"]\',
                                 "sector",
                                 "perpetual",
-                                \'["msilb7", "drethereum", "rplust","Henrystats", "jeff-dude", "tomfutago"]\') }}'
+                                \'["msilb7", "drethereum", "rplust","Henrystats", "jeff-dude", "kaiblade", "tomfutago"]\') }}'
         )
 }}
 
@@ -21,6 +21,12 @@
 ,ref('hubble_exchange_avalanche_c_perpetual_trades')
 ,ref('gmx_perpetual_trades')
 ,ref('tigris_perpetual_trades')
+,ref('mummy_finance_optimism_perpetual_trades')
+,ref('fxdx_optimism_perpetual_trades')
+,ref('opx_finance_optimism_perpetual_trades')
+,ref('nex_optimism_perpetual_trades')
+,ref('avt_optimism_perpetual_trades')
+,ref('minerva_money_optimism_perpetual_trades')
 ,ref('immortalx_perpetual_trades')
 ] %}
 
