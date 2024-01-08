@@ -83,6 +83,10 @@ sources:
       - name: DMMFactory_evt_PoolCreated
       - name: ElasticPoolV2_evt_Swap
       - name: ElasticFactoryV2_evt_PoolCreated
+  - name: ellipsis_finance_bnb
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: StableSwap_evt_TokenExchangeUnderlying
   - name: onepunch_quick_bnb
     tables:
       - name: QuickLiquidityProvider_evt_QuoteAccepted

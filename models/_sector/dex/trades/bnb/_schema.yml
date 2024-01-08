@@ -393,6 +393,23 @@ models:
               - classic
               - elastic_2
 
+  - name: ellipsis_finance_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: ellipsis_finance
+      contributors: Henrystats, 0xRob, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'ellipsis_finance' ]
+    description: "ellipsis_finance bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ellipsis_finance_bnb_base_trades_seed')
+          
   - name: onepunchswap_bnb_base_trades
     meta:
       blockchain: bnb
