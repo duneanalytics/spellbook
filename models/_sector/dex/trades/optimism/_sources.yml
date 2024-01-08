@@ -36,6 +36,14 @@ sources:
       - name: ClipperPackedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperCove_evt_CoveSwapped
+  - name: velodrome_optimism
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: velodrome_v2_optimism
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
   - name: synthetix_optimism
     tables:
       - name: SNX_evt_SynthExchange

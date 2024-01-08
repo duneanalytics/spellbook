@@ -247,6 +247,27 @@ models:
               - elastic
               - elastic_2
 
+  - name: velodrome_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: velodrome
+      contributors: msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'velodrome', 'uniswap', 'v2' ]
+    description: "velodrome optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velodrome_optimism_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2
+              
   - name: synthetix_optimism_base_trades
     meta:
       blockchain: optimism
