@@ -143,16 +143,16 @@ SELECT
   t.token_sold_amount_raw,
   CASE
     WHEN t.trade_type = 'Multi-Buy' THEN COALESCE(
-        (t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0))) * p_bought.price,
-        (t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0))) * p_sold.price / maker_length
+        (t.token_bought_amount / power(10, t_bought.decimals)) * p_bought.price,
+        (t.token_sold_amount / power(10, t_sold.decimals)) * p_sold.price / maker_length
     )
     WHEN t.trade_type = 'Multi-Sell' THEN COALESCE(
-        (t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0))) * p_sold.price,
-        (t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0))) * p_bought.price / taker_length
+        (t.token_sold_amount / power(10, t_sold.decimals)) * p_sold.price,
+        (t.token_bought_amount / power(10, t_bought.decimals)) * p_bought.price / taker_length
     )
     ELSE COALESCE(
-        (t.token_bought_amount / power(10, coalesce(t_bought.decimals, 0))) * p_bought.price,
-        (t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0))) * p_sold.price
+        (t.token_bought_amount / power(10, t_bought.decimals)) * p_bought.price,
+        (t.token_sold_amount / power(10, t_sold.decimals)) * p_sold.price
     ) 
     END as amount_usd, -- when there's a Multi-trade, the usd value of the multi tokens traded is used as the amount_usd 
     t.token_bought_address,
