@@ -224,6 +224,7 @@ models:
               - 1
               - 2
 
+
   - name: kyberswap_optimism_base_trades
     meta:
       blockchain: optimism
@@ -245,4 +246,3 @@ models:
               - classic
               - elastic
               - elastic_2
-
