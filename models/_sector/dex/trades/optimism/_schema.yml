@@ -247,6 +247,23 @@ models:
               - elastic
               - elastic_2
 
+  - name: synthetix_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: synthetix
+      contributors: msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'synthetix' ]
+    description: "synthetix optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('synthetix_optimism_base_trades_seed')
+          
   - name: openxswap_optimism_base_trades
     meta:
       blockchain: optimism
