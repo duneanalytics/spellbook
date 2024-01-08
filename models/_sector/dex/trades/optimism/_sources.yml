@@ -39,3 +39,9 @@ sources:
   - name: synthetix_optimism
     tables:
       - name: SNX_evt_SynthExchange
+  - name: openxswap_optimism
+    tables:
+      - name: Aggregator_evt_Swap
+  - name: openocean_v2_optimism
+    tables:
+      - name: OpenOceanExchangeProxy_evt_Swapped
