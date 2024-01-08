@@ -252,3 +252,20 @@ models:
               - classic
               - elastic
               - elastic_2
+
+  - name: openocean_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'openocean' ]
+    description: "openocean avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_avalanche_c_base_trades_seed')
