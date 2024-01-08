@@ -61,3 +61,45 @@ sources:
     tables:
       - name: SwapsPair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: swapr_ethereum
+    tables:
+      - name: DXswapPair_evt_Swap
+      - name: DXswapFactory_evt_PairCreated
+  - name: mauve_ethereum
+    tables:
+      - name: MauvePool_evt_Swap
+      - name: MauveFactory_evt_PoolCreated
+  - name: dfx_finance_ethereum
+    tables:
+      - name: Curve_evt_Trade
+  - name: dodo_ethereum
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: integral_size_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: maverick_v1_ethereum
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
+  - name: kyber_ethereum
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+  - name: clipper_ethereum
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped
+      - name: ClipperApproximateCaravelExchange_evt_Swapped
+  - name: mstable_ethereum
+    tables:
+      - name: Masset_evt_Swapped
+      - name: FeederPool_evt_Swapped
