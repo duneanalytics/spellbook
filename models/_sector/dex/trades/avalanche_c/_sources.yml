@@ -43,3 +43,6 @@ sources:
   - name: platypus_finance_avalanche_c
     tables:
       - name: Pool_evt_Swap
+  - name: openocean_v2_avalanche_c
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
