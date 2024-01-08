@@ -83,3 +83,9 @@ sources:
       - name: DMMFactory_evt_PoolCreated
       - name: ElasticPoolV2_evt_Swap
       - name: ElasticFactoryV2_evt_PoolCreated
+  - name: onepunch_quick_bnb
+    tables:
+      - name: QuickLiquidityProvider_evt_QuoteAccepted
+  - name: onepunch_normal_bnb
+    tables:
+      - name: DexLiquidityProvider_evt_QuoteAccepted
