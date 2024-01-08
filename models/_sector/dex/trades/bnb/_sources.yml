@@ -83,6 +83,14 @@ sources:
       - name: DMMFactory_evt_PoolCreated
       - name: ElasticPoolV2_evt_Swap
       - name: ElasticFactoryV2_evt_PoolCreated
+  - name: thena_fi_bnb
+    tables:
+      - name: pair_evt_swap
+      - name: PairFactoryUpgradeable_evt_Pool
+      - name: PairFactoryUpgradeable_evt_PairCreated
+  - name: thena_bnb
+    tables:
+      - name: AlgebraPool_evt_Swap
   - name: ellipsis_finance_bnb
     tables:
       - name: StableSwap_evt_TokenExchange

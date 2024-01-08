@@ -393,6 +393,27 @@ models:
               - classic
               - elastic_2
 
+  - name: thena_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: thena
+      contributors: hsrvc, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'thena' ]
+    description: "thena bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('thena_bnb_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - fusion
+              
   - name: ellipsis_finance_bnb_base_trades
     meta:
       blockchain: bnb
