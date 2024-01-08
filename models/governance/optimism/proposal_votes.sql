@@ -1,4 +1,3 @@
-
 {{ config(tags=['dunesql']
     ,alias = 'proposal_votes'
     ,materialized = 'incremental'
@@ -14,19 +13,12 @@
 }}
 
 SELECT
-  CONCAT(
-    SUBSTRING(
-      CAST(TRY_CAST(proposalId AS VARBINARY) AS VARCHAR),
-      1,
-      35
-    ),
-    '...'
-  ) AS proposal_id,
-  '<a href="https://vote.optimism.io/proposals/' || CAST(proposalId AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
-  'Agora' AS platform,
+  TRY_CAST(proposalId AS VARBINARY) AS VARCHAR AS proposal_id,
+  'agora' AS platform,
   evt_tx_hash AS tx_hash,
   evt_block_time AS date_timestamp,
   voter,
+  reason,
   weight / POWER(10, 18) AS votingWeightage,
   support AS choice,
   CASE
@@ -39,15 +31,12 @@ FROM
   {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
 UNION ALL
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(proposal AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
-  '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(proposal AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
-  'Snapshot' AS platform,
+  proposal AS proposal_id,
+  'snapshot' AS platform,
   TRY_CAST('' AS VARBINARY) AS tx_hash,
-  TRY_CAST('' AS TIMESTAMP) AS date_timestamp,
+  from_unixtime(created) AS date_timestamp,
   voter,
+  reason,
   vp AS votingWeightage,
   TRY_CAST(choice AS INT) AS choice,
   CASE
@@ -55,7 +44,7 @@ SELECT
     WHEN choice = '2' THEN 'against'
     WHEN choice = '3' THEN 'abstain'
     WHEN choice = '4' THEN 'voted'
-  END AS status
+  END AS choice_name
 FROM
   {{ source('snapshot','votes') }}
 WHERE

@@ -42,41 +42,41 @@ SELECT
   END AS highest_weightage_voter_percentage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_for_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '2' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_abstain_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '0' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '0' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_against_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '1' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN 1
       ELSE 0
     END
   ) AS unique_for_votes,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '2' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN 1
       ELSE 0
     END
   ) AS unique_abstain_votes,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '0' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '0' THEN 1
       ELSE 0
     END
   ) AS unique_against_votes,
-  COUNT(v.support) AS unique_votes_count,
+  COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
   CASE
     WHEN pc.proposalId IS NOT NULL THEN 'cancelled'
@@ -84,7 +84,7 @@ SELECT
     WHEN (
       SUM(
         CASE
-          WHEN TRY_CAST(v.support AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+          WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
           ELSE 0.0
         END
       ) / SUM(v.votingWeightage)
@@ -109,21 +109,7 @@ FROM
         '90839767999322802375479087567202389126141447078032129455920633707568400402209'
       )
   ) AS p
-  LEFT JOIN (
-    -- Join vote data with Single-Choice proposals
-    SELECT
-      proposalId AS proposal_id,
-      voter,
-      weight / POW(10, 18) AS votingWeightage,
-      support,
-      CASE
-        WHEN support = 0 THEN 'against'
-        WHEN support = 1 THEN 'for'
-        WHEN support = 2 THEN 'abstain'
-      END AS status
-    FROM
-      {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
-  ) AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN FROM {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
@@ -167,46 +153,46 @@ SELECT
   END AS highest_weightage_voter_percentage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_for_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '2' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_abstain_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '0' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '0' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_against_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '1' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN 1
       ELSE 0
     END
   ) AS unique_for_votes,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '2' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN 1
       ELSE 0
     END
   ) AS unique_abstain_votes,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '0' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '0' THEN 1
       ELSE 0
     END
   ) AS unique_against_votes,
-  COUNT(v.support) AS unique_votes_count,
+  COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
   '' AS proposal_status
 FROM
   (
-    -- Select Multi-Choice proposals from Agora platform based on specific criteria
+    -- Select Multi-Choice proposals from agora platform based on specific criteria
     SELECT
       proposalId AS proposal_id,
       description AS proposal_description,
@@ -218,21 +204,7 @@ FROM
     WHERE
       votingModule IS NOT NULL
   ) AS p
-  LEFT JOIN (
-    -- Join vote data with multiple options proposals
-    SELECT
-      proposalId AS proposal_id,
-      voter,
-      weight / POW(10, 18) AS votingWeightage,
-      support,
-      CASE
-        WHEN support = 0 THEN 'against'
-        WHEN support = 1 THEN 'for'
-        WHEN support = 2 THEN 'abstain'
-      END AS status
-    FROM
-      {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
-  ) AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
@@ -276,41 +248,41 @@ SELECT
   END AS highest_weightage_voter_percentage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_for_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '2' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_abstain_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '0' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+      WHEN TRY_CAST(v.choice AS varchar) = '0' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
       ELSE 0.0
     END
   ) AS total_against_votingWeightage,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '1' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN 1
       ELSE 0
     END
   ) AS unique_for_votes,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '2' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN 1
       ELSE 0
     END
   ) AS unique_abstain_votes,
   SUM(
     CASE
-      WHEN TRY_CAST(v.support AS varchar) = '0' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '0' THEN 1
       ELSE 0
     END
   ) AS unique_against_votes,
-  COUNT(v.support) AS unique_votes_count,
+  COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
   CASE
     WHEN pc.proposalId IS NOT NULL THEN 'cancelled'
@@ -318,7 +290,7 @@ SELECT
     WHEN (
       SUM(
         CASE
-          WHEN TRY_CAST(v.support AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
+          WHEN TRY_CAST(v.choice AS varchar) = '1' THEN TRY_CAST(v.votingWeightage AS DOUBLE)
           ELSE 0.0
         END
       ) / SUM(v.votingWeightage)
@@ -327,7 +299,7 @@ SELECT
   END AS proposal_status
 FROM
   (
-    -- Select test proposals from Agora platform based on specific criteria
+    -- Select test proposals fromagora platform based on specific criteria
     SELECT
       proposalId AS proposal_id,
       description AS proposal_description,
@@ -346,21 +318,7 @@ FROM
       )
       --  AND LOWER(description) LIKE '%test vote%'
   ) AS p
-  LEFT JOIN (
-    -- Join vote data with test proposals
-    SELECT
-      proposalId AS proposal_id,
-      voter,
-      weight / POW(10, 18) AS votingWeightage,
-      support,
-      CASE
-        WHEN support = 0 THEN 'against'
-        WHEN support = 1 THEN 'for'
-        WHEN support = 2 THEN 'abstain'
-      END AS status
-    FROM
-      {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
-  ) AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId

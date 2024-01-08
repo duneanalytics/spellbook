@@ -213,7 +213,7 @@ models:
     config:
       tags: ['optimism','snapshot','agora','proposals','governance','votes']
     description: >
-        Analysis of votes for optimism governance proposals available on agora and snapshot platform 
+        Events of votes for optimism governance proposals available on agora and snapshot platform 
     columns:
       - *proposal_id
 
@@ -223,7 +223,7 @@ models:
 
       - &tx_hash
         name: tx_hash
-        description: "The unique hash of voters voting transaction on proposal"
+        description: "The unique hash of voters voting transaction on proposal, tx_hash not available on snapshot proposals"
 
       - &date_timestamp
         name: date_timestamp

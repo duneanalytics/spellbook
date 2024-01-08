@@ -1,4 +1,3 @@
-
 {{ config(tags=['dunesql']
     ,alias = 'snapshot_proposals'
     ,materialized = 'incremental'
@@ -86,7 +85,7 @@ SELECT
   END AS proposal_status
 FROM
   (
-    -- Select Single-Choice proposals from Snapshot platform based on specific criteria
+    -- Select Single-Choice proposals from snapshot platform based on specific criteria
     SELECT
       id AS proposal_id,
       CONCAT(
@@ -310,23 +309,7 @@ FROM
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
   ) AS p
-  LEFT JOIN (
-    -- Join vote data with Single-Choice proposals
-    SELECT
-      proposal AS proposal_id,
-      voter,
-      vp AS votingWeightage,
-      choice,
-      CASE
-        WHEN choice = '1' THEN 'for'
-        WHEN choice = '2' THEN 'against'
-        WHEN choice = '3' THEN 'abstain'
-      END AS status
-    FROM
-      {{ source('snapshot','votes') }}
-    WHERE
-      "space" = 'opcollective.eth'
-  ) AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -398,7 +381,7 @@ SELECT
   '' AS proposal_status
 FROM
   (
-    -- Select Multi-Choice proposals from Snapshot platform based on specific criteria
+    -- Select Multi-Choice proposals from snapshot platform based on specific criteria
     SELECT
       id AS proposal_id,
       CONCAT(
@@ -618,23 +601,7 @@ FROM
       "space" = 'opcollective.eth'
       AND "type" = 'approval'
   ) AS p
-  LEFT JOIN (
-    -- Join vote data with Multi-Choice proposals
-    SELECT
-      proposal AS proposal_id,
-      voter,
-      vp AS votingWeightage,
-      choice,
-      CASE
-        WHEN choice = '1' THEN 'for'
-        WHEN choice = '2' THEN 'against'
-        WHEN choice = '3' THEN 'abstain'
-      END AS status
-    FROM
-      {{ source('snapshot','votes') }}
-    WHERE
-      "space" = 'opcollective.eth'
-  ) AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -717,7 +684,7 @@ SELECT
   END AS proposal_status
 FROM
   (
-    -- Select test proposals from Snapshot platform based on specific criteria
+    -- Select test proposals from snapshot platform based on specific criteria
     SELECT
       id AS proposal_id,
       CONCAT(
@@ -940,23 +907,7 @@ FROM
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
   ) AS p
-  LEFT JOIN (
-    -- Join vote data with test proposals
-    SELECT
-      proposal AS proposal_id,
-      voter,
-      vp AS votingWeightage,
-      choice,
-      CASE
-        WHEN choice = '1' THEN 'for'
-        WHEN choice = '2' THEN 'against'
-        WHEN choice = '3' THEN 'abstain'
-      END AS status
-    FROM
-      {{ source('snapshot','votes') }}
-    WHERE
-      "space" = 'opcollective.eth'
-  ) AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
   p.proposal_id,
   p.proposal_description,
