@@ -13,7 +13,7 @@
 }}
 
 SELECT
-  TRY_CAST(proposalId AS VARBINARY) AS VARCHAR AS proposal_id,
+  TRY_CAST(proposalId AS VARBINARY) AS proposal_id,
   'agora' AS platform,
   evt_tx_hash AS tx_hash,
   evt_block_time AS date_timestamp,
