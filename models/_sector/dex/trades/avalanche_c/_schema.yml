@@ -253,6 +253,23 @@ models:
               - elastic
               - elastic_2
 
+  - name: platypus_finance_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: platypus_finance
+      contributors: umer_h_adil, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'platypus_finance' ]
+    description: "Platypus Finance avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('platypus_finance_avalanche_c_base_trades_seed')
+          
   - name: openocean_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
