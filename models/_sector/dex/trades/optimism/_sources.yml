@@ -36,3 +36,6 @@ sources:
       - name: ClipperPackedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperCove_evt_CoveSwapped
+  - name: openocean_v2_optimism
+    tables:
+      - name: OpenOceanExchangeProxy_evt_Swapped

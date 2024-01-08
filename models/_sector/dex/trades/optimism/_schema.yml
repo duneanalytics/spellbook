@@ -246,3 +246,20 @@ models:
               - classic
               - elastic
               - elastic_2
+
+  - name: openocean_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: openocean
+      contributors: ARDev097, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'openocean' ]
+    description: "openocean optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_optimism_base_trades_seed')
