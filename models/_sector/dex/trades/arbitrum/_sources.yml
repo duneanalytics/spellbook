@@ -67,3 +67,7 @@ sources:
       - name: ClipperCove_v2_evt_CoveSwapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
+  - name: xchange_arbitrum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
