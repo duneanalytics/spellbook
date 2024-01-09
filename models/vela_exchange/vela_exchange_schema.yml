@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: vela_exchange_perpetual_trades
+    meta:
+      blockchain: base
+      sector: perpetual
+      contributors: ARDev097
+    config:
+      tags: ['base', 'perpetuals', 'perps', 'vela_exchange','cross-chain']
+    description: >
+      Perpetual swaps/trades table on vela_exchange protocol across blockchains
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the perpetuals market is deployed"
+      - &block_date
+        name: block_date
+        description: "Date of the transaction"
+      - &block_time
+        name: block_time
+        description: "Time of the transaction"
+      - &virtual_asset
+        name: virtual_asset
+        description: "How the protocol represents the underlying asset"
+      - &underlying_asset
+        name: underlying_asset
+        description: "The real underlying asset that is represented in the swap"
+      - &market
+        name: market
+        description: "The futures market involved in the transaction"
+      - &market_address
+        name: market_address
+        description: "Contract address of the market"
+      - &volume_usd
+        name: volume_usd
+        description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
+      - &fee_usd
+        name: fee_usd
+        description: "The fees charged to the user for the swap in USD"
+      - &margin_usd
+        name: margin_usd
+        description: "The amount of collateral/margin used in a trade in USD"
+      - &trade
+        name: trade
+        description: "Indicates the trade's direction whether a short, long, of if a position is being closed"
+      - &project
+        name: project
+        description: "The underlying protocol/project where the swap took place"
+      - &version
+        name: version
+        description: "The version of the protocol/project"
+      - &frontend
+        name: frontend
+        description: "The frontend protocol/project where the specific swap was executed; built on top of the 'project' and defaults to the 'project' if no other frontend is specified"
+      - &trader
+        name: trader
+        description: "The address which made the swap in the protocol"
+      - &volume_raw
+        name: volume_raw
+        description: "The size of the position in raw form"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &tx_from
+        name: tx_from
+        description: "The address that originated the transaction; based on the base.transactions table"
+      - &tx_to
+        name: tx_to
+        description: "The address receiving the transaction; based on the base.transactions table"
+      - &evt_index
+        name: evt_index
+        description: "Event index number"
+      - &block_month
+        name: block_month
+        description: "Month of the transaction"

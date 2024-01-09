@@ -1,0 +1,58 @@
+version: 2
+
+models:
+ - name: tofu_arbitrum_base_trades
+   meta:
+     blockchain: arbitrum
+     sector: nft
+     project: tofu
+     contributors: 0xRob
+   config:
+     tags: ['arbitrum', 'nft', 'trades', 'tofu']
+   description: "Tofu base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+
+ - name: stealcam_arbitrum_base_trades
+   meta:
+     blockchain: arbitrum
+     project: stealcam
+     contributors: [ hildobby ]
+   config:
+     tags: [ 'arbitrum','stealcam','v1','trades' ]
+   description: >
+     Stealcam v1 trades on Arbitrum
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: trove_v1_arbitrum_base_trades
+   meta:
+     blockchain: arbitrum
+     sector: nft
+     project: trove
+     contributors: bizzyvinci
+   config:
+     tags: [ 'trove', 'treasure', 'nft', 'trades' ]
+   description: "NFT trades on trove v1 on arbitrum blockchain"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: trove_v2_arbitrum_base_trades
+   meta:
+     blockchain: arbitrum
+     sector: nft
+     project: trove
+     contributors: bizzyvinci
+   config:
+     tags: [ 'trove', 'treasure', 'nft', 'trades' ]
+   description: "NFT trades on trove v2 on arbitrum blockchain"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
