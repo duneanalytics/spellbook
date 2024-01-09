@@ -247,6 +247,7 @@ models:
               - elastic
               - elastic_2
 
+
   - name: velodrome_optimism_base_trades
     meta:
       blockchain: optimism
@@ -267,7 +268,8 @@ models:
             version:
               - 1
               - 2
-              
+
+
   - name: synthetix_optimism_base_trades
     meta:
       blockchain: optimism
@@ -284,7 +286,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('synthetix_optimism_base_trades_seed')
-          
+
+
   - name: openxswap_optimism_base_trades
     meta:
       blockchain: optimism
@@ -301,7 +304,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('openxswap_optimism_base_trades_seed')
-          
+
+
   - name: openocean_optimism_base_trades
     meta:
       blockchain: optimism
