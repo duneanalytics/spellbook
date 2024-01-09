@@ -14,7 +14,7 @@ select
     nft_tokens.name as collection_name
 from {{ source('tokens_ethereum', 'balances_ethereum_0002') }} balances
 left join {{ ref('tokens_erc20') }} erc20_tokens on
-    erc20_tokens.blockchain = '{{ blockchain }}'and (
+    erc20_tokens.blockchain = '{{ blockchain }}' AND (
     CASE
         WHEN type = 'erc20' THEN erc20_tokens.contract_address = balances.contract_address
         -- TODO: should not be hardcoded
