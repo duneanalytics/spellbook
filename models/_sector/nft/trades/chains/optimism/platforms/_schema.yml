@@ -1,0 +1,100 @@
+version: 2
+
+models:
+ - name: tofu_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: tofu
+     contributors: [ chuxin ]
+   config:
+     tags: [ 'optimism','tofu','v1','trades' ]
+   description: >
+     Tofu v1 trades on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: zonic_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: zonic
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','zonic', 'trades' ]
+   description: >
+     Zonic events on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: quix_v1_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: quix
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','quix', 'trades' ]
+   description: >
+     Quix trades on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: quix_v2_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: quix
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','quix', 'trades' ]
+   description: >
+     Quix trades on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: quix_v3_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: quix
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','quix', 'trades' ]
+   description: >
+     Quix trades on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: quix_v4_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: quix
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','quix', 'trades' ]
+   description: >
+     Quix trades on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: quix_v5_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: quix
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','quix', 'trades' ]
+   description: >
+     Quix trades on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
