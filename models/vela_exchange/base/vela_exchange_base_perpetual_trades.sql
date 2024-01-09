@@ -1,6 +1,6 @@
 {{ config(
     alias = 'perpetual_trades',
-    schema = 'vela_exchnage_base_perpetual',
+    schema = 'vela_exchnage_base',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
