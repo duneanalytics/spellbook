@@ -10,7 +10,7 @@ select
     (balances.amount / power(10, erc20_tokens.decimals) * prices.price)  as balance_usd,
     prices.price as price_rate,
     erc20_tokens.symbol,
-    erc20_tokens.decimals
+    erc20_tokens.decimals,
     nft_tokens.name as collection_name
 from {{ source('tokens_ethereum', 'balances_ethereum_0002') }} balances
 left join {{ ref('tokens_erc20') }} erc20_tokens on
