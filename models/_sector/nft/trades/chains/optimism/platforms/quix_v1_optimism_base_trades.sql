@@ -89,6 +89,8 @@ with events_raw as (
         ,'quix' as project
         ,'v1' as project_version
         ,er.block_time
+        ,cast(date_trunc('day', er.block_time) as date) as block_date
+        ,cast(date_trunc('month', er.block_time) as date) as block_month
         ,er.token_id as nft_token_id
         ,'secondary' as trade_type
         ,uint256 '1' as nft_amount
