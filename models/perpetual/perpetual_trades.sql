@@ -30,6 +30,7 @@
     ,ref('minerva_money_optimism_perpetual_trades')
     ,ref('immortalx_perpetual_trades')
     ,ref('unidex_perpetual_trades')
+    ,ref('vela_exchange_perpetual_trades')
 ] %}
 
 SELECT *
