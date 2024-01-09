@@ -200,3 +200,4 @@ models:
       - name: price_rate
       - name: symbol
       - name: decimals
+      - name: collection_name
