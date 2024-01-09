@@ -90,5 +90,5 @@ FROM tfe
 )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'polygon') }}
+{{ add_nft_tx_data('base_trades', blockchain) }}
 {% endmacro %}
