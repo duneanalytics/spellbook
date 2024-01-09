@@ -1,7 +1,6 @@
 {{ config(
-    
-    alias = 'perpetual_trades',
-    schema = 'vela_exchange_perpetual',
+    schema = 'vela_exchange',
+    alias = 'perpetual_trades'
     )
 }}
 
