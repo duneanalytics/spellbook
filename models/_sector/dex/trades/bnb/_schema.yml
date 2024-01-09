@@ -464,3 +464,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('onepunchswap_bnb_base_trades_seed')
+
+  - name: woofi_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: woofi
+      contributors: scoffie, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'woofi' ]
+    description: "woofi bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('woofi_bnb_base_trades_seed')
