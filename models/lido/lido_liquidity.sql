@@ -38,7 +38,10 @@
  ref('lido_liquidity_ethereum_maverick_pools'),
  ref('lido_liquidity_ethereum_uniswap_v3_pools'),
  ref('lido_liquidity_ethereum_pancakeswap_v3_pools'),
- ref('lido_liquidity_ethereum_uniswap_v2_pools')
+ ref('lido_liquidity_ethereum_uniswap_v2_pools'),
+ ref('lido_liquidity_ethereum_solidly_pools'),
+ ref('lido_liquidity_base_kyberswap_pools'),
+ ref('lido_liquidity_base_aerodrome_pools')
  
 ] %}
 

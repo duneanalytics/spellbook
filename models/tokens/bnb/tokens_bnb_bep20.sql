@@ -1,4 +1,11 @@
-{{ config( alias = 'bep20', tags=['static'])}}
+{{
+    config(
+        schema = 'tokens_bnb',
+        alias = 'bep20',
+        tags = ['static'],
+        materialized = 'table'
+    )
+}}
 
 SELECT contract_address, symbol, decimals
   FROM (VALUES 
@@ -197,6 +204,7 @@ SELECT contract_address, symbol, decimals
 ,(0x8cd6e29d3686d24d3c2018cee54621ea0f89313b, 'NULS', 8)
 ,(0xf0e406c49c63abf358030a299c0e00118c4c6ba5, 'NVT', 8)
 ,(0xbfa0841f7a90c4ce6643f651756ee340991f99d5, 'NYA', 18)
+,(0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4, 'NPM', 18)
 ,(0xee9801669c6138e84bd50deb500827b776777d28, 'O3', 18)
 ,(0xcd40f2670cf58720b694968698a5514e924f742d, 'ODDZ', 18)
 ,(0xf05e45ad22150677a017fbd94b84fbb63dc9b44c, 'OG', 2)
@@ -5538,4 +5546,5 @@ SELECT contract_address, symbol, decimals
 ,(0x0565805ca3a4105faee51983b0bd8ffb5ce1455c, 'GUILD', 18)
 ,(0x14778860E937f509e651192a90589dE711Fb88a9, 'CYBER', 18)
 ,(0x40af3827f39d0eacbf4a168f8d4ee67c121d11c9, 'TUSD', 18)
+,(0xb0b84d294e0c75a6abe60171b70edeb2efd14a1b, 'SnBNB', 18)
 ) AS temp_table (contract_address, symbol, decimals)

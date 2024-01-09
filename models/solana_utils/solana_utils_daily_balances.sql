@@ -8,7 +8,7 @@
         file_format = 'delta',
         incremental_strategy='merge',
         incremental_predicates = ['DBT_INTERNAL_DEST.day >= date_trunc(\'day\', now() - interval \'1\' day)'],
-        unique_key = ['token_mint_address', 'address','day'],
+        unique_key = ['unique_address_key'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -45,6 +45,7 @@ SELECT
       , token_mint_address
       , token_balance
       , token_balance_owner
+      , {{ dbt_utils.generate_surrogate_key(['address', 'token_mint_address', 'day']) }} as unique_address_key
       , now() as updated_at
 FROM updated_balances
 WHERE latest_balance = 1

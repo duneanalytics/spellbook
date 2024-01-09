@@ -5,7 +5,7 @@
    SELECT
       case 
          when 'ethereum' = chain_ then 'https://etherscan.io/address/' || CAST(column_ AS VARCHAR)
-         when 'optimism' = chain_ then 'https://optimistic.etherscan.io/address/' || CAST(column_ AS VARCHAR)
+         when 'optimism' = chain_ then 'https://explorer.optimism.io/address/' || CAST(column_ AS VARCHAR)
          when 'polygon' = chain_ then 'https://polygonscan.com/address/' || CAST(column_ AS VARCHAR)
          when 'arbitrum' = chain_ then 'https://arbiscan.io/address/' || CAST(column_ AS VARCHAR)
          when 'avalanche_c' = chain_ then 'https://snowtrace.io/address/' || CAST(column_ AS VARCHAR)
@@ -17,6 +17,7 @@
          when 'base' = chain_ then 'https://basescan.org/address/' || CAST(column_ AS VARCHAR)
          when 'bitcoin' = chain_ then 'https://blockstream.info/address/' || CAST(column_ AS VARCHAR)
          when 'goerli' = chain_ then 'https://goerli.basescan.org/address/' || CAST(column_ AS VARCHAR)
+         when 'zksync' = chain_ then 'https://explorer.zksync.io' || CAST(column_ AS VARCHAR)
          else 'https://etherscan.io/address/' || CAST(column_ AS VARCHAR)
       end as explorer_address_url;
 {% endmacro %}

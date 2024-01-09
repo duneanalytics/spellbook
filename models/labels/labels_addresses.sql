@@ -6,7 +6,7 @@
     post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
-                                \'["soispoke", "hildobby", "ilemi", "hosuke"]\') }}')
+                                \'["soispoke", "hildobby", "ilemi", "hosuke", "kaiblade"]\') }}')
 }}
 
 -- single category labels (no subsets), needs label_type and model_name added still.
@@ -26,6 +26,16 @@
     , ref('labels_quest_participants')
     , ref('labels_cex_users')
     , ref('labels_op_retropgf')
+    , ref('labels_op_attestationstation_attesters')
+    , ref('labels_op_attestationstation_creators')
+    , ref('labels_op_governance_delegators')
+    , ref('labels_op_governance_derived_archetype')
+    , ref('labels_op_governance_retropgf_proposal_submitters')
+    , ref('labels_op_governance_voters')
+    , ref('labels_op_governance_retropgf_voters')
+    , ref('labels_op_perpetual_traders')
+    , ref('labels_op_traders_derived_archetype')
+    , ref('labels_op_transfers_only')
 ] %}
 
 -- new/standardized labels

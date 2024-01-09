@@ -1,4 +1,11 @@
-{{ config( alias = 'erc20', tags=['static'])}}
+{{
+    config(
+        schema = 'tokens_polygon',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
+}}
 
 SELECT contract_address, symbol, decimals
   FROM (VALUES
@@ -94,6 +101,7 @@ SELECT contract_address, symbol, decimals
 ,(0x101a023270368c0d50bffb62780f4afd4ea79c35 ,'ANKR' ,18)
 ,(0xe8d17b127ba8b9899a160d9a07b69bca8e08bfc6 ,'NSDX' ,18)
 ,(0x8f006d1e1d9dc6c98996f50a4c810f17a47fbf19 ,'NSFW' ,18)
+,(0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4 ,'NPM' ,18)
 ,(0x958d208cdf087843e9ad98d23823d32e17d723a1 ,'dQUICK' , 18)
 ,(0x692ac1e363ae34b6b489148152b12e2785a3d8d6 ,'TRADE' ,18)
 ,(0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b ,'BETS' ,18)
@@ -496,4 +504,22 @@ SELECT contract_address, symbol, decimals
 ,(0xA5577D1cec2583058A6Bd6d5DEAC44797c205701, 'DEV', 18)
 ,(0x40379a439D4F6795B6fc9aa5687dB461677A2dBa, 'USDR', 9)
 ,(0x00e8c0E92eB3Ad88189E7125Ec8825eDc03Ab265, 'wUSDR', 9)
+,(0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c, 'COMP', 18)
+,(0x3d93f3bc2cb79c31b4df652cd332d84d16317889, 'GIT', 18)
+,(0x8765f05adce126d70bcdf1b0a48db573316662eb, 'PLA', 18)
+,(0x16eccfdbb4ee1a85a33f3a9b21175cd7ae753db4, 'ROUTE', 18)
+,(0x1b815d120b3ef02039ee11dc2d33de7aa4a8c603, 'WOO', 18)
+,(0xed755dba6ec1eb520076cec051a582a6d81a8253, 'CHAMP', 18)
+,(0x1ed02954d60ba14e26c230eec40cbac55fa3aeea, 'MAKERX', 18)
+,(0xa353deb6fb81df3844d8bd614d33d040fdbb8188, 'MST', 18)
+,(0x86775d0b80b3df266af5377db34ba8f318d715ec, 'XEND', 18)
+,(0xaa9654becca45b5bdfa5ac646c939c62b527d394, 'DINO', 18)
+,(0xdf9b4b57865b403e08c85568442f95c26b7896b0, 'SFF', 18)
+,(0x50b728d8d964fd00c2d0aad81718b71311fef68a, 'SNX', 18)
+,(0x5fe2b58c013d7601147dcdd68c143a77499f5531, 'GRT', 18)
+,(0xaaa5b9e6c589642f98a1cda99b9d024b8407285a, 'IRON', 18)
+,(0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590, 'STG', 18)
+,(0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78, 'TRUEHN', 18)
+,(0x456f931298065b1852647de005dd27227146d8b9, 'VAL', 18)
+
 ) AS temp_table (contract_address, symbol, decimals)
