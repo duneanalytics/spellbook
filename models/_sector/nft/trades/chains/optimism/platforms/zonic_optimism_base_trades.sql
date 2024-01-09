@@ -152,7 +152,7 @@ with source_optimism_transactions as (
     ) as x
     where rn = 1 -- select closest by order
 )
-, base_trades (
+, base_trades as (
 select
     'optimism' as blockchain
     ,'zonic' as project
