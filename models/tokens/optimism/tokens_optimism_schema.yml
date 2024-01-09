@@ -1,37 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_optimism_erc20
-    meta:
-      blockchain: optimism
-      sector: tokens
-      project: erc20
-      contributors: msilb7
-    config:
-      tags: ['table', 'erc20', 'optimism']
-    description: "All ERC20 Token Addresses on Optimism - with mapped Symbols and Decimals if known."
-    columns:
-      - &contract_address
-        name: contract_address
-        description: "ERC20 token contract address on Optimism"
-        tests:
-          - unique
-      - &symbol
-        name: symbol
-        description: "ERC20 token symbol"
-      - &decimals
-        name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 token can be"
-      - &token_type
-        name: token_type
-        description: "Is this token a receipt (vault, LP, etc) token, or a lowest-level underlying token (i.e. USDC, DAI, OP)?"
-      - &token_mapping_source
-        name: token_mapping_source
-        description: "The source of ERC20 Token Information (i.e. manual, contract factory)"
-      - &is_counted_in_tvl
-        name: is_counted_in_tvl
-        description: "Is this a token whose value we should count in total value calculations? (i.e. we don't want to double count value)"
-
   - name: tokens_optimism_erc20_curated
     meta:
       blockchain: optimism
