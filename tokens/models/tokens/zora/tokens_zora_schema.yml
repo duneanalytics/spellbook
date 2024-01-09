@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: tokens_zora_erc20
+    meta:
+      blockchain: zora
+      sector: tokens
+      project: erc20
+      contributors: hildobby, msilb7
+    config:
+      tags: ['table', 'erc20', 'zora']
+    description: "All ERC20 Token Addresses on zora - with mapped Symbols and Decimals if known."
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address on zora"
+        tests:
+          - unique
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"

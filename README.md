@@ -37,7 +37,7 @@ models/yearn/optimism/yearn_optimism_vaults.sql
 I moved those files to the target dir with this command:
 
 ```
-dbt -q ls -s +tokens_erc20 +tokens_native --resource-type model --output path | xargs -I {} rsync --relative {} tokens/models/
+dbt -q ls -s +tokens_erc20 +tokens_native --resource-type model --output path | xargs -I {} rsync --relative --remove-source-files {} tokens/models/
 ```
 
 Move sources into dune_util:

@@ -62,10 +62,6 @@ models:
     aave:
       +schema: aave
 
-    decent:
-      +schema: decent
-      optimism:
-        +schema: decent_optimism
     
     tokens:
       +schema: tokens
@@ -116,27 +112,7 @@ models:
         +materialized: table
         +file_format: delta
 
-    zora:
-      +schema: zora
-      optimism:
-        +schema: zora_optimism
-
-    mirror:
-      +schema: mirror
-      optimism:
-        +schema: mirror_optimism
-
     ovm:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
-    
-    sound_xyz:
-      +schema: sound_xyz
-      optimism:
-        +schema: sound_xyz_optimism
-
-    the_granary:
-      +schema: the_granary
-      optimism:
-        +schema: the_granary_optimism
