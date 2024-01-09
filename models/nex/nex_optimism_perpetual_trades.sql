@@ -87,7 +87,7 @@ complete_perp_tx AS (
 		INNER JOIN {{ ref('tokens_erc20') }} tokens1
 		ON event.collateralToken = tokens1.contract_address
 		AND tokens1.blockchain = 'optimism'
-		GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14
+		GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 	)
 )
 
