@@ -23,6 +23,7 @@ with events_raw as (
         ,seller
         ,erc721address as nft_contract_address
         ,price as amount_raw
+        ,evt_index
     from {{ source('quixotic_optimism','Exchange_evt_SellOrderFilled') }}
     where erc721address != 0xbe81eabdbd437cba43e4c1c330c63022772c2520 -- --exploit contract
     {% if is_incremental() %} -- this filter will only be applied on an incremental run
