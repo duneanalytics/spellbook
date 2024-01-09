@@ -4,7 +4,7 @@
     ,file_format = 'delta'
     ,schema = 'governance_optimism_proposal_votes'
     ,incremental_strategy = 'merge'
-    ,unique_key = ['proposal_id','date_timestamp','proposal_link','tx_hash','voter','choice']
+    ,unique_key = ['proposal_id','date_timestamp','tx_hash','voter','choice']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
