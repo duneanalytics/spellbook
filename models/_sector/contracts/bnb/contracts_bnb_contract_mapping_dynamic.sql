@@ -1,7 +1,10 @@
  {{
   config(     
         schema = 'contracts_bnb',
-        alias = 'contract_mapping_dynamic'
+        alias = 'contract_mapping_dynamic',
+        materialized ='table',
+        on_table_exists = 'drop',
+        partition_by =['created_month']
   )
 }}
 
