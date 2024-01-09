@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: prices_unsupported_chains_non_native_tokens
+  - name: prices_bitcoin_tokens
     meta:
-      blockchain: multiple
+      blockchain: bitcoin
       sector: prices
       contributors: cryptokoryo
     config:
-      tags: ['prices', 'tokens', 'usd', ]
-    description: "Price of non-native tokens on Unsupported Dune chains"
+      tags: ['prices', 'tokens', 'usd', 'bitcoin' ]
+    description: "Price tokens on bitcoin chain"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
