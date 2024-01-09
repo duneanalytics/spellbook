@@ -11,6 +11,7 @@ select
     prices.price as price_rate,
     erc20_tokens.symbol,
     erc20_tokens.decimals
+    nft_tokens.name as collection_name
 from {{ source('tokens_ethereum', 'balances_ethereum_0002') }} balances
 left join {{ ref('tokens_erc20') }} erc20_tokens on
     erc20_tokens.blockchain = '{{ blockchain }}'and (
@@ -27,4 +28,11 @@ left join {{ source('prices', 'usd') }} prices on (
         ELSE null
     END)
     and prices.minute = date_trunc('minute', balances.block_time)
+left join {{ ref('tokens', 'nft') }} nft_tokens on (
+   nft_tokens.blockchain = '{{ blockchain }}' AND
+   CASE
+        WHEN type = 'erc721' OR 'erc1155' THEN nft_tokens.contract_address = balances.contract_address
+        ELSE null
+    END
+)
 {% endmacro %}
