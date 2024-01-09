@@ -36,3 +36,17 @@ sources:
     tables:
       - name: ClPool_evt_Swap
       - name: ClPoolFactory_evt_PoolCreated
+  - name: kyber_avalanche_c
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticFactoryV2_evt_PoolCreated
+  - name: platypus_finance_avalanche_c
+    tables:
+      - name: Pool_evt_Swap
+  - name: openocean_v2_avalanche_c
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
