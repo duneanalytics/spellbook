@@ -1,3 +1,4 @@
+
 {{ config(tags=['dunesql']
     ,alias = 'snapshot_proposals'
     ,materialized = 'incremental'
@@ -35,37 +36,37 @@ SELECT
   ) AS highest_weightage_voter_percentage,
   SUM(
     CASE
-      WHEN v.choice = '1' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_for_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '3' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '3' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_abstain_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '2' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_against_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '1' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN 1
       ELSE 0
     END
   ) AS unique_for_votes,
   SUM(
     CASE
-      WHEN v.choice = '3' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '3' THEN 1
       ELSE 0
     END
   ) AS unique_abstain_votes,
   SUM(
     CASE
-      WHEN v.choice = '2' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN 1
       ELSE 0
     END
   ) AS unique_against_votes,
@@ -342,37 +343,37 @@ SELECT
   ) AS highest_weightage_voter_percentage,
   SUM(
     CASE
-      WHEN v.choice = '1' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_for_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '3' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '3' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_abstain_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '2' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_against_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '1' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN 1
       ELSE 0
     END
   ) AS unique_for_votes,
   SUM(
     CASE
-      WHEN v.choice = '3' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '3' THEN 1
       ELSE 0
     END
   ) AS unique_abstain_votes,
   SUM(
     CASE
-      WHEN v.choice = '2' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN 1
       ELSE 0
     END
   ) AS unique_against_votes,
@@ -634,37 +635,37 @@ SELECT
   ) AS highest_weightage_voter_percentage,
   SUM(
     CASE
-      WHEN v.choice = '1' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_for_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '3' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '3' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_abstain_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '2' THEN v.votingWeightage
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN v.votingWeightage
       ELSE 0
     END
   ) AS total_against_votingWeightage,
   SUM(
     CASE
-      WHEN v.choice = '1' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '1' THEN 1
       ELSE 0
     END
   ) AS unique_for_votes,
   SUM(
     CASE
-      WHEN v.choice = '3' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '3' THEN 1
       ELSE 0
     END
   ) AS unique_abstain_votes,
   SUM(
     CASE
-      WHEN v.choice = '2' THEN 1
+      WHEN TRY_CAST(v.choice AS varchar) = '2' THEN 1
       ELSE 0
     END
   ) AS unique_against_votes,

@@ -109,7 +109,7 @@ FROM
         '90839767999322802375479087567202389126141447078032129455920633707568400402209'
       )
   ) AS p
-  LEFT JOIN FROM {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
+  LEFT JOIN {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
