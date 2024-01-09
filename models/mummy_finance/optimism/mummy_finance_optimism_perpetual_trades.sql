@@ -5,7 +5,7 @@
 }}
 
 {% set mummy_finance_optimism_perpetual_trade_models = [
- ref('mummy_finance_v1_optimism_perpetual_trades')
+ 	ref('mummy_finance_v1_optimism_perpetual_trades')
 ] %}
 
 
