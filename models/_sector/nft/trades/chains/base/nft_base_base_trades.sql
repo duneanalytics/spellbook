@@ -17,37 +17,34 @@ SELECT * FROM  (
         blockchain,
         project,
         project_version,
-        cast(date_trunc('day', block_time) as date) as block_date,
-        cast(date_trunc('month', block_time) as date) as block_month,
         block_time,
+        block_date,
+        block_month,
         block_number,
         tx_hash,
         project_contract_address,
-        trade_category,                 --buy/sell/swap
-        trade_type,                     --primary/secondary
+        trade_category,
+        trade_type,
         buyer,
         seller,
         nft_contract_address,
         nft_token_id,
-        nft_amount,                -- always 1 for erc721
+        nft_amount,
         price_raw,
         currency_contract,
         platform_fee_amount_raw,
         royalty_fee_amount_raw,
-        platform_fee_address,   -- optional
-        royalty_fee_address,    -- optional
+        platform_fee_address,
+        royalty_fee_address,
         sub_tx_trade_id,
---        tx_from,              -- not yet available in the base event tables
---        tx_to,                -- not yet available in the base event tables
-        row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank   -- duplicates protection
+        tx_from,
+        tx_to,
+        tx_data_marker
     FROM {{ nft_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
     )
-where duplicates_rank = 1
 )
-
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_union', 'base') }}
+select * from base_union

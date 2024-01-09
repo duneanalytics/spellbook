@@ -10,6 +10,7 @@
 
 {% set alienswap_usage_start_date = "2023-08-13" %}
 
+WITH base_trades as (
 SELECT
       'base' as blockchain
     , 'alienswap' as project
@@ -32,7 +33,7 @@ SELECT
     , CASE WHEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))!=s.recipient THEN from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,1), '$.recipient'))
         ELSE from_hex(JSON_EXTRACT_SCALAR(element_at(s.consideration,2), '$.recipient'))
         END AS royalty_fee_address
-    , cast(NULL as varbinary) as platform_fee_address 
+    , cast(NULL as varbinary) as platform_fee_address
     , s.evt_index as sub_tx_trade_id
 FROM {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
     {% if is_incremental() %}
@@ -40,3 +41,7 @@ FROM {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
     {% else %}
     WHERE s.evt_block_time >= timestamp '{{alienswap_usage_start_date}}'
     {% endif %}
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'base_trades') }}
