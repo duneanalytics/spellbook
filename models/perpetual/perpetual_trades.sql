@@ -15,21 +15,21 @@
 }}
 
 {% set perpetual_trade_models = [
-  ref('perpetual_protocol_perpetual_trades')
-  ,ref('pika_perpetual_trades')
-  ,ref('synthetix_perpetual_trades')
-  ,ref('emdx_avalanche_c_perpetual_trades')
-  ,ref('hubble_exchange_avalanche_c_perpetual_trades')
-  ,ref('gmx_perpetual_trades')
-  ,ref('tigris_perpetual_trades')
-  ,ref('mummy_finance_optimism_perpetual_trades')
-  ,ref('fxdx_optimism_perpetual_trades')
-  ,ref('opx_finance_optimism_perpetual_trades')
-  ,ref('nex_optimism_perpetual_trades')
-  ,ref('avt_optimism_perpetual_trades')
-  ,ref('minerva_money_optimism_perpetual_trades')
-  ,ref('immortalx_perpetual_trades')
-  ,ref('unidex_perpetual_trades')
+    ref('perpetual_protocol_perpetual_trades')
+    ,ref('pika_perpetual_trades')
+    ,ref('synthetix_perpetual_trades')
+    ,ref('emdx_avalanche_c_perpetual_trades')
+    ,ref('hubble_exchange_avalanche_c_perpetual_trades')
+    ,ref('gmx_perpetual_trades')
+    ,ref('tigris_perpetual_trades')
+    ,ref('mummy_finance_optimism_perpetual_trades')
+    ,ref('fxdx_optimism_perpetual_trades')
+    ,ref('opx_finance_optimism_perpetual_trades')
+    ,ref('nex_optimism_perpetual_trades')
+    ,ref('avt_optimism_perpetual_trades')
+    ,ref('minerva_money_optimism_perpetual_trades')
+    ,ref('immortalx_perpetual_trades')
+    ,ref('unidex_perpetual_trades')
 ] %}
 
 SELECT *
