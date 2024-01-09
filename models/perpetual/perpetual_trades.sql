@@ -29,6 +29,7 @@
   ,ref('avt_optimism_perpetual_trades')
   ,ref('minerva_money_optimism_perpetual_trades')
   ,ref('immortalx_perpetual_trades')
+  ,ref('unidex_perpetual_trades')
 ] %}
 
 SELECT *
