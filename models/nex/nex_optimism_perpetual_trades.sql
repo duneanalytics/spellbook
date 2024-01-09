@@ -63,6 +63,7 @@ complete_perp_tx AS (
 			event.evt_index,
 			event.evt_tx_hash,
 			event.isLong,
+			event.collateralDelta,
 			event.evt_tx_from,
 			event.evt_tx_to,
             event.trade_type,
