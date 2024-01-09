@@ -266,3 +266,21 @@ models:
             version:
               - classic
               - elastic_2
+
+
+  - name: xchange_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: xchange
+      contributors: mike-x7f, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+    description: "xchange polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xchange_polygon_base_trades_seed')

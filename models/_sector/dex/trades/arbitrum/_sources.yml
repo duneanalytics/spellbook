@@ -73,3 +73,7 @@ sources:
       - name: PairFactory_evt_PairCreated
       - name: RamsesV2Pool_evt_Swap
       - name: RamsesV2Factory_evt_PoolCreated
+  - name: xchange_arbitrum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
