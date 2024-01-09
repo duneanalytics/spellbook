@@ -4,11 +4,11 @@ models:
 
   - name: referral_rewards
     meta:
-      blockchain: ethereum, optimism, arbitrum, base, zora
+      blockchain: ethereum, optimism, arbitrum, base, zora, polygon
       sector: referral
       contributors: 0xRob, datadanne
     config:
-      tags: ['referral','rewards', 'ethereum', 'optimism', 'arbitrum', 'base', 'zora']
+      tags: ['referral','rewards', 'ethereum', 'optimism', 'arbitrum', 'base', 'zora', 'polygon']
     description: >
         Referral rewards
     tests:

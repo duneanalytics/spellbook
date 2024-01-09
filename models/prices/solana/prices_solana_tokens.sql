@@ -43,6 +43,9 @@ FROM
     ('ust-terrausd', 'solana', 'USTC', '9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i', 6),
     ('usdc-usd-coin', 'solana', 'USDC', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 6),
     ('usdt-tether', 'solana', 'USDT', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 6),
-    ('pyth-pyth-network', 'solana', 'PYTH', 'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', 6)
+    ('pyth-pyth-network', 'solana', 'PYTH', 'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', 6),
+    ('hnt-helium', 'solana', 'HNT', 'hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux', 8),
+    ('jto-jito', 'solana', 'JTO', 'jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL', 9),
+    ('guac-guacamole', 'solana', 'GUAC', 'AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR', 5)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
