@@ -36,13 +36,8 @@
 ,ref('quix_v3_optimism_events')
 ,ref('quix_v4_optimism_events')
 ,ref('quix_v5_optimism_events')
-,ref('stealcam_arbitrum_events')
-,ref('tofu_arbitrum_events')
 ,ref('tofu_bnb_events')
 ,ref('tofu_optimism_events')
-,ref('trove_ethereum_events')
-,ref('trove_v1_arbitrum_events')
-,ref('trove_v2_arbitrum_events')
 ,ref('zonic_optimism_events')
 ] %}
 

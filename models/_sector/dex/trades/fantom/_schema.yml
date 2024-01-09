@@ -131,3 +131,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('spartacus_exchange_fantom_base_trades_seed')
+
+  - name: openocean_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'fantom', 'dex', 'trades', 'openocean' ]
+    description: "openocean fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_fantom_base_trades_seed')
