@@ -12,5 +12,5 @@
 -- depends_on: {{ ref('contracts_deterministic_contract_creators') }}
 
 {{contracts_base_starting_level(
-    chain='bnb'
+    chain='bnb', days_forward=183
 )}}

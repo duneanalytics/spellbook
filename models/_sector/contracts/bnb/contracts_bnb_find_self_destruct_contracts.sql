@@ -10,5 +10,5 @@
 }}
 
 {{find_self_destruct_contracts(
-    chain='bnb'
+    chain='bnb', days_forward=183
 )}}
