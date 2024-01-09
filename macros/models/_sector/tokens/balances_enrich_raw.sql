@@ -29,10 +29,11 @@ left join {{ source('prices', 'usd') }} prices on (
     END)
     and prices.minute = date_trunc('minute', balances.block_time)
 left join {{ ref('tokens_nft') }} nft_tokens on (
-   nft_tokens.blockchain = '{{ blockchain }}' AND
+   nft_tokens.blockchain = '{{ blockchain }}' AND (
    CASE
         WHEN type = 'erc721' OR 'erc1155' THEN nft_tokens.contract_address = balances.contract_address
         ELSE null
     END
+    )
 )
 {% endmacro %}
