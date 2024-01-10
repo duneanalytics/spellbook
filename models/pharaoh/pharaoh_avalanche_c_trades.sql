@@ -13,13 +13,20 @@
 
 WITH dexs AS
 (
-    --QuickSwap v3
     SELECT
         t.evt_block_time AS block_time
         ,t.recipient AS taker
         ,CAST(NULL AS VARBINARY) AS maker
-        ,CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
-        ,CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        ,CASE
+            WHEN router.evt_tx_hash IS NULL
+                THEN CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END
+                ELSE router.amountOut
+            END AS token_bought_amount_raw
+        ,CASE
+            WHEN router.evt_tx_hash IS NULL
+                THEN CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END
+                ELSE router.inputAmount
+            END AS token_sold_amount_raw
         ,NULL AS amount_usd
         ,CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
         ,CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
@@ -31,6 +38,9 @@ WITH dexs AS
     INNER JOIN 
         {{ source('pharaoh_avalanche_c', 'ClPoolFactory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
+    LEFT JOIN {{ source('glacier_avalanche_c', 'OdosRouterV2_evt_Swap') }} AS router
+        ON t.evt_tx_hash = router.evt_tx_hash
+        AND t.evt_index + 2 = router.evt_index
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
