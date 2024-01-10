@@ -42,6 +42,8 @@ from
     ,(0xfc2d34a2a545dbe210ad0d8cc0e0e943aacff621, 'first.lol', 'first.lol') --Zora
     ,(0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7, 'Gnosis Safe', 'Safe Singleton Factory')
     ,(0x00005EA00Ac477B1030CE78506496e8C2dE24bf5, 'OpenSea', 'SeaDrop 1.0')
+    ,(0x74de5d4FCbf63E00296fd95d33236B9794016631, 'Metamask', 'Metamask Swaps') -- Ethereum L1
+    ,(0x881d40237659c251811cec9c364ef91dc08d300c, 'Metamask', 'Metamask Swaps') -- Ethereum L1
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
     ,(0xf332761c673b59B21fF6dfa8adA44d78c12dEF09, 'OKX', 'OKX DEX')
