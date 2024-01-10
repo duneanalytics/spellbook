@@ -23,6 +23,8 @@
     , ref('synthetix_optimism_base_trades')
     , ref('openxswap_optimism_base_trades')
     , ref('openocean_optimism_base_trades')
+    , ref('chainhop_optimism_base_trades')
+    , ref('saddle_finance_optimism_base_trades')
 ] %}
 
 WITH base_union AS (
