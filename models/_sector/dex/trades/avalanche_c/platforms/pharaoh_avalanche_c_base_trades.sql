@@ -49,3 +49,4 @@ SELECT
 FROM dex_raw
 LEFT JOIN {{ source('glacier_avalanche_c', 'OdosRouterV2_evt_Swap') }} AS router
 ON dex_raw.tx_hash = router.evt_tx_hash
+AND dex_raw.evt_index+2 = router.evt_index
