@@ -13,7 +13,3 @@ sources:
         loaded_at_field: call_block_time
       - name: StableSwap_Factory_call_deploy_metapool
         loaded_at_field: call_block_time
-      - name: StableSwap_evt_TokenExchangeUnderlying
-        loaded_at_field: evt_block_time
-      - name: StableSwap_evt_TokenExchange
-        loaded_at_field: evt_block_time
