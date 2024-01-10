@@ -61,7 +61,6 @@ models:
     
     aave:
       +schema: aave
-
     
     tokens:
       +schema: tokens
@@ -116,3 +115,8 @@ models:
       +schema: ovm
       optimism:
         +schema: ovm_optimism
+
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism

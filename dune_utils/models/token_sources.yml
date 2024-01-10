@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: dbt_poc_tokens_aave_v3
+  - name: aave_v3
     tables:
       - name: tokens
         columns:
@@ -23,29 +23,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_no_schema
-    tables:
-      - name: tokens
-        columns:
-          - name: blockchain
-            data_type: varchar
-          - name: atoken_address
-            data_type: varbinary
-          - name: underlying_address
-            data_type: varbinary
-          - name: atoken_decimals
-            data_type: integer
-          - name: side
-            data_type: varchar
-          - name: arate_type
-            data_type: varchar
-          - name: atoken_symbol
-            data_type: varchar
-          - name: atoken_name
-            data_type: varchar
-
-
-  - name: dbt_poc_tokens_ovm_optimism
+  - name: ovm_optimism
     tables:
       - name: l2_token_factory
         columns:
@@ -69,7 +47,29 @@ sources:
             data_type: bigint
 
 
-  - name: dbt_poc_tokens_tokens
+  - name: the_granary_optimism
+    tables:
+      - name: tokens
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: atoken_address
+            data_type: varbinary
+          - name: underlying_address
+            data_type: varbinary
+          - name: atoken_decimals
+            data_type: integer
+          - name: side
+            data_type: varchar
+          - name: arate_type
+            data_type: varchar
+          - name: atoken_symbol
+            data_type: varchar
+          - name: atoken_name
+            data_type: varchar
+
+
+  - name: tokens
     tables:
       - name: erc20
         columns:
@@ -109,7 +109,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_arbitrum
+  - name: tokens_arbitrum
     tables:
       - name: erc20
         columns:
@@ -148,7 +148,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_avalanche_c
+  - name: tokens_avalanche_c
     tables:
       - name: erc20
         columns:
@@ -187,7 +187,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_base
+  - name: tokens_base
     tables:
       - name: erc20
         columns:
@@ -226,7 +226,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_bnb
+  - name: tokens_bnb
     tables:
       - name: bep20
         columns:
@@ -265,7 +265,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_celo
+  - name: tokens_celo
     tables:
       - name: erc20
         columns:
@@ -304,7 +304,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_ethereum
+  - name: tokens_ethereum
     tables:
       - name: erc20
         columns:
@@ -361,7 +361,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_fantom
+  - name: tokens_fantom
     tables:
       - name: erc20
         columns:
@@ -420,7 +420,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_gnosis
+  - name: tokens_gnosis
     tables:
       - name: erc20
         columns:
@@ -459,7 +459,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_optimism
+  - name: tokens_optimism
     tables:
       - name: erc20
         columns:
@@ -589,7 +589,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_polygon
+  - name: tokens_polygon
     tables:
       - name: erc20
         columns:
@@ -628,7 +628,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_zksync
+  - name: tokens_zksync
     tables:
       - name: erc20
         columns:
@@ -667,7 +667,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_tokens_zora
+  - name: tokens_zora
     tables:
       - name: erc20
         columns:
@@ -706,7 +706,7 @@ sources:
             data_type: varchar
 
 
-  - name: dbt_poc_tokens_yearn
+  - name: yearn
     tables:
       - name: vaults
         columns:
