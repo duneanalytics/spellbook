@@ -2,7 +2,7 @@
 
 
 {% set column_list = [
-     'blockchain', 'trace_creator_address', 'creator_address', 'deployer_address'
+     'blockchain', 'trace_creator_address', 'creator_address', 'trace_deployer_address'
     ,'contract_address', 'created_time', 'created_month', 'created_block_number', 'created_tx_hash'
     ,'top_level_time', 'top_level_block_number', 'top_level_tx_hash', 'top_level_tx_from', 'top_level_tx_to', 'top_level_tx_method_id'
     ,'created_tx_from', 'created_tx_to', 'created_tx_method_id', 'created_tx_index'
@@ -14,7 +14,7 @@
 -- do token and name mappings at the end
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
-{% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use deployer_address if this is too poor.
+{% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use trace_deployer_address if this is too poor.
 
 WITH deterministic_deployers AS (
     SELECT array_agg(creator_address) AS creator_address_array FROM {{ref('contracts_deterministic_contract_creators')}}
@@ -59,7 +59,7 @@ WITH deterministic_deployers AS (
         blockchain
         ,trace_creator_address
         ,trace_creator_address AS creator_address_intermediate
-        ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
+        ,trace_creator_address AS trace_deployer_address -- deployer from the trace - does not iterate up
         ,contract_address
         ,created_time
         ,created_month
@@ -126,7 +126,7 @@ WITH deterministic_deployers AS (
       s.blockchain
       ,s.trace_creator_address
       ,s.creator_address AS creator_address_intermediate
-      ,s.deployer_address AS deployer_address
+      ,s.trace_deployer_address AS trace_deployer_address
       ,s.contract_address
       ,s.created_time
       ,s.created_month
@@ -190,7 +190,7 @@ WITH deterministic_deployers AS (
           THEN b.created_tx_from --when deterministic creator, we take the tx sender
           ELSE coalesce(u.creator_address, b.creator_address)
         END as creator_address -- get the highest-level creator we know of
-        ,b.creator_address AS deployer_address -- deployer from the trace - does not iterate up
+        ,b.creator_address AS trace_deployer_address -- deployer from the trace - does not iterate up
         ,b.contract_address
         -- store the raw created data
         ,b.created_time
@@ -268,7 +268,7 @@ WITH deterministic_deployers AS (
     blockchain
     ,trace_creator_address
     ,creator_address
-    ,deployer_address
+    ,trace_deployer_address
     ,u.contract_address
     ,created_time
     ,created_month
@@ -308,4 +308,5 @@ WITH deterministic_deployers AS (
   ON u.contract_address = ts.contract_address
 
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+  
 {% endmacro %}
