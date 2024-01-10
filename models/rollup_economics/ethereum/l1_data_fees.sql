@@ -168,7 +168,7 @@ with tx_batch_appends as (
   WHERE (
       t."from" = 0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7 -- StateUpdate poster
       AND t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
-      AND cast(t.data as varchar) LIKE '0x77552641%'
+      AND bytearray_substring(t.data, 1, 4) = 0x77552641
     )
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
@@ -196,7 +196,7 @@ with tx_batch_appends as (
     {% endif %}
   WHERE (
         (t.to = 0x5FDCCA53617f4d2b9134B29090C87D01058e27e9 OR t.to = 0x16BA0f221664A5189cf2C1a7AF0d3AbFc70aA295)
-        AND (cast(t.data as varchar) LIKE '0x538f9406%' OR cast(t.data as varchar) LIKE '0x504f7f6f%') -- StateUpdate & Verify Availability Proof 
+        AND (bytearray_substring(t.data, 1, 4) = 0x538f9406 OR bytearray_substring(t.data, 1, 4) = 0x504f7f6f) -- StateUpdate & Verify Availability Proof
     )
     AND t.block_time >= timestamp '2021-03-24' -- mainnet launch date
     {% if is_incremental() %}
@@ -229,7 +229,7 @@ with tx_batch_appends as (
       OR t."from" = 0x01c3a1a6890a146ac187a019f9863b3ab2bff91e -- L2 Operator V1
     )
     AND t.to = 0xabea9132b05a70803a4e85094fd0e1800777fbef -- zksync
-    AND cast(t.data as varchar) LIKE '0x45269298%' -- Commit Block
+    AND bytearray_substring(t.data, 1, 4) = 0x45269298 -- Commit Block
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -296,7 +296,7 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND cast(t.data as varchar) LIKE '0x5e9145c9%' -- sequenceBatches
+    AND bytearray_substring(t.data, 1, 4) = 0x5e9145c9 -- sequenceBatches
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -322,7 +322,7 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F
-    AND cast(t.data as varchar) LIKE '0x4165d6dd%' -- Finalize Blocks (proof verified immediately)
+    AND bytearray_substring(t.data, 1, 4) = 0x4165d6dd -- Finalize Blocks (proof verified immediately)
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -348,7 +348,7 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0xa13BAF47339d63B743e7Da8741db5456DAc1E556
-    AND cast(t.data as varchar) LIKE '0x1325aca0%' -- Commit Batch
+    AND bytearray_substring(t.data, 1, 4) = 0x1325aca0 -- Commit Batch
     AND t.block_time >= timestamp '2023-10-07'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -374,7 +374,7 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0x153CdDD727e407Cb951f728F24bEB9A5FaaA8512
-    AND cast(t.data as varchar) LIKE '0xdcb2aa31%' -- submitBlocksWithCallbacks (proof verified immediately)
+    AND bytearray_substring(t.data, 1, 4) = 0xdcb2aa31 -- submitBlocksWithCallbacks (proof verified immediately)
     AND t.block_time >= timestamp '2021-03-23' 
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)

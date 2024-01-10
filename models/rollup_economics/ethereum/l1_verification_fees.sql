@@ -67,7 +67,7 @@ with verify_txns as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND cast(t.data as varchar) LIKE '0x2b0006fa%' -- verifyBatchesTrustedAggregator
+    AND bytearray_substring(t.data, 1, 4) = 0x2b0006fa -- verifyBatchesTrustedAggregator
     AND t.block_time >= timestamp '2023-03-23'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -93,7 +93,7 @@ with verify_txns as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60
-    AND cast(t.data as varchar) LIKE '0x9b3b76cc%' -- Verify Availability Proof, imx committee
+    AND bytearray_substring(t.data, 1, 4) = 0x9b3b76cc -- Verify Availability Proof, imx committee
     AND t.block_time >= timestamp '2021-03-24'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -119,7 +119,7 @@ with verify_txns as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0xa13BAF47339d63B743e7Da8741db5456DAc1E556
-    AND cast(t.data as varchar) LIKE '0x31fa742d%' -- finalizeBatchWithProof
+    AND bytearray_substring(t.data, 1, 4) = 0x31fa742d -- finalizeBatchWithProof
     AND t.block_time >= timestamp '2023-10-07'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
