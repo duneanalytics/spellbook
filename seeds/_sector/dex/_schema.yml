@@ -2070,7 +2070,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
- - name: smardex_base_base_trades_seed
+  - name: smardex_base_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -2085,7 +2085,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
- - name: dackieswap_base_base_trades_seed
+  - name: dackieswap_base_base_trades_seed
     config:
       column_types:
         blockchain: varchar

@@ -11,7 +11,7 @@
 }}
 
 {{
-    uniswap_compatible_v2_trades(
+    smardex_compatible_trades(
         blockchain = 'base',
         project = 'smardex',
         version = '1',

@@ -93,5 +93,5 @@ FROM (VALUES
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
-    , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
+    , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')  
     ) AS temp_table (project, name, marketplace_type, x_username)
