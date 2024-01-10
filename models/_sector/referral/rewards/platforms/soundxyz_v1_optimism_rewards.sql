@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'soundxyz_optimism',
+    schema = 'soundxyz_v1_optimism',
     alias = 'rewards',
     materialized = 'incremental',
     file_format = 'delta',

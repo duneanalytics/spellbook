@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'soundxyz_ethereum',
+    schema = 'soundxyz_v1_ethereum',
     alias = 'rewards',
     materialized = 'incremental',
     file_format = 'delta',
