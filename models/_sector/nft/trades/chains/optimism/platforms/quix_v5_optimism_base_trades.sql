@@ -156,6 +156,7 @@ with events_raw as (
     left join transfers as tr
         on tr.tx_hash = er.tx_hash
         and tr.block_number = er.block_number
+        and tr.evt_index = er.evt_index
 )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
