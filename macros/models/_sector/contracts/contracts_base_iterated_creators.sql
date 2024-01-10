@@ -1,4 +1,4 @@
-{% macro contracts_base_iterated_creators( chain, days_forward=365 ) %}
+{% macro contracts_base_iterated_creators( chain, standard_name = 'erc', days_forward=365 ) %}
 
 
 {% set column_list = [
@@ -305,10 +305,10 @@ WITH check_date AS (
     FROM levels u
     left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard_erc20
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, '{{standard_name}}' || '20' as token_standard_erc20
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r, check_date cd
             WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_' + standard_name + '20')}} )
 
               AND {{ incremental_days_forward_predicate('r.evt_block_time', 'cd.base_time', days_forward ) }}
 
