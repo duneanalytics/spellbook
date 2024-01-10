@@ -31,14 +31,7 @@
 ,ref('opensea_solana_events')
 ,ref('pancakeswap_bnb_nft_events')
 ,ref('quix_seaport_optimism_events')
-,ref('quix_v1_optimism_events')
-,ref('quix_v2_optimism_events')
-,ref('quix_v3_optimism_events')
-,ref('quix_v4_optimism_events')
-,ref('quix_v5_optimism_events')
 ,ref('tofu_bnb_events')
-,ref('tofu_optimism_events')
-,ref('zonic_optimism_events')
 ] %}
 
 
