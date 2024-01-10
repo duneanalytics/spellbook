@@ -16,6 +16,8 @@ SELECT
     , 'alienswap' as project
     , '1' as project_version
     , s.evt_block_time AS block_time
+    , cast(date_trunc('day', s.evt_block_time) as date) as block_date
+    , cast(date_trunc('month', s.evt_block_time) as date) as block_month
     , s.evt_block_number AS block_number
     , from_hex(JSON_EXTRACT_SCALAR(s.offer[1], '$.token')) AS nft_contract_address
     , cast(JSON_EXTRACT_SCALAR(s.offer[1], '$.identifier') as uint256) AS nft_token_id
