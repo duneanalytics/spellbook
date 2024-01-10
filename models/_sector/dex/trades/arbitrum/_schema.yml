@@ -345,6 +345,7 @@ models:
               - elastic
               - elastic_2
 
+
   - name: xchange_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -361,3 +362,26 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_arbitrum_base_trades_seed')
+
+
+  - name: ramses_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: ramses
+      contributors: echovl, discochuck
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'ramses', 'uniswap', 'v2' ]
+    description: "Ramses Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ramses_arbitrum_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2
+
