@@ -24,7 +24,6 @@ SELECT
     evt_tx_hash as tx_hash,
     evt_index,
     trader,
-    CASE WHEN direction = 'true' THEN 'long' ELSE 'short' END AS direction,
     'open' as trade_type,
     CAST(json_extract_scalar(args, '$.collateralId') as double) as underlying_id,
     assetId as virtual_id,
@@ -50,7 +49,6 @@ SELECT
     evt_tx_hash as tx_hash,
     evt_index,
     trader,
-    CASE WHEN direction = 'true' THEN 'long' ELSE 'short' END AS direction,
     'close' as trade_type,
     CAST(json_extract_scalar(args, '$.collateralId') as double) as underlying_id,
     CAST(json_extract_scalar(args, '$.profitAssetId') as double) as virtual_id,
@@ -76,7 +74,6 @@ SELECT
     evt_tx_hash as tx_hash,
     evt_index,
     trader,
-    CASE WHEN direction = 'true' THEN 'long' ELSE 'short' END AS direction,
     'liquidate' as trade_type,
     CAST(json_extract_scalar(args, '$.collateralId') as double) as underlying_id,
     CAST(json_extract_scalar(args, '$.profitAssetId') as double) as virtual_id,
@@ -106,6 +103,7 @@ SELECT * FROM liquidate_position
 full_tables as (
 SELECT
     c.*,
+    CASE WHEN direction = 'true' THEN 'long' ELSE 'short' END AS direction_tmp,
     from_utf8(a.symbol) as underlying_asset,
     from_utf8(b.symbol) as virtual_asset
 FROM
@@ -131,7 +129,7 @@ SELECT
     a.volume_usd,
     a.fee_usd,
     CAST(NULL as double) as margin_usd,
-    concat(trade_type, '-' , direction) as trade,
+    concat(trade_type, '-' , direction_tmp) as trade,
     a.trader, 
     a.volume_raw,
     a.tx_hash,
