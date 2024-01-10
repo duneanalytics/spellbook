@@ -1,0 +1,15 @@
+version: 2
+
+sources: 
+  - name: avt_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event tables for Perpetual trades on fxdx
+    tables:
+
+      - name: PositionRouter_evt_ExecuteDecreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: PositionRouter_evt_ExecuteIncreasePosition
+        loaded_at_field: evt_block_time

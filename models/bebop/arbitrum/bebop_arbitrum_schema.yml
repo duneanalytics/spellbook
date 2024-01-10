@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: bebop_arbitrum_trades
+  - name: bebop_rfq_arbitrum_trades
     meta:
       blockchain: arbitrum
       sector: dex
       project: bebop
       contributors: alekss
     config:
-      tags: [ 'arbitrum','bebop','trades','dex' ]
-    description: Bebop contract trades on arbitrum - formatted for dex.trades
+      tags: [ 'arbitrum','bebop','rfq','trades','dex' ]
+    description: Bebop-RFQ contract trades on arbitrum - formatted for dex.trades
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -100,3 +100,89 @@ models:
       - &trade_type
         name: trade_type
         description: "Trade classification (Multi-buy, Multi-sell or Simple-swap)"
+
+  - name: bebop_jam_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: bebop
+      contributors: alekss
+    config:
+      tags: [ 'arbitrum','bebop','jam','trades','dex' ]
+    description: Bebop-JAM contract trades on arbitrum - formatted for dex.trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: arbitrum
+          project: bebop
+          version: jam
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+      - *block_month
+      - *trade_type
+
+  - name: bebop_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: bebop
+      contributors: alekss
+    config:
+      tags: [ 'arbitrum','bebop','trades','dex' ]
+    description: Bebop contract trades on arbitrum - formatted for dex.trades
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+      - *block_month
+      - *trade_type
