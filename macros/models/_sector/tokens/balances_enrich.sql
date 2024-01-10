@@ -1,4 +1,4 @@
-{%- macro balances_enrich_raw(balances_base, blockchain) %}
+{%- macro balances_enrich(balances_base, blockchain) %}
 select
     balances.block_number,
     balances.block_time,
@@ -6,8 +6,16 @@ select
     balances.address as wallet_address,
     balances.contract_address as token_address,
     balances.amount as balance_raw,
-    balances.amount / power(10, erc20_tokens.decimals) as balance,
-    (balances.amount / power(10, erc20_tokens.decimals) * prices.price)  as balance_usd,
+    CASE
+        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals)
+        WHEN balances.type = 'native' THEN balances.amount / power(10, 18)
+        ELSE balances.amount
+    END as balance,
+    CASE
+        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals) * prices.price
+        WHEN balances.type = 'native' THEN balances.amount / power(10, 18) * prices.price
+        ELSE NULL
+    END as balance_usd,
     prices.price as price_rate,
     erc20_tokens.symbol,
     erc20_tokens.decimals,
