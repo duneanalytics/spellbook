@@ -1627,7 +1627,7 @@ FROM
     ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18),
     ('gene-genomesdao', 'ethereum', 'GENE', 0x21413c119b0c11c5d96ae1bd328917bc5c8ed67e, 18),
     ('rbc-rubic', 'ethereum', 'RBC', 0x3330bfb7332ca23cd071631837dc289b09c33333, 18),
-    ('magic-magic-arbitrumk', 'ethereum', 'MAGIC', 0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a, 18),
+    ('magic-magic-arbitrum', 'ethereum', 'MAGIC', 0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a, 18),
     ('premia-premia', 'ethereum', 'PREMIA', 0x6399c842dd2be3de30bf99bc7d1bbf6fa3650e70, 18),
     ('stfx-stfx', 'ethereum', 'STFX', 0x9343e24716659a3551eb10aff9472a2dcad5db2d, 18),
     ('flux-datamine-flux', 'ethereum', 'FLUX', 0x469eda64aed3a3ad6f868c44564291aa415cb1d9, 18),
