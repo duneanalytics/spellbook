@@ -31,7 +31,7 @@ left join {{ source('prices', 'usd') }} prices on (
 left join {{ ref('tokens_nft') }} nft_tokens on (
    nft_tokens.blockchain = '{{ blockchain }}' AND (
    CASE
-        WHEN type = 'erc721' OR type = 'erc1155') THEN nft_tokens.contract_address = balances.contract_address
+        WHEN (type = 'erc721' OR type = 'erc1155') THEN nft_tokens.contract_address = balances.contract_address
         ELSE null
     END
     )
