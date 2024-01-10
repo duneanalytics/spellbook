@@ -29,31 +29,16 @@ SELECT
     dex_raw.block_date,
     dex_raw.block_time,
     dex_raw.block_number,
-    router.amountOut as token_bought_amount_raw,
-    router.inputAmount as token_sold_amount_raw,
-    dex_raw.token_bought_address,
-    dex_raw.token_sold_address,
-    dex_raw.taker,
-    dex_raw.maker,
-    dex_raw.project_contract_address,
-    dex_raw.tx_hash,
-    dex_raw.evt_index
-FROM dex_raw
-INNER JOIN {{ source('glacier_avalanche_c', 'OdosRouterV2_evt_Swap') }} AS router
-ON dex_raw.tx_hash = router.evt_tx_hash
-
-UNION ALL
-
-SELECT
-    dex_raw.blockchain,
-    dex_raw.project,
-    dex_raw.version,
-    dex_raw.block_month,
-    dex_raw.block_date,
-    dex_raw.block_time,
-    dex_raw.block_number,
-    dex_raw.token_bought_amount_raw,
-    dex_raw.token_sold_amount_raw,
+    CASE
+        WHEN router.evt_tx_hash IS NULL
+            THEN dex_raw.token_bought_amount_raw
+            ELSE router.amountOut
+        END AS token_bought_amount_raw,
+    CASE
+        WHEN router.evt_tx_hash IS NULL
+            THEN dex_raw.token_sold_amount_raw
+            ELSE router.inputAmount
+        END AS token_sold_amount_raw,
     dex_raw.token_bought_address,
     dex_raw.token_sold_address,
     dex_raw.taker,
@@ -64,4 +49,3 @@ SELECT
 FROM dex_raw
 LEFT JOIN {{ source('glacier_avalanche_c', 'OdosRouterV2_evt_Swap') }} AS router
 ON dex_raw.tx_hash = router.evt_tx_hash
-WHERE router.evt_tx_hash IS NULL
