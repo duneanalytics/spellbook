@@ -227,5 +227,4 @@ FROM (VALUES
         ,(0xc06E17bDC3F008F4Ce08D27d364416079289e729,'DWC',18)
         ,(0x493Ab7f3b885a03f31A0C8F80f68CEA8EF6f417C,'KRBY',18)
         ,(0xAAAE58986b24e422740C8F22B3efB80BCbD68159,'xPHAR',18)
-
     ) AS temp_table (contract_address, symbol, decimals)
