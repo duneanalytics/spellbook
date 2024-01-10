@@ -15,6 +15,7 @@
  , ref('contracts_base_contract_mapping')
  , ref('contracts_optimism_contract_mapping')
  , ref('contracts_zora_contract_mapping')
+ , ref('contracts_polygon_contract_mapping')
  , ref('contracts_arbitrum_contract_mapping')
  , ref('contracts_celo_contract_mapping')
 
