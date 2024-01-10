@@ -236,7 +236,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: pharaoh
-      contributors: discochuck
+      contributors: discochuck, hosuke
     config:
       tags: [ 'avalanche_c', 'dex', 'trades', 'pharaoh' ]
     description: "pharaoh avalanche_c base trades"
