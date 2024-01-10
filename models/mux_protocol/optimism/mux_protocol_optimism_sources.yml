@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: mux_protocol_optimism
+  - name: mux_optimism
     description: "mux protocol optimism decoded events"
     tables:
       - name: LiquidityPoolHop1_evt_AddAsset

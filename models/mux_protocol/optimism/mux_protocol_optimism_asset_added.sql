@@ -10,5 +10,3 @@ SELECT
     symbol
 FROM 
 {{ source('mux_optimism', 'LiquidityPoolHop1_evt_AddAsset') }}
-
-
