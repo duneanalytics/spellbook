@@ -2,7 +2,7 @@
     
     alias = 'transactions',
     materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
@@ -18,6 +18,8 @@ ref('dao_transactions_ethereum_erc20')
 ,ref('dao_transactions_polygon_eth')
 ,ref('dao_transactions_base_erc20')
 ,ref('dao_transactions_base_eth')
+,ref('dao_transactions_arbitrum_erc20')
+,ref('dao_transactions_arbitrum_eth')
 ] %}
 
 SELECT *

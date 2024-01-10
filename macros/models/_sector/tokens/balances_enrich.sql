@@ -1,27 +1,47 @@
-{%- macro balances_enrich(balances_base) %}
+{%- macro balances_enrich(balances_base, blockchain) %}
 select
-    balances.blockchain,
     balances.block_number,
     balances.block_time,
-    balances.tx_hash,
-    balances.tx_index,
-    balances.tx_from,
-    balances.tx_to,
-    balances.wallet_address,
-    balances.token_address,
-    balances.change_amount_raw,
-    balances.change_amount_raw / power(10, erc20_tokens.decimals) as change_amount,
-    balances.change_amount_raw / power(10, prices.decimals) * prices.price as change_amount_usd,
-    balance_raw,
-    balances.balance_raw / power(10, erc20_tokens.decimals) as balance,
-    (balances.balance_raw / power(10, prices.decimals) * prices.price)  as balance_usd,
-    prices.price as price_rate
+    balances.type,
+    balances.address as wallet_address,
+    balances.contract_address as token_address,
+    balances.amount as balance_raw,
+    CASE
+        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals)
+        WHEN balances.type = 'native' THEN balances.amount / power(10, 18)
+        ELSE balances.amount
+    END as balance,
+    CASE
+        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals) * prices.price
+        WHEN balances.type = 'native' THEN balances.amount / power(10, 18) * prices.price
+        ELSE NULL
+    END as balance_usd,
+    prices.price as price_rate,
+    erc20_tokens.symbol,
+    erc20_tokens.decimals,
+    nft_tokens.name as collection_name
 from {{ balances_base }} balances
-left join {{ ref('tokens_erc20') }}  erc20_tokens on
-    erc20_tokens.blockchain = balances.blockchain
-    and erc20_tokens.contract_address = balances.token_address
-left join {{ source('prices', 'usd') }} prices on
-    prices.blockchain = balances.blockchain
-    and prices.contract_address = balances.token_address
+left join {{ ref('tokens_erc20') }} erc20_tokens on
+    erc20_tokens.blockchain = '{{ blockchain }}' AND (
+    CASE
+        WHEN type = 'erc20' THEN erc20_tokens.contract_address = balances.contract_address
+        -- TODO: should not be hardcoded
+        WHEN type = 'native' THEN erc20_tokens.contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        ELSE null
+    END)
+left join {{ source('prices', 'usd') }} prices on (
+    CASE
+        WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = '{{ blockchain }}'
+        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is null
+        ELSE null
+    END)
     and prices.minute = date_trunc('minute', balances.block_time)
+left join {{ ref('tokens_nft') }} nft_tokens on (
+   nft_tokens.blockchain = '{{ blockchain }}' AND (
+   CASE
+        WHEN (type = 'erc721' OR type = 'erc1155') THEN nft_tokens.contract_address = balances.contract_address
+        ELSE null
+    END
+    )
+)
 {% endmacro %}
