@@ -146,6 +146,7 @@ with events_raw as (
         on erc20.evt_block_time=er.block_time
         and erc20.evt_tx_hash=er.tx_hash
         and erc20.to=er.seller
+        and erc20.value > er.amount_raw / uint256 '2' -- filter out royalty payments
         {% if not is_incremental() %}
         -- smallest block number for source tables above
         and erc20.evt_block_number >= {{min_block_number}}
