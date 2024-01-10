@@ -45,9 +45,7 @@ Move sources into dune_util:
 find ./models -type f -name '*_sources.yml' -exec rsync --relative {} ../dune_utils/models/ \;
 ```
 
-## Notes
-
-Generate source definitions for token subproject:
+Generate source definitions for token subproject. This sources represent all the models that were move to the tokens subproject
 ```
 cd tokens
 ./generate_sources.sh 
@@ -55,7 +53,18 @@ cd tokens
 This will dump all sources to terminal output. I just copied it, and manually reformated the output so it would fit into one file.
 
 
+Change all refs to sources:
 
+generate file containing ref and their source they should be changed to:
+```
+dbt -q ls --resource-type model --output json | jq --slurp | jq -r '.[] | "\(.name),\(.config.schema),\(.config.alias)"' | sort -u > tmp.txt
+```
+
+run the script:
+```
+python scripts/refs_to_source.py
+```
+some wont get changed automatically ( `ref('tokens_' + chain, 'erc20')` for example)
 
 
 
