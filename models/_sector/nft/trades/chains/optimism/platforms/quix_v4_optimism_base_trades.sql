@@ -78,6 +78,7 @@ with events_raw as (
       ,tr.tx_hash
       ,cast(tr.value as uint256) as value
       ,tr.to
+      ,er.event_index
     from events_raw as er
     join {{ ref('transfers_optimism_eth') }} as tr
       on er.tx_hash = tr.tx_hash
@@ -108,6 +109,7 @@ with events_raw as (
       ,erc20.evt_tx_hash as tx_hash
       ,erc20.value
       ,erc20.to
+      ,er.event_index
     from events_raw as er
     join {{ source('erc20_optimism','evt_transfer') }} as erc20
       on er.tx_hash = erc20.evt_tx_hash
