@@ -6,7 +6,7 @@
 }}
 
 {{
-    balances_enrich_raw(
+    balances_enrich(
         balances_base = source('tokens_ethereum', 'balances_ethereum_0002'),
         blockchain = 'ethereum',
     )
