@@ -52,8 +52,8 @@ WITH zerion_trades AS (
         {% if is_incremental() %}
         AND pt.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-    LEFT JOIN {{ ref('tokens_bnb_bep20') }} tok_sold ON tok_sold.contract_address=swap.inputToken
-    LEFT JOIN {{ ref('tokens_bnb_bep20') }} tok_bought ON tok_bought.contract_address=swap.outputToken
+    LEFT JOIN {{ source('tokens_bnb', 'bep20') }} tok_sold ON tok_sold.contract_address=swap.inputToken
+    LEFT JOIN {{ source('tokens_bnb', 'bep20') }} tok_bought ON tok_bought.contract_address=swap.outputToken
     {% if not is_incremental() %}
     WHERE swap.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

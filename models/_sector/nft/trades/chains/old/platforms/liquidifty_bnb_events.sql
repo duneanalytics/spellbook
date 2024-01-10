@@ -238,7 +238,7 @@ from (
     union all
     select * from v3
 ) buys
-left join {{ ref('tokens_bnb_bep20') }} bep20
+left join {{ source('tokens_bnb', 'bep20') }} bep20
     on bep20.contract_address = buys.currency_contract
 left join {{ ref('tokens_bnb_nft') }} nft_tokens
     on nft_tokens.contract_address = buys.nft_contract_address

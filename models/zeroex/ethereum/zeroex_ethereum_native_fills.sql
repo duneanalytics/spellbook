@@ -65,8 +65,8 @@ WITH
                     WHEN greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                     ELSE greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
+        LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} mt ON mt.contract_address = greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
+        LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tt ON tt.contract_address = greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -126,8 +126,8 @@ WITH
                     WHEN greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                     ELSE greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
+        LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} mt ON mt.contract_address = greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20))
+        LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tt ON tt.contract_address = greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20))
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -188,8 +188,8 @@ WITH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                     ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = fills.makerToken
-        LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = fills.takerToken
+        LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} mt ON mt.contract_address = fills.makerToken
+        LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tt ON tt.contract_address = fills.takerToken
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -248,8 +248,8 @@ WITH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = fills.makerToken 
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = fills.takerToken 
+      LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} mt ON mt.contract_address = fills.makerToken 
+      LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tt ON tt.contract_address = fills.takerToken 
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -307,8 +307,8 @@ WITH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} mt ON mt.contract_address = fills.makerToken
-      LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tt ON tt.contract_address = fills.takerToken 
+      LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} mt ON mt.contract_address = fills.makerToken
+      LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tt ON tt.contract_address = fills.takerToken 
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)

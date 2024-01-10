@@ -71,11 +71,11 @@ inner join {{ source('bnb', 'transactions') }} tx
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 -- bought tokens
-left join {{ ref('tokens_erc20') }} erc20_b
+left join {{ source('tokens', 'erc20') }} erc20_b
     on erc20_b.contract_address = s.token_bought_address 
     and erc20_b.blockchain = 'bnb'
 -- sold tokens
-left join {{ ref('tokens_erc20') }} erc20_s
+left join {{ source('tokens', 'erc20') }} erc20_s
     on erc20_s.contract_address = s.token_sold_address
     and erc20_s.blockchain = 'bnb'
 -- price of bought tokens

@@ -78,7 +78,7 @@ WITH events AS (
 
     FROM events
     LEFT JOIN {{ ref('nft_bnb_aggregators') }} agg ON events.buyer=agg.contract_address
-    LEFT JOIN {{ ref('tokens_bnb_bep20') }} bnb_bep20_tokens ON bnb_bep20_tokens.contract_address=events.currency_contract
+    LEFT JOIN {{ source('tokens_bnb', 'bep20') }} bnb_bep20_tokens ON bnb_bep20_tokens.contract_address=events.currency_contract
     LEFT JOIN {{ ref('tokens_bnb_nft') }} bnb_nft_tokens ON bnb_nft_tokens.contract_address=events.currency_contract
     LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', events.block_time)
     AND (prices.contract_address=events.currency_contract AND prices.blockchain=events.blockchain)

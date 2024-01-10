@@ -119,7 +119,7 @@ WITH lbps_call_create AS (
         start_time,
         COALESCE(end_time, '2999-01-01') AS end_time
     FROM lbps_info l
-    LEFT JOIN {{ ref('tokens_erc20') }} t
+    LEFT JOIN {{ source('tokens', 'erc20') }} t
     ON l.token = t.contract_address
     AND t.blockchain = 'polygon'
     ORDER BY pool_id

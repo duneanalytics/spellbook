@@ -21,7 +21,7 @@ WITH global_values AS (
     cast(POWER(2,32) as double) AS total_initial_supply,
     cast('2022-05-31' AS date) AS token_launch_date
 
-    FROM {{ref('tokens_optimism_erc20')}} t
+    FROM {{source('tokens_optimism', 'erc20')}} t
     WHERE t.contract_address = 0x4200000000000000000000000000000000000042
 
 )

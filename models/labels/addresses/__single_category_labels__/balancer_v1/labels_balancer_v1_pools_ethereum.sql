@@ -66,7 +66,7 @@ settings AS (
     denorm,
     next_block_number
     FROM state_with_gaps s
-    LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON s.token = t.contract_address
+    LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON s.token = t.contract_address
     WHERE next_block_number = 99999999
     AND denorm > uint256 '0'
 ),

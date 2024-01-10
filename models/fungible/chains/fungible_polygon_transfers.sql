@@ -11,5 +11,5 @@
     , traces = source('polygon','traces')
     , transactions = source('polygon','transactions')
     , erc20_transfers = source('erc20_polygon','evt_Transfer')
-    , erc20_tokens = ref('tokens_polygon_erc20')
+    , erc20_tokens = source('tokens_polygon', 'erc20')
 )}}
