@@ -2,14 +2,14 @@ version: 2
 
 models:
 
-  - name: contracts_arbitrum_contract_mapping
+  - name: contracts_polygon_contract_mapping
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'arbitrum', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on Ethereum."
+      tags: ['evm', 'polygon', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on polygon."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -112,9 +112,9 @@ models:
         name: is_deterministic_deployer_deployed
         description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
 
-  - name: contracts_arbitrum_find_self_destruct_contracts
+  - name: contracts_polygon_find_self_destruct_contracts
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -142,14 +142,14 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_arbitrum_base_starting_level
+  - name: contracts_polygon_base_starting_level
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'arbitrum', 'contracts', 'addresses']
-    description: "Base Level for mapping of contracts to its creators and names on Ethereum."
+      tags: ['evm', 'polygon', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on polygon."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -182,14 +182,14 @@ models:
         name: reinitialize_rank
         description: "Rank of the same contract being deployed in descending order - used to only ensure we get the most recent contract instance (allowlist & self-destructs can cause duplicates)."
 
-  - name: contracts_arbitrum_base_iterated_creators
+  - name: contracts_polygon_base_iterated_creators
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'arbitrum', 'contracts', 'addresses']
-    description: "Iterated creators for mapping of contracts to its creators and names on Ethereum."
+      tags: ['evm', 'polygon', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on polygon."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
