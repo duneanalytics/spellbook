@@ -20,7 +20,14 @@ select
     erc20_tokens.symbol,
     erc20_tokens.decimals,
     nft_tokens.name as collection_name
-from {{ balances_base }} balances
+from   {{ source('prices', 'usd') }} prices
+right join {{ balances_base }} balances on (
+    CASE
+        WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = '{{ blockchain }}'
+        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is false
+        ELSE false
+    END)
+    and prices.minute = date_trunc('minute', balances.block_time)
 left join {{ ref('tokens_erc20') }} erc20_tokens on
     erc20_tokens.blockchain = '{{ blockchain }}' AND (
     CASE
@@ -29,13 +36,6 @@ left join {{ ref('tokens_erc20') }} erc20_tokens on
         WHEN type = 'native' THEN erc20_tokens.contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         ELSE null
     END)
-left join {{ source('prices', 'usd') }} prices on (
-    CASE
-        WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = '{{ blockchain }}'
-        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is null
-        ELSE null
-    END)
-    and prices.minute = date_trunc('minute', balances.block_time)
 left join {{ ref('tokens_nft') }} nft_tokens on (
    nft_tokens.blockchain = '{{ blockchain }}' AND (
    CASE
