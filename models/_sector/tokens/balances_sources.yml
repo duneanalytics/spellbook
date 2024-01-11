@@ -1,6 +1,5 @@
 
 version: 2
-# MOVE this to shared folder later with all balances sources
 sources:
   - name: tokens_ethereum
     description: "Prices tables across blockchains"
