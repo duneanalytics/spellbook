@@ -16,6 +16,6 @@
         project = 'dackieswap',
         version = '3',
         Pair_evt_Swap = source('dackieswap_base', 'DackieV3Pool_evt_Swap'),
-        Factory_evt_PairCreated = source('dackieswap_base', 'DackieV3Factory_evt_PoolCreated')
+        Factory_evt_PoolCreated = source('dackieswap_base', 'DackieV3Factory_evt_PoolCreated')
     )
 }}
