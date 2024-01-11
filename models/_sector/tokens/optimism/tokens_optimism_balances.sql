@@ -6,7 +6,7 @@
 }}
 
 {{
-    balances_enrich_raw(
+    balances_enrich(
         balances_base = source('tokens_optimism', 'balances_optimism_0001'),
         blockchain = 'optimism',
     )
