@@ -1,4 +1,13 @@
-{% macro find_self_destruct_contracts( chain ) %}
+{% macro find_self_destruct_contracts( chain, days_forward=365 ) %}
+
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(created_time) AS base_time FROM {{this}}
+  {% else %}
+    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+  {% endif %}
+)
 
 SELECT
 blockchain, created_time, created_block_number, created_tx_hash, contract_address
@@ -22,6 +31,7 @@ FROM (
       ,sd.block_number as destructed_block_number
       ,sd.tx_hash as destructed_tx_hash 
     from {{ source( chain , 'traces') }} as cr
+    cross join check_date as cd
     join {{ source( chain , 'traces') }} as sd
       on cr.tx_hash = sd.tx_hash
       and cr.block_time = sd.block_time
@@ -30,15 +40,11 @@ FROM (
       and   (CASE WHEN cardinality(cr.trace_address) = 0 then cast(-1 as bigint) else cr.trace_address[1] end)
           = (CASE WHEN cardinality(sd.trace_address) = 0 then cast(-1 as bigint) else sd.trace_address[1] end)
       and sd.type = 'suicide'
-      {% if is_incremental() %}
-      AND {{ incremental_predicate('sd.block_time') }}
-      {% endif %}
+      AND {{ incremental_days_forward_predicate('sd.block_time', 'cd.base_time', days_forward ) }}
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
       AND cr.type = 'create'
-      {% if is_incremental() %}
-      AND {{ incremental_predicate('cr.block_time') }} --we know same tx
-      {% endif %}
+      AND {{ incremental_days_forward_predicate('cr.block_time', 'cd.base_time', days_forward ) }}
     group by 1, 2, 3, 4, 5, 6, 7, 8
 
     UNION ALL
@@ -55,15 +61,14 @@ FROM (
       ,sds.tx_hash as destructed_tx_hash 
 
     from {{ source( chain , 'creation_traces') }} as cr
+    cross join check_date cd
     JOIN {{ source( chain , 'traces') }} as sds
       ON cr.address = sds.address
       AND cr.block_time <= sds.block_time
       AND cr.block_number <= sds.block_number
       AND sds.type = 'suicide'
       AND sds.address IS NOT NULL
-      {% if is_incremental() %}
-      AND {{ incremental_predicate('sds.block_time') }}
-      {% endif %}
+      AND {{ incremental_days_forward_predicate('sds.block_time', 'cd.base_time', days_forward ) }}
 
     WHERE 1=1 --cr.blockchain = '{{chain}}'
       -- no incremental check on creates, since we've seen destructs happen as long as 100 days later.

@@ -1,11 +1,10 @@
 {{ config(
     schema = 'zonic_optimism',
-    alias = 'events',
-    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_trade_id']
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
     )
 }}
 {% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
@@ -153,92 +152,37 @@ with source_optimism_transactions as (
     ) as x
     where rn = 1 -- select closest by order
 )
+, base_trades as (
 select
     'optimism' as blockchain
     ,'zonic' as project
-    ,'v1' as version
+    ,'v1' as project_version
+    ,er.tx_hash
+    ,er.block_number
     ,er.block_time
-    ,er.token_id
-    ,n.name as collection
-    ,er.amount_raw / power(10, t1.decimals) * p1.price as amount_usd
-    ,case
-        when erct2.evt_tx_hash is not null then 'erc721'
-        when erc1155.evt_tx_hash is not null then 'erc1155'
-    end as token_standard
-    ,'Single Item Trade' as trade_type
-    ,uint256 '1' as number_of_items
+    ,cast(date_trunc('day', er.block_time) as date) as block_date
+    ,cast(date_trunc('month', er.block_time) as date) as block_month
+    ,er.token_id as nft_token_id
+    ,'secondary' as trade_type
+    ,uint256 '1' as nft_amount
     ,'Buy' as trade_category
-    ,'Trade' as evt_type
     ,er.seller
-    ,case
-        when er.buyer = agg.contract_address then coalesce(erct2.to, erc1155.to)
-        else er.buyer
-    end as buyer
-    ,er.amount_raw / power(10, t1.decimals) as amount_original
-    ,er.amount_raw
-    ,t1.symbol as currency_symbol
+    ,er.buyer
+    ,er.amount_raw as price_raw
     ,er.currency_contract
     ,er.nft_contract_address
     ,er.project_contract_address
-    ,agg.name as aggregator_name
-    ,agg.contract_address as aggregator_address
-    ,er.tx_hash
-    ,er.evt_index as evt_index
-    ,er.block_number
-    ,tx."from" as tx_from
-    ,tx.to as tx_to
     ,er.platform_fee_amount_raw
-    ,er.platform_fee_amount_raw / power(10, t1.decimals) as platform_fee_amount
-    ,er.platform_fee_amount_raw / power(10, t1.decimals) * p1.price as platform_fee_amount_usd
-    ,cast(2.5 as double) as platform_fee_percentage
     ,er.royalty_fee_amount_raw
-    ,er.royalty_fee_amount_raw / power(10, t1.decimals) as royalty_fee_amount
-    ,er.royalty_fee_amount_raw / power(10, t1.decimals) * p1.price as royalty_fee_amount_usd
-    ,er.royalty_fee_amount_raw / cast(er.amount_raw * 100 as double) as royalty_fee_percentage
-    ,case when tr.value is not null then tr.to end as royalty_fee_receive_address
-    ,t1.symbol as royalty_fee_currency_symbol
-    ,concat(cast(er.block_number as varchar),'-',cast(er.tx_hash as varchar),'-',cast(er.evt_index as varchar),'-', cast(er.sale_id as varchar)) as unique_trade_id
+    ,case when tr.value is not null then tr.to end as royalty_fee_address
+    ,cast(null as varbinary) as platform_fee_address
+    ,er.evt_index as sub_tx_trade_id
 from events_raw as er
-join source_optimism_transactions as tx
-    on er.tx_hash = tx.hash
-    and tx.block_number = er.block_number
-left join ref_nft_aggregators as agg
-    on agg.contract_address = tx.to
-    and agg.blockchain = 'optimism'
-left join ref_tokens_nft as n
-    on n.contract_address = er.nft_contract_address
-left join ref_tokens_erc20 as t1
-    on t1.contract_address = er.currency_contract
-left join source_prices_usd as p1
-    on p1.minute = date_trunc('minute', er.block_time)
-    and p1.contract_address = er.currency_contract
-left join {{ source('erc721_optimism','evt_transfer') }} as erct2
-    on erct2.evt_block_time=er.block_time
-    and er.nft_contract_address=erct2.contract_address
-    and erct2.evt_tx_hash=er.tx_hash
-    and erct2.tokenId=er.token_id
-    and erct2.to=er.buyer
-    {% if not is_incremental() %}
-    -- smallest block number for source tables above
-    and erct2.evt_block_number >= {{min_block_number}}
-    {% endif %}
-    {% if is_incremental() %}
-    and erct2.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-left join {{ source('erc1155_optimism','evt_transfersingle') }} as erc1155
-    on erc1155.evt_block_time=er.block_time
-    and er.nft_contract_address=erc1155.contract_address
-    and erc1155.evt_tx_hash=er.tx_hash
-    and erc1155.id=er.token_id
-    and erc1155.to=er.buyer
-    {% if not is_incremental() %}
-    -- smallest block number for source tables above
-    and erc1155.evt_block_number >= {{min_block_number}}
-    {% endif %}
-    {% if is_incremental() %}
-    and erc1155.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
 left join transfers as tr
     on tr.tx_hash = er.tx_hash
     and tr.block_number = er.block_number
     and tr.evt_index = er.evt_index
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'optimism') }}

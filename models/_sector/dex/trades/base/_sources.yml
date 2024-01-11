@@ -32,3 +32,11 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: baseswap_base
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: scale_base
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
