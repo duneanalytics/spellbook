@@ -11,7 +11,7 @@
 }}
 
 {{
-    uniswap_compatible_v2_trades(
+    uniswap_compatible_v3_trades(
         blockchain = 'base',
         project = 'dackieswap',
         version = '3',
