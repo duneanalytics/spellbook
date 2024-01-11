@@ -11,9 +11,10 @@ SELECT
     , blockchain
     , symbol
     , contract_address
-    , CAST(decimals as int) as decimals
+    , CAST(null as VARBINARY) as contract_address
+    , CAST(null as int) as decimals
 FROM
 (
     VALUES
-    ('snek-snek-crd', 'cardano', 'SNEK', '279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f', null)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('snek-snek-crd', 'cardano', 'SNEK')
+) as temp (token_id, blockchain, symbol)
