@@ -24,7 +24,7 @@ from   {{ source('prices', 'usd') }} prices
 right join {{ balances_base }} balances on (
     CASE
         WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = '{{ blockchain }}'
-        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is false
+        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is null
         ELSE false
     END)
     and prices.minute = date_trunc('minute', balances.block_time)
