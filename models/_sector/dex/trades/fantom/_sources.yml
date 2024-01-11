@@ -29,3 +29,6 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: BaseV1Factory_evt_PairCreated
+  - name: beethoven_x_fantom
+    tables:
+      - name: Vault_evt_Swap

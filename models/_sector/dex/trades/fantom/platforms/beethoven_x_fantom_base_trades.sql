@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'beethoven_x_optimism',
+        schema = 'beethoven_x_fantom',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     balancer_compatible_v2_trades(
-        blockchain = 'optimism',
+        blockchain = 'fantom',
         project = 'beethoven_x',
         version = '1',
-        project_decoded_as = 'balancer_v2', -- ???
+        project_decoded_as = 'beethoven_x',
         Vault_evt_Swap = 'Vault_evt_Swap',
         pools_fees = 'pools_fees'
     )
