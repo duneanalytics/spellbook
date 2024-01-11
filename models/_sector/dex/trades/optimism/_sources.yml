@@ -56,3 +56,9 @@ sources:
   - name: openocean_v2_optimism
     tables:
       - name: OpenOceanExchangeProxy_evt_Swapped
+  - name: curvefi_optimism
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: MetaPoolSwap_evt_TokenExchangeUnderlying
+      - name: MetaPoolSwap_evt_TokenExchange
+      - name: wstETH_swap_evt_TokenExchange
