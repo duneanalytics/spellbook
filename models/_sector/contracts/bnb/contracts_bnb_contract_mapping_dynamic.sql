@@ -2,7 +2,10 @@
   config(     
         schema = 'contracts_bnb',
         alias = 'contract_mapping_dynamic',
-        materialized ='table',
+        materialized ='incremental',
+        file_format ='delta',
+        incremental_strategy='merge',
+        unique_key = ['blockchain', 'contract_address'],
         on_table_exists = 'drop',
         partition_by =['created_month']
   )
