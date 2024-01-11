@@ -4,7 +4,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'atoken_address']
-    , post_hook='{{ dune_utils.expose_spells(\'["optimism"]\',
+    , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "the_granary",
                                   \'["msilb7"]\') 
@@ -31,7 +31,7 @@ FROM (
                'Variable'        AS arate_type,
                aTokenSymbol      AS atoken_symbol,
                aTokenName        AS atoken_name
-        FROM {{dune_utils.source( 'the_granary_optimism', 'AToken_evt_Initialized' ) }}
+        FROM {{source( 'the_granary_optimism', 'AToken_evt_Initialized' ) }}
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -49,7 +49,7 @@ FROM (
             ELSE 'Variable' END AS arate_type,
             debtTokenSymbol     AS atoken_symbol,
             debtTokenName       AS atoken_name
-        FROM {{dune_utils.source( 'the_granary_optimism', 'DebtToken_evt_Initialized' ) }}
+        FROM {{source( 'the_granary_optimism', 'DebtToken_evt_Initialized' ) }}
             {% if is_incremental() %}
             WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}

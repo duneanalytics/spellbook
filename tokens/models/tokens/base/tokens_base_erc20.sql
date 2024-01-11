@@ -2,7 +2,7 @@
     tags=[ 'static']
     , alias = 'erc20'
     , materialized = 'table'
-    , post_hook='{{ dune_utils.expose_spells(\'["base"]\',
+    , post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "tokens",
                                     \'["hildobby"]\') }}'

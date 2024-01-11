@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['l1_token', 'l2_token'],
-    post_hook='{{ dune_utils.expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["optimism"]\',
                               "project",
                               "ovm_optimism",
                               \'["msilb7"]\') }}',
@@ -30,9 +30,9 @@ FROM (
     SELECT c1.contract_address, c1._l1Token, tc._l2Token, _symbol, _name,
     -- We would need contract function reads to get the actual decimal value - Approximate here, and overwrite in 'tokens_optimism_erc20' as necessary
         COALESCE(t.decimals,18) AS decimals, c1.call_tx_hash, c1.call_block_time, c1.call_block_number
-        FROM {{dune_utils.source( 'ovm_optimism', 'L2StandardTokenFactory_call_createStandardL2Token' ) }} c1
+        FROM {{source( 'ovm_optimism', 'L2StandardTokenFactory_call_createStandardL2Token' ) }} c1
             
-        INNER JOIN {{dune_utils.source( 'ovm_optimism', 'L2StandardTokenFactory_evt_StandardL2TokenCreated' ) }} tc
+        INNER JOIN {{source( 'ovm_optimism', 'L2StandardTokenFactory_evt_StandardL2TokenCreated' ) }} tc
             ON c1.call_block_number = tc.evt_block_number
             AND c1.call_tx_hash = tc.evt_tx_hash
             {% if is_incremental() %}
@@ -52,9 +52,9 @@ FROM (
     SELECT c2.contract_address, c2._l1Token, _l2Token, _symbol, _name, 
         -- We would need contract function reads to get the actual decimal value - Approximate here, and overwrite in 'tokens_optimism_erc20' as necessary
         COALESCE(t.decimals,18) AS decimals, c2.call_tx_hash, c2.call_block_time, c2.call_block_number
-        FROM {{dune_utils.source( 'ovm_optimism', 'OVM_L2StandardTokenFactory_call_createStandardL2Token' ) }} c2
+        FROM {{source( 'ovm_optimism', 'OVM_L2StandardTokenFactory_call_createStandardL2Token' ) }} c2
 
-        INNER JOIN {{dune_utils.source( 'ovm_optimism', 'OVM_L2StandardTokenFactory_evt_StandardL2TokenCreated' ) }} tc
+        INNER JOIN {{source( 'ovm_optimism', 'OVM_L2StandardTokenFactory_evt_StandardL2TokenCreated' ) }} tc
             ON c2.call_block_number = tc.evt_block_number
             AND c2.call_tx_hash = tc.evt_tx_hash
             {% if is_incremental() %}

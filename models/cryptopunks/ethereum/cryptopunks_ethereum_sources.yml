@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: cryptopunks_ethereum
+    freshness:
+      warn_after: { count: 48, period: hour }
+      error_after: { count: 96, period: hour }
+    tables:
+      - name: CryptoPunksMarket_evt_PunkBought
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkBidEntered
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkOffered
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkNoLongerForSale
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkTransfer
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_PunkBidWithdrawn
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: CryptoPunksMarket_evt_Assign
+        loaded_at_field: evt_block_time
+  - name: rarible_v1_ethereum
+    freshness:
+      warn_after: { count: 48, period: hour }
+      error_after: { count: 96, period: hour }
+    tables:
+      - name: ERC721Sale_v2_evt_Buy
+        loaded_at_field: evt_block_time

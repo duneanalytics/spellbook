@@ -6,7 +6,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['l1_token', 'l2_token']
-    , post_hook='{{ dune_utils.expose_spells(\'["optimism"]\',
+    , post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
                                 "tokens",
                                 \'["msilb7"]\') }}'
@@ -25,7 +25,7 @@ SELECT l1_token, l2_token
 FROM (
 
         SELECT _l1Token AS l1_token, _l2Token AS l2_token, NULL AS symbol, NULL AS decimals
-            FROM {{dune_utils.source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
+            FROM {{source( 'optimism_ethereum', 'L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         WHERE evt_tx_hash != 0x460965f169a99b3d372cd749621a3652ad232d1b1580fd77424eacc2e973b672 --bad event emitted
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -34,7 +34,7 @@ FROM (
 
         UNION ALL
         SELECT _l1Token, _l2Token, NULL AS symbol, NULL AS decimals
-            FROM {{dune_utils.source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
+            FROM {{source( 'optimism_ethereum', 'OVM_L1StandardBridge_evt_ERC20DepositInitiated' ) }}
         {% if is_incremental() %}
         WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}

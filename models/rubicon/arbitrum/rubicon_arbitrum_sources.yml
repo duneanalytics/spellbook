@@ -1,0 +1,71 @@
+version: 2
+
+sources:
+  - name: rubicon_arbitrum
+    description: "Arbitrum decoded tables related to rubicon's implementation of OasisDEX"
+    freshness:
+      warn_after: { count: 12, period: hour } 
+    tables:
+      - name: RubiconMarket_evt_emitOffer
+        loaded_at_field: evt_block_time
+        description: "a table of events triggered when a maker creates an offer" 
+        columes: 
+          - &contract_address
+            name: contract_address
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &id
+            name: id
+            description: "the unique id of the offer"
+          - &pair
+            name: pair
+            description: "the pair of the offer"
+          - &maker
+            name: maker
+            description: "the address of the maker"
+          - &pay_gem
+            name: pay_gem
+            description: "the token the offer is selling"
+          - &buy_gem
+            name: buy_gem
+            description: "the token the offer is buying"
+          - &pay_amt
+            name: pay_amt
+            description: "the amount of the token being sold"
+          - &buy_amt
+            name: buy_amt
+            description: "the amount of the token being bought"
+          
+      - name: RubiconMarket_evt_emitTake
+        loaded_at_field: evt_block_time
+        description: "a table of events triggered when a taker fills an outstanding offer" 
+        columes: 
+          - *contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *id
+          - *pair
+          - &taker
+            name: taker
+            description: "the address of the taker"
+          - *maker
+          - *pay_gem
+          - *buy_gem
+          - &take_amt
+            name: take_amt
+            description: "the amount of the token that the taker received"
+          - &give_amt
+            name: give_amt
+            description: "the amount of the token that the taker payed with"

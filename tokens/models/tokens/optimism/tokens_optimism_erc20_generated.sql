@@ -1,7 +1,7 @@
 {{ config(
     
     alias = 'erc20_generated',
-    post_hook='{{ dune_utils.expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
                                     \'["msilb7"]\') }}')}}

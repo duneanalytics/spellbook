@@ -3,7 +3,7 @@
     , schema = 'tokens_zora'
     , alias = 'erc20'
     , materialized = 'table'
-    , post_hook='{{ dune_utils.expose_spells(\'["zora"]\',
+    , post_hook='{{ expose_spells(\'["zora"]\',
                                     "sector",
                                     "tokens",
                                     \'["hildobby","msilb7"]\') }}'

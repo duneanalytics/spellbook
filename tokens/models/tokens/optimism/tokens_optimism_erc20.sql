@@ -1,5 +1,5 @@
 {{ config( alias = 'erc20', materialized = 'table',
-    post_hook='{{ dune_utils.expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "tokens",
                                     \'["msilb7"]\') }}')}}

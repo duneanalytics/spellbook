@@ -1,0 +1,128 @@
+version: 2
+
+sources:
+  - name: ethereumnameservice_ethereum
+    tables:
+      - name: BaseRegistrarImplementation_evt_NameRegistered
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: BaseRegistrarImplementation_evt_NameRenewed
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: ETHRegistrarController_1_evt_NameRegistered
+      - name: ETHRegistrarController_2_evt_NameRegistered
+      - name: ETHRegistrarController_3_evt_NameRegistered
+      - name: ETHRegistrarController_4_evt_NameRegistered
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: ENSRegistry_evt_NewOwner
+      - name: ENSRegistryWithFallback_evt_NewOwner
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: ETHRegistrarController_1_evt_NameRenewed
+      - name: ETHRegistrarController_2_evt_NameRenewed
+      - name: ETHRegistrarController_3_evt_NameRenewed
+      - name: ETHRegistrarController_4_evt_NameRenewed
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: DefaultReverseResolver_call_setName
+      - name: PublicResolver_v2_call_setName
+      - name: ReverseRegistrar_v2_call_setName
+      - name: PublicResolver_call_setName
+      - name: ReverseRegistrar_v1_call_setName
+      - name: ReverseRegistrar_v3_call_setName
+      - name: BaseRegistrarImplementation_call_reclaim
+      - name: PublicResolver_evt_AddrChanged
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: PublicResolver_v2_evt_AddrChanged
+        freshness:
+          warn_after: { count: 12, period: hour }
+        loaded_at_field: evt_block_time
+      - name: PublicResolver_evt_AddressChanged
+      - name: OldBaseRegistrar_evt_NameRegistered
+      - name: ENSGovernor_evt_VoteCast
+        loaded_at_field: evt_block_time
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "DAO governor contract address"
+          - &evt_block_number
+            name: evt_block_number
+          - &evt_block_time
+            name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - &evt_index
+            name: evt_index
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Unique transaction hash value tied to each vote on the DAO"
+          - &proposalId
+            name: proposalId
+          - &reason
+            name: reason
+          - &voter
+            name: voter
+          - &votes
+            name: votes
+      - name: ENSGovernor_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &calldatas
+            name: calldatas
+          - &description
+            name: description
+          - &endBlock
+            name: endBlock
+          - &id
+            name: id
+          - &proposer
+            name: proposer
+          - &signatures
+            name: signatures
+          - &startBlock
+            name: startBlock
+          - &targets
+            name: targets
+          - &values
+            name: values
+      - name: ENSGovernor_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: ENSGovernor_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: ENSGovernor_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - &eta
+            name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id

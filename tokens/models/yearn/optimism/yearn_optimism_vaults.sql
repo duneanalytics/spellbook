@@ -6,7 +6,7 @@
         , file_format = 'delta'
         , incremental_strategy = 'merge'
         , unique_key = ['vault_token']
-        , post_hook='{{ dune_utils.expose_spells(\'["optimism"]\',
+        , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "yearn",
                                   \'["msilb7"]\') }}'
@@ -22,7 +22,7 @@ SELECT
 , _name AS vault_name
 , output_0 AS vault_token
 
-FROM {{ dune_utils.source('yearn_optimism', 'ReleaseRegistry_call_newVault') }}
+FROM {{ source('yearn_optimism', 'ReleaseRegistry_call_newVault') }}
 
 WHERE call_success = true
 {% if is_incremental() %}

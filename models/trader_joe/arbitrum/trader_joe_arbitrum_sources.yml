@@ -1,0 +1,91 @@
+version: 2
+
+sources: 
+  - name: trader_joe_arbitrum
+    description: "Arbitrum chain decoded tables related to Trader Joe contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: LBPair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Liquidity book Pair swap event decoded table" 
+        columns:
+          - &amountIn
+            name: amountIn
+            description: "Token Sold Amount"
+          - &amountOut
+            name: amountOut
+            description: "Token Bought Amount"
+          - &contract_address
+            name: contract_address
+            description: "Address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - &fees
+            name: fees
+            description: "Fees paid for swap"
+          - &id
+            name: id
+            description: "id"
+          - &recipient
+            name: recipient
+            description: "Address receiving the tokens bought"
+          - &sender
+            name: sender
+            description: "Swap Initiator"
+          - &swapForY
+            name: swapForY
+            description: "Direction of trade"
+          - &volatilityAccumulated
+            name: volatilityAccumulated
+            description: "volatilityAccumulated"
+
+      - name: LBFactory_evt_LBPairCreated
+        loaded_at_field: evt_block_time
+        description: "Liquidity Book Factory pair create decoded table" 
+        columns:
+          - &LBPair
+            name: LBPair
+            description: "LBPair"
+          - &binStep
+            name: binStep
+            description: "binStep"
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pid
+            name: pid
+            description: "pid"
+          - &tokenX
+            name: tokenX
+            description: "tokenX"
+          - &tokenY
+            name: tokenY
+            description: "tokenY"
+
+  - name: trader_joe_v2_1_arbitrum
+    description: "Arbitrum chain decoded tables related to Trader Joe contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: LBPair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Liquidity book Pair swap event decoded table" 
+
+      - name: LBFactory_evt_LBPairCreated
+        loaded_at_field: evt_block_time
+        description: "Liquidity Book Factory pair create decoded table" 
+
+

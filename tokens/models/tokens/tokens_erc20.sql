@@ -1,6 +1,6 @@
 {{ config( alias = 'erc20',
         tags=['static'],
-        post_hook='{{ dune_utils.expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo", "zksync","zora"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","base", "celo", "zksync","zora"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich"]\') }}')}}
