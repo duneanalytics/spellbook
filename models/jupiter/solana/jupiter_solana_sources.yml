@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: dca_solana
+    description:  "Decoded events and function calls for Jupiter DCA on Solana"
+    tables:
+      - name: dca_call_fulfillFlashFill
+        loaded_at_field:  call_block_time
+      - name: dca_call_transfer
+        loaded_at_field:  call_block_time

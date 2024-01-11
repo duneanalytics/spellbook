@@ -1312,6 +1312,10 @@ models:
       ethereum:
         +schema: tokemak_ethereum
 
+    jupiter:
+      +schema: jupiter
+      solana:
+        +schema: jupiter_solana
 
     thena:
       +schema: thena

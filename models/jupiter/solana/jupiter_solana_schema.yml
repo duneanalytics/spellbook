@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: jupiter_solana_dca_volume 
+    meta:
+      blockchain: solana
+      project: jupiter
+      contributors: ilemi
+    config:
+      tags: ['solana','dex','dca','trades','jupiter']
+    description: >
+        Jupiter DCA volume, all fills of positions
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time of the transaction"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of the transaction"
+      - &tx_id
+        name: tx_id
+        description:  "id of the transaction"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description:  "outer_instruction_index of the fulfillFlashFill call"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description:  "inner_instruction_index of the fulfillFlashFill call"
+      - &input_mint
+        name: input_mint
+        description:  "token mint address of token being sold/traded"
+      - &in_amount
+        name: in_amount
+        description:  "token being sold/traded in the transaction"
+      - &in_amount_usd
+        name: in_amount_usd
+        description:  "dollar value of the token being sold/traded in the transaction"
+      - &output_mint
+        name: output_mint
+        description:  "token mint address of token being bought/traded"
+      - &out_amount
+        name: out_amount
+        description:  "token being bought/traded in the transaction"
+      - &out_amount_usd
+        name: out_amount_usd
+        description:  "dollar value of the token being bought/traded in the transaction"
+      - &account_user
+        name: account_user
+        description:  "account of user who initiatied the DCA"
+      - &account_dca
+        name: account_dca
+        description:  "account that represents a specific DCA position (unique)"
