@@ -1,0 +1,42 @@
+version: 2
+
+sources:    
+  - name: balancer_v2_polygon
+    description: "Polygon decoded tables related to Balancer contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: pools_fees
+        loaded_at_field: evt_block_time
+
+  - name: uniswap_v3_polygon
+    description: "Polygon decoded tables related to Uniswap v3 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: UniswapV3Pool_evt_Mint 
+        loaded_at_field: evt_block_time
+      - name: UniswapV3Pool_evt_Collect
+        loaded_at_field: evt_block_time
+      - name: UniswapV3Pool_evt_Burn
+        loaded_at_field: evt_block_time  
+
+  - name: kyber_polygon
+    description: "Polygon decoded tables related to Kyberswap contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: ElasticFactoryV2_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Swap
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: ElasticPoolV2_evt_Burn
+        loaded_at_field: evt_block_time                      
+      - name: ElasticPoolV2_evt_BurnRTokens
+        loaded_at_field: evt_block_time        
+      
