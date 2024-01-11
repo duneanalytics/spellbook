@@ -1,0 +1,109 @@
+version: 2
+
+sources:
+  - name: defiswap_ethereum
+  - name: uniswap_ethereum
+  - name: uniswap_v2_ethereum
+  - name: uniswap_v3_ethereum
+  - name: carbon_defi_ethereum
+    tables:
+      - name: CarbonController_evt_TokensTraded
+  - name: airswap_ethereum
+    tables:
+      - name: Light_evt_Swap
+      - name: Light_v0_evt_Swap
+      - name: swap_evt_Swap
+      - name: Swap_v3_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
+  - name: sushi_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sushiswap_v3_ethereum
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: pancakeswap_v2_ethereum
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+      - name: PancakeSwapMMPool_evt_Swap
+  - name: pancakeswap_v3_ethereum
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: shibaswap_ethereum
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: balancer_v1_ethereum
+    tables:
+      - name: BPool_evt_LOG_SWAP
+      - name: BPool_call_setSwapFee
+  - name: balancer_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap
+  - name: fraxswap_ethereum
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: bancornetwork_ethereum
+    tables:
+      - name: BancorNetwork_v6_evt_Conversion
+      - name: BancorNetwork_v7_evt_Conversion
+      - name: BancorNetwork_v8_evt_Conversion
+      - name: BancorNetwork_v9_evt_Conversion
+      - name: BancorNetwork_v10_evt_Conversion
+  - name: bancor3_ethereum
+    tables:
+      - name: BancorNetwork_evt_TokensTraded
+  - name: verse_dex_ethereum
+    tables:
+      - name: SwapsPair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: swapr_ethereum
+    tables:
+      - name: DXswapPair_evt_Swap
+      - name: DXswapFactory_evt_PairCreated
+  - name: mauve_ethereum
+    tables:
+      - name: MauvePool_evt_Swap
+      - name: MauveFactory_evt_PoolCreated
+  - name: dfx_finance_ethereum
+    tables:
+      - name: Curve_evt_Trade
+  - name: dodo_ethereum
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: integral_size_ethereum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: maverick_v1_ethereum
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
+  - name: kyber_ethereum
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+  - name: clipper_ethereum
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped
+      - name: ClipperApproximateCaravelExchange_evt_Swapped
+  - name: mstable_ethereum
+    tables:
+      - name: Masset_evt_Swapped
+      - name: FeederPool_evt_Swapped
+  - name: xchange_ethereum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated

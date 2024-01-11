@@ -1,0 +1,373 @@
+version: 2
+
+sources:
+  - name: balancer_v2_ethereum
+    description: >
+      Decoded tables related to Balancer v2, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: Vault_evt_PoolRegistered
+        description: >
+          Decoded table of registered pools on the Balancer Vault contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: 'Primary key of the transaction'
+          - &evt_index
+            name: evt_index
+            description: 'Index value of the transaction'
+          - &evt_block_time
+            name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+          - &evt_block_number
+            name: evt_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - name: poolAddress
+            description: 'Ethereum address for the liquidity pool used in transaction'
+          - name: poolId
+            description: 'Unique encoded identifier that refers to each pool'
+          - name: specialization
+            description: 'Pool specialization'
+
+      - name: WeightedPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - &call_block_number
+            name: call_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - &call_block_time
+            name: call_block_time
+            description: 'Timestamp for block time in which the call occurred in UTC'
+          - &call_success
+            name: call_success
+            description: 'Boolean indicating if call was successfully processed'
+          - &call_trace_address
+            name: call_trace_address
+            description: ''
+          - &call_tx_hash
+            name: call_tx_hash
+            description: 'Primary key of the transaction'
+          - name: contract_address
+            description: 'Address of the WeightedPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - &output_0
+            name: output_0
+            description: 'Contract address of the created pool'
+          - &owner
+            name: owner
+            description: 'Contract of the pool owner'
+          - &swapFeePercentage
+            name: swapFeePercentage
+            description: 'Pool swap fee in percentage'
+          - &symbol
+            name: symbol
+            description: 'Symbol of the created pool'
+          - &tokens
+            name: tokens
+            description: 'Array with the address of the created pool tokens'
+          - &weights
+            name: weights
+            description: 'Array with the weight of each token in the created pool'
+
+      - name: WeightedPool2TokensFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the WeightedPool2TokensFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
+
+      - name: WeightedPoolV2Factory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the WeightedPoolV2Factory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - name: normalizedWeights
+            description: 'Array with the normalized weight of each token in the created pool'
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+
+      - name: Vault_evt_PoolBalanceChanged
+        description: >
+          Decoded table of pool balances changes record on the Balancer Vault contract on Ethereum.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: poolId
+            description: 'Balancer pool contract address'
+          - name: tokens
+            description: 'Contract address of each token of the pool'
+          - name: deltas
+            description: 'Balance changes of each token of the pool'
+          - name: liquidityProvider
+            description: 'Address of the wallet which provided or removed liquidity from the pool'
+          - name: protocolFeeAmounts
+            description: 'Amount of fee paid of each token of the pool during the transaction'
+
+      - name: Vault_evt_PoolBalanceManaged
+        description: >
+          Decoded table of transactions performed by asset managers on the Balancer Vault contract on Ethereum.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: poolId
+            description: 'Balancer pool contract address'
+          - name: token
+            description: 'Contract address of token managed'
+          - name: assetManager
+            description: 'Address of the contract which managed the asset from the vault'
+          - name: managedDelta
+            description: 'Change in the amount of token managed by the asset manager'
+          - name: cashDelta
+            description: 'Change in the amount of token cashed the vault'
+
+      - name: LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
+        description: >
+          Decoded table related to scheduled gradual weight updates on the Balancer LiquidityBootstrappingPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'LBP contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &endTime
+            name: endTime
+            description: 'Unix timestamp of the LBP end time'
+          - &endWeights
+            name: endWeights
+            description: 'Array with the weights of the LBP tokens at the end of the LBP'
+          - &startTime
+            name: startTime
+            description: 'Unix timestamp of the LBP start time'
+          - &startWeights
+            name: startWeights
+            description: 'Array with the weights of the LBP tokens at the start of the LBP'
+
+      - name: NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
+        description: >
+          Decoded table related to scheduled gradual weight updates on the Balancer NoProtocolFeeLiquidityBootstrappingPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'LBP contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *endTime
+          - *endWeights
+          - *startTime
+          - *startWeights
+          
+      - name: Vault_evt_FlashLoan
+        loaded_at_field: evt_block_time
+
+      - name: ComposableStablePoolFactory_evt_PoolCreated
+        description: >
+          Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Composable Stable Pool Factory contract address.'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: pool
+            description: 'Ethereum address for the Composable Stable Pool created in the transaction.'
+
+      - name: Vault_evt_TokensRegistered
+        description: >
+          Decoded table of tokens registered by pool with the Balancer Vault contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Vault contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: poolId
+            description: 'Unique encoded identifier that refers to each pool'
+          - *tokens
+          - name: assetManager
+            description: 'Address of the contract which managed the asset from the vault'
+
+  - name: balancer_v1_ethereum
+    description: >
+      Decoded tables related to Balancer V1, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: BFactory_evt_LOG_NEW_POOL
+        description: >
+          Decoded table related to the Balancer BFactory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v1 BFactory contract address'
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: caller
+            description: 'Caller address that created the Balancer pool'
+          - name: pool
+            description: 'Balancer pool contract address'
+
+      - name: BPool_call_bind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - &balance
+            name: balance
+            description: ''
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - &denorm
+            name: denorm
+            description: ''
+          - &token
+            name: token
+            description: ''
+
+      - name: BPool_call_rebind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *balance
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - *denorm
+          - *token
+
+      - name: BPool_call_unbind
+        description: >
+          Decoded table related to the Balancer BPool contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: ''
+          - *token
+
+  - name: balancer_ethereum
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: veBAL_call_create_lock
+        loaded_at_field: call_block_time
+        description: "Function to create a veBAL lock"
+        columns:
+          - name: _unlock_time
+            description: "Epoch time when tokens unlock; this is the user's request, but the actual unlock time will be rounded down to a Thursday"
+          - name: _value
+            description: "Amount to deposit"
+
+      - name: veBAL_evt_Deposit
+        loaded_at_field: evt_block_time
+        description: "Emitted when user deposits tokens in their lock or extends its unlock time"
+        columns:
+          - name: locktime
+            description: "Epoch time when tokens unlock"
+          - name: provider
+            description: "The wallet address of the lock's owner"
+          - name: ts
+            description: "Block timestamp"
+          - name: type
+            tests:
+              - accepted_values:
+                  values: [0, 1, 2, 3]
+            description: >
+              DEPOSIT_FOR_TYPE: 0
+              CREATE_LOCK_TYPE: 1
+              INCREASE_LOCK_AMOUNT: 2
+              INCREASE_UNLOCK_TIME: 3
+          - name: value
+            description: "Amount of base tokens added to the lock"
+
+      - name: veBAL_evt_Withdraw
+        loaded_at_field: evt_block_time
+        description: "Emitted when user withdraws tokens from their lock"
+        columns:
+          - name: provider
+            description: "The wallet address of the lock's owner"
+          - name: value
+            description: "Amount of base tokens withdrawn from the lock"
+          - name: ts
+            description: "Block timestamp"
+
+      - name: GaugeController_evt_VoteForGauge
+        loaded_at_field: evt_block_time
+        description: "Emitted when veBAL holder votes for a gauge"
+        columns:
+          - name: contract_address
+            description: "Gauge controller address"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - name: gauge_addr
+            description: "Address of the gauge which user votes for"
+          - name: time
+            description: "Epoch timestamp at which the event occurred"
+          - name: user
+            description: "veBAL holder that voted for the gauge"
+          - name: weight
+            description: "Weight of the user for the gauge"
