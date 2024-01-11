@@ -29,6 +29,9 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: BaseV1Factory_evt_PairCreated
+  - name: open_ocean_fantom
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
   - name: beethoven_x_fantom
     tables:
       - name: Vault_evt_Swap
