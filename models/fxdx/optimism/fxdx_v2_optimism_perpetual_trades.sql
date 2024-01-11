@@ -5,7 +5,8 @@
 	materialized = 'incremental',
 	file_format = 'delta',
 	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 	)
 }}
 
@@ -13,80 +14,98 @@
 {% set project_start_date = '2023-05-18' %}
 
 WITH all_executed_positions AS (
-SELECT *,
-       'Open' AS trade_type
+SELECT 
+    *,
+    'Open' AS trade_type
 FROM {{ source('fxdxdex_v2_optimism', 'Vault_evt_IncreasePosition') }}
 WHERE evt_tx_hash IN (
     SELECT evt_tx_hash
     FROM {{ source('fxdxdex_v2_optimism', 'PositionRouter_evt_ExecuteIncreasePosition') }}
     )
     {% if not is_incremental() %}
-  AND evt_block_time >= DATE '{{project_start_date}}'
+    AND evt_block_time >= DATE '{{project_start_date}}'
     {% else %}
-  AND {{ incremental_predicate('evt_block_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 
 UNION ALL
 
-SELECT *, 'Close' AS trade_type
+SELECT 
+    *, 
+    'Close' AS trade_type
 FROM {{ source('fxdxdex_v2_optimism', 'Vault_evt_DecreasePosition') }}
 WHERE evt_tx_hash IN (
     SELECT evt_tx_hash
     FROM {{ source('fxdxdex_v2_optimism', 'PositionRouter_evt_ExecuteDecreasePosition') }}
     )
     {% if not is_incremental() %}
-  AND evt_block_time >= DATE '{{project_start_date}}'
+    AND evt_block_time >= DATE '{{project_start_date}}'
     {% else %}
-  AND {{ incremental_predicate('evt_block_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
 margin_fees_info AS (
-SELECT *,
-       LEAD(evt_index, 1, 1000000) OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS next_evt_index
+SELECT 
+    *,
+    LEAD(evt_index, 1, 1000000) OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS next_evt_index
 FROM {{ source('fxdxdex_v2_optimism', 'Vault_evt_CollectPositionTradeFees') }}
-    {% if not is_incremental() %}
+{% if not is_incremental() %}
 WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% else %}
+{% else %}
 WHERE {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
+{% endif %}
 ),
 
 complete_perp_tx AS (
-SELECT *, index_token || '/USD' AS market
-FROM (SELECT event.*,
-             (CASE
-                  WHEN collateralToken = 0xd158b0f013230659098e58b66b602dff8f7ff120 THEN 'WETH'
-                  ELSE tokens1.symbol
-                 END)   AS underlying_asset,
-             (CASE
-                  WHEN indexToken = 0xd158b0f013230659098e58b66b602dff8f7ff120 THEN 'ETH'
-                  WHEN tokens.symbol = 'WBTC' THEN 'BTC'
-                  ELSE tokens.symbol
-                 END
-                 )      AS index_token,
-             trx."from",
-             trx.to,
-             fee.feeUsd AS margin_fee
-      FROM all_executed_positions event
-      INNER JOIN {{ source('optimism', 'transactions') }} trx
-          ON event.evt_tx_hash = trx.hash
-          {% if not is_incremental() %}
-          AND event.evt_block_time >= DATE '{{project_start_date}}'
-          {% else %}
-          AND {{ incremental_predicate('event.evt_block_time') }}
-          {% endif %}
-      INNER JOIN margin_fees_info fee
-          ON event.evt_tx_hash = fee.evt_tx_hash
-          AND event.evt_index > fee.evt_index
-          AND event.evt_index < fee.next_evt_index
-      INNER JOIN {{ ref('tokens_erc20') }} tokens
-          ON event.indexToken = tokens.contract_address
-          AND tokens.blockchain = 'optimism'
-      INNER JOIN {{ ref('tokens_erc20') }} tokens1
-          ON event.collateralToken = tokens1.contract_address
-          AND tokens1.blockchain = 'optimism'
-      GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+    SELECT 
+        *, 
+        index_token || '/USD' AS market
+    FROM 
+    (
+        SELECT 
+            event.account,
+            event.collateralDelta,
+            event.collateralToken,
+            event.contract_address,
+            event.fee,
+            event.indexToken,
+            event.key,
+            event.sizeDelta,
+            event.evt_block_time,
+            event.evt_index,
+            event.evt_tx_hash,
+            event.isLong,
+            event.evt_tx_from,
+            event.evt_tx_to,
+            event.trade_type,
+            (
+                CASE
+                    WHEN collateralToken = 0xd158b0f013230659098e58b66b602dff8f7ff120 THEN 'WETH'
+                    ELSE tokens1.symbol
+                END
+            )   AS underlying_asset,
+            (
+                CASE
+                    WHEN indexToken = 0xd158b0f013230659098e58b66b602dff8f7ff120 THEN 'ETH'
+                    WHEN tokens.symbol = 'WBTC' THEN 'BTC'
+                    ELSE tokens.symbol
+                END
+            )      AS index_token,
+            fee.feeUsd AS margin_fee
+        FROM all_executed_positions event
+        INNER JOIN margin_fees_info fee
+            ON event.evt_tx_hash = fee.evt_tx_hash
+            AND event.evt_index > fee.evt_index
+            AND event.evt_index < fee.next_evt_index
+        INNER JOIN {{ ref('tokens_erc20') }} tokens
+            ON event.indexToken = tokens.contract_address
+            AND tokens.blockchain = 'optimism'
+        INNER JOIN {{ ref('tokens_erc20') }} tokens1
+            ON event.collateralToken = tokens1.contract_address
+            AND tokens1.blockchain = 'optimism'
+        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+    )
 )
 
 SELECT
@@ -114,7 +133,7 @@ SELECT
 	,account AS trader
 	,sizeDelta AS volume_raw
 	,evt_tx_hash AS tx_hash
-	,"from" AS tx_from
-	,to AS tx_to
+	,evt_tx_from AS tx_from
+	,evt_tx_to AS tx_to
 	,evt_index
 FROM complete_perp_tx
