@@ -14,6 +14,7 @@ sources:
     tables:
       - name: swap_evt_Swap
       - name: SwapERC20_v4_evt_SwapERC20
+  - name: sushi_arbitrum
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated

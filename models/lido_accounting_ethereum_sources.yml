@@ -1,0 +1,25 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+  - name: lido_ethereum
+    description: "Decoded events for [LidoDAO](https://lido.fi/)."
+    loaded_at_field: evt_block_time 
+    freshness: # default freshness
+      warn_after: { count: 1, period: day }
+      error_after: { count: 7, period: day }
+    tables:
+      - name: AllowedRecipientsRegistry_evt_RecipientAdded
+      - name: AllowedRecipientsRegistry_evt_RecipientRemoved
+      - name: AllowedRecipientsRegistry_RevShare_evt_RecipientAdded
+      - name: AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved
+      - name: LegacyOracle_evt_PostTotalShares
+      - name: steth_evt_FeeSet
+      - name: steth_evt_FeeDistributionSet
+      - name: steth_evt_Transfer
+      - name: LDO_evt_Transfer
+      - name: AccountingOracle_evt_ProcessingStarted
+      - name: steth_evt_Submitted
+      - name: steth_evt_ELRewardsReceived
+      - name: steth_evt_WithdrawalsReceived
+      - name: WithdrawalQueueERC721_evt_WithdrawalsFinalized
+      

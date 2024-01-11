@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: astaria_v1_ethereum
+    description: "astaria ethereum decoded events"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: LienToken_evt_NewLien
+        loaded_at_field: evt_block_time
+      - name: LienToken_evt_Payment
+        loaded_at_field: evt_block_time
+      - name: LienToken_call_makePayment
+        loaded_at_field: call_block_time
+      - name: AstariaRouter_evt_Liquidation
+        loaded_at_field: evt_block_time
+      - name: CollateralToken_evt_Deposit721
+        loaded_at_field: evt_block_time
+      - name: CollateralToken_evt_ReleaseTo
+        loaded_at_field: evt_block_time
+      - name: LienToken_call_createLien
+        loaded_at_field: evt_block_time
