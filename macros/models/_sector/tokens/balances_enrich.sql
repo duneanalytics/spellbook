@@ -34,13 +34,13 @@ left join {{ ref('tokens_erc20') }} erc20_tokens on
         WHEN type = 'erc20' THEN erc20_tokens.contract_address = balances.contract_address
         -- TODO: should not be hardcoded
         WHEN type = 'native' THEN erc20_tokens.contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-        ELSE null
+        ELSE false
     END)
 left join {{ ref('tokens_nft') }} nft_tokens on (
    nft_tokens.blockchain = '{{ blockchain }}' AND (
    CASE
         WHEN (type = 'erc721' OR type = 'erc1155') THEN nft_tokens.contract_address = balances.contract_address
-        ELSE null
+        ELSE false
     END
     )
 )
