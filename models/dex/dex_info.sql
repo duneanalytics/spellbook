@@ -94,7 +94,5 @@ FROM (VALUES
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
-    , ('baseswap','BaseSwap','Direct','BaseSwapDex')
-    , ('scale','Scale','Direct','Equalizer0x')
     , ('odos', 'Odos', 'Direct', 'odosprotocol')
     ) AS temp_table (project, name, marketplace_type, x_username)
