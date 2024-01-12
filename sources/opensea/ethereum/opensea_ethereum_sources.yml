@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: opensea_ethereum
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: wyvernexchange_call_atomicmatch_
+        loaded_at_field: call_block_time
+      - name: wyvernexchange_evt_ordersmatched
+        loaded_at_field: evt_block_time

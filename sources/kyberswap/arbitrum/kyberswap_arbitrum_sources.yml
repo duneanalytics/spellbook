@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: kyber_arbitrum
+    description: "Arbitrum decoded tables related to Kyberswap contract (classic+elastic)"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: MetaAggregationRouterV2_evt_Swapped
+        loaded_at_field: evt_block_time

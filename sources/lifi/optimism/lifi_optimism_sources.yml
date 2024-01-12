@@ -1,0 +1,13 @@
+version: 2
+
+sources: 
+  - name: lifi_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on lifi
+    tables:
+      - name: LiFiDiamond_v2_evt_AssetSwapped
+        loaded_at_field: evt_block_time
+      - name: LiFiDiamond_v2_evt_LiFiSwappedGeneric
+        loaded_at_field: evt_block_time

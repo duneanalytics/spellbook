@@ -1,0 +1,29 @@
+version: 2
+
+sources: 
+  - name: erc721_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for erc721 NFTs transfer on Optimism
+    tables:
+      - name: evt_Transfer
+        loaded_at_field: evt_block_time
+
+  - name: erc1155_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for erc1155 NFTs transfer on Optimism
+    tables:
+      - name: evt_TransferBatch
+        loaded_at_field: evt_block_time
+
+  - name: erc1155_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for erc1155 NFTs transfer on Optimism
+    tables:
+      - name: evt_TransferSingle
+        loaded_at_field: evt_block_time
