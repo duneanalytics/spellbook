@@ -33,8 +33,8 @@ select
 	'avalanche_c' as blockchain
 	, 'platypus_finance' as project
 	, '1' as version
-	, date_trunc('DAY', s.evt_block_time) as block_date
-    , CAST(date_trunc('DAY', s.evt_block_time) AS date) as block_month
+	, cast(date_trunc('day', s.evt_block_time) as date) as block_date
+    , cast(date_trunc('month', s.evt_block_time) AS date) as block_month
 	, s.evt_block_time as block_time
 	, erc20_b.symbol as token_bought_symbol
 	, erc20_s.symbol as token_sold_symbol
@@ -49,7 +49,7 @@ select
     , coalesce(
         (s.toAmount / power(10, prices_b.decimals)) * prices_b.price
         ,(s.fromAmount / power(10, prices_s.decimals)) * prices_s.price
-    ) as amount_usd	
+    ) as amount_usd
 	, s.toToken as token_bought_address
 	, s.fromToken as token_sold_address
     , coalesce(s."to", tx."from") AS taker
@@ -59,7 +59,7 @@ select
     , tx."from" AS tx_from
     , tx.to AS tx_to
 	, s.evt_index as evt_index
-from 
+from
     {{ source('platypus_finance_avalanche_c', 'Pool_evt_Swap') }} s
 inner join {{ source('avalanche_c', 'transactions') }} tx
     ON tx.hash = s.evt_tx_hash
@@ -71,7 +71,7 @@ inner join {{ source('avalanche_c', 'transactions') }} tx
     {% endif %}
 -- bought tokens
 left join {{ ref('tokens_erc20') }} erc20_b
-    on erc20_b.contract_address = s.toToken 
+    on erc20_b.contract_address = s.toToken
     and erc20_b.blockchain = 'avalanche_c'
 -- sold tokens
 left join {{ ref('tokens_erc20') }} erc20_s
