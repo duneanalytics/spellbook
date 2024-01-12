@@ -169,8 +169,9 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_base_base_trades_seed')
-  
+          seed_file: ref('maverick_base_base_trades_seed')  
+
+
   - name: baseswap_base_base_trades
     meta:
       blockchain: base
@@ -187,7 +188,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('baseswap_base_base_trades_seed')
-  
+
 
   - name: scale_base_base_trades
     meta:
@@ -205,3 +206,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('scale_base_base_trades_seed')
+
+
+  - name: rubicon_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: rubicon
+      contributors: denver, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'rubicon' ]
+    description: "rubicon base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rubicon_base_base_trades_seed')
