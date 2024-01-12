@@ -478,7 +478,6 @@ models:
               - masset
               - feederpool
 
-
   - name: kyberswap_ethereum_base_trades
     meta:
       blockchain: ethereum
