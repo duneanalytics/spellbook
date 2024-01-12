@@ -43,7 +43,7 @@ executors as (
 
 , evms_transactions as (
     {% for blockchain in oneinch_exposed_blockchains_list() %}
-        select '{{ blockchain }}' as blockchain, hash, "from" from {{ source(blockchain, 'transactions') }}
+        select '{{ blockchain }}' as blockchain, hash, "from", block_time from {{ source(blockchain, 'transactions') }}
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
         {% else %}
