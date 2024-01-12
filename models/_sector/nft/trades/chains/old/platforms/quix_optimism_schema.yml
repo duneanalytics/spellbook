@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: quix_seaport_optimism_events
+    meta:
+      blockchain: optimism
+      project: quix
+      contributors: chuxin
+    config:
+      tags: ['optimism','seaport','events','chuxin']
+    description: >
+        Quix Seaport events on Optimism
+    tests:
+      - check_columns_nft_old_events
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
+          seed_file: ref('quix_events_seed')
+          filter:
+            blockchain: optimism
+            project: quix
+            version: seaport
+          match_columns:
+            - tx_hash
+            - token_id
+            - seller
+            - evt_index
+          check_columns:
+            - buyer
+            - nft_contract_address

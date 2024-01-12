@@ -17,7 +17,7 @@ FROM
     VALUES
     ('ftt-ftx-token','solana','FTT','AGFEad2et2ZJif9jaGpdMixQqvW5i81aBdvKe7PHNfz3',6),
     ('forge-blocksmith-labs-forge','solana','FORGE','FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds',9),
-    ('gmt-stepn','solana','STEPN-GMT','7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx',9),
+    ('gmt-stepn','solana','GMT','7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx',9),
     ('bonk-bonk','solana','BONK','DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263',5),
     ('rlb-rollbit-coin','solana','RLB','RLBxxFkseAZ4RgJH3Sqn8jXxhmGoz9jWxDNJMh8pL7a',6),
     ('orca-orca','solana','ORCA','orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE',6),
@@ -42,6 +42,10 @@ FROM
     ('sol-solana', 'solana', 'SOL', 'So11111111111111111111111111111111111111112', 9),
     ('ust-terrausd', 'solana', 'USTC', '9vMJfxuKxXBoEa7rM12mYLMwTacLMLDJqHozw96WQL8i', 6),
     ('usdc-usd-coin', 'solana', 'USDC', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 6),
-    ('usdt-tether', 'solana', 'USDT', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 6)
+    ('usdt-tether', 'solana', 'USDT', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 6),
+    ('pyth-pyth-network', 'solana', 'PYTH', 'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', 6),
+    ('hnt-helium', 'solana', 'HNT', 'hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux', 8),
+    ('jto-jito', 'solana', 'JTO', 'jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL', 9),
+    ('guac-guacamole', 'solana', 'GUAC', 'AZsHEMXd36Bj1EMNXhowJajpUXzrKcK57wW4ZGXVa7yR', 5)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
