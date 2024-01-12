@@ -67,6 +67,12 @@ python scripts/refs_to_source.py
 some wont get changed automatically ( `ref('tokens_' + chain, 'erc20')` for example)
 
 
+Other useful commands:
+
+delete all empty subdirectories
+```
+find . -type d -empty -delete 
+```
 
 
 
