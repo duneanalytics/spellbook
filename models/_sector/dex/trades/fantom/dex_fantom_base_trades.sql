@@ -11,6 +11,9 @@
     , ref('spiritswap_fantom_base_trades')
     , ref('spookyswap_fantom_base_trades')
     , ref('wigoswap_fantom_base_trades')
+    , ref('equalizer_fantom_base_trades')
+    , ref('spartacus_exchange_fantom_base_trades')
+    , ref('openocean_fantom_base_trades')
 ] %}
 
 WITH base_union AS (
