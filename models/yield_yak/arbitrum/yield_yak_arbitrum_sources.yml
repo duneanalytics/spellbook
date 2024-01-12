@@ -1,0 +1,21 @@
+version: 2
+
+sources: 
+  - name: yield_yak_arbitrum
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on yield yak
+    tables:
+      - name: YakRouter_evt_YakSwap
+        loaded_at_field: evt_block_time
+      - name: YakRouter_call_swapNoSplitFromAVAX
+        loaded_at_field: call_block_time
+      - name: YakRouter_call_swapNoSplit
+        loaded_at_field: call_block_time
+      - name: YakRouter_call_swapNoSplitToAVAXWithPermit
+        loaded_at_field: call_block_time
+      - name: YakRouter_call_swapNoSplitWithPermit
+        loaded_at_field: call_block_time
+      - name: YakRouter_call_swapNoSplitToAVAX
+        loaded_at_field: call_block_time
