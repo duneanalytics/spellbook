@@ -5,7 +5,7 @@ WITH check_date AS (
   {% if is_incremental() %}
     MAX(block_date) AS base_time FROM {{this}}
   {% else %}
-    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+    MIN(time) AS base_time FROM {{ source( chain , 'blocks') }}
   {% endif %}
 )
 
