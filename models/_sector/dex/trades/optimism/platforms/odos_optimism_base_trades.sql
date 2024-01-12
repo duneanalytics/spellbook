@@ -10,33 +10,25 @@
 }}
 
 WITH 
-dexs_raw as (
+dexs as (
         SELECT 
             evt_block_time as block_time, 
-            explode(outputs) as data_value, 
-            '' as maker, 
-            CAST(amountsIn[0] as double) as token_sold_amount_raw, 
-            CAST(amountsOut[0] as double) as token_bought_amount_raw, 
+            evt_block_number as block_number,
+            json_extract_scalar(outputs[1], '$.receiver') AS taker,
+            sender as maker,
+            amountsIn[1] as token_sold_amount_raw, 
+            amountsOut[1] as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
-            CAST(tokensIn[0] as string) as token_sold_address, 
+            tokensIn[1] as token_sold_address,
+            json_extract_scalar(outputs[1], '$.tokenAddress') AS token_bought_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
-            CAST(ARRAY() as array<bigint>) AS trace_address,
             evt_index
         FROM 
         {{ source('odos_optimism', 'OdosRouter_evt_Swapped') }}
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
-), 
-
-dexs as (
-        SELECT 
-            *, 
-            CAST(data_value:receiver as string) as taker, 
-            CAST(data_value:tokenAddress as string) as token_bought_address
-        FROM 
-        dexs_raw
 )
 
 SELECT
