@@ -19,6 +19,7 @@ WITH whitelist_token as (
     (0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA, 'USDC', 'base'),
     (0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb, 'DAI', 'base'),
     (0x4200000000000000000000000000000000000006, 'WETH', 'base'),
+    (0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83, 'WFTM', 'fantom'),  
     (0xddafbb505ad214d7b80b1f830fccc89b60fb7a83, 'USDC', 'gnosis'),
     (0x4ecaba5870353805a9f068101a40e0f32ed605c6, 'USDT', 'gnosis'),
     (0xe91d153e0b41518a2ce8dd3d7944fa863463a97d, 'WXDAI', 'gnosis'),
