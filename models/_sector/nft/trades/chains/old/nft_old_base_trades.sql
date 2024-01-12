@@ -31,19 +31,7 @@
 ,ref('opensea_solana_events')
 ,ref('pancakeswap_bnb_nft_events')
 ,ref('quix_seaport_optimism_events')
-,ref('quix_v1_optimism_events')
-,ref('quix_v2_optimism_events')
-,ref('quix_v3_optimism_events')
-,ref('quix_v4_optimism_events')
-,ref('quix_v5_optimism_events')
-,ref('stealcam_arbitrum_events')
-,ref('tofu_arbitrum_events')
 ,ref('tofu_bnb_events')
-,ref('tofu_optimism_events')
-,ref('trove_ethereum_events')
-,ref('trove_v1_arbitrum_events')
-,ref('trove_v2_arbitrum_events')
-,ref('zonic_optimism_events')
 ] %}
 
 

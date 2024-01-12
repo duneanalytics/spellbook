@@ -170,3 +170,38 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_base_base_trades_seed')
+  
+  - name: baseswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: baseswap
+      contributors: ARDev097
+    config:
+      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+    description: "baseswap base trades on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('baseswap_base_base_trades_seed')
+  
+
+  - name: scale_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: scale
+      contributors: ARDev097
+    config:
+      tags: [ 'base', 'dex', 'trades', 'scale' ]
+    description: "scale base trades on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('scale_base_base_trades_seed')
