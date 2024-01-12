@@ -340,3 +340,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('opx_finance_optimism_base_trades_seed')
+
+
+  - name: rubicon_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: rubicon
+      contributors: msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'rubicon' ]
+    description: "rubicon optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rubicon_optimism_base_trades_seed')
