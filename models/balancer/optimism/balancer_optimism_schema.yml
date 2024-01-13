@@ -106,12 +106,13 @@ models:
     meta:
       blockchain: optimism
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer pools.
     columns:
+      - *blockchain
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
@@ -128,7 +129,7 @@ models:
     meta:
       blockchain: optimism
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -139,6 +140,7 @@ models:
             - pool_id
             - token_address
     columns:
+      - *blockchain
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -252,7 +254,8 @@ models:
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
       - name: version
         description: 'Version of Balancer in which pool was deployed'
-      - *blockchain      
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -262,8 +265,12 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'
 
   - name: balancer_optimism_gauge_mappings
     meta:
@@ -405,6 +412,43 @@ models:
       - name: tx_from
       - name: tx_to
       - name: evt_index
+
+  - name: balancer_v2_optimism_trades_beta
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'balancer', 'optimism', 'amm', 'trades', 'dex', 'beta' ]
+    description: >
+      DEX trades on balancer v2 on optimism
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - name: block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *pool_id
+      - *swap_fee
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
 
   - name: balancer_v2_optimism_protocol_fee
     meta:
