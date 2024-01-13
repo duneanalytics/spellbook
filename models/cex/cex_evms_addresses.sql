@@ -694,6 +694,7 @@ FROM (VALUES
     , (0xdd51f01d9fc0fd084c1a4737bbfa5becb6ced9bc, 'Gemini', 'Gemini Deployer', 'hildobby', date '2023-08-31')
     , (0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini Deployer 2', 'hildobby', date '2023-08-31')
     , (0x07ee55aa48bb72dcc6e9d78256648910de513eca, 'Gemini', 'Gemini Contract 1', 'hildobby', date '2023-08-31')
+    , (0x485b9a41e8bf06e57bb64c6ba7cb04f9d53d2d76, 'Gemini', 'Gemini Contract 2', 'hildobby', date '2024-01-10')
     -- BitMart
     , (0xe79eef9b9388a4ff70ed7ec5bccd5b928ebb8bd1, 'BitMart', 'BitMart 1', 'hildobby', date '2022-08-28')
     , (0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7, 'BitMart', 'BitMart 2', 'hildobby', date '2022-08-28')
@@ -723,6 +724,7 @@ FROM (VALUES
     , (0x1938a448d105d26c40a52a1bfe99b8ca7a745ad0, 'Upbit', 'Upbit 4', 'hildobby', date '2023-09-09')
     , (0x03747f06215b44e498831da019b27f53e483599f, 'Upbit', 'Upbit 5', 'hildobby', date '2023-09-09')
     , (0xc9cf0ec93d764f5c9571fd12f764bae7fc87c84e, 'Upbit', 'Upbit Cold Wallet', 'hildobby', date '2022-08-28')
+    , (0x4f01001cf69785d4c37f03fd87398849411ccbba, 'Upbit', 'Upbit Wallet Factory Contract', 'hildobby', date '2023-01-10')
     -- BlockFi
     , (0x04046027549f739edfd5b2a78efdbaf0f0bf4514, 'BlockFi', 'BlockFi 1', 'hildobby', date '2023-09-09')
     , (0xa26a8e242a7470476df1dc11ded5dbc9fca610fa, 'BlockFi', 'BlockFi 2', 'hildobby', date '2023-09-09')
@@ -884,6 +886,7 @@ FROM (VALUES
     , (0xaf1931c20ee0c11bea17a41bfbbad299b2763bc0, 'Luno', 'Luno 1', 'hildobby', date '2022-08-28')
     , (0x416299aade6443e6f6e8ab67126e65a7f606eef5, 'Luno', 'Luno 2', 'hildobby', date '2022-08-28')
     , (0x05CdB1526F6e224e02919a4C018D9784Ea25eb3d, 'Luno', 'Luno 3', 'hildobby', date '2023-11-22')
+    , (0x3a5cc8689d1b0cef2c317bc5c0ad6ce88b27d597, 'Luno', 'Luno 4', 'hildobby', date '2024-01-10')
     -- Poloniex
     , (0x32be343b94f860124dc4fee278fdcbd38c102d88, 'Poloniex', 'Poloniex', 'hildobby', date '2022-08-28')
     , (0x209c4784ab1e8183cf58ca33cb740efbf3fc18ef, 'Poloniex', 'Poloniex 2', 'hildobby', date '2022-08-28')
@@ -1365,6 +1368,7 @@ FROM (VALUES
     , (0x51836a753e344257b361519e948ffcaf5fb8d521, 'Indodax', 'Indodax 1', 'hildobby', date '2022-08-28')
     , (0x9cbadd5ce7e14742f70414a6dcbd4e7bb8712719, 'Indodax', 'Indodax 2', 'hildobby', date '2022-08-28')
     , (0x8Ab399CBB9FDB9a36518a7e7EddF89158E56c595, 'Indodax', 'Indodax 3', 'hildobby', date '2023-11-23')
+    , (0x9554efa1669014c25070bc23c2df262825704228, 'Indodax', 'Indodax 4', 'hildobby', date '2024-01-10')
     -- MaiCoin
     , (0x477b8d5ef7c2c42db84deb555419cd817c336b6f, 'MaiCoin', 'MaiCoin 1', 'hildobby', date '2022-08-28')
     -- ProBit
