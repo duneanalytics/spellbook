@@ -5,7 +5,6 @@
     )
 }}
 
-
 -- (blockchain, project, project_version, model)
 {% set base_models = [
     ref('uniswap_v3_bnb_base_trades')
