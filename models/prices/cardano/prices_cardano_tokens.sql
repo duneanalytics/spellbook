@@ -10,7 +10,6 @@ SELECT
     token_id
     , blockchain
     , symbol
-    , contract_address
     , CAST(null as VARBINARY) as contract_address
     , CAST(null as int) as decimals
 FROM
