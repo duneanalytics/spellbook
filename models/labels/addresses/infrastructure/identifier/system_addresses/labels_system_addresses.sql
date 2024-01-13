@@ -27,8 +27,8 @@ FROM curated_addresses
 
 UNION ALL
 
-SELECT blockchain, contract_address AS address, contract_name as name, 'infrastructure' as category, 'contracts_system_predeploys' as contributor, 'static' as source, NOW() AS created_at, NOW() AS updated_at, 'system_addresses' AS model_name, 'identifier' as label_type
-FROM {{ ref('contracts_system_predeploys') }}
+SELECT pdp.blockchain, contract_address AS address, contract_name as name, 'infrastructure' as category, 'contracts_system_predeploys' as contributor, 'static' as source, NOW() AS created_at, NOW() AS updated_at, 'system_addresses' AS model_name, 'identifier' as label_type
+FROM {{ ref('contracts_system_predeploys') }} pdp
 LEFT JOIN curated_addresses c 
     ON c.blockchain = pdp.blockchain 
     AND c.address = pdp.contract_address
