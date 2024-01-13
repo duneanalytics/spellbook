@@ -12,7 +12,7 @@
 
 {% set op_chains = all_op_chains() %} --macro: all_op_chains.sql
 
--- https://github.com/ethereum-optimism/optimism/blob/c93958755b4f6ab7f95cc0b2459f39ca95c06684/specs/predeploys.md?plain=1#L48
+-- https://github.com/ethereum-optimism/optimism/blob/develop/specs/predeploys.md
 WITH op_stack_predeploys AS (
 	SELECT contract_project, contract_name, contract_address
 	FROM (values
@@ -34,6 +34,7 @@ WITH op_stack_predeploys AS (
 		,('OVM',	'ProxyAdmin',					0x4200000000000000000000000000000000000018)
 		,('OVM',	'BaseFeeVault',				0x4200000000000000000000000000000000000019)
 		,('OVM',	'L1FeeVault',					0x420000000000000000000000000000000000001a)
+		,('OVM',	'create2Deployer',	0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2)
 		---
 		,('EAS',	'EAS',					0x4200000000000000000000000000000000000021)
 		,('EAS',	'SchemaRegistry',				0x4200000000000000000000000000000000000020)
