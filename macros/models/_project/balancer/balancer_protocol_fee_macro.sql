@@ -121,7 +121,7 @@ WITH pool_labels AS (
         LEFT JOIN bpt_prices p3
             ON p3.token = CAST(d.token_address AS VARCHAR)
             AND p3.day = d.day
-        LEFT JOIN {{ ref('tokens_erc20') }} t 
+        LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4

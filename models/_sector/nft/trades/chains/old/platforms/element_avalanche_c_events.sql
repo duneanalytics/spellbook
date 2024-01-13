@@ -156,7 +156,7 @@ SELECT alet.blockchain
 , alet.blockchain || alet.project || alet.version || cast(alet.tx_hash as varchar) || cast(alet.token_id as varchar) AS unique_trade_id
 FROM element_txs alet
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON alet.buyer=agg.contract_address AND agg.blockchain='avalanche_c'
-LEFT JOIN {{ ref('tokens_erc20') }} ava_erc20_tokens ON ava_erc20_tokens.contract_address=alet.currency_contract AND ava_erc20_tokens.blockchain='avalanche_c'
+LEFT JOIN {{ source('tokens', 'erc20') }} ava_erc20_tokens ON ava_erc20_tokens.contract_address=alet.currency_contract AND ava_erc20_tokens.blockchain='avalanche_c'
 LEFT JOIN {{ ref('tokens_nft') }} ava_nft_tokens ON ava_nft_tokens.contract_address=alet.currency_contract AND ava_nft_tokens.blockchain='avalanche_c'
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.minute=date_trunc('minute', alet.block_time)
     AND prices.contract_address=alet.currency_contract AND prices.blockchain='avalanche_c'

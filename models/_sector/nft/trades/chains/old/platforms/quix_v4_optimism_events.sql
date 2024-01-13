@@ -289,7 +289,7 @@ with events_raw as (
         on erc20.evt_block_time=er.block_time
         and erc20.evt_tx_hash=er.tx_hash
         and erc20.to=er.seller
-    left join {{ ref('tokens_erc20') }} as t1
+    left join {{ source('tokens', 'erc20') }} as t1
         on t1.contract_address =
             case when (erc20.contract_address = 0x0000000000000000000000000000000000000000 or erc20.contract_address is null)
             then 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000

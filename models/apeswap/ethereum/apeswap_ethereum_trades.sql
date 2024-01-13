@@ -79,10 +79,10 @@ inner join {{ source('ethereum', 'transactions') }} tx
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-left join {{ ref('tokens_erc20') }} erc20a 
+left join {{ source('tokens', 'erc20') }} erc20a 
     on erc20a.contract_address = dexs.token_bought_address 
     and erc20a.blockchain = 'ethereum'
-left join {{ ref('tokens_erc20') }} erc20b 
+left join {{ source('tokens', 'erc20') }} erc20b 
     on erc20b.contract_address = dexs.token_sold_address 
     and erc20b.blockchain = 'ethereum'
 left join {{ source('prices', 'usd') }} p_bought 

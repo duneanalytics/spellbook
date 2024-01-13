@@ -19,7 +19,7 @@ select
   borrow.tx_hash,
   borrow.evt_index
 from {{ model }} borrow
-  left join {{ ref('tokens_erc20') }} erc20
+  left join {{ source('tokens', 'erc20') }} erc20
     on borrow.token_address = erc20.contract_address
     and borrow.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 

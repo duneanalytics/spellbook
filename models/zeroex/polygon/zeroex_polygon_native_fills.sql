@@ -66,8 +66,8 @@ WITH
                     WHEN bytearray_substring(fills.makerAssetData, 8, 10) IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE bytearray_substring(fills.makerAssetData, 8, 10)
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = bytearray_substring(fills.makerAssetData, 8, 10) and mt.blockchain = 'polygon'
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = bytearray_substring(fills.takerAssetData, 8, 10) and tt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = bytearray_substring(fills.makerAssetData, 8, 10) and mt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = bytearray_substring(fills.takerAssetData, 8, 10) and tt.blockchain = 'polygon'
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -130,8 +130,8 @@ WITH
                     WHEN fills.makerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
+        LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -191,8 +191,8 @@ WITH
                     WHEN fills.makerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -251,8 +251,8 @@ WITH
                     WHEN fills.makerToken IN (0x0000000000000000000000000000000000001010) THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'polygon'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'polygon'
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)

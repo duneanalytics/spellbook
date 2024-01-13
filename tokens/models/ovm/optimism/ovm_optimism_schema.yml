@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: ovm_optimism_l2_token_factory
+
+    meta:
+      blockchain: optimism
+      project: ovm_optimism
+      contributors: msilb7
+
+    config:
+      tags: ['cross-chain', 'optimism', 'tokens']
+    description: "Tokens created by Optimism's L2 Token Factory"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - l1_token
+            - l2_token
+    columns:
+      - &factory_address
+        name: factory_address
+        description: "Address of the factory contract creating the token"
+      - &l1_token
+        name: l1_token
+        description: "Token address on L1"
+      - &l2_token
+        name: l2_token
+        description: "Token address on L2"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &name
+        name: name
+        description: "Token name"
+      - &decimals
+        name: name
+        description: "Token decimals (assume 18 unless we have an L1 mapping"
+      - &call_tx_hash
+        name: call_tx_hash
+        description: "Transaction hash of token creation transaction"
+      - &call_block_time
+        name: call_block_time
+        description: "Block time of token creation transaction"
+      - &call_block_number
+        name: call_block_number
+        description: "Block number of token creation transaction"

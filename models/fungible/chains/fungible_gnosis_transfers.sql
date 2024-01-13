@@ -11,5 +11,5 @@
     , traces = source('gnosis','traces')
     , transactions = source('gnosis','transactions')
     , erc20_transfers = source('erc20_gnosis','evt_Transfer')
-    , erc20_tokens = ref('tokens_gnosis_erc20')
+    , erc20_tokens = source('tokens_gnosis', 'erc20')
 )}}

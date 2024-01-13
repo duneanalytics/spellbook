@@ -1,3 +1,89 @@
+# Subprojects POC
+
+I'd recommend cloning this repo in a separate location and creating a new dbt profile (with a new schema name) in your `profiles.yml` file. I created a profile named `spellbook-poc-tokens`, copied my existing dev profile and changed the schema to `dbt_poc_tokens`. 
+```
+cd tokens/
+dbt deps
+dbt run --profiles-dir ~/.dbt --profile spellbook-poc-tokens
+```
+
+The tokens subproject contains the following models. This set of models is defined by `dbt -q ls -s +tokens_erc20 +tokens_native --resource-type model --output path`
+
+```
+models/aave/aave_v3_tokens.sql
+models/ovm/optimism/ovm_optimism_l2_token_factory.sql
+models/the_granary/optimism/the_granary_optimism_tokens.sql
+models/tokens/arbitrum/tokens_arbitrum_erc20.sql
+models/tokens/avalanche_c/tokens_avalanche_c_erc20.sql
+models/tokens/base/tokens_base_erc20.sql
+models/tokens/bnb/tokens_bnb_bep20.sql
+models/tokens/celo/tokens_celo_erc20.sql
+models/tokens/tokens_erc20.sql
+models/tokens/ethereum/tokens_ethereum_erc20.sql
+models/tokens/fantom/tokens_fantom_erc20.sql
+models/tokens/gnosis/tokens_gnosis_erc20.sql
+models/tokens/tokens_native.sql
+models/tokens/optimism/tokens_optimism_erc20.sql
+models/tokens/optimism/tokens_optimism_erc20_bridged_mapping.sql
+models/tokens/optimism/tokens_optimism_erc20_curated.sql
+models/tokens/optimism/tokens_optimism_erc20_generated.sql
+models/tokens/optimism/tokens_optimism_erc20_transfer_source.sql
+models/tokens/polygon/tokens_polygon_erc20.sql
+models/tokens/zksync/tokens_zksync_erc20.sql
+models/tokens/zora/tokens_zora_erc20.sql
+models/yearn/optimism/yearn_optimism_vaults.sql
+```
+
+I moved those files to the target dir with this command:
+
+```
+dbt -q ls -s +tokens_erc20 +tokens_native --resource-type model --output path | xargs -I {} rsync --relative --remove-source-files {} tokens/models/
+```
+
+Move sources into dune_util:
+```
+find ./models -type f -name '*_sources.yml' -exec rsync --relative {} ../dune_utils/models/ \;
+```
+
+Generate source definitions for token subproject. This sources represent all the models that were move to the tokens subproject
+```
+cd tokens
+./generate_sources.sh 
+```
+This will dump all sources to terminal output. I just copied it, and manually reformated the output so it would fit into one file.
+
+
+Change all refs to sources:
+
+generate file containing ref and their source they should be changed to:
+```
+dbt -q ls --resource-type model --output json | jq --slurp | jq -r '.[] | "\(.name),\(.config.schema),\(.config.alias)"' | sort -u > tmp.txt
+```
+
+run the script:
+```
+python scripts/refs_to_source.py
+```
+some wont get changed automatically ( `ref('tokens_' + chain, 'erc20')` for example)
+
+
+Other useful commands:
+
+delete all empty subdirectories
+```
+find . -type d -empty -delete 
+```
+
+TODO:
+
+* use .env file in .github/workflows to share s3 locations and other stuff across all actions
+* get files changed in PR and only run tokens subproject if tokens/ in changed files: https://stackoverflow.com/a/71117981
+
+
+
+
+
+
 ![spellbook-logo@10x](https://user-images.githubusercontent.com/2520869/200791687-76f1bc4f-05d0-4384-a753-e3b5da0e7a4a.png#gh-light-mode-only)
 ![spellbook-logo-negative_10x](https://user-images.githubusercontent.com/2520869/200865128-426354af-8059-494d-83f7-46947aae271c.png#gh-dark-mode-only)
 

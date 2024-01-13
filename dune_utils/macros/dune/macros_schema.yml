@@ -1,0 +1,36 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: "This overrides the dbt-core function for setting schemas. For PR tests, the schema is set to test_schema"
+    arguments:
+      - name: custom_schema_name
+        type: column name or expression
+        description: "Custom schema name"
+      - name: node
+        type: column name or expression
+        description: "Node"
+
+  - name: generate_alias_name
+    description: "This overrides the dbt-core function for setting aliases. For PR test, the alias is set to the user schema and file name. "
+    arguments:
+      - name: custom_alias_name
+        type: column name or expression
+        description: "Custom alias name"
+      - name: node
+        type: column name or expression
+        description: "Node"
+
+  - name: is_incremental
+    description: >
+      Overrides the core is_incremental marco to allow the usage of a force-incremental command line variable.
+      This enables us to easily get the compiled incremental models. 
+      Example usage: dbt compile --vars '{force-incremental: True}'
+
+  - name: mark_as_spell
+    description: >
+      Catch all macro to mark all models as spells even if they are not exposed in the data explorer
+  
+  - name: source
+    description: >
+      Change source database.

@@ -88,7 +88,7 @@ token_prices as (
         , dt.user_withdrawal_value_norm * COALESCE(p.price_usd, b.price) as user_withdrawals_usd
         , dt.user_withdrawal_value_norm * COALESCE(p.price_eth, b.price_eth) as user_withdrawals_eth
     FROM daily_transfers dt
-    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
+    LEFT JOIN {{source('tokens', 'erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address
     LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -- using this to get price for missing ETH token 
 ; 

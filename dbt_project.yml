@@ -20,7 +20,7 @@ vars:
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ["models"]
+model-paths: ["models", "sources"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
@@ -46,6 +46,10 @@ seeds:
   spellbook:
     +schema: test_data
 
+# defining search order of macro invokation 
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['dune_utils', 'trino_utils', 'dbt_utils']
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models

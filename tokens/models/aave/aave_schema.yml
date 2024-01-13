@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: aave_v3_tokens
+
+    meta:
+      blockchain: optimism, ethereum, polygon, avalanche_c, arbitrum
+      sector: lending
+      project: aave
+      contributors: msilb7
+
+    config:
+      tags: ['cross-chain', 'aave', 'aave_v3','tokens','lending', 'borrowing']
+    description: "Aave aToken list and mappings to underlying tokens"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - atoken_address
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &atoken_address
+      name: atoken_address
+      description: "Address for the atoken"
+    - &underlying_address
+      name: underlying_address
+      description: "Underlying ERC20 token that that the aToken represents"
+    - &atoken_decimals
+      name: atoken_decimals
+      description: "Decimals for the atoken"
+    - &side
+      name: side
+      description: "Supply side or Borrow side for the atoken"
+    - &atoken_rate_type
+      name: arate_type
+      description: "Variable or Stable rate for the atoken"
+    - &atoken_symbol
+      name: atoken_symbol
+      description: "Symbol for the atoken"
+    - &atoken_name
+      name: atoken_name
+      description: "Name for the atoken"
+    - &underlying_decimals
+      name: underlying_decimals
+      description: "Decimals for the underlying token"
+    - &underlying_symbol
+      name: underlying_symbol
+      description: "Symbol for the underlying token"

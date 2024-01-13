@@ -470,12 +470,12 @@ LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_
     {% else %}
     AND mp.minute >= TIMESTAMP '{{zeroex_v3_start_date}}'
     {% endif %}
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts  ON ts.contract_address = case
+LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ts  ON ts.contract_address = case
                     WHEN all_tx.taker_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
                     WHEN all_tx.taker_token = 0x0000000000000000000000000000000000000000 THEN 0x55d398326f99059ff775485246999027b3197955
                     ELSE all_tx.taker_token end
                 AND ts.blockchain = 'bnb'
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address =
+LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ms ON ms.contract_address =
                 case 
                     WHEN all_tx.maker_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
                     WHEN all_tx.maker_token = 0x0000000000000000000000000000000000000000 THEN 0x55d398326f99059ff775485246999027b3197955

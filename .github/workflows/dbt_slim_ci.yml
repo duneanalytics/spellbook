@@ -17,22 +17,41 @@ concurrency:
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    strategy:
+      matrix:
+        project: [ 'dunesql', 'spark' ]
+      max-parallel: 1
     timeout-minutes: 90
 
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      # - name: Setup variables
+      #   run: |
+      #       echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
+      #       echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+
       - name: Setup variables
         run: |
-            echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
-            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+          if [[ "${{ matrix.project }}" == "tokens" ]]; then
+            echo "PROFILE=--project-dir tokens " >> $GITHUB_ENV
+            echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
+            echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
+          elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
+            printf "Using spark project\n"
+            echo 
+          else
+            echo "Unknown engine: ${{ matrix.project }}"
+            exit 1
+          fi
+          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
 
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json manifest.json"
+        run: "aws s3 cp s3://manifest-spellbook-dunesql/spellbook/manifest.json manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"

@@ -17,7 +17,7 @@ select
     (balances.balance_raw / power(10, prices.decimals) * prices.price)  as balance_usd,
     prices.price as price_rate
 from {{ balances_base }} balances
-left join {{ ref('tokens_erc20') }}  erc20_tokens on
+left join {{ source('tokens', 'erc20') }}  erc20_tokens on
     erc20_tokens.blockchain = balances.blockchain
     and erc20_tokens.contract_address = balances.token_address
 left join {{ source('prices', 'usd') }} prices on

@@ -11,5 +11,5 @@
     , traces = source('base','traces')
     , transactions = source('base','transactions')
     , erc20_transfers = source('erc20_base','evt_transfer')
-    , erc20_tokens = ref('tokens_base_erc20')
+    , erc20_tokens = source('tokens_base', 'erc20')
 )}}

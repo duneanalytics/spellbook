@@ -29,7 +29,7 @@ with flashloans as (
     flash.target as recipient,
     flash.contract_address
   from {{ source('moolainterestbearingmoo_celo', 'LendingPool_evt_FlashLoan') }} flash
-    left join {{ ref('tokens_celo_erc20') }} erc20 on erc20.contract_address = flash.asset
+    left join {{ source('tokens_celo', 'erc20') }} erc20 on erc20.contract_address = flash.asset
   where cast(flash.amount as double) > 0
     {% if is_incremental() %}
     and {{ incremental_predicate('flash.evt_block_time') }}

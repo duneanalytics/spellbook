@@ -78,7 +78,7 @@ from (
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
   ) deposit
-  left join {{ ref('tokens_celo_erc20') }} erc20 on deposit.token_address = erc20.contract_address
+  left join {{ source('tokens_celo', 'erc20') }} erc20 on deposit.token_address = erc20.contract_address
   left join {{ source('prices', 'usd') }} p on p.blockchain = 'celo'
     and date_trunc('minute', deposit.evt_block_time) = p.minute
     and deposit.token_address = p.contract_address

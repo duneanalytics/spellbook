@@ -195,11 +195,11 @@ INNER JOIN
     AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
   LEFT JOIN 
-  {{ ref('tokens_erc20') }} t_bought 
+  {{ source('tokens', 'erc20') }} t_bought 
     ON t_bought.contract_address = t.token_bought_address
     AND t_bought.blockchain = 'ethereum'
   LEFT JOIN 
-  {{ ref('tokens_erc20') }} t_sold
+  {{ source('tokens', 'erc20') }} t_sold
     ON t_sold.contract_address = t.token_sold_address
     AND t_sold.blockchain = 'ethereum'
   LEFT JOIN 

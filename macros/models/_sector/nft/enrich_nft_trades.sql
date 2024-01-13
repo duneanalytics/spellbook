@@ -84,7 +84,7 @@ FROM {{base_trades}} base
 LEFT JOIN {{ref('tokens_nft')}} nft
     ON nft.blockchain = base.blockchain
     AND nft.contract_address = base.nft_contract_address
-LEFT JOIN {{ ref('tokens_erc20') }} erc20
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20
     ON erc20.blockchain = base.blockchain
     AND erc20.contract_address = base.currency_contract
 LEFT JOIN prices_patch p

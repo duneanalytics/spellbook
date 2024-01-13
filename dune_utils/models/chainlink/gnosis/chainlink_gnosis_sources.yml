@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: erc20_gnosis
+    description: "Transfers events for ERC20 tokens on gnosis."
+    tables:
+      - name: evt_Transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC20 tokens on gnosis."
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block event number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &from
+            name: from
+            description: "Wallet address for ERC20 token transfer from"
+          - &to
+            name: to
+            description: "Wallet address for ERC20 token transfer to"
+          - &value
+            name: value
+            description: "Raw amount of ERC20 token"

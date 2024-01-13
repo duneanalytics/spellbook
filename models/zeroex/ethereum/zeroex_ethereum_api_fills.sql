@@ -494,5 +494,5 @@ AND mp.minute >= date_trunc('day', now() - interval '7' day)
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts ON ts.contract_address = taker_token
-LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ms ON ms.contract_address = maker_token
+LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} ts ON ts.contract_address = taker_token
+LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} ms ON ms.contract_address = maker_token

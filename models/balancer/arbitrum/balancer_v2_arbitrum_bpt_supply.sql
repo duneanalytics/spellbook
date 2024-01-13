@@ -409,7 +409,7 @@ WITH
             --, blockchain AS b
             , symbol AS s
             , decimals AS d 
-        FROM {{ ref ('tokens_arbitrum_erc20') }} --#########################
+        FROM {{ source('tokens_arbitrum', 'erc20') }} --#########################
     )
 
     , data_table_1 AS (

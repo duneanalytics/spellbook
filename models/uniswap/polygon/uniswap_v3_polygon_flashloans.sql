@@ -26,8 +26,8 @@ WITH flashloans AS (
     , f.contract_address
     FROM {{ source('uniswap_v3_polygon','UniswapV3Pool_evt_Flash') }} f
         INNER JOIN {{ source('uniswap_v3_polygon','Factory_evt_PoolCreated') }} p ON f.contract_address = p.pool
-    LEFT JOIN {{ ref('tokens_polygon_erc20') }} erc20a ON p.token0 = erc20a.contract_address
-    LEFT JOIN {{ ref('tokens_polygon_erc20') }} erc20b ON p.token1 = erc20b.contract_address
+    LEFT JOIN {{ source('tokens_polygon', 'erc20') }} erc20a ON p.token0 = erc20a.contract_address
+    LEFT JOIN {{ source('tokens_polygon', 'erc20') }} erc20b ON p.token1 = erc20b.contract_address
     WHERE f.evt_block_time > NOW() - interval '1' month
         {% if is_incremental() %}
         AND f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
