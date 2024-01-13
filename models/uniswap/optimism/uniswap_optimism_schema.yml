@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: optimism
       project: uniswap
-      contributors: msilb7, chuxin, mtitus6
+      contributors: msilb7, chuxin, mtitus6, hildobby
     config:
       tags: ['optimism','uniswap','pools']
     description: >
@@ -25,15 +25,13 @@ models:
         description: "Uniswap liquidity pool contract address"
         tests:
           - unique
-      - &token0
-        name: token0
-        description:  "Token0 contract address"
-      - &token1
-        name: token1
-        description:  "Token1 contract address"
       - &fee
         name: fee
         description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e6 or power(10,6) to get the fee percentage"
+      - name: tokens
+        description: "List of tokens in pool"
+      - name: tokens_in_pool
+        description: "Number of tokens in pool"
       - &creation_block_time
         name: creation_block_time
         description: "Block time of pool creation"
@@ -65,8 +63,12 @@ models:
       - &newAddress
         name: newAddress
         description: "Uniswap liquidity pool contract address in the EVM Equivalence regenesis release."
-      - *token0
-      - *token1
+      - &token0
+        name: token0
+        description:  "Token0 contract address"
+      - &token1
+        name: token1
+        description:  "Token1 contract address"
       - *fee
 
   - name: uniswap_v3_optimism_trades

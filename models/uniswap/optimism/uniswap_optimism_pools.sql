@@ -8,7 +8,7 @@
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "uniswap_v3",
-                                    \'["msilb7", "chuxin"]\') }}'
+                                    \'["msilb7", "chuxin", "hildobby"]\') }}'
   )
 }}
 with uniswap_v3_poolcreated as (
@@ -17,9 +17,11 @@ with uniswap_v3_poolcreated as (
     , 'uniswap' AS project
     , 'v3' AS version
     , pool
-    , token0
-    , token1
     , fee
+    , array_agg(
+        CAST(ROW(token0, token1) AS ROW(token0 VARBINARY, token1 VARBINARY))
+    ) AS tokens
+    , 2 AS tokens_in_pool
     , evt_block_time AS creation_block_time
     , evt_block_number AS creation_block_number
     , contract_address
@@ -31,9 +33,11 @@ select
   , 'uniswap' AS project
   , 'v3' AS version
   , newAddress as pool
-  , token0
-  , token1
   , fee
+  , array_agg(
+      CAST(ROW(token0, token1) AS ROW(token0 VARBINARY, token1 VARBINARY))
+  ) AS tokens
+  , 2 AS tokens_in_pool
   , creation_block_time
   , creation_block_number
   , contract_address
@@ -46,9 +50,11 @@ select
   , project
   , version
   , pool
-  , token0
-  , token1
   , fee
+  , array_agg(
+      CAST(ROW(token0, token1) AS ROW(token0 VARBINARY, token1 VARBINARY))
+  ) AS tokens
+  , 2 AS tokens_in_pool
   , creation_block_time
   , creation_block_number
   , contract_address
