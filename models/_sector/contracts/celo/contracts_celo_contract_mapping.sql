@@ -10,8 +10,6 @@
     )
 }}
 
-{{
-    contracts_contract_mapping(
-        chain = 'celo'
-    )
-}}
+{{contracts_contract_mapping(
+    chain = 'celo'
+)}}
