@@ -18,7 +18,9 @@ SELECT 'bnb' AS blockchain
 , 'v3' AS version
 , pool
 , fee
-, array_agg(ROW(token0, token1)) AS tokens
+, array_agg(
+    CAST(ROW(token0, token1) AS ROW(token0 VARBINARY, token1 VARBINARY))
+) AS tokens
 , 2 AS tokens_in_pool
 , evt_block_time AS creation_block_time
 , evt_block_number AS creation_block_number
