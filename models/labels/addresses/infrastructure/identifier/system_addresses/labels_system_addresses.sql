@@ -22,7 +22,6 @@ WITH curated_addresses AS (
 )
 
 
-SELECT *
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM curated_addresses
 
