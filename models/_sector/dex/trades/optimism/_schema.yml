@@ -223,25 +223,6 @@ models:
               - coves1
               - 1
               - 2
-  
-  - name: odos_optimism_base_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: odos
-      contributors: ARDev097
-    config:
-      tags: [ 'optimism', 'dex', 'trades', 'odos' ]
-    description: >
-        Odos base trades on optimism.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('odos_optimism_base_trades_seed')
-
 
   - name: kyberswap_optimism_base_trades
     meta:

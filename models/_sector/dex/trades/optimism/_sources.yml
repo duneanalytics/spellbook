@@ -36,9 +36,6 @@ sources:
       - name: ClipperPackedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperCove_evt_CoveSwapped
-  - name: odos_optimism
-    tables:
-      - name: OdosRouter_evt_Swapped
   - name: opx_finance_optimism
     tables:
       - name: Router_evt_Swap

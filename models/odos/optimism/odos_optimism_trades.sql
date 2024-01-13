@@ -1,6 +1,6 @@
 {{ config(
     schema = 'odos_optimism'
-    ,alias = 'base_trades'
+    ,alias = 'trades'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
