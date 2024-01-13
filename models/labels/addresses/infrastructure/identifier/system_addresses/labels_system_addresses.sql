@@ -36,6 +36,5 @@ FROM {{ ref('contracts_system_predeploys') }}
 LEFT JOIN curated c 
     ON c.blockchain = pdp.blockchain 
     AND c.address = pdp.contract_address
-
 WHERE c.address IS NULL
 
