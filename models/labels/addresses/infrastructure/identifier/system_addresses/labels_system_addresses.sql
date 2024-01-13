@@ -31,7 +31,7 @@ FROM curated
 
 UNION ALL
 
-SELECT blockchain, contract_address AS address, contract_name as name, 'infrastructure' as category,'contract_mapping' as contributor, 'static' as source, NOW() AS created_at, NOW() AS updated_at, 'system_addresses' AS model_name, 'identifier' as label_type
+SELECT blockchain, contract_address AS address, contract_name as name, 'infrastructure' as category, 'contracts_system_predeploys' as contributor, 'static' as source, NOW() AS created_at, NOW() AS updated_at, 'system_addresses' AS model_name, 'identifier' as label_type
 FROM {{ ref('contracts_system_predeploys') }}
 LEFT JOIN curated c 
     ON c.blockchain = pdp.blockchain 
