@@ -74,6 +74,10 @@ delete all empty subdirectories
 find . -type d -empty -delete 
 ```
 
+TODO:
+
+* use .env file in .github/workflows to share s3 locations and other stuff across all actions
+* get files changed in PR and only run tokens subproject if tokens/ in changed files: https://stackoverflow.com/a/71117981
 
 
 
