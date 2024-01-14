@@ -38,7 +38,7 @@ tests:
   spellbook:
     +store_failures: true  # store failures for all tests
 
-# Configureing seeds
+# Configuring seeds
 # Full documentation: https://docs.getdbt.com/reference/seed-configs
 # For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
 # example: seeds/cryptopunks/schema.yml
@@ -61,7 +61,7 @@ models:
       - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
         transaction: true
     +materialized: view
-    +schema: no_schema    # this should be overriden in model specific configs
+    +schema: no_schema    # this should be overridden in model specific configs
     +view_security: invoker
 
     aave:
