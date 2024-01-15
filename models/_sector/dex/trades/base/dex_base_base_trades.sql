@@ -17,6 +17,7 @@
     , ref('maverick_base_base_trades')
     , ref('smardex_base_base_trades')
     , ref('dackieswap_base_base_trades')
+    , ref('rubicon_base_base_trades')
     , ref('baseswap_base_base_trades')
     , ref('scale_base_base_trades')
 ] %}
