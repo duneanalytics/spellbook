@@ -136,9 +136,10 @@ tokens as (
 , amounts as (
     select 
         blockchain
+        , block_number
         , tx_hash
         , call_trace_address
-        , block_number
+        , second_side
 
         -- what the user actually gave and received, judging by the transfers
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
@@ -174,10 +175,10 @@ tokens as (
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
         {% endif %}
-    ) using(blockchain, tx_hash, call_trace_address, block_number) -- block_number is needed for performance
+    ) using(blockchain, block_number, tx_hash, call_trace_address) -- block_number is needed for performance
     left join prices using(blockchain, contract_address, minute)
     left join tokens using(blockchain, contract_address)
-    group by 1, 2, 3, 4
+    group by 1, 2, 3, 4, 5
 )
 
 -- output --
@@ -224,4 +225,4 @@ select
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
 from swaps
-join amounts using(blockchain, tx_hash, call_trace_address, block_number)
+join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)
