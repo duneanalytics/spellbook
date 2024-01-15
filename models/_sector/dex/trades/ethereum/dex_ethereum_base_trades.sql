@@ -32,6 +32,7 @@
     , ref('kyberswap_ethereum_base_trades')
     , ref('clipper_ethereum_base_trades')
     , ref('mstable_ethereum_base_trades')
+    , ref('xchange_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (

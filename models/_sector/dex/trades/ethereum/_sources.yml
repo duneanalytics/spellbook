@@ -103,3 +103,7 @@ sources:
     tables:
       - name: Masset_evt_Swapped
       - name: FeederPool_evt_Swapped
+  - name: xchange_ethereum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated

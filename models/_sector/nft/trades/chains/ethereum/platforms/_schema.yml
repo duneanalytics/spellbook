@@ -81,6 +81,8 @@ models:
            - source('foundation_ethereum','market_evt_BuyPriceAccepted')
            - source('foundation_ethereum','market_evt_OfferAccepted')
            - source('foundation_ethereum','market_evt_PrivateSaleFinalized')
+           - source('foundation_ethereum','NFTDropMarket_evt_MintFromFixedPriceDrop')
+           - source('foundation_ethereum','NFTDropMarket_evt_MintFromDutchAuction')
      - check_seed:
          seed_file: ref('foundation_ethereum_base_trades_seed')
          match_columns:

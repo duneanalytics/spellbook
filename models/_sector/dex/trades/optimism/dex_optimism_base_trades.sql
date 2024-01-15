@@ -18,6 +18,12 @@
     , ref('dodo_optimism_base_trades')
     , ref('kyberswap_optimism_base_trades')
     , ref('clipper_optimism_base_trades')
+    , ref('opx_finance_optimism_base_trades')
+    , ref('velodrome_optimism_base_trades')
+    , ref('synthetix_optimism_base_trades')
+    , ref('openxswap_optimism_base_trades')
+    , ref('openocean_optimism_base_trades')
+    , ref('rubicon_optimism_base_trades')
 ] %}
 
 WITH base_union AS (
