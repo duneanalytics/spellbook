@@ -114,7 +114,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('equalizer_fantom_base_trades_seed')
-          
+
   - name: spartacus_exchange_fantom_base_trades
     meta:
       blockchain: fantom
@@ -148,3 +148,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('openocean_fantom_base_trades_seed')
+
+  - name: beethoven_x_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: beethoven_x
+      contributors: msilb7, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'beethoven_x']
+    description: "beethoven_x fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beethoven_x_fantom_base_trades_seed')
