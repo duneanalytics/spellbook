@@ -130,8 +130,6 @@ tokens as (
 
 {% set src_condition = 'contract_address = _src_token_address' %}
 {% set dst_condition = 'contract_address = _dst_token_address' %}
-{% set user_condition = 'user in (transfer_from, transfer_to)' %}
-{% set receiver_condition = 'receiver in (transfer_from, transfer_to)' %}
 {% set symbol = 'coalesce(symbol, token_symbol)' %}
 {% set decimals = 'coalesce(decimals, token_decimals)' %}
 
@@ -143,12 +141,12 @@ tokens as (
         , block_number
 
         -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and {{ user_condition }}) as _src_token_address_true
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ user_condition }}) as _dst_token_address_to_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and {{ user_condition }}) as _src_token_symbol_true
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and {{ user_condition }}) as _dst_token_symbol_to_user
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _dst_token_symbol_to_receiver
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_true
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_symbol_to_receiver
         , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_token_decimals
         , any_value({{ decimals }}) filter(where {{ dst_condition }}) as dst_token_decimals
 
@@ -162,11 +160,11 @@ tokens as (
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
         -- $ amount from user to any
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and {{ user_condition }}) as _amount_usd_from_user
+        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and transfer_from = user) as _amount_usd_from_user
         -- $ amount from any to user
-        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ user_condition }}) as _amount_usd_to_user
+        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = user) as _amount_usd_to_user
         -- $ amount from any to receiver
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and {{ receiver_condition }}) as _amount_usd_to_receiver
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as _amount_usd_to_receiver
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -212,11 +210,11 @@ select
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
     , src_token_decimals
-    , _src_token_amount_true as src_token_amount
+    , coalesce(_src_token_amount_true, src_token_amount) as src_token_amount
     , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
     , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
-    , _dst_token_amount_true as dst_token_amount
+    , coalesce(_dst_token_amount_true, dst_token_amount) as dst_token_amount
     , coalesce(sources_amount_usd, transfers_amount_usd) as amount_usd -- sources $ amount first if found prices, then $ amount of connector tokens
     , sources_amount_usd
     , transfers_amount_usd
