@@ -5,7 +5,7 @@
 }}
 
 {% set opx_finance_optimism_perpetual_trade_models = [
- ref('opx_finance_v1_optimism_perpetual_trades')
+ 	ref('opx_finance_v1_optimism_perpetual_trades')
 ] %}
 
 

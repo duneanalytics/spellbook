@@ -1,4 +1,14 @@
-{% macro contracts_base_starting_level( chain ) %}
+{% macro contracts_base_starting_level( chain, days_forward=365 ) %}
+
+
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(created_time) AS base_time FROM {{this}}
+  {% else %}
+    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+  {% endif %}
+)
 
 SELECT *
 FROM (
@@ -46,20 +56,21 @@ FROM (
             ,bytearray_length(ct.code) AS code_bytelength
             
           from {{ source( chain , 'transactions') }} as t 
+          cross join check_date cd
           inner join  {{ source( chain , 'creation_traces') }} as ct 
             ON t.hash = ct.tx_hash
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('ct.block_time') }}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
+
+            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+
           where 
             1=1
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('ct.block_time') }}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
+
+            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+
         ) x
 ) y
   WHERE reinitialize_rank = 1 --ensures one row per contract

@@ -1,7 +1,10 @@
  {{
   config(     
         schema = 'contracts_ethereum',
-        alias = 'contract_mapping'
+        alias = 'contract_mapping',
+        materialized ='table',
+        on_table_exists = 'drop',
+        partition_by =['created_month']
   )
 }}
 

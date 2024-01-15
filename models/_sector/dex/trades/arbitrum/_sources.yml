@@ -67,6 +67,12 @@ sources:
       - name: ClipperCove_v2_evt_CoveSwapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
+  - name: ramses_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+      - name: RamsesV2Pool_evt_Swap
+      - name: RamsesV2Factory_evt_PoolCreated
   - name: xchange_arbitrum
     tables:
       - name: XchangePair_evt_Swap
