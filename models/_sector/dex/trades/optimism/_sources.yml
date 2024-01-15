@@ -36,6 +36,9 @@ sources:
       - name: ClipperPackedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperCove_evt_CoveSwapped
+  - name: opx_finance_optimism
+    tables:
+      - name: Router_evt_Swap
   - name: velodrome_optimism
     tables:
       - name: Pair_evt_Swap

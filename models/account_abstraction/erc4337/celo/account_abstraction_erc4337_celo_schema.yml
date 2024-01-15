@@ -1,0 +1,168 @@
+version: 2
+
+models:
+
+  - name: account_abstraction_erc4337_celo_v0_6_userops_basics
+    meta:
+      blockchain: celo
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, tomfutago
+    config:
+      tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.6 user operations on celo"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain which EntryPoint was deployed"
+      - &version
+        name: version
+        description: "version of the EntryPoint contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block date of each User Operation"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each User Operation"
+      - &entrypoint_contract
+        name: entrypoint_contract
+        description: "the contract address of the EntryPoint"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the User Operation"
+      - &sender
+        name: sender
+        description: "the sender(AA wallet address) that submmited the user operation"
+      - &userop_hash
+        name: userop_hash
+        description: "Unique user operation hash"
+      - &success
+        name: success
+        description: "weather the user operation is successfully execuated"
+      - &paymaster
+        name: paymaster
+        description: "the address that pay for the user operation gas fees on behalf of the user"
+      - &op_fee
+        name: op_fee
+        description: "The gas paid by sender or paymaster It depends on the chain gas setting"
+      - &beneficiary
+        name: beneficiary
+        description: "the address where the bundler setting for the user operation pay for thier gas fee"
+
+  - name: account_abstraction_erc4337_celo_userops
+    meta:
+      blockchain: celo
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, tomfutago
+    config:
+      tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 user operation on celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_userops_seed')
+          filter:
+            blockchain: celo
+            version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - bundler
+    columns:
+      - *blockchain
+      - *version
+      - *block_month
+      - *block_time
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *userop_hash
+      - *success
+      - *paymaster
+      - *op_fee
+      - &op_fee_usd
+        name: op_fee_usd
+        description: "The user operation gas (in usd) paid by sender or paymaster. "
+      - &bundler
+        name: bundler
+        description: "address that bundle UserOps and submit those UserOps to the final on-chain by send a EOA transaction. It is the transaction from address"
+      - &tx_to
+        name: tx_to
+        description: "address where the bundler send the transaction"
+      - &gas_symbol
+        name: gas_symbol
+        description: "the gas symbol paied for the transaction"
+      - &tx_fee
+        name: tx_fee
+        description: "the bundler paied gas value for the transaction"
+      - &tx_fee_usd
+        name: tx_fee_usd
+        description: "the bundler paied gas (in usd) value for the transaction"
+      - *beneficiary
+
+
+  - name: account_abstraction_erc4337_celo_v0_6_account_deployed
+    meta:
+      blockchain: celo
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, tomfutago
+    config:
+      tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 v0.6 account deployed on celo"
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - &factory
+        name: factory
+        description: "who can create a new AA Wallet. It's smart contract address"
+
+  - name: account_abstraction_erc4337_celo_account_deployed
+    meta:
+      blockchain: celo
+      sector: erc4337
+      project: erc4337
+      contributors: 0xbitfly, tomfutago
+    config:
+      tags: ["celo", "erc4337", "account", "abstraction", "entrypoint"]
+    description: "erc4337 account deployed on celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - userop_hash
+            - tx_hash
+      - check_seed:
+          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
+          filter:
+            blockchain: celo
+            version: v0.6
+          match_columns:
+            - userop_hash
+            - tx_hash
+          check_columns:
+            - paymaster
+            - factory
+    columns:
+      - *blockchain
+      - *version
+      - *block_time
+      - *block_month
+      - *userop_hash
+      - *entrypoint_contract
+      - *tx_hash
+      - *sender
+      - *paymaster
+      - *factory
