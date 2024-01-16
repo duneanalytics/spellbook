@@ -13,6 +13,6 @@
 , max_by(t.token_standard, t.block_time) AS standard
 FROM {{ ref('nft_goerli_transfers') }} t
     {% if is_incremental() %}
-       WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
+       WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
 GROUP BY 1
