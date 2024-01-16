@@ -60,6 +60,7 @@ FROM
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
     , optional_columns = ['f.fee']
+    , pair_column_name = 'pool'
     )
 %}
 WITH dexs AS
@@ -85,7 +86,7 @@ WITH dexs AS
         {{ Pair_evt_Swap }} t
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
-        ON f.pool = t.contract_address
+        ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
