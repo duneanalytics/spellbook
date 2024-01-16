@@ -8,8 +8,7 @@
 
 -- while we refactor more marketplace models, they should be removed here and added to the chain specific base_trades unions.
 {% set nft_models = [
- ref('element_bnb_events')
-,ref('element_avalanche_c_events')
+ref('element_avalanche_c_events')
 ,ref('magiceden_solana_events')
 ,ref('nftearth_optimism_events')
 ,ref('mooar_polygon_events')
