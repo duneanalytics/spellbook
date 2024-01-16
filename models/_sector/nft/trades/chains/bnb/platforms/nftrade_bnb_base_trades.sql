@@ -112,8 +112,8 @@ source_inventory_enriched as (
         CAST(src.royalty_fees_raw  AS uint256) as royalty_fee_amount_raw,
         royalties_address as royalty_fee_address,
         cast(null as varbinary) as platform_fee_address
-        src.evt_index as sub_tx_trade_id,
-        FROM source_inventory_enriched src
+        src.evt_index as sub_tx_trade_id
+    FROM source_inventory_enriched src
 
 )
 
