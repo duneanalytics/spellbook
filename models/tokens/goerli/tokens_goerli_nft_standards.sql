@@ -1,5 +1,6 @@
 {{ config(
         alias = 'nft_standards',
+        schema = 'tokens_goerli',
         materialized='incremental',
         incremental_strategy = 'merge',
         file_format = 'delta',

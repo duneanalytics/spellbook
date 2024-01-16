@@ -1,5 +1,6 @@
 {{ config(
         alias = 'nft'
+        , schema = 'tokens_goerli'
         , materialized = 'table'
         , post_hook='{{ expose_spells(\'["goerli"]\',
                                 "sector",
