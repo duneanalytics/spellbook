@@ -871,8 +871,6 @@ models:
       +schema: yield_yak
       avalanche_c:
         +schema: yield_yak_avalanche_c
-      arbitrum:
-        +schema: yield_yak_arbitrum
 
     shibaswap:
       +schema: shibaswap

@@ -1,15 +1,12 @@
 {{ config(
-    
+    schema = 'yield_yak_arbitrum',
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "yield_yak",
-                                \'["angus_1"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -35,7 +32,7 @@ dexs as (
         FROM 
         {{ source('yield_yak_arbitrum', 'YakRouter_evt_YakSwap') }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
 )
 
@@ -78,7 +75,7 @@ INNER JOIN {{ source('arbitrum', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
+    AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 LEFT JOIN {{ ref('tokens_erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -94,7 +91,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' Day)
+    AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -104,5 +101,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' Day)
+    AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
