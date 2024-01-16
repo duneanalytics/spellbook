@@ -1,11 +1,10 @@
 {{ config(
     schema = 'liquidifty_bnb',
-    alias = 'events',
-
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'unique_trade_id']
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id']
 )}}
 
 {% set wbnb_address = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c" %}
