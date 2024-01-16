@@ -159,10 +159,6 @@ SELECT
     INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
         ON cp.project_contract_address = tb.pool
         AND cp.sold_id = tb.tokenid
-    LEFT JOIN {{ ref('tokens_optimism_erc20') }} ea
-        ON ea.contract_address = ta.token
-    LEFT JOIN {{ ref('tokens_optimism_erc20') }} eb
-        ON eb.contract_address = tb.token
 )
 SELECT DISTINCT
     'optimism' AS blockchain,
