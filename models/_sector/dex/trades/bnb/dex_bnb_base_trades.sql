@@ -33,6 +33,7 @@
     , ref('onepunchswap_bnb_base_trades')
 ] %}
 
+
 WITH base_union AS (
     SELECT *
     FROM (
