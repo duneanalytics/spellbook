@@ -14,7 +14,7 @@
 }}
 
 {{ 
-    balancer_protocol_fee_macro(
+    balancer_bpt_supply_macro(
         blockchain = blockchain,
         version = '2'
     )
