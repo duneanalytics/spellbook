@@ -1,11 +1,10 @@
 {{ config(
     schema = 'liquidifty_bnb',
-    alias = 'events',
-
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'unique_trade_id']
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id']
 )}}
 
 {% set wbnb_address = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c" %}
@@ -16,7 +15,7 @@ with v1 as (
         evt_block_time as block_time,
         cast(token as uint256) as token_id,
         'erc721' as token_standard,
-        'Single Item Trade' as trade_type,
+        'secondary' as trade_type,
         CAST(amount as uint256) as number_of_items,
         'Buy' as trade_category,
         owner as seller,
@@ -41,7 +40,7 @@ v2 as (
         evt_block_time as block_time,
         cast(token as uint256) as token_id,
         'erc721' as token_standard,
-        'Single Item Trade' as trade_type,
+        'secondary' as trade_type,
         CAST(amount as uint256) as number_of_items,
         'Buy' as trade_category,
         owner as seller,
@@ -87,7 +86,7 @@ stack as (
         evt_block_time as block_time,
         cast(null as uint256) as token_id,
         'erc721' as token_standard,
-        'Bundle Trade' as trade_type,
+        'secondary' as trade_type,
         CAST(amount as uint256) as number_of_items,
         'Buy' as trade_category,
         owner as seller,
@@ -123,10 +122,7 @@ v3 as (
             when json_extract_scalar(nft, '$.assetType') = '2' then 'erc721'
             when json_extract_scalar(nft, '$.assetType') = '3' then 'erc1155'
         end as token_standard,
-        case
-            when cardinality(orders) > 1 then 'Bundle Trade'
-            else 'Single Item Trade'
-        end as trade_type,
+        'secondary' as trade_type,
         CAST(JSON_EXTRACT_SCALAR(nft, '$.amount') as uint256) as number_of_items,
         case
             when orderType = '0' then 'Swap'
@@ -185,50 +181,31 @@ v3 as (
     )
 )
 
-
+,base_trades as (
 select
     'bnb' as blockchain,
     'liquidifty' as project,
-    buys.version,
+    buys.version as project_version,
     buys.block_time,
-    buys.token_id,
-    nft_tokens.name as collection,
-    buys.amount_raw / power(10, bep20.decimals) * prices.price as amount_usd,
-    buys.token_standard as token_standard,
+    cast(date_trunc('day', buys.block_time) as date) as block_date,
+    cast(date_trunc('month', buys.block_time) as date) as block_month,
+    buys.token_id as nft_token_id,
     buys.trade_type,
-    buys.number_of_items,
+    buys.number_of_items as nft_amount,
     buys.trade_category,
-    'Trade' as evt_type,
     buys.seller,
-    case
-        when buys.version = 'v3' then transactions."from"
-        else buys.buyer
-    end as buyer,
-    buys.amount_raw / power(10, bep20.decimals) as amount_original,
-    buys.amount_raw,
-    bep20.symbol as currency_symbol,
+    buys.buyer,
+    buys.amount_raw as price_raw,
     buys.currency_contract,
     buys.nft_contract_address,
     buys.project_contract_address,
-    cast(null as varchar) as aggregator_name,
-    cast(null as varbinary) as aggregator_address,
     buys.tx_hash,
     buys.block_number,
-    transactions."from" as tx_from,
-    transactions.to as tx_to,
     cast(null as uint256) as platform_fee_amount_raw,
-    cast(null as double) as platform_fee_amount,
-    cast(null as double) as platform_fee_amount_usd,
-    cast(null as double) as platform_fee_percentage,
     cast(null as uint256) as royalty_fee_amount_raw,
-    cast(null as double) as royalty_fee_amount,
-    cast(null as double) as royalty_fee_amount_usd,
-    cast(null as double) as royalty_fee_percentage,
-    cast(null as varbinary) as royalty_fee_receive_address,
-    bep20.symbol as royalty_fee_currency_symbol,
-    concat(cast(buys.block_number as varchar), '-',cast(buys.tx_hash as varchar),'-', cast(in_tx_id as varchar)) as unique_trade_id,
-    buys.currency_token_standard,
-    buys.orderType as order_type
+    cast(null as varbinary) as platform_fee_address,
+    cast(null as varbinary) as royalty_fee_address,
+    buys.in_tx_id as sub_tx_trade_id
 from (
     select * from v1
     union all
@@ -237,21 +214,8 @@ from (
     select * from stack
     union all
     select * from v3
-) buys
-left join {{ ref('tokens_bnb_bep20') }} bep20
-    on bep20.contract_address = buys.currency_contract
-left join {{ ref('tokens_bnb_nft') }} nft_tokens
-    on nft_tokens.contract_address = buys.nft_contract_address
-left join {{ source('prices', 'usd') }} as prices
-    on prices.minute = date_trunc('minute', buys.block_time)
-    and prices.contract_address = buys.currency_contract
-    and prices.blockchain = 'bnb'
-    {% if is_incremental() %}
-    and prices.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-inner join {{ source('bnb', 'transactions') }} transactions
-    on transactions.block_number = buys.block_number
-    and transactions.hash = buys.tx_hash
-    {% if is_incremental() %}
-    and transactions.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+    ) buys
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'bnb') }}
