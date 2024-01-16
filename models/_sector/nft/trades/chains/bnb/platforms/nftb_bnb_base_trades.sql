@@ -123,7 +123,7 @@ AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 )
 
-base_trades as (
+,base_trades as (
 
 SELECT 'bnb' as blockchain
     ,'nftb' as project

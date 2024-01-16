@@ -46,7 +46,7 @@ WITH events AS (
         cast(date_trunc('day', events.block_time) as date) as block_date,
         cast(date_trunc('month', events.block_time) as date) as block_month,
         events.token_id as nft_token_id,
-        'secondary' END AS trade_type,
+        'secondary' AS trade_type,
         events.number_of_items as nft_amount,
         events.trade_category,
         events.seller,

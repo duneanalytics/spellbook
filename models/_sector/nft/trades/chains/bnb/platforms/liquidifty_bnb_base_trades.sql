@@ -185,7 +185,7 @@ v3 as (
 select
     'bnb' as blockchain,
     'liquidifty' as project,
-    buys.version as project_version
+    buys.version as project_version,
     buys.block_time,
     cast(date_trunc('day', buys.block_time) as date) as block_date,
     cast(date_trunc('month', buys.block_time) as date) as block_month,
@@ -214,7 +214,7 @@ from (
     select * from stack
     union all
     select * from v3
-) buys
+    ) buys
 )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables

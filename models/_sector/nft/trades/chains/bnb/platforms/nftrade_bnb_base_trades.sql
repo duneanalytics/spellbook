@@ -98,7 +98,7 @@ source_inventory_enriched as (
         cast(date_trunc('month', src.evt_block_time) as date) as block_month,
         src.evt_block_number as block_number,
         src.token_id as nft_token_id,
-        src.amount_raw as price_raw
+        src.amount_raw as price_raw,
         'secondary' as trade_type,
         uint256 '1' AS nft_amount,
         src.trade_category,
