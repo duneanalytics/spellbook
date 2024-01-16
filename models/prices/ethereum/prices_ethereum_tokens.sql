@@ -1631,7 +1631,11 @@ FROM
     ('premia-premia', 'ethereum', 'PREMIA', 0x6399c842dd2be3de30bf99bc7d1bbf6fa3650e70, 18),
     ('stfx-stfx', 'ethereum', 'STFX', 0x9343e24716659a3551eb10aff9472a2dcad5db2d, 18),
     ('flux-datamine-flux', 'ethereum', 'FLUX', 0x469eda64aed3a3ad6f868c44564291aa415cb1d9, 18),
-    ('tpy-thrupenny', 'ethereum', 'TPY', 0x968cbe62c830a0ccf4381614662398505657a2a9, 8)
+    ('tpy-thrupenny', 'ethereum', 'TPY', 0x968cbe62c830a0ccf4381614662398505657a2a9, 8),
+    ('hilo-hilo', 'ethereum', 'HILO', 0xbb9fd9fa4863c03c574007ff3370787b9ce65ff6, 18),
+    ('pear-pear-swap', 'ethereum', 'PEAR', 0x5dcd6272c3cbb250823f0b7e6c618bce11b21f90, 18),
+    ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
+    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
