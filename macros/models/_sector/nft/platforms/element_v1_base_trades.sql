@@ -103,6 +103,8 @@ SELECT
   'element' as project,
   'v1' as project_version,
   evt_block_time AS block_time,
+  cast(date_trunc('day', evt_block_time) as date) as block_date,
+  cast(date_trunc('month', evt_block_time) as date) as block_month,
   evt_block_number AS block_number,
   'Buy' AS trade_category,
   'secondary' AS trade_type,
