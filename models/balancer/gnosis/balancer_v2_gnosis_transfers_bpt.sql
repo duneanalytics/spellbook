@@ -1,7 +1,6 @@
 {{
     config(
         schema='balancer_v2_gnosis',
-        
         alias = 'transfers_bpt',
         partition_by = ['block_month'],
         materialized = 'incremental',
