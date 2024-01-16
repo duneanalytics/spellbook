@@ -34,6 +34,7 @@ spells with issues, to be excluded in short term:
     ,ref('firebird_finance_optimism_trades')
     ,ref('oneinch_ar_trades')
     ,ref('unidex_optimism_trades')
+    ,ref('odos_optimism_trades')
 ] %}
 
 {% for aggregator_model in dex_aggregator_models %}
