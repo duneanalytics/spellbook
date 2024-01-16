@@ -10,6 +10,7 @@
      ,ref('liquidifty_bnb_base_trades')
      ,ref('nftb_bnb_base_trades')
      ,ref('nftrade_bnb_base_trades')
+     ,ref('pancakeswap_nft_bnb_base_trades')
      ,ref('tofu_bnb_base_trades')
 ] %}
 
