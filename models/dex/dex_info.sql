@@ -94,5 +94,5 @@ FROM (VALUES
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
-    , ('odos', 'Odos', 'Aggregator', 'odosprotocol')
+--     , ('odos', 'Odos', 'Aggregator', 'odosprotocol')
     ) AS temp_table (project, name, marketplace_type, x_username)
