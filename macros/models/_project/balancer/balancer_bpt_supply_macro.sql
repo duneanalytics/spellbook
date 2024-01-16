@@ -54,7 +54,7 @@ WITH pool_labels AS (
         WHERE d.i = t.i 
         AND BYTEARRAY_SUBSTRING(poolId, 1, 20) = t.token
         {% if is_incremental() %}
-        AND {{ incremental_predicate('b.evt_block_time') }}
+        AND {{ incremental_predicate('pb.evt_block_time') }}
         {% endif %}              
         ORDER BY 1 DESC
     ),
