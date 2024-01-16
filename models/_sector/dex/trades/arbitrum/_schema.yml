@@ -453,3 +453,20 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('solidlizard_arbitrum_base_trades_seed')
 
+
+  - name: rubicon_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: rubicon
+      contributors: denver, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'rubicon' ]
+    description: "rubicon Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rubicon_arbitrum_base_trades_seed')

@@ -29,6 +29,7 @@
     , ref('chronos_arbitrum_base_trades')
     , ref('zyberswap_arbitrum_base_trades')
     , ref('solidlizard_arbitrum_base_trades')
+    , ref('rubicon_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
