@@ -2,7 +2,7 @@
 
 {{ config(
         schema='balancer_v2_' + blockchain,
-        alias = 'bpt_supply'
+        alias = 'bpt_supply',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
