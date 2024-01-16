@@ -3,13 +3,12 @@
 {{
     config(
         schema='balancer_v2_' + blockchain,
-        alias = 'protocol_fee', 
+        alias = 'bpt_supply'
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['day', 'token_address', 'blockchain'],
+        unique_key = ['day', 'pool_id', 'token_address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
-
     )
 }}
 

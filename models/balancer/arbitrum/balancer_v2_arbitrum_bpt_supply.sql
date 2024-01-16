@@ -1,14 +1,13 @@
 {% set blockchain = 'arbitrum' %}
 
 {{ config(
-    schema = 'balancer_v2_arbitrum',
-    materialized = 'table',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['day', 'pool_id', 'token_address'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
-    alias = 'bpt_supply',
+        schema='balancer_v2_' + blockchain,
+        alias = 'bpt_supply'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'pool_id', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
 
