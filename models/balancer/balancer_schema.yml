@@ -330,11 +330,11 @@ models:
             - blockchain
             - token_address
     columns:
-      - *day
+      - name: day
       - name: pool_type
-      - *version
-      - *blockchain
-      - *token_address
+      - name: version
+      - name: blockchain
+      - name: token_address
       - name: supply
 
   - name: balancer_token_whitelist
