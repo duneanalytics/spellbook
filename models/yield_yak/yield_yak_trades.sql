@@ -1,10 +1,6 @@
 {{ config(
-	    
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","arbitrum"]\',
-                                "project",
-                                "yield_yak",
-                                \'["Henrystats","angus_1"]\') }}'
+	schema = 'yield_yak',
+        alias = 'trades'
         )
 }}
 
@@ -48,4 +44,3 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
