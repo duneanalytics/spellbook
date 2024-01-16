@@ -11,73 +11,7 @@
 {%- set project_start_date = '2021-04-30' %}
 
 
-WITH mints as
-(SELECT tr.contract_address as project_contract_address
-       ,tr.evt_tx_hash as tx_hash
-       ,tr.evt_index
-       ,tr.evt_block_time as block_time
-       ,tr.evt_block_number as block_number
-    --   ,"from"
-    --   ,to
-       ,tr.tokenId as token_id
-       ,NULL as buyer
-       ,NULL as seller
-       ,'Mint' as evt_type
-       ,uint256 '1' AS number_of_items
-       ,NULL as trade_type
-       ,NULL as trade_category
-       ,'BNB' as currency_symbol
-       ,0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as currency_contract
-       ,0x836eb8202d4bc2ed14d1d2861e441c69228155cc AS nft_contract_address -- generic contract address for all nfts on NFTb no individual contract addreses
-       ,_recipient as royalty_fee_receive_address
-        ,uint256 '0' AS amount_raw
-       ,CASE WHEN cardinality(_royaltyAmounts)>1 THEN CAST (10 AS DOUBLE)
-              WHEN cardinality(_royaltyAmounts)=1 THEN CAST (element_at(_royaltyAmounts, 1) AS DOUBLE)
-              ELSE CAST (0 AS DOUBLE)
-              END AS royalty_fee_percentage
-
-FROM {{source('nftb_bnb', 'NFT_evt_Transfer')}} tr
-
-INNER JOIN {{source('nftb_bnb', 'NFT_evt_Mint')}} m
-ON tr.evt_tx_hash=m.evt_tx_hash
-WHERE tr.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-{% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-)
-
-,burns as
-(SELECT tr.contract_address as project_contract_address
-       ,tr.evt_tx_hash as tx_hash
-       ,tr.evt_index
-       ,tr.evt_block_time as block_time
-       ,tr.evt_block_number as block_number
-    --   ,"from"
-    --   ,to
-       ,tokenId as token_id
-       ,NULL as buyer
-       ,NULL as seller
-       ,'Burn' as evt_type
-       ,uint256 '1' AS number_of_items
-       ,NULL as trade_type
-       ,NULL as trade_category
-       ,'BNB' as currency_symbol
-       ,0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as currency_contract
-       ,0x836eb8202d4bc2ed14d1d2861e441c69228155cc AS nft_contract_address  -- generic contract address for all nfts on NFTb no individual contract addreses
-       ,"from" as royalty_fee_receive_address
-       ,uint256 '0' AS amount_raw
-       ,CAST (0 as DOUBLE) as royalty_fee_percentage
-FROM {{source('nftb_bnb', 'NFT_evt_Transfer')}} tr
-WHERE 1=1
-AND to=0x0000000000000000000000000000000000000000
-AND  tr.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-{% if is_incremental() %}
-AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-
-)
-
-,trades as
+WITH trades as
 (SELECT  tr.contract_address as project_contract_address
        ,tr.evt_tx_hash as tx_hash
        ,tr.evt_index
@@ -98,7 +32,7 @@ AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
 
        ,'Trade' as evt_type
        ,uint256 '1' AS number_of_items
-       ,'Single Item Trade' as trade_type
+       ,'secondary' as trade_type
        ,CASE WHEN tr."from"=0xebd4232e4c1999bc9562802eae01b431d5053e65
               THEN 'Auction Settled'
               WHEN tr."from"=0xdc2f08364ebc6cebe0b487fc47823b1e83ce8550
@@ -189,105 +123,35 @@ AND tr.evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 )
 
-,all_events AS
-(SELECT * FROM mints
-UNION ALL
-SELECT * FROM burns
-UNION ALL
-SELECT * FROM trades
-)
-
+base_trades as (
 
 SELECT 'bnb' as blockchain
-      ,'nftb' as project
-      ,'v1' as version
-      ,ae.block_time as block_time
-      ,ae.block_number as block_number
-      ,ae.token_id
-      ,nft_token.name  as collection
-      ,amount_raw
-      ,amount_raw/pow(10,p.decimals) as amount_original
-      ,(amount_raw/pow(10,p.decimals)) * p.price as amount_usd
-      ,CASE
-            WHEN erc721.evt_index IS NOT NULL THEN 'erc721'
-            ELSE 'erc1155'
-        END as token_standard
-        ,ae.trade_type
-        ,ae.number_of_items
-        ,ae.trade_category
-        ,ae.evt_type
-        ,ae.buyer
-        ,ae.seller
-        ,ae.currency_symbol
-        ,ae.currency_contract
-        ,ae.nft_contract_address
-        ,ae.project_contract_address
-
-       , agg.name as aggregator_name
-       , agg.contract_address as aggregator_address
-        ,ae.tx_hash
-        ,btx."from" as tx_from
-        ,btx.to as tx_to
-
-
-        ,CAST (0.1 *(ae.amount_raw -(ae.royalty_fee_percentage/100 * ae.amount_raw)) AS uint256) as platform_fee_amount_raw
-        ,CAST (0.1 * (ae.amount_raw -(ae.royalty_fee_percentage/100 * ae.amount_raw))/POW(10,p.decimals) AS DOUBLE) as platform_fee_amount
-        ,CAST ((0.1 * (ae.amount_raw -(ae.royalty_fee_percentage/100 * ae.amount_raw))/POW(10,p.decimals)) * p.price AS DOUBLE) as platform_fee_amount_usd
-        ,CAST ((0.1 * (ae.amount_raw-(ae.royalty_fee_percentage/100 * ae.amount_raw))/ae.amount_raw) * 100 AS DOUBLE)  as platform_fee_percentage
-
-        ,cast(ae.royalty_fee_percentage/100 * ae.amount_raw as uint256) as royalty_fee_amount_raw
-        ,(ae.royalty_fee_percentage/100 * ae.amount_raw)/pow(10,p.decimals) as royalty_fee_amount
-        ,(ae.royalty_fee_percentage/100 * ae.amount_raw)/pow(10,p.decimals) * p.price as royalty_fee_amount_usd
-        ,ae.royalty_fee_percentage
-        ,'BNB' as royalty_fee_currency_symbol
-        ,COALESCE(ae.royalty_fee_receive_address,ae.seller) as royalty_fee_receive_address
-        ,ae.evt_index
-        ,'bnb-nftb-v1' || '-' || cast(ae.block_number as varchar) || '-' || cast(ae.tx_hash as varchar) || '-' ||  cast(ae.evt_index as varchar) AS unique_trade_id
-FROM all_events ae
-
-INNER JOIN {{ source('bnb','transactions') }} btx
-ON btx.block_time = ae.block_time
-AND btx.hash = ae.tx_hash
-{% if not is_incremental() %}
-AND btx.block_time >= TIMESTAMP '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND btx.block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-
-LEFT JOIN {{ source('prices','usd') }} p
-ON p.blockchain = 'bnb'
-AND p.minute = date_trunc('minute', ae.block_time)
-AND p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
-{% if not is_incremental() %}
-AND p.minute >= TIMESTAMP '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND p.minute >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-
-LEFT JOIN {{ source('erc721_ethereum','evt_transfer') }} erc721
-ON erc721.evt_block_time = ae.block_time
-AND erc721.evt_tx_hash = ae.tx_hash
-AND erc721.contract_address = ae.nft_contract_address
-AND erc721.tokenId = ae.token_id
-AND erc721.to = ae.buyer
-{% if not is_incremental() %}
-AND erc721.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-{% endif %}
-{% if is_incremental() %}
-AND erc721.evt_block_time >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-
-
-LEFT JOIN {{ ref('tokens_bnb_nft') }} nft_token
-ON nft_token.contract_address = ae.nft_contract_address
-
-LEFT JOIN {{ ref('nft_bnb_aggregators')}} agg
-ON agg.contract_address = btx."to"
-
-
-
+    ,'nftb' as project
+    ,'v1' as project_version
+    ,ae.block_time as block_time
+    ,cast(date_trunc('day', ae.block_time) as date) as block_date,
+    ,cast(date_trunc('month', ae.block_time) as date) as block_month,
+    ,ae.block_number as block_number
+    ,ae.token_id as nft_token_id
+    ,amount_raw as price_raw
+    ,ae.trade_type
+    ,ae.number_of_items as nft_amount
+    ,ae.trade_category
+    ,ae.buyer
+    ,ae.seller
+    ,ae.currency_contract
+    ,ae.nft_contract_address
+    ,ae.project_contract_address
+    ,ae.tx_hash
+    ,CAST (0.1 *(ae.amount_raw -(ae.royalty_fee_percentage/100 * ae.amount_raw)) AS uint256) as platform_fee_amount_raw
+    ,cast(ae.royalty_fee_percentage/100 * ae.amount_raw as uint256) as royalty_fee_amount_raw
+    ,COALESCE(ae.royalty_fee_receive_address,ae.seller) as royalty_fee_address
+    ,cast(null as varbinary) as platform_fee_address
+    ,ae.evt_index as sub_tx_trade_id
+FROM trades ae
+)
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'bnb') }}
 
 
 
