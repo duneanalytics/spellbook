@@ -1,5 +1,5 @@
 {{ config(
-    
+
     alias = 'mints',
     schema = 'nft',
     partition_by = ['block_month'],
@@ -17,14 +17,14 @@
 {% set native_mints = [
  ref('nft_ethereum_native_mints')
 ,ref('nft_optimism_native_mints')
+,ref('nft_base_native_mints')
+,ref('nft_zora_native_mints')
 ] %}
 
 
 {% set project_mints = [
- ref('nftb_bnb_events')
-,ref('opensea_v1_ethereum_events')
+ ref('opensea_v1_ethereum_events')
 ,ref('magiceden_solana_events')
-,ref('stealcam_arbitrum_events')
 ] %}
 
 WITH project_mints as

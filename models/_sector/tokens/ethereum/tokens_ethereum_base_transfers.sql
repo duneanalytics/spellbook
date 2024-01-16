@@ -10,7 +10,6 @@
         )
 }}
 
--- TODO: use variable for native_contract_address
 {{transfers_base(
     blockchain='ethereum',
     traces = source('ethereum','traces'),
@@ -20,6 +19,7 @@
 )}}
 
 UNION ALL
+
 SELECT * FROM
 (
 {{transfers_base_wrapped_token(

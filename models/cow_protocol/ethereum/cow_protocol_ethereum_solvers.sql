@@ -101,6 +101,8 @@ known_solver_metadata (address, environment, name) as (
                  (0xFf662Eedb413273B6727e1F59755607CA6876044, 'prod', 'OpenOcean_Aggregator'),
                  (0xBEAf89aEc78A2990BE29E2a317feed6B75Bc78Cd, 'prod', 'Quasimodo'),
                  (0x16C473448E770Ff647c69CBe19e28528877fba1B, 'prod', 'Copium_Capital'),
+                 (0x4FC4a61a3b99A1ad4A61b03f3752CA12B4A17646, 'prod', 'Rizzolver'),
+                 (0x2854C9A92cd1dC65BdDF45aFE397D9d75D4718C8, 'barn', 'Rizzolver'),
                  (0x8E8C00aD7011AabEa0E06e984cfA7194CF8b16b0, 'barn', 'Copium_Capital'),
                  (0xaaC451d13cF8D6915f859f4c7Bc26dA2df10ECA6, 'barn', 'Quasimodo'),
                  (0x9902F0B57b6B8b2Fa7339Cd3eFe0710CF63c86d6, 'barn', 'OpenOcean_Aggregator'),

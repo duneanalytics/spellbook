@@ -22,3 +22,7 @@ sources:
       - name: RFQv1_evt_FillOrder
         loaded_at_field: evt_block_time
         description: 'Tokenlon V5 RFQv1 swapped Event'
+
+      - name: RFQv2_evt_FilledRFQ
+        loaded_at_field: evt_block_time
+        description: 'Tokenlon V5 RFQv2 swapped Event'

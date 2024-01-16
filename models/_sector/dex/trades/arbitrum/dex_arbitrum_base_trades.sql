@@ -7,6 +7,25 @@
 
 {% set base_models = [
     ref('uniswap_v3_arbitrum_base_trades')
+    , ref('camelot_v2_arbitrum_base_trades')
+    , ref('camelot_v3_arbitrum_base_trades')
+    , ref('airswap_arbitrum_base_trades')
+    , ref('sushiswap_v1_arbitrum_base_trades')
+    , ref('sushiswap_v2_arbitrum_base_trades')
+    , ref('arbswap_arbitrum_base_trades')
+    , ref('trader_joe_v2_arbitrum_base_trades')
+    , ref('trader_joe_v2_1_arbitrum_base_trades')
+    , ref('pancakeswap_v2_arbitrum_base_trades')
+    , ref('pancakeswap_v3_arbitrum_base_trades')
+    , ref('balancer_v2_arbitrum_base_trades')
+    , ref('dodo_arbitrum_base_trades')
+    , ref('gmx_arbitrum_base_trades')
+    , ref('integral_arbitrum_base_trades')
+    , ref('kyberswap_arbitrum_base_trades')
+    , ref('clipper_arbitrum_base_trades')
+    , ref('ramses_arbitrum_base_trades')
+    , ref('xchange_arbitrum_base_trades')
+    , ref('rubicon_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

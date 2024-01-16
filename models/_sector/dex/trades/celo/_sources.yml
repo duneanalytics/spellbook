@@ -19,3 +19,6 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UbeswapFactory_evt_PairCreated
+  - name: carbonhood_celo
+    tables:
+      - name: Router_evt_Swap

@@ -1,10 +1,9 @@
-{{ config(
-        schema = 'tokens_ethereum',
-        alias = 'transfers',
-        materialized = 'view',
-    )
+{{config(
+    schema = 'tokens_ethereum',
+    alias = 'transfers',
+    materialized = 'view',
+)
 }}
-
 
 {{transfers_enrich(
     blockchain='ethereum',

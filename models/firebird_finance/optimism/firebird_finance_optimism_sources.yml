@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: firebird_finance_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on firebird_finance
+    tables:
+      - name: FireBirdRouter_evt_Swapped
+        loaded_at_field: evt_block_time

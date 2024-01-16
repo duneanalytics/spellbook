@@ -18,6 +18,7 @@ models:
             - dao_creator_tool
             - dao
             - dao_wallet_address
+            - block_month
     columns:
       - &blockchain
         name: blockchain
@@ -63,6 +64,7 @@ models:
             - dao_creator_tool
             - dao
             - dao_wallet_address
+            - block_month
     columns:
       - *blockchain
       - name: dao_creator_tool

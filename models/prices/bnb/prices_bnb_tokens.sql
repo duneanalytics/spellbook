@@ -6,7 +6,7 @@
         tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , blockchain
     , symbol
@@ -25,7 +25,6 @@ FROM
     ('ankr-ankr-network', 'bnb', 'ANKR', 0xf307910a4c7bbc79691fd374889b36d8531b08e3, 18),
     ('atom-cosmos', 'bnb', 'ATOM', 0x0eb3a705fc54725037cc9e008bdede697f62f335, 18),
     ('auto-auto', 'bnb', 'AUTO', 0x1cff458b364d0d328d4c9d59d10be7d22d01953d, 18),
-    ('axlusdc-axelar-usd-coin', 'bnb', 'axlUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3, 6),
     ('axs-axie-infinity', 'bnb', 'AXS', 0x715d400f88c167884bbcc41c5fea407ed4d2f8a0, 18),
     ('banana-apeswap-finance', 'bnb', 'BANANA', 0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95, 18),
     ('bat-basic-attention-token', 'bnb', 'BAT', 0x101d82428437127bF1608F699CD651e6Abf9766E, 18),
@@ -153,7 +152,6 @@ FROM
     ('gst-gunstar-metaverse', 'bnb', 'GST', 0x4a2c860cec6471b9f5f5a336eb4f38bb21683c98, 18),
     ('bsw-biswap', 'bnb', 'BSW', 0x965f527d9159dce6288a2219db51fc6eef120dd1, 18),
     ('mines-of-dalarnia-dar','bnb', 'DAR', 0x23ce9e926048273ef83be0a3a8ba9cb6d45cd978, 6),
-    ('chr-chroma', 'bnb', 'CHR', 0xf9cec8d50f6c8ad3fb6dccec577e05aa32b224fe,6),
     ('fgd-freedom-god-dao', 'bnb', 'FGD', 0x0566b9a8ffb8908682796751eed00722da967be0, 18),
     ('twt-trust-wallet-token','bnb', 'TWT', 0x4b0f1812e5df2a09796481ff14017e6005508003, 18),
     ('bfg-betfury', 'bnb' ,'BFG' ,0xbb46693ebbea1ac2070e59b4d043b47e2e095f86 ,18),
@@ -205,7 +203,8 @@ FROM
     ('ankrbnb-ankr-staked-bnb', 'bnb', 'ankrBNB', 0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827, 18),
     ('joyg-kismet-joy-gold', 'bnb', 'JOYG', 0xe63c37e50a045c247b5003e24ba066f1cc3f0ff3, 8),
     ('gft-galaxy-finance', 'bnb', 'GFT', 0xe77932b1216125848e82c3967e75698362168f99, 18),
-    ('snbnb-synclub-staked-bnb', 'bnb', 'SnBNB', 0xb0b84d294e0c75a6abe60171b70edeb2efd14a1b, 18)
+    ('snbnb-synclub-staked-bnb', 'bnb', 'SnBNB', 0xb0b84d294e0c75a6abe60171b70edeb2efd14a1b, 18),
+    ('gmt-stepn', 'bnb', 'GMT', 0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1, 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.

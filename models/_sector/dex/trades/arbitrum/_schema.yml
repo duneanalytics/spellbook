@@ -1,6 +1,8 @@
 version: 2
 
 models:
+  - name: dex_arbitrum_base_trades
+
   - name: uniswap_v3_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -15,5 +17,388 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            
-  - name: dex_arbitrum_base_trades
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_arbitrum_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: sushiswap_v1_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['arbitrum', 'dex', 'trades', 'sushiswap', 'v1']
+    description: "Sushiswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_arbitrum_base_trades_seed')
+          filter:
+            version: 1
+
+    
+  - name: sushiswap_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: ['arbitrum', 'dex', 'trades', 'sushiswap', 'v2']
+    description: "Sushiswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: airswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: airswap
+      contributors: tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'airswap' ]
+    description: "Airswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('airswap_arbitrum_base_trades_seed')
+
+
+  - name: camelot_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: camelot
+      contributors: ytoast, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'camelot', 'uniswap', 'v2' ]
+    description: "Camelot Arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('camelot_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: camelot_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: camelot
+      contributors: whale_hunter, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'camelot', 'uniswap', 'v3' ]
+    description: "Camelot Arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('camelot_arbitrum_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: arbswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: arbswap
+      contributors: chrispearcx, hosuke, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'arbswap' ]
+    description: "Arbswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('arbswap_arbitrum_base_trades_seed')
+
+
+  - name: trader_joe_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: trader_joe
+      contributors: hsrvc, pecio222, hosuke
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2' ]
+    description: "Trader Joe arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: trader_joe_v2_1_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+    description: "Trader Joe arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_arbitrum_base_trades_seed')
+          filter:
+            version: 2.1
+
+
+  - name: pancakeswap_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap Arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: balancer_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: pancakeswap_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+    description: "Pancakeswap Arbitrum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: dodo_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: dodo
+      contributors: owen05, scoffie, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'dodo' ]
+    description: "Dodo Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dodo_arbitrum_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2_dvm
+              - 2_dpp
+              - 2_dsp
+
+
+  - name: gmx_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'gmx' ]
+    description: "GMX Arbitrum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gmx_arbitrum_base_trades_seed')
+
+
+  - name: integral_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: integral
+      contributors: integralhq, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'integral', 'uniswap', 'v2' ]
+    description: "Integral Arbitrum v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('integral_arbitrum_base_trades_seed')
+
+
+  - name: clipper_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: clipper
+      contributors: 0xRob, amalashkevich, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'clipper' ]
+    description: "clipper Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_arbitrum_base_trades_seed')
+          filter:
+            version:
+              - coves1
+              - coves2
+              - 1
+              - 2
+
+
+  - name: kyberswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: kyberswap
+      contributors: ppclunghe, gregshestakovlido, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_arbitrum_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic
+              - elastic_2
+
+
+  - name: xchange_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: xchange
+      contributors: mike-x7f, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+    description: "xchange Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xchange_arbitrum_base_trades_seed')
+
+
+  - name: ramses_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: ramses
+      contributors: echovl, discochuck
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'ramses', 'uniswap', 'v2' ]
+    description: "Ramses Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ramses_arbitrum_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2
+
+
+  - name: rubicon_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: rubicon
+      contributors: denver, tomfutago
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'rubicon' ]
+    description: "rubicon Arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rubicon_arbitrum_base_trades_seed')

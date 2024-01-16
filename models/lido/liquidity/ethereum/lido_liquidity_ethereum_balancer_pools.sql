@@ -80,7 +80,8 @@ values
 (0xE0FCBF4D98F0AD982DB260F86CF28B49845403C5000000000000000000000504, 0xE0FCBF4D98F0AD982DB260F86CF28B49845403C5),
 (0x5F1F4E50BA51D723F12385A8A9606AFC3A0555F5000200000000000000000465, 0x5F1F4E50BA51D723F12385A8A9606AFC3A0555F5),
 (0x25ACCB7943FD73DDA5E23BA6329085A3C24BFB6A000200000000000000000387, 0x25ACCB7943FD73DDA5E23BA6329085A3C24BFB6A),
-(0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd0000000000000000000005c2, 0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd)
+(0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd0000000000000000000005c2, 0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd),
+(0x54ca50ee86616379420cc56718e12566aa75abbe000200000000000000000610, 0x54ca50ee86616379420cc56718e12566aa75abbe)
               
 )
 
@@ -137,7 +138,19 @@ from (
     order by 1 desc
 )
 
+, wusdm_rate as (
+    select 
+        date_trunc('day', evt_block_time) as time, 
+        avg(CAST(value AS DOUBLE))/POW(10,18) as rate
+    from {{source('mountain_ethereum','USDM_evt_RewardMultiplier')}}
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
     
+    GROUP BY 1
+)    
 
 , tokens_prices_daily AS (
     SELECT distinct
@@ -229,6 +242,21 @@ SELECT distinct
     and blockchain = 'ethereum'
      and contract_address = 0xdac17f958d2ee523a2206206994597c13d831ec7
     group by 1,2,3,4
+union all
+SELECT distinct
+        DATE_TRUNC('day', time) AS time,
+        0x57F5E098CaD7A3D1Eed53991D4d66C45C9AF7812 as token,
+        'wUSDM',
+        18,
+        avg(r.rate) AS price
+    FROM wusdm_rate r 
+    {% if not is_incremental() %}
+    WHERE DATE_TRUNC('day', r.time) >= DATE '{{ project_start_date }}'
+    {% else %}
+    WHERE DATE_TRUNC('day', r.time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    {% endif %}
+    group by 1,2,3,4
+
     
     
 )

@@ -6,7 +6,7 @@
         tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , blockchain
     , symbol
@@ -17,7 +17,6 @@ FROM
     VALUES
 
     ('aave-new','avalanche_c','AAVE.e',0x63a72806098bd3d9520cc43356dd78afe5d386d9,18),
-    ('axlusdc-axelar-usd-coin', 'avalanche_c', 'axlUSDC', 0xfab550568c688d5d8a52c7d794cb93edc26ec0ec, 6),
     ('axlusdt-axelar-usd-tether', 'avalanche_c', 'axlUSDT', 0xf976ba91b6bb3468c91e4f02e68b37bc64a57e66, 6),
     ('axlatom-axelar-wrapped-atom', 'avalanche_c', 'axlATOM', 0x80d18b1c9ab0c9b5d6a6d5173575417457d00a12, 6),
     ('frax-frax', 'avalanche_c', 'FRAX', 0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64, 18),
@@ -32,8 +31,8 @@ FROM
     ('weth-weth', 'avalanche_c', 'WETH.e', 0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab, 18),
     ('btcb-bitcoin-avalanche-bridged-btcb', 'avalanche_c', 'BTC.b', 0x152b9d0fdc40c096757f570a51e494bd4b943e50,8),
     ('woo-wootrade', 'avalanche_c', 'WOO.e', 0xabc9547b534519ff73921b1fba6e672b5f58d083, 18),
-    ('usdte-tether-usde', 'avalanche_c', 'USDT.e', 0xc7198437980c041c805a1edcba50c1ce5db95118, 6),
-    ('usdce-usd-coine', 'avalanche_c', 'USDC.e', 0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664, 6),
+    ('usdt-tether', 'avalanche_c', 'USDT.e', 0xc7198437980c041c805a1edcba50c1ce5db95118, 6),
+    ('usdc-usd-coin', 'avalanche_c', 'USDC.e', 0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664, 6),
     ('savax-benqi-liquid-staked-avax', 'avalanche_c', 'sAVAX', 0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be, 18),
     ('mimatic-mimatic', 'avalanche_c', 'MIMATIC', 0x3b55e45fd6bd7d4724f5c47e0d1bcaedd059263e, 18),
     ('mim-magic-internet-money','avalanche_c','MIM',0x130966628846bfd36ff31a822705796e8cb8c18d,18),
@@ -50,6 +49,6 @@ FROM
     ('ust-terrausd-wormhole', 'avalanche_c', 'UST', 0xb599c3590f42f8f995ecfa0f85d2980b76862fc1, 6),
     ('ico-axelar', 'avalanche_c', 'AXL', 0x44c784266cf024a60e8acf2427b9857ace194c5d, 6),
     ('grain-granary','avalanche_c','GRAIN',0x9df4ac62f9e435dbcd85e06c990a7f0ea32739a9,18),
-    ('oath-oath','avalanche_c','OATH',0x2c69095d81305f1e3c6ed372336d407231624cea,18)
-    
+    ('oath-oath','avalanche_c','OATH',0x2c69095d81305f1e3c6ed372336d407231624cea,18),
+    ('fld-fold','avalanche_c','FLD',0x88F89BE3E9b1dc1C5F208696fb9cABfcc684bD5F,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

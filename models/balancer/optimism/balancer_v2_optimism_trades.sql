@@ -1,6 +1,5 @@
 {{ config(
     schema = 'balancer_v2_optimism',
-    
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',

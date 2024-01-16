@@ -8,7 +8,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - Don't know where to start? The docs below will guide you, but as a summary:
   - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes. 
     - Follow the guide for [Submitting a PR](), [Setting up your dev environment]() and [Using dbt to write spells]() if you find yourself lost.
-    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/data-tables/spellbook/contributing/).
+    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/spellbook/).
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
   - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
@@ -45,7 +45,7 @@ Spellbook is built for and by the community, you are welcome to close any gaps t
 - **Propose** changes to spellbook - [Discussions](https://github.com/duneanalytics/spellbook/discussions) are where we bring up, challenge and develop ideas to continue building spellbook. If you want to make a major change to a spell (e.g. major overhaul to a sector, launching a new sector, designing a new organic volume filter, etc.).
 
 ### Submitting a PR
-Want to get right to work? Follow the guide [here](https://dune.com/docs/data-tables/spellbook/contributing/#7-steps-to-adding-a-spell) to get started.
+Want to get right to work? Follow the guide [here](https://dune.com/docs/spellbook/?h=7+steps+adding+a+spell) to get started.
 
 ### Testing your spell
 You don't need a complex local setup to test spells against Dune's engine. Once you send a PR, our CI pipeline will run and test it, and, if the job finishes successfully, you'll be able to query the data your PR created directly from dune.com.
@@ -94,7 +94,7 @@ pipenv install
 If the install fails, one likely reason is our script looks for a static python version and the likelihood of an error for a wrong python version is pretty high. If that error occurs, check your python version with:
 
 ```console
-py --version
+python --version
 ```
 
 Now use any text editor program to change the python version in the pipfile within the spellbook directory to your python version. You need to have at least python 3.9.

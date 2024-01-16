@@ -1,0 +1,12 @@
+version: 2
+
+sources: 
+
+  - name: attestationstation_v1_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for created Attestations
+    tables:
+      - name: EAS_evt_Attested
+        loaded_at_field: evt_block_time

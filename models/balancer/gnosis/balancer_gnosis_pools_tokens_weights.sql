@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'balancer_gnosis',
         alias = 'pools_tokens_weights',
         
         )
@@ -8,6 +9,7 @@ SELECT *
 FROM
 (
         SELECT
+                blockchain,
                 pool_id,
                 token_address,
                 normalized_weight

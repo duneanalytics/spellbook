@@ -31,32 +31,6 @@ sources:
           - name: specialization
             description: 'Pool specialization'
 
-      - name: Vault_evt_Swap
-        description: >
-          Decoded table related to the contracts emitted by swaps in Balancer V2 pools.
-        loaded_at_field: evt_block_time
-        columns:
-          - name: contract_address
-            description: 'Balancer Vault contract address'
-          - name: evt_tx_hash
-            description: 'Transaction hash of the event'
-          - name: evt_index
-            description: 'Event index'
-          - name: evt_block_time
-            description: 'Timestamp for block event time in UTC'
-          - name: evt_block_number
-            description: 'Event block number'
-          - name: poolId
-            description: 'Balancer pool contract address'
-          - name: tokenIn
-            description: 'Contract address of the token provided to the pool'
-          - name: tokenOut
-            description: 'Contract address of the token bought from the pool'
-          - name: amountIn
-            description: 'Raw amount of the token provided to the pool'
-          - name: amountOut
-            description: 'Raw amount of the token bought from the pool'
-
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
