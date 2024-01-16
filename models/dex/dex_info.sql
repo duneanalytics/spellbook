@@ -94,7 +94,6 @@ FROM (VALUES
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
-    , ('fraxswap', 'Fraxswap', 'Direct', 'fraxfinance')
     , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
     , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
     , ('solidlizard', 'SolidLizard', 'Direct', 'solidlizardfi')
