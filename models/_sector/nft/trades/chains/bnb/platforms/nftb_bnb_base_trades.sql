@@ -129,8 +129,8 @@ SELECT 'bnb' as blockchain
     ,'nftb' as project
     ,'v1' as project_version
     ,ae.block_time as block_time
-    ,cast(date_trunc('day', ae.block_time) as date) as block_date,
-    ,cast(date_trunc('month', ae.block_time) as date) as block_month,
+    ,cast(date_trunc('day', ae.block_time) as date) as block_date
+    ,cast(date_trunc('month', ae.block_time) as date) as block_month
     ,ae.block_number as block_number
     ,ae.token_id as nft_token_id
     ,amount_raw as price_raw
