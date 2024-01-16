@@ -1,4 +1,8 @@
-{{ config( alias = 'erc20', tags=['static'])}}
+{{ config(
+    alias = 'erc20'
+    , schema = 'tokens_goerli'
+    , tags=['static']
+)}}
 
 SELECT contract_address as contract_address, symbol, decimals
 FROM (VALUES

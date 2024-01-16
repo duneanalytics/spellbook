@@ -1,8 +1,9 @@
-{{ config(schema = 'tokens_goerli',
-        alias = 'nft_curated',
-        tags=['static']
-        )
-}}
+{{ config(
+    schema = 'tokens_goerli',
+    alias = 'nft_curated',
+    tags=['static']
+
+)}}
 
 SELECT
   contract_address, name, symbol

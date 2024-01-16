@@ -1,11 +1,10 @@
 {{ config(
     schema = 'nftrade_bnb',
-    alias = 'events',
-    
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index']
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id']
     )
 }}
 
@@ -89,92 +88,37 @@ source_inventory_enriched as (
     source_inventory src
 )
 
+, base_trades as (
     SELECT
         'bnb' as blockchain,
         'nftrade' as project,
-        'v1' as version,
+        'v1' as project_version,
         src.evt_block_time as block_time,
+        cast(date_trunc('day', src.evt_block_time) as date) as block_date,
+        cast(date_trunc('month', src.evt_block_time) as date) as block_month,
         src.evt_block_number as block_number,
-        src.token_id,
-        nft_token.name as collection,
-        src.amount_raw,
-        src.amount_original,
-        src.amount_original * p.price as amount_usd,
-        CASE
-            WHEN erc721.evt_index IS NOT NULL THEN 'erc721'
-            ELSE 'erc1155'
-        END as token_standard,
-        'Single Item Trade' as trade_type,
-        uint256 '1' AS number_of_items,
+        src.token_id as nft_token_id,
+        src.amount_raw as price_raw,
+        'secondary' as trade_type,
+        uint256 '1' AS nft_amount,
         src.trade_category,
-        'Trade' as evt_type,
         src.buyer,
         src.seller,
-        'BNB' as currency_symbol,
         0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c as currency_contract,
         src.nft_contract_address,
         src.contract_address as project_contract_address,
-        agg.name as aggregator_name,
-        agg.contract_address as aggregator_address,
         src.evt_tx_hash as tx_hash,
-        btx."from" as tx_from,
-        btx.to as tx_to,
         CAST(src.protocol_fees_raw AS uint256) as platform_fee_amount_raw,
-        CAST(src.protocol_fees AS DOUBLE) as platform_fee_amount,
-        CAST(src.protocol_fees * p.price AS DOUBLE) as platform_fee_amount_usd,
-        CAST(src.platform_fee_percentage AS DOUBLE) as platform_fee_percentage,
         CAST(src.royalty_fees_raw  AS uint256) as royalty_fee_amount_raw,
-        src.royalty_fees as royalty_fee_amount,
-        src.royalty_fees * p.price as royalty_fee_amount_usd,
-        CAST(src.royalty_fee_percentage AS DOUBLE) as royalty_fee_percentage,
-        'BNB' as royalty_fee_currency_symbol,
-        royalties_address as royalty_fee_receive_address,
-        src.evt_index,
-        'bnb-nftrade-v1' || '-' || cast(src.evt_block_number as varchar) || '-' || cast(src.evt_tx_hash as varchar) || '-' ||  cast(src.evt_index as varchar) AS unique_trade_id
-    FROM
-    source_inventory_enriched src
-    INNER JOIN
-    {{ source('bnb','transactions') }} btx
-        ON btx.block_time = src.evt_block_time
-        AND btx.hash = src.evt_tx_hash
-        {% if not is_incremental() %}
-        AND btx.block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND btx.block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-    LEFT JOIN
-    {{ ref('tokens_bnb_nft') }} nft_token
-        ON nft_token.contract_address = src.nft_contract_address
-    LEFT JOIN
-    {{ source('prices','usd') }} p
-        ON p.blockchain = 'bnb'
-        AND p.minute = date_trunc('minute', src.evt_block_time)
-        AND p.contract_address = 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
-        {% if not is_incremental() %}
-        AND p.minute >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND p.minute >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
-    LEFT JOIN
-    {{ ref('nft_bnb_aggregators') }} agg
-        ON agg.contract_address = src.sender_address
-    LEFT JOIN
-    {{ source('erc721_bnb','evt_transfer') }} erc721
-        ON erc721.evt_block_time = src.evt_block_time
-        AND erc721.evt_tx_hash = src.evt_tx_hash
-        AND erc721.contract_address = src.nft_contract_address
-        AND erc721.tokenId = src.token_id
-        AND erc721.to = src.buyer
-        {% if not is_incremental() %}
-        AND erc721.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-        AND erc721.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+        royalties_address as royalty_fee_address,
+        cast(null as varbinary) as platform_fee_address,
+        src.evt_index as sub_tx_trade_id
+    FROM source_inventory_enriched src
 
+)
 
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'bnb') }}
 
 
 
