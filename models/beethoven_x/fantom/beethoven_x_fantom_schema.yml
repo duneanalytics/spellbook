@@ -19,10 +19,6 @@ models:
               - version
               - tx_hash
               - evt_index
-      - check_dex_seed:
-          blockchain: fantom
-          project: beethoven_x
-          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -149,3 +145,49 @@ models:
         description: 'Liquidity of the token in the pool in USD, except BPTs'
       - name: protocol_liquidity_eth
         description: 'Liquidity of the token in the pool in ETH, except BPTs'
+
+  - name: beethoven_x_fantom_pools_fees
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: jacektrocinski, thetroyharris, tomfutago
+    config:
+      tags: ['fantom', 'balancer', 'pools_fees']
+    description: >
+      Beethoven X swap fees stored at the pool level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - &contract_address
+        name: contract_address
+        description: 'fantom address for the liquidity pool used in transaction'
+        tests:
+          - not_null
+      - *tx_hash
+      - &index
+        name: index
+        description: ''
+        tests:
+          - not_null
+      - &tx_index
+        name: tx_index
+        description: ''
+        tests:
+          - not_null
+      - *block_time
+      - &block_number
+        name: block_number
+        description: 'Block number'
+        tests:
+          - not_null
+      - &swap_fee_percentage
+        name: swap_fee_percentage
+        description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
+        tests:
+          - not_null
+
