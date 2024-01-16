@@ -23,7 +23,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref('balancer_tranfers_bpt') }} t
+        FROM  {{ ref('balancer_v2_' + blockchain, '_transfers_bpt') }} t
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_date') }}
