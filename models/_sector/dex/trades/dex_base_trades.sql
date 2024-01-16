@@ -24,6 +24,7 @@
     , ref('dex_zksync_base_trades')
 ] %}
 
+
 with base_union as (
     SELECT *
     FROM
