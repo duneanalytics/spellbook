@@ -1,47 +1,46 @@
-{% macro enrich_social_trades(blockchain, base_trades_models, raw_transactions) %}
+{% macro enrich_social_trades(base_trades) %}
 
-
-{% for base_trades_model in base_trades_models %}
-SELECT '{{ blockchain }}' AS blockchain
-, CAST(date_trunc('month', t.block_time) AS date) AS block_month
-, t.block_time
-, t.block_number
-, t.project
-, t.trader
-, t.subject
-, txs."from" AS tx_from
-, txs.to AS tx_to
-, t.trade_side
-, t.amount_original
-, t.amount_original*pu.price AS amount_usd
-, t.share_amount
-, t.subject_fee_amount
-, t.subject_fee_amount*pu.price AS subject_fee_amount_usd
-, t.protocol_fee_amount
-, t.protocol_fee_amount*pu.price AS protocol_fee_amount_usd
-, t.currency_contract
-, CASE WHEN t.currency_contract=0x0000000000000000000000000000000000000000 THEN info.native_token_symbol ELSE tok.symbol END AS currency_symbol
-, t.supply
-, t.tx_hash
-, t.evt_index
-, t.contract_address
-FROM {{ base_trades_model }} t
-INNER JOIN {{raw_transactions}} txs ON txs.block_number=t.block_number
-    AND  txs.hash=t.tx_hash
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('t.block_time') }}
-    AND {{ incremental_predicate('txs.block_time') }}
-    {% endif %}
-INNER JOIN {{ref('evms_info')}} info ON info.blockchain='{{ blockchain }}'
-LEFT JOIN {{ref('tokens_erc20')}} tok ON tok.blockchain='{{ blockchain }}'
-    AND tok.contract_address=t.currency_contract
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{ blockchain }}'
-    AND (pu.contract_address=info.wrapped_native_token_address
-    AND pu.minute = date_trunc('minute', t.block_time)
+SELECT 
+    t.blockchain AS blockchain
+    , CAST(date_trunc('month', t.block_time) AS date) AS block_month
+    , t.block_time
+    , t.block_number
+    , t.project
+    , t.trader
+    , t.subject
+    , t.trade_side
+    , t.amount_original
+    , t.amount_original * pu.price AS amount_usd
+    , t.share_amount
+    , t.subject_fee_amount
+    , t.subject_fee_amount * pu.price AS subject_fee_amount_usd
+    , t.protocol_fee_amount
+    , t.protocol_fee_amount * pu.price AS protocol_fee_amount_usd
+    , t.currency_contract
+    , CASE WHEN t.currency_contract=0x0000000000000000000000000000000000000000 THEN info.native_token_symbol ELSE tok.symbol END AS currency_symbol
+    , t.supply
+    , t.tx_hash
+    , t.evt_index
+    , t.contract_address
+FROM {{ base_trades }} t
+INNER JOIN {{ref('evms_info')}} info
+    ON info.blockchain = t.blockchain
+LEFT JOIN {{ref('tokens_erc20')}} tok
+    ON tok.blockchain = t.blockchain
+    AND tok.contract_address = t.currency_contract
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu
+    ON pu.blockchain = t.blockchain
+    AND (
+        pu.contract_address=info.wrapped_native_token_address
+        AND pu.minute = date_trunc('minute', t.block_time)
         )
-    {% if not loop.last %}
-    UNION ALL
+    {% if is_incremental() %}
+    AND
+        {{ incremental_predicate('pu.minute') }}
     {% endif %}
-    {% endfor %}
+{% if is_incremental() %}
+WHERE
+    {{ incremental_predicate('t.block_time') }}
+{% endif %}
 
 {% endmacro %}

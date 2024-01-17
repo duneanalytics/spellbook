@@ -1,14 +1,13 @@
 version: 2
 
 models:
-  - name: social_trades
+  - name: social_base_trades
     meta:
-      blockchain: base
+      blockchain: base, avalanche_c, arbitrum, bnb
       sector: social
       contributors: hildobby
     config:
       tags: ['table', 'social', 'base', 'trades', 'friend_tech']
-    description: "friend.tech basic trades info"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,9 +18,6 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - &block_month
-        name: block_month
-        description: "Block month of transaction"
       - &block_time
         name: block_time
         description: "Block time of transaction"
@@ -43,24 +39,15 @@ models:
       - &amount_original
         name: amount_original
         description: "Amount of traded currency"
-      - &amount_usd
-        name: amount_usd
-        description: "Amount in USD"
       - &share_amount
         name: share_amount
         description: "Amout of shares"
       - &subject_fee_amount
         name: subject_fee_amount
         description: "Subject fee amount"
-      - &subject_fee_amount_usd
-        name: subject_fee_amount_usd
-        description: "Subject fee amount in USD"
       - &protocol_fee_amount
         name: protocol_fee_amount
         description: "Protocol fee amount"
-      - &protocol_fee_amount_usd
-        name: protocol_fee_amount_usd
-        description: "Protocol fee amount in USD"
       - &currency_contract
         name: currency_contract
         description: "Currency contract"
@@ -79,6 +66,50 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract addressed used"
+
+  - name: social_trades
+    meta:
+      blockchain: base, avalanche_c, arbitrum, bnb
+      sector: social
+      contributors: hildobby
+    config:
+      tags: ['table', 'social', 'base', 'trades', 'friend_tech']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - &block_month
+        name: block_month
+        description: "Block month of transaction"
+      - *block_time
+      - *block_number
+      - *project
+      - *trader
+      - *subject
+      - *trade_side
+      - *amount_original
+      - &amount_usd
+        name: amount_usd
+        description: "Amount in USD"
+      - *share_amount
+      - *subject_fee_amount
+      - &subject_fee_amount_usd
+        name: subject_fee_amount_usd
+        description: "Subject fee amount in USD"
+      - *protocol_fee_amount
+      - &protocol_fee_amount_usd
+        name: protocol_fee_amount_usd
+        description: "Protocol fee amount in USD"
+      - *currency_contract
+      - *currency_symbol
+      - *supply
+      - *tx_hash
+      - *evt_index
+      - *contract_address
 
   - name: social_info
     meta:

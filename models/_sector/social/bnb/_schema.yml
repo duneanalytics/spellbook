@@ -71,7 +71,7 @@ models:
         name: contract_address
         description: "Contract addressed used"
 
-  - name: social_bnb_trades
+  - name: social_bnb_base_trades
     meta:
       blockchain: bnb
       sector: social
@@ -100,18 +100,9 @@ models:
         description: "Transaction to address"
       - *trade_side
       - *amount_original
-      - &amount_usd
-        name: amount_usd
-        description: "Amount in USD"
       - *share_amount
       - *subject_fee_amount
-      - &subject_fee_amount_usd
-        name: subject_fee_amount_usd
-        description: "Subject fee amount in USD"
       - *protocol_fee_amount
-      - &protocol_fee_amount_usd
-        name: protocol_fee_amount_usd
-        description: "Protocol fee amount in USD"
       - *currency_contract
       - *currency_symbol
       - *supply

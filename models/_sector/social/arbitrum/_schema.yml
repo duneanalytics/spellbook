@@ -105,14 +105,14 @@ models:
       - *evt_index
       - *contract_address
 
-  - name: social_arbitrum_trades
+  - name: social_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: social
       contributors: hildobby
     config:
       tags: ['table', 'social', 'arbitrum', 'trades', 'cipher']
-    description: "social trades on Avalanche"
+    description: "social trades on arbitrum"
     columns:
       - *blockchain
       - *block_month
@@ -129,18 +129,9 @@ models:
         description: "Transaction to address"
       - *trade_side
       - *amount_original
-      - &amount_usd
-        name: amount_usd
-        description: "Amount in USD"
       - *share_amount
       - *subject_fee_amount
-      - &subject_fee_amount_usd
-        name: subject_fee_amount_usd
-        description: "Subject fee amount in USD"
       - *protocol_fee_amount
-      - &protocol_fee_amount_usd
-        name: protocol_fee_amount_usd
-        description: "Protocol fee amount in USD"
       - *currency_contract
       - *currency_symbol
       - *supply
