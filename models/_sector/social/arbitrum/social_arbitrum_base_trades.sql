@@ -28,7 +28,7 @@ WITH base_union AS (
             , subject_fee_amount
             , protocol_fee_amount
             , currency_contract
-            , currency_symbol
+            , currency_symbol  --this field gets overriden in final social.trades spell
             , supply
             , tx_hash
             , evt_index

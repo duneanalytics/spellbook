@@ -23,6 +23,7 @@ SELECT
     , CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 6, 32)))/1e18 AS double) AS subject_fee_amount
     , CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 7, 32)))/1e18 AS double) AS protocol_fee_amount
     , 0x0000000000000000000000000000000000000000 AS currency_contract
+    , 'ETH' AS currency_symbol --this field gets overriden in final social.trades spell
     , CAST(varbinary_to_int256(bytearray_ltrim(bytearray_substring(logs.data, 1 + 32 * 8, 32))) AS UINT256) AS supply
     , txs.hash AS tx_hash
     , logs.index AS evt_index
