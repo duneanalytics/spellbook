@@ -80,4 +80,3 @@ FROM (VALUES ('arbitrum', 'USDC.e', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 
              ('zksync', 'WBTC', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011, 4),
              ('zora', 'WETH', 0x4200000000000000000000000000000000000006, 1)
 ) AS t (blockchain, symbol, contract_address, rank)
-                                                                                                            )
