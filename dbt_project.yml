@@ -1374,6 +1374,3 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
-
-    mux_protocol:
-      +schema: mux_protocol
