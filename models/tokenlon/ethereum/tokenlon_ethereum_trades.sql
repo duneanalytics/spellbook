@@ -14,6 +14,7 @@
     ref('tokenlon_v5_ethereum_amm_v2_trades'),
     ref('tokenlon_v5_ethereum_pmm_v5_trades'),
     ref('tokenlon_v5_ethereum_rfq_v1_trades'),
+    ref('tokenlon_v5_ethereum_rfq_v2_trades'),
 ] %}
 
 

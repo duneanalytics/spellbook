@@ -9,3 +9,10 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: balancer_v2_gnosis
+    tables:
+      - name: Vault_evt_Swap
+  - name: honeyswap_v2_gnosis
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated

@@ -44,8 +44,12 @@
             {% endfor -%}
         WHERE 1=1
               {%- if filter is not none %}
-                  {%- for col, val in filter.items() %}
-                      {% if val is not none %} AND seed.{{col}} = '{{val}}' {% endif %}
+                  {%- for col, val_or_vals in filter.items() %}
+                        {% if val_or_vals is iterable and val_or_vals is not string %}
+                            AND seed.{{ col }} IN ({% for val in val_or_vals %}'{{ val }}'{% if not loop.last %}, {% endif %}{% endfor %})
+                        {% else %}
+                            AND seed.{{ col }} = '{{ val_or_vals }}'
+                        {% endif %}
                   {% endfor -%}
               {% endif -%}
     ),

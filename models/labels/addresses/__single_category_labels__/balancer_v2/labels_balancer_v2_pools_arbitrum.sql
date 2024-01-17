@@ -275,6 +275,24 @@ WITH pools AS (
   WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
     AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
   {% endif %}
+
+  UNION ALL
+
+  SELECT
+    c.poolId AS pool_id,
+    t.tokens AS token_address,
+    0 AS normalized_weight,
+    cc.symbol,
+    'ECLP' AS pool_type
+  FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('gyroscope_arbitrum', 'GyroECLPPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+  {% if is_incremental() %}
+  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
+  {% endif %}
 ),
 
 settings AS (
@@ -291,7 +309,7 @@ settings AS (
 SELECT 
   'arbitrum' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('SP', 'LP', 'LBP') 
+  CASE WHEN pool_type IN ('SP', 'LP', 'LBP', 'ECLP') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))

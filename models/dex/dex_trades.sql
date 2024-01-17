@@ -78,6 +78,7 @@
 ,ref('woofi_optimism_trades')
 ,ref('oneinch_lop_own_trades')
 ,ref('mummy_finance_optimism_trades')
+,ref('hashflow_optimism_trades')
 ] %}
 
 

@@ -2,12 +2,12 @@ version: 2
 models:
   - name: account_abstraction_erc4337_userops
     meta:
-      blockchain: ethereum, polygon, arbitrum, optimism, avalanche_c, gnosis
+      blockchain: ethereum, polygon, arbitrum, optimism, avalanche_c, gnosis, celo
       sector: erc4337
       project: erc4337
       contributors: 0xbitfly, hosuke
     config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'avalanche_c', 'gnosis', 'erc4337', 'account', 'abstraction',]
+      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'avalanche_c', 'gnosis', 'celo', 'erc4337', 'account', 'abstraction',]
     description: >
         erc4337 user operations across six blockchain.
     columns:
@@ -69,12 +69,12 @@ models:
 
   - name: account_abstraction_erc4337_account_deployed
     meta:
-      blockchain: ethereum, polygon, arbitrum, optimism, avalanche_c, gnosis
+      blockchain: ethereum, polygon, arbitrum, optimism, avalanche_c, gnosis, celo
       sector: erc4337
       project: erc4337
       contributors: 0xbitfly
     config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'avalanche_c', 'gnosis', 'erc4337', 'account', 'abstraction',]
+      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'avalanche_c', 'gnosis', 'celo', 'erc4337', 'account', 'abstraction',]
     description: >
         erc4337 account deployed across six blockchain.
     columns:

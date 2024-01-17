@@ -53,3 +53,22 @@ models:
         description: "Who added the address"
       - name: added_date
         description: "Date the address was added on"
+
+  - name: cex_info
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'fantom', 'base', 'zksync', 'celo', 'zora', 'info']
+    description: >
+        CEXs info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cex_name
+    columns:
+      - name: cex_name
+        description: "CEX name"
+      - name: x_username
+        description: "Username on X"

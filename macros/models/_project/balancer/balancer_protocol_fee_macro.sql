@@ -60,7 +60,8 @@ WITH pool_labels AS (
         SELECT 
             date_trunc('day', hour) AS day,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price
+            approx_percentile(median_price, 0.5) AS price,
+            18 AS decimals
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -108,13 +109,8 @@ WITH pool_labels AS (
             d.token_address, 
             t.symbol AS token_symbol,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals))) AS token_amount,
-            CASE 
-                WHEN BYTEARRAY_SUBSTRING(d.pool_id, 1, 20) = d.token_address -- fees paid in BPTs
-                    THEN 0
-                ELSE 
-                    SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals))) 
-            END AS protocol_fee_collected_usd
+            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
+            SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
             ON p1.token = d.token_address

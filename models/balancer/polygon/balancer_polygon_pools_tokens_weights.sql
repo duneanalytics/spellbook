@@ -1,6 +1,6 @@
 {{ config(
+        schema = 'balancer_polygon',
         alias = 'pools_tokens_weights',
-        
         )
 }}
 
@@ -8,6 +8,7 @@ SELECT *
 FROM
 (
         SELECT
+                blockchain,
                 pool_id,
                 token_address,
                 normalized_weight

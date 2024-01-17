@@ -8,8 +8,6 @@ sources:
     description: >
       Decoded event table for swaps & margin trades on gmx avalanche_c
     tables:
-      - name: Router_evt_Swap
-        loaded_at_field: evt_block_time
       - name: Vault_evt_DecreasePosition
         loaded_at_field: evt_block_time
       - name: Vault_evt_IncreasePosition

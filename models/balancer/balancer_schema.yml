@@ -199,12 +199,14 @@ models:
       - name: day
         description: 'UTC event block time truncated to the day mark'
       - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - *version
-      - *blockchain     
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
       - name: token_address
-        description: 'Contract address for the token'
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
@@ -213,8 +215,13 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'
+
 
   - name: balancer_transfers_bpt
     meta:
@@ -330,3 +337,42 @@ models:
       - name: lp_virtual_supply_raw
       - name: lp_virtual_supply
       - name: pool_id
+
+  - name: balancer_token_whitelist
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+    description: >
+      These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name 
+            - chain
+    columns:
+      - name: address
+      - name: name
+      - name: chain
+
+  - name: balancer_pools_tokens_weights
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+    description: >
+      Token weights in Balancer pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool_id
+            - token_address
+    columns:
+      - *blockchain
+      - *pool_id
+      - name: token_address
+      - name: normalized_weight
