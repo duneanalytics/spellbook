@@ -23,7 +23,8 @@ dexs as (
             json_extract_scalar(outputs[1], '$.tokenAddress') AS token_bought_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
-            evt_index
+            evt_index,
+            array[-1] as trace_address
         FROM 
         {{ source('odos_optimism', 'OdosRouter_evt_Swapped') }}
         {% if is_incremental() %}
@@ -48,4 +49,5 @@ SELECT
     dexs.project_contract_address,
     dexs.tx_hash,
     dexs.evt_index
+    dexs.trace_address
 FROM dexs
