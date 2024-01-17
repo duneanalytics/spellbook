@@ -46,3 +46,41 @@ sources:
   - name: openocean_v2_avalanche_c
     tables:
       - name: OpenOceanExchange_evt_Swapped
+  - name: curvefi_avalanche_c
+    tables:
+      - name: 3pool_evt_TokenExchange
+      - name: 3poolV2_evt_TokenExchange
+      - name: AavePool_evt_TokenExchange
+      - name: AavePool_evt_TokenExchangeUnderlying
+      - name: aave_v3_evt_TokenExchangeUnderlying
+      - name: agEURjEUR_evt_TokenExchange
+      - name: arUSD_evt_TokenExchange
+      - name: ATriCryptoPool_evt_TokenExchange
+      - name: avax3pool_evt_TokenExchange
+      - name: axlUSDCUSDC_evt_TokenExchange
+      - name: axlUSDC_USDC_e_evt_TokenExchange
+      - name: Blizz_evt_TokenExchange
+      - name: Curve_DD2_Pool_evt_TokenExchange
+      - name: deBridge_USDC_evt_TokenExchangeUnderlying
+      - name: DefrostH2O_evt_TokenExchange
+      - name: DefrostH2O_evt_TokenExchangeUnderlying
+      - name: eEURjEUR_evt_TokenExchange
+      - name: frax_evt_TokenExchange
+      - name: frax_evt_TokenExchangeUnderlying
+      - name: FUSD_MIM_Factory_Pool_evt_TokenExchange
+      - name: FUSDUSDC_evt_TokenExchange
+      - name: L2StableSwap_evt_TokenExchange
+      - name: MAI_evt_TokenExchange
+      - name: MAI_evt_TokenExchangeUnderlying
+      - name: MIM_evt_TokenExchange
+      - name: MIM_evt_TokenExchangeUnderlying
+      - name: MoreMoney_USD_evt_TokenExchange
+      - name: MoreMoney_USD_evt_TokenExchangeUnderlying
+      - name: NXUSDaV3CRV_evt_TokenExchangeUnderlying
+      - name: ren_evt_TokenExchange
+      - name: ren_evt_TokenExchangeUnderlying
+      - name: Topshelf_USDL_evt_TokenExchangeUnderlying
+      - name: USDCe_UST_evt_TokenExchange
+      - name: USD_coin_evt_TokenExchange
+      - name: USDS_evt_TokenExchangeUnderlying
+      - name: YUSDPOOL_evt_TokenExchange

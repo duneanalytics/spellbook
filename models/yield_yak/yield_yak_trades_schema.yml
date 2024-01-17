@@ -1,38 +1,26 @@
 version: 2
 
 models:
-  - name: beethoven_x_optimism_trades
+  - name: yield_yak_trades
     meta:
-      blockchain: optimism
-      project: beethoven_x
-      contributors: msilb7
+      blockchain: avalanche_c, arbitrum
+      sector: dex
+      project: yield_yak
+      contributors: Henrystats, angus_1
     config:
-      tags: ['optimism','beethoven_x','dex']
+      tags: ['avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum']
     description: >
-        A table containing all trades of beethoven x on optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-              - block_date
-              - blockchain
-              - project
-              - version
-              - tx_hash
-              - evt_index
-      - check_dex_seed:
-          blockchain: optimism
-          project: beethoven_x
-          version: 2
+        yield yak aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project
+      - &project 
         name: project
-        description: "Project name of the DEX"
+        description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the DEX project"  
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -87,6 +75,9 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
+      - &trace_address
+        name: trace_address
+        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "the position of this event log within this transaction"
