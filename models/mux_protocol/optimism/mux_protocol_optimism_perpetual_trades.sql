@@ -1,15 +1,13 @@
 {{ config(
     
+    schema = 'mux_protocol_optimism',
     alias = 'perpetual_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "mux_protocol",
-                                \'["sofiat"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -34,11 +32,8 @@ SELECT
     CAST(NULL as varbinary) as margin_asset
 FROM
     {{ source('mux_optimism', 'LiquidityPoolHop1_evt_OpenPosition') }}
-     {% if not is_incremental() %}
-    WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
 ),
 
@@ -59,11 +54,8 @@ SELECT
     CAST(NULL as varbinary) as margin_asset
 FROM
     {{ source('mux_optimism', 'LiquidityPoolHop1_evt_ClosePosition') }}
-     {% if not is_incremental() %}
-    WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
 ),
 
@@ -84,11 +76,8 @@ SELECT
     CAST(NULL as varbinary) as margin_asset
 FROM
     {{ source('mux_optimism', 'LiquidityPoolHop1_evt_Liquidate') }}
-    {% if not is_incremental() %}
-    WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+    WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
 ),
 
@@ -138,11 +127,8 @@ SELECT
     evt_index
 FROM
     full_tables a
-LEFT JOIN {{ source('optimism', 'transactions') }} b
+INNER JOIN {{ source('optimism', 'transactions') }} b
 ON a.tx_hash = b.hash
-{% if not is_incremental() %}
-    WHERE evt_block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' DAY)
+{% if is_incremental() %}
+    AND {{incremental_predicate('b.block_time')}}
     {% endif %}

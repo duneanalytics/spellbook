@@ -1379,5 +1379,3 @@ models:
 
     mux_protocol:
       +schema: mux_protocol
-      optimism:
-        +schema: mux_protocol_optimism
