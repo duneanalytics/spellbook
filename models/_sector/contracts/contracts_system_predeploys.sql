@@ -43,8 +43,22 @@ WITH op_stack_predeploys AS (
 
 )
 
-{% for chain in op_chains %} --op chain predeploys
+, bnb_predeploys AS (
+	SELECT contract_project, contract_name, contract_address
+	FROM (values
+		('BSC', 'BSC: Governance Hub', 0x0000000000000000000000000000000000001007)
+		,('BSC', 'BSC: Relayer Hub', 0x0000000000000000000000000000000000001006)
+		,('BSC', 'BSC: Relayer Incentivize', 0x0000000000000000000000000000000000001005)
+		,('BSC', 'BSC: SlashIndicator', 0x0000000000000000000000000000000000001001)
+		,('BSC', 'BSC: System Reward', 0x0000000000000000000000000000000000001002)
+		,('BSC', 'BSC: Tendermint Light Client', 0x0000000000000000000000000000000000001003)
+		,('BSC', 'BSC: Token Hub', 0x0000000000000000000000000000000000001004)
+		,('BSC', 'BSC: Token Manager', 0x0000000000000000000000000000000000001008)
+		,('BSC', 'BSC: Validator Set', 0x0000000000000000000000000000000000001000)
+	) a (contract_project, contract_name, contract_address)
+)
 
+{% for chain in op_chains %} --op chain predeploys
 	select 
 		'{{chain}}' as blockchain
 		, contract_project
@@ -54,5 +68,7 @@ WITH op_stack_predeploys AS (
 	{% if not loop.last %}
 	UNION ALL
 	{% endif %}
-
 {% endfor %}
+UNION ALL 
+	SELECT 'bnb' as blockchain, contract_project, contract_name, contract_address
+	FROM bnb_predeploys
