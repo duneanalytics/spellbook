@@ -101,4 +101,7 @@ FROM (VALUES
     , ('ramses', 'Ramses', 'Direct', 'ramses')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
+    , ('smardex', 'SmarDex', 'Direct', 'SmarDex')
+    , ('oasisswap', 'OasisSwap', 'Direct', 'OasisSwapDEX')
+    , ('swaap', 'Swaap', 'Direct', 'SwaapFinance')
     ) AS temp_table (project, name, marketplace_type, x_username)
