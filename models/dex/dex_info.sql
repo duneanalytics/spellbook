@@ -96,4 +96,8 @@ FROM (VALUES
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
     , ('chainhop', 'ChainHop', 'Direct', 'ChainHopDEX')
     , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')
+    , ('pharaoh', 'Pharaoh', 'Direct', 'pharaoh')
+    , ('ramses', 'Ramses', 'Direct', 'ramses')
+    , ('scale', 'Scale', 'Direct', 'scale')
+    , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
     ) AS temp_table (project, name, marketplace_type, x_username)
