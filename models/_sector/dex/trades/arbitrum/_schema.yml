@@ -384,6 +384,74 @@ models:
             version:
               - 1
               - 2
+  
+  - name: fraxswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: fraxswap
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'fraxswap' ]
+    description: "Fraxswap arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_arbitrum_base_trades_seed')
+  
+  - name: chronos_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: chronos
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'chronos']
+    description: "Chronos arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('chronos_arbitrum_base_trades_seed')
+  
+  - name: zyberswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: zyberswap
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'zyberswap']
+    description: "Zyberswap arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('zyberswap_arbitrum_base_trades_seed')
+  
+  - name: solidlizard_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: solidlizard
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'solidlizard']
+    description: "Solidlizard arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidlizard_arbitrum_base_trades_seed')
 
 
   - name: rubicon_arbitrum_base_trades
