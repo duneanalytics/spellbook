@@ -15,6 +15,7 @@
     , ref('spartacus_exchange_fantom_base_trades')
     , ref('openocean_fantom_base_trades')
     , ref('beethoven_x_fantom_base_trades')
+    , ref('curvefi_fantom_base_trades')
 ] %}
 
 WITH base_union AS (
