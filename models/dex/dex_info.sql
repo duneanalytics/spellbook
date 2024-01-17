@@ -98,4 +98,5 @@ FROM (VALUES
     , ('ramses', 'Ramses', 'Direct', 'ramses')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
+    , ('odos', 'Odos', 'Aggregator', 'odosprotocol')
     ) AS temp_table (project, name, marketplace_type, x_username)
