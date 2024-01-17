@@ -48,6 +48,6 @@ SELECT
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    dexs.evt_index
+    dexs.evt_index,
     dexs.trace_address
 FROM dexs
