@@ -24,7 +24,7 @@ dexs as (
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
             evt_index,
-            array[-1] as trace_address
+            CAST(array[-1] AS VARCHAR) as trace_address
         FROM 
         {{ source('odos_optimism', 'OdosRouter_evt_Swapped') }}
         {% if is_incremental() %}
