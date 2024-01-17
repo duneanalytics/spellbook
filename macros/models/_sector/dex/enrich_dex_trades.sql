@@ -50,7 +50,7 @@ WITH base_trades as (
         , CASE
                 WHEN stability_bought.rank IS NOT NULL AND (stability_sold.rank IS NULL OR stability_bought.rank < stability_sold.rank) THEN
                     base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price
-                WHEN stability_sold.rank IS NOT NULL AND (stability_bought.rank IS NULL OR stability_sold.rank < rank_bought.rank) THEN
+                WHEN stability_sold.rank IS NOT NULL AND (stability_bought.rank IS NULL OR stability_sold.rank < stability_bought.rank) THEN
                     base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
                 ELSE
                     coalesce(
