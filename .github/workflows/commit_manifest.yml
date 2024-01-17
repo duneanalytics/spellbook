@@ -13,6 +13,10 @@ concurrency:
 jobs:
   commit_manifest:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    strategy:
+      matrix:
+        project: [ 'token', 'spellbook' ]
+      max-parallel: 1
 
     steps:
     - uses: actions/setup-python@v3
@@ -26,7 +30,14 @@ jobs:
     
     - name: Setup variables
       run: |
+        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+        if [[ "${{ matrix.project }}" == "tokens" ]]; then
+          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --project-dir tokens" >> $GITHUB_ENV
+          echo "S3_LOCATION=s3://manifest-spellbook-dunesql/tokens" >> $GITHUB_ENV
+        elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+          echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
+        fi
 
     - name: dbt dependencies
       run: "dbt deps"
@@ -38,14 +49,14 @@ jobs:
       run: "dbt compile --target-path . $PROFILE"
 
     - name: copy old manifest locally
-      run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json s3://manifest-spellbook-dunesql/previous_manifest.json"
+      run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
 
     - name: Set environment variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
 
     - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
-      run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json s3://manifest-spellbook-dunesql/manifest_$GIT_SHA.json"
+      run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/manifest_$GIT_SHA.json"
 
     - name: upload manifest
-      run: "aws s3 cp manifest.json s3://manifest-spellbook-dunesql/manifest.json"
+      run: "aws s3 cp manifest.json $S3_LOCATION/manifest.json"

@@ -19,7 +19,7 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     strategy:
       matrix:
-        project: [ 'dunesql', 'spark' ]
+        project: [ 'tokens', 'spellbook' ]
       max-parallel: 1
     timeout-minutes: 90
 
@@ -35,12 +35,11 @@ jobs:
       - name: Setup variables
         run: |
           if [[ "${{ matrix.project }}" == "tokens" ]]; then
-            echo "PROFILE=--project-dir tokens " >> $GITHUB_ENV
-            echo "COMPILE_TAG=--select tag:dunesql" >> $GITHUB_ENV
-            echo "S3_LOCATION=manifest-spellbook-dunesql" >> $GITHUB_ENV
+            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --project-dir tokens" >> $GITHUB_ENV
+            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/tokens" >> $GITHUB_ENV
           elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
-            printf "Using spark project\n"
-            echo 
+            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
           else
             echo "Unknown engine: ${{ matrix.project }}"
             exit 1
@@ -51,7 +50,7 @@ jobs:
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook-dunesql/spellbook/manifest.json manifest.json"
+        run: "aws s3 cp $S3_LOCATION/manifest.json manifest.json"
 
       - name: dbt dependencies
         run: "dbt deps"
