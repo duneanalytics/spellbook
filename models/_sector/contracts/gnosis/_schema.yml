@@ -1,32 +1,15 @@
 version: 2
 
 models:
-  - name: contracts_fantom_contract_mapping
-    meta:
-      blockchain: fantom
-      sector: contracts
-      contributors: Henrystats
-    config:
-      tags: ['fantom', 'contracts', 'addresses']
-    description: "A list of contract addresses and their corresponding project names/creator."
-    columns:
-      - name: contract_address
-        description: "contract address of the dapp/project"
-        tests:
-          - unique
-      - name: project_name
-        description: "name of the dapp/project"
-      - name: project_type
-        description: "type of dapp/project (eg, DEX, Options, eg..)"
 
-  - name: contracts_fantom_contract_mapping_dynamic
+  - name: contracts_gnosis_contract_mapping
     meta:
-      blockchain: fantom
+      blockchain: gnosis
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'fantom', 'contracts', 'addresses']
-    description: "Mapping of contracts to its creators and names on fantom."
+      tags: ['evm', 'gnosis', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on Gnosis Chain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -129,9 +112,9 @@ models:
         name: is_deterministic_deployer_deployed
         description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
 
-  - name: contracts_fantom_find_self_destruct_contracts
+  - name: contracts_gnosis_find_self_destruct_contracts
     meta:
-      blockchain: fantom
+      blockchain: gnosis
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -159,14 +142,14 @@ models:
         name: destructed_tx_hash
         description: "Tx Hash where contract was destructed"
 
-  - name: contracts_fantom_base_starting_level
+  - name: contracts_gnosis_base_starting_level
     meta:
-      blockchain: fantom
+      blockchain: gnosis
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'fantom', 'contracts', 'addresses']
-    description: "Base Level for mapping of contracts to its creators and names on fantom."
+      tags: ['evm', 'gnosis', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on Gnosis Chain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -199,14 +182,14 @@ models:
         name: reinitialize_rank
         description: "Rank of the same contract being deployed in descending order - used to only ensure we get the most recent contract instance (allowlist & self-destructs can cause duplicates)."
 
-  - name: contracts_fantom_base_iterated_creators
+  - name: contracts_gnosis_base_iterated_creators
     meta:
-      blockchain: fantom
+      blockchain: gnosis
       sector: contracts
       contributors: chuxin, msilb7
     config:
-      tags: ['evm', 'fantom', 'contracts', 'addresses']
-    description: "Iterated creators for mapping of contracts to its creators and names on fantom."
+      tags: ['evm', 'gnosis', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on Gnosis Chain."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
