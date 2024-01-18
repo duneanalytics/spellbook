@@ -58,11 +58,15 @@ WITH base_union AS (
             , tx_hash
             , evt_index
             {% if base_model == ref('curvefi_ethereum_base_trades') %}
-            , override_sold_decimals
             , override_bought_decimals
+            , override_sold_decimals
+            , swap_bought_decimals
+            , swap_sold_decimals
             {% else %}
-            , false AS override_sold_decimals
             , false AS override_bought_decimals
+            , false AS override_sold_decimals
+            , false AS swap_bought_decimals
+            , false AS swap_sold_decimals
             {% endif %}
         FROM 
             {{ base_model }}

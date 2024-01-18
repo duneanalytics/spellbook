@@ -101,6 +101,8 @@ SELECT
     ,dexs.project_contract_address
     ,dexs.tx_hash
     ,dexs.evt_index
-    , CASE WHEN dexs.swap_type = 'underlying_exchange_base' THEN true ELSE false END as override_sold_decimals
-    , false as override_bought_decimals
+    ,false AS override_bought_decimals
+    ,CASE WHEN dexs.swap_type = 'underlying_exchange_base' THEN true ELSE false END AS override_sold_decimals
+    ,false AS swap_bought_decimals
+    ,false AS swap_sold_decimals
 FROM dexs

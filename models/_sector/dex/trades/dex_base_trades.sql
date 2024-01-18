@@ -47,8 +47,10 @@ with base_union as (
             , project_contract_address
             , tx_hash
             , evt_index
-            , override_sold_decimals
             , override_bought_decimals
+            , override_sold_decimals
+            , swap_bought_decimals
+            , swap_sold_decimals
             , tx_from
             , tx_to
             , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank

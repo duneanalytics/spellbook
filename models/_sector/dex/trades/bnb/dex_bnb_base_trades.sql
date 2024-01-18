@@ -56,8 +56,10 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-            , false AS override_sold_decimals
             , false AS override_bought_decimals
+            , false AS override_sold_decimals
+            , false AS swap_bought_decimals
+            , false AS swap_sold_decimals
         FROM
             {{ base_model }}
         {% if not loop.last %}
