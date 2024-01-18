@@ -130,7 +130,7 @@ WITH pool_labels AS (
         SELECT 
             date_sequence AS day
         FROM unnest(sequence(date('2021-04-21'), date(now()), interval '1' day)) as t(date_sequence)
-    ),
+    )
 
     SELECT
         c.day,
