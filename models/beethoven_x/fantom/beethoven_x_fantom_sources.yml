@@ -143,3 +143,4 @@ sources:
             description: 'Change in the amount of token managed by the asset manager'
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
+
