@@ -12,7 +12,7 @@ SELECT contract_address, symbol, decimals
 
 (0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 'DAI', 18)
 ,(0x0000000000000000000000000000000000001010, 'MATIC', 18)
-,(0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 'USDC', 6)
+,(0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 'USDC.e', 6)
 ,(0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 'USDT', 6)
 ,(0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6, 'WBTC', 8)
 ,(0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 18)
@@ -521,5 +521,6 @@ SELECT contract_address, symbol, decimals
 ,(0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590, 'STG', 18)
 ,(0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78, 'TRUEHN', 18)
 ,(0x456f931298065b1852647de005dd27227146d8b9, 'VAL', 18)
+,(0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359, 'USDC', 6)
 
 ) AS temp_table (contract_address, symbol, decimals)

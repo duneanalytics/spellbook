@@ -27,7 +27,13 @@
     , ref('iziswap_bnb_base_trades')
     , ref('maverick_bnb_base_trades')
     , ref('nomiswap_bnb_base_trades')
+    , ref('kyberswap_bnb_base_trades')
+    , ref('xchange_bnb_base_trades')
+    , ref('thena_bnb_base_trades')
+    , ref('ellipsis_finance_bnb_base_trades')
+    , ref('onepunchswap_bnb_base_trades')
 ] %}
+
 
 WITH base_union AS (
     SELECT *

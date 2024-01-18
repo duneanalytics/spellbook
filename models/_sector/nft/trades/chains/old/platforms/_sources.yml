@@ -1,13 +1,6 @@
 version: 2
 
 sources:
-  - name: aavegotchi_polygon
-    tables:
-      - name: aavegotchi_diamond_evt_ERC721ExecutedListing
-      - name: aavegotchi_diamond_evt_ERC1155ExecutedListing
-      - name: aavegotchi_diamond_evt_Transfer
-      - name: aavegotchi_diamond_evt_TransferSingle
-      - name: aavegotchi_diamond_evt_TransferBatch
 
   - name: element_ex_bnb
     tables:

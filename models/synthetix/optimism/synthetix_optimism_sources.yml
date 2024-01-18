@@ -16,9 +16,6 @@ sources:
       - name: FuturesMarket_evt_FuturesTracking
         loaded_at_field: evt_block_time
         description: "Provides details on the app or protocol where the trade was executed"
-      - name: SNX_evt_SynthExchange
-        loaded_at_field: evt_block_time
-        description: "Details the synth exchange"
   - name: synthetix_futuresmarket_optimism
     description: Optimism decoded tables related to Synthetix PerpsV2
     tables:

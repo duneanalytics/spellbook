@@ -395,7 +395,8 @@ models:
               - 2_dvm
               - 2_dpp
               - 2_dsp
-              
+
+     
   - name: integral_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -412,7 +413,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('integral_ethereum_base_trades_seed')
-          
+
+
   - name: maverick_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -429,3 +431,113 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_ethereum_base_trades_seed')
+
+
+  - name: clipper_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: clipper
+      contributors: 0xRob, amalashkevich, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'clipper' ]
+    description: "clipper ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_ethereum_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2
+              - 3
+              - 4
+
+
+  - name: mstable_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: mstable
+      contributors: ripple3, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'mstable' ]
+    description: "mstable ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mstable_ethereum_base_trades_seed')
+          filter:
+            version:
+              - masset
+              - feederpool
+
+  - name: kyberswap_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: kyberswap
+      contributors: ppclunghe, gregshestakovlido, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_ethereum_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic
+              - elastic_2
+
+  - name: xchange_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: xchange
+      contributors: mike-x7f, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+    description: "xchange ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xchange_ethereum_base_trades_seed')
+
+  - name: curvefi_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: curvefi
+      contributors: dsalv, yulesa, ilemi, jeff-dude, tomfutago
+    config:
+      tags: ['ethereum', 'dex', 'trades', 'curvefi']
+    description: "Curvefi ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('curvefi_ethereum_base_trades_seed')
+          filter:
+            version:
+              - Factory V1 Meta
+              - Factory V1 Plain
+              - Factory V1 Stableswap Plain
+              - Factory V2
+              - Factory V2 updated
+              - Regular
