@@ -140,7 +140,7 @@ WITH pool_labels AS (
         b.token AS token_address,
         COALESCE(SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)),0) AS supply
     FROM calendar c 
-    LEFT JOIN balances b ON c.day => b.day  AND c.day < b.day_of_next_change
+    LEFT JOIN balances b ON b.day <= c.day AND c.day < b.day_of_next_change
     LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
