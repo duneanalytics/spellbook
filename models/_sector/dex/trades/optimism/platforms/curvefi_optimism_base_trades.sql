@@ -176,5 +176,7 @@ SELECT DISTINCT
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
-    dexs.evt_index
+    dexs.evt_index,
+    false AS override_sold_decimals,
+    CASE WHEN dexs.pool_type = 'meta' AND bought_id = 0 THEN true ELSE false END AS override_bought_decimals
 FROM dexs

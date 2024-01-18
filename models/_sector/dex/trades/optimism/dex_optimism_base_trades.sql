@@ -48,6 +48,13 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
+            {% if base_model == ref('curvefi_optimism_base_trades') %}
+            , override_sold_decimals
+            , override_bought_decimals
+            {% else %}
+            , false AS override_sold_decimals
+            , false AS override_bought_decimals
+            {% endif %}
         FROM
             {{ base_model }}
         {% if not loop.last %}
