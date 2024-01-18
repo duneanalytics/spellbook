@@ -131,3 +131,5 @@ models:
       - *evt_index
       - *tx_from
       - *tx_to
+      - name: override_sold_decimals
+      - name: override_bought_decimals
