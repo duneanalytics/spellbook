@@ -422,7 +422,7 @@ SELECT
     evt_index,
     evt_tx_hash,
     position_id,
-    price_id,
+    price,
     new_margin,
     CASE
         WHEN margin_asset = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 THEN new_margin * pe.price
