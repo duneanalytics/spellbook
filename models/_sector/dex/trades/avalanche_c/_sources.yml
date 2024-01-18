@@ -84,7 +84,6 @@ sources:
       - name: USD_coin_evt_TokenExchange
       - name: USDS_evt_TokenExchangeUnderlying
       - name: YUSDPOOL_evt_TokenExchange
-
   - name: pharaoh_avalanche_c
     tables:
       - name: Pair_evt_Swap
