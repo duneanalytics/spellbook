@@ -77,3 +77,19 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: fraxswap_arbitrum
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: chronos_arbitrum
+    tables:
+      - name: PoolAMM_evt_Swap
+      - name: PairFactoryAMM_evt_PairCreated
+  - name: zyberswap_arbitrum
+    tables:
+      - name: ZyberPair_evt_Swap
+      - name: ZyberFactory_evt_PairCreated
+  - name: solidlizard_arbitrum
+    tables:
+      - name: LizardPair_evt_Swap
+      - name: LizardFactory_evt_PairCreated

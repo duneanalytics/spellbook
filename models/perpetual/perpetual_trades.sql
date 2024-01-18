@@ -31,6 +31,7 @@
     ,ref('immortalx_perpetual_trades')
     ,ref('unidex_perpetual_trades')
     ,ref('vela_exchange_perpetual_trades')
+    ,ref('mux_protocol_optimism_perpetual_trades')
 ] %}
 
 SELECT *
