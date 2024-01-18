@@ -37,7 +37,7 @@ WITH pool_labels AS (
         SELECT
             day,
             token,
-            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change,
             SUM(COALESCE(mints, 0) - COALESCE(burns, 0)) OVER (PARTITION BY token ORDER BY DAY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS supply
         FROM transfers
     ),
