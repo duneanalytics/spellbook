@@ -304,7 +304,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('curvefi_avalanche_c_base_trades_seed')
 
-- name: pharaoh_avalanche_c_base_trades
+  - name: pharaoh_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
       sector: dex
