@@ -37,7 +37,8 @@ WITH pool_labels AS (
         SELECT
             day,
             token,
-            SUM(COALESCE(mints, 0) - COALESCE(burns, 0)) OVER (PARTITION BY token ORDER BY day) AS supply
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token, pool_id ORDER BY DAY) AS day_of_next_change,
+            SUM(COALESCE(mints, 0) - COALESCE(burns, 0)) OVER (PARTITION BY token ORDER BY DAY ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS supply
         FROM transfers
     ),
 
@@ -117,24 +118,34 @@ WITH pool_labels AS (
     ),
 
     joins_and_exits AS (
-        SELECT j.block_date, j.tokenOut AS bpt, SUM(COALESCE(ajoins, 0) - COALESCE(aexits, 0)) OVER (ORDER BY j.block_date ASC) AS adelta
+        SELECT 
+            j.block_date, 
+            j.tokenOut AS bpt, 
+            SUM(COALESCE(ajoins, 0) - COALESCE(aexits, 0)) OVER (PARTITION BY j.tokenOut ORDER BY j.block_date ASC) AS adelta
         FROM joins j
         FULL OUTER JOIN exits e ON j.block_date = e.block_date AND e.tokenIn = j.tokenOut
-    )
+    ),
+
+    calendar AS (
+        SELECT 
+            date_sequence AS day
+        FROM unnest(sequence(date('2021-04-21'), date(now()), interval '1' day)) as t(date_sequence)
+    ),
 
     SELECT
-        b.day,
+        c.day,
         l.pool_type,
         '{{version}}' as version,
         '{{blockchain}}' as blockchain,
         b.token AS token_address,
-        SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) AS supply
-    FROM balances b
-    LEFT JOIN joins_and_exits j ON b.day = j.block_date AND b.token = j.bpt
+        COALESCE)SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)),0) AS supply
+    FROM calendar c
+    LEFT JOIN balances b ON c.day => b.day  AND c.day < b.day_of_next_change
+    LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
     WHERE l.pool_type IN ('WP', 'WP2T', 'LBP', 'IP', 'SP', 'LP')
     GROUP BY 1, 2, 3, 4, 5
-    HAVING SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) > 0  --simple filter to remove outliers
+    HAVING SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) >= 0  --simple filter to remove outliers
 
 {% endmacro %}
