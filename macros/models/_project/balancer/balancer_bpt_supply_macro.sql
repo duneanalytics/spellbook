@@ -83,6 +83,24 @@ WITH pool_labels AS (
     joins AS (
         SELECT 
             DATE_TRUNC('day', evt_block_time) AS block_date, 
+            tokenOut,
+            pool_type,
+            CASE WHEN pool_type IN ('WP', 'WP2T') 
+            THEN 0
+            ELSE SUM(amountOut / POWER(10, 18)) 
+            END AS ajoins
+        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
+        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
+        WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}         
+        GROUP BY 1, 2, 3
+    ),
+
+    exits AS (
+        SELECT 
+            DATE_TRUNC('day', evt_block_time) AS block_date, 
             tokenIn,
             pool_type,
             CASE WHEN pool_type IN ('WP', 'WP2T') 
@@ -95,24 +113,6 @@ WITH pool_labels AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
         {% endif %}         
-        GROUP BY 1, 2, 3
-    ),
-
-    exits AS (
-        SELECT 
-            DATE_TRUNC('day', evt_block_time) AS block_date, 
-            tokenOut,
-            pool_type,
-            CASE WHEN pool_type IN ('WP', 'WP2T') 
-            THEN 0
-            ELSE SUM(amountOut / POWER(10, 18)) 
-            END AS aexits
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
-        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
-        WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
-        {% endif %}             
         GROUP BY 1, 2, 3
     ),
 
@@ -133,8 +133,7 @@ WITH pool_labels AS (
     LEFT JOIN joins_and_exits j ON b.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
-    WHERE l.pool_type IN ('WP', 'WP2T', 'LBP', 'IP', 'SP')
-    -- missing LP
+    WHERE l.pool_type IN ('WP', 'WP2T', 'LBP', 'IP', 'SP', 'LP')
     GROUP BY 1, 2, 3, 4, 5
     HAVING SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) > 0  --simple filter to remove outliers
 
