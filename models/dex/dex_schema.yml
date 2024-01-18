@@ -526,11 +526,11 @@ models:
 
   - name: dex_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, solana
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'info']
+      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'solana', 'info']
     description: >
         DEXs info
     tests:
