@@ -23,8 +23,7 @@
 
 
 {% set project_mints = [
- ref('nftb_bnb_events')
-,ref('opensea_v1_ethereum_events')
+ ref('opensea_v1_ethereum_events')
 ,ref('magiceden_solana_events')
 ] %}
 

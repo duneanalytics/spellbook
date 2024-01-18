@@ -13,7 +13,7 @@ def get_starting_line(filename):
     return 1
                 
 def get_authors_loc(filename, starting_line):
-    # get authors in git blame and ommit config block
+    # get authors in git blame and omit config block
     cmd = ['git', 'blame', '--line-porcelain', filename, '-L', f'{starting_line}']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, stderr = proc.communicate()
