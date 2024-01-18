@@ -7,7 +7,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['day', 'pool_id', 'token_address'],
+        unique_key = ['day', 'token_address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
