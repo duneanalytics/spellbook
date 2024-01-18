@@ -28,8 +28,16 @@ WITH dexs AS
                 ELSE router.inputAmount
             END AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
-        ,CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        ,CASE
+            WHEN router.evt_tx_hash IS NULL
+                THEN CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END
+                ELSE router.outputToken
+            END AS token_bought_address
+        ,CASE
+            WHEN router.evt_tx_hash IS NULL
+                THEN CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END
+                ELSE router.inputToken
+            END AS token_sold_address
         ,t.contract_address as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
