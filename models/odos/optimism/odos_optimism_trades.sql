@@ -20,7 +20,7 @@ dexs as (
             amountsOut[1] as token_bought_amount_raw, 
             CAST(NULL as double) as amount_usd, 
             tokensIn[1] as token_sold_address,
-            json_extract_scalar(outputs[1], '$.tokenAddress') AS token_bought_address, 
+            CAST(json_extract_scalar(outputs[1], '$.tokenAddress') AS varbinary) AS token_bought_address, 
             contract_address as project_contract_address, 
             evt_tx_hash as tx_hash, 
             evt_index,
