@@ -29,29 +29,51 @@ WITH bridge_events AS (
         ,source_chain_name
         ,destination_chain_name
     FROM (
-        -- Deposit ERC-20
+        -- Deposit ETH from Ethereum to zkSync Era
+
+
+        -- Deposit ERC-20 from Ethereum to zkSync Era
         SELECT
-             l.block_time
-            ,l.block_number
-            ,l.tx_hash
-            ,bytearray_substring(l.topic1, 13, 20) as sender
-            ,bytearray_substring(l.topic2, 13, 20) as receiver
-            ,bytearray_substring(l.topic3, 13, 20) as bridged_token_address
-            ,bytearray_to_uint256(l.data) as bridged_token_amount_raw
+             d.evt_block_time as block_time
+            ,d.evt_block_number as block_number
+            ,d.evt_tx_hash as tx_hash
+            ,d."from" as sender
+            ,d.to as receiver
+            ,d.l1Token as bridged_token_address
+            ,d.amount as bridged_token_amount_raw
             ,UINT256 '1' AS source_chain_id
             ,UINT256 '324' AS destination_chain_id
             ,'Ethereum' AS source_chain_name
             ,'zkSync Era' AS destination_chain_name
-        FROM {{ source ('zksync', 'logs') }} l
-        WHERE topic0 = 0xb84fba9af218da60d299dc177abd5805e7ac541d2673cbee7808c10017874f63 
-        AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
+        FROM {{ source ('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
+        {% if is_incremental() %}
+        AND evt_block_time > NOW() - interval '14' Day
+        {% endif %}
+
+        UNION ALL
+
+        -- Withdraw ETH from zkSync Era to Ethereum
+        SELECT
+             l.block_time
+            ,l.block_number
+            ,bytearray_substring(l.topic1, 13, 20) AS sender
+            ,bytearray_substring(l.topic2, 13, 20) AS receiver
+            ,'0x000000000000000000000000000000000000800a' AS bridged_token_address
+            ,bytearray_to_int256(l.data) AS bridged_token_amount_raw
+            ,UINT256 '324' AS source_chain_id
+            ,UINT256 '1' AS destination_chain_id
+            ,'zkSync Era' AS source_chain_name
+            ,'Ethereum' AS destination_chain_name
+        FROM zksync.logs l
+        WHERE l.topic0 = 0x2717ead6b9200dd235aad468c9809ea400fe33ac69b5bfaa6d3e90fc922b6398
+        AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (data IS NOT NULL)
         {% if is_incremental() %}
         AND block_time > NOW() - interval '14' Day
         {% endif %}
 
         UNION ALL
 
-        -- Withdraw ERC-20
+        -- Withdraw ERC-20 from zkSync Era to Ethereum
         SELECT
              l.block_time
             ,l.block_number
@@ -67,27 +89,6 @@ WITH bridge_events AS (
         FROM {{ source ('zksync', 'logs') }} l
         WHERE topic0 = 0x2fc3848834aac8e883a2d2a17a7514dc4f2d3dd268089df9b9f5d918259ef3b0 
         AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
-        {% if is_incremental() %}
-        AND block_time > NOW() - interval '14' Day
-        {% endif %}
-
-        UNION ALL
-
-        -- Withdraw ETH
-        SELECT
-             l.block_time
-            ,l.block_number
-            ,bytearray_substring(l.topic1, 13, 20) AS sender
-            ,bytearray_substring(l.topic2, 13, 20) AS receiver
-            ,'0x000000000000000000000000000000000000800a' AS bridged_token_address
-            ,bytearray_to_int256(l.data) AS bridged_token_amount_raw
-            ,UINT256 '324' AS source_chain_id
-            ,UINT256 '1' AS destination_chain_id
-            ,'zkSync Era' AS source_chain_name
-            ,'Ethereum' AS destination_chain_name
-        FROM zksync.logs l
-        WHERE l.topic0 = 0x2717ead6b9200dd235aad468c9809ea400fe33ac69b5bfaa6d3e90fc922b6398
-        AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (data IS NOT NULL)
         {% if is_incremental() %}
         AND block_time > NOW() - interval '14' Day
         {% endif %}
