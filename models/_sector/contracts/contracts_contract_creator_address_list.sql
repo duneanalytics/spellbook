@@ -976,6 +976,14 @@ WITH curated_list AS (
 
       ,(0x87e7D106FE75fcD26d9aC311EF29ac1398DD4441, 'Coinbase')
       ,(0xFFFFfFfFA2eC6F66a22017a0Deb0191e5F8cBc35, '0xStation')
+      ,(0x961f36fb5922d721b5af7effd7591beb107d6ab9, 'Wormhole')
+      ,(0x580d2c2da4f58d9efc2fdb5982ea67edc9620258, 'Circle')
+      ,(0xe4Bfe4DA57e2b8abaF8c77abce0C8a719e9B64D2, 'Cross Inscriptions')
+      ,(0x98306f66BF80225175653410438aed33a313BBCA, 'Chainlink')
+      ,(0x6aa06e0cB77fAB16E6963196A3EBd81c90e4a98c, 'Chainlink')
+      ,(0x104FFA1641C0E3D28fcb614771eB39E6a70cbE32, 'Coinbase Verifications')
+      ,(0x9bc9ca7e6a8f013f40617c4585508a988db7c1c7, 'Symmio')
+      ,(0xf10e74b5105af05984c92b1a5b8974b2c090af00, 'Chainlink')
 
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
