@@ -40,7 +40,7 @@ SELECT DISTINCT * FROM (
         transfer."from",
         transfer.to,
         transfer.value
-    FROM {{ source('erc20_arbitrum', 'evt_Transfe') }} transfer
+    FROM {{ source('erc20_arbitrum', 'evt_Transfer') }} transfer
     INNER JOIN registered_pools p ON p.pool_address = transfer.contract_address
         {% if not is_incremental() %}
         WHERE transfer.block_time >= TIMESTAMP '{{ project_start_date }}'
