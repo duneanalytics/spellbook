@@ -59,6 +59,7 @@ FROM
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
+    , taker_column_name = 'recipient'
     , optional_columns = ['f.fee']
     , pair_column_name = 'pool'
     )
@@ -68,8 +69,8 @@ WITH dexs AS
     SELECT
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
-        , t.recipient AS taker
-        , CAST(NULL as VARBINARY) as maker
+        , t.{{ taker_column_name }} AS taker
+        , t.contract_address as maker
         , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
