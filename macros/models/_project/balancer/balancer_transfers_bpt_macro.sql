@@ -1,6 +1,6 @@
 {% macro 
     balancer_transfers_bpt_macro(
-        blockchain, 
+        blockchain 
     ) 
 %}
 
@@ -37,4 +37,4 @@
             {% endif %} ) transfers
 
 
-    {% endmacro %}
+ {% endmacro %}
