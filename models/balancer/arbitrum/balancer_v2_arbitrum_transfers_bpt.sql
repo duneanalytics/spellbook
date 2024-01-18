@@ -14,7 +14,7 @@
 }}
 
 {{ 
-    balancer_bpt_supply_macro(
-        blockchain = blockchain,
+    balancer_transfers_bpt_macro(
+        blockchain = blockchain
     )
 }}
