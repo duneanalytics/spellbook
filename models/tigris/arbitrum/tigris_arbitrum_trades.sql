@@ -456,9 +456,6 @@ LEFT JOIN {{ source('prices', 'usd') }} pe
     ON pe.minute = date_trunc('minute', ec.evt_block_time)
     AND pe.blockchain = 'arbitrum'
     AND pe.symbol = 'WETH'
-    {% if not is_incremental() %}
-    AND pe.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
     {% if is_incremental() %}
     AND pe.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
