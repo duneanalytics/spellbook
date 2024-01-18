@@ -31,11 +31,11 @@ jobs:
     - name: Setup variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+        echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
         if [[ "${{ matrix.project }}" == "tokens" ]]; then
-          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --project-dir tokens" >> $GITHUB_ENV
+          echo "PROJECT_DIR=--project-dir tokens" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/tokens" >> $GITHUB_ENV
         elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
-          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
         fi
 
@@ -46,7 +46,7 @@ jobs:
       run: "./scripts/ensure_cluster.sh"
           
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . $PROFILE"
+      run: "dbt compile --target-path . $PROFILE $PROJECT_DIR"
 
     - name: copy old manifest locally
       run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
