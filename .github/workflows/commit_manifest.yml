@@ -48,15 +48,15 @@ jobs:
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path . $PROFILE $PROJECT_DIR"
 
-    - name: copy old manifest locally
-      run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
+    # - name: copy old manifest locally
+    #   run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
 
-    - name: Set environment variables
-      run: |
-        echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+    # - name: Set environment variables
+    #   run: |
+    #     echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
 
-    - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
-      run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/manifest_$GIT_SHA.json"
+    # - name: upload git_sha versioned previous manifest (for manual catchup if jobs fail)
+    #   run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/manifest_$GIT_SHA.json"
 
     - name: upload manifest
       run: "aws s3 cp manifest.json $S3_LOCATION/manifest.json"
