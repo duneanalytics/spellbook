@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  # Base Tables
+  - name: zksync_era_zksync
+    description: "zkSync contracts on zkSyns."
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: ContractDeployer_evt_ContractDeployed
+        loaded_at_field: evt_block_time
+        description: "zkSync contract deployed events."
+        columns:
+        - &bytecodeHash
+            name: bytecodeHash
+        - &contractAddress
+            name: contractAddress
+        - &contract_address
+            name: contract_address
+        - &deployerAddress
+            name: deployerAddress
+        - &evt_block_number
+            name: evt_block_number
+        - &evt_block_time
+            name: evt_block_time
+        - &evt_index
+            name: evt_index
+        - &evt_tx_from
+            name: evt_tx_from
+        - &evt_tx_hash
+            name: evt_tx_hash
+        - &evt_tx_to
+            name: evt_tx_to
