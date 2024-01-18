@@ -204,4 +204,5 @@ FROM (VALUES
         ,(0x8BFE04fa3B0992364C41032a3EcceBA2AA3db65C, 'waUSDT-xPYT', 6)
         ,(0x60f761380011Ab35D0C72C2e98e821D76Fd2b4A5, 'waDAI-NYT', 18)
         ,(0xa7fFC97D0f0bebF54f3A82303D999e2dC95d785c, 'waDAI-xPYT', 18)
+        ,(0x3BA337F3167eA35910E6979D5BC3b0AeE60E7d59, 'aUSDC', 6)
      ) AS temp_table (contract_address, symbol, decimals)
