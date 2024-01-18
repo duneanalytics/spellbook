@@ -67,3 +67,29 @@ sources:
       - name: ClipperCove_v2_evt_CoveSwapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
+  - name: ramses_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+      - name: RamsesV2Pool_evt_Swap
+      - name: RamsesV2Factory_evt_PoolCreated
+  - name: xchange_arbitrum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
+  - name: fraxswap_arbitrum
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: chronos_arbitrum
+    tables:
+      - name: PoolAMM_evt_Swap
+      - name: PairFactoryAMM_evt_PairCreated
+  - name: zyberswap_arbitrum
+    tables:
+      - name: ZyberPair_evt_Swap
+      - name: ZyberFactory_evt_PairCreated
+  - name: solidlizard_arbitrum
+    tables:
+      - name: LizardPair_evt_Swap
+      - name: LizardFactory_evt_PairCreated

@@ -36,3 +36,29 @@ sources:
       - name: ClipperPackedExchange_evt_Swapped
       - name: ClipperPackedVerifiedExchange_evt_Swapped
       - name: ClipperCove_evt_CoveSwapped
+  - name: opx_finance_optimism
+    tables:
+      - name: Router_evt_Swap
+  - name: velodrome_optimism
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: velodrome_v2_optimism
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
+  - name: synthetix_optimism
+    tables:
+      - name: SNX_evt_SynthExchange
+  - name: openxswap_optimism
+    tables:
+      - name: Aggregator_evt_Swap
+  - name: openocean_v2_optimism
+    tables:
+      - name: OpenOceanExchangeProxy_evt_Swapped
+  - name: curvefi_optimism
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: MetaPoolSwap_evt_TokenExchangeUnderlying
+      - name: MetaPoolSwap_evt_TokenExchange
+      - name: wstETH_swap_evt_TokenExchange

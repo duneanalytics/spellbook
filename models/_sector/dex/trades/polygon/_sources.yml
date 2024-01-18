@@ -52,3 +52,7 @@ sources:
       - name: ClipperDirectExchange_evt_Swapped
       - name: ClipperVerifiedExchange_evt_Swapped
       - name: ClipperCove_evt_CoveSwapped
+  - name: xchange_polygon
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated

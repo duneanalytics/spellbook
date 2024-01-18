@@ -32,7 +32,7 @@ WITH pool_labels AS (
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 3
+        HAVING sum(sample_size) > 10
     ),
 
     dex_prices AS (
@@ -248,7 +248,6 @@ WITH pool_labels AS (
         c.token_symbol,
         c.token_balance_raw,
         c.token_balance,
-        c.protocol_liquidity_usd as test_prot,
         COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
         COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
         COALESCE(b.pool_liquidity * w.normalized_weight, c.pool_liquidity_usd) AS pool_liquidity_usd,
