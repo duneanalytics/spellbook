@@ -138,8 +138,8 @@ WITH pool_labels AS (
         '{{version}}' as version,
         '{{blockchain}}' as blockchain,
         b.token AS token_address,
-        COALESCE)SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)),0) AS supply
-    FROM calendar c
+        COALESCE(SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)),0) AS supply
+    FROM calendar c 
     LEFT JOIN balances b ON c.day => b.day  AND c.day < b.day_of_next_change
     LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
