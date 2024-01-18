@@ -27,25 +27,16 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      # - name: Setup variables
-      #   run: |
-      #       echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
-      #       echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-
       - name: Setup variables
         run: |
+          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
           if [[ "${{ matrix.project }}" == "tokens" ]]; then
-            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql --project-dir tokens" >> $GITHUB_ENV
+            echo "PROJECT_DIR=--project-dir tokens" >> $GITHUB_ENV
             echo "S3_LOCATION=s3://manifest-spellbook-dunesql/tokens" >> $GITHUB_ENV
           elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
-            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
             echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
-          else
-            echo "Unknown engine: ${{ matrix.project }}"
-            exit 1
           fi
-          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
-
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
