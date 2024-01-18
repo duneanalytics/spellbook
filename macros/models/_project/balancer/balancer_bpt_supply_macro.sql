@@ -106,7 +106,7 @@ WITH pool_labels AS (
             CASE WHEN pool_type IN ('WP', 'WP2T') 
             THEN 0
             ELSE SUM(amountIn / POWER(10, 18)) 
-            END AS ajoins
+            END AS aexits
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)
@@ -117,9 +117,9 @@ WITH pool_labels AS (
     ),
 
     joins_and_exits AS (
-        SELECT j.block_date, j.tokenIn AS bpt, SUM(COALESCE(ajoins, 0) - COALESCE(aexits, 0)) OVER (ORDER BY j.block_date ASC) AS adelta
+        SELECT j.block_date, j.tokenOut AS bpt, SUM(COALESCE(ajoins, 0) - COALESCE(aexits, 0)) OVER (ORDER BY j.block_date ASC) AS adelta
         FROM joins j
-        FULL OUTER JOIN exits e ON j.block_date = e.block_date AND j.tokenIn = e.tokenOut
+        FULL OUTER JOIN exits e ON j.block_date = e.block_date AND e.tokenIn = j.tokenOut
     )
 
     SELECT
