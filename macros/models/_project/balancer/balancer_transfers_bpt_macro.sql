@@ -9,9 +9,6 @@
         DISTINCT poolAddress AS pool_address
         FROM
         {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolRegistered') }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('day') }}
-        {% endif %}
     )
 
     SELECT DISTINCT * FROM (
