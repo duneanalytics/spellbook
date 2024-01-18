@@ -30,22 +30,21 @@ WITH registered_pools AS (
 SELECT DISTINCT * FROM (
     SELECT
         'arbitrum' AS blockchain,
-        logs.contract_address,
-        logs.tx_hash AS evt_tx_hash,
-        logs.index AS evt_index,
-        logs.block_time AS evt_block_time,
-        TRY_CAST(date_trunc('DAY', logs.block_time) AS date) AS block_date,
-        TRY_CAST(date_trunc('MONTH', logs.block_time) AS date) AS block_month,
-        logs.block_number AS evt_block_number,
-        bytearray_substring(topic1, 13) AS "from",
-        bytearray_substring(topic2, 13) AS to,
-        bytearray_to_uint256(logs.data) AS value
-    FROM {{ source('arbitrum', 'logs') }} logs
-    INNER JOIN registered_pools p ON p.pool_address = logs.contract_address
-    WHERE logs.topic0 = {{ event_signature }}
+        transfer.contract_address,
+        transfer.evt_tx_hash,
+        transfer.evt_index,
+        transfer.evt_block_time,
+        TRY_CAST(date_trunc('DAY', transfer.evt_block_time) AS date) AS block_date,
+        TRY_CAST(date_trunc('MONTH', transfer.evt_block_time) AS date) AS block_month,
+        transfer.evt_block_number,
+        transfer."from",
+        transfer.to,
+        transfer.value
+    FROM {{ source('erc20_arbitrum', 'evt_Transfe') }} transfer
+    INNER JOIN registered_pools p ON p.pool_address = transfer.contract_address
         {% if not is_incremental() %}
-        AND logs.block_time >= TIMESTAMP '{{ project_start_date }}'
+        WHERE transfer.block_time >= TIMESTAMP '{{ project_start_date }}'
         {% endif %}
         {% if is_incremental() %}
-        AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
+        WHERE transfer.block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %} ) transfers
