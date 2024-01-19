@@ -37,6 +37,7 @@ WITH check_date AS (
             effective_gas_price/1e9 * gas_used/1e9
           {% else %}
             gas_price/1e9 * gas_used/1e9
+          {% endif %}
           AS tx_gas_fee
         , ROW_NUMBER() OVER (PARTITION BY r.tx_hash, r.to) AS trace_to_number --reindex trace to ensure single count
         FROM {{ source(chain,'traces') }} r

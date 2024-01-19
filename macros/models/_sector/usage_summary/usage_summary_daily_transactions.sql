@@ -30,6 +30,7 @@ SELECT
         effective_gas_price/1e9 * gas_used/1e9
       {% else %}
         gas_price/1e9 * gas_used/1e9
+      {% endif %}
       )
     AS sum_tx_to_gas_fee
   FROM {{ source(chain,'transactions') }} t
