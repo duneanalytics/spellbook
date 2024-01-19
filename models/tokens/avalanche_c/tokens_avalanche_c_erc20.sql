@@ -233,7 +233,6 @@ FROM (VALUES
         ,(0xf7b084572bd638d8282f4933143a8eac94482f28, 'RPG', 18)
         ,(0xa2cde628d7617956eaf4780e32f68df19cc13d62, 'SUBAVA', 18)
         ,(0x5039af99956f13a4e2c4b29e745e4d27e07b45ff, 'ROCKET', 18)
-        ,(0xc06e17bdc3f008f4ce08d27d364416079289e729, 'DWC', 18)
         ,(0x19c79f282d151995d91f6dbdda2739701f9c47aa, 'BEAR', 18)
         ,(0xefd6aa06eb95e0ab23de9ac0977d870888b89a71, 'MICRO', 18)
     ) AS temp_table (contract_address, symbol, decimals)
