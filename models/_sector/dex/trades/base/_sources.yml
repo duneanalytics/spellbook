@@ -43,3 +43,7 @@ sources:
   - name: woofi_base
     tables:
       - name: WooPPV2_evt_WooSwap
+  - name: basevelocimeter_base
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
