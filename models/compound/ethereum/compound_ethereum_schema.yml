@@ -177,26 +177,22 @@ models:
         name: block_date
         description: "UTC event block date"
 
-  - name: compound_v2_ethereum_borrow
+  - name: compound_ethereum_borrow
     meta:
       blockchain: ethereum
       sector: lending
-      project: compound_v2
-      contributors: [bizzyvinci, hosuke]
+      project: aave
+      contributors: bizzyvinci, hosuke, tomfutago
     config:
-      tags: ['ethereum', 'compound', 'compound_v2', 'borrow', 'lending']
-    description: "All compound v2 transactions involving borrow transactions on ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_block_number
-            - evt_index
+      tags: ['lending', 'borrow', 'compound', 'ethereum']
+    description: "All Compound transactions involving borrow transactions on Ethereum"
     columns:
+      - name: blockchain
+      - name: project
       - *version
       - *transaction_type
       - *symbol
-      - *token_address_lending
+      - *token_address
       - &borrower
         name: borrower
         description: "Borrower wallet address"
@@ -206,8 +202,7 @@ models:
       - *liquidator
       - *amount
       - *usd_amount
-      - *evt_tx_hash
+      - name: block_time
+      - name: block_number
+      - name: tx_hash
       - *evt_index
-      - *evt_block_time
-      - *evt_block_number
-      - *block_date

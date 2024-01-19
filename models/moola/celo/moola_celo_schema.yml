@@ -113,3 +113,46 @@ models:
         description: "Flashloan recipient"
       - name: contract_address
         description: "Flashload contract address"
+
+  - name: moola_celo_borrow
+    meta:
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'moola', 'aave_v2', 'celo']
+    description: "All Moola borrow transactions on Celo"
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: project
+        description: "Project name"
+      - name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - name: transaction_type
+        description: "Transaction type"
+      - name: symbol
+        description: "Token symbol"
+      - name: token_address
+        description: "Token contract address"
+      - name: borrower
+        description: "Borrower wallet address"
+      - name: repayer
+        description: "Repayer wallet address"
+      - name: liquidator
+        description: "Liquidator wallet address"
+      - name: amount
+        description: "Token amount present in the transaction"
+      - name: usd_amount
+        description: "Token amount in USD"
+      - name: block_month
+        description: "Block Month column used to partition data in this table"
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: block_number
+        description: "Event block number"
+      - name: tx_hash
+        description: "Transaction hash of the event"
+      - name: evt_index
+        description: "Event index"
