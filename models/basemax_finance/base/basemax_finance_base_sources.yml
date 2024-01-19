@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: basemax_finance_base
+    description: Base decoded tables related to basemax_finance protocol
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: PositionVault_evt_IncreasePosition
+        loaded_at_field: evt_block_time
+      - name: PositionVault_evt_DecreasePosition
+        loaded_at_field: evt_block_time
+      - name: LiquidateVault_evt_LiquidatePosition
+        loaded_at_field: evt_block_time
+        

@@ -33,6 +33,7 @@
     ,ref('vela_exchange_perpetual_trades')
     ,ref('mux_protocol_optimism_perpetual_trades')
     ,ref('xena_finance_base_perpetual_trades')
+    ,ref('basemax_finance_base_perpetual_trades')
 ] %}
 
 SELECT *
