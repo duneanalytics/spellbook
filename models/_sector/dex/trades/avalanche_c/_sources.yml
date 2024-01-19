@@ -46,6 +46,10 @@ sources:
   - name: openocean_v2_avalanche_c
     tables:
       - name: OpenOceanExchange_evt_Swapped
+  - name: woofi_avalanche_c
+    tables:
+      - name: WooPP_evt_WooSwap
+      - name: WooRouterV2_evt_WooRouterSwap
   - name: curvefi_avalanche_c
     tables:
       - name: 3pool_evt_TokenExchange
