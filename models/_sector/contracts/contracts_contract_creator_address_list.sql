@@ -984,6 +984,8 @@ WITH curated_list AS (
       ,(0x104FFA1641C0E3D28fcb614771eB39E6a70cbE32, 'Coinbase Verifications')
       ,(0x9bc9ca7e6a8f013f40617c4585508a988db7c1c7, 'Symmio')
       ,(0xf10e74b5105af05984c92b1a5b8974b2c090af00, 'Chainlink')
+      ,(0x0A888Bb1Cb72F2bA9279574a6d83744D052D95Fd, 'Socket')
+      ,(0x37d3AE4662e9d2Ec96F634De98824DfBd399399D, 'Inscriber')
 
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
