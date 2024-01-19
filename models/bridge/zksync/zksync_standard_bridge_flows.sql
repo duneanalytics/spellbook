@@ -35,17 +35,17 @@ WITH bridge_events AS (
             ,npr.evt_block_number as block_number
             ,npr.evt_tx_hash as tx_hash
             ,et."from" as sender
-            ,COALESCE(d.to, zt.to) as receiver -- d.to is null if there is no matching ERC20 deposit tx hash
+            ,COALESCE(d.to, zt.to) as receiver -- d.to is null if there is no matching ERC20 deposit tx hash. This is used to handle the log of an 'if statement'.
             ,0x0000000000000000000000000000000000000000 as bridged_token_address
             ,CAST(JSON_EXTRACT_SCALAR(npr.transaction, '$.reserved[0]') as UINT256) as bridged_token_amount_raw
             ,UINT256 '1' AS source_chain_id
             ,UINT256 '324' AS destination_chain_id
             ,'Ethereum' AS source_chain_name
             ,'zkSync Era' AS destination_chain_name
-        FROM {{ source ('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr
-        LEFT JOIN {{ source ('ethereum', 'transactions') }} et ON npr.evt_tx_hash = et.hash
-        LEFT JOIN {{ source ('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
-        LEFT JOIN {{ source ('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash
+        FROM {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr
+        LEFT JOIN {{ source('ethereum', 'transactions') }} et ON npr.evt_tx_hash = et.hash
+        LEFT JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
+        LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('npr.evt_block_time') }}
         {% endif %}
@@ -63,7 +63,7 @@ WITH bridge_events AS (
             ,UINT256 '324' AS destination_chain_id
             ,'Ethereum' AS source_chain_name
             ,'zkSync Era' AS destination_chain_name
-        FROM {{ source ('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
+        FROM {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('d.evt_block_time') }}
         {% endif %}
@@ -83,7 +83,7 @@ WITH bridge_events AS (
             ,UINT256 '1' AS destination_chain_id
             ,'zkSync Era' AS source_chain_name
             ,'Ethereum' AS destination_chain_name
-        FROM {{ source ('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w
+        FROM {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.evt_block_time') }}
         {% endif %}
@@ -91,25 +91,21 @@ WITH bridge_events AS (
         UNION ALL
 
         -- Withdraw ERC-20 from zkSync Era to Ethereum
-        -- redo using the WithdrawalInitiated event from 0x11f943b2c77b743AB90f4A0Ae7d5A4e7FCA3E102
-
         SELECT
-             l.block_time
-            ,l.block_number
-            ,l.tx_hash
-            ,bytearray_substring(l.topic1, 13, 20) as sender
-            ,bytearray_substring(l.topic2, 13, 20) as receiver
-            ,bytearray_substring(l.topic3, 13, 20) as bridged_token_address
-            ,bytearray_to_uint256(l.data) as bridged_token_amount_raw
+             w.evt_block_time as block_time
+            ,w.evt_block_number as block_number
+            ,w.evt_tx_hash as tx_hash
+            ,w.l2Sender as sender
+            ,w.l1Receiver as receiver
+            ,w.l2Token as bridged_token_address
+            ,w.amount as bridged_token_amount_raw
             ,UINT256 '324' AS source_chain_id
             ,UINT256 '1' AS destination_chain_id
             ,'zkSync Era' AS source_chain_name
             ,'Ethereum' AS destination_chain_name
-        FROM {{ source ('zksync', 'logs') }} l
-        WHERE topic0 = 0x2fc3848834aac8e883a2d2a17a7514dc4f2d3dd268089df9b9f5d918259ef3b0 
-        AND (topic1 IS NOT NULL) AND (topic2 IS NOT NULL) AND (topic3 IS NOT NULL) AND (data IS NOT NULL)
+        FROM {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w
         {% if is_incremental() %}
-        AND block_time > NOW() - interval '14' Day
+        WHERE {{ incremental_predicate('w.evt_block_time') }}
         {% endif %}
 
         ) a
@@ -152,7 +148,7 @@ LEFT JOIN {{ source('zksync', 'transactions') }} t
         ON t.block_time = tf.block_time
         AND t.hash = tf.tx_hash
         {% if is_incremental() %}
-        AND t.block_time >= (NOW() - interval '14' Day)
+        AND {{ incremental_predicate('t.block_time') }}
         {% endif %}
         
 LEFT JOIN {{ ref('tokens_erc20') }} erc
@@ -164,5 +160,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     AND p.blockchain = 'zksync'
     AND p.contract_address = tf.bridged_token_address
     {% if is_incremental() %}
-    AND p.minute >= (NOW() - interval '14' Day)
+    AND {{ incremental_predicate('p.minute') }}
     {% endif %}
