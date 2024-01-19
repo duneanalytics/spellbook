@@ -3,13 +3,13 @@ version: 2
 models:
   - name: aave_optimism_supply
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'ethereum']
-    description: "All Aave transactions involving supply transactions on Ethereum"
+      tags: ['lending', 'supply', 'aave', 'optimism']
+    description: "All Aave transactions involving supply transactions on Optimism"
     columns:
       - &blockchain
         name: blockchain
@@ -118,7 +118,7 @@ models:
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['optimism', 'aave', 'borrow', 'aave', 'lending']
-    description: "All Aave transactions involving borrow transactions on optimism"
+    description: "All Aave transactions involving borrow transactions on Optimism"
     columns:
       - *version
       - *transaction_type
@@ -138,64 +138,32 @@ models:
       - *block_time
       - *block_number
 
-  - name: aave_v3_optimism_flashloans
-    meta:
-      blockchain: optimism
-      sector: lending
-      contributors: hildobby
-    config:
-        tags: ['optimism', 'flashloans']
-    description: >
-        Aave v3 flashloans on Optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-    columns:
-        - name: blockchain
-        - name: project
-        - name: version
-        - name: block_time
-        - name: block_number
-        - name: amount
-        - name: amount_usd
-        - name: tx_hash
-        - name: evt_index
-        - name: fee
-        - name: currency_contract
-        - name: currency_symbol
-        - name: recipient
-        - name: contract_address
-        - name: block_month
-
   - name: aave_optimism_flashloans
     meta:
       blockchain: optimism
       sector: lending
-      contributors: hildobby
+      project: aave
+      contributors: hildobby, tomfutago
     config:
-        tags: ['optimism', 'flashloans']
-    description: >
-        All Aave flashloans on Optimism
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
+      tags: ['lending', 'flashloans', 'aave', 'optimism']
+    description: "All Aave transactions involving flashloans transactions on Optimism"
     columns:
-        - name: blockchain
-        - name: project
-        - name: version
-        - name: block_time
-        - name: block_number
-        - name: amount
-        - name: amount_usd
-        - name: tx_hash
-        - name: evt_index
-        - name: fee
-        - name: currency_contract
-        - name: currency_symbol
-        - name: recipient
-        - name: contract_address
-        - name: block_month
+      - *blockchain
+      - *project
+      - *version
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - *amount
+      - *usd_amount
+      - &fee
+        name: fee
+      - *symbol
+      - *token_address
+      - &contract_address
+        name: contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
