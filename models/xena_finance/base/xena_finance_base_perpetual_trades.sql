@@ -96,7 +96,7 @@ FROM (SELECT event.*,
 SELECT 'base'                                    AS blockchain
      , CAST(date_trunc('DAY', evt_block_time) AS date)   AS block_date
      , CAST(date_trunc('MONTH', evt_block_time) AS date) AS block_month
-     , evt_block_time AS block_time,
+     , evt_block_time AS block_time
      , CAST(NULL AS VARCHAR)                         AS virtual_asset
      , underlying_asset
      , market
