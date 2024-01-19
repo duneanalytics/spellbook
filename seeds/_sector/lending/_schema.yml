@@ -113,3 +113,60 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
+
+  - name: compound_ethereum_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
+  - name: compound_arbitrum_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
+  - name: compound_base_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
+  - name: compound_polygon_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
