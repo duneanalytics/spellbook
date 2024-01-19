@@ -33,8 +33,7 @@ WITH bridge_events AS (
         SELECT
              npr.evt_block_time as block_time
             ,npr.evt_block_number as block_number
-            ,npr.evt_tx_hash as l1_tx_hash
-            ,npr.txHash as l2_tx_hash
+            ,npr.evt_tx_hash as tx_hash
             ,et."from" as sender
             ,COALESCE(d.to, zt.to) as receiver -- d.to is null if there is no matching ERC20 deposit tx hash
             ,0x0000000000000000000000000000000000000000 as bridged_token_address
