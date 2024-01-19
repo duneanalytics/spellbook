@@ -287,6 +287,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('openocean_avalanche_c_base_trades_seed')
 
+  - name: woofi_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: woofi
+      contributors: scoffie, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'woofi' ]
+    description: "woofi avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('woofi_avalanche_c_base_trades_seed')
+          
   - name: curvefi_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
