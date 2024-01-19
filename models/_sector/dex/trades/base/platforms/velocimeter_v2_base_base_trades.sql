@@ -12,7 +12,7 @@
 {{
     uniswap_compatible_v2_trades(
         blockchain = 'base'
-        , project = 'velocimeter_v2'
+        , project = 'velocimeter'
         , version = '2'
         , Pair_evt_Swap = source('basevelocimeter_base', 'Pair_evt_Swap')
         , Factory_evt_PairCreated = source('basevelocimeter_base', 'PairFactory_evt_PairCreated')
