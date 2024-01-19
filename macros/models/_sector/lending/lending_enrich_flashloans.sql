@@ -22,7 +22,6 @@ from {{ model }} flashloans
     and flashloans.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 
     on date_trunc('minute', flashloans.block_time) = p.minute
-    and erc20.symbol = p.symbol
     and flashloans.token_address = p.contract_address
     and flashloans.blockchain = p.blockchain
     {% if is_incremental() %}

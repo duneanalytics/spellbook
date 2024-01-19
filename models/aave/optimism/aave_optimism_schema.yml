@@ -3,13 +3,13 @@ version: 2
 models:
   - name: aave_optimism_supply
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'ethereum']
-    description: "All Aave transactions involving supply transactions on Ethereum"
+      tags: ['lending', 'supply', 'aave', 'optimism']
+    description: "All Aave transactions involving supply transactions on Optimism"
     columns:
       - &blockchain
         name: blockchain
@@ -118,7 +118,7 @@ models:
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['optimism', 'aave', 'borrow', 'aave', 'lending']
-    description: "All Aave transactions involving borrow transactions on optimism"
+    description: "All Aave transactions involving borrow transactions on Optimism"
     columns:
       - *version
       - *transaction_type
@@ -140,20 +140,16 @@ models:
 
   - name: aave_optimism_flashloans
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       sector: lending
       project: aave
       contributors: hildobby, tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'ethereum']
-    description: "All Aave transactions involving flashloans transactions on Ethereum"
+      tags: ['lending', 'flashloans', 'aave', 'optimism']
+    description: "All Aave transactions involving flashloans transactions on Optimism"
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain name"
-      - &project
-        name: project
-        description: "Project name"
+      - *blockchain
+      - *project
       - *version
       - &recipient
         name: recipient
@@ -166,16 +162,8 @@ models:
       - *token_address
       - &contract_address
         name: contract_address
-      - &block_month
-        name: block_month
-        description: "Block month column used to partition data in this table"
-      - &block_time
-        name: block_time
-        description: "Timestamp for block event time in UTC"
-      - &block_number
-        name: block_number
-        description: "Event block number"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of the event"
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
       - *evt_index
