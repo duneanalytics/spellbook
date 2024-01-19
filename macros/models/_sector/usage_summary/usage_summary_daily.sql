@@ -39,8 +39,11 @@ WITH check_date AS (
   , COALESCE(num_tx_tos, 0) AS num_tx_tos
   , COALESCE(num_tx_to_senders, 0) AS num_tx_to_senders
   , COALESCE(sum_tx_to_gas_used, 0) AS sum_tx_to_gas_used
+
   , COALESCE(sum_tx_to_calldata_bytes, 0) AS sum_tx_to_calldata_bytes
   , COALESCE(sum_tx_to_calldata_gas, 0) AS sum_tx_to_calldata_gas
+
+  , COALESCE(sum_tx_to_gas_fee, 0) AS sum_tx_to_gas_fee
   ---
   , COALESCE(num_trace_to_blocks, 0) AS num_trace_to_blocks
   , COALESCE(num_trace_to_txs, 0) AS num_trace_to_txs
@@ -51,6 +54,8 @@ WITH check_date AS (
 
   , COALESCE(sum_trace_to_gas_used, 0) AS sum_trace_to_gas_used
   , COALESCE(sum_trace_to_tx_gas_used, 0) AS sum_trace_to_tx_gas_used
+
+  , COALESCE(sum_trace_to_tx_gas_fee, 0) AS sum_trace_to_tx_gas_fee
   --
   , COALESCE(num_logs_emitted_blocks, 0) AS num_logs_emitted_blocks
   , COALESCE(num_logs_emitted_txs, 0) AS num_logs_emitted_txs

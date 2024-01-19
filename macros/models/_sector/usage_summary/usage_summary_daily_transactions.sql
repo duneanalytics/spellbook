@@ -22,6 +22,16 @@ SELECT
   , SUM(
     {{ evm_get_calldata_gas_from_data('t.data') }}
   ) AS sum_tx_to_calldata_gas
+
+  , SUM(
+      {% if chain in all_op_chains() %}
+        CASE WHEN t.gas_price = 0 then 0 else t.l1_fee/1e18 + (t.gas_price/1e9 * t.gas_used/1e9) end
+      {% elif chain == 'arbitrum' %}
+        effective_gas_price/1e9 * gas_used/1e9
+      {% else %}
+        gas_price/1e9 * gas_used/1e9
+      )
+    AS sum_tx_to_gas_fee
   FROM {{ source(chain,'transactions') }} t
   cross join check_date cd
 

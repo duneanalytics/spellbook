@@ -47,6 +47,9 @@ models:
     - &sum_tx_to_calldata_gas
       name: sum_tx_to_calldata_gas
       description:  "Amount of calldata gas used by successful transactions where the contract was the 'to address'"
+    - &sum_tx_to_gas_fee
+      name: sum_tx_to_gas_fee
+      description: "Amount of gas fees paid (in ETH)d by successful transactions where the contract was the 'to address'"
     - &num_trace_to_blocks
       name: num_trace_to_blocks
       description: "Amount of blocks where the contract was called in traces for successful traces"
@@ -68,6 +71,9 @@ models:
     - &sum_trace_to_tx_gas_used
       name: sum_trace_to_tx_gas_used
       description:   "Amount of gas used in successful transactions where the contract was called in traces"
+    - &sum_trace_to_tx_gas_fee
+      name: sum_trace_to_tx_gas_fee
+      description: "Amount of gas fees paid (in ETH)d by successful transactions where the contract was called in traces"
     - &num_logs_emitted_blocks
       name: num_logs_emitted_blocks
       description:  "Amount of blocks where the contract was called in traces for successful event logs"
