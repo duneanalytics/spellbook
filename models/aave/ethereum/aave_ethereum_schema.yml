@@ -97,113 +97,65 @@ models:
       - &reason
         name: reason
         description: "Optional onchain commments to explain votes"
-       
- - name: aave_v2_ethereum_supply
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v2
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v2', 'supply', 'aave', 'lending']
-   description: "All aave v2 transactions involving supply transactions on ethereum"
-   columns:
-     - &version
-       name: version
-       description: "Aave version"
-     - &transaction_type
-       name: transaction_type
-       description: "The transaction type"
-     - *symbol
-     - &token_address
-       name: token_address
-       description: "Aave reserve contract address"  
-     - &depositor
-       name: depositor
-       description: "Depositor wallet address"
-     - &withdrawn_to
-       name: withdrawn_to
-       description: "The wallet address where the tokens are withdrawn"
-     - &liquidator
-       name: liquidator
-       description: "Liquidator wallet address"
-     - &amount
-       name: amount
-       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
-     - &usd_amount
-       name: usd_amount
-       description: "Token amount in USD" 
-     - &evt_tx_hash
-       name: evt_tx_hash
-       description: "Transaction hash of the event"
-     - &evt_index
-       name: evt_index
-       description: "Event index"   
-     - &evt_block_time
-       name: evt_block_time
-       description: "Timestamp for block event time in UTC"
-     - &evt_block_number
-       name: evt_block_number
-       description: "Event block number"
-       
- - name: aave_v1_ethereum_supply
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v1
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v1', 'supply', 'aave', 'lending']
-   description: "All aave v1 transactions involving supply transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - *depositor
-     - *withdrawn_to
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number
 
- - name: aave_ethereum_supply
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
-   description: "All aave transactions involving supply transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - *depositor
-     - *withdrawn_to
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number 
+  - name: aave_ethereum_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
+    description: "All aave transactions involving supply transactions on ethereum"
+    columns:
+      - &version
+        name: version
+        description: "Aave version"
+      - &transaction_type
+        name: transaction_type
+        description: "The transaction type"
+      - *symbol
+      - &token_address
+        name: token_address
+        description: "Aave reserve contract address"  
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "The wallet address where the tokens are withdrawn"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD" 
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"   
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
 
- - name: aave_ethereum_borrow
-   meta:
+  - name: aave_ethereum_borrow
+    meta:
       blockchain: ethereum
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
-   config:
+    config:
       tags: ['lending', 'borrow', 'aave', 'ethereum']
-   description: "All Aave transactions involving borrow transactions on Ethereum"
-   columns:
+    description: "All Aave transactions involving borrow transactions on Ethereum"
+    columns:
       - *version
       - *transaction_type
       - *symbol
@@ -217,10 +169,10 @@ models:
       - *liquidator
       - *amount
       - *usd_amount
-      - *evt_tx_hash
+      - *tx_hash
       - *evt_index
-      - *evt_block_time
-      - *evt_block_number
+      - *block_time
+      - *block_number
 
   - name: aave_ethereum_proposals
     meta:

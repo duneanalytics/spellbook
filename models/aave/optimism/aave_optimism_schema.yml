@@ -110,62 +110,6 @@ models:
       - *stable_borrow_apy
       - *variable_borrow_apy
 
-  - name: aave_v3_optimism_supply
-    meta:
-      blockchain: optimism
-      sector: lending
-      project: aave_v3
-      contributors: batwayne, chuxin
-    config:
-      tags: ['ethereum', 'aave_v3', 'supply', 'aave', 'lending']
-    description: "All aave v3 transactions involving supply transactions on optimism"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - version
-            - token_address
-            - evt_tx_hash
-            - evt_block_number
-            - evt_index
-    columns:
-      - &version
-        name: version
-        description: "Aave version"
-      - &transaction_type
-        name: transaction_type
-        description: "The transaction type"
-      - *symbol
-      - &token_address
-        name: token_address
-        description: "Aave reserve contract address"
-      - &depositor
-        name: depositor
-        description: "Depositor wallet address"
-      - &withdrawn_to
-        name: withdrawn_to
-        description: "The wallet address where the tokens are withdrawn"
-      - &liquidator
-        name: liquidator
-        description: "Liquidator wallet address"
-      - &amount
-        name: amount
-        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest"
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: "Transaction hash of the event"
-      - &evt_index
-        name: evt_index
-        description: "Event index"
-      - &evt_block_time
-        name: evt_block_time
-        description: "Timestamp for block event time in UTC"
-      - &evt_block_number
-        name: evt_block_number
-        description: "Event block number"
-
   - name: aave_optimism_borrow
     meta:
       blockchain: optimism
@@ -189,10 +133,10 @@ models:
       - *liquidator
       - *amount
       - *usd_amount
-      - *evt_tx_hash
+      - *tx_hash
       - *evt_index
-      - *evt_block_time
-      - *evt_block_number
+      - *block_time
+      - *block_number
 
   - name: aave_v3_optimism_flashloans
     meta:
