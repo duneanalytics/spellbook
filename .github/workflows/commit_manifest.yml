@@ -41,14 +41,14 @@ jobs:
         fi
 
     - name: dbt dependencies
-      working-directory: ${PROJECT_DIR}
+      working-directory: ${{env.PROJECT_DIR}}
       run: "dbt deps"
     
     - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
       run: "./scripts/ensure_cluster.sh"
           
     - name: dbt compile to create prod manifest from main
-      run: "dbt compile --target-path . $PROFILE --project-dir  $PROJECT_DIR"
+      run: "dbt compile --target-path . $PROFILE --project-dir  ${{PROJECT_DIR}}"
 
     # - name: copy old manifest locally
     #   run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/previous_manifest.json"
