@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
@@ -72,7 +72,6 @@ FROM (VALUES
     , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
     , ('cow_protocol', 'CoW Swap', 'Aggregator', 'CoWSwap')
-    , ('CoW Protocol', 'CoW Swap', 'Aggregator', 'CoWSwap') -- To Fix, should be just cow_protocol
     , ('openocean', 'OpenOcean', 'Aggregator', 'OpenOceanGlobal')
     , ('lifi', 'LI.FI', 'Aggregator', 'lifiprotocol')
     , ('yield_yak', 'Yield Yak', 'Aggregator', 'yieldyak_')
@@ -93,7 +92,7 @@ FROM (VALUES
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
-    , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
+    , ('wardenswap', 'Warden', 'Direct & Aggregator', 'WardenSwap')
     , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
     , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
     , ('solidlizard', 'SolidLizard', 'Direct', 'solidlizardfi')
@@ -101,4 +100,10 @@ FROM (VALUES
     , ('ramses', 'Ramses', 'Direct', 'ramses')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
+    , ('whirlpool', 'Orca', 'Direct', 'orca_so')
+    , ('phoenix', 'Phoenix', 'Direct', 'PhoenixTrade')
+    , ('raydium', 'Raydium', 'Direct', 'RaydiumProtocol')
+    , ('meteora', 'Meteora', 'Direct', 'MeteoraAG')
+    , ('lifinity', 'Lifinity', 'Direct', 'Lifinity_io')
+    , ('goosefx_ssl', 'GooseFX', 'Direct', 'GooseFX1')
     ) AS temp_table (project, name, marketplace_type, x_username)
