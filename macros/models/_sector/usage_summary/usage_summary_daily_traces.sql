@@ -39,7 +39,7 @@ WITH check_date AS (
             gas_price/1e9 * gas_used/1e9
           {% endif %}
           AS tx_gas_fee
-        , ROW_NUMBER() OVER (PARTITION BY r.tx_hash, r.to) AS trace_to_number --reindex trace to ensure single count
+        , ROW_NUMBER() OVER (PARTITION BY r.tx_hash, COALESCE(r.to, 0x) ) AS trace_to_number --reindex trace to ensure single count
         FROM {{ source(chain,'traces') }} r
         cross join check_date cd
         INNER JOIN  {{ source(chain,'transactions') }} t 
