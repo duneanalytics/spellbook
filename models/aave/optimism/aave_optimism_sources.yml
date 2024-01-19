@@ -40,7 +40,3 @@ sources:
           description: "Variable borrow index value of the reserve"
         - name: variableBorrowRate
           description: "Variable borrow rate value of the reserve"     
-
-      - name: Pool_evt_FlashLoan
-        loaded_at_field: evt_block_time
-          

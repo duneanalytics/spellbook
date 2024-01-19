@@ -29,7 +29,7 @@ models:
       - &variable_borrow_apy
         name: variable_borrow_apy
         description: "Hourly variable borrow interest rate value of the reserve"
- 
+
   - name: aave_ethereum_interest_rates
     meta:
       blockchain: ethereum
@@ -46,7 +46,7 @@ models:
       - *deposit_apy
       - *stable_borrow_apy
       - *variable_borrow_apy
- 
+
   - name: aave_ethereum_votes
     meta:
       blockchain: ethereum
@@ -174,6 +174,42 @@ models:
       - *block_time
       - *block_number
 
+  - name: aave_ethereum_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'ethereum']
+    description: "All Aave transactions involving flashloans transactions on Ethereum"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - *version
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - *amount
+      - *usd_amount
+      - &fee
+        name: fee
+      - *symbol
+      - *token_address
+      - &contract_address
+        name: contract_address
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
   - name: aave_ethereum_proposals
     meta:
       blockchain: ethereum
@@ -219,127 +255,3 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
-
-  - name: aave_v1_ethereum_flashloans
-    meta:
-      blockchain: ethereum
-      sector: lending
-      contributors: hildobby
-    config:
-      tags: ['ethereum', 'flashloans']
-    description: >
-      Aave v1 flashloans on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-    columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
- 
-  - name: aave_v2_ethereum_flashloans
-    meta:
-      blockchain: ethereum
-      sector: lending
-      contributors: hildobby
-    config:
-      tags: ['ethereum', 'flashloans']
-    description: >
-      Aave v2 flashloans on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-    columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
- 
-  - name: aave_v3_ethereum_flashloans
-    meta:
-      blockchain: ethereum
-      sector: lending
-      contributors: hildobby
-    config:
-      tags: ['ethereum', 'flashloans']
-    description: >
-      Aave v3 flashloans on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-    columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
- 
-  - name: aave_ethereum_flashloans
-    meta:
-      blockchain: ethereum
-      sector: lending
-      contributors: hildobby
-    config:
-      tags: ['ethereum', 'flashloans']
-    description: >
-      All Aave flashloans on Ethereum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-    columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
