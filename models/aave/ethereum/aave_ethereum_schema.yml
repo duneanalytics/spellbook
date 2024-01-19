@@ -143,7 +143,77 @@ models:
      - *evt_block_time
      - *evt_block_number 
 
- - name: aave_ethereum_votes
+- name: aave_ethereum_borrow
+   meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+   config:
+      tags: ['lending', 'borrow', 'aave', 'ethereum']
+   description: "All Aave transactions involving borrow transactions on Ethereum"
+   columns:
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+
+ - name: aave_ethereum_flashloans
+   meta:
+    blockchain: ethereum
+    sector: lending
+    project: aave
+    contributors: hildobby, tomfutago
+   config:
+    tags: ['lending', 'flashloans', 'aave', 'ethereum']
+   description: "All Aave transactions involving flashloans transactions on Ethereum"
+   columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - *version
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - *amount
+      - *usd_amount
+      - &fee
+        name: fee
+      - *symbol
+      - *token_address
+      - &contract_address
+        name: contract_address
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+      - *evt_index
+
+- name: aave_ethereum_votes
    meta:
     blockchain: ethereum
     sector: dao
@@ -239,45 +309,3 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
-
- - name: aave_ethereum_flashloans
-   meta:
-    blockchain: ethereum
-    sector: lending
-    project: aave
-    contributors: hildobby, tomfutago
-   config:
-    tags: ['lending', 'flashloans', 'aave', 'ethereum']
-   description: "All Aave transactions involving flashloans transactions on Ethereum"
-   columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain name"
-      - &project
-        name: project
-        description: "Project name"
-      - *version
-      - &recipient
-        name: recipient
-        description: "recipient wallet address"
-      - *amount
-      - *usd_amount
-      - &fee
-        name: fee
-      - *symbol
-      - *token_address
-      - &contract_address
-        name: contract_address
-      - &block_month
-        name: block_month
-        description: "Block month column used to partition data in this table"
-      - &block_time
-        name: block_time
-        description: "Timestamp for block event time in UTC"
-      - &block_number
-        name: block_number
-        description: "Event block number"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of the event"
-      - *evt_index

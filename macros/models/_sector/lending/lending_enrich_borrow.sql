@@ -24,11 +24,13 @@ from {{ model }} borrow
     and borrow.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 
     on date_trunc('minute', borrow.block_time) = p.minute
-    and erc20.symbol = p.symbol
     and borrow.token_address = p.contract_address
     and borrow.blockchain = p.blockchain
     {% if is_incremental() %}
     and {{ incremental_predicate('p.minute') }}
     {% endif %}
+{% if is_incremental() %}
+where {{ incremental_predicate('borrow.block_time') }}
+{% endif %}
 
 {% endmacro %}
