@@ -2,7 +2,8 @@
         blockchain = '',
         project = '',
         version = '',
-        source_evt_swap = ''
+        source_evt_swap = '',
+        taker = 'account'
     )
 %}
 
@@ -10,7 +11,7 @@ WITH dexs AS (
     SELECT
         t.evt_block_time as block_time,
         t.evt_block_number as block_number,
-        t.account as taker,
+        t.{{ taker }} as taker,
         cast(null as varbinary) as maker,
         t.amountOut as token_bought_amount_raw,
         t.amountIn as token_sold_amount_raw,
