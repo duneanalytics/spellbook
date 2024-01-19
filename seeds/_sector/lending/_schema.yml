@@ -113,7 +113,20 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
-
+  - name: aave_arbitrum_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
   - name: compound_ethereum_base_borrow_seed
     config:
       column_types:
@@ -127,6 +140,20 @@ seeds:
         transaction_type: varchar
         token_address: varbinary
         borrower: varbinary
+        amount: double
+  - name: aave_avalanche_c_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
         amount: double
   - name: compound_arbitrum_base_borrow_seed
     config:
@@ -142,6 +169,20 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
+  - name: aave_base_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
   - name: compound_base_base_borrow_seed
     config:
       column_types:
@@ -156,6 +197,20 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
+  - name: aave_ethereum_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
   - name: compound_polygon_base_borrow_seed
     config:
       column_types:
@@ -169,4 +224,60 @@ seeds:
         transaction_type: varchar
         token_address: varbinary
         borrower: varbinary
+        amount: double
+  - name: aave_fantom_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
+  - name: aave_optimism_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
+  - name: aave_polygon_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
+  - name: moola_celo_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
         amount: double
