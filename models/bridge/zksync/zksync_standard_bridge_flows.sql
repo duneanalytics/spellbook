@@ -30,7 +30,22 @@ WITH bridge_events AS (
         ,destination_chain_name
     FROM (
         -- Deposit ETH from Ethereum to zkSync Era
-
+        SELECT
+             npr.evt_block_time as block_time
+            ,npr.evt_block_number as block_number
+            ,npr.evt_tx_hash as l1_tx_hash
+            ,npr.txHash as l2_tx_hash
+            ,et."from" as sender
+            ,COALESCE(d.to, zt.to) as receiver -- d.to is null if there is no matching ERC20 deposit tx hash
+            ,0x0000000000000000000000000000000000000000 as bridged_token_address
+            ,CAST(JSON_EXTRACT_SCALAR(npr.transaction, '$.reserved[0]') as UINT256) as bridged_token_amount_raw
+        FROM {{ source ('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr
+        LEFT JOIN {{ source ('ethereum', 'transactions') }} et ON npr.evt_tx_hash = et.hash
+        LEFT JOIN {{ source ('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
+        LEFT JOIN {{ source ('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('npr.evt_block_time') }}
+        {% endif %}
 
         -- Deposit ERC-20 from Ethereum to zkSync Era
         SELECT
@@ -47,7 +62,7 @@ WITH bridge_events AS (
             ,'zkSync Era' AS destination_chain_name
         FROM {{ source ('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
         {% if is_incremental() %}
-        AND d.evt_block_time > NOW() - interval '14' Day
+        WHERE {{ incremental_predicate('d.evt_block_time') }}
         {% endif %}
 
         UNION ALL
@@ -67,12 +82,14 @@ WITH bridge_events AS (
             ,'Ethereum' AS destination_chain_name
         FROM {{ source ('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w
         {% if is_incremental() %}
-        AND w.evt_block_time > NOW() - interval '14' Day
+        WHERE {{ incremental_predicate('w.evt_block_time') }}
         {% endif %}
 
         UNION ALL
 
         -- Withdraw ERC-20 from zkSync Era to Ethereum
+        -- redo using the WithdrawalInitiated event from 0x11f943b2c77b743AB90f4A0Ae7d5A4e7FCA3E102
+
         SELECT
              l.block_time
             ,l.block_number
