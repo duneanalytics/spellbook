@@ -61,4 +61,4 @@ jobs:
     #   run: "aws s3 cp $S3_LOCATION/manifest.json $S3_LOCATION/manifest_$GIT_SHA.json"
 
     - name: upload manifest
-      run: "aws s3 cp manifest.json $S3_LOCATION/manifest.json"
+      run: "aws s3 cp $PROJECT_DIR/manifest.json $S3_LOCATION/manifest.json"
