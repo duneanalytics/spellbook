@@ -29,5 +29,8 @@ from {{ model }} borrow
     {% if is_incremental() %}
     and {{ incremental_predicate('p.minute') }}
     {% endif %}
+{% if is_incremental() %}
+where {{ incremental_predicate('borrow.block_time') }}
+{% endif %}
 
 {% endmacro %}
