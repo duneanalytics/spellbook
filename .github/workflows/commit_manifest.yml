@@ -41,7 +41,7 @@ jobs:
         fi
 
     - name: dbt dependencies
-      working-directory: $PROJECT_DIR
+      working-directory: ${PROJECT_DIR}
       run: "dbt deps"
     
     - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
