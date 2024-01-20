@@ -17,4 +17,11 @@
   ]
 %}
 
-select 1
+{{
+  lending_compound_v3_compatible_supply(
+    blockchain = 'arbitrum',
+    project = 'compound',
+    version = '3',
+    sources = config_sources
+  )
+}}

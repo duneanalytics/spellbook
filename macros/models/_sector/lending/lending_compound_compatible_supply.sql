@@ -103,46 +103,10 @@ from base_supply
 
 with
 
-src_Mint as (
+src_SupplyCollateral as (
   {% for src in sources %}
-    select contract_address, src, amount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Withdraw' )}}
-    where evt_tx_hash not in (
-        select evt_tx_hash
-        from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Transfer' )}}
-        where "to" = 0x0000000000000000000000000000000000000000
-      )
-    {% if is_incremental() %}
-      and {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
-    {% if not loop.last %}
-    union all
-    {% endif %}
-  {% endfor %}
-),
-
-src_Redeem as (
-  {% for src in sources %}
-    select contract_address, "from", dst, amount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Supply' )}}
-    where evt_tx_hash not in (
-        select evt_tx_hash
-        from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Transfer' )}}
-        where "from" = 0x0000000000000000000000000000000000000000
-      )
-    {% if is_incremental() %}
-      and {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
-    {% if not loop.last %}
-    union all
-    {% endif %}
-  {% endfor %}
-),
-
-src_LiquidationCall as (
-  {% for src in sources %}
-    select contract_address, supplyer, absorber, basePaidOut, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_AbsorbDebt' )}}
+    select contract_address, "from", amount, asset, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_SupplyCollateral' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -152,15 +116,37 @@ src_LiquidationCall as (
   {% endfor %}
 ),
 
-ctokens as (
-  select * from {{ ref( decoded_project ~ '_' ~ blockchain ~ '_ctokens' ) }}
+src_WithdrawCollateral as (
+  {% for src in sources %}
+    select contract_address, src, to, amount, asset, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_WithdrawCollateral' )}}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+    {% if not loop.last %}
+    union all
+    {% endif %}
+  {% endfor %}
+),
+
+src_AbsorbCollateral as (
+  {% for src in sources %}
+    select contract_address, borrower, absorber, collateralAbsorbed, asset, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_AbsorbCollateral' )}}
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+    {% if not loop.last %}
+    union all
+    {% endif %}
+  {% endfor %}
 ),
 
 base_supply as (
   select
     'supply' as transaction_type,
-    contract_address as comet_contract_address,
-    src as supplyer,
+    asset as token_address,
+    "from" as borrower,
     cast(null as varbinary) as repayer,
     cast(null as varbinary) as liquidator,
     cast(amount as double) as amount,
@@ -168,12 +154,12 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_Mint
+  from src_SupplyCollateral
   union all
   select
     'repay' as transaction_type,
-    contract_address as comet_contract_address,
-    "from" as supplyer,
+    asset as token_address,
+    "from" as borrower,
     dst as repayer,
     cast(null as varbinary) as liquidator,
     -1 * cast(amount as double) as amount,
@@ -181,12 +167,12 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_Redeem
+  from src_WithdrawCollateral
   union all
   select
     'supply_liquidation' as transaction_type,
-    contract_address as comet_contract_address,
-    supplyer,
+    asset as token_address,
+    borrower,
     absorber as repayer,
     absorber as liquidator,
     -1 * cast(basePaidOut as double) as amount,
@@ -194,7 +180,7 @@ base_supply as (
     evt_index,
     evt_block_time,
     evt_block_number
-  from src_LiquidationCall
+  from src_AbsorbCollateral
 )
 
 select
@@ -203,8 +189,8 @@ select
   '{{ version }}' as version,
   base_supply.transaction_type,
   cast(null as varchar) as loan_type,
-  ctokens.asset_address as token_address,
-  base_supply.supplyer,
+  base_supply.token_address,
+  base_supply.borrower,
   base_supply.repayer,
   base_supply.liquidator,
   base_supply.amount,
@@ -214,8 +200,5 @@ select
   base_supply.evt_tx_hash as tx_hash,
   base_supply.evt_index
 from base_supply
-  join (
-    select distinct comet_contract_address, asset_address from ctokens
-  ) ctokens on base_supply.comet_contract_address = ctokens.comet_contract_address
 
 {% endmacro %}
