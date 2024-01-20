@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v1_ethereum_base_supply'),
     ref('aave_v2_ethereum_base_supply'),
-    ref('aave_v3_ethereum_base_supply')
+    ref('aave_v3_ethereum_base_supply'),
+    ref('compound_v2_ethereum_base_supply')
   ]
 %}
 

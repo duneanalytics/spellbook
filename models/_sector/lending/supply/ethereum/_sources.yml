@@ -18,3 +18,10 @@ sources:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying
+
+  - name: compound_v2_ethereum
+    tables:
+      - name: cErc20_evt_Mint
+      - name: cEther_evt_Mint
+      - name: cErc20_evt_Redeem
+      - name: cEther_evt_Redeem
