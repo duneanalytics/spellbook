@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "woofi",
-                                    \'["ARDev097"]\') }}'
+                                    \'["ARDev097", "tomfutago"]\') }}'
 )
 }}
     
@@ -22,11 +22,11 @@ WITH dexs as
             ,'1' AS version
             ,"from" AS taker
             ,to AS maker
-            ,fromAmount AS token_bought_amount_raw
-            ,toAmount AS token_sold_amount_raw
+            ,toAmount AS token_bought_amount_raw
+            ,fromAmount AS token_sold_amount_raw
             ,NULL AS amount_usd
-            ,fromToken AS token_bought_address
-            ,toToken AS token_sold_address
+            ,toToken AS token_bought_address
+            ,fromToken AS token_sold_address
             ,contract_address AS project_contract_address
             ,evt_tx_hash AS tx_hash
             ,evt_index
@@ -46,11 +46,11 @@ WITH dexs as
             ,'1' AS version
             ,"from" AS taker
             ,to AS maker
-            ,fromAmount AS token_bought_amount_raw
-            ,toAmount AS token_sold_amount_raw
+            ,toAmount AS token_bought_amount_raw
+            ,fromAmount AS token_sold_amount_raw
             ,NULL AS amount_usd
-            ,fromToken AS token_bought_address
-            ,toToken AS token_sold_address
+            ,toToken AS token_bought_address
+            ,fromToken AS token_sold_address
             ,contract_address AS project_contract_address
             ,evt_tx_hash AS tx_hash
             ,evt_index
