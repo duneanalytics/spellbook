@@ -10,12 +10,21 @@
     )
 }}
 
+{%
+    set config_sources = [
+        {
+            'version': 'elastic',
+            'source_evt_swap': 'ElasticPool_evt_Swap',
+            'source_evt_factory': 'Factory_evt_PoolCreated'
+        },
+    ]
+%}
+
+
 {{
-    kyberswap_base_compatible_trades(
-        blockchain = 'base',
-        project = 'kyberswap',
-        version = '2',
-        Pair_evt_Swap = source('kyber_base', 'ElasticPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('kyber_base', 'Factory_evt_PoolCreated')
-    )
+        kyberswap_compatible_trades(
+            blockchain = 'base',
+            project = 'kyberswap',
+            sources = config_sources
+        )
 }}
