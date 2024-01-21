@@ -25,6 +25,10 @@
     , ref('clipper_arbitrum_base_trades')
     , ref('ramses_arbitrum_base_trades')
     , ref('xchange_arbitrum_base_trades')
+    , ref('fraxswap_arbitrum_base_trades')
+    , ref('chronos_arbitrum_base_trades')
+    , ref('zyberswap_arbitrum_base_trades')
+    , ref('solidlizard_arbitrum_base_trades')
     , ref('rubicon_arbitrum_base_trades')
 ] %}
 
