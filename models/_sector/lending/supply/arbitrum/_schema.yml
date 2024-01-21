@@ -5,11 +5,11 @@ models:
     meta:
       blockchain: arbitrum
       sector: lending
-      project: aave
+      project: aave, compound
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'arbitrum']
-    description: "All Aave supply transactions on Arbitrum"
+      tags: ['lending', 'supply', 'aave', 'compound', 'arbitrum']
+    description: "All lending supply transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -5,11 +5,11 @@ models:
     meta:
       blockchain: ethereum
       sector: lending
-      project: aave
+      project: aave, compound
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'ethereum']
-    description: "All Aave supply transactions on Ethereum"
+      tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
+    description: "All lending supply transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -86,7 +86,7 @@ models:
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'v1', 'ethereum']
+      tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v1 supply transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -131,7 +131,7 @@ models:
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'v2', 'ethereum']
+      tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v2 supply transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -176,7 +176,7 @@ models:
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'v3', 'ethereum']
+      tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -221,7 +221,7 @@ models:
       project: compound
       contributors: bizzyvinci, hosuke, tomfutago
     config:
-      tags: ['lending', 'supply', 'compound', 'v2', 'ethereum']
+      tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v2 supply transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -234,6 +234,51 @@ models:
           seed_file: ref('compound_ethereum_base_supply_seed')
           filter:
             version: 2
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - supplyer
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: compound_v3_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'ethereum']
+    description: "Compound v3 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('compound_ethereum_base_supply_seed')
+          filter:
+            version: 3
           match_columns:
             - transaction_type
             - token_address
