@@ -30,8 +30,9 @@
         'tx_to',
         'tx_nonce',
         'maker',
-        'gas_price',
-        'priority_fee_per_gas',
+        'tx_gas_used',
+        'tx_gas_price',
+        'tx_priority_fee_per_gas',
         'call_trace_address',
         'call_from',
         'call_to',
@@ -160,12 +161,12 @@ tokens as (
         , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
-        -- $ amount from user to any
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and transfer_from = user) as _amount_usd_from_user
-        -- $ amount from any to user
-        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = user) as _amount_usd_to_user
-        -- $ amount from any to receiver
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as _amount_usd_to_receiver
+        -- src $ amount from user
+        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
+        -- dst $ amount to user
+        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
+        -- dst $ amount to receiver
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -191,8 +192,9 @@ select
     , tx_from
     , tx_to
     , tx_nonce
-    , gas_price
-    , priority_fee_per_gas
+    , tx_gas_used
+    , tx_gas_price
+    , tx_priority_fee_per_gas
     , contract_name
     , protocol
     , protocol_version

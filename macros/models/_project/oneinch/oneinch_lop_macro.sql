@@ -158,11 +158,9 @@ select
     , tx_to
     , tx_success
     , tx_nonce
-    , tx_gas_price as gas_price
-    , tx_priority_fee_per_gas as priority_fee_per_gas
+    , tx_gas_used
     , tx_gas_price
     , tx_priority_fee_per_gas
-    , tx_gas_used
     , contract_name
     , 'LOP' as protocol
     , protocol_version
