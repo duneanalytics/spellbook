@@ -26,8 +26,7 @@
 
 
 with base_union as (
-    SELECT
-        *
+    SELECT *
     FROM
     (
         {% for model in models %}
