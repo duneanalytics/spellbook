@@ -18,6 +18,7 @@
         Pair_evt_Swap = source('smardex_base', 'SmardexPair_evt_Swap'),
         Factory_evt_PoolCreated = source('smardex_base', 'SmardexFactory_evt_PairCreated'),
         taker_column_name = 'to',
+        maker_column_name = 'contract_address',
         optional_columns = null,
         pair_column_name = 'pair'
     )
