@@ -197,7 +197,7 @@ with
         LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
             AND trade.call_block_slot = rl.call_block_slot
             AND trade.call_order = rl.log_order
-        LEFT JOIN {{ ref(tokens_solana_fungible) }} trade_token ON contains(trade.call_account_arguments, trade_token.token_mint_address)
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} trade_token ON contains(trade.call_account_arguments, trade_token.token_mint_address)
             AND trade_token.token_mint_address != trade.account_tokenMint
     )
 
