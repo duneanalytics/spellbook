@@ -102,6 +102,7 @@ FROM (VALUES
     , ('ramses', 'Ramses', 'Direct', 'ramses')
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
+    , ('odos', 'Odos', 'Aggregator', 'odosprotocol')
     , ('whirlpool', 'Orca', 'Direct', 'orca_so')
     , ('phoenix', 'Phoenix', 'Direct', 'PhoenixTrade')
     , ('raydium', 'Raydium', 'Direct', 'RaydiumProtocol')

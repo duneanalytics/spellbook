@@ -988,6 +988,18 @@ WITH curated_list AS (
       ,(0x9cBa37df627CdAa6548E1a837F82773D68E593D0, 'Voodoo Trade Base')
       ,(0xB1ecA297E90E6B93DA5fA068293cBDd864D55FFA, 'Detto Finance')
 
+      ,(0x2CC36834BccC4313477aD195f503d8C584B8b827, 'Sobal') -- Base
+      ,(0x5985A78e447aDf6BCd38541F364475d97613148c, 'Autoearn Finance')
+      ,(0xD818EA2aF0778652F825A40f3fA91d5eAAc1802F, 'ZebraDao')
+      ,(0x317D250C6a3D66835fb9f798647B63e40B6c844a, 'Toupee.tech')
+      ,(0x9a480c450CAA1f69E824A7C04304D234E05dACED, 'EDEBASE')
+      ,(0x3c0122b76457287311BE960fC81B1bD7cB6b240a, 'Mountain Protocol')
+      ,(0xEfb9a25a5D892Bdf587103a226e6DD0369b220De, 'Sharesgram')
+      ,(0xECFD8CA333ae3179eF99849e403dBc154cA3Af0d, 'Sweep')
+      ,(0xf2596F5e647C1e405B5aAAC611Ba9adA21246f45, 'Energon Dex')
+      ,(0x96eB1141B2432725ccaBb1a0C46A57188174d6B5, 'BAS3D')
+      ,(0x38c21885bb51389fE107320D1540B78b4Fa040D6, 'Boobs.finance')
+
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
       ,(0x4D521577f820525964C392352bB220482F1Aa63b, 'jaredfromsubway.eth')
