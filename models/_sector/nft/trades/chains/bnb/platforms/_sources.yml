@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: tofu_nft_bnb
+    tables:
+      - name: MarketNG_call_run
+      - name: MarketNG_evt_EvInventoryUpdate
+
+  - name: liquidifty_bnb
+    tables:
+      - name: MarketplaceV1_evt_Buy
+      - name: MarketplaceV2_evt_Buy
+      - name: MarketplaceV2_1_evt_Buy
+      - name: MarketplaceV2_5_evt_Buy
+      - name: MultipleSell_evt_Buy
+      - name: MarketplaceV3_call_buy
+      - name: MarketplaceV3_deprecated_call_buy
+
+  - name: nftb_bnb
+    tables:
+      - name: NFT_evt_Transfer
+      - name: NFT_evt_Mint
+      - name: NFT_call_royaltyInfo
+
+  - name: nftrade_bnb
+    tables:
+      - name: NiftyProtocol_evt_Fill
+
+

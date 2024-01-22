@@ -92,94 +92,6 @@ models:
       - name: amount_usd
         description: "The USD amount of the transfer"
 
-  - name: tokens_ethereum_base_balances_erc20
-    meta:
-      blockchain: ethereum
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'ethereum']
-    description: "Token Balances itermediary table for erc20"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - token_address
-            - wallet_address
-    columns:
-      - name: blockchain
-      - name: block_date
-      - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
-      - name: token_address
-      - name: wallet_address
-      - name: change_amount_raw
-      - name: balance_raw
-
-  - name: tokens_ethereum_base_balances_native
-    meta:
-      blockchain: ethereum
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'ethereum']
-    description: "Token Balances itermediary table for native ETH"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - token_address
-            - wallet_address
-    columns:
-      - name: blockchain
-      - name: block_date
-      - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
-      - name: token_address
-      - name: wallet_address
-      - name: change_amount_raw
-      - name: balance_raw
-
-  - name: tokens_ethereum_base_balances
-    meta:
-      blockchain: ethereum
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'ethereum']
-    description: "Token balances base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_standard
-            - block_number
-            - tx_index
-            - token_address
-            - wallet_address
-    columns:
-      - name: blockchain
-      - name: block_date
-      - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
-      - name: token_address
-      - name: wallet_address
-      - name: change_amount_raw
-      - name: balance_raw
-
   - name: tokens_ethereum_balances
     meta:
       blockchain: ethereum
@@ -189,20 +101,15 @@ models:
       tags: ['tokens','balances', 'ethereum']
     description: "Token balances enriched"
     columns:
-      - name: blockchain
       - name: block_date
       - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
+      - name: type
       - name: token_address
       - name: wallet_address
-      - name: change_amount_raw
-      - name: change_amount_usd
       - name: balance_raw
+      - name: balance
       - name: balance_usd
       - name: price_rate
-      - name: amount_usd
-        description: "The USD amount of the transfer"
+      - name: symbol
+      - name: decimals
+      - name: collection_name
