@@ -976,6 +976,17 @@ WITH curated_list AS (
 
       ,(0x87e7D106FE75fcD26d9aC311EF29ac1398DD4441, 'Coinbase')
       ,(0xFFFFfFfFA2eC6F66a22017a0Deb0191e5F8cBc35, '0xStation')
+      ,(0xE11AADB7BbC0C76A15BCd5B3afb9590bbCbfb865, 'Xena Finance') -- Base
+      ,(0x45C75bd8Bb9CF5263539b914925EabBF0441Eb14, 'SmarDEX')
+      ,(0x251827cbaC8608bCaEF15ed14d3fe313e0d0E6ed, 'CitadelSwap')
+      ,(0x9973EdDb50D3F22C2523862eA8A415f7f43D5Cd7, 'SharkSwap')
+      ,(0x77f2B73DC975a6E9172BB871FDaC31eBcC04C25a, 'MeridianSwap')
+      ,(0x3aBf8911ebcea4003E0656Bc9676595b65694E5b, 'KokonutSwap')
+      ,(0xf5506183269D8e1274019097B9c1edA86aB606bD, 'APXFinance')
+      ,(0x957548032E493285741d98C9588C4711971dE5e8, 'BaseMax')
+      ,(0x07B9c6e3342244F76E242A30fF9CC2747e643d05, 'DIP Exchange')
+      ,(0x9cBa37df627CdAa6548E1a837F82773D68E593D0, 'Voodoo Trade Base')
+      ,(0xB1ecA297E90E6B93DA5fA068293cBDd864D55FFA, 'Detto Finance')
 
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')

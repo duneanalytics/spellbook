@@ -19,6 +19,7 @@ select
     prices.price as price_rate,
     erc20_tokens.symbol,
     erc20_tokens.decimals,
+    token_id,
     nft_tokens.name as collection_name
 from   {{ source('prices', 'usd') }} prices
 right join {{ balances_base }} balances on (
