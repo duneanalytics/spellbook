@@ -17,9 +17,9 @@
 -- UNION ALL
 -- SELECT MIN(evt_block_time) FROM curvefi_optimism.MetaPoolSwap_evt_TokenExchange
 
-{% set dai_optimism_token = 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1 %}
-{% set usdt_optimism_token = 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58 %}
-{% set usdce_optimism_token = 0x7f5c764cbc14f9669b88837ca1490cca17c31607 %}
+{% set dai_optimism_token = '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1' %}
+{% set usdt_optimism_token = '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58' %}
+{% set usdce_optimism_token = '0x7f5c764cbc14f9669b88837ca1490cca17c31607' %}
 
 with dexs as
 (
