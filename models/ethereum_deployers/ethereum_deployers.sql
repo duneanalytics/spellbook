@@ -1,6 +1,5 @@
  {{
   config(
-        
         schema = 'ethereum',
         alias = 'deployers', --ethereum.deployers
         partition_by = ['block_month'],
