@@ -19,7 +19,7 @@
 
 {% set dai_optimism_token = 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1 %}
 {% set usdt_optimism_token = 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58 %}
-{% set usdc.e_optimism_token = 0x7f5c764cbc14f9669b88837ca1490cca17c31607 %}
+{% set usdce_optimism_token = 0x7f5c764cbc14f9669b88837ca1490cca17c31607 %}
 
 with dexs as
 (
@@ -33,7 +33,7 @@ SELECT
     token_sold_amount_raw,
     ta.token AS token_bought_address,
     CASE
-        WHEN pool_type = 'meta' AND tb.token IN ({{dai_optimism_token}}, {{usdt_optimism_token}}, {{usdc.e_optimism_token}})
+        WHEN pool_type = 'meta' AND tb.token IN ({{dai_optimism_token}}, {{usdt_optimism_token}}, {{usdce_optimism_token}})
             THEN 0x1337bedc9d22ecbe766df105c9623922a27963ec -- 3CRV
         ELSE tb.token
     END AS token_sold_address,
