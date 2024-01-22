@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: prices_cardano_tokens
+    meta:
+      blockchain: cardano
+      sector: prices
+      contributors: cryptokoryo
+    config:
+      tags: ['prices', 'tokens', 'usd', 'cardano' ]
+    description: "Price tokens on cardano chain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - symbol
+    columns:
+      - name: token_id
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
+      - name: blockchain
+        description: "Native blockchain of the token, if any"
+      - name: contract_address
+        description: "Contract address of the token, if any. Stored as a varchar."
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals for the token contract"

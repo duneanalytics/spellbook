@@ -6,3 +6,14 @@ sources:
       - name: L2Pool_evt_Borrow
       - name: L2Pool_evt_Repay
       - name: L2Pool_evt_LiquidationCall
+
+  - name: compound_v3_arbitrum
+    tables:
+      - name: Comet_evt_Supply
+      - name: cUSDCv3Native_evt_Supply
+      - name: Comet_evt_Withdraw
+      - name: cUSDCv3Native_evt_Withdraw
+      - name: Comet_evt_Transfer
+      - name: cUSDCv3Native_evt_Transfer
+      - name: Comet_evt_AbsorbDebt
+      - name: cUSDCv3Native_evt_AbsorbDebt
