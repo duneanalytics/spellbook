@@ -1,7 +1,7 @@
  {{
   config(
         schema = 'ethereum',
-        alias = 'deployers', --ethereum.deployers
+        alias = 'deployers',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
