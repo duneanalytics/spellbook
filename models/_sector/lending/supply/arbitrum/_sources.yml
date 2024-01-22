@@ -6,3 +6,12 @@ sources:
       - name: L2Pool_evt_Supply
       - name: L2Pool_evt_Withdraw
       - name: L2Pool_evt_RedeemUnderlying
+
+  - name: compound_v3_arbitrum
+    tables:
+      - name: Comet_evt_SupplyCollateral
+      - name: cUSDCv3Native_evt_SupplyCollateral
+      - name: Comet_evt_WithdrawCollateral
+      - name: cUSDCv3Native_evt_WithdrawCollateral
+      - name: Comet_evt_AbsorbCollateral
+      - name: cUSDCv3Native_evt_AbsorbCollateral

@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v3_base_base_supply')
+    ref('aave_v3_base_base_supply'),
+    ref('compound_v3_base_base_supply')
   ]
 %}
 
