@@ -1,0 +1,140 @@
+version: 2
+
+models:
+  - name: cipher_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: social
+      project: cipher
+      contributors: hildobby
+    config:
+      tags: ['table', 'social', 'arbitrum', 'trades', 'cipher']
+    description: "Cipher basic trades info"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_month
+        name: block_month
+        description: "Block month"
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - &project
+        name: project
+        description: "Project name"
+      - &trader
+        name: trader
+        description: "Trader"
+      - &subject
+        name: subject
+        description: "Traded subject"
+      - &trade_side
+        name: trade_side
+        description: "Side of the trade"
+      - &amount_original
+        name: amount_original
+        description: "Amount of traded currency"
+      - &share_amount
+        name: share_amount
+        description: "Amout of shares"
+      - &subject_fee_amount
+        name: subject_fee_amount
+        description: "Subject fee amount"
+      - &protocol_fee_amount
+        name: protocol_fee_amount
+        description: "Protocol fee amount"
+      - &currency_contract
+        name: currency_contract
+        description: "Currency contract"
+      - &currency_symbol
+        name: currency_symbol
+        description: "Currency symbol"
+      - &supply
+        name: supply
+        description: "Outstanding share supply"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+
+  - name: post_tech_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: social
+      project: post_tech
+      contributors: hildobby
+    config:
+      tags: ['table', 'social', 'arbitrum', 'trades', 'post_tech']
+    description: "post.tech basic trades info"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project
+      - *trader
+      - *subject
+      - *trade_side
+      - *amount_original
+      - *share_amount
+      - *subject_fee_amount
+      - *protocol_fee_amount
+      - *currency_contract
+      - *currency_symbol
+      - *supply
+      - *tx_hash
+      - *evt_index
+      - *contract_address
+
+  - name: social_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: social
+      contributors: hildobby
+    config:
+      tags: ['table', 'social', 'arbitrum', 'trades', 'cipher']
+    description: "social trades on arbitrum"
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project
+      - *trader
+      - *subject
+      - &tx_from
+        name: tx_from
+        description: "Transaction from address"
+      - &tx_to
+        name: tx_to
+        description: "Transaction to address"
+      - *trade_side
+      - *amount_original
+      - *share_amount
+      - *subject_fee_amount
+      - *protocol_fee_amount
+      - *currency_contract
+      - *currency_symbol
+      - *supply
+      - *tx_hash
+      - *evt_index
+      - *contract_address
