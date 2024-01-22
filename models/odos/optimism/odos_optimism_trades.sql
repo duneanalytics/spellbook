@@ -61,7 +61,7 @@ SELECT
     )                                                     AS amount_usd,
     CAST(dexs.token_bought_address AS varbinary) AS token_bought_address,
     dexs.token_sold_address,
-    dexs.taker                     AS taker,
+    CAST(dexs.taker AS varbinary)                     AS taker,
     dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
