@@ -25,6 +25,7 @@
     
 ] %}
 
+
 with base_union as (
     SELECT *
     FROM
