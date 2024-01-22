@@ -18,3 +18,19 @@ sources:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying
+
+  - name: compound_v2_ethereum
+    tables:
+      - name: cErc20_evt_Mint
+      - name: cEther_evt_Mint
+      - name: cErc20_evt_Redeem
+      - name: cEther_evt_Redeem
+
+  - name: compound_v3_ethereum
+    tables:
+      - name: Comet_evt_SupplyCollateral
+      - name: cWETHv3_evt_SupplyCollateral
+      - name: Comet_evt_WithdrawCollateral
+      - name: cWETHv3_evt_WithdrawCollateral
+      - name: Comet_evt_AbsorbCollateral
+      - name: cWETHv3_evt_AbsorbCollateral

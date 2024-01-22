@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom
       sector: lending
-      project: aave, moola
+      project: aave, moola, compound
       contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'aave', 'moola', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom']

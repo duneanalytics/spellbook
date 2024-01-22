@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aave_v3_arbitrum_base_supply
+  - name: lending_arbitrum_base_supply
     meta:
       blockchain: arbitrum
       sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
+      project: aave, compound
+      contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'v3', 'arbitrum']
-    description: "Aave v3 supply transactions on Arbitrum"
+      tags: ['lending', 'supply', 'aave', 'compound', 'arbitrum']
+    description: "All lending supply transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,17 +17,6 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('aave_arbitrum_base_supply_seed')
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -90,15 +79,15 @@ models:
         tests:
           - not_null
 
-  - name: lending_arbitrum_base_supply
+  - name: aave_v3_arbitrum_base_supply
     meta:
       blockchain: arbitrum
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'arbitrum']
-    description: "All Aave supply transactions on Arbitrum"
+      tags: ['lending', 'supply', 'aave', 'v3', 'arbitrum']
+    description: "Aave v3 supply transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -106,6 +95,17 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_arbitrum_base_supply_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
     columns:
       - *blockchain
       - *project
@@ -121,3 +121,49 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: compound_v3_arbitrum_base_supply
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      project: compound
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'v3', 'arbitrum']
+    description: "Compound v3 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('compound_arbitrum_base_supply_seed')
+          filter:
+            version: 3
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
