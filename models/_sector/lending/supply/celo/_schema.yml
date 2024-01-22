@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: moola_celo_base_supply
+  - name: lending_celo_base_supply
     meta:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: batwayne, chuxin, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'moola', 'aave_v3', 'celo']
-    description: "Moola supply transactions on Celo"
+      tags: ['lending', 'supply', 'moola', 'celo']
+    description: "All lending supply transactions on Celo"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,17 +17,6 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('moola_celo_base_supply_seed')
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -90,15 +79,15 @@ models:
         tests:
           - not_null
 
-  - name: lending_celo_base_supply
+  - name: moola_celo_base_supply
     meta:
       blockchain: celo
       sector: lending
       project: moola
-      contributors: batwayne, chuxin, tomfutago
+      contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'moola', 'aave_v3', 'celo']
-    description: "All Moola supply transactions on Celo"
+    description: "Moola supply transactions on Celo"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -106,6 +95,17 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('moola_celo_base_supply_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
     columns:
       - *blockchain
       - *project
