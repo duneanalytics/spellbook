@@ -4,10 +4,10 @@
         materialized='table',
         file_format = 'delta',
         tags = ['static'],
-        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora", "bitcoin", "cardano"]\',
+        post_hook = '{{ expose_spells(\'["ethereum", "cosmos", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora", "bitcoin", "cardano"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "ilemi"]\') }}'
         )
 }}
 
@@ -28,6 +28,7 @@ ref('prices_native_tokens')
 ,ref('prices_base_tokens')
 ,ref('prices_zksync_tokens')
 ,ref('prices_zora_tokens')
+,ref('prices_cosmos_tokens')
 ] %}
 
 
