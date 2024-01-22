@@ -2,7 +2,8 @@
         blockchain = '',
         project = '',
         version = '',
-        source_evt_swap = ''
+        source_evt_swap = '',
+        taker = 'account'
     )
 %}
 
@@ -10,7 +11,7 @@ WITH dexs AS (
     SELECT
         t.evt_block_time as block_time,
         t.evt_block_number as block_number,
-        t.account as taker,
+        t.{{ taker }} as taker,
         cast(null as varbinary) as maker,
         t.amountOut as token_bought_amount_raw,
         t.amountIn as token_sold_amount_raw,
@@ -51,7 +52,8 @@ FROM dexs
 {% macro generic_spot_v2_compatible_trades(
         blockchain = '',
         project = '',
-        sources = []
+        sources = [],
+        maker = ''
     )
 %}
 
@@ -62,7 +64,11 @@ WITH dexs AS (
             t.evt_block_time as block_time,
             t.evt_block_number as block_number,
             t.to as taker,
-            cast(null as varbinary) as maker,
+            {% if maker %}
+                t.{{ maker }}
+            {% else %}
+                cast(null as varbinary)
+            {% endif %} as maker,
             t.toAmount as token_bought_amount_raw,
             t.fromAmount as token_sold_amount_raw,
             t.toToken as token_bought_address,
@@ -71,8 +77,12 @@ WITH dexs AS (
             t.evt_tx_hash as tx_hash,
             t.evt_index
         FROM {{ source(project ~ '_' ~ blockchain, src["source"] )}} t
+        WHERE 1 = 1
+        {% if src["exclude"] %}
+            AND t."from" NOT IN ({{ src["exclude"] }})
+        {% endif %}
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('t.evt_block_time') }}
+            AND {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}{% if not loop.last %}
         UNION ALL
         {% endif %}
