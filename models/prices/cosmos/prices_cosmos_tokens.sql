@@ -15,5 +15,5 @@ SELECT
 FROM
 (
     VALUES 
-        ('tia-celestia','cosmos','TIA',0x0000000000000000000000000000000000000000,8) --native token
+        ('tia-celestia',null,'TIA',0x0000000000000000000000000000000000000000,8) --native token
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
