@@ -231,6 +231,24 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('gmx_avalanche_c_base_trades_seed')
 
+  - name: pharaoh_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: pharaoh
+      contributors: discochuck, hosuke
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'pharaoh' ]
+    description: "pharaoh avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pharaoh_avalanche_c_base_trades_seed')
+
+
   - name: kyberswap_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
