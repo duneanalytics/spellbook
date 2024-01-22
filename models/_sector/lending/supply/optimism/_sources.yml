@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: aave_v3_optimism
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+      - name: Pool_evt_RedeemUnderlying

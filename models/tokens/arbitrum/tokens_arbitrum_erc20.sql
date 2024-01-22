@@ -205,4 +205,5 @@ FROM (VALUES
         ,(0x60f761380011Ab35D0C72C2e98e821D76Fd2b4A5, 'waDAI-NYT', 18)
         ,(0xa7fFC97D0f0bebF54f3A82303D999e2dC95d785c, 'waDAI-xPYT', 18)
         ,(0x763E061856b3e74a6C768a859DC2543A56D299d5, 'tigETH', 18)
+        ,(0xde5ed76e7c05ec5e4572cfc88d1acea165109e44, 'DEUS', 18)
      ) AS temp_table (contract_address, symbol, decimals)
