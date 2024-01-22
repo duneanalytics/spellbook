@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: proposals
+  - name: governance_optimism_proposals
     meta:
       blockchain: optimism
       sector: governance
@@ -98,7 +98,7 @@ models:
         name: proposal_status
         description: "The current status of the proposal"
 
-  - name: agora_proposals
+  - name: governance_optimism_agora_proposals
     meta:
       blockchain: optimism
       sector: governance
@@ -151,7 +151,7 @@ models:
 
       - *proposal_status
 
-  - name: snapshot_proposals
+  - name: governance_optimism_snapshot_proposals
     meta:
       blockchain: optimism
       sector: governance
@@ -204,7 +204,7 @@ models:
 
       - *proposal_status
   
-  - name: proposal_votes
+  - name: governance_optimism_proposal_votes
     meta:
       blockchain: optimism
       sector: governance

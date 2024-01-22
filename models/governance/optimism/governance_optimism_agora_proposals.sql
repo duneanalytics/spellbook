@@ -1,8 +1,7 @@
-{{ config(tags=['dunesql']
-    ,alias = 'agora_proposals'
+{{ config(alias = 'agora_proposals'
     ,materialized = 'incremental'
     ,file_format = 'delta'
-    ,schema = 'governance_optimism_agora_proposals'
+    ,schema = 'governance_optimism'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
@@ -109,7 +108,7 @@ FROM
         '90839767999322802375479087567202389126141447078032129455920633707568400402209'
       )
   ) AS p
-  LEFT JOIN {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
+  LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
@@ -204,7 +203,7 @@ FROM
     WHERE
       votingModule IS NOT NULL
   ) AS p
-  LEFT JOIN {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
+  LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
@@ -318,7 +317,7 @@ FROM
       )
       --  AND LOWER(description) LIKE '%test vote%'
   ) AS p
-  LEFT JOIN {{ ref('proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
+  LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON TRY_CAST(p.proposal_id AS VARBINARY) = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
   LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId

@@ -1,9 +1,8 @@
 
-{{ config(tags=['dunesql']
-    ,alias = 'snapshot_proposals'
+{{ config(alias = 'snapshot_proposals'
     ,materialized = 'incremental'
     ,file_format = 'delta'
-    ,schema = 'governance_optimism_snapshot_proposals'
+    ,schema = 'governance_optimism'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
@@ -310,7 +309,7 @@ FROM
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
   ) AS p
-  LEFT JOIN {{ ref('proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -602,7 +601,7 @@ FROM
       "space" = 'opcollective.eth'
       AND "type" = 'approval'
   ) AS p
-  LEFT JOIN {{ ref('proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -908,7 +907,7 @@ FROM
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
   ) AS p
-  LEFT JOIN {{ ref('proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
+  LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
   p.proposal_id,
   p.proposal_description,

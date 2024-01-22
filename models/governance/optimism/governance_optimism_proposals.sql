@@ -1,10 +1,9 @@
 -- Proposals Available On Agora And Snapshot Platform
 
-{{ config(
-    alias = 'proposals'
+{{ config(alias = 'proposals'
     ,materialized = 'incremental'
     ,file_format = 'delta'
-    ,schema = 'governance_optimism_proposals'
+    ,schema = 'governance_optimism'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
     ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_timestamp')]
@@ -16,8 +15,8 @@
 }}
 
 {% set models = [
-    ref('agora_proposals'),
-    ref('snapshot_proposals')
+    ref('governance_optimism_agora_proposals'),
+    ref('governance_optimism_snapshot_proposals')
 ] %}
 
 WITH all_proposals AS (

@@ -1,8 +1,7 @@
-{{ config(tags=['dunesql']
-    ,alias = 'proposal_votes'
+{{ config(alias = 'proposal_votes'
     ,materialized = 'incremental'
     ,file_format = 'delta'
-    ,schema = 'governance_optimism_proposal_votes'
+    ,schema = 'governance_optimism'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id','date_timestamp','tx_hash','voter','choice']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
