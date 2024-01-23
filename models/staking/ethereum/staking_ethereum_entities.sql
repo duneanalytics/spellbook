@@ -100,6 +100,40 @@ WITH entries AS (
         {% endfor %}
         )
      
+, merged AS (
+     SELECT e.depositor_address
+     , e.tx_from
+     , e.pubkey
+     , e.withdrawal_credentials
+     , e.entity
+     , e.entity_unique_name
+     , e.category
+     , s.sub_entity
+     , s.sub_entity_unique_name
+     , s.sub_entity_category
+     FROM entries e
+     LEFT JOIN entries s ON e.depositor_address=s.depositor_address
+          AND e.tx_from=s.tx_from
+          AND e.pubkey=s.pubkey
+          AND e.withdrawal_credentials=s.withdrawal_credentials
+          AND s.sub_entity IS NOT NULL
+     WHERE e.entity IS NOT NULL
+     )
+
+SELECT depositor_address
+, tx_from
+, pubkey
+, withdrawal_credentials
+, entity
+, entity_unique_name
+, category
+, sub_entity
+, sub_entity_unique_name
+, sub_entity_category
+FROM merged
+
+UNION ALL
+
 SELECT e.depositor_address
 , e.tx_from
 , e.pubkey
@@ -107,13 +141,13 @@ SELECT e.depositor_address
 , e.entity
 , e.entity_unique_name
 , e.category
-, s.sub_entity
-, s.sub_entity_unique_name
-, s.sub_entity_category
+, e.sub_entity
+, e.sub_entity_unique_name
+, e.sub_entity_category
 FROM entries e
-LEFT JOIN entries s ON e.depositor_address=s.depositor_address
-     AND e.tx_from=s.tx_from
-     AND e.pubkey=s.pubkey
-     AND e.withdrawal_credentials=s.withdrawal_credentials
-     AND s.sub_entity IS NOT NULL
-WHERE e.entity IS NOT NULL
+LEFT JOIN merged m ON m.depositor_address=e.depositor_address
+     AND m.tx_from=e.tx_from
+     AND m.pubkey=e.pubkey
+     AND m.withdrawal_credentials=e.withdrawal_credentials
+     AND m.entity IS NULL
+WHERE e.sub_entity IS NOT NULL

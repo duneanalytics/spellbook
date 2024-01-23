@@ -76,6 +76,7 @@ FROM (VALUES
     , ('Everstake Pool', 'everstake_pool')
     , ('SharedStake', 'SharedStakeNews')
     , ('HashKing', 'HashKingGlobal')
+    , ('Kiln', 'Kiln_finance')
     , ('Teku Team', 'Teku_Consensys')
     , ('Prysm Team', 'prylabs')
     , ('Sigma Prime Team', 'sigp_io')
