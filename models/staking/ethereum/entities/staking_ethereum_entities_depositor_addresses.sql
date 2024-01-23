@@ -67,7 +67,6 @@ FROM
     , (0x607ebc82329d0cac3027b83d15e4b4e816f131b7, 'StakeHound', 'StakeHound', 'Liquid Staking')
     , (0xc236c3ec83351b07f148afbadc252cce2c07972e, 'Bitfinex', 'Bitfinex 1', 'CEX')
     , (0xe733455faddf4999176e99a0ec084e978f5552ed, 'Bitfinex', 'Bitfinex 2', 'CEX')
-    , (0x2b1df729083f6416861445d8aaac04ebdcd4a848, 'Bitfinex', 'Bitfinex 3', 'CEX')
     , (0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini', 'CEX')
     , (0xbb84d966c09264ce9a2104a4a20bb378369986db, 'WEX Exchange', 'WEX Exchange', 'CEX')
     , (0xbafa44efe7901e04e39dad13167d089c559c1138, 'Frax Finance', 'Frax Finance', 'Liquid Staking')
