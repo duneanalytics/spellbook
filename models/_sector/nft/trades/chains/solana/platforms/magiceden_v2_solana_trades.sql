@@ -70,13 +70,25 @@ with
         FROM nested_logs
     )
 
+    , priced_tokens as (
+        SELECT
+            symbol
+            , to_base58(contract_address) as token_mint_address
+        FROM {{ source('prices', 'usd_latest') }} p
+        WHERE p.blockchain = 'solana'
+    )
+
     , trades as (
         SELECT
             case when account_buyer = call_tx_signer then 'buy' else 'sell' end as trade_category
-            , case when trade_token.token_mint_address is not null then trade_token.symbol
+            , case 
+                when contains(trade.call_account_arguments, '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug') then 'HXD'
+                when pt.token_mint_address is not null then pt.symbol
                 else 'SOL'
                 end as trade_token_symbol
-            , case when trade_token.token_mint_address is not null then trade_token.token_mint_address
+            , case
+                when contains(trade.call_account_arguments, '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug') then '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug'
+                when pt.token_mint_address is not null then pt.token_mint_address
                 else 'So11111111111111111111111111111111111111112'
                 end as trade_token_mint
             --price should include all fees paid by user
@@ -197,8 +209,7 @@ with
         LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
             AND trade.call_block_slot = rl.call_block_slot
             AND trade.call_order = rl.log_order
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} trade_token ON contains(trade.call_account_arguments, trade_token.token_mint_address)
-            AND trade_token.token_mint_address != trade.account_tokenMint
+        LEFT JOIN priced_tokens pt ON contains(trade.call_account_arguments, pt.token_mint_address)
     )
 
     , raw_nft_trades as (
