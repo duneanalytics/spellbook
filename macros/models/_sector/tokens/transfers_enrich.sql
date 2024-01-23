@@ -30,11 +30,12 @@ SELECT t.blockchain
     'NULL')}} AS usd_amount
 FROM {{ source('prices', 'usd') }} prices
 -- Right join due to performance reasons
-RIGHT JOIN {{transfers_base}} t ON prices.blockchain = '{{blockchain}}'
-    AND (
-            prices.contract_address=t.contract_address
-            OR t.contract_address IS NULL AND prices.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
-        )
+RIGHT JOIN {{transfers_base}} t ON on (
+    CASE
+        WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = '{{ blockchain }}'
+        WHEN type = 'native' THEN contract_address = (SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
+        ELSE false
+    END)
     AND prices.minute = date_trunc('minute', t.block_time)
 LEFT JOIN {{ref('tokens_erc20')}} tokens_erc20 on tokens_erc20.blockchain = '{{blockchain}}' AND tokens_erc20.contract_address = t.contract_address
 {%- endmacro %}
