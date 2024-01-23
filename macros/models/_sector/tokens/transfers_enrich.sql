@@ -33,7 +33,7 @@ FROM {{ source('prices', 'usd') }} prices
 RIGHT JOIN {{transfers_base}} t ON (
     CASE
         WHEN t.token_standard = 'erc20' THEN prices.contract_address = t.contract_address and prices.blockchain = '{{ blockchain }}'
-        WHEN t.token_standard = 'native' THEN p.contract_address = (SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
+        WHEN t.token_standard = 'native' THEN prices.contract_address = (SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
         ELSE false
     END)
     AND prices.minute = date_trunc('minute', t.block_time)
