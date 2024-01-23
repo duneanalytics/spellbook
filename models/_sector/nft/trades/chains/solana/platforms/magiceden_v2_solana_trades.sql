@@ -76,6 +76,9 @@ with
             , to_base58(contract_address) as token_mint_address
         FROM {{ ref('prices_usd_latest') }} p
         WHERE p.blockchain = 'solana'
+        {% if is_incremental() %}
+        AND {{incremental_predicate('minute')}}
+        {% endif %}
     )
 
     , trades as (
