@@ -34,7 +34,10 @@ WITH transfers AS (
     , t.evt_index
     , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
-    , '{{token_standard_20}}' AS token_standard
+    , CASE
+        WHEN t.contract_address = {{native_contract_address}} THEN 'native'
+        ELSE '{{token_standard_20}}'
+      END AS token_standard
     , t."from"
     , t.to
     , t.value AS amount_raw
