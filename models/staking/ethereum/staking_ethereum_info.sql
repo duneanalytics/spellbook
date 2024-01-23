@@ -50,6 +50,8 @@ FROM (VALUES
     , ('Bitpanda', 'Bitpanda_global')
     , ('Ether Capital', 'ethcap')
     , ('Binance US', 'BinanceUS')
+    , ('Hord', 'HordApp')
+    , ('ClayStack', 'ClayStack_HQ')
     , ('Poloniex', 'Poloniex')
     , ('Bitpie', 'BitpieWallet')
     , ('Tranchess', 'Tranchess')
