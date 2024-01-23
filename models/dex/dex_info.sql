@@ -93,7 +93,6 @@ FROM (VALUES
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
     , ('dackieswap', 'DackieSwap', 'Direct', 'DackieSwap')
-    , ('smardex', 'SmarDex', 'Direct', 'SmarDex')
     , ('wardenswap', 'Warden', 'Direct & Aggregator', 'WardenSwap')
     , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
     , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
