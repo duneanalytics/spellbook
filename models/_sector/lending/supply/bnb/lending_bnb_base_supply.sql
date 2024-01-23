@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_ethereum',
+    schema = 'lending_bnb',
     alias = 'base_supply',
     materialized = 'view'
   )
@@ -8,12 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v1_ethereum_base_supply'),
-    ref('aave_v2_ethereum_base_supply'),
-    ref('aave_v3_ethereum_base_supply'),
-    ref('compound_v2_ethereum_base_supply'),
-    ref('compound_v3_ethereum_base_supply'),
-    ref('radiant_ethereum_base_supply')
+    ref('radiant_bnb_base_supply')
   ]
 %}
 

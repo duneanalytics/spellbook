@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: lending_polygon_base_supply
+  - name: lending_bnb_base_supply
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: lending
       project: aave, compound
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'polygon']
-    description: "All lending supply transactions on Polygon"
+      tags: ['lending', 'supply', 'aave', 'compound', 'bnb']
+    description: "All lending supply transactions on BNB"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -79,105 +79,15 @@ models:
         tests:
           - not_null
 
-  - name: aave_v2_polygon_base_supply
+  - name: radiant_bnb_base_supply
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'supply', 'aave', 'polygon']
-    description: "Aave v2 supply transactions on Polygon"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-      - check_seed:
-          seed_file: ref('aave_polygon_base_supply_seed')
-          filter:
-            version: 2
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *depositor
-      - *withdrawn_to
-      - *liquidator
-      - *amount
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: aave_v3_polygon_base_supply
-    meta:
-      blockchain: polygon
-      sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
-    config:
-      tags: ['lending', 'supply', 'aave', 'polygon']
-    description: "Aave v3 supply transactions on Polygon"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-      - check_seed:
-          seed_file: ref('aave_polygon_base_supply_seed')
-          filter:
-            version: 3
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *transaction_type
-      - *token_address
-      - *depositor
-      - *withdrawn_to
-      - *liquidator
-      - *amount
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: compound_v3_polygon_base_supply
-    meta:
-      blockchain: polygon
-      sector: lending
-      project: compound
+      project: radiant
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'compound', 'v3', 'polygon']
-    description: "Compound v3 supply transactions on Polygon"
+      tags: ['lending', 'supply', 'radiant', 'bnb']
+    description: "Radiant supply transactions on BNB"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -186,9 +96,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('compound_polygon_base_supply_seed')
-          filter:
-            version: 3
+          seed_file: ref('radiant_bnb_base_supply_seed')
           match_columns:
             - transaction_type
             - token_address
