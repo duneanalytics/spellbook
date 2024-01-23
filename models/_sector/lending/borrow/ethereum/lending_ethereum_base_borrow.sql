@@ -12,7 +12,8 @@
     ref('aave_v2_ethereum_base_borrow'),
     ref('aave_v3_ethereum_base_borrow'),
     ref('compound_v2_ethereum_base_borrow'),
-    ref('compound_v3_ethereum_base_borrow')
+    ref('compound_v3_ethereum_base_borrow'),
+    ref('radiant_ethereum_base_borrow')
   ]
 %}
 

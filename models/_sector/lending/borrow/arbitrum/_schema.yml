@@ -174,7 +174,7 @@ models:
       project: radiant
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'radiant', 'arbitrum']
+      tags: ['lending', 'borrow', 'aave', 'radiant', 'arbitrum']
     description: "Radiant borrow transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
