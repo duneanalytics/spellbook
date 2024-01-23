@@ -35,6 +35,8 @@ FROM
     , (0xd6216fc19db775df9774a6e33526131da7d19a2c, 'KuCoin', 'KuCoin 1', 'CEX')
     , (0x1692e170361cefd1eb7240ec13d048fd9af6d667, 'KuCoin', 'KuCoin 2', 'CEX')
     , (0x7b915c27a0ed48e2ce726ee40f20b2bf8a88a1b3, 'KuCoin', 'KuCoin 3', 'CEX')
+    , (0xf8da05c625a6e601281110cba52b156e714e1dc2, 'KuCoin', 'KuCoin 4', 'CEX')
+    , (0xe3cbd06d7dadb3f4e6557bab7edd924cd1489e8f, 'Mantle', 'Mantle 1', 'Staking Pool')
     , (0xcbc1065255cbc3ab41a6868c22d1f1c573ab89fd, 'CREAM', 'CREAM', 'Liquid Staking')
     , (0x808e7133c700cf3a66e6a25aadb1fbef6be468b4, 'Bitstamp', 'Bitstamp 1', 'CEX')
     , (0x3965c5F4Bf942EcCF88bd8B3926456b16479e3E8, 'Bitstamp', 'Bitstamp 2', 'CEX')

@@ -20,7 +20,7 @@ WITH tagged_entities AS (
 , batch_contracts AS (
     SELECT contract
     FROM (VALUES
-        , (0x1BDc639EaBF1c5EbC020Bb79E2dD069A8b6fe865) -- BatchDeposit
+        (0x1BDc639EaBF1c5EbC020Bb79E2dD069A8b6fe865) -- BatchDeposit
         , (0xe8239B17034c372CDF8A5F8d3cCb7Cf1795c4572) -- Batch Deposit
         ) AS temp_table (contract)
     )

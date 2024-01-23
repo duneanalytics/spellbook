@@ -34,6 +34,7 @@ FROM (VALUES
     , ('Bitstamp', 'Bitstamp')
     , ('HTX', 'HTX_Global')
     , ('imToken', 'imTokenOfficial')
+    , ('Mantle', '0xMantle')
     , ('Stkr (Ankr)', 'ankr')
     , ('KuCoin', 'kucoincom')
     , ('Bake', 'bake_io')
