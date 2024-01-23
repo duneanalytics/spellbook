@@ -17,3 +17,9 @@ sources:
       - name: cUSDCv3Native_evt_Transfer
       - name: Comet_evt_AbsorbDebt
       - name: cUSDCv3Native_evt_AbsorbDebt
+
+  - name: radiant_capital_arbitrum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
