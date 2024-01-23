@@ -56,3 +56,7 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: dooar_polygon
+    tables:
+      - name: DooarSwapV2Pair_evt_Swap
+      - name: DooarSwapV2Factory_evt_PairCreated
