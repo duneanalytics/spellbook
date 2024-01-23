@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: lending_polygon_base_flashloans
+  - name: lending_bnb_base_flashloans
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'polygon']
-    description: "All lending flashloans transactions on Polygon"
+      tags: ['lending', 'flashloans', 'aave', 'bnb']
+    description: "All lending flashloans transactions on bnb"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -73,64 +73,22 @@ models:
         tests:
           - not_null
 
-  - name: aave_v2_polygon_base_flashloans
+  - name: radiant_bnb_base_flashloans
     meta:
-      blockchain: polygon
+      blockchain: bnb
       sector: lending
-      project: aave
-      contributors: hildobby, tomfutago
+      project: radiant
+      contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'polygon']
-    description: "Aave v2 flashloans transactions on Polygon"
+      tags: ['lending', 'flashloans', 'aave', 'radiant', 'bnb']
+    description: "Radiant flashloans transactions on bnb"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('aave_polygon_base_flashloans_seed')
-          filter:
-            version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *recipient
-      - *amount
-      - *fee
-      - *token_address
-      - *contract_address
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: aave_v3_polygon_base_flashloans
-    meta:
-      blockchain: polygon
-      sector: lending
-      project: aave
-      contributors: hildobby, tomfutago
-    config:
-      tags: ['lending', 'flashloans', 'aave', 'polygon']
-    description: "Aave v3 flashloans transactions on Polygon"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_seed:
-          seed_file: ref('aave_polygon_base_flashloans_seed')
-          filter:
-            version: 3
+          seed_file: ref('radiant_bnb_base_flashloans_seed')
           match_columns:
             - tx_hash
             - evt_index

@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_ethereum',
+    schema = 'lending_bnb',
     alias = 'base_flashloans',
     materialized = 'view'
   )
@@ -8,10 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v1_ethereum_base_flashloans'),
-    ref('aave_v2_ethereum_base_flashloans'),
-    ref('aave_v3_ethereum_base_flashloans'),
-    ref('radiant_ethereum_base_flashloans')
+    ref('radiant_bnb_base_flashloans')
   ]
 %}
 

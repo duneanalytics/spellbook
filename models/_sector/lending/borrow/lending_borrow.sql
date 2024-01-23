@@ -11,7 +11,6 @@
                                 "sector",
                                 "lending",
                                 \'["tomfutago"]\') }}'
-
   )
 }}
 
