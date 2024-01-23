@@ -36,6 +36,7 @@ FROM (VALUES
     , ('imToken', 'imTokenOfficial')
     , ('Mantle', '0xMantle')
     , ('Stkr (Ankr)', 'ankr')
+    , ('Redacted Pirex', 'redactedcartel')
     , ('KuCoin', 'kucoincom')
     , ('Bake', 'bake_io')
     , ('Consensys', 'Consensys')
