@@ -30,7 +30,7 @@ SELECT t.blockchain
     'NULL')}} AS usd_amount
 FROM {{ source('prices', 'usd') }} prices
 -- Right join due to performance reasons
-RIGHT JOIN JOIN FROM {{transfers_base}} t  ON prices.blockchain = '{{blockchain}}'
+RIGHT JOIN {{transfers_base}} t ON prices.blockchain = '{{blockchain}}'
     AND (
             prices.contract_address=t.contract_address
             OR t.contract_address IS NULL AND prices.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
