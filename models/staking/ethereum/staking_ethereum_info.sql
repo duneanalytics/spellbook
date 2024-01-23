@@ -40,6 +40,7 @@ FROM (VALUES
     , ('Liquid Collective', 'liquid_col')
     , ('Stader', 'staderlabs')
     , ('MEV Protocol', 'mevdotio')
+    , ('Mercado Bitcoin', 'MercadoBitcoin')
     , ('Bitfinex', 'bitfinex')
     , ('Chorus One', 'ChorusOne')
     , ('WEX Exchange', 'WEXnz')

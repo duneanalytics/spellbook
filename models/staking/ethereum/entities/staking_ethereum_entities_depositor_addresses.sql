@@ -51,6 +51,7 @@ FROM
     , (0x1db3439a222c519ab44bb1144fc28167b4fa6ee6, 'Vitalik Buterin', 'Vitalik Buterin', 'Solo Staker')
     , (0x49df3cca2670eb0d591146b16359fe336e476f29, 'stereum.net', 'stereum.net 1', 'Solo Staker')
     , (0x62dfeb55fcbdcb921446168eecfd1406379a1ee1, 'stereum.net', 'stereum.net 2', 'Solo Staker')
+    , (0xb8ba36e591facee901ffd3d5d82df491551ad7ef, 'Mercado Bitcoin', 'Mercado Bitcoin 1', 'CEX')
     , (0x5a0036bcab4501e70f086c634e2958a8beae3a11, 'OKX', 'OKX 1', 'CEX')
     , (0x54b0f363e88a05cefdeb5f8c810286b439140a94, 'OKX', 'OKX 2', 'CEX')
     , (0x9772abd9469ad597961166ed3220720afdd51912, 'OKX', 'OKX 3', 'CEX')
