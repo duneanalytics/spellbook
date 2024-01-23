@@ -284,3 +284,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_polygon_base_trades_seed')
+
+  - name: dooar_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: dooar
+      contributors: tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'dooar', 'uniswap' ]
+    description: "Dooar polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dooar_polygon_base_trades_seed')
