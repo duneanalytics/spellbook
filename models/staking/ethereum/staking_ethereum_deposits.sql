@@ -30,7 +30,7 @@ WITH deposit_events AS (
     , ROW_NUMBER() OVER (PARTITION BY d.evt_block_number, d.evt_tx_hash, from_big_endian_64(reverse(d.amount)) ORDER BY d.evt_index) AS table_merging_deposits_id
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
     {% if not is_incremental() %}
-    WHERE d.evt_block_time >= TIMESTAMP '2020-10-14'
+    WHERE d.evt_block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
     WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -49,7 +49,7 @@ WITH deposit_events AS (
     AND t.value > UINT256 '0'
     AND success
     {% if not is_incremental() %}
-    AND t.block_time >= TIMESTAMP '2020-10-14'
+    AND t.block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -76,7 +76,7 @@ FROM deposit_events d
 INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number=d.block_number
     AND et.hash=d.tx_hash
     {% if not is_incremental() %}
-    AND et.block_time >= TIMESTAMP '2020-10-14'
+    AND et.block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
     AND et.block_time >= date_trunc('day', now() - interval '7' day)
