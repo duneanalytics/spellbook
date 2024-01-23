@@ -12,15 +12,16 @@
 {% set entities_identifiers_models = [
      ('depositor_address', ref('staking_ethereum_entities_depositor_addresses'))
      , ('depositor_address', ref('staking_ethereum_entities_contracts'))
-     , ('depositor_address', ref('staking_ethereum_entities_coinbase'))
-     , ('depositor_address', ref('staking_ethereum_entities_binance'))
-     , ('depositor_address', ref('staking_ethereum_entities_darma_capital'))
      , ('tx_from', ref('staking_ethereum_entities_tx_from_addresses'))
-     , ('pubkey', ref('staking_ethereum_entities_chorusone'))
      , ('tx_from', ref('staking_ethereum_entities_batch_contracts_tx_from'))
      , ('pubkey', ref('staking_ethereum_entities_batch_contracts_pubkey'))
      , ('withdrawal_credentials', ref('staking_ethereum_entities_withdrawal_credentials'))
+
+     , ('depositor_address', ref('staking_ethereum_entities_coinbase'))
+     , ('depositor_address', ref('staking_ethereum_entities_binance'))
      , ('depositor_address', ref('staking_ethereum_entities_bitcoin_suisse'))
+     , ('depositor_address', ref('staking_ethereum_entities_darma_capital'))
+     , ('pubkey', ref('staking_ethereum_entities_chorusone'))
 ] %}
 
 SELECT depositor_address
@@ -93,4 +94,3 @@ FROM (
         {% endif %}
         {% endfor %}
         )
-        
