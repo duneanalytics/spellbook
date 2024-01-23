@@ -316,6 +316,7 @@ models:
       - name: transfers
       - name: minute
       - name: block_month
+      - name: swap_id
 
   - name: oneinch_lop_own_trades
     meta:

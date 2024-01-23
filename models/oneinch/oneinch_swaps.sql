@@ -44,7 +44,8 @@
         'order_hash',
         'fusion',
         'remains',
-        'native_token_symbol'
+        'native_token_symbol',
+        '_call_trace_address'
     ]
 %}
 
@@ -82,6 +83,7 @@ tokens as (
         , if(src_token_address in {{native_addresses}}, true, false) as _src_token_native
         , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as _dst_token_address
         , if(dst_token_address in {{native_addresses}}, true, false) as _dst_token_native
+        , array_join(call_trace_address, '') as _call_trace_address
     from {{ ref('oneinch_calls') }}
     join {{ ref('oneinch_blockchains') }} using(blockchain)
     where
@@ -226,5 +228,6 @@ select
     , transfers
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
+    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
 from swaps
 join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)
