@@ -169,8 +169,24 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('maverick_base_base_trades_seed')  
+          seed_file: ref('maverick_base_base_trades_seed')
 
+  - name: smardex_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: smardex
+      contributors: Chain_L
+    config:
+      tags: [ 'base', 'dex', 'trades', 'smardex' ]
+    description: "smardex base trades on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('smardex_base_base_trades_seed')
 
   - name: baseswap_base_base_trades
     meta:
@@ -189,7 +205,24 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('baseswap_base_base_trades_seed')
 
-
+  
+  - name: dackieswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: dackieswap
+      contributors: Chain_L
+    config:
+      tags: [ 'base', 'dex', 'trades', 'dackieswap' ]
+    description: "dackieswap base trades on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dackieswap_base_base_trades_seed')
+  
   - name: scale_base_base_trades
     meta:
       blockchain: base
@@ -206,7 +239,6 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('scale_base_base_trades_seed')
-
 
   - name: rubicon_base_base_trades
     meta:

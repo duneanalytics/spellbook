@@ -32,6 +32,14 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: smardex_base
+    tables:
+      - name: SmardexPair_evt_Swap
+      - name: SmardexFactory_evt_PairCreated
+  - name: dackieswap_base
+    tables:
+      - name: DackieV3Pool_evt_Swap
+      - name: DackieV3Factory_evt_PoolCreated
   - name: baseswap_base
     tables:
       - name: PancakePair_evt_Swap

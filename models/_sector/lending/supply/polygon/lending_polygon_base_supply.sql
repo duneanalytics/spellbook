@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v2_polygon_base_supply'),
-    ref('aave_v3_polygon_base_supply')
+    ref('aave_v3_polygon_base_supply'),
+    ref('compound_v3_polygon_base_supply')
   ]
 %}
 
