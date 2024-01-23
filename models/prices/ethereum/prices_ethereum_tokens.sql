@@ -1340,6 +1340,7 @@ FROM
     ('com-communis', 'ethereum', 'COM', 0x5A9780Bfe63f3ec57f01b087cD65BD656C9034A8, 12),
     ('woof-woofworkio', 'ethereum', 'WOOF', 0x6BC08509B36A98E829dFfAD49Fde5e412645d0a3, 18),
     ('banana-banana', 'ethereum', 'BANANA', 0x94e496474F1725f1c1824cB5BDb92d7691A4F03a, 18),
+    ('banana-banana-gun-v2', 'ethereum', 'BANANA', 0x38e68a37e401f7271568cecaac63c6b1e19130b4, 18),
     ('hopr-hopr', 'ethereum', 'HOPR', 0xF5581dFeFD8Fb0e4aeC526bE659CFaB1f8c781dA, 18),
     ('ic-icy', 'ethereum', 'IC', 0xA876f27F13A9eB6E621202cEFDD5AFc4a90E6457, 9),
     ('pkf-firebird', 'ethereum', 'PKF', 0x8B39B70E39Aa811b69365398e0aACe9bee238AEb, 18),
