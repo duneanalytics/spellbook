@@ -1636,7 +1636,8 @@ FROM
     ('hilo-hilo', 'ethereum', 'HILO', 0xbb9fd9fa4863c03c574007ff3370787b9ce65ff6, 18),
     ('pear-pear-swap', 'ethereum', 'PEAR', 0x5dcd6272c3cbb250823f0b7e6c618bce11b21f90, 18),
     ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
-    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9)
+    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9),
+    ('rbx-rabbitx', 'ethereum', 'RBX', 0x3Ba925fdeAe6B46d0BB4d424D829982Cb2F7309e, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
