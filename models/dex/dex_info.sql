@@ -103,7 +103,6 @@ FROM (VALUES
     , ('scale', 'Scale', 'Direct', 'scale')
     , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
     , ('oasisswap', 'OasisSwap', 'Direct', 'OasisSwapDEX')
-    , ('smardex', 'SmarDex', 'Direct', 'SmarDex')
     , ('swaap', 'Swaap', 'Direct', 'SwaapFinance')
     , ('odos', 'Odos', 'Aggregator', 'odosprotocol')
     , ('whirlpool', 'Orca', 'Direct', 'orca_so')
