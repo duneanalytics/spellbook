@@ -32,3 +32,7 @@ sources:
   - name: open_ocean_fantom
     tables:
       - name: OpenOceanExchange_evt_Swapped
+  - name: curvefi_fantom
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: StableSwap_evt_TokenExchangeUnderlying

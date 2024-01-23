@@ -18,3 +18,23 @@ sources:
       - name: Pool_evt_Borrow
       - name: Pool_evt_Repay
       - name: Pool_evt_LiquidationCall
+
+  - name: compound_v2_ethereum
+    tables:
+      - name: cErc20_evt_Borrow
+      - name: cEther_evt_Borrow
+      - name: cErc20_evt_RepayBorrow
+      - name: cEther_evt_RepayBorrow
+      - name: cErc20_evt_LiquidateBorrow
+      - name: cEther_evt_LiquidateBorrow
+
+  - name: compound_v3_ethereum
+    tables:
+      - name: Comet_evt_Supply
+      - name: cWETHv3_evt_Supply
+      - name: Comet_evt_Withdraw
+      - name: cWETHv3_evt_Withdraw
+      - name: Comet_evt_Transfer
+      - name: cWETHv3_evt_Transfer
+      - name: Comet_evt_AbsorbDebt
+      - name: cWETHv3_evt_AbsorbDebt
