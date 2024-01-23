@@ -24,20 +24,7 @@
      , ('pubkey', ref('staking_ethereum_entities_chorusone'), 'sub')
 ] %}
 
-SELECT DISTINCT depositor_address
-, tx_from
-, pubkey
-, withdrawal_credentials
-, entity
-, entity_unique_name
-, category
-, entity FILTER (WHERE entity IS NOT NULL) AS entity
-, entity_unique_name FILTER (WHERE entity_unique_name IS NOT NULL) AS entity_unique_name
-, category FILTER (WHERE category IS NOT NULL) AS category
-, sub_entity FILTER (WHERE sub_entity IS NOT NULL) AS sub_entity
-, sub_entity_unique_name FILTER (WHERE sub_entity_unique_name IS NOT NULL) AS sub_entity_unique_name
-, sub_entity_category FILTER (WHERE sub_entity_category IS NOT NULL) AS sub_entity_category
-FROM (
+WITH entries AS (
         {% for entities_identifiers_model in entities_identifiers_models if entities_identifiers_model[0] == 'depositor_address' %}
         SELECT depositor_address
         , from_hex(NULL) AS tx_from
@@ -112,3 +99,21 @@ FROM (
         {% endif %}
         {% endfor %}
         )
+     
+SELECT e.depositor_address
+, e.tx_from
+, e.pubkey
+, e.withdrawal_credentials
+, e.entity
+, e.entity_unique_name
+, e.category
+, s.sub_entity
+, s.sub_entity_unique_name
+, s.sub_entity_category
+FROM entries e
+LEFT JOIN entries s ON e.depositor_address=s.depositor_address
+     AND e.tx_from=s.tx_from
+     AND e.pubkey=s.pubkey
+     AND e.withdrawal_credentials=s.withdrawal_credentials
+     AND s.sub_entity IS NOT NULL
+WHERE e.entity IS NOT NULL
