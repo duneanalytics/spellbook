@@ -988,6 +988,28 @@ WITH curated_list AS (
       ,(0x9cBa37df627CdAa6548E1a837F82773D68E593D0, 'Voodoo Trade Base')
       ,(0xB1ecA297E90E6B93DA5fA068293cBDd864D55FFA, 'Detto Finance')
 
+      ,(0x2CC36834BccC4313477aD195f503d8C584B8b827, 'Sobal') -- Base
+      ,(0x5985A78e447aDf6BCd38541F364475d97613148c, 'Autoearn Finance')
+      ,(0xD818EA2aF0778652F825A40f3fA91d5eAAc1802F, 'ZebraDao')
+      ,(0x317D250C6a3D66835fb9f798647B63e40B6c844a, 'Toupee.tech')
+      ,(0x9a480c450CAA1f69E824A7C04304D234E05dACED, 'EDEBASE')
+      ,(0x3c0122b76457287311BE960fC81B1bD7cB6b240a, 'Mountain Protocol')
+      ,(0xEfb9a25a5D892Bdf587103a226e6DD0369b220De, 'Sharesgram')
+      ,(0xECFD8CA333ae3179eF99849e403dBc154cA3Af0d, 'Sweep')
+      ,(0xf2596F5e647C1e405B5aAAC611Ba9adA21246f45, 'Energon Dex')
+      ,(0x96eB1141B2432725ccaBb1a0C46A57188174d6B5, 'BAS3D')
+      ,(0x38c21885bb51389fE107320D1540B78b4Fa040D6, 'Boobs.finance')
+      ,(0x87ECa2f17Fb969D30196a5C7d6AE411A99E0f0A4, 'Iceswap')
+      ,(0x6fE9A453Fa576991B564B40F153F18E2F17A0796, 'BasinDAO')
+      ,(0x85c208ea8016EfD7Da54092475ADff8ed7D014DF, 'Torus')
+      ,(0x26f6d954c4132fae4eFe389b947c8CC4B4CE5CE7, 'Swirlend')
+      ,(0x209e02F8296b80977380ebDD58569675e9fca472, 'Ace of Base')
+      ,(0x23E82e140Dab7eC311F90ddaa35478c7F8012A71, 'Larri Finance')
+      ,(0x9D3D46E89eB0a5611e5881Dd2E5cf0F0cABbA2EE, 'UncleSam Protocol')
+      ,(0xa4c14CeC3c81cAeD552544dD90B4ED60F32ff69D, 'Spirit Farm')
+      ,(0x1b05D830f157A97e7eC31F46165E2b079113989c, 'Magnate Finance')
+      ,(0xEb48217792A68FbEa0E71228f29Fe335040De334, 'Tempest Capital')
+
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
       ,(0x4D521577f820525964C392352bB220482F1Aa63b, 'jaredfromsubway.eth')
