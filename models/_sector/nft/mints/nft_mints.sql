@@ -7,10 +7,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['tx_hash','evt_index','token_id','number_of_items'],
-    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum"]\',
+    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum","zksync"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin"]\') }}')
+                    \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin", "lgingerich"]\') }}')
 }}
 
 
@@ -19,6 +19,7 @@
 ,ref('nft_optimism_native_mints')
 ,ref('nft_base_native_mints')
 ,ref('nft_zora_native_mints')
+,ref('nft_zksync_native_mints')
 ] %}
 
 

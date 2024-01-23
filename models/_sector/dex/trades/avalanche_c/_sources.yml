@@ -29,9 +29,14 @@ sources:
       - name: PairFactory_evt_PairCreated
       - name: AlgebraPool_evt_Swap
       - name: AlgebraFactory_evt_Pool
+      - name: OdosRouterV2_evt_Swap
   - name: gmx_avalanche_c
     tables:
       - name: Router_evt_Swap
+  - name: pharaoh_avalanche_c
+    tables:
+      - name: ClPool_evt_Swap
+      - name: ClPoolFactory_evt_PoolCreated
   - name: kyber_avalanche_c
     tables:
       - name: DMMPool_evt_Swap
