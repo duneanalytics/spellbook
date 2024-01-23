@@ -74,7 +74,7 @@ with
         SELECT
             symbol
             , to_base58(contract_address) as token_mint_address
-        FROM {{ source('prices', 'usd_latest') }} p
+        FROM {{ ref('prices_usd_latest') }} p
         WHERE p.blockchain = 'solana'
     )
 
