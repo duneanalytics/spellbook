@@ -263,6 +263,9 @@ with
         LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'solana' 
             and to_base58(p.contract_address) = t.trade_token_mint 
             and p.minute = date_trunc('minute', t.call_block_time)
+            {% if is_incremental() %}
+            and {{incremental_predicate('p.minute')}}
+            {% endif %}
     )
 
 SELECT
