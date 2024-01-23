@@ -1,10 +1,10 @@
 {{ config(
         alias='native',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich"]\') }}')}}
 
 SELECT chain, symbol, price_symbol, price_address, decimals
 FROM (VALUES
@@ -20,4 +20,5 @@ FROM (VALUES
          , ('fantom', 'FTM', 'WFTM', 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83, 18)
          , ('solana', 'SOL', 'SOL', from_base58('so11111111111111111111111111111111111111112'), 18) --not sure if solana decimals are correct here
          , ('celo', 'CELO', 'CELO', 0x471ece3750da237f93b8e339c536989b8978a438, 18)
+         , ('zksync', 'ETH', 'WETH', 0x000000000000000000000000000000000000800A, 18)
      ) AS temp_table (chain, symbol, price_symbol, price_address, decimals)
