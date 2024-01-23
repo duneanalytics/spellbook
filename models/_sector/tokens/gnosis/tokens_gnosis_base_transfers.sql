@@ -1,4 +1,5 @@
 {{config(
+    tags=['prod_exclude'],
     schema = 'tokens_gnosis',
     alias = 'base_transfers',
     partition_by = ['token_standard', 'block_date'],
