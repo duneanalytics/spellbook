@@ -28,6 +28,9 @@ WITH invalid_pubkeys AS (
     , MAX(entity) AS entity
     , MAX(entity_category) AS entity_category
     , MAX(entity_unique_name) AS entity_unique_name
+    , MAX(sub_entity) AS sub_entity
+    , MAX(sub_entity_category) AS sub_entity_category
+    , MAX(sub_entity_unique_name) AS sub_entity_unique_name
     FROM {{ ref('staking_ethereum_deposits')}}
     WHERE pubkey NOT IN (SELECT pubkey FROM invalid_pubkeys)
     GROUP BY 1
@@ -41,6 +44,9 @@ WITH invalid_pubkeys AS (
     , d.entity
     , d.entity_unique_name
     , d.entity_category
+    , d.sub_entity
+    , d.sub_entity_unique_name
+    , d.sub_entity_category
     , d.tx_hash
     , d.tx_from
     , d.deposit_index
@@ -62,6 +68,9 @@ SELECT block_time
 , entity
 , entity_unique_name
 , entity_category
+, sub_entity
+, sub_entity_unique_name
+, sub_entity_category
 , tx_from
 , deposit_index
 , NULL AS withdrawal_index
@@ -86,6 +95,9 @@ SELECT w.block_time
 , i.entity
 , i.entity_unique_name
 , i.entity_category
+, i.sub_entity
+, i.sub_entity_unique_name
+, i.sub_entity_category
 , NULL AS tx_from
 , NULL deposit_index
 , w."index" AS withdrawal_index

@@ -63,6 +63,9 @@ SELECT distinct d.block_time
 , ete.entity
 , ete.entity_unique_name
 , ete.category AS entity_category
+, ete.sub_entity
+, ete.sub_entity_unique_name
+, ete.sub_entity_category
 , d.tx_hash
 , et."from" AS tx_from
 , d.deposit_index
