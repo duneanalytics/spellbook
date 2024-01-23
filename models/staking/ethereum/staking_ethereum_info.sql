@@ -37,6 +37,7 @@ FROM (VALUES
     , ('Stkr (Ankr)', 'ankr')
     , ('KuCoin', 'kucoincom')
     , ('Bake', 'bake_io')
+    , ('Consensys', 'Consensys')
     , ('Liquid Collective', 'liquid_col')
     , ('Stader', 'staderlabs')
     , ('MEV Protocol', 'mevdotio')
