@@ -13,11 +13,11 @@
     )
 }}
 
-WITH bridge_events AS (
+WITH bridge_events as (
     SELECT
          block_time
-        ,CAST(DATE_TRUNC('day', block_time) as date) AS block_date
-        ,CAST(DATE_TRUNC('month', block_time) as date) AS block_month
+        ,CAST(DATE_TRUNC('day', block_time) as date) as block_date
+        ,CAST(DATE_TRUNC('month', block_time) as date) as block_month
         ,block_number
         ,tx_hash
         ,sender
@@ -38,10 +38,10 @@ WITH bridge_events AS (
             ,COALESCE(d.to, zt.to) as receiver -- d.to is null if there is no matching ERC20 deposit tx hash. This is used to handle the log of an 'if statement'.
             ,0x0000000000000000000000000000000000000000 as bridged_token_address
             ,CAST(JSON_EXTRACT_SCALAR(npr.transaction, '$.reserved[0]') as UINT256) as bridged_token_amount_raw
-            ,UINT256 '1' AS source_chain_id
-            ,UINT256 '324' AS destination_chain_id
-            ,'Ethereum' AS source_chain_name
-            ,'zkSync Era' AS destination_chain_name
+            ,UINT256 '1' as source_chain_id
+            ,UINT256 '324' as destination_chain_id
+            ,'Ethereum' as source_chain_name
+            ,'zkSync Era' as destination_chain_name
         FROM {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr
         LEFT JOIN {{ source('ethereum', 'transactions') }} et ON npr.evt_tx_hash = et.hash
         LEFT JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
@@ -49,6 +49,8 @@ WITH bridge_events AS (
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('npr.evt_block_time') }}
         {% endif %}
+
+        UNION ALL
 
         -- Deposit ERC-20 from Ethereum to zkSync Era
         SELECT
@@ -59,10 +61,10 @@ WITH bridge_events AS (
             ,d.to as receiver
             ,d.l1Token as bridged_token_address
             ,d.amount as bridged_token_amount_raw
-            ,UINT256 '1' AS source_chain_id
-            ,UINT256 '324' AS destination_chain_id
-            ,'Ethereum' AS source_chain_name
-            ,'zkSync Era' AS destination_chain_name
+            ,UINT256 '1' as source_chain_id
+            ,UINT256 '324' as destination_chain_id
+            ,'Ethereum' as source_chain_name
+            ,'zkSync Era' as destination_chain_name
         FROM {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('d.evt_block_time') }}
@@ -79,10 +81,10 @@ WITH bridge_events AS (
             ,w._l1Receiver as receiver
             ,w.contract_address as bridged_token_address
             ,w._amount as bridged_token_amount_raw
-            ,UINT256 '324' AS source_chain_id
-            ,UINT256 '1' AS destination_chain_id
-            ,'zkSync Era' AS source_chain_name
-            ,'Ethereum' AS destination_chain_name
+            ,UINT256 '324' as source_chain_id
+            ,UINT256 '1' as destination_chain_id
+            ,'zkSync Era' as source_chain_name
+            ,'Ethereum' as destination_chain_name
         FROM {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.evt_block_time') }}
@@ -99,10 +101,10 @@ WITH bridge_events AS (
             ,w.l1Receiver as receiver
             ,w.l2Token as bridged_token_address
             ,w.amount as bridged_token_amount_raw
-            ,UINT256 '324' AS source_chain_id
-            ,UINT256 '1' AS destination_chain_id
-            ,'zkSync Era' AS source_chain_name
-            ,'Ethereum' AS destination_chain_name
+            ,UINT256 '324' as source_chain_id
+            ,UINT256 '1' as destination_chain_id
+            ,'zkSync Era' as source_chain_name
+            ,'Ethereum' as destination_chain_name
         FROM {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.evt_block_time') }}
@@ -113,7 +115,7 @@ WITH bridge_events AS (
 
 SELECT
     'zksync' as blockchain
-    ,'standard_bridge' AS project
+    ,'standard_bridge' as project
     ,'' as version
     ,tf.block_time
     ,tf.block_date
@@ -122,26 +124,26 @@ SELECT
     ,tx_hash
     ,COALESCE(sender,CAST(NULL as VARBINARY)) as sender
     ,COALESCE(receiver, CAST(NULL as VARBINARY)) as receiver
-    ,erc.symbol AS token_symbol
-    ,CAST(bridged_token_amount_raw as double)/ POWER(10,erc.decimals) AS token_amount
-    ,p.price*( CAST(bridged_token_amount_raw as double) / POWER(10,erc.decimals) ) AS token_amount_usd
+    ,erc.symbol as token_symbol
+    ,CAST(bridged_token_amount_raw as double)/ POWER(10,erc.decimals) as token_amount
+    ,p.price*( CAST(bridged_token_amount_raw as double) / POWER(10,erc.decimals) ) as token_amount_usd
     ,bridged_token_amount_raw as token_amount_raw
-    ,0 AS fee_amount
-    ,0 AS fee_amount_usd
-    ,0 AS fee_amount_raw
+    ,0 as fee_amount
+    ,0 as fee_amount_usd
+    ,0 as fee_amount_raw
     ,bridged_token_address as token_address
-    ,CAST(NULL as VARBINARY) AS fee_address
+    ,CAST(NULL as VARBINARY) as fee_address
     ,source_chain_id
     ,destination_chain_id
-    ,cid_source.chain_name AS source_chain_name
-    ,cid_dest.chain_name AS destination_chain_name
-    ,1 AS is_native_bridge
-    ,t."from" AS tx_from
-    ,t.to AS tx_to
+    ,cid_source.chain_name as source_chain_name
+    ,cid_dest.chain_name as destination_chain_name
+    ,1 as is_native_bridge
+    ,t."from" as tx_from
+    ,t.to as tx_to
     ,tf.transfer_id
     ,tf.evt_index
     ,tf.trace_address
-    ,bytearray_substring(t.data,1,4) AS tx_method_id
+    ,bytearray_substring(t.data,1,4) as tx_method_id
 FROM bridge_events tf
 
 LEFT JOIN {{ source('zksync', 'transactions') }} t
