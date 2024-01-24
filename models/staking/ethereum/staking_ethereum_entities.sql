@@ -13,9 +13,9 @@
      ('depositor_address', ref('staking_ethereum_entities_depositor_addresses'), 'main')
      , ('depositor_address', ref('staking_ethereum_entities_contracts'), 'main')
      , ('tx_from', ref('staking_ethereum_entities_tx_from_addresses'), 'main')
-     , ('tx_from', ref('staking_ethereum_entities_batch_contracts_tx_from'), 'main')
-     , ('pubkey', ref('staking_ethereum_entities_batch_contracts_pubkey'), 'main')
      , ('withdrawal_credentials', ref('staking_ethereum_entities_withdrawal_credentials'), 'main')
+     , ('tx_from', ref('staking_ethereum_entities_batch_contracts_tx_from'), 'sub')
+     , ('pubkey', ref('staking_ethereum_entities_batch_contracts_pubkey'), 'sub')
 
      , ('depositor_address', ref('staking_ethereum_entities_coinbase'), 'main')
      , ('depositor_address', ref('staking_ethereum_entities_binance'), 'main')
