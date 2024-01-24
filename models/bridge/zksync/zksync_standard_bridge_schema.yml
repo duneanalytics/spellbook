@@ -41,11 +41,14 @@ models:
       - &tx_hash
         name: tx_hash
         description: Transaction hash
-      - &sender
-        name: sender
+      - &evt_index
+        name: evt_index
+        description: Index value of the transaction"
+      - &sender_address
+        name: sender_address
         description: Address initiating the bridge transaction
-      - &receiver
-        name: receiver
+      - &receiver_address
+        name: receiver_address
         description: Address receiving the assets of the source bridge transaction
       - &token_symbol
         name: token_symbol

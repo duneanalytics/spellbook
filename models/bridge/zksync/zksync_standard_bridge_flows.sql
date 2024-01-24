@@ -20,8 +20,9 @@ WITH bridge_events as (
         ,CAST(DATE_TRUNC('month', block_time) as date) as block_month
         ,block_number
         ,tx_hash
-        ,sender
-        ,receiver
+        ,evt_index
+        ,sender_address
+        ,receiver_address
         ,bridged_token_address
         ,bridged_token_amount_raw
         ,source_chain_id
@@ -34,8 +35,9 @@ WITH bridge_events as (
              npr.evt_block_time as block_time
             ,npr.evt_block_number as block_number
             ,npr.evt_tx_hash as tx_hash
-            ,et."from" as sender
-            ,COALESCE(d.to, zt.to) as receiver -- d.to is null if there is no matching ERC20 deposit tx hash. This is used to handle the log of an 'if statement'.
+            ,npr.evt_index
+            ,et."from" as sender_address
+            ,COALESCE(d.to, zt.to) as receiver_address -- d.to is null if there is no matching ERC20 deposit tx hash. This is used to handle the log of an 'if statement'.
             ,0x0000000000000000000000000000000000000000 as bridged_token_address
             ,CAST(JSON_EXTRACT_SCALAR(npr.transaction, '$.reserved[0]') as UINT256) as bridged_token_amount_raw
             ,UINT256 '1' as source_chain_id
@@ -45,7 +47,7 @@ WITH bridge_events as (
         FROM {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr
         LEFT JOIN {{ source('ethereum', 'transactions') }} et ON npr.evt_tx_hash = et.hash
         LEFT JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
-        LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash
+        LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash AND npr.evt_index = d.evt_index
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('npr.evt_block_time') }}
         {% endif %}
@@ -57,8 +59,9 @@ WITH bridge_events as (
              d.evt_block_time as block_time
             ,d.evt_block_number as block_number
             ,d.evt_tx_hash as tx_hash
-            ,d."from" as sender
-            ,d.to as receiver
+            ,d.evt_index
+            ,d."from" as sender_address
+            ,d.to as receiver_address
             ,d.l1Token as bridged_token_address
             ,d.amount as bridged_token_amount_raw
             ,UINT256 '1' as source_chain_id
@@ -77,8 +80,9 @@ WITH bridge_events as (
              w.evt_block_time as block_time
             ,w.evt_block_number as block_number
             ,w.evt_tx_hash as tx_hash
-            ,w._l2Sender as sender
-            ,w._l1Receiver as receiver
+            ,w.evt_index
+            ,w._l2Sender as sender_address
+            ,w._l1Receiver as receiver_address
             ,w.contract_address as bridged_token_address
             ,w._amount as bridged_token_amount_raw
             ,UINT256 '324' as source_chain_id
@@ -97,8 +101,9 @@ WITH bridge_events as (
              w.evt_block_time as block_time
             ,w.evt_block_number as block_number
             ,w.evt_tx_hash as tx_hash
-            ,w.l2Sender as sender
-            ,w.l1Receiver as receiver
+            ,w.evt_index
+            ,w.l2Sender as sender_address
+            ,w.l1Receiver as receiver_address
             ,w.l2Token as bridged_token_address
             ,w.amount as bridged_token_amount_raw
             ,UINT256 '324' as source_chain_id
@@ -122,8 +127,9 @@ SELECT
     ,tf.block_month
     ,tf.block_number
     ,tf.tx_hash
-    ,COALESCE(tf.sender,CAST(NULL as VARBINARY)) as sender
-    ,COALESCE(tf.receiver, CAST(NULL as VARBINARY)) as receiver
+    ,tf.evt_index
+    ,COALESCE(tf.sender_address,CAST(NULL as VARBINARY)) as sender_address
+    ,COALESCE(tf.receiver_address, CAST(NULL as VARBINARY)) as receiver_address
     ,erc.symbol as token_symbol
     ,CAST(tf.bridged_token_amount_raw as double)/ POWER(10, erc.decimals) as token_amount
     ,p.price * (CAST(tf.bridged_token_amount_raw as double) / POWER(10, erc.decimals) ) as token_amount_usd

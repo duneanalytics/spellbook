@@ -20,7 +20,7 @@ sources:
           description: Transaction hash of the event
         - &evt_index
           name: evt_index
-          description: Event index
+          description: Index value of the transaction"
         - &evt_block_time
           name: evt_block_time
           description: Timestamp for block event time in UTC
