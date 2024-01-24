@@ -93,10 +93,10 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
     OR (ete.tx_from IS NOT NULL AND et."from"=ete.tx_from)
     OR (ete.pubkey IS NOT NULL AND d.pubkey=ete.pubkey)
     OR (ete.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=ete.withdrawal_credentials))
-    AND (ete.entity IS NOT NULL OR ete.sub_entity IS NULL)
+    AND ete.entity IS NOT NULL
 LEFT JOIN {{ ref('staking_ethereum_entities')}} etes
-    ON ((etes.depositor_address IS NOT NULL AND ett.depositor_address=ete.depositor_address)
-    OR (etes.tx_from IS NOT NULL AND et."from"=ete.tx_from)
-    OR (etes.pubkey IS NOT NULL AND d.pubkey=ete.pubkey)
-    OR (etes.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=ete.withdrawal_credentials))
+    ON ((etes.depositor_address IS NOT NULL AND ett.depositor_address=etes.depositor_address)
+    OR (etes.tx_from IS NOT NULL AND et."from"=etes.tx_from)
+    OR (etes.pubkey IS NOT NULL AND d.pubkey=etes.pubkey)
+    OR (etes.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=etes.withdrawal_credentials))
     AND etes.sub_entity IS NOT NULL
