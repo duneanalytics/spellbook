@@ -9,7 +9,7 @@ WITH transfers AS (
     , tx_hash
     , cast(NULL as bigint) AS evt_index
     , trace_address
-    {% if native_contract_address %}
+    {% if native_contract_address%}
     , {{native_contract_address}} AS contract_address
     {% else %}
     , CAST(NULL AS varbinary) AS contract_address
@@ -34,15 +34,7 @@ WITH transfers AS (
     , t.evt_index
     , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
-    , CASE
-        WHEN t.contract_address =     
-            {% if native_contract_address %}
-                {{native_contract_address}}
-            {% else %}
-                CAST(NULL AS varbinary)
-            {% endif %} THEN 'native'
-        ELSE '{{token_standard_20}}'
-      END AS token_standard
+    , '{{token_standard_20}}' AS token_standard
     , t."from"
     , t.to
     , t.value AS amount_raw
