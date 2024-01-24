@@ -13,7 +13,8 @@
     ref('aave_v3_ethereum_base_supply'),
     ref('compound_v2_ethereum_base_supply'),
     ref('compound_v3_ethereum_base_supply'),
-    ref('radiant_ethereum_base_supply')
+    ref('radiant_ethereum_base_supply'),
+    ref('uwulend_ethereum_base_supply')
   ]
 %}
 

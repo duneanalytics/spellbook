@@ -110,3 +110,41 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: radiant_arbitrum_base_flashloans
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      project: radiant
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'radiant', 'arbitrum']
+    description: "Radiant flashloans transactions on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('radiant_arbitrum_base_flashloans_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - recipient
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

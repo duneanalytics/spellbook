@@ -16,3 +16,7 @@ sources:
   - name: radiant_capital_ethereum
     tables:
       - name: LendingPool_evt_FlashLoan
+
+  - name: uwulend_ethereum
+    tables:
+      - name: LendingPool_evt_FlashLoan
