@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'bridge_zksync_native'
+    schema = 'bridge_zksync_native',
     alias = 'flows',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -29,6 +29,8 @@ WITH bridge_events as (
         ,destination_chain_id
         ,source_chain_name
         ,destination_chain_name
+        ,tx_from
+        ,tx_to
     FROM (
         -- Deposit ETH from Ethereum to zkSync Era
         SELECT
@@ -44,9 +46,11 @@ WITH bridge_events as (
             ,UINT256 '324' as destination_chain_id
             ,'ethereum' as source_chain_name
             ,'zksync' as destination_chain_name
+            ,et."from" as tx_from
+            ,et.to as tx_to
         FROM {{ source('ethereum', 'transactions') }} et
         INNER JOIN {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr ON et.hash = npr.evt_tx_hash
-        LEFT JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
+        INNER JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
         LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash AND npr.evt_index = d.evt_index
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('et.block_time') }}
@@ -68,9 +72,12 @@ WITH bridge_events as (
             ,UINT256 '324' as destination_chain_id
             ,'ethereum' as source_chain_name
             ,'zksync' as destination_chain_name
-        FROM {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
+            ,et."from" as tx_from
+            ,et.to as tx_to
+        FROM {{ source('ethereum', 'transactions') }} et
+        INNER JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON et.hash = d.evt_tx_hash
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('d.evt_block_time') }}
+        WHERE {{ incremental_predicate('et.block_time') }}
         {% endif %}
 
         UNION ALL
@@ -89,9 +96,12 @@ WITH bridge_events as (
             ,UINT256 '1' as destination_chain_id
             ,'zksync' as source_chain_name
             ,'ethereum' as destination_chain_name
-        FROM {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w
+            ,zt."from" as tx_from
+            ,zt.to as tx_to
+        FROM {{ source('zksync', 'transactions') }} zt
+        INNER JOIN {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w ON zt.hash = w.evt_tx_hash
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('w.evt_block_time') }}
+        WHERE {{ incremental_predicate('zt.block_time') }}
         {% endif %}
 
         UNION ALL
@@ -110,9 +120,12 @@ WITH bridge_events as (
             ,UINT256 '1' as destination_chain_id
             ,'zksync' as source_chain_name
             ,'ethereum' as destination_chain_name
-        FROM {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w
+            ,zt."from" as tx_from
+            ,zt.to as tx_to
+        FROM {{ source('zksync', 'transactions') }} zt
+        INNER JOIN {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w ON zt.hash = w.evt_tx_hash
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('w.evt_block_time') }}
+        WHERE {{ incremental_predicate('zt.block_time') }}
         {% endif %}
 
         ) a
@@ -144,23 +157,16 @@ SELECT
     ,tf.source_chain_name
     ,tf.destination_chain_name
     ,1 as is_native_bridge
-    ,t."from" as tx_from
-    ,t.to as tx_to
+    ,tf.tx_from
+    ,tf.tx_to
 FROM bridge_events tf
 
-LEFT JOIN {{ source('zksync', 'transactions') }} t
-        ON t.block_time = tf.block_time
-        AND t.hash = tf.tx_hash
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('t.block_time') }}
-        {% endif %}
-        
 LEFT JOIN {{ ref('tokens_erc20') }} erc
     ON erc.blockchain = 'zksync'
     AND erc.contract_address = tf.bridged_token_address
     
 LEFT JOIN {{ source('prices', 'usd') }} p
-    ON p.minute = DATE_TRUNC('minute',tf.block_time)
+    ON p.minute = DATE_TRUNC('minute', tf.block_time)
     AND p.blockchain = 'zksync'
     AND p.contract_address = tf.bridged_token_address
     {% if is_incremental() %}
