@@ -117,7 +117,7 @@ FROM
     , (0x1d5ba5414f2983212e03bf7725add9eb4cdb00dc, 'Bitget', 'Bitget 1', 'CEX')
     , (0xefb2e870b14d7e555a31b392541acf002dae6ae9, 'Bithumb', 'Bithumb 1', 'CEX')
     , (0x00ecC96508d299Fa8d228d569d8582980C1bc75e, 'Uphold', 'Uphold 1', 'CEX')
-    , (0x307048Ad5Ab7279D34e5358331B0d48050ADa274, 'CoinCDX', 'CoinCDX 1', 'CEX')
+    , (0x307048Ad5Ab7279D34e5358331B0d48050ADa274, 'CoinDCX', 'CoinDCX 1', 'CEX')
     , (0x2d4F5E4982F980BC61aA571AE63f66bF3577618C, 'BlockFi', 'BlockFi 1', 'CEX')
     , (0xB61428Db947a9eE049B966fb0536CB00579753eD, 'Korbit', 'Korbit 1', 'CEX')
     , (0x8d874F5A07dF691bC8e56818Ca1eBc6027B60d51, 'Paxos', 'Paxos 1', 'CEX')
