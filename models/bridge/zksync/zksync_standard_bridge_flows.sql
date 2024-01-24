@@ -42,8 +42,8 @@ WITH bridge_events as (
             ,CAST(JSON_EXTRACT_SCALAR(npr.transaction, '$.reserved[0]') as UINT256) as bridged_token_amount_raw
             ,UINT256 '1' as source_chain_id
             ,UINT256 '324' as destination_chain_id
-            ,'Ethereum' as source_chain_name
-            ,'zkSync Era' as destination_chain_name
+            ,'ethereum' as source_chain_name
+            ,'zksync' as destination_chain_name
         FROM {{ source('ethereum', 'transactions') }} et
         INNER JOIN {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr ON et.hash = npr.evt_tx_hash
         LEFT JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
@@ -66,8 +66,8 @@ WITH bridge_events as (
             ,d.amount as bridged_token_amount_raw
             ,UINT256 '1' as source_chain_id
             ,UINT256 '324' as destination_chain_id
-            ,'Ethereum' as source_chain_name
-            ,'zkSync Era' as destination_chain_name
+            ,'ethereum' as source_chain_name
+            ,'zksync' as destination_chain_name
         FROM {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('d.evt_block_time') }}
@@ -87,8 +87,8 @@ WITH bridge_events as (
             ,w._amount as bridged_token_amount_raw
             ,UINT256 '324' as source_chain_id
             ,UINT256 '1' as destination_chain_id
-            ,'zkSync Era' as source_chain_name
-            ,'Ethereum' as destination_chain_name
+            ,'zksync' as source_chain_name
+            ,'ethereum' as destination_chain_name
         FROM {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.evt_block_time') }}
@@ -108,8 +108,8 @@ WITH bridge_events as (
             ,w.amount as bridged_token_amount_raw
             ,UINT256 '324' as source_chain_id
             ,UINT256 '1' as destination_chain_id
-            ,'zkSync Era' as source_chain_name
-            ,'Ethereum' as destination_chain_name
+            ,'zksync' as source_chain_name
+            ,'ethereum' as destination_chain_name
         FROM {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('w.evt_block_time') }}
