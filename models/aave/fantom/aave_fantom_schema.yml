@@ -1,64 +1,56 @@
 version: 2
 
 models:
- - name: aave_v3_fantom_flashloans
-   meta:
-    blockchain: fantom
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['fantom', 'flashloans']
-   description: >
-      Aave v3 flashloans on Fantom
-   tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-   columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
-
- - name: aave_fantom_flashloans
-   meta:
-    blockchain: fantom
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['fantom', 'flashloans']
-   description: >
-      All Aave flashloans on Fantom
-   tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-   columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
+  - name: aave_fantom_flashloans
+    meta:
+      blockchain: fantom
+      sector: lending
+      project: aave
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'fantom']
+    description: "All Aave transactions involving flashloans transactions on Ethereum"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD"
+      - &fee
+        name: fee
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &contract_address
+        name: contract_address
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"

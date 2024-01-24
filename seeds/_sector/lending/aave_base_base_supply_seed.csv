@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+base,aave,3,5894355,2023-10-29 11:14:17.000 UTC,0x3959fc08d3314105fe5f1f49c37b723caed74ffb41004b63aabb6743296147a3,72,deposit,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2bde6a71265becec57fd5127992101f73f41f62e,2.085e+07
+base,aave,3,6451756,2023-11-11 08:54:19.000 UTC,0xb9c30cf48fccac51d48468e675630c0d735e29d2787bef75fdaeed91a74bf8d6,28,withdraw,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0xf3279a09118f5491cbccac49a2377fca368837d6,-8.7004743e+07

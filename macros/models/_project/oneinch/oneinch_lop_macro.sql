@@ -147,6 +147,7 @@ orders as (
     {% endfor %}
 )
 
+-- output --
 
 select
     '{{ blockchain }}' as blockchain
@@ -157,8 +158,9 @@ select
     , tx_to
     , tx_success
     , tx_nonce
-    , tx_gas_price as gas_price
-    , tx_priority_fee_per_gas as priority_fee_per_gas
+    , tx_gas_used
+    , tx_gas_price
+    , tx_priority_fee_per_gas
     , contract_name
     , 'LOP' as protocol
     , protocol_version
@@ -189,7 +191,7 @@ from (
         add_tx_columns(
             model_cte = 'orders'
             , blockchain = blockchain
-            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas']
+            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used']
         )
     }}
 )
