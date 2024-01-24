@@ -44,3 +44,9 @@ sources:
       - name: LendingPool_evt_Borrow
       - name: LendingPool_evt_Repay
       - name: LendingPool_evt_LiquidationCall
+
+  - name: uwulend_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
