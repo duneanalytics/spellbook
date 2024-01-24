@@ -135,8 +135,8 @@ SELECT
     ,CAST(NULL as VARBINARY) as fee_address
     ,source_chain_id
     ,destination_chain_id
-    ,cid_source.chain_name as source_chain_name
-    ,cid_dest.chain_name as destination_chain_name
+    ,source_chain_name
+    ,destination_chain_name
     ,1 as is_native_bridge
     ,t."from" as tx_from
     ,t.to as tx_to
