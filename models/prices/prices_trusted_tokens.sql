@@ -1,6 +1,6 @@
 {{ config(
         schema='prices',
-        alias = 'stablibity_rank',
+        alias = 'trusted_tokens',
         materialized='table',
         file_format = 'delta',
         tags = ['static']

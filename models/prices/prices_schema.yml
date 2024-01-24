@@ -109,7 +109,7 @@ models:
         description: "USD price of a token"
         test: not_null
 
-  - name: prices_stability_rank
+  - name: prices_trusted_tokens
     meta:
       sector: prices
       contributors: hosuke
