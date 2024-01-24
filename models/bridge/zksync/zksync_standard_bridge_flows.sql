@@ -1,6 +1,6 @@
 {{ config(
-    
-    alias = 'standard_bridge_flows',
+    schema = 'bridge_zksync_native'
+    alias = 'flows',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
