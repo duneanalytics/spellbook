@@ -21,6 +21,7 @@
      , ('depositor_address', ref('staking_ethereum_entities_binance'), 'main')
      , ('depositor_address', ref('staking_ethereum_entities_bitcoin_suisse'), 'main')
      , ('depositor_address', ref('staking_ethereum_entities_darma_capital'), 'main')
+     , ('depositor_address', ref('staking_ethereum_entities_stakewise_v3'), 'main')
      , ('pubkey', ref('staking_ethereum_entities_chorusone'), 'sub')
 ] %}
 
