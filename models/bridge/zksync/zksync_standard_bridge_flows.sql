@@ -121,29 +121,25 @@ SELECT
     ,tf.block_date
     ,tf.block_month
     ,tf.block_number
-    ,tx_hash
-    ,COALESCE(sender,CAST(NULL as VARBINARY)) as sender
-    ,COALESCE(receiver, CAST(NULL as VARBINARY)) as receiver
+    ,tf.tx_hash
+    ,COALESCE(tf.sender,CAST(NULL as VARBINARY)) as sender
+    ,COALESCE(tf.receiver, CAST(NULL as VARBINARY)) as receiver
     ,erc.symbol as token_symbol
-    ,CAST(bridged_token_amount_raw as double)/ POWER(10,erc.decimals) as token_amount
-    ,p.price*( CAST(bridged_token_amount_raw as double) / POWER(10,erc.decimals) ) as token_amount_usd
-    ,bridged_token_amount_raw as token_amount_raw
+    ,CAST(tf.bridged_token_amount_raw as double)/ POWER(10, erc.decimals) as token_amount
+    ,p.price * (CAST(tf.bridged_token_amount_raw as double) / POWER(10, erc.decimals) ) as token_amount_usd
+    ,tf.bridged_token_amount_raw as token_amount_raw
     ,0 as fee_amount
     ,0 as fee_amount_usd
     ,0 as fee_amount_raw
-    ,bridged_token_address as token_address
+    ,tf.bridged_token_address as token_address
     ,CAST(NULL as VARBINARY) as fee_address
-    ,source_chain_id
-    ,destination_chain_id
-    ,source_chain_name
-    ,destination_chain_name
+    ,tf.source_chain_id
+    ,tf.destination_chain_id
+    ,tf.source_chain_name
+    ,tf.destination_chain_name
     ,1 as is_native_bridge
     ,t."from" as tx_from
     ,t.to as tx_to
-    ,tf.transfer_id
-    ,tf.evt_index
-    ,tf.trace_address
-    ,bytearray_substring(t.data,1,4) as tx_method_id
 FROM bridge_events tf
 
 LEFT JOIN {{ source('zksync', 'transactions') }} t

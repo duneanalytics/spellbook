@@ -16,7 +16,6 @@ models:
               - blockchain
               - tx_hash
               - evt_index
-              - transfer_id
     columns:
       - &blockchain
         name: blockchain
@@ -90,15 +89,4 @@ models:
       - &tx_to
         name: tx_to
         description: Transaction to address
-      - &transfer_id
-        name: transfer_id
-        description: "Unique ID used to tie bridge events together across chains"
-      - &evt_index
-        name: evt_index
-        description: "Index value of the transaction"
-      - &trace_address
-        name: trace_address
-        description: "Trace address of the transaction"
-      - &tx_method_id
-        name: tx_method_id
-        description: "4byte function signature of the transaction (with leading 0x)"
+
