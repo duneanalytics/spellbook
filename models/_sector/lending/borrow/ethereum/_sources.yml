@@ -38,3 +38,9 @@ sources:
       - name: cWETHv3_evt_Transfer
       - name: Comet_evt_AbsorbDebt
       - name: cWETHv3_evt_AbsorbDebt
+
+  - name: radiant_capital_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

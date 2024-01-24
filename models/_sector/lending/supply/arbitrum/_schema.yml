@@ -86,7 +86,7 @@ models:
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'v3', 'arbitrum']
+      tags: ['lending', 'supply', 'aave', 'arbitrum']
     description: "Aave v3 supply transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -129,8 +129,8 @@ models:
       project: compound
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'compound', 'v3', 'arbitrum']
-    description: "Compound v3 supply transactions on Ethereum"
+      tags: ['lending', 'supply', 'compound', 'arbitrum']
+    description: "Compound v3 supply transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -167,3 +167,45 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: radiant_arbitrum_base_supply
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      project: radiant
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'radiant', 'arbitrum']
+    description: "Radiant supply transactions on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('radiant_arbitrum_base_supply_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
