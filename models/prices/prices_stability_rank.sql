@@ -3,11 +3,7 @@
         alias = 'stablibity_rank',
         materialized='table',
         file_format = 'delta',
-        tags = ['static'],
-        post_hook = '{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora"]\',
-                                    "sector",
-                                    "prices",
-                                    \'["hosuke"]\') }}'
+        tags = ['static']
         )
 }}
 
