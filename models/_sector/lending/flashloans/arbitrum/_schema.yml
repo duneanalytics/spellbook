@@ -1,29 +1,20 @@
 version: 2
 
 models:
-  - name: aave_v3_arbitrum_base_flashloans
+  - name: lending_arbitrum_base_flashloans
     meta:
       blockchain: arbitrum
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'v3', 'arbitrum']
-    description: "Aave v3 flashloans transactions on Arbitrum"
+      tags: ['lending', 'flashloans', 'aave', 'arbitrum']
+    description: "All lending flashloans transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('aave_arbitrum_base_flashloans_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -82,7 +73,7 @@ models:
         tests:
           - not_null
 
-  - name: lending_arbitrum_base_flashloans
+  - name: aave_v3_arbitrum_base_flashloans
     meta:
       blockchain: arbitrum
       sector: lending
@@ -90,12 +81,21 @@ models:
       contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'arbitrum']
-    description: "All Aave flashloans transactions on Arbitrum"
+    description: "Aave v3 flashloans transactions on Arbitrum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_arbitrum_base_flashloans_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - recipient
+            - amount
     columns:
       - *blockchain
       - *project

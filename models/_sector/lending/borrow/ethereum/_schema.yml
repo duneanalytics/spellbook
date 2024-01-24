@@ -5,10 +5,10 @@ models:
     meta:
       blockchain: ethereum
       sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
+      project: aave, compound
+      contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v1', 'ethereum']
+      tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum']
     description: "Aave v1 borrow transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -279,6 +279,49 @@ models:
           seed_file: ref('compound_ethereum_base_borrow_seed')
           filter:
             version: 3
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - borrower
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: radiant_ethereum_base_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: radiant
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'radiant', 'ethereum']
+    description: "Radiant borrow transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('radiant_ethereum_base_borrow_seed')
           match_columns:
             - transaction_type
             - token_address
