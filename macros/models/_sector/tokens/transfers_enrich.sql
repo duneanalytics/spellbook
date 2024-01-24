@@ -21,7 +21,7 @@ SELECT t.blockchain
 , t."from"
 , t.to
 , t.contract_address
-, {{case_when_token_standard("'{{native_symbol}}'", 'tokens_erc20.symbol', 'NULL')}} AS symbol
+, {{ case_when_token_standard("'" ~ native_symbol ~ "'", 'tokens_erc20.symbol', 'NULL') }} AS symbol
 , t.amount_raw
 , {{case_when_token_standard('t.amount_raw / power(10, 18)', 'amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)')}} AS amount
 , prices.price AS usd_price

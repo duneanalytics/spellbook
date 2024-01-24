@@ -1340,6 +1340,7 @@ FROM
     ('com-communis', 'ethereum', 'COM', 0x5A9780Bfe63f3ec57f01b087cD65BD656C9034A8, 12),
     ('woof-woofworkio', 'ethereum', 'WOOF', 0x6BC08509B36A98E829dFfAD49Fde5e412645d0a3, 18),
     ('banana-banana', 'ethereum', 'BANANA', 0x94e496474F1725f1c1824cB5BDb92d7691A4F03a, 18),
+    ('banana-banana-gun-v2', 'ethereum', 'BANANA', 0x38e68a37e401f7271568cecaac63c6b1e19130b4, 18),
     ('hopr-hopr', 'ethereum', 'HOPR', 0xF5581dFeFD8Fb0e4aeC526bE659CFaB1f8c781dA, 18),
     ('ic-icy', 'ethereum', 'IC', 0xA876f27F13A9eB6E621202cEFDD5AFc4a90E6457, 9),
     ('pkf-firebird', 'ethereum', 'PKF', 0x8B39B70E39Aa811b69365398e0aACe9bee238AEb, 18),
@@ -1635,7 +1636,8 @@ FROM
     ('hilo-hilo', 'ethereum', 'HILO', 0xbb9fd9fa4863c03c574007ff3370787b9ce65ff6, 18),
     ('pear-pear-swap', 'ethereum', 'PEAR', 0x5dcd6272c3cbb250823f0b7e6c618bce11b21f90, 18),
     ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
-    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9)
+    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9),
+    ('rbx-rabbitx', 'ethereum', 'RBX', 0x3Ba925fdeAe6B46d0BB4d424D829982Cb2F7309e, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
