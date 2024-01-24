@@ -67,7 +67,7 @@ FROM (VALUES
     , ('Poloniex', 'Poloniex')
     , ('Bitpie', 'BitpieWallet')
     , ('Tranchess', 'Tranchess')
-    , ('StakeWise Solos', 'stakewise_io')
+    , ('StakeWise', 'stakewise_io')
     , ('Node DAO', 'Node_DAO')
     , ('Taylor Gerring', 'TaylorGerring')
     , ('StaFi', 'StaFi_Protocol')
