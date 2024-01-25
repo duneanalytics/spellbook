@@ -21,12 +21,14 @@
 
 UNION ALL
 
-SELECT * FROM
+SELECT *
+FROM
 (
-{{transfers_base_wrapped_token(
-    blockchain='polygon',
-    transactions = source('polygon','transactions'),
-    wrapped_token_deposit = source('mahadao_polygon', 'wmatic_evt_deposit'),
-    wrapped_token_withdrawal = source('mahadao_polygon', 'wmatic_evt_withdrawal')
-)}}
+    {{transfers_base_wrapped_token(
+        blockchain='polygon',
+        transactions = source('polygon','transactions'),
+        wrapped_token_deposit = source('mahadao_polygon', 'wmatic_evt_deposit'),
+        wrapped_token_withdrawal = source('mahadao_polygon', 'wmatic_evt_withdrawal')
+    )
+    }}
 )

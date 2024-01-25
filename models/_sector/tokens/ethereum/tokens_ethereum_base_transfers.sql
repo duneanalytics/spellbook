@@ -20,12 +20,14 @@
 
 UNION ALL
 
-SELECT * FROM
+SELECT *
+FROM
 (
-{{transfers_base_wrapped_token(
-    blockchain='ethereum',
-    transactions = source('ethereum','transactions'),
-    wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
-    wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
-)}}
+    {{transfers_base_wrapped_token(
+        blockchain='ethereum',
+        transactions = source('ethereum','transactions'),
+        wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
+        wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
+    )
+    }}
 )

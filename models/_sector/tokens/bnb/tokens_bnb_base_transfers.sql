@@ -21,12 +21,14 @@
 
 UNION ALL
 
-SELECT * FROM
+SELECT *
+FROM
 (
-{{transfers_base_wrapped_token(
-    blockchain='bnb',
-    transactions = source('bnb','transactions'),
-    wrapped_token_deposit = source('bnb_bnb', 'WBNB_evt_Deposit'),
-    wrapped_token_withdrawal = source('bnb_bnb', 'WBNB_evt_Withdrawal')
-)}}
+    {{transfers_base_wrapped_token(
+        blockchain='bnb',
+        transactions = source('bnb','transactions'),
+        wrapped_token_deposit = source('bnb_bnb', 'WBNB_evt_Deposit'),
+        wrapped_token_withdrawal = source('bnb_bnb', 'WBNB_evt_Withdrawal')
+    )
+    }}
 )
