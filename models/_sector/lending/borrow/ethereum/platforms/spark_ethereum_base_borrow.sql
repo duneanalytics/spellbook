@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'aave_v3_arbitrum',
-    alias = 'base_supply',
+    schema = 'spark_ethereum',
+    alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,10 +11,10 @@
 }}
 
 {{
-  lending_aave_v3_compatible_supply(
-    blockchain = 'arbitrum',
-    project = 'aave',
-    version = '3',
-    decoded_contract_name = 'L2Pool'
+  lending_aave_v3_compatible_borrow(
+    blockchain = 'ethereum',
+    project = 'spark',
+    version = '1',
+    project_decoded_as = 'spark_protocol'
   )
 }}

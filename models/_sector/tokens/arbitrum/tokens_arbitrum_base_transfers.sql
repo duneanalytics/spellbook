@@ -1,7 +1,8 @@
 {{config(
+    tags = ['base_transfers_macro'],
     schema = 'tokens_arbitrum',
     alias = 'base_transfers',
-    partition_by = ['token_standard', 'block_date'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

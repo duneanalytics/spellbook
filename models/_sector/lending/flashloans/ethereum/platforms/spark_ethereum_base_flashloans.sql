@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_v3_arbitrum',
+    schema = 'spark_ethereum',
     alias = 'base_flashloans',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,9 +12,9 @@
 
 {{
   lending_aave_v3_compatible_flashloans(
-    blockchain = 'arbitrum',
-    project = 'aave',
-    version = '3',
-    decoded_contract_name = 'L2Pool'
+    blockchain = 'ethereum',
+    project = 'spark',
+    version = '1',
+    project_decoded_as = 'spark_protocol'
   )
 }}
