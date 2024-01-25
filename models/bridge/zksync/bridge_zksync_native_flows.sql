@@ -57,7 +57,7 @@ WITH bridge_events as (
         INNER JOIN {{ source('zksync', 'transactions') }} zt 
             ON npr.txHash = zt.hash
             {% if is_incremental() %}
-            AND {{ incremental_predicate('zt.evt_block_time') }}
+            AND {{ incremental_predicate('zt.block_time') }}
             {% endif %}
         LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d 
             ON npr.evt_tx_hash = d.evt_tx_hash 
