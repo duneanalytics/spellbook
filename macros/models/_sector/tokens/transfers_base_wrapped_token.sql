@@ -1,34 +1,37 @@
 {% macro transfers_base_wrapped_token(blockchain, transactions, wrapped_token_deposit, wrapped_token_withdrawal) %}
+{%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
+{%- set default_address = '0x0000000000000000000000000000000000000000' -%}
+
 with transfers AS (
-    SELECT t.evt_block_time AS block_time
-    , t.evt_block_number AS block_number
-    , t.evt_tx_hash AS tx_hash
-    , t.evt_index
-    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
-    , t.contract_address
-    -- technically this is not a standard 20 token, but we use it for consistency
-    , '{{token_standard_20}}' AS token_standard
-    , 0x0000000000000000000000000000000000000000 as "from"  -- TODO: change to variable
-    , t.dst as "to"
-    , t.wad AS amount_raw -- is this safe cross chain?
+    SELECT
+        t.evt_block_time AS block_time
+        , t.evt_block_number AS block_number
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index
+        , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
+        , t.contract_address
+        , '{{token_standard_20}}' AS token_standard -- technically this is not a standard 20 token, but we use it for consistency
+        , '{{default_address}}' AS "from"
+        , t.dst as "to"
+        , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_deposit }} t
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
+    WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
     UNION ALL
 
-    SELECT t.evt_block_time AS block_time
-    , t.evt_block_number AS block_number
-    , t.evt_tx_hash AS tx_hash
-    , t.evt_index
-    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
-    , t.contract_address
-    -- technically this is not a standard 20 token, but we use it for consistency
-    , '{{token_standard_20}}' AS token_standard
-    , t.src as "from"
-    , 0x0000000000000000000000000000000000000000 as "to"  -- TODO: change to variable
-    , t.wad AS amount_raw -- is this safe cross chain?
+    SELECT
+        t.evt_block_time AS block_time
+        , t.evt_block_number AS block_number
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index
+        , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
+        , t.contract_address
+        , '{{token_standard_20}}' AS token_standard -- technically this is not a standard 20 token, but we use it for consistency
+        , t.src as "from"
+        , '{{default_address}}' AS "to"
+        , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_withdrawal }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
