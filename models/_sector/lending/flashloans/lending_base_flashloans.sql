@@ -20,7 +20,8 @@
     ref('lending_optimism_base_flashloans'),
     ref('lending_polygon_base_flashloans'),
     ref('lending_avalanche_c_base_flashloans'),
-    ref('lending_fantom_base_flashloans')
+    ref('lending_fantom_base_flashloans'),
+    ref('lending_gnosis_base_flashloans')
   ]
 %}
 
