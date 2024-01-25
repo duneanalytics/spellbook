@@ -166,9 +166,8 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE (
-      t."from" = 0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7 -- StateUpdate poster
-      AND t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
-      AND bytearray_substring(t.data, 1, 4) = 0x77552641
+      t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
+      AND bytearray_substring(t.data, 1, 4) = 0x77552641 -- updateState
     )
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
@@ -413,7 +412,7 @@ with tx_batch_appends as (
       , b.base_fee_per_gas
       , b.time
     FROM {{ source('ethereum','blocks') }} as b
-    WHERE b.time >= timestamp '2022-01-01'
+    WHERE b.time >= timestamp '2021-03-23'
       {% if is_incremental() %}
       AND b.time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
