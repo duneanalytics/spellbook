@@ -1,7 +1,7 @@
 {{config(
     tags = ['base_transfers_macro'],
     schema = 'tokens_bnb',
-    alias = 'base_transfers',
+    alias = 'base_wrapped_transfers',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -11,11 +11,14 @@
 )
 }}
 
-{{transfers_base(
-    blockchain='bnb',
-    traces = source('bnb','traces'),
-    transactions = source('bnb','transactions'),
-    erc20_transfers = source('erc20_bnb','evt_transfer'),
-    native_contract_address = null
+SELECT *
+FROM
+(
+    {{transfers_base_wrapped_token(
+        blockchain='bnb',
+        transactions = source('bnb','transactions'),
+        wrapped_token_deposit = source('bnb_bnb', 'WBNB_evt_Deposit'),
+        wrapped_token_withdrawal = source('bnb_bnb', 'WBNB_evt_Withdrawal')
+    )
+    }}
 )
-}}
