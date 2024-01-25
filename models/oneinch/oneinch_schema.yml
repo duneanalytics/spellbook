@@ -29,8 +29,9 @@ models:
       - name: tx_to
       - name: tx_success
       - name: tx_nonce
-      - name: gas_price
-      - name: priority_fee_per_gas
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
       - name: contract_name
       - name: protocol
       - name: protocol_version
@@ -84,8 +85,9 @@ models:
       - name: tx_to
       - name: tx_success
       - name: tx_nonce
-      - name: gas_price
-      - name: priority_fee_per_gas
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
       - name: contract_name
       - name: protocol
       - name: protocol_version
@@ -163,8 +165,9 @@ models:
       - name: tx_to
       - name: tx_success
       - name: tx_nonce
-      - name: gas_price
-      - name: priority_fee_per_gas
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
       - name: contract_name
       - name: protocol
       - name: protocol_version
@@ -275,8 +278,9 @@ models:
       - name: tx_from
       - name: tx_to
       - name: tx_nonce
-      - name: gas_price
-      - name: priority_fee_per_gas
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
       - name: contract_name
       - name: protocol
       - name: protocol_version
@@ -312,6 +316,7 @@ models:
       - name: transfers
       - name: minute
       - name: block_month
+      - name: swap_id
 
   - name: oneinch_lop_own_trades
     meta:

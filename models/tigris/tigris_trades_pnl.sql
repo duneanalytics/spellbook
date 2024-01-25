@@ -155,7 +155,11 @@ close_liquidate as (
 close_liquidate_pnl as (
     SELECT 
         cl.*, 
-        p.pnl,
+        CASE
+            WHEN margin_asset = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 AND cl.blockchain = 'arbitrum' THEN p.pnl * pe.price
+            WHEN margin_asset = 0x763e061856b3e74a6c768a859dc2543a56d299d5 AND cl.blockchain = 'arbitrum' THEN p.pnl * pe.price
+            ELSE p.pnl
+        END as pnl,
         CASE 
             WHEN p.pnl > 0 THEN 1 ELSE 0 END as wins, 
         CASE 
@@ -167,6 +171,13 @@ close_liquidate_pnl as (
         ON cl.position_id = p.position_id
         AND cl.evt_tx_hash = p.evt_tx_hash 
         AND cl.blockchain = p.blockchain
+    LEFT JOIN {{ source('prices', 'usd') }} pe 
+        ON pe.minute = date_trunc('minute', cl.evt_block_time)
+        AND pe.blockchain = 'arbitrum'
+        AND pe.symbol = 'WETH'
+        {% if is_incremental() %}
+        AND pe.minute >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
 )
 -- use to reload x
 SELECT * FROM close_liquidate_pnl

@@ -326,17 +326,16 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - day
             - blockchain
-            - block_number
-            - lp_virtual_supply_raw
-            - pool_id
+            - token_address
     columns:
+      - name: day
+      - name: pool_type
+      - name: version
       - name: blockchain
-      - name: block_time
-      - name: block_number
-      - name: lp_virtual_supply_raw
-      - name: lp_virtual_supply
-      - name: pool_id
+      - name: token_address
+      - name: supply
 
   - name: balancer_token_whitelist
     meta:
