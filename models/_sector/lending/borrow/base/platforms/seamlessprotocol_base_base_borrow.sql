@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'aave_v3_arbitrum',
-    alias = 'base_supply',
+    schema = 'seamlessprotocol_base',
+    alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,10 +11,11 @@
 }}
 
 {{
-  lending_aave_v3_compatible_supply(
-    blockchain = 'arbitrum',
-    project = 'aave',
-    version = '3',
+  lending_aave_v3_compatible_borrow(
+    blockchain = 'base',
+    project = 'seamlessprotocol',
+    version = '1',
+    project_decoded_as = 'seamlessprotocol',
     decoded_contract_name = 'L2Pool'
   )
 }}
