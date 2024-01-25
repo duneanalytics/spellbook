@@ -11,7 +11,7 @@ with transfers AS (
         , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
         , t.contract_address
         , '{{token_standard_20}}' AS token_standard -- technically this is not a standard 20 token, but we use it for consistency
-        , '{{default_address}}' AS "from"
+        , {{default_address}} AS "from"
         , t.dst as "to"
         , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_deposit }} t
@@ -30,7 +30,7 @@ with transfers AS (
         , t.contract_address
         , '{{token_standard_20}}' AS token_standard -- technically this is not a standard 20 token, but we use it for consistency
         , t.src as "from"
-        , '{{default_address}}' AS "to"
+        , {{default_address}} AS "to"
         , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_withdrawal }} t
     {% if is_incremental() %}
