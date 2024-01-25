@@ -30,8 +30,9 @@
         'tx_to',
         'tx_nonce',
         'maker',
-        'gas_price',
-        'priority_fee_per_gas',
+        'tx_gas_used',
+        'tx_gas_price',
+        'tx_priority_fee_per_gas',
         'call_trace_address',
         'call_from',
         'call_to',
@@ -43,7 +44,8 @@
         'order_hash',
         'fusion',
         'remains',
-        'native_token_symbol'
+        'native_token_symbol',
+        '_call_trace_address'
     ]
 %}
 
@@ -81,6 +83,7 @@ tokens as (
         , if(src_token_address in {{native_addresses}}, true, false) as _src_token_native
         , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as _dst_token_address
         , if(dst_token_address in {{native_addresses}}, true, false) as _dst_token_native
+        , array_join(call_trace_address, '') as _call_trace_address
     from {{ ref('oneinch_calls') }}
     join {{ ref('oneinch_blockchains') }} using(blockchain)
     where
@@ -160,12 +163,12 @@ tokens as (
         , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
-        -- $ amount from user to any
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and transfer_from = user) as _amount_usd_from_user
-        -- $ amount from any to user
-        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = user) as _amount_usd_to_user
-        -- $ amount from any to receiver
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and transfer_to = receiver) as _amount_usd_to_receiver
+        -- src $ amount from user
+        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
+        -- dst $ amount to user
+        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
+        -- dst $ amount to receiver
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -191,8 +194,9 @@ select
     , tx_from
     , tx_to
     , tx_nonce
-    , gas_price
-    , priority_fee_per_gas
+    , tx_gas_used
+    , tx_gas_price
+    , tx_priority_fee_per_gas
     , contract_name
     , protocol
     , protocol_version
@@ -224,5 +228,6 @@ select
     , transfers
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
+    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
 from swaps
 join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)

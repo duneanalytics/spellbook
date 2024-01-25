@@ -94,3 +94,35 @@ models:
       - *main_token_usd_price
       - *paired_token_usd_price
       - *trading_volume
+
+  - name: lido_liquidity_base_uniswap_v3_pools
+    meta:
+      blockchain: base
+      project: lido
+      contributors: ppclunghe
+    config:
+      tags: ['base','lido','liquidity']
+    description: 
+        Lido wstETH liquidity pools on Uniswap v3 Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - blockchain
+            - time
+    columns:
+      - *pool_name
+      - *pool
+      - *blockchain
+      - *project
+      - *fee
+      - *time
+      - *main_token
+      - *main_token_symbol
+      - *paired_token
+      - *paired_token_symbol
+      - *main_token_reserve
+      - *paired_token_reserve
+      - *main_token_usd_price
+      - *paired_token_usd_price
+      - *trading_volume

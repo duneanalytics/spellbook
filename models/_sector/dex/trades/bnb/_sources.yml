@@ -105,3 +105,8 @@ sources:
   - name: onepunch_normal_bnb
     tables:
       - name: DexLiquidityProvider_evt_QuoteAccepted
+  - name: woofi_bnb
+    tables:
+      - name: WooPP_evt_WooSwap
+      - name: WooRouter_evt_WooRouterSwap
+      - name: WooRouterV2_evt_WooRouterSwap
