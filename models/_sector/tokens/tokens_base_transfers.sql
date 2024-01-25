@@ -1,4 +1,5 @@
 {{config(
+    tags = ['prod_exclude'],
     schema = 'tokens',
     alias = 'base_transfers',
     partition_by = ['blockchain', 'block_date'],
