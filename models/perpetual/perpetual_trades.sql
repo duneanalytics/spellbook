@@ -35,6 +35,8 @@
     ,ref('basemax_finance_base_perpetual_trades')
     ,ref('xena_finance_base_perpetual_trades')
     ,ref('meridian_base_perpetual_trades')
+    ,ref('mummy_finance_base_perpetual_trades')
+    ,ref('voodoo_trade_base_perpetual_trades')
 ] %}
 
 SELECT *
