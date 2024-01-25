@@ -11,11 +11,20 @@
 }}
 
 
+{%
+    set config_sources = [
+        {
+            'version': '2',
+            'source': 'WooPPV2_evt_WooSwap'
+        }
+    ]
+%}
 {{
-    woofi_compatible_trades(
+    generic_spot_v2_compatible_trades(
         blockchain = 'base',
         project = 'woofi',
-        version = '2',
-        Pair_evt_Swap = source('woofi_base', 'WooPPV2_evt_WooSwap'),
+        sources = config_sources,
+        maker = '"from"'
     )
 }}
+
