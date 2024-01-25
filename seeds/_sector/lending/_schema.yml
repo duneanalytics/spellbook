@@ -612,6 +612,21 @@ seeds:
         recipient: varbinary
         amount: double
 
+  - name: agave_gnosis_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
+
   - name: spark_ethereum_base_borrow_seed
     config:
       column_types:
@@ -625,6 +640,21 @@ seeds:
         transaction_type: varchar
         token_address: varbinary
         borrower: varbinary
+        amount: double
+        
+  - name: agave_gnosis_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
         amount: double
         
   - name: seamlessprotocol_base_base_borrow_seed
@@ -670,6 +700,20 @@ seeds:
         transaction_type: varchar
         token_address: varbinary
         depositor: varbinary
+        amount: double
+        
+  - name: agave_gnosis_base_flashloans_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        token_address: varbinary
+        recipient: varbinary
         amount: double
         
   - name: spark_ethereum_base_flashloans_seed
