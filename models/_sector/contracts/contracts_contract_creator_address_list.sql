@@ -1009,6 +1009,16 @@ WITH curated_list AS (
       ,(0xa4c14CeC3c81cAeD552544dD90B4ED60F32ff69D, 'Spirit Farm')
       ,(0x1b05D830f157A97e7eC31F46165E2b079113989c, 'Magnate Finance')
       ,(0xEb48217792A68FbEa0E71228f29Fe335040De334, 'Tempest Capital')
+      ,(0x054c9E9100232FD322aF34FA218B95772Dc270CA, 'Bryan On Base')
+      ,(0x440097Cebd3b8C20ec43bA4A9395e252BF41dcCc, 'DerpDEX')
+      ,(0x920aa1B2E75a239717Dc27898CF2587C9644A7eB, 'Xbased')
+      ,(0x467d8b5401296194c60FDD978a293ec09E431228, 'Messina Bridge')
+      ,(0xF9950E55323aC6Af7a4b2DCEe5e42d5168CdA253, 'Phase')
+      ,(0x1312eE86e3254cB681c7435f64998FFF35eB2dC7, 'Flash Liquidity')
+      ,(0xD6F1257847FdE8A67Fd66d4ea41f26a872d4B6C9, 'Particles Money')
+      ,(0x764E7f8798D8193bEd69030AE66eb304968C3F93, 'Cap V4')
+      ,(0x2566530ebdC1D77893C0ACA17c7E6F77c11E037A, 'SpookyBase')
+      ,(0x335901b18B83B2940d0419a26c1Aa3d482DD5500, 'Statix Farm')
 
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')

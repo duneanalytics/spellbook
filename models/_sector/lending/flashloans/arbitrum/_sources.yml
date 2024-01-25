@@ -4,3 +4,7 @@ sources:
   - name: aave_v3_arbitrum
     tables:
       - name: L2Pool_evt_FlashLoan
+
+  - name: radiant_capital_arbitrum
+    tables:
+      - name: LendingPool_evt_FlashLoan

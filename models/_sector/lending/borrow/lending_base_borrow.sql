@@ -14,6 +14,7 @@
   set models = [
     ref('lending_arbitrum_base_borrow'),
     ref('lending_base_base_borrow'),
+    ref('lending_bnb_base_borrow'),
     ref('lending_celo_base_borrow'),
     ref('lending_ethereum_base_borrow'),
     ref('lending_optimism_base_borrow'),
