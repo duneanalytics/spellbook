@@ -42,3 +42,8 @@ sources:
     tables:
       - name: LendingPool_evt_Deposit
       - name: LendingPool_evt_Withdraw
+
+  - name: spark_protocol_ethereum
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
