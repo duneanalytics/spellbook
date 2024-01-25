@@ -379,6 +379,32 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+
+  UNION ALL 
+  
+  SELECT
+    'Mantle' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length,
+    gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+  FROM {{ source('ethereum','transactions') }} AS t
+  INNER JOIN {{ source('prices','usd') }} p
+    ON p.minute = date_trunc('minute', t.block_time)
+    AND p.blockchain is null
+    AND p.symbol = 'ETH'
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+  WHERE t.to = 0xD1328C9167e0693B689b5aa5a024379d4e437858
+    AND bytearray_substring(t.data, 1, 4) = 0x49cd3004 -- createAssertionWithStateBatch 
+    AND t.block_time >= timestamp '2023-06-27' 
+    {% if is_incremental() %}
+    AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 )
 
 ,block_basefees as (
