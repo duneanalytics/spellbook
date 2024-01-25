@@ -1,8 +1,8 @@
 version: 1
 
 sources:
-  - name: voodoo_trade_base
-    description: Base decoded tables related to voodoo_trade protocol
+  - name: bmx_base
+    description: Base decoded tables related to bmx protocol
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }

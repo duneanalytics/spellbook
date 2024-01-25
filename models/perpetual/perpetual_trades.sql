@@ -37,6 +37,7 @@
     ,ref('meridian_base_perpetual_trades')
     ,ref('mummy_finance_base_perpetual_trades')
     ,ref('voodoo_trade_base_perpetual_trades')
+    ,ref('bmx_base_perpetual_trades')
 ] %}
 
 SELECT *
