@@ -20,3 +20,7 @@ sources:
   - name: uwulend_ethereum
     tables:
       - name: LendingPool_evt_FlashLoan
+
+  - name: spark_protocol_ethereum
+    tables:
+      - name: Pool_evt_FlashLoan
