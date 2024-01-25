@@ -1020,6 +1020,11 @@ WITH curated_list AS (
       ,(0x1b05D830f157A97e7eC31F46165E2b079113989c, 'Magnate Finance')
       ,(0xEb48217792A68FbEa0E71228f29Fe335040De334, 'Tempest Capital')
 
+      ,(0xb013abd83f0bd173e9f14ce7d6e420ad711483b4, 'TreasureDAO') --Treasure Bridgeworld & Smolverse
+      ,(0x2940108780b870ae8f1509be95fdf2b6fb066e41, 'TreasureDAO') --Treasure Bridgeworld
+      ,(0x393248ae29a7c2128e8e27d23330b1f87e0600fc, 'TreasureDAO') --Treasure Trove
+      ,(0x032f84aeff59ddebc55797f321624826d873bf65, 'SmolBrains') --Treasure Smolverse
+
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
       ,(0x4D521577f820525964C392352bB220482F1Aa63b, 'jaredfromsubway.eth')
