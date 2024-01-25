@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: zksync_standard_bridge_flows
+  - name: bridge_zksync_native_flows
     meta:
       project: zksync
       contributors: lgingerich
     config:
-      tags: ['bridge','standard_bridge', 'flows', 'cross-chain', 'zksync']
+      tags: ['bridge','native_bridge', 'flows', 'cross-chain', 'zksync']
     description: >
-        Table aggregating bridge transfers through zkSync Era's Standard Bridge.
+        Table aggregating bridge transfers through zkSync Era's Native Bridge.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
