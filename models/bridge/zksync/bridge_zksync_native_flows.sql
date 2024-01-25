@@ -49,9 +49,22 @@ WITH bridge_events as (
             ,et."from" as tx_from
             ,et.to as tx_to
         FROM {{ source('ethereum', 'transactions') }} et
-        INNER JOIN {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr ON et.hash = npr.evt_tx_hash
-        INNER JOIN {{ source('zksync', 'transactions') }} zt ON npr.txHash = zt.hash
-        LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON npr.evt_tx_hash = d.evt_tx_hash AND npr.evt_index = d.evt_index
+        INNER JOIN {{ source('zksync_v2_ethereum', 'DiamondProxy_evt_NewPriorityRequest') }} npr 
+            ON et.hash = npr.evt_tx_hash
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('npr.evt_block_time') }}
+            {% endif %}
+        INNER JOIN {{ source('zksync', 'transactions') }} zt 
+            ON npr.txHash = zt.hash
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('zt.evt_block_time') }}
+            {% endif %}
+        LEFT JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d 
+            ON npr.evt_tx_hash = d.evt_tx_hash 
+            AND npr.evt_index = d.evt_index
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('d.evt_block_time') }}
+            {% endif %}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('et.block_time') }}
         {% endif %}
@@ -75,7 +88,11 @@ WITH bridge_events as (
             ,et."from" as tx_from
             ,et.to as tx_to
         FROM {{ source('ethereum', 'transactions') }} et
-        INNER JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d ON et.hash = d.evt_tx_hash
+        INNER JOIN {{ source('zksync_v2_ethereum', 'L1ERC20Bridge_evt_DepositInitiated') }} d 
+            ON et.hash = d.evt_tx_hash
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('d.evt_block_time') }}
+            {% endif %}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('et.block_time') }}
         {% endif %}
@@ -99,7 +116,11 @@ WITH bridge_events as (
             ,zt."from" as tx_from
             ,zt.to as tx_to
         FROM {{ source('zksync', 'transactions') }} zt
-        INNER JOIN {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w ON zt.hash = w.evt_tx_hash
+        INNER JOIN {{ source('zksync_era_zksync', 'L2EthToken_evt_Withdrawal') }} w 
+            ON zt.hash = w.evt_tx_hash
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('w.evt_block_time') }}
+            {% endif %}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('zt.block_time') }}
         {% endif %}
@@ -123,7 +144,11 @@ WITH bridge_events as (
             ,zt."from" as tx_from
             ,zt.to as tx_to
         FROM {{ source('zksync', 'transactions') }} zt
-        INNER JOIN {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w ON zt.hash = w.evt_tx_hash
+        INNER JOIN {{ source('zksync_era_zksync', 'L2ERC20Bridge_evt_WithdrawalInitiated') }} w 
+            ON zt.hash = w.evt_tx_hash
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('w.evt_block_time') }}
+            {% endif %}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('zt.block_time') }}
         {% endif %}
