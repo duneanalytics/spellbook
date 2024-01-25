@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_v3_arbitrum',
+    schema = 'seamlessprotocol_base',
     alias = 'base_flashloans',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,9 +12,10 @@
 
 {{
   lending_aave_v3_compatible_flashloans(
-    blockchain = 'arbitrum',
-    project = 'aave',
-    version = '3',
+    blockchain = 'base',
+    project = 'seamlessprotocol',
+    version = '1',
+    project_decoded_as = 'seamlessprotocol',
     decoded_contract_name = 'L2Pool'
   )
 }}
