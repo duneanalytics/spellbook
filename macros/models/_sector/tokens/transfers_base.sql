@@ -1,57 +1,57 @@
 {% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
-{# denormalized tables are not yet in use #}
-{%- set denormalized = True if blockchain in ['base'] else False -%}
 
 WITH transfers AS (
-    SELECT block_time
-    , block_number
-    , tx_hash
-    , cast(NULL as bigint) AS evt_index
-    , trace_address
-    {% if native_contract_address%}
-    , {{native_contract_address}} AS contract_address
-    {% else %}
-    , CAST(NULL AS varbinary) AS contract_address
-    {% endif %}
-    , 'native' AS token_standard
-    , "from"
-    , to
-    , value AS amount_raw
+    SELECT
+        block_time
+        , block_number
+        , tx_hash
+        , cast(NULL as bigint) AS evt_index
+        , trace_address
+        {% if native_contract_address%}
+        , {{native_contract_address}} AS contract_address 
+        {% else %}
+        , CAST(NULL AS varbinary) AS contract_address 
+        {% endif %}
+        , 'native' AS token_standard
+        , "from"
+        , to
+        , value AS amount_raw
     FROM {{ traces }}
     WHERE success
-    AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
-    AND value > UINT256 '0'
-    {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
-    {% endif %}
+        AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
+        AND value > UINT256 '0'
+        {% if is_incremental() %}
+        AND {{incremental_predicate('block_time')}}
+        {% endif %}
 
     UNION ALL
 
-    SELECT t.evt_block_time AS block_time
-    , t.evt_block_number AS block_number
-    , t.evt_tx_hash AS tx_hash
-    , t.evt_index
-    , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
-    , t.contract_address
-    , CASE
-        WHEN t.contract_address =     
-            {% if native_contract_address %}
-                {{native_contract_address}}
-            {% else %}
-                CAST(NULL AS varbinary)
-            {% endif %}
-        THEN 'native'
-        ELSE '{{token_standard_20}}'
-        END AS token_standard
-    , t."from"
-    , t.to
-    , t.value AS amount_raw
+    SELECT 
+        t.evt_block_time AS block_time
+        , t.evt_block_number AS block_number
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index
+        , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
+        , t.contract_address
+        , CASE
+            WHEN t.contract_address =     
+                {% if native_contract_address %}
+                    {{native_contract_address}}
+                {% else %}
+                    CAST(NULL AS varbinary)
+                {% endif %}
+            THEN 'native'
+            ELSE '{{token_standard_20}}'
+            END AS token_standard
+        , t."from"
+        , t.to
+        , t.value AS amount_raw
     FROM {{ erc20_transfers }} t
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
-    )
+)
 
 SELECT 
     -- We have to create this unique key because evt_index and trace_address can be null
