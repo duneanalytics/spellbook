@@ -1317,6 +1317,9 @@ models:
     quests:
       +schema: quests
 
+    polygon_datateam:
+      +schema: polygon_datateam
+
     account_abstraction:
       erc4337:
         +schema: account_abstraction_erc4337
