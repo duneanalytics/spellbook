@@ -103,7 +103,7 @@ nft_transfers as (
     {% if is_incremental() %}
     AND {{incremental_predicate('block_time')}}
     {% endif %}
-),
+)
 
 SELECT 
     'polygon' as blockchain,
