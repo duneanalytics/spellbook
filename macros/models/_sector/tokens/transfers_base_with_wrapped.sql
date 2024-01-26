@@ -1,5 +1,6 @@
 {% macro transfers_base_with_wrapped(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, wrapped_token_deposit = null, wrapped_token_withdrawal = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
+{%- set default_address = '0x0000000000000000000000000000000000000000' -%}
 
 WITH transfers AS (
     SELECT
