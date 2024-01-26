@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: agave_gnosis
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
