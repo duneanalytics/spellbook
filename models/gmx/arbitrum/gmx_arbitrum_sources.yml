@@ -8,8 +8,6 @@ sources:
     description: >
       Decoded event table for swaps and margin trades on gmx arbitrum
     tables:
-      - name: Router_evt_Swap
-        loaded_at_field: evt_block_time
       - name: Vault_evt_DecreasePosition
         loaded_at_field: evt_block_time
       - name: Vault_evt_IncreasePosition

@@ -25,3 +25,9 @@ macros:
         description: "Valid base58 string"
   - name: get_balancer_link
     description: "Returns a link to access a specific pool on the Balancer app, based on its blockchain and pool ID"
+  - name: evm_get_calldata_gas_from_data
+    description: "Returns the amount of gas used by transaction data (given a data field) by EVM specification"
+    arguments:
+      - name: data_field
+        type: varbinary
+        description: "Field containing calldata"

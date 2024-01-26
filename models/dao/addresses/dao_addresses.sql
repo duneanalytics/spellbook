@@ -3,7 +3,7 @@
     alias = 'addresses',
     materialized = 'view',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
@@ -14,6 +14,7 @@ ref('dao_addresses_ethereum')
 ,ref('dao_addresses_gnosis')
 ,ref('dao_addresses_polygon')
 ,ref('dao_addresses_base')
+,ref('dao_addresses_arbitrum')
 ] %}
 
 

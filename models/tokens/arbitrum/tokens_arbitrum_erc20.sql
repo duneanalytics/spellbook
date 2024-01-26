@@ -1,4 +1,11 @@
-{{ config( alias = 'erc20', tags=['static'])}}
+{{
+    config(
+        schema = 'tokens_arbitrum',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
+}}
 
 SELECT contract_address, symbol, decimals
 FROM (VALUES
@@ -115,6 +122,7 @@ FROM (VALUES
         ,(0x07e49d5de43dda6162fa28d24d5935c151875283, 'GOVI', 18)
         ,(0x65c936f008bc34fe819bce9fa5afd9dc2d49977f, 'Y2K', 18)
         ,(0xda51015b73ce11f77a115bb1b8a7049e02ddecf0, 'NEU', 18)
+        ,(0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4, 'NPM', 18)
         ,(0x7a5D193fE4ED9098F7EAdC99797087C96b002907, 'plsARB', 18)
         ,(0x088cd8f5eF3652623c22D48b1605DCfE860Cd704, 'VELA', 18)
         ,(0xd77b108d4f6cefaa0cae9506a934e825becca46e, 'WINR', 18)
@@ -196,4 +204,6 @@ FROM (VALUES
         ,(0x8BFE04fa3B0992364C41032a3EcceBA2AA3db65C, 'waUSDT-xPYT', 6)
         ,(0x60f761380011Ab35D0C72C2e98e821D76Fd2b4A5, 'waDAI-NYT', 18)
         ,(0xa7fFC97D0f0bebF54f3A82303D999e2dC95d785c, 'waDAI-xPYT', 18)
+        ,(0x763E061856b3e74a6C768a859DC2543A56D299d5, 'tigETH', 18)
+        ,(0xde5ed76e7c05ec5e4572cfc88d1acea165109e44, 'DEUS', 18)
      ) AS temp_table (contract_address, symbol, decimals)

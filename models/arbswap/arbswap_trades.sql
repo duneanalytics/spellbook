@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["arbswap"]\',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "arbswap",
                                 \'["chrispearcx", "hosuke"]\') }}'

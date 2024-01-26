@@ -10,6 +10,16 @@
     , ref('sushiswap_v1_base_base_trades')
     , ref('sushiswap_v2_base_base_trades')
     , ref('aerodrome_base_base_trades')
+    , ref('pancakeswap_v2_base_base_trades')
+    , ref('pancakeswap_v3_base_base_trades')
+    , ref('balancer_v2_base_base_trades')
+    , ref('dodo_base_base_trades')
+    , ref('maverick_base_base_trades')
+    , ref('smardex_base_base_trades')
+    , ref('dackieswap_base_base_trades')
+    , ref('rubicon_base_base_trades')
+    , ref('baseswap_base_base_trades')
+    , ref('scale_base_base_trades')
 ] %}
 
 WITH base_union AS (

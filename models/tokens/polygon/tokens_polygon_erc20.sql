@@ -1,11 +1,18 @@
-{{ config( alias = 'erc20', tags=['static'])}}
+{{
+    config(
+        schema = 'tokens_polygon',
+        alias = 'erc20',
+        tags = ['static'],
+        materialized = 'table'
+    )
+}}
 
 SELECT contract_address, symbol, decimals
   FROM (VALUES
 
 (0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 'DAI', 18)
 ,(0x0000000000000000000000000000000000001010, 'MATIC', 18)
-,(0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 'USDC', 6)
+,(0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 'USDC.e', 6)
 ,(0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 'USDT', 6)
 ,(0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6, 'WBTC', 8)
 ,(0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 18)
@@ -94,6 +101,7 @@ SELECT contract_address, symbol, decimals
 ,(0x101a023270368c0d50bffb62780f4afd4ea79c35 ,'ANKR' ,18)
 ,(0xe8d17b127ba8b9899a160d9a07b69bca8e08bfc6 ,'NSDX' ,18)
 ,(0x8f006d1e1d9dc6c98996f50a4c810f17a47fbf19 ,'NSFW' ,18)
+,(0x57f12FE6A4e5fe819eec699FAdf9Db2D06606bB4 ,'NPM' ,18)
 ,(0x958d208cdf087843e9ad98d23823d32e17d723a1 ,'dQUICK' , 18)
 ,(0x692ac1e363ae34b6b489148152b12e2785a3d8d6 ,'TRADE' ,18)
 ,(0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b ,'BETS' ,18)
@@ -513,5 +521,6 @@ SELECT contract_address, symbol, decimals
 ,(0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590, 'STG', 18)
 ,(0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78, 'TRUEHN', 18)
 ,(0x456f931298065b1852647de005dd27227146d8b9, 'VAL', 18)
+,(0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359, 'USDC', 6)
 
 ) AS temp_table (contract_address, symbol, decimals)

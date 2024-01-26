@@ -6,7 +6,7 @@
     post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c"]\',
                                 "sector",
                                 "labels",
-                                \'["ilemi"]\') }}')
+                                \'["ilemi", "kaiblade"]\') }}')
 }}
 
 {# -- Enable once balances work again
@@ -25,6 +25,7 @@
 ,ref('labels_trader_age')
 ,ref('labels_trader_dex_diversity')
 ,ref('labels_trader_frequencies')
+,ref('labels_op_dex_traders')
 ] %}
 
 SELECT *

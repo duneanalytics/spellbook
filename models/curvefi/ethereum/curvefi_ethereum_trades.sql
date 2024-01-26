@@ -45,7 +45,7 @@ WITH dexs AS
     FROM {{ source('ethereum', 'logs') }} l
     JOIN  {{ ref('curvefi_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
-        AND p.version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular') --note Plain only has TokenExchange.
+        AND p.version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular', 'Factory V1 Stableswap Plain', 'Factory V1 Stableswap Meta') --note Plain only has TokenExchange.
     WHERE l.topic0 IN
         (
             0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b -- TokenExchangeUnderlying 

@@ -32,14 +32,14 @@ models:
 
   - name: safe_transactions_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, goerli, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, goerli, optimism, polygon, zksync
       project: safe
       contributors: kryptaki
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe']
+      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe', 'zksync']
     description: "Safe transactions"
     columns:
       - *blockchain

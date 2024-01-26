@@ -257,7 +257,6 @@ FROM
     ('nkn-nkn', 'ethereum', 'NKN', 0x5cf04716ba20127f1e2297addcf4b5035000c9eb, 18),
     ('nmr-numeraire', 'ethereum', 'NMR', 0x1776e1f26f98b1a5df9cd347953a26dd3cb46671, 18),
     ('noah-noah-coin', 'ethereum', 'NOAH', 0x58a4884182d9e835597f405e5f258290e46ae7c2, 18),
-    ('npxs-pundi-x', 'ethereum', 'NPXS', 0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3, 18),
     ('nrg-energi', 'ethereum', 'NRG', 0x1416946162b1c2c871a73b07e932d2fb6c932069, 18),
     ('ntvrk-netvrk', 'ethereum', 'NTVRK', 0xfc0d6cf33e38bce7ca7d89c0e292274031b7157a, 18),
     ('ntx-nunet', 'ethereum', 'NTX', 0xf0d33beda4d734c72684b5f9abbebf715d0a7935, 6),
@@ -1161,7 +1160,8 @@ FROM
     ('equad-quadrantprotocol', 'ethereum', 'EQUAD', 0xc28e931814725bbeb9e670676fabbcb694fe7df2, 18),
     ('fnk-fnkcom', 'ethereum', 'FNK', 0xb5fe099475d3030dde498c3bb6f3854f762a48ad, 18),
     ('fyz-fyooz', 'ethereum', 'FYZ', 0x6bff2fe249601ed0db3a87424a2e923118bb0312, 18),
-    ('gmt-gomining-token', 'ethereum', 'GMT', 0x7ddc52c4de30e94be3a6a0a2b259b2850f421989, 18),
+    ('gmt-gomining-token', 'ethereum', 'GMT', 0x7ddc52c4de30e94be3a6a0a2b259b2850f421989, 18),    
+    ('gmt-stepn', 'ethereum', 'GMT', 0xe3c408bd53c31c085a1746af401a4042954ff740, 8),
     ('hbot-hummingbot', 'ethereum', 'HBOT', 0xe5097d9baeafb89f9bcb78c9290d545db5f9e9cb, 18),
     ('lead-lead', 'ethereum', 'LEAD', 0x1dd80016e3d4ae146ee2ebb484e8edd92dacc4ce, 18),
     ('mage-metabrands', 'ethereum', 'MAGE', 0xd52aae39a2b5cc7812f7b9450ebb61dfef702b15, 18),
@@ -1271,7 +1271,6 @@ FROM
     ('ousd-origin-dollar', 'ethereum', 'OUSD', 0x2a8e1e676ec238d8a992307b495b45b3feaa5e86, 18),
     ('pin-public-index-network', 'ethereum', 'PIN', 0xc1f976b91217e240885536af8b63bc8b5269a9be, 18),
     ('quad-quadency', 'ethereum', 'QUAD', 0xab2a7b5876d707e0126b3a75ef7781c77c8877ee, 18),
-    ('ram-ramifi-protocol', 'ethereum', 'RAM', 0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5, 9),
     ('rem-remme', 'ethereum', 'REM', 0x83984d6142934bb535793a82adb0a46ef0f66b6d, 4),
     ('rice-daosquare', 'ethereum', 'RICE', 0xbd9908b0cdd50386f92efcc8e1d71766c2782df0, 18),
     ('roobee-roobee', 'ethereum', 'ROOBEE', 0xa31b1767e09f842ecfd4bc471fe44f830e3891aa, 18),
@@ -1341,6 +1340,7 @@ FROM
     ('com-communis', 'ethereum', 'COM', 0x5A9780Bfe63f3ec57f01b087cD65BD656C9034A8, 12),
     ('woof-woofworkio', 'ethereum', 'WOOF', 0x6BC08509B36A98E829dFfAD49Fde5e412645d0a3, 18),
     ('banana-banana', 'ethereum', 'BANANA', 0x94e496474F1725f1c1824cB5BDb92d7691A4F03a, 18),
+    ('banana-banana-gun-v2', 'ethereum', 'BANANA', 0x38e68a37e401f7271568cecaac63c6b1e19130b4, 18),
     ('hopr-hopr', 'ethereum', 'HOPR', 0xF5581dFeFD8Fb0e4aeC526bE659CFaB1f8c781dA, 18),
     ('ic-icy', 'ethereum', 'IC', 0xA876f27F13A9eB6E621202cEFDD5AFc4a90E6457, 9),
     ('pkf-firebird', 'ethereum', 'PKF', 0x8B39B70E39Aa811b69365398e0aACe9bee238AEb, 18),
@@ -1507,6 +1507,7 @@ FROM
     ('hachi-akita-dao', 'ethereum', 'HACHI', 0x967B0c95295ead8fAef70d26A7846AeCD349AAFf, 18),
     ('auscm-auric-network', 'ethereum', 'AUSCM', 0x1c7BBADc81E18F7177A95eb1593e5f5f35861B10, 18),
     ('gear-bitgear', 'ethereum', 'GEAR', 0x1b980e05943dE3dB3a459C72325338d327B6F5a9, 18),
+    ('gear-gearbox', 'ethereum', 'GEAR', 0xBa3335588D9403515223F109EdC4eB7269a9Ab5D, 18),
     ('myth-mythos', 'ethereum', 'MYTH', 0xBA41Ddf06B7fFD89D1267b5A93BFeF2424eb2003, 18),
     ('oddz-oddztoken-erc-20', 'ethereum', 'ODDZ', 0xCd2828fc4D8E8a0eDe91bB38CF64B1a81De65Bf6, 18),
     ('umbr-umbria-network', 'ethereum', 'UMBR', 0xa4bBE66f151B22B167127c770016b15fF97Dd35C, 18),
@@ -1534,7 +1535,6 @@ FROM
     ('ldn-ludena-protocol', 'ethereum', 'LDN', 0xb29663Aa4E2e81e425294193616c1B102B70a158, 18),
     ('sdex-smardex', 'ethereum', 'SDEX', 0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF, 18),
     ('bzz-bzz', 'ethereum', 'BZZ', 0x19062190B1925b5b6689D7073fDfC8c2976EF8Cb, 16),
-    ('dobe-dobermann', 'ethereum', 'DOBE', 0xe7aB45162f5979F09B0bDa1CC7DfC97C270EA3d5, 18),
     ('k9-k9', 'ethereum', 'K9', 0x2bD0FB740e403B505A3146F9aC02df883Fd5C3Fc, 18),
     ('mne-minereum', 'ethereum', 'MNE', 0x426CA1eA2406c07d75Db9585F22781c096e3d0E0, 8),
     ('ptoy-patientory', 'ethereum', 'PTOY', 0x8Ae4BF2C33a8e667de34B54938B0ccD03Eb8CC06, 8),
@@ -1625,7 +1625,19 @@ FROM
     ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
     ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18),
     ('ton-tokamak-network', 'ethereum', 'TON', 0x2be5e8c109e2197D077D13A82dAead6a9b3433C5, 18),
-    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18)
+    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18),
+    ('gene-genomesdao', 'ethereum', 'GENE', 0x21413c119b0c11c5d96ae1bd328917bc5c8ed67e, 18),
+    ('rbc-rubic', 'ethereum', 'RBC', 0x3330bfb7332ca23cd071631837dc289b09c33333, 18),
+    ('magic-magic-arbitrum', 'ethereum', 'MAGIC', 0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a, 18),
+    ('premia-premia', 'ethereum', 'PREMIA', 0x6399c842dd2be3de30bf99bc7d1bbf6fa3650e70, 18),
+    ('stfx-stfx', 'ethereum', 'STFX', 0x9343e24716659a3551eb10aff9472a2dcad5db2d, 18),
+    ('flux-datamine-flux', 'ethereum', 'FLUX', 0x469eda64aed3a3ad6f868c44564291aa415cb1d9, 18),
+    ('tpy-thrupenny', 'ethereum', 'TPY', 0x968cbe62c830a0ccf4381614662398505657a2a9, 8),
+    ('hilo-hilo', 'ethereum', 'HILO', 0xbb9fd9fa4863c03c574007ff3370787b9ce65ff6, 18),
+    ('pear-pear-swap', 'ethereum', 'PEAR', 0x5dcd6272c3cbb250823f0b7e6c618bce11b21f90, 18),
+    ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
+    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9),
+    ('rbx-rabbitx', 'ethereum', 'RBX', 0x3Ba925fdeAe6B46d0BB4d424D829982Cb2F7309e, 18)
     ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1646,4 +1658,7 @@ where contract_address not in (
     ,0x22acaee85ddb83a3a33b7f0928a0e2c3bfdb6a4f   -- PRXY
     ,0xe94b97b6b43639e238c851a7e693f50033efd75c   -- RNBW
     ,0x6aa40d02115090d40dc33c7c5f3cf05112fa4f83   -- PWRC
+    ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
+    ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
+    ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
 )

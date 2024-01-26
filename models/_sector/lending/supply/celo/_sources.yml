@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: moolainterestbearingmoo_celo
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+      - name: LendingPool_evt_RedeemUnderlying

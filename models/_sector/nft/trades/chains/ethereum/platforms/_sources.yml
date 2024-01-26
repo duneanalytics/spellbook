@@ -40,6 +40,9 @@ sources:
       - name: market_evt_OfferAccepted
       - name: market_evt_PrivateSaleFinalized
       - name: market_evt_SellerReferralPaid
+      - name: NFTDropMarket_evt_MintFromFixedPriceDrop
+      - name: NFTDropMarket_evt_MintFromDutchAuction
+      - name: NFTDropMarket_evt_WithdrawCreatorRevenueFromDutchAuction
 
   - name: looksrare_ethereum
     tables:
@@ -103,4 +106,17 @@ sources:
       - name: ReserveAuctionFindersErc20_evt_RoyaltyPayout
       - name: ReserveAuctionListingEth_evt_RoyaltyPayout
       - name: ReserveAuctionListingErc20_evt_RoyaltyPayout
+
+  - name: treasure_trove_ethereum
+    tables:
+      - name: TreasureMarketplace_evt_BidAccepted
+      - name: TreasureMarketplace_evt_ItemSold
+
+  - name: liquidifty_ethereum
+    tables:
+      - name: MarketplaceV2_5_evt_Buy
+      - name: PoolSell_evt_Buy
+      - name: MarketplaceV3_call_buy
+      - name: MarketplaceV3_deprecated_call_buy
+
 #  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.

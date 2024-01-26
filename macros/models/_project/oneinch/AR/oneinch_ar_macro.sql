@@ -10,64 +10,64 @@
 {%
     set samples = {
         "aggregate": {
-            "src_token_address": "fromToken",
-            "dst_token_address": "toToken",
-            "src_amount":        "tokensAmount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minTokensAmount",
-            "router_type":       "generic",
+            "src_token_address":    "fromToken",
+            "dst_token_address":    "toToken",
+            "src_token_amount":     "tokensAmount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minTokensAmount",
+            "router_type":          "generic",
         },
         "swap_1": {
-            "src_token_address": "fromToken",
-            "dst_token_address": "toToken",
-            "src_amount":        "fromTokenAmount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturnAmount",
-            "router_type":       "generic",
+            "src_token_address":    "fromToken",
+            "dst_token_address":    "toToken",
+            "src_token_amount":     "fromTokenAmount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturnAmount",
+            "router_type":          "generic",
         },
         "swap_2": {
-            "kit":               "cast(json_parse(desc) as map(varchar, varchar))",
-            "src_token_address": "from_hex(kit['srcToken'])",
-            "dst_token_address": "from_hex(kit['dstToken'])",
-            "src_receiver":      "from_hex(kit['srcReceiver'])",
-            "dst_receiver":      "from_hex(kit['dstReceiver'])",
-            "src_amount":        "cast(kit['amount'] as uint256)",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "cast(kit['minReturnAmount'] as uint256)",
-            "router_type":       "generic",
+            "kit":                  "cast(json_parse(desc) as map(varchar, varchar))",
+            "src_token_address":    "from_hex(kit['srcToken'])",
+            "dst_token_address":    "from_hex(kit['dstToken'])",
+            "src_receiver":         "from_hex(kit['srcReceiver'])",
+            "dst_receiver":         "from_hex(kit['dstReceiver'])",
+            "src_token_amount":     "cast(kit['amount'] as uint256)",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "cast(kit['minReturnAmount'] as uint256)",
+            "router_type":          "generic",
         },
         "unoswap_1": {
-            "pools":             "pools",
-            "src_token_address": "srcToken",
-            "src_amount":        "amount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturn",
-            "direction_bit":     "1",
-            "router_type":       "unoswap",
+            "pools":                "pools",
+            "src_token_address":    "srcToken",
+            "src_token_amount":     "amount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturn",
+            "direction_bit":        "1",
+            "router_type":          "unoswap",
         },
         "uniswap_1": {
-            "pools":             "pools",
-            "src_amount":        "amount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturn",
-            "direction_bit":     "1",
-            "router_type":       "unoswap",
+            "pools":                "pools",
+            "src_token_amount":     "amount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturn",
+            "direction_bit":        "1",
+            "router_type":          "unoswap",
         },
         "clipper_1": {
-            "src_token_address": "srcToken",
-            "dst_token_address": "dstToken",
-            "src_amount":        "amount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "minReturn",
-            "router_type":       "clipper",
+            "src_token_address":    "srcToken",
+            "dst_token_address":    "dstToken",
+            "src_token_amount":     "amount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "minReturn",
+            "router_type":          "clipper",
         },
         "clipper_2": {
-            "src_token_address": "srcToken",
-            "dst_token_address": "dstToken",
-            "src_amount":        "inputAmount",
-            "dst_amount":        "output_returnAmount",
-            "dst_amount_min":    "goodUntil",
-            "router_type":       "clipper",
+            "src_token_address":    "srcToken",
+            "dst_token_address":    "dstToken",
+            "src_token_amount":     "inputAmount",
+            "dst_token_amount":     "output_returnAmount",
+            "dst_token_amount_min": "goodUntil",
+            "router_type":          "clipper",
         },
     }
 %}
@@ -188,7 +188,7 @@
         },
         "AggregationRouterV5": {
             "version": "5",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
             "start": "2022-11-04",
             "methods": {
                 "swap":                      samples["swap_2"],
@@ -237,6 +237,7 @@ pools_list as (
                 , length(input) as call_input_length
                 , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
                 , output as call_output
+                , error as call_error
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %}
@@ -288,30 +289,36 @@ select
     , tx_from
     , tx_to
     , tx_success
+    , tx_nonce
+    , tx_gas_used
+    , tx_gas_price
+    , tx_priority_fee_per_gas
     , contract_name
+    , 'AR' as protocol
     , protocol_version
     , method
+    , call_selector
+    , call_trace_address
     , call_from
     , call_to
-    , call_trace_address
-    , call_selector
-    , src_token_address
-    , dst_token_address
+    , call_success
+    , call_gas_used
+    , call_output
+    , call_error
     , src_receiver
     , dst_receiver
-    , src_amount
-    , dst_amount
-    , dst_amount_min
+    , src_token_address
+    , dst_token_address
+    , src_token_amount
+    , dst_token_amount
+    , dst_token_amount_min
     , ordinary
     , pools
     , router_type
-    , call_success
-    , call_gas_used
     , concat(cast(length(remains) as bigint), if(length(remains) > 0
         , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
         , array[bigint '0']
     )) as remains
-    , call_output
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
 from (
@@ -319,7 +326,7 @@ from (
         add_tx_columns(
             model_cte = 'calls'
             , blockchain = blockchain
-            , columns = ['from', 'to', 'success']
+            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used']
         )
     }}
 )

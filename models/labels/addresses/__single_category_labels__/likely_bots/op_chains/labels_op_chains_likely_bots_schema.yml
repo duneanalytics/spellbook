@@ -21,10 +21,14 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain"   
+        description: "Blockchain"
+        tests:
+          - not_null
       - &address
         name: address
         description: "Address"
+        tests:
+          - not_null
       - &name
         name: name
         description: "Label name"

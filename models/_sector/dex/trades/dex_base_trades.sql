@@ -17,8 +17,12 @@
     , ref('dex_bnb_base_trades')
     , ref('dex_celo_base_trades')
     , ref('dex_ethereum_base_trades')
+    , ref('dex_fantom_base_trades')
+    , ref('dex_gnosis_base_trades')
     , ref('dex_optimism_base_trades')
     , ref('dex_polygon_base_trades')
+    , ref('dex_zksync_base_trades')
+    
 ] %}
 
 
