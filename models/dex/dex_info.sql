@@ -92,6 +92,7 @@ FROM (VALUES
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
+    , ('chainhop', 'ChainHop', 'Direct', 'ChainHopDEX')
     , ('dackieswap', 'DackieSwap', 'Direct', 'DackieSwap')
     , ('smardex', 'SmarDex', 'Direct', 'SmarDex')
     , ('wardenswap', 'Warden', 'Direct & Aggregator', 'WardenSwap')
