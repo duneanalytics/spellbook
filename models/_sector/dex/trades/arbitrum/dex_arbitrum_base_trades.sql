@@ -23,7 +23,18 @@
     , ref('integral_arbitrum_base_trades')
     , ref('kyberswap_arbitrum_base_trades')
     , ref('clipper_arbitrum_base_trades')
+    , ref('ramses_arbitrum_base_trades')
     , ref('xchange_arbitrum_base_trades')
+    , ref('fraxswap_arbitrum_base_trades')
+    , ref('chronos_arbitrum_base_trades')
+    , ref('zyberswap_arbitrum_base_trades')
+    , ref('solidlizard_arbitrum_base_trades')
+    , ref('rubicon_arbitrum_base_trades')
+    , ref('apeswap_arbitrum_base_trades')
+    , ref('oasisswap_arbitrum_base_trades')
+    , ref('smardex_arbitrum_base_trades')
+    , ref('swaap_v2_arbitrum_base_trades')
+    , ref('woofi_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

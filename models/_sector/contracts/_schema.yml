@@ -58,8 +58,8 @@ models:
       - &creator_address
         name: creator_address
         description: "Attribution to the highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
-      - &deployer_address
-        name: deployer_address
+      - &trace_deployer_address
+        name: trace_deployer_address
         description: "Attribution to the mapped deployer address at the creation trace, handles for ~most deterministic deployers and smart wallet creations."
       - &created_time
         name: created_time

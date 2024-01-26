@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: aave_v2_polygon
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+      - name: LendingPool_evt_RedeemUnderlying
+
+  - name: aave_v3_polygon
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+      - name: Pool_evt_RedeemUnderlying
+
+  - name: compound_v3_polygon
+    tables:
+      - name: cUSDCv3Polygon_evt_SupplyCollateral
+      - name: cUSDCv3Polygon_evt_WithdrawCollateral
+      - name: cUSDCv3Polygon_evt_AbsorbCollateral

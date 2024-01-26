@@ -1,32 +1,32 @@
-{{ config(
-       alias = 'supply'
-      , post_hook='{{ expose_spells(\'["optimism"]\',
-                                  "project",
-                                  "aave",
-                                  \'["batwayne", "chuxin"]\') }}'
+{{
+  config(
+    schema = 'aave_optimism',
+    alias = 'supply',
+    materialized = 'view',
+    post_hook = '{{ expose_spells(\'["optimism"]\',
+                                    "project",
+                                    "aave",
+                                    \'["tomfutago"]\') }}'
   )
 }}
 
-SELECT *
-FROM 
-(
-      SELECT 
-            version,
-            transaction_type,
-            symbol,
-            token_address, 
-            depositor,
-            withdrawn_to,
-            liquidator,
-            amount,
-            usd_amount,
-            evt_tx_hash,
-            evt_index,
-            evt_block_time,
-            evt_block_number 
-      FROM {{ ref('aave_v3_optimism_supply') }}
-      /*
-      UNION ALL
-      < add new version as needed
-      */
-)
+select
+  blockchain,
+  project,
+  version,
+  transaction_type,
+  symbol,
+  token_address,
+  depositor,
+  withdrawn_to,
+  liquidator,
+  amount,
+  usd_amount,
+  block_month,
+  block_time,
+  block_number,
+  tx_hash,
+  evt_index
+from {{ ref('lending_supply') }}
+where blockchain = 'optimism'
+  and project = 'aave'
