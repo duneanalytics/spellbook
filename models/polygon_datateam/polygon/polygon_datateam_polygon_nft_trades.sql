@@ -144,7 +144,7 @@ SELECT
     CASE 
         WHEN agg.name = 'Gem' AND nt.block_number >= 16971894 THEN 'OpenSea Pro' -- 16971894 is the first block of 2023-04-04 which is when Gem rebranded to OpenSea Pro
         ELSE agg.name
-    END as aggregator_name,
+    END as aggregator_name
 FROM 
 nft_transfers nt 
 INNER JOIN 
