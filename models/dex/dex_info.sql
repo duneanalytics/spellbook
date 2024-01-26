@@ -110,5 +110,6 @@ FROM (VALUES
     , ('meteora', 'Meteora', 'Direct', 'MeteoraAG')
     , ('lifinity', 'Lifinity', 'Direct', 'Lifinity_io')
     , ('goosefx_ssl', 'GooseFX', 'Direct', 'GooseFX1')
+    , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
     , ('dooar', 'Dooar', 'Direct', 'dooar')
     ) AS temp_table (project, name, marketplace_type, x_username)
