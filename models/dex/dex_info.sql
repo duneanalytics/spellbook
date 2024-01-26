@@ -64,6 +64,7 @@ FROM (VALUES
     , ('nomiswap', 'Nomiswap DEX', 'Direct', 'Nomiswap')
     , ('onepunchswap', 'OnePunchSwap', 'Direct', 'OnePunchSwap')
     , ('camelot', 'Camelot', 'Direct', 'CamelotDEX')
+    , ('saddle', 'Saddle', 'Direct', 'saddlefinance')
     , ('oneinch', '1inch', 'Aggregator', '1inch')
     , ('1inch', '1inch', 'Aggregator', '1inch') -- To Fix, should be just oneinch
     , ('1inch Limit Order Protocol', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
@@ -93,7 +94,6 @@ FROM (VALUES
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
     , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
     , ('chainhop', 'ChainHop', 'Direct', 'ChainHopDEX')
-    , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')
     , ('wardenswap', 'Warden', 'Direct & Aggregator', 'WardenSwap')
     , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
     , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
