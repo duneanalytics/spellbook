@@ -256,3 +256,64 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('rubicon_base_base_trades_seed')
+
+
+  - name: kyberswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: kyberswap
+      contributors: lldao
+    config:
+      tags: [ 'base', 'dex', 'trades', 'kyberswap' ]
+    description: "kyberswap base  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_base_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: woofi_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: woofi
+      contributors: lldao
+    config:
+      tags: [ 'base', 'dex', 'trades', 'woofi' ]
+    description: "woofi base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('woofi_base_base_trades_seed')
+          filter:
+            version: 2
+  
+
+  - name: velocimeter_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: velocimeter_v2
+      contributors: lldao
+    config:
+      tags: [ 'base', 'dex', 'trades', 'velocimeter_v2' ]
+    description: "velocimeter_v2 base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velocimeter_v2_base_base_trades_seed')
+          filter:
+            version: 2
+  

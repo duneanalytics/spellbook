@@ -340,8 +340,26 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('opx_finance_optimism_base_trades_seed')
+  
 
-
+  - name: chainhop_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: chainhop
+      contributors: ARDev097
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'chainhop' ]
+    description: >
+        chainhop base trades on optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('chainhop_optimism_base_trades_seed')
+  
   - name: rubicon_optimism_base_trades
     meta:
       blockchain: optimism
