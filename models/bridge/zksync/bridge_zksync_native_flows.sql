@@ -187,13 +187,13 @@ SELECT
 FROM bridge_events tf
 
 LEFT JOIN {{ ref('tokens_erc20') }} erc
-    ON erc.blockchain = 'zksync'
-    AND erc.contract_address = tf.bridged_token_address
+    ON erc.contract_address = tf.bridged_token_address
+    AND erc.blockchain IN ('ethereum', 'zksync')
     
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.minute = DATE_TRUNC('minute', tf.block_time)
-    AND p.blockchain = 'zksync'
     AND p.contract_address = tf.bridged_token_address
+    AND p.blockchain IN ('ethereum', 'zksync')
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}
