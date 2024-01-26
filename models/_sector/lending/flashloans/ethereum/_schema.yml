@@ -268,3 +268,41 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: spark_ethereum_base_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: spark
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'spark', 'ethereum']
+    description: "Spark Protocol flashloans transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('spark_ethereum_base_flashloans_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - recipient
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
