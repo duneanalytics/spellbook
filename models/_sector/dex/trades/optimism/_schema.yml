@@ -360,26 +360,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('chainhop_optimism_base_trades_seed')
   
-
-  - name: saddle_finance_optimism_base_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: saddle_finance
-      contributors: ARDev097
-    config:
-      tags: [ 'optimism', 'dex', 'trades', 'saddle_finance' ]
-    description: >
-        saddle_finance base trades on optimism.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_dex_base_trades_seed:
-          seed_file: ref('saddle_finance_optimism_base_trades_seed')
-
-
   - name: rubicon_optimism_base_trades
     meta:
       blockchain: optimism

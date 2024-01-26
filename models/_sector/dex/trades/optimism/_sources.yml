@@ -59,9 +59,6 @@ sources:
   - name: chainhop_optimism
     tables:
       - name: TransferSwapper_evt_DirectSwap
-  - name: saddle_finance_optimism
-    tables:
-      - name: MetaSwap_evt_TokenSwap
   - name: curvefi_optimism
     tables:
       - name: StableSwap_evt_TokenExchange
