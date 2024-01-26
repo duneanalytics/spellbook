@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aave_v3_base_base_borrow
+  - name: lending_base_base_borrow
     meta:
       blockchain: base
       sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
+      project: aave, compound
+      contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v3', 'base']
-    description: "Aave v3 borrow transactions on Base"
+      tags: ['lending', 'borrow', 'aave', 'compound', 'base']
+    description: "All lending borrow transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,17 +17,6 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('aave_base_base_borrow_seed')
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - borrower
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -90,7 +79,7 @@ models:
         tests:
           - not_null
 
-  - name: lending_base_base_borrow
+  - name: aave_v3_base_base_borrow
     meta:
       blockchain: base
       sector: lending
@@ -98,7 +87,7 @@ models:
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'base']
-    description: "All Aave borrow transactions on Base"
+    description: "Aave v3 borrow transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -106,6 +95,17 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_base_base_borrow_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - borrower
+            - amount
     columns:
       - *blockchain
       - *project
@@ -129,7 +129,7 @@ models:
       project: compound
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'compound', 'v3', 'base']
+      tags: ['lending', 'borrow', 'compound', 'base']
     description: "Compound v3 borrow transactions on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:

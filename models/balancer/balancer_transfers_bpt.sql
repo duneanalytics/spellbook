@@ -18,7 +18,6 @@
     ref('balancer_v2_polygon_transfers_bpt')
 ] %}
 
-
 SELECT *
 FROM (
     {% for model in balancer_models %}

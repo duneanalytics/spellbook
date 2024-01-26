@@ -1,29 +1,20 @@
 version: 2
 
 models:
-  - name: aave_v3_base_base_flashloans
+  - name: lending_base_base_flashloans
     meta:
       blockchain: base
       sector: lending
       project: aave
-      contributors: hildobby, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'v3', 'base']
-    description: "Aave v3 flashloans transactions on Base"
+      tags: ['lending', 'flashloans', 'aave', 'base']
+    description: "All lending flashloans transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('aave_base_base_flashloans_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -82,7 +73,7 @@ models:
         tests:
           - not_null
 
-  - name: lending_base_base_flashloans
+  - name: aave_v3_base_base_flashloans
     meta:
       blockchain: base
       sector: lending
@@ -90,12 +81,21 @@ models:
       contributors: hildobby, tomfutago
     config:
       tags: ['lending', 'flashloans', 'aave', 'base']
-    description: "All Aave flashloans transactions on Base"
+    description: "Aave v3 flashloans transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_base_base_flashloans_seed')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - recipient
+            - amount
     columns:
       - *blockchain
       - *project

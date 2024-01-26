@@ -177,7 +177,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'v3', 'polygon']
-    description: "Compound v3 supply transactions on Ethereum"
+    description: "Compound v3 supply transactions on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
