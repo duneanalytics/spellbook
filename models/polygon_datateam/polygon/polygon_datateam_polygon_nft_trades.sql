@@ -108,7 +108,7 @@ nft_transfers as (
 SELECT 
     'polygon' as blockchain,
     'New Methodology' as project,
-    '1' as as project_version,
+    '1' as project_version,
     CAST(date_trunc('day', nt.block_time) as date) as block_date,
     CAST(date_trunc('month', nt.block_time) as date) as block_month,
     nt.block_time,
@@ -140,7 +140,7 @@ SELECT
     CAST(NULL as double) as royalty_fee_amount_usd,
     CAST(NULL as double) as platform_fee_percentage,
     CAST(NULL as double) as royalty_fee_percentage,
-    COALESCE(agg1.contract_address, agg2.contract_address) as aggregator_address,
+    agg.contract_address as aggregator_address,
     CASE 
         WHEN agg.name = 'Gem' AND nt.block_number >= 16971894 THEN 'OpenSea Pro' -- 16971894 is the first block of 2023-04-04 which is when Gem rebranded to OpenSea Pro
         ELSE agg.name
@@ -152,8 +152,8 @@ transfers_aggregated ta
     ON nt.tx_hash = ta.tx_hash
 INNER JOIN 
 {{ source('polygon', 'transactions') }} tx
-    AND tx.block_number = nt.block_number
-    ON tx.hash = nt.tx_hash
+    ON tx.block_number = nt.block_number
+    AND tx.hash = nt.tx_hash
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
