@@ -15,6 +15,14 @@
     , ref('balancer_v2_base_base_trades')
     , ref('dodo_base_base_trades')
     , ref('maverick_base_base_trades')
+    , ref('smardex_base_base_trades')
+    , ref('dackieswap_base_base_trades')
+    , ref('rubicon_base_base_trades')
+    , ref('baseswap_base_base_trades')
+    , ref('scale_base_base_trades')
+    , ref('kyberswap_base_base_trades')
+    , ref('woofi_base_base_trades')
+    , ref('velocimeter_v2_base_base_trades')
 ] %}
 
 WITH base_union AS (

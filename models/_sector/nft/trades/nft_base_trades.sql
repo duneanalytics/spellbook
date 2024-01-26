@@ -12,9 +12,13 @@
 
 
 {% set nft_models = [
- ref('nft_ethereum_base_trades')
- ,ref('nft_polygon_base_trades')
+ ref('nft_arbitrum_base_trades')
+ ,ref('nft_base_base_trades')
+ ,ref('nft_bnb_base_trades')
+ ,ref('nft_ethereum_base_trades')
  ,ref('nft_old_base_trades')
+ ,ref('nft_optimism_base_trades')
+ ,ref('nft_polygon_base_trades')
 ] %}
 
 with base_union as (

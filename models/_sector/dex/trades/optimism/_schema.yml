@@ -247,6 +247,7 @@ models:
               - elastic
               - elastic_2
 
+
   - name: velodrome_optimism_base_trades
     meta:
       blockchain: optimism
@@ -267,7 +268,8 @@ models:
             version:
               - 1
               - 2
-              
+
+
   - name: synthetix_optimism_base_trades
     meta:
       blockchain: optimism
@@ -284,7 +286,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('synthetix_optimism_base_trades_seed')
-          
+
+
   - name: openxswap_optimism_base_trades
     meta:
       blockchain: optimism
@@ -301,7 +304,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('openxswap_optimism_base_trades_seed')
-          
+
+
   - name: openocean_optimism_base_trades
     meta:
       blockchain: optimism
@@ -318,3 +322,75 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('openocean_optimism_base_trades_seed')
+
+
+  - name: opx_finance_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: opx_finance
+      contributors: kaiblade, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'opx_finance' ]
+    description: "OPX Finance optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('opx_finance_optimism_base_trades_seed')
+  
+
+  - name: chainhop_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: chainhop
+      contributors: ARDev097
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'chainhop' ]
+    description: >
+        chainhop base trades on optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('chainhop_optimism_base_trades_seed')
+  
+  - name: rubicon_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: rubicon
+      contributors: msilb7, tomfutago
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'rubicon' ]
+    description: "rubicon optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rubicon_optimism_base_trades_seed')
+
+
+  - name: curvefi_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: curvefi
+      contributors: msilb7, tomfutago
+    config:
+      tags: ['optimism', 'dex', 'trades', 'curvefi']
+    description: "Curvefi optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('curvefi_optimism_base_trades_seed')

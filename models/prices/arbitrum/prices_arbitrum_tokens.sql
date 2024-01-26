@@ -60,6 +60,7 @@ FROM
     ('mim-magic-internet-money','arbitrum','MIM',0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a,18),
     ('multi-multichain','arbitrum','MULTI',0x9fb9a33956351cf4fa040f65a13b835a3c8764e3,18),
     ('myc-mycelium','arbitrum','MYC',0xc74fe4c715510ec2f8c61d70d397b32043f55abe,18),
+    ('o3-o3-swap-token','arbitrum','O3',0xee9801669c6138e84bd50deb500827b776777d28,18),
     ('perp-perpetual-protocol','arbitrum','PERP',0x753d224bcf9aafacd81558c32341416df61d3dac,18),
     ('rai-rai-reflex-index','arbitrum','RAI',0xaef5bbcbfa438519a5ea80b4c7181b4e78d419f2,18),
     ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),

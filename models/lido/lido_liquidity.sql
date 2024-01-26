@@ -1,7 +1,7 @@
 {{ config(
         alias = 'liquidity',
          
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "base"]\',
                                 "project",
                                 "lido_liquidity",
                                 \'["ppclunghe", "gregshestakovlido", "hosuke"]\') }}'
@@ -41,7 +41,8 @@
  ref('lido_liquidity_ethereum_uniswap_v2_pools'),
  ref('lido_liquidity_ethereum_solidly_pools'),
  ref('lido_liquidity_base_kyberswap_pools'),
- ref('lido_liquidity_base_aerodrome_pools')
+ ref('lido_liquidity_base_aerodrome_pools'),
+ ref('lido_liquidity_base_uniswap_v3_pools')
  
 ] %}
 
