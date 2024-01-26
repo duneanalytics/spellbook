@@ -56,6 +56,9 @@ sources:
   - name: openocean_v2_optimism
     tables:
       - name: OpenOceanExchangeProxy_evt_Swapped
+  - name: chainhop_optimism
+    tables:
+      - name: TransferSwapper_evt_DirectSwap
   - name: curvefi_optimism
     tables:
       - name: StableSwap_evt_TokenExchange
