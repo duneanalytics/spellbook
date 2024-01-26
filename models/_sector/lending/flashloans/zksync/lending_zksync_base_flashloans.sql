@@ -1,16 +1,14 @@
 {{
   config(
-    schema = 'lending_avalanche_c',
-    alias = 'base_supply',
+    schema = 'lending_zksync',
+    alias = 'base_flashloans',
     materialized = 'view'
   )
 }}
 
 {%
   set models = [
-    ref('aave_v2_avalanche_c_base_supply'),
-    ref('aave_v3_avalanche_c_base_supply'),
-    ref('benqi_avalanche_c_base_supply')
+    ref('zerolend_zksync_base_flashloans')
   ]
 %}
 
@@ -19,12 +17,11 @@ select
   blockchain,
   project,
   version,
-  transaction_type,
-  token_address,
-  depositor,
-  withdrawn_to,
-  liquidator,
+  recipient,
   amount,
+  fee,
+  token_address,
+  contract_address,
   block_month,
   block_time,
   block_number,
