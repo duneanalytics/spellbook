@@ -497,16 +497,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_number
-            - lp_virtual_supply_raw
-            - pool_id
+            - day
+            - blockchain
+            - token_address
     columns:
-      - *block_time
-      - *block_number
-      - &lp_virtual_supply_raw
-        name: lp_virtual_supply_raw
-        description: "The supply of a BPT token. Equivalent to reading the 'getActualSupply' function of the ComposableStablePool."
-      - &lp_virtual_supply
-        name: lp_virtual_supply
-        description: "The scaled supply of a BPT token."
-      - *pool_id
+      - name: day
+      - name: pool_type
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: supply

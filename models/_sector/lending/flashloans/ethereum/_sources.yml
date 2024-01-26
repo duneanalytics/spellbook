@@ -12,3 +12,15 @@ sources:
   - name: aave_v3_ethereum
     tables:
       - name: Pool_evt_FlashLoan
+
+  - name: radiant_capital_ethereum
+    tables:
+      - name: LendingPool_evt_FlashLoan
+
+  - name: uwulend_ethereum
+    tables:
+      - name: LendingPool_evt_FlashLoan
+
+  - name: spark_protocol_ethereum
+    tables:
+      - name: Pool_evt_FlashLoan

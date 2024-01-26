@@ -20,6 +20,12 @@ FROM (
     UNION ALL
     SELECT 0xd897df5690a186F92970d5e42d16599136308257 AS address
     UNION ALL
+    SELECT 0x2b1df729083f6416861445d8aaac04ebdcd4a848 AS address
+    UNION ALL
+    SELECT 0xeab8f76c098d2c2262a46dd3fb85e9340081a0dc AS address
+    UNION ALL
+    SELECT 0x3b436fb33b79a3a754b0242a48a3b3aec1e35ad2 AS address
+    UNION ALL
     SELECT distinct to AS address
     FROM {{ source('ethereum', 'transactions') }}
     WHERE "from"=0xf17aced3c7a8daa29ebb90db8d1b6efd8c364a18

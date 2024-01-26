@@ -76,3 +76,5 @@ SELECT * FROM fees_v1
 UNION ALL 
 
 SELECT * FROM fees_v2 
+
+-- reload

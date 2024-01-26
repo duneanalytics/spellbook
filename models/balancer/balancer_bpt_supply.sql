@@ -22,12 +22,12 @@ SELECT *
 FROM (
     {% for bpt_supply_model in bpt_supply_models %}
     SELECT
-    '{{ bpt_supply_model[0] }}' AS blockchain
-    , block_time
-    , block_number
-    , lp_virtual_supply_raw
-    , lp_virtual_supply
-    , pool_id
+        day,
+        token_address,
+        pool_type,
+        version,
+        blockchain,
+        supply
     FROM {{ bpt_supply_model[1] }}
     {% if not loop.last %}
     UNION ALL

@@ -8,7 +8,9 @@
 
 {%
   set models = [
-    ref('aave_v3_arbitrum_base_supply')
+    ref('aave_v3_arbitrum_base_supply'),
+    ref('compound_v3_arbitrum_base_supply'),
+    ref('radiant_arbitrum_base_supply')
   ]
 %}
 

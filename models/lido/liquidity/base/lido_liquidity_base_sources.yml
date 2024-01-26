@@ -34,3 +34,19 @@ sources:
       - name: Pool_evt_Fees
         loaded_at_field: evt_block_time 
 
+  - name: uniswap_v3_base
+    description: "Base decoded tables related to Uniswap v3 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: UniswapV3Pool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: UniswapV3Pool_evt_Collect
+        loaded_at_field: evt_block_time
+      - name: UniswapV3Pool_evt_Burn
+        loaded_at_field: evt_block_time  
+
+    
+
+

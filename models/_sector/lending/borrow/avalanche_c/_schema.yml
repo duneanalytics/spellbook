@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aave_v2_avalanche_c_base_borrow
+  - name: lending_avalanche_c_base_borrow
     meta:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: batwayne, chuxin, tomfutago
+      contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v2', 'avalanche_c']
-    description: "Aave v2 borrow transactions on Avalanche_c"
+      tags: ['lending', 'borrow', 'aave', 'avalanche_c']
+    description: "All lending borrow transactions on Avalanche_c"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,19 +17,6 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('aave_avalanche_c_base_borrow_seed')
-          filter:
-            version: 2
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - borrower
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -92,15 +79,15 @@ models:
         tests:
           - not_null
 
-  - name: aave_v3_avalanche_c_base_borrow
+  - name: aave_v2_avalanche_c_base_borrow
     meta:
       blockchain: avalanche_c
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v3', 'avalanche_c']
-    description: "Aave v3 borrow transactions on Avalanche_c"
+      tags: ['lending', 'borrow', 'aave', 'avalanche_c']
+    description: "Aave v2 borrow transactions on Avalanche_c"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -111,7 +98,7 @@ models:
       - check_seed:
           seed_file: ref('aave_avalanche_c_base_borrow_seed')
           filter:
-            version: 3
+            version: 2
           match_columns:
             - transaction_type
             - token_address
@@ -137,7 +124,7 @@ models:
       - *tx_hash
       - *evt_index
 
-  - name: lending_avalanche_c_base_borrow
+  - name: aave_v3_avalanche_c_base_borrow
     meta:
       blockchain: avalanche_c
       sector: lending
@@ -145,7 +132,7 @@ models:
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'avalanche_c']
-    description: "All Aave borrow transactions on Avalanche_c"
+    description: "Aave v3 borrow transactions on Avalanche_c"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -153,6 +140,19 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('aave_avalanche_c_base_borrow_seed')
+          filter:
+            version: 3
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - borrower
+            - amount
     columns:
       - *blockchain
       - *project
