@@ -95,8 +95,8 @@ FROM (VALUES
         ,(0x253887577420cb7e7418cd4d50147743c8041b28, 'Aevo', 'L1BatchInbox','to_address','OP Stack','Aevo (Ribbon Finance): L1BatchInbox')
         ,(0x889e21d7ba3d6dd62e75d4980a4ad1349c61599d, 'Aevo', 'L1BatchInbox','from_address','OP Stack','Aevo (Ribbon Finance): L1BatchInbox')
 
-        ,(0x75acb7ae6c76b3f5ca049431fe2c0797dd002b90, 'Aevo', 'L2OutputOracle','to_address','OP Stack','Aevo (Ribbon Finance): L1OutputOracle')
-        ,(0x909e51211e959339efb14b36f5a50955a8ae3770, 'Aevo', 'L2OutputOracle','from_address','OP Stack','Aevo (Ribbon Finance): L1OutputOracle')
+        ,(0x909e51211e959339efb14b36f5a50955a8ae3770, 'Aevo', 'L2OutputOracle','to_address','OP Stack','Aevo (Ribbon Finance): L1OutputOracle')
+        ,(0x75acb7ae6c76b3f5ca049431fe2c0797dd002b90, 'Aevo', 'L2OutputOracle','from_address','OP Stack','Aevo (Ribbon Finance): L1OutputOracle')
 
 
 

@@ -1,7 +1,8 @@
 {{config(
+    tags = ['base_transfers_macro'],
     schema = 'tokens_bnb',
     alias = 'base_transfers',
-    partition_by = ['token_standard', 'block_date'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -21,12 +22,14 @@
 
 UNION ALL
 
-SELECT * FROM
+SELECT *
+FROM
 (
-{{transfers_base_wrapped_token(
-    blockchain='bnb',
-    transactions = source('bnb','transactions'),
-    wrapped_token_deposit = source('bnb_bnb', 'WBNB_evt_Deposit'),
-    wrapped_token_withdrawal = source('bnb_bnb', 'WBNB_evt_Withdrawal')
-)}}
+    {{transfers_base_wrapped_token(
+        blockchain='bnb',
+        transactions = source('bnb','transactions'),
+        wrapped_token_deposit = source('bnb_bnb', 'WBNB_evt_Deposit'),
+        wrapped_token_withdrawal = source('bnb_bnb', 'WBNB_evt_Withdrawal')
+    )
+    }}
 )

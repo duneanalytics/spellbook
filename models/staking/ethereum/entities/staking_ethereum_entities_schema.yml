@@ -271,6 +271,33 @@ models:
           - accepted_values:
               values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
 
+  - name: staking_ethereum_entities_stakewise_v3
+    meta:
+      blockchain: ethereum
+      sector: staking
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'staking', 'entities']
+    description: StakeWise v3 Ethereum staking vaults identified
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - depositor_address
+    columns:
+      - name: depositor_address
+        description: "Address of identified depositor entity"
+        tests:
+          - unique
+      - name: entity
+        description: "Identified entity name"
+      - name: entity_unique_name
+        description: "Unique name of identified entity"
+      - name: category
+        description: "Category of entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+
   - name: staking_ethereum_entities_chorusone
     meta:
       blockchain: ethereum

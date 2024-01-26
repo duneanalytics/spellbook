@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+bnb,radiant,1,35504928,2024-01-23 20:06:17.000 UTC,0x6ddb5b4fd98de0c10f411afb4f43fcbef6dd2b5a983c87c2ca863e3603e7b121,184,deposit,0x2170ed0880ac9a755fd29b2688956bd959f933f8,0x7dd0c8ceda0dcc86e71ae6d30e505c3d30072dc8,2.5829963e+17
+bnb,radiant,1,35504852,2024-01-23 20:02:29.000 UTC,0xb49072052131da646b6eab74e1e4db040d639c1897e5a4712b4919dda3e67ca9,159,withdraw,0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d,0x336e828f4e90d69a0d0eab73d4298497b6ce7e63,-2.014676601256638e+19
