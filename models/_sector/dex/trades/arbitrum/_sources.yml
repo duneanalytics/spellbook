@@ -93,3 +93,21 @@ sources:
     tables:
       - name: LizardPair_evt_Swap
       - name: LizardFactory_evt_PairCreated
+  - name: woofi_swap_arbitrum
+    tables:
+      - name: WooPPV2_1_evt_WooSwap
+  - name: smardex_arbitrum
+    tables:
+      - name: SmardexPair_evt_Swap
+      - name: SmardexFactory_evt_PairCreated
+  - name: oasisswap_arbitrum
+    tables:
+      - name: OasisSwapPair_evt_Swap
+      - name: OasisSwapFactory_evt_PairCreated
+  - name: swaap_v2_arbitrum
+    tables:
+      - name: Vault_evt_Swap
+  - name: apeswap_arbitrum
+    tables:
+      - name: ApePair_evt_Swap
+      - name: ApeFactory_evt_PairCreated
