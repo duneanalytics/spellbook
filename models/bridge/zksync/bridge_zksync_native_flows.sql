@@ -172,7 +172,7 @@ SELECT
         WHEN bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 'ETH'
         ELSE erc.symbol
      END AS token_symbol
-    ,CAST(tf.bridged_token_amount_raw as double)/ POWER(10, erc.decimals) as token_amount
+    ,CAST(tf.bridged_token_amount_raw as double) / POWER(10, erc.decimals) as token_amount
     ,p.price * (CAST(tf.bridged_token_amount_raw as double) / POWER(10, erc.decimals) ) as token_amount_usd
     ,tf.bridged_token_amount_raw as token_amount_raw
     ,0 as fee_amount
@@ -190,14 +190,18 @@ SELECT
 FROM bridge_events tf
 
 LEFT JOIN {{ ref('tokens_erc20') }} erc
-    ON erc.contract_address = tf.bridged_token_address
+    ON erc.contract_address = 
+        CASE
+            WHEN tf.bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- When the token is ETH, match on WETH
+            ELSE tf.bridged_token_address
+        END
     AND erc.blockchain IN ('ethereum', 'zksync')
     
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.minute = DATE_TRUNC('minute', tf.block_time)
     AND p.contract_address = 
         CASE
-            WHEN tf.bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- When the token is ETH, match on WETH to get pricing
+            WHEN tf.bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- When the token is ETH, match on WETH
             ELSE tf.bridged_token_address
         END
     AND p.blockchain IN ('ethereum', 'zksync')
