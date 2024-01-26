@@ -1,4 +1,4 @@
-{% macro transfers_base_wrapped(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, wrapped_token_deposit, wrapped_token_withdrawal) %}
+{% macro transfers_base_with_wrapped(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, wrapped_token_deposit = null, wrapped_token_withdrawal = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 
 WITH transfers AS (
@@ -51,6 +51,8 @@ WITH transfers AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
+
+    {% if wrapped_token_deposit %}
     UNION ALL
     SELECT
         t.evt_block_time AS block_time
@@ -68,6 +70,8 @@ WITH transfers AS (
     WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
+    {% endif %}
+     {% if wrapped_token_withdrawal %}
     UNION ALL
 
     SELECT
@@ -85,8 +89,8 @@ WITH transfers AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
-    )
-
+    {% endif %}
+)
 SELECT
     -- We have to create this unique key because evt_index and trace_address can be null
     {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(t.trace_address, ',')"])}} as unique_key
