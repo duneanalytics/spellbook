@@ -168,7 +168,10 @@ SELECT
     ,tf.evt_index
     ,COALESCE(tf.sender_address,CAST(NULL as VARBINARY)) as sender_address
     ,COALESCE(tf.receiver_address, CAST(NULL as VARBINARY)) as receiver_address
-    ,erc.symbol as token_symbol
+    ,CASE 
+        WHEN bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 'ETH'
+        ELSE erc.symbol
+     END AS token_symbol
     ,CAST(tf.bridged_token_amount_raw as double)/ POWER(10, erc.decimals) as token_amount
     ,p.price * (CAST(tf.bridged_token_amount_raw as double) / POWER(10, erc.decimals) ) as token_amount_usd
     ,tf.bridged_token_amount_raw as token_amount_raw
@@ -192,7 +195,11 @@ LEFT JOIN {{ ref('tokens_erc20') }} erc
     
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.minute = DATE_TRUNC('minute', tf.block_time)
-    AND p.contract_address = tf.bridged_token_address
+    AND p.contract_address = 
+        CASE
+            WHEN tf.bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- When the token is ETH, match on WETH to get pricing
+            ELSE tf.bridged_token_address
+        END
     AND p.blockchain IN ('ethereum', 'zksync')
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
