@@ -36645,8 +36645,6 @@ FROM (VALUES
         ,(0x250f02a3ae700835892535eb6f9d0af96e2c0643, 'SHARE', 18)
         ,(0x5b71c444538cc0c8be0b0c909b07139b78839320, 'STILTON', 18)
         ,(0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 'GYD', 18)
-<<<<<<< HEAD
-=======
 	    ,(0x090993bcc9dd600d15805d5ff070941cac6a506f, 'TITS', 8)
         ,(0x2467f69cc544c80f1cdddc0cc78e48265f8b8951, 'DIABLO', 9)
         ,(0x4e3f613d73140e0bace8bea33381459ab82ab01e, 'PropAI', 9)
@@ -38162,5 +38160,4 @@ FROM (VALUES
         ,(0xde94eb4ad24028eb74e7ede2e71462ee3f90dd4b, 'GATSBY', 9)
         ,(0x86bf94708ccde8729350c4addb745db2be3802a4, '10000X', 9)
         ,(0xb34e1a3d07f9d180bc2fdb9fd90b8994423e33c1, 'PRISMAETH-f', 18)
->>>>>>> 19470475d4900346495fee4cc801da37f4beea48
      ) AS temp_table (contract_address, symbol, decimals)
