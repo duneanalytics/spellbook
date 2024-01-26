@@ -2,7 +2,7 @@
 
 WITH transfers AS (
     SELECT
-        block_time,
+        block_time
         , block_date
         , block_number
         , tx_index
