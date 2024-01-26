@@ -1,45 +1,31 @@
-{{ config(
-       partition_by = ['block_month']
-      , alias = 'flashloans'
-      , materialized = 'incremental'
-      , file_format = 'delta'
-      , incremental_strategy = 'merge'
-      , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["fantom"]\',
-                                  "project",
-                                  "aave",
-                                  \'["hildobby"]\') }}'
+{{
+  config(
+    schema = 'aave_fantom',
+    alias = 'flashloans',
+    materialized = 'view',
+    post_hook = '{{ expose_spells(\'["fantom"]\',
+                                    "project",
+                                    "aave",
+                                    \'["hildobby", "tomfutago"]\') }}'
   )
 }}
 
-{% set aave_models = [
-ref('aave_v3_fantom_flashloans')
-] %}
-
-SELECT *
-FROM (
-    {% for aave_model in aave_models %}
-      SELECT blockchain
-      , project
-      , version
-      , block_month
-      , block_time
-      , block_number
-      , amount
-      , amount_usd
-      , tx_hash
-      , evt_index
-      , fee
-      , currency_contract
-      , currency_symbol
-      , recipient
-      , contract_address
-    FROM {{ aave_model }}
-    {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
-    {% endif %}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %} 
-)
+select
+  blockchain,
+  project,
+  version,
+  recipient,
+  amount,
+  usd_amount as amount_usd,
+  fee,
+  symbol as currency_symbol,
+  token_address as currency_contract,
+  contract_address,
+  block_month,
+  block_time,
+  block_number,
+  tx_hash,
+  evt_index
+from {{ ref('lending_flashloans') }}
+where blockchain = 'fantom'
+  and project = 'aave'

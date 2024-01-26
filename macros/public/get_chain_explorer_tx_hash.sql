@@ -1,5 +1,5 @@
 {% macro get_chain_explorer_tx_hash() %}
-   create or replace function get_chain_explorer_tx_hash(hash_ STRING, chain_ STRING)
+   create or replace function get_chain_explorer_tx_hash(chain_ STRING, hash_ STRING)
    returns STRING
    return
    SELECT

@@ -1,3 +1,5 @@
+version: 2
+
 sources:
   - name: beethoven_x_fantom
     tables:
