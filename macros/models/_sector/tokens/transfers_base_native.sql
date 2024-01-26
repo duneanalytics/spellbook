@@ -31,7 +31,7 @@ SELECT
     -- We have to create this unique key because evt_index and trace_address can be null
     {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(t.trace_address, ',')"])}} as unique_key
     , '{{blockchain}}' as blockchain
-    ,  block_date
+    , t.block_date
     , t.block_time
     , t.block_number
     , t.tx_hash
