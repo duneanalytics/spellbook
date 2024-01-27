@@ -50,5 +50,6 @@ FROM
     ('ico-axelar', 'avalanche_c', 'AXL', 0x44c784266cf024a60e8acf2427b9857ace194c5d, 6),
     ('grain-granary','avalanche_c','GRAIN',0x9df4ac62f9e435dbcd85e06c990a7f0ea32739a9,18),
     ('oath-oath','avalanche_c','OATH',0x2c69095d81305f1e3c6ed372336d407231624cea,18),
-    ('fld-fold','avalanche_c','FLD',0x88F89BE3E9b1dc1C5F208696fb9cABfcc684bD5F,18)
+    ('fld-fold','avalanche_c','FLD',0x88F89BE3E9b1dc1C5F208696fb9cABfcc684bD5F,18),
+    ('egs-emingunsirer','avalanche_c','EGS',0xc92f165f5e20979576A7Ba48f16eb45361c078a2,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
