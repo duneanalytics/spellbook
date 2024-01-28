@@ -22,11 +22,7 @@ SELECT
   call_block_time as block_time
 FROM
   {{ source('ajna_ethereum', 'ERC20PoolFactory_call_deployPool')}}
-{% if is_incremental() %}
 
-    WHERE call_block_time >= date_trunc("day", now() - interval '1' day)
-
-{% endif %}
 JOIN
   (
     select
@@ -35,3 +31,9 @@ JOIN
     from
       {{source('ajna_ethereum', 'ERC20PoolFactory_evt_PoolCreated')}}
   ) on call_tx_hash = evt_tx_hash
+
+{% if is_incremental() %}
+
+    WHERE call_block_time >= date_trunc("day", now() - interval '1' day)
+
+{% endif %}
