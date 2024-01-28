@@ -13,7 +13,7 @@
 SELECT
   case
     when contract_address = 0x6146DD43C5622bB6D12A5240ab9CF4de14eDC625 then 9
-    else 6 end as version
+    else 6 end as version,
   collateral_ as collateral,
   quote_ as quote,
   pool_ as pool_address,
