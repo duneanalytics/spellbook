@@ -1366,3 +1366,8 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
+        
+    ajna:
+      +schema: ajna
+      ethereum:
+        +schema: ajna_ethereum
