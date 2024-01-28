@@ -25,6 +25,6 @@ from
   unit_test
 where
   quote_test = false
-  or collateral test = false
+  or collateral_test = false
   or version_test = false
   
