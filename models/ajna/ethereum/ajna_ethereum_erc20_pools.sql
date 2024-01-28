@@ -34,6 +34,6 @@ JOIN
 
 {% if is_incremental() %}
 
-    WHERE call_block_time >= date_trunc("day", now() - interval '1' day)
+    WHERE call_block_time >= date_trunc('day', now() - interval '1' day)
 
 {% endif %}
