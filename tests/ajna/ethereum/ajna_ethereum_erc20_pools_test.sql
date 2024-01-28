@@ -1,11 +1,11 @@
 with unit_test as (
   select
     case
-      when test.quote = actual.quote then true
+      when from_hex(test.quote) = actual.quote then true
       else false
     end as quote_test,
     case
-      when test.collateral = actual.collateral then true
+      when from_hex(test.collateral) = actual.collateral then true
       else false
     end as collateral_test,
     case
@@ -16,7 +16,7 @@ with unit_test as (
     {{ ref('ajna_ethereum_erc20_pools')}} as actual
   inner join {{ ref('ajna_ethereum_erc20_pools_test_data')}} as test
   on
-    actual.pool_address = test.pool_address
+    actual.pool_address = from_hex(test.pool_address)
 )
 
 select
