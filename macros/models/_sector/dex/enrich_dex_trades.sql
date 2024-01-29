@@ -47,17 +47,6 @@ WITH base_trades as (
         , base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) AS token_sold_amount
         , base_trades.token_bought_amount_raw
         , base_trades.token_sold_amount_raw
-        , CASE
-                WHEN stability_bought.rank IS NOT NULL AND (stability_sold.rank IS NULL OR stability_bought.rank < stability_sold.rank) THEN
-                    base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price
-                WHEN stability_sold.rank IS NOT NULL AND (stability_bought.rank IS NULL OR stability_sold.rank < stability_bought.rank) THEN
-                    base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
-                ELSE
-                    coalesce(
-                        base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price,
-                        base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
-                    )
-            END AS amount_usd
         , base_trades.token_bought_address
         , base_trades.token_sold_address
         , coalesce(base_trades.taker, base_trades.tx_from) AS taker
@@ -77,28 +66,16 @@ WITH base_trades as (
         {{ tokens_erc20_model }} as erc20_sold
         ON erc20_sold.contract_address = base_trades.token_sold_address
         AND erc20_sold.blockchain = base_trades.blockchain
-    LEFT JOIN
-        prices as p_bought
-        ON p_bought.minute = date_trunc('minute', base_trades.block_time)
-        AND p_bought.contract_address = base_trades.token_bought_address
-        AND p_bought.blockchain = base_trades.blockchain
-    LEFT JOIN
-        prices as p_sold
-        ON p_sold.minute = date_trunc('minute', base_trades.block_time)
-        AND p_sold.contract_address = base_trades.token_sold_address
-        AND p_sold.blockchain = base_trades.blockchain
-    LEFT JOIN
-        {{ ref('prices_stability_rank') }} as stability_bought
-        ON stability_bought.contract_address = base_trades.token_bought_address
-        AND stability_bought.blockchain = base_trades.blockchain
-    LEFT JOIN
-        {{ ref('prices_stability_rank') }} as stability_sold
-        ON stability_sold.contract_address = base_trades.token_sold_address
-        AND stability_sold.blockchain = base_trades.blockchain
 )
 
-select
-    *
-from
-    enrichments
+
+{{
+    add_amount_usd(
+        trades_cte = 'enrichments'
+        , prices_model = prices_model
+        , bought_amount_column='token_bought_amount'
+        , sold_amount_column='token_sold_amount'
+    )
+}}
+
 {% endmacro %}
