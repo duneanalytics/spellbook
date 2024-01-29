@@ -15,3 +15,9 @@ sources:
       - name: cUSDbCv3Comet_evt_WithdrawCollateral
       - name: Comet_evt_AbsorbCollateral
       - name: cUSDbCv3Comet_evt_AbsorbCollateral
+
+  - name: seamlessprotocol_base
+    tables:
+      - name: L2Pool_evt_Supply
+      - name: L2Pool_evt_Withdraw
+      - name: L2Pool_evt_RedeemUnderlying

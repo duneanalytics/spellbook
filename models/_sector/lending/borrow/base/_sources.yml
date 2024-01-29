@@ -17,3 +17,9 @@ sources:
       - name: cUSDbCv3Comet_evt_Transfer
       - name: Comet_evt_AbsorbDebt
       - name: cUSDbCv3Comet_evt_AbsorbDebt
+
+  - name: seamlessprotocol_base
+    tables:
+      - name: L2Pool_evt_Borrow
+      - name: L2Pool_evt_Repay
+      - name: L2Pool_evt_LiquidationCall

@@ -2,8 +2,6 @@ version: 2
 
 sources: 
   - name: snapshot
-    freshness:
-          warn_after: { count: 12, period: hour }
     description: >
       Decoded table for proposals and their voting on Snapshot platform
     tables:
@@ -11,8 +9,6 @@ sources:
       - name: votes
   
   - name: optimism_governor_optimism
-    freshness:
-          warn_after: { count: 12, period: hour }
     description: >
       Decoded table for proposals and their voting on Agora platform
     tables:
