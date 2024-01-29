@@ -12,3 +12,6 @@
     - If the seed also isn’t in the PR, then CI test runs out of places to check
     - The workflow will fail on ‘metadata not found’ or ‘missing seed’
     - In order to get around this, force a change on the associated seed file and bring into PR to rebuild, then CI will be able to find in the test section
+- I submitted a PR to add a new token to `prices.usd`, but it's still not showing up? Why is that?
+    - new price additions can take a few days, as the backend process needs to acknowledge the new API ID value provided & backfill historical pricing data
+    - please check back in a few days to see the new data populated
