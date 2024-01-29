@@ -66,7 +66,7 @@ WITH base_trades as (
         {{ tokens_erc20_model }} as erc20_sold
         ON erc20_sold.contract_address = base_trades.token_sold_address
         AND erc20_sold.blockchain = base_trades.blockchain
-)
+),
 
 
 {{
