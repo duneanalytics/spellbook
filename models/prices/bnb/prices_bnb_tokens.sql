@@ -162,7 +162,6 @@ FROM
     ('doge-dogecoin','bnb' ,'DOGE' ,0xba2ae424d960c26247dd6c32edc70b295c744c43 ,8),
     ('cow-coinwind-token','bnb' ,'COW' ,0x422e3af98bc1de5a1838be31a56f75db4ad43730 ,18),
     ('time-time' ,'bnb' ,'TIME' ,0x26619fa1d4c957c58096bbbeca6588dcfb12e109 ,18),
-    ('fuse-fuse-token-on-bsc' ,'bnb' ,'FUSE' ,0x5857c96dae9cf8511b08cb07f85753c472d36ea3 ,18),
     ('dxct-dnaxcat' ,'bnb' ,'DXCT' ,0x5b1baec64af6dc54e6e04349315919129a6d3c23 ,18),
     ('sfo-starfish-os' ,'bnb' ,'SFO' ,0xc544d8ab2b5ed395b96e3ec87462801eca579ae1 ,18),
     ('baby-babyswap' ,'bnb' ,'BABY' ,0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657 ,18),
