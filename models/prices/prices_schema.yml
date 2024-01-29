@@ -115,7 +115,7 @@ models:
       contributors: hosuke
     config:
       tags: [ 'prices', 'stability' ]
-    description: "Rank of prices stability of tokens across blockchains"
+    description: "List of trusted tokens across blockchains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -128,5 +128,3 @@ models:
         description: "Contract address of the token"
       - name: symbol
         description: "Token symbol"
-      - name: rank
-        description: "Rank of prices stability of tokens in the blockchain"
