@@ -4,6 +4,8 @@
 Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
 ## TL;DR
+- Have a question on how something works in Spellbook, or why we design spells in a particular way?
+  - Please visit the [docs](docs/) directory to find various topics & ideally answers to any question about Spellbook
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
 - Don't know where to start? The docs below will guide you, but as a summary:
   - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes. 
@@ -19,6 +21,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Docs](#docs)
 - [How to contribute](#ways-to-contribute-to-spellbook)
   - [Submitting a PR](#submitting-a-pr)
   - [Testing your Spell](#testing-your-spell)
@@ -34,6 +37,10 @@ Spellbook is Dune's interpretation layer, built for and by the community.
 Spellbook is a [dbt](https://docs.getdbt.com/docs/introduction) project. Each model is a simple SQL query with minor syntactic sugar (meant to capture dependencies and help build the resulting tables), and does a small part of the task of turning raw and decoded records into interpretable blockchain data.
 
 Spellbook is built for and by the community, you are welcome to close any gaps that you find by sending a PR, creating issues to propose small changes or track bugs, or participate in discussions to help steer the future of this project.
+
+## Docs
+
+Spellbook has a lot of moving parts & specific design principles for contributing to Dune's interpretation layer of data. In order to prepare contributors to parcipate most efficiently, the [docs](docs/) directory contains a wide ranging set of topics to answer common questions & provide info on why the repo is setup as it is. Please read & refer to this section when developing in Spellbook and questions arise. The Dune team will also link back to these docs to answer questions often, to help grow awareness and keep communications clean.
 
 ## Ways to contribute to Spellbook
 
