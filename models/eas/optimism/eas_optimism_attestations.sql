@@ -15,6 +15,6 @@
     blockchain = 'optimism',
     project = 'eas',
     version = '1',
-    decoded_project_name = 'attestationstation_v1_optimism'
+    decoded_project_name = 'attestationstation_v1'
   )
 }}

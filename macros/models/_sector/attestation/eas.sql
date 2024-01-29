@@ -79,7 +79,8 @@ from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
     blockchain = '',
     project = 'eas',
     version = '',
-    decoded_project_name = ''
+    decoded_project_name = '',
+    schema_column_name = 'schema'
   )
 %}
 
@@ -109,7 +110,7 @@ select
   '{{ blockchain }}' as blockchain,
   '{{ project }}' as project,
   '{{ version }}' as version,
-  ea.schema as schema_uid,
+  ea.{{ schema_column_name }} as schema_uid,
   ea.uid as attestation_uid,
   ea.attester,
   ea.recipient,

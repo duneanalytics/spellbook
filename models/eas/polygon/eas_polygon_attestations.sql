@@ -15,6 +15,7 @@
     blockchain = 'polygon',
     project = 'eas',
     version = '1',
-    decoded_project_name = 'polygon_eas'
+    decoded_project_name = 'polygon_eas',
+    schema_column_name = 'schemaUID'
   )
 }}
