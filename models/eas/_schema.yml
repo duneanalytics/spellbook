@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: eas_schemas
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, zksync
+      sector: attestation
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas' ]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where EAS is deployed"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the EAS contract"
+      - &schema_uid
+        name: schema_uid
+        description: ""
+      - &registerer
+        name: registerer
+        description: ""
+      - &resolver
+        name: schema_uid
+        description: ""
+      - &schema
+        name: schema
+        description: ""
+      - &schema_array
+        name: schema_array
+        description: ""
+      - &is_revocable
+        name: is_revocable
+        description: ""
+      - &contract_address
+        name: contract_address
+        description: "EAS schema registry contract address"
+      - &block_number
+        name: block_number
+        description: "Block number of each schema registered"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each schema registered"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to schema registry"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding schema registry event"
