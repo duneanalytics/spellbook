@@ -1157,11 +1157,6 @@ models:
       optimism:
         +schema: bridge_optimism
 
-    the_granary:
-      +schema: the_granary
-      optimism:
-        +schema: the_granary_optimism
-
     tessera:
       +schema: tessera
       ethereum:
