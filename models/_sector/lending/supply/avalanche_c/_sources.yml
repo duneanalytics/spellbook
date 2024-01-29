@@ -12,3 +12,10 @@ sources:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying
+
+  - name: benqi_finance_avalanche_c
+    tables:
+      - name: QiErc20Delegate_evt_Mint
+      - name: QiAvax_evt_Mint
+      - name: QiErc20Delegate_evt_Redeem
+      - name: QiAvax_evt_Redeem

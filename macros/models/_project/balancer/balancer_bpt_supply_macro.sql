@@ -25,10 +25,7 @@ WITH pool_labels AS (
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
         FROM  {{ ref('balancer_transfers_bpt') }} t
-        WHERE blockchain = '{{blockchain}}'
-        {% if is_incremental() %} 
-        AND {{ incremental_predicate('block_date') }}
-        {% endif %}        
+        WHERE blockchain = '{{blockchain}}'   
         GROUP BY 1, 2
     ),
 
@@ -53,10 +50,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (pb.deltas) WITH ORDINALITY d(delta, i)
         CROSS JOIN UNNEST (pb.tokens) WITH ORDINALITY t(token, i)
         WHERE d.i = t.i 
-        AND BYTEARRAY_SUBSTRING(poolId, 1, 20) = t.token
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('pb.evt_block_time') }}
-        {% endif %}              
+        AND BYTEARRAY_SUBSTRING(poolId, 1, 20) = t.token          
         ORDER BY 1 DESC
     ),
 
@@ -92,10 +86,7 @@ WITH pool_labels AS (
             END AS ajoins
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
-        WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
-        {% endif %}         
+        WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)       
         GROUP BY 1, 2, 3
     ),
 
@@ -110,10 +101,7 @@ WITH pool_labels AS (
             END AS aexits
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
-        {% endif %}         
+        WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)        
         GROUP BY 1, 2, 3
     ),
 
