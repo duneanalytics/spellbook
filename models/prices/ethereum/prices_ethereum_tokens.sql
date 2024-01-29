@@ -1541,7 +1541,6 @@ FROM
     ('rsc-researchcoin', 'ethereum', 'RSC', 0xD101dCC414F310268c37eEb4cD376CcFA507F571, 18),
     ('smart-smart-game', 'ethereum', 'SMART', 0xce20BB92CCF9BbF5091ef85649E71E552819AD8c, 18),
     ('crvfrax-curvefi-fraxusdc', 'ethereum', 'FRAXBP', 0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC, 18),
-    ('tbtc-tbtc-v2', 'ethereum', 'TBTC', 0x18084fbA666a33d37592fA2633fD49a74DD93a88, 18),
     ('asw-adaswap', 'ethereum', 'ASW', 0x56694577564FdD577a0ABB20FE95C1E2756C2a11, 18),
     ('cnlt-cannaland-token', 'ethereum', 'CNLT', 0x00E13FF16d54619024Ab3b861F25B84Bd53e8Ac1, 18),
     ('fanc-fanc', 'ethereum', 'FANC', 0xbB126042235E6bD38B17744cb31a8bF4A206c045, 18),
