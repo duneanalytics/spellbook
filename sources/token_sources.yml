@@ -184,6 +184,16 @@ sources:
           - name: decimals
             data_type: integer
 
+  - name: tokens_goerli
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
 
   - name: tokens_gnosis
     tables:

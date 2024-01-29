@@ -78,6 +78,10 @@ models:
         +schema: tokens_bnb
         +materialized: table
         +file_format: delta
+      goerli:
+        +schema: tokens_goerli
+        +materialized: table
+        +file_format: delta
       gnosis:
         +schema: tokens_gnosis
         +materialized: table
