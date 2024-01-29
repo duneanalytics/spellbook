@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'eas_arbitrum',
-    alias = 'attestations',
+    schema = 'eas_ethereum',
+    alias = 'schemas',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,10 +11,10 @@
 }}
 
 {{
-  eas_attestations(
-    blockchain = 'arbitrum',
+  eas_schemas(
+    blockchain = 'ethereum',
     project = 'eas',
     version = '1',
-    decoded_project_name = 'arbitrum_eas'
+    decoded_project_name = 'ethereum_attestation_service_ethereum_schema'
   )
 }}

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: eas_schemas
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, zksync
+      blockchain: arbitrum, base, ethereum, optimism, polygon
       sector: attestation
       contributors: tomfutago
     config:

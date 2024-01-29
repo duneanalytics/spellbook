@@ -73,3 +73,61 @@ from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
 {% endmacro %}
 
 {# ######################################################################### #}
+
+{%
+  macro eas_attestations(
+    blockchain = '',
+    project = 'eas',
+    version = '',
+    decoded_project_name = ''
+  )
+%}
+
+{% set decoded_project_name = project if decoded_project_name == '' else decoded_project_name %}
+
+with
+
+src_EAS_evt_Attested as (
+  select *
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Attested') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
+),
+
+src_EAS_call_attest as (
+  select
+    *,
+    replace(replace(replace(request, '\"', '"'), '"{', '{'), '}"', '}') as clean_request
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_call_attest') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
+  {% endif %}
+)
+
+select
+  '{{ blockchain }}' as blockchain,
+  '{{ project }}' as project,
+  '{{ version }}' as version,
+  ea.schema as schema_uid,
+  ea.uid as attestation_uid,
+  ea.attester,
+  ea.recipient,
+  json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as expiration_time,
+  json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as is_revocable,
+  json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes) as ref_uid,
+  json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
+  json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as raw_value,
+  ca.request,
+  ea.contract_address,
+  ea.evt_block_number as block_number,
+  ea.evt_block_time as block_time,
+  ea.evt_tx_hash as tx_hash,
+  ea.evt_index
+from src_EAS_evt_Attested ea
+  join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash
+where ca.call_success
+
+{% endmacro %}
+
+{# ######################################################################### #}

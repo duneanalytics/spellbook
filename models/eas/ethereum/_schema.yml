@@ -1,60 +1,60 @@
 version: 2
 
 models:
-  - name: eas_arbitrum_schemas
+  - name: eas_ethereum_schemas
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum
       sector: attestation
       project: eas
       contributors: tomfutago
     config:
-      tags: [ 'attestation', 'eas', 'arbitrum' ]
-    description: "EAS schema registry on Arbitrum"
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
 
-  - name: eas_arbitrum_schema_details
+  - name: eas_ethereum_schema_details
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum
       sector: attestation
       project: eas
       contributors: tomfutago
     config:
-      tags: [ 'attestation', 'eas', 'arbitrum' ]
-    description: "EAS schema registry details on Arbitrum"
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry details on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
             - ordinality_id
 
-  - name: eas_arbitrum_attestations
+  - name: eas_ethereum_attestations
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum
       sector: attestation
       project: eas
       contributors: tomfutago
     config:
-      tags: [ 'attestation', 'eas', 'arbitrum' ]
-    description: "EAS schema registry on Arbitrum"
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
 
-  - name: eas_arbitrum_attestation_details
+  - name: eas_ethereum_attestation_details
     meta:
-      blockchain: arbitrum
+      blockchain: ethereum
       sector: attestation
       project: eas
       contributors: tomfutago
     config:
-      tags: [ 'attestation', 'eas', 'arbitrum' ]
-    description: "EAS schema registry details on Arbitrum"
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry details on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
