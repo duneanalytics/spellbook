@@ -5,7 +5,7 @@ Tests tied to models are highly encouraged & at times required, depending on the
 ## Main Tests Used Universally Within Spellbook
 
 - Unique test on column(s) used as unique keys in incremental models, to ensure no duplicates.
-- Seed tests, as discussed more in detail in the [seeds directory](docs/seeds/).
+- Seed tests, as discussed more in detail in the [seeds directory](../seeds/seed_overview.md).
 
 ## Recent Tests Added
 

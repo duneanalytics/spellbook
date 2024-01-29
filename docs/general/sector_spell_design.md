@@ -20,7 +20,7 @@ The upstream spells within the sector-level DBT lineages, as noted in the level 
 - Raw data only – base tables / decoded tables
     - The intention is to avoid materializing metadata which is later joined to enhance this raw data. materializing the metadata raises the risk of more frequent historical full refreshes on large amounts of data
     - To indicate raw data, the ‘base_’ prefix is used on aliases
-- Use macros for repeatable code – see [macro section](docs/macros/macro_overview.md) for more info
+- Use macros for repeatable code – see [macro section](../macros/macro_overview.md) for more info
     - same projects cross-chain
     - forked projects on same chain
 - Materialize and build incrementally

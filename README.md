@@ -5,7 +5,7 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 
 ## TL;DR
 - Have a question on how something works in Spellbook, or why we design spells in a particular way?
-  - Please visit the [docs](spellbook/docs/) directory to find various topics & ideally answers to any question about Spellbook
+  - Please visit the [docs](docs/) directory to find various topics & ideally answers to any question about Spellbook
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
 - Don't know where to start? The docs below will guide you, but as a summary:
   - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes. 
@@ -40,7 +40,7 @@ Spellbook is built for and by the community, you are welcome to close any gaps t
 
 ## Docs
 
-Spellbook has a lot of moving parts & specific design principles for contributing to Dune's interpretation layer of data. In order to prepare contributors to parcipate most efficiently, the [docs](spellbook/docs/) directory contains a wide ranging set of topics to answer common questions & provide info on why the repo is setup as it is. Please read & refer to this section when developing in Spellbook and questions arise. The Dune team will also link back to these docs to answer questions often, to help grow awareness and keep communications clean.
+Spellbook has a lot of moving parts & specific design principles for contributing to Dune's interpretation layer of data. In order to prepare contributors to parcipate most efficiently, the [docs](docs/) directory contains a wide ranging set of topics to answer common questions & provide info on why the repo is setup as it is. Please read & refer to this section when developing in Spellbook and questions arise. The Dune team will also link back to these docs to answer questions often, to help grow awareness and keep communications clean.
 
 ## Ways to contribute to Spellbook
 
