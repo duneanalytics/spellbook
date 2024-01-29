@@ -116,10 +116,10 @@ SELECT
     dexs.tx_to,
     dexs.evt_index
 FROM dexs
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
         AND erc20a.blockchain = dexs.blockchain
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
         ON erc20b.contract_address = dexs.token_sold_address
         AND erc20b.blockchain = dexs.blockchain
     INNER JOIN bpa
