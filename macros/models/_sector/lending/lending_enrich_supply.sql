@@ -18,7 +18,7 @@ select
   supply.tx_hash,
   supply.evt_index
 from {{ model }} supply
-  left join {{ ref('tokens_erc20') }} erc20
+  left join {{ source('tokens', 'erc20') }} erc20
     on supply.token_address = erc20.contract_address
     and supply.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 
