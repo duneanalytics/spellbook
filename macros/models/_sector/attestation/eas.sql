@@ -112,33 +112,71 @@ src_EAS_evt_Revoked as (
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
+),
+
+-- separate valid attestations..
+valid_attestations as (
+  select
+    '{{ blockchain }}' as blockchain,
+    '{{ project }}' as project,
+    '{{ version }}' as version,
+    ea.{{ schema_column_name }} as schema_uid,
+    ea.uid as attestation_uid,
+    ea.attester,
+    ea.recipient,
+    ca.request,
+    json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as is_revocable,
+    json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes) as ref_uid,
+    json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
+    json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as raw_value,
+    json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as expiration_time,
+    cast(null as timestamp) as revocation_time,
+    'valid' as attestation_state,
+    false as is_revoked,
+    ea.contract_address,
+    ea.evt_block_number as block_number,
+    ea.evt_block_time as block_time, -- attestation created
+    ea.evt_tx_hash as tx_hash,
+    ea.evt_index
+  from src_EAS_evt_Attested ea
+    join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash
+    left join src_EAS_evt_Revoked er on ea.schema = er.schema and ea.uid = er.uid
+  where ca.call_success
+    and er.evt_tx_hash is null
+),
+
+-- .. and revoked ones..
+revoked_attestations as (
+  select
+    ea.blockchain,
+    ea.project,
+    ea.version,
+    ea.schema_uid,
+    ea.attestation_uid,
+    ea.attester,
+    ea.recipient,
+    ea.request,
+    ea.is_revocable,
+    ea.ref_uid,
+    ea.raw_data,
+    ea.raw_value,
+    ea.expiration_time,
+    er.evt_block_time as revocation_time,
+    'revoked' as attestation_state,
+    true as is_revoked,
+    ea.contract_address,
+    ea.evt_block_number as block_number,
+    ea.evt_block_time as block_time, -- attestation created
+    ea.evt_tx_hash as tx_hash,
+    ea.evt_index
+  from src_EAS_evt_Revoked er
+    join {{ this }} ea on er.schema = ea.schema and er.uid = ea.uid -- checking against full data in the model
 )
 
-select
-  '{{ blockchain }}' as blockchain,
-  '{{ project }}' as project,
-  '{{ version }}' as version,
-  ea.{{ schema_column_name }} as schema_uid,
-  ea.uid as attestation_uid,
-  ea.attester,
-  ea.recipient,
-  ca.request,
-  json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as is_revocable,
-  json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes) as ref_uid,
-  json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
-  json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as raw_value,
-  json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as expiration_time,
-  er.evt_block_time as revocation_time,
-  if(er.evt_block_time, true, false) as is_revoked,
-  ea.contract_address,
-  ea.evt_block_number as block_number,
-  ea.evt_block_time as block_time,
-  ea.evt_tx_hash as tx_hash,
-  ea.evt_index
-from src_EAS_evt_Attested ea
-  join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash
-  left join src_EAS_evt_Revoked er on ea.schema = er.schema and ea.uid = er.uid
-where ca.call_success
+-- .. to pull them back together to ensure incremental load will pick both
+select * from valid_attestations
+union all
+select * from revoked_attestations
 
 {% endmacro %}
 
