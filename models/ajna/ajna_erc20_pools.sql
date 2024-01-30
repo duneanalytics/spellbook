@@ -21,12 +21,12 @@ ref('ajna_arbitrum_erc20_pools')
 ] %}
 
 SELECT
-  blockchain
+  p.blockchain
   ,version
   ,collateral
   ,quote
   ,pool_address
-  ,blockchain || '-rc' || cast(version as varchar) || '-' || a.symbol || '/' || b.symbol || '-' || cast(varbinary_substring(pool_address, 1, 6) as varchar) as name
+  ,p.blockchain || '-rc' || cast(version as varchar) || '-' || a.symbol || '/' || b.symbol || '-' || cast(varbinary_substring(pool_address, 1, 6) as varchar) as name
   ,a.symbol as collateral_symbol
   ,b.symbol as quote_symbol
   ,a.decimals as collateral_decimal

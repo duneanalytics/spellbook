@@ -15,7 +15,7 @@
 SELECT
   'polygon' as blockchain,
   case
-    when contract_address = 0xA3A1e968Bd6C578205E11256c8e6929f21742aAF then 10
+    when contract_address = 0x1f172F881eBa06Aa7a991651780527C173783Cf6 then 10
     else 9 end as version,
   collateral_ as collateral,
   quote_ as quote,

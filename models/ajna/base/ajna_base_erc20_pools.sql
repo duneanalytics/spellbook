@@ -15,7 +15,7 @@
 SELECT
   'base' as blockchain,
   case
-    when contract_address = 0x609C4e8804fafC07c96bE81A8a98d0AdCf2b7Dfa then 10
+    when contract_address = 0x214f62B5836D83f3D6c4f71F174209097B1A779C then 10
     else 9 end as version,
   collateral_ as collateral,
   quote_ as quote,
