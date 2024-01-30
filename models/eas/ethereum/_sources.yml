@@ -9,3 +9,4 @@ sources:
     tables:
       - name: EAS_evt_Attested
       - name: EAS_call_attest
+      - name: EAS_evt_Revoked

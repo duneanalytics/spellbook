@@ -68,7 +68,7 @@ select
   se.element[1] as data_type,
   se.element[2] as field_name
 from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
-  cross join unnest(split(sr.schema, ',')) with ordinality as se (element, ordinality_id)
+  cross join unnest(sr.schema_array) with ordinality as se (element, ordinality_id)
 
 {% endmacro %}
 
@@ -104,6 +104,14 @@ src_EAS_call_attest as (
   {% if is_incremental() %}
   where {{ incremental_predicate('call_block_time') }}
   {% endif %}
+),
+
+src_EAS_evt_Revoked as (
+  select *
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Revoked') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
 )
 
 select
@@ -114,12 +122,14 @@ select
   ea.uid as attestation_uid,
   ea.attester,
   ea.recipient,
-  json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as expiration_time,
+  ca.request,
   json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as is_revocable,
   json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes) as ref_uid,
   json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
   json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as raw_value,
-  ca.request,
+  json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as expiration_time,
+  er.evt_block_time as revocation_time,
+  if(er.evt_block_time, true, false) as is_revoked,
   ea.contract_address,
   ea.evt_block_number as block_number,
   ea.evt_block_time as block_time,
@@ -127,8 +137,39 @@ select
   ea.evt_index
 from src_EAS_evt_Attested ea
   join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash
+  left join src_EAS_evt_Revoked er on ea.schema = er.schema and ea.uid = er.uid
 where ca.call_success
 
 {% endmacro %}
 
 {# ######################################################################### #}
+
+{%
+  macro eas_attestation_details(
+    blockchain = '',
+    project = 'eas',
+    version = ''
+  )
+%}
+
+select
+  sd.blockchain,
+  sd.project,
+  sd.version,
+  sd.schema_uid,
+  sd.ordinality_id,
+  sd.data_type,
+  sd.field_name,
+  a.attestation_uid,
+  a.raw_data,
+  a.block_number,
+  a.block_time,
+  a.tx_hash,
+  a.evt_index
+from {{ ref(project ~ '_' ~ blockchain ~ '_schema_details') }} sd
+  join {{ ref(project ~ '_' ~ blockchain ~ '_attestations') }} a on sd.schema_uid = a.schema_uid
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time') }}
+{% endif %}
+
+{% endmacro %}
