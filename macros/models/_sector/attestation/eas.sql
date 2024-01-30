@@ -170,7 +170,7 @@ revoked_attestations as (
     ea.evt_tx_hash as tx_hash,
     ea.evt_index
   from src_EAS_evt_Revoked er
-    join {{ this }} ea on er.schema = ea.schema and er.uid = ea.uid -- checking against full data in the model
+    join {{ this }} ea on er.schema = ea.schema_uid and er.uid = ea.attestation_uid -- checking against full data in the model
 )
 
 -- .. to pull them back together to ensure incremental load will pick both
