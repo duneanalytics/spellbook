@@ -55,5 +55,5 @@ FROM (
       {% endif %}
       {% endfor %} 
 ) p
-LEFT JOIN {{ ref('tokens_erc20') }} a on a.contract_address = collateral and a.blockchain = p.blockchain
-LEFT JOIN {{ ref('tokens_erc20') }} b on b.contract_address = quote and b.blockchain = p.blockchain
+LEFT JOIN {{ source('tokens', 'erc20') }} a on a.contract_address = collateral and a.blockchain = p.blockchain
+LEFT JOIN {{ source('tokens', 'erc20') }} b on b.contract_address = quote and b.blockchain = p.blockchain
