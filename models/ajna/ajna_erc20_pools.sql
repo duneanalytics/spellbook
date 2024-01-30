@@ -26,7 +26,7 @@ SELECT
   ,collateral
   ,quote
   ,pool_address
-  ,p.blockchain || '-rc' || cast(version as varchar) || '-' || a.symbol || '/' || b.symbol || '-' || cast(varbinary_substring(pool_address, 1, 6) as varchar) as name
+  ,p.blockchain || '-rc' || cast(version as varchar) || '-' || coalesce(a.symbol, 'UNKNOWN') || '/' || coalesce(b.symbol, 'UNKNOWN') || '-' || cast(varbinary_substring(pool_address, 1, 6) as varchar) as name
   ,a.symbol as collateral_symbol
   ,b.symbol as quote_symbol
   ,a.decimals as collateral_decimal
