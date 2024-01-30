@@ -77,10 +77,10 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
 	{% else %}
 	AND {{ incremental_predicate('tx.block_time') }}
 	{% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON CAST(erc20a.contract_address AS varchar) = dexs.token_bought_address
     AND erc20a.blockchain = 'optimism'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'optimism'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

@@ -1,10 +1,5 @@
 {{config(
   alias = 'balancer_v2_pools_gnosis',
-  materialized = 'incremental',
-  
-  file_format = 'delta',
-  incremental_strategy = 'merge',
-  unique_key = ['address'],
   post_hook = '{{ expose_spells(\'["gnosis"]\',
                                "sector",
                                "labels",
@@ -32,10 +27,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
   UNION ALL
@@ -60,10 +51,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
   UNION ALL
@@ -79,10 +66,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -97,10 +80,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -115,10 +94,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -133,10 +108,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -151,10 +122,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -169,10 +136,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 ),
 
 settings AS (
@@ -183,7 +146,7 @@ settings AS (
     p.symbol AS pool_symbol,
     p.pool_type
   FROM pools p
-  LEFT JOIN {{ ref('tokens_erc20') }} t ON p.token_address = t.contract_address
+  LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
 )
 
 SELECT 

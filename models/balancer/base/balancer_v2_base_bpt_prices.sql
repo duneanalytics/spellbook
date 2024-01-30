@@ -51,8 +51,8 @@ WITH
             {% if is_incremental() %}
             AND p2.minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
-        LEFT JOIN {{ ref ('tokens_erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'base'
-        LEFT JOIN {{ ref ('tokens_erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'base'
+        LEFT JOIN {{ source('tokens', 'erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'base'
+        LEFT JOIN {{ source('tokens', 'erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'base'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ),
 

@@ -143,7 +143,7 @@ INNER JOIN
     AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
-{{ ref('tokens_arbitrum_erc20') }} er 
+{{ source('tokens_arbitrum', 'erc20') }} er 
     ON t.margin_asset = er.contract_address
 LEFT JOIN {{ source('prices', 'usd') }} pe 
     ON pe.minute = date_trunc('minute', t.evt_block_time)

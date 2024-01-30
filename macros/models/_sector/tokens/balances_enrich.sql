@@ -29,7 +29,7 @@ right join {{ balances_base }} balances on (
         ELSE false
     END)
     and prices.minute = date_trunc('minute', balances.block_time)
-left join {{ ref('tokens_erc20') }} erc20_tokens on
+left join {{ source('tokens', 'erc20') }} erc20_tokens on
     erc20_tokens.blockchain = '{{ blockchain }}' AND (
     CASE
         WHEN type = 'erc20' THEN erc20_tokens.contract_address = balances.contract_address

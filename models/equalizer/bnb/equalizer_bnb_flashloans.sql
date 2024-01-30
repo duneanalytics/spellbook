@@ -29,7 +29,7 @@ SELECT 'bnb' AS blockchain
 , flash.receiver AS recipient
 , flash.contract_address
 FROM {{ source('equalizer_bnb','FlashLoanProvider_evt_FlashLoan') }} flash
-LEFT JOIN {{ ref('tokens_bnb_bep20') }} tok ON tok.contract_address=flash.token
+LEFT JOIN {{ source('tokens_bnb', 'bep20') }} tok ON tok.contract_address=flash.token
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'bnb'  
   AND pu.contract_address = flash.token
   AND pu.minute = date_trunc('minute', flash.evt_block_time)

@@ -162,7 +162,6 @@ FROM
     ('doge-dogecoin','bnb' ,'DOGE' ,0xba2ae424d960c26247dd6c32edc70b295c744c43 ,8),
     ('cow-coinwind-token','bnb' ,'COW' ,0x422e3af98bc1de5a1838be31a56f75db4ad43730 ,18),
     ('time-time' ,'bnb' ,'TIME' ,0x26619fa1d4c957c58096bbbeca6588dcfb12e109 ,18),
-    ('fuse-fuse-token-on-bsc' ,'bnb' ,'FUSE' ,0x5857c96dae9cf8511b08cb07f85753c472d36ea3 ,18),
     ('dxct-dnaxcat' ,'bnb' ,'DXCT' ,0x5b1baec64af6dc54e6e04349315919129a6d3c23 ,18),
     ('sfo-starfish-os' ,'bnb' ,'SFO' ,0xc544d8ab2b5ed395b96e3ec87462801eca579ae1 ,18),
     ('baby-babyswap' ,'bnb' ,'BABY' ,0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657 ,18),
@@ -204,7 +203,8 @@ FROM
     ('joyg-kismet-joy-gold', 'bnb', 'JOYG', 0xe63c37e50a045c247b5003e24ba066f1cc3f0ff3, 8),
     ('gft-galaxy-finance', 'bnb', 'GFT', 0xe77932b1216125848e82c3967e75698362168f99, 18),
     ('snbnb-synclub-staked-bnb', 'bnb', 'SnBNB', 0xb0b84d294e0c75a6abe60171b70edeb2efd14a1b, 18),
-    ('gmt-stepn', 'bnb', 'GMT', 0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1, 8)
+    ('gmt-stepn', 'bnb', 'GMT', 0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1, 8),
+    ('sub-subme', 'bnb', 'SUB', 0x47bB3D817e627D196ae74b89AfA7928C2Bb159A9, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.

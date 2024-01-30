@@ -17,7 +17,7 @@ select
   flashloans.tx_hash,
   flashloans.evt_index
 from {{ model }} flashloans
-  left join {{ ref('tokens_erc20') }} erc20
+  left join {{ source('tokens', 'erc20') }} erc20
     on flashloans.token_address = erc20.contract_address
     and flashloans.blockchain = erc20.blockchain
   left join {{ source('prices', 'usd') }} p 
