@@ -59,7 +59,7 @@ tokens as (
         , contract_address
         , symbol as token_symbol
         , decimals as token_decimals
-    from {{ ref('tokens_erc20') }}
+    from {{ source('tokens', 'erc20') }}
 )
 
 , prices as (
