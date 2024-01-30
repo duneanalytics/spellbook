@@ -69,6 +69,7 @@ select
   se.element[2] as field_name
 from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
   cross join unnest(sr.schema_array) with ordinality as se (element, ordinality_id)
+where cardinality(se.element) = 2 -- only inlcude valid schemas
 
 {% endmacro %}
 
