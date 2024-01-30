@@ -162,12 +162,12 @@ WITH pool_labels AS (
             b.pool_id,
             q.name,
             pool_type,
-            ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.pool_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
+            ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.protocol_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
-        AND b.pool_liquidity_usd > 0
+        AND b.protocol_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
