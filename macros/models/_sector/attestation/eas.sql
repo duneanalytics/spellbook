@@ -138,7 +138,7 @@ select
   ea.evt_index
 from src_EAS_evt_Attested ea
   join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash
-  left join src_EAS_evt_Revoked er on ea.schema = er.schema and ea.uid = er.uid
+  left join src_EAS_evt_Revoked er on ea.{{ schema_column_name }} = er.schema and ea.uid = er.uid
 where ca.call_success
 
 {% if is_incremental() %}
