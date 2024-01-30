@@ -22,7 +22,7 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
-    )
+    ),
 
     swaps_changes AS (
         SELECT
