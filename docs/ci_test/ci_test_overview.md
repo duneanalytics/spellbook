@@ -19,6 +19,11 @@ Any time a PR is opened in Spellbook, there are a few GH workflows which automat
 - Run `dbt run` again, for incremental models only, to ensure incremental logic runs as expected.
 - Run `dbt test` again, to test the data again post-incremental run.
 
+## CI Tests workflow matrix
+
+To handle the dbt sub-project separation within Spellbook, there are two projects which run separately in CI: `tokens` & `spellbook`. Within the PR, you will likely see two CI test workflows running, one for each project. As sub-projects grow, this matrix could also grow. If sub-projects grow much larger, the matrix will be replaced with a cleaner solution.
+- Expect to see two CI workflows, but each workflow will be able to automatically detect which spells to run
+
 ## CI Tests Leverage Prod Data
 
 If spells within a PR reference (i.e. dbt ref usage) another spell which isn’t included in PR, the CI environment will default to read from prod environment. This is setup to expedite the process and not rebuild entire lineages for each PR. If there is ever an issue with the CI test due to this prod data, modify the troubled spell within the same PR to force the spell to run in CI and refresh.

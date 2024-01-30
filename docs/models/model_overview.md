@@ -24,6 +24,8 @@ For larger sector spells:
 
 ### Source YML Files
 
+**_Note:_** with the release of [sub-projects](https://github.com/duneanalytics/spellbook/discussions/5238), all sources were migrated to a [new directory](https://github.com/duneanalytics/spellbook/tree/main/sources) at the root of Spellbook. The intention is to centralize sources, so they can be reused across sub-projects.
+
 Required for DBT to understand the source schema & table names. While there aren’t strict guidelines to follow on these source files, most include:
 
 - Schema name of source
