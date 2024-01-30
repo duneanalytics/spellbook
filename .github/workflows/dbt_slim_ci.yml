@@ -52,13 +52,11 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        # run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
-        run: "dbt compile $PROFILE --project-dir ${PROJECT_DIR}"
+        run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
       - name: check schemas
         run: |
           test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir ${PROJECT_DIR})
-          echo $test  
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
       - name: dbt seed
