@@ -211,7 +211,7 @@ WITH pool_labels AS (
         18 AS decimals,
         l.liquidity / s.supply AS bpt_price
     FROM tvl l
-    LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON l.pool_address = s.token_address
+    LEFT JOIN {{ ref('balancer_v2_arbitrum_bpt_supply') }} s ON l.pool_address = s.token_address
     AND l.blockchain = s.blockchain
     AND l.day = s.day
     WHERE supply > 0
