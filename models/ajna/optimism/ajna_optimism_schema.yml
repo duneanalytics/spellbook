@@ -1,13 +1,13 @@
-version: 2
+versions: 2
 
 models:
-  - name: ajna_ethereum_erc20_pools
+  - name: ajna_optimism_erc20_pools
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       project: ajna
       contributors: [gunboats]
     config:
-      tags: ["ethereum", "ajna"]
+      tags: ["optimism", "ajna"]
     description: List of ERC20 pools deployed on Ajna
     columns:
       - &blockchain
@@ -15,7 +15,7 @@ models:
         description: Blockchain that Ajna pool was deployed on
       - &version
         name: version
-        description: Ajna versions that is deployed on the network (6 for original, 9 for grief vector fix)
+        description: Ajna versions that is deployed on the network (9 for original L2 deployment, 10 for burning bwAJNA fix)
       - &collateral
         name: collateral
         description: Collateral token address

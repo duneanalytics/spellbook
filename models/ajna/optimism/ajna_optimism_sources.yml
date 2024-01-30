@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: ajna_ethereum
+  - name: ajna_optimism
     description: A Peer-to-peer, permissionless, oracleless, no-governance borrowing protocol
     tables:
       - name: ERC20PoolFactory_call_deployPool

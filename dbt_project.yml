@@ -1369,5 +1369,13 @@ models:
         
     ajna:
       +schema: ajna
+      arbitrum:
+        +schema: ajna_arbitrum
+      base:
+        +schema: ajna_base
       ethereum:
         +schema: ajna_ethereum
+      optimism:
+        +schema: ajna_optimism
+      polygon:
+        +schema: ajna_polygon

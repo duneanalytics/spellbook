@@ -1,11 +1,11 @@
 {{  config (
-        schema = 'ajna_ethereum',
+        schema = 'ajna_arbitrum',
         alias = 'erc20_pools',
         partition_by = ['block_time'],
         materialized = 'incremental',
         incremental_strategy = 'merge',
         unique_key = ['collateral', 'quote', 'pool_address'],
-        post_hook= '{{ expose_spells(\'["ethereum"]\',
+        post_hook= '{{ expose_spells(\'["arbitrum"]\',
                        "project", "ajna",
                        \'["gunboats"]\'
                     )}}'
@@ -13,10 +13,10 @@
 ) }}
 
 SELECT
-  'ethereum' as blockchain,
+  'arbitrum' as blockchain,
   case
-    when contract_address = 0x6146DD43C5622bB6D12A5240ab9CF4de14eDC625 then 9
-    else 6 end as version,
+    when contract_address = 0xA3A1e968Bd6C578205E11256c8e6929f21742aAF then 10
+    else 9 end as version,
   collateral_ as collateral,
   quote_ as quote,
   pool_ as pool_address,
@@ -25,7 +25,7 @@ SELECT
   call_block_time as block_time,
   call_block_number as block_number
 FROM
-  {{ source('ajna_ethereum', 'ERC20PoolFactory_call_deployPool')}}
+  {{ source('ajna_arbitrum', 'ERC20PoolFactory_call_deployPool')}}
 
 JOIN
   (
@@ -33,7 +33,7 @@ JOIN
       pool_,
       evt_tx_hash
     from
-      {{source('ajna_ethereum', 'ERC20PoolFactory_evt_PoolCreated')}}
+      {{source('ajna_arbitrum', 'ERC20PoolFactory_evt_PoolCreated')}}
   ) on call_tx_hash = evt_tx_hash
 
 {% if is_incremental() %}
