@@ -163,8 +163,7 @@ WITH pool_labels AS (
             q.name,
             pool_type,
             ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.pool_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
-            SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
-            SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
+            SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
         LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
@@ -181,7 +180,6 @@ WITH pool_labels AS (
     weighted_pool_liquidity_estimates_2 AS(
     SELECT  e.day,
             e.pool_id,
-            SUM(e.pool_liquidity) / MAX(e.pricing_count) AS pool_liquidity,
             SUM(e.protocol_liquidity) / MAX(e.pricing_count) AS protocol_liquidity
     FROM weighted_pool_liquidity_estimates e
     GROUP BY 1,2
