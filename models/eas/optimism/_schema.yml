@@ -13,8 +13,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - tx_hash
-            - evt_index
+            - schema_uid
 
   - name: eas_optimism_schema_details
     meta:
@@ -43,8 +42,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - tx_hash
-            - evt_index
+            - schema_uid
+            - attestation_uid
 
   - name: eas_optimism_attestation_details
     meta:

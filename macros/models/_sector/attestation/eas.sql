@@ -163,9 +163,9 @@ select
   'revoked' as attestation_state,
   true as is_revoked,
   a.contract_address,
-  a.evt_block_number as block_number,
-  a.evt_block_time as block_time, -- attestation created
-  a.evt_tx_hash as tx_hash,
+  a.block_number,
+  a.block_time, -- attestation created
+  a.tx_hash,
   a.evt_index
 from src_EAS_evt_Revoked er
   join {{ this }} a on er.{{ schema_column_name }} = a.schema_uid and er.uid = a.attestation_uid -- checking against main model to backfill data

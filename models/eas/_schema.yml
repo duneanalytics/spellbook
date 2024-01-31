@@ -14,8 +14,7 @@ models:
             - blockchain
             - project
             - version
-            - tx_hash
-            - evt_index
+            - schema_uid
     columns:
       - &blockchain
         name: blockchain
