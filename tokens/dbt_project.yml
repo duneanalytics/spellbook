@@ -1,0 +1,118 @@
+#Welcome to your Spellbook!
+
+name: "tokens"
+version: "1.0.0"
+config-version: 2
+
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
+# This setting configures which "profile" dbt uses for this project.
+# profile: "spellbook-poc-tokens"
+profile: "spellbook-local"
+
+vars:
+  DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
+  DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
+  DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
+  ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
+
+# These configurations specify where dbt should look for different types of files.
+# You don't need to change these!
+model-paths: ["models", "../sources"]
+# analysis-paths: ["analyses"]
+# test-paths: ["tests"]
+# seed-paths: ["seeds"]
+macro-paths: ["../macros"]
+# snapshot-paths: ["snapshots"]
+
+target-path: "target" # directory which will store compiled SQL files
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# defining search order of macro invokation 
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['trino_utils', 'dbt_utils']
+    
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+models:
+  tokens:
+    +post-hook:
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
+        transaction: true
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'task_scale_writers_enabled', false) }}"
+        transaction: true
+      - sql: "{{ optimize_spell(this, model.config.materialized) }}"
+        transaction: true
+      - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
+        transaction: true
+    +materialized: view
+    +schema: no_schema    # this should be overriden in model specific configs
+    +view_security: invoker
+    
+    aave:
+      +schema: aave
+    
+    tokens:
+      +schema: tokens
+      +materialized: table
+      +file_format: delta
+      ethereum:
+        +schema: tokens_ethereum
+        +materialized: table
+        +file_format: delta
+      optimism:
+        +schema: tokens_optimism
+        +materialized: table
+        +file_format: delta
+      avalanche_c:
+        +schema: tokens_avalanche_c
+        +materialized: table
+        +file_format: delta
+      bnb:
+        +schema: tokens_bnb
+        +materialized: table
+        +file_format: delta
+      goerli:
+        +schema: tokens_goerli
+        +materialized: table
+        +file_format: delta
+      gnosis:
+        +schema: tokens_gnosis
+        +materialized: table
+        +file_format: delta
+      arbitrum:
+        +schema: tokens_arbitrum
+        +materialized: table
+        +file_format: delta
+      polygon:
+        +schema: tokens_polygon
+        +materialized: table
+        +file_format: delta
+      fantom:
+        +schema: tokens_fantom
+        +materialized: table
+        +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+      celo:
+        +schema: tokens_celo
+        +materialized: table
+        +file_format: delta
+
+    ovm:
+      +schema: ovm
+      optimism:
+        +schema: ovm_optimism
+
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism
