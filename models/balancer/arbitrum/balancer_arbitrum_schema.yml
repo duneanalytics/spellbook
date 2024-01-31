@@ -359,15 +359,13 @@ models:
             - contract_address
     columns:
       - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
+      - *day
+      - name: version
+      - name: decimals
       - *contract_address
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - *bpt_price
+        name: bpt_price
+        description: 'BPT price on a given day'
 
   - name: balancer_v2_arbitrum_trades
     meta:

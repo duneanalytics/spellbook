@@ -101,8 +101,8 @@ SELECT
     dexs.token_sold_amount_raw,
     COALESCE(
         dexs.amount_usd,
-        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.median_price,
-        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.median_price
+        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.bpt_price,
+        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.bpt_price
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,

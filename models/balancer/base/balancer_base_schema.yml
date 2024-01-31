@@ -308,21 +308,17 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
       - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - &contract_address
-        name: contract_address
-        description: 'BPT contract address'
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - *day
+      - name: version
+      - name: decimals
+      - *contract_address
+      - *bpt_price
+        name: bpt_price
+        description: 'BPT price on a given day'
 
   - name: balancer_v2_base_transfers_bpt
     meta:
