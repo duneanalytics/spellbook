@@ -49,9 +49,9 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
-LEFT JOIN {{ ref('tokens_erc20') }} erc20_bought
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20_bought
     ON erc20_bought.symbol = dexs.token_bought_symbol
     AND erc20_bought.blockchain = 'optimism'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20_sold
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20_sold
     ON erc20_sold.symbol = dexs.token_sold_symbol
     AND erc20_sold.blockchain = 'optimism'

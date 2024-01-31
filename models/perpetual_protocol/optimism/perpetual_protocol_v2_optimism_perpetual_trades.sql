@@ -77,7 +77,7 @@ SELECT
 	,tx."to" AS tx_to
 	,perps.evt_index
 FROM perps
-LEFT JOIN {{ ref('tokens_erc20') }} AS e
+LEFT JOIN {{ source('tokens', 'erc20') }} AS e
 	ON perps.baseToken = e.contract_address
 	AND e.blockchain = 'optimism'
 INNER JOIN {{ source('optimism', 'transactions') }} AS tx

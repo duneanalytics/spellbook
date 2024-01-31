@@ -29,7 +29,7 @@ SELECT t.blockchain
     '(t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price',
     'NULL')}} AS usd_amount
 FROM {{transfers_base}} t
-LEFT JOIN {{ref('tokens_erc20')}} tokens_erc20 on tokens_erc20.blockchain = '{{blockchain}}' AND tokens_erc20.contract_address = t.contract_address
+LEFT JOIN {{source('tokens', 'erc20')}} tokens_erc20 on tokens_erc20.blockchain = '{{blockchain}}' AND tokens_erc20.contract_address = t.contract_address
 LEFT JOIN {{ source('prices', 'usd') }} prices ON prices.blockchain = '{{blockchain}}'
     AND (
             prices.contract_address=t.contract_address
