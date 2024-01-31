@@ -76,10 +76,10 @@ FROM (SELECT event.*,
           {% else %}
           AND {{ incremental_predicate('event.evt_block_time') }}
           {% endif %}
-      INNER JOIN {{ ref('tokens_erc20') }} tokens
+      INNER JOIN {{ source('tokens', 'erc20') }} tokens
           ON event.indexToken = tokens.contract_address
           AND tokens.blockchain = 'base'
-      INNER JOIN {{ ref('tokens_erc20') }} tokens1
+      INNER JOIN {{ source('tokens', 'erc20') }} tokens1
           ON event.collateralToken = tokens1.contract_address
           AND tokens1.blockchain = 'base'
       GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
