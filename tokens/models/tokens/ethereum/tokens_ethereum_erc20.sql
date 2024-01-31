@@ -38191,4 +38191,5 @@ FROM (VALUES
         ,(0x50defeeb4137b331c6011ec8fd3700c10f67e770, 'FLASH', 18)
         ,(0xde8cd13b812bcd82218754a740b27e76ec1e86ad, 'TRESTLE', 18)
         ,(0x61a40b8f2d70a65264e5fb79d26c8b1b4c190ef4, 'RBT', 18)
+        ,(0xb9f599ce614Feb2e1BBe58F180F370D05b39344E, 'PORK', 18)
      ) AS temp_table (contract_address, symbol, decimals)
