@@ -235,4 +235,6 @@ FROM (VALUES
         ,(0x5039af99956f13a4e2c4b29e745e4d27e07b45ff, 'ROCKET', 18)
         ,(0x19c79f282d151995d91f6dbdda2739701f9c47aa, 'BEAR', 18)
         ,(0xefd6aa06eb95e0ab23de9ac0977d870888b89a71, 'MICRO', 18)
+        ,(0x913c61ec3573e5e4ee6488552535fb1be84ff2ac, 'XAV', 18)
+        ,(0x609268b9c47c7be0a8d77ae93c31d2bf6859d175, 'LONG', 18)
     ) AS temp_table (contract_address, symbol, decimals)
