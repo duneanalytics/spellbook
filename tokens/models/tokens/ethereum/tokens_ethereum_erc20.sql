@@ -38160,4 +38160,5 @@ FROM (VALUES
         ,(0xde94eb4ad24028eb74e7ede2e71462ee3f90dd4b, 'GATSBY', 9)
         ,(0x86bf94708ccde8729350c4addb745db2be3802a4, '10000X', 9)
         ,(0xb34e1a3d07f9d180bc2fdb9fd90b8994423e33c1, 'PRISMAETH-f', 18)
+        ,(0xb9f599ce614Feb2e1BBe58F180F370D05b39344E, 'PORK', 18)
      ) AS temp_table (contract_address, symbol, decimals)
