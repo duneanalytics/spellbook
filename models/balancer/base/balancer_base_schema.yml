@@ -303,7 +303,7 @@ models:
     config:
       tags: ['base', 'bpt', 'prices']
     description: >
-      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+      Balancer Pool Token (BPT) daily price by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -311,14 +311,12 @@ models:
             - day
             - contract_address
     columns:
-      - *blockchain
-      - *day
+      - name: blockchain
+      - name: day
       - name: version
       - name: decimals
-      - *contract_address
-      - *bpt_price
-        name: bpt_price
-        description: 'BPT price on a given day'
+      - name: contract_address
+      - name: bpt_price
 
   - name: balancer_v2_base_transfers_bpt
     meta:

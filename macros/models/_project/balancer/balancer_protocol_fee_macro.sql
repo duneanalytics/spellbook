@@ -65,7 +65,7 @@ WITH pool_labels AS (
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('hour') }}
+        AND {{ incremental_predicate('dau') }}
         {% endif %}
         GROUP BY 1, 2
     ),
