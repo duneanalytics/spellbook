@@ -7,4 +7,3 @@ sources:
       - name: SchemaRegistry_call_register
       - name: EAS_evt_Attested
       - name: EAS_call_attest
-      - name: EAS_evt_Revoked
