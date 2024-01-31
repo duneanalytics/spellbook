@@ -138,7 +138,7 @@ select
   ea.evt_tx_hash as tx_hash,
   ea.evt_index
 from src_EAS_evt_Attested ea
-  join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash
+  join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash and ea.uid = ca.output_0
   left join src_EAS_evt_Revoked er on ea.{{ schema_column_name }} = er.{{ schema_column_name }} and ea.uid = er.uid
 where ca.call_success
 
