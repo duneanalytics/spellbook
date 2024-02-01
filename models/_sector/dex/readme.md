@@ -1,35 +1,164 @@
-# README for models/_sector/dex/
+# README for `dex.trades`
 
-Welcome to the `models/_sector/dex/` directory of our project. This document provides essential information on contributing to the dex sector models, along with insights into our design choices and the next steps in the dex.trades redesign workstream.
+Welcome to the `models/_sector/dex/` directory of our project. This README provides essential information on contributing to the `dex` sector models, insights into our design choices, and outlines the next steps in the `dex.trades` redesign workstream.
+
+## Table of Contents
+- [How to Contribute](#how-to-contribute)
+- [Project Structure Details](#project-structure-details)
+- [Adding New Sources](#adding-new-sources)
+- [Defining Model Schemas](#defining-model-schemas)
+- [Model Config Settings](#model-config-settings)
+- [Example PRs](#example-prs)
+- [Dependency on dex.info](#dependency-on-dexinfo)
+- [Adding Seed Tests](#adding-seed-tests)
+- [Further Information](#further-information)
+- [Contact](#contact)
 
 ## How to Contribute
 
-1. **Understanding the Structure**: Familiarize yourself with the current structure and conventions used in the dex sector models.
-2. **Making Changes**: For any changes or additions, please fork the repository and create your feature branch from `main`.
-3. **Pull Requests (PRs)**: Submit PRs with clear descriptions of changes and reference related issues or discussions.
-4. **Code Review**: PRs will be reviewed by the team. Constructive feedback and suggestions are welcomed.
+### Understanding the Structure
+Familiarize yourself with the current structure and conventions used in the `dex` sector models.
+
+### Making Changes
+For any changes or additions, please fork the repository and create your feature branch from `main`.
+
+### Pull Requests (PRs)
+Submit PRs with clear descriptions of changes and reference related issues or discussions.
+
+### Code Review
+PRs will be reviewed by the team. Constructive feedback and suggestions are welcomed.
+
+## Project Structure Details
+
+### Overview
+The `dex.trades` redesign focuses on implementing improvements across all sectors, with an initial emphasis on `dex.trades`. This redesign aims to enhance the spell experience by incorporating advanced tech stack capabilities and addressing various opportunities for improvement.
+
+### Data Flow Architecture
+Below is a diagram illustrating the `dex.trades` architecture. This visual guide helps to understand how base trades compatible macros are used to feed into our `dex.trades` data model, showing the flow from source tables (like decoded swap and pair created event source tables) to the final enriched `dex.trades` view. It also highlights the integration of various chain-specific base trades and the enrichment process through macros.
+
+![DEX.Trades Architecture Diagram](https://github.com/duneanalytics/spellbook/assets/102681548/236e0920-8073-44c9-9cde-e0219d236101)
+
+### Core Components
+- **Base Project-Level Spells**: Contain only data from raw & decoded source tables, serving as building blocks for `dex.trades`.
+- **Chain Union Spells**: Utilize a dbt macro to standardize a union of input spells on the same blockchain.
+- **Sector Union Spell**: Enriches the raw/decoded data with necessary metadata at the `dex.trades` level.
+
+### Naming Standards
+Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names.
+
+### Directory Structure
+- Macros/Models: `macros/models/_sector/dex/`
+- Platforms: `models/_sector/dex/trades/<blockchain>/platforms/`
+
+### Materialization Strategy
+- Platform/Project Level: Incremental.
+- Blockchain Level: View.
+- Sector Level: Incremental.
+
+### Macro vs. Code in Model
+- Standalone dexes can have code directly in the model.
+- Forked dexes or repeatable logic should utilize or create macros.
+
+
+### Macro Usage Example
+
+One of the key components in the dex.trades redesign is the utilization of dbt macros to standardize and simplify the process of data transformation across different blockchains and projects. Below is an example of how to use the [`uniswap_compatible_v2_trades` macro](https://github.com/duneanalytics/spellbook/blob/main/macros/models/_sector/dex/uniswap_compatible_trades.sql) macro within our project. This macro is designed to standardize the trades data for projects compatible with Uniswap V2 on various blockchains.
+
+```sql
+{{
+    uniswap_compatible_v2_trades(
+        blockchain = 'bnb',
+        project = 'biswap',
+        version = '2',
+        Pair_evt_Swap = source('biswap_bnb', 'BiswapPair_evt_Swap'),
+        Factory_evt_PairCreated = source('biswap_bnb', 'BiswapFactory_evt_PairCreated')
+    )
+}}
+```
+
+## Adding New Sources
+
+When incorporating new data sources into the `dex` sector, it's essential to properly define them in our dbt project. Here’s how to add new sources:
+
+1. **Locate the Source YML File**: Navigate to `sources/_sector/dex/trades/[blockchain]` in the project directory.
+
+2. **Edit the `_sources.yml` File**: Within this file, you’ll define the new source tables. Provide the necessary details such as name, description, database, schema, and table identifier. Here’s an example:
+
+```yaml
+  - name: clipper_ethereum
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped
+      - name: ClipperApproximateCaravelExchange_evt_Swapped
+```
+
+## Defining Model Schemas
+
+For each model in the DEX sector, we must define its schema. This schema outlines the structure of the model and the definitions of its columns. Here’s how to add a schema for a model:
+
+1. **Locate the Schema YML File**: Go to `models/_sector/dex/trades/[blockchain]` in the project directory.
+
+2. **Edit the `_schema.yml` File**: Add the schema definition for your model. This includes specifying column names, types, descriptions, and any tests that should be applied to the columns. For example:
+
+```yaml
+  - name: uniswap_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            version: 2
+```
+
+## Model Config Settings
+  - Include both schema and alias, avoiding schema addition to project files.
+  - Retain table configs as incremental/merge/delta.
+  - Add incremental predicates for targeted filtering.
+
+Example config block:
+```yaml
+{{ config(
+    schema = 'uniswap_v2_ethereum'
+    , alias = 'base_trades'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+```
 
 ## Example PRs
-
 - [PR #4929: Add mdex to dex.trades_beta](https://github.com/duneanalytics/spellbook/pull/4929/files)
 - [PR #4924: Add biswap to dex.trades_beta](https://github.com/duneanalytics/spellbook/pull/4924/files)
 
 ## Dependency on dex.info
-
-When adding a new dex to our project, it's important to add a corresponding entry in [`dex.info`](https://github.com/duneanalytics/spellbook/blob/main/models/dex/dex_info.sql). This step is crucial because `dex.info` serves as a central repository of metadata for all dexes, ensuring consistency and easy access to key information.
-
-- [dex_info.sql](https://github.com/duneanalytics/spellbook/blob/main/models/dex/dex_info.sql)
+It's crucial to add a corresponding entry in [`dex.info`](https://github.com/duneanalytics/spellbook/blob/main/models/dex/dex_info.sql) when adding a new `dex`.
 
 Sample new entry:
 ```sql
 , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')
 ```
+
+
 ## Adding Seed Tests
+Seed tests are vital for ensuring that the output of our models aligns with the expected results.
 
-Seed tests play a vital role in our development process, adhering to the principles of test-driven development. They ensure that the output of our models aligns with the expected results, which are hardcoded in the seed. Here's how to add them:
-
-1. **Define the Seed Schema**: Start by defining the schema of your seed in the [seeds/_sector/dex/_schema.yml](https://github.com/duneanalytics/spellbook/blob/main/seeds/_sector/dex/_schema.yml) file. This schema should match the expected output of your model.
-
+### Define the Seed Schema
+Start by defining the schema of your seed in the [seeds/_sector/dex/_schema.yml](https://github.com/duneanalytics/spellbook/blob/main/seeds/_sector/dex/_schema.yml) file.
   eg.
 ```yaml
   - name: trader_joe_avalanche_c_base_trades_seed
@@ -48,8 +177,12 @@ Seed tests play a vital role in our development process, adhering to the princip
         block_date: timestamp
 ```
 
-2. **Add the Corresponding Seed File**: Create and add the seed file in the [seeds/_sector/dex/](https://github.com/duneanalytics/spellbook/tree/main/seeds/_sector/dex) directory. This file should contain the trades that verified on the blockchain explorers.
-3. **Add Tests to Model Schema**: In your model's schema file, add tests that will validate the output against the seed data. These tests help to ensure data integrity and adherence to expected results.
+### Add the Corresponding Seed File
+Create and add the seed file in the [seeds/_sector/dex/](https://github.com/duneanalytics/spellbook/tree/main/seeds/_sector/dex) directory. This file should contain the trades that verified on the blockchain explorers.
+
+### Add Tests to Model Schema
+In your model's schema file, add tests that validate the output against the seed data. These tests help to ensure data integrity and adherence to expected results.
+
 Example tests:
 ```yaml
     tests:
@@ -66,55 +199,6 @@ Example tests:
 - `check_dex_base_trades_seed`: Validates the model's output against the predefined seed data.
 
 By following these steps, you can effectively implement seed tests to validate your models, ensuring that they produce the expected results.
-
-## Project Structure Details
-
-### Overview
-The `dex.trades` redesign focuses on implementing improvements across all sectors, with an initial emphasis on `dex.trades`. This redesign aims to enhance the spell experience by incorporating advanced tech stack capabilities and addressing various opportunities for improvement.
-
-### What's Changing and Why?
-- **Base Project-Level Spells**: 
-  - Will contain only data from raw & decoded source tables (e.g., [`uniswap_v1_ethereum.base_trades`](https://github.com/duneanalytics/spellbook/blob/main/models/_sector/dex/trades/ethereum/platforms/uniswap_v1_ethereum_base_trades.sql)).
-  - This helps in keeping dbt lineages clean and CI/prod orchestration easy to support.
-  - Materialized incrementally, these spells are not intended for end-user queries but as building blocks for `dex.trades`.
-
-- **Chain Union Spells**: 
-  - Will call a dbt macro to standardize a union of input spells on the same blockchain, forming another building block towards `dex_<blockchain>.base_trades`.
-
-- **Sector Union Spell**: 
-  - Calls a dbt macro to enrich the raw/decoded data with necessary metadata at `dex.trades` level.
-  - Centralizes the logic and simplifies contributions of new projects.
-
-### Key Initiatives
-- **Naming Standards**: Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names, indicating their role as building blocks.
-- **Directory Structure**: 
-  - Macros/Models: `macros/models/_sector/dex/`
-  - Platforms: `models/_sector/dex/trades/<blockchain>/platforms/`
-- **Materialization Strategy**: 
-  - Platform/Project Level: Incremental.
-  - Blockchain Level: View.
-  - Sector Level: Incremental.
-- **Model Config Settings**: 
-  - Include both schema and alias, avoiding schema addition to project files.
-  - Retain table configs as incremental/merge/delta.
-  - Add incremental predicates for targeted filtering.
-
-### Macro vs. Code in Model
-- Standalone dexes can have code directly in the model.
-- Forked dexes or repeatable logic should utilize or create macros.
-
-Example [`uniswap_compatible_v2_trades` macro](https://github.com/duneanalytics/spellbook/blob/main/macros/models/_sector/dex/uniswap_compatible_trades.sql)
-```sql
-{{
-    uniswap_compatible_v2_trades(
-        blockchain = 'bnb',
-        project = 'biswap',
-        version = '2',
-        Pair_evt_Swap = source('biswap_bnb', 'BiswapPair_evt_Swap'),
-        Factory_evt_PairCreated = source('biswap_bnb', 'BiswapFactory_evt_PairCreated')
-    )
-}}
-```
 
 ## Further Information
 
