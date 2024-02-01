@@ -5,6 +5,9 @@ Welcome to the `models/_sector/dex/` directory of our project. This README provi
 ## Table of Contents
 - [How to Contribute](#how-to-contribute)
 - [Project Structure Details](#project-structure-details)
+- [Adding New Sources](#adding-new-sources)
+- [Defining Model Schemas](#defining-model-schemas)
+- [Model Config Settings](#model-config-settings)
 - [Example PRs](#example-prs)
 - [Dependency on dex.info](#dependency-on-dexinfo)
 - [Adding Seed Tests](#adding-seed-tests)
@@ -52,25 +55,6 @@ Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names.
 - Blockchain Level: View.
 - Sector Level: Incremental.
 
-### Model Config Settings
-  - Include both schema and alias, avoiding schema addition to project files.
-  - Retain table configs as incremental/merge/delta.
-  - Add incremental predicates for targeted filtering.
-
-Example config block:
-```yaml
-{{ config(
-    schema = 'uniswap_v2_ethereum'
-    , alias = 'base_trades'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['tx_hash', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    )
-}}
-```
-
 ### Macro vs. Code in Model
 - Standalone dexes can have code directly in the model.
 - Forked dexes or repeatable logic should utilize or create macros.
@@ -88,6 +72,70 @@ One of the key components in the dex.trades redesign is the utilization of dbt m
         version = '2',
         Pair_evt_Swap = source('biswap_bnb', 'BiswapPair_evt_Swap'),
         Factory_evt_PairCreated = source('biswap_bnb', 'BiswapFactory_evt_PairCreated')
+    )
+}}
+```
+
+## Adding New Sources
+
+When incorporating new data sources into the `dex` sector, it's essential to properly define them in our dbt project. Here’s how to add new sources:
+
+1. **Locate the Source YML File**: Navigate to `sources/_sector/dex/trades/[blockchain]` in the project directory.
+
+2. **Edit the `_sources.yml` File**: Within this file, you’ll define the new source tables. Provide the necessary details such as name, description, database, schema, and table identifier. Here’s an example:
+
+```yaml
+  - name: clipper_ethereum
+    tables:
+      - name: ClipperExchangeInterface_evt_Swapped
+      - name: ClipperCaravelExchange_evt_Swapped
+      - name: ClipperVerifiedCaravelExchange_evt_Swapped
+      - name: ClipperApproximateCaravelExchange_evt_Swapped
+```
+
+## Defining Model Schemas
+
+For each model in the DEX sector, we must define its schema. This schema outlines the structure of the model and the definitions of its columns. Here’s how to add a schema for a model:
+
+1. **Locate the Schema YML File**: Go to `models/_sector/dex/trades/[blockchain]` in the project directory.
+2. **Edit the `_schema.yml` File**: Add the schema definition for your model. This includes specifying column names, types, descriptions, and any tests that should be applied to the columns. For example:
+
+```yaml
+  - name: uniswap_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, hosuke
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            version: 2
+```
+
+## Model Config Settings
+  - Include both schema and alias, avoiding schema addition to project files.
+  - Retain table configs as incremental/merge/delta.
+  - Add incremental predicates for targeted filtering.
+
+Example config block:
+```yaml
+{{ config(
+    schema = 'uniswap_v2_ethereum'
+    , alias = 'base_trades'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 ```
