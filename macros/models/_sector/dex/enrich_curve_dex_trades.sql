@@ -129,14 +129,14 @@ WITH base_trades as (
         token_enrichments AS te
     LEFT JOIN
         prices as p_bought
-        ON p_bought.minute = date_trunc('minute', base_trades.block_time)
-        AND p_bought.contract_address = base_trades.token_bought_address
-        AND p_bought.blockchain = base_trades.blockchain
+        ON p_bought.minute = date_trunc('minute', te.block_time)
+        AND p_bought.contract_address = te.token_bought_address
+        AND p_bought.blockchain = te.blockchain
     LEFT JOIN
         prices as p_sold
-        ON p_sold.minute = date_trunc('minute', base_trades.block_time)
-        AND p_sold.contract_address = base_trades.token_sold_address
-        AND p_sold.blockchain = base_trades.blockchain
+        ON p_sold.minute = date_trunc('minute', te.block_time)
+        AND p_sold.contract_address = te.token_sold_address
+        AND p_sold.blockchain = te.blockchain
 
 )
 select
