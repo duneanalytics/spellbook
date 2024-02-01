@@ -6,9 +6,16 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'margin', 'protocol_version']
+    unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'margin', 'protocol_version'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
+
+
+{% if is_incremental() %}
+    AND {{incremental_predicate('b.block_time')}}
+    {% endif %}
+
 
 WITH 
 
@@ -119,7 +126,7 @@ add_margin_v2 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_arbitrum', add_margin_trading_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('evt_block_time')}}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
