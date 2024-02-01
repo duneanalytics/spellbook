@@ -46,3 +46,9 @@ models:
       - &block_number
         name: block_number
         description: Block number that pool was deployed
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - pool_address
