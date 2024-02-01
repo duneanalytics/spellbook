@@ -1,7 +1,7 @@
 version: 2
 sources:
   - name: tokens_aave_v3
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: tokens
         columns:
@@ -24,7 +24,7 @@ sources:
 
 
   - name: tokens_ovm_optimism
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: l2_token_factory
         columns:
@@ -49,7 +49,7 @@ sources:
 
 
   - name: tokens_the_granary_optimism
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: tokens
         columns:
@@ -72,7 +72,7 @@ sources:
 
 
   - name: tokens
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -100,7 +100,7 @@ sources:
 
 
   - name: tokens_arbitrum
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -112,7 +112,7 @@ sources:
             data_type: integer
 
   - name: tokens_avalanche_c
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -125,7 +125,7 @@ sources:
 
 
   - name: tokens_base
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -138,7 +138,7 @@ sources:
 
 
   - name: tokens_bnb
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: bep20
         columns:
@@ -151,7 +151,7 @@ sources:
 
 
   - name: tokens_celo
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -164,7 +164,7 @@ sources:
 
 
   - name: tokens_ethereum
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -184,7 +184,7 @@ sources:
 
 
   - name: tokens_fantom
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -196,7 +196,7 @@ sources:
             data_type: integer
 
   - name: tokens_goerli
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -208,7 +208,7 @@ sources:
             data_type: integer
 
   - name: tokens_gnosis
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -221,7 +221,7 @@ sources:
 
 
   - name: tokens_optimism
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -284,7 +284,7 @@ sources:
 
 
   - name: tokens_polygon
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -297,7 +297,7 @@ sources:
 
 
   - name: tokens_zksync
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -310,7 +310,7 @@ sources:
 
 
   - name: tokens_zora
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -323,7 +323,7 @@ sources:
 
 
   - name: tokens_yearn
-    database: hive
+    tags: ["subproject"]
     tables:
       - name: vaults
         columns:
