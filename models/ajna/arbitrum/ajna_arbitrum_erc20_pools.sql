@@ -32,8 +32,8 @@ JOIN
       {{source('ajna_arbitrum', 'ERC20PoolFactory_evt_PoolCreated')}}
   ) on call_tx_hash = evt_tx_hash
 
-{{{% if is_incremental() %}
+{% if is_incremental() %}
 
 where {{ incremental_predicate('call_block_time') }}
 
-{% endif %}}}
+{% endif %}
