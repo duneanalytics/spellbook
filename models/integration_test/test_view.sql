@@ -1,5 +1,5 @@
 {{ config(
-  tags=[ 'prod_exclude'],
+  
   materialized='view',
   schema='integration_test', 
   alias = 'test_view') }}
