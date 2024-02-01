@@ -1,4 +1,4 @@
-# README for models/_sector/dex/
+# README for `dex.trades`
 
 Welcome to the `models/_sector/dex/` directory of our project. This README provides essential information on contributing to the `dex` sector models, insights into our design choices, and outlines the next steps in the `dex.trades` redesign workstream.
 
@@ -98,6 +98,7 @@ When incorporating new data sources into the `dex` sector, it's essential to pro
 For each model in the DEX sector, we must define its schema. This schema outlines the structure of the model and the definitions of its columns. Here’s how to add a schema for a model:
 
 1. **Locate the Schema YML File**: Go to `models/_sector/dex/trades/[blockchain]` in the project directory.
+
 2. **Edit the `_schema.yml` File**: Add the schema definition for your model. This includes specifying column names, types, descriptions, and any tests that should be applied to the columns. For example:
 
 ```yaml
