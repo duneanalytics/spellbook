@@ -57,6 +57,20 @@ Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names.
   - Retain table configs as incremental/merge/delta.
   - Add incremental predicates for targeted filtering.
 
+Example config block:
+```yaml
+{{ config(
+    schema = 'uniswap_v2_ethereum'
+    , alias = 'base_trades'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['tx_hash', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+```
+
 ### Macro vs. Code in Model
 - Standalone dexes can have code directly in the model.
 - Forked dexes or repeatable logic should utilize or create macros.
