@@ -1,7 +1,6 @@
 {{  config (
         schema = 'ajna',
         alias = 'erc20_pools',
-        partition_by = ['block_time'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -46,10 +45,11 @@ FROM (
       , starting_interest_rate
       , tx_hash
       , block_time
+      , block_date
       , block_number
       FROM {{ i }}
       {% if is_incremental() %}
-      WHERE block_time >= date_trunc('day', now() - interval '1' Day)
+      WHERE {{ incremental_predicate('block_date') }}
       {% endif %}
       {% if not loop.last %}
       UNION ALL

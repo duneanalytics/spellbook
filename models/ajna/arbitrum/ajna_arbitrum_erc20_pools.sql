@@ -1,7 +1,6 @@
 {{  config (
         schema = 'ajna_arbitrum',
         alias = 'erc20_pools',
-        partition_by = ['block_time'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -19,6 +18,7 @@ SELECT
   cast(interestRate_ as decimal (38, 0)) / 1e18 as starting_interest_rate,
   call_tx_hash as tx_hash,
   call_block_time as block_time,
+  date_trunc('day', call_block_time) as block_date,
   call_block_number as block_number
 FROM
   {{ source('ajna_arbitrum', 'ERC20PoolFactory_call_deployPool')}}
@@ -32,8 +32,8 @@ JOIN
       {{source('ajna_arbitrum', 'ERC20PoolFactory_evt_PoolCreated')}}
   ) on call_tx_hash = evt_tx_hash
 
-{% if is_incremental() %}
+{{{% if is_incremental() %}
 
-    WHERE call_block_time >= date_trunc('day', now() - interval '1' day)
+where {{ incremental_predicate('call_block_time') }}
 
-{% endif %}
+{% endif %}}}

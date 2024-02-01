@@ -34,6 +34,9 @@ models:
       - &block_time
         name: block_time
         description: Time of deployment
+      - &block_date
+        name: block_date
+        description: Date of deployment
       - &block_number
         name: block_number
         description: Block number that pool was deployed

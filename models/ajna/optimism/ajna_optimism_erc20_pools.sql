@@ -1,7 +1,6 @@
 {{  config (
         schema = 'ajna_optimism',
         alias = 'erc20_pools',
-        partition_by = ['block_time'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -34,6 +33,6 @@ JOIN
 
 {% if is_incremental() %}
 
-    WHERE call_block_time >= date_trunc('day', now() - interval '1' day)
+where {{ incremental_predicate('call_block_time') }}
 
 {% endif %}
