@@ -18,6 +18,7 @@ SELECT
   cast(interestRate_ as decimal (38, 0)) / 1e18 as starting_interest_rate,
   call_tx_hash as tx_hash,
   call_block_time as block_time,
+  date_trunc('day', call_block_time) as block_date,
   call_block_number as block_number
 FROM
   {{ source('ajna_optimism', 'ERC20PoolFactory_call_deployPool')}}
