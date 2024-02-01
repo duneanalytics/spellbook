@@ -81,7 +81,7 @@ borrows as (
         AND cl.call_block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
     INNER JOIN 
-    {{ ref('tokens_ethereum_erc20') }} er 
+    {{ source('tokens_ethereum', 'erc20') }} er 
         ON  b.lien_token = er.contract_address
 ), 
 
