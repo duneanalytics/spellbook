@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         project: [ 'tokens', 'spellbook' ]
-      max-parallel: 1
+      max-parallel: 2
     timeout-minutes: 90
 
     steps:

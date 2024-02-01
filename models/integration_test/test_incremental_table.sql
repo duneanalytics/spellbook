@@ -1,5 +1,5 @@
 {{ config(
-        tags=[ 'prod_exclude'],
+        
         alias = 'test_incremental_table',
         materialized ='incremental',
         file_format ='delta',
