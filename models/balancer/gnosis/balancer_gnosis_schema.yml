@@ -364,9 +364,9 @@ models:
             - evt_index
             - block_date
     columns:
-      - *blockchain
-      - *contract_address
-      - *block_date
+      - name: blockchain
+      - name: contract_address
+      - name: block_date
       - name: block_month
       - &evt_tx_hash
         name: evt_tx_hash
