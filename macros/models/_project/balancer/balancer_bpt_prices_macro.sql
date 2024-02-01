@@ -216,4 +216,5 @@ WITH pool_labels AS (
     AND l.day = s.day
     WHERE supply > 0
 
+
     {% endmacro %}
