@@ -39,6 +39,7 @@ FROM
     ('dvf-rhinofi','arbitrum','DVF',0xa7aa2921618e3d63da433829d448b58c9445a4c3,18),
     ('eurs-stasis-eurs','arbitrum','EURS',0xd22a58f79e9481d1a88e00c343885a588b34b68b,2),
     ('frax-frax','arbitrum','FRAX',0x17fc002b466eec40dae837fc4be5c67993ddbd6f,18),
+    ('frxeth-frax-ether', 'arbitrum', 'frxETH',0x178412e79c25968a32e89b11f63B33F733770c2A,18),
     ('fuse-fuse-network','arbitrum','FUSE',0xbdef0e9ef12e689f366fe494a7a7d0dad25d9286,18),
     ('fxs-frax-share','arbitrum','FXS',0x9d2f299715d94d8a7e6f5eaa8e654e8c74a988a7,18),
     ('gmx-gmx','arbitrum','GMX',0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a,18),

@@ -32,6 +32,12 @@
     ,ref('unidex_perpetual_trades')
     ,ref('vela_exchange_perpetual_trades')
     ,ref('mux_protocol_optimism_perpetual_trades')
+    ,ref('basemax_finance_base_perpetual_trades')
+    ,ref('xena_finance_base_perpetual_trades')
+    ,ref('meridian_base_perpetual_trades')
+    ,ref('mummy_finance_base_perpetual_trades')
+    ,ref('voodoo_trade_base_perpetual_trades')
+    ,ref('bmx_base_perpetual_trades')
     ,ref('nether_fi_base_perpetual_trades')
 ] %}
 
