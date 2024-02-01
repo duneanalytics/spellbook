@@ -31,6 +31,7 @@ JOIN
     from
       {{source('ajna_optimism', 'ERC20PoolFactory_evt_PoolCreated')}}
   ) on call_tx_hash = evt_tx_hash
+  and output_pool_ = pool_
 
 {% if is_incremental() %}
 
