@@ -36,7 +36,7 @@ The `dex.trades` redesign focuses on implementing improvements across all sector
 ### Data Flow Architecture
 Below is a diagram illustrating the `dex.trades` architecture. This visual guide helps to understand how base trades compatible macros are used to feed into our `dex.trades` data model, showing the flow from source tables (like decoded swap and pair created event source tables) to the final enriched `dex.trades` view. It also highlights the integration of various chain-specific base trades and the enrichment process through macros.
 
-![DEX.Trades Architecture Diagram](dex_trades_architecture_overview.jpg)
+![DEX.Trades Architecture Diagram](https://github.com/duneanalytics/spellbook/assets/102681548/236e0920-8073-44c9-9cde-e0219d236101)
 
 ### Core Components
 - **Base Project-Level Spells**: Contain only data from raw & decoded source tables, serving as building blocks for `dex.trades`.
