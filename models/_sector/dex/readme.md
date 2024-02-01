@@ -35,7 +35,7 @@ Below is a diagram illustrating the `dex.trades` architecture. This visual guide
 
 ![DEX.Trades Architecture Diagram](dex_trades_architecture_overview.jpg)
 
-### Key Initiatives
+### Core Components
 - **Base Project-Level Spells**: Contain only data from raw & decoded source tables, serving as building blocks for `dex.trades`.
 - **Chain Union Spells**: Utilize a dbt macro to standardize a union of input spells on the same blockchain.
 - **Sector Union Spell**: Enriches the raw/decoded data with necessary metadata at the `dex.trades` level.
