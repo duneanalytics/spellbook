@@ -103,4 +103,4 @@ from sent_transfers
 union all
 select 'ethereum' as blockchain, wallet_address, token_address, evt_block_time, tokenId, amount, evt_tx_hash, unique_tx_id
 from received_transfers
-limit 100
+limit 200
