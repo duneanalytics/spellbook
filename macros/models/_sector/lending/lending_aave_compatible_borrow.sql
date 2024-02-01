@@ -222,11 +222,10 @@ from base_borrow
     blockchain,
     project,
     version,
-    project_decoded_as = 'aave_v3'
+    project_decoded_as = 'aave_v3',
+    decoded_contract_name = 'Pool'
   )
 %}
-
-{%- set decoded_contract_name = 'L2Pool' if blockchain == 'arbitrum' else 'Pool' -%}
 
 with 
 

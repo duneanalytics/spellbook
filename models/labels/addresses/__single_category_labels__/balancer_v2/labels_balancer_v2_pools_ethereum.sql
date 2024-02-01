@@ -1,10 +1,5 @@
 {{config(
   alias = 'balancer_v2_pools_ethereum',
-  materialized = 'incremental',
-  
-  file_format = 'delta',
-  incremental_strategy = 'merge',
-  unique_key = ['address'],
   post_hook = '{{ expose_spells(\'["ethereum"]\',
                                "sector",
                                "labels",
@@ -32,10 +27,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
   UNION ALL
@@ -60,10 +51,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
   UNION ALL
@@ -88,10 +75,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
   UNION ALL
@@ -116,10 +99,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
   UNION ALL
@@ -144,10 +123,6 @@ WITH pools AS (
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
     CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
     WHERE t.pos = w.pos
-    {% if is_incremental() %}
-      AND c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-      AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
   ) zip
 
 
@@ -165,10 +140,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -183,10 +154,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -201,10 +168,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -219,10 +182,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -237,10 +196,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -255,10 +210,6 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
 
   UNION ALL
 
@@ -273,11 +224,22 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
-  {% if is_incremental() %}
-  WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND cc.call_block_time >= date_trunc('day', now() - interval '7' day)
-  {% endif %}
+
+  UNION ALL
+
+  SELECT
+    c.poolId AS pool_id,
+    t.tokens AS token_address,
+    0 AS normalized_weight,
+    cc.symbol,
+    'ECLP' AS pool_type
+  FROM {{ source('balancer_v2_ethereum', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('gyroscope_ethereum', 'GyroECLPPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
 ),
+
 settings AS (
   SELECT
     pool_id,
@@ -286,13 +248,13 @@ settings AS (
     p.symbol AS pool_symbol,
     p.pool_type
   FROM pools p
-  LEFT JOIN {{ ref('tokens_erc20') }} t ON p.token_address = t.contract_address
+  LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
 )
 
 SELECT 
   'ethereum' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('SP', 'LP', 'LBP') 
+  CASE WHEN pool_type IN ('SP', 'LP', 'LBP', 'ECLP') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))

@@ -118,6 +118,7 @@ models:
           filter:
             version: 3
 
+
   - name: apeswap_polygon_base_trades
     meta:
       blockchain: polygon
@@ -136,6 +137,7 @@ models:
           seed_file: ref('apeswap_polygon_base_trades_seed')    
           filter:
             version: 2
+
 
   - name: balancer_v2_polygon_base_trades
     meta:
@@ -156,6 +158,7 @@ models:
           filter:
             version: 2
 
+
   - name: honeyswap_v2_polygon_base_trades
     meta:
       blockchain: polygon
@@ -175,6 +178,7 @@ models:
           filter:
             version: 2
 
+
   - name: fraxswap_polygon_base_trades
     meta:
       blockchain: polygon
@@ -193,3 +197,107 @@ models:
           seed_file: ref('fraxswap_polygon_base_trades_seed')
           filter:
             version: 1
+
+
+  - name: dodo_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: dodo
+      contributors: owen05, scoffie, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'dodo' ]
+    description: "Dodo polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dodo_polygon_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2_dvm
+              - 2_dpp
+              - 2_dsp
+
+
+  - name: clipper_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: clipper
+      contributors: 0xRob, amalashkevich, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'clipper' ]
+    description: "clipper polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_polygon_base_trades_seed')
+          filter:
+            version:
+              - coves1
+              - 1
+              - 2
+
+
+  - name: kyberswap_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: kyberswap
+      contributors: nhd98z, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_polygon_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic_2
+
+
+  - name: xchange_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: xchange
+      contributors: mike-x7f, tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+    description: "xchange polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xchange_polygon_base_trades_seed')
+
+  - name: dooar_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: dooar
+      contributors: tomfutago
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'dooar', 'uniswap' ]
+    description: "Dooar polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dooar_polygon_base_trades_seed')

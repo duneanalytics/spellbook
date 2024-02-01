@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: sushi_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: SushiV2Factory_evt_PairCreated
+  - name: sushi_v2_fantom
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: spiritswap_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: spookyswap_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: wigoswap_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: equalizer_exchange_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: spartacus_exchange_fantom
+    tables:
+      - name: Pair_evt_Swap
+      - name: BaseV1Factory_evt_PairCreated
+  - name: open_ocean_fantom
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
+  - name: curvefi_fantom
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: StableSwap_evt_TokenExchangeUnderlying

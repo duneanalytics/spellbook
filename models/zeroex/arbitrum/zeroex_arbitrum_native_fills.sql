@@ -68,8 +68,8 @@ WITH
                     WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.makerToken
                 END = mp.contract_address
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
-        LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
+        LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
+        LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
          where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -129,8 +129,8 @@ WITH
                     WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
        where 1=1   
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -189,8 +189,8 @@ WITH
                     WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
                     ELSE fills.makerToken
               END = mp.contract_address
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
-      LEFT OUTER JOIN {{ ref('tokens_erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} mt ON mt.contract_address = fills.makerToken and mt.blockchain = 'arbitrum'
+      LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tt ON tt.contract_address = fills.takerToken and tt.blockchain = 'arbitrum'
        where 1=1  
                 {% if is_incremental() %}
                 AND evt_block_time >= date_trunc('day', now() - interval '7' day)

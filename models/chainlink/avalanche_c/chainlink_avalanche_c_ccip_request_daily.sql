@@ -11,43 +11,63 @@
 }}
 
 {% set incremental_interval = '7' %}
-{% set truncate_by = 'day' %}
 
 WITH
-  ccip_request_daily_meta AS (
-    SELECT
-      COALESCE(
-        cast(date_trunc('{{truncate_by}}', fulfilled.block_time) as date),
-        cast(date_trunc('{{truncate_by}}', reverted.block_time) as date)
-      ) AS "date_start",      
-      COALESCE(COUNT(fulfilled.token_amount), 0) as fulfilled_requests,
-      COALESCE(COUNT(reverted.token_amount), 0) as reverted_requests,
-      COALESCE(COUNT(fulfilled.token_amount), 0) + COALESCE(COUNT(reverted.token_amount), 0) as total_requests
-    FROM
-      {{ ref('chainlink_avalanche_c_ccip_fulfilled_transactions') }} fulfilled
-      FULL OUTER JOIN {{ ref('chainlink_avalanche_c_ccip_reverted_transactions') }} reverted ON
-        reverted.block_time = fulfilled.block_time AND
-        reverted.node_address = fulfilled.node_address
-    {% if is_incremental() %}
-      WHERE
-        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-        AND reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-    {% endif %}
-    GROUP BY
-      1
-    ORDER BY
-      1
-  ),
-  ccip_request_daily AS (
-    SELECT
-      'avalanche_c' as blockchain,
-      date_start,
-      cast(date_trunc('month', date_start) as date) as date_month,
-      fulfilled_requests,
-      reverted_requests,
-      total_requests
-    FROM ccip_request_daily_meta
-  )
+ethereum_agg AS (
+        SELECT
+            date_start,
+            (
+                SELECT
+                    COUNT(*)
+                FROM
+                    {{ ref('chainlink_avalanche_c_ccip_fulfilled_transactions') }} eth
+                WHERE
+                    eth.date_start = date_series.date_start
+                {% if is_incremental() %}
+                    AND eth.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                {% endif %}
+            ) AS fulfilled_requests,
+            (
+                SELECT
+                    COUNT(*)
+                FROM
+                    {{ ref('chainlink_avalanche_c_ccip_reverted_transactions') }} rev
+                WHERE
+                    rev.date_start = date_series.date_start
+                {% if is_incremental() %}
+                    AND rev.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                {% endif %}
+            ) AS reverted_requests
+        FROM
+            (
+                SELECT
+                    date_start
+                FROM
+            (
+                SELECT
+                    sequence (
+                        CAST('2023-07-06' AS date),
+                        date_trunc ('day', cast(now () AS date)),
+                        INTERVAL '1' day
+                    ) AS date_sequence
+            ) AS seq
+            CROSS JOIN UNNEST (seq.date_sequence) AS t (date_start)
+            {% if is_incremental() %}
+                    WHERE date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+            {% endif %}
+            ) date_series
+    ),
+    ccip_request_daily as (
+        SELECT
+            'avalanche_c' as blockchain,
+            cast(date_trunc('month', date_start) as date) as date_month,
+            date_start,
+            fulfilled_requests,
+            reverted_requests,
+            fulfilled_requests + reverted_requests AS total_requests
+        FROM
+            ethereum_agg
+    )
 SELECT 
   ccip_request_daily.blockchain,
   date_start,

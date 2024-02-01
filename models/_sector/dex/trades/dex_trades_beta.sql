@@ -10,11 +10,12 @@
     )
 }}
 
+
 -- macros/models/_sector/dex
 {{
     enrich_dex_trades(
         base_trades = ref('dex_base_trades')
-        , tokens_erc20_model = ref('tokens_erc20')
+        , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
     )
 }}

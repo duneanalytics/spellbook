@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - tx_index
+            - trace_address
             - node_address
     columns:
       - &blockchain
@@ -24,24 +24,18 @@ models:
       - &block_time
         name: block_time
         description: "Block Time"
-      - &date_month
-        name: date_month
-        description: "Date Month"
+      - &date_start
+        name: date_start
+        description: "Date Start"
       - &node_address
         name: node_address
         description: "Node Address"
-      - &token_amount
-        name: token_amount
-        description: "Token Amount"
-      - &usd_amount
-        name: usd_amount
-        description: "USD Amount"
       - &tx_hash
         name: tx_hash
         description: "Transaction Hash"
-      - &tx_index
-        name: tx_index
-        description: "Transaction Index"
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
 
   - name: chainlink_base_ccip_gas_daily
     meta:
@@ -60,10 +54,10 @@ models:
             - node_address
     columns:
       - *blockchain
-      - &date_start
-        name: date_start
-        description: "Date Start"
-      - *date_month
+      - *date_start
+      - &date_month
+        name: date_month
+        description: "Date Month"
       - *node_address
       - &operator_name
         name: operator_name
@@ -129,15 +123,15 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
+            - trace_address
             - node_address
     columns:
       - *blockchain
       - *block_time
-      - *date_month
+      - *date_start
       - *node_address
-      - *token_amount
-      - *usd_amount
       - *tx_hash
+      - *trace_address
 
   - name: chainlink_base_ccip_reward_daily
     meta:
@@ -158,8 +152,12 @@ models:
       - *blockchain
       - *date_start
       - *date_month
-      - *token_amount
-      - *usd_amount
+      - &token_amount
+        name: token_amount
+        description: "Token Amount"
+      - &usd_amount
+        name: usd_amount
+        description: "USD Amount"
       - &token
         name: token
         description: "Token"
@@ -259,6 +257,7 @@ models:
       - &destination
         name: destination
         description: "Destination"
+      - *trace_address
 
   - name: chainlink_base_ccip_tokens_locked_logs
     meta:
@@ -296,7 +295,9 @@ models:
       - &index
         name: index
         description: "Index"
-      - *tx_index
+      - &tx_index
+        name: tx_index
+        description: "Transaction Index"
       - &total_tokens
         name: total_tokens
         description: "Total Tokens"

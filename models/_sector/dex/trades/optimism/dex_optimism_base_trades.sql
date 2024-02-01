@@ -14,6 +14,18 @@
     , ref('hashflow_optimism_base_trades')
     , ref('zipswap_optimism_base_trades')
     , ref('balancer_v2_optimism_base_trades')
+    , ref('wardenswap_optimism_base_trades')
+    , ref('dodo_optimism_base_trades')
+    , ref('kyberswap_optimism_base_trades')
+    , ref('clipper_optimism_base_trades')
+    , ref('opx_finance_optimism_base_trades')
+    , ref('velodrome_optimism_base_trades')
+    , ref('synthetix_optimism_base_trades')
+    , ref('openxswap_optimism_base_trades')
+    , ref('openocean_optimism_base_trades')
+    , ref('chainhop_optimism_base_trades')
+    , ref('curvefi_optimism_base_trades')
+    , ref('rubicon_optimism_base_trades')
 ] %}
 
 WITH base_union AS (

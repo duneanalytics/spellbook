@@ -9,7 +9,7 @@ models:
       contributors: niftytable
     config:
       tags: ['rollup', 'l2']
-    description: Gas fees paid by rollups for posting transaction data on Ethereum
+    description: Gas fees paid by rollups for posting transaction data or state updates on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -52,7 +52,7 @@ models:
       contributors: niftytable
     config:
       tags: ['rollup', 'l2']
-    description: Gas fees paid by rollups for verifying proofs on Ethereum
+    description: Gas fees paid by rollups for posting proofs on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

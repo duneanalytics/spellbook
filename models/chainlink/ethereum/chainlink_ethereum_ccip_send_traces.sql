@@ -19,7 +19,8 @@ SELECT
   traces.tx_success,
   traces.value,
   network_meta.chain_selector as chain_selector,
-  network_meta.blockchain as destination
+  network_meta.blockchain as destination,
+  traces.trace_address
 FROM
   {{ source('ethereum', 'traces') }} traces
 left join {{ref('chainlink_ccip_network_meta')}} network_meta on network_meta.chain_selector = bytearray_to_uint256(bytearray_substring(input, 5, 32))

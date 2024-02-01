@@ -35,9 +35,9 @@ select
     ) as dst_token_address 
     , src_receiver
     , dst_receiver
-    , src_amount
-    , dst_amount
-    , dst_amount_min
+    , src_token_amount
+    , dst_token_amount
+    , dst_token_amount_min
     , call_gas_used
     , call_output
     , call_error
@@ -59,9 +59,9 @@ from (
         , {{ method_data.get("dst_token_address", "null") }} as dst_token_address
         , {{ method_data.get("src_receiver", "null") }} as src_receiver
         , {{ method_data.get("dst_receiver", "null") }} as dst_receiver
-        , {{ method_data.get("src_amount", "null") }} as src_amount
-        , {{ method_data.get("dst_amount", "null") }} as dst_amount
-        , {{ method_data.get("dst_amount_min", "null") }} as dst_amount_min
+        , {{ method_data.get("src_token_amount", "null") }} as src_token_amount
+        , {{ method_data.get("dst_token_amount", "null") }} as dst_token_amount
+        , {{ method_data.get("dst_token_amount_min", "null") }} as dst_token_amount_min
         , call_gas_used
         , call_output
         , call_error
