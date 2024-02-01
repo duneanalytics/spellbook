@@ -3,8 +3,9 @@
         alias = 'erc20_pools',
         partition_by = ['block_time'],
         materialized = 'incremental',
+        file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'collateral', 'quote', 'pool_address'],
+        unique_key = ['blockchain', 'pool_address'],
         post_hook= '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon"]\',
                        "project", "ajna",
                        \'["gunboats"]\'
