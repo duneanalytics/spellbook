@@ -20,7 +20,7 @@ select
 FROM {{ ref('test_view') }}
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where evt_block_time > date_trunc('day', now() - interval '2' day) 
+where evt_block_time > date_trunc('day', now() - interval '1' day) 
 {% endif %}
 group by
     date_trunc('day', evt_block_time), wallet_address, token_address, tokenId, unique_tx_id
