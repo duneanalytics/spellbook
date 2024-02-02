@@ -35,6 +35,7 @@
     , ref('smardex_arbitrum_base_trades')
     , ref('swaap_v2_arbitrum_base_trades')
     , ref('woofi_arbitrum_base_trades')
+    , ref('zigzag_arbitrum_base_trades')
     , ref('gridex_arbitrum_base_trades')
 ] %}
 

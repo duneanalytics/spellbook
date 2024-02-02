@@ -555,6 +555,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('apeswap_arbitrum_base_trades_seed')
+
+  - name: zigzag_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      pproject: zigzag
+      contributors: jeff-dude, masquot, soispoke, mtitus6, hosuke
+    config:
+        tags: [ 'arbitrum','trades', 'zigzag','dex' ]
+    description: >
+          Zigzag V1 contract trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('zigzag_arbitrum_base_trades_seed')
   
   - name: gridex_arbitrum_base_trades
     meta:
