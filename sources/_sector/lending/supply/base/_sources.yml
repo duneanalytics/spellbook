@@ -21,3 +21,20 @@ sources:
       - name: L2Pool_evt_Supply
       - name: L2Pool_evt_Withdraw
       - name: L2Pool_evt_RedeemUnderlying
+
+  - name: moonwell_base
+    tables:
+      - name: mcbETH_evt_Mint
+      - name: mcbETH_evt_Redeem
+      - name: mDAI_evt_Mint
+      - name: mDAI_evt_Redeem
+      - name: mUSDC_evt_Mint
+      - name: mUSDC_evt_Redeem
+      - name: mUSDCnative_evt_Mint
+      - name: mUSDCnative_evt_Redeem
+      - name: mWETH_evt_Mint
+      - name: mWETH_evt_Redeem
+      - name: mwstETH_evt_Mint
+      - name: mwstETH_evt_Redeem
+      - name: mrETH_evt_Mint
+      - name: mrETH_evt_Redeem
