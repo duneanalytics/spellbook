@@ -28,6 +28,12 @@ WITH base_trades as (
         {{ incremental_predicate('minute') }}
     {% endif %}
 )
+, trusted_tokens AS (
+    SELECT
+        contract_address,
+        blockchain
+    FROM {{ ref('prices_trusted_tokens') }}
+)
 , enrichments AS (
     SELECT
         base_trades.blockchain
@@ -47,10 +53,17 @@ WITH base_trades as (
         , base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) AS token_sold_amount
         , base_trades.token_bought_amount_raw
         , base_trades.token_sold_amount_raw
-        , coalesce(
-                base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price,
-                base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
-            ) AS amount_usd
+        , CASE
+            WHEN base_trades.token_bought_address IN (SELECT contract_address FROM trusted_tokens WHERE blockchain = base_trades.blockchain)
+                THEN base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price
+            WHEN base_trades.token_sold_address IN (SELECT contract_address FROM trusted_tokens WHERE blockchain = base_trades.blockchain)
+                THEN base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
+            ELSE
+                COALESCE(
+                    base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) * p_bought.price,
+                    base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) * p_sold.price
+                )
+        END AS amount_usd
         , base_trades.token_bought_address
         , base_trades.token_sold_address
         , coalesce(base_trades.taker, base_trades.tx_from) AS taker
