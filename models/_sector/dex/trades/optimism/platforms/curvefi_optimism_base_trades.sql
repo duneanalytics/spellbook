@@ -161,20 +161,24 @@ SELECT
         AND cp.sold_id = tb.tokenid
 )
 SELECT DISTINCT
-    'optimism' AS blockchain,
-    'curve' AS project,
-    '1' AS version,
-    CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date,
-    CAST(date_trunc('MONTH', dexs.block_time) AS date) AS block_month,
-    dexs.block_time,
-    dexs.block_number,
-    dexs.token_bought_amount_raw,
-    dexs.token_sold_amount_raw,
-    dexs.token_bought_address,
-    dexs.token_sold_address,
-    dexs.taker,
-    dexs.maker,
-    dexs.project_contract_address,
-    dexs.tx_hash,
-    dexs.evt_index
+    'optimism' AS blockchain
+    ,'curve' AS project
+    ,'1' AS version
+    ,CAST(date_trunc('DAY', dexs.block_time) AS date) AS block_date
+    ,CAST(date_trunc('MONTH', dexs.block_time) AS date) AS block_month
+    ,dexs.block_time
+    ,dexs.block_number
+    ,dexs.token_bought_amount_raw
+    ,dexs.token_sold_amount_raw
+    ,dexs.token_bought_address
+    ,dexs.token_sold_address
+    ,dexs.taker
+    ,dexs.maker
+    ,dexs.project_contract_address
+    ,dexs.tx_hash
+    ,dexs.evt_index
+
+    --unique to curve in dex lineage, pull extra columns to calculate amount / amount_usd downstream in enrichment phase
+    ,dexs.pool_type
+    ,dexs.bought_id
 FROM dexs
