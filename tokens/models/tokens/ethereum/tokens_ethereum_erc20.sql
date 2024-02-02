@@ -38193,4 +38193,7 @@ FROM (VALUES
         ,(0xde8cd13b812bcd82218754a740b27e76ec1e86ad, 'TRESTLE', 18)
         ,(0x61a40b8f2d70a65264e5fb79d26c8b1b4c190ef4, 'RBT', 18)
         ,(0xb9f599ce614Feb2e1BBe58F180F370D05b39344E, 'PORK', 18)
+        ,(0x609c117183c9264af6ee54fe3f290f212b31afbf, 'μϾ721', 18)
+        ,(0x9f83ed4fdf636e8b0562ac704267346712b44c36, 'μMFER', 18)
+        ,(0xad161afae7db2a048b042bd68e11c38c9c042cc1, 'μNKMGS', 18)
      ) AS temp_table (contract_address, symbol, decimals)

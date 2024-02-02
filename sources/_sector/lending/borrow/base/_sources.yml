@@ -23,3 +23,27 @@ sources:
       - name: L2Pool_evt_Borrow
       - name: L2Pool_evt_Repay
       - name: L2Pool_evt_LiquidationCall
+
+  - name: moonwell_base
+    tables:
+      - name: mcbETH_evt_Borrow
+      - name: mcbETH_evt_RepayBorrow
+      - name: mcbETH_evt_LiquidateBorrow
+      - name: mDAI_evt_Borrow
+      - name: mDAI_evt_RepayBorrow
+      - name: mDAI_evt_LiquidateBorrow
+      - name: mUSDC_evt_Borrow
+      - name: mUSDC_evt_RepayBorrow
+      - name: mUSDC_evt_LiquidateBorrow
+      - name: mUSDCnative_evt_Borrow
+      - name: mUSDCnative_evt_RepayBorrow
+      - name: mUSDCnative_evt_LiquidateBorrow
+      - name: mWETH_evt_Borrow
+      - name: mWETH_evt_RepayBorrow
+      - name: mWETH_evt_LiquidateBorrow
+      - name: mwstETH_evt_Borrow
+      - name: mwstETH_evt_RepayBorrow
+      - name: mwstETH_evt_LiquidateBorrow
+      - name: mrETH_evt_Borrow
+      - name: mrETH_evt_RepayBorrow
+      - name: mrETH_evt_LiquidateBorrow
