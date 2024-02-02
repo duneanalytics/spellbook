@@ -17,10 +17,10 @@ with dexs as (
       from_hex(json_extract_scalar(zzmo.makerOrder, '$.buyToken')) as token_bought_address,
       cast(json_extract_scalar(zzmo.output_matchedFillResults, '$.takerSellFilledAmount') as UINT256) as token_bought_amount_raw,
       cast(json_extract_scalar(zzmo.output_matchedFillResults, '$.makerSellFilledAmount') as UINT256) as token_sold_amount_raw,
-      NULL AS amount_usd,
       from_hex(json_extract_scalar(zzmo.makerOrder, '$.user')) as maker,
       from_hex(json_extract_scalar(zzmo.takerOrder, '$.user')) as taker,
       call_tx_hash as tx_hash,
+      call_block_number as block_number,
       row_number() OVER(PARTITION BY call_tx_hash ORDER BY zzmo.makerOrder) AS evt_index, --prevent duplicates
       contract_address as project_contract_address
     from
