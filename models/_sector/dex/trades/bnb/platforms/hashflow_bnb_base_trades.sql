@@ -29,7 +29,7 @@ with dexs AS (
             baseToken               AS token_sold_address,
             contract_address        AS project_contract_address,
             evt_tx_hash             AS tx_hash,
-            evt_index
+            evt_index,
             evt_block_number        AS block_number
         FROM {{ evt_trade_table }}
         {% if is_incremental() %}
