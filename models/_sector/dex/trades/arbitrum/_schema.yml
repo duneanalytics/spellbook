@@ -555,3 +555,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('apeswap_arbitrum_base_trades_seed')
+  
+  - name: gridex_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gridex
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'gridex']
+    description: "gridex Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gridex_arbitrum_base_trades_seed')
