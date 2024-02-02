@@ -9,6 +9,10 @@ models:
     config:
       tags: ["base", "ajna"]
     description: List of ERC20 pools deployed on Ajna
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
     columns:
       - &blockchain
         name: blockchain
@@ -40,8 +44,3 @@ models:
       - &block_number
         name: block_number
         description: Block number that pool was deployed
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - pool_address
