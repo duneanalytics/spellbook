@@ -12,11 +12,6 @@
 }}
 
 
-{% if is_incremental() %}
-    AND {{incremental_predicate('b.block_time')}}
-    {% endif %}
-
-
 WITH 
 
 {% set add_margin_v1_evt_tables = [
