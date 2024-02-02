@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: tokens_optimism_erc20
+    meta:
+      blockchain: optimism
+      sector: tokens
+      project: erc20
+      contributors: msilb7
+    config:
+      tags: ['table', 'erc20', 'optimism']
+    description: "All ERC20 Token Addresses on Optimism - with mapped Symbols and Decimals if known."
+    columns:
+      - &contract_address
+        name: contract_address
+        description: "ERC20 token contract address on Optimism"
+        tests:
+          - unique
+      - &symbol
+        name: symbol
+        description: "ERC20 token symbol"
+      - &decimals
+        name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"
+      - &token_type
+        name: token_type
+        description: "Is this token a receipt (vault, LP, etc) token, or a lowest-level underlying token (i.e. USDC, DAI, OP)?"
+      - &token_mapping_source
+        name: token_mapping_source
+        description: "The source of ERC20 Token Information (i.e. manual, contract factory)"
+      - &is_counted_in_tvl
+        name: is_counted_in_tvl
+        description: "Is this a token whose value we should count in total value calculations? (i.e. we don't want to double count value)"
+
+  - name: tokens_optimism_erc20_curated
+    meta:
+      blockchain: optimism
+      sector: tokens
+      project: erc20
+      contributors: msilb7
+    config:
+      tags: ['table', 'erc20', 'optimism']
+    description: "Manually identified ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - *contract_address
+      - *symbol
+      - *decimals
+      - *token_type
+      - *token_mapping_source
+
+  - name: tokens_optimism_erc20_generated
+    meta:
+      blockchain: optimism
+      sector: tokens
+      project: erc20
+      contributors: msilb7
+    config:
+      tags: ['table', 'erc20', 'optimism']
+    description: "Query generated ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - *contract_address
+      - *symbol
+      - *decimals
+      - *token_type
+      - *token_mapping_source
+
+  - name: tokens_optimism_erc20_transfer_source
+    meta:
+      blockchain: optimism
+      sector: tokens
+      project: erc20
+      contributors: msilb7
+    config:
+      tags: ['table', 'erc20', 'optimism']
+    description: "All ERC20 tokens that have emitted a transfer event"
+    columns:
+      - *contract_address
+      - name: latest_transfer
+        description: "Latest Block Time of the transaction which emitted a transfer event for this token"
+
+  - name: tokens_optimism_erc20_bridged_mapping
+    meta:
+      blockchain: optimism
+      sector: erc20
+      contributors: msilb7
+    config:
+      tags: ['tokens', 'optimism', 'bridge', 'erc20']
+    description: >
+        Selection of ERC20 token addresses bridged from Ethereum to Optimism.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - l1_token
+            - l2_token
+    columns:
+      - name: l1_token
+        description: "Token Address on L1"
+      - name: l2_token
+        description: "Token Address on L2"
+      - name: l1_symbol
+        description: "Token Symbol on L1, if it's in the ethereum erc20 tokens table"
+      - name: l1_decimals
+        description: "Token Decimals on L1, if it's in the ethereum erc20 tokens table"

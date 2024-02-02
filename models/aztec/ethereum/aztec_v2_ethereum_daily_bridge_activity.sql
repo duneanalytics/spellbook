@@ -91,6 +91,6 @@ token_prices as (
         , dt.output_value_norm * COALESCE(p.price_usd, b.price) as output_volume_usd
         , dt.output_value_norm * COALESCE(p.price_eth, b.price_eth) as output_volume_eth
     from daily_transfers dt
-    LEFT JOIN {{ref('tokens_erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
+    LEFT JOIN {{source('tokens', 'erc20')}} er ON dt.token_address = er.contract_address AND er.blockchain = 'ethereum'
     LEFT join token_prices p on dt.date = p.day and dt.token_address = p.token_address AND dt.token_address != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
     LEFT JOIN token_prices_eth b on dt.date = b.day AND dt.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -- using this to get price for missing ETH token 

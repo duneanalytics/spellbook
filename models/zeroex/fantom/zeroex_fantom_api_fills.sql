@@ -336,5 +336,5 @@ AND mp.minute >= date_trunc('day', now() - interval '7' day)
 AND mp.minute >= TIMESTAMP '{{zeroex_v3_start_date}}'
 {% endif %}
 
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'fantom'
-LEFT OUTER JOIN {{ ref('tokens_erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'fantom'
+LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'fantom'
+LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'fantom'

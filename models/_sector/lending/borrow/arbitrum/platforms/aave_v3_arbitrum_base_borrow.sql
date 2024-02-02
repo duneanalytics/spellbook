@@ -14,6 +14,7 @@
   lending_aave_v3_compatible_borrow(
     blockchain = 'arbitrum',
     project = 'aave',
-    version = '3'
+    version = '3',
+    decoded_contract_name = 'L2Pool'
   )
 }}

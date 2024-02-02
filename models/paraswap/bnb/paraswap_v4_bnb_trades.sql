@@ -94,9 +94,9 @@ INNER JOIN {{ source('bnb', 'transactions') }} tx ON d.tx_hash = tx.hash
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} e1 ON e1.contract_address = d.token_bought_address
+LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
     AND e1.blockchain = 'bnb'
-LEFT JOIN {{ ref('tokens_erc20') }} e2 on e2.contract_address = d.token_sold_address
+LEFT JOIN {{ source('tokens', 'erc20') }} e2 on e2.contract_address = d.token_sold_address
     AND e2.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d.block_time)
     AND p1.contract_address = d.token_bought_address

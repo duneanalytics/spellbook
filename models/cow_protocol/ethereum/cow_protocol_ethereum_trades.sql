@@ -91,9 +91,9 @@ trades_with_token_units as (
            sell_price,
            buy_price
     FROM trades_with_prices
-             LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} ts
+             LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} ts
                              ON ts.contract_address = sell_token
-             LEFT OUTER JOIN {{ ref('tokens_ethereum_erc20') }} tb
+             LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tb
                              ON tb.contract_address =
                                 (CASE
                                      WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee

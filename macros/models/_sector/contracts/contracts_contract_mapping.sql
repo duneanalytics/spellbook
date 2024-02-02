@@ -112,7 +112,7 @@ WITH get_contracts as (
   left join (
         select
           '{{chain}}' as blockchain, e.contract_address, e.symbol, 'erc20' as token_standard
-        FROM {{ ref('tokens_' + chain + '_' + standard_name + '20')}} e --note: This doesn't yet contain all ERC20 tokens
+        FROM {{ source('tokens_' + chain, standard_name + '20')}} e --note: This doesn't yet contain all ERC20 tokens
         -- WHERE e.blockchain = '{{chain}}'
         GROUP BY 1,2,3,4
       UNION ALL

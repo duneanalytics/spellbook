@@ -1,0 +1,95 @@
+version: 2
+
+models:
+  - name: bridge_zksync_native_flows
+    meta:
+      project: zksync
+      contributors: lgingerich
+    config:
+      tags: ['bridge','native_bridge', 'flows', 'cross-chain', 'zksync']
+    description: >
+        Table aggregating bridge transfers through zkSync Era's Native Bridge.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - tx_hash
+              - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: Bridge protocol blockchain
+      - &project
+        name: project
+        description: Bridge protocol project
+      - &version
+        name: version
+        description: Bridge protocol version
+      - &block_time
+        name: block_time
+        description: block time of the transaction
+      - &block_date
+        name: block_date
+        description: Date of the block time
+      - &block_month
+        name: block_month
+        description: Month of the block time
+      - &block_number
+        name: block_number
+        description: Block number of the transaction
+      - &tx_hash
+        name: tx_hash
+        description: Transaction hash
+      - &evt_index
+        name: evt_index
+        description: Index value of the transaction"
+      - &sender_address
+        name: sender_address
+        description: Address initiating the bridge transaction
+      - &receiver_address
+        name: receiver_address
+        description: Address receiving the assets of the source bridge transaction
+      - &token_symbol
+        name: token_symbol
+        description: Symbol of the token being bridged
+      - &token_amount
+        name: token_amount
+        description: Decimal amount of the token being bridged
+      - &token_amount_usd
+        name: token_amount_usd
+        description: USD amount of the token being bridged
+      - &token_amount_raw
+        name: token_amount_raw
+        description: Raw amount of the token being bridged
+      - &fee_amount
+        name: fee_amount
+        description: Decimal bridge fee
+      - &fee_amount_usd
+        name: fee_amount_usd
+        description: USD bridge fee
+      - &fee_amount_raw
+        name: fee_amount_raw
+        description: Raw bridge fee
+      - &source_chain_id
+        name: source_chain_id
+        description: Source Chain ID (EIP-155)
+      - &destination_chain_id
+        name: destination_chain_id
+        description: Destination Chain ID (EIP-155)
+      - &source_chain_name
+        name: source_chain_name
+        description: Source Chain Name (EIP-155)
+      - &destination_chain_name
+        name: destination_chain_name
+        description: Destination Chain ID (EIP-155)
+      - &is_native_bridge
+        name: is_native_bridge
+        description: Boolean flag for native vs. non-native bridges
+      - &tx_from
+        name: tx_from
+        description: Transaction from address
+      - &tx_to
+        name: tx_to
+        description: Transaction to address
+
