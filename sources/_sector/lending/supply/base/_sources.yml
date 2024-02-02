@@ -36,3 +36,5 @@ sources:
       - name: mWETH_evt_Redeem
       - name: mwstETH_evt_Mint
       - name: mwstETH_evt_Redeem
+      - name: mrETH_evt_Mint
+      - name: mrETH_evt_Redeem

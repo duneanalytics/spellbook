@@ -18,6 +18,7 @@
     {'contract': 'mUSDCnative'},
     {'contract': 'mWETH'},
     {'contract': 'mwstETH'},
+    {'contract': 'mrETH'},
   ]
 %}
 

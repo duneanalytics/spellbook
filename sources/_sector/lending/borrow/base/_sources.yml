@@ -44,3 +44,6 @@ sources:
       - name: mwstETH_evt_Borrow
       - name: mwstETH_evt_RepayBorrow
       - name: mwstETH_evt_LiquidateBorrow
+      - name: mrETH_evt_Borrow
+      - name: mrETH_evt_RepayBorrow
+      - name: mrETH_evt_LiquidateBorrow
