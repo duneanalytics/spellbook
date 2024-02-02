@@ -1,5 +1,6 @@
 {% macro enrich_dex_trades(
     base_trades = null
+    , filter = null
     , tokens_erc20_model = null
     , prices_model = null
     )
@@ -10,8 +11,10 @@ WITH base_trades as (
         *
     FROM
         {{ base_trades }}
-    {% if is_incremental() %}
     WHERE
+        {{ filter }}
+    {% if is_incremental() %}
+    AND
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
