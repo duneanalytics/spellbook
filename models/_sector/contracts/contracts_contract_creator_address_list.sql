@@ -1019,6 +1019,16 @@ WITH curated_list AS (
       ,(0x764E7f8798D8193bEd69030AE66eb304968C3F93, 'Cap V4')
       ,(0x2566530ebdC1D77893C0ACA17c7E6F77c11E037A, 'SpookyBase')
       ,(0x335901b18B83B2940d0419a26c1Aa3d482DD5500, 'Statix Farm')
+      ,(0x0B6945643526d3114B875A4bc3356026aBc05E84, 'Based Farm')
+      ,(0xd54FBE6D66bb5806e4bac4a33F6f1Ce5399586d3, 'Redemption Finance')
+      ,(0x4d76254cfaA60Eec196f31ccbFEcA01B3E6C238D, 'PlantBaseSwap')
+      ,(0xA27702FD1d3883ff2166fE9EFA73d43C0438d583, 'ChocoBase')
+      ,(0x4914442a0dA681637eb6D3b020668B5aEfa22b9F, 'PixelSwap')
+      ,(0x4eAd779001Ee27AEb67148362183a208EB0b3970, 'Base Yield')
+      ,(0x2b13a4AcFF9934f1c60582Dcd5a7db947E74AdEb, 'MYSO V2')
+      ,(0x0cC48985BC06486661803664a5deD06BFC00AA11, 'BaseTrade')
+      ,(0x31eAbA89Cc7163c4B238Cf39189881996fc726e2, 'Basetasm Finance')
+      ,(0x316E136D1c91025CE1A40F4FCc9988039336aC00, 'FT33 DAO')
 
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
