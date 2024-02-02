@@ -16,7 +16,7 @@
         project = 'gridex',
         version = '1',
         Pair_evt_Swap = source('gridex_arbitrum', 'Grid_evt_Swap'),
-        Factory_evt_PairCreated = source('gridex_arbitrum', 'GridFactory_evt_GridCreated')
+        Factory_evt_PairCreated = source('gridex_arbitrum', 'GridFactory_evt_GridCreated'),
         taker_column_name = 'sender',
         maker_column_name = 'recipient',
         optional_columns = null,

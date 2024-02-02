@@ -114,4 +114,5 @@ FROM (VALUES
     , ('goosefx_ssl', 'GooseFX', 'Direct', 'GooseFX1')
     , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
     , ('dooar', 'Dooar', 'Direct', 'dooar')
+    , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
     ) AS temp_table (project, name, marketplace_type, x_username)
