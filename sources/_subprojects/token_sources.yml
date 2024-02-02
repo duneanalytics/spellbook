@@ -1,6 +1,7 @@
 version: 2
 sources:
   - name: tokens_aave_v3
+    tags: ["subproject"]
     tables:
       - name: tokens
         columns:
@@ -23,6 +24,7 @@ sources:
 
 
   - name: tokens_ovm_optimism
+    tags: ["subproject"]
     tables:
       - name: l2_token_factory
         columns:
@@ -47,6 +49,7 @@ sources:
 
 
   - name: tokens_the_granary_optimism
+    tags: ["subproject"]
     tables:
       - name: tokens
         columns:
@@ -69,6 +72,7 @@ sources:
 
 
   - name: tokens
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -96,6 +100,7 @@ sources:
 
 
   - name: tokens_arbitrum
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -107,6 +112,7 @@ sources:
             data_type: integer
 
   - name: tokens_avalanche_c
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -119,6 +125,7 @@ sources:
 
 
   - name: tokens_base
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -131,6 +138,7 @@ sources:
 
 
   - name: tokens_bnb
+    tags: ["subproject"]
     tables:
       - name: bep20
         columns:
@@ -143,6 +151,7 @@ sources:
 
 
   - name: tokens_celo
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -155,6 +164,7 @@ sources:
 
 
   - name: tokens_ethereum
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -174,6 +184,7 @@ sources:
 
 
   - name: tokens_fantom
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -185,6 +196,7 @@ sources:
             data_type: integer
 
   - name: tokens_goerli
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -196,6 +208,7 @@ sources:
             data_type: integer
 
   - name: tokens_gnosis
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -208,6 +221,7 @@ sources:
 
 
   - name: tokens_optimism
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -270,6 +284,7 @@ sources:
 
 
   - name: tokens_polygon
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -282,6 +297,7 @@ sources:
 
 
   - name: tokens_zksync
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -294,6 +310,7 @@ sources:
 
 
   - name: tokens_zora
+    tags: ["subproject"]
     tables:
       - name: erc20
         columns:
@@ -306,6 +323,7 @@ sources:
 
 
   - name: tokens_yearn
+    tags: ["subproject"]
     tables:
       - name: vaults
         columns:
