@@ -976,6 +976,16 @@ WITH curated_list AS (
 
       ,(0x87e7D106FE75fcD26d9aC311EF29ac1398DD4441, 'Coinbase')
       ,(0xFFFFfFfFA2eC6F66a22017a0Deb0191e5F8cBc35, '0xStation')
+      ,(0x961f36fb5922d721b5af7effd7591beb107d6ab9, 'Wormhole')
+      ,(0x580d2c2da4f58d9efc2fdb5982ea67edc9620258, 'Circle')
+      ,(0xe4Bfe4DA57e2b8abaF8c77abce0C8a719e9B64D2, 'Cross Inscriptions')
+      ,(0x98306f66BF80225175653410438aed33a313BBCA, 'Chainlink')
+      ,(0x6aa06e0cB77fAB16E6963196A3EBd81c90e4a98c, 'Chainlink')
+      ,(0x104FFA1641C0E3D28fcb614771eB39E6a70cbE32, 'Coinbase Verifications')
+      ,(0x9bc9ca7e6a8f013f40617c4585508a988db7c1c7, 'Symmio')
+      ,(0xf10e74b5105af05984c92b1a5b8974b2c090af00, 'Chainlink')
+      ,(0x0A888Bb1Cb72F2bA9279574a6d83744D052D95Fd, 'Socket')
+      ,(0x37d3AE4662e9d2Ec96F634De98824DfBd399399D, 'Inscriber')
       ,(0xE11AADB7BbC0C76A15BCd5B3afb9590bbCbfb865, 'Xena Finance') -- Base
       ,(0x45C75bd8Bb9CF5263539b914925EabBF0441Eb14, 'SmarDEX')
       ,(0x251827cbaC8608bCaEF15ed14d3fe313e0d0E6ed, 'CitadelSwap')
@@ -1029,6 +1039,11 @@ WITH curated_list AS (
       ,(0x0cC48985BC06486661803664a5deD06BFC00AA11, 'BaseTrade')
       ,(0x31eAbA89Cc7163c4B238Cf39189881996fc726e2, 'Basetasm Finance')
       ,(0x316E136D1c91025CE1A40F4FCc9988039336aC00, 'FT33 DAO')
+
+      ,(0xb013abd83f0bd173e9f14ce7d6e420ad711483b4, 'TreasureDAO') --Treasure Bridgeworld & Smolverse
+      ,(0x2940108780b870ae8f1509be95fdf2b6fb066e41, 'TreasureDAO') --Treasure Bridgeworld
+      ,(0x393248ae29a7c2128e8e27d23330b1f87e0600fc, 'TreasureDAO') --Treasure Trove
+      ,(0x032f84aeff59ddebc55797f321624826d873bf65, 'SmolBrains') --Treasure Smolverse
 
       --MEV - https://github.com/winnsterx/searcherbuilder.pics/blob/main/labels/searcher_addr_map.py
       ,(0x69E906c33722F61b854929cd2c6f3427dea9f090, 'Jump Trading')
