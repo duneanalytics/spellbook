@@ -31,4 +31,3 @@
     sources = config_sources
   )
 }}
- 
