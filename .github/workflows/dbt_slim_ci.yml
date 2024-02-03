@@ -57,7 +57,7 @@ jobs:
       - name: Generate source
         
         run: |
-          echo ${{ github.event.pull_request.body }} | python scripts/generate_source_from_pr.py
+          echo "${{ github.event.pull_request.body }}" | python scripts/generate_source_from_pr.py
 
       - name: check schemas
         run: |
