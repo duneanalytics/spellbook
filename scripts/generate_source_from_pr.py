@@ -17,10 +17,6 @@ def run_dbt_command(schema_name, table_names, profile):
     try:
         subprocess.run(command, check=True)
         output = subprocess.check_output(command)
-        
-        
-
-        print("Command executed successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error executing the command: {e}")
 
@@ -39,14 +35,12 @@ if __name__ == "__main__":
     for line in pr_body.split("\n"):
         if "[GENSOURCE:" in line:
             schema_table = line.split("[GENSOURCE:")[1].split("]")[0]
-            print(schema_table)
             schema_name, table_name = schema_table.split(".")
             if schema_name in schema_table_map:
                 schema_table_map[schema_name].append(table_name)
             else:
                 schema_table_map[schema_name] = [table_name]
-    
-    print(schema_table_map)
+
     
     profile = os.environ.get("PROFILE")
 
