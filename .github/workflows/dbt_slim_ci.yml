@@ -54,6 +54,11 @@ jobs:
       - name: dbt compile to create manifest to compare to
         run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
+      - name: Generate source
+        if: contains(github.event.pull_request.body, '[GENSOURCE')
+        run: |
+          echo ${{ github.event.pull_request.body }} | python scripts/generate_source_from_pr.py
+
       - name: check schemas
         run: |
           test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir ${PROJECT_DIR})
