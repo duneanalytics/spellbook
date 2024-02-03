@@ -1,6 +1,6 @@
 {{
 	config(
-		schema = 'moonwell_base_base',
+		schema = 'moonwell_base',
 		alias = 'ctokens'
 	)
 }}
