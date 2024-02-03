@@ -47,3 +47,21 @@ sources:
       - name: mrETH_evt_Borrow
       - name: mrETH_evt_RepayBorrow
       - name: mrETH_evt_LiquidateBorrow
+
+  - name: sonne_finance_base
+    tables:
+      - name: sobcbETH_evt_Borrow
+      - name: sobcbETH_evt_RepayBorrow
+      - name: sobcbETH_evt_LiquidateBorrow
+      - name: sobDAI_evt_Borrow
+      - name: sobDAI_evt_RepayBorrow
+      - name: sobDAI_evt_LiquidateBorrow
+      - name: sobUSDbC_evt_Borrow
+      - name: sobUSDbC_evt_RepayBorrow
+      - name: sobUSDbC_evt_LiquidateBorrow
+      - name: sobUSDC_evt_Borrow
+      - name: sobUSDC_evt_RepayBorrow
+      - name: sobUSDC_evt_LiquidateBorrow
+      - name: sobWETH_evt_Borrow
+      - name: sobWETH_evt_RepayBorrow
+      - name: sobWETH_evt_LiquidateBorrow
