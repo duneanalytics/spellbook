@@ -60,7 +60,7 @@ jobs:
         run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
       - name: Generate source
-        if: contains(github.event.pull_request.body, '[GENSOURCE')
+        if: contains(github.event.pull_request.body, '[GENSOURCE') && matrix.project == 'spellbook'
         run: |
           echo "${{ github.event.pull_request.body }}" | python scripts/generate_source_from_pr.py
 
