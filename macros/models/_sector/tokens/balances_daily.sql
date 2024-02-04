@@ -1,7 +1,7 @@
 {%- macro balances_daily(balances_base) %}
 select
     *,
-    {{ dbt_utils.generate_surrogate_key(['day', 'type', 'address', 'contract_address', 'token_id']) }} as unique_key,
+    {{ dbt_utils.generate_surrogate_key(['day', 'type', 'address', 'contract_address', 'token_id']) }} as unique_key
 from (
     select
         date_trunc('day', block_time) as day,
