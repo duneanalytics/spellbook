@@ -11,6 +11,6 @@
 
 {{
     balances_daily(
-        balances_base = source('tokens_base', 'balances_base_daily'),
+        balances_base = source('tokens_base', 'balances_base_0001'),
     )
 }}
