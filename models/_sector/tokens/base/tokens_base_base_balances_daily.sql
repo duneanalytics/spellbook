@@ -5,13 +5,12 @@
         materialized='incremental',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['unique_key']
-        -- TODO: Add post_hook to expose_spells
+        unique_key = ['unique_key'],
         )
 }}
 
 {{
     balances_daily(
-        balances_base = source('tokens_base', 'balances_base_0001'),
+        balances_base = source('tokens_base', 'balances_base_0001')
     )
 }}
