@@ -2,9 +2,10 @@
         schema = 'tokens_base',
         alias = 'balances_daily',
         file_format = 'delta',
+        materialized='incremental',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['unique_key'],
+        unique_key = ['unique_key']
         -- TODO: Add post_hook to expose_spells
         )
 }}
