@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens_base',
-        alias = 'balances_daily',
+        alias = 'base_balances_daily',
         file_format = 'delta',
         materialized='incremental',
         incremental_strategy='merge',
