@@ -115,14 +115,22 @@ with tx_batch_appends as (
     {{ source('ethereum','transactions') }} as t
     INNER JOIN (
       SELECT 
-          protocol_name,
-          MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l1_batch_inbox_from_address",
-          MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l1_batch_inbox_to_address",
-          MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l2_output_oracle_from_address",
-          MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l2_output_oracle_to_address"
+          protocol_name, version,
+          MAX(CASE WHEN (submitter_type = 'L1BatchInbox' OR submitter_type = 'Canonical Transaction Chain')
+                AND role_type = 'from_address' THEN address ELSE NULL END)
+            AS "l1_batch_inbox_from_address",
+          MAX(CASE WHEN (submitter_type = 'L1BatchInbox' OR submitter_type = 'Canonical Transaction Chain')
+                AND role_type = 'to_address' THEN address ELSE NULL END)
+            AS "l1_batch_inbox_to_address",
+          MAX(CASE WHEN (submitter_type = 'L2OutputOracle' OR submitter_type = 'State Commitment Chain')
+                AND role_type = 'from_address' THEN address ELSE NULL END)
+            AS "l2_output_oracle_from_address",
+          MAX(CASE WHEN (submitter_type = 'L2OutputOracle' OR submitter_type = 'State Commitment Chain')
+                AND role_type = 'to_address' THEN address ELSE NULL END)
+            AS "l2_output_oracle_to_address"
       FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
       WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora', 'Aevo', 'Mode', 'Lyra', 'Orderly Network')
-      GROUP BY protocol_name
+      GROUP BY protocol_name, version
       ) as op 
       ON
         (
