@@ -21,7 +21,8 @@
     ref('lending_polygon_base_supply'),
     ref('lending_avalanche_c_base_supply'),
     ref('lending_fantom_base_supply'),
-    ref('lending_gnosis_base_supply')
+    ref('lending_gnosis_base_supply'),
+    ref('lending_zksync_base_supply')
   ]
 %}
 
