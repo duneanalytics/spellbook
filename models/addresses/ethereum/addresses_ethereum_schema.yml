@@ -70,6 +70,8 @@ models:
         description: "Address of known L2 Batch Submitter"
       - name: protocol_name
         description: "Protocol Name"
+      - name: codebase
+        description: "What codebase is the rollup based on"
       - name: submitter_type
         description: "Submitter Type (i.e. state vs transaction batch)"
       - name: role_type
@@ -78,3 +80,24 @@ models:
         description: "Version of the batch submitter"
       - name: description
         description: "Additional descriptiors of the address"
+  
+  - name: addresses_ethereum_optimism_batch_submitter_combinations
+    meta:
+      blockchain: ethereum
+      sector: l2_batch_submitters
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
+    description: "Unique combinations of Optimism submitter addresses across versions"
+    columns:
+      - name: protocol_name
+        description: "Protocol Name"
+      - name: l1_batch_inbox_from_address
+        description: "l1_batch_inbox_from_address"
+      - name: l1_batch_inbox_to_address
+        description: "l1_batch_inbox_to_address"
+      - name: l2_output_oracle_from_address
+        description: "l2_output_oracle_from_address"
+      - name: l2_output_oracle_to_address
+        description: "l2_output_oracle_to_address"

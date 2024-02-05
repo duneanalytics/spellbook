@@ -113,25 +113,7 @@ with tx_batch_appends as (
     {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
   FROM
     {{ source('ethereum','transactions') }} as t
-    INNER JOIN (
-      SELECT 
-          protocol_name, version,
-          MAX(CASE WHEN (submitter_type = 'L1BatchInbox' OR submitter_type = 'Canonical Transaction Chain')
-                AND role_type = 'from_address' THEN address ELSE NULL END)
-            AS "l1_batch_inbox_from_address",
-          MAX(CASE WHEN (submitter_type = 'L1BatchInbox' OR submitter_type = 'Canonical Transaction Chain')
-                AND role_type = 'to_address' THEN address ELSE NULL END)
-            AS "l1_batch_inbox_to_address",
-          MAX(CASE WHEN (submitter_type = 'L2OutputOracle' OR submitter_type = 'State Commitment Chain')
-                AND role_type = 'from_address' THEN address ELSE NULL END)
-            AS "l2_output_oracle_from_address",
-          MAX(CASE WHEN (submitter_type = 'L2OutputOracle' OR submitter_type = 'State Commitment Chain')
-                AND role_type = 'to_address' THEN address ELSE NULL END)
-            AS "l2_output_oracle_to_address"
-      FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-      WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora', 'Aevo', 'Mode', 'Lyra', 'Orderly Network')
-      GROUP BY protocol_name, version
-      ) as op 
+    INNER JOIN {{ ref('addresses_ethereum_optimism_batch_submitter_combinations') }} as op 
       ON
         (
           t."from" = op.l1_batch_inbox_from_address
@@ -142,7 +124,7 @@ with tx_batch_appends as (
           t."from" = op.l2_output_oracle_from_address
           AND t.to = op.l2_output_oracle_to_address
         )
-      AND t.block_time >= timestamp '2022-01-01'
+      AND t.block_time >= timestamp '2021-01-01'
     INNER JOIN {{ source('prices','usd') }} p
       ON p.minute = date_trunc('minute', t.block_time)
       AND p.blockchain is null
