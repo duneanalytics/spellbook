@@ -81,7 +81,7 @@ models:
       - name: description
         description: "Additional descriptiors of the address"
   
-  - name: addresses_ethereum_optimism_batch_submitter_combinations
+  - name: addresses_ethereum_optimism_batchinbox_combinations
     meta:
       blockchain: ethereum
       sector: l2_batch_submitters
@@ -89,7 +89,7 @@ models:
       contributors: msilb7
     config:
       tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
-    description: "Unique combinations of Optimism submitter addresses across versions"
+    description: "Unique combinations of Optimism batch inbox addresses across versions"
     columns:
       - name: protocol_name
         description: "Protocol Name"
@@ -97,6 +97,19 @@ models:
         description: "l1_batch_inbox_from_address"
       - name: l1_batch_inbox_to_address
         description: "l1_batch_inbox_to_address"
+  
+  - name: addresses_ethereum_optimism_outputoracle_combinations
+    meta:
+      blockchain: ethereum
+      sector: l2_batch_submitters
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
+    description: "Unique combinations of Optimism output oracle addresses across versions"
+    columns:
+      - name: protocol_name
+        description: "Protocol Name"
       - name: l2_output_oracle_from_address
         description: "l2_output_oracle_from_address"
       - name: l2_output_oracle_to_address

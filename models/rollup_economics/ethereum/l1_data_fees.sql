@@ -104,31 +104,33 @@ with tx_batch_appends as (
   
   SELECT
     lower(op.protocol_name) as name,
-    t.block_number,
-    t.hash,
+    block_number,
+    hash,
     (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
     p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
-    length(t.data) as data_length,
+    data_length,
     t.gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
-  FROM
+    calldata_gas_used
+  FROM (
+    SELECT protocol_name, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     {{ source('ethereum','transactions') }} as t
-    INNER JOIN {{ ref('addresses_ethereum_optimism_batch_submitter_combinations') }} as op 
-      ON
-        (
-          t."from" = op.l1_batch_inbox_from_address
-          AND t.to = op.l1_batch_inbox_to_address
-        )
-      OR
-        (
-          t."from" = op.l2_output_oracle_from_address
-          AND t.to = op.l2_output_oracle_to_address
-        )
-      AND t.block_time >= timestamp '2021-01-01'
+    INNER JOIN {{ ref('addresses_ethereum_optimism_batch_batchinbox_combinations') }} as op 
+      ON t."from" = op.l1_batch_inbox_from_address
+         AND t.to = op.l1_batch_inbox_to_address
+      WHERE t.block_time >= timestamp '2020-01-01'
+      UNION ALL
+    SELECT protocol_name, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    {{ source('ethereum','transactions') }} as t
+    INNER JOIN {{ ref('addresses_ethereum_optimism_batch_outputoracle_combinations') }} as op 
+      ON t."from" = op.l2_output_oracle_from_address
+         AND t.to = op.l2_output_oracle_to_address
+      WHERE t.block_time >= timestamp '2020-01-01'
+    ) b
     INNER JOIN {{ source('prices','usd') }} p
-      ON p.minute = date_trunc('minute', t.block_time)
+      ON p.minute = date_trunc('minute', b.block_time)
       AND p.blockchain is null
       AND p.symbol = 'ETH'
+      AND p.minute >= timestamp '2020-01-01'
       {% if is_incremental() %}
       AND p.minute >= date_trunc('day', now() - interval '7' day)
       {% endif %}
