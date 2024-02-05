@@ -12,7 +12,8 @@ SELECT
         , trim(symbol) as symbol
         , decimals
 FROM (VALUES
-        (0x00000000000045166c45af0fc6e4cf31d9e14b9a, 'BID', 18)
+        (0x5eed99d066a8caf10f3e4327c1b3d8b673485eed, 'SEED', 18)
+        ,(0x00000000000045166c45af0fc6e4cf31d9e14b9a, 'BID', 18)
         ,(0x0000000000004946c0e9f43f4dee607b0ef1fa1c, 'CHI', 0)
         ,(0x000000000000d0151e748d25b766e77efe2a6c83, 'XDEX', 18)
         ,(0x0000000000085d4780b73119b644ae5ecd22b376, 'TUSD', 18)
@@ -38192,4 +38193,7 @@ FROM (VALUES
         ,(0xde8cd13b812bcd82218754a740b27e76ec1e86ad, 'TRESTLE', 18)
         ,(0x61a40b8f2d70a65264e5fb79d26c8b1b4c190ef4, 'RBT', 18)
         ,(0xb9f599ce614Feb2e1BBe58F180F370D05b39344E, 'PORK', 18)
+        ,(0x609c117183c9264af6ee54fe3f290f212b31afbf, 'μϾ721', 18)
+        ,(0x9f83ed4fdf636e8b0562ac704267346712b44c36, 'μMFER', 18)
+        ,(0xad161afae7db2a048b042bd68e11c38c9c042cc1, 'μNKMGS', 18)
      ) AS temp_table (contract_address, symbol, decimals)

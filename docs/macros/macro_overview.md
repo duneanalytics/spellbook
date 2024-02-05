@@ -39,7 +39,7 @@ Within models, such as uniswap v2, call macro code with [this approach](https://
 ## Benefits of Macros
 
 - **Centralized Code Modifications**
-  - Alterations occur in one place, reducing bugs across spells.
+  - Modifications occur in one place, reducing bugs across spells.
 - **Data Quality and Consistency**
   - Maintain a high level of data quality and consistency across spells.
 

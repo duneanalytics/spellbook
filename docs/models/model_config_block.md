@@ -29,7 +29,8 @@ Each model within Spellbook contains a config block with various properties. Dep
    - Primary key(s) that determine unique rows and specify join conditions in merge statements.
 
 4. **incremental_predicates**
-   - Filters target to match the date range of the source for performance and data efficiency.
+   - Filters the target to the same date range as the source, for improved performance & less data in memory.
+   - Universal incremental macro can be found [here](https://github.com/duneanalytics/spellbook/blob/main/macros/incremental_predicate.sql).
    - **Note**: This is a newer addition to Spellbook. Please add this property for new incremental spells.
 
 ## Optional Configs for Materialized as Table / Incremental
@@ -49,7 +50,7 @@ Each model within Spellbook contains a config block with various properties. Dep
 
 2. **tags**
    - Tags are mostly used for Dune team to handle orchestration.
-   - **Examples**: ‘prod_exclude’ for failing models or models not intended for production, ‘static’ for spells with static data.
+   - **Examples**: ‘prod_exclude’ for failing models or models not intended for production, ‘static’ for spells materialized as a table, yet only contain hardcoded static data and don’t need to run every day, only when modified.
 
 3. **on_table_exists**
    - Overrides existing behavior for how a table is rebuilt on full refresh.
