@@ -7,6 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'project', 'version', 'transaction_type', 'token_address', 'tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
@@ -43,6 +44,9 @@ select
   tx_hash,
   evt_index
 from {{ model }}
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time') }}
+{% endif %}
 {% if not loop.last %}
 union all
 {% endif %}
