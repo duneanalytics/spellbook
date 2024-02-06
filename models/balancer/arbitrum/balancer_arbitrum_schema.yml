@@ -476,7 +476,7 @@ models:
       - name: token_address
       - name: supply
 
-  - name: balancer_v2_arbitrum_bpt_prices
+  - name: balancer_v2_arbitrum_bpt_prices_beta
     meta:
       blockchain: arbitrum
       project: balancer_v2
