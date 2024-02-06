@@ -3,11 +3,7 @@
         schema = 'balancer_v2_arbitrum',
         alias = 'bpt_prices',
         materialized = 'table',
-        file_format = 'delta',
-        post_hook="{{ expose_spells('[\"" + blockchain + '"]' + '\',
-                        "project",
-                        "balancer_v2",
-                        \'["viniabussafi"]\') }}'
+        file_format = 'delta'
     )
 }}
 
