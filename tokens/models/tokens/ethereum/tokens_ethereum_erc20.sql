@@ -38196,4 +38196,6 @@ FROM (VALUES
         ,(0x609c117183c9264af6ee54fe3f290f212b31afbf, 'μϾ721', 18)
         ,(0x9f83ed4fdf636e8b0562ac704267346712b44c36, 'μMFER', 18)
         ,(0xad161afae7db2a048b042bd68e11c38c9c042cc1, 'μNKMGS', 18)
+        ,(0x9a96ec9B57Fb64FbC60B423d1f4da7691Bd35079, 'AJNA', 18)
+        ,(0x936Ab482d6bd111910a42849D3A51Ff80BB0A711, 'bwAJNA', 18)
      ) AS temp_table (contract_address, symbol, decimals)
