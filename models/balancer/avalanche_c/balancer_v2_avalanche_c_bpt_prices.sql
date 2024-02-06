@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema='balancer_v2_' + blockchain,
+        schema='balancer_v2_avalanche_c',
         alias = 'bpt_prices',
         materialized = 'table',
         file_format = 'delta'
