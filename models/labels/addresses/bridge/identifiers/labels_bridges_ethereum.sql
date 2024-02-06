@@ -122,6 +122,7 @@ FROM (VALUES
     , ('ethereum', 0x76943c0d61395d8f2edf9060e1533529cae05de6, 'Optimism: Lido Bridge', 'bridge', 'msilb7', 'static', DATE '2022-10-12' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3, 'Optimism: Teleportr v1', 'bridge', 'msilb7', 'static', DATE '2022-10-12' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc, 'Optimism: Teleportr v2', 'bridge', 'msilb7', 'static', DATE '2022-10-12' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0xbEb5Fc579115071764c7423A4f12eDde41f106Ed, 'Optimism: OptimismPortal', 'bridge', 'msilb7', 'static', DATE '2023-06-06' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0xabea9132b05a70803a4e85094fd0e1800777fbef, 'zkSync Lite Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x32400084c286cf3e17e7b677ea9583e60a000324, 'zkSync Era Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0xae0ee0a63a2ce6baeeffe56e7714fb4efe48d419, 'Starknet StarkGate Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
