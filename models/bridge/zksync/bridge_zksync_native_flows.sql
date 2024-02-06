@@ -189,7 +189,7 @@ SELECT
     ,tf.tx_to
 FROM bridge_events tf
 
-LEFT JOIN {{ ref('tokens_erc20') }} erc
+LEFT JOIN {{ source('tokens', 'erc20') }} erc
     ON erc.contract_address = 
         CASE
             WHEN tf.bridged_token_address = 0x0000000000000000000000000000000000000000 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- When the token is ETH, match on WETH

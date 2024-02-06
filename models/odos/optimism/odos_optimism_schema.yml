@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: odos_optimism_trades
+  - name: odos_v1_optimism_trades
     meta:
       blockchain: optimism
       sector: dex
@@ -10,7 +10,7 @@ models:
     config:
       tags: ['optimism','trades', 'odos','dex']
     description: >
-        odos dex trades on optimism
+        A table containing all trades of odos v1 on optimism
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,6 +20,7 @@ models:
             - version
             - tx_hash
             - evt_index 
+            - trace_address
       - check_dex_aggregator_seed:
           blockchain: optimism
           project: odos
@@ -97,3 +98,89 @@ models:
       - &trace_address
         name: trace_address
         description: ""
+  
+  - name: odos_v2_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: odos
+      contributors: ARDev097
+    config:
+      tags: ['optimism','trades', 'odos','dex']
+    description: >
+        A table containing all trades of odos v2 on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index 
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: optimism
+          project: odos
+          version: 2
+    columns:
+      - *blockchain
+      - *project 
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *trace_address
+  
+  - name: odos_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: odos
+      contributors: ARDev097
+    config:
+      tags: ['optimism','trades', 'odos','dex']
+    description: >
+        A table containing all trades of odos on optimism.
+    columns:
+      - *blockchain
+      - *project 
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *trace_address

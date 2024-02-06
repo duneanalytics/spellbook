@@ -481,3 +481,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('woofi_bnb_base_trades_seed')
+
+  - name: hashflow_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: hashflow
+      contributors: Henrystats, hosuke
+    config:
+      tags: [ 'bnb','hashflow','trades','dex', 'Henrystats']
+    description: >
+      Hashflow contract trades on Binance Smart Chain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hashflow_bnb_base_trades_seed')

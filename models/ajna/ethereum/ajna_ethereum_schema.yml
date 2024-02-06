@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: ajna_ethereum_erc20_pools
+    meta:
+      blockchain: ethereum
+      project: ajna
+      contributors: [gunboats]
+    config:
+      tags: ["ethereum", "ajna"]
+    description: List of ERC20 pools deployed on Ajna
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: Blockchain that Ajna pool was deployed on
+      - &version
+        name: version
+        description: Ajna versions that is deployed on the network (6 for original, 9 for grief vector fix)
+      - &collateral
+        name: collateral
+        description: Collateral token address
+      - &quote
+        name: quotes
+        description: Quote token address
+      - &pool_address
+        name: pool_address
+        description: Pool address
+      - &starting_interest_rate
+        name: starting_interest_rate
+        description: Initial interest rate set by deployer
+      - &tx_hash
+        name: tx_hash
+        description: TX hash of deployment
+      - &block_time
+        name: block_time
+        description: Time of deployment
+      - &block_date
+        name: block_date
+        description: Date of deployment
+      - &block_number
+        name: block_number
+        description: Block number that pool was deployed
