@@ -10,6 +10,12 @@
     )
 }}
 
+{% set as_is_models = [
+    ref('oneinch_lop_own_trades')
+    , ref('zeroex_native_trades')
+
+] %}
+
 WITH curve AS (
     {{
         enrich_curve_dex_trades(
@@ -32,10 +38,32 @@ WITH curve AS (
         )
     }}
 )
+, as_is_dexs AS (
+    {% for model in as_is_models %}
+    SELECT
+        *
+        , NULL as block_number  -- we may solve this in the future
+    FROM
+        {{ model }}
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
+
 SELECT
     *
 FROM
     curve
+UNION ALL
+SELECT
+    *
+FROM
+    as_is_dexs
 UNION ALL
 SELECT
     *
