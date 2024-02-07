@@ -42,7 +42,7 @@ Spellbook is built for and by the community, you are welcome to close any gaps t
 
 ## Docs
 
-Spellbook has a lot of moving parts & specific design principles for contributing to Dune's interpretation layer of data. In order to prepare contributors to parcipate most efficiently, the [docs](docs/) directory contains a wide ranging set of topics to answer common questions & provide info on why the repo is setup as it is. Please read & refer to this section when developing in Spellbook and questions arise. The Dune team will also link back to these docs to answer questions often, to help grow awareness and keep communications clean.
+Spellbook has a lot of moving parts & specific design principles for contributing to Dune's interpretation layer of data. In order to prepare contributors to participate most efficiently, the [docs](docs/) directory contains a wide ranging set of topics to answer common questions & provide info on why the repo is setup as it is. Please read & refer to this section when developing in Spellbook and questions arise. The Dune team will also link back to these docs to answer questions often, to help grow awareness and keep communications clean.
 
 ## Sub-projects
 
@@ -52,7 +52,7 @@ In order to prepare for scaling Spellbook, the repo has started to pilot sub-pro
 ## Ways to contribute to Spellbook
 
 - **Build** spells - if you want to write code, simply clone the repo, write your code, and open a PR
-  - If you already know what to build, there's no red tape to skip around, simply open a PR when you're ready. We advice opening draft PRs early, so we avoid duplication of efforts and you can get help from other wizards
+  - If you already know what to build, there's no red tape to skip around, simply open a PR when you're ready. We advise opening draft PRs early, so we avoid duplication of efforts and you can get help from other wizards
   - If you don't know where to start, check out Issues for ideas. We're always looking for help fixing small bugs or implementing spells for small projects
 - **Flag** gaps in spellbook - have you found a bug, or is there a project missing from one of the sectors that you'd like to add? You can create an [issue](https://github.com/duneanalytics/spellbook/issues) and bring other wizards to your aid.
   - **Bugs**: Found a record on a Spell that doesn't reflect chain data correctly? Please make sure you link to a block explorer showing the expected value, and a dune query showing the wrong value. If there's multiple records affected, any sense of scale (how many rows, affected USD volume) will also be very helpful.

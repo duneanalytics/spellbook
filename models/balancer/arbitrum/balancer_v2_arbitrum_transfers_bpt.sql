@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema = 'balancer_v2_' + blockchain,
+        schema = 'balancer_v2_arbitrum',
         alias = 'transfers_bpt',
         partition_by = ['block_month'],
         materialized = 'incremental',

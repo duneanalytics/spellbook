@@ -101,4 +101,7 @@ SELECT
     ,dexs.project_contract_address
     ,dexs.tx_hash
     ,dexs.evt_index
+
+    --unique to curve in dex lineage, pull extra columns to calculate amount / amount_usd downstream in enrichment phase
+    ,dexs.swap_type
 FROM dexs
