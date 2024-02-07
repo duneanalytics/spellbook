@@ -111,3 +111,7 @@ sources:
     tables:
       - name: ApePair_evt_Swap
       - name: ApeFactory_evt_PairCreated
+  - name: gridex_arbitrum
+    tables:
+      - name: Grid_evt_Swap
+      - name: GridFactory_evt_GridCreated

@@ -33,6 +33,7 @@
     , ref('ellipsis_finance_bnb_base_trades')
     , ref('onepunchswap_bnb_base_trades')
     , ref('woofi_bnb_base_trades')
+    , ref('hashflow_bnb_base_trades')
 ] %}
 
 
