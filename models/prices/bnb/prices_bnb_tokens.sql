@@ -96,6 +96,7 @@ FROM
     ('prq-parsiq', 'bnb', 'PRQ', 0xd21d29b38374528675c34936bf7d5dd693d2a577, 18),
     ('radar-radar', 'bnb', 'RADAR', 0xf03a2dc374d494fbe894563fe22ee544d826aa50, 18),
     ('ramp-ramp', 'bnb', 'RAMP', 0x8519ea49c997f50ceffa444d240fb655e89248aa, 18),
+    ('rb-reborn-token', 'bnb', 'RB', 0x441bb79f2da0daf457bad3d401edb68535fb3faa, 18),
     ('reef-reef', 'bnb', 'REEF', 0xf21768ccbc73ea5b6fd3c687208a7c2def2d966e, 18),
     ('ren-republic-protocol', 'bnb', 'REN', 0xea3c7383b9bc4ac15fcdadce07e2e25cc6e7b627, 18),
     ('renbtc-renbtc', 'bnb', 'RENBTC', 0xfce146bf3146100cfe5db4129cf6c82b0ef4ad8c, 8),
