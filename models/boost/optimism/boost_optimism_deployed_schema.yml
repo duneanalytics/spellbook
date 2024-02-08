@@ -1,0 +1,90 @@
+version: 2
+
+
+models:
+
+
+  - name: boost_optimism_deployed
+
+
+    meta:
+
+
+      blockchain: optimism
+
+
+      project: boost
+
+
+      contributors: raho
+
+
+    config:
+
+
+      tags: ["optimism", "boost", "boost_inbox", "quest"]
+
+
+    description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
+
+
+    columns:
+
+
+      - &blockchain
+
+
+        name: blockchain
+
+
+        description: "Blockchain which the Boost was deployed"
+      - &contractAddress
+        name: boost_address
+
+
+        description: "Contract address of the Boost"
+      - &questId
+        name: boost_id
+
+
+        description: "ID of the Boost"
+      - &contractType
+        name: boost_type
+
+
+        description: "Boost action type"
+      - &startTime
+        name: start_time
+
+
+        description: "Time the Boost goes/went live"
+      - &endTime
+        name: end_time
+
+
+        description: "Time the Boost ends"
+      - &rewardAmountOrTokenId
+        name: reward_amount_raw
+
+
+        description: "Raw reward amount"
+      - &rewardTokenAddress
+        name: reward_token_address
+
+
+        description: "Reward token contract address"
+      - &totalParticipants
+        name: max_participants
+
+
+        description: "Maximum number of Boost completions"
+      - &evt_block_time
+        name: creation_time
+
+
+        description: "Time the Boost was created"
+      - &creator
+        name: creation_address
+
+
+        description: "Wallet address of the creator"
