@@ -1,4 +1,4 @@
-versions: 2
+version: 2
 
 models:
   - name: ajna_optimism_erc20_pools
