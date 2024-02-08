@@ -37,7 +37,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
-                FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }}
 
                 UNION ALL
 
@@ -46,7 +46,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
-                FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
@@ -58,7 +58,7 @@ WITH pool_labels AS (
             t.tokens,
             d.deltas,
             p.protocolFeeAmounts
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_PoolBalanceChanged') }}
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
@@ -83,7 +83,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_PoolBalanceManaged') }}
     ),
 
     daily_delta_balance AS (
