@@ -1,7 +1,6 @@
 {% macro 
     balancer_bpt_prices_macro(
         blockchain
-        , bpt_supply_model = null
     ) 
 %}
 
@@ -212,7 +211,7 @@ WITH pool_labels AS (
         l.pool_address AS contract_address,
         l.liquidity / s.supply AS bpt_price
     FROM tvl l
-    LEFT JOIN {{ bpt_supply_model }} s ON l.pool_address = s.token_address
+    LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON l.pool_address = s.token_address
     AND l.blockchain = s.blockchain
     AND l.day = s.day
     WHERE supply > 0
