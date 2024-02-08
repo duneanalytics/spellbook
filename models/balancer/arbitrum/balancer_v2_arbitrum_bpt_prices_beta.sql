@@ -11,5 +11,6 @@
 {{ 
     balancer_bpt_prices_macro(
         blockchain = blockchain
+        , bpt_supply_model = ref('balancer_bpt_supply')
     )
 }}
