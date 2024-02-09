@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'moonwell_base',
-    alias = 'base_supply',
+    schema = 'sonne_finance_base',
+    alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,23 +12,20 @@
 
 {%
   set config_sources = [
-    {'contract': 'mcbETH'},
-    {'contract': 'mDAI'},
-    {'contract': 'mUSDC'},
-    {'contract': 'mUSDCnative'},
-    {'contract': 'mWETH'},
-    {'contract': 'mwstETH'},
-    {'contract': 'mrETH'},
+    {'contract': 'sobcbETH'},
+    {'contract': 'sobDAI'},
+    {'contract': 'sobUSDbC'},
+    {'contract': 'sobUSDC'},
+    {'contract': 'sobWETH'},
   ]
 %}
 
 {{
-  lending_compound_v2_compatible_supply(
+  lending_compound_v2_compatible_borrow(
     blockchain = 'base',
-    project = 'moonwell',
+    project = 'sonne_finance',
     version = '1',
-    decoded_project = 'moonwell',
+    decoded_project = 'sonne_finance',
     sources = config_sources
   )
 }}
- 

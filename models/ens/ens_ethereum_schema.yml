@@ -259,7 +259,7 @@ models:
             values: ['for', 'against', 'abstain']
       - &reason
         name: reason
-        description: "Optional onchain commments to explain votes"
+        description: "Optional onchain comments to explain votes"
 
   - name: ens_ethereum_proposals
     meta:
