@@ -16,7 +16,7 @@ WITH dexs AS
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
         , t.recipient AS taker
-        , cast(null as varbinary)
+        , cast(null as varbinary) as maker
         , CASE WHEN t.deltaQty0 < INT256 '0' THEN abs(t.deltaQty0) ELSE abs(t.deltaQty1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         , CASE WHEN t.deltaQty0 < INT256 '0' THEN abs(t.deltaQty1) ELSE abs(t.deltaQty0) END AS token_sold_amount_raw
         , CASE WHEN t.deltaQty0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
