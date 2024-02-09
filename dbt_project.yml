@@ -1365,12 +1365,12 @@ models:
     boost:
       +schema: boost
       optimism:
-        +schema: boost_optimism_deployed
+        +schema: boost_optimism
       ethereum:
-        +schema: boost_ethereum_deployed
+        +schema: boost_ethereum
       arbitrum:
-        +schema: boost_arbitrum_deployed
+        +schema: boost_arbitrum
       base:
-        +schema: boost_base_deployed
+        +schema: boost_base
       polygon:
-        +schema: boost_polygon_deployed
+        +schema: boost_polygon

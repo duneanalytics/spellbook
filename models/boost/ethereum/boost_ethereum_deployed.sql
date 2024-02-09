@@ -10,4 +10,4 @@
       totalParticipants,
       evt_block_time,
       creator
-    from {{source('boost_ethereum_deployed', 'rabbithole_ethereum.QuestFactory_evt_QuestCreated')}}
+    from {{source('rabbithole_ethereum', 'QuestFactory_evt_QuestCreated')}}

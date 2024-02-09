@@ -4,6 +4,14 @@
     )
 }}
 
+{% set boost_deployed_models = [
+    ref('boost_arbitrum_deployed'),
+    ref('boost_base_deployed'),
+    ref('boost_ethereum_deployed'),
+    ref('boost_optimism_deployed'),
+    ref('boost_polygon_deployed'),
+] %}
+
 select
   blockchain,
   contractAddress as boost_address,
@@ -18,80 +26,7 @@ select
   creator as creator_address
 from
   (
-    select
-      'ethereum' as blockchain,
-      contractAddress,
-      questId,
-      questType as contractType,
-      startTime,
-      endTime,
-      rewardAmountOrTokenId,
-      rewardToken as rewardTokenAddress,
-      totalParticipants,
-      evt_block_time,
-      creator
-    from
-      {{source('boost_ethereum_deployed', 'rabbithole_ethereum.QuestFactory_evt_QuestCreated')}}
-    union all
-    select
-      'optimism' as blockchain,
-      contractAddress,
-      questId,
-      contractType,
-      startTime,
-      endTime,
-      rewardAmountOrTokenId,
-      rewardTokenAddress,
-      totalParticipants,
-      evt_block_time,
-      creator
-    from
-      from {{source('boost_optimism_deployed', 'rabbithole_optimism.QuestFactory_evt_QuestCreated')}}
-    union all
-    select
-      'polygon' as blockchain,
-      contractAddress,
-      questId,
-      questType as contractType,
-      startTime,
-      endTime,
-      rewardAmountOrTokenId,
-      rewardToken,
-      totalParticipants,
-      evt_block_time,
-      creator
-    from
-      {{source('boost_polygon_deployed', 'rabbithole_polygon.QuestFactory_evt_QuestCreated')}}
-    union all
-    select
-      'arbitrum' as blockchain,
-      contractAddress,
-      questId,
-      contractType,
-      startTime,
-      endTime,
-      rewardAmountOrTokenId,
-      rewardTokenAddress,
-      totalParticipants,
-      evt_block_time,
-      creator
-    from
-      {{source('boost_arbitrum_deployed', 'rabbithole_arbitrum.QuestFactory_evt_QuestCreated')}}
-    union all
-    select
-      'base' as blockchain,
-      contractAddress,
-      questId,
-      questType as contractType,
-      startTime,
-      endTime,
-      rewardAmountOrTokenId,
-      rewardToken as rewardTokenAddress,
-      totalParticipants,
-      evt_block_time,
-      creator
-    from
-      {{source('boost_base_deployed', 'rabbithole_base.QuestFactory_evt_QuestCreated')}}
+    {% for model in boost_deployed_models %}
 )
 where 
     creator <> 0xa4c8bb4658bc44bac430699c8b7b13dab28e0f4e -- test address

@@ -10,4 +10,4 @@
       totalParticipants,
       evt_block_time,
       creator
-    from {{source('boost_arbitrum_deployed', 'rabbithole_arbitrum.QuestFactory_evt_QuestCreated')}}
+    from {{source('rabbithole_arbitrum', 'QuestFactory_evt_QuestCreated')}}
