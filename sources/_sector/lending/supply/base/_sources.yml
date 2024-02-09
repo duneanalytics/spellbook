@@ -38,3 +38,16 @@ sources:
       - name: mwstETH_evt_Redeem
       - name: mrETH_evt_Mint
       - name: mrETH_evt_Redeem
+
+  - name: sonne_finance_base
+    tables:
+      - name: sobcbETH_evt_Mint
+      - name: sobcbETH_evt_Redeem
+      - name: sobDAI_evt_Mint
+      - name: sobDAI_evt_Redeem
+      - name: sobUSDbC_evt_Mint
+      - name: sobUSDbC_evt_Redeem
+      - name: sobUSDC_evt_Mint
+      - name: sobUSDC_evt_Redeem
+      - name: sobWETH_evt_Mint
+      - name: sobWETH_evt_Redeem
