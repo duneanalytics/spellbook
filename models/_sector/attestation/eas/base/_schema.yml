@@ -28,7 +28,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
-            - ordinality_id
+            - ordinality
 
   - name: eas_base_attestations
     meta:
@@ -59,4 +59,4 @@ models:
           combination_of_columns:
             - schema_uid
             - attestation_uid
-            - ordinality_id
+            - ordinality

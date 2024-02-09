@@ -3,7 +3,7 @@
     schema = 'eas_arbitrum',
     alias = 'schema_details',
     materialized = 'view',
-    unique_key = ['schema_uid', 'ordinality_id']
+    unique_key = ['schema_uid', 'ordinality']
   )
 }}
 
