@@ -64,11 +64,11 @@ select
   sr.project,
   sr.version,
   sr.schema_uid,
-  se.ordinality_id,
+  se.ordinality,
   se.element[1] as data_type,
   se.element[2] as field_name
 from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
-  cross join unnest(sr.schema_array) with ordinality as se (element, ordinality_id)
+  cross join unnest(sr.schema_array) with ordinality as se (element, ordinality)
 where cardinality(se.element) = 2 -- only inlcude valid schemas
 
 {% endmacro %}
