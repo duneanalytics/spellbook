@@ -185,24 +185,133 @@ where ea.evt_tx_hash is null
   )
 %}
 
+with
+
+schema_details as (
+  select
+    *,
+    concat(
+      case
+        when data_type like '%int%' then 'int' -- simplify
+        else data_type
+      end,
+      '-',
+      cast(row_number() over (partition by schema_uid, data_type order by ordinality) as varchar)
+    ) as data_type_join
+  from {{ ref(project ~ '_' ~ blockchain ~ '_schema_details') }}
+),
+
+attestations_unnested as (
+  select
+    schema_uid,
+    attestation_uid,
+    ordinality,
+    substring(raw_data from 3 + (64 * (ordinality - 1)) for 64) as chunk,
+    block_number,
+    block_time,
+    tx_hash,
+    evt_index
+  from {{ ref(project ~ '_' ~ blockchain ~ '_attestations') }} a
+    cross join unnest(sequence(1, floor(length(raw_data) / 64))) as t(ordinality)
+),
+
+attestations as (
+  select
+    schema_uid,
+    attestation_uid,
+    ordinality,
+    --chunk,
+    case
+      when try_cast(bytearray_to_uint256(from_hex(chunk)) as int) in (0, 1) then 'bool'
+      when try_cast(bytearray_to_uint256(from_hex(chunk)) as uint256) <= 999999999999999999 then 'int'
+      -- '[[:print:]]+[^\x00-\x7F]+[[:print:]]*' --> contains unreadable characters?
+      when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') then
+        case
+          when length(regexp_replace(chunk, '^0+', '')) = 40 then 'address'
+          else 'bytes32'
+        end
+      when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') = false then 'string' -- or 'bytes32'
+      else 'unknown'
+    end as data_type,
+    case
+      when try_cast(bytearray_to_uint256(from_hex(chunk)) as int) in (0, 1)
+        then cast(try_cast(try_cast(bytearray_to_uint256(from_hex(chunk)) as int) as boolean) as varchar) -- boolean
+      when try_cast(bytearray_to_uint256(from_hex(chunk)) as uint256) <= 999999999999999999
+        then try_cast(bytearray_to_uint256(from_hex(chunk)) as varchar) -- int
+      -- '[[:print:]]+[^\x00-\x7F]+[[:print:]]*' --> contains unreadable characters?
+      when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*')
+        then try_cast(concat('0x', regexp_replace(chunk, '^0+', '')) as varchar) -- address / bytes32
+      when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') = false
+        then try_cast(from_utf8(from_hex(chunk)) as varchar) -- string
+      else cast(chunk as varchar) -- anything else
+    end as decoded_data,
+    block_number,
+    block_time,
+    tx_hash,
+    evt_index
+  from attestations_unnested
+),
+
+attestations_ext as (
+  select
+    *,
+    lag(data_type) over (partition by schema_uid, attestation_uid order by ordinality) as prev_data_type,
+    lead(data_type) over (partition by schema_uid, attestation_uid order by ordinality) as next_data_type
+  from attestations
+),
+
+attestations_sorted as (
+  select
+    *,
+    sum(case when data_type != prev_data_type then 1 else 0 end ) over (partition by schema_uid, attestation_uid order by ordinality) as group_id
+  from attestations_ext
+),
+
+attestations_grouped as (
+  select
+    schema_uid,
+    attestation_uid,
+    data_type,
+    group_id,
+    block_number,
+    block_time,
+    tx_hash,
+    evt_index,
+    array_join(array_agg(decoded_data order by ordinality), '') as decoded_data,
+    concat(
+      case
+        when data_type like '%int%' then 'int' -- simply as non-trivial to "guess" int size based on decoded data chunk
+        else data_type
+      end,
+      '-',
+      cast(dense_rank() over (partition by schema_uid, attestation_uid, data_type order by group_id) as varchar)
+    ) as data_type_join
+  from attestations_sorted
+  where 1 = 1
+    and not (data_type = 'int' and cast(decoded_data as bigint) % 64 = 0) -- exclude bytesize markers
+    and not (data_type = 'int' and next_data_type = 'string') -- exclude string length markers
+  group by 1,2,3,4,5,6,7,8
+)
+
 select
   sd.blockchain,
   sd.project,
   sd.version,
   sd.schema_uid,
-  sd.ordinality_id,
+  a.attestation_uid,
+  sd.ordinality,
   sd.data_type,
   sd.field_name,
-  a.attestation_uid,
-  a.raw_data,
+  a.decoded_data,
   a.block_number,
   a.block_time,
   a.tx_hash,
   a.evt_index
-from {{ ref(project ~ '_' ~ blockchain ~ '_schema_details') }} sd
-  join {{ ref(project ~ '_' ~ blockchain ~ '_attestations') }} a on sd.schema_uid = a.schema_uid
-{% if is_incremental() %}
-where {{ incremental_predicate('block_time') }}
-{% endif %}
+from schema_details sd
+  left join attestations_grouped a on sd.schema_uid = a.schema_uid and sd.data_type_join = a.data_type_join
+where a.attestation_uid is not null
+  {% if is_incremental() %}
+  and {{ incremental_predicate('a.block_time') }}
+  {% endif %}
 
 {% endmacro %}
