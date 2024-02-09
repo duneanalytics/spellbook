@@ -121,3 +121,46 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: sonne_finance_optimism_base_supply
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: sonne_finance
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'sonne_finance', 'compound', 'optimism']
+    description: "Sonne Finance supply transactions on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sonne_finance_optimism_base_supply_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
