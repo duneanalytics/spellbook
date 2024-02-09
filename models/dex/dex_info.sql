@@ -115,5 +115,5 @@ FROM (VALUES
     , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
     , ('dooar', 'Dooar', 'Direct', 'dooar')
     , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
-    , ('citadelswap''Citadelswap','Direct','Citadel')
+    , ('citadelswap','Citadelswap','Direct','Citadel')
     ) AS temp_table (project, name, marketplace_type, x_username)
