@@ -7,7 +7,7 @@ select
      'ethereum' as blockchain,
       contractAddress,
       questId,
-      contractType,
+      questType as contractType,
       startTime,
       endTime,
       rewardAmountOrTokenId,

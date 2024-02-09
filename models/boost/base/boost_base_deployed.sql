@@ -7,7 +7,7 @@ select
       'base' as blockchain,
       contractAddress,
       questId,
-      contractType,
+      questType as contractType,
       startTime,
       endTime,
       rewardAmountOrTokenId,
