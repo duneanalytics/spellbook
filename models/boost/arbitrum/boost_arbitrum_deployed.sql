@@ -1,3 +1,8 @@
+ {{
+    config(
+        schema='boost_arbitrum',
+    )
+}}
  select
       'arbitrum' as blockchain,
       contractAddress,
@@ -10,4 +15,4 @@
       totalParticipants,
       evt_block_time,
       creator
-    from {{source('rabbithole_arbitrum', 'QuestFactory_evt_QuestCreated')}}
+from {{source('rabbithole_arbitrum', 'QuestFactory_evt_QuestCreated')}}

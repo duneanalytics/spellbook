@@ -1,5 +1,10 @@
- select
-      'ethereum' as blockchain,
+ {{
+    config(
+        schema='boost_ethereum',
+    )
+}}
+select
+     'ethereum' as blockchain,
       contractAddress,
       questId,
       contractType,
@@ -10,4 +15,4 @@
       totalParticipants,
       evt_block_time,
       creator
-    from {{source('rabbithole_ethereum', 'QuestFactory_evt_QuestCreated')}}
+from {{source('rabbithole_ethereum', 'QuestFactory_evt_QuestCreated')}}

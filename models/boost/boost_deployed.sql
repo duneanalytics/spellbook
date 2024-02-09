@@ -1,6 +1,7 @@
 {{
     config(
-        unique_key='boost_address'
+        unique_key='boost_address',
+        schema='boost',
     )
 }}
 
@@ -27,8 +28,14 @@ select
 from
   (
     {% for model in boost_deployed_models %}
+    SELECT *
+    FROM {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
 where 
-    creator <> 0xa4c8bb4658bc44bac430699c8b7b13dab28e0f4e -- test address
+    creator <> 0xa4c8bb4658bc44bac430699c8b7b13dab28e0f4e
     and startTime > 0
     and endTime < 1e11

@@ -1,4 +1,9 @@
- select
+ {{
+    config(
+        schema='boost_base',
+    )
+}}
+select
       'optimism' as blockchain,
       contractAddress,
       questId,
@@ -10,4 +15,4 @@
       totalParticipants,
       evt_block_time,
       creator
-    from {{source('rabbithole_optimism', 'QuestFactory_evt_QuestCreated')}}
+from {{source('rabbithole_optimism', 'QuestFactory_evt_QuestCreated')}}

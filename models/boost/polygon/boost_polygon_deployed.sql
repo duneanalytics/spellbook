@@ -1,4 +1,9 @@
- select
+ {{
+    config(
+        schema='boost_polygon',
+    )
+}}
+select
       'polygon' as blockchain,
       contractAddress,
       questId,
@@ -10,4 +15,4 @@
       totalParticipants,
       evt_block_time,
       creator
-    from {{source('rabbithole_polygon', 'QuestFactory_evt_QuestCreated')}}
+from {{source('rabbithole_polygon', 'QuestFactory_evt_QuestCreated')}}
