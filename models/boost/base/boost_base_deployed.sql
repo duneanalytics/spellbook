@@ -11,7 +11,7 @@ select
       startTime,
       endTime,
       rewardAmountOrTokenId,
-      rewardTokenAddress,
+      rewardToken as rewardTokenAddress,
       totalParticipants,
       evt_block_time,
       creator
