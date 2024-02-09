@@ -55,4 +55,7 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
- 
+  - name: citadelswap_base
+    tables:
+      - name: CitadelFactory_evt_PairCreated
+      - name: CitadelPair_evt_Swap
