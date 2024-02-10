@@ -18,19 +18,7 @@ WITH base_trades as (
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
-, prices AS (
-    SELECT
-        blockchain
-        , contract_address
-        , minute
-        , price
-    FROM
-        {{ prices_model }}
-    {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('minute') }}
-    {% endif %}
-)
+
 , enrichments AS (
     SELECT
         base_trades.blockchain
@@ -71,14 +59,17 @@ WITH base_trades as (
         AND erc20_sold.blockchain = base_trades.blockchain
 )
 
+, enrichments_with_prices AS (
+    {{
+        add_amount_usd(
+            trades_cte = 'enrichments'
+        )
+    }}
+)
 
-{{
-    add_amount_usd(
-        trades_cte = 'enrichments'
-        , prices_model = prices_model
-        , bought_amount_column='token_bought_amount'
-        , sold_amount_column='token_sold_amount'
-    )
-}}
+SELECT
+    *
+FROM
+    enrichments_with_prices
 
 {% endmacro %}
