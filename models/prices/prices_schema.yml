@@ -124,7 +124,7 @@ models:
     columns:
       - name: blockchain
         description: "Native blockchain of the token"
-      - name: contract_address
-        description: "Contract address of the token"
       - name: symbol
         description: "Token symbol"
+      - name: contract_address
+        description: "Contract address of the token"
