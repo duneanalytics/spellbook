@@ -130,7 +130,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'compound', 'base']
-    description: "Compound v3 supply transactions on Ethereum"
+    description: "Compound v3 supply transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -175,7 +175,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'seamlessprotocol', 'base']
-    description: "Seamless Protocol supply transactions on Ethereum"
+    description: "Seamless Protocol supply transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -218,7 +218,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['lending', 'supply', 'moonwell', 'base']
-    description: "Moonwell supply transactions on Ethereum"
+    description: "Moonwell supply transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -228,6 +228,49 @@ models:
             - evt_index
       - check_seed:
           seed_file: ref('moonwell_base_base_supply_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: sonne_finance_base_base_supply
+    meta:
+      blockchain: base
+      sector: lending
+      project: sonne_finance
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'sonne_finance', 'base']
+    description: "Sonne Finance supply transactions on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('sonne_finance_base_base_supply_seed')
           match_columns:
             - transaction_type
             - token_address
