@@ -59,16 +59,16 @@ Simple rule of thumb – a green check success on CI tests does not guarantee a 
 ### Other Minor CI Details
 
 - There is a 90-minute timeout window, to cancel any long-running spells.
-- This timeframe has worked well for 95%+ of PRs, but there are instances where the timeout needs increased, which needs handled by the Dune team.
-- Wizards are unable to modify objects in the ‘spellbook/.github/’ directory. If modified in a PR, a bot may auto-close the PR. Please request help from the Dune team to modify.
+  - This timeframe has worked well for 95%+ of PRs, but there are instances where the timeout needs increased, which needs handled by the Dune team.
+- Wizards are unable to modify objects in the `spellbook/.github/` directory. If modified in a PR, a bot may auto-close the PR. Please request help from the Dune team to modify.
 - Concurrency is set to 1, meaning each new commit which triggers a new workflow action will cancel any currently running.
 
 ### Common Issues to Look Out For in CI Tests
 
 - **Models which are not in my PR are running in my CI workflow, why is that?**
   - Due to the manifest comparison steps, there are times the manifest files are out of sync, therefore PR manifest vs. main branch manifest pulls more than it should to run.
-  - To fix, the ‘commit manifest’ workflow in ‘Actions’ section likely needs rerun to upload a fresh main branch manifest file.
-  - When the Dune team merges a batch of PRs, this ‘commit manifest’ workflow automatically kicks off to set up a new manifest file. However, this workflow takes a few minutes, so if a commit is pushed to another PR during this workflow run, it can pull in more models than expected – simply monitor this job and rerun CI tests on PR once complete.
+  - To fix, the `commit manifest` workflow in `Actions` section likely needs rerun to upload a fresh main branch manifest file.
+  - When the Dune team merges a batch of PRs, this `commit manifest` workflow automatically kicks off to set up a new manifest file. However, this workflow takes a few minutes, so if a commit is pushed to another PR during this workflow run, it can pull in more models than expected – simply monitor this job and rerun CI tests on PR once complete.
 - **The DuneSQL cluster for CI is down.**
   - Dune team will need to fix internally.
 - **Error: ‘Metadata is not found for ____’.**

@@ -4,7 +4,7 @@ sources:
   - name: tokens_ethereum
     description: "Prices tables across blockchains"
     tables:
-      - name: balances_ethereum_0002
+      - name: balances_ethereum_0004
         description: "Raw balances data"
         columns:
           - name: block_number

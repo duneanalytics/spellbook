@@ -338,3 +338,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('curvefi_avalanche_c_base_trades_seed')
+
+
+  - name: hashflow_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: hashflow
+      contributors: hosuke
+    config:
+      tags: [ 'avalanche_c','hashflow','trades','dex','hosuke' ]
+    description: >
+      Hashflow contract trades on Avalanche C-Chain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hashflow_avalanche_c_base_trades_seed')
