@@ -1,11 +1,11 @@
 {{
   config(
     schema = 'eas',
-    alias = 'schemas',
+    alias = 'attestation_details',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'project', 'version', 'schema_uid'],
+    unique_key = ['blockchain', 'project', 'version', 'schema_uid', 'attestation_uid', 'ordinality'],
     post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon"]\',
                                 "sector",
                                 "attestation",
@@ -15,11 +15,11 @@
 
 {%
   set models = [
-    ref('eas_arbitrum_schemas'),
-    ref('eas_base_schemas'),
-    ref('eas_ethereum_schemas'),
-    ref('eas_optimism_schemas'),
-    ref('eas_polygon_schemas')
+    ref('eas_arbitrum_attestation_details'),
+    ref('eas_base_attestation_details'),
+    ref('eas_ethereum_attestation_details'),
+    ref('eas_optimism_attestation_details'),
+    ref('eas_polygon_attestation_details')
   ]
 %}
 
@@ -29,12 +29,11 @@ select
   project,
   version,
   schema_uid,
-  registerer,
-  resolver,
-  schema,
-  schema_array,
-  is_revocable,
-  contract_address,
+  attestation_uid,
+  ordinality,
+  data_type,
+  field_name,
+  decoded_data,
   block_number,
   block_time,
   tx_hash,
