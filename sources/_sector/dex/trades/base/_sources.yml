@@ -55,4 +55,7 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
- 
+  - name: moonbase_base
+    tables:
+      - name: UniswapFactory_evt_PairCreated
+      - name: Pair_evt_Swap
