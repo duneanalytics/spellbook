@@ -2,7 +2,6 @@
     base_trades = null
     , filter = null
     , tokens_erc20_model = null
-    , prices_model = null
     )
 %}
 
