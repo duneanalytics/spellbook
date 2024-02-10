@@ -66,7 +66,11 @@ select
   sr.schema_uid,
   se.ordinality,
   se.element[1] as data_type,
-  se.element[2] as field_name
+  se.element[2] as field_name,
+  block_number,
+  block_time,
+  tx_hash,
+  evt_index
 from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
   cross join unnest(sr.schema_array) with ordinality as se (element, ordinality)
 where cardinality(se.element) = 2 -- only inlcude valid schemas
@@ -199,6 +203,17 @@ schema_details as (
       cast(row_number() over (partition by schema_uid, data_type order by ordinality) as varchar)
     ) as data_type_join
   from {{ ref(project ~ '_' ~ blockchain ~ '_schema_details') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_time') }}
+  {% endif %}
+),
+
+attestations as (
+  select *
+  from {{ ref(project ~ '_' ~ blockchain ~ '_attestations') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('block_time') }}
+  {% endif %}
 ),
 
 attestations_unnested as (
@@ -206,16 +221,12 @@ attestations_unnested as (
     schema_uid,
     attestation_uid,
     ordinality,
-    substring(raw_data from 3 + (64 * (ordinality - 1)) for 64) as chunk,
-    block_number,
-    block_time,
-    tx_hash,
-    evt_index
-  from {{ ref(project ~ '_' ~ blockchain ~ '_attestations') }} a
+    substring(raw_data from 3 + (64 * (ordinality - 1)) for 64) as chunk
+  from attestations a
     cross join unnest(sequence(1, floor(length(raw_data) / 64))) as t(ordinality)
 ),
 
-attestations as (
+attestations_decoded as (
   select
     schema_uid,
     attestation_uid,
@@ -224,10 +235,10 @@ attestations as (
     case
       when try_cast(bytearray_to_uint256(from_hex(chunk)) as int) in (0, 1) then 'bool'
       when try_cast(bytearray_to_uint256(from_hex(chunk)) as uint256) <= 999999999999999999 then 'int'
-      -- '[[:print:]]+[^\x00-\x7F]+[[:print:]]*' --> contains unreadable characters?
+      -- '[[:print:]]+[^\x00-\x7F]+[[:print:]]*' --> contains non-human readable characters?
       when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') then
         case
-          when length(regexp_replace(chunk, '^0+', '')) = 40 then 'address'
+          when length(regexp_replace(chunk, '^0+', '')) <= 40 then 'address'
           else 'bytes32'
         end
       when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') = false then 'string' -- or 'bytes32'
@@ -238,17 +249,16 @@ attestations as (
         then cast(try_cast(try_cast(bytearray_to_uint256(from_hex(chunk)) as int) as boolean) as varchar) -- boolean
       when try_cast(bytearray_to_uint256(from_hex(chunk)) as uint256) <= 999999999999999999
         then try_cast(bytearray_to_uint256(from_hex(chunk)) as varchar) -- int
-      -- '[[:print:]]+[^\x00-\x7F]+[[:print:]]*' --> contains unreadable characters?
-      when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*')
-        then try_cast(concat('0x', regexp_replace(chunk, '^0+', '')) as varchar) -- address / bytes32
+      -- '[[:print:]]+[^\x00-\x7F]+[[:print:]]*' --> contains non-human readable characters?
+      when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') then
+        case
+          when length(regexp_replace(chunk, '^0+', '')) <= 40 then try_cast(concat('0x', regexp_replace(chunk, '^0{1,24}', '')) as varchar) -- address
+          else try_cast(concat('0x', chunk) as varchar) -- bytes32
+        end
       when regexp_like(from_utf8(from_hex(chunk)), '[[:print:]]+[^\x00-\x7F]+[[:print:]]*') = false
         then try_cast(from_utf8(from_hex(chunk)) as varchar) -- string
       else cast(chunk as varchar) -- anything else
-    end as decoded_data,
-    block_number,
-    block_time,
-    tx_hash,
-    evt_index
+    end as decoded_data
   from attestations_unnested
 ),
 
@@ -257,7 +267,7 @@ attestations_ext as (
     *,
     lag(data_type) over (partition by schema_uid, attestation_uid order by ordinality) as prev_data_type,
     lead(data_type) over (partition by schema_uid, attestation_uid order by ordinality) as next_data_type
-  from attestations
+  from attestations_decoded
 ),
 
 attestations_sorted as (
@@ -273,10 +283,6 @@ attestations_grouped as (
     attestation_uid,
     data_type,
     group_id,
-    block_number,
-    block_time,
-    tx_hash,
-    evt_index,
     array_join(array_agg(decoded_data order by ordinality), '') as decoded_data,
     concat(
       case
@@ -290,7 +296,7 @@ attestations_grouped as (
   where 1 = 1
     and not (data_type = 'int' and cast(decoded_data as bigint) % 64 = 0) -- exclude bytesize markers
     and not (data_type = 'int' and next_data_type = 'string') -- exclude string length markers
-  group by 1,2,3,4,5,6,7,8
+  group by 1,2,3,4
 )
 
 select
@@ -302,16 +308,16 @@ select
   sd.ordinality,
   sd.data_type,
   sd.field_name,
-  a.decoded_data,
+  ag.decoded_data,
   a.block_number,
   a.block_time,
   a.tx_hash,
   a.evt_index
 from schema_details sd
-  left join attestations_grouped a on sd.schema_uid = a.schema_uid and sd.data_type_join = a.data_type_join
-where a.attestation_uid is not null
-  {% if is_incremental() %}
-  and {{ incremental_predicate('a.block_time') }}
-  {% endif %}
+  join attestations a on sd.schema_uid = a.schema_uid -- only schemas with online attestations
+  left join attestations_grouped ag
+     on a.schema_uid = ag.schema_uid
+    and a.attestation_uid = ag.attestation_uid
+    and sd.data_type_join = ag.data_type_join
 
 {% endmacro %}
