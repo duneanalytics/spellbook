@@ -96,7 +96,7 @@ models:
             values: ['for', 'against', 'abstain']
       - &reason
         name: reason
-        description: "Optional onchain commments to explain votes"
+        description: "Optional onchain comments to explain votes"
 
   - name: aave_ethereum_supply
     meta:
