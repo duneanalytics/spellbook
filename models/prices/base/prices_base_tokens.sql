@@ -28,5 +28,12 @@ FROM
     ('based-basedmarkets','base','BASED',0xba5e6fa2f33f3955f0cef50c63dcc84861eab663,18),
     ('usdc-usd-coin', 'base', 'USDC', 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, 6),
     ('wsteth-wrapped-liquid-staked-ether-20', 'base', 'wstETH',0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452,18),
-    ('aero-aerodrome-finance', 'base', 'AERO', 0x940181a94A35A4569E4529A3CDfB74e38FD98631, 18)
+    ('aero-aerodrome-finance', 'base', 'AERO', 0x940181a94A35A4569E4529A3CDfB74e38FD98631, 18),
+    ('degen-token', 'base', 'DEGEN', 0x4ed4e862860bed51a9570b96d89af5e1b0efefed,18),
+    ('base-velocimeter', 'base', 'BVM', 0xd386a121991e51eab5e3433bf5b1cf4c8884b47a,18),
+    ('dai-plus-overnight', 'base', 'DAI+', 0x65a2508c429a6078a7bc2f7df81ab575bd9d9275,18),
+    ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18),
+    ('prime', 'base', 'PRIME', 0xfa980ced6895ac314e7de34ef1bfae90a5add21b,18),
+    ('btiusd', 'base', 'bTiUSD', 0x82fdaf19c7560be8f29d4bb3a1f7e1620db27238,18),
+    ('yieldfarming-index', 'base', 'YFX'. 0x8901cb2e82cc95c01e42206f8d1f417fe53e7af0.18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
