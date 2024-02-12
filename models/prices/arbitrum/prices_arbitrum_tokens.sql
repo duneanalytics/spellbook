@@ -125,5 +125,7 @@ FROM
     ('ush-unsheth','arbitrum','USH',0x51a80238b5738725128d3a3e06ab41c1d4c05c74,18),
     ('hdn-hydranet','arbitrum','HDN',0x3404149e9ee6f17fb41db1ce593ee48fbdcd9506,18),
     ('vela-vela-token','arbitrum','VELA',0x088cd8f5ef3652623c22d48b1605dcfe860cd704,18),
-    ('choke-artichoke','arbitrum','CHOKE',0x6fc2680d8ad8e8312191441b4eca9eff8d06b45a,18)
+    ('choke-artichoke','arbitrum','CHOKE',0x6fc2680d8ad8e8312191441b4eca9eff8d06b45a,18),
+    ('cbeth-coinbase-wrapped-staked-eth','arbitrum','CBETH',0x1debd73e752beaf79865fd6446b0c970eae7732f, 18),        
+    ('aeth-ankreth','arbitrum','AETH',0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18)        
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
