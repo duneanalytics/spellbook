@@ -42,7 +42,6 @@ WITH curve AS (
     {% for model in as_is_models %}
     SELECT
         *
-        , NULL as block_number  -- we may solve this in the future
     FROM
         {{ model }}
     {% if is_incremental() %}
