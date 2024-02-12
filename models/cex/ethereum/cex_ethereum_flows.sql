@@ -28,7 +28,7 @@ SELECT t.blockchain
 , t.tx_index
 , t.tx_hash
 , t.evt_index
-FROM ref('tokens_ethereum_transfers') t
+FROM {{ ref('tokens_ethereum_transfers')}} t
 INNER JOIN {{ ref('cex_ethereum_addresses')}} a ON a.address IN (t."from", t.to)
 {% if is_incremental() %}
 WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
