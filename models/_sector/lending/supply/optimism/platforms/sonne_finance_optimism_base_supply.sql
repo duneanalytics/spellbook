@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'moonwell_base',
+    schema = 'sonne_finance_optimism',
     alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,23 +12,25 @@
 
 {%
   set config_sources = [
-    {'contract': 'mcbETH'},
-    {'contract': 'mDAI'},
-    {'contract': 'mUSDC'},
-    {'contract': 'mUSDCnative'},
-    {'contract': 'mWETH'},
-    {'contract': 'mwstETH'},
-    {'contract': 'mrETH'},
+    {'contract': 'soDAI'},
+    {'contract': 'soMAI'},
+    {'contract': 'soOP'},
+    {'contract': 'soSNX'},
+    {'contract': 'soSUSD'},
+    {'contract': 'soUSDC'},
+    {'contract': 'soUSDT'},
+    {'contract': 'soWBTC'},
+    {'contract': 'soWETH'},
+    {'contract': 'sowstETH'},
   ]
 %}
 
 {{
   lending_compound_v2_compatible_supply(
-    blockchain = 'base',
-    project = 'moonwell',
+    blockchain = 'optimism',
+    project = 'sonne_finance',
     version = '1',
-    decoded_project = 'moonwell',
+    decoded_project = 'sonne_finance',
     sources = config_sources
   )
 }}
- 

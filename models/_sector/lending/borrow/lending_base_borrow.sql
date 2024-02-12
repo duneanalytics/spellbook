@@ -7,6 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'project', 'version', 'transaction_type', 'token_address', 'tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
@@ -21,7 +22,8 @@
     ref('lending_polygon_base_borrow'),
     ref('lending_avalanche_c_base_borrow'),
     ref('lending_fantom_base_borrow'),
-    ref('lending_gnosis_base_borrow')
+    ref('lending_gnosis_base_borrow'),
+    ref('lending_zksync_base_borrow')
   ]
 %}
 
@@ -43,6 +45,9 @@ select
   tx_hash,
   evt_index
 from {{ model }}
+{% if is_incremental() %}
+where {{ incremental_predicate('block_time') }}
+{% endif %}
 {% if not loop.last %}
 union all
 {% endif %}
