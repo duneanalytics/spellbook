@@ -212,4 +212,5 @@ FROM (VALUES
         ,(0x0eab25ecb949827d675864ea7686a8a7efe41116, 'SFT', 18)
         ,(0x88ec3bfb63f5583bb4127a8d834be87e67908e2c, 'ADAI', 18)
         ,(0xf93fc7d6508ae2faf8fc5675e896bc38d6e7212c, 'YOU', 18)
+        ,(0xA98c94d67D9dF259Bee2E7b519dF75aB00E3E2A8, 'bwAJNA', 18)
      ) AS temp_table (contract_address, symbol, decimals)

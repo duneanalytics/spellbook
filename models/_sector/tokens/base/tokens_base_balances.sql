@@ -1,8 +1,12 @@
 {{ config(
-        schema = 'tokens_base',
-        alias = 'balances',
-        materialized = 'view'
-        )
+    schema = 'tokens_base',
+    alias = 'balances',
+    materialized = 'view',
+    post_hook = '{{ expose_spells(\'["base"]\',
+                                "sector",
+                                "tokens",
+                                \'["aalan3"]\') }}'
+    )
 }}
 
 {{

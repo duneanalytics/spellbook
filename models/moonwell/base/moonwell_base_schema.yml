@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: moonwell_base_ctokens
+    meta:
+      blockchain: base
+      sector: lending
+      project: moonwell
+      contributors: tomfutago
+    config:
+      tags: ['base', 'lending', 'compound', 'moonwell']
+    description: "All moonwell cTokens"
+    columns:
+      - name: asset_symbol
+        description: "Underlying asset symbol"
+      - name: ctoken_address
+        description: "cToken address"
+      - name: asset_address
+        description: "Underlying asset address"
