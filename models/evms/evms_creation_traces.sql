@@ -40,11 +40,11 @@ FROM (
         --, tx_from
         --, tx_to
         FROM {{ creation_traces_model[1] }}
-        {% if not loop.last %}
-        {% if is_incremental() %}
+    {% if not loop.last or is_incremental() %}
         WHERE {{incremental_predicate('block_time')}}
-        {% endif %}
+    {% endif %}
+    {% if not loop.last %}
         UNION ALL
-        {% endif %}
-        {% endfor %}
-        );
+    {% endif %}
+    {% endfor %}
+);
