@@ -15,7 +15,8 @@
     ref('compound_v3_ethereum_base_borrow'),
     ref('radiant_ethereum_base_borrow'),
     ref('uwulend_ethereum_base_borrow'),
-    ref('spark_ethereum_base_borrow')
+    ref('spark_ethereum_base_borrow'),
+    ref('fluxfinance_ethereum_base_borrow')
   ]
 %}
 
