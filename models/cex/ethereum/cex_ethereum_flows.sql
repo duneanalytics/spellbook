@@ -19,7 +19,7 @@ SELECT t.blockchain
 , t.token_standard
 , CASE WHEN a.address=t."from" THEN 'Outflow' ELSE 'Inflow' END AS flow_type
 , CASE WHEN a.address=t."from" THEN -t.amount ELSE t.amount END AS amount
-, CASE WHEN a.address=t."from" THEN -t.amount_raw ELSE t.amount_raw END AS amount_raw
+, t.amount_raw
 , CASE WHEN a.address=t."from" THEN -t.usd_amount ELSE t.usd_amount END AS usd_amount
 , t."from"
 , t.to
