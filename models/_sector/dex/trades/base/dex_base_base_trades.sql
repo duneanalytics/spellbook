@@ -24,7 +24,6 @@
     , ref('woofi_base_base_trades')
     , ref('velocimeter_v2_base_base_trades')
     , ref('sobal_base_base_trades')
-
 ] %}
 
 WITH base_union AS (
