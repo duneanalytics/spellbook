@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema='balancer_v2_' + blockchain,
+        schema = 'balancer_v2_polygon',
         alias = 'protocol_fee', 
         materialized = 'incremental',
         file_format = 'delta',

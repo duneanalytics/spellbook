@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema='balancer_v2_' + blockchain,
+        schema='balancer_v2_ethereum',
         alias = 'bpt_supply',
         materialized = 'table',
         file_format = 'delta'
