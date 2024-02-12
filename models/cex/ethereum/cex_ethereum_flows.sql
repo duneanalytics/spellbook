@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_number', 'tx_index', 'evt_index']
+        unique_key = ['flow_type', 'block_number', 'tx_index', 'evt_index']
         )}}
 
 SELECT t.blockchain
