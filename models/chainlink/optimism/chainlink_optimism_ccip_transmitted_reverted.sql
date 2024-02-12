@@ -32,7 +32,7 @@ WITH
       MAX(tx.block_time) as block_time,
       cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
       tx.tx_from as "node_address",
-      MAX((cast((l1_gas_used) as double) / 1e18) * l1_gas_price) as token_amount,
+      MAX(((gas_price * gas_used) + l1_fee) / 1e18) as token_amount,
       MAX(optimism_usd.usd_amount) as usd_amount
     FROM
       {{ ref('chainlink_optimism_ccip_transmitted_logs') }} tx
