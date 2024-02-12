@@ -1637,8 +1637,9 @@ FROM
     ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
     ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9),
     ('rbx-rabbitx', 'ethereum', 'RBX', 0x3Ba925fdeAe6B46d0BB4d424D829982Cb2F7309e, 18),
-    ('gyd-gyro-dollar','ethereum','GYD',0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 18)
-    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('gyd-gyro-dollar','ethereum','GYD',0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 18),
+    ('ezeth-renzo-restaked-eth','ethereum','EZETH',0xbf5495efe5db9ce00f80364c8b423567e58d2110, 18)
+) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
     0x841fb148863454a3b3570f515414759be9091465    -- SHIH

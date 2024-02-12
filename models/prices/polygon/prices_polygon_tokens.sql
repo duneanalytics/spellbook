@@ -87,5 +87,5 @@ FROM
     ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18),
     ('gmt-stepn', 'polygon', 'GMT', 0x714db550b574b3e927af3d93e26127d15721d4c2,8),
     ('tel-telcoin', 'polygon', 'TEL', 0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32,2),
-    ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18)
+    ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18)   
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
