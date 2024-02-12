@@ -1,6 +1,7 @@
 {{ config(
 
         alias = 'creation_traces',
+        materialized = 'incremental',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
                                     "sector",
@@ -40,6 +41,9 @@ FROM (
         --, tx_to
         FROM {{ creation_traces_model[1] }}
         {% if not loop.last %}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('block_time')}}
+        {% endif %}
         UNION ALL
         {% endif %}
         {% endfor %}
