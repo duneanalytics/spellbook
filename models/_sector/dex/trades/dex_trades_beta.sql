@@ -10,6 +10,7 @@
     )
 }}
 
+-- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage
 {% set as_is_models = [
     ref('oneinch_lop_own_trades')
     , ref('zeroex_native_trades')
@@ -17,6 +18,7 @@
 ] %}
 
 WITH curve AS (
+    -- due to curve having increased complexity to determine token_bought_amount / token_sold_amount, enrich separately
     {{
         enrich_curve_dex_trades(
             base_trades = ref('dex_base_trades')
