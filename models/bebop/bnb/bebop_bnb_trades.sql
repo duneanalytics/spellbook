@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'bebop_polygon',
+        schema = 'bebop_bnb',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        post_hook='{{ expose_spells(\'["bnb"]\',
                         "project",
                         "bebop",
                         \'["alekss"]\') }}'
@@ -10,8 +10,7 @@
 
 
 {% set bebop_models = [
-    ref('bebop_rfq_polygon_trades'),
-    ref('bebop_jam_polygon_trades')
+    ref('bebop_jam_bnb_trades')
 ] %}
 
 SELECT *

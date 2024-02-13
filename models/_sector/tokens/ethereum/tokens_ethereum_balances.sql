@@ -1,7 +1,11 @@
 {{ config(
         schema = 'tokens_ethereum',
         alias = 'balances',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(\'["ethereum"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["aalan3"]\') }}'
         )
 }}
 

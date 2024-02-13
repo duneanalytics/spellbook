@@ -116,4 +116,5 @@ FROM (VALUES
     , ('dooar', 'Dooar', 'Direct', 'dooar')
     , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
     , ('moonbase', 'Moonbase','Direct','MoonBase')
+    , ('derpdex','DerpDex', 'Direct', 'DerpDex')
     ) AS temp_table (project, name, marketplace_type, x_username)
