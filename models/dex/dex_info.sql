@@ -115,5 +115,6 @@ FROM (VALUES
     , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
     , ('dooar', 'Dooar', 'Direct', 'dooar')
     , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
+    , ('sobal','Sobal','Direct','Sobal')
     , ('derpdex','DerpDex', 'Direct', 'DerpDex')
     ) AS temp_table (project, name, marketplace_type, x_username)
