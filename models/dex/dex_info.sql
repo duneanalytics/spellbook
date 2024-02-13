@@ -117,4 +117,5 @@ FROM (VALUES
     , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
     , ('sobal','Sobal','Direct','Sobal')
     , ('derpdex','DerpDex', 'Direct', 'DerpDex')
+    , ('solidly','Solidly','Direct','Solidly')
     ) AS temp_table (project, name, marketplace_type, x_username)
