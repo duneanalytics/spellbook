@@ -28,7 +28,6 @@ WITH curve AS (
             base_trades = ref('dex_base_trades')
             , filter = "project != 'curve'"
             , tokens_erc20_model = source('tokens', 'erc20')
-            , prices_model = source('prices', 'usd')
         )
     }}
 )
