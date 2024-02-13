@@ -2476,7 +2476,7 @@ seeds:
         block_date: timestamp
 
   - name: moonbase_base_base_trades_seed
-     config:
+    config:
       column_types:
         blockchain: varchar
         project: varchar
