@@ -103,7 +103,7 @@ with tx_batch_appends as (
   UNION ALL 
   
   SELECT
-    lower(op.protocol_name) as name,
+    lower(protocol_name) as name,
     block_number,
     hash,
     (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
