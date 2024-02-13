@@ -106,10 +106,10 @@ with tx_batch_appends as (
     lower(protocol_name) as name,
     block_number,
     hash,
-    (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
-    p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
     data_length,
-    t.gas_used,
+    gas_used,
     calldata_gas_used
   FROM (
     SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
@@ -135,7 +135,7 @@ with tx_batch_appends as (
       AND p.minute >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     {% if is_incremental() %}
-    WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE b.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
   UNION ALL 
