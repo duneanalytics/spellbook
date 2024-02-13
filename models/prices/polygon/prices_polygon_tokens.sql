@@ -25,7 +25,8 @@ FROM
     ('matic-polygon', 'polygon', 'MATIC', 0x0000000000000000000000000000000000001010, 18),
     ('dai-dai', 'polygon', 'DAI', 0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 18),
     ('dquick-dragon-quick', 'polygon', 'dQUICK', 0x958d208Cdf087843e9AD98d23823d32E17d723A1, 18),
-    ('usdc-usd-coin', 'polygon', 'USDC', 0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 6),
+    ('usdc-usd-coin', 'polygon', 'USDC.e', 0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 6),
+    ('usdc-usd-coin', 'polygon', 'USDC', 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359, 6),
     ('usdt-tether', 'polygon', 'USDT', 0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 6),
     ('stmatic-lido-staked-matic','polygon','stMATIC',0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4,18),
     ('sushi-sushi','polygon','SUSHI',0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a,18),
@@ -87,5 +88,5 @@ FROM
     ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18),
     ('gmt-stepn', 'polygon', 'GMT', 0x714db550b574b3e927af3d93e26127d15721d4c2,8),
     ('tel-telcoin', 'polygon', 'TEL', 0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32,2),
-    ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18)
+    ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18)   
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
