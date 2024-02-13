@@ -3,7 +3,7 @@
 
 {{
     config(
-        schema='balancer_v2_' + blockchain,
+        schema = 'balancer_v2_ethereum',
         alias = 'liquidity',
         materialized = 'table',
         file_format = 'delta',
