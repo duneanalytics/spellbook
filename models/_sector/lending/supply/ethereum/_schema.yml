@@ -432,3 +432,46 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: fluxfinance_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: fluxfinance
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'fluxfinance', 'ethereum']
+    description: "Flux Finance supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('fluxfinance_ethereum_base_supply_seed')
+          match_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+          check_columns:
+            - block_number
+            - depositor
+            - amount
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

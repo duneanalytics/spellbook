@@ -56,3 +56,21 @@ sources:
       - name: Pool_evt_Borrow
       - name: Pool_evt_Repay
       - name: Pool_evt_LiquidationCall
+
+  - name: fluxfinance_ethereum
+    tables:
+      - name: fUSDC_evt_Borrow
+      - name: fUSDC_evt_RepayBorrow
+      - name: fUSDC_evt_LiquidateBorrow
+      - name: fDAI_evt_Borrow
+      - name: fDAI_evt_RepayBorrow
+      - name: fDAI_evt_LiquidateBorrow
+      - name: fUSDT_evt_Borrow
+      - name: fUSDT_evt_RepayBorrow
+      - name: fUSDT_evt_LiquidateBorrow
+      - name: fFRAX_evt_Borrow
+      - name: fFRAX_evt_RepayBorrow
+      - name: fFRAX_evt_LiquidateBorrow
+      - name: fOUSG_evt_Borrow
+      - name: fOUSG_evt_RepayBorrow
+      - name: fOUSG_evt_LiquidateBorrow
