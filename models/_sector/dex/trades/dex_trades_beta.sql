@@ -77,7 +77,12 @@ WITH curve AS (
     {% endfor %}
 )
 
-{% set cte_to_union = ['curve', 'as_is_dexs', 'dexs'] %}
+{% set cte_to_union = [
+    'curve'
+    , 'as_is_dexs'
+    , 'dexs'
+    ] 
+%}
 
 {% for cte in cte_to_union %}
     SELECT
