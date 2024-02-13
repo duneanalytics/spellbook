@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'bebop_arbitrum',
         alias = 'trades',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                         "project",
