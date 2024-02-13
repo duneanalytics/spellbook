@@ -45,5 +45,9 @@ left join {{ ref('tokens_nft') }} nft_tokens on (
         ELSE false
     END
     )
+
+{% if daily and is_incremental() %}
+    where {{ incremental_predicate('balances.day') }}
+{% endif %}
 )
 {% endmacro %}
