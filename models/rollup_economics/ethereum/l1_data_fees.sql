@@ -112,14 +112,14 @@ with tx_batch_appends as (
     t.gas_used,
     calldata_gas_used
   FROM (
-    SELECT protocol_name, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} as t
     INNER JOIN {{ ref('addresses_ethereum_optimism_batchinbox_combinations') }} as op 
       ON t."from" = op.l1_batch_inbox_from_address
          AND t.to = op.l1_batch_inbox_to_address
       WHERE t.block_time >= timestamp '2020-01-01'
       UNION ALL
-    SELECT protocol_name, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} as t
     INNER JOIN {{ ref('addresses_ethereum_optimism_outputoracle_combinations') }} as op 
       ON t."from" = op.l2_output_oracle_from_address
