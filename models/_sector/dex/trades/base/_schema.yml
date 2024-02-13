@@ -321,11 +321,11 @@ models:
     meta:
       blockchain: base
       sector: dex
-      project: citadelswap
+      project: sobal
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'citadelswap' ]
-    description: "citadelswap base base trades"
+      tags: [ 'base', 'dex', 'trades', 'sobal' ]
+    description: "sobal base base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
