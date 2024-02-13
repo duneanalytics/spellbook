@@ -26,7 +26,6 @@ WITH curve AS (
             , curve_ethereum = ref('curvefi_ethereum_base_trades')
             , curve_optimism = ref('curvefi_optimism_base_trades')
             , tokens_erc20_model = source('tokens', 'erc20')
-            , prices_model = source('prices', 'usd')
         )
     }}
 )
