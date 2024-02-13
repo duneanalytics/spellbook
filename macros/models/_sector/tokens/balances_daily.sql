@@ -4,7 +4,7 @@ select
     {{ dbt_utils.generate_surrogate_key(['day', 'type', 'address', 'contract_address', 'token_id']) }} as unique_key
 from (
     select
-        date_trunc('day', block_time) as day,
+        cast(date_trunc('day', block_time) as date) as day,
         block_number,
         block_time,
         "type",
