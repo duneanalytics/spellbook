@@ -329,7 +329,7 @@ WITH pool_labels AS (
         ORDER BY 2 DESC, 3
     ),
 
-    price_formulation(
+    price_formulation AS(
         SELECT
             day,
             contract_address,
