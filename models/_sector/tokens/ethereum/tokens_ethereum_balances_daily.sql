@@ -13,7 +13,7 @@ select *,
  {{ dbt_utils.generate_surrogate_key(['day', 'type', 'wallet_address', 'token_address', 'token_id']) }} as unique_key
  FROM (
 {{
-    balances_enrich(
+    balances_enrich_test(
         balances_base = ref('tokens_ethereum_base_balances_daily'),
         blockchain = 'ethereum',
         daily=true,
