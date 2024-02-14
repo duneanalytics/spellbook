@@ -1,33 +1,29 @@
 {{config(
-    tags = ['prod_exclude'],
+    tags = ['base_transfers_macro'],
     schema = 'tokens',
     alias = 'base_transfers',
     partition_by = ['blockchain', 'block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     unique_key = ['blockchain', 'unique_key']
 )
 }}
-
-/*
-    --short term, to get prod running, omit bnb due to cluster crashing, add later
-    , ref('tokens_bnb_base_transfers')
-*/
 
 {% set models = [
     ref('tokens_arbitrum_base_transfers')
     , ref('tokens_avalanche_c_base_transfers')
     , ref('tokens_base_base_transfers')
+    , ref('tokens_bnb_base_transfers')
     , ref('tokens_celo_base_transfers')
     , ref('tokens_ethereum_base_transfers')
     , ref('tokens_fantom_base_transfers')
     , ref('tokens_gnosis_base_transfers')
     , ref('tokens_optimism_base_transfers')
+    , ref('tokens_polygon_base_transfers')
     , ref('tokens_zksync_base_transfers')
     , ref('tokens_zora_base_transfers')
-    , ref('tokens_polygon_base_transfers')
 ] %}
 
 with base_union as (
@@ -56,7 +52,7 @@ with base_union as (
             {{ model }}
         {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('block_time') }}
+            {{ incremental_predicate('block_date') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
