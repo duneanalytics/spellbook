@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'lodestar_v0_arbitrum',
-    alias = 'base_borrow',
+    alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -25,7 +25,7 @@
 %}
 
 {{
-  lending_compound_v2_compatible_borrow(
+  lending_compound_v2_compatible_supply(
     blockchain = 'arbitrum',
     project = 'lodestar',
     version = '0',
