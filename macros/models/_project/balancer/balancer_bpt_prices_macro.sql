@@ -13,6 +13,8 @@ WITH pool_labels AS (
         WHERE blockchain = '{{blockchain}}'
     ),
 
+-- liquidity formulation
+
     prices AS (
         SELECT
             date_trunc('day', minute) AS day,
@@ -203,6 +205,8 @@ WITH pool_labels AS (
     GROUP BY 1, 2, 3, 4
     ),
 
+-- trade based formulation, for Linear Pools
+
     bpt_trades AS (
         SELECT * FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} v
         WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
@@ -214,7 +218,7 @@ WITH pool_labels AS (
             a.evt_block_time AS block_time,
             a.evt_block_number AS block_number,
             CAST(a.poolId AS VARCHAR(66)) AS pool_id,
-            CAST(bytearray_substring(a.poolId, 1, 20) AS VARCHAR) AS bpt_address,
+            bytearray_substring(a.poolId, 1, 20) AS bpt_address,
             CAST(a.tokenIn AS VARCHAR(66)) AS token_in,
             CAST(a.amountIn AS DOUBLE) AS amount_in,
             CAST(a.tokenOut AS VARCHAR(66)) AS token_out,
