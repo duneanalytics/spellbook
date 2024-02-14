@@ -938,6 +938,7 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
+
   - name: strike_ethereum_base_supply_seed
     config:
       column_types:
