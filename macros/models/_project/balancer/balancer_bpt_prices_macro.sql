@@ -325,8 +325,7 @@ WITH pool_labels AS (
             SELECT block_time, contract_address, token_out_price AS price
             FROM backfill_pricing_2 b2 WHERE b2.contract_address = b2.token_out
         )
-        GROUP BY 1, 2, 3
-        ORDER BY 2 DESC, 3
+        GROUP BY 1, 2
     ),
 
     price_formulation AS(
@@ -335,17 +334,16 @@ WITH pool_labels AS (
             contract_address,
             CASE
                 WHEN median_price IS NOT NULL THEN median_price
-                WHEN LEAD(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC) IS NOT NULL
-                THEN LEAD(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC)
-                WHEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC) IS NOT NULL
-                THEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY hour DESC)
+                WHEN LEAD(median_price) OVER(PARTITION BY contract_address ORDER BY day DESC) IS NOT NULL
+                THEN LEAD(median_price) OVER(PARTITION BY contract_address ORDER BY day DESC)
+                WHEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY day DESC) IS NOT NULL
+                THEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY day DESC)
                 ELSE approx_percentile(median_price, 0.5) OVER(
-                        PARTITION BY contract_address ORDER BY hour
+                        PARTITION BY contract_address ORDER BY day
                         ROWS BETWEEN 10 PRECEDING AND 10 FOLLOWING
                     )
             END AS median_price
         FROM trade_price_formulation
-        ORDER BY 2 DESC, 3
     )
 
     SELECT 
@@ -354,15 +352,16 @@ WITH pool_labels AS (
         l.version,
         18 AS decimals,
         l.pool_address AS contract_address,
-        CASE WHEN pool_type = 'LP'
-        THEN median_price
+        CASE WHEN pl.pool_type = 'LP'
+        THEN p.median_price
         ELSE l.liquidity / s.supply 
         END AS bpt_price
     FROM tvl l
     LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON l.pool_address = s.token_address
-    LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     AND l.blockchain = s.blockchain
     AND l.day = s.day
+    LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
+    LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
     WHERE supply > 0
 
     {% endmacro %}
