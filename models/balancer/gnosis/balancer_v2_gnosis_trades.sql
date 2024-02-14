@@ -71,7 +71,7 @@ WITH
         FROM
             dexs
             LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
+                ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
                 {% if not is_incremental() %}
                 AND bpt_prices.day >= TIMESTAMP '{{project_start_date}}'
@@ -92,7 +92,7 @@ WITH
         FROM
             dexs
             LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
+                ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
                 {% if not is_incremental() %}
                 AND bpt_prices.day >= TIMESTAMP '{{project_start_date}}'

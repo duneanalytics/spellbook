@@ -65,7 +65,7 @@ WITH
             MAX(bpt_prices.day) AS bpa_max_block_date
         FROM dexs
             LEFT JOIN {{ ref('balancer_v2_optimism_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
+                ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -79,7 +79,7 @@ WITH
             MAX(bpt_prices.day) AS bpb_max_block_date
         FROM dexs
             LEFT JOIN {{ ref('balancer_v2_optimism_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
+                ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
     )
