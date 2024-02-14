@@ -346,7 +346,7 @@ WITH pool_labels AS (
             END AS median_price
         FROM trade_price_formulation
         ORDER BY 2 DESC, 3
-    ),
+    )
 
     SELECT 
         l.day,
