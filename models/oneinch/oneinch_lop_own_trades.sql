@@ -16,6 +16,7 @@ select
     , date(block_time) as block_date
     , block_month
     , block_time
+    , block_number
     , coalesce(dst_token_symbol, '') as token_bought_symbol
     , coalesce(src_token_symbol, '') as token_sold_symbol
     , array_join(array_sort(array[coalesce(src_token_symbol, ''), coalesce(dst_token_symbol, '')]), '-') as token_pair

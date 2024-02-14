@@ -27,6 +27,7 @@
     , ref('curvefi_optimism_base_trades')
     , ref('rubicon_optimism_base_trades')
     , ref('gridex_optimism_base_trades')
+    , ref('solidly_v3_optimism_base_trades')
 ] %}
 
 WITH base_union AS (

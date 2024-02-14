@@ -47,3 +47,16 @@ sources:
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
+
+  - name: fluxfinance_ethereum
+    tables:
+      - name: fUSDC_evt_Mint
+      - name: fUSDC_evt_Redeem
+      - name: fDAI_evt_Mint
+      - name: fDAI_evt_Redeem
+      - name: fUSDT_evt_Mint
+      - name: fUSDT_evt_Redeem
+      - name: fFRAX_evt_Mint
+      - name: fFRAX_evt_Redeem
+      - name: fOUSG_evt_Mint
+      - name: fOUSG_evt_Redeem

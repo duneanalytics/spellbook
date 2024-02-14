@@ -69,3 +69,7 @@ sources:
     tables:
       - name: GridFactory_evt_GridCreated
       - name: Grid_evt_Swap
+  - name: solidly_v3_optimism
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
