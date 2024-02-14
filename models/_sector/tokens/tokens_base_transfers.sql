@@ -1,4 +1,5 @@
 {{config(
+    tags = ['base_transfers_macro'],
     schema = 'tokens',
     alias = 'base_transfers',
     partition_by = ['blockchain', 'block_date'],
