@@ -67,7 +67,7 @@ WITH pool_labels AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('dau') }}
         {% endif %}
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3, 4
     ),
 
     daily_protocol_fee_collected AS (

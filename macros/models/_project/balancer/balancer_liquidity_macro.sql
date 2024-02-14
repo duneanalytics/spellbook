@@ -53,7 +53,7 @@ WITH pool_labels AS (
             bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3
     ),
     
     eth_prices AS (
