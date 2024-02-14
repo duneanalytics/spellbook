@@ -55,6 +55,10 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: plantbaseswap_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: Pair_evt_Swap
   - name: sobal_base
     tables:
       - name: Vault_evt_Swap
