@@ -67,7 +67,7 @@ FROM (VALUES
     , ('saddle', 'Saddle', 'Direct', 'saddlefinance')
     , ('oneinch', '1inch', 'Aggregator', '1inch')
     , ('1inch', '1inch', 'Aggregator', '1inch') -- To Fix, should be just oneinch
-    , ('1inch Limit Order Protocol', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
+    , ('1inch LOP', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
     , ('zeroex', '0x', 'Aggregator', '0xProject')
     , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
@@ -116,5 +116,7 @@ FROM (VALUES
     , ('dooar', 'Dooar', 'Direct', 'dooar')
     , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
     , ('citadelswap','Citadelswap','Direct','Citadel')
+    , ('sobal','Sobal','Direct','Sobal')
     , ('derpdex','DerpDex', 'Direct', 'DerpDex')
+    , ('solidly','Solidly','Direct','Solidly')
     ) AS temp_table (project, name, marketplace_type, x_username)
