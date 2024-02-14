@@ -1,4 +1,6 @@
-{{ config(alias = 'optimism_outputoracle_combinations',
+{{ config(
+        schema = 'addresses_ethereum',
+        alias = 'optimism_outputoracle_combinations',
         tags=['static'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
