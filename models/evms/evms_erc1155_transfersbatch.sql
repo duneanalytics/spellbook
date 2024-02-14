@@ -2,7 +2,7 @@
         
         alias = 'erc1155_transfersbatch',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -23,6 +23,7 @@
      , ('goerli', source('erc1155_goerli', 'evt_transferbatch'))
      , ('zksync', source('erc1155_zksync', 'evt_transferbatch'))
      , ('zora', source('erc1155_zora', 'evt_transferbatch'))
+     , ('scroll', source('erc1155_scroll', 'evt_transferbatch'))
 ] %}
 
 SELECT *

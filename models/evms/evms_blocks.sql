@@ -2,7 +2,7 @@
         
         alias = 'blocks',
         unique_key=['blockchain', 'number'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -23,6 +23,7 @@
      , ('goerli', source('goerli', 'blocks'))
      , ('zksync', source('zksync', 'blocks'))
      , ('zora', source('zora', 'blocks'))
+     , ('scroll', source('scroll', 'blocks'))
 ] %}
 
 SELECT *
