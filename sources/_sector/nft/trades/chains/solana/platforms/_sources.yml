@@ -3,6 +3,9 @@ version: 2
 sources:
   - name: magic_eden_solana
     tables:
+      - name: m1_call_acceptBid
+      - name: m1_call_exchange
+      - name: m1_call_exchange2
       - name: m2_call_executeSaleV2
       - name: m2_call_mip1ExecuteSaleV2
       - name: m2_call_ocpExecuteSaleV2
