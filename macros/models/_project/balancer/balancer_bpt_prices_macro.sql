@@ -327,7 +327,7 @@ WITH pool_labels AS (
         GROUP BY 1, 2
     ),
 
-    price_formulation AS(
+    trade_price_formulation_2 AS(
         SELECT
             day,
             contract_address,
@@ -339,10 +339,27 @@ WITH pool_labels AS (
                 THEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY day DESC)
                 ELSE approx_percentile(median_price, 0.5) OVER(
                         PARTITION BY contract_address ORDER BY day
-                        ROWS BETWEEN 20 PRECEDING AND 20 FOLLOWING
+                        ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING
                     )
             END AS median_price
         FROM trade_price_formulation
+    ),
+
+    price_formulation AS(
+        SELECT
+            day,
+            contract_address,
+            median_price
+        FROM (
+            SELECT
+                day,
+                contract_address,
+                median_price,
+                AVG(median_price) OVER (PARTITION BY contract_address) AS avg_median_price
+            FROM trade_price_formulation
+        ) subquery
+        WHERE median_price < avg_median_price * 2 --removes outliers
+        GROUP BY 1, 2, 3
     )
 
     SELECT 
