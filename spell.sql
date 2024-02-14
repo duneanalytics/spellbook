@@ -8,8 +8,17 @@ with
           call_outer_instruction_index,
           call_inner_instruction_index,
           cast(
-            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.royalty') as double
-          ) as royalty,
+            json_extract_scalar(
+              json_parse(split(logs, ' ') [3]),
+              '$.royalty_paid'
+            ) as double
+          ) as royalty_paid,
+          cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') as double
+          ) as total_price,
+          cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') as double
+          ) as lp_fee,
           logs
         FROM
           (
@@ -20,7 +29,7 @@ with
               call_inner_instruction_index,
               call_log_messages
             FROM
-              "delta_prod"."magic_eden_solana"."m2_call_mip1ExecuteSaleV2"
+              magic_eden_solana.mmm_call_solFulfillBuy
             UNION ALL
             SELECT
               call_tx_id,
@@ -29,7 +38,7 @@ with
               call_inner_instruction_index,
               call_log_messages
             FROM
-              "delta_prod"."magic_eden_solana"."m2_call_executeSaleV2"
+              magic_eden_solana.mmm_call_solFulfillSell
             UNION ALL
             SELECT
               call_tx_id,
@@ -38,11 +47,38 @@ with
               call_inner_instruction_index,
               call_log_messages
             FROM
-              "delta_prod"."magic_eden_solana"."m2_call_ocpExecuteSaleV2"
+              magic_eden_solana.mmm_call_solMip1FulfillBuy
+            UNION ALL
+            SELECT
+              call_tx_id,
+              call_block_slot,
+              call_outer_instruction_index,
+              call_inner_instruction_index,
+              call_log_messages
+            FROM
+              magic_eden_solana.mmm_call_solMip1FulfillSell
+            UNION ALL
+            SELECT
+              call_tx_id,
+              call_block_slot,
+              call_outer_instruction_index,
+              call_inner_instruction_index,
+              call_log_messages
+            FROM
+              magic_eden_solana.mmm_call_solOcpFulfillBuy
+            UNION ALL
+            SELECT
+              call_tx_id,
+              call_block_slot,
+              call_outer_instruction_index,
+              call_inner_instruction_index,
+              call_log_messages
+            FROM
+              magic_eden_solana.mmm_call_solOcpFulfillSell
           )
           LEFT JOIN unnest (call_log_messages) as log_messages (logs) ON True
         WHERE
-          logs LIKE '%Program log:%royalty%price%seller_expiry%' --must log these fields. hopefully no other programs out there log them hahaha
+          logs LIKE 'Program log: {"lp_fee":%,"royalty_paid":%,"total_price":%}' --must log these fields. hopefully no other programs out there log them hahaha
           AND try(json_parse(split(logs, ' ') [3])) is not null --valid hex
       )
     SELECT
