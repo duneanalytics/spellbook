@@ -339,7 +339,7 @@ WITH pool_labels AS (
                 THEN LAG(median_price) OVER(PARTITION BY contract_address ORDER BY day DESC)
                 ELSE approx_percentile(median_price, 0.5) OVER(
                         PARTITION BY contract_address ORDER BY day
-                        ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING
+                        ROWS BETWEEN 10 PRECEDING AND 10 FOLLOWING
                     )
             END AS median_price
         FROM trade_price_formulation
