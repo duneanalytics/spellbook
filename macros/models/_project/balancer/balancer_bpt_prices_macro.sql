@@ -208,8 +208,11 @@ WITH pool_labels AS (
 -- trade based formulation, for Linear Pools (former BPT prices spell)
 
     bpt_trades AS (
-        SELECT * FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} v
+        SELECT * 
+        FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }} v
+        LEFT JOIN pool_labels l ON v.bytearray_substring(poolId, 1, 20) = l.pool_id
         WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
+        AND l.pool_type = 'LP'
     ), 
 
     all_trades_info AS (
@@ -230,20 +233,12 @@ WITH pool_labels AS (
             COALESCE(p2.symbol, t2.symbol) AS token_out_sym,
             COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
         FROM bpt_trades a
-        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = 'ethereum'
-            AND  p1.minute = date_trunc('minute', a.evt_block_time)
-            {% if is_incremental() %}
-            AND p1.minute >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-
-        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = 'ethereum'
-            AND  p2.minute = date_trunc('minute', a.evt_block_time)
-            {% if is_incremental() %}
-            AND p2.minute >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
-
-        LEFT JOIN {{ source('tokens', 'erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = 'ethereum'
-        LEFT JOIN {{ source('tokens', 'erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = 'ethereum'
+        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = '{{blockchain}}'
+        AND  p1.minute = date_trunc('minute', a.evt_block_time)
+        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = '{{blockchain}}'
+        AND  p2.minute = date_trunc('minute', a.evt_block_time)
+        LEFT JOIN {{ source('tokens', 'erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = '{{blockchain}}'
+        LEFT JOIN {{ source('tokens', 'erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = '{{blockchain}}'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ),
 
