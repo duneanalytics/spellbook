@@ -24,78 +24,6 @@ WITH pool_labels AS (
         GROUP BY 1, 2, 3
     ),
 
-dex_trades as (
-    SELECT 
-        d.token_bought_address as contract_address, 
-        COALESCE(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, er.decimals))) as price, 
-        d.block_time, 
-        d.blockchain
-    FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ source('tokens', 'erc20') }} er
-        ON d.token_bought_address = er.contract_address
-        AND d.blockchain = er.blockchain
-    WHERE d.amount_usd > 0 
-        AND d.token_bought_amount_raw > UINT256 '0'
-
-    UNION ALL
-
-    SELECT 
-        d.token_sold_address as contract_address, 
-        COALESCE(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, er.decimals))) as price, 
-        d.block_time, 
-        d.blockchain
-    FROM {{ ref('dex_trades') }} d 
-    LEFT JOIN {{ source('tokens', 'erc20') }} er
-        ON d.token_sold_address = er.contract_address
-        AND d.blockchain = er.blockchain
-    WHERE d.amount_usd > 0 
-        AND d.token_sold_amount_raw > UINT256 '0'
-        {% if is_incremental() %}
-        AND d.block_time >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
-),
-
-
-    final_dex_prices as(
-    SELECT 
-        CAST(date_trunc('month', hour) as date) as block_month, -- for partitioning 
-        * 
-    FROM 
-    (
-        SELECT 
-            date_trunc('hour', block_time) as hour, 
-            contract_address,
-            blockchain,
-            approx_percentile(price, 0.5) AS median_price,
-            COUNT(price) as sample_size 
-        FROM dex_trades
-        GROUP BY 1, 2, 3
-        HAVING COUNT(price) >= 5 
-    ) tmp
-    ),    
-
-    dex_prices_1 AS (
-        SELECT
-            date_trunc('day', HOUR) AS DAY,
-            contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            sum(sample_size) AS sample_size
-        FROM final_dex_prices
-        GROUP BY 1, 2
-        HAVING sum(sample_size) > 7
-    ),
-
-    dex_prices AS (
-        SELECT
-            *,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change
-        FROM dex_prices_1
-    ),
-
     swaps_changes AS (
         SELECT
             day,
@@ -217,7 +145,7 @@ dex_trades as (
             '{{blockchain}}' as blockchain,
             b.pool_id,
             b.token,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -225,9 +153,7 @@ dex_trades as (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN dex_prices p2 ON p2.day <= c.day
-        AND c.day < p2.day_of_next_change
-        AND p2.token = b.token
+
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
