@@ -309,12 +309,12 @@ models:
             - block_date
     columns:
       - *blockchain
-      - &contract_address
+      - name: contract_address
         name: contract_address
         description: "Address of BPT being transfered"
-      - *block_date
-      - *block_month
-      - *evt_index
+      - name: block_date
+      - name: block_month
+      - name: evt_index
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'
