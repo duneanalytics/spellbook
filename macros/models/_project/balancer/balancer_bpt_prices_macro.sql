@@ -24,6 +24,28 @@ WITH pool_labels AS (
         GROUP BY 1, 2, 3
     ),
 
+    dex_prices_1 AS (
+        SELECT
+            date_trunc('day', HOUR) AS DAY,
+            contract_address AS token,
+            approx_percentile(median_price, 0.5) AS price,
+            sum(sample_size) AS sample_size
+        FROM {{ ref('dex_prices') }}
+        GROUP BY 1, 2
+        HAVING sum(sample_size) > 7
+    ),
+
+    dex_prices AS (
+        SELECT
+            *,
+            LEAD(DAY, 1, NOW()) OVER (
+                PARTITION BY token
+                ORDER BY
+                    DAY
+            ) AS day_of_next_change
+        FROM dex_prices_1
+    ),
+
     swaps_changes AS (
         SELECT
             day,
@@ -145,7 +167,7 @@ WITH pool_labels AS (
             '{{blockchain}}' as blockchain,
             b.pool_id,
             b.token,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -153,6 +175,9 @@ WITH pool_labels AS (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
+        LEFT JOIN dex_prices p2 ON p2.day <= c.day
+        AND c.day < p2.day_of_next_change
+        AND p2.token = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
