@@ -210,8 +210,8 @@ WITH pool_labels AS (
     bpt_trades AS (
         SELECT * 
         FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }} v
-        LEFT JOIN pool_labels l ON v.bytearray_substring(poolId, 1, 20) = l.pool_id
-        WHERE tokenIn = bytearray_substring(poolId, 1, 20) OR tokenOut = bytearray_substring(poolId, 1, 20)
+        LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
+        WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
         AND l.pool_type = 'LP'
     ), 
 
