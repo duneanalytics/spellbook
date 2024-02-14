@@ -29,4 +29,4 @@ from (values
 	('DPX', 1, 0x5d27cff80df09f28534bb37d386d43aa60f88e25, 0x6C2C06790b3E3E3c38e12Ee22F8183b37a13EE55),
 	('wstETH', 1, 0xfece754d92bd956f681a941cef4632ab65710495, 0x5979D7b546E38E414F7E9822514be443A4800529),
 	('GMX', 1, 0x79b6c5e1a7c0ad507e1db81ec7cf269062bab4eb, 0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a)
-) as x (asset_symbol, ctoken_address, asset_address)
+) as x (asset_symbol, version, ctoken_address, asset_address)
