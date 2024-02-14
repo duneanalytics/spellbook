@@ -2,7 +2,7 @@
         
         alias = 'logs_decoded',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -23,6 +23,7 @@
      , ('goerli', source('goerli', 'logs_decoded'))
      , ('zksync', source('zksync', 'logs_decoded'))
      , ('zora', source('zora', 'logs_decoded'))
+     , ('scroll', source('scroll', 'logs_decoded'))
 ] %}
 
 SELECT *
