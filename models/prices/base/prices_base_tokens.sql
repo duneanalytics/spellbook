@@ -35,5 +35,5 @@ FROM
     ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18),
     ('prime', 'base', 'PRIME', 0xfa980ced6895ac314e7de34ef1bfae90a5add21b,18),
     ('btiusd', 'base', 'bTiUSD', 0x82fdaf19c7560be8f29d4bb3a1f7e1620db27238,18),
-    ('yieldfarming-index', 'base', 'YFX'. 0x8901cb2e82cc95c01e42206f8d1f417fe53e7af0.18)
+    ('yieldfarming-index', 'base', 'YFX'. 0x8901cb2e82cc95c01e42206f8d1f417fe53e7af0,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
