@@ -66,3 +66,7 @@ sources:
     tables:
       - name: UniswapV3Factory_evt_PoolCreated
       - name: Pair_evt_Swap
+  - name: torus_base
+    tables:
+      - name: TorusFactory_evt_PairCreated
+      - name: TorusPair_evt_Swap
