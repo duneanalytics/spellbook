@@ -170,13 +170,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
       - name: blockchain
-      - name: hour
+      - name: day
+      - name: version
+      - name: decimals
       - name: contract_address
-      - name: median_price
+      - name: bpt_price
 
   - name: balancer_liquidity
     meta:

@@ -136,7 +136,7 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['gnosis', 'bpt', 'prices']
     description: >
@@ -145,23 +145,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - &contract_address
-        name: contract_address
-        description: 'Gnosis address for the liquidity pool'
-        tests:
-          - not_null
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
+      - name: contract_address
+      - name: bpt_price
 
   - name: balancer_v2_gnosis_pools_fees
     meta:

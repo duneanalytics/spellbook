@@ -58,14 +58,14 @@ WITH pool_labels AS (
 
     bpt_prices AS(
         SELECT 
-            date_trunc('day', hour) AS day,
+            day,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            18 AS decimals
+            bpt_price AS price,
+            decimals
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('hour') }}
+        AND {{ incremental_predicate('dau') }}
         {% endif %}
         GROUP BY 1, 2
     ),
