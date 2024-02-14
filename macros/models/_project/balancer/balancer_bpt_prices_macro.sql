@@ -13,7 +13,7 @@ WITH pool_labels AS (
         WHERE blockchain = '{{blockchain}}'
     ),
 
--- liquidity formulation
+-- liquidity formulation, with a few simplifications, compared to liquidity spell
 
     prices AS (
         SELECT
@@ -205,7 +205,7 @@ WITH pool_labels AS (
     GROUP BY 1, 2, 3, 4
     ),
 
--- trade based formulation, for Linear Pools
+-- trade based formulation, for Linear Pools (former BPT prices spell)
 
     bpt_trades AS (
         SELECT * FROM {{ source('balancer_v2_ethereum', 'Vault_evt_Swap') }} v
@@ -217,11 +217,11 @@ WITH pool_labels AS (
             a.evt_tx_hash AS tx_hash,
             a.evt_block_time AS block_time,
             a.evt_block_number AS block_number,
-            CAST(a.poolId AS VARCHAR(66)) AS pool_id,
+            a.poolId AS pool_id,
             bytearray_substring(a.poolId, 1, 20) AS bpt_address,
-            CAST(a.tokenIn AS VARCHAR(66)) AS token_in,
+            a.tokenIn AS token_in,
             CAST(a.amountIn AS DOUBLE) AS amount_in,
-            CAST(a.tokenOut AS VARCHAR(66)) AS token_out,
+            a.tokenOut AS token_out,
             CAST(a.amountOut AS DOUBLE) AS amount_out,
             p1.price AS token_in_p,
             COALESCE(p1.symbol, t1.symbol) AS token_in_sym,
