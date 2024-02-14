@@ -369,9 +369,7 @@ models:
       - name: block_date
       - name: block_month
       - name: evt_tx_hash
-        name: evt_tx_hash
-        description: 'Transaction hash of transfer event'
-      - *evt_index
+      - name: evt_index
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'

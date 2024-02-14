@@ -308,12 +308,11 @@ models:
             - evt_index
             - block_date
     columns:
-      - *blockchain
+      - name: blockchain
       - name: contract_address
-        name: contract_address
-        description: "Address of BPT being transfered"
       - name: block_date
       - name: block_month
+      - name: evt_tx_hash
       - name: evt_index
       - &evt_block_time
         name: evt_block_time
