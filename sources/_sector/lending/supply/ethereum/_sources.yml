@@ -60,3 +60,10 @@ sources:
       - name: fFRAX_evt_Redeem
       - name: fOUSG_evt_Mint
       - name: fOUSG_evt_Redeem
+
+  - name: strike_lending_ethereum
+    tables:
+      - name: SErc20Delegate_evt_Mint
+      - name: SErc20Delegate_evt_Redeem
+      - name: SEther_evt_Mint
+      - name: SEther_evt_Redeem
