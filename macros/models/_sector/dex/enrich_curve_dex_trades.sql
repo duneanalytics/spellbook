@@ -4,7 +4,6 @@
     , curve_ethereum = null
     , curve_optimism = null
     , tokens_erc20_model = null
-    , prices_model = null
     )
 %}
 
@@ -20,20 +19,7 @@ WITH base_trades as (
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
-, prices AS (
-    SELECT
-        blockchain
-        , contract_address
-        , minute
-        , price
-    FROM
-        {{ prices_model }}
-    {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('minute') }}
-    {% endif %}
-)
-, token_enrichments AS (
+, enrichments AS (
     SELECT
         base_trades.blockchain
         , base_trades.project
@@ -96,51 +82,40 @@ WITH base_trades as (
         ON erc20_sold.contract_address = base_trades.token_sold_address
         AND erc20_sold.blockchain = base_trades.blockchain
 )
-, final_enrichments AS (
-    SELECT
-        te.blockchain
-        , te.project
-        , te.version
-        , te.block_month
-        , te.block_date
-        , te.block_time
-        , te.block_number
-        , te.token_bought_symbol
-        , te.token_sold_symbol
-        , te.token_pair
-        , te.token_bought_amount
-        , te.token_sold_amount
-        , te.token_bought_amount_raw
-        , te.token_sold_amount_raw
-        , coalesce(
-                te.token_bought_amount * p_bought.price
-                ,te.token_sold_amount * p_sold.price
-            ) AS amount_usd
-        , te.token_bought_address
-        , te.token_sold_address
-        , te.taker
-        , te.maker
-        , te.project_contract_address
-        , te.tx_hash
-        , te.tx_from
-        , te.tx_to
-        , te.evt_index
-    FROM
-        token_enrichments AS te
-    LEFT JOIN
-        prices as p_bought
-        ON p_bought.minute = date_trunc('minute', te.block_time)
-        AND p_bought.contract_address = te.token_bought_address
-        AND p_bought.blockchain = te.blockchain
-    LEFT JOIN
-        prices as p_sold
-        ON p_sold.minute = date_trunc('minute', te.block_time)
-        AND p_sold.contract_address = te.token_sold_address
-        AND p_sold.blockchain = te.blockchain
-
+, enrichments_with_prices AS (
+    {{
+        add_amount_usd(
+            trades_cte = 'enrichments'
+        )
+    }}
 )
+
 select
-    *
+    blockchain
+    , project
+    , version
+    , block_month
+    , block_date
+    , block_time
+    , block_number
+    , token_bought_symbol
+    , token_sold_symbol
+    , token_pair
+    , token_bought_amount
+    , token_sold_amount
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , amount_usd
+    , token_bought_address
+    , token_sold_address
+    , taker
+    , maker
+    , project_contract_address
+    , tx_hash
+    , tx_from
+    , tx_to
+    , evt_index
 from
-    final_enrichments
+    enrichments_with_prices
+    
 {% endmacro %}
