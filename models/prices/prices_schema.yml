@@ -108,3 +108,23 @@ models:
       - name: price
         description: "USD price of a token"
         test: not_null
+
+  - name: prices_trusted_tokens
+    meta:
+      sector: prices
+      contributors: hosuke
+    config:
+      tags: [ 'prices', 'stability' ]
+    description: "List of trusted tokens across blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: contract_address
+        description: "Contract address of the token"
