@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'rabbithole_polygon',
     alias = 'rewards',
     materialized = 'incremental',

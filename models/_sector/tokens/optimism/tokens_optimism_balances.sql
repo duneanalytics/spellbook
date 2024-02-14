@@ -1,7 +1,11 @@
 {{ config(
         schema = 'tokens_optimism',
         alias = 'balances',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(\'["optimism"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["aalan3"]\') }}'
         )
 }}
 
