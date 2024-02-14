@@ -65,3 +65,7 @@ sources:
       - name: MetaPoolSwap_evt_TokenExchangeUnderlying
       - name: MetaPoolSwap_evt_TokenExchange
       - name: wstETH_swap_evt_TokenExchange
+  - name: solidly_v3_optimism
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap

@@ -394,3 +394,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('curvefi_optimism_base_trades_seed')
+
+
+  - name: solidly_v3_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: solidly
+      contributors: lldao
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'solidly' ]
+    description: "solidly v3 optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidly_v3_optimism_base_trades_seed')
+          

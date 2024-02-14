@@ -59,6 +59,9 @@ sources:
     tables:
       - name: UniswapFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: sobal_base
+    tables:
+      - name: Vault_evt_Swap
   - name: derpdex_base
     tables:
       - name: UniswapV3Factory_evt_PoolCreated
