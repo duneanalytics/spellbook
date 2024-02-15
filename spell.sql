@@ -174,22 +174,8 @@ with
         when account_buyer = call_tx_signer then 'buy'
         else 'sell'
       end as trade_category,
-      case
-        when contains(
-          trade.call_account_arguments,
-          '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug'
-        ) then 'HXD'
-        when pt.token_mint_address is not null then pt.symbol
-        else 'SOL'
-      end as trade_token_symbol,
-      case
-        when contains(
-          trade.call_account_arguments,
-          '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug'
-        ) then '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug'
-        when pt.token_mint_address is not null then pt.token_mint_address
-        else 'So11111111111111111111111111111111111111112'
-      end as trade_token_mint
+      'SOL' as trade_token_symbol,
+      'So11111111111111111111111111111111111111112' as trade_token_mint
       --price should include all fees paid by user
 ,
       buyerPrice + coalesce(
@@ -559,7 +545,7 @@ with
     SELECT
       'solana' as blockchain,
       'magiceden' as project,
-      'v2' as version,
+      'mmm' as version,
       t.call_block_time as block_time,
       'secondary' as trade_type,
       token_size as number_of_items --all single trades right now
