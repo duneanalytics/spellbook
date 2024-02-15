@@ -11,7 +11,8 @@
         'celo', 
         'base', 
         'zksync', 
-        'zora'
+        'zora',
+        'scroll'
     ]) }}
 {% endmacro %}
 

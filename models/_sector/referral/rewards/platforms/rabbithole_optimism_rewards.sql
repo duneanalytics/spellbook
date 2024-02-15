@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'rabbithole_optimism',
     alias = 'rewards',
     materialized = 'incremental',
