@@ -1,5 +1,5 @@
 {{ config(
-        
+
         schema = 'nft',
         alias ='transfers',
         partition_by = ['block_month'],
@@ -29,6 +29,7 @@
 ,ref('nft_zksync_transfers')
 ,ref('nft_zora_transfers')
 ,ref('nft_celo_transfers')
+,ref('nft_scroll_transfers')
 ] %}
 
 SELECT *
