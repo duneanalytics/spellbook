@@ -11,13 +11,13 @@ with
             json_extract_scalar(
               json_parse(split(logs, ' ') [3]),
               '$.royalty_paid'
-            ) AS double
+            ) AS DOUBLE
           ) AS royalty_paid,
           cast(
-            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') AS double
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') AS DOUBLE
           ) AS total_price,
           cast(
-            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') AS double
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') AS DOUBLE
           ) AS lp_fee,
           logs
         FROM
@@ -156,11 +156,11 @@ with
     SELECT
       *,
       row_number() over (
-        partition by
+        partition BY
           call_tx_id
-        order by
-          call_outer_instruction_index asc,
-          call_inner_instruction_index asc
+        ORDER BY
+          call_outer_instruction_index ASC,
+          call_inner_instruction_index ASC
       ) AS log_order
     FROM
       nested_logs
@@ -210,16 +210,16 @@ with
               json_value(
                 args,
                 'strict $.SolFulfillBuyArgs.minPaymentAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS buyerPrice,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') AS DOUBLE
             ) AS tokenSize,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') AS DOUBLE
             ) AS makerFeeBp,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') AS DOUBLE
             ) AS takerFeeBp,
             call_outer_instruction_index,
             call_inner_instruction_index,
@@ -229,11 +229,11 @@ with
             call_tx_signer,
             call_account_arguments,
             row_number() over (
-              partition by
+              partition BY
                 call_tx_id
-              order by
-                call_outer_instruction_index asc,
-                call_inner_instruction_index asc
+              ORDER BY
+                call_outer_instruction_index ASC,
+                call_inner_instruction_index ASC
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solFulfillBuy
@@ -259,16 +259,16 @@ with
               json_value(
                 args,
                 'strict $.SolFulfillBuyArgs.minPaymentAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS buyerPrice,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') AS DOUBLE
             ) AS tokenSize,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') AS DOUBLE
             ) AS makerFeeBp,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') AS DOUBLE
             ) AS takerFeeBp,
             call_outer_instruction_index,
             call_inner_instruction_index,
@@ -278,11 +278,11 @@ with
             call_tx_signer,
             call_account_arguments,
             row_number() over (
-              partition by
+              partition BY
                 call_tx_id
-              order by
-                call_outer_instruction_index asc,
-                call_inner_instruction_index asc
+              ORDER BY
+                call_outer_instruction_index ASC,
+                call_inner_instruction_index ASC
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solMip1FulfillBuy
@@ -308,16 +308,16 @@ with
               json_value(
                 args,
                 'strict $.SolFulfillBuyArgs.minPaymentAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS buyerPrice,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') AS DOUBLE
             ) AS tokenSize,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') AS DOUBLE
             ) AS makerFeeBp,
             cast(
-              json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') AS DOUBLE
             ) AS takerFeeBp,
             call_outer_instruction_index,
             call_inner_instruction_index,
@@ -327,11 +327,11 @@ with
             call_tx_signer,
             call_account_arguments,
             row_number() over (
-              partition by
+              partition BY
                 call_tx_id
-              order by
-                call_outer_instruction_index asc,
-                call_inner_instruction_index asc
+              ORDER BY
+                call_outer_instruction_index ASC,
+                call_inner_instruction_index ASC
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solOcpFulfillBuy
@@ -357,16 +357,16 @@ with
               json_value(
                 args,
                 'strict $.SolFulfillSellArgs.maxPaymentAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS buyerPrice,
             cast(
-              json_value(args, 'strict $.SolFulfillSellArgs.assetAmount') AS double
+              json_value(args, 'strict $.SolFulfillSellArgs.assetAmount') AS DOUBLE
             ) AS tokenSize,
             cast(
-              json_value(args, 'strict $.SolFulfillSellArgs.makerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillSellArgs.makerFeeBp') AS DOUBLE
             ) AS makerFeeBp,
             cast(
-              json_value(args, 'strict $.SolFulfillSellArgs.takerFeeBp') AS double
+              json_value(args, 'strict $.SolFulfillSellArgs.takerFeeBp') AS DOUBLE
             ) AS takerFeeBp,
             call_outer_instruction_index,
             call_inner_instruction_index,
@@ -376,11 +376,11 @@ with
             call_tx_signer,
             call_account_arguments,
             row_number() over (
-              partition by
+              partition BY
                 call_tx_id
-              order by
-                call_outer_instruction_index asc,
-                call_inner_instruction_index asc
+              ORDER BY
+                call_outer_instruction_index ASC,
+                call_inner_instruction_index ASC
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solFulfillSell
@@ -406,25 +406,25 @@ with
               json_value(
                 args,
                 'strict $.SolMip1FulfillSellArgs.maxPaymentAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS buyerPrice,
             cast(
               json_value(
                 args,
                 'strict $.SolMip1FulfillSellArgs.assetAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS tokenSize,
             cast(
               json_value(
                 args,
                 'strict $.SolMip1FulfillSellArgs.makerFeeBp'
-              ) AS double
+              ) AS DOUBLE
             ) AS makerFeeBp,
             cast(
               json_value(
                 args,
                 'strict $.SolMip1FulfillSellArgs.takerFeeBp'
-              ) AS double
+              ) AS DOUBLE
             ) AS takerFeeBp,
             call_outer_instruction_index,
             call_inner_instruction_index,
@@ -434,11 +434,11 @@ with
             call_tx_signer,
             call_account_arguments,
             row_number() over (
-              partition by
+              partition BY
                 call_tx_id
-              order by
-                call_outer_instruction_index asc,
-                call_inner_instruction_index asc
+              ORDER BY
+                call_outer_instruction_index ASC,
+                call_inner_instruction_index ASC
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solMip1FulfillSell
@@ -464,19 +464,19 @@ with
               json_value(
                 args,
                 'strict $.SolOcpFulfillSellArgs.maxPaymentAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS buyerPrice,
             cast(
               json_value(
                 args,
                 'strict $.SolOcpFulfillSellArgs.assetAmount'
-              ) AS double
+              ) AS DOUBLE
             ) AS tokenSize,
             cast(
-              json_value(args, 'strict $.SolOcpFulfillSellArgs.makerFeeBp') AS double
+              json_value(args, 'strict $.SolOcpFulfillSellArgs.makerFeeBp') AS DOUBLE
             ) AS makerFeeBp,
             cast(
-              json_value(args, 'strict $.SolOcpFulfillSellArgs.takerFeeBp') AS double
+              json_value(args, 'strict $.SolOcpFulfillSellArgs.takerFeeBp') AS DOUBLE
             ) AS takerFeeBp,
             call_outer_instruction_index,
             call_inner_instruction_index,
@@ -486,11 +486,11 @@ with
             call_tx_signer,
             call_account_arguments,
             row_number() over (
-              partition by
+              partition BY
                 call_tx_id
-              order by
-                call_outer_instruction_index asc,
-                call_inner_instruction_index asc
+              ORDER BY
+                call_outer_instruction_index ASC,
+                call_inner_instruction_index ASC
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solOcpFulfillSell
