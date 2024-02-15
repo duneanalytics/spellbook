@@ -179,10 +179,8 @@ with
       rl.total_price as price,
       makerFeeBp,
       takerFeeBp,
-      makerFeeRaw,
-      takerFeeRaw,
-      coalesce(makerFeeBp, makerFeeRaw) / 1e4 * buyerPrice as maker_fee,
-      coalesce(takerFeeBp, takerFeeRaw) / 1e4 * buyerPrice as taker_fee,
+      coalesce(makerFeeBp) / 1e4 * buyerPrice as maker_fee,
+      coalesce(takerFeeBp) / 1e4 * buyerPrice as taker_fee,
       tokenSize as token_size,
       rl.royalty_paid,
       trade.call_instruction_name as instruction,
@@ -217,11 +215,9 @@ with
             cast(
               json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') as double
             ) as makerFeeBp,
-            null as makerFeeRaw,
             cast(
               json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') as double
             ) as takerFeeBp,
-            null as takerFeeRaw,
             call_outer_instruction_index,
             call_inner_instruction_index,
             call_block_time,
@@ -268,11 +264,9 @@ with
             cast(
               json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') as double
             ) as makerFeeBp,
-            null as makerFeeRaw,
             cast(
               json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') as double
             ) as takerFeeBp,
-            null as takerFeeRaw,
             call_outer_instruction_index,
             call_inner_instruction_index,
             call_block_time,
@@ -319,11 +313,9 @@ with
             cast(
               json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') as double
             ) as makerFeeBp,
-            null as makerFeeRaw,
             cast(
               json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') as double
             ) as takerFeeBp,
-            null as takerFeeRaw,
             call_outer_instruction_index,
             call_inner_instruction_index,
             call_block_time,
@@ -370,11 +362,9 @@ with
             cast(
               json_value(args, 'strict $.SolFulfillSellArgs.makerFeeBp') as double
             ) as makerFeeBp,
-            null as makerFeeRaw,
             cast(
               json_value(args, 'strict $.SolFulfillSellArgs.takerFeeBp') as double
             ) as takerFeeBp,
-            null as takerFeeRaw,
             call_outer_instruction_index,
             call_inner_instruction_index,
             call_block_time,
@@ -427,14 +417,12 @@ with
                 'strict $.SolMip1FulfillSellArgs.makerFeeBp'
               ) as double
             ) as makerFeeBp,
-            null as makerFeeRaw,
             cast(
               json_value(
                 args,
                 'strict $.SolMip1FulfillSellArgs.takerFeeBp'
               ) as double
             ) as takerFeeBp,
-            null as takerFeeRaw,
             call_outer_instruction_index,
             call_inner_instruction_index,
             call_block_time,
@@ -484,7 +472,6 @@ with
             cast(
               json_value(args, 'strict $.SolOcpFulfillSellArgs.makerFeeBp') as double
             ) as makerFeeBp,
-            null as makerFeeRaw,
             cast(
               json_value(args, 'strict $.SolOcpFulfillSellArgs.takerFeeBp') as double
             ) as takerFeeBp,
@@ -543,12 +530,12 @@ with
       cast(null as varchar) as account_merkle_tree, -- ok
       cast(null as bigint) leaf_id, -- ok
       t.account_tokenMint as account_mint, -- ok
-      'mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc' as project_program_id,
-      cast(null as varchar) as aggregator_name,
-      cast(null as varchar) as aggregator_address,
-      t.call_tx_id as tx_id,
-      t.call_block_slot as block_slot,
-      t.call_tx_signer as tx_signer,
+      'mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc' as project_program_id, -- ok
+      cast(null as varchar) as aggregator_name, -- ok
+      cast(null as varchar) as aggregator_address, -- ok
+      t.call_tx_id as tx_id, -- ok
+      t.call_block_slot as block_slot, -- ok
+      t.call_tx_signer as tx_signer, -- ok
       t.taker_fee as taker_fee_amount_raw,
       t.taker_fee / pow(10, p.decimals) as taker_fee_amount,
       t.taker_fee / pow(10, p.decimals) * p.price as taker_fee_amount_usd,
