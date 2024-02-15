@@ -526,33 +526,30 @@ with
   ),
   raw_nft_trades as (
     SELECT
-      'solana' as blockchain,
-      'magiceden' as project,
-      'mmm' as version,
-      t.call_block_time as block_time,
-      'secondary' as trade_type,
-      token_size as number_of_items --all single trades right now
-,
-      t.trade_category,
-      t.account_buyer as buyer,
-      t.account_seller as seller,
-      t.price as amount_raw --magiceden does not include fees in the emitted price
-,
-      t.price / pow(10, p.decimals) as amount_original,
-      t.price / pow(10, p.decimals) * p.price as amount_usd,
-      t.trade_token_symbol as currency_symbol,
-      t.trade_token_mint as currency_address,
-      cast(null as varchar) as account_merkle_tree,
-      cast(null as bigint) leaf_id,
-      t.account_tokenMint as account_mint,
-      'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K' as project_program_id,
+      'solana' as blockchain, -- ok
+      'magiceden' as project, -- ok
+      'mmm' as version, -- ok
+      t.call_block_time as block_time, -- ok
+      'secondary' as trade_type, -- ok
+      token_size as number_of_items, -- ok
+      t.trade_category, -- ok
+      t.account_buyer as buyer, -- ok
+      t.account_seller as seller, -- ok
+      t.price as amount_raw, -- ok
+      t.price / pow(10, p.decimals) as amount_original, -- ok
+      t.price / pow(10, p.decimals) * p.price as amount_usd, -- ok
+      t.trade_token_symbol as currency_symbol, -- ok
+      t.trade_token_mint as currency_address, -- ok
+      cast(null as varchar) as account_merkle_tree, -- ok
+      cast(null as bigint) leaf_id, -- ok
+      t.account_tokenMint as account_mint, -- ok
+      'mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc' as project_program_id,
       cast(null as varchar) as aggregator_name,
       cast(null as varchar) as aggregator_address,
       t.call_tx_id as tx_id,
       t.call_block_slot as block_slot,
       t.call_tx_signer as tx_signer,
-      t.taker_fee as taker_fee_amount_raw --taker fees = platform fees
-,
+      t.taker_fee as taker_fee_amount_raw,
       t.taker_fee / pow(10, p.decimals) as taker_fee_amount,
       t.taker_fee / pow(10, p.decimals) * p.price as taker_fee_amount_usd,
       case
