@@ -14,7 +14,6 @@
 {% set as_is_models = [
     ref('oneinch_lop_own_trades')
     , ref('zeroex_native_trades')
-
 ] %}
 
 WITH curve AS (
