@@ -31,6 +31,16 @@ with
                 call_log_messages
               FROM
                 magic_eden_solana.mmm_call_solFulfillBuy
+              WHERE
+                call_tx_id in (
+                  '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+                  '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+                  'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+                  '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+                  '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                )
             )
             UNION ALL
             (
@@ -42,6 +52,16 @@ with
                 call_log_messages
               FROM
                 magic_eden_solana.mmm_call_solFulfillSell
+              WHERE
+                call_tx_id in (
+                  '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+                  '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+                  'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+                  '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+                  '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                )
             )
             UNION ALL
             (
@@ -53,6 +73,16 @@ with
                 call_log_messages
               FROM
                 magic_eden_solana.mmm_call_solMip1FulfillBuy
+              WHERE
+                call_tx_id in (
+                  '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+                  '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+                  'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+                  '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+                  '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                )
             )
             UNION ALL
             (
@@ -64,6 +94,16 @@ with
                 call_log_messages
               FROM
                 magic_eden_solana.mmm_call_solMip1FulfillSell
+              WHERE
+                call_tx_id in (
+                  '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+                  '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+                  'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+                  '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+                  '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                )
             )
             UNION ALL
             (
@@ -75,6 +115,16 @@ with
                 call_log_messages
               FROM
                 magic_eden_solana.mmm_call_solOcpFulfillBuy
+              WHERE
+                call_tx_id in (
+                  '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+                  '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+                  'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+                  '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+                  '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                )
             )
             UNION ALL
             (
@@ -86,6 +136,16 @@ with
                 call_log_messages
               FROM
                 magic_eden_solana.mmm_call_solOcpFulfillSell
+              WHERE
+                call_tx_id in (
+                  '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+                  '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+                  'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+                  '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+                  '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                )
             )
           )
           LEFT JOIN unnest (call_log_messages) AS log_messages (logs) ON True
@@ -177,6 +237,16 @@ with
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solFulfillBuy
+          WHERE
+            call_tx_id in (
+              '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+              '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+              'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+              '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+              '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+            )
         )
         UNION ALL
         (
@@ -216,6 +286,16 @@ with
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solMip1FulfillBuy
+          WHERE
+            call_tx_id in (
+              '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+              '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+              'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+              '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+              '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+            )
         )
         UNION ALL
         (
@@ -255,6 +335,16 @@ with
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solOcpFulfillBuy
+          WHERE
+            call_tx_id in (
+              '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+              '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+              'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+              '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+              '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+            )
         )
         UNION ALL
         (
@@ -294,6 +384,16 @@ with
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solFulfillSell
+          WHERE
+            call_tx_id in (
+              '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+              '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+              'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+              '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+              '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+            )
         )
         UNION ALL
         (
@@ -342,6 +442,16 @@ with
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solMip1FulfillSell
+          WHERE
+            call_tx_id in (
+              '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+              '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+              'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+              '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+              '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+            )
         )
         UNION ALL
         (
@@ -384,6 +494,16 @@ with
             ) AS call_order
           FROM
             magic_eden_solana.mmm_call_solOcpFulfillSell
+          WHERE
+            call_tx_id in (
+              '2CjNi6Cjiz6PnAmUsg2WXykrKxGkiZLPnpVpfnnbyjAptBJAUTiZHxVUJp9yu6JeTq8SC4ZMReieUSQwy7WX2XEq',
+              '2LWRU2w8Xk9hM1ud88hBGhEbAwd3cZpGZdd74Cthhof9jgfoHuuPM6Hj1RyoBzhjGMMUwhqXe4w4pKfBYT33STzo',
+              'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
+              '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
+              '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+            )
         )
       ) trade
       LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
