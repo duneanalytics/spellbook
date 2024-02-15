@@ -324,7 +324,6 @@ with
           magic_eden_solana.mmm_call_solFulfillSell
         UNION ALL
         SELECT
-          args,
           call_instruction_name,
           call_tx_signer as account_buyer,
           account_owner as account_seller,
@@ -374,7 +373,6 @@ with
           magic_eden_solana.mmm_call_solMip1FulfillSell
         UNION ALL
         SELECT
-          args,
           call_instruction_name,
           call_tx_signer as account_buyer,
           account_owner as account_seller,
