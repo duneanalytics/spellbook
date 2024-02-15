@@ -1,7 +1,7 @@
 {{ config(
         tags = [ 'static'],
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}')
@@ -21,6 +21,7 @@ FROM (VALUES
         , (42220, 'celo', 'Celo', 'Layer 1', NULL, 'CELO', 0x471EcE3750Da237f93B8E339c536989b8978a438, 'https://celoscan.io/', timestamp '2020-04-22 16:00', NULL, NULL)
         , (8453, 'base', 'Base', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://basescan.org/', timestamp '2023-06-15 00:35', 'OP Stack', 'ethereum')
         , (7777777, 'zora', 'ZORA', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.zora.energy/', timestamp '2023-06-14 00:03', 'OP Stack', 'ethereum')
+        , (534352, 'scroll', 'Scroll', 'Layer 2', 'ZK Rollup', 'ETH', 0x5300000000000000000000000000000000000004, 'https://scrollscan.com/', timestamp '2023-10-10 06:00', 'Scroll', 'ethereum')
         , (424, 'pgn', 'Public Goods Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.publicgoods.network/', timestamp '2023-07-11 22:18', 'OP Stack', 'ethereum')
         , (324, 'zksync', 'zkSync Era', 'Layer 2', 'ZK Rollup', 'ETH', 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91, 'https://explorer.zksync.io/', timestamp '2023-02-14 15:22', 'zkSync', 'ethereum')
         , (1101, 'polygonzkevm', 'Polygon zkEVM', 'Layer 2', 'ZK Rollup', 'ETH', NULL, 'https://zkevm.polygonscan.com/', timestamp '2023-03-24 05:30', 'Polygon', 'ethereum')

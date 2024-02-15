@@ -74,3 +74,12 @@ sources:
       - name: fOUSG_evt_Borrow
       - name: fOUSG_evt_RepayBorrow
       - name: fOUSG_evt_LiquidateBorrow
+
+  - name: strike_lending_ethereum
+    tables:
+      - name: SErc20Delegate_evt_Borrow
+      - name: SErc20Delegate_evt_RepayBorrow
+      - name: SErc20Delegate_evt_LiquidateBorrow
+      - name: SEther_evt_Borrow
+      - name: SEther_evt_RepayBorrow
+      - name: SEther_evt_LiquidateBorrow

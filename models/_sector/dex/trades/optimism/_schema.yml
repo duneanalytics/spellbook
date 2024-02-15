@@ -396,6 +396,24 @@ models:
           seed_file: ref('curvefi_optimism_base_trades_seed')
 
 
+  - name: gridex_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: gridex
+      contributors: lldao
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'gridex' ]
+    description: "gridex  optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gridex_optimism_base_trades_seed')
+          
+          
   - name: solidly_v3_optimism_base_trades
     meta:
       blockchain: optimism
@@ -412,4 +430,4 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('solidly_v3_optimism_base_trades_seed')
-          
+           

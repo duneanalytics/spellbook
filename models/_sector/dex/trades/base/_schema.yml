@@ -317,6 +317,7 @@ models:
           filter:
             version: 2
   
+  
   - name: sobal_base_base_trades
     meta:
       blockchain: base
@@ -336,6 +337,7 @@ models:
           filter:
             version: 1
 
+
   - name: citadelswap_base_base_trades
     meta:
       blockchain: base
@@ -354,6 +356,26 @@ models:
           seed_file: ref('citadelswap_base_base_trades_seed')
           filter:
             version: 1
+
+
+  - name: plantbaseswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: plantbaseswap
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'plantbaseswap' ]
+    description: "plantbaseswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('plantbaseswap_base_base_trades_seed')
+          filter:
+            version: 2
             
             
   - name: derpdex_base_base_trades
@@ -374,3 +396,20 @@ models:
           seed_file: ref('derpdex_base_base_trades_seed')
           filter:
             version: 1
+  
+  - name: torus_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: torus
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'torus', 'v1' ]
+    description: "torus base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('torus_base_base_trades_seed')
