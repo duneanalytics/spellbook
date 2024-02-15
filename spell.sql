@@ -38,7 +38,8 @@ with
                   'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -58,7 +59,8 @@ with
                   'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -78,7 +80,8 @@ with
                   'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -98,7 +101,8 @@ with
                   'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -118,7 +122,8 @@ with
                   'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -138,7 +143,8 @@ with
                   'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+                  'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
           )
@@ -181,6 +187,7 @@ with
       takerFeeBp / 1e4 * buyerPrice as taker_fee,
       tokenSize as token_size,
       rl.royalty_paid,
+      rl.lp_fee as amm_fee,
       trade.call_instruction_name as instruction,
       trade.account_metadata,
       trade.account_tokenMint,
@@ -239,7 +246,8 @@ with
               'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
               '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
               '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
             )
         )
         UNION ALL
@@ -288,7 +296,8 @@ with
               'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
               '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
               '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
             )
         )
         UNION ALL
@@ -337,7 +346,8 @@ with
               'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
               '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
               '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
             )
         )
         UNION ALL
@@ -386,7 +396,8 @@ with
               'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
               '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
               '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
             )
         )
         UNION ALL
@@ -444,7 +455,8 @@ with
               'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
               '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
               '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
             )
         )
         UNION ALL
@@ -496,7 +508,8 @@ with
               'So6ngQRVrjXGgBBvK3k7axoinAuP8N2LPqiJ5uFXecojLDRWuM4g7idpphXLiMCq77SWBpyQjrjSUjk9dy4hXni',
               '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
               '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
-              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG'
+              'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
+              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
             )
         )
       ) trade
@@ -536,26 +549,30 @@ with
       t.call_tx_id as tx_id, -- ok
       t.call_block_slot as block_slot, -- ok
       t.call_tx_signer as tx_signer, -- ok
-      t.taker_fee as taker_fee_amount_raw,
-      t.taker_fee / pow(10, p.decimals) as taker_fee_amount,
-      t.taker_fee / pow(10, p.decimals) * p.price as taker_fee_amount_usd,
+      t.taker_fee as taker_fee_amount_raw, -- ok
+      t.taker_fee / pow(10, p.decimals) as taker_fee_amount, -- ok
+      t.taker_fee / pow(10, p.decimals) * p.price as taker_fee_amount_usd, -- ok
       case
         when t.taker_fee = 0
         OR t.price = 0 then 0
         else t.taker_fee / t.price
-      end as taker_fee_percentage,
-      t.maker_fee as maker_fee_amount_raw,
-      t.maker_fee / pow(10, p.decimals) as maker_fee_amount,
-      t.maker_fee / pow(10, p.decimals) * p.price as maker_fee_amount_usd,
+      end as taker_fee_percentage, -- ok
+      t.maker_fee as maker_fee_amount_raw, -- ok
+      t.maker_fee / pow(10, p.decimals) as maker_fee_amount, -- ok
+      t.maker_fee / pow(10, p.decimals) * p.price as maker_fee_amount_usd, -- ok
       case
         when t.maker_fee = 0
         OR t.price = 0 then 0
         else t.maker_fee / t.price
-      end as maker_fee_percentage,
-      cast(null as double) as amm_fee_amount_raw,
-      cast(null as double) as amm_fee_amount,
-      cast(null as double) as amm_fee_amount_usd,
-      cast(null as double) as amm_fee_percentage,
+      end as maker_fee_percentage, -- ok
+      t.amm_fee as amm_fee_amount_raw,
+      t.amm_fee / pow(10, p.decimals) as amm_fee_amount,
+      t.amm_fee / pow(10, p.decimals) * p.price as amm_fee_amount_usd,
+case
+        when t.amm_fee = 0
+        OR t.price = 0 then 0
+        else t.amm_fee / t.price
+      end as amm_fee_percentage, -- ok
       t.royalty_paid as royalty_fee_amount_raw,
       t.royalty_paid / pow(10, p.decimals) as royalty_fee_amount,
       t.royalty_paid / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
