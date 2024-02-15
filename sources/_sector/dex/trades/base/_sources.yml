@@ -55,6 +55,10 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: horizondex_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
   - name: plantbaseswap_base
     tables:
       - name: UniswapV2Factory_evt_PairCreated

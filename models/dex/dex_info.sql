@@ -115,6 +115,7 @@ FROM (VALUES
     , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
     , ('dooar', 'Dooar', 'Direct', 'dooar')
     , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
+    , ('horizondex', 'HorizonDex', 'Direct', 'HorizonDex')
     , ('plantbaseswap','Plantbaseswap','Direct','PlantBaseSwap')
     , ('sobal','Sobal','Direct','Sobal')
     , ('derpdex','DerpDex', 'Direct', 'DerpDex')
