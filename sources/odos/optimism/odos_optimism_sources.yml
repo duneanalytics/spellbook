@@ -17,3 +17,4 @@ sources:
       Decoded event table for swaps on odos_v2
     tables:
       - name: OdosRouterV2_evt_Swap
+        loaded_at_field: evt_block_time

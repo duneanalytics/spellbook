@@ -1,5 +1,6 @@
-{%- macro balances_enrich(balances_base, blockchain) %}
+{%- macro balances_enrich(balances_base, blockchain, daily=false) %}
 select
+    {% if daily %}balances.day,{% endif %}
     balances.block_number,
     balances.block_time,
     balances.type,

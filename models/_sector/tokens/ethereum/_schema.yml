@@ -113,3 +113,44 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_ethereum_base_balances_daily
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances daily base"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_ethereum_balances_daily
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
