@@ -95,7 +95,7 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_borrow_seed:
           seed_file: ref('zerolend_zksync_base_borrow_seed')
     columns:
       - *blockchain
