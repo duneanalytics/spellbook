@@ -1070,6 +1070,10 @@ WITH curated_list AS (
       ,(0xC0ffeEBABE5D496B2DDE509f9fa189C25cF29671, '0xc0ffeebabe')
       ,(0xD1F861139aB7d831304603Cfd2ACc50ee2408a57, '0xb0bababe')
 
+      ---
+
+      ,(0x6ddb6B042b4f3aE8CC73EBd371fCc70762279473, 'Witness Protocol')
+
   ) as temp_table (creator_address, contract_project)
 )
 
