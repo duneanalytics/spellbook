@@ -183,13 +183,12 @@ with
       'SOL' as trade_token_symbol,
       'So11111111111111111111111111111111111111112' as trade_token_mint,
       total_price as price,
-      makerFeeBp / 1e4 * buyerPrice as maker_fee,
-      takerFeeBp / 1e4 * buyerPrice as taker_fee,
+      makerFeeBp / 1e4 * rl.total_price as maker_fee,
+      takerFeeBp / 1e4 * rl.total_price as taker_fee,
       tokenSize as token_size,
-      rl.royalty_paid,
+      rl.royalty_paid as royalty_fee,
       rl.lp_fee as amm_fee,
       trade.call_instruction_name as instruction,
-      trade.account_metadata,
       trade.account_tokenMint,
       trade.account_buyer,
       trade.account_seller,
@@ -206,7 +205,6 @@ with
             call_instruction_name,
             account_owner as account_buyer,
             call_tx_signer as account_seller,
-            null as account_metadata,
             account_assetMint as account_tokenMint,
             cast(
               json_value(
@@ -256,7 +254,6 @@ with
             call_instruction_name,
             account_owner as account_buyer,
             call_tx_signer as account_seller,
-            null as account_metadata,
             account_assetMint as account_tokenMint,
             cast(
               json_value(
@@ -306,7 +303,6 @@ with
             call_instruction_name,
             account_owner as account_buyer,
             call_tx_signer as account_seller,
-            null as account_metadata,
             account_assetMint as account_tokenMint,
             cast(
               json_value(
@@ -356,7 +352,6 @@ with
             call_instruction_name,
             call_tx_signer as account_buyer,
             account_owner as account_seller,
-            null as account_metadata,
             account_assetMint as account_tokenMint,
             cast(
               json_value(
@@ -406,7 +401,6 @@ with
             call_instruction_name,
             call_tx_signer as account_buyer,
             account_owner as account_seller,
-            null as account_metadata,
             account_assetMint as account_tokenMint,
             cast(
               json_value(
@@ -465,7 +459,6 @@ with
             call_instruction_name,
             call_tx_signer as account_buyer,
             account_owner as account_seller,
-            null as account_metadata,
             account_assetMint as account_tokenMint,
             cast(
               json_value(
@@ -573,13 +566,13 @@ case
         OR t.price = 0 then 0
         else t.amm_fee / t.price
       end as amm_fee_percentage, -- ok
-      t.royalty_paid as royalty_fee_amount_raw,
-      t.royalty_paid / pow(10, p.decimals) as royalty_fee_amount,
-      t.royalty_paid / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
+      t.royalty_fee as royalty_fee_amount_raw,
+      t.royalty_fee / pow(10, p.decimals) as royalty_fee_amount,
+      t.royalty_fee / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
       case
-        when t.royalty_paid = 0
+        when t.royalty_fee = 0
         OR t.price = 0 then 0
-        else t.royalty_paid / t.price
+        else t.royalty_fee / t.price
       end as royalty_fee_percentage,
       t.instruction,
       t.outer_instruction_index,
