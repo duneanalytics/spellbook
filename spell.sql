@@ -12,13 +12,13 @@ with
               json_parse(split(logs, ' ') [3]),
               '$.royalty_paid'
             ) as double
-          ) as royalty,
-          --   cast(
-          --     json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') as double
-          --   ) as total_price,
-          --   cast(
-          --     json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') as double
-          --   ) as lp_fee,
+          ) as royalty_paid,
+          cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') as double
+          ) as total_price,
+          cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') as double
+          ) as lp_fee,
           logs
         FROM
           (
@@ -192,7 +192,7 @@ with
           0
         )
         else 0
-      end + coalesce(rl.royalty, 0) as price,
+      end + coalesce(rl.royalty_paid, 0) as price,
       makerFeeBp,
       takerFeeBp,
       makerFeeRaw,
@@ -200,8 +200,9 @@ with
       coalesce(makerFeeBp, makerFeeRaw) / 1e4 * buyerPrice as maker_fee,
       coalesce(takerFeeBp, takerFeeRaw) / 1e4 * buyerPrice as taker_fee,
       tokenSize as token_size,
-      rl.royalty --we will just be missing this if log is truncated.
-,
+      rl.royalty_paid,
+      rl.total_price,
+      rl.lp_fee,
       trade.call_instruction_name as instruction,
       trade.account_metadata,
       trade.account_tokenMint,
@@ -589,13 +590,13 @@ with
       cast(null as double) as amm_fee_amount,
       cast(null as double) as amm_fee_amount_usd,
       cast(null as double) as amm_fee_percentage,
-      t.royalty as royalty_fee_amount_raw,
-      t.royalty / pow(10, p.decimals) as royalty_fee_amount,
-      t.royalty / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
+      t.royalty_paid as royalty_fee_amount_raw,
+      t.royalty_paid / pow(10, p.decimals) as royalty_fee_amount,
+      t.royalty_paid / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
       case
-        when t.royalty = 0
+        when t.royalty_paid = 0
         OR t.price = 0 then 0
-        else t.royalty / t.price
+        else t.royalty_paid / t.price
       end as royalty_fee_percentage,
       t.instruction,
       t.outer_instruction_index,
