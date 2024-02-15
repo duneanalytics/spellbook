@@ -12,13 +12,13 @@ with
               json_parse(split(logs, ' ') [3]),
               '$.royalty_paid'
             ) as double
-          ) as royalty_paid,
-          cast(
-            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') as double
-          ) as total_price,
-          cast(
-            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') as double
-          ) as lp_fee,
+          ) as royalty,
+          -- cast(
+          --   json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.total_price') as double
+          -- ) as total_price,
+          -- cast(
+          --   json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.lp_fee') as double
+          -- ) as lp_fee,
           logs
         FROM
           (
@@ -205,7 +205,7 @@ SELECT
       0
     )
     else 0
-  end + coalesce(rl.royalty_paid, 0) as price,
+  end + coalesce(rl.royalty, 0) as price,
   makerFeeBp,
   takerFeeBp,
   makerFeeRaw,
@@ -213,7 +213,7 @@ SELECT
   coalesce(makerFeeBp, makerFeeRaw) / 1e4 * buyerPrice as maker_fee,
   coalesce(takerFeeBp, takerFeeRaw) / 1e4 * buyerPrice as taker_fee,
   tokenSize as token_size,
-  rl.royalty_paid --we will just be missing this if log is truncated.
+  rl.royalty --we will just be missing this if log is truncated.
 ,
   trade.call_instruction_name as instruction,
   trade.account_metadata,
