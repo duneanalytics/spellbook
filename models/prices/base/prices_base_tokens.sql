@@ -64,4 +64,5 @@ FROM
     ('bay-baseyield', 'base', 'BAY', 0xF45116C2E5bE608152Ea8A6a73917DFE75b707dC, 18),
     ('rats-ratsbase', 'base', 'RATS', 0x06c4c7f8011fbfb6a9654ee4142532f9bb3c52b8, 9),
     ('gmr1-gamer', 'base', 'GMR', 0xa617c0c739845b2941bd8edd05c9f993ecc97c18, 18),
+    ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18),
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
