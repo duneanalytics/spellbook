@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'rabbithole_base',
     alias = 'rewards',
     materialized = 'incremental',
@@ -12,6 +11,6 @@
 
 {{rabbithole_referral_rewards(
         blockchain = "base"
-        ,QuestFactory_evt_MintFeePaid = source('rabbithole_base','QuestFactory_evt_MintFeePaid')
+        ,QuestFactory_evt_MintFeePaid = source('boost_base','QuestFactory_evt_MintFeePaid')
         )
     }}
