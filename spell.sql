@@ -176,11 +176,9 @@ with
       end as trade_category,
       'SOL' as trade_token_symbol,
       'So11111111111111111111111111111111111111112' as trade_token_mint,
-      rl.total_price as price,
-      makerFeeBp,
-      takerFeeBp,
-      coalesce(makerFeeBp) / 1e4 * buyerPrice as maker_fee,
-      coalesce(takerFeeBp) / 1e4 * buyerPrice as taker_fee,
+      total_price as price,
+      makerFeeBp / 1e4 * buyerPrice as maker_fee,
+      takerFeeBp / 1e4 * buyerPrice as taker_fee,
       tokenSize as token_size,
       rl.royalty_paid,
       trade.call_instruction_name as instruction,
@@ -475,7 +473,6 @@ with
             cast(
               json_value(args, 'strict $.SolOcpFulfillSellArgs.takerFeeBp') as double
             ) as takerFeeBp,
-            null as takerFeeRaw,
             call_outer_instruction_index,
             call_inner_instruction_index,
             call_block_time,
@@ -522,9 +519,12 @@ with
       t.trade_category, -- ok
       t.account_buyer as buyer, -- ok
       t.account_seller as seller, -- ok
+
+      -- price with all the fees
       t.price as amount_raw, -- ok
       t.price / pow(10, p.decimals) as amount_original, -- ok
       t.price / pow(10, p.decimals) * p.price as amount_usd, -- ok
+
       t.trade_token_symbol as currency_symbol, -- ok
       t.trade_token_mint as currency_address, -- ok
       cast(null as varchar) as account_merkle_tree, -- ok
