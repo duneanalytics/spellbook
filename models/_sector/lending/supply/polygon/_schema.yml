@@ -95,19 +95,10 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_supply_seed:
           seed_file: ref('aave_polygon_base_supply_seed')
           filter:
             version: 2
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
     columns:
       - *blockchain
       - *project
@@ -140,19 +131,10 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_supply_seed:
           seed_file: ref('aave_polygon_base_supply_seed')
           filter:
             version: 3
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
     columns:
       - *blockchain
       - *project
@@ -185,19 +167,10 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_supply_seed:
           seed_file: ref('compound_polygon_base_supply_seed')
           filter:
             version: 3
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
     columns:
       - *blockchain
       - *project
