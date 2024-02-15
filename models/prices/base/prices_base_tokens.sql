@@ -30,7 +30,6 @@ FROM
     ('wsteth-wrapped-liquid-staked-ether-20', 'base', 'wstETH',0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452,18),
     ('aero-aerodrome-finance', 'base', 'AERO', 0x940181a94A35A4569E4529A3CDfB74e38FD98631, 18),
     ('degen-degen-base', 'base', 'DEGEN', 0x4ed4e862860bed51a9570b96d89af5e1b0efefed,18),
-    ('base-velocimeter', 'base', 'BVM', 0xd386a121991e51eab5e3433bf5b1cf4c8884b47a,18),
     ('dai-plus-overnight', 'base', 'DAI+', 0x65a2508c429a6078a7bc2f7df81ab575bd9d9275,18),
     ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18),
     ('prime', 'base', 'PRIME', 0xfa980ced6895ac314e7de34ef1bfae90a5add21b,18),
