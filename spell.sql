@@ -39,7 +39,7 @@ with
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
                   'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
-              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -60,7 +60,7 @@ with
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
                   'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
-              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -81,7 +81,7 @@ with
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
                   'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
-              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -102,7 +102,7 @@ with
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
                   'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
-              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -123,7 +123,7 @@ with
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
                   'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
-              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
             UNION ALL
@@ -144,7 +144,7 @@ with
                   '4TnzVhZVxAXubo8NbMdNnZfLVyAoj7U5jBPvius7UWJU1ueksQthraDrws3ef3HJuVMyMPrA5va8QLKkLMrQA5Vk',
                   '2gHDGKbH7DRLigoz6NNduLvwRLF3dz7YnEZFgNYnWUz5m9vJ5tWexkeJtSmYwPN2AmB3xwDQ3Sx96vYyTDTFeV1v',
                   'rhG4NhUbEbcxrZqGSa5XCqGnKMTwY9GbVXiv3EZgEjYGZs9qsM5vAWi47veNgpde3H31Pv6sSa7JheAWNPPfcQG',
-              '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
+                  '2NdNekcxuw422XrPhAgJTWD6B5NVcUWjsHTMPLzWG7fBtD9LiNxw6MgvbAXCXGyPmBBgbEYjzKUU7m5yDPF4amwA'
                 )
             )
           )
@@ -525,12 +525,10 @@ with
       t.trade_category, -- ok
       t.account_buyer as buyer, -- ok
       t.account_seller as seller, -- ok
-
       -- price with all the fees
       t.price as amount_raw, -- ok
       t.price / pow(10, p.decimals) as amount_original, -- ok
       t.price / pow(10, p.decimals) * p.price as amount_usd, -- ok
-
       t.trade_token_symbol as currency_symbol, -- ok
       t.trade_token_mint as currency_address, -- ok
       cast(null as varchar) as account_merkle_tree, -- ok
@@ -561,7 +559,7 @@ with
       t.amm_fee as amm_fee_amount_raw,
       t.amm_fee / pow(10, p.decimals) as amm_fee_amount,
       t.amm_fee / pow(10, p.decimals) * p.price as amm_fee_amount_usd,
-case
+      case
         when t.amm_fee = 0
         OR t.price = 0 then 0
         else t.amm_fee / t.price
