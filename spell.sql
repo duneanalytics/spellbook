@@ -175,24 +175,8 @@ with
         else 'sell'
       end as trade_category,
       'SOL' as trade_token_symbol,
-      'So11111111111111111111111111111111111111112' as trade_token_mint
-      --price should include all fees paid by user
-,
-      buyerPrice + coalesce(
-        coalesce(takerFeeBp, takerFeeRaw) / 1e4 * buyerPrice,
-        0
-      )
-      --if maker fee is negative then it is paid out of taker fee. else it comes out of taker (user) wallet
-      + case
-        when coalesce(
-          coalesce(makerFeeBp, makerFeeRaw) / 1e4 * buyerPrice,
-          0
-        ) > 0 then coalesce(
-          coalesce(makerFeeBp, makerFeeRaw) / 1e4 * buyerPrice,
-          0
-        )
-        else 0
-      end + coalesce(rl.royalty_paid, 0) as price,
+      'So11111111111111111111111111111111111111112' as trade_token_mint,
+      rl.total_price as price,
       makerFeeBp,
       takerFeeBp,
       makerFeeRaw,
@@ -201,8 +185,6 @@ with
       coalesce(takerFeeBp, takerFeeRaw) / 1e4 * buyerPrice as taker_fee,
       tokenSize as token_size,
       rl.royalty_paid,
-      rl.total_price,
-      rl.lp_fee,
       trade.call_instruction_name as instruction,
       trade.account_metadata,
       trade.account_tokenMint,
