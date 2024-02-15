@@ -165,48 +165,27 @@ with
       (
         SELECT
           call_instruction_name,
-          account_buyer,
-          account_seller,
-          account_metadata,
-          account_tokenMint
-          --think we have a decoding issue, I've done a manual coalesce for now https://dune.com/queries/3059777
-,
-          coalesce(
-            cast(buyerPrice as double),
-            cast(
-              bytearray_to_bigint (
-                bytearray_reverse (bytearray_substring (call_data, 1 + 10, 8))
-              ) as double
-            )
+          account_owner as account_buyer,
+          call_tx_signer as account_seller,
+          null as account_metadata,
+          account_assetMint as account_tokenMint,
+          cast(
+            json_value(
+              args,
+              'strict $.SolFulfillBuyArgs.minPaymentAmount'
+            ) as double
           ) as buyerPrice,
-          coalesce(
-            cast(tokenSize as double),
-            cast(
-              bytearray_to_bigint (
-                bytearray_reverse (bytearray_substring (call_data, 1 + 18, 8))
-              ) as double
-            )
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') as double
           ) as tokenSize,
-          cast(makerFeeBp as double) as makerFeeBp,
-          bytearray_to_bigint (
-            bytearray_reverse (
-              case
-                when bytearray_substring (call_data, 1 + 43, 1) = 0xff --check second byte for 0xff
-                then rpad(
-                  bytearray_substring (call_data, 1 + 42, 2),
-                  8,
-                  0xff
-                )
-                else bytearray_substring (call_data, 1 + 42, 2)
-              end
-            )
-          ) as makerFeeRaw,
-          cast(takerFeeBp as double) as takerFeeBp,
           cast(
-            bytearray_to_bigint (
-              bytearray_reverse (bytearray_substring (call_data, 1 + 44, 2))
-            ) as double
-          ) as takerFeeRaw,
+            json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') as double
+          ) as makerFeeBp,
+          null as makerFeeRaw,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') as double
+          ) as takerFeeBp,
+          null as takerFeeRaw,
           call_outer_instruction_index,
           call_inner_instruction_index,
           call_block_time,
@@ -222,51 +201,31 @@ with
               call_inner_instruction_index asc
           ) as call_order
         FROM
-          "delta_prod"."magic_eden_solana"."m2_call_executeSaleV2"
+          magic_eden_solana.mmm_call_solFulfillBuy
         UNION ALL
         SELECT
           call_instruction_name,
-          account_buyer,
-          account_seller,
-          account_metadata,
-          account_tokenMint
-          --again, some transactions are missing "args"
-,
-          coalesce(
-            cast(
-              json_value(args, 'strict $.MIP1ExecuteSaleV2Args.price') as double
-            ),
-            cast(
-              bytearray_to_bigint (
-                bytearray_reverse (bytearray_substring (call_data, 1 + 8, 8))
-              ) as double
-            )
-          ) as buyerPrice,
-          1 as tokenSize,
+          account_owner as account_buyer,
+          call_tx_signer as account_seller,
+          null as account_metadata,
+          account_assetMint as account_tokenMint,
           cast(
-            json_value(args, 'strict $.MIP1ExecuteSaleV2Args.makerFeeBp') as double
-          ) as makerFeeBp,
-          bytearray_to_bigint (
-            bytearray_reverse (
-              case
-                when bytearray_substring (call_data, 1 + 17, 1) = 0xff --check second byte for 0xff
-                then rpad(
-                  bytearray_substring (call_data, 1 + 16, 2),
-                  8,
-                  0xff
-                )
-                else bytearray_substring (call_data, 1 + 16, 2)
-              end
-            )
-          ) as makerFeeRaw,
-          cast(
-            json_value(args, 'strict $.MIP1ExecuteSaleV2Args.takerFeeBp') as double
-          ) as takerFeeBp,
-          cast(
-            bytearray_to_bigint (
-              bytearray_reverse (bytearray_substring (call_data, 1 + 18, 2))
+            json_value(
+              args,
+              'strict $.SolFulfillBuyArgs.minPaymentAmount'
             ) as double
-          ) as takerFeeRaw,
+          ) as buyerPrice,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') as double
+          ) as tokenSize,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') as double
+          ) as makerFeeBp,
+          null as makerFeeRaw,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') as double
+          ) as takerFeeBp,
+          null as takerFeeRaw,
           call_outer_instruction_index,
           call_inner_instruction_index,
           call_block_time,
@@ -282,51 +241,31 @@ with
               call_inner_instruction_index asc
           ) as call_order
         FROM
-          "delta_prod"."magic_eden_solana"."m2_call_mip1ExecuteSaleV2"
+          magic_eden_solana.mmm_call_solMip1FulfillBuy
         UNION ALL
         SELECT
           call_instruction_name,
-          account_buyer,
-          account_seller,
-          account_metadata,
-          account_tokenMint
-          --again, some transactions are missing "args"
-,
-          coalesce(
-            cast(
-              json_value(args, 'strict $.OCPExecuteSaleV2Args.price') as double
-            ),
-            cast(
-              bytearray_to_bigint (
-                bytearray_reverse (bytearray_substring (call_data, 1 + 8, 8))
-              ) as double
-            )
-          ) as buyerPrice,
-          1 as tokenSize,
+          account_owner as account_buyer,
+          call_tx_signer as account_seller,
+          null as account_metadata,
+          account_assetMint as account_tokenMint,
           cast(
-            json_value(args, 'strict $.OCPExecuteSaleV2Args.makerFeeBp') as double
-          ) as makerFeeBp,
-          bytearray_to_bigint (
-            bytearray_reverse (
-              case
-                when bytearray_substring (call_data, 1 + 17, 1) = 0xff --check second byte for 0xff
-                then rpad(
-                  bytearray_substring (call_data, 1 + 16, 2),
-                  8,
-                  0xff
-                )
-                else bytearray_substring (call_data, 1 + 16, 2)
-              end
-            )
-          ) as makerFeeRaw,
-          cast(
-            json_value(args, 'strict $.OCPExecuteSaleV2Args.takerFeeBp') as double
-          ) as takerFeeBp,
-          cast(
-            bytearray_to_bigint (
-              bytearray_reverse (bytearray_substring (call_data, 1 + 18, 2))
+            json_value(
+              args,
+              'strict $.SolFulfillBuyArgs.minPaymentAmount'
             ) as double
-          ) as takerFeeRaw,
+          ) as buyerPrice,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.assetAmount') as double
+          ) as tokenSize,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.makerFeeBp') as double
+          ) as makerFeeBp,
+          null as makerFeeRaw,
+          cast(
+            json_value(args, 'strict $.SolFulfillBuyArgs.takerFeeBp') as double
+          ) as takerFeeBp,
+          null as takerFeeRaw,
           call_outer_instruction_index,
           call_inner_instruction_index,
           call_block_time,
@@ -342,7 +281,141 @@ with
               call_inner_instruction_index asc
           ) as call_order
         FROM
-          "delta_prod"."magic_eden_solana"."m2_call_ocpExecuteSaleV2"
+          magic_eden_solana.mmm_call_solOcpFulfillBuy
+        UNION ALL
+        SELECT
+          call_instruction_name,
+          call_tx_signer as account_buyer,
+          account_owner as account_seller,
+          null as account_metadata,
+          account_assetMint as account_tokenMint,
+          cast(
+            json_value(
+              args,
+              'strict $.SolFulfillSellArgs.maxPaymentAmount'
+            ) as double
+          ) as buyerPrice,
+          cast(
+            json_value(args, 'strict $.SolFulfillSellArgs.assetAmount') as double
+          ) as tokenSize,
+          cast(
+            json_value(args, 'strict $.SolFulfillSellArgs.makerFeeBp') as double
+          ) as makerFeeBp,
+          null as makerFeeRaw,
+          cast(
+            json_value(args, 'strict $.SolFulfillSellArgs.takerFeeBp') as double
+          ) as takerFeeBp,
+          null as takerFeeRaw,
+          call_outer_instruction_index,
+          call_inner_instruction_index,
+          call_block_time,
+          call_block_slot,
+          call_tx_id,
+          call_tx_signer,
+          call_account_arguments,
+          row_number() over (
+            partition by
+              call_tx_id
+            order by
+              call_outer_instruction_index asc,
+              call_inner_instruction_index asc
+          ) as call_order
+        FROM
+          magic_eden_solana.mmm_call_solFulfillSell
+        UNION ALL
+        SELECT
+          args,
+          call_instruction_name,
+          call_tx_signer as account_buyer,
+          account_owner as account_seller,
+          null as account_metadata,
+          account_assetMint as account_tokenMint,
+          cast(
+            json_value(
+              args,
+              'strict $.SolMip1FulfillSellArgs.maxPaymentAmount'
+            ) as double
+          ) as buyerPrice,
+          cast(
+            json_value(
+              args,
+              'strict $.SolMip1FulfillSellArgs.assetAmount'
+            ) as double
+          ) as tokenSize,
+          cast(
+            json_value(
+              args,
+              'strict $.SolMip1FulfillSellArgs.makerFeeBp'
+            ) as double
+          ) as makerFeeBp,
+          null as makerFeeRaw,
+          cast(
+            json_value(
+              args,
+              'strict $.SolMip1FulfillSellArgs.takerFeeBp'
+            ) as double
+          ) as takerFeeBp,
+          null as takerFeeRaw,
+          call_outer_instruction_index,
+          call_inner_instruction_index,
+          call_block_time,
+          call_block_slot,
+          call_tx_id,
+          call_tx_signer,
+          call_account_arguments,
+          row_number() over (
+            partition by
+              call_tx_id
+            order by
+              call_outer_instruction_index asc,
+              call_inner_instruction_index asc
+          ) as call_order
+        FROM
+          magic_eden_solana.mmm_call_solMip1FulfillSell
+        UNION ALL
+        SELECT
+          args,
+          call_instruction_name,
+          call_tx_signer as account_buyer,
+          account_owner as account_seller,
+          null as account_metadata,
+          account_assetMint as account_tokenMint,
+          cast(
+            json_value(
+              args,
+              'strict $.SolOcpFulfillSellArgs.maxPaymentAmount'
+            ) as double
+          ) as buyerPrice,
+          cast(
+            json_value(
+              args,
+              'strict $.SolOcpFulfillSellArgs.assetAmount'
+            ) as double
+          ) as tokenSize,
+          cast(
+            json_value(args, 'strict $.SolOcpFulfillSellArgs.makerFeeBp') as double
+          ) as makerFeeBp,
+          null as makerFeeRaw,
+          cast(
+            json_value(args, 'strict $.SolOcpFulfillSellArgs.takerFeeBp') as double
+          ) as takerFeeBp,
+          null as takerFeeRaw,
+          call_outer_instruction_index,
+          call_inner_instruction_index,
+          call_block_time,
+          call_block_slot,
+          call_tx_id,
+          call_tx_signer,
+          call_account_arguments,
+          row_number() over (
+            partition by
+              call_tx_id
+            order by
+              call_outer_instruction_index asc,
+              call_inner_instruction_index asc
+          ) as call_order
+        FROM
+          magic_eden_solana.mmm_call_solOcpFulfillSell
       ) trade
       --this shortcut ONLY works if you know that a log is only emitted ONCE per call.
       LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
