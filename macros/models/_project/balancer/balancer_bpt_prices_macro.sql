@@ -368,7 +368,7 @@ WITH pool_labels AS (
         l.version,
         18 AS decimals,
         l.pool_address AS contract_address,
-        CASE WHEN pl.pool_type = 'LP'
+        CASE WHEN pl.pool_type = 'LP' AND median_price IS NOT NULL
         THEN p.median_price
         ELSE l.liquidity / s.supply 
         END AS bpt_price
