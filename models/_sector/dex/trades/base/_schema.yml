@@ -394,6 +394,25 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('torus_base_base_trades_seed')
+  
+  - name: sharkswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: sharkswap
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'sharkswap' ]
+    description: "sharkswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sharkswap_base_base_trades_seed')
+          filter:
+            version: 1
 
 
   - name: horizondex_base_base_trades

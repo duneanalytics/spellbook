@@ -28,6 +28,7 @@
     , ref('sobal_base_base_trades')
     , ref('derpdex_base_base_trades')
     , ref('torus_base_base_trades')
+    , ref('sharkswap_base_base_trades')
 ] %}
 
 WITH base_union AS (

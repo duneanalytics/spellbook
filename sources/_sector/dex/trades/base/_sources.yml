@@ -74,3 +74,7 @@ sources:
     tables:
       - name: TorusFactory_evt_PairCreated
       - name: TorusPair_evt_Swap
+  - name: sharkswap_base
+    tables:
+      - name: SharkswapFactory_evt_PairCreated
+      - name: SharkswapPair_evt_Swap
