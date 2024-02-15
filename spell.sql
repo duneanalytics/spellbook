@@ -30,7 +30,7 @@ with
                 call_inner_instruction_index,
                 call_log_messages
               FROM
-                magic_eden_solana.mmm_call_solFulfillBuy
+                {{ source('magic_eden_solana','mmm_call_solFulfillBuy') }}
             )
             UNION ALL
             (
@@ -41,7 +41,7 @@ with
                 call_inner_instruction_index,
                 call_log_messages
               FROM
-                magic_eden_solana.mmm_call_solFulfillSell
+                {{ source('magic_eden_solana','mmm_call_solFulfillSell') }}
             )
             UNION ALL
             (
@@ -52,7 +52,7 @@ with
                 call_inner_instruction_index,
                 call_log_messages
               FROM
-                magic_eden_solana.mmm_call_solMip1FulfillBuy
+                {{ source('magic_eden_solana','mmm_call_solMip1FulfillBuy') }}
             )
             UNION ALL
             (
@@ -63,7 +63,7 @@ with
                 call_inner_instruction_index,
                 call_log_messages
               FROM
-                magic_eden_solana.mmm_call_solMip1FulfillSell
+                {{ source('magic_eden_solana','mmm_call_solMip1FulfillSell') }}
             )
             UNION ALL
             (
@@ -74,7 +74,7 @@ with
                 call_inner_instruction_index,
                 call_log_messages
               FROM
-                magic_eden_solana.mmm_call_solOcpFulfillBuy
+                {{ source('magic_eden_solana','mmm_call_solOcpFulfillBuy') }}
             )
             UNION ALL
             (
@@ -85,7 +85,7 @@ with
                 call_inner_instruction_index,
                 call_log_messages
               FROM
-                magic_eden_solana.mmm_call_solOcpFulfillSell
+                {{ source('magic_eden_solana','mmm_call_solOcpFulfillSell') }}
             )
           )
           LEFT JOIN unnest (call_log_messages) AS log_messages (logs) ON True
@@ -176,7 +176,7 @@ with
                 call_inner_instruction_index ASC
             ) AS call_order
           FROM
-            magic_eden_solana.mmm_call_solFulfillBuy
+            {{ source('magic_eden_solana','mmm_call_solFulfillBuy') }}
         )
         UNION ALL
         (
@@ -215,7 +215,7 @@ with
                 call_inner_instruction_index ASC
             ) AS call_order
           FROM
-            magic_eden_solana.mmm_call_solMip1FulfillBuy
+            {{ source('magic_eden_solana','mmm_call_solMip1FulfillBuy') }}
         )
         UNION ALL
         (
@@ -254,7 +254,7 @@ with
                 call_inner_instruction_index ASC
             ) AS call_order
           FROM
-            magic_eden_solana.mmm_call_solOcpFulfillBuy
+            {{ source('magic_eden_solana','mmm_call_solOcpFulfillBuy') }}
         )
         UNION ALL
         (
@@ -293,7 +293,7 @@ with
                 call_inner_instruction_index ASC
             ) AS call_order
           FROM
-            magic_eden_solana.mmm_call_solFulfillSell
+            {{ source('magic_eden_solana','mmm_call_solFulfillSell') }}
         )
         UNION ALL
         (
@@ -341,7 +341,7 @@ with
                 call_inner_instruction_index ASC
             ) AS call_order
           FROM
-            magic_eden_solana.mmm_call_solMip1FulfillSell
+            {{ source('magic_eden_solana','mmm_call_solMip1FulfillSell') }}
         )
         UNION ALL
         (
@@ -383,7 +383,7 @@ with
                 call_inner_instruction_index ASC
             ) AS call_order
           FROM
-            magic_eden_solana.mmm_call_solOcpFulfillSell
+            {{ source('magic_eden_solana','mmm_call_solOcpFulfillSell') }}
         )
       ) trade
       LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id

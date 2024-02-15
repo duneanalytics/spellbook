@@ -178,7 +178,7 @@ models:
             - account_mint
             - tx_id
       - check_seed:
-          seed_file: ref('tensorswap_v1_solana_trades_seed')
+          seed_file: ref('magiceden_mmm_solana_trades_seed')
           match_columns:
             - block_slot
             - tx_id
