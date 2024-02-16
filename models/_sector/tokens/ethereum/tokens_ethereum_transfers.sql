@@ -1,5 +1,4 @@
 {{config(
-    tags = ['prod_exclude'],
     schema = 'tokens_ethereum',
     alias = 'transfers',
     partition_by = ['block_date'],
