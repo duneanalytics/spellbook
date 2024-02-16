@@ -313,7 +313,10 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F
-    AND bytearray_substring(t.data, 1, 4) = 0x4165d6dd -- Finalize Blocks (proof verified immediately)
+    AND bytearray_substring(t.data, 1, 4) IN (
+                                             0x4165d6dd -- Finalize Blocks (proof verified immediately)
+                                            ,0x7a776315 -- Submit Data (Aplha v2 Release 2024-02-13)
+                                            )
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
