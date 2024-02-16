@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: element_scroll
+    tables:
+      - name: ERC721OrdersFeature_evt_ERC721SellOrderFilled
+      - name: ERC721OrdersFeature_evt_ERC721BuyOrderFilled
+
+  - name: zonic_scroll
+    freshness:
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+
