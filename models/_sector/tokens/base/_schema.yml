@@ -47,7 +47,7 @@ models:
       - name: amount_raw
         description: "The raw amount of the transfer"
 
-  - name: tokens_base_transfers_view
+  - name: tokens_base_transfers
     meta:
       blockchain: base
       sector: tokens
