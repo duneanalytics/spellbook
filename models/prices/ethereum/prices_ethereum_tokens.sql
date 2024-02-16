@@ -1643,7 +1643,8 @@ FROM
     ('peas-peapods', 'ethereum', 'PEAS', 0x02f92800F57BCD74066F5709F1Daa1A4302Df875, 18),
     ('aeth-ankreth', 'ethereum', 'ankrETH', 0xe95a203b1a91a908f9b9ce46459d101078c2c3cb, 18),
     ('sweth-swell-ethereum', 'ethereum', 'swETH', 0xf951e335afb289353dc249e82926178eac7ded78, 18),
-    ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18)
+    ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18),
+    ('usde-ethena-usde', 'ethereum', 'USDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

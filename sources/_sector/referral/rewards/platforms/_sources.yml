@@ -13,16 +13,16 @@ sources:
   - name: zora_zora
     tables:
       - name: ProtocolRewards_evt_RewardsDeposit
-  - name: rabbithole_arbitrum
+  - name: boost_arbitrum
     tables:
       - name: QuestFactory_evt_MintFeePaid
-  - name: rabbithole_base
+  - name: boost_base
     tables:
       - name: QuestFactory_evt_MintFeePaid
-  - name: rabbithole_optimism
+  - name: boost_optimism
     tables:
       - name: QuestFactory_evt_MintFeePaid
-  - name: rabbithole_polygon
+  - name: boost_polygon
     tables:
       - name: QuestFactory_evt_MintFeePaid
   - name: sound_xyz_ethereum
