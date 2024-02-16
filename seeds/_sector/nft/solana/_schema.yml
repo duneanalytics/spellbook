@@ -30,6 +30,7 @@ seeds:
         taker_fee_amount_raw: double
         maker_fee_amount_raw: double
         royalty_fee_amount_raw: double
+        amm_fee_amount_raw: double
 
   - name: tensorswap_v1_solana_trades_seed
     config:

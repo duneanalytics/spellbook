@@ -192,6 +192,7 @@ models:
             - taker_fee_amount_raw
             - maker_fee_amount_raw
             - royalty_fee_amount_raw
+            - amm_fee_amount_raw
     columns:
       - *blockchain
       - *project
