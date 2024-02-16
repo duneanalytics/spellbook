@@ -61,7 +61,6 @@ FROM
     ('gecko-gecko-base', 'base', 'GECKO', 0xeE9E3123dbb3AC5e75C65A1fC4617B2aCC082d85, 18),
     ('sofi-rai-finance', 'base', 'SOFI', 0x703d57164ca270b0b330a87fd159cfef1490c0a5, 18),
     ('dai-overnight-dai', 'base', 'DAI+', 0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275, 18),
-    ('bay-baseyield', 'base', 'BAY', 0xF45116C2E5bE608152Ea8A6a73917DFE75b707dC, 18),
     ('rats-ratsbase', 'base', 'RATS', 0x06c4c7f8011fbfb6a9654ee4142532f9bb3c52b8, 9),
     ('gmr1-gamer', 'base', 'GMR', 0xa617c0c739845b2941bd8edd05c9f993ecc97c18, 18),
     ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18)
