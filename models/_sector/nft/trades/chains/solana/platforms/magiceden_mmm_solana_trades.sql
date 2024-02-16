@@ -48,8 +48,11 @@ with
                                 call_log_messages
                             FROM
                                 {{ source('magic_eden_solana','mmm_call_solFulfillBuy') }}
+                            WHERE 
+                                -- ensure the tx is not from lucky buy program
+                                call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                             {% if is_incremental() %}
-                            WHERE {{incremental_predicate('call_block_time')}}
+                                AND {{incremental_predicate('call_block_time')}}
                             {% endif %}
                         )
                         UNION ALL
@@ -62,8 +65,11 @@ with
                                 call_log_messages
                             FROM
                                 {{ source('magic_eden_solana','mmm_call_solFulfillSell') }}
+                            WHERE 
+                                -- ensure the tx is not from lucky buy program
+                                call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                             {% if is_incremental() %}
-                            WHERE {{incremental_predicate('call_block_time')}}
+                                AND {{incremental_predicate('call_block_time')}}
                             {% endif %}
                         )
                         UNION ALL
@@ -76,8 +82,11 @@ with
                                 call_log_messages
                             FROM
                                 {{ source('magic_eden_solana','mmm_call_solMip1FulfillBuy') }}
+                            WHERE 
+                                -- ensure the tx is not from lucky buy program
+                                call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                             {% if is_incremental() %}
-                            WHERE {{incremental_predicate('call_block_time')}}
+                                AND {{incremental_predicate('call_block_time')}}
                             {% endif %}
                         )
                         UNION ALL
@@ -90,8 +99,11 @@ with
                                 call_log_messages
                             FROM
                                 {{ source('magic_eden_solana','mmm_call_solMip1FulfillSell') }}
-                             {% if is_incremental() %}
-                            WHERE {{incremental_predicate('call_block_time')}}
+                            WHERE 
+                                -- ensure the tx is not from lucky buy program
+                                call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
+                            {% if is_incremental() %}
+                                AND {{incremental_predicate('call_block_time')}}
                             {% endif %}
                        )
                         UNION ALL
@@ -104,8 +116,11 @@ with
                                 call_log_messages
                             FROM
                                 {{ source('magic_eden_solana','mmm_call_solOcpFulfillBuy') }}
+                            WHERE 
+                                -- ensure the tx is not from lucky buy program
+                                call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                             {% if is_incremental() %}
-                            WHERE {{incremental_predicate('call_block_time')}}
+                                AND {{incremental_predicate('call_block_time')}}
                             {% endif %}
                         )
                         UNION ALL
@@ -118,8 +133,11 @@ with
                                 call_log_messages
                             FROM
                                 {{ source('magic_eden_solana','mmm_call_solOcpFulfillSell') }}
+                            WHERE 
+                                -- ensure the tx is not from lucky buy program
+                                call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                             {% if is_incremental() %}
-                            WHERE {{incremental_predicate('call_block_time')}}
+                                AND {{incremental_predicate('call_block_time')}}
                             {% endif %}
                         )
                     )
@@ -212,8 +230,11 @@ with
                         ) AS call_order
                     FROM
                         {{ source('magic_eden_solana','mmm_call_solFulfillBuy') }}
+                    WHERE 
+                        -- ensure the tx is not from lucky buy program
+                        call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                     {% if is_incremental() %}
-                    WHERE {{incremental_predicate('call_block_time')}}
+                        AND {{incremental_predicate('call_block_time')}}
                     {% endif %}
                 )
                 UNION ALL
@@ -254,8 +275,11 @@ with
                         ) AS call_order
                     FROM
                         {{ source('magic_eden_solana','mmm_call_solMip1FulfillBuy') }}
+                    WHERE 
+                        -- ensure the tx is not from lucky buy program
+                        call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                     {% if is_incremental() %}
-                    WHERE {{incremental_predicate('call_block_time')}}
+                        AND {{incremental_predicate('call_block_time')}}
                     {% endif %}
                 )
                 UNION ALL
@@ -296,8 +320,11 @@ with
                         ) AS call_order
                     FROM
                         {{ source('magic_eden_solana','mmm_call_solOcpFulfillBuy') }}
+                    WHERE 
+                        -- ensure the tx is not from lucky buy program
+                        call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                     {% if is_incremental() %}
-                    WHERE {{incremental_predicate('call_block_time')}}
+                        AND {{incremental_predicate('call_block_time')}}
                     {% endif %}
                 )
                 UNION ALL
@@ -338,8 +365,11 @@ with
                         ) AS call_order
                     FROM
                         {{ source('magic_eden_solana','mmm_call_solFulfillSell') }}
+                    WHERE 
+                        -- ensure the tx is not from lucky buy program
+                        call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                     {% if is_incremental() %}
-                    WHERE {{incremental_predicate('call_block_time')}}
+                        AND {{incremental_predicate('call_block_time')}}
                     {% endif %}
                 )
                 UNION ALL
@@ -389,8 +419,11 @@ with
                         ) AS call_order
                     FROM
                         {{ source('magic_eden_solana','mmm_call_solMip1FulfillSell') }}
+                    WHERE 
+                        -- ensure the tx is not from lucky buy program
+                        call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                     {% if is_incremental() %}
-                    WHERE {{incremental_predicate('call_block_time')}}
+                        AND {{incremental_predicate('call_block_time')}}
                     {% endif %}
                 )
                 UNION ALL
@@ -434,8 +467,11 @@ with
                         ) AS call_order
                     FROM
                         {{ source('magic_eden_solana','mmm_call_solOcpFulfillSell') }}
+                    WHERE 
+                        -- ensure the tx is not from lucky buy program
+                        call_outer_executing_account != 'LUCK57mxzZiRGF2PdHAY79P6tZ8Apsi381tKvBrTdqk'
                     {% if is_incremental() %}
-                    WHERE {{incremental_predicate('call_block_time')}}
+                        AND {{incremental_predicate('call_block_time')}}
                     {% endif %}
                 )
             ) trade
