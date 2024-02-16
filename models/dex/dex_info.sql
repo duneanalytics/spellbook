@@ -123,4 +123,5 @@ FROM (VALUES
     , ('torus', 'Torus', 'Direct', 'torus_farm')
     , ('solidly','Solidly','Direct','Solidly')
     , ('sharkswap', 'SharkSwap', 'Direct', 'SharkSwapDEX')
+    , ('citadelswap','Citadelswap','Direct','Citadel')
     ) AS temp_table (project, name, marketplace_type, x_username)
