@@ -32,7 +32,7 @@ WITH pool_labels AS (
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 5
+        HAVING sum(sample_size) > 9
     ),
 
     dex_prices AS (
@@ -260,5 +260,4 @@ WITH pool_labels AS (
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day 
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
-    WHERE c.protocol_liquidity_usd < 1e9
     {% endmacro %}
