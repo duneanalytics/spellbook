@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: eas_ethereum_schemas
+    meta:
+      blockchain: ethereum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+
+  - name: eas_ethereum_schema_details
+    meta:
+      blockchain: ethereum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry details on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+            - ordinality
+
+  - name: eas_ethereum_attestations
+    meta:
+      blockchain: ethereum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+            - attestation_uid
+
+  - name: eas_ethereum_attestation_details
+    meta:
+      blockchain: ethereum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'ethereum' ]
+    description: "EAS schema registry details on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+            - attestation_uid
+            - ordinality
