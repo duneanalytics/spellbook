@@ -1,5 +1,4 @@
 {{config(
-    tags = ['prod_exclude'],
     schema = 'tokens_celo',
     alias = 'transfers',
     partition_by = ['block_date'],

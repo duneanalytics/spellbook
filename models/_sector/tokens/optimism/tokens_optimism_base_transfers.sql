@@ -1,5 +1,4 @@
 {{config(
-    tags = ['base_transfers_macro', 'prod_exclude'],
     schema = 'tokens_optimism',
     alias = 'base_transfers',
     partition_by = ['block_date'],
