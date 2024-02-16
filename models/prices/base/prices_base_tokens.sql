@@ -43,7 +43,7 @@ FROM
     ('frame-frametoken', 'base', 'FRAME', 0x91F45aa2BdE7393e0AF1CC674FFE75d746b93567, 18),
     ('omni-omnicat', 'base', 'OMNI', 0xc48e605c7b722a57277e087a6170b9e227e5ac0a, 18),
     ('bsx-basex', 'base', 'BSX', 0xd5046b976188eb40f6de40fb527f89c05b323385, 18),
-    ('fxdx-fxdx', 'base', 'FXDX', 0x30b593f8c3ab37615359b4e0e6df2e06d55bb55d, 18),
+    ('fxdx-fxdx-exchange', 'base', 'FXDX', 0x30b593f8c3ab37615359b4e0e6df2e06d55bb55d, 18),
     ('ai-any-inu', 'base', 'AI', 0x2598c30330d5771ae9f983979209486ae26de875, 18),
     ('bets-betswirl', 'base', 'BETS', 0x94025780a1aB58868D9B2dBBB775f44b32e8E6e5, 18),
     ('swprs-maidsweepers', 'base', 'SWPRS', 0xa4AF354d466E8A68090DD9EB2CB7caF162f4c8c2, 18),
