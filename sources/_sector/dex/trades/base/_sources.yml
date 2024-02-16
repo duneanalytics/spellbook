@@ -86,3 +86,7 @@ sources:
     tables:
       - name: CitadelFactory_evt_PairCreated
       - name: CitadelPair_evt_Swap
+  - name: autotronic_base
+    tables:
+      - name: AutotronicFactory_evt_PairCreated
+      - name: AutotronicPair_evt_Swap
