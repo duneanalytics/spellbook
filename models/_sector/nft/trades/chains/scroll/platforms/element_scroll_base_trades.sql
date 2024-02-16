@@ -28,7 +28,7 @@ WITH element_txs AS (
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
         , ee.evt_index
-        FROM {{ source('element_scroll','OrdersFeature_evt_ERC721SellOrderFilled') }} ee
+        FROM {{ source('element_scroll','ERC721OrdersFeature_evt_ERC721SellOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE {{incremental_predicate('ee.evt_block_time')}}
         {% endif %}
@@ -54,7 +54,7 @@ WITH element_txs AS (
         , ee.evt_tx_hash AS tx_hash
         , ee.evt_block_number AS block_number
         , ee.evt_index
-        FROM {{ source('element_scroll','OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
+        FROM {{ source('element_scroll','ERC721OrdersFeature_evt_ERC721BuyOrderFilled') }} ee
         {% if is_incremental() %}
         WHERE {{incremental_predicate('ee.evt_block_time')}}
         {% endif %}
