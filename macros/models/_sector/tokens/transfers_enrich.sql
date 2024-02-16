@@ -12,6 +12,7 @@ END
     , tokens_erc20_model = null
     , prices_model = null
     , evms_info_model = null
+    , transfers_start_date = '2000-01-01'
     )
 %}
 
@@ -36,6 +37,9 @@ WITH base_transfers as (
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('minute') }}
+    {% else %}
+    WHERE
+        minute >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
 SELECT

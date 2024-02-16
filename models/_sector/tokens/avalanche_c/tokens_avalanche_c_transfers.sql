@@ -13,12 +13,13 @@
                                 \'["aalan3", "jeff-dude"]\') }}'
 )
 }}
---add start date of first transfer, to add not incremental flag in macro
+
 {{
     transfers_enrich(
         base_transfers = ref('tokens_avalanche_c_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = ref('evms_info')
+        , transfers_start_date = '2020-09-23'
     )
 }}
