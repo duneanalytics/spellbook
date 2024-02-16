@@ -1,12 +1,24 @@
 {{config(
     schema = 'tokens_gnosis',
     alias = 'transfers',
-    materialized = 'view',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['unique_key'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    post_hook='{{ expose_spells(\'["gnosis"]\',
+                                "sector",
+                                "tokens",
+                                \'["aalan3", "jeff-dude"]\') }}'
 )
 }}
-
-{{transfers_enrich(
-    blockchain='gnosis',
-    transfers_base = ref('tokens_gnosis_base_transfers'),
-    native_symbol = 'xDAI'
-)}}
+--add start date of first transfer, to add not incremental flag in macro
+{{
+    transfers_enrich(
+        base_transfers = ref('tokens_gnosis_base_transfers')
+        , tokens_erc20_model = source('tokens', 'erc20')
+        , prices_model = source('prices', 'usd')
+        , evms_info_model = ref('evms_info')
+    )
+}}
