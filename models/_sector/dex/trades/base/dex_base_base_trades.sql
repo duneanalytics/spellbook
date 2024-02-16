@@ -24,10 +24,12 @@
     , ref('woofi_base_base_trades')
     , ref('velocimeter_v2_base_base_trades')
     , ref('moonbase_base_base_trades')
+    , ref('horizondex_base_base_trades')
     , ref('plantbaseswap_base_base_trades')
     , ref('sobal_base_base_trades')
     , ref('derpdex_base_base_trades')
     , ref('torus_base_base_trades')
+    , ref('sharkswap_base_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -59,6 +59,10 @@ sources:
     tables:
       - name: UniswapFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: horizondex_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
   - name: plantbaseswap_base
     tables:
       - name: UniswapV2Factory_evt_PairCreated
@@ -74,3 +78,7 @@ sources:
     tables:
       - name: TorusFactory_evt_PairCreated
       - name: TorusPair_evt_Swap
+  - name: sharkswap_base
+    tables:
+      - name: SharkswapFactory_evt_PairCreated
+      - name: SharkswapPair_evt_Swap
