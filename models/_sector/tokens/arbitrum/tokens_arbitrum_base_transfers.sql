@@ -1,4 +1,5 @@
 {{config(
+    tags = ['base_transfers_macro'],
     schema = 'tokens_arbitrum',
     alias = 'base_transfers',
     partition_by = ['block_date'],
@@ -6,7 +7,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date','unique_key'],
+    unique_key = ['unique_key'],
 )
 }}
 
