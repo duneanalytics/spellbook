@@ -55,6 +55,10 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: moonbase_base
+    tables:
+      - name: UniswapFactory_evt_PairCreated
+      - name: Pair_evt_Swap
   - name: horizondex_base
     tables:
       - name: Pool_evt_Swap
@@ -78,3 +82,11 @@ sources:
     tables:
       - name: SharkswapFactory_evt_PairCreated
       - name: SharkswapPair_evt_Swap
+  - name: citadelswap_base
+    tables:
+      - name: CitadelFactory_evt_PairCreated
+      - name: CitadelPair_evt_Swap
+  - name: autotronic_base
+    tables:
+      - name: AutotronicFactory_evt_PairCreated
+      - name: AutotronicPair_evt_Swap
