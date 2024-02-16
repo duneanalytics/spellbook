@@ -54,7 +54,7 @@ FROM
     ('usdm-mountain-protocol-usd', 'base', 'USDM', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 18),
     ('xid-xidoltech', 'base', 'XID', 0x8d8d99dfa6814f694a7edecc18849684fbd3b645, 18),
     ('far-farlaunch', 'base', 'FAR', 0x93e6407554B2F02640aB806cD57bd83e848Ec65d, 18),
-    ('troves-trove', 'base', 'TROVES', 0x67ac031540320886f2706f3e8e680919d7f547a1, 18),
+    ('troves-troves', 'base', 'TROVES', 0x67ac031540320886f2706f3e8e680919d7f547a1, 18),
     ('fren-pet-fren-pet', 'base', 'FREN PET', 0xFF0C532FDB8Cd566Ae169C1CB157ff2Bdc83E105, 18),
     ('bex-basexchange', 'base', 'BEX', 0x1b5d3a85ef27a213c73c610352a0912fd7031637, 18),
     ('dce-ducky-city-earn', 'base', 'DCE', 0x3C3Aa127e6Ee3d2F2e432d0184dD36f2D2076b52, 18),
