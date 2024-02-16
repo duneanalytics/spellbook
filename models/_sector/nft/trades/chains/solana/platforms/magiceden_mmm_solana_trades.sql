@@ -24,6 +24,7 @@ with
                     call_block_slot,
                     call_outer_instruction_index,
                     call_inner_instruction_index,
+                    -- read all the fees from the log, if the log is truncated, no fees
                     cast(
                         json_extract_scalar(
                             json_parse(split(logs, ' ') [3]),
