@@ -120,4 +120,5 @@ FROM (VALUES
     , ('derpdex','DerpDex', 'Direct', 'DerpDex')
     , ('torus', 'Torus', 'Direct', 'torus_farm')
     , ('solidly','Solidly','Direct','Solidly')
+    , ('throne_exchange','Throne_exchange','Direct','Throne')
     ) AS temp_table (project, name, marketplace_type, x_username)
