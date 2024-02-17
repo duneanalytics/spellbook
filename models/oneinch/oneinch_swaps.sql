@@ -42,7 +42,6 @@
         'protocol_version',
         'method',
         'order_hash',
-        'fusion',
         'remains',
         'native_token_symbol',
         '_call_trace_address'
@@ -106,7 +105,7 @@ tokens as (
         , _dst_token_address
         , _dst_token_native
         , dst_token_amount
-        , if(position('RFQ' in method) > 0, true, false) as contracts_only -- RFQ limit orders
+        , if(protocol = 'LOP', map_concat(flags, map_from_entries(array[('rfq_method', position('RFQ' in method) > 0)])), flags) as flags
         , false as second_side
     from calls
 
@@ -123,7 +122,7 @@ tokens as (
         , _src_token_address as _dst_token_address
         , _src_token_native as _dst_token_native
         , src_token_amount as dst_token_amount
-        , false as contracts_only
+        , map_concat(flags, map_from_entries(array[('rfq_method', position('RFQ' in method) > 0)])) as flags
         , true as second_side
     from calls
     where
@@ -207,10 +206,9 @@ select
     , call_gas_used
     , user
     , receiver
-    , fusion
-    , contracts_only
     , second_side
     , order_hash
+    , flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
