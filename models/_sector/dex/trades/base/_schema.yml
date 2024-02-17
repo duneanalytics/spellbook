@@ -466,7 +466,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
     description: "throne_exchange base base trades"
-     tests:
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
