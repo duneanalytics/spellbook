@@ -6,16 +6,17 @@ There are various use cases for macros in DBT, but the main focus for wizards in
 
 - Path: `spellbook/macros/models/`
 - Within this path, there are two main subdirectories:
-  1. **_project**
+
+  1. **\_project**
      - For standalone project spell lineages.
-  2. **_sector**
+  2. **\_sector**
      - For sector-level spell lineages, e.g., `dex.trades` lineage.
 
-  - **Note**: The ‘_’ prefix in directory paths is used to keep them at the top & easily accessible, reserved for the most frequently used directories.
+  - **Note**: The ‘\_’ prefix in directory paths is used to keep them at the top & easily accessible, reserved for the most frequently used directories.
 
 ## Design Principles for Macros
 
-Following [this](https://github.com/duneanalytics/spellbook/blob/main/macros/models/_sector/dex/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:
+Following [this](/macros/models/_sector/dex/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:
 
 - **Assign Arguments**
   - Define arguments expected to be passed in via each model that calls the macro.
@@ -26,7 +27,7 @@ Following [this](https://github.com/duneanalytics/spellbook/blob/main/macros/mod
 - **Multiple Macros in One File**
   - It's common to have multiple macros within a single file, such as various versions of the uniswap contract code. Group similar macros together logically.
 
-Within models, such as uniswap v2, call macro code with [this approach](https://github.com/duneanalytics/spellbook/blob/main/models/_sector/dex/trades/ethereum/platforms/uniswap_v2_ethereum_base_trades.sql).
+Within models, such as uniswap v2, call macro code with [this approach](/models/_sector/dex/trades/ethereum/platforms/uniswap_v2_ethereum_base_trades.sql).
 
 ## When to Use a Macro
 
@@ -50,7 +51,7 @@ Within models, such as uniswap v2, call macro code with [this approach](https://
 2. **Universal Use Cases in Spellbook**
    - incremental predicates, containing the incremental filter which can be controlled in one location and called across multiple models.
    - incremental days forward, which can chunk data from the source into smaller time frames to help bypass performance limitations.
-   - Macros with lists for for-loops in models, like [`all_evm_chains`](https://github.com/duneanalytics/spellbook/blob/main/macros/public/all_evm_chains.sql).
+   - Macros with lists for for-loops in models, like [`all_evm_chains`](/macros/public/all_evm_chains.sql).
 3. **Dune Team Specific Cases**
    - Overriding dbt-trino core macros for Spellbook-specific scenarios.
    - Backend database specific code in pre or post hooks for spell optimization.

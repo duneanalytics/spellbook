@@ -6,15 +6,15 @@ Seeds will be required in these sector-level spell additions to ensure proper le
 
 ## Using `dex.trades` as an Example for Sector-Level Spell Design Approach to Seeds:
 
-1. Add new model seed to [the schema file](https://github.com/duneanalytics/spellbook/blob/main/seeds/_sector/dex/_schema.yml), to ensure proper data type assignments.
+1. Add new model seed to [the schema file](/seeds/_sector/dex/_schema.yml), to ensure proper data type assignments.
 2. Build a seed file in CSV format, which contains:
    - All the unique keys on the model for downstream join conditions in tests.
    - Fields which we want to test the results of the model execution.
-   - Example seed file [here](https://github.com/duneanalytics/spellbook/blob/main/seeds/_sector/dex/aerodrome_base_base_trades_seed.csv).
-3. Within the [model schema file](https://github.com/duneanalytics/spellbook/blob/main/models/_sector/dex/trades/arbitrum/_schema.yml#L20-L23), call the [generic seed test](https://github.com/duneanalytics/spellbook/blob/main/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
+   - Example seed file [here](/seeds/_sector/dex/aerodrome_base_base_trades_seed.csv).
+3. Within the [model schema file](/models/_sector/dex/trades/arbitrum/_schema.yml#L20-L23), call the [generic seed test](/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
    - Seed file name.
    - Filter(s) for project versions, if the spell is split into versions per project.
-4. Ultimately, following the above steps, the test query built and executed against seed files lives in the generic seed macro [here](https://github.com/duneanalytics/spellbook/blob/main/macros/test-helpers/check_seed_macro.sql).
+4. Ultimately, following the above steps, the test query built and executed against seed files lives in the generic seed macro [here](/macros/test-helpers/check_seed_macro.sql).
 
 ## How Do I Track Seed Tests Running During Development?
 
