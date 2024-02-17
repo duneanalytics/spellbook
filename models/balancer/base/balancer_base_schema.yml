@@ -299,7 +299,7 @@ models:
     meta:
       blockchain: base
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['base', 'bpt', 'prices']
     description: >
@@ -308,21 +308,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - &contract_address
-        name: contract_address
-        description: 'BPT contract address'
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
+      - name: contract_address
+      - name: bpt_price
 
   - name: balancer_v2_base_transfers_bpt
     meta:
@@ -340,14 +334,12 @@ models:
             - evt_index
             - block_date
     columns:
-      - *blockchain
-      - *contract_address
-      - *block_date
-      - *block_month
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: 'Transaction hash of transfer event'
-      - *evt_index
+      - name: blockchain
+      - name: contract_address
+      - name: block_date
+      - name: block_month
+      - name: evt_tx_hash
+      - name: evt_index
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'

@@ -11,6 +11,7 @@ Welcome to the `models/_sector/dex/` directory of our project. This README provi
 - [Example PRs](#example-prs)
 - [Dependency on dex.info](#dependency-on-dexinfo)
 - [Adding Seed Tests](#adding-seed-tests)
+- [PR Submission Guidelines](#pr-submission-guidelines)
 - [Further Information](#further-information)
 - [Contact](#contact)
 
@@ -199,6 +200,17 @@ Example tests:
 - `check_dex_base_trades_seed`: Validates the model's output against the predefined seed data.
 
 By following these steps, you can effectively implement seed tests to validate your models, ensuring that they produce the expected results.
+
+## PR Submission Guidelines
+
+When contributing new dexes to the `dex.trades`, here are a few guidelines to ensure a smooth submission process:
+
+- **Multiple dexes on the Same Chain**: If you're adding multiple dexes that operate on the same blockchain, it's best to group them together in the same Pull Request (PR). This helps in consolidating the review process and ensures consistency across dex integrations on the same chain.
+
+- **Different Chains**: For dexes operating on different blockchains, please submit a separate PR for each chain. This approach not only makes it easier to manage and review changes specific to each blockchain's unique characteristics and requirements but also significantly reduces the potential for file conflicts when updates are merged into the main branch.
+
+
+Following these guidelines helps maintain the spellbook's organization and facilitates efficient review and integration of your contributions.
 
 ## Further Information
 

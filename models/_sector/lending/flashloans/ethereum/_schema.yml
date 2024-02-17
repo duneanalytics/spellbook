@@ -87,17 +87,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('aave_ethereum_base_flashloans_seed')
           filter:
             version: 1
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
@@ -127,17 +120,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('aave_ethereum_base_flashloans_seed')
           filter:
             version: 2
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
@@ -167,17 +153,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('aave_ethereum_base_flashloans_seed')
           filter:
             version: 3
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
@@ -207,15 +186,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('radiant_ethereum_base_flashloans_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
@@ -245,15 +217,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('uwulend_ethereum_base_flashloans_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
@@ -283,15 +248,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('spark_ethereum_base_flashloans_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
