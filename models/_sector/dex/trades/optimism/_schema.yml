@@ -437,7 +437,7 @@ models:
       blockchain: optimism
       sector: dex
       project: dackieswap
-      contributors: lldao
+      contributors: LLDAO
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap v2  optimism base trades"
@@ -456,7 +456,7 @@ models:
       blockchain: optimism
       sector: dex
       project: dackieswap
-      contributors: lldao
+      contributors: LLDAO
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap v3  optimism base trades"
@@ -475,7 +475,7 @@ models:
       blockchain: optimism
       sector: dex
       project: wombat_exchange
-      contributors: lldao
+      contributors: LLDAO
     config:
       tags: [ 'optimism', 'dex', 'trades', 'wombat_exchange' ]
     description: "wombat_exchange optimism base trades"
