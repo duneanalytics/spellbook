@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'rabbithole_arbitrum',
     alias = 'rewards',
     materialized = 'incremental',
@@ -12,6 +11,6 @@
 
 {{rabbithole_referral_rewards(
         blockchain = "arbitrum"
-        ,QuestFactory_evt_MintFeePaid = source('rabbithole_arbitrum','QuestFactory_evt_MintFeePaid')
+        ,QuestFactory_evt_MintFeePaid = source('boost_arbitrum','QuestFactory_evt_MintFeePaid')
         )
     }}
