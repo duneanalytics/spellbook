@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'bebop_polygon',
         alias = 'trades',
         post_hook='{{ expose_spells(\'["polygon"]\',
                         "project",

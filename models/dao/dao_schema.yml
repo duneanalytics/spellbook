@@ -54,7 +54,7 @@ models:
         description: "For, Against or Abstain votes"
       - &reason
         name: reason
-        description: "Optional onchain commments to explain votes"
+        description: "Optional onchain comments to explain votes"
 
 
   - name: dao_proposals
