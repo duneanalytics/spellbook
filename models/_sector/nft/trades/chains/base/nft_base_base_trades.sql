@@ -8,6 +8,7 @@
 
 {% set nft_models = [
  ref('alienswap_base_base_trades')
+ ref('zora_base_base_trades')
 ] %}
 
 with base_union as (
