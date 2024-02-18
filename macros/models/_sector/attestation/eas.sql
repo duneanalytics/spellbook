@@ -309,6 +309,7 @@ select
   sd.data_type,
   sd.field_name,
   ag.decoded_data,
+  a.is_revoked,
   a.block_number,
   a.block_time,
   a.tx_hash,

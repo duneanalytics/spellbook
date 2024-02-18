@@ -193,6 +193,7 @@ models:
       - &decoded_data
         name: decoded_data
         description: "Decoded data chunk (if successful otherwise blank) related to data_type/field_name pair"
+      - *is_revoked
       - *block_number
       - *block_time
       - *tx_hash
