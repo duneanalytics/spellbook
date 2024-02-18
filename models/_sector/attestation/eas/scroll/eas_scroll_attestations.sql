@@ -14,6 +14,7 @@
   eas_attestations(
     blockchain = 'scroll',
     project = 'eas',
-    version = '1'
+    version = '1',
+    schema_column_name = 'schemaUID'
   )
 }}
