@@ -262,7 +262,8 @@ models:
           check_columns:
             - buyer
             - seller
-            - account_mint
+            - account_merkle_tree
+            - leaf_id
             - amount_raw
             - taker_fee_amount_raw
             - maker_fee_amount_raw
