@@ -10,7 +10,7 @@
 }}
 
 select *,
- {{ dbt_utils.generate_surrogate_key(['day', 'type', 'wallet_address', 'token_address', 'token_id']) }} as unique_key
+ {{ dbt_utils.generate_surrogate_key(['day', '"type"', 'wallet_address', 'token_address', 'token_id']) }} as unique_key
  FROM (
 {{
     balances_enrich_test(
