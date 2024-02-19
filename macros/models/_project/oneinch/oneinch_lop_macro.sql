@@ -147,13 +147,13 @@ orders as (
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
                         , cast(pow(2, {{ method_data.partial_bit }} - {{ method_data.partial_bit }} / 8 * 8) as bigint) -- 2 ^ (partial_bit - partial_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
                     ) = 0) -- if set, the order does not allow partial fills
-                {% else %} null {% endif %} as partial
+                {% else %} null {% endif %} as _partial
                 , {% if 'multiple_bit' in method_data %}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.multiple_bit }} / 8 + 1, 1)) -- current byte: multiple_bit / 8 + 1 -- integer division
                         , cast(pow(2, {{ method_data.multiple_bit }} - {{ method_data.multiple_bit }} / 8 * 8) as bigint) -- 2 ^ (multiple_bit - multiple_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
                     ) = 1) -- if set, the order permits multiple fills
-                {% else %} null {% endif %} as multiple
+                {% else %} null {% endif %} as _multiple
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
@@ -220,7 +220,11 @@ select
     , taker_asset
     , taking_amount
     , order_hash
-    , map_from_entries(array[('partial', partial), ('multiple', multiple)]) as flags
+    , map_from_entries(array[
+        ('partial', _partial)
+        , ('multiple', _multiple)
+        , ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
+    ]) as flags
     , concat(cast(length(remains) as bigint), if(length(remains) > 0
         , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
         , array[bigint '0']
@@ -232,7 +236,7 @@ from (
         add_tx_columns(
             model_cte = 'orders'
             , blockchain = blockchain
-            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used']
+            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
         )
     }}
 )

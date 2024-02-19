@@ -266,7 +266,7 @@ models:
             - blockchain
             - tx_hash
             - call_trace_address
-            - second_side
+            - flags
     columns:
       - name: blockchain
         tests:
@@ -294,11 +294,10 @@ models:
       - name: call_gas_used
       - name: user
       - name: receiver
-      - name: second_side
-        tests:
-          - not_null
       - name: order_hash
       - name: flags
+        tests:
+          - not_null
       - name: remains
       - name: src_token_address
       - name: src_token_symbol

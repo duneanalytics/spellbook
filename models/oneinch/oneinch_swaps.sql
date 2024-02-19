@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side'],
+        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'flags'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base"]\',
                                 "project",
                                 "oneinch",
@@ -42,9 +42,10 @@
         'protocol_version',
         'method',
         'order_hash',
+        'flags',
         'remains',
         'native_token_symbol',
-        '_call_trace_address'
+        '_call_trace_address',
     ]
 %}
 
@@ -105,8 +106,7 @@ tokens as (
         , _dst_token_address
         , _dst_token_native
         , dst_token_amount
-        , if(protocol = 'LOP', map_concat(flags, map_from_entries(array[('rfq_method', position('RFQ' in method) > 0)])), flags) as flags
-        , false as second_side
+        , false as _second_side
     from calls
 
     union all
@@ -122,8 +122,7 @@ tokens as (
         , _src_token_address as _dst_token_address
         , _src_token_native as _dst_token_native
         , src_token_amount as dst_token_amount
-        , map_concat(flags, map_from_entries(array[('rfq_method', position('RFQ' in method) > 0)])) as flags
-        , true as second_side
+        , true as _second_side
     from calls
     where
         protocol = 'LOP'
@@ -141,7 +140,7 @@ tokens as (
         , block_number
         , tx_hash
         , call_trace_address
-        , second_side
+        , _second_side
 
         -- what the user actually gave and received, judging by the transfers
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
@@ -206,9 +205,14 @@ select
     , call_gas_used
     , user
     , receiver
-    , second_side
     , order_hash
-    , flags
+    , map_concat(
+        if(protocol = 'LOP'
+            , map_concat(flags, map_from_entries(array[('rfq', position('RFQ' in method) > 0), ('second_side', _second_side)]))
+            , flags
+        )
+        , array[('direct', cardinality(call_trace_address) = 0)]
+    ) as flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
@@ -226,6 +230,6 @@ select
     , transfers
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
-    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
+    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(_second_side as int) as varchar))) as swap_id
 from swaps
-join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)
+join amounts using(blockchain, block_number, tx_hash, call_trace_address, _second_side)
