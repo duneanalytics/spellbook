@@ -13,7 +13,7 @@ select
         ELSE balances.amount
     END as balance,
     CASE
-        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals) * prices_blockchain.price
+        WHEN balances.type = 'erc20' THEN balances.amount / power(10, prices_blockchain.decimals) * prices_blockchain.price
         WHEN balances.type = 'native' THEN balances.amount / power(10, 18) * prices_native.price
         ELSE NULL
     END as balance_usd,
