@@ -21,8 +21,6 @@ with
         call_outer_instruction_index as outer_instruction_index,
         index as leaf_id
         from {{ source('magic_eden_solana','m3_call_buyNow') }}
-        from
-        bubblegum_solana.bubblegum_call_transfer
         {% if is_incremental() %}
         where {{incremental_predicate('call_block_time')}}
         {% endif %}
