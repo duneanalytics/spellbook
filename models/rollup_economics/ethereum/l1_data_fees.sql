@@ -286,8 +286,15 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-  WHERE t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND bytearray_substring(t.data, 1, 4) = 0x5e9145c9 -- sequenceBatches
+  WHERE 
+    (
+      t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2 -- old proxy 
+      OR t.to = 0x519E42c24163192Dca44CD3fBDCEBF6be9130987 -- new proxy (as of block 19218878)
+    )
+    AND bytearray_substring(t.data, 1, 4) IN (
+      0x5e9145c9, -- sequenceBatches
+      0xecef3f99 -- sequenceBatches (as of block 19218878)
+      )
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -312,8 +319,12 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-  WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F
-    AND bytearray_substring(t.data, 1, 4) = 0x4165d6dd -- Finalize Blocks (proof verified immediately)
+  WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+    AND bytearray_substring(t.data, 1, 4) IN (
+      0x4165d6dd, -- Finalize Blocks (proof verified immediately)
+      0xd630280f, -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
+      0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
+      )
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
