@@ -30,7 +30,6 @@ with
         call_tx_id,
         call_block_slot,
         call_outer_instruction_index,
-        call_inner_instruction_index,
         cast(
             json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.price') as double
         ) as price,
@@ -48,14 +47,15 @@ with
         ) as total_platform_fee
         from
         (
-            (
             select
                 call_tx_id,
                 call_block_slot,
                 call_outer_instruction_index,
-                call_inner_instruction_index,
                 call_log_messages
             from {{ source('magic_eden_solana','m3_call_buyNow') }}
+            {% if is_incremental() %}
+            where {{incremental_predicate('call_block_time')}}
+            {% endif %}
         )
         left join unnest (call_log_messages) as log_messages (logs) ON True
         where
