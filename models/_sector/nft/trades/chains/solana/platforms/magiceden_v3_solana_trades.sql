@@ -121,7 +121,7 @@ select
     'SOL' as currency_symbol,
     'So11111111111111111111111111111111111111112' as currency_address,
     t.account_merkle_tree,
-    cast(t.leaf_id as bigint) as leaf_id,
+    cast(coalesce(t.leaf_id, b.leaf_id) as bigint) as leaf_id,
     cast(null as varchar) as account_mint,
     'M3mxk5W2tt27WGT7THox7PmgRDp4m6NEhL5xvxrBfS1' as project_program_id,
     cast(null as varchar) as aggregator_name,
