@@ -45,7 +45,7 @@ WITH dexs AS
 SELECT
     'base' AS blockchain
     ,'sushiswap' AS project
-    ,'1' AS version
+    ,'2' AS version
     ,try_cast(date_trunc('day', dexs.block_time) AS date) AS block_date
     ,cast(date_trunc('month',dexs.block_time) as date) as block_month
     ,dexs.block_time
