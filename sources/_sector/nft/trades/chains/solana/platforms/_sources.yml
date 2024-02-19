@@ -24,4 +24,6 @@ sources:
       - name: tcomp_call_buy
       - name: tcomp_call_takeBidMetaHash
       - name: tcomp_call_takeBidFullMeta
-  
+  - name: bubblegum_solana
+    tables:
+      - name: bubblegum_call_transfer
