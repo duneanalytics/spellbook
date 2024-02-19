@@ -30,11 +30,11 @@ from  {{ balances_base }} balances
 left join {{ source('prices', 'usd') }} prices_blockchain on (
         prices_blockchain.contract_address = balances.contract_address and prices_blockchain.blockchain = '{{ blockchain }}'
        )
-    and prices.minute = date_trunc('minute', balances.block_time)
+    and prices_blockchain.minute = date_trunc('minute', balances.block_time)
 left join {{ source('prices', 'usd') }} prices_native on (
         prices_native.contract_address is null and prices_native.blockchain = '{{ blockchain }}' and prices_native.symbol = 'ETH'
        )
-    and prices.minute = date_trunc('minute', balances.block_time)
+    and prices_native.minute = date_trunc('minute', balances.block_time)
 left join {{ source('tokens', 'erc20') }} erc20_tokens on
     erc20_tokens.blockchain = '{{ blockchain }}' AND (
     CASE
