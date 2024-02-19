@@ -15,6 +15,18 @@
     )
 }}
 with
+    bubblegum_tx as (
+        select
+        call_tx_id as tx_id,
+        call_outer_instruction_index as outer_instruction_index,
+        index as leaf_id
+        from {{ source('magic_eden_solana','m3_call_buyNow') }}
+        from
+        bubblegum_solana.bubblegum_call_transfer
+        {% if is_incremental() %}
+        where {{incremental_predicate('call_block_time')}}
+        {% endif %}
+    ),
     cnft_base as (
         select
             cast(
@@ -114,3 +126,5 @@ from
     left join {{ source('prices', 'usd') }} sol_p on sol_p.blockchain = 'solana'
     and sol_p.symbol = 'SOL'
     and sol_p.minute = date_trunc('minute', t.block_time)
+left join bubblegum_tx b on b.tx_id = t.tx_id
+    and b.outer_instruction_index = t.outer_instruction_index
