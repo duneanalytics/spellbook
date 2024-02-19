@@ -71,3 +71,17 @@ sources:
           warn_after: { count: 12, period: hour }
         description: "signatures from ABIs on this chain"
         loaded_at_field: created_at
+  - name: zksync
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: scroll
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at

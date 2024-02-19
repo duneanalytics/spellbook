@@ -6,7 +6,7 @@
         post_hook = '{{ expose_spells(\'["avalanche_c"]\',
                                         "project",
                                         "balancer_v2",
-                                        \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago"]\') }}'
+                                        \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago", "viniabussafi"]\') }}'
     )
 }}
 
@@ -62,11 +62,11 @@ WITH
             dexs.evt_index,
             bpt_prices.contract_address,
             dexs.block_time,
-            MAX(bpt_prices.hour) AS bpa_max_block_time
+            MAX(bpt_prices.day) AS bpa_max_block_date
         FROM dexs
             LEFT JOIN {{ ref('balancer_v2_avalanche_c_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
-                AND bpt_prices.hour <= dexs.block_time
+                ON bpt_prices.contract_address = dexs.token_bought_address
+                AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
     ),
     bpb AS (
@@ -76,11 +76,11 @@ WITH
             dexs.evt_index,
             bpt_prices.contract_address,
             dexs.block_time,
-            MAX(bpt_prices.hour) AS bpb_max_block_time
+            MAX(bpt_prices.day) AS bpb_max_block_date
         FROM dexs
             LEFT JOIN {{ ref('balancer_v2_avalanche_c_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
-                AND bpt_prices.hour <= dexs.block_time
+                ON bpt_prices.contract_address = dexs.token_sold_address
+                AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
     )
 
@@ -101,8 +101,8 @@ SELECT
     dexs.token_sold_amount_raw,
     COALESCE(
         dexs.amount_usd,
-        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.median_price,
-        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.median_price
+        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.bpt_price,
+        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.bpt_price
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
@@ -128,11 +128,11 @@ FROM dexs
         AND bpa.evt_index = dexs.evt_index
     LEFT JOIN {{ ref('balancer_v2_avalanche_c_bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
-        AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
+        AND bpa_bpt_prices.day = bpa.bpa_max_block_date
     INNER JOIN bpb
         ON bpb.block_number = dexs.block_number
         AND bpb.tx_hash = dexs.tx_hash
         AND bpb.evt_index = dexs.evt_index
     LEFT JOIN {{ ref('balancer_v2_avalanche_c_bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
-        AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
+        AND bpb_bpt_prices.day = bpb.bpb_max_block_date

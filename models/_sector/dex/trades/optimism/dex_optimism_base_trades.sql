@@ -26,6 +26,11 @@
     , ref('chainhop_optimism_base_trades')
     , ref('curvefi_optimism_base_trades')
     , ref('rubicon_optimism_base_trades')
+    , ref('gridex_optimism_base_trades')
+    , ref('solidly_v3_optimism_base_trades')
+    , ref('dackieswap_v2_optimism_base_trades')
+    , ref('dackieswap_v3_optimism_base_trades')
+    , ref('wombat_exchange_optimism_base_trades')
 ] %}
 
 WITH base_union AS (

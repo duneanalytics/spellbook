@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll"]\',
                                 "sector",
                                 "inscription",
                                 \'["hildobby"]\') }}'
@@ -26,6 +26,7 @@
      , (ref('inscription_celo_all'))
      , (ref('inscription_zora_all'))
      , (ref('inscription_zksync_all'))
+     , (ref('inscription_scroll_all'))
      , (ref('inscription_goerli_all'))
 ] %}
 
