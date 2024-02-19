@@ -61,6 +61,7 @@ with
         where
         logs like 'Program log: {"price":%,"maker_fee":%,"taker_fee":%,"total_platform_fee":%}'
         and try(json_parse(split(logs, ' ') [3])) is not null
+        )
     ),
     cnft_base as (
         select
