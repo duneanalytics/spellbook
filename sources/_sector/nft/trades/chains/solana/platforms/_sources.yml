@@ -6,6 +6,7 @@ sources:
       - name: m2_call_executeSaleV2
       - name: m2_call_mip1ExecuteSaleV2
       - name: m2_call_ocpExecuteSaleV2
+      - name: m3_call_buyNow
   - name: tensorswap_v1_solana
     tables:
       - name: tensorswap_call_buyNft
