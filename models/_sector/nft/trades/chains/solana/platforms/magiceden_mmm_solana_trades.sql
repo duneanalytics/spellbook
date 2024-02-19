@@ -144,11 +144,14 @@ with
     priced_tokens as (
         select
             symbol,
-            to_base58 (contract_address) as token_mint_address
+            to_base58(contract_address) as token_mint_address
         from
-            prices.usd_latest p
+            {{ ref('prices_usd_latest') }} p
         where
             p.blockchain = 'solana'
+            {% if is_incremental() %}
+            AND {{incremental_predicate('p.minute')}}
+            {% endif %}
     ),
     trades as (
         select
@@ -511,8 +514,11 @@ with
         from
             trades t
             left join {{ source('prices', 'usd') }} p ON p.blockchain = 'solana' 
-            and to_base58 (p.contract_address) = t.trade_token_mint
+            and to_base58(p.contract_address) = t.trade_token_mint
             and p.minute = date_trunc('minute', t.call_block_time)
+            {% if is_incremental() %}
+            and {{incremental_predicate('p.minute')}}
+            {% endif %}
     )
 select
     *
