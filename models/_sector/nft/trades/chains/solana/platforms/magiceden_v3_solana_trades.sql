@@ -51,7 +51,7 @@ with
             call_tx_signer as tx_signer
         from {{ source('magic_eden_solana','m3_call_buyNow') }}
         {% if is_incremental() %}
-        WHERE {{incremental_predicate('call_block_time')}}
+        where {{incremental_predicate('call_block_time')}}
         {% endif %}
     )
 select
