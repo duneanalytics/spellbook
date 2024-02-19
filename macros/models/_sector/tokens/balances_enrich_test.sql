@@ -13,22 +13,27 @@ select
         ELSE balances.amount
     END as balance,
     CASE
-        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals) * prices.price
-        WHEN balances.type = 'native' THEN balances.amount / power(10, 18) * prices.price
+        WHEN balances.type = 'erc20' THEN balances.amount / power(10, erc20_tokens.decimals) * prices_blockchain.price
+        WHEN balances.type = 'native' THEN balances.amount / power(10, 18) * prices_native.price
         ELSE NULL
     END as balance_usd,
-    prices.price as price_rate,
+    CASE
+        WHEN balances.type = 'erc20' THEN prices_blockchain.price
+        WHEN balances.type = 'native' THEN prices_native.price
+        ELSE NULL
+    END as price_rate,
     erc20_tokens.symbol,
-    erc20_tokens.decimals,
+    coalesce(prices_blockchain.decimals, prices_native.decimals, erc20_tokens.decimals),
     token_id,
     nft_tokens.name as collection_name
 from  {{ balances_base }} balances
-left join {{ source('prices', 'usd') }} prices on (
-    CASE
-        WHEN type = 'erc20' THEN prices.contract_address = balances.contract_address and prices.blockchain = '{{ blockchain }}'
-        WHEN type = 'native' THEN prices.contract_address is null and prices.symbol = 'ETH' and prices.blockchain is null
-        ELSE false
-    END)
+left join {{ source('prices', 'usd') }} prices_blockchain on (
+        prices_blockchain.contract_address = balances.contract_address and prices_blockchain.blockchain = '{{ blockchain }}'
+       )
+    and prices.minute = date_trunc('minute', balances.block_time)
+left join {{ source('prices', 'usd') }} prices_native on (
+        prices_native.contract_address is null and prices_native.blockchain = '{{ blockchain }}'
+       )
     and prices.minute = date_trunc('minute', balances.block_time)
 left join {{ source('tokens', 'erc20') }} erc20_tokens on
     erc20_tokens.blockchain = '{{ blockchain }}' AND (
