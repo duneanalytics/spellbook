@@ -510,7 +510,7 @@ with
             COALESCE(t.inner_instruction_index, 0) AS inner_instruction_index
         FROM
             trades t
-            LEFT JOIN "delta_prod"."prices"."usd" p ON p.blockchain = 'solana'
+            LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'solana' 
             AND to_base58 (p.contract_address) = t.trade_token_mint
             AND p.minute = date_trunc('minute', t.call_block_time)
     )
