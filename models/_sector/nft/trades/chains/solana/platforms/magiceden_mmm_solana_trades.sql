@@ -507,7 +507,7 @@ with
             end as royalty_fee_percentage,
             t.instruction,
             t.outer_instruction_index,
-            COALESCE(t.inner_instruction_index, 0) as inner_instruction_index
+            coalesce(t.inner_instruction_index, 0) as inner_instruction_index
         from
             trades t
             left join {{ source('prices', 'usd') }} p ON p.blockchain = 'solana' 
