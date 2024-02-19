@@ -101,7 +101,7 @@ with
             t.call_tx_signer as tx_signer
         from {{ source('magic_eden_solana','m3_call_buyNow') }}
         left join fee_logs f on f.call_tx_id = t.call_tx_id
-        and f.call_block_slot = t.call_block_slot
+        and f.call_outer_instruction_index = t.call_outer_instruction_index
         {% if is_incremental() %}
         where {{incremental_predicate('call_block_time')}}
         {% endif %}
