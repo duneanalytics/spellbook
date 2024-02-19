@@ -1,0 +1,114 @@
+{{
+    config(
+        schema = 'magiceden_v3_solana'
+        
+        , alias = 'trades'
+        ,materialized = 'incremental'
+        ,file_format = 'delta'
+        ,incremental_strategy = 'merge'
+        ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+        ,unique_key = ['project','trade_category','outer_instruction_index','inner_instruction_index','account_mint','tx_id']
+        ,post_hook='{{ expose_spells(\'["solana"]\',
+                                    "project",
+                                    "magiceden",
+                                    \'["tsekityam"]\') }}'
+    )
+}}
+with
+    cnft_base as (
+        select
+            cast(
+                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+            ) as price,
+            cast(
+                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+            ) * cast(
+                json_value(args, 'strict $.BuyNowArgs.takerFeeBp') as double
+            ) / 10000 as taker_fee,
+            cast(
+                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+            ) * cast(
+                json_value(args, 'strict $.BuyNowArgs.makerFeeBp') as double
+            ) / 10000 as maker_fee,
+            cast(
+                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+            ) * cast(
+                json_value(args, 'strict $.BuyNowArgs.buyerCreatorRoyaltyBp') as double
+            ) / 10000 as royalty_fee,
+            call_instruction_name as instruction,
+            'buy' as trade_category,
+            account_merkleTree as account_merkle_tree,
+            cast(
+                json_value(args, 'strict $.BuyNowArgs.index') as bigint
+            ) as leaf_id,
+            account_buyer as buyer,
+            account_seller as seller,
+            call_outer_instruction_index as outer_instruction_index,
+            coalesce(call_inner_instruction_index, 0) as inner_instruction_index,
+            call_block_time as block_time,
+            call_block_slot as block_slot,
+            call_tx_id as tx_id,
+            call_tx_signer as tx_signer
+        from
+            magic_eden_solana.m3_call_buyNow
+    )
+select
+    'solana' as blockchain,
+    'magiceden' as project,
+    'v3' as version,
+    t.block_time,
+    'secondary' as trade_type,
+    1 as number_of_items,
+    t.trade_category,
+    t.buyer,
+    t.seller,
+    t.price as amount_raw,
+    t.price / 1e9 as amount_original,
+    t.price / 1e9 * sol_p.price as amount_usd,
+    'SOL' as currency_symbol,
+    'So11111111111111111111111111111111111111112' as currency_address,
+    t.account_merkle_tree,
+    cast(t.leaf_id as bigint) as leaf_id,
+    cast(null as varchar) as account_mint,
+    'M3mxk5W2tt27WGT7THox7PmgRDp4m6NEhL5xvxrBfS1' as project_program_id,
+    cast(null as varchar) as aggregator_name,
+    cast(null as varchar) as aggregator_address,
+    t.tx_id,
+    t.block_slot,
+    t.tx_signer,
+    t.taker_fee as taker_fee_amount_raw,
+    t.taker_fee / 1e9 as taker_fee_amount,
+    t.taker_fee / 1e9 * sol_p.price as taker_fee_amount_usd,
+    case
+        when t.taker_fee = 0
+        OR t.price = 0 then 0
+        else t.taker_fee / t.price
+    end as taker_fee_percentage,
+    t.maker_fee as maker_fee_amount_raw,
+    t.maker_fee / 1e9 as maker_fee_amount,
+    t.maker_fee / 1e9 * sol_p.price as maker_fee_amount_usd,
+    case
+        when t.maker_fee = 0
+        OR t.price = 0 then 0
+        else t.maker_fee / t.price
+    end as maker_fee_percentage,
+    cast(null as double) as amm_fee_amount_raw,
+    cast(null as double) as amm_fee_amount,
+    cast(null as double) as amm_fee_amount_usd,
+    cast(null as double) as amm_fee_percentage,
+    t.royalty_fee as royalty_fee_amount_raw,
+    t.royalty_fee / 1e9 as royalty_fee_amount,
+    t.royalty_fee / 1e9 * sol_p.price as royalty_fee_amount_usd,
+    case
+        when t.royalty_fee = 0
+        OR t.price = 0 then 0
+        else t.royalty_fee / t.price
+    end as royalty_fee_percentage,
+    t.instruction,
+    t.outer_instruction_index,
+    t.inner_instruction_index
+from
+    cnft_base t
+    left join prices.usd sol_p on sol_p.blockchain = 'solana'
+    and sol_p.symbol = 'SOL'
+    and sol_p.minute = date_trunc('minute', t.block_time)
