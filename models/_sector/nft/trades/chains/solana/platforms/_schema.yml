@@ -159,15 +159,16 @@ models:
        tests:
          - not_null
 
-  - name: tensorswap_v1_solana_trades
+
+  - name: magiceden_v3_solana_trades
     meta:
       blockchain: solana
-      project: tensor
-      contributors: [ ilemi ]
+      project: magiceden
+      contributors: [ tsekityam ]
     config:
-      tags: [ 'tensorswap','solana','nft' ]
+      tags: [ 'magiceden','solana','nft' ]
     description: >
-      tensorswap solana trades
+      magiceden solana trades
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -175,10 +176,11 @@ models:
             - trade_category
             - outer_instruction_index
             - inner_instruction_index
-            - account_mint
+            - account_merkle_tree
+            - leaf_id
             - tx_id
       - check_seed:
-          seed_file: ref('tensorswap_v1_solana_trades_seed')
+          seed_file: ref('magiceden_v3_solana_trades_seed')
           match_columns:
             - block_slot
             - tx_id
@@ -187,7 +189,8 @@ models:
           check_columns:
             - buyer
             - seller
-            - account_mint
+            - account_merkle_tree
+            - leaf_id
             - amount_raw
             - taker_fee_amount_raw
             - maker_fee_amount_raw
@@ -232,17 +235,17 @@ models:
       - *unique_trade_id
       - *instruction
       - *outer_instruction_index
-      - *inner_instruction_index
-
-  - name: magiceden_v3_solana_trades
+      - *inner_instruction_index  
+      
+  - name: tensorswap_v1_solana_trades
     meta:
       blockchain: solana
-      project: magiceden
-      contributors: [ tsekityam ]
+      project: tensor
+      contributors: [ ilemi ]
     config:
-      tags: [ 'magiceden','solana','nft' ]
+      tags: [ 'tensorswap','solana','nft' ]
     description: >
-      magiceden solana trades
+      tensorswap solana trades
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -253,7 +256,7 @@ models:
             - account_mint
             - tx_id
       - check_seed:
-          seed_file: ref('magiceden_v3_solana_trades_seed')
+          seed_file: ref('tensorswap_v1_solana_trades_seed')
           match_columns:
             - block_slot
             - tx_id
@@ -262,8 +265,7 @@ models:
           check_columns:
             - buyer
             - seller
-            - account_merkle_tree
-            - leaf_id
+            - account_mint
             - amount_raw
             - taker_fee_amount_raw
             - maker_fee_amount_raw
