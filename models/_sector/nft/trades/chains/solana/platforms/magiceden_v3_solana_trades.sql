@@ -20,46 +20,87 @@ with
         call_tx_id as tx_id,
         call_outer_instruction_index as outer_instruction_index,
         index as leaf_id
-        from {{ source('magic_eden_solana','m3_call_buyNow') }}
+        from {{ source('bubblegum_solana','bubblegum_call_transfer') }}
         {% if is_incremental() %}
         where {{incremental_predicate('call_block_time')}}
         {% endif %}
     ),
+    fee_logs as (
+        select distinct
+        call_tx_id,
+        call_block_slot,
+        call_outer_instruction_index,
+        call_inner_instruction_index,
+        cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.price') as double
+        ) as price,
+        cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.maker_fee') as double
+        ) as maker_fee,
+        cast(
+            json_extract_scalar(json_parse(split(logs, ' ') [3]), '$.taker_fee') as double
+        ) as taker_fee,
+        cast(
+            json_extract_scalar(
+            json_parse(split(logs, ' ') [3]),
+            '$.total_platform_fee'
+            ) as double
+        ) as total_platform_fee
+        from
+        (
+            (
+            select
+                call_tx_id,
+                call_block_slot,
+                call_outer_instruction_index,
+                call_inner_instruction_index,
+                call_log_messages
+            from {{ source('magic_eden_solana','m3_call_buyNow') }}
+        )
+        left join unnest (call_log_messages) as log_messages (logs) ON True
+        where
+        logs like 'Program log: {"price":%,"maker_fee":%,"taker_fee":%,"total_platform_fee":%}'
+        and try(json_parse(split(logs, ' ') [3])) is not null
+    ),
     cnft_base as (
         select
-            cast(
-                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
-            ) as price,
-            cast(
-                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+            coalesce(f.price, cast(
+                json_value(t.args, 'strict $.BuyNowArgs.buyerPrice') as double
+            )) as price,
+            coalesce(f.taker_fee, cast(
+                json_value(t.args, 'strict $.BuyNowArgs.buyerPrice') as double
             ) * cast(
-                json_value(args, 'strict $.BuyNowArgs.takerFeeBp') as double
-            ) / 10000 as taker_fee,
-            cast(
-                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+                json_value(t.args, 'strict $.BuyNowArgs.takerFeeBp') as double
+            ) / 10000) as taker_fee,
+            coalesce(maker_fee, cast(
+                json_value(t.args, 'strict $.BuyNowArgs.buyerPrice') as double
             ) * cast(
-                json_value(args, 'strict $.BuyNowArgs.makerFeeBp') as double
-            ) / 10000 as maker_fee,
-            cast(
-                json_value(args, 'strict $.BuyNowArgs.buyerPrice') as double
+                json_value(t.args, 'strict $.BuyNowArgs.makerFeeBp') as double
+            ) / 10000) as maker_fee,
+            coalesce(cast(
+                json_value(t.args, 'strict $.BuyNowArgs.buyerPrice') as double
             ) * cast(
-                json_value(args, 'strict $.BuyNowArgs.buyerCreatorRoyaltyBp') as double
-            ) / 10000 as royalty_fee,
-            call_instruction_name as instruction,
+                json_value(t.args, 'strict $.BuyNowArgs.buyerCreatorRoyaltyBp') as double
+            ) / 10000, 0) as royalty_fee,
+            t.call_instruction_name as instruction,
             'buy' as trade_category,
-            account_merkleTree as account_merkle_tree,
+            t.account_merkleTree as account_merkle_tree,
             cast(
-                json_value(args, 'strict $.BuyNowArgs.index') as bigint
+                json_value(t.args, 'strict $.BuyNowArgs.index') as bigint
             ) as leaf_id,
-            account_buyer as buyer,
-            account_seller as seller,
-            call_outer_instruction_index as outer_instruction_index,
-            coalesce(call_inner_instruction_index, 0) as inner_instruction_index,
-            call_block_time as block_time,
-            call_block_slot as block_slot,
-            call_tx_id as tx_id,
-            call_tx_signer as tx_signer
+            t.account_buyer as buyer,
+            t.account_seller as seller,
+            t.call_outer_instruction_index as outer_instruction_index,
+            coalesce(t.call_inner_instruction_index, 0) as inner_instruction_index,
+            t.call_block_time as block_time,
+            t.call_block_slot as block_slot,
+            t.call_tx_id as tx_id,
+            t.call_block_hash as block_hash,
+            t.call_tx_index as tx_index,
+            t.call_tx_signer as tx_signer
         from {{ source('magic_eden_solana','m3_call_buyNow') }}
+        left join fee_logs f on f.call_tx_id = t.call_tx_id
+        and f.call_block_slot = t.call_block_slot
         {% if is_incremental() %}
         where {{incremental_predicate('call_block_time')}}
         {% endif %}
