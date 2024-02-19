@@ -1,4 +1,5 @@
 {{config(
+    tags = ['prod_exclude'],
     schema = 'tokens_arbitrum',
     alias = 'transfers',
     partition_by = ['block_date'],
