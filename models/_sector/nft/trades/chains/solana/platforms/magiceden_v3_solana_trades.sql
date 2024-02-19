@@ -98,7 +98,7 @@ with
             t.call_block_hash as block_hash,
             t.call_tx_index as tx_index,
             t.call_tx_signer as tx_signer
-        from {{ source('magic_eden_solana','m3_call_buyNow') }}
+        from {{ source('magic_eden_solana','m3_call_buyNow') }} t
         left join fee_logs f on f.call_tx_id = t.call_tx_id
         and f.call_outer_instruction_index = t.call_outer_instruction_index
         {% if is_incremental() %}
