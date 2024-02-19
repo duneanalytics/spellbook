@@ -49,8 +49,10 @@ with
             call_block_slot as block_slot,
             call_tx_id as tx_id,
             call_tx_signer as tx_signer
-        from
-            magic_eden_solana.m3_call_buyNow
+        from {{ source('magic_eden_solana','m3_call_buyNow') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('call_block_time')}}
+        {% endif %}
     )
 select
     'solana' as blockchain,
