@@ -73,7 +73,8 @@ SELECT
     , t.amount_raw
 FROM transfers t
 INNER JOIN {{ transactions }} tx ON
-    tx.block_number = t.block_number
+    tx.block_date = t.block_date --partition column in raw base tables (traces, transactions)
+    AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
