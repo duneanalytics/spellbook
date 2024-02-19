@@ -95,17 +95,8 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_supply_seed:
           seed_file: ref('zerolend_zksync_base_supply_seed')
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - depositor
-            - amount
     columns:
       - *blockchain
       - *project

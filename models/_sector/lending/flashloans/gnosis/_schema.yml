@@ -87,15 +87,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_flashloans_seed:
           seed_file: ref('agave_gnosis_base_flashloans_seed')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - recipient
-            - amount
     columns:
       - *blockchain
       - *project
