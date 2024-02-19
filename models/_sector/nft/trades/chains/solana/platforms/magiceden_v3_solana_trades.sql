@@ -111,6 +111,6 @@ select
     t.inner_instruction_index
 from
     cnft_base t
-    left join prices.usd sol_p on sol_p.blockchain = 'solana'
+    left join {{ source('prices', 'usd') }} sol_p on sol_p.blockchain = 'solana'
     and sol_p.symbol = 'SOL'
     and sol_p.minute = date_trunc('minute', t.block_time)
