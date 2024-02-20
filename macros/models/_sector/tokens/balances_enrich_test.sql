@@ -23,7 +23,7 @@ select
         ELSE NULL
     END as price_rate,
     erc20_tokens.symbol,
-    coalesce(prices_blockchain.decimals, prices_native.decimals, erc20_tokens.decimals),
+    coalesce(prices_blockchain.decimals, prices_native.decimals, erc20_tokens.decimals) as decimals,
     token_id,
     nft_tokens.name as collection_name
 from  {{ balances_base }} balances
