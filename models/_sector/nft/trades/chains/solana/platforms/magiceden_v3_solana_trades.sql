@@ -175,7 +175,7 @@ select
     t.outer_instruction_index,
     t.inner_instruction_index
 from
-  cnft_base t
-  left join priced_tokens sol_p on sol_p.minute = date_trunc('minute', t.block_time)
-  left join bubblegum_tx b on b.tx_id = t.tx_id
-  and b.outer_instruction_index = t.outer_instruction_index
+    cnft_base t
+    left join priced_tokens sol_p on sol_p.minute = date_trunc('minute', t.block_time)
+    left join bubblegum_tx b on b.tx_id = t.tx_id
+    and b.outer_instruction_index = t.outer_instruction_index
