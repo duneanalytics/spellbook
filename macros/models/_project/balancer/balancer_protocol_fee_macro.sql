@@ -58,16 +58,16 @@ WITH pool_labels AS (
 
     bpt_prices AS(
         SELECT 
-            date_trunc('day', hour) AS day,
+            day,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            18 AS decimals
+            bpt_price AS price,
+            decimals
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('hour') }}
+        AND {{ incremental_predicate('day') }}
         {% endif %}
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3, 4
     ),
 
     daily_protocol_fee_collected AS (
@@ -119,7 +119,7 @@ WITH pool_labels AS (
             ON p2.token = d.token_address
             AND p2.day = d.day
         LEFT JOIN bpt_prices p3
-            ON p3.token = CAST(d.token_address AS VARCHAR)
+            ON p3.token = d.token_address
             AND p3.day = d.day
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address

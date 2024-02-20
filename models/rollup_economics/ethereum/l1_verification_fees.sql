@@ -67,7 +67,10 @@ with verify_txns as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND bytearray_substring(t.data, 1, 4) = 0x2b0006fa -- verifyBatchesTrustedAggregator
+    AND bytearray_substring(t.data, 1, 4) IN ( 
+      0x2b0006fa, -- verifyBatchesTrustedAggregator
+      0x1489ed10 -- verifyBatchesTrustedAggregator (since block 19218496)
+      )
     AND t.block_time >= timestamp '2023-03-23'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
