@@ -171,25 +171,20 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - project
-            - trade_category
-            - outer_instruction_index
-            - inner_instruction_index
+            - instruction
             - account_merkle_tree
             - leaf_id
             - tx_id
       - check_seed:
           seed_file: ref('magiceden_v3_solana_trades_seed')
           match_columns:
-            - block_slot
+            - instruction
+            - account_merkle_tree
+            - leaf_id
             - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
           check_columns:
             - buyer
             - seller
-            - account_merkle_tree
-            - leaf_id
             - amount_raw
             - taker_fee_amount_raw
             - maker_fee_amount_raw
