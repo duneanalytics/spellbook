@@ -1,13 +1,13 @@
 {{ config(
         schema='prices',
         alias = 'usd_daily',
-        materialized = 'table'
+        materialized = 'table',
 
         post_hook='{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "zksync"]\',
-                                    "sector",
-                                    "prices",
-                                    \'["aalan3"]\') }}'
-        )
+        "sector",
+        "prices",
+        \'["aalan3"]\') }}'
+)
 }}
 
 SELECT
