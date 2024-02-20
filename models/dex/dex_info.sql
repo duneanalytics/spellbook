@@ -125,4 +125,6 @@ FROM (VALUES
     , ('sharkswap', 'SharkSwap', 'Direct', 'SharkSwapDEX')
     , ('citadelswap','Citadelswap','Direct','Citadel')
     , ('autotronic', 'Autotronic', 'Direct', 'autotronicbase')
+    , ('sterling_finance', 'Sterling Finance', 'Direct', 'Sterling_Fi')
+    , ('sharkyswap', 'Sharky Swap', 'Direct', 'SharkySwapFi')
     ) AS temp_table (project, name, marketplace_type, x_username)
