@@ -12,9 +12,9 @@
 
 {%
   set config_sources = [
-    {'contract': 'lETH'},
-    {'contract': 'lUSDC'},
-    {'contract': 'lwstETH'},
+    {'contract': 'lETH', 'borrower_column_name': 'account', 'borrowAmount_column_name': 'ammount', 'repayAmount_column_name': 'amount'},
+    {'contract': 'lUSDC', 'borrower_column_name': 'account', 'borrowAmount_column_name': 'ammount', 'repayAmount_column_name': 'amount'},
+    {'contract': 'lwstETH', 'borrower_column_name': 'account', 'borrowAmount_column_name': 'ammount', 'repayAmount_column_name': 'amount'},
   ]
 %}
 

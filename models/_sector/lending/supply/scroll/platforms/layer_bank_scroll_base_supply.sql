@@ -12,9 +12,9 @@
 
 {%
   set config_sources = [
-    {'contract': 'lETH'},
-    {'contract': 'lUSDC'},
-    {'contract': 'lwstETH'},
+    {'contract': 'lETH', 'redeemer_column_name': 'account', 'redeemAmount_column_name': 'underlyingAmount'},
+    {'contract': 'lUSDC', 'redeemer_column_name': 'account', 'redeemAmount_column_name': 'underlyingAmount'},
+    {'contract': 'lwstETH', 'redeemer_column_name': 'account', 'redeemAmount_column_name': 'underlyingAmount'},
   ]
 %}
 
