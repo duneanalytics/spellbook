@@ -111,7 +111,7 @@ with
             minute,
             price
         from
-            prices.usd p
+            {{ source('prices', 'usd') }} p
         where
             p.blockchain = 'solana'
             and symbol = 'SOL'
