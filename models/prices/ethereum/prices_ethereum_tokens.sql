@@ -1645,7 +1645,8 @@ FROM
     ('sweth-swell-ethereum', 'ethereum', 'swETH', 0xf951e335afb289353dc249e82926178eac7ded78, 18),
     ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18),
     ('usde-ethena-usde', 'ethereum', 'USDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 18),
-    ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18)
+    ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18),
+    ('ata-automata', 'ethereum', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
