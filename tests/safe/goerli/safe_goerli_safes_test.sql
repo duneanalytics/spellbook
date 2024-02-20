@@ -11,7 +11,6 @@ test_result as (
     from test_data
 )
 
-select
-    *
+select *
 from test_result
 where success = false
