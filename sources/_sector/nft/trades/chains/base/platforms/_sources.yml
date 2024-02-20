@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: alienswap_base
+    tables:
+        - name: Alienswap_evt_OrderFulfilled
+  
+
+ 

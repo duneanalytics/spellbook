@@ -1,4 +1,14 @@
-{% macro contracts_base_starting_level( chain ) %}
+{% macro contracts_base_starting_level( chain, days_forward=365 ) %}
+
+
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(created_time) AS base_time FROM {{this}}
+  {% else %}
+    MIN(time) AS base_time FROM {{ source( chain , 'blocks') }}
+  {% endif %}
+)
 
 SELECT *
 FROM (
@@ -46,20 +56,58 @@ FROM (
             ,bytearray_length(ct.code) AS code_bytelength
             
           from {{ source( chain , 'transactions') }} as t 
+          cross join check_date cd
           inner join  {{ source( chain , 'creation_traces') }} as ct 
             ON t.hash = ct.tx_hash
             AND t.block_time = ct.block_time
             AND t.block_number = ct.block_number
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('ct.block_time') }}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
+
+            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+
           where 
             1=1
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('ct.block_time') }}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
+
+            AND {{ incremental_days_forward_predicate('ct.block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+        {% if chain == 'zksync' %}
+          UNION ALL
+          select 
+            '{{chain}}' AS blockchain
+            ,ct.deployerAddress as trace_creator_address
+            ,ct.contractAddress as contract_address
+            ,ct.evt_block_time as created_time
+            ,ct.evt_block_number as created_block_number
+            ,ct.evt_tx_hash as created_tx_hash
+            ,t.block_time as top_level_time
+            ,t.block_number as top_level_block_number
+            ,t.hash as top_level_tx_hash
+            ,t."from" AS top_level_tx_from
+            ,t.to AS top_level_tx_to
+            ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
+            ,t."from" AS created_tx_from
+            ,t.to AS created_tx_to
+            ,bytearray_substring(t.data,1,4) AS created_tx_method_id
+            ,t.index as created_tx_index
+            ,ct.bytecodeHash as code
+            ,bytearray_length(ct.bytecodeHash) AS code_bytelength
+            
+          from {{ source( chain , 'transactions') }} as t 
+          cross join check_date cd
+          inner join  {{ source( 'zksync_era_zksync' , 'ContractDeployer_evt_ContractDeployed') }} as ct 
+            ON t.hash = ct.evt_tx_hash
+            AND t.block_time = ct.evt_block_time
+            AND t.block_number = ct.evt_block_number
+
+            AND {{ incremental_days_forward_predicate('ct.evt_block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+
+          where 
+            1=1
+
+            AND {{ incremental_days_forward_predicate('ct.evt_block_time', 'cd.base_time', days_forward ) }}
+            AND {{ incremental_days_forward_predicate('t.block_time', 'cd.base_time', days_forward ) }}
+        {% endif %}
         ) x
 ) y
   WHERE reinitialize_rank = 1 --ensures one row per contract

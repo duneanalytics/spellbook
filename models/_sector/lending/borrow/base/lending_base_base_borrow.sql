@@ -8,7 +8,11 @@
 
 {%
   set models = [
-    ref('aave_v3_base_base_borrow')
+    ref('aave_v3_base_base_borrow'),
+    ref('compound_v3_base_base_borrow'),
+    ref('seamlessprotocol_base_base_borrow'),
+    ref('moonwell_base_base_borrow'),
+    ref('sonne_finance_base_base_borrow')
   ]
 %}
 

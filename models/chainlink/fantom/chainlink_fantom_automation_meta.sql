@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='automation_meta',
     materialized = 'view'
   )

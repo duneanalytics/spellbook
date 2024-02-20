@@ -8,7 +8,11 @@
 
 {%
   set models = [
-    ref('aave_v3_arbitrum_base_borrow')
+    ref('aave_v3_arbitrum_base_borrow'),
+    ref('compound_v3_arbitrum_base_borrow'),
+    ref('radiant_arbitrum_base_borrow'),
+    ref('lodestar_v0_arbitrum_base_borrow'),
+    ref('lodestar_v1_arbitrum_base_borrow')
   ]
 %}
 

@@ -39,6 +39,7 @@ FROM
     ('dvf-rhinofi','arbitrum','DVF',0xa7aa2921618e3d63da433829d448b58c9445a4c3,18),
     ('eurs-stasis-eurs','arbitrum','EURS',0xd22a58f79e9481d1a88e00c343885a588b34b68b,2),
     ('frax-frax','arbitrum','FRAX',0x17fc002b466eec40dae837fc4be5c67993ddbd6f,18),
+    ('frxeth-frax-ether', 'arbitrum', 'frxETH',0x178412e79c25968a32e89b11f63B33F733770c2A,18),
     ('fuse-fuse-network','arbitrum','FUSE',0xbdef0e9ef12e689f366fe494a7a7d0dad25d9286,18),
     ('fxs-frax-share','arbitrum','FXS',0x9d2f299715d94d8a7e6f5eaa8e654e8c74a988a7,18),
     ('gmx-gmx','arbitrum','GMX',0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a,18),
@@ -60,6 +61,7 @@ FROM
     ('mim-magic-internet-money','arbitrum','MIM',0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a,18),
     ('multi-multichain','arbitrum','MULTI',0x9fb9a33956351cf4fa040f65a13b835a3c8764e3,18),
     ('myc-mycelium','arbitrum','MYC',0xc74fe4c715510ec2f8c61d70d397b32043f55abe,18),
+    ('o3-o3-swap-token','arbitrum','O3',0xee9801669c6138e84bd50deb500827b776777d28,18),
     ('perp-perpetual-protocol','arbitrum','PERP',0x753d224bcf9aafacd81558c32341416df61d3dac,18),
     ('rai-rai-reflex-index','arbitrum','RAI',0xaef5bbcbfa438519a5ea80b4c7181b4e78d419f2,18),
     ('rdnt-radiant-capital','arbitrum','RDNT',0x3082cc23568ea640225c2467653db90e9250aaa0,18),
@@ -123,5 +125,7 @@ FROM
     ('ush-unsheth','arbitrum','USH',0x51a80238b5738725128d3a3e06ab41c1d4c05c74,18),
     ('hdn-hydranet','arbitrum','HDN',0x3404149e9ee6f17fb41db1ce593ee48fbdcd9506,18),
     ('vela-vela-token','arbitrum','VELA',0x088cd8f5ef3652623c22d48b1605dcfe860cd704,18),
-    ('choke-artichoke','arbitrum','CHOKE',0x6fc2680d8ad8e8312191441b4eca9eff8d06b45a,18)
+    ('choke-artichoke','arbitrum','CHOKE',0x6fc2680d8ad8e8312191441b4eca9eff8d06b45a,18),
+    ('cbeth-coinbase-wrapped-staked-eth','arbitrum','CBETH',0x1debd73e752beaf79865fd6446b0c970eae7732f, 18),        
+    ('aeth-ankreth','arbitrum','AETH',0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18)        
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

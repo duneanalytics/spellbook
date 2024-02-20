@@ -192,4 +192,4 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.b
     AND p.contract_address = t.currency_contract
     AND p.blockchain ='ethereum'
     AND minute >= TIMESTAMP '{{START_DATE}}' AND minute <= TIMESTAMP '{{END_DATE}}'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = t.currency_contract and erc20.blockchain = 'ethereum'
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20 ON erc20.contract_address = t.currency_contract and erc20.blockchain = 'ethereum'

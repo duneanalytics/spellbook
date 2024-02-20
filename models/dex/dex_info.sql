@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
@@ -67,12 +67,11 @@ FROM (VALUES
     , ('saddle', 'Saddle', 'Direct', 'saddlefinance')
     , ('oneinch', '1inch', 'Aggregator', '1inch')
     , ('1inch', '1inch', 'Aggregator', '1inch') -- To Fix, should be just oneinch
-    , ('1inch Limit Order Protocol', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
+    , ('1inch LOP', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
     , ('zeroex', '0x', 'Aggregator', '0xProject')
     , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
     , ('cow_protocol', 'CoW Swap', 'Aggregator', 'CoWSwap')
-    , ('CoW Protocol', 'CoW Swap', 'Aggregator', 'CoWSwap') -- To Fix, should be just cow_protocol
     , ('openocean', 'OpenOcean', 'Aggregator', 'OpenOceanGlobal')
     , ('lifi', 'LI.FI', 'Aggregator', 'lifiprotocol')
     , ('yield_yak', 'Yield Yak', 'Aggregator', 'yieldyak_')
@@ -93,5 +92,37 @@ FROM (VALUES
     , ('mummy_finance', 'Mummy Finance', 'Direct', 'mummyftm')
     , ('carbonhood', 'Carbonhood', 'Direct', 'carbonhood')
     , ('immortalx', 'ImmortalX', 'Perpetual', 'immortalx')
-    , ('wardenswap', 'WardenSwap', 'Direct', 'wardenswap')
+    , ('chainhop', 'ChainHop', 'Direct', 'ChainHopDEX')
+    , ('dackieswap', 'DackieSwap', 'Direct', 'DackieSwap')
+    , ('wardenswap', 'Warden', 'Direct & Aggregator', 'WardenSwap')
+    , ('chronos', 'Chronos', 'Direct', 'ChronosFi_')
+    , ('zyberswap', 'Zyberswap', 'Direct', 'zyberswap')
+    , ('solidlizard', 'SolidLizard', 'Direct', 'solidlizardfi')
+    , ('pharaoh', 'Pharaoh', 'Direct', 'pharaoh')
+    , ('ramses', 'Ramses', 'Direct', 'ramses')
+    , ('scale', 'Scale', 'Direct', 'scale')
+    , ('baseswap', 'Baseswap', 'Direct', 'Baseswap')
+    , ('oasisswap', 'OasisSwap', 'Direct', 'OasisSwapDEX')
+    , ('smardex', 'SmarDex', 'Direct', 'SmarDex')
+    , ('swaap', 'Swaap', 'Direct', 'SwaapFinance')
+    , ('odos', 'Odos', 'Aggregator', 'odosprotocol')
+    , ('whirlpool', 'Orca', 'Direct', 'orca_so')
+    , ('phoenix', 'Phoenix', 'Direct', 'PhoenixTrade')
+    , ('raydium', 'Raydium', 'Direct', 'RaydiumProtocol')
+    , ('meteora', 'Meteora', 'Direct', 'MeteoraAG')
+    , ('lifinity', 'Lifinity', 'Direct', 'Lifinity_io')
+    , ('goosefx_ssl', 'GooseFX', 'Direct', 'GooseFX1')
+    , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
+    , ('dooar', 'Dooar', 'Direct', 'dooar')
+    , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
+    , ('moonbase', 'Moonbase','Direct','MoonBase')
+    , ('horizondex', 'HorizonDex', 'Direct', 'HorizonDex')
+    , ('plantbaseswap','Plantbaseswap','Direct','PlantBaseSwap')
+    , ('sobal','Sobal','Direct','Sobal')
+    , ('derpdex','DerpDex', 'Direct', 'DerpDex')
+    , ('torus', 'Torus', 'Direct', 'torus_farm')
+    , ('solidly','Solidly','Direct','Solidly')
+    , ('sharkswap', 'SharkSwap', 'Direct', 'SharkSwapDEX')
+    , ('citadelswap','Citadelswap','Direct','Citadel')
+    , ('autotronic', 'Autotronic', 'Direct', 'autotronicbase')
     ) AS temp_table (project, name, marketplace_type, x_username)

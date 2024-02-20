@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: lending_celo_base_flashloans
+    meta:
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'moola']
+    description: "All lending flashloans transactions on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        tests:
+          - not_null
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+        tests:
+          - not_null
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+        tests:
+          - not_null
+      - &fee
+        name: fee
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - &token_address
+        name: token_address
+      - &contract_address
+        name: contract_address
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Event block number"
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        tests:
+          - not_null
+
+  - name: moola_celo_base_flashloans
+    meta:
+      blockchain: moola
+      sector: lending
+      project: aave
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'moola']
+    description: "Moola flashloans transactions on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('moola_celo_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

@@ -43,7 +43,7 @@ with source_polygon_transactions as (
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20') }}
+    from {{ source('tokens', 'erc20') }}
     where blockchain = 'polygon'
 )
 ,ref_nft_aggregators as (

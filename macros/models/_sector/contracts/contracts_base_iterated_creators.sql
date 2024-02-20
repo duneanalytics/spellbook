@@ -1,8 +1,8 @@
-{% macro contracts_base_iterated_creators( chain ) %}
+{% macro contracts_base_iterated_creators( chain, standard_name = 'erc', days_forward=365 ) %}
 
 
 {% set column_list = [
-     'blockchain', 'trace_creator_address', 'creator_address', 'deployer_address'
+     'blockchain', 'trace_creator_address', 'creator_address', 'trace_deployer_address'
     ,'contract_address', 'created_time', 'created_month', 'created_block_number', 'created_tx_hash'
     ,'top_level_time', 'top_level_block_number', 'top_level_tx_hash', 'top_level_tx_from', 'top_level_tx_to', 'top_level_tx_method_id'
     ,'created_tx_from', 'created_tx_to', 'created_tx_method_id', 'created_tx_index'
@@ -14,9 +14,18 @@
 -- do token and name mappings at the end
 
 -- set max number of levels to trace root contract, eventually figure out how to make this properly recursive
-{% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use deployer_address if this is too poor.
+{% set max_levels = 5 %} --NOTE: If this is too low, this will make the "creator address" not accurate - pivot to use trace_deployer_address if this is too poor.
 
-WITH deterministic_deployers AS (
+WITH check_date AS (
+  SELECT
+  {% if is_incremental() %}
+    MAX(created_time) AS base_time FROM {{this}}
+  {% else %}
+    MIN(time) AS base_time FROM {{ source( chain , 'blocks') }}
+  {% endif %}
+)
+
+, deterministic_deployers AS (
     SELECT array_agg(creator_address) AS creator_address_array FROM {{ref('contracts_deterministic_contract_creators')}}
     )
 
@@ -59,7 +68,7 @@ WITH deterministic_deployers AS (
         blockchain
         ,trace_creator_address
         ,trace_creator_address AS creator_address_intermediate
-        ,trace_creator_address AS deployer_address -- deployer from the trace - does not iterate up
+        ,trace_creator_address AS trace_deployer_address -- deployer from the trace - does not iterate up
         ,contract_address
         ,created_time
         ,created_month
@@ -83,12 +92,12 @@ WITH deterministic_deployers AS (
         , ARRAY[created_tx_method_id] AS tx_method_id_lineage_intermediate
         , 1 AS is_new_contract
 
-      FROM {{ref('contracts_' + chain + '_base_starting_level') }} s
+      FROM {{ref('contracts_' + chain + '_base_starting_level') }} s, check_date cd
       WHERE 
           1=1
-          {% if is_incremental() %}
-          AND {{ incremental_predicate('s.created_time') }}
-          {% endif %}
+
+          AND {{ incremental_days_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }}
+
     )
 
     {% if is_incremental() %}
@@ -126,7 +135,7 @@ WITH deterministic_deployers AS (
       s.blockchain
       ,s.trace_creator_address
       ,s.creator_address AS creator_address_intermediate
-      ,s.deployer_address AS deployer_address
+      ,s.trace_deployer_address AS trace_deployer_address
       ,s.contract_address
       ,s.created_time
       ,s.created_month
@@ -150,10 +159,10 @@ WITH deterministic_deployers AS (
       ,s.tx_method_id_lineage AS tx_method_id_lineage_intermediate
       , 0 AS is_new_contract -- since we rebuild initial on static ref updates, we don't need to iterate on this.
 
-    FROM {{ this }} s
+    FROM {{ this }} s, check_date cd
     WHERE 
         1=1
-        AND (NOT {{ incremental_predicate('s.created_time') }} ) --don't pick up incrementals
+        AND (NOT {{ incremental_days_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }} ) --don't pick up incrementals
         AND s.contract_address IN (SELECT contract_address FROM inc_contracts) --is this a contract we need to iterate through
         AND s.contract_address NOT IN (SELECT contract_address FROM new_contracts) --exclude contract we reinitialize
 
@@ -190,7 +199,7 @@ WITH deterministic_deployers AS (
           THEN b.created_tx_from --when deterministic creator, we take the tx sender
           ELSE coalesce(u.creator_address, b.creator_address)
         END as creator_address -- get the highest-level creator we know of
-        ,b.creator_address AS deployer_address -- deployer from the trace - does not iterate up
+        ,b.creator_address AS trace_deployer_address -- deployer from the trace - does not iterate up
         ,b.contract_address
         -- store the raw created data
         ,b.created_time
@@ -268,7 +277,7 @@ WITH deterministic_deployers AS (
     blockchain
     ,trace_creator_address
     ,creator_address
-    ,deployer_address
+    ,trace_deployer_address
     ,u.contract_address
     ,created_time
     ,created_month
@@ -296,16 +305,17 @@ WITH deterministic_deployers AS (
     FROM levels u
     left join (
             -- We have an all NFTs table, but don't yet hand an all ERC20s table
-            SELECT contract_address, MIN(evt_block_number) AS min_block_number, 'erc20' as token_standard_erc20
-            FROM {{source('erc20_' + chain, 'evt_transfer')}} r
+            SELECT contract_address, MIN(evt_block_number) AS min_block_number, '{{standard_name}}' || '20' as token_standard_erc20
+            FROM {{source('erc20_' + chain, 'evt_transfer')}} r, check_date cd
             WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_erc20')}} )
-            {% if is_incremental() %}
-              AND {{ incremental_predicate('r.evt_block_time') }}
-            {% endif %}
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ source('tokens_' + chain, standard_name + '20')}} )
+
+              AND {{ incremental_days_forward_predicate('r.evt_block_time', 'cd.base_time', days_forward ) }}
+
             group by 1
           ) ts 
   ON u.contract_address = ts.contract_address
 
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+  
 {% endmacro %}

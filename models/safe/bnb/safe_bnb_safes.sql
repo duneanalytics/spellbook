@@ -1,13 +1,14 @@
 {{ 
     config(
-        materialized='incremental',
-        
+        schema = 'safe_bnb',
         alias = 'safes',
+        tags = ['prod_exclude'],
         partition_by = ['block_month'],
-        unique_key = ['block_date', 'address'],
         on_schema_change='fail',
+        materialized='incremental',
         file_format ='delta',
         incremental_strategy='merge',
+        unique_key = ['block_date', 'address'],
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "safe",

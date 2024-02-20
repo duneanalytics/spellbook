@@ -1,0 +1,327 @@
+version: 2
+sources:
+  - name: tokens_aave_v3
+    tables:
+      - name: tokens
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: atoken_address
+            data_type: varbinary
+          - name: underlying_address
+            data_type: varbinary
+          - name: atoken_decimals
+            data_type: integer
+          - name: side
+            data_type: varchar
+          - name: arate_type
+            data_type: varchar
+          - name: atoken_symbol
+            data_type: varchar
+          - name: atoken_name
+            data_type: varchar
+
+
+  - name: tokens_ovm_optimism
+    tables:
+      - name: l2_token_factory
+        columns:
+          - name: factory_address
+            data_type: varbinary
+          - name: l1_token
+            data_type: varbinary
+          - name: l2_token
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: name
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: call_tx_hash
+            data_type: varbinary
+          - name: call_block_time
+            data_type: timestamp(3) with time zone
+          - name: call_block_number
+            data_type: bigint
+
+
+  - name: tokens_the_granary_optimism
+    tables:
+      - name: tokens
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: atoken_address
+            data_type: varbinary
+          - name: underlying_address
+            data_type: varbinary
+          - name: atoken_decimals
+            data_type: integer
+          - name: side
+            data_type: varchar
+          - name: arate_type
+            data_type: varchar
+          - name: atoken_symbol
+            data_type: varchar
+          - name: atoken_name
+            data_type: varchar
+
+
+  - name: tokens
+    tables:
+      - name: erc20
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+      - name: native
+        columns:
+          - name: chain
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: price_symbol
+            data_type: varchar
+          - name: price_address
+            data_type: varbinary
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_arbitrum
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+  - name: tokens_avalanche_c
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_base
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_bnb
+    tables:
+      - name: bep20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_celo
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_ethereum
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+      - name: rebase
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+
+
+  - name: tokens_fantom
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+  - name: tokens_goerli
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+  - name: tokens_gnosis
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_optimism
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: token_type
+            data_type: varchar
+          - name: token_mapping_source
+            data_type: varchar
+          - name: is_counted_in_tvl
+            data_type: integer
+
+      - name: erc20_bridged_mapping
+        columns:
+          - name: l1_token
+            data_type: varbinary
+          - name: l2_token
+            data_type: varbinary
+          - name: l1_symbol
+            data_type: varchar
+          - name: l1_decimals
+            data_type: integer
+
+      - name: erc20_curated
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: token_type
+            data_type: varchar
+          - name: token_mapping_source
+            data_type: varchar
+
+      - name: erc20_generated
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: token_type
+            data_type: varchar
+          - name: token_mapping_source
+            data_type: varchar
+
+      - name: erc20_transfer_source
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: latest_transfer
+            data_type: timestamp(3) with time zone
+
+
+  - name: tokens_polygon
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_zksync
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_zora
+    tables:
+      - name: erc20
+        columns:
+          - name: contract_address
+            data_type: varbinary
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+
+
+  - name: tokens_yearn
+    tables:
+      - name: vaults
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: block_time_created
+            data_type: timestamp(3) with time zone
+          - name: block_number_created
+            data_type: bigint
+          - name: underlying_token
+            data_type: varbinary
+          - name: vault_symbol
+            data_type: varchar
+          - name: vault_name
+            data_type: varchar
+          - name: vault_token
+            data_type: varbinary
+
+

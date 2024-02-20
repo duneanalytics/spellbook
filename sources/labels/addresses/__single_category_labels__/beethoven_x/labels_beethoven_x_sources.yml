@@ -1,0 +1,120 @@
+version: 2
+
+sources:
+  - name: beethoven_x_fantom
+    tables:
+      - name: StablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X StablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - name: call_block_number
+          - name: call_block_time
+          - name: call_success
+          - name: call_trace_address
+          - name: call_tx_hash
+          - name: contract_address
+            description: "Address of the StablePoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - name: amplificationParameter
+            description: "Amplification parameter of the created pool"
+          - name: output_0
+          - name: owner
+          - name: swapFeePercentage
+          - name: symbol
+          - name: tokens
+
+      - name: MetaStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X MetaStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - name: call_block_number
+          - name: call_block_time
+          - name: call_success
+          - name: call_trace_address
+          - name: call_tx_hash
+          - name: contract_address
+            description: "Address of the MetaStablePoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - name: oracleEnabled
+            description: "Boolean which indicates if the oracle functionality is enabled in the created pool"
+          - name: rateProviders
+            description: "Array with the contracts of the rate providers of the created pool"
+          - name: priceRateCacheDuration
+            description: "Array with the duration of the cached prices from RateProviders for each token"
+          - name: output_0
+          - name: owner
+          - name: swapFeePercentage
+          - name: amplificationParameter
+          - name: symbol
+          - name: tokens
+
+      - name: YearnLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X YearnLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - name: call_block_number
+          - name: call_block_time
+          - name: call_success
+          - name: call_trace_address
+          - name: call_tx_hash
+          - name: contract_address
+            description: "Address of the AaveLinearPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - name: mainToken
+          - name: wrappedToken
+          - name: upperTarget
+          - name: output_0
+          - name: owner
+          - name: swapFeePercentage
+          - name: symbol
+
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - name: call_block_number
+          - name: call_block_time
+          - name: call_success
+          - name: call_trace_address
+          - name: call_tx_hash
+          - name: contract_address
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - name: swapEnabledOnStart
+          - name: output_0
+          - name: owner
+          - name: swapFeePercentage
+          - name: symbol
+          - name: tokens
+          - name: weights
+
+      - name: StablePhantomPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Beethoven X StablePhantomPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - name: call_block_number
+          - name: call_block_time
+          - name: call_success
+          - name: call_trace_address
+          - name: call_tx_hash
+          - name: contract_address
+            description: "Address of the StablePhantomPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - name: output_0
+          - name: owner
+          - name: rateProviders
+          - name: tokenRateCacheDurations
+          - name: amplificationParameter
+          - name: swapFeePercentage
+          - name: symbol
+          - name: tokens
