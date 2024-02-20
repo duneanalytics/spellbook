@@ -1,6 +1,6 @@
 {% macro 
     balancer_liquidity_macro(
-        blockchain
+        blockchain, version
     ) 
 %}
 
@@ -53,6 +53,7 @@ WITH pool_labels AS (
             bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
         GROUP BY 1, 2, 3
     ),
     
@@ -225,6 +226,7 @@ WITH pool_labels AS (
         WHERE q.name IS NOT NULL 
         AND p.pool_type IN ('WP', 'WP2T') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
+        AND w.version = '{{version}}'        
         GROUP BY 1, 2, 3, 4
     ),
     
@@ -242,7 +244,7 @@ WITH pool_labels AS (
         c.pool_id,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
         p.pool_symbol,
-        '2' AS version,
+        '{{version}}' AS version,
         '{{blockchain}}' AS blockchain,
         c.token AS token_address,
         c.token_symbol,
@@ -257,6 +259,7 @@ WITH pool_labels AS (
     AND c.pool_id = b.pool_id
     LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
     AND w.blockchain = '{{blockchain}}'
+    AND w.version = '{{version}}'     
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day 
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
