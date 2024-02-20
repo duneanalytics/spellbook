@@ -288,8 +288,10 @@ FROM (VALUES
     , (0xCD531Ae9EFCCE479654c4926dec5F6209531Ca7b, 'Coinbase Prime', 'Coinbase Prime 1', 'hildobby', date '2023-11-17')
     , (0xceB69F6342eCE283b2F5c9088Ff249B5d0Ae66ea, 'Coinbase Prime', 'Coinbase Prime 2', 'hildobby', date '2023-11-17')
     , (0x1E7016f7C23859d097668C27B72C170eD7129A10, 'Coinbase Prime', 'Coinbase Prime 3', 'hildobby', date '2023-11-17')
+    , (0xDfD76BbFEB9Eb8322F3696d3567e03f894C40d6c, 'Coinbase Prime', 'Coinbase Prime 4', 'hildobby', date '2024-02-20')
     , (0x1565f0c48c06bC006095591A4c3FE4A6F39712cF, 'Coinbase Prime', 'Coinbase Prime Deposit Funder 1', 'hildobby', date '2023-11-22')
     , (0x72CEf07728B199e7aD11FF03f02D2D65F91AD553, 'Coinbase Prime', 'Coinbase Prime Deposit Funder 2', 'hildobby', date '2023-11-22')
+    , (0xabF7503e05a9c82726Ba6d7BBfFDfF8C2f3388c6, 'Coinbase Prime', 'Coinbase Prime Deposit Funder 3', 'hildobby', date '2024-02-20')
     , (0xa86309988947559b6e72ef716c5058f479386c0f, 'Coinbase Prime', 'Coinbase Prime Custody Deposit Funder 1', 'hildobby', date '2023-11-17')
     -- OKX
     , (0x6cc5f688a315f3dc28a7781717a9a798a59fda7b, 'OKX', 'OKX 1', 'hildobby', date '2022-08-28')
@@ -484,12 +486,14 @@ FROM (VALUES
     , (0xd1669ac6044269b59fa12c5822439f609ca54f41, 'CoinList', 'CoinList 1', 'hildobby', date '2023-09-08')
     , (0x8d1f2ebfaccf1136db76fdd1b86f1dede2d23852, 'CoinList', 'CoinList 2', 'hildobby', date '2023-09-08')
     , (0xd2c82f2e5fa236e114a81173e375a73664610998, 'CoinList', 'CoinList 3', 'hildobby', date '2023-09-08')
+    , (0x187c0E0aa33282096b39a33457939f1dC3Ea8e0f, 'CoinList', 'CoinList 4', 'hildobby', date '2024-02-20')
     -- Duelbits
     , (0x4e80744fa23cec76e1621ce0dfaceb4b1d532e12, 'Duelbits', 'Duelbits 1', 'hildobby', date '2023-11-15')
     -- Coincheck
     , (0x9c19b0497997fe9e75862688a295168070456951, 'Coincheck', 'Coincheck 1', 'hildobby', date '2023-11-19')
     , (0xd52814615DC129e1eEa3520e7e7f8d44DBfc6c5b, 'Coincheck', 'Coincheck 2', 'hildobby', date '2023-11-19')
     , (0x189B9cBd4AfF470aF2C0102f365FC1823d857965, 'Coincheck', 'Coincheck Cold 1', 'hildobby', date '2023-11-19')
+    , (0x8696e84aB5e78983f2456bCB5c199eEa9648C8C2, 'Coincheck', 'Coincheck Cold 2', 'hildobby', date '2024-02-20')
     -- Gate.io
     , (0x0d0707963952f2fba59dd06f2b425ace40b492fe, 'Gate.io', 'Gate.io 1', 'hildobby', date '2022-08-28')
     , (0x7793cd85c11a924478d358d49b05b37e91b5810f, 'Gate.io', 'Gate.io 2', 'hildobby', date '2022-08-28')
