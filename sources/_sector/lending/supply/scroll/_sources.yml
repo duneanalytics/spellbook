@@ -6,7 +6,7 @@ sources:
       - name: L2Pool_evt_Supply
       - name: L2Pool_evt_Withdraw
 
-  - name: lodestar_scroll
+  - name: layer_bank_scroll
     tables:
       - name: lETH_evt_Mint
       - name: lETH_evt_Redeem

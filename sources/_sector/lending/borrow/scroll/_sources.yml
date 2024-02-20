@@ -7,7 +7,7 @@ sources:
       - name: L2Pool_evt_Repay
       - name: L2Pool_evt_LiquidationCall
 
-  - name: lodestar_scroll
+  - name: layer_bank_scroll
     tables:
       - name: lETH_evt_Borrow
       - name: lETH_evt_RepayBorrow
