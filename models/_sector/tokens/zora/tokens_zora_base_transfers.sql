@@ -1,5 +1,4 @@
 {{config(
-    tags = ['prod_exclude'],
     schema = 'tokens_zora',
     alias = 'base_transfers',
     partition_by = ['block_date'],
