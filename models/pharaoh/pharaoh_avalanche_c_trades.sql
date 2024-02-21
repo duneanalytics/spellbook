@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'pharaoh_avalanche_c'
+    tags = ['prod_exclude']
+    , schema = 'pharaoh_avalanche_c'
     , alias = 'trades'
     , partition_by = ['block_month']
     , materialized = 'incremental'
