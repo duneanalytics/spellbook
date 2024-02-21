@@ -75,7 +75,11 @@ SELECT
     , t.amount_raw
 FROM transfers t
 INNER JOIN {{ transactions }} tx ON
+    {% if blockchain == 'gnosis' %}
+    cast(date_trunc('day', tx.block_time) as date) = t.block_date --gnosis does not have block_date in transactions, force block_time to be date
+    {% else %}
     tx.block_date = t.block_date --partition column in raw base tables (traces, transactions)
+    {% endif %}
     AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
     {% if is_incremental() %}
