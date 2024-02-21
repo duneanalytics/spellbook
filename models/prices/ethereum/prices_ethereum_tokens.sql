@@ -1210,7 +1210,6 @@ FROM
     ('nmt-nftmart-token', 'ethereum', 'NMT', 0xd81b71cbb89b2800cdb000aa277dc1491dc923c3, 18),
     ('nwc-newscryptoio', 'ethereum', 'NWC', 0x968f6f898a6df937fc1859b323ac2f14643e3fed, 18),
     ('ons-one-share', 'ethereum', 'ONS', 0x5bb29c33c4a3c29f56f8aca40b4db91d8a5fe2c5, 18),
-    ('peak-peakdefi', 'ethereum', 'PEAK', 0x630d98424efe0ea27fb1b3ab7741907dffeaad78, 8),
     ('pepe-pepegold', 'ethereum', 'PEPE', 0x4a27e9aab8f8ba9de06766c8476ed1d16494e35f, 18),
     ('phnx-phoenixdao', 'ethereum', 'PHNX', 0x38a2fdc11f526ddd5a607c1f251c065f40fbf2f7, 18),
     ('pla-playdapp', 'ethereum', 'PLA', 0x3a4f40631a4f906c2bad353ed06de7a5d3fcb430, 18),
@@ -1670,4 +1669,5 @@ where contract_address not in (
     ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
+    ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
 )
