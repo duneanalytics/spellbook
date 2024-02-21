@@ -1,5 +1,4 @@
 {{config(
-    tags = ['prod_exclude'],
     schema = 'tokens_bnb',
     alias = 'transfers',
     partition_by = ['block_date'],
@@ -22,5 +21,6 @@
         , prices_model = source('prices', 'usd')
         , evms_info_model = ref('evms_info')
         , transfers_start_date = '2020-08-29'
+        , blockchain = 'bnb'
     )
 }}

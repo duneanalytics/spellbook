@@ -76,7 +76,7 @@ LEFT JOIN
     ON tokens_erc20.blockchain = t.blockchain
     AND tokens_erc20.contract_address = t.contract_address
 LEFT JOIN prices
-    ON prices.blockchain = '{{ blockchain }}'
+    ON prices.blockchain = '{{ blockchain }}' -- due to data volume in prices, filter by static blockchain value for performance gains (slight improvement over using t.blockchain directly)
     AND (
             prices.contract_address = t.contract_address
             OR (t.contract_address IS NULL AND prices.contract_address = evms_info.wrapped_native_token_address)
