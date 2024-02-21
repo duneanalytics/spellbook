@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_optimism_base_trades_seed')
+          filter:
+            version: 3
 
 
 

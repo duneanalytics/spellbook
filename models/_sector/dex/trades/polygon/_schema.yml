@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_polygon_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: airswap_polygon_base_trades
