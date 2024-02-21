@@ -16,8 +16,9 @@ sources:
           - &amount0
             name: amount0
             description: "The delta of the token0 balance of the pool"
-          - name: contract_address
-            description: "BNB chain address for the liquidity pool used in transaction"
+          - &contract_address
+            name: contract_address
+            description: "BNB Chain address for the liquidity pool used in transaction"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
