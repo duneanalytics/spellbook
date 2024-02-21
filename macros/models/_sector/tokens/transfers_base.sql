@@ -3,7 +3,8 @@
 
 WITH transfers AS (
     SELECT
-        block_time
+        block_date
+        , block_time
         , block_number
         , tx_hash
         , cast(NULL as bigint) AS evt_index
@@ -28,7 +29,8 @@ WITH transfers AS (
     UNION ALL
 
     SELECT 
-        t.evt_block_time AS block_time
+        cast(date_trunc('day', t.evt_block_time) as date) AS block_date
+        , t.evt_block_time AS block_time
         , t.evt_block_number AS block_number
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
@@ -57,7 +59,7 @@ SELECT
     -- We have to create this unique key because evt_index and trace_address can be null
     {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(t.trace_address, ',')"])}} as unique_key
     , '{{blockchain}}' as blockchain
-    , cast(date_trunc('day', t.block_time) as date) as block_date
+    , t.block_date
     , t.block_time
     , t.block_number
     , t.tx_hash
@@ -73,7 +75,8 @@ SELECT
     , t.amount_raw
 FROM transfers t
 INNER JOIN {{ transactions }} tx ON
-    tx.block_number = t.block_number
+    tx.block_date = t.block_date --partition column in raw base tables (traces, transactions)
+    AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
