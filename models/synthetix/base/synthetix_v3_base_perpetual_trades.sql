@@ -19,7 +19,7 @@ synthetix_accounts as (
         accountId,
         owner
     FROM 
-    {{ source('synthetix_v3_base', 'PerpsMarket_evt_AccountCreated') }
+    {{ source('synthetix_v3_base', 'PerpsMarket_evt_AccountCreated') }}
 ),
 
 synthetix_markets as (
@@ -28,7 +28,7 @@ synthetix_markets as (
         marketSymbol,
         perpsMarketId 
     FROM 
-    {{ source('synthetix_v3_base', 'PerpsMarket_evt_MarketCreated') }
+    {{ source('synthetix_v3_base', 'PerpsMarket_evt_MarketCreated') }}
 ),
 
 perps as (
@@ -62,9 +62,9 @@ perps as (
         mu.evt_tx_hash,
         mu.evt_index
     FROM 
-    {{ source('synthetix_v3_base', 'PerpsMarket_evt_MarketUpdated') } mu 
+    {{ source('synthetix_v3_base', 'PerpsMarket_evt_MarketUpdated') }} mu 
     INNER JOIN 
-    {{ source('synthetix_v3_base', 'PerpsMarket_evt_OrderSettled') } os 
+    {{ source('synthetix_v3_base', 'PerpsMarket_evt_OrderSettled') }} os 
         ON mu.evt_tx_hash = os.evt_tx_hash
         AND mu.sizeDelta = os.sizeDelta
         {% if is_incremental() %}
