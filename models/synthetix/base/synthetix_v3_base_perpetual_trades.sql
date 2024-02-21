@@ -44,6 +44,8 @@ perps as (
         mu.size/1e18 * mu.price/1e18 as margin_usd,
         (ABS(mu.sizeDelta)/1e18 * mu.price/1e18) / (mu.size/1e18 * mu.price/1e18) as leverage_ratio,
         CASE 
+            WHEN (CAST(mu.size AS DOUBLE) >= 0 AND CAST(os.newSize AS DOUBLE) = 0 AND CAST(mu.sizeDelta AS DOUBLE) < 0 AND os.newSize != mu.sizeDelta) THEN 'close'
+		    WHEN (CAST(mu.size AS DOUBLE) >= 0 AND CAST(os.newSize AS DOUBLE) = 0 AND CAST(mu.sizeDelta AS DOUBLE) > 0 AND os.newSize != mu.sizeDelta) THEN 'close'
         	WHEN CAST(mu.sizeDelta AS DOUBLE) > 0 THEN 'long'
 		    WHEN CAST(mu.sizeDelta AS DOUBLE) < 0 THEN 'short'
 		    ELSE 'NA'
