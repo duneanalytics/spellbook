@@ -8,6 +8,7 @@ WITH transfers AS (
         , block_number
         , tx_hash
         , cast(NULL as bigint) AS evt_index
+        , -CAST(ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash ORDER BY "from", to, value) AS INT256) AS sub_tx_trade_id
         , trace_address
         {% if native_contract_address%}
         , {{native_contract_address}} AS contract_address 
@@ -25,6 +26,7 @@ WITH transfers AS (
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {% endif %}
+    AND block_time > NOW() - interval '1' day
 
     UNION ALL
 
@@ -34,6 +36,7 @@ WITH transfers AS (
         , t.evt_block_number AS block_number
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
+        , t.evt_index AS sub_tx_trade_id
         , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
         , t.contract_address
         , CASE
@@ -50,8 +53,9 @@ WITH transfers AS (
         , t.to
         , t.value AS amount_raw
     FROM {{ erc20_transfers }} t
+    WHERE block_time > NOW() - interval '1' day
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
+    AND {{incremental_predicate('evt_block_time')}}
     {% endif %}
 )
 
@@ -64,6 +68,7 @@ SELECT
     , t.block_number
     , t.tx_hash
     , t.evt_index
+    , t.sub_tx_trade_id
     , t.trace_address
     , t.token_standard
     , tx."from" AS tx_from
@@ -78,6 +83,7 @@ INNER JOIN {{ transactions }} tx ON
     tx.block_date = t.block_date --partition column in raw base tables (traces, transactions)
     AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
+    AND t.block_time > NOW() - interval '1' day
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
