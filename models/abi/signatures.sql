@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['created_at', 'unique_signature_id'],
-        
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_at')],
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","gnosis","polygon","fantom","celo","base"]\',
                         "sector",
                         "abi",
@@ -25,6 +25,8 @@
     ,source('fantom', 'signatures')
     ,source('celo', 'signatures')
     ,source('base', 'signatures')
+    ,source('zksync', 'signatures')
+    ,source('scroll', 'signatures')
 ] %}
 
 WITH
@@ -41,7 +43,7 @@ WITH
             FROM {{ chain_source }}
 
             {% if is_incremental() %}
-            WHERE cast(created_at as timestamp) >= cast(date_add('day', -7, now()) as timestamp)
+            WHERE {{incremental_predicate('created_at')}}
             {% endif %}
 
             {% if not loop.last %}

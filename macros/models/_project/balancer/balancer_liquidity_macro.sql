@@ -32,7 +32,7 @@ WITH pool_labels AS (
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 10
+        HAVING sum(sample_size) > 9
     ),
 
     dex_prices AS (
@@ -48,12 +48,12 @@ WITH pool_labels AS (
 
     bpt_prices AS(
         SELECT 
-            date_trunc('day', HOUR) AS day,
+            day,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS bpt_price
+            bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3
     ),
     
     eth_prices AS (
@@ -202,7 +202,7 @@ WITH pool_labels AS (
         AND c.day < p2.day_of_next_change
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day 
-        AND p3.token = CAST(b.token as VARCHAR)
+        AND p3.token = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
@@ -260,5 +260,4 @@ WITH pool_labels AS (
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day 
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
-
     {% endmacro %}

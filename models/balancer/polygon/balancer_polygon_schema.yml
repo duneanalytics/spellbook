@@ -331,7 +331,7 @@ models:
     meta:
       blockchain: polygon
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['polygon', 'bpt', 'prices']
     description: >
@@ -340,19 +340,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - *contract_address
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
+      - name: contract_address
+      - name: bpt_price
 
   - name: balancer_v2_polygon_trades
     meta:

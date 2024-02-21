@@ -1049,7 +1049,20 @@ WITH curated_list AS (
       ,(0x8a8Cf648e6A7325AaE25bEfD04FF2a2cb29B0A16, 'Hi.Market')
       ,(0x600bE5FcB9338BC3938e4790EFBeAaa4F77D6893, 'Wild Base')
       ,(0x1A16250c062D7076b6E33d62890616153F728789, 'SharkSwap')
-  
+      ,(0x3d600ee1ab8c88057a1a8F0fAF4908fB104Fbe4e, 'Toupee.tech')
+      ,(0x41De4eEC72A5e1f0B7e278B7863525dc63846b4D, 'Toupee.tech')
+      ,(0xe331ba084E68F11822FC02cC6Ea73a3E54387566, 'Toupee.tech')
+      ,(0xAEabFbCC0865246FEd861A674791D66BF38a756a, 'Toupee.tech')
+      ,(0xe9Afba5B42Bbc99b6e602069161963fFE5218bB6, 'Toupee.tech')
+      ,(0x8610F105F3d0a0479d9c9D85C13b352f6c8EefeE, 'Sweep')
+      ,(0xc7b145AD8f3aD68587efCa54024f342dE825AD9D, 'Sweep')
+      ,(0x066e55b5Cb2DB7eEFC0B0968101039D4DCE3137c, 'Bas3d')
+      ,(0xE8dC4bbCA1A280bFe4825f14B6ef3cE30462B828, 'Flash Liquidity')
+      ,(0xcd4526fF643F6dB7D2C2701AC62ab2b62d8eceB3, 'Flash Liquidity')
+      ,(0xAA62cBC86d65917a44EF1C1fae3AAB55fbd773C5, 'Contango V2')
+      ,(0x4A88C44B8D9B9f3F2BA4D97236F737CF03DF76CD, 'Wombat Exchange')
+      ,(0x9e031064ce7C3E9b6dda1FfCF9E5D41AFBbdfEEa, 'Wombat Exchange')
+      ,(0xE2B0E2aFB24E46e5cA31Dce7F80C67fB03e10fC0, 'Timeswap V2')
 
       ,(0xb013abd83f0bd173e9f14ce7d6e420ad711483b4, 'TreasureDAO') --Treasure Bridgeworld & Smolverse
       ,(0x2940108780b870ae8f1509be95fdf2b6fb066e41, 'TreasureDAO') --Treasure Bridgeworld
