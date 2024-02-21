@@ -59,7 +59,7 @@ perps as (
 		) as frontend,
         sa.owner as trader,
         CAST(ABS(mu.sizeDelta) as UINT256) as volume_raw,
-        mu.evt_tx_hash,
+        mu.evt_tx_hash as tx_hash,
         mu.evt_index
     FROM 
     {{ source('synthetix_v3_base', 'PerpsMarket_evt_MarketUpdated') }} mu 
