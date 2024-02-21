@@ -21,5 +21,6 @@
         , prices_model = source('prices', 'usd')
         , evms_info_model = ref('evms_info')
         , transfers_start_date = '2023-06-15'
+        , blockchain = 'base'
     )
 }}
