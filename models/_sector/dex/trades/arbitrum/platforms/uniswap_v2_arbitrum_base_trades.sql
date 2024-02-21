@@ -15,7 +15,7 @@
         blockchain = 'arbitrum',
         project = 'uniswap',
         version = '2',
-        Pair_evt_Swap = source('uniswap_v2_arbitrum', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('uniswap_v2_arbitrum', 'Factory_evt_PairCreated')
+        Pair_evt_Swap = source('uniswap_v2_arbitrum', 'UniswapV2Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('uniswap_v2_arbitrum', 'UniswapV2Factory_evt_PairCreated')
     )
 }}

@@ -15,7 +15,7 @@
         blockchain = 'optimism',
         project = 'uniswap',
         version = '2',
-        Pair_evt_Swap = source('uniswap_v2_optimism', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('uniswap_v2_optimism', 'Factory_evt_PairCreated')
+        Pair_evt_Swap = source('uniswap_v2_optimism', 'UniswapV2Pair_evt_Swap'),
+        Factory_evt_PairCreated = source('uniswap_v2_optimism', 'UniswapV2Factory_evt_PairCreated')
     )
 }}
