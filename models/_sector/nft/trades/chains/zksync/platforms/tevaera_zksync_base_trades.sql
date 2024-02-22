@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     )
 }}
 
