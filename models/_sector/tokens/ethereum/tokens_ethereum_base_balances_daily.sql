@@ -9,8 +9,42 @@
         )
 }}
 
-{{
-    balances_daily(
-        balances_base = source('tokens_ethereum', 'balances_ethereum_0004')
-    )
-}}
+with balances_agg as (
+    select *
+    from (
+        select
+            cast(date_trunc('day', block_time) as date) as day,
+            block_number,
+            block_time,
+            "type",
+            "address",
+            contract_address,
+            token_id,
+            amount,
+            row_number() OVER (partition by date_trunc('day', block_time), type, address, contract_address, token_id order by block_number desc) as row_number
+        from source('tokens_base', 'balances_ethereum_0004') balances
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('block_time')}}
+        {% endif %}
+    ) where row_number = 1
+),
+daily_balances as (select
+    day,
+    block_number,
+    block_time,
+    "type",
+    "address",
+    contract_address,
+    token_id,
+    amount,
+    LEAD(day, 1, current_timestamp) OVER (PARTITION BY "type", "address", "contract_address", "token_id" ORDER BY day) AS next_day
+from balances_agg
+),
+days as (
+    -- TODO: Start date 12 months ago
+SELECT day FROM unnest(sequence(current_date - interval '12' month, current_date, interval '1' day)) AS t(day)
+)
+select d.day, b.*
+from daily_balances b
+join days d ON b.day <= d.day AND d.day < b.next_day
+
