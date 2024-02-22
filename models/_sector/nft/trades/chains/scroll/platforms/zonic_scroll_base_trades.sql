@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'zonic_optimism',
+    schema = 'zonic_scroll',
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -32,7 +32,7 @@ with events_raw as (
             else currency
         end as currency_contract
        ,saleId as sale_id
-    from {{ source('zonic_optimism', 'ZonicMarketplace_evt_ZonicBasicOrderFulfilled') }} as o
+    from {{ source('zonic_scroll', 'ZonicMarketplace_evt_ZonicBasicOrderFulfilled') }} as o
     {% if not is_incremental() %}
     where evt_block_time >= TIMESTAMP '{{project_start_date}}'  -- zonic first txn
     {% endif %}
@@ -51,7 +51,7 @@ with events_raw as (
       ,er.evt_index
       ,er.evt_index - coalesce(element_at(tr.trace_address,1), 0) as ranking
     from events_raw as er
-    join {{ ref('transfers_optimism_eth') }} as tr
+    join {{ ref('transfers_scroll_eth') }} as tr
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.tx_block_number
       and tr.value_decimal > 0
@@ -81,7 +81,7 @@ with events_raw as (
       ,er.evt_index
       ,er.evt_index - erc20.evt_index as ranking
     from events_raw as er
-    join {{ source('erc20_optimism','evt_transfer') }} as erc20
+    join {{ source('erc20_scroll','evt_transfer') }} as erc20
       on er.tx_hash = erc20.evt_tx_hash
       and er.block_number = erc20.evt_block_number
       and erc20.value is not null
@@ -117,7 +117,7 @@ with events_raw as (
 )
 , base_trades as (
 select
-    'optimism' as blockchain
+    'scroll' as blockchain
     ,'zonic' as project
     ,'v1' as project_version
     ,er.tx_hash
@@ -148,4 +148,4 @@ left join transfers as tr
 )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'optimism') }}
+{{ add_nft_tx_data('base_trades', 'scroll') }}

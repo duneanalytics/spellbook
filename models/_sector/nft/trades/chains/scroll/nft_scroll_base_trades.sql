@@ -1,25 +1,13 @@
 {{ config(
-    schema = 'nft',
+    schema = 'nft_scroll',
     alias = 'base_trades',
-    partition_by = ['blockchain','project','block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['project','project_version','tx_hash','sub_tx_trade_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    materialized = 'view'
     )
 }}
-
-
+-- (project, project_version, model)
 {% set nft_models = [
- ref('nft_arbitrum_base_trades')
- ,ref('nft_base_base_trades')
- ,ref('nft_bnb_base_trades')
- ,ref('nft_ethereum_base_trades')
- ,ref('nft_old_base_trades')
- ,ref('nft_optimism_base_trades')
- ,ref('nft_polygon_base_trades')
- ,ref('nft_scroll_base_trades')
+     ref('element_scroll_base_trades')
+     ,ref('zonic_scroll_base_trades')
 ] %}
 
 with base_union as (
@@ -29,9 +17,9 @@ SELECT * FROM  (
         blockchain,
         project,
         project_version,
+        block_time,
         block_date,
         block_month,
-        block_time,
         block_number,
         tx_hash,
         project_contract_address,
@@ -53,9 +41,6 @@ SELECT * FROM  (
         tx_to,
         tx_data_marker
     FROM {{ nft_model }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
-    {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

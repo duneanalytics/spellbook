@@ -1,5 +1,5 @@
 {{ config(
-        
+
         alias = 'approvals',
         schema = 'nft',
         partition_by = ['block_month', 'blockchain'],
@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "celo", "base", "zksync"]\',
                                     "sector",
                                     "nft",
-                                    \'["hildobby", "tomfutago"]\') }}')
+                                    \'["hildobby", "tomfutago", "0xRob"]\') }}')
 }}
 
 {% set nft_models = [
@@ -27,6 +27,7 @@
 ,ref('nft_celo_approvals')
 ,ref('nft_base_approvals')
 ,ref('nft_zksync_approvals')
+,ref('nft_scroll_approvals')
 ] %}
 
 SELECT *
