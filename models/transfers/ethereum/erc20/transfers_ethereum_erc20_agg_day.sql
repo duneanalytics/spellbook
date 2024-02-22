@@ -14,6 +14,6 @@
 {{
     transfers_erc20_agg_day(
         transfers_erc20 = ref('transfers_ethereum_erc20'),
-        tokens_erc20 = ref('tokens_ethereum_erc20')
+        tokens_erc20 = source('tokens', 'erc20')
     )
 }}
