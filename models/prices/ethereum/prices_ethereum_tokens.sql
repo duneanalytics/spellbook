@@ -1210,7 +1210,6 @@ FROM
     ('nmt-nftmart-token', 'ethereum', 'NMT', 0xd81b71cbb89b2800cdb000aa277dc1491dc923c3, 18),
     ('nwc-newscryptoio', 'ethereum', 'NWC', 0x968f6f898a6df937fc1859b323ac2f14643e3fed, 18),
     ('ons-one-share', 'ethereum', 'ONS', 0x5bb29c33c4a3c29f56f8aca40b4db91d8a5fe2c5, 18),
-    ('peak-peakdefi', 'ethereum', 'PEAK', 0x630d98424efe0ea27fb1b3ab7741907dffeaad78, 8),
     ('pepe-pepegold', 'ethereum', 'PEPE', 0x4a27e9aab8f8ba9de06766c8476ed1d16494e35f, 18),
     ('phnx-phoenixdao', 'ethereum', 'PHNX', 0x38a2fdc11f526ddd5a607c1f251c065f40fbf2f7, 18),
     ('pla-playdapp', 'ethereum', 'PLA', 0x3a4f40631a4f906c2bad353ed06de7a5d3fcb430, 18),
@@ -1637,8 +1636,17 @@ FROM
     ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
     ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9),
     ('rbx-rabbitx', 'ethereum', 'RBX', 0x3Ba925fdeAe6B46d0BB4d424D829982Cb2F7309e, 18),
-    ('gyd-gyro-dollar','ethereum','GYD',0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 18)
-    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('gyd-gyro-dollar','ethereum','GYD',0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 18),
+    ('ezeth-renzo-restaked-eth','ethereum','EZETH',0xbf5495efe5db9ce00f80364c8b423567e58d2110, 18),
+    ('mubi-multibit', 'ethereum', 'MUBI', 0x38e382f74dfb84608f3c1f10187f6bef5951de93, 18),
+    ('peas-peapods', 'ethereum', 'PEAS', 0x02f92800F57BCD74066F5709F1Daa1A4302Df875, 18),
+    ('aeth-ankreth', 'ethereum', 'ankrETH', 0xe95a203b1a91a908f9b9ce46459d101078c2c3cb, 18),
+    ('sweth-swell-ethereum', 'ethereum', 'swETH', 0xf951e335afb289353dc249e82926178eac7ded78, 18),
+    ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18),
+    ('usde-ethena-usde', 'ethereum', 'USDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 18),
+    ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18),
+    ('ata-automata', 'ethereum', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18)
+) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
     0x841fb148863454a3b3570f515414759be9091465    -- SHIH
@@ -1661,4 +1669,5 @@ where contract_address not in (
     ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
+    ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
 )

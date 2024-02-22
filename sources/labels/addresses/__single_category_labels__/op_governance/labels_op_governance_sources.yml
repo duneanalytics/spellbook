@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded optimism event logs table
+    tables:
+      - name: decoded_logs
+        loaded_at_field: evt_block_time

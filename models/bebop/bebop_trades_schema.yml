@@ -3,12 +3,12 @@ version: 2
 models:
   - name: bebop_trades
     meta:
-      blockchain: polygon, arbitrum, ethereum
+      blockchain: polygon, arbitrum, ethereum, bnb
       sector: dex
       project: bebop
       contributors: alekss
     config:
-      tags: [ 'polygon', 'arbitrum', 'ethereum', 'bebop','trades','dex' ]
+      tags: [ 'polygon', 'arbitrum', 'ethereum', 'bnb', 'bebop','trades','dex' ]
     description: Bebop trades - formatted for dex.trades
     columns:
       - &blockchain

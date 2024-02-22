@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
   - name: nether_fi_base_perpetual_trades

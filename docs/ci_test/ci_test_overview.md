@@ -19,6 +19,11 @@ Any time a PR is opened in Spellbook, there are a few GH workflows which automat
 - Run `dbt run` again, for incremental models only, to ensure incremental logic runs as expected.
 - Run `dbt test` again, to test the data again post-incremental run.
 
+## CI Tests workflow matrix
+
+To handle the dbt sub-project separation within Spellbook, there are two projects which run separately in CI: `tokens` & `spellbook`. Within the PR, you will likely see two CI test workflows running, one for each project. As sub-projects grow, this matrix could also grow. If sub-projects grow much larger, the matrix will be replaced with a cleaner solution.
+- Expect to see two CI workflows, but each workflow will be able to automatically detect which spells to run
+
 ## CI Tests Leverage Prod Data
 
 If spells within a PR reference (i.e. dbt ref usage) another spell which isn’t included in PR, the CI environment will default to read from prod environment. This is setup to expedite the process and not rebuild entire lineages for each PR. If there is ever an issue with the CI test due to this prod data, modify the troubled spell within the same PR to force the spell to run in CI and refresh.
@@ -54,16 +59,16 @@ Simple rule of thumb – a green check success on CI tests does not guarantee a 
 ### Other Minor CI Details
 
 - There is a 90-minute timeout window, to cancel any long-running spells.
-- This timeframe has worked well for 95%+ of PRs, but there are instances where the timeout needs increased, which needs handled by the Dune team.
-- Wizards are unable to modify objects in the ‘spellbook/.github/’ directory. If modified in a PR, a bot may auto-close the PR. Please request help from the Dune team to modify.
+  - This timeframe has worked well for 95%+ of PRs, but there are instances where the timeout needs increased, which needs handled by the Dune team.
+- Wizards are unable to modify objects in the `spellbook/.github/` directory. If modified in a PR, a bot may auto-close the PR. Please request help from the Dune team to modify.
 - Concurrency is set to 1, meaning each new commit which triggers a new workflow action will cancel any currently running.
 
 ### Common Issues to Look Out For in CI Tests
 
 - **Models which are not in my PR are running in my CI workflow, why is that?**
   - Due to the manifest comparison steps, there are times the manifest files are out of sync, therefore PR manifest vs. main branch manifest pulls more than it should to run.
-  - To fix, the ‘commit manifest’ workflow in ‘Actions’ section likely needs rerun to upload a fresh main branch manifest file.
-  - When the Dune team merges a batch of PRs, this ‘commit manifest’ workflow automatically kicks off to set up a new manifest file. However, this workflow takes a few minutes, so if a commit is pushed to another PR during this workflow run, it can pull in more models than expected – simply monitor this job and rerun CI tests on PR once complete.
+  - To fix, the `commit manifest` workflow in `Actions` section likely needs rerun to upload a fresh main branch manifest file.
+  - When the Dune team merges a batch of PRs, this `commit manifest` workflow automatically kicks off to set up a new manifest file. However, this workflow takes a few minutes, so if a commit is pushed to another PR during this workflow run, it can pull in more models than expected – simply monitor this job and rerun CI tests on PR once complete.
 - **The DuneSQL cluster for CI is down.**
   - Dune team will need to fix internally.
 - **Error: ‘Metadata is not found for ____’.**

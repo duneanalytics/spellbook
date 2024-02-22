@@ -39,6 +39,7 @@ FROM (VALUES
     , ('mstable', 'mStable', 'Direct', 'mstable_')
     , ('airswap', 'AirSwap', 'Direct', 'airswap')
     , ('wombat', 'Wombat Exchange', 'Direct', 'WombatExchange')
+    , ('wombat_exchange', 'Wombat Exchange', 'Direct', 'WombatExchange')
     , ('defiswap', 'DeFi Swap', 'Direct', 'defi_swap')
     , ('gmx', 'GMX', 'Direct', 'GMX_IO')
     , ('clipper', 'Clipper', 'Direct', 'Clipper_DEX')
@@ -67,7 +68,7 @@ FROM (VALUES
     , ('saddle', 'Saddle', 'Direct', 'saddlefinance')
     , ('oneinch', '1inch', 'Aggregator', '1inch')
     , ('1inch', '1inch', 'Aggregator', '1inch') -- To Fix, should be just oneinch
-    , ('1inch Limit Order Protocol', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
+    , ('1inch LOP', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
     , ('zeroex', '0x', 'Aggregator', '0xProject')
     , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
@@ -114,4 +115,17 @@ FROM (VALUES
     , ('goosefx_ssl', 'GooseFX', 'Direct', 'GooseFX1')
     , ('velocimeter', 'Velocimeter', 'Direct', 'Velocimeter')
     , ('dooar', 'Dooar', 'Direct', 'dooar')
+    , ('gridex', 'Gridex', 'Direct', 'GridexProtocol')
+    , ('moonbase', 'Moonbase','Direct','MoonBase')
+    , ('horizondex', 'HorizonDex', 'Direct', 'HorizonDex')
+    , ('plantbaseswap','Plantbaseswap','Direct','PlantBaseSwap')
+    , ('sobal','Sobal','Direct','Sobal')
+    , ('derpdex','DerpDex', 'Direct', 'DerpDex')
+    , ('torus', 'Torus', 'Direct', 'torus_farm')
+    , ('solidly','Solidly','Direct','Solidly')
+    , ('sharkswap', 'SharkSwap', 'Direct', 'SharkSwapDEX')
+    , ('citadelswap','Citadelswap','Direct','Citadel')
+    , ('autotronic', 'Autotronic', 'Direct', 'autotronicbase')
+    , ('zebra', 'Zebra', 'Direct', 'zebra')
+    , ('scrollswap', 'ScrollSwap', 'Direct', 'scrollswap')
     ) AS temp_table (project, name, marketplace_type, x_username)
