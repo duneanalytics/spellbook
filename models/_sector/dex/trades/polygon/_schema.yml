@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_polygon_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: airswap_polygon_base_trades
@@ -301,3 +303,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dooar_polygon_base_trades_seed')
+
+  - name: uniswap_v2_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap polygon v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_polygon_base_trades_seed')
+          filter:
+            version: 2
