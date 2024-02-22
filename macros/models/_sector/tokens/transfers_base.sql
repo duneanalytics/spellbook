@@ -8,7 +8,7 @@ WITH transfers AS (
         , block_number
         , tx_hash
         , cast(NULL as bigint) AS evt_index
-        , -CAST(ROW_NUMBER() OVER (PARTITION BY block_number, tx_hash ORDER BY "from", to, value) AS INT256) AS sub_tx_trade_id
+        , 100000000 + CAST(ROW_NUMBER() OVER (PARTITION BY block_number ORDER BY "from", to, trace_address, value) AS INT256) AS sub_tx_trade_id
         , trace_address
         {% if native_contract_address%}
         , {{native_contract_address}} AS contract_address 
