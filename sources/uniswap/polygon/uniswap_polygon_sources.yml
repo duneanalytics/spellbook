@@ -16,7 +16,8 @@ sources:
           - &amount0
             name: amount0
             description: "The delta of the token0 balance of the pool"
-          - name: contract_address
+          - &contract_address
+            name: contract_address
             description: "Polygon address for the liquidity pool used in transaction"
           - &evt_block_number
             name: evt_block_number
@@ -46,7 +47,7 @@ sources:
             description: the sqt(price) of the pool after the swap"
           - &tick
             name: tick
-            description: the log base 1.0001 of price of the pool after the swap"
+            description: the log polygon 1.0001 of price of the pool after the swap"
 
       - name: Factory_evt_PoolCreated
         loaded_at_field: evt_block_time
@@ -76,3 +77,45 @@ sources:
 
       - name: UniswapV3Pool_evt_Flash
         loaded_at_field: evt_block_time
+
+  - name: uniswap_v2_polygon
+    description: "polygon decoded tables related to Uniswap v2 contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &amount0In
+            name: amount0In
+          - &amount0Out
+            name: amount0Out
+          - &amount1In
+            name: amount1In
+          - &amount1Out
+            name: amount1Out
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - &to
+            name: to
+
+      - name: UniswapV2Factory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &_0
+            name: _0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pair
+            name: pair
+          - *token0
+          - *token1

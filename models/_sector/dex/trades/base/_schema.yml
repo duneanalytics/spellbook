@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_base_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: aerodrome_base_base_trades
@@ -495,3 +497,22 @@ models:
           seed_file: ref('autotronic_base_base_trades_seed')
           filter:
             version: 1
+
+  - name: uniswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap base v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_base_base_trades_seed')
+          filter:
+            version: 2
