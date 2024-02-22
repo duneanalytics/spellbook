@@ -82,17 +82,12 @@ LEFT JOIN
     ON date_trunc('minute', t.block_time) = prices.minute
     AND CASE
         WHEN t.token_standard = 'native'
-        THEN prices.blockchain IS NULL
-        ELSE prices.blockchain = '{{ blockchain }}'
-    END
-    AND CASE
-        WHEN t.token_standard = 'native'
-        THEN prices.contract_address IS NULL
-        ELSE t.contract_address = prices.contract_address
-    END
-    AND CASE
-        WHEN t.token_standard = 'native'
-        THEN evms_info.native_token_symbol = prices.symbol
-        ELSE 1 = 1
-    END
+            THEN
+            prices.blockchain IS NULL
+            AND prices.contract_address IS NULL
+            AND evms_info.native_token_symbol = prices.symbol
+        ELSE
+            prices.blockchain = '{{ blockchain }}'
+            AND t.contract_address = prices.contract_address
+        END
 {%- endmacro %}
