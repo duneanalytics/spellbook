@@ -10,47 +10,10 @@
 {% set c_native_token_address = '0x0000000000000000000000000000000000000000' %}
 {% set c_alternative_token_address = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000' %}  -- ETH
 {% set zonic_fee_address_address = '0xc353de8af2ee32da2eeae58220d3c8251ee1adcf' %}
-{% set c_native_symbol = "ETH" %}
 {% set min_block_number = 72260823 %}
 {% set project_start_date = '2023-02-04' %}
 
-with source_scroll_transactions as (
-    select *
-    from {{ source('scroll','transactions') }}
-    {% if not is_incremental() %}
-    where block_number >= {{min_block_number}}  -- zonic first txn
-    {% endif %}
-    {% if is_incremental() %}
-    where block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-)
-,ref_tokens_nft as (
-    select *
-    from {{ ref('tokens_nft') }}
-    where blockchain = 'scroll'
-)
-,ref_tokens_erc20 as (
-    select *
-    from {{ source('tokens', 'erc20') }}
-    where blockchain = 'scroll'
-)
-,ref_nft_aggregators as (
-    select *
-    from {{ ref('nft_aggregators') }}
-    where blockchain = 'scroll'
-)
-,source_prices_usd as (
-    select *
-    from {{ source('prices', 'usd') }}
-    where blockchain = 'scroll'
-    {% if not is_incremental() %}
-      and minute >= TIMESTAMP '{{project_start_date}}'  -- first txn
-    {% endif %}
-    {% if is_incremental() %}
-      and minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-)
-,events_raw as (
+with events_raw as (
     select
        evt_block_time as block_time
        ,evt_block_number as block_number
