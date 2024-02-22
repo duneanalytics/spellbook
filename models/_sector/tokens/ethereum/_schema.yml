@@ -127,6 +127,24 @@ models:
       - name: decimals
       - name: collection_name
 
+  - name: tokens_ethereum_base_balances_daily_agg
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances daily base"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
   - name: tokens_ethereum_base_balances_daily
     meta:
       blockchain: ethereum
