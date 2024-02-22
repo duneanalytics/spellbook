@@ -1,0 +1,128 @@
+version: 2
+
+sources:
+  - name: aave_v2_ethereum
+    description: "Decoded contracts for aave v2 on Ethereum"
+
+    tables:
+      - name: LendingPool_evt_ReserveDataUpdated
+        loaded_at_field: evt_block_time
+        description: "Provides the liqudity index, stable and variable borrow rates for aave v2 reserves."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+        - &contract_address
+          name: contract_address
+          description: "Aave token contract address"       
+        - &evt_block_number
+          name: evt_block_number
+          description: "Event block number"  
+        - &evt_block_time
+          name: evt_block_time
+          description: "Timestamp for block event time in UTC"
+        - &evt_index
+          name: evt_index
+          description: "Event index"  
+        - &evt_tx_hash
+          name: evt_tx_hash
+          description: "Transaction hash of the event" 
+        - name: liqudityIndex
+          description: "Liqudity index value of the reserve"
+        - name: liqudityRate
+          description: "Liqudity rate value of the reserve"
+        - &reserve
+          name: reserve
+          description: "Aave reserve contract address"
+        - name: stableBorrowRate
+          description: "Stable borrow rate value of the reserve"  
+        - name: variableBorrowIndex
+          description: "Variable borrow index value of the reserve"
+        - name: variableBorrowRate
+          description: "Variable borrow rate value of the reserve" 
+
+      - name: DefaultReserveInterestRateStrategy_call_calculateInterestRates
+  
+  - name: aave_ethereum
+    description: "Decoded contracts for Aave v1 on Ethereum"
+    tables:
+      - name: AaveGovernanceV2_evt_VoteEmitted
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: "DAO governor contract address"
+          - name: evt_block_number
+          - name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - name: evt_index
+          - name: evt_tx_hash
+            description: "Unique transaction hash value tied to each vote on the DAO"
+          - &proposalId
+            name: proposalId
+          - &reason
+            name: reason
+          - &voter
+            name: voter
+          - &votes
+            name: votes
+
+      - name: AaveGovernanceV2_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: "DAO governor contract address"
+          - name: evt_block_number
+          - name: evt_block_time
+            description: "UTC event block time of each DAO vote"
+          - name: evt_index
+          - name: evt_tx_hash
+          - &calldatas
+            name: calldatas
+          - &description
+            name: description
+          - &endBlock
+            name: endBlock
+          - &id
+            name: id
+          - &proposer
+            name: proposer
+          - &signatures
+            name: signatures
+          - &startBlock
+            name: startBlock
+          - &targets
+            name: targets
+          - &values
+            name: values
+
+      - name: AaveGovernanceV2_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+
+      - name: AaveGovernanceV2_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+
+      - name: AaveGovernanceV2_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - &eta
+            name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id

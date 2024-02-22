@@ -98,3 +98,4 @@ INNER JOIN
     ON a.project_contract_address = c.trading_contract
     AND a.version = c.trading_contract_version
 
+-- reload

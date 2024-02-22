@@ -14,7 +14,7 @@
 -- -- about 20 pools on fantom missing because of broken creation_traces table
 -- -- some of the pools on zksync are missing because of broken creation_traces table (known issue, node problems)
 
--- TODO: 
+-- TODO:
 -- -- implement mento pools on celo. it's only 11 of them, but implementation is not trivial, so for now we'll just skip them
 
 
@@ -51,32 +51,31 @@
 
 
 
-{% 
+{%
     set blockchains = [
-        "ethereum", 
-        "polygon", 
-        "bnb", 
-        "avalanche_c", 
-        "gnosis", 
-        "fantom", 
-        "optimism", 
-        "arbitrum", 
-        "celo", 
-        "base", 
-        "zksync",
+        "ethereum",
+        "polygon",
+        "bnb",
+        "avalanche_c",
+        "gnosis",
+        "fantom",
+        "optimism",
+        "arbitrum",
+        "celo",
+        "base",
         "zora",
     ]
 %}
 
 
 
-with 
+with
 
 
 pool_created_logs as (
     {% for blockchain in blockchains %}
         {% for topic0, data in config.items() %}
-            select 
+            select
                 '{{ blockchain }}' as blockchain
                 , '{{ data['type'] }}' as type
                 , '{{ data['version'] }}' as version
@@ -118,13 +117,13 @@ pool_created_logs as (
 
 -- hardcoded OP legacy pools
 , _optimism_ovm1_legacy as (
-    select 
+    select
         'optimism' as blockchain
         , 'uniswap_compatible' as type
         , 'v3' as version
         , pool
         , token0
-        , token1 
+        , token1
         , creation_block_time
         , creation_block_number
         , contract_address
@@ -137,7 +136,7 @@ pool_created_logs as (
 
 
 
-select 
+select
     blockchain
     , type
     , version
@@ -151,7 +150,7 @@ from pool_created_logs
 join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
 {% if is_incremental() %}
     where {{ incremental_predicate('block_time') }}
-{% endif %} 
+{% endif %}
 
 union all
 

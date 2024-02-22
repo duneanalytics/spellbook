@@ -22,10 +22,12 @@ SELECT *
 FROM (
     {% for bpt_prices in balancer_models %}
     SELECT
+        day,
         blockchain,
-        hour,
+        version,
+        decimals,
         contract_address,
-        median_price
+        bpt_price
     FROM {{ bpt_prices }}
     {% if not loop.last %}
     UNION ALL

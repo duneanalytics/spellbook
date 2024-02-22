@@ -67,7 +67,10 @@ with verify_txns as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND bytearray_substring(t.data, 1, 4) = 0x2b0006fa -- verifyBatchesTrustedAggregator
+    AND bytearray_substring(t.data, 1, 4) IN ( 
+      0x2b0006fa, -- verifyBatchesTrustedAggregator
+      0x1489ed10 -- verifyBatchesTrustedAggregator (since block 19218496)
+      )
     AND t.block_time >= timestamp '2023-03-23'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -94,7 +97,7 @@ with verify_txns as (
     {% endif %}
   WHERE t.to = 0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60
     AND bytearray_substring(t.data, 1, 4) = 0x9b3b76cc -- Verify Availability Proof, imx committee
-    AND t.block_time >= timestamp '2021-03-24'
+    AND t.block_time >= timestamp '2021-10-23'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
@@ -132,7 +135,7 @@ with verify_txns as (
       , b.base_fee_per_gas
       , b.time
     FROM {{ source('ethereum','blocks') }} as b
-    WHERE b.time >= timestamp '2022-01-01'
+    WHERE b.time >= timestamp '2021-10-23'
       {% if is_incremental() %}
       AND b.time >= date_trunc('day', now() - interval '7' day)
       {% endif %}

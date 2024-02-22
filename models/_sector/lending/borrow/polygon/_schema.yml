@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: aave_v2_polygon_base_borrow
+  - name: lending_polygon_base_borrow
     meta:
       blockchain: polygon
       sector: lending
-      project: aave
-      contributors: batwayne, chuxin, tomfutago
+      project: aave, compound
+      contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v2', 'polygon']
-    description: "Aave v2 borrow transactions on Polygon"
+      tags: ['lending', 'borrow', 'aave', 'compound', 'polygon']
+    description: "All lending borrow transactions on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,19 +17,6 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('aave_polygon_base_borrow_seed')
-          filter:
-            version: 2
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - borrower
-            - amount
     columns:
       - &blockchain
         name: blockchain
@@ -92,15 +79,15 @@ models:
         tests:
           - not_null
 
-  - name: aave_v3_polygon_base_borrow
+  - name: aave_v2_polygon_base_borrow
     meta:
       blockchain: polygon
       sector: lending
       project: aave
       contributors: batwayne, chuxin, tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'v3', 'polygon']
-    description: "Aave v3 borrow transactions on Polygon"
+      tags: ['lending', 'borrow', 'aave', 'polygon']
+    description: "Aave v2 borrow transactions on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -108,19 +95,10 @@ models:
             - token_address
             - tx_hash
             - evt_index
-      - check_seed:
+      - check_lending_base_borrow_seed:
           seed_file: ref('aave_polygon_base_borrow_seed')
           filter:
-            version: 3
-          match_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
-          check_columns:
-            - block_number
-            - borrower
-            - amount
+            version: 2
     columns:
       - *blockchain
       - *project
@@ -137,7 +115,7 @@ models:
       - *tx_hash
       - *evt_index
 
-  - name: lending_polygon_base_borrow
+  - name: aave_v3_polygon_base_borrow
     meta:
       blockchain: polygon
       sector: lending
@@ -145,7 +123,7 @@ models:
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'polygon']
-    description: "All Aave borrow transactions on Polygon"
+    description: "Aave v3 borrow transactions on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -153,6 +131,46 @@ models:
             - token_address
             - tx_hash
             - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_polygon_base_borrow_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: compound_v3_polygon_base_borrow
+    meta:
+      blockchain: polygon
+      sector: lending
+      project: compound
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'compound', 'polygon']
+    description: "Compound v3 borrow transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('compound_polygon_base_borrow_seed')
+          filter:
+            version: 3
     columns:
       - *blockchain
       - *project

@@ -1,0 +1,87 @@
+version: 2
+
+sources:
+  - name: ethereum
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: polygon
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at  
+  - name: optimism
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: arbitrum
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: gnosis
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: bnb
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: avalanche_c
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: fantom
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: celo
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: base
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: zksync
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at
+  - name: scroll
+    tables:
+      - name: signatures
+        freshness:
+          warn_after: { count: 12, period: hour }
+        description: "signatures from ABIs on this chain"
+        loaded_at_field: created_at

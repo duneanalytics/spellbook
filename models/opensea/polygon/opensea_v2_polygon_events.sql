@@ -145,5 +145,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', a.b
     {% if is_incremental() %}
     AND minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20 ON erc20.contract_address = a.currency_contract and erc20.blockchain = 'polygon'
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20 ON erc20.contract_address = a.currency_contract and erc20.blockchain = 'polygon'
 LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.blockchain = 'polygon' AND agg.contract_address = t.to

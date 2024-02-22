@@ -21,7 +21,7 @@ WITH check_date AS (
   {% if is_incremental() %}
     MAX(created_time) AS base_time FROM {{this}}
   {% else %}
-    MIN(block_time) AS base_time FROM {{ source( chain , 'transactions') }}
+    MIN(time) AS base_time FROM {{ source( chain , 'blocks') }}
   {% endif %}
 )
 
@@ -308,7 +308,7 @@ WITH check_date AS (
             SELECT contract_address, MIN(evt_block_number) AS min_block_number, '{{standard_name}}' || '20' as token_standard_erc20
             FROM {{source('erc20_' + chain, 'evt_transfer')}} r, check_date cd
             WHERE 1=1
-            AND r.contract_address NOT IN (SELECT contract_address FROM {{ ref('tokens_' + chain + '_' + standard_name + '20')}} )
+            AND r.contract_address NOT IN (SELECT contract_address FROM {{ source('tokens_' + chain, standard_name + '20')}} )
 
               AND {{ incremental_days_forward_predicate('r.evt_block_time', 'cd.base_time', days_forward ) }}
 

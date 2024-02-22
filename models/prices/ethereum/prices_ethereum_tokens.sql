@@ -1160,7 +1160,7 @@ FROM
     ('equad-quadrantprotocol', 'ethereum', 'EQUAD', 0xc28e931814725bbeb9e670676fabbcb694fe7df2, 18),
     ('fnk-fnkcom', 'ethereum', 'FNK', 0xb5fe099475d3030dde498c3bb6f3854f762a48ad, 18),
     ('fyz-fyooz', 'ethereum', 'FYZ', 0x6bff2fe249601ed0db3a87424a2e923118bb0312, 18),
-    ('gmt-gomining-token', 'ethereum', 'GMT', 0x7ddc52c4de30e94be3a6a0a2b259b2850f421989, 18),    
+    ('gmt-gomining-token', 'ethereum', 'GMT', 0x7ddc52c4de30e94be3a6a0a2b259b2850f421989, 18),
     ('gmt-stepn', 'ethereum', 'GMT', 0xe3c408bd53c31c085a1746af401a4042954ff740, 8),
     ('hbot-hummingbot', 'ethereum', 'HBOT', 0xe5097d9baeafb89f9bcb78c9290d545db5f9e9cb, 18),
     ('lead-lead', 'ethereum', 'LEAD', 0x1dd80016e3d4ae146ee2ebb484e8edd92dacc4ce, 18),
@@ -1210,7 +1210,6 @@ FROM
     ('nmt-nftmart-token', 'ethereum', 'NMT', 0xd81b71cbb89b2800cdb000aa277dc1491dc923c3, 18),
     ('nwc-newscryptoio', 'ethereum', 'NWC', 0x968f6f898a6df937fc1859b323ac2f14643e3fed, 18),
     ('ons-one-share', 'ethereum', 'ONS', 0x5bb29c33c4a3c29f56f8aca40b4db91d8a5fe2c5, 18),
-    ('peak-peakdefi', 'ethereum', 'PEAK', 0x630d98424efe0ea27fb1b3ab7741907dffeaad78, 8),
     ('pepe-pepegold', 'ethereum', 'PEPE', 0x4a27e9aab8f8ba9de06766c8476ed1d16494e35f, 18),
     ('phnx-phoenixdao', 'ethereum', 'PHNX', 0x38a2fdc11f526ddd5a607c1f251c065f40fbf2f7, 18),
     ('pla-playdapp', 'ethereum', 'PLA', 0x3a4f40631a4f906c2bad353ed06de7a5d3fcb430, 18),
@@ -1340,6 +1339,7 @@ FROM
     ('com-communis', 'ethereum', 'COM', 0x5A9780Bfe63f3ec57f01b087cD65BD656C9034A8, 12),
     ('woof-woofworkio', 'ethereum', 'WOOF', 0x6BC08509B36A98E829dFfAD49Fde5e412645d0a3, 18),
     ('banana-banana', 'ethereum', 'BANANA', 0x94e496474F1725f1c1824cB5BDb92d7691A4F03a, 18),
+    ('banana-banana-gun-v2', 'ethereum', 'BANANA', 0x38e68a37e401f7271568cecaac63c6b1e19130b4, 18),
     ('hopr-hopr', 'ethereum', 'HOPR', 0xF5581dFeFD8Fb0e4aeC526bE659CFaB1f8c781dA, 18),
     ('ic-icy', 'ethereum', 'IC', 0xA876f27F13A9eB6E621202cEFDD5AFc4a90E6457, 9),
     ('pkf-firebird', 'ethereum', 'PKF', 0x8B39B70E39Aa811b69365398e0aACe9bee238AEb, 18),
@@ -1540,7 +1540,6 @@ FROM
     ('rsc-researchcoin', 'ethereum', 'RSC', 0xD101dCC414F310268c37eEb4cD376CcFA507F571, 18),
     ('smart-smart-game', 'ethereum', 'SMART', 0xce20BB92CCF9BbF5091ef85649E71E552819AD8c, 18),
     ('crvfrax-curvefi-fraxusdc', 'ethereum', 'FRAXBP', 0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC, 18),
-    ('tbtc-tbtc-v2', 'ethereum', 'TBTC', 0x18084fbA666a33d37592fA2633fD49a74DD93a88, 18),
     ('asw-adaswap', 'ethereum', 'ASW', 0x56694577564FdD577a0ABB20FE95C1E2756C2a11, 18),
     ('cnlt-cannaland-token', 'ethereum', 'CNLT', 0x00E13FF16d54619024Ab3b861F25B84Bd53e8Ac1, 18),
     ('fanc-fanc', 'ethereum', 'FANC', 0xbB126042235E6bD38B17744cb31a8bF4A206c045, 18),
@@ -1624,8 +1623,30 @@ FROM
     ('beam-beam-eth', 'ethereum', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
     ('sdl-stakelink', 'ethereum', 'SDL', 0xa95c5ebb86e0de73b4fb8c47a45b792cfea28c23, 18),
     ('ton-tokamak-network', 'ethereum', 'TON', 0x2be5e8c109e2197D077D13A82dAead6a9b3433C5, 18),
-    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18)
-    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('tos-tonstarter', 'ethereum', 'TOS', 0x409c4d8cd5d2924b9bc5509230d16a61289c8153, 18),
+    ('gene-genomesdao', 'ethereum', 'GENE', 0x21413c119b0c11c5d96ae1bd328917bc5c8ed67e, 18),
+    ('rbc-rubic', 'ethereum', 'RBC', 0x3330bfb7332ca23cd071631837dc289b09c33333, 18),
+    ('magic-magic-arbitrum', 'ethereum', 'MAGIC', 0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a, 18),
+    ('premia-premia', 'ethereum', 'PREMIA', 0x6399c842dd2be3de30bf99bc7d1bbf6fa3650e70, 18),
+    ('stfx-stfx', 'ethereum', 'STFX', 0x9343e24716659a3551eb10aff9472a2dcad5db2d, 18),
+    ('flux-datamine-flux', 'ethereum', 'FLUX', 0x469eda64aed3a3ad6f868c44564291aa415cb1d9, 18),
+    ('tpy-thrupenny', 'ethereum', 'TPY', 0x968cbe62c830a0ccf4381614662398505657a2a9, 8),
+    ('hilo-hilo', 'ethereum', 'HILO', 0xbb9fd9fa4863c03c574007ff3370787b9ce65ff6, 18),
+    ('pear-pear-swap', 'ethereum', 'PEAR', 0x5dcd6272c3cbb250823f0b7e6c618bce11b21f90, 18),
+    ('dinero-dinerobet', 'ethereum', 'DINERO', 0xa3ad8c7ab6b731045b5b16e3fdf77975c71abe79, 18),
+    ('jbot-jackbot', 'ethereum', 'JBOT', 0x3a97e00b48d56bd5e0502e1a2a8c036a040e1b99, 9),
+    ('rbx-rabbitx', 'ethereum', 'RBX', 0x3Ba925fdeAe6B46d0BB4d424D829982Cb2F7309e, 18),
+    ('gyd-gyro-dollar','ethereum','GYD',0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 18),
+    ('ezeth-renzo-restaked-eth','ethereum','EZETH',0xbf5495efe5db9ce00f80364c8b423567e58d2110, 18),
+    ('mubi-multibit', 'ethereum', 'MUBI', 0x38e382f74dfb84608f3c1f10187f6bef5951de93, 18),
+    ('peas-peapods', 'ethereum', 'PEAS', 0x02f92800F57BCD74066F5709F1Daa1A4302Df875, 18),
+    ('aeth-ankreth', 'ethereum', 'ankrETH', 0xe95a203b1a91a908f9b9ce46459d101078c2c3cb, 18),
+    ('sweth-swell-ethereum', 'ethereum', 'swETH', 0xf951e335afb289353dc249e82926178eac7ded78, 18),
+    ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18),
+    ('usde-ethena-usde', 'ethereum', 'USDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 18),
+    ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18),
+    ('ata-automata', 'ethereum', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18)
+) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
     0x841fb148863454a3b3570f515414759be9091465    -- SHIH
@@ -1648,4 +1669,5 @@ where contract_address not in (
     ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
+    ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
 )

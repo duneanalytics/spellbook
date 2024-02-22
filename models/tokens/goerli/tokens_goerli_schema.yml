@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: tokens_goerli_nft_curated
+    meta:
+      blockchain: goerli
+      sector: tokens
+      contributors: hildobby
+    config:
+      tags: ['tokens', 'metadata', 'goerli', 'nft', 'erc721']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Token Symbol"
+
+  - name: tokens_goerli_nft
+    meta:
+      blockchain: goerli
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens', 'metadata', 'goerli', 'nft', 'erc721' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: symbol
+        description: "NFT Token Symbol"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
+        description: >
+          The token standard. This is the set of rules that the contract must respect
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.
+
+
+  - name: tokens_goerli_nft_standards
+    meta:
+      blockchain: goerli
+      sector: nft
+      contributors: 0xRob
+    config:
+      tags: [ 'nft','goerli' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']

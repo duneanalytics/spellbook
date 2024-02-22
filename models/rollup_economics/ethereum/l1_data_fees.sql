@@ -103,47 +103,39 @@ with tx_batch_appends as (
   UNION ALL 
   
   SELECT
-    lower(op.protocol_name) as name,
-    t.block_number,
-    t.hash,
-    (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent,
-    p.price * (cast(t.gas_used as double) * (cast(t.gas_price as double) / 1e18)) as gas_spent_usd,
-    length(t.data) as data_length,
-    t.gas_used,
-    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
-  FROM
-    {{ source('ethereum','transactions') }} as t
-    INNER JOIN (
-      SELECT 
-          protocol_name,
-          MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l1_batch_inbox_from_address",
-          MAX(CASE WHEN submitter_type = 'L1BatchInbox' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l1_batch_inbox_to_address",
-          MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'from_address' THEN address ELSE NULL END) AS "l2_output_oracle_from_address",
-          MAX(CASE WHEN submitter_type = 'L2OutputOracle' AND role_type = 'to_address' THEN address ELSE NULL END) AS "l2_output_oracle_to_address"
-      FROM {{ ref('addresses_ethereum_l2_batch_submitters') }}
-      WHERE protocol_name IN ('OP Mainnet', 'Base', 'Public Goods Network', 'Zora', 'Aevo', 'Mode', 'Lyra', 'Orderly Network')
-      GROUP BY protocol_name
-      ) as op 
-      ON
-        (
-          t."from" = op.l1_batch_inbox_from_address
-          AND t.to = op.l1_batch_inbox_to_address
-        )
-      OR
-        (
-          t."from" = op.l2_output_oracle_from_address
-          AND t.to = op.l2_output_oracle_to_address
-        )
-      AND t.block_time >= timestamp '2022-01-01'
+    lower(protocol_name) as name,
+    block_number,
+    hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    data_length,
+    gas_used,
+    calldata_gas_used
+  FROM (
+    SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    FROM {{ source('ethereum','transactions') }} as t
+    INNER JOIN {{ ref('addresses_ethereum_optimism_batchinbox_combinations') }} as op 
+      ON t."from" = op.l1_batch_inbox_from_address
+         AND t.to = op.l1_batch_inbox_to_address
+      WHERE t.block_time >= timestamp '2020-01-01'
+      UNION ALL
+    SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+    FROM {{ source('ethereum','transactions') }} as t
+    INNER JOIN {{ ref('addresses_ethereum_optimism_outputoracle_combinations') }} as op 
+      ON t."from" = op.l2_output_oracle_from_address
+         AND t.to = op.l2_output_oracle_to_address
+      WHERE t.block_time >= timestamp '2020-01-01'
+    ) b
     INNER JOIN {{ source('prices','usd') }} p
-      ON p.minute = date_trunc('minute', t.block_time)
+      ON p.minute = date_trunc('minute', b.block_time)
       AND p.blockchain is null
       AND p.symbol = 'ETH'
+      AND p.minute >= timestamp '2020-01-01'
       {% if is_incremental() %}
       AND p.minute >= date_trunc('day', now() - interval '7' day)
       {% endif %}
     {% if is_incremental() %}
-    WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE b.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
   UNION ALL 
@@ -166,9 +158,8 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE (
-      t."from" = 0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7 -- StateUpdate poster
-      AND t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
-      AND bytearray_substring(t.data, 1, 4) = 0x77552641
+      t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
+      AND bytearray_substring(t.data, 1, 4) = 0x77552641 -- updateState
     )
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}
@@ -295,8 +286,15 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-  WHERE t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2
-    AND bytearray_substring(t.data, 1, 4) = 0x5e9145c9 -- sequenceBatches
+  WHERE 
+    (
+      t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2 -- old proxy 
+      OR t.to = 0x519E42c24163192Dca44CD3fBDCEBF6be9130987 -- new proxy (as of block 19218878)
+    )
+    AND bytearray_substring(t.data, 1, 4) IN (
+      0x5e9145c9, -- sequenceBatches
+      0xecef3f99 -- sequenceBatches (as of block 19218878)
+      )
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -321,8 +319,12 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-  WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F
-    AND bytearray_substring(t.data, 1, 4) = 0x4165d6dd -- Finalize Blocks (proof verified immediately)
+  WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+    AND bytearray_substring(t.data, 1, 4) IN (
+      0x4165d6dd, -- Finalize Blocks (proof verified immediately)
+      0xd630280f, -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
+      0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
+      )
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -379,6 +381,32 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
+
+  UNION ALL 
+  
+  SELECT
+    'Mantle' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    (length(t.data)) AS input_length,
+    gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+  FROM {{ source('ethereum','transactions') }} AS t
+  INNER JOIN {{ source('prices','usd') }} p
+    ON p.minute = date_trunc('minute', t.block_time)
+    AND p.blockchain is null
+    AND p.symbol = 'ETH'
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+  WHERE t.to = 0xD1328C9167e0693B689b5aa5a024379d4e437858
+    AND bytearray_substring(t.data, 1, 4) = 0x49cd3004 -- createAssertionWithStateBatch 
+    AND t.block_time >= timestamp '2023-06-27' 
+    {% if is_incremental() %}
+    AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 )
 
 ,block_basefees as (
@@ -387,7 +415,7 @@ with tx_batch_appends as (
       , b.base_fee_per_gas
       , b.time
     FROM {{ source('ethereum','blocks') }} as b
-    WHERE b.time >= timestamp '2022-01-01'
+    WHERE b.time >= timestamp '2021-03-23'
       {% if is_incremental() %}
       AND b.time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
