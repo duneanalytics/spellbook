@@ -516,3 +516,22 @@ models:
           seed_file: ref('uniswap_base_base_trades_seed')
           filter:
             version: 2
+
+  - name: sushiswap_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: sushiswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'sushiswap', 'v3' ]
+    description: "sushiswap base v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_base_base_trades_seed')
+          filter:
+            version: 3
