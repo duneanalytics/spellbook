@@ -499,3 +499,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('hashflow_bnb_base_trades_seed')
+
+  - name: uniswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap bnb v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_bnb_base_trades_seed')
+          filter:
+            version: 2
