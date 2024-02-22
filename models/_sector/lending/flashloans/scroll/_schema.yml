@@ -1,21 +1,18 @@
 version: 2
 
 models:
-  - name: lending_flashloans
+  - name: lending_scroll_base_flashloans
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync
+      blockchain: scroll
       sector: lending
       project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync']
-    description: "All lending transactions involving flashloans transactions"
+      tags: ['lending', 'flashloans', 'aave', 'scroll']
+    description: "All lending flashloans transactions on Scroll"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - tx_hash
             - evt_index
     columns:
@@ -44,26 +41,15 @@ models:
         description: "Token amount present in the transaction"
         tests:
           - not_null
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
       - &fee
         name: fee
-      - &symbol
-        name: symbol
-        description: "Token symbol"
-      - &token_address
-        name: token_address
-        description: "Token contract address"
-        tests:
-          - not_null
-      - &contract_address
-        name: contract_address
-        tests:
-          - not_null
       - &block_month
         name: block_month
         description: "Block month column used to partition data in this table"
+      - &token_address
+        name: token_address
+      - &contract_address
+        name: contract_address
         tests:
           - not_null
       - &block_time
@@ -86,3 +72,34 @@ models:
         description: "Event index"
         tests:
           - not_null
+
+  - name: aave_v3_scroll_base_flashloans
+    meta:
+      blockchain: scroll
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'scroll']
+    description: "Aave v3 flashloans transactions on Scroll"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('aave_scroll_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
