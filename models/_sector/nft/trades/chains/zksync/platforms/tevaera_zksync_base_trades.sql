@@ -10,7 +10,7 @@
     )
 }}
 
-{% set alienswap_usage_start_date = "2023-08-13" %}
+{% set tevaera_usage_start_date = "2023-07-26" %}
 
 with base_trades as (
     select
@@ -37,11 +37,11 @@ with base_trades as (
         cast(null as varbinary) as royalty_fee_address,
         cast(null as varbinary) as platform_fee_address,
         s.evt_index as sub_tx_trade_id
-    from {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
+    from {{ source('tevaera_zksync', 'TevaMarket_evt_NewSale') }} s
     {% if is_incremental() %}
     where {{incremental_predicate('s.evt_block_time')}}
     {% else %}
-    where s.evt_block_time >= timestamp '{{alienswap_usage_start_date}}'
+    where s.evt_block_time >= timestamp '{{tevaera_usage_start_date}}'
     {% endif %}
 )
 
