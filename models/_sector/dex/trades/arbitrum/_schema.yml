@@ -608,3 +608,37 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gridex_arbitrum_base_trades_seed')
+  
+  - name: sterling_finance_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sterling_finance
+      contributors: ARDev097
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'sterling_finance']
+    description: "sterling_finance Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sterling_finance_arbitrum_base_trades_seed') 
+
+  - name: sharkyswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sharkyswap
+      contributors: ARDev097
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'sharkyswap']
+    description: "sharkyswap Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sharkyswap_arbitrum_base_trades_seed')
