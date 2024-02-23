@@ -2,7 +2,6 @@
     config(
         schema = 'safe_bnb',
         alias = 'safes',
-        tags = ['prod_exclude'],
         partition_by = ['block_month'],
         on_schema_change='fail',
         materialized='incremental',
@@ -47,6 +46,7 @@ where et.success = true
         0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
+    and et.tx_success = true
     {% if not is_incremental() %}
     and et.block_time > TIMESTAMP '2021-01-26' -- for initial query optimisation
     {% endif %}
