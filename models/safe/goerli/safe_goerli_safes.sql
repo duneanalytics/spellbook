@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["goerli"]\',
                                     "project",
                                     "safe",
-                                    \'["tschubotz", "hosuke"]\') }}'
+                                    \'["tschubotz", "hosuke", "danielpartida", "aliceha", "safe_intern"]\') }}'
     ) 
 }}
 
@@ -45,7 +45,7 @@ where et.success = true
         0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
-
+    and tx_success = true 
     {% if not is_incremental() %}
     and et.block_time > TIMESTAMP '2019-09-03' -- for initial query optimisation
     {% endif %}
