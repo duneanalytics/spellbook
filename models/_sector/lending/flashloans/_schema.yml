@@ -3,12 +3,12 @@ version: 2
 models:
   - name: lending_flashloans
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync
       sector: lending
-      project: aave, moola
+      project: aave
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'moola', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom']
+      tags: ['lending', 'flashloans', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync']
     description: "All lending transactions involving flashloans transactions"
     tests:
       - dbt_utils.unique_combination_of_columns:
