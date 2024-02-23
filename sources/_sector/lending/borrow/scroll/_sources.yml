@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: aave_v3_scroll
+    tables:
+      - name: L2Pool_evt_Borrow
+      - name: L2Pool_evt_Repay
+      - name: L2Pool_evt_LiquidationCall
+
+  - name: layer_bank_scroll
+    tables:
+      - name: lETH_evt_Borrow
+      - name: lETH_evt_RepayBorrow
+      - name: lETH_evt_LiquidateBorrow
+      - name: lUSDC_evt_Borrow
+      - name: lUSDC_evt_RepayBorrow
+      - name: lUSDC_evt_LiquidateBorrow
+      - name: lwstETH_evt_Borrow
+      - name: lwstETH_evt_RepayBorrow
+      - name: lwstETH_evt_LiquidateBorrow

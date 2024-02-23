@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: synthetix_v3_base
+    description: "Synthetix V3 Base Decoded Events"
+    tables:
+      - name: PerpsMarket_evt_AccountCreated
+        loaded_at_field: evt_block_time
+      - name: PerpsMarket_evt_MarketCreated
+        loaded_at_field: evt_block_time
+      - name: PerpsMarket_evt_MarketUpdated
+        loaded_at_field: evt_block_time
+      - name: PerpsMarket_evt_OrderSettled
+        loaded_at_field: evt_block_time

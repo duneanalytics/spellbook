@@ -115,3 +115,11 @@ sources:
     tables:
       - name: Grid_evt_Swap
       - name: GridFactory_evt_GridCreated
+  - name: sterling_finance_arbitrum
+    tables:
+      - name: StrPair_STR_WETH_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sharkyswap_arbitrum
+    tables:
+      - name: SharkyPair_evt_Swap
+      - name: SharkyFactory_evt_PairCreated

@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: magic_eden_solana
+    tables:
+      - name: m2_call_executeSaleV2
+      - name: m2_call_mip1ExecuteSaleV2
+      - name: m2_call_ocpExecuteSaleV2
+      - name: m3_call_buyNow
+      - name: mmm_call_solFulfillBuy
+      - name: mmm_call_solFulfillSell
+      - name: mmm_call_solMip1FulfillBuy
+      - name: mmm_call_solMip1FulfillSell
+      - name: mmm_call_solOcpFulfillBuy
+      - name: mmm_call_solOcpFulfillSell
+  - name: tensorswap_v1_solana
+    tables:
+      - name: tensorswap_call_buyNft
+      - name: tensorswap_call_buySingleListing
+      - name: tensorswap_call_sellNftTokenPool
+      - name: tensorswap_call_sellNftTradePool
+  - name: tensor_cnft_solana
+    tables:
+      - name: tcomp_call_buy
+      - name: tcomp_call_takeBidMetaHash
+      - name: tcomp_call_takeBidFullMeta
+  - name: bubblegum_solana
+    tables:
+      - name: bubblegum_call_transfer
