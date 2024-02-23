@@ -5,10 +5,12 @@ Each model within Spellbook contains a config block with various properties. Dep
 ## Required Config Properties
 
 1. **schema**
+
    - Schema name, as used on the Dune app.
    - **Note**: There may be some older models with the schema property in the dbt project file, but this will eventually be moved directly into models. All future spells will require this property in the model.
 
 2. **alias**
+
    - Table/view name, as used on the Dune app.
 
 3. **materialized**
@@ -20,17 +22,20 @@ Each model within Spellbook contains a config block with various properties. Dep
 ## Required Configs for Incremental Tables
 
 1. **file_format**
+
    - `delta` – Delta lake, an open-source storage framework, is used for all spells.
 
 2. **incremental_strategy**
+
    - `merge` – Standard setting; some spells might use ‘append-only’ in unique situations.
 
 3. **unique_key**
+
    - Primary key(s) that determine unique rows and specify join conditions in merge statements.
 
 4. **incremental_predicates**
    - Filters the target to the same date range as the source, for improved performance & less data in memory.
-   - Universal incremental macro can be found [here](https://github.com/duneanalytics/spellbook/blob/main/macros/incremental_predicate.sql).
+   - Universal incremental macro can be found [here](/macros/incremental_predicate.sql).
    - **Note**: This is a newer addition to Spellbook. Please add this property for new incremental spells.
 
 ## Optional Configs for Materialized as Table / Incremental
@@ -43,12 +48,14 @@ Each model within Spellbook contains a config block with various properties. Dep
 ## Other Optional Properties for All Materialization Types
 
 1. **post_hook**
+
    - In general, this can be any query needed to run after the model completes.
    - Main use in Spellbook: Add table properties for display on the Dune data explorer.
    - Ideal for spells at the end of a lineage, intended for frequent querying and public sharing.
    - Spells which are ‘building blocks’ towards final downstream spells can avoid this property.
 
 2. **tags**
+
    - Tags are mostly used for Dune team to handle orchestration.
    - **Examples**: ‘prod_exclude’ for failing models or models not intended for production, ‘static’ for spells materialized as a table, yet only contain hardcoded static data and don’t need to run every day, only when modified.
 

@@ -4,20 +4,20 @@
 Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation to tame the blockchain.
 
 ## TL;DR
+
 - Have a question on how something works in Spellbook, or why we design spells in a particular way?
   - Please visit the [docs](docs/) directory to find various topics & ideally answers to any question about Spellbook
 - Spellbook has [introduced sub-projects](https://github.com/duneanalytics/spellbook/discussions/5238), with the intention to pilot a path forward for scaling the repo
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
 - Don't know where to start? The docs below will guide you, but as a summary:
-  - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes. 
+  - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes.
     - Follow the guide for [Submitting a PR](), [Setting up your dev environment]() and [Using dbt to write spells]() if you find yourself lost.
     - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/spellbook/).
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
   - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
 - Have questions? Head over to #spellbook on our [discord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
-- Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](https://github.com/duneanalytics/spellbook/blob/main/CLA.md)
-
+- Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](CLA.md)
 
 ## Table of Contents
 
@@ -30,7 +30,6 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - [Connecting with other wizards](#connecting-with-other-wizards)
 - [Setting up your dev environment](#setting-up-your-local-dev-environment)
 - [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
-
 
 ## Introduction
 
@@ -47,7 +46,8 @@ Spellbook has a lot of moving parts & specific design principles for contributin
 ## Sub-projects
 
 In order to prepare for scaling Spellbook, the repo has started to pilot sub-projects to break out complex DBT lineages a bit & keep focus areas clean. This will also help downstream orchestration to keep spells fresh in production. Please refer to initial [GH discussion](https://github.com/duneanalytics/spellbook/discussions/5238) for high-level info & continue the conversation there with the Dune team.
-- First sub-project: erc20 token metadata, found [here](https://github.com/duneanalytics/spellbook/tree/main/tokens)
+
+- First sub-project: erc20 token metadata, found [here](tokens)
 
 ## Ways to contribute to Spellbook
 
@@ -59,14 +59,16 @@ In order to prepare for scaling Spellbook, the repo has started to pilot sub-pro
 - **Propose** changes to spellbook - [Discussions](https://github.com/duneanalytics/spellbook/discussions) are where we bring up, challenge and develop ideas to continue building spellbook. If you want to make a major change to a spell (e.g. major overhaul to a sector, launching a new sector, designing a new organic volume filter, etc.).
 
 ### Submitting a PR
+
 Want to get right to work? Follow the guide [here](https://dune.com/docs/spellbook/?h=7+steps+adding+a+spell) to get started.
 
 ### Testing your spell
+
 You don't need a complex local setup to test spells against Dune's engine. Once you send a PR, our CI pipeline will run and test it, and, if the job finishes successfully, you'll be able to query the data your PR created directly from dune.com.
 
 Simply write a query like you would for any of our live tables, and use the test schema to fetch the tables your PR created.
 
-`test_schema.git_{{commit_hash}}_{{table_name}}` 
+`test_schema.git_{{commit_hash}}_{{table_name}}`
 
 You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
 
@@ -75,7 +77,6 @@ Please note: the test tables built in the CI pipeline will exist for ~24 hours. 
 ### Connecting with other wizards
 
 We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.gg/dunecom) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
-
 
 ## Setting up your Local Dev Environment
 
@@ -134,7 +135,7 @@ Ensure you are in Spellbook root directory, then run the following command:
 dbt compile
 ```
 
-Spellbook root directory includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](https://github.com/duneanalytics/spellbook/blob/main/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
+Spellbook root directory includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
 Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
 
 dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containing plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there are big errors the compile process will not complete.
