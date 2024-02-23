@@ -1,6 +1,5 @@
 {{ config(
-    tags = ['prod_exclude']
-    , schema = 'pharaoh_avalanche_c'
+    schema = 'pharaoh_avalanche_c'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
