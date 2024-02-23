@@ -106,7 +106,7 @@ tokens as (
         , _dst_token_address
         , _dst_token_native
         , dst_token_amount
-        , false as _second_side
+        , false as second_side
     from calls
 
     union all
@@ -122,7 +122,7 @@ tokens as (
         , _src_token_address as _dst_token_address
         , _src_token_native as _dst_token_native
         , src_token_amount as dst_token_amount
-        , true as _second_side
+        , true as second_side
     from calls
     where
         protocol = 'LOP'
@@ -140,7 +140,7 @@ tokens as (
         , block_number
         , tx_hash
         , call_trace_address
-        , _second_side
+        , second_side
 
         -- what the user actually gave and received, judging by the transfers
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
@@ -205,10 +205,13 @@ select
     , call_gas_used
     , user
     , receiver
+    , coalesce(flags['fusion'], false) as fusion -- to delete in the next step
+    , position('RFQ' in method) > 0 and not second_side as contracs_only -- to delete in the next step
+    , second_side -- to delete in the next step
     , order_hash
     , map_concat(
         if(protocol = 'LOP'
-            , map_concat(flags, map_from_entries(array[('rfq', position('RFQ' in method) > 0), ('second_side', _second_side)]))
+            , map_concat(flags, map_from_entries(array[('rfq', position('RFQ' in method) > 0), ('second_side', second_side)]))
             , flags
         )
         , array[('direct', cardinality(call_trace_address) = 0)]
@@ -230,6 +233,6 @@ select
     , transfers
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
-    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(_second_side as int) as varchar))) as swap_id
+    , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
 from swaps
-join amounts using(blockchain, block_number, tx_hash, call_trace_address, _second_side)
+join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)

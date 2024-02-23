@@ -294,6 +294,9 @@ models:
       - name: call_gas_used
       - name: user
       - name: receiver
+      - name: fusion
+      - name: contracts_only
+      - name: second_side
       - name: order_hash
       - name: flags
         tests:
