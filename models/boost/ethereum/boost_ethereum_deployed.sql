@@ -15,4 +15,4 @@ select
     totalParticipants,
     evt_block_time,
     creator
-from {{source('rabbithole_ethereum', 'QuestFactory_evt_QuestCreated')}}
+from {{source('boost_ethereum', 'QuestFactory_evt_QuestCreated')}}

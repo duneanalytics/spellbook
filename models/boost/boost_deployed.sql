@@ -6,7 +6,6 @@
 }}
 
 {% set boost_deployed_models = [
-    ref('boost_arbitrum_deployed'),
     ref('boost_base_deployed'),
     ref('boost_ethereum_deployed'),
     ref('boost_optimism_deployed'),
