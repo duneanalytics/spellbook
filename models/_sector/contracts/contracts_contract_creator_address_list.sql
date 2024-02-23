@@ -1088,6 +1088,7 @@ WITH curated_list AS (
       ,(0x6ddb6B042b4f3aE8CC73EBd371fCc70762279473, 'Witness Protocol')
       ,(0xF1C0dF2381Ac4a6Cac9C866DdbdE3c3D641a1337, 'Layer3')
       ,(0x13845Fc81a84765f417A058b1F4B8e0C98e1F2Ee, 'KyberSwap')
+      ,(0x219bf2CFF75B392d60978F7D0429B78385c19988, 'Unlooped')
 
   ) as temp_table (creator_address, contract_project)
 )
