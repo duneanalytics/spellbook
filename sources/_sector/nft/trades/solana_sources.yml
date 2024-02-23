@@ -6,6 +6,7 @@ sources:
       - name: m2_call_executeSaleV2
       - name: m2_call_mip1ExecuteSaleV2
       - name: m2_call_ocpExecuteSaleV2
+      - name: m3_call_buyNow
       - name: mmm_call_solFulfillBuy
       - name: mmm_call_solFulfillSell
       - name: mmm_call_solMip1FulfillBuy
@@ -23,4 +24,6 @@ sources:
       - name: tcomp_call_buy
       - name: tcomp_call_takeBidMetaHash
       - name: tcomp_call_takeBidFullMeta
-  
+  - name: bubblegum_solana
+    tables:
+      - name: bubblegum_call_transfer
