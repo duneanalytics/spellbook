@@ -13,6 +13,8 @@
 
 {% set solana_marketplaces = [
     ref('magiceden_v2_solana_trades')
+    , ref('magiceden_v3_solana_trades')
+    , ref('magiceden_mmm_solana_trades')
     , ref('tensorswap_v1_solana_trades')
     , ref('tensorswap_v2_solana_trades')
 ] %}
