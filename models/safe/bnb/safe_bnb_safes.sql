@@ -2,7 +2,6 @@
     config(
         schema = 'safe_bnb',
         alias = 'safes',
-        tags = [],
         partition_by = ['block_month'],
         on_schema_change='fail',
         materialized='incremental',
