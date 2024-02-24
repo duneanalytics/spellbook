@@ -17,6 +17,7 @@
 
 {{ 
     balancer_liquidity_macro(
-        blockchain = blockchain
+        blockchain = blockchain,
+        version = '2'
     )
 }}

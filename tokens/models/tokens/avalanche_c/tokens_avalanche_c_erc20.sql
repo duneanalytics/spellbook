@@ -237,5 +237,6 @@ FROM (VALUES
         ,(0xefd6aa06eb95e0ab23de9ac0977d870888b89a71, 'MICRO', 18)
         ,(0x913c61ec3573e5e4ee6488552535fb1be84ff2ac, 'XAV', 18)
         ,(0x609268b9c47c7be0a8d77ae93c31d2bf6859d175, 'LONG', 18)
-        ,(0xa25eaf2906fa1a3a13edac9b9657108af7b703e3, 'ggAVAX', 18)    
+        ,(0xa25eaf2906fa1a3a13edac9b9657108af7b703e3, 'ggAVAX', 18)
+        ,(0x13e793e76c38a6362f3f712c4ae365a9174f9b56, 'FOX', 9)
     ) AS temp_table (contract_address, symbol, decimals)
