@@ -24,14 +24,16 @@ WITH base_transfers as (
         {{ base_transfers }}
     {% if is_incremental() %}
     WHERE
-        {{ incremental_predicate('block_time') }}
+        {{ incremental_predicate('block_date') }}
     {% endif %}
 )
 , prices AS (
     SELECT
-        blockchain
+        minute
+        , blockchain
         , contract_address
-        , minute
+        , decimals
+        , symbol
         , price
     FROM
         {{ prices_model }}
@@ -75,11 +77,17 @@ LEFT JOIN
     {{ tokens_erc20_model }} as tokens_erc20
     ON tokens_erc20.blockchain = t.blockchain
     AND tokens_erc20.contract_address = t.contract_address
-LEFT JOIN prices
-    ON prices.blockchain = '{{ blockchain }}' -- due to data volume in prices, filter by static blockchain value for performance gains (slight improvement over using t.blockchain directly)
-    AND (
-            prices.contract_address = t.contract_address
-            OR (t.contract_address IS NULL AND prices.contract_address = evms_info.wrapped_native_token_address)
-        )
-    AND prices.minute = date_trunc('minute', t.block_time)
+LEFT JOIN
+    prices
+    ON date_trunc('minute', t.block_time) = prices.minute
+    AND CASE
+        WHEN t.token_standard = 'native'
+            THEN
+            prices.blockchain IS NULL
+            AND prices.contract_address IS NULL
+            AND evms_info.native_token_symbol = prices.symbol
+        ELSE
+            prices.blockchain = '{{ blockchain }}'
+            AND t.contract_address = prices.contract_address
+        END
 {%- endmacro %}

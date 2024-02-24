@@ -44,7 +44,13 @@ normalized_weights AS (
         normalized_weight / POWER(10, 18) AS normalized_weight
     FROM weighted_pool_factory
 )
-SELECT 'base' as blockchain, r.pool_id, w.token_address, w.normalized_weight 
+
+SELECT 
+    'base' AS blockchain, 
+    '2' AS version,
+    r.pool_id, 
+    w.token_address, 
+    w.normalized_weight 
 FROM normalized_weights w 
 LEFT JOIN registered r ON BYTEARRAY_SUBSTRING(r.pool_id,1,20) = w.pool_id
 WHERE w.pool_id IS NOT NULL

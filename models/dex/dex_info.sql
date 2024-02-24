@@ -123,6 +123,7 @@ FROM (VALUES
     , ('derpdex','DerpDex', 'Direct', 'DerpDex')
     , ('torus', 'Torus', 'Direct', 'torus_farm')
     , ('solidly','Solidly','Direct','Solidly')
+    , ('throne_exchange','Throne_exchange','Direct','Throne')
     , ('sharkswap', 'SharkSwap', 'Direct', 'SharkSwapDEX')
     , ('citadelswap','Citadelswap','Direct','Citadel')
     , ('autotronic', 'Autotronic', 'Direct', 'autotronicbase')

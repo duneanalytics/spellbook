@@ -6,13 +6,15 @@
 }}
 -- (project, project_version, model)
 {% set nft_models = [
+    ref('tevaera_zksync_base_trades')
     ,ref('element_zksync_base_trades')
     ,ref('kreatorland_zksync_base_trades')
     ,ref('rarible_zksync_base_trades')
 ] %}
 
-with base_union as (
-    SELECT * FROM  (
+with 
+base_union as (
+    SELECT * FROM (
     {% for nft_model in nft_models %}
         SELECT
             blockchain,
@@ -49,3 +51,4 @@ with base_union as (
     )
 )
 select * from base_union
+
