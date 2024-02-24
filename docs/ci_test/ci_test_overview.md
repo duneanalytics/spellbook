@@ -1,6 +1,6 @@
 # CI Tests as GH Workflows in Spellbook
 
-Any time a PR is opened in Spellbook, there are a few GH workflows which automatically run on each commit. The `dbt slim ci` workflow kicks off the continuous integration (CI) tests, which are required to pass in order to prepare for final merge into the main branch. The code which runs the CI workflow can be found [here](https://github.com/duneanalytics/spellbook/blob/main/.github/workflows/dbt_slim_ci.yml), but in general, the steps included are:
+Any time a PR is opened in Spellbook, there are a few GH workflows which automatically run on each commit. The `dbt slim ci` workflow kicks off the continuous integration (CI) tests, which are required to pass in order to prepare for final merge into the main branch. The code which runs the CI workflow can be found [here](/.github/workflows/dbt_slim_ci.yml), but in general, the steps included are:
 
 - Setup environment variables:
   - `GIT_SHA` – unique hash value tied to the commit within a PR, used downstream to name CI output test spells.
@@ -22,6 +22,7 @@ Any time a PR is opened in Spellbook, there are a few GH workflows which automat
 ## CI Tests workflow matrix
 
 To handle the dbt sub-project separation within Spellbook, there are two projects which run separately in CI: `tokens` & `spellbook`. Within the PR, you will likely see two CI test workflows running, one for each project. As sub-projects grow, this matrix could also grow. If sub-projects grow much larger, the matrix will be replaced with a cleaner solution.
+
 - Expect to see two CI workflows, but each workflow will be able to automatically detect which spells to run
 
 ## CI Tests Leverage Prod Data
@@ -71,6 +72,6 @@ Simple rule of thumb – a green check success on CI tests does not guarantee a 
   - When the Dune team merges a batch of PRs, this `commit manifest` workflow automatically kicks off to set up a new manifest file. However, this workflow takes a few minutes, so if a commit is pushed to another PR during this workflow run, it can pull in more models than expected – simply monitor this job and rerun CI tests on PR once complete.
 - **The DuneSQL cluster for CI is down.**
   - Dune team will need to fix internally.
-- **Error: ‘Metadata is not found for ____’.**
+- **Error: ‘Metadata is not found for \_\_\_\_’.**
   - This typically occurs when a spell is being modified in a PR & the spell has a seed test associated in the schema yml file.
   - Seeds are not run frequently in production, therefore it’s easier to just force the seed to run in the PR by making a slight modification to the file and start fresh.

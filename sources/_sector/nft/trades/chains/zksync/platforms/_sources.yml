@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: tevaera_zksync
+    tables:
+      - name: TevaMarket_evt_NewSale
