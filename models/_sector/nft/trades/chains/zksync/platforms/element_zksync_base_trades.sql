@@ -1,12 +1,16 @@
-{{ config(
-    schema = 'element_polygon',
-    alias = 'base_trades',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+{{ 
+    config(
+        schema = 'element_polygon',
+        alias = 'base_trades',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
+
+{% set element_usage_start_date = "2023-04-10" %}
 
 WITH element_txs AS (
         -- polygon ERC721 Sells

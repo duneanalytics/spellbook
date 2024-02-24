@@ -9,7 +9,7 @@ models:
    config:
      tags: [ 'zksync','element','base_trades' ]
    description: >
-     Element events on zksync
+     Element trades on zksync
    tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
@@ -18,12 +18,12 @@ models:
  - name: kreatorland_zksync_base_trades
    meta:
      blockchain: zksync
-     project: tofu
+     project: kreatorland
      contributors: thetroyharris
    config:
      tags: [ 'zksync','kreatorland','base_trades' ]
    description: >
-     Tofu v1 base_trades on zksync
+     Kreatorland trades on zksync
    tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
@@ -37,7 +37,7 @@ models:
    config:
      tags: [ 'zksync','rarible','base_trades' ]
    description: >
-     Rarible events on zksync
+     Rarible trades on zksync
    tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
