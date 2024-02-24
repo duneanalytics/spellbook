@@ -42,8 +42,8 @@
             , sp.call_tx_index as tx_index
             , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
             , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
-            , trs_2.account_source as token_bought_vault
-            , trs_1.account_destination as token_sold_vault
+            , trs_2.from_token_account as token_bought_vault
+            , trs_1.to_token_account as token_sold_vault
         FROM {{ source('meteora_solana','lb_clmm_call_swap') }}  sp
         INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1 
             ON trs_1.tx_id = sp.call_tx_id 
@@ -51,9 +51,9 @@
             AND trs_1.outer_instruction_index = sp.call_outer_instruction_index 
             AND trs_1.inner_instruction_index = COALESCE(sp.call_inner_instruction_index,0) + 1
             {% if is_incremental() %}
-            AND {{incremental_predicate('trs_1.call_block_time')}}
+            AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
-            AND trs_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
@@ -61,9 +61,9 @@
             AND trs_2.outer_instruction_index = sp.call_outer_instruction_index 
             AND trs_2.inner_instruction_index = COALESCE(sp.call_inner_instruction_index,0) + 2
             {% if is_incremental() %}
-            AND {{incremental_predicate('trs_2.call_block_time')}}
+            AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
-            AND trs_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = trs_1.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = trs_2.token_mint_address
