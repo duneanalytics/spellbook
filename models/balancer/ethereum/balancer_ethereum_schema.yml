@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'fees']
     description: >
@@ -18,6 +18,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - &contract_address
         name: contract_address
         description: "Ethereum address for the liquidity pool used in transaction"
@@ -89,7 +90,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['ethereum', 'bpt', 'transfers']
     description: >
@@ -104,6 +105,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+      - name: version
       - *contract_address
       - &block_date
         name: block_date
@@ -144,6 +146,7 @@ models:
       Token weights in Balancer pools.
     columns:
       - *blockchain
+      - name: version
       - &pool_id
         name: pool_id
         description: "Unique encoded identifier that refers to each pool"
@@ -170,6 +173,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -190,6 +194,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -375,7 +380,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'ethereum', 'amm', 'trades', 'dex' ]
     description: >
@@ -424,7 +429,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'balancer', 'ethereum', 'amm', 'trades', 'dex', 'beta' ]
     description: >
@@ -498,7 +503,6 @@ models:
         description: 'Liquidity of the token in the pool in USD, including BPTs'
       - name: pool_liquidity_eth
         description: 'Liquidity of the token in the pool in ETH, including BPTs'
-
 
   - name: balancer_ethereum_vebal_votes
     meta:
@@ -684,7 +688,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer_v2
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['ethereum', 'bpt', 'supply']
     description: >
