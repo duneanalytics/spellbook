@@ -78,6 +78,12 @@ sources:
     tables:
       - name: TorusFactory_evt_PairCreated
       - name: TorusPair_evt_Swap
+  - name: throne_exchange_base
+    tables:
+      - name: ThroneV2Factory_evt_PairCreated
+      - name: ThroneV2Pair_evt_Swap  
+      - name: ThroneV3Factory_evt_PoolCreated
+      - name: ThroneV3Pool_evt_Swap  
   - name: sharkswap_base
     tables:
       - name: SharkswapFactory_evt_PairCreated
@@ -90,3 +96,4 @@ sources:
     tables:
       - name: AutotronicFactory_evt_PairCreated
       - name: AutotronicPair_evt_Swap
+ 

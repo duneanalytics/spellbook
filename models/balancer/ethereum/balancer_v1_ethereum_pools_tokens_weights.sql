@@ -128,6 +128,7 @@ norm_weights AS (
 --
 SELECT
     'ethereum' AS blockchain,
+    '1' AS version,
     pool_address AS pool_id,
     token_address,
     normalized_weight
