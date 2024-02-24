@@ -1,12 +1,11 @@
 version: 2
 
 models:
-
   - name: boost_arbitrum_deployed
     meta:
       blockchain: arbitrum
       project: boost
-      contributors: raho
+      contributors: raho, pntemi
     config:
       tags: ["arbitrum", "boost", "boost_inbox", "quest"]
     description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
@@ -54,5 +53,30 @@ models:
         name: creation_time
         description: "Time the Boost was created"
       - &creator
-        name: creation_address
+        name: creator_address
         description: "Wallet address of the creator"
+  
+  - name: boost_arbitrum_claimed
+    meta:
+      blockchain: arbitrum
+      project: boost
+      contributors: raho, pntemi
+    config:
+      tags: ["arbitrum", "boost", "boost_inbox", "quest"]
+    description: "Reward claimed from Boost completion"
+    columns:
+      - name: reward_network
+      - name: boost_address
+      - name: boost_id
+      - name: boost_name
+      - name: claimer_address
+      - name: reward_amount_raw
+      - name: reward_token_address
+      - name: claim_tx_hash
+      - name: block_time
+      - name: claim_fee_eth
+      - name: action_type
+      - name: action_tx_hash
+      - name: action_network
+
+

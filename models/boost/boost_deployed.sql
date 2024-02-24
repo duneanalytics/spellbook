@@ -6,6 +6,7 @@
 }}
 
 {% set boost_deployed_models = [
+    ref('boost_arbitrum_deployed'),
     ref('boost_base_deployed'),
     ref('boost_ethereum_deployed'),
     ref('boost_optimism_deployed'),
@@ -13,17 +14,21 @@
 ] %}
 
 select
-  blockchain,
-  contractAddress as boost_address,
-  questId as boost_id,
-  contractType as boost_type,
-  TRY(from_unixtime(startTime)) as start_time,
-  TRY(from_unixtime(endTime)) as end_time,
-  rewardAmountOrTokenId as reward_amount_or_token_id,
-  rewardTokenAddress as reward_address,
-  cast(totalParticipants as int) as max_participants,
-  evt_block_time as creation_time,
-  creator as creator_address
+    reward_network,
+    boost_address,
+    boost_id,
+    boost_name,
+    action_type,
+    action_network,
+    project_name,
+    questType as boost_type,
+    TRY(from_unixtime(startTime)) as start_time,
+    TRY(from_unixtime(endTime)) as end_time,
+    reward_amount_raw,
+    reward_token_address,
+    cast(max_participants as int) as max_participants,
+    creation_time,
+    creator as creator_address
 from
   (
     {% for model in boost_deployed_models %}
