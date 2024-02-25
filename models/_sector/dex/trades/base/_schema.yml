@@ -597,3 +597,20 @@ models:
           seed_file: ref('leetswap_v2_base_base_trades_seed')
           filter:
             version: 2
+
+  - name: openocean_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'openocean' ]
+    description: "openocean base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_base_base_trades_seed')
