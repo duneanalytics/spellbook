@@ -10,7 +10,7 @@
 }}
 
 {{
-    openocea_compatible_v2_trades(
+    openocean_compatible_v2_trades(
           blockchain = 'base'
         , project = 'openocean'
         , version = '2'
