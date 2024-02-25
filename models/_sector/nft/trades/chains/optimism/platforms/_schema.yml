@@ -116,6 +116,8 @@ models:
          evt_sources:
            - source('element_ex_optimism','ElementEx_evt_ERC721SellOrderFilled')
            - source('element_ex_optimism','ElementEx_evt_ERC721BuyOrderFilled')
+           - source('element_ex_optimism','ElementEx_evt_ERC1155SellOrderFilled')
+           - source('element_ex_optimism','ElementEx_evt_ERC1155BuyOrderFilled')
      - check_seed:
          seed_file: ref('element_optimism_base_trades_seed')
          match_columns:
