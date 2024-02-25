@@ -78,4 +78,3 @@ models:
       - name: action_type
       - name: action_tx_hash
       - name: action_network
-

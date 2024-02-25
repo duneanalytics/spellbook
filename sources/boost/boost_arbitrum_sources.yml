@@ -6,4 +6,3 @@ sources:
     tables:
       - name: QuestFactory_evt_QuestCreated
       - name: QuestFactory_evt_QuestClaimedData
-      
