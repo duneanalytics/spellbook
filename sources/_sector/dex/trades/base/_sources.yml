@@ -96,4 +96,7 @@ sources:
     tables:
       - name: AutotronicFactory_evt_PairCreated
       - name: AutotronicPair_evt_Swap
- 
+  - name: leetswap_v2_base
+    tables:
+      - name: LeetSwapV2Factory_evt_PairCreated
+      - name: LeetSwapV2Pair_evt_Swap
