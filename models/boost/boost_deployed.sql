@@ -41,5 +41,5 @@ from
 )
 where 
     creator <> 0xa4c8bb4658bc44bac430699c8b7b13dab28e0f4e
-    and startTime > 0
-    and endTime < 1e11
+    and start_time > 0
+    and end_time < 1e11
