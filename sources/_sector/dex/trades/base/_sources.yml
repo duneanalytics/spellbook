@@ -104,3 +104,6 @@ sources:
     tables:
       - name: LeetSwapV2Factory_evt_PairCreated
       - name: LeetSwapV2Pair_evt_Swap
+  - name: wombat_exchange_base
+    tables:
+      - name: CrossChainPool_evt_SwapV2
