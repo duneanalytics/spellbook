@@ -24,8 +24,8 @@ with quest_claimed_data as (
 ),
 quest_claims_enriched as (
     select 
-        reward_network,
-        boost_address,
+        c.reward_network,
+        c.boost_address,
         coalesce(b.boost_id, c.boost_id) boost_id,
         coalesce(b.boost_name, c.boost_name) boost_name,
         b.project_name,
@@ -33,7 +33,7 @@ quest_claims_enriched as (
         coalesce(b.reward_amount_raw, c.reward_amount_raw) reward_amount_raw,
         coalesce(b.reward_token_address, c.reward_token_address) reward_token_address,
         claim_tx_hash,
-        block_time,
+        c.block_time,
         coalesce(claim_fee_eth, 0.000075) claim_fee_eth,
         coalesce(b.action_type, c.action_type) action_type,
         action_tx_hash,
