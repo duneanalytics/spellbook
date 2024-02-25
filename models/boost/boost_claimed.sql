@@ -26,7 +26,7 @@ quest_claims_enriched as (
     select 
         reward_network,
         boost_address,
-        coalesce(b.boost_id, c.boost_id) boost_id
+        coalesce(b.boost_id, c.boost_id) boost_id,
         coalesce(b.boost_name, c.boost_name) boost_name,
         b.project_name,
         claimer_address,
