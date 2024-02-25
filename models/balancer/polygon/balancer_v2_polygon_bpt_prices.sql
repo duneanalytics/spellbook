@@ -12,6 +12,7 @@
 
 {{ 
     balancer_bpt_prices_macro(
-        blockchain = blockchain
+        blockchain = blockchain,
+        version = '2'
     )
 }}

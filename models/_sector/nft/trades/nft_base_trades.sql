@@ -19,6 +19,7 @@
  ,ref('nft_old_base_trades')
  ,ref('nft_optimism_base_trades')
  ,ref('nft_polygon_base_trades')
+ ,ref('nft_zksync_base_trades')
  ,ref('nft_scroll_base_trades')
 ] %}
 

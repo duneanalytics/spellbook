@@ -418,7 +418,27 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('torus_base_base_trades_seed')
 
-  
+
+  - name: throne_exchange_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: throne_exchange
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
+    description: "throne_exchange base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('throne_exchange_v2_base_base_trades_seed')
+          filter:
+            version: 2
+
+
   - name: sharkswap_base_base_trades
     meta:
       blockchain: base
@@ -437,6 +457,26 @@ models:
           seed_file: ref('sharkswap_base_base_trades_seed')
           filter:
             version: 1
+            
+
+  - name: throne_exchange_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: throne_exchange
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
+    description: "throne_exchange base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('throne_exchange_v3_base_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: horizondex_base_base_trades
@@ -497,6 +537,7 @@ models:
           seed_file: ref('autotronic_base_base_trades_seed')
           filter:
             version: 1
+
 
   - name: uniswap_v2_base_base_trades
     meta:

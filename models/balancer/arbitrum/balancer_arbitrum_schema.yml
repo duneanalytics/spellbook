@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools_fees']
     description: >
@@ -18,6 +18,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - &contract_address
         name: contract_address
         description: 'Arbitrum address for the liquidity pool used in transaction'
@@ -58,7 +59,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'bpt', 'transfers']
     description: >
@@ -73,6 +74,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+      - name: version
       - *contract_address
       - &block_date
         name: block_date
@@ -106,13 +108,14 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer pools.
     columns:
       - *blockchain
+      - name: version
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
@@ -141,6 +144,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -234,7 +238,7 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'balancer', 'arbitrum', 'amm', 'trades', 'dex', 'beta' ]
     description: >
@@ -369,7 +373,7 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'arbitrum', 'amm', 'trades', 'dex' ]
     description: >
@@ -453,7 +457,7 @@ models:
     meta:
       blockchain: arbiturm
       project: balancer_v2
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['arbiturm', 'bpt', 'supply']
     description: >

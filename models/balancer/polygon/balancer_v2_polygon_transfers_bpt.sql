@@ -15,6 +15,7 @@
 
 {{ 
     balancer_transfers_bpt_macro(
-        blockchain = blockchain
+        blockchain = blockchain,
+        version = '2'
     )
 }}

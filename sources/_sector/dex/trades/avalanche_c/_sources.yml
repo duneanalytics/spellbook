@@ -29,7 +29,6 @@ sources:
       - name: PairFactory_evt_PairCreated
       - name: AlgebraPool_evt_Swap
       - name: AlgebraFactory_evt_Pool
-      - name: OdosRouterV2_evt_Swap
   - name: gmx_avalanche_c
     tables:
       - name: Router_evt_Swap
@@ -93,3 +92,6 @@ sources:
       - name: USD_coin_evt_TokenExchange
       - name: USDS_evt_TokenExchangeUnderlying
       - name: YUSDPOOL_evt_TokenExchange
+  - name: odos_v2_avalanche_c
+    tables:
+      - name: OdosRouterV2_evt_Swap
