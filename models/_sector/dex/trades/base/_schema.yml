@@ -564,7 +564,7 @@ models:
       blockchain: base
       sector: dex
       project: leetswap_v2
-      contributors: 
+      contributors:archie 
     config:
       tags: [ 'base', 'dex', 'trades', 'leetswap' ]
     description: "leetswap_v2 base base trades"
@@ -576,4 +576,4 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('leetswap_v2_base_base_trades_seed')
           filter:
-            version: 1
+            version: 2
