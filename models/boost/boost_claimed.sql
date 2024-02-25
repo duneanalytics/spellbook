@@ -59,7 +59,7 @@ unified_claims as (
         action_type,
         action_tx_hash,
         action_network
-    from dune.boost_xyz.result_dashboard_quest_claims_legacy
+    from "dune"."boost_xyz"."result_dashboard_quest_claims_legacy"
     union all
     select 
         reward_network, 
