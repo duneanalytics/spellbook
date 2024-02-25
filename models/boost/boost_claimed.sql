@@ -39,7 +39,7 @@ quest_claims_enriched as (
         action_tx_hash,
         coalesce(b.action_network, c.action_network) action_network
     from quest_claimed_data c
-    left join ref("boost_deployed") b
+    left join {{ref("boost_deployed")}} b
     on c.boost_address = b.boost_address
     where block_time > date '2023-11-12'
 ),

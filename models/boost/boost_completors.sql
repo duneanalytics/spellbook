@@ -20,7 +20,7 @@ with boost_completors as (
         min_by(boost_id, block_time) first_boost_completed,
         count(distinct claim_tx_hash) total_boost_completed,
         sum(reward_usd) as total_reward_earned_usd
-    from ref("boost_claimed")
+    from {{ref("boost_claimed")}}
     group by 1
 ),
 {% for network, fee_logic in network_to_fees_logic.items() %}
