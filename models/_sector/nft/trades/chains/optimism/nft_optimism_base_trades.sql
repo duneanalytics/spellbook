@@ -13,6 +13,7 @@
      ,ref('quix_v3_optimism_base_trades')
      ,ref('quix_v4_optimism_base_trades')
      ,ref('quix_v5_optimism_base_trades')
+     ,ref('element_optimism_base_trades')
 ] %}
 
 with base_union as (
