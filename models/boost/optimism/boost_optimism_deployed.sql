@@ -31,3 +31,4 @@ select
     evt_block_time as creation_time,
     creator
 from {{source('boost_optimism', 'QuestFactory_evt_QuestCreated')}}
+where questId <> 'd070f682-e513-4585-9dc8-e973c8ff6a7c'
