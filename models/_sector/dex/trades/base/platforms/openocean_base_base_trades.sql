@@ -15,7 +15,7 @@
         , project = 'openocean'
         , version = '2'
         , evt_swapped = source('openocean_v2_base', 'OpenOceanExchange_evt_Swapped')
-        , burn = '0x0000000000000000000000000000000000000000'
+        , burn = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
         , w_native = '0x4200000000000000000000000000000000000006'
     )
 }}
