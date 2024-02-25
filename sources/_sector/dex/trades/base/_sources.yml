@@ -96,6 +96,10 @@ sources:
     tables:
       - name: AutotronicFactory_evt_PairCreated
       - name: AutotronicPair_evt_Swap
+  - name: oasisswap_base
+    tables:
+      - name: OasisSwapFactory_evt_PairCreated
+      - name: OasisSwapPair_evt_Swap
   - name: leetswap_v2_base
     tables:
       - name: LeetSwapV2Factory_evt_PairCreated

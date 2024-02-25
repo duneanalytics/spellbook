@@ -35,6 +35,7 @@
     , ref('citadelswap_base_base_trades')
     , ref('autotronic_base_base_trades')
     , ref('uniswap_v2_base_base_trades')
+    , ref('oasisswap_base_base_trades')
     , ref('leetswap_v2_base_base_trades')
 ] %}
 
