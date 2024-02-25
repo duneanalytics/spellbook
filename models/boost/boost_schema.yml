@@ -78,3 +78,11 @@ models:
       - name: action_type
       - name: action_tx_hash
       - name: action_network
+
+  - name: boost_completors
+    meta:
+      project: boost
+      contributors: raho, pntemi
+    config:
+      tags: ["boost", "boost_inbox", "quest"]
+    description: Boost completors stats on Ethereum and supported L2s.

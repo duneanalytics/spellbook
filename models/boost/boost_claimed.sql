@@ -98,4 +98,5 @@ select
 from unified_claims u
 left join {{source('prices','usd')}} p
 on date_trunc('hour', block_time) = p.minute
+    and reward_token_address = p.contract_address
 order by block_time desc
