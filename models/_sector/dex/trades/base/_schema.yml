@@ -563,7 +563,7 @@ models:
     meta:
       blockchain: base
       sector: dex
-      project: elk_financ
+      project: elk_finance
       contributors: archie
     config:
       tags: [ 'base', 'dex', 'trades', 'elk_finance' ]
