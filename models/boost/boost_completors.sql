@@ -1,6 +1,6 @@
 {{
     config(
-        unique_key='boost_address',
+        unique_key='claimer_address',
         schema='boost',
     )
 }}
@@ -17,10 +17,10 @@ with boost_completors as (
     select 
         claimer_address,
         min(block_time) first_time_on_boost,
-        min_by(quest_id, block_time) first_boost_completed,
-        count(distinct tx_hash) total_boost_completed,
+        min_by(boost_id, block_time) first_boost_completed,
+        count(distinct claim_tx_hash) total_boost_completed,
         sum(reward_usd) as total_reward_earned_usd
-    from dune.boost_xyz.result_dashboard_quest_claims
+    from ref("boost_claimed")
     group by 1
 ),
 {% for network, fee_logic in network_to_fees_logic.items() %}
@@ -31,11 +31,10 @@ with boost_completors as (
         {{ fee_logic }},
         min(t.block_time) first_time_on_{{ network }}
     from boost_completors u
-    left join {{ network }}.transactions t
+    left join {{source(network, 'transactions')}} t
     on u.claimer_address = t."from"
     group by 1
-)
-{% if not loop.last %}, {% endif %}
+){% if not loop.last %}, {% endif %}
 {% endfor %}
 
 select 
