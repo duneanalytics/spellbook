@@ -100,3 +100,11 @@ sources:
     tables:
       - name: ElkFactory_evt_PairCreated
       - name: ElkPair_evt_Swap
+  - name: oasisswap_base
+    tables:
+      - name: OasisSwapFactory_evt_PairCreated
+      - name: OasisSwapPair_evt_Swap
+  - name: leetswap_v2_base
+    tables:
+      - name: LeetSwapV2Factory_evt_PairCreated
+      - name: LeetSwapV2Pair_evt_Swap
