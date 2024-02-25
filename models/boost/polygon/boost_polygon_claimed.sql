@@ -39,7 +39,7 @@ select
             limit 1440
         )
     ) / (
-        select avg(price))
+        select avg(price)
         from (
             select price from {{source('prices','usd')}}
             where blockchain = 'ethereum' and symbol = 'WETH'

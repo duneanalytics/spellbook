@@ -18,10 +18,10 @@ select
     'polygon' as reward_network,
     contractAddress as boost_address,
     questId as boost_id,
-    null as boost_name,
-    null as action_type,
-    null as action_network,
-    null as project_name,
+    '' as boost_name,
+    '' as action_type,
+    '' as action_network,
+    '' as project_name,
     questType as boost_type,
     startTime as start_time,
     endTime as end_time,
@@ -30,4 +30,4 @@ select
     totalParticipants as max_participants,
     evt_block_time as creation_time,
     creator
-from {{source('boost_ethereum', 'QuestFactory_evt_QuestCreated')}}
+from {{source('boost_polygon', 'QuestFactory_evt_QuestCreated')}}
