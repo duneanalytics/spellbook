@@ -106,5 +106,5 @@ sources:
       - name: LeetSwapV2Pair_evt_Swap
   - name: soswap_base
     tables:
-      - name: soswapFactory_evt_PairCreated
-      - name: soswapPair_evt_Swap
+      - name: SwapFactory_evt_PairCreated
+      - name: SwapPair_evt_Swap

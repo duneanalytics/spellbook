@@ -15,8 +15,8 @@
         blockchain = 'base',
         project = 'soswap',
         version = '1',
-        Pair_evt_Swap = source('soswap_base', 'soswapPair_evt_Swap'),
-        Factory_evt_PairCreated = source('soswap_base', 'soswapFactory_evt_PairCreated'),
+        Pair_evt_Swap = source('soswap_base', 'SwapPair_evt_Swap'),
+        Factory_evt_PairCreated = source('soswap_base', 'SwapPair_evt_PairCreated'),
         pair_column_name = 'pair'
     )
 }}
