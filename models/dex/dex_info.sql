@@ -131,4 +131,5 @@ FROM (VALUES
     , ('sharkyswap', 'Sharky Swap', 'Direct', 'SharkySwapFi')
     , ('zebra', 'Zebra', 'Direct', 'zebra')
     , ('scrollswap', 'ScrollSwap', 'Direct', 'scrollswap')
+    , ('leetswap', 'Leetswap', 'Direct', 'LeetSwap')
     ) AS temp_table (project, name, marketplace_type, x_username)
