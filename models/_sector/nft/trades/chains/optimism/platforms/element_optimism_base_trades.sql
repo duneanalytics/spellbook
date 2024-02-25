@@ -20,4 +20,5 @@ WITH base_trades as (
     }}
 )
 
-SELECT * FROM base_trades
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'optimism') }}
