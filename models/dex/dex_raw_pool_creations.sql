@@ -55,7 +55,6 @@
     set blockchains = [
         "ethereum",
         "polygon",
-        "bnb",
         "avalanche_c",
         "gnosis",
         "fantom",

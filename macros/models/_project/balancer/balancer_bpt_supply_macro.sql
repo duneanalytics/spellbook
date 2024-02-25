@@ -26,6 +26,7 @@ WITH pool_labels AS (
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
         FROM  {{ ref('balancer_transfers_bpt') }} t
         WHERE blockchain = '{{blockchain}}'   
+        AND version = '{{version}}'
         GROUP BY 1, 2
     ),
 
