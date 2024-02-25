@@ -557,3 +557,22 @@ models:
           seed_file: ref('uniswap_base_base_trades_seed')
           filter:
             version: 2
+
+  - name: soswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: soswap
+      contributors: intensodefi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'soswap' ]
+    description: "soswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('soswap_base_base_trades_seed')
+          filter:
+            version: 1

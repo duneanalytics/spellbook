@@ -96,4 +96,7 @@ sources:
     tables:
       - name: AutotronicFactory_evt_PairCreated
       - name: AutotronicPair_evt_Swap
- 
+  - name: soswap_base
+    tables:
+      - name: soswapFactory_evt_PairCreated
+      - name: soswapPair_evt_Swap
