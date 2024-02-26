@@ -84,3 +84,7 @@ sources:
   - name: wombat_exchange_optimism
     tables:
       - name: CrossChainPool_evt_SwapV2
+  - name: elk_finance_optimism
+    tables:
+      - name: ElkFactory_evt_PairCreated
+      - name: ElkPair_evt_Swap
