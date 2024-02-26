@@ -159,7 +159,7 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['gnosis', 'balancer', 'pools_fees']
     description: >
@@ -172,6 +172,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -184,7 +185,7 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'gnosis', 'amm', 'trades', 'dex' ]
     description: >
@@ -233,7 +234,7 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'balancer', 'gnosis', 'amm', 'trades', 'dex', 'beta' ]
     description: >
@@ -320,6 +321,7 @@ models:
       Token weights in Balancer pools.
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - &token_address
         name: token_address
@@ -344,6 +346,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -352,7 +355,7 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['gnosis', 'bpt', 'transfers']
     description: >
@@ -365,6 +368,7 @@ models:
             - block_date
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: block_date
       - name: block_month
@@ -425,7 +429,7 @@ models:
     meta:
       blockchain: gnosis
       project: balancer_v2
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['gnosis', 'bpt', 'supply']
     description: >

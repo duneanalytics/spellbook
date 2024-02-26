@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
-                                \'["thetroyharris", "victorstefenon"]\') }}'
+                                \'["thetroyharris", "victorstefenon", "viniabussafi"]\') }}'
     )
 }}
 
@@ -23,6 +23,7 @@ FROM (
     {% for model in balancer_models %}
     SELECT
         blockchain
+      , version    
       , contract_address
       , block_date
       , evt_tx_hash

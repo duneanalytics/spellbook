@@ -1,6 +1,6 @@
 {% macro 
     balancer_bpt_prices_macro(
-        blockchain
+        blockchain, version
     ) 
 %}
 
@@ -177,6 +177,7 @@ WITH pool_labels AS (
         WHERE q.name IS NOT NULL 
         AND p.pool_type IN ('WP', 'WP2T') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
+        AND w.version = '{{version}}'
         GROUP BY 1, 2, 3, 4
     ),
     
@@ -192,7 +193,7 @@ WITH pool_labels AS (
     SELECT
         c.day,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
-        '2' AS version,
+        '{{version}}' AS version,
         '{{blockchain}}' AS blockchain,
         SUM(COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)) AS liquidity
     FROM cumulative_usd_balance c
@@ -200,6 +201,7 @@ WITH pool_labels AS (
     AND c.pool_id = b.pool_id
     LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
     AND w.blockchain = '{{blockchain}}'
+    AND w.version = '{{version}}'    
     AND w.token_address = c.token
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
     GROUP BY 1, 2, 3, 4
@@ -375,6 +377,7 @@ WITH pool_labels AS (
     FROM tvl l
     LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON l.pool_address = s.token_address
     AND l.blockchain = s.blockchain
+    AND l.version = s.version  
     AND l.day = s.day
     LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
