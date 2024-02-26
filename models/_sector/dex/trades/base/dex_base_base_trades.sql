@@ -37,6 +37,7 @@
     , ref('uniswap_v2_base_base_trades')
     , ref('oasisswap_base_base_trades')
     , ref('leetswap_v2_base_base_trades')
+    , ref('openocean_base_base_trades')
 ] %}
 
 WITH base_union AS (

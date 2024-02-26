@@ -104,3 +104,6 @@ sources:
     tables:
       - name: LeetSwapV2Factory_evt_PairCreated
       - name: LeetSwapV2Pair_evt_Swap
+  - name: openocean_v2_base
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
