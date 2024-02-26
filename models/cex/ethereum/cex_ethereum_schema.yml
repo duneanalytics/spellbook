@@ -70,7 +70,7 @@ models:
         description: "Amount"
       - name: amount_raw
         description: "Raw amount"
-      - name: usd_amount
+      - name: amount_usd
         description: "USD amount"
       - name: from
         description: "from address"
