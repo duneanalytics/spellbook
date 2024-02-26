@@ -96,6 +96,10 @@ sources:
     tables:
       - name: AutotronicFactory_evt_PairCreated
       - name: AutotronicPair_evt_Swap
+  - name: elk_finance_base
+    tables:
+      - name: ElkFactory_evt_PairCreated
+      - name: ElkPair_evt_Swap
   - name: oasisswap_base
     tables:
       - name: OasisSwapFactory_evt_PairCreated

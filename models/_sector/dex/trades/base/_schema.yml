@@ -559,6 +559,26 @@ models:
             version: 2
 
 
+  - name: elk_finance_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: elk_finance
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'elk_finance' ]
+    description: "elk_finance base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_base_base_trades_seed')
+          filter:
+            version: 1
+
+
   - name: oasisswap_base_base_trades
     meta:
       blockchain: base
