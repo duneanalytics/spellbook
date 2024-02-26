@@ -173,3 +173,6 @@ SELECT 'polygon' as blockchain
 FROM whitelisted_trades t
 LEFT JOIN fees f ON t.block_number=f.block_number
     AND t.tx_hash=f.tx_hash
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'polygon') }}
