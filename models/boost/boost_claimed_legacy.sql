@@ -13,7 +13,7 @@ with receipt_mints as (
     {% set schema_name = 'boost_' + network %}
     {% set deployed_model = ref('boost_' + network + '_deployed') %}
     select
-        {{ network }} as reward_network,
+        '{{ network }}' as reward_network,
         c.questAddress as boost_address,
         c.questId as boost_id,
         '' as boost_name,
@@ -34,7 +34,7 @@ erc20_claims as (
     {% for network in erc20_quests %}
     {% set schema_name = 'boost_' + network %}
     select
-        {{ network }} as reward_network,
+        '{{ network }}' as reward_network,
         questAddress as boost_address,
         questId as boost_id,
         '' as boost_name,
@@ -53,7 +53,7 @@ erc1155_claims as (
     {% for network in erc20_quests %}
     {% set schema_name = 'boost_' + network %}
     select
-        {{ network }} as reward_network,
+        '{{ network }}' as reward_network,
         questAddress as boost_address,
         questId as boost_id,
         '' as boost_name,
