@@ -1645,7 +1645,13 @@ FROM
     ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18),
     ('usde-ethena-usde', 'ethereum', 'USDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 18),
     ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18),
-    ('ata-automata', 'ethereum', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18)
+    ('ata-automata', 'ethereum', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
+    ('oseth-stakewise-staked-eth','ethereum','osETH',0xf1c9acdc66974dfb6decb12aa385b9cd01190e38, 18),
+    ('lseth-liquid-staked-ethereum','ethereum','LsETH',0x8c1bed5b9a0928467c9b1341da1d7bd5e10b6549, 18),
+    ('oeth-origin-ether','ethereum','OETH',0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3, 18),
+    ('ethx-stader-ethx','ethereum','ETHx',0xA35b1B31Ce002FBF2058D22F30f95D405200A15b, 18),
+    ('rseth-rseth','ethereum','rsETH',0xa1290d69c65a6fe4df752f95823fae25cb99e5a7, 18),
+    ('pufeth-pufeth','ethereum','pufETH',0xD9A442856C234a39a81a089C06451EBAa4306a72, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
