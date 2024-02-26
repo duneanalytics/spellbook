@@ -6,11 +6,11 @@
 }}
 
 {% set network_to_fees_logic = {
-    'arbitrum': 'sum(effective_gas_price * gas_used / 1e18) arbitrum_fee_eth',
+    'arbitrum': 'sum(gas_used / 1e18 * effective_gas_price) arbitrum_fee_eth',
     'base': 'sum((gas_used * gas_price + l1_fee) / 1e18) base_fee_eth',
-    'ethereum': 'sum(gas_price * gas_used / 1e18) ethereum_fee_eth',
+    'ethereum': 'sum(gas_used / 1e18 * gas_price) ethereum_fee_eth',
     'optimism': 'sum((gas_used * gas_price + l1_fee) / 1e18) optimism_fee_eth',
-    'polygon': 'sum(gas_price * gas_used / 1e18) polygon_fee_matic',
+    'polygon': 'sum(gas_used / 1e18 * gas_price) polygon_fee_matic',
 } %}
 
 with boost_completors as (
