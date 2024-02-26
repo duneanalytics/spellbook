@@ -193,7 +193,6 @@ FROM
     , (0x3a8cf14a2b26cd28729909c263e0fa385149f185, 'lenhardt.eth', 'lenhardt.eth', 'Solo Staker')
     , (0x1f51221d0a6a2fd1ca80712f941185bbcbc24e1e, 'damstake.eth', 'damstake.eth', 'Solo Staker')
     , (0xea310c966d3ff5e09c65487f1763b21361eb71ef, 'ctrl-alt.eth', 'ctrl-alt.eth', 'Solo Staker')
-    , (0x9087b03c47dc0246d0c31192fdc6c44d503aa847, 'Jesse Rinaldi', 'Jesse Rinaldi', 'Solo Staker')
     , (0x8a9d46d28003673cd4fe7a56ecfcfa2be6372e64, 'johnc.eth', 'johnc.eth', 'Solo Staker')
     , (0x5e014aa0649102e07c074f498845f01bcd520317, 'Mahachai', 'Mahachai', 'Solo Staker')
     , (0xa652565db815ad3b138fd98830d14cfd1826693a, 'Alex Chapman', 'Alex Chapman', 'Solo Staker')
