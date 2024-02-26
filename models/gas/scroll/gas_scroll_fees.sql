@@ -35,13 +35,18 @@ SELECT
         WHEN txns.gas_limit != 0 THEN txns.gas_used / txns.gas_limit * 100
      END AS gas_usage_percent,
      type as transaction_type
-FROM {{ source('scroll', 'transactions') }} txns
-JOIN {{ source('scroll', 'blocks') }} blocks 
-    ON blocks.number = txns.block_number
-LEFT JOIN {{ source('prices', 'usd') }} p 
-    ON p.minute = date_trunc('minute', blocks.time)
-    AND p.blockchain = 'scroll'
-    AND p.symbol = 'WETH'
+FROM {{ source('scroll','transactions') }} txns
+JOIN {{ source('scroll','blocks') }} blocks ON blocks.number = txns.block_number
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('blocks.time') }}
+AND {{ incremental_predicate('txns.block_time') }}
+AND {{ incremental_predicate('blocks.time') }}
+{% endif %}
+LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
+AND p.blockchain = 'scroll'
+AND p.symbol = 'WETH'
+{% if is_incremental() %}
+AND {{ incremental_predicate('p.minute') }}
+WHERE {{ incremental_predicate('txns.block_time') }}
+AND {{ incremental_predicate('blocks.time') }}
+AND {{ incremental_predicate('p.minute') }}
 {% endif %}
