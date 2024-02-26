@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['flow_type', 'block_number', 'tx_index', 'evt_index']
+        unique_key = ['flow_type', 'block_number', 'tx_index', 'unique_key']
         )}}
 
 SELECT t.blockchain
@@ -28,6 +28,7 @@ SELECT t.blockchain
 , t.tx_index
 , t.tx_hash
 , t.evt_index
+, t.unique_key
 FROM {{ ref('tokens_ethereum_transfers')}} t
 INNER JOIN {{ ref('cex_ethereum_addresses')}} a ON a.address IN (t."from", t.to)
 {% if is_incremental() %}

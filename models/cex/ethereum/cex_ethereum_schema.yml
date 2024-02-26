@@ -44,7 +44,7 @@ models:
             - flow_type
             - block_number
             - tx_index
-            - evt_index
+            - unique_key
     columns:
       - name: blockchain
         description: "Blockchain"
@@ -86,3 +86,5 @@ models:
         description: "Transaction hash"
       - name: evt_index
         description: "Event index"
+      - name: unique_key
+        description: "The transfer's unique key"
