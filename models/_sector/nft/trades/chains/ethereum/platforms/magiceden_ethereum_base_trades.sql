@@ -9,6 +9,8 @@
     )
 }}
 
+{% set magiceden_start_date = "TIMESTAMP '2024-02-16'" %}
+
 WITH trades AS (
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
@@ -23,7 +25,12 @@ WITH trades AS (
     , paymentCoin AS currency_contract
     , salePrice AS price_raw
     , evt_index AS sub_tx_trade_id
-    FROM limitbreak_ethereum.PaymentProcessor_evt_BuyListingERC721
+    FROM {{ source('limitbreak_ethereum','PaymentProcessor_evt_BuyListingERC721') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    WHERE evt_block_time >= {{magiceden_start_date}}
+    {% endif %}
     
     UNION ALL
     
@@ -40,7 +47,12 @@ WITH trades AS (
     , paymentCoin AS currency_contract
     , salePrice AS price_raw
     , evt_index AS sub_tx_trade_id
-    FROM limitbreak_ethereum.PaymentProcessor_evt_BuyListingERC1155
+    FROM {{ source('limitbreak_ethereum','PaymentProcessor_evt_BuyListingERC1155') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    WHERE evt_block_time >= {{magiceden_start_date}}
+    {% endif %}
     
     UNION ALL
     
@@ -57,7 +69,12 @@ WITH trades AS (
     , paymentCoin AS currency_contract
     , salePrice AS price_raw
     , evt_index AS sub_tx_trade_id
-    FROM limitbreak_ethereum.PaymentProcessor_evt_AcceptOfferERC721
+    FROM {{ source('limitbreak_ethereum','PaymentProcessor_evt_AcceptOfferERC721') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    WHERE evt_block_time >= {{magiceden_start_date}}
+    {% endif %}
     
     UNION ALL
     
@@ -74,7 +91,12 @@ WITH trades AS (
     , paymentCoin AS currency_contract
     , salePrice AS price_raw
     , evt_index AS sub_tx_trade_id
-    FROM limitbreak_ethereum.PaymentProcessor_evt_AcceptOfferERC1155
+    FROM {{ source('limitbreak_ethereum','PaymentProcessor_evt_AcceptOfferERC1155') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% else %}
+    WHERE evt_block_time >= {{magiceden_start_date}}
+    {% endif %}
     )
     
 , whitelisted_trades AS (
@@ -93,9 +115,14 @@ WITH trades AS (
     , t.sub_tx_trade_id
     , fc.message
     FROM trades t
-    INNER JOIN limitbreak_ethereum.TrustedForwarder_call_forwardCall fc ON fc.call_block_number=t.block_number
+    INNER JOIN {{ source('limitbreak_ethereum','TrustedForwarder_call_forwardCall') }} fc ON fc.call_block_number=t.block_number
         AND fc.call_tx_hash=t.tx_hash
         AND fc.contract_address = 0x5ebc127fae83ed5bdd91fc6a5f5767e259df5642
+        {% if is_incremental() %}
+        AND {{incremental_predicate('call_block_time')}}
+        {% else %}
+        AND call_block_time >= {{magiceden_start_date}}
+        {% endif %}
     )
 
 , fees AS (
@@ -112,6 +139,11 @@ WITH trades AS (
         AND tr."from" = 0x9a1d00bed7cd04bcda516d721a596eb22aac6834
         AND tr."to" != wt.seller
         AND tr.block_number >= 19242536
+    {% if is_incremental() %}
+    WHERE tr.{{incremental_predicate('block_time')}}
+    {% else %}
+    WHERE tr.block_time >= {{magiceden_start_date}}
+    {% endif %}
     GROUP BY 1, 2
     )
 
