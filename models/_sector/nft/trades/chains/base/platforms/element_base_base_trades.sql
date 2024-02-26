@@ -20,4 +20,4 @@ WITH base_trades as (
     }}
 )
 
-SELECT * FROM base_trades
+{{ add_nft_tx_data('base_trades', 'base') }}
