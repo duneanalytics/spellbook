@@ -71,7 +71,7 @@ FROM
     , (0xbb84d966c09264ce9a2104a4a20bb378369986db, 'WEX Exchange', 'WEX Exchange', 'CEX')
     , (0xbafa44efe7901e04e39dad13167d089c559c1138, 'Frax Finance', 'Frax Finance', 'Liquid Staking')
     , (0xefe9a82d56cd965d7b332c7ac1feb15c53cd4340, 'Coinbase', 'Coinbase Batch 1', 'CEX')
-    , (0x2d5e65ff87d986d18ac224e725dc654bec3a04cd, 'Coinbase', 'Coinbase Cloud')
+    , (0x2d5e65ff87d986d18ac224e725dc654bec3a04cd, 'Coinbase', 'Coinbase Cloud', 'CEX')
     , (0xeee27662c2b8eba3cd936a23f039f3189633e4c8, 'Celsius', 'Celsius 1', 'Staking Pool')
     , (0xbd9d540f6a671d4280d81127de555a7d8ce7e204, 'Celsius', 'Celsius 2', 'Staking Pool')
     , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell 1', 'Liquid Staking')
