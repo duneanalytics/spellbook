@@ -603,10 +603,10 @@ models:
       blockchain: base
       sector: dex
       project: swapbased
-      contributors: intensodefi
+      contributors: LLDAO
     config:
       tags: [ 'base', 'dex', 'trades', 'swapbased' ]
-    description: "swapbased base base trades"
+    description: "swapbased base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
