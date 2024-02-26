@@ -1,0 +1,141 @@
+{{ config(
+    schema = 'magiceden_v2_polygon',
+    
+    alias = 'base_trades',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+    )
+}}
+
+WITH trades AS (
+    SELECT evt_block_time AS block_time
+    , evt_block_number AS block_number
+    , evt_tx_hash AS tx_hash
+    , contract_address AS project_contract_address
+    , buyer
+    , seller
+    , tokenAddress AS nft_contract_address
+    , tokenId AS nft_token_id
+    , 1 AS nft_amount
+    , 'Buy' AS trade_category
+    , paymentCoin AS currency_contract
+    , salePrice AS price_raw
+    , evt_index AS sub_tx_trade_id
+    FROM limitbreak_polygon.PaymentProcessor_evt_BuyListingERC721
+    
+    UNION ALL
+    
+    SELECT evt_block_time AS block_time
+    , evt_block_number AS block_number
+    , evt_tx_hash AS tx_hash
+    , contract_address AS project_contract_address
+    , buyer
+    , seller
+    , tokenAddress AS nft_contract_address
+    , tokenId AS nft_token_id
+    , 1 AS nft_amount
+    , 'Buy' AS trade_category
+    , paymentCoin AS currency_contract
+    , salePrice AS price_raw
+    , evt_index AS sub_tx_trade_id
+    FROM limitbreak_polygon.PaymentProcessor_evt_BuyListingERC1155
+    
+    UNION ALL
+    
+    SELECT evt_block_time AS block_time
+    , evt_block_number AS block_number
+    , evt_tx_hash AS tx_hash
+    , contract_address AS project_contract_address
+    , buyer
+    , seller
+    , tokenAddress AS nft_contract_address
+    , tokenId AS nft_token_id
+    , 1 AS nft_amount
+    , 'Offer Accepted' AS trade_category
+    , paymentCoin AS currency_contract
+    , salePrice AS price_raw
+    , evt_index AS sub_tx_trade_id
+    FROM limitbreak_polygon.PaymentProcessor_evt_AcceptOfferERC721
+    
+    UNION ALL
+    
+    SELECT evt_block_time AS block_time
+    , evt_block_number AS block_number
+    , evt_tx_hash AS tx_hash
+    , contract_address AS project_contract_address
+    , buyer
+    , seller
+    , tokenAddress AS nft_contract_address
+    , tokenId AS nft_token_id
+    , amount AS nft_amount
+    , 'Offer Accepted' AS trade_category
+    , paymentCoin AS currency_contract
+    , salePrice AS price_raw
+    , evt_index AS sub_tx_trade_id
+    FROM limitbreak_polygon.PaymentProcessor_evt_AcceptOfferERC1155
+    )
+    
+, whitelisted_trades AS (
+    SELECT t.block_time
+    , t.block_number
+    , t.tx_hash
+    , t.project_contract_address
+    , t.buyer
+    , t.seller
+    , t.nft_contract_address
+    , t.nft_token_id
+    , t.nft_amount
+    , t.trade_category
+    , t.currency_contract
+    , t.price_raw
+    , t.sub_tx_trade_id
+    , fc.message
+    FROM trades t
+    INNER JOIN limitbreak_polygon.TrustedForwarder_call_forwardCall fc ON fc.call_block_number=t.block_number
+        AND fc.call_tx_hash=t.tx_hash
+        AND fc.contract_address = 0x5ebc127fae83ed5bdd91fc6a5f5767e259df5642
+    )
+
+, fees AS (
+    SELECT tr.block_number
+    , tr.tx_hash
+    , 0xca9337244b5f04cb946391bc8b8a980e988f9a6a AS platform_fee_address
+    , MAX_BY(tr.to, tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_address
+    , SUM(tr.amount_raw) FILTER (WHERE to = 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS platform_fee_amount_raw
+    , SUM(tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_amount_raw
+    FROM tokens_polygon.transfers tr
+    INNER JOIN whitelisted_trades wt ON tr.block_number=wt.block_number
+        AND tr.tx_hash=wt.tx_hash
+        AND tr.amount_raw > 0
+        AND tr."from" = 0x9a1d00bed7cd04bcda516d721a596eb22aac6834
+        AND tr."to" != wt.seller
+        AND tr.block_number >= 19242536
+    GROUP BY 1, 2
+    )
+
+SELECT 'polygon' as blockchain
+, 'magiceden' as project
+, 'v2' as project_version
+, t.block_time
+, t.block_number
+, t.tx_hash
+, t.project_contract_address
+, t.buyer
+, t.seller
+, t.nft_contract_address
+, t.nft_token_id
+, t.nft_amount
+, 'secondary' AS trade_type
+, t.trade_category
+, t.currency_contract
+, t.price_raw
+, f.platform_fee_amount_raw
+, f.royalty_fee_amount_raw
+, CASE WHEN platform_fee_amount_raw > 0 THEN f.platform_fee_address END AS platform_fee_address
+, f.royalty_fee_address
+, t.sub_tx_trade_id
+FROM whitelisted_trades t
+LEFT JOIN fees f ON t.block_number=f.block_number
+    AND t.tx_hash=f.tx_hash
