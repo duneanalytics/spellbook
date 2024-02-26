@@ -79,6 +79,30 @@ models:
       - name: action_tx_hash
       - name: action_network
 
+  - name: boost_claimed_legacy
+    meta:
+      project: boost
+      contributors: raho, pntemi
+    config:
+      tags: ["boost", "boost_inbox", "quest"]
+    description: Boost rewards claimed after actions are completed, but from legacy events. 
+    columns:
+      - name: reward_network
+      - name: boost_address
+      - name: boost_id
+      - name: boost_name
+      - name: project_name
+      - name: claimer_address
+      - name: reward_token_address
+      - name: reward_amount_raw
+      - name: reward_usd
+      - name: claim_tx_hash
+      - name: block_time
+      - name: claim_fee_eth
+      - name: action_type
+      - name: action_tx_hash
+      - name: action_network
+
   - name: boost_completors
     meta:
       project: boost

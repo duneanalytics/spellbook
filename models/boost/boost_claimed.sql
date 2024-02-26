@@ -15,10 +15,10 @@
 
 with quest_claimed_data as (
     {% for model in boost_claimed_models %}
-    SELECT *
-    FROM {{ model }}
+    select *
+    from {{ model }}
     {% if not loop.last %}
-    UNION ALL
+    union all
     {% endif %}
     {% endfor %}
 ),
@@ -39,27 +39,27 @@ quest_claims_enriched as (
         action_tx_hash,
         coalesce(b.action_network, c.action_network) action_network
     from quest_claimed_data c
-    left join {{ref("boost_deployed")}} b
+    left join {{ ref("boost_deployed") }} b
     on c.boost_address = b.boost_address
     where block_time > date '2023-11-12'
 ),
 unified_claims as (
     select
-        blockchain as reward_network, 
-        quest_address as boost_address,
-        quest_id as boost_id,
-        quest_name as boost_name,
+        reward_network, 
+        boost_address,
+        boost_id,
+        boost_name,
         project_name,
         claimer_address,
         reward_amount_raw,
         reward_token_address,
-        tx_hash as claim_tx_hash,
+        claim_tx_hash,
         block_time,
         claim_fee_eth,
         action_type,
         action_tx_hash,
         action_network
-    from "dune"."boost_xyz"."result_dashboard_quest_claims_legacy"
+    from {{ ref("boost_claimed_legacy") }} 
     union all
     select 
         reward_network, 
@@ -96,7 +96,7 @@ select
     action_tx_hash,
     action_network
 from unified_claims u
-left join {{source('prices','usd')}} p
+left join {{ source('prices','usd') }} p
 on date_trunc('hour', block_time) = p.minute
     and reward_token_address = p.contract_address
 order by block_time desc

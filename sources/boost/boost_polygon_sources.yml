@@ -6,3 +6,6 @@ sources:
     tables:
       - name: QuestFactory_evt_QuestCreated
       - name: QuestFactory_evt_QuestClaimedData
+      - name: QuestFactory_evt_QuestClaimed
+      - name: QuestFactory_evt_Quest1155Claimed
+      - name: QuestFactory_evt_ReceiptMinted

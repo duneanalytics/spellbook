@@ -32,10 +32,10 @@ select
 from
   (
     {% for model in boost_deployed_models %}
-    SELECT *
-    FROM {{ model }}
+    select *
+    from {{ model }}
     {% if not loop.last %}
-    UNION ALL
+    union all
     {% endif %}
     {% endfor %}
 )

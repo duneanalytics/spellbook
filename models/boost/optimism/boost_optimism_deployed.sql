@@ -19,15 +19,21 @@ select
     'optimism' as reward_network,
     contractAddress as boost_address,
     questId as boost_id,
-    '' as boost_name,
-    '' as action_type,
-    '' as action_network,
-    '' as project_name,
-    contractType as boost_type,
+    questName as boost_name,
+    actionType as action_type,
+    case
+    {% for chain_id, network in network_to_chain_id.items() %}
+        when chainId={{ chain_id }} then '{{ network }}'
+    {% if loop.last %}
+    end as action_network,
+    {% endif %}
+    {% endfor %}
+    projectName as project_name,
+    coalesce(contractType, questType) as boost_type,
     startTime as start_time,
     endTime as end_time,
     rewardAmountOrTokenId as reward_amount_raw,
-    rewardTokenAddress as reward_token_address,
+    coalesce(rewardTokenAddress, rewardToken) as reward_token_address,
     totalParticipants as max_participants,
     evt_block_time as creation_time,
     creator
