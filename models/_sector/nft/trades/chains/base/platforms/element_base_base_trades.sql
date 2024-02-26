@@ -12,8 +12,10 @@
 WITH base_trades as (
     {{ element_v1_base_trades(
           blockchain = 'base'
-        , erc721_sell_order_filled = source('element_ex_base','ERC721OrdersFeature_evt_ERC721BuyOrderFilled')
-        , erc721_buy_order_filled = source('element_ex_base','ERC721OrdersFeature_evt_ERC721SellOrderFilled')
+        , erc721_sell_order_filled = source('element_ex_base','ElementEx_evt_ERC721SellOrderFilled')
+        , erc721_buy_order_filled = source('element_ex_base','ElementEx_evt_ERC721BuyOrderFilled')
+        , erc1155_sell_order_filled = source('element_ex_base','ElementEx_evt_ERC1155SellOrderFilled')
+        , erc1155_buy_order_filled = source('element_ex_base','ElementEx_evt_ERC1155BuyOrderFilled')
         )
     }}
 )

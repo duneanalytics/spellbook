@@ -44,8 +44,10 @@ models:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
      - equal_rowcount_with_sources:
          evt_sources:
-           - source('element_ex_base','ERC721OrdersFeature_evt_ERC721BuyOrderFilled')
-           - source('element_ex_base','ERC721OrdersFeature_evt_ERC721SellOrderFilled')
+           - source('element_ex_base','ElementEx_evt_ERC721BuyOrderFilled')
+           - source('element_ex_base','ElementEx_evt_ERC721SellOrderFilled')
+           - source('element_ex_base','ElementEx_evt_ERC1155BuyOrderFilled')
+           - source('element_ex_base','ElementEx_evt_ERC1155SellOrderFilled')
      - check_seed:
          seed_file: ref('element_base_base_trades_seed')
          match_columns:
