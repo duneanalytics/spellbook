@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_base_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: aerodrome_base_base_trades
@@ -416,7 +418,27 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('torus_base_base_trades_seed')
 
-  
+
+  - name: throne_exchange_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: throne_exchange
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
+    description: "throne_exchange base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('throne_exchange_v2_base_base_trades_seed')
+          filter:
+            version: 2
+
+
   - name: sharkswap_base_base_trades
     meta:
       blockchain: base
@@ -435,6 +457,26 @@ models:
           seed_file: ref('sharkswap_base_base_trades_seed')
           filter:
             version: 1
+            
+
+  - name: throne_exchange_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: throne_exchange
+      contributors: LLDAO
+    config:
+      tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
+    description: "throne_exchange base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('throne_exchange_v3_base_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: horizondex_base_base_trades
@@ -495,3 +537,100 @@ models:
           seed_file: ref('autotronic_base_base_trades_seed')
           filter:
             version: 1
+
+
+  - name: uniswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap base v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_base_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: elk_finance_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: elk_finance
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'elk_finance' ]
+    description: "elk_finance base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_base_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: oasisswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: oasisswap
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'oasisswap' ]
+    description: "oasisswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('oasisswap_base_base_trades_seed')
+          filter:
+            version: 1
+  
+
+  - name: leetswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: leetswap_v2
+      contributors: archie 
+    config:
+      tags: [ 'base', 'dex', 'trades', 'leetswap' ]
+    description: "leetswap_v2 base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_v2_base_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: openocean_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'openocean' ]
+    description: "openocean base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_base_base_trades_seed')

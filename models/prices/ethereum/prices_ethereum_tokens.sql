@@ -1210,7 +1210,6 @@ FROM
     ('nmt-nftmart-token', 'ethereum', 'NMT', 0xd81b71cbb89b2800cdb000aa277dc1491dc923c3, 18),
     ('nwc-newscryptoio', 'ethereum', 'NWC', 0x968f6f898a6df937fc1859b323ac2f14643e3fed, 18),
     ('ons-one-share', 'ethereum', 'ONS', 0x5bb29c33c4a3c29f56f8aca40b4db91d8a5fe2c5, 18),
-    ('peak-peakdefi', 'ethereum', 'PEAK', 0x630d98424efe0ea27fb1b3ab7741907dffeaad78, 8),
     ('pepe-pepegold', 'ethereum', 'PEPE', 0x4a27e9aab8f8ba9de06766c8476ed1d16494e35f, 18),
     ('phnx-phoenixdao', 'ethereum', 'PHNX', 0x38a2fdc11f526ddd5a607c1f251c065f40fbf2f7, 18),
     ('pla-playdapp', 'ethereum', 'PLA', 0x3a4f40631a4f906c2bad353ed06de7a5d3fcb430, 18),
@@ -1645,7 +1644,14 @@ FROM
     ('sweth-swell-ethereum', 'ethereum', 'swETH', 0xf951e335afb289353dc249e82926178eac7ded78, 18),
     ('meth-meth', 'ethereum', 'mETH', 0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa, 18),
     ('usde-ethena-usde', 'ethereum', 'USDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 18),
-    ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18)
+    ('ajna-ajna-protocol', 'ethereum', 'AJNA', 0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079, 18),
+    ('ata-automata', 'ethereum', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
+    ('oseth-stakewise-staked-eth','ethereum','osETH',0xf1c9acdc66974dfb6decb12aa385b9cd01190e38, 18),
+    ('lseth-liquid-staked-ethereum','ethereum','LsETH',0x8c1bed5b9a0928467c9b1341da1d7bd5e10b6549, 18),
+    ('oeth-origin-ether','ethereum','OETH',0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3, 18),
+    ('ethx-stader-ethx','ethereum','ETHx',0xA35b1B31Ce002FBF2058D22F30f95D405200A15b, 18),
+    ('rseth-rseth','ethereum','rsETH',0xa1290d69c65a6fe4df752f95823fae25cb99e5a7, 18),
+    ('pufeth-pufeth','ethereum','pufETH',0xD9A442856C234a39a81a089C06451EBAa4306a72, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1669,4 +1675,5 @@ where contract_address not in (
     ,0xe7ab45162f5979f09b0bda1cc7dfc97c270ea3d5   -- DOBE
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
+    ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
 )

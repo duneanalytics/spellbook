@@ -12,7 +12,14 @@ with
 
 src_Mint as (
   {% for src in sources %}
-    select contract_address, minter, mintAmount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    select
+      contract_address,
+      minter,
+      mintAmount,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number
     from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Mint' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
@@ -25,7 +32,20 @@ src_Mint as (
 
 src_Redeem as (
   {% for src in sources %}
-    select contract_address, redeemer, redeemAmount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    select
+      contract_address,
+      {% if src["redeemer_column_name"] -%}
+        {{ src["redeemer_column_name"] }} as 
+      {%- endif %}
+      redeemer,
+      {% if src["redeemAmount_column_name"] -%}
+        {{ src["redeemAmount_column_name"] }} as 
+      {%- endif %}
+      redeemAmount,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number
     from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Redeem' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}

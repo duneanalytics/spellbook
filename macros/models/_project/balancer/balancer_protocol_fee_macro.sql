@@ -64,6 +64,7 @@ WITH pool_labels AS (
             decimals
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
         {% if is_incremental() %}
         AND {{ incremental_predicate('day') }}
         {% endif %}

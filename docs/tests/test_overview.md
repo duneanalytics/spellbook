@@ -10,7 +10,8 @@ Tests tied to models are highly encouraged & at times required, depending on the
 ## Recent Tests Added
 
 These tests would benefit all sector-level spells, first introduced in `nft.trades`:
-- Validate column data types, as built [here](https://github.com/duneanalytics/spellbook/blob/d6b5acc1dbd01e67e6cb23d96da6f3fc3ec7d268/tests/generic/check_column_types.sql#L6) and called like [this](https://github.com/duneanalytics/spellbook/blob/main/models/_sector/nft/trades/chains/arbitrum/platforms/_schema.yml#L14).
+
+- Validate column data types, as built [here](https://github.com/duneanalytics/spellbook/blob/d6b5acc1dbd01e67e6cb23d96da6f3fc3ec7d268/tests/generic/check_column_types.sql#L6) and called like [this](/models/_sector/nft/trades/chains/arbitrum/platforms/_schema.yml#L14).
 
 ## Where to Store Tests?
 

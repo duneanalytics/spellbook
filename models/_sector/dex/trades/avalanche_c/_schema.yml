@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 3
 
 
   - name: airswap_avalanche_c_base_trades
@@ -357,3 +359,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('hashflow_avalanche_c_base_trades_seed')
+
+  - name: uniswap_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'avalance_c', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap avalanche_c v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
