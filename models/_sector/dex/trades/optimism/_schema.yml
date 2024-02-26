@@ -19,6 +19,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('uniswap_optimism_base_trades_seed')
+          filter:
+            version: 3
 
 
 
@@ -430,4 +432,99 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('solidly_v3_optimism_base_trades_seed')
-           
+
+  
+  - name: dackieswap_v2_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: dackieswap
+      contributors: LLDAO
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
+    description: "dackieswap v2  optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dackieswap_v2_optimism_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: dackieswap_v3_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: dackieswap
+      contributors: LLDAO
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
+    description: "dackieswap v3  optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dackieswap_v3_optimism_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: wombat_exchange_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: wombat_exchange
+      contributors: LLDAO
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'wombat_exchange' ]
+    description: "wombat_exchange optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wombat_exchange_optimism_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: uniswap_v2_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap optimism v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_optimism_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: elk_finance_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: elk_finance
+      contributors: archie
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'elk_finance' ]
+    description: "elk_finance optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_optimism_base_trades_seed')
+          filter:
+            version: 1           

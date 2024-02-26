@@ -1,6 +1,6 @@
 {% macro 
     balancer_transfers_bpt_macro(
-        blockchain 
+        blockchain, version 
     ) 
 %}
 
@@ -14,6 +14,7 @@
     SELECT DISTINCT * FROM (
         SELECT
             '{{blockchain}}' AS blockchain,
+            '{{version}}' AS version,
             transfer.contract_address,
             transfer.evt_tx_hash,
             transfer.evt_index,

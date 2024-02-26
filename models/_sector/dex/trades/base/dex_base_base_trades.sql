@@ -29,9 +29,14 @@
     , ref('sobal_base_base_trades')
     , ref('derpdex_base_base_trades')
     , ref('torus_base_base_trades')
+    , ref('throne_exchange_v2_base_base_trades')
+    , ref('throne_exchange_v3_base_base_trades')
     , ref('sharkswap_base_base_trades')
     , ref('citadelswap_base_base_trades')
     , ref('autotronic_base_base_trades')
+    , ref('uniswap_v2_base_base_trades')
+    , ref('oasisswap_base_base_trades')
+    , ref('leetswap_v2_base_base_trades')
 ] %}
 
 WITH base_union AS (
