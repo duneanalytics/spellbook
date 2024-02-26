@@ -151,6 +151,8 @@ SELECT 'polygon' as blockchain
 , 'magiceden' as project
 , 'v1' as project_version
 , t.block_time
+, CAST(date_trunc('day', t.block_time) AS date) AS block_date
+, CAST(date_trunc('month', t.block_time) as date) as block_month
 , t.block_number
 , t.tx_hash
 , t.project_contract_address
