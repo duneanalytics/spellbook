@@ -38,9 +38,18 @@ with boost_completors as (
 {% endfor %}
 
 select 
-    *
+    u.*,
+    {% for network in network_to_fees_logic.keys() %}
+    {{ network }}_tx_count,
+    {% if network == 'polygon' %}
+    polygon_fee_matic,
+    {% else %}
+    {{ network }}_fee_eth,
+    {% endif %}
+    first_time_on_{{ network }} {% if not loop.last %}, {% endif %}
+    {% endfor %}
 from boost_completors u 
 {% for network in network_to_fees_logic.keys() %}
-join {{ network }}_transactions {{network}}
-on u.claimer_address = {{network}}.claimer_address
+join {{ network }}_transactions {{ network }}
+on u.claimer_address = {{ network }}.claimer_address
 {% endfor %}
