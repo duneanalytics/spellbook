@@ -603,7 +603,7 @@ models:
       blockchain: base
       sector: dex
       project: swapbased
-      contributors: archie
+      contributors: intensodefi
     config:
       tags: [ 'base', 'dex', 'trades', 'swapbased' ]
     description: "swapbased base base trades"
