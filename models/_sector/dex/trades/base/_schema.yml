@@ -597,3 +597,22 @@ models:
           seed_file: ref('leetswap_v2_base_base_trades_seed')
           filter:
             version: 2
+
+  - name: swapbased_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: swapbased
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'swapbased' ]
+    description: "swapbased base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swapbased_base_base_trades_seed')
+          filter:
+            version: 1
