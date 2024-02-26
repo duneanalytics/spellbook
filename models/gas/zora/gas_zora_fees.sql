@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'gas_zora',
     alias = 'fees',
     partition_by = ['block_month'],
     materialized = 'incremental',
