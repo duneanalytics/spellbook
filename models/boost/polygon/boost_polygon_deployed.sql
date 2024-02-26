@@ -19,10 +19,16 @@ select
     'polygon' as reward_network,
     contractAddress as boost_address,
     questId as boost_id,
-    '' as boost_name,
-    '' as action_type,
-    '' as action_network,
-    '' as project_name,
+    questName as boost_name,
+    actionType as action_type,
+    case
+    {% for chain_id, network in network_to_chain_id.items() %}
+        when chainId={{ chain_id }} then '{{ network }}'
+    {% if loop.last %}
+    end as action_network,
+    {% endif %}
+    {% endfor %}
+    projectName as project_name,
     questType as boost_type,
     startTime as start_time,
     endTime as end_time,
