@@ -16,7 +16,6 @@
         project = 'sharkswap',
         version = '1',
         Pair_evt_Swap = source('sharkswap_base', 'SharkswapPair_evt_Swap'),
-        Factory_evt_PairCreated = source('sharkswap_base', 'SharkswapFactory_evt_PairCreated'),
-        pair_column_name = 'pair'
+        Factory_evt_PairCreated = source('sharkswap_base', 'SharkswapFactory_evt_PairCreated')
     )
 }}
