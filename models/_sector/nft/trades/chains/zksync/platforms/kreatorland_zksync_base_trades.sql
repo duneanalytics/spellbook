@@ -12,8 +12,7 @@
 
 {% set kreatorland_usage_start_date = "2023-06-25" %}
 
-WITH 
-    base AS (
+WITH base AS (
         SELECT 
             -- Consideration 1
             json_extract_scalar(consideration[1], '$.itemType') AS cons_item_type_1
@@ -46,7 +45,7 @@ WITH
         {% else %}
         WHERE evt_block_time >= timestamp '{{kreatorland_usage_start_date}}'
         {% endif %}
-    )
+)
 
 SELECT
     'zksync'AS blockchain
