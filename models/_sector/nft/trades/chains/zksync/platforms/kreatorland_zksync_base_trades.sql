@@ -10,7 +10,7 @@
     )
 }}
 
-{% SET kreatorland_usage_start_date = "2023-06-25" %}
+{% set kreatorland_usage_start_date = "2023-06-25" %}
 
 WITH 
     base AS (
@@ -41,10 +41,10 @@ WITH
             , from_hex(json_extract_scalar(offer[1], '$.recipient')) AS offer_recipient
             , *
         FROM {{ source('kreator_land_zksync', 'Seaport_evt_OrderFulfilled') }} 
-        {% IF is_incremental() %}
-        WHERE {{incremental_predicate('k.evt_block_time')}}
-        {% ELSE %}
-        WHERE k.evt_block_time >= timestamp '{{kreatorland_usage_start_date}}'
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('evt_block_time')}}
+        {% else %}
+        WHERE evt_block_time >= timestamp '{{kreatorland_usage_start_date}}'
         {% endif %}
     )
 

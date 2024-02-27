@@ -7,3 +7,6 @@ sources:
   - name: zonic_zksync
     tables:
       - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+  - name: kreator_land_zksync
+    tables: 
+      - name: Seaport_evt_OrderFulfilled
