@@ -15,6 +15,7 @@
     ,ref('rarible_polygon_base_trades')
     ,ref('tofu_polygon_base_trades')
     ,ref('magiceden_polygon_base_trades')
+    ,ref('magiceden_v2_polygon_base_trades')
 ] %}
 
 with base_union as (
