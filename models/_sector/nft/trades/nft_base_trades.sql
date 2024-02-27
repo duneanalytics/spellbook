@@ -21,6 +21,7 @@
  ,ref('nft_polygon_base_trades')
  ,ref('nft_zksync_base_trades')
  ,ref('nft_scroll_base_trades')
+ ,ref('nft_celo_base_trades')
 ] %}
 
 with base_union as (
