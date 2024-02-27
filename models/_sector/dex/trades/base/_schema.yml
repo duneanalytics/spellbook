@@ -661,7 +661,7 @@ models:
       project: wombat_exchange
       contributors: Henrystats
     config:
-      tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
+      tags: [ 'base', 'dex', 'trades', 'wombat_exchange' ]
     description: "wombat exchange base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -679,7 +679,8 @@ models:
       sector: dex
       project: gridex
       contributors: sofiat
-      tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
+    config:
+      tags: [ 'base', 'dex', 'trades', 'gridex' ]
     description: "gridex base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
