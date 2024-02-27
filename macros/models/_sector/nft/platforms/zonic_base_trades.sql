@@ -44,7 +44,7 @@ with events_raw as (
       tr.block_number
       ,tr.block_time
       ,tr.tx_hash
-      ,tr.amount_raw
+      ,tr.amount_raw as value
       ,tr.to
       ,er.evt_index
       ,er.evt_index - coalesce(tr.evt_index,element_at(tr.trace_address,1), 0) as ranking
