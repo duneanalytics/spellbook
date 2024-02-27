@@ -52,7 +52,7 @@ WITH
         SELECT
             'zksync' AS blockchain
             , 'kreatorland' AS project 
-            , 'v1.1' AS project 
+            , 'v1.1' AS version
             , evt_tx_hash AS tx_hash
             , evt_index AS sub_tx_trade_id
             , CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date
