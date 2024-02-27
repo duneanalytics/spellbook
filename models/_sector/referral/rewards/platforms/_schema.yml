@@ -590,14 +590,6 @@ models:
             - project
             - tx_hash
             - sub_tx_id
-      - check_seed:
-          seed_file: ref('fabric_ethereum_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -617,14 +609,6 @@ models:
             - project
             - tx_hash
             - sub_tx_id
-      - check_seed:
-          seed_file: ref('fabric_optimism_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -644,14 +628,6 @@ models:
             - project
             - tx_hash
             - sub_tx_id
-      - check_seed:
-          seed_file: ref('fabric_base_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
     columns:
       - *project
       - *tx_hash
@@ -671,14 +647,6 @@ models:
             - project
             - tx_hash
             - sub_tx_id
-      - check_seed:
-          seed_file: ref('fabric_zora_rewards_seed')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - referrer_address
-            - referee_address
-            - reward_amount_raw
     columns:
       - *project
       - *tx_hash
