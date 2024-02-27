@@ -510,4 +510,40 @@ models:
           filter:
             version: 2
 
-           
+  - name: elk_finance_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: elk_finance
+      contributors: archie
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'elk_finance' ]
+    description: "elk_finance optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_optimism_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: fraxswap_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: fraxswap
+      contributors: Henrystats
+    config:
+      tags: ['optimism', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap optimism base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_optimism_base_trades_seed')
+          filter:
+            version: 1   
