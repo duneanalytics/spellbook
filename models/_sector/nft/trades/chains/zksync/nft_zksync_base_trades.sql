@@ -6,11 +6,9 @@
 }}
 -- (project, project_version, model)
 {% set nft_models = [
-    ref('zonic_zksync_base_trades'),
-    ref('tevaera_zksync_base_trades')
-    ,ref('element_zksync_base_trades')
+    ref('zonic_zksync_base_trades')
+    ,ref('tevaera_zksync_base_trades')
     ,ref('kreatorland_zksync_base_trades')
-    ,ref('rarible_zksync_base_trades')
 ] %}
 
 with 

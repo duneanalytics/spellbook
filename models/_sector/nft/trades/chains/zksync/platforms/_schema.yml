@@ -32,7 +32,7 @@ models:
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
 
-- name: zonic_zksync_base_trades
+ - name: zonic_zksync_base_trades
    meta:
      blockchain: zksync
      sector: nft
