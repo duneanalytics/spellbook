@@ -111,3 +111,7 @@ sources:
   - name: openocean_v2_base
     tables:
       - name: OpenOceanExchange_evt_Swapped
+  - name: rocketswap_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
