@@ -1,4 +1,4 @@
-{{ 
+{{
     config(
         schema = 'nft_zksync',
         alias = 'base_trades',
