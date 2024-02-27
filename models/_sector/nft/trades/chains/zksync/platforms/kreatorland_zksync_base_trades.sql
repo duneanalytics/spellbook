@@ -48,7 +48,7 @@ WITH base AS (
 )
 
 SELECT
-    'zksync'AS blockchain
+    'zksync' AS blockchain
     , 'kreatorland' AS project 
     , 'v1.1' AS project 
     , evt_tx_hash AS tx_hash
