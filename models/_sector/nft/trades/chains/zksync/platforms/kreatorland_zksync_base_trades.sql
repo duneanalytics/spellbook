@@ -12,7 +12,8 @@
 
 {% set kreatorland_usage_start_date = "2023-06-25" %}
 
-WITH base AS (
+WITH 
+    base AS (
         SELECT 
             -- Consideration 1
             json_extract_scalar(consideration[1], '$.itemType') AS cons_item_type_1
@@ -45,35 +46,36 @@ WITH base AS (
         {% else %}
         WHERE evt_block_time >= timestamp '{{kreatorland_usage_start_date}}'
         {% endif %}
-)
+    )
 
-SELECT
-    'zksync' AS blockchain
-    , 'kreatorland' AS project 
-    , 'v1.1' AS project 
-    , evt_tx_hash AS tx_hash
-    , evt_index AS sub_tx_trade_id
-    , CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date
-    , CAST(date_trunc('month', evt_block_time) AS DATE) AS block_month
-    , evt_block_time AS block_time
-    , evt_block_number AS block_number
-    , contract_address AS project_contract_address
-    , offerer AS seller
-    , recipient AS buyer
-    , 'secondary' AS trade_type
-    , 'Buy' AS trade_category
-    , cons_amount_1 + cons_amount_2 + cons_amount_3 AS price_raw
-    , 0x000000000000000000000000000000000000800A AS currency_contract
-    , cons_amount_3 AS royalty_fee_amount_raw
-    , cons_recipient_3 AS royalty_fee_address
-    , cons_amount_1 AS  platform_fee_amount_raw
-    , cons_recipient_1 AS platform_fee_address
-    , offer_token AS nft_contract_address
-    , offer_identifier AS nft_token_id
-    , offer_amount AS nft_amount
-FROM base 
-WHERE offer_item_type = '2' 
-
+    , base_trades AS (
+        SELECT
+            'zksync' AS blockchain
+            , 'kreatorland' AS project 
+            , 'v1.1' AS project 
+            , evt_tx_hash AS tx_hash
+            , evt_index AS sub_tx_trade_id
+            , CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date
+            , CAST(date_trunc('month', evt_block_time) AS DATE) AS block_month
+            , evt_block_time AS block_time
+            , evt_block_number AS block_number
+            , contract_address AS project_contract_address
+            , offerer AS seller
+            , recipient AS buyer
+            , 'secondary' AS trade_type
+            , 'Buy' AS trade_category
+            , cons_amount_1 + cons_amount_2 + cons_amount_3 AS price_raw
+            , 0x000000000000000000000000000000000000800A AS currency_contract
+            , cons_amount_3 AS royalty_fee_amount_raw
+            , cons_recipient_3 AS royalty_fee_address
+            , cons_amount_1 AS  platform_fee_amount_raw
+            , cons_recipient_1 AS platform_fee_address
+            , offer_token AS nft_contract_address
+            , offer_identifier AS nft_token_id
+            , offer_amount AS nft_amount
+        FROM base 
+        WHERE offer_item_type = '2' 
+    )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
 {{ add_nft_tx_data('base_trades', 'zksync') }}
