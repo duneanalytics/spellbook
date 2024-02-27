@@ -49,7 +49,7 @@ with events_raw as (
       ,er.evt_index
       ,er.evt_index - coalesce(tr.evt_index,element_at(tr.trace_address,1), 0) as ranking
     from events_raw as er
-    join {{ ref('transfers_' ~ blockchain ~ '_base_transfers') }} as tr
+    join {{ ref('tokens_' ~ blockchain ~ '_base_transfers') }} as tr
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.block_number
       and tr.amount_raw > 0
