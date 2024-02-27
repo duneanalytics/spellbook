@@ -15,7 +15,6 @@ select
     ,evt_tx_hash as tx_hash
     ,'NFT' as category
     ,referrer as referrer_address
-    -- this info is not available in the event
     ,tx."from" as referee_address
     ,{{ var("ETH_ERC20_ADDRESS") }} as currency_contract
     ,"rewardAmount" as reward_amount_raw
