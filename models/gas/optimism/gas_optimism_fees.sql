@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'gas_optimism',
     alias = 'fees',
     partition_by = ['block_month'],
     materialized = 'incremental',
