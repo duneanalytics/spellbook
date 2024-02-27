@@ -4,3 +4,6 @@ sources:
   - name: tevaera_zksync
     tables:
       - name: TevaMarket_evt_NewSale
+  - name: zonic_zksync
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
