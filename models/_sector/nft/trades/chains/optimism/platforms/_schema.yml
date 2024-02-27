@@ -19,7 +19,7 @@ models:
    meta:
      blockchain: optimism
      project: zonic
-     contributors: chuxin
+     contributors: chuxin, tomfutago
    config:
      tags: [ 'optimism','zonic', 'trades' ]
    description: >
