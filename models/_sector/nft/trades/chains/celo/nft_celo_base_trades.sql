@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'nft_ethereum',
+    schema = 'nft_celo',
     alias = 'base_trades',
     materialized = 'view'
     )
@@ -7,29 +7,10 @@
 
 
 {% set nft_models = [
- ref('archipelago_ethereum_base_trades')
-,ref('blur_ethereum_base_trades')
-,ref('blur_seaport_ethereum_base_trades')
-,ref('blur_v2_ethereum_base_trades')
-,ref('collectionswap_ethereum_base_trades')
-,ref('cryptopunks_ethereum_base_trades')
-,ref('element_ethereum_base_trades')
-,ref('foundation_ethereum_base_trades')
-,ref('liquidifty_ethereum_base_trades')
-,ref('looksrare_seaport_ethereum_base_trades')
-,ref('looksrare_v1_ethereum_base_trades')
-,ref('looksrare_v2_ethereum_base_trades')
-,ref('sudoswap_ethereum_base_trades')
-,ref('superrare_ethereum_base_trades')
-,ref('trove_ethereum_base_trades')
-,ref('x2y2_ethereum_base_trades')
-,ref('zora_v1_ethereum_base_trades')
-,ref('zora_v2_ethereum_base_trades')
-,ref('zora_v3_ethereum_base_trades')
-,ref('magiceden_ethereum_base_trades')
+ ref('tofu_celo_base_trades')
 ] %}
 
-with base_union as (
+
 SELECT * FROM  (
 {% for nft_model in nft_models %}
     SELECT
@@ -56,8 +37,9 @@ SELECT * FROM  (
         platform_fee_address,   -- optional
         royalty_fee_address,    -- optional
         sub_tx_trade_id,
---        tx_from,              -- not yet available in the base event tables
---        tx_to,                -- not yet available in the base event tables
+        tx_from,
+        tx_to,
+        tx_data_marker,
         row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank   -- duplicates protection
     FROM {{ nft_model }}
     {% if not loop.last %}
@@ -66,7 +48,3 @@ SELECT * FROM  (
     {% endfor %}
     )
 where duplicates_rank = 1
-)
-
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_union', 'ethereum') }}
