@@ -4,6 +4,12 @@ sources:
   - name: alienswap_base
     tables:
         - name: Alienswap_evt_OrderFulfilled
+  - name: element_ex_base
+    tables:
+        - name: ElementEx_evt_ERC721SellOrderFilled
+        - name: ElementEx_evt_ERC721BuyOrderFilled
+        - name: ElementEx_evt_ERC1155SellOrderFilled
+        - name: ElementEx_evt_ERC1155BuyOrderFilled
   
 
  
