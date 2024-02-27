@@ -42,8 +42,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
-            - block_number
-            - tx_index
             - unique_key
     columns:
       - name: blockchain

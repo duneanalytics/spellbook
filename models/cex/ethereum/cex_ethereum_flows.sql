@@ -5,11 +5,11 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['flow_type', 'block_number', 'tx_index', 'unique_key']
+        unique_key = ['flow_type', 'unique_key']
         )}}
 
 SELECT t.blockchain
-, date_trunc('month', block_time) AS block_month
+, CAST(date_trunc('month', block_time) AS date) AS block_month
 , block_time
 , block_number
 , a.cex_name
@@ -32,5 +32,5 @@ SELECT t.blockchain
 FROM {{ ref('tokens_ethereum_transfers')}} t
 INNER JOIN {{ ref('cex_ethereum_addresses')}} a ON a.address IN (t."from", t.to)
 {% if is_incremental() %}
-WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('block_time')}}
 {% endif %}
