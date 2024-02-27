@@ -85,6 +85,18 @@ seeds:
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
 
+  - name: element_optimism_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
   - name: x2y2_ethereum_base_trades_seed
     config:
       column_types:
