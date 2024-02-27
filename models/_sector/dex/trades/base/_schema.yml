@@ -672,3 +672,21 @@ models:
           seed_file: ref('wombat_exchange_base_base_trades_seed')
           filter:
             version: 2
+
+  - name: gridex_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: gridex
+      contributors: sofiat
+      tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
+    description: "gridex base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gridex_base_base_trades_seed')
+          filter:
+            version: 1
