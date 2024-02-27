@@ -111,3 +111,7 @@ sources:
   - name: openocean_v2_base
     tables:
       - name: OpenOceanExchange_evt_Swapped
+  - name: icecreamswap_base
+    tables:
+      - name: IceCreamSwapFactory_evt_PairCreated
+      - name: pool_evt_Swap
