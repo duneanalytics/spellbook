@@ -634,3 +634,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('openocean_base_base_trades_seed')
+
+  - name: rocketswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: rocketswap
+      contributors: intensodefi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
+    description: "rocketswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rocketswap_base_base_trades_seed')
+          filter:
+            version: 1
