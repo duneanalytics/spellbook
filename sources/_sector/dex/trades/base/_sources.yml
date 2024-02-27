@@ -111,3 +111,7 @@ sources:
   - name: openocean_v2_base
     tables:
       - name: OpenOceanExchange_evt_Swapped
+  - name: gridex_base
+    tables:
+      - name: GridFactory_evt_GridCreated
+      - name: pool_evt_Swap
