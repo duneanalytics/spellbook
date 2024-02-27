@@ -39,20 +39,20 @@ with events_raw as (
     {% endif %}
 )
 ,transfers_raw as (
-    -- eth royalities
+    -- royalties
     select
-      tr.tx_block_number as block_number
-      ,tr.tx_block_time as block_time
+      tr.block_number
+      ,tr.block_time
       ,tr.tx_hash
-      ,cast(tr.value as uint256) as value
+      ,tr.amount_raw
       ,tr.to
       ,er.evt_index
-      ,er.evt_index - coalesce(element_at(tr.trace_address,1), 0) as ranking
+      ,er.evt_index - coalesce(tr.evt_index,element_at(tr.trace_address,1), 0) as ranking
     from events_raw as er
-    join {{ ref('transfers_' ~ blockchain ~ '_eth') }} as tr
+    join {{ ref('transfers_' ~ blockchain ~ '_base_transfers') }} as tr
       on er.tx_hash = tr.tx_hash
-      and er.block_number = tr.tx_block_number
-      and tr.value_decimal > 0
+      and er.block_number = tr.block_number
+      and tr.amount_raw > 0
       and tr."from" in (er.project_contract_address, er.buyer) -- only include transfer from zonic or buyer to royalty fee address
       and tr.to not in (
         {{zonic_fee_address_address}} --platform fee address
@@ -61,40 +61,10 @@ with events_raw as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and tr.tx_block_number >= {{min_block_number}}
+      and tr.block_number >= {{min_block_number}}
       {% endif %}
       {% if is_incremental() %}
-      and {{incremental_predicate('tr.tx_block_time')}}
-      {% endif %}
-
-    union all
-
-    -- erc20 royalities
-    select
-      erc20.evt_block_number as block_number
-      ,erc20.evt_block_time as block_time
-      ,erc20.evt_tx_hash as tx_hash
-      ,erc20.value
-      ,erc20.to
-      ,er.evt_index
-      ,er.evt_index - erc20.evt_index as ranking
-    from events_raw as er
-    join {{ source('erc20_' ~ blockchain, 'evt_transfer') }} as erc20
-      on er.tx_hash = erc20.evt_tx_hash
-      and er.block_number = erc20.evt_block_number
-      and erc20.value is not null
-      and erc20."from" in (er.project_contract_address, er.buyer) -- only include transfer from zonic to royalty fee address
-      and erc20.to not in (
-        {{zonic_fee_address_address}} --platform fee address
-        ,er.seller
-        ,er.project_contract_address
-      )
-      {% if not is_incremental() %}
-      -- smallest block number for source tables above
-      and erc20.evt_block_number >= {{min_block_number}}
-      {% endif %}
-      {% if is_incremental() %}
-      and {{incremental_predicate('erc20.evt_block_time')}}
+      and {{incremental_predicate('tr.block_time')}}
       {% endif %}
 )
 ,transfers as (
