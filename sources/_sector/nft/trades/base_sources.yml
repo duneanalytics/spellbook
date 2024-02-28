@@ -10,6 +10,7 @@ sources:
         - name: ElementEx_evt_ERC721BuyOrderFilled
         - name: ElementEx_evt_ERC1155SellOrderFilled
         - name: ElementEx_evt_ERC1155BuyOrderFilled
-  
-
- 
+  - name: zonic_base
+    freshness:
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled

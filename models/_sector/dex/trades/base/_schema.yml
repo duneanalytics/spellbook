@@ -559,6 +559,26 @@ models:
             version: 2
 
 
+  - name: soswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: soswap
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'soswap' ]
+    description: "soswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('soswap_base_base_trades_seed')
+          filter:
+            version: 1
+
+
   - name: elk_finance_base_base_trades
     meta:
       blockchain: base
