@@ -31,3 +31,34 @@ models:
            - price_raw
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
+
+ - name: zonic_zksync_base_trades
+   meta:
+     blockchain: zksync
+     sector: nft
+     project: zonic
+     contributors: tomfutago
+   config:
+     tags: [ 'zksync', 'nft', 'trades', 'zonic' ]
+   description: "Zonic base trades on zkSync"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('zonic_zksync','ZonicMarketplace_evt_ZonicBasicOrderFulfilled')
+     - check_seed:
+         seed_file: ref('zonic_zksync_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
+           - platform_fee_amount_raw
+           - royalty_fee_amount_raw
