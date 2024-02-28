@@ -214,7 +214,7 @@ select
             , map_concat(flags, map_from_entries(array[('rfq', position('RFQ' in method) > 0), ('second_side', second_side)]))
             , flags
         )
-        , array[('direct', cardinality(call_trace_address) = 0)]
+        , map_from_entries(array[('direct', cardinality(call_trace_address) = 0)])
     ) as flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
