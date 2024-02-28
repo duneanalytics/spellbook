@@ -205,7 +205,7 @@ select
     , call_gas_used
     , user
     , receiver
-    , coalesce(flags['fusion'], false) as fusion -- to delete in the next step
+    , coalesce(element_at(flags, 'fusion'), false) as fusion -- to delete in the next step
     , position('RFQ' in method) > 0 and not second_side as contracs_only -- to delete in the next step
     , second_side -- to delete in the next step
     , order_hash
