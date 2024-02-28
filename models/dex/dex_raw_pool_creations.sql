@@ -151,6 +151,8 @@ pool_created_logs as (
     join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
     {% if is_incremental() %}
         where {{ incremental_predicate('block_time') }}
+    {% else %}
+        where block_time >= timestamp '2024-02-20 00:00:00'
     {% endif %}
 
     union all

@@ -48,6 +48,8 @@ select * from (
             and success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
+            {% else %}
+                and block_time >= timestamp '2024-02-20 00:00:00'
             {% endif %}
 
         {% if not loop.last %}
