@@ -74,19 +74,19 @@ from (
             , try(substr(cast(call_pools[cardinality(call_pools)] as varbinary), 13)) -- get last pool from call_pools if pools arr length 2+
         ) as last_pool
         , if(cardinality(call_pools) > 0
-            , try(bitwise_and( -- binary AND to allocate significant bit: bin byte & bit weight
+            , try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                 bytearray_to_bigint(substr(cast(call_pools[1] as varbinary), {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: direction_bit / 8 + 1 -- integer division
-                , cast(pow(2, 8 - mod({{ method_data.direction_bit }}, 8)) as bigint) -- 2 ^ (8 - direction_bit % 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
+                , cast(pow(2, {{ method_data.direction_bit }} - {{ method_data.direction_bit }} / 8 * 8) as bigint) -- 2 ^ (direction_bit - direction_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
             )) -- get direction from pools
             , try(bitwise_and( -- binary AND
                 bytearray_to_bigint(substr(call_input, call_input_length - mod(call_input_length - 4, 32) - 32 + {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: input_length - input_length % 8 - 32 + direction_bit / 8 + 1
-                , cast(pow(2, 8 - mod({{ method_data.direction_bit }}, 8)) as bigint) -- 2 ^ (8 - direction_bit % 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
+                , cast(pow(2, {{ method_data.direction_bit }} - {{ method_data.direction_bit }} / 8 * 8) as bigint) -- 2 ^ (direction_bit - direction_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
             )) -- get direction from input
         ) as first_direction
         , if(cardinality(call_pools) > 1
-            , try(bitwise_and( -- binary AND to allocate significant bit: bin byte & bit weight
+            , try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                 bytearray_to_bigint(substr(cast(call_pools[cardinality(call_pools)] as varbinary), {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: direction_bit / 8 + 1 -- integer division
-                , cast(pow(2, 8 - mod({{ method_data.direction_bit }}, 8)) as bigint) -- 2 ^ (8 - direction_bit % 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
+                , cast(pow(2, {{ method_data.direction_bit }} - {{ method_data.direction_bit }} / 8 * 8) as bigint) -- 2 ^ (direction_bit - direction_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
             )) -- get direction from pools
         ) as last_direction
         , if(cardinality(call_pools) > 0

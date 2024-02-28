@@ -1,8 +1,7 @@
 {% macro oneinch_blockchain_macro(blockchain) %}
 
-
-{% set 
-    config = {        
+{% set
+    config = {
         "ethereum":      "1,            'ETH',     0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 'https://etherscan.io',         timestamp '2019-06-03 20:11', array[0xa88800cd213da5ae406ce248380802bd53b47647]",
         "bnb":           "56,           'BNB',     0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c, 'https://bscscan.com',          timestamp '2021-02-18 14:37', array[0x1d0ae300eec4093cee4367c00b228d10a5c7ac63]",
         "polygon":       "137,          'MATIC',   0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 'https://polygonscan.com',      timestamp '2021-05-05 09:39', array[0x1e8ae092651e7b14e4d0f93611267c5be19b8b9f]",
@@ -18,12 +17,9 @@
     }
 %}
 
-
-
-{% set column_names = 
-    "blockchain,     chain_id, native_token_symbol, wrapped_native_token_address,        explorer_link,                 first_deploy_at,              fusion_settlement_addresses"
- %}
-
+{% set column_names =
+        "blockchain,     chain_id,      native_token_symbol, wrapped_native_token_address,     explorer_link,                  first_deploy_at,              fusion_settlement_addresses"
+%}
 
 select * from (values
     ('{{ blockchain }}', {{ config[blockchain] }})
