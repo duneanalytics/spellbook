@@ -693,6 +693,25 @@ models:
           filter:
             version: 2
 
+  - name: alienbase_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: alienbase
+      contributors: intensodefi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'alienbase' ]
+    description: "alienbase base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('alienbase_base_base_trades_seed')
+          filter:
+            version: 1
+            
   - name: swapbased_base_base_trades
     meta:
       blockchain: base
