@@ -12,7 +12,7 @@
 {{
 balances_daily(
     balances_daily_agg = ref('tokens_ethereum_balances_daily_agg'),
-    start_date = '2017-01-01',
+    start_date = '2015-07-30',
 )
 }}
 

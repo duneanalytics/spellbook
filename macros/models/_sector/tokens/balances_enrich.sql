@@ -16,7 +16,7 @@ select
     erc20_tokens.decimals,
     token_id,
     nft_tokens.name as collection_name
-from {{ balances_base }}
+from {{ balances_base }} balances
 left join {{ source('tokens', 'erc20') }} erc20_tokens on
     erc20_tokens.blockchain = '{{ blockchain }}' AND (
     CASE
