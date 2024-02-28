@@ -58,7 +58,7 @@ settlements as (
             , dst_token_address
             , dst_token_amount
             , cast(null as varbinary) as order_hash
-            , cast(null as map(varchar, boolean)) as flags
+            , map() as flags
         from {{ ref('oneinch_' + blockchain + '_ar') }}
 
         union all
