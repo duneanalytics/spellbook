@@ -122,6 +122,10 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+  - name: icecreamswap_base
+    tables:
+      - name: IceCreamSwapFactory_evt_PairCreated
+      - name: pool_evt_Swap
   - name: alienbase_base
     tables:
       - name: UniswapV2Factory_evt_PairCreated

@@ -693,6 +693,23 @@ models:
           filter:
             version: 2
 
+  - name: icecreamswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: icecreamswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'icecreamswap' ]
+    description: "icecreamswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('icecreamswap_base_base_trades_seed')
+
   - name: alienbase_base_base_trades
     meta:
       blockchain: base
