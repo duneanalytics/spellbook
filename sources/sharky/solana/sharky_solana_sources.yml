@@ -15,11 +15,15 @@ sources:
         loaded_at_field: call_block_time
       - name: sharky_call_takeLoanV3
         loaded_at_field: call_block_time
+      - name: sharky_call_takeLoanV3Compressed
+        loaded_at_field: call_block_time
       - name: sharky_call_repayLoan
         loaded_at_field: call_block_time
       - name: sharky_call_repayLoanEscrow
         loaded_at_field: call_block_time
       - name: sharky_call_repayLoanV3
+        loaded_at_field: call_block_time
+      - name: sharky_call_repayLoanV3Compressed
         loaded_at_field: call_block_time
       - name: sharky_call_forecloseLoan
         loaded_at_field: call_block_time
@@ -27,9 +31,13 @@ sources:
         loaded_at_field: call_block_time
       - name: sharky_call_forecloseLoanV3
         loaded_at_field: call_block_time
+      - name: sharky_call_forecloseLoanV3Compressed
+        loaded_at_field: call_block_time
       - name: sharky_call_extendLoan
         loaded_at_field: call_block_time
       - name: sharky_call_extendLoanEscrow
         loaded_at_field: call_block_time
       - name: sharky_call_extendLoanV3
+        loaded_at_field: call_block_time
+      - name: sharky_call_extendLoanV3Compressed
         loaded_at_field: call_block_time
