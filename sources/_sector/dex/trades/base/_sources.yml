@@ -122,6 +122,10 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+  - name: swapbased_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
   - name: gridex_base
     tables:
       - name: GridFactory_evt_GridCreated
