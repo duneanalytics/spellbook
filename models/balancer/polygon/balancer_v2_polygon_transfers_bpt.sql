@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema = 'balancer_v2_' + blockchain,
+        schema = 'balancer_v2_polygon',
         alias = 'transfers_bpt',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -15,6 +15,7 @@
 
 {{ 
     balancer_transfers_bpt_macro(
-        blockchain = blockchain
+        blockchain = blockchain,
+        version = '2'
     )
 }}

@@ -22,6 +22,24 @@ models:
           filter:
             version: 3
 
+  - name: uniswap_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_arbitrum_base_trades_seed')
+          filter:
+            version: 2
 
   - name: sushiswap_v1_arbitrum_base_trades
     meta:
@@ -470,3 +488,157 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('rubicon_arbitrum_base_trades_seed')
+  
+  - name: woofi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: woofi
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'woofi']
+    description: "woofi Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('woofi_arbitrum_base_trades_seed')   
+      
+  - name: smardex_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: smardex
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'smardex']
+    description: "smardex Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('smardex_arbitrum_base_trades_seed')   
+
+  - name: oasisswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: oasisswap
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'oasisswap']
+    description: "oasisswap Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('oasisswap_arbitrum_base_trades_seed')   
+
+  - name: swaap_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: swaap_v2
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'swaap_v2']
+    description: "swaap_v2 Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swaap_v2_arbitrum_base_trades_seed') 
+  
+  - name: apeswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: apeswap
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'apeswap']
+    description: "apeswap Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('apeswap_arbitrum_base_trades_seed')
+
+  - name: zigzag_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      pproject: zigzag
+      contributors: jeff-dude, masquot, soispoke, mtitus6, hosuke
+    config:
+        tags: [ 'arbitrum','trades', 'zigzag','dex' ]
+    description: >
+          Zigzag V1 contract trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('zigzag_arbitrum_base_trades_seed')
+  
+  - name: gridex_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gridex
+      contributors: LLDAO
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'gridex']
+    description: "gridex Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gridex_arbitrum_base_trades_seed')
+  
+  - name: sterling_finance_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sterling_finance
+      contributors: ARDev097
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'sterling_finance']
+    description: "sterling_finance Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sterling_finance_arbitrum_base_trades_seed') 
+
+  - name: sharkyswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sharkyswap
+      contributors: ARDev097
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'sharkyswap']
+    description: "sharkyswap Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sharkyswap_arbitrum_base_trades_seed')

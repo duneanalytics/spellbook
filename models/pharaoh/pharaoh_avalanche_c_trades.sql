@@ -46,7 +46,7 @@ WITH dexs AS
     INNER JOIN 
         {{ source('pharaoh_avalanche_c', 'ClPoolFactory_evt_PoolCreated') }} f
         ON f.pool = t.contract_address
-    LEFT JOIN {{ source('glacier_avalanche_c', 'OdosRouterV2_evt_Swap') }} AS router
+    LEFT JOIN {{ source('odos_v2_avalanche_c', 'OdosRouterV2_evt_Swap') }} AS router
         ON t.evt_tx_hash = router.evt_tx_hash
         AND t.evt_index + 2 = router.evt_index
     {% if is_incremental() %}
@@ -94,10 +94,10 @@ INNER JOIN
     {% if is_incremental() %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
     AND erc20a.blockchain = 'avalanche_c'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'avalanche_c'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

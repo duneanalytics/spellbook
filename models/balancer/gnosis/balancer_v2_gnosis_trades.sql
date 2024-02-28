@@ -9,7 +9,7 @@
     post_hook = '{{ expose_spells(\'["gnosis"]\',
                                 "project",
                                 "balancer_v2",
-                                \'["mendesfabio", "jacektrocinski", "thetroyharris"]\') }}'
+                                \'["mendesfabio", "jacektrocinski", "thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
@@ -67,17 +67,17 @@ WITH
             dexs.evt_index,
             bpt_prices.contract_address,
             dexs.block_time,
-            MAX(bpt_prices.hour) AS bpa_max_block_time
+            MAX(bpt_prices.day) AS bpa_max_block_date
         FROM
             dexs
             LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_bought_address AS VARCHAR)
-                AND bpt_prices.hour <= dexs.block_time
+                ON bpt_prices.contract_address = dexs.token_bought_address
+                AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
                 {% if not is_incremental() %}
-                AND bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
+                AND bpt_prices.day >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
+                AND bpt_prices.day >= DATE_TRUNC('day', NOW() - interval '7' day)
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -88,17 +88,17 @@ WITH
             dexs.evt_index,
             bpt_prices.contract_address,
             dexs.block_time,
-            MAX(bpt_prices.hour) AS bpb_max_block_time
+            MAX(bpt_prices.day) AS bpb_max_block_date
         FROM
             dexs
             LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpt_prices
-                ON bpt_prices.contract_address = CAST(dexs.token_sold_address AS VARCHAR)
-                AND bpt_prices.hour <= dexs.block_time
+                ON bpt_prices.contract_address = dexs.token_sold_address
+                AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
                 {% if not is_incremental() %}
-                AND bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
+                AND bpt_prices.day >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
                 {% if is_incremental() %}
-                AND bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
+                AND bpt_prices.day >= DATE_TRUNC('day', NOW() - interval '7' day)
                 {% endif %}
         GROUP BY 1, 2, 3, 4, 5
     )
@@ -125,8 +125,8 @@ SELECT
         dexs.amount_usd,
         dexs.token_bought_amount_raw / POWER(10, p_bought.decimals) * p_bought.price,
         dexs.token_sold_amount_raw / POWER(10, p_sold.decimals) * p_sold.price,
-        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.median_price,
-        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.median_price
+        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.bpt_price,
+        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.bpt_price
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
@@ -149,10 +149,10 @@ FROM
         {% if is_incremental() %}
         AND tx.block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
         ON erc20a.contract_address = dexs.token_bought_address
         AND erc20a.blockchain = 'gnosis'
-    LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
         ON erc20b.contract_address = dexs.token_sold_address
         AND erc20b.blockchain = 'gnosis'
     LEFT JOIN {{ source('prices', 'usd') }} p_bought
@@ -181,12 +181,12 @@ FROM
         AND bpa.evt_index = dexs.evt_index
     LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
-        AND bpa_bpt_prices.hour = bpa.bpa_max_block_time
+        AND bpa_bpt_prices.day = bpa.bpa_max_block_date
         {% if not is_incremental() %}
-        AND bpa_bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
+        AND bpa_bpt_prices.day >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
+        AND bpa_bpt_prices.day >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}
     INNER JOIN bpb
         ON bpb.evt_block_number = dexs.evt_block_number
@@ -194,10 +194,10 @@ FROM
         AND bpb.evt_index = dexs.evt_index
     LEFT JOIN {{ ref('balancer_v2_gnosis_bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
-        AND bpb_bpt_prices.hour = bpb.bpb_max_block_time
+        AND bpb_bpt_prices.day = bpb.bpb_max_block_date
         {% if not is_incremental() %}
-        AND bpa_bpt_prices.hour >= TIMESTAMP '{{project_start_date}}'
+        AND bpa_bpt_prices.day >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-        AND bpa_bpt_prices.hour >= DATE_TRUNC('day', NOW() - interval '7' day)
+        AND bpa_bpt_prices.day >= DATE_TRUNC('day', NOW() - interval '7' day)
         {% endif %}

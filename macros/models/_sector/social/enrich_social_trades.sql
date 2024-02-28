@@ -25,7 +25,7 @@ SELECT
 FROM {{ base_trades }} t
 INNER JOIN {{ref('evms_info')}} info
     ON info.blockchain = t.blockchain
-LEFT JOIN {{ref('tokens_erc20')}} tok
+LEFT JOIN {{source('tokens', 'erc20')}} tok
     ON tok.blockchain = t.blockchain
     AND tok.contract_address = t.currency_contract
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu

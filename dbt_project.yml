@@ -20,7 +20,7 @@ vars:
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ["models"]
+model-paths: ["models", "sources"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
@@ -1156,11 +1156,6 @@ models:
       +schema: bridge
       optimism:
         +schema: bridge_optimism
-
-    the_granary:
-      +schema: the_granary
-      optimism:
-        +schema: the_granary_optimism
 
     tessera:
       +schema: tessera

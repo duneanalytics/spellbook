@@ -105,7 +105,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'avalanche_c', 'amm', 'trades', 'dex' ]
     description: >
@@ -154,7 +154,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'balancer', 'avalanche_c', 'amm', 'trades', 'dex', 'beta' ]
     description: >
@@ -191,13 +191,14 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['avalanche_c', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer pools.
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - &token_address
         name: token_address
@@ -222,6 +223,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -273,7 +275,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'bpt', 'prices']
     description: >
@@ -282,26 +284,21 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
       - name: contract_address
-        description: 'avalanche address for the liquidity pool used in transaction'
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - name: bpt_price
 
   - name: balancer_v2_avalanche_c_transfers_bpt
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'bpt', 'transfers']
     description: >
@@ -313,13 +310,13 @@ models:
             - evt_index
             - block_date
     columns:
-      - *blockchain
-      - &contract_address
-        name: contract_address
-        description: "Address of BPT being transfered"
-      - *block_date
-      - *block_month
-      - *evt_index
+      - name: blockchain
+      - name: version
+      - name: contract_address
+      - name: block_date
+      - name: block_month
+      - name: evt_tx_hash
+      - name: evt_index
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'
@@ -340,7 +337,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'balancer', 'pools', 'fees']
     description: >
@@ -353,6 +350,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -432,7 +430,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'bpt', 'supply']
     description: >

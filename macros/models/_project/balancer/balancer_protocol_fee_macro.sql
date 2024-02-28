@@ -45,29 +45,38 @@ WITH pool_labels AS (
         HAVING sum(sample_size) > 3
     ),
  
+    dex_prices_2 AS(
+        SELECT 
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),    
+
     dex_prices AS (
         SELECT
-            *,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change
-        FROM dex_prices_1
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
     bpt_prices AS(
         SELECT 
-            date_trunc('day', hour) AS day,
+            day,
             contract_address AS token,
-            approx_percentile(median_price, 0.5) AS price,
-            18 AS decimals
+            bpt_price AS price,
+            decimals
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
         {% if is_incremental() %}
-        AND {{ incremental_predicate('hour') }}
+        AND {{ incremental_predicate('day') }}
         {% endif %}
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3, 4
     ),
 
     daily_protocol_fee_collected AS (
@@ -119,9 +128,9 @@ WITH pool_labels AS (
             ON p2.token = d.token_address
             AND p2.day = d.day
         LEFT JOIN bpt_prices p3
-            ON p3.token = CAST(d.token_address AS VARCHAR)
+            ON p3.token = d.token_address
             AND p3.day = d.day
-        LEFT JOIN {{ ref('tokens_erc20') }} t 
+        LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4

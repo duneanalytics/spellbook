@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: meteora_pools_solana
+    description: "meteora decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: amm_call_initialize
+        loaded_at_field: call_block_time
+      - name: amm_call_swap
+        loaded_at_field: call_block_time
+  - name: meteora_vault_solana
+    description: "meteora vault decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: vault_call_deposit
+        loaded_at_field: call_block_time
+  - name: meteora_solana
+    description: "meteora lb_clmm decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: lb_clmm_call_swap
+        loaded_at_field: call_block_time
+        

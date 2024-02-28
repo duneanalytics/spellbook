@@ -30,6 +30,16 @@
     , ref('zyberswap_arbitrum_base_trades')
     , ref('solidlizard_arbitrum_base_trades')
     , ref('rubicon_arbitrum_base_trades')
+    , ref('apeswap_arbitrum_base_trades')
+    , ref('oasisswap_arbitrum_base_trades')
+    , ref('smardex_arbitrum_base_trades')
+    , ref('swaap_v2_arbitrum_base_trades')
+    , ref('woofi_arbitrum_base_trades')
+    , ref('zigzag_arbitrum_base_trades')
+    , ref('gridex_arbitrum_base_trades')
+    , ref('sterling_finance_arbitrum_base_trades')
+    , ref('sharkyswap_arbitrum_base_trades')
+    , ref('uniswap_v2_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

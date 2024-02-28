@@ -7,7 +7,7 @@ with test_data as (
 ),
 
 test_result as (
-    select case when total = 23054 then true else false end as success
+    select case when total = 23059 then true else false end as success
     from test_data
 )
 

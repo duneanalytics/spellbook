@@ -3,7 +3,7 @@ version: 2
 models:
   - name: inscription_mints
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, goerli
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli
       sector: inscription
       contributors: hildobby
     config:
@@ -64,7 +64,7 @@ models:
 
   - name: inscription_deploys
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, goerli
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli
       sector: inscription
       contributors: hildobby
     config:
@@ -99,7 +99,7 @@ models:
 
   - name: inscription_all
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, goerli
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli
       sector: inscription
       contributors: hildobby
     config:

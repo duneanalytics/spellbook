@@ -170,13 +170,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
       - name: blockchain
-      - name: hour
+      - name: day
+      - name: version
+      - name: decimals
       - name: contract_address
-      - name: median_price
+      - name: bpt_price
 
   - name: balancer_liquidity
     meta:
@@ -226,7 +228,7 @@ models:
   - name: balancer_transfers_bpt
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
@@ -239,6 +241,7 @@ models:
             - block_date
     columns:
       - *blockchain
+      - name: version
       - *contract_address
       - *block_date
       - *evt_tx_hash
@@ -258,7 +261,7 @@ models:
   - name: balancer_pools_fees
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
@@ -272,6 +275,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -318,7 +322,7 @@ models:
   - name: balancer_bpt_supply
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
     description: >
@@ -372,6 +376,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - name: token_address
       - name: normalized_weight

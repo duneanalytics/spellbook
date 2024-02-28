@@ -11,5 +11,5 @@
     , traces = source('ethereum','traces')
     , transactions = source('ethereum','transactions')
     , erc20_transfers = source('erc20_ethereum','evt_Transfer')
-    , erc20_tokens = ref('tokens_ethereum_erc20')
+    , erc20_tokens = source('tokens_ethereum', 'erc20')
 )}}

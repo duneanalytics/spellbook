@@ -115,6 +115,27 @@ WITH
             {% else %}
             True
             {% endif %}
+
+        UNION ALL
+        SELECT
+            call_block_date,
+            call_block_slot,
+            call_block_time,
+            call_tx_signer,
+            call_tx_id,
+            account_loan,
+            'Take' AS evt_type,
+            account_escrow,
+            account_orderBook,
+            account_collateralMint,
+            ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
+        FROM {{ source('sharky_solana', 'sharky_call_takeLoanV3Compressed') }}
+        WHERE
+            {% if is_incremental() %}
+            call_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+            {% else %}
+            True
+            {% endif %}
     ), repay AS (
         SELECT
             call_block_date,
@@ -177,6 +198,27 @@ WITH
             {% else %}
             True
             {% endif %}
+
+        UNION ALL
+        SELECT
+            call_block_date,
+            call_block_slot,
+            call_block_time,
+            call_tx_signer,
+            call_tx_id,
+            account_loan,
+            'Repay' AS evt_type,
+            account_escrow,
+            account_orderBook,
+            NULL AS account_collateralMint,
+            ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
+        FROM {{ source('sharky_solana', 'sharky_call_repayLoanV3Compressed') }}
+        WHERE
+            {% if is_incremental() %}
+            call_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+            {% else %}
+            True
+            {% endif %}
     ), foreclose AS (
         SELECT
             call_block_date,
@@ -233,6 +275,27 @@ WITH
             account_collateralMint,
             ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
         FROM {{ source('sharky_solana', 'sharky_call_forecloseLoanV3') }}
+        WHERE
+            {% if is_incremental() %}
+            call_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+            {% else %}
+            True
+            {% endif %}
+
+        UNION ALL
+        SELECT
+            call_block_date,
+            call_block_slot,
+            call_block_time,
+            call_tx_signer,
+            call_tx_id,
+            account_loan,
+            'Foreclose' AS evt_type,
+            account_escrow,
+            NULL AS account_orderBook,
+            NULL AS account_collateralMint,
+            ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
+        FROM {{ source('sharky_solana', 'sharky_call_forecloseLoanV3Compressed') }}
         WHERE
             {% if is_incremental() %}
             call_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
@@ -302,6 +365,26 @@ WITH
             True
             {% endif %}
 
+        UNION ALL
+        SELECT
+            call_block_date,
+            call_block_slot,
+            call_block_time,
+            call_tx_signer,
+            call_tx_id,
+            account_loan,
+            'Extend' AS evt_type,
+            account_escrow,
+            account_orderBook,
+            NULL AS account_collateralMint,
+            ARRAY[CAST(ROW(call_data, call_account_arguments) AS ROW(data VARBINARY, account_arguments ARRAY<VARCHAR>))] AS sharky_instructions
+        FROM {{ source('sharky_solana', 'sharky_call_extendLoanV3Compressed') }}
+        WHERE
+            {% if is_incremental() %}
+            call_block_time >= DATE_TRUNC('day', NOW() - INTERVAL '7' DAY)
+            {% else %}
+            True
+            {% endif %}
 ), with_amount AS (
     SELECT
        events.*,
