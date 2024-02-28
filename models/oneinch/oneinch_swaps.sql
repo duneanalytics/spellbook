@@ -209,13 +209,13 @@ select
     , position('RFQ' in method) > 0 and not second_side as contracs_only -- to delete in the next step
     , second_side -- to delete in the next step
     , order_hash
-    , cast(json_format(cast(map_concat(
+    , map_concat(
         if(protocol = 'LOP'
             , map_concat(flags, map_from_entries(array[('rfq', position('RFQ' in method) > 0), ('second_side', second_side)]))
             , flags
         )
         , map_from_entries(array[('direct', cardinality(call_trace_address) = 0)])
-    ) as json)) as varchar) as flags
+    ) as flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
