@@ -260,13 +260,6 @@ models:
       tags: ['oneinch', 'swaps']
     description: >
         1inch swaps - all user exchanges using 1inch aggregation router & limit order protocol
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
-            - flags
     columns:
       - name: blockchain
         tests:
@@ -319,6 +312,10 @@ models:
       - name: minute
       - name: block_month
       - name: swap_id
+      - name: unique_key
+        tests:
+          - unique
+          - not_null
 
   - name: oneinch_lop_own_trades
     meta:
