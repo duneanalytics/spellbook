@@ -32,18 +32,26 @@ WITH pool_labels AS (
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 9
+        HAVING sum(sample_size) > 3
     ),
+
+    dex_prices_2 AS(
+        SELECT 
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),    
 
     dex_prices AS (
         SELECT
-            *,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change
-        FROM dex_prices_1
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
     bpt_prices AS(
