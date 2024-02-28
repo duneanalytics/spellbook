@@ -6,6 +6,7 @@ with changed_balances as (
     ,wallet_address
     ,symbol
     ,token_address
+    ,type
     ,token_id
     ,balance
     ,lead(cast(day as timestamp)) over (partition by token_address,wallet_address,token_id order by day asc) as next_update_day
@@ -29,6 +30,7 @@ with changed_balances as (
         ,wallet_address
         ,symbol
         ,token_address
+        ,type
         ,token_id
         ,balance
         from days d
