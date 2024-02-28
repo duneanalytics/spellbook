@@ -16,7 +16,7 @@ with changed_balances as (
 ,days as (
     select *
     from unnest(
-         sequence(cast('{start_date}' as date)
+         sequence(cast('{{start_date}}' as date)
                 , date(date_trunc('day',now()))
                 , interval '1' day
                 )
