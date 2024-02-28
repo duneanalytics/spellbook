@@ -7,3 +7,8 @@ sources:
   - name: zonic_zksync
     tables:
       - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+  - name: zk_markets_zksync
+    tables:
+      - name: AANftMarketplace_call_buyItem
+      - name: AANFTMarketplace_evt_ItemBought
+      - name: NftMarketplace_evt_ItemBought
