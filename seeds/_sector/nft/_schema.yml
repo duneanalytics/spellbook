@@ -288,3 +288,15 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
+
+  - name: zonic_base_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
