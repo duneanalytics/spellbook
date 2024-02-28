@@ -6,14 +6,11 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "paraswap_v5",
-                                \'["Henrystats"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
-{% set project_start_date = '2022-07-20' %} -- will update
+{% set project_start_date = '2023-09-13' %}
 {% set trade_event_tables = [
     source('paraswap_base', 'AugustusSwapper_evt_BoughtV3')
     ,source('paraswap_base', 'AugustusSwapper_evt_SwappedV3')
@@ -45,7 +42,7 @@ WITH dexs AS (
             evt_index
         FROM {{ trade_table }} p 
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{incremental_predicate('p.evt_block_time')}}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -91,7 +88,7 @@ INNER JOIN {{ source('base', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
     AND e1.blockchain = 'base'
@@ -104,7 +101,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p1.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p1.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
@@ -113,5 +110,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p2.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{incremental_predicate('p2.minute')}}
     {% endif %}
