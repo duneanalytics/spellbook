@@ -39376,4 +39376,5 @@ FROM (VALUES
         ,(0x886124e6472bd36474df6ff3c8f814e998233296, 'FUR', 18)
         ,(0x0b059237fcf4b85b85439400cc9ec4105aed995e, 'TROLL2.0', 9)
         ,(0xe485E2f1bab389C08721B291f6b59780feC83Fd7, 'SHU', 18)
+        ,(0x6733f0283711f225a447e759d859a70b0c0fd2bc, 'svETH', 18)  
      ) AS temp_table (contract_address, symbol, decimals)
