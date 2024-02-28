@@ -88,3 +88,7 @@ sources:
     tables:
       - name: ElkFactory_evt_PairCreated
       - name: ElkPair_evt_Swap
+  - name: fraxswap_optimism
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
