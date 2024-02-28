@@ -128,6 +128,7 @@ WITH trades AS (
 , fees AS (
     SELECT tr.block_number
     , tr.tx_hash
+    , contract_address
     , 0xca9337244b5f04cb946391bc8b8a980e988f9a6a AS platform_fee_address
     , MAX_BY(tr.to, tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_address
     , SUM(tr.amount_raw) FILTER (WHERE to = 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS platform_fee_amount_raw
@@ -144,7 +145,7 @@ WITH trades AS (
     {% else %}
     WHERE tr.block_time >= {{magiceden_start_date}}
     {% endif %}
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
     )
 
 SELECT 'ethereum' as blockchain
@@ -173,3 +174,4 @@ SELECT 'ethereum' as blockchain
 FROM whitelisted_trades t
 LEFT JOIN fees f ON t.block_number=f.block_number
     AND t.tx_hash=f.tx_hash
+    AND (f.contract_address=t.currency_contract OR (f.contract_address=0x0000000000000000000000000000000000000000 AND t.currency_contract=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee))
