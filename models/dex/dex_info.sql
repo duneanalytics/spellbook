@@ -134,4 +134,5 @@ FROM (VALUES
     , ('elk_finance', 'Elk Finance', 'Direct', 'Elk Finance')   
     , ('leetswap', 'Leetswap', 'Direct', 'LeetSwap')
     , ('rocketswap', 'RocketSwap', 'Direct', 'RocketSwap_Labs')
+    , ('alienbase', 'AlienBase', 'Direct', 'alienbasedex')
     ) AS temp_table (project, name, marketplace_type, x_username)

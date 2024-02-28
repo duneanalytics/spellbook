@@ -41,6 +41,7 @@
     , ref('wombat_exchange_base_base_trades')
     , ref('openocean_base_base_trades')
     , ref('rocketswap_base_base_trades')
+    , ref('alienbase_base_base_trades')
 ] %}
 
 WITH base_union AS (
