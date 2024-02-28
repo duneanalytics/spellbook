@@ -12,7 +12,7 @@
 {{
     uniswap_compatible_v2_trades(
           blockchain = 'base'
-        , project = 'icecreamwap'
+        , project = 'icecreamswap'
         , version = '1'
         , Pair_evt_Swap = source('icecreamswap_base', 'pool_evt_Swap')
         , Factory_evt_PairCreated = source('icecreamswap_base', 'IceCreamSwapFactory_evt_PairCreated')
