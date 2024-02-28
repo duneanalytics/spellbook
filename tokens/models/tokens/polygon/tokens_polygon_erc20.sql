@@ -527,4 +527,6 @@ SELECT contract_address, symbol, decimals
 ,(0x94d9b0506d9acecea7da59bebe1f6b59a48dbe78, 'PSFT', 18)
 ,(0xb4c5d19c0bfea009c94b5b4a402280a4840b6ffe, 'ELK', 18)
 ,(0xA63b19647787Da652D0826424460D1BBf43Bf9c6, 'bwAJNA', 18)
+,(0xf33687811f3ad0cd6b48dd4b39f9f977bd7165a2, 'truMATIC', 18)
+,(0xfcbb00df1d663eee58123946a30ab2138bf9eb2a, 'csMATIC', 18)
 ) AS temp_table (contract_address, symbol, decimals)

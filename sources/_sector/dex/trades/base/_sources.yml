@@ -96,6 +96,10 @@ sources:
     tables:
       - name: AutotronicFactory_evt_PairCreated
       - name: AutotronicPair_evt_Swap
+  - name: soswap_base
+    tables:
+      - name: RaiFactory_evt_PairCreated
+      - name: RaiPair_evt_Swap
   - name: elk_finance_base
     tables:
       - name: ElkFactory_evt_PairCreated
@@ -122,3 +126,7 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+  - name: gridex_base
+    tables:
+      - name: GridFactory_evt_GridCreated
+      - name: pool_evt_Swap
