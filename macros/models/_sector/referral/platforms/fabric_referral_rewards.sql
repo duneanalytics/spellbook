@@ -7,6 +7,7 @@
 
 with currency_contract_info as (
     select
+        chain,
         erc20TokenAddr,
         contract_address
     from {{SubscriptionTokenV1Factory_call_deploySubscription}}
