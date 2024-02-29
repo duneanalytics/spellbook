@@ -4,7 +4,7 @@
     , version = null
     , Factory_evt_PairCreated = null
     , hardcoded_fee = null 
-    , fee_column_name = 'fee'
+    , fee_column_name = null
     , pool_column_name = 'pair'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
@@ -17,8 +17,9 @@ SELECT
     , '{{ version }}' AS version
     , f.{{ pool_column_name }} as pool
     {% if hardcoded_fee %} -- use hardcoded fee if it's exists
-    , {{harcoded_fee}} as fee
-    {% else %}
+    , {{ hardcoded_fee | default('NULL') }} as fee
+    {% endif %}
+    {% if fee_column_name %}
     , f.{{fee_column_name}} as fee -- use fee column if hardcoded fee doesn't exists
     {% endif %}
     , array_agg(

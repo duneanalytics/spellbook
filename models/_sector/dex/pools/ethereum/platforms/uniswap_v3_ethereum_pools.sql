@@ -16,5 +16,6 @@
         , version = '3'
         , Factory_evt_PairCreated = source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated')
         , pool_column_name = 'pool'
+        , fee_column_name = 'fee'
     )
 }}
