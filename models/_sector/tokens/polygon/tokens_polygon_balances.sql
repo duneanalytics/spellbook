@@ -7,7 +7,7 @@
 
 with balances_raw as (
 {{balances_fix_schema(source('tokens_polygon', 'balances_polygon_0001'),'polygon')}}
-),
+)
 
 {{
     balances_enrich(
