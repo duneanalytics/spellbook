@@ -22,7 +22,7 @@ left join {{ source('tokens', 'erc20') }} erc20_tokens on
     CASE
         WHEN token_standard = 'erc20' THEN erc20_tokens.contract_address = balances.token_address
         -- TODO: should not be hardcoded
-        WHEN token_standard = 'native' THEN erc20_tokens.token_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+        WHEN token_standard = 'native' THEN erc20_tokens.contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         ELSE false
     END)
 left join {{ ref('tokens_nft') }} nft_tokens on (
