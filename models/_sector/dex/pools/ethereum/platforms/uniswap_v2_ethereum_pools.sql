@@ -15,6 +15,6 @@
         , project = 'uniswap'
         , version = '2'
         , Factory_evt_PairCreated = source('uniswap_v2_ethereum', 'Factory_evt_PairCreated')
-        , fee = 0.3
+        , hardcoded_fee = 0.3
     )
 }}

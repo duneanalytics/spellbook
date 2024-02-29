@@ -3,7 +3,8 @@
     , project = null
     , version = null
     , Factory_evt_PairCreated = null
-    , fee = null 
+    , hardcoded_fee = null 
+    , fee_column_name = 'fee'
     , pool_column_name = 'pair'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
@@ -15,10 +16,14 @@ SELECT
     , '{{ project }}' AS project
     , '{{ version }}' AS version
     , f.{{ pool_column_name }} as pool
-    , COALESCE({{fee}}, f.fee) as fee
+    {% if hardcoded_fee %} -- use hardcoded fee if it's exists
+    , {{harcoded_fee}} as fee
+    {% else %}
+    , f.{{fee_column_name}} as fee -- use fee column if hardcoded fee doesn't exists
+    {% endif %}
     , array_agg(
-        CAST(ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }}) AS ROW(f.{{ token0_column_name }} VARBINARY, f.{{ token1_column_name }} VARBINARY))
-    ) AS tokens 
+        ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }})
+    ) AS tokens
     , 2 AS tokens_in_pool
     , evt_block_time AS creation_block_time
     , evt_block_number AS creation_block_number

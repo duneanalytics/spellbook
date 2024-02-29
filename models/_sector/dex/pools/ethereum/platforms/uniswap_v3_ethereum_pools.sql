@@ -15,7 +15,6 @@
         , project = 'uniswap'
         , version = '3'
         , Factory_evt_PairCreated = source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated')
-        , fee = 0.3
         , pool_column_name = 'pool'
     )
 }}
