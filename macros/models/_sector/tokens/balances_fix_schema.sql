@@ -8,5 +8,5 @@ select
     type as token_standard,
     token_id,
     balances.amount as balance_raw
-from {{ balance_raw }}
+from {{ balances_raw }}
 {% endmacro %}
