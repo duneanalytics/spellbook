@@ -54,6 +54,7 @@
 {%
     set blockchains = [
         "ethereum",
+        "bnb",
         "polygon",
         "avalanche_c",
         "gnosis",
@@ -62,6 +63,7 @@
         "arbitrum",
         "celo",
         "base",
+        "zksync",
         "zora",
     ]
 %}
@@ -134,23 +136,33 @@ pool_created_logs as (
 )
 
 
+, t as (
+    select
+        blockchain
+        , type
+        , version
+        , pool
+        , token0
+        , token1
+        , block_time as creation_block_time
+        , block_number as creation_block_number
+        , contract_address
+    from pool_created_logs
+    join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
+    {% if is_incremental() %}
+        where {{ incremental_predicate('block_time') }}
+    {% endif %}
 
-select
-    blockchain
-    , type
-    , version
-    , pool
-    , token0
-    , token1
-    , block_time as creation_block_time
-    , block_number as creation_block_number
-    , contract_address
-from pool_created_logs
-join creation_traces using(blockchain, tx_hash, block_number, block_time, pool)
-{% if is_incremental() %}
-    where {{ incremental_predicate('block_time') }}
-{% endif %}
+    union all
 
-union all
+    select * from _optimism_ovm1_legacy
+)
 
-select * from _optimism_ovm1_legacy
+
+select * from (
+    select 
+        *
+        , row_number() over(partition by blockchain, pool order by creation_block_time, contract_address) as rn
+    from t
+)
+where rn = 1 -- remove duplicates // rare case, shitcoins only
