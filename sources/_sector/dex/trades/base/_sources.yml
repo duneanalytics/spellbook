@@ -138,3 +138,7 @@ sources:
     tables:
       - name: GridFactory_evt_GridCreated
       - name: pool_evt_Swap
+  - name: crescent_base
+    tables:
+      - name: factory_evt_PoolCreated
+      - name: pool_evt_Swap
