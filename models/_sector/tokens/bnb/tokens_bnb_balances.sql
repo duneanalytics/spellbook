@@ -5,7 +5,7 @@
         )
 }}
 
-with balances_raw (
+with balances_raw as (
 {{balances_fix_schema(source('tokens_bnb', 'balances_bnb_0001'), 'bnb')}}
 ),
 

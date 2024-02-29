@@ -9,7 +9,7 @@
         )
 }}
 
-with balances_raw (
+with balances_raw as (
 {{balances_fix_schema(source('tokens_ethereum', 'balances_ethereum_0004'), 'ethereum')}}
 ),
 

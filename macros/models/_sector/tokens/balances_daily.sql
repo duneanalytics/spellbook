@@ -39,12 +39,16 @@ with changed_balances as (
             and (b.next_update_day is null OR d.day < b.next_update_day) -- perform forward fill
 )
 
-select *
+select
+    b.*
+    ,b.balance * p.price as balance_usd
 from(
     select * from forward_fill
     where balance > 1
     ) b
 left join {{source('prices','usd')}} p
-on
+    on b.blockchain = p.blockchain
+    and b.token_address = p.contract_address
+    and b.day = p.minute
 
 {% endmacro %}

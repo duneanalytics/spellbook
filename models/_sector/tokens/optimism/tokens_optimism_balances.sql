@@ -9,7 +9,7 @@
         )
 }}
 
-with balances_raw (
+with balances_raw as (
 {{balances_fix_schema(source('tokens_optimism', 'balances_optimism_0001'),'optimism')}}
 ),
 
