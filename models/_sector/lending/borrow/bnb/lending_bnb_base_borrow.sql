@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('radiant_bnb_base_borrow')
+    ref('radiant_bnb_base_borrow'),
+    ref('aave_v3_bnb_base_borrow')
   ]
 %}
 

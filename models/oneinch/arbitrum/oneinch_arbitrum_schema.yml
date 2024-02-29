@@ -53,6 +53,7 @@ models:
       - name: taker_asset
       - name: taking_amount
       - name: order_hash
+      - name: flags
       - name: remains
       - name: minute
       - name: block_month

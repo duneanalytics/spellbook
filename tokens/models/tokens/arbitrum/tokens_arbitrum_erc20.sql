@@ -213,4 +213,6 @@ FROM (VALUES
         ,(0x88ec3bfb63f5583bb4127a8d834be87e67908e2c, 'ADAI', 18)
         ,(0xf93fc7d6508ae2faf8fc5675e896bc38d6e7212c, 'YOU', 18)
         ,(0xA98c94d67D9dF259Bee2E7b519dF75aB00E3E2A8, 'bwAJNA', 18)
+        ,(0x95ab45875cffdba1e5f451b950bc2e42c0053f39, 'sfrxETH', 18)   
+        ,(0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 'ankrETH', 18)   
      ) AS temp_table (contract_address, symbol, decimals)

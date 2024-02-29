@@ -1,7 +1,7 @@
 {{ config(
 	    
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon"]\',
+        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon","base"]\',
                                 "project",
                                 "paraswap",
                                 \'["Henrystats","springzh"]\') }}'
@@ -16,6 +16,7 @@ ref('paraswap_avalanche_c_trades')
 ,ref('paraswap_ethereum_trades')
 ,ref('paraswap_optimism_trades')
 ,ref('paraswap_polygon_trades')
+,ref('paraswap_base_trades')
 ] %}
 
 
@@ -53,4 +54,4 @@ FROM (
     {% endif %}
     {% endfor %}
 )
-;
+
