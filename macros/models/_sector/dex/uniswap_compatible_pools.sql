@@ -1,54 +1,70 @@
-{% macro uniswap_compatible_v2_trades(
+{% macro uniswap_v2_compatible_pools(
     blockchain = null
     , project = null
     , version = null
-    , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
-    , pair_column_name = 'pair'
+    , hardcoded_fee = 0 
+    , pool_column_name = 'pair'
+    , token0_column_name = 'token0'
+    , token1_column_name = 'token1'
     )
 %}
-WITH dexs AS
-(
-    SELECT
-        t.evt_block_number AS block_number
-        , t.evt_block_time AS block_time
-        , t.to AS taker
-        , t.contract_address AS maker
-        , CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-        , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
-        , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
-        , t.contract_address AS project_contract_address
-        , t.evt_tx_hash AS tx_hash
-        , t.evt_index AS evt_index
-    FROM
-        {{ Pair_evt_Swap }} t
-    INNER JOIN
-        {{ Factory_evt_PairCreated }} f
-        ON f.{{ pair_column_name }} = t.contract_address
-    {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('t.evt_block_time') }}
-    {% endif %}
-)
 
-SELECT
+SELECT 
     '{{ blockchain }}' AS blockchain
     , '{{ project }}' AS project
     , '{{ version }}' AS version
-    , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-    , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
-    , dexs.block_time
-    , dexs.block_number
-    , dexs.token_bought_amount_raw
-    , dexs.token_sold_amount_raw
-    , dexs.token_bought_address
-    , dexs.token_sold_address
-    , dexs.taker
-    , dexs.maker
-    , dexs.project_contract_address
-    , dexs.tx_hash
-    , dexs.evt_index
-FROM
-    dexs
+    , f.{{ pool_column_name }} as pool
+    , {{ hardcoded_fee }} as fee
+    , array_agg(
+        ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }})
+    ) AS tokens
+    , 2 AS tokens_in_pool
+    , evt_block_time AS creation_block_time
+    , evt_block_number AS creation_block_number
+    , contract_address
+FROM 
+{{ Factory_evt_PairCreated }} f
+{% if is_incremental() %}
+WHERE
+{{ incremental_predicate('f.evt_block_time') }}
+{% endif %}
+GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
+
+{% endmacro %}
+
+
+{% macro uniswap_v3_compatible_pools(
+    blockchain = null
+    , project = null
+    , version = null
+    , Factory_evt_PoolCreated = null
+    , fee_column_name = 'fee'
+    , pool_column_name = 'pool'
+    , token0_column_name = 'token0'
+    , token1_column_name = 'token1'
+    )
+%}
+
+SELECT 
+    '{{ blockchain }}' AS blockchain
+    , '{{ project }}' AS project
+    , '{{ version }}' AS version
+    , f.{{ pool_column_name }} as pool
+    , f.{{fee_column_name}} as fee 
+    , array_agg(
+        ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }})
+    ) AS tokens
+    , 2 AS tokens_in_pool
+    , evt_block_time AS creation_block_time
+    , evt_block_number AS creation_block_number
+    , contract_address
+FROM 
+{{ Factory_evt_PoolCreated }} f
+{% if is_incremental() %}
+WHERE
+{{ incremental_predicate('f.evt_block_time') }}
+{% endif %}
+GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
+
 {% endmacro %}
