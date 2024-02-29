@@ -3,11 +3,11 @@ version: 2
 models:
   - name: gas_fees
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, zksync, zora, base, scroll
       sector: gas
       contributors: soispoke
     config:
-      tags: ['ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum','gas', 'fees']
+      tags: ['ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum','zksync','zora','scroll','gas', 'fees']
     description: >
         Gas Fees across chains
     columns:
