@@ -138,3 +138,7 @@ sources:
     tables:
       - name: GridFactory_evt_GridCreated
       - name: pool_evt_Swap
+  - name: volt_base
+    tables:
+      - name: factory_evt_PairCreated
+      - name: pool_evt_Swap
