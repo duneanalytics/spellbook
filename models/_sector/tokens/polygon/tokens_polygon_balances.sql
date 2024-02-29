@@ -7,7 +7,7 @@
 
 {{
     balances_enrich(
-        balances_base = source('tokens_polygon', 'balances_polygon_0001'),
+        balances_raw = source('tokens_polygon', 'balances_polygon_0001'),
         blockchain = 'polygon',
     )
 }}

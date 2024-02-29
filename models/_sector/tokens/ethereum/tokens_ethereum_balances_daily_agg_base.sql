@@ -9,8 +9,12 @@
         )
 }}
 
+with balances_raw (
+{{balances_fix_schema(source('tokens_ethereum', 'balances_ethereum_0004'), 'ethereum')}}
+)
+
 {{
     balances_daily_agg(
-        balances_base = source('tokens_ethereum', 'balances_ethereum_0004')
+        balances_raw = 'balances_raw'
     )
 }}

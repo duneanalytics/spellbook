@@ -7,8 +7,7 @@
 
 {{
     balances_enrich(
-        balances_base = ref('tokens_ethereum_balances_daily_agg_base'),
-        blockchain = 'ethereum',
+        balances_raw = ref('tokens_ethereum_balances_daily_agg_base'),
         daily=true,
     )
 }}

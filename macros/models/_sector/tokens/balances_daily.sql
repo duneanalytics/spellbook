@@ -3,13 +3,13 @@
 with changed_balances as (
     select
     day
-    ,wallet_address
-    ,symbol
+    ,address
+    ,token_symbol
     ,token_address
-    ,type
+    ,token_standard
     ,token_id
     ,balance
-    ,lead(cast(day as timestamp)) over (partition by token_address,wallet_address,token_id order by day asc) as next_update_day
+    ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg}}
 )
 
@@ -27,10 +27,10 @@ with changed_balances as (
 , forward_fill as (
     select
         cast(d.day as timestamp) as day
-        ,wallet_address
-        ,symbol
+        ,address
+        ,token_symbol
         ,token_address
-        ,type
+        ,token_standard
         ,token_id
         ,balance
         from days d
@@ -39,6 +39,12 @@ with changed_balances as (
             and (b.next_update_day is null OR d.day < b.next_update_day) -- perform forward fill
 )
 
-select * from forward_fill where balance > 1
+select *
+from(
+    select * from forward_fill
+    where balance > 1
+    ) b
+left join {{source('prices','usd')}} p
+on
 
 {% endmacro %}
