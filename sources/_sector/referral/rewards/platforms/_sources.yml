@@ -82,12 +82,16 @@ sources:
   - name: fabric_ethereum
     tables:
       - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
   - name: fabric_optimism
     tables:
       - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
   - name: fabric_base
     tables:
       - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
   - name: fabric_zora
     tables:
       - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
