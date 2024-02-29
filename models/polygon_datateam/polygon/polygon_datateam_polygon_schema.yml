@@ -13,11 +13,10 @@ models:
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
-           - block_date
-           - blockchain
-           - project
-           - project_version
            - tx_hash
+           - evt_index
+           - nft_token_id
+           - nft_amount
    columns:
      - &blockchain
        name: blockchain
@@ -31,6 +30,9 @@ models:
      - &block_time
        name: block_time
        description: "UTC event block time"
+     - &evt_index
+       name: evt_index
+       description: "Transaction EVT Index"
      - &nft_token_id
        name: nft_token_id
        description: "NFT Token ID"

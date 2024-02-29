@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'project_version', 'tx_hash'],
+    unique_key = ['tx_hash', 'evt_index', 'nft_token_id', 'nft_amount'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
@@ -96,7 +96,8 @@ nft_transfers as (
         to,
         amount,
         token_id,
-        transfer_type
+        transfer_type,
+        evt_index
     FROM 
     {{ ref('nft_transfers') }} 
     WHERE blockchain = 'polygon'
@@ -114,6 +115,7 @@ SELECT
     nt.block_time,
     nt.block_number,
     nt.tx_hash,
+    nt.evt_index,
     tx.to as project_contract_address,
     CAST(NULL as VARCHAR) as trade_category,
     CAST(NULL as VARCHAR) as trade_type,
