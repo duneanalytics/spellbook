@@ -7,7 +7,7 @@
 
 with balances_raw (
 {{balances_fix_schema(source('tokens_bnb', 'balances_bnb_0001'), 'bnb')}}
-)
+),
 
 {{
     balances_enrich(
