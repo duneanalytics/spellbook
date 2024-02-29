@@ -2,7 +2,8 @@
 
 with changed_balances as (
     select
-    day
+    blockchain
+    ,day
     ,address
     ,token_symbol
     ,token_address
@@ -26,7 +27,8 @@ with changed_balances as (
 
 , forward_fill as (
     select
-        cast(d.day as timestamp) as day
+        blockchain
+        ,cast(d.day as timestamp) as day
         ,address
         ,token_symbol
         ,token_address
