@@ -137,6 +137,5 @@ FROM (VALUES
     , ('rocketswap', 'RocketSwap', 'Direct', 'RocketSwap_Labs')
     , ('alienbase', 'AlienBase', 'Direct', 'alienbasedex')
     , ('swapbased', 'SwapBased', 'Direct', 'swap_based')
-    , ('swapbased', 'SwapBased', 'Direct', 'swap_based')
     , ('baso_finance', 'Baso Finance', 'Direct', 'Baso_Finance')
     ) AS temp_table (project, name, marketplace_type, x_username)
