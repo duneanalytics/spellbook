@@ -7,6 +7,6 @@ select
     contract_address as token_address,
     type as token_standard,
     token_id,
-    balances.amount as balance_raw
+    amount as balance_raw
 from {{ balances_raw }}
 {% endmacro %}
