@@ -17,10 +17,13 @@ SELECT
     , '{{ version }}' AS version
     , f.{{ pool_column_name }} as pool
     {% if hardcoded_fee %} -- use hardcoded fee if it's exists
-    , {{ hardcoded_fee | default('NULL') }} as fee
+    , {{ hardcoded_fee }} as fee
     {% endif %}
     {% if fee_column_name %}
     , f.{{fee_column_name}} as fee -- use fee column if hardcoded fee doesn't exists
+    {% endif %}
+    {% if not (fee_column_name or hardcoded_fee) %}
+    , CAST(NULL as BIGINT) as fee 
     {% endif %}
     , array_agg(
         ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }})
