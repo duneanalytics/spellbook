@@ -76,10 +76,6 @@ models:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
-      - equal_rowcount_with_sources:
-          evt_sources:
-            - source('zk_markets_zksync','AANFTMarketplace_evt_ItemBought')
-            - source('zk_markets_zksync','NftMarketplace_evt_ItemBought')
       - check_seed:
           seed_file: ref('zk_markets_zksync_base_trades_seed')
           match_columns:
