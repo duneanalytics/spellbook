@@ -18,13 +18,8 @@ select
     nft_tokens.name as collection_name
 from {{balances_raw}} balances
 left join {{ source('tokens', 'erc20') }} erc20_tokens on
-    erc20_tokens.blockchain = balances.blockchain AND (
-    CASE
-        WHEN token_standard = 'erc20' THEN erc20_tokens.contract_address = balances.token_address
-        -- TODO: should not be hardcoded
-        WHEN token_standard = 'native' THEN erc20_tokens.contract_address = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-        ELSE false
-    END)
+    erc20_tokens.blockchain = balances.blockchain
+    AND erc20_tokens.contract_address = balances.token_address
 left join {{ ref('tokens_nft') }} nft_tokens on (
    nft_tokens.blockchain = balances.blockchain AND (
    CASE

@@ -46,7 +46,7 @@ select
     ,b.balance * p.price as balance_usd
 from(
     select * from forward_fill
-    where balance > 1
+    where balance > 0
     ) b
 left join {{source('prices','usd')}} p
     on b.blockchain = p.blockchain
