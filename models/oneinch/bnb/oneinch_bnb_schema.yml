@@ -110,7 +110,7 @@ models:
       - name: src_token_amount
       - name: dst_token_amount
       - name: dst_token_amount_min
-      - name: ordinary
+      - name: flags
       - name: pools
       - name: router_type
       - name: remains

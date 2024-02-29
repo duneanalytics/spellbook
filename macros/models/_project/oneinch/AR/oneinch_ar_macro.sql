@@ -333,7 +333,7 @@ select
     , src_token_amount
     , dst_token_amount
     , dst_token_amount_min
-    , ordinary
+    , map_from_entries(array[('ordinary', ordinary)]) as flags
     , pools
     , router_type
     , concat(cast(length(remains) as bigint), if(length(remains) > 0
