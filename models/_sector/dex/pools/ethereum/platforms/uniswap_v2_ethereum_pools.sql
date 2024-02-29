@@ -10,7 +10,7 @@
 }}
 
 {{
-    uniswap_compatible_pools(
+    uniswap_v2_compatible_pools(
         blockchain = 'ethereum'
         , project = 'uniswap'
         , version = '2'

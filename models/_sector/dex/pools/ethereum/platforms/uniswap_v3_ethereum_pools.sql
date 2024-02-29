@@ -10,11 +10,11 @@
 }}
 
 {{
-    uniswap_compatible_pools(
+    uniswap_v3_compatible_pools(
         blockchain = 'ethereum'
         , project = 'uniswap'
         , version = '3'
-        , Factory_evt_PairCreated = source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated')
+        , Factory_evt_PoolCreated = source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated')
         , pool_column_name = 'pool'
         , fee_column_name = 'fee'
     )
