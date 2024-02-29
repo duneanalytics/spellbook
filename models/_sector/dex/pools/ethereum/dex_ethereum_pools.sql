@@ -6,7 +6,8 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_ethereum_pools')
+    ref('uniswap_v2_ethereum_pools')
+    ,ref('uniswap_v3_ethereum_pools')
 ] %}
 
 WITH base_union AS (
