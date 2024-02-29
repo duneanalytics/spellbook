@@ -12,5 +12,6 @@
 {{fabric_referral_rewards(
         blockchain = "base"
         ,SubscriptionTokenV1_evt_ReferralPayout = source('fabric_base','SubscriptionTokenV1_evt_ReferralPayout')
+        ,SubscriptionTokenV1Factory_call_deploySubscription = source('fabric_base','SubscriptionTokenV1Factory_call_deploySubscription')
         )
     }}

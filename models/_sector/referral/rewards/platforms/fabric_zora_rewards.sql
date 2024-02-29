@@ -12,5 +12,6 @@
 {{fabric_referral_rewards(
         blockchain = "zora"
         ,SubscriptionTokenV1_evt_ReferralPayout = source('fabric_zora','SubscriptionTokenV1_evt_ReferralPayout')
+        ,SubscriptionTokenV1Factory_call_deploySubscription = source('fabric_zora','SubscriptionTokenV1Factory_call_deploySubscription')
         )
     }}

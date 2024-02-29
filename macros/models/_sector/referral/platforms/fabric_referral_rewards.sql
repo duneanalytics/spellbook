@@ -1,8 +1,17 @@
 {% macro fabric_referral_rewards(
     blockchain
     ,SubscriptionTokenV1_evt_ReferralPayout
+    ,SubscriptionTokenV1Factory_call_deploySubscription
     )
 %}
+
+with currency_contract_info as (
+    select
+        erc20TokenAddr,
+        contract_address
+    from {{SubscriptionTokenV1Factory_call_deploySubscription}}
+    where chain = blockchain
+)
 
 select
     '{{blockchain}}' as blockchain
@@ -16,16 +25,18 @@ select
     ,'NFT' as category
     ,referrer as referrer_address
     ,tx."from" as referee_address
-    ,{{ var("ETH_ERC20_ADDRESS") }} as currency_contract
+    ,c.erc20TokenAddr as currency_contract
     ,"rewardAmount" as reward_amount_raw
-    ,"contract_address" as project_contract_address
+    ,e."contract_address" as project_contract_address
     ,evt_index as sub_tx_id
     ,tx."from" as tx_from
     ,tx.to as tx_to
 from {{SubscriptionTokenV1_evt_ReferralPayout}} e
 inner join {{source(blockchain, 'transactions')}} tx
-    on evt_block_number = tx.block_number
-    and evt_tx_hash = tx.hash
+    on e.evt_block_number = tx.block_number
+    and e.evt_tx_hash = tx.hash
+left join currency_contract_info c
+    on e.contract_address = c.contract_address
     {% if is_incremental() %}
     and {{incremental_predicate('tx.block_time')}}
     {% endif %}
