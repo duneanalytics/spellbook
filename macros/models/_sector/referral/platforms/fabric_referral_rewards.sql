@@ -7,8 +7,8 @@
 
 with currency_contract_info as (
     select
-        erc20TokenAddr,
-        contract_address
+        output_0,
+        erc20TokenAddr
     from {{SubscriptionTokenV1Factory_call_deploySubscription}}
 )
 
@@ -34,11 +34,11 @@ from {{SubscriptionTokenV1_evt_ReferralPayout}} e
 inner join {{source(blockchain, 'transactions')}} tx
     on e.evt_block_number = tx.block_number
     and e.evt_tx_hash = tx.hash
-left join currency_contract_info c
-    on e.contract_address = c.contract_address
     {% if is_incremental() %}
     and {{incremental_predicate('tx.block_time')}}
     {% endif %}
+left join currency_contract_info c
+    on e.contract_address = c.output_0
 {% if is_incremental() %}
 where {{incremental_predicate('evt_block_time')}}
 {% endif %}
