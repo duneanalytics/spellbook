@@ -175,7 +175,7 @@ WITH trades AS (
     FROM whitelisted_trades t
     LEFT JOIN fees f ON t.block_number=f.block_number
         AND t.tx_hash=f.tx_hash
-        AND (f.contract_address=t.currency_contract OR (f.contract_address=0x0000000000000000000000000000000000000000 AND t.currency_contract=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee))
+        AND (f.contract_address=t.currency_contract OR (f.contract_address=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AND t.currency_contract=0x0000000000000000000000000000000000000000))
     )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
