@@ -125,6 +125,14 @@ WITH trades AS (
         {% endif %}
     )
 
+, bundled_whitelisted_trades AS (
+    SELECT block_number
+    , tx_hash
+    , array_agg(seller) AS sellers
+    FROM whitelisted_trades
+    GROUP BY 1, 2
+    )
+
 , fees AS (
     SELECT tr.block_number
     , tr.tx_hash
@@ -134,11 +142,11 @@ WITH trades AS (
     , SUM(tr.amount_raw) FILTER (WHERE to = 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS platform_fee_amount_raw
     , SUM(tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_amount_raw
     FROM tokens_ethereum.transfers tr
-    INNER JOIN whitelisted_trades wt ON tr.block_number=wt.block_number
+    INNER JOIN bundled_whitelisted_trades wt ON tr.block_number=wt.block_number
         AND tr.tx_hash=wt.tx_hash
         AND tr.amount_raw > 0
         AND tr."from" = 0x9a1d00bed7cd04bcda516d721a596eb22aac6834
-        AND tr."to" != wt.seller
+        AND NOT contains(wt.sellers, tr."to")
         AND tr.block_number >= 19242536
     {% if is_incremental() %}
     WHERE tr.{{incremental_predicate('block_time')}}
