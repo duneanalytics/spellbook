@@ -1,6 +1,6 @@
 {%- macro balances_fix_schema(balances_raw, blockchain) %}
 select
-    '{{blockchain}}' as blockchain
+    '{{blockchain}}' as blockchain,
     block_number,
     block_time,
     address ,
