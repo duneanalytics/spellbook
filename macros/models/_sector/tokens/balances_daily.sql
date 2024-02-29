@@ -1,4 +1,4 @@
-{%- macro balances_daily(balances_daily_agg, start_date) %}
+{%- macro balances_daily(balances_daily_agg, start_date, native_token='ETH') %}
 
 with changed_balances as (
     select
@@ -49,8 +49,14 @@ from(
     where balance > 0
     ) b
 left join {{source('prices','usd')}} p
-    on b.blockchain = p.blockchain
+    on (token_standard != 'native'
+    and b.blockchain = p.blockchain
     and b.token_address = p.contract_address
-    and b.day = p.minute
+    and b.day = p.minute)
+    or (token_standard = 'native'
+    and p.blockchain is null
+    and p.contract_address is null
+    and p.symbol = '{{native_token}}'
+    and b.day = p.minute)
 
 {% endmacro %}
