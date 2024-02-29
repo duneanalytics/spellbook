@@ -176,7 +176,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x84e5c8518c248de590d5302fd7c32d2ae6b0123c, 'service', 'Withdraw'),
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
                  (0x2caef7f0ee82fb0abf1ab0dcd3a093803002e705, 'test', 'Test Solver 1'),
-                 (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2')
+                 (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2'),
+                 (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'staging', 'Seasolver2')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
