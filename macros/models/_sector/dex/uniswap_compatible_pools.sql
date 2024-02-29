@@ -3,7 +3,7 @@
     , project = null
     , version = null
     , Factory_evt_PairCreated = null
-    , hardcoded_fee = null 
+    , hardcoded_fee = 0 
     , pool_column_name = 'pair'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
@@ -39,8 +39,8 @@ GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
     , project = null
     , version = null
     , Factory_evt_PoolCreated = null
-    , fee_column_name = null
-    , pool_column_name = 'pair'
+    , fee_column_name = 'fee'
+    , pool_column_name = 'pool'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
     )
