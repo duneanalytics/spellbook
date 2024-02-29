@@ -15,7 +15,7 @@
         blockchain = 'base',
         project = 'energon',
         version = '1',
-        Pair_evt_Swap = source('energon_base', 'EnergonDexFactory_evt_PairCreated'),
-        Factory_evt_PairCreated = source('energon_base', 'EnergonDexPair_evt_Swap')
+        Pair_evt_Swap = source('energon_base', 'EnergonDexPair_evt_Swap'),
+        Factory_evt_PairCreated = source('energon_base', 'EnergonDexFactory_evt_PairCreated')
     )
 }}
