@@ -10,7 +10,7 @@
 }}
 
 with balances_raw as (
-{{balances_fix_schema(source('tokens_base', 'balances_base_0001'),'base')}}
+{{balances_fix_schema(source('tokens_base', 'balances_base'),'base')}}
 )
 
 {{
