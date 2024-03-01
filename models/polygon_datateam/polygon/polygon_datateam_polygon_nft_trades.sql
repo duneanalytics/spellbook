@@ -14,30 +14,29 @@ WITH
 
 fungible_transfers as (
     SELECT 
-        token_address, 
-        wallet_address, 
-        -amount_raw as amount_raw, 
-        evt_tx_hash as tx_hash, 
-        evt_block_time as block_time
+        contract_address as token_address, 
+        "from" as wallet_address, 
+        CAST(amount_raw as double) as amount_raw, 
+        tx_hash, 
+        block_time
     FROM 
-    {{ ref('transfers_polygon_erc20') }}
+    {{ ref('tokens_polygon_transfers') }}
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('evt_block_time')}}
+    WHERE {{incremental_predicate('block_time')}}
     {% endif %}
     
     UNION ALL 
     
     SELECT 
-        token_address, 
-        wallet_address, 
-        -amount_raw as amount_raw, 
+        contract_address as token_address, 
+        to as wallet_address, 
+        -CAST(amount_raw as double) as amount_raw, 
         tx_hash, 
         block_time
     FROM 
-    {{ ref('transfers_polygon_matic') }}
-    WHERE transfer_type != 'gas_fee'
+    {{ ref('tokens_polygon_transfers') }}
     {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
+    WHERE {{incremental_predicate('block_time')}}
     {% endif %}
 ), 
 
