@@ -138,3 +138,7 @@ sources:
     tables:
       - name: GridFactory_evt_GridCreated
       - name: pool_evt_Swap
+  - name: basex_base
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
