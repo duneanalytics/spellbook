@@ -128,3 +128,31 @@ models:
         description: "Token symbol"
       - name: contract_address
         description: "Contract address of the token"
+
+  - name: prices_usd_daily
+    meta:
+      sector: prices
+      contributors: aalan3
+    config:
+      tags: ['prices', 'usd', 'daily']
+    description: "Daily aggregated prices table across blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - symbol
+            - decimals
+    columns:
+      - name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "USD price of a token"
