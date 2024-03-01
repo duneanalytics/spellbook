@@ -79,7 +79,7 @@
         "ExchangeV1": {
             "version": "0.1",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-06-03",
             "end": "2020-09-18",
             "methods": {
                 "aggregate": samples["aggregate"],
@@ -88,7 +88,7 @@
         "ExchangeV2": {
             "version": "0.2",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-06-10",
             "end": "2020-09-18",
             "methods": {
                 "aggregate": samples["aggregate"],
@@ -97,7 +97,7 @@
         "ExchangeV3": {
             "version": "0.3",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-06-18",
             "end": "2020-09-18",
             "methods": {
                 "aggregate": samples["aggregate"],
@@ -106,7 +106,7 @@
         "ExchangeV4": {
             "version": "0.4",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-07-18",
             "end": "2020-09-18",
             "methods": {
                 "aggregate": samples["aggregate"],
@@ -115,7 +115,7 @@
         "ExchangeV5": {
             "version": "0.5",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-07-18",
             "end": "2020-09-18",
             "methods": {
                 "aggregate": samples["aggregate"],
@@ -124,7 +124,7 @@
         "ExchangeV6": {
             "version": "0.6",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-07-19",
             "end": "2020-09-18",
             "methods": {
                 "aggregate": samples["aggregate"],
@@ -133,7 +133,7 @@
         "ExchangeV7": {
             "version": "0.7",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-09-17",
             "end": "2019-09-29",
             "methods": {
                 "swap": dict(samples["aggregate"], src_token_amount="fromTokenAmount", dst_token_amount_min="minReturnAmount"),
@@ -142,7 +142,7 @@
         "AggregationRouterV1": {
             "version": "1",
             "blockchains": ["ethereum"],
-            "start": "2014-02-20",
+            "start": "2019-09-28",
             "methods": {
                 "swap": dict(samples["aggregate"], src_token_amount="fromTokenAmount", dst_token_amount_min="minReturnAmount"),
             },
@@ -150,7 +150,7 @@
         "AggregationRouterV2": {
             "version": "2",
             "blockchains": ["ethereum", "bnb"],
-            "start": "2024-02-20",
+            "start": "2020-11-04",
             "methods": {
                 "swap":           samples["swap"],
                 "discountedSwap": samples["swap"],
@@ -159,7 +159,7 @@
         "AggregationRouterV3": {
             "version": "3",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism"],
-            "start": "2024-02-20",
+            "start": "2021-03-14",
             "methods": {
                 "swap":              samples["swap"],
                 "discountedSwap":    samples["swap"],
@@ -170,7 +170,7 @@
         "AggregationRouterV4": {
             "version": "4",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom"],
-            "start": "2024-02-20",
+            "start": "2021-11-05",
             "methods": {
                 "swap":                      samples["swap"],
                 "discountedSwap":            dict(samples["swap"], blockchains=["bnb", "polygon"]),
@@ -187,7 +187,7 @@
         "AggregationRouterV5": {
             "version": "5",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
-            "start": "2024-02-20",
+            "start": "2022-11-04",
             "methods": {
                 "swap":                      samples["swap"],
                 "clipperSwap":               samples["clipper"],
@@ -204,7 +204,7 @@
         "AggregationRouterV6": {
             "version": "6",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
-            "start": "2024-02-20",
+            "start": "2024-02-12",
             "methods": {
                 "swap":          dict(samples["swap"], src_token_amount="output_spentAmount"),
                 "clipperSwap":   dict(samples["clipper"], src_token_address="substr(cast(srcToken as varbinary), 13)", blockchains=["ethereum","bnb","polygon","arbitrum","optimism","avalanche_c","gnosis","fantom","base"]),
