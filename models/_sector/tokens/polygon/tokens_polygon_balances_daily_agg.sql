@@ -9,5 +9,6 @@
     balances_enrich(
         balances_raw = ref('tokens_polygon_balances_daily_agg_base'),
         daily=true,
+        native_token='MATIC'
     )
 }}
