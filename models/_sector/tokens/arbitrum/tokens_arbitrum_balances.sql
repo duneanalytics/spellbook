@@ -1,7 +1,11 @@
 {{ config(
         schema = 'tokens_arbitrum',
         alias = 'balances',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(\'["arbitrum"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["aalan3"]\') }}'
         )
 }}
 
