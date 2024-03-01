@@ -1,4 +1,7 @@
-- name: uniswap_ethereum_pools_copy
+version: 2
+
+models:
+  - name: uniswap_ethereum_pools_copy
     meta:
       blockchain: ethereum
       sector: dex
@@ -7,10 +10,16 @@
       tags: ['ethereum']
     description: >
       Uniswap DEX pools
-    columns:
-      - *blockchain
-      - *project
-      - *version
+    columns:      
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
       - name: pool
         description: "DEX pool smart contract address"
         tests:
