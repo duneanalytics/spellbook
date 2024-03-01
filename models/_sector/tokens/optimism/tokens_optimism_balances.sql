@@ -9,9 +9,12 @@
         )
 }}
 
+with balances_raw as (
+{{balances_fix_schema(source('tokens_optimism', 'balances_optimism_0001'),'optimism')}}
+)
+
 {{
     balances_enrich(
-        balances_base = source('tokens_optimism', 'balances_optimism_0001'),
-        blockchain = 'optimism',
+        balances_raw = 'balances_raw',
     )
 }}

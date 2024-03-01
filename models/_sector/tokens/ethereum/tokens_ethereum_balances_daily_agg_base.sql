@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'tokens_base',
-        alias = 'base_balances_daily',
+        schema = 'tokens_ethereum',
+        alias = 'balances_daily_agg_base',
         file_format = 'delta',
         materialized='incremental',
         incremental_strategy='merge',
@@ -9,8 +9,12 @@
         )
 }}
 
+with balances_raw as (
+{{balances_fix_schema(source('tokens_ethereum', 'balances_ethereum_0004'), 'ethereum')}}
+)
+
 {{
-    balances_daily(
-        balances_base = source('tokens_base', 'balances_base_0001')
+    balances_daily_agg(
+        balances_raw = 'balances_raw'
     )
 }}

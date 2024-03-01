@@ -5,9 +5,15 @@
         )
 }}
 
+with balances_raw as (
+{{balances_fix_schema(
+    source('tokens_polygon', 'balances_polygon_0001')
+    ,'polygon'
+    ,'0x0000000000000000000000000000000000001010')}}
+)
+
 {{
     balances_enrich(
-        balances_base = source('tokens_polygon', 'balances_polygon_0001'),
-        blockchain = 'polygon',
+        balances_raw = 'balances_raw',
     )
 }}
