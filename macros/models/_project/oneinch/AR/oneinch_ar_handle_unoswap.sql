@@ -32,7 +32,7 @@ select
         last_direction is null, -- if 1 or 0 pools in array
         if(first_direction = 0, first_token1, first_token0), -- -> THEN if first_direction = 0, then first_token1 is dst_token_address, else it's 1 -> first_token0
         if(last_direction = 0, last_token1, last_token0) -- -> ELSE if last_direction = 0, then last_token1 is dst_token_address, else it's 1 -> last_token0
-    ) as dst_token_address 
+    ) as dst_token_address
     , src_receiver
     , dst_receiver
     , src_token_amount
@@ -70,27 +70,15 @@ from (
         , if(cardinality(call_pools) > 0, true, false) as ordinary -- if call_pools is not empty
         , if(cardinality(call_pools) > 0
             , try(substr(cast(call_pools[1] as varbinary), 13)) -- get first pool from call_pools
-            , substr(call_input, call_input_length - 20 - mod(call_input_length - 4, 32) + 1, 20) -- if pools arr is empty, get pool address from call_input
+            , substr(call_input, call_input_length - 20 - mod(call_input_length - 4, 32) + 1, 20) -- if pools array is empty, get pool address from call_input
         ) as first_pool
-        , if(cardinality(call_pools) > 1
-            , try(substr(cast(call_pools[cardinality(call_pools)] as varbinary), 13)) -- get last pool from call_pools if pools arr length 2+
-        ) as last_pool
-        , if(cardinality(call_pools) > 0
-            , try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
-                bytearray_to_bigint(substr(cast(call_pools[1] as varbinary), {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: direction_bit / 8 + 1 -- integer division
-                , cast(pow(2, {{ method_data.direction_bit }} - {{ method_data.direction_bit }} / 8 * 8) as bigint) -- 2 ^ (direction_bit - direction_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-            )) -- get direction from pools
-            , try(bitwise_and( -- binary AND
-                bytearray_to_bigint(substr(call_input, call_input_length - mod(call_input_length - 4, 32) - 32 + {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: input_length - input_length % 8 - 32 + direction_bit / 8 + 1
-                , cast(pow(2, {{ method_data.direction_bit }} - {{ method_data.direction_bit }} / 8 * 8) as bigint) -- 2 ^ (direction_bit - direction_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-            )) -- get direction from input
+        , if(cardinality(call_pools) > 1, try(substr(cast(call_pools[cardinality(call_pools)] as varbinary), 13))) as last_pool -- get last pool from call_pools if pools array length > 1
+        , try(bit_count(bitwise_and(if(cardinality(call_pools) > 0 -- selecting the direction bit
+                , call_pools[1] -- get direction from pools
+                , bytearray_to_uint256(substr(call_input, call_input_length - mod(call_input_length - 4, 32) - 32 + 1, 32)) -- get direction from input
+            ), {{ method_data.direction_mask }}), 256)
         ) as first_direction
-        , if(cardinality(call_pools) > 1
-            , try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
-                bytearray_to_bigint(substr(cast(call_pools[cardinality(call_pools)] as varbinary), {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: direction_bit / 8 + 1 -- integer division
-                , cast(pow(2, {{ method_data.direction_bit }} - {{ method_data.direction_bit }} / 8 * 8) as bigint) -- 2 ^ (direction_bit - direction_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-            )) -- get direction from pools
-        ) as last_direction
+        , if(cardinality(call_pools) > 1, try(bit_count(bitwise_and(call_pools[cardinality(call_pools)], {{ method_data.direction_mask }}), 256))) as last_direction
         , if(cardinality(call_pools) > 0
             , transform(call_pools, x -> cast(x as varbinary))
             , array[substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32)]

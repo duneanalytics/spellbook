@@ -29,12 +29,12 @@
             "router_type":          "generic",
         },
         "unoswap_v1": {
-            "pools":                "pools",
+            "pools":                "transform(pools, x -> bytearray_to_uint256(x))",
             "src_token_address":    "srcToken",
             "src_token_amount":     "amount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
-            "direction_bit":        "1",
+            "direction_mask":       "bytearray_to_uint256(0x8000000000000000000000000000000000000000000000000000000000000000)",
             "router_type":          "unoswap",
         },
         "unoswap_v2": {
@@ -42,7 +42,7 @@
             "src_token_amount":     "amount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
-            "direction_bit":        "9",
+            "direction_mask":       "bytearray_to_uint256(0x0080000000000000000000000000000000000000000000000000000000000000)",
             "router_type":          "unoswap",
         },
         "ethunoswap": {
@@ -50,7 +50,7 @@
             "src_token_amount":     "call_value",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
-            "direction_bit":        "9",
+            "direction_mask":       "bytearray_to_uint256(0x0080000000000000000000000000000000000000000000000000000000000000)",
             "router_type":          "unoswap",
         },
         "uniswap": {
@@ -58,7 +58,7 @@
             "src_token_amount":     "amount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
-            "direction_bit":        "1",
+            "direction_mask":       "bytearray_to_uint256(0x8000000000000000000000000000000000000000000000000000000000000000)",
             "router_type":          "unoswap",
         },
         "clipper": {
@@ -70,8 +70,6 @@
         },
     }
 %}
--- direction_bit: the number of the bit on the left starting from 1 to 256 in 32 bytes with pool address that indicates the direction of exchange
--- direction_bit = 256 - [solidity offset (~ ZERO_FOR_ONE)]
 
 -- CONTRACTS CONFIG
 {%
@@ -163,7 +161,7 @@
             "methods": {
                 "swap":              samples["swap"],
                 "discountedSwap":    samples["swap"],
-                "unoswap":           dict(samples["unoswap_v1"], blockchains=["ethereum","bnb","polygon","arbitrum"], pools="_0"),
+                "unoswap":           dict(samples["unoswap_v1"], blockchains=["ethereum","bnb","polygon","arbitrum"], pools="transform(_0, x -> bytearray_to_uint256(x))"),
                 "unoswapWithPermit": dict(samples["unoswap_v1"], blockchains=["ethereum","bnb","polygon","arbitrum"]),
             },
         },
@@ -193,9 +191,9 @@
                 "clipperSwap":               samples["clipper"],
                 "clipperSwapTo":             dict(samples["clipper"], dst_receiver="recipient"),
                 "clipperSwapToWithPermit":   dict(samples["clipper"], dst_receiver="recipient"),
-                "unoswap":                   samples["unoswap_v1"],
-                "unoswapTo":                 dict(samples["unoswap_v1"], dst_receiver="recipient"),
-                "unoswapToWithPermit":       dict(samples["unoswap_v1"], dst_receiver="recipient"),
+                "unoswap":                   dict(samples["unoswap_v1"], pools="pools"),
+                "unoswapTo":                 dict(samples["unoswap_v1"], pools="pools", dst_receiver="recipient"),
+                "unoswapToWithPermit":       dict(samples["unoswap_v1"], pools="pools", dst_receiver="recipient"),
                 "uniswapV3Swap":             samples["uniswap"],
                 "uniswapV3SwapTo":           dict(samples["uniswap"], dst_receiver="recipient"),
                 "uniswapV3SwapToWithPermit": dict(samples["uniswap"], dst_receiver="recipient"),
