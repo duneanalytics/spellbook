@@ -6,7 +6,7 @@
 }}
 
 with balances_raw as (
-{{balances_fix_schema(source('tokens_arbitrum', 'balances_arbitrum_0001'),'arbitrum')}}
+{{balances_fix_schema(source('tokens_arbitrum', 'balances_arbitrum'),'arbitrum')}}
 )
 
 {{
