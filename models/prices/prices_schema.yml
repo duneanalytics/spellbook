@@ -139,10 +139,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - day
             - blockchain
             - contract_address
             - symbol
-            - decimals
     columns:
       - name: day
         description: "UTC event block time truncated to the day mark"
