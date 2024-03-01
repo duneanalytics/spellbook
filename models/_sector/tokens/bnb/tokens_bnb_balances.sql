@@ -5,9 +5,12 @@
         )
 }}
 
+with balances_raw as (
+{{balances_fix_schema(source('tokens_bnb', 'balances_bnb_0001'), 'bnb')}}
+)
+
 {{
     balances_enrich(
-        balances_base = source('tokens_bnb', 'balances_bnb_0001'),
-        blockchain = 'bnb',
+        balances_raw = 'balances_raw',
     )
 }}
