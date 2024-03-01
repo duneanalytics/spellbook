@@ -1,6 +1,5 @@
 {{
     config(
-        unique_key='claimer_address',
         schema='boost',
     )
 }}

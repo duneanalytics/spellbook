@@ -1362,15 +1362,3 @@ models:
       optimism:
         +schema: openxswap_optimism
 
-    boost:
-      +schema: boost
-      optimism:
-        +schema: boost_optimism
-      ethereum:
-        +schema: boost_ethereum
-      arbitrum:
-        +schema: boost_arbitrum
-      base:
-        +schema: boost_base
-      polygon:
-        +schema: boost_polygon

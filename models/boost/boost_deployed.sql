@@ -1,6 +1,5 @@
 {{
     config(
-        unique_key='boost_address',
         schema='boost',
     )
 }}
