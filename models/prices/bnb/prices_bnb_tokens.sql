@@ -205,7 +205,8 @@ FROM
     ('gft-galaxy-finance', 'bnb', 'GFT', 0xe77932b1216125848e82c3967e75698362168f99, 18),
     ('snbnb-synclub-staked-bnb', 'bnb', 'SnBNB', 0xb0b84d294e0c75a6abe60171b70edeb2efd14a1b, 18),
     ('gmt-stepn', 'bnb', 'GMT', 0x3019BF2a2eF8040C242C9a4c5c4BD4C81678b2A1, 8),
-    ('sub-subme', 'bnb', 'SUB', 0x47bB3D817e627D196ae74b89AfA7928C2Bb159A9, 18)
+    ('sub-subme', 'bnb', 'SUB', 0x47bB3D817e627D196ae74b89AfA7928C2Bb159A9, 18),
+    ('ata-automata', 'bnb', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.

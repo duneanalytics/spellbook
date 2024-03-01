@@ -129,6 +129,44 @@ sources:
         loaded_at_field: evt_block_time
       - name: FusionWhitelistRegistryV2_evt_Promotion
         loaded_at_field: evt_block_time
+      - name: AggregationRouterV6_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillOrderArgs
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillContractOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillContractOrderArgs
+        loaded_at_field: call_block_time
       
 
   - name: onesplit_ethereum

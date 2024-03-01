@@ -159,6 +159,152 @@ models:
        tests:
          - not_null
 
+  - name: magiceden_v3_solana_trades
+    meta:
+      blockchain: solana
+      project: tensor
+      contributors: [ tsekityam ]
+    config:
+      tags: [ 'magiceden','solana','nft' ]
+    description: >
+      magiceden solana trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - instruction
+            - account_merkle_tree
+            - leaf_id
+            - tx_id
+      - check_seed:
+          seed_file: ref('magiceden_v3_solana_trades_seed')
+          match_columns:
+            - instruction
+            - account_merkle_tree
+            - leaf_id
+            - tx_id
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - taker_fee_amount_raw
+            - maker_fee_amount_raw
+            - royalty_fee_amount_raw
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *trade_type
+      - *number_of_items
+      - *trader_category
+      - *seller
+      - *buyer
+      - *amount_usd
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *account_merkle_tree
+      - *leaf_id
+      - *account_mint
+      - *project_program_id
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_signer
+      - *taker_fee_amount_raw
+      - *taker_fee_amount
+      - *taker_fee_amount_usd
+      - *taker_fee_percentage
+      - *royalty_fee_currency_symbol
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *amm_fee_amount_raw
+      - *amm_fee_amount
+      - *amm_fee_amount_usd
+      - *amm_fee_percentage
+      - *unique_trade_id
+      - *instruction
+      - *outer_instruction_index
+      - *inner_instruction_index
+
+  - name: magiceden_mmm_solana_trades
+    meta:
+      blockchain: solana
+      project: tensor
+      contributors: [ tserkityam ]
+    config:
+      tags: [ 'magiceden','solana','nft' ]
+    description: >
+      magiceden solana trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - trade_category
+            - outer_instruction_index
+            - inner_instruction_index
+            - account_mint
+            - tx_id
+      - check_seed:
+          seed_file: ref('magiceden_mmm_solana_trades_seed')
+          match_columns:
+            - block_slot
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+          check_columns:
+            - buyer
+            - seller
+            - account_mint
+            - amount_raw
+            - royalty_fee_amount_raw
+            - amm_fee_amount_raw
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *trade_type
+      - *number_of_items
+      - *trader_category
+      - *seller
+      - *buyer
+      - *amount_usd
+      - *amount_original
+      - *amount_raw
+      - *currency_symbol
+      - *currency_contract
+      - *account_merkle_tree
+      - *leaf_id
+      - *account_mint
+      - *project_program_id
+      - *aggregator_name
+      - *aggregator_address
+      - *tx_hash
+      - *block_number
+      - *tx_signer
+      - *taker_fee_amount_raw
+      - *taker_fee_amount
+      - *taker_fee_amount_usd
+      - *taker_fee_percentage
+      - *royalty_fee_currency_symbol
+      - *royalty_fee_amount_raw
+      - *royalty_fee_amount
+      - *royalty_fee_amount_usd
+      - *royalty_fee_percentage
+      - *amm_fee_amount_raw
+      - *amm_fee_amount
+      - *amm_fee_amount_usd
+      - *amm_fee_percentage
+      - *unique_trade_id
+      - *instruction
+      - *outer_instruction_index
+      - *inner_instruction_index
+
   - name: tensorswap_v1_solana_trades
     meta:
       blockchain: solana

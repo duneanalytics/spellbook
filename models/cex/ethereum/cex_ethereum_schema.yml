@@ -29,3 +29,60 @@ models:
         description: "Who added the address"
       - name: added_date
         description: "Date the address was added on"
+
+  - name: cex_ethereum_flows
+    meta:
+      blockchain: ethereum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'ethereum']
+    description: "All CEX-tied flows identified on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_month
+        description: "Block month"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: cex_name
+        description: "Name of centralised exchange"
+      - name: distinct_name
+        description: "Distinct name of centralised exchange address"
+      - name: token_address
+        description: "Token address"
+      - name: token_symbol
+        description: "Token symbol"
+      - name: token_standard
+        description: "Token standard"
+      - name: flow_type
+        description: "Flow type"
+      - name: amount
+        description: "Amount"
+      - name: amount_raw
+        description: "Raw amount"
+      - name: amount_usd
+        description: "USD amount"
+      - name: from
+        description: "from address"
+      - name: to
+        description: "to address"
+      - name: tx_from
+        description: "Address that executed the transaction"
+      - name: tx_to
+        description: "Address that the transaction points towards"
+      - name: tx_index
+        description: "Transaction index"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: unique_key
+        description: "The transfer's unique key"
