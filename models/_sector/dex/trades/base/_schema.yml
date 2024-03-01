@@ -775,7 +775,7 @@ models:
       contributors: sofiat
     config:
       tags: [ 'base', 'dex', 'trades', 'solidly' ]
-    description: "gridex base trades"
+    description: "solidly base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
