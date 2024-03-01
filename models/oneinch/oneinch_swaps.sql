@@ -37,6 +37,7 @@
         'call_from',
         'call_to',
         'call_gas_used',
+        'call_type',
         'contract_name',
         'protocol',
         'protocol_version',
@@ -208,6 +209,7 @@ select
     , call_from
     , call_to
     , call_gas_used
+    , call_type
     , user
     , receiver
     , coalesce(element_at(flags, 'fusion'), false) as fusion -- to delete in the next step
