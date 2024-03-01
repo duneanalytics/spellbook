@@ -259,6 +259,7 @@ pools_list as (
                 , output as call_output
                 , error as call_error
                 , value as call_value
+                , call_type
             from {{ source(blockchain, 'traces') }}
             where
                 {% if is_incremental() %}
@@ -266,7 +267,6 @@ pools_list as (
                 {% else %}
                     block_time >= timestamp '{{ contract_data['start'] }}'
                 {% endif %}
-                    and call_type = 'call'
         )
 
     
@@ -326,6 +326,7 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_type
     , src_receiver
     , dst_receiver
     , src_token_address

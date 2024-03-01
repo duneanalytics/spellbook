@@ -30,6 +30,7 @@
     'call_gas_used',
     'call_output',
     'call_error',
+    'call_type',
     'remains',
     'flags',
 ] %}
@@ -106,6 +107,7 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_type
     , remains
     , maker
     , receiver

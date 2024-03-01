@@ -41,6 +41,7 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_type
     , ordinary
     , pools
     , remains
@@ -65,6 +66,7 @@ from (
         , call_gas_used
         , call_output
         , call_error
+        , call_type
         , if(cardinality(call_pools) > 0, true, false) as ordinary -- if call_pools is not empty
         , if(cardinality(call_pools) > 0
             , try(substr(cast(call_pools[1] as varbinary), 13)) -- get first pool from call_pools
