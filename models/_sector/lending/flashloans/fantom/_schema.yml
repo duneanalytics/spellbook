@@ -111,15 +111,15 @@ models:
       project: granary
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'fantom']
-    description: "Aave v3 flashloans transactions on Fantom"
+      tags: ['lending', 'flashloans', 'aave', 'granary', 'fantom']
+    description: "Granary flashloans transactions on Fantom"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_fantom_base_flashloans_seed')
+          seed_file: ref('granary_fantom_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
