@@ -3,7 +3,6 @@
     , project = null
     , version = null
     , Factory_evt_PairCreated = null
-    , hardcoded_fee = 0 
     , pool_column_name = 'pair'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
@@ -15,7 +14,7 @@ SELECT
     , '{{ project }}' AS project
     , '{{ version }}' AS version
     , f.{{ pool_column_name }} as pool
-    , {{ hardcoded_fee }} as fee
+    , 0 as fee -- testing to see if this is the issue
     , array_agg(
         ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }})
     ) AS tokens
