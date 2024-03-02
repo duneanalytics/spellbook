@@ -26,7 +26,7 @@ SELECT
     , CAST(NULL as BIGINT) as fee 
     {% endif %}
     , array_agg(
-        ROW(f.{{ token0_column_name }} AS token0, f.{{ token1_column_name }} AS token1)
+        CAST(ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }}) as ROW(token0 VARBINARY, token1 VARBINARY))
     ) AS tokens
     , 2 AS tokens_in_pool
     , evt_block_time AS creation_block_time
