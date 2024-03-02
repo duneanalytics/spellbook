@@ -13,7 +13,7 @@ SELECT
     'ethereum' AS blockchain
     , 'uniswap' AS project
     , '2' AS version
-    , pool
+    , pair as pool 
     , 0 as fee -- testing to see if this is the issue
     , array_agg(
         ROW(f.token0, f.token1)
