@@ -1339,7 +1339,7 @@ seeds:
         token_address: varbinary
         depositor: varbinary
         amount: double
-  - name: granary_avalache_c_base_supply_seed
+  - name: granary_avalanche_c_base_supply_seed
     config:
       column_types:
         blockchain: varchar
