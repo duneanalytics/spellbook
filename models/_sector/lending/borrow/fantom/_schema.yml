@@ -117,7 +117,7 @@ models:
     meta:
       blockchain: fantom
       sector: lending
-      project: aave
+      project: granary
       contributors: batwayne, chuxin, tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'granary', 'fantom']
