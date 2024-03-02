@@ -1,8 +1,8 @@
 {% macro uniswap_v2_compatible_pools(
-    blockchain = null
-    , project = null
-    , version = null
-    , Factory_evt_PairCreated = null
+    blockchain
+    , project
+    , version
+    , Factory_evt_PairCreated 
     , pool_column_name = 'pair'
     , token0_column_name = 'token0'
     , token1_column_name = 'token1'
