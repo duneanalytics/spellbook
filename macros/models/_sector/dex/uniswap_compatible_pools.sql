@@ -3,9 +3,6 @@
     , project
     , version
     , Factory_evt_PairCreated 
-    , pool_column_name = 'pair'
-    , token0_column_name = 'token0'
-    , token1_column_name = 'token1'
     )
 %}
 
@@ -13,10 +10,10 @@ SELECT
     '{{ blockchain }}' AS blockchain
     , '{{ project }}' AS project
     , '{{ version }}' AS version
-    , f.{{ pool_column_name }} as pool
+    , f.pair as pool
     , 0 as fee -- testing to see if this is the issue
     , array_agg(
-        ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }})
+        ROW(token0, token1)
     ) AS tokens
     , 2 AS tokens_in_pool
     , evt_block_time AS creation_block_time
