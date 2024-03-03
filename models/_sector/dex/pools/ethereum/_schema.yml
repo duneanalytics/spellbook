@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: dex_ethereum_base_pools
+
+  - name: uniswap_v2_ethereum_base_pools
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: hildobby, lgingerich
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "DEX Pools for Uniswap V2 on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_ethereum_base_pools_seed')
+          filter:
+            version: 2
