@@ -39380,4 +39380,5 @@ FROM (VALUES
         ,(0x9f671e369Ce010A9e4Cb0A53ba575Ff0a7cD6320, 'GENESIS', 18)
         ,(0xB36cF340a35f9860D0Bb59AFb0355580f0000DAD, 'PADRE', 18)
         ,(0x3bBBB6a231d0a1a12c6b79Ba5BC2Ed6358Db5160, 'ZEN', 18)
+        ,(0xCe6E54DaA1ea95fb3530859d69D4bdb978dd821b, 'ORBK', 18)
      ) AS temp_table (contract_address, symbol, decimals)
