@@ -10,6 +10,8 @@
     )
 %}
 
+{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+
 
 
 select
@@ -26,18 +28,17 @@ select
     , call_selector
     , coalesce(
         src_token_address -- src_token_address from params
-        , try( -- try to get src_token_address from first pool: pools[1]
-            if(pools[1]['pool_type'] = 2 -- when pool type = 2, i.e Curve pool
-                , first_pool_tokens[cast(pools[1]['src_token_index'] as int) + 1] -- get src token address from first_pool_tokens by src token index
-                , first_pool_tokens[cast(pools[1]['direction'] as int) + 1] -- get src token address from first_pool_tokens by direction
-    ))) as src_token_address
+        , try(case -- try to get src_token_address from first pool: pools[1]
+            when pools[1]['pool_type'] = 2 then first_pool_tokens[cast(pools[1]['src_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get src token address from first_pool_tokens by src token index
+            else first_pool_tokens[cast(pools[1]['direction'] as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get src token address from first_pool_tokens by direction
+    end)) as src_token_address
     , coalesce(
         dst_token_address -- dst_token_address from params
-        , try( -- try to get dst_token_address from last pool: reverse(pools)[1]
-            if(reverse(pools)[1]['pool_type'] = 2 -- when pool type = 2, i.e Curve pool
-                , last_pool_tokens[cast(reverse(pools)[1]['dst_token_index'] as int) + 1] -- get dst token address from last_pool_tokens by dst token index
-                , last_pool_tokens[cast(bitwise_xor(reverse(pools)[1]['direction'], 1) as int) + 1] -- get dst token address from last_pool_tokens by direction
-    ))) as dst_token_address
+        , try(case -- try to get dst_token_address from last pool: reverse(pools)[1]
+            when reverse(pools)[1]['unwrap'] = 1 then {{native_address}} -- when flaf 'unwrap' is set, than set dst token address to native address
+            when reverse(pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
+            else last_pool_tokens[cast(bitwise_xor(reverse(pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
+    end)) as dst_token_address
     , src_receiver
     , dst_receiver
     , src_token_amount
@@ -79,6 +80,7 @@ from (
             ('pool', x) -- raw pool data in uint256
             , ('pool_type', bitwise_right_shift(bitwise_and(x, {{ method_data.get("pool_type_mask", "null") }}), {{ method_data.get("pool_type_offset", "null") }}))
             , ('direction', bitwise_xor(bit_count(bitwise_and(x, {{ method_data.direction_mask }}), 256), if({{ contract_data.version }} < 6, 0, 1))) -- until v6, the set direction bit meant the reverse direction, starting from v6, the set direction bit means the ordinary direction
+            , ('unwrap', bit_count(bitwise_and(x, {{ method_data.get("unwrap_mask", "null") }}), 256))
             , ('src_token_index', bitwise_right_shift(bitwise_and(x, {{ method_data.get("src_token_mask", "null") }}), {{ method_data.get("src_token_offset", "null") }}))
             , ('dst_token_index', bitwise_right_shift(bitwise_and(x, {{ method_data.get("dst_token_mask", "null") }}), {{ method_data.get("dst_token_offset", "null") }}))
         ])) as pools
