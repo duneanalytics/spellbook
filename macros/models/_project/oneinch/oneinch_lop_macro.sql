@@ -39,7 +39,7 @@
         "LimitOrderProtocolV1": {
             "version": "1",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism"],
-            "start": "2021-06-03",
+            "start": "2024-02-20",
             "methods": {
                 "fillOrder":    dict(samples["v2"], maker="substr(from_hex(order_map['makerAssetData']), 4 + 12 + 1, 20)"),
                 "fillOrderRFQ": dict(
@@ -53,7 +53,7 @@
         "LimitOrderProtocolV2": {
             "version": "2",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism"],
-            "start": "2021-11-26",
+            "start": "2024-02-20",
             "methods": {
                 "fillOrder":                samples["v2"],
                 "fillOrderTo":              dict(samples["v2"], receiver="from_hex(order_map['receiver'])"),
@@ -66,7 +66,7 @@
         "AggregationRouterV4": {
             "version": "2",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom"],
-            "start": "2021-11-05",
+            "start": "2024-02-20",
             "methods": {
                 "fillOrderRFQ":             samples["v2"],
                 "fillOrderRFQTo":           samples["v2"],
@@ -76,7 +76,7 @@
         "AggregationRouterV5": {
             "version": "3",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom", "base", "zksync"],
-            "start": "2022-11-04",
+            "start": "2024-02-20",
             "methods": {
                 "fillOrder":                dict(samples["v2"], order_hash="output_2"),
                 "fillOrderTo":              dict(
@@ -107,7 +107,7 @@
         "AggregationRouterV6": {
             "version": "4",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom", "base"],
-            "start": "2024-02-12",
+            "start": "2024-02-20",
             "methods": {
                 "fillOrder":             samples["v4"],
                 "fillOrderArgs":         samples["v4"],
