@@ -28,16 +28,27 @@ SELECT
     , array_agg(
         CAST(ROW(f.{{ token0_column_name }}, f.{{ token1_column_name }}) as ROW(token0 VARBINARY, token1 VARBINARY))
     ) AS tokens
+    , array_agg(
+        CAST(ROW(erc20a.symbol, erc20b.symbol) as ROW(token0symbol VARCHAR, token1symbol VARCHAR))
+    ) AS token_symbols
     , 2 AS tokens_in_pool
-    , evt_block_time AS creation_block_time
-    , evt_block_number AS creation_block_number
-    , contract_address
+    , f.evt_block_time AS creation_block_time
+    , f.evt_block_number AS creation_block_number
+    , f.contract_address
 FROM 
 {{ Factory_evt_PairCreated }} f
+LEFT JOIN 
+{{ source('tokens', 'erc20') }} erc20a 
+    ON f.{{ token0_column_name }} = erc20a.contract_address
+    AND erc20a.blockchain = '{{ blockchain }}'
+LEFT JOIN 
+{{ source('tokens', 'erc20') }} erc20b
+    ON f.{{ token1_column_name }} = erc20b.contract_address
+    AND erc20b.blockchain = '{{ blockchain }}'
 {% if is_incremental() %}
 WHERE
-{{ incremental_predicate('evt_block_time') }}
+{{ incremental_predicate('f.evt_block_time') }}
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5, 7, 8, 9, 10
+GROUP BY 1, 2, 3, 4, 5, 8, 9, 10, 11
 
 {% endmacro %}
