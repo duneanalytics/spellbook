@@ -767,6 +767,25 @@ models:
           filter:
             version: 1
 
+  - name: solidly_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: solidly
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'solidly' ]
+    description: "solidly base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidly_base_base_trades_seed')
+          filter:
+            version: 3
+            
   - name: energon_base_base_trades
     meta:
       blockchain: base
