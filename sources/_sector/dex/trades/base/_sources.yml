@@ -138,6 +138,12 @@ sources:
     tables:
       - name: GridFactory_evt_GridCreated
       - name: pool_evt_Swap
+  - name: synthswap_base
+    tables:
+      - name: SynthFactory_evt_PairCreated
+  - name: synth_base
+    tables:
+      - name: SynthPair_evt_Swap
   - name: solidly__base
     tables:
       - name: factory_evt_PoolCreated

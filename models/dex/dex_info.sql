@@ -137,6 +137,7 @@ FROM (VALUES
     , ('rocketswap', 'RocketSwap', 'Direct', 'RocketSwap_Labs')
     , ('alienbase', 'AlienBase', 'Direct', 'alienbasedex')
     , ('swapbased', 'SwapBased', 'Direct', 'swap_based')
+    , ('synthswap', 'SynthSwap', 'Direct', 'synthswapio')
     , ('energon', 'Energon', 'Direct', 'EnergonDex')
     , ('voltswap', 'VoltSwap', 'Direct', 'VoltSwapFinance')
     , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
