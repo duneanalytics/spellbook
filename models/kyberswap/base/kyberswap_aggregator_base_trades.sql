@@ -106,7 +106,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_eth
     AND p_eth.blockchain IS NULL
     AND p_eth.symbol = 'ETH'
     {% if is_incremental() %}
-    AND p_eth.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
-    {% else %}
     AND {{incremental_predicate('p_eth.minute')}}
+    {% else %}
+    AND p_eth.minute >= TIMESTAMP '{{ project_start_date }}'
     {% endif %}
