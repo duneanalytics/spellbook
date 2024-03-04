@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: kyberswap_aggregator_base_trades
+    meta:
+      blockchain: base
+      sector: dex_aggregator
+      project: kyberswap
+      contributors: Henrystats
+    config:
+      tags: ['base', 'kyberswap', 'aggregator', 'trades', 'dex']
+    description: >
+      Kyberswap Aggregator on base.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: base
+          project: kyberswap
+          version: 2
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_month
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: tx_hash
+      - name: tx_from
+      - name: tx_to
+      - name: evt_index
+      - name: trace_address
