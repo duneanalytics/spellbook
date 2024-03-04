@@ -281,7 +281,8 @@ pools_list as (
                         method_data=method_data,
                         blockchain=blockchain,
                         traces_cte=traces_cte,
-                        pools_list=pools_list
+                        pools_list=pools_list,
+                        native=native
                     )
                 }}
             {% endif %}

@@ -6,11 +6,10 @@
         method_data,
         blockchain,
         traces_cte,
-        pools_list
+        pools_list,
+        native
     )
 %}
-
-{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
 
@@ -35,7 +34,7 @@ select
     , coalesce(
         dst_token_address -- dst_token_address from params
         , try(case -- try to get dst_token_address from last pool: reverse(pools)[1]
-            when reverse(pools)[1]['unwrap'] = 1 then {{native_address}} -- when flaf 'unwrap' is set, than set dst token address to native address
+            when reverse(pools)[1]['unwrap'] = 1 then {{native}} -- when flaf 'unwrap' is set, than set dst token address to native address
             when reverse(pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
             else last_pool_tokens[cast(bitwise_xor(reverse(pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
     end)) as dst_token_address
