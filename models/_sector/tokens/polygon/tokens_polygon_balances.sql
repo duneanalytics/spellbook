@@ -1,7 +1,11 @@
 {{ config(
         schema = 'tokens_polygon',
         alias = 'balances',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(\'["polygon"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["aalan3"]\') }}'
         )
 }}
 

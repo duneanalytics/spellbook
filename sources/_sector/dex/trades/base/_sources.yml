@@ -144,3 +144,19 @@ sources:
   - name: synth_base
     tables:
       - name: SynthPair_evt_Swap
+  - name: solidly__base
+    tables:
+      - name: factory_evt_PoolCreated
+      - name: pool_evt_Swap
+  - name: energon_base
+    tables:
+      - name: EnergonDexFactory_evt_PairCreated
+      - name: EnergonDexPair_evt_Swap
+  - name: volt_base
+    tables:
+      - name: factory_evt_PairCreated
+      - name: pool_evt_Swap
+  - name: crescent_base
+    tables:
+      - name: factory_evt_PoolCreated
+      - name: pool_evt_Swap

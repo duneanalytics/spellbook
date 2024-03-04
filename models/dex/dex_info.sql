@@ -138,4 +138,7 @@ FROM (VALUES
     , ('alienbase', 'AlienBase', 'Direct', 'alienbasedex')
     , ('swapbased', 'SwapBased', 'Direct', 'swap_based')
     , ('synthswap', 'SynthSwap', 'Direct', 'synthswapio')
+    , ('energon', 'Energon', 'Direct', 'EnergonDex')
+    , ('voltswap', 'VoltSwap', 'Direct', 'VoltSwapFinance')
+    , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
     ) AS temp_table (project, name, marketplace_type, x_username)
