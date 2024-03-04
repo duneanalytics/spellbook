@@ -128,11 +128,16 @@ select
   ea.attester,
   ea.recipient,
   ca.request,
-  json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as is_revocable,
-  json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes) as ref_uid,
+  try_cast(json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as boolean) as is_revocable,
+  from_hex(json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes)) as ref_uid,
   json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
-  json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as raw_value,
-  json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as expiration_time,
+  try_cast(json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as uint256) as raw_value,
+  cast(
+    if(
+      json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) <> '0',
+      from_unixtime(try_cast(json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as bigint))
+    ) as timestamp
+  ) as expiration_time,
   cast(er.evt_block_time as timestamp) as revocation_time,
   if(er.evt_block_time is not null, 'revoked', 'valid') as attestation_state,
   if(er.evt_block_time is not null, true, false) as is_revoked,
@@ -309,6 +314,7 @@ select
   sd.data_type,
   sd.field_name,
   ag.decoded_data,
+  a.is_revoked,
   a.block_number,
   a.block_time,
   a.tx_hash,
