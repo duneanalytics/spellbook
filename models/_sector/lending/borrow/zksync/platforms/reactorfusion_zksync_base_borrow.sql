@@ -24,6 +24,7 @@
     blockchain = 'zksync',
     project = 'reactorfusion',
     version = '1',
+    decoded_project = 'reactorfusion',
     sources = config_sources
   )
 }}
