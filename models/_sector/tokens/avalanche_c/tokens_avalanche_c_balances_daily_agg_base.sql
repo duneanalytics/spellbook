@@ -15,7 +15,7 @@ with balances_raw as (
 
 {{
     balances_daily_agg(
-        balances_raw = 'balances_raw'
-        native_token_address = null
+        balances_raw = 'balances_raw',
+        native_token_address = '0x0000000000000000000000000000000000000000',
     )
 }}
