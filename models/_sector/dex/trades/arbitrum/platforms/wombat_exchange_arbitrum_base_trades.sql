@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'wombatexchange_arbitrum',
+        schema = 'wombat_exchange_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
