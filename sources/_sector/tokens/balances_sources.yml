@@ -109,7 +109,7 @@ sources:
   - name: tokens_avalanche_c
     description: "Prices tables across blockchains"
     tables:
-      - name: balances_avlanche_c
+      - name: balances_avalanche_c
         identifier: balances_avalanche_c_0001
         description: "Raw balances data"
         columns:
