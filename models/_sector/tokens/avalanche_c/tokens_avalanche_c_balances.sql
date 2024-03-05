@@ -10,7 +10,7 @@
 }}
 
 with balances_raw as (
-{{balances_fix_schema(source('tokens_avalanche_c', 'balances_avalanche_c'),'avalanche_c'), '0x0000000000000000000000000000000000000000'}}
+{{balances_fix_schema(source('tokens_avalanche_c', 'balances_avalanche_c'),'avalanche_c', '0x0000000000000000000000000000000000000000')}}
 )
 
 {{
