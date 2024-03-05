@@ -7,18 +7,17 @@ sources:
       - name: Pool_evt_Repay
       - name: Pool_evt_LiquidationCall
 
-sources:
   - name: reactorfusion_zksync
     tables:
       - name: rfUSDC_evt_Borrow
       - name: rfUSDT_evt_Borrow
-      - name: rfWBTC_evt_Borrow
+      - name: rfBTC_evt_Borrow
       - name: rfETH_evt_Borrow
       - name: rfUSDC_evt_RepayBorrow
       - name: rfUSDT_evt_RepayBorrow
-      - name: rfWBTC_evt_RepayBorrow
+      - name: rfBTC_evt_RepayBorrow
       - name: rfETH_evt_RepayBorrow
       - name: rfUSDC_evt_LiquidateBorrow
       - name: rfUSDT_evt_LiquidateBorrow
-      - name: rfWBTC_evt_LiquidateBorrow
+      - name: rfBTC_evt_LiquidateBorrow
       - name: rfETH_evt_LiquidateBorrow

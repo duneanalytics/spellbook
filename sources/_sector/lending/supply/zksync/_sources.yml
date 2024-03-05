@@ -6,14 +6,13 @@ sources:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
 
-sources:
   - name: reactorfusion_zksync
     tables:
       - name: rfUSDC_evt_Mint
       - name: rfUSDT_evt_Mint
-      - name: rfWBTC_evt_Mint
+      - name: rfBTC_evt_Mint
       - name: rfETH_evt_Mint
       - name: rfUSDC_evt_Redeem
       - name: rfUSDT_evt_Redeem
-      - name: rfWBTC_evt_Redeem
+      - name: rfBTC_evt_Redeem
       - name: rfETH_evt_Redeem

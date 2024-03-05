@@ -14,7 +14,7 @@
   set config_sources = [
     {'contract': 'rfUSDC'},
     {'contract': 'rfUSDT'},
-    {'contract': 'rfWBTC'},
+    {'contract': 'rfBTC'},
     {'contract': 'rfETH'},
   ]
 %}
