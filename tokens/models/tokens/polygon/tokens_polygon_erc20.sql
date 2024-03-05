@@ -529,4 +529,5 @@ SELECT contract_address, symbol, decimals
 ,(0xA63b19647787Da652D0826424460D1BBf43Bf9c6, 'bwAJNA', 18)
 ,(0xf33687811f3ad0cd6b48dd4b39f9f977bd7165a2, 'truMATIC', 18)
 ,(0xfcbb00df1d663eee58123946a30ab2138bf9eb2a, 'csMATIC', 18)
+,(0x2934b36ca9a4b31e633c5be670c8c8b28b6aa015, 'THX', 18)   
 ) AS temp_table (contract_address, symbol, decimals)
