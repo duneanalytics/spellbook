@@ -5,7 +5,7 @@ models:
    meta:
      blockchain: scroll
      project: zonic
-     contributors: 0xRob
+     contributors: 0xRob, tomfutago
    config:
      tags: [ 'scroll','zonic', 'trades' ]
    description: >
