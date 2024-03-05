@@ -220,5 +220,4 @@ FROM (VALUES
         ,(0xe3b3FE7bcA19cA77Ad877A5Bebab186bEcfAD906, 'sFRAX', 18)   
         ,(0x641441c631e2F909700d2f41FD87F0aA6A6b4EDb, 'USX', 18)   
         ,(0x6dbF2155B0636cb3fD5359FCcEFB8a2c02B6cb51, 'plsRDNT', 18)   
-    
      ) AS temp_table (contract_address, symbol, decimals)
