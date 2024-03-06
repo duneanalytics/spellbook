@@ -155,4 +155,12 @@ models:
       - name: decimals
         description: "Token decimals"
       - name: price
-        description: "USD price of a token"
+        description: "daily average USD price of a token"
+      - name: price_open
+        description: "daily opening USD price of a token"
+      - name: price_high
+        description: "daily maximum USD price of a token"
+      - name: price_low
+        description: "daily minimum USD price of a token"
+      - name: price_close
+        description: "daily closing USD price of a token"

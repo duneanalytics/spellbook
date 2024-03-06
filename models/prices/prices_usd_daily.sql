@@ -17,8 +17,13 @@ select
     contract_address,
     decimals,
     symbol,
-    price,
-    row_number() OVER (partition by date_trunc('day', minute), blockchain, contract_address, symbol order by minute) as row_number
+    avg(price) as price,
+    min_by(price,minute) as price_open,
+    max(price) as price_high,
+    min(price) as price_low,
+    max_by(price,minute) as price_close,
 from {{ source('prices', 'usd') }}
-) where row_number = 1
+group by 1,2,3,4,5
+)
+where day < cast(date_trunc('day',now()) as date) -- exclude ongoing day
 
