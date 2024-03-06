@@ -1,6 +1,11 @@
 {{
     config(
         schema='boost',
+        alias='claimed',
+        materialized='incremental',
+        file_format='delta',
+        incremental_strategy='merge',
+        unique_key=['boost_address', 'claim_tx_hash', 'action_tx_hash']
     )
 }}
 
@@ -97,5 +102,6 @@ select
 from unified_claims u
 left join {{ source('prices','usd') }} p
 on date_trunc('hour', block_time) = p.minute
+    and p.blockchain = reward_network
     and reward_token_address = p.contract_address
 order by block_time desc

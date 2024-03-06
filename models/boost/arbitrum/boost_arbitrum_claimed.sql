@@ -1,6 +1,7 @@
  {{
     config(
         schema='boost_arbitrum',
+        alias='claimed'
     )
 }}
 

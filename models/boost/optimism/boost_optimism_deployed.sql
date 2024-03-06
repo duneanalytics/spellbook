@@ -1,6 +1,7 @@
  {{
     config(
         schema='boost_optimism',
+        alias='deployed'
     )
 }}
 
