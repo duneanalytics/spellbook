@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'eas_optimism',
+    schema = 'eas_scroll',
     alias = 'attestations',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,9 +12,9 @@
 
 {{
   eas_attestations(
-    blockchain = 'optimism',
+    blockchain = 'scroll',
     project = 'eas',
     version = '1',
-    decoded_project_name = 'attestationstation_v1'
+    schema_column_name = 'schemaUID'
   )
 }}
