@@ -22,10 +22,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(platform_fee_amount_raw AS UINT256) AS platform_fee_amount_raw,
+  CAST(royalty_fee_amount_raw AS UINT256) AS royalty_fee_amount_raw,
+  cast(platform_fee_address AS VARBINARY) AS platform_fee_address,
+  cast(royalty_fee_address AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -56,11 +56,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
-  contract_address AS project_contract_address,
+  CAST(platform_fee_amount_raw AS UINT256) AS platform_fee_amount_raw,
+  CAST(royalty_fee_amount_raw AS UINT256) AS royalty_fee_amount_raw,
+  cast(platform_fee_address AS VARBINARY) AS platform_fee_address,
+  cast(royalty_fee_address AS VARBINARY) AS royalty_fee_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
 FROM {{ erc721_buy_order_filled }}
@@ -90,10 +89,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(platform_fee_amount_raw AS UINT256) AS platform_fee_amount_raw,
+  CAST(royalty_fee_amount_raw AS UINT256) AS royalty_fee_amount_raw,
+  cast(platform_fee_address AS VARBINARY) AS platform_fee_address,
+  cast(royalty_fee_address AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -124,10 +123,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(platform_fee_amount_raw AS UINT256) AS platform_fee_amount_raw,
+  CAST(royalty_fee_amount_raw AS UINT256) AS royalty_fee_amount_raw,
+  cast(platform_fee_address AS VARBINARY) AS platform_fee_address,
+  cast(royalty_fee_address AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
