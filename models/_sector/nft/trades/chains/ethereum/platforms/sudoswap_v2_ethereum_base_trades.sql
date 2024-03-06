@@ -158,7 +158,7 @@ SELECT
     , case when trade_category = 'sell' then pool_address else trade_recipient end as buyer
     , case when trade_category = 'buy' then pool_address else trade_recipient end as seller
     , nft_contract_address
-    , one_nft_token_id as token_id
+    , one_nft_token_id as nft_token_id
     , number_of_items_unnested as nft_amount
     , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
     , trade_category
