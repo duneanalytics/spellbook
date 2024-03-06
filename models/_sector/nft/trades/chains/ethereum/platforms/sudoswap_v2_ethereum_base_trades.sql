@@ -50,7 +50,7 @@ WITH
                 --need this for a clean join below on trace_address, since top level calls are empty for trace address
                 , case when cardinality(call_trace_address) = 0 then array[0] else call_trace_address end as call_trace_address_filled 
             FROM {{ source('sudoswap_v2_ethereum','LSSVMPair_call_swapNFTsForToken') }}
-            WHERE success
+            WHERE call_success
             {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
@@ -111,7 +111,7 @@ WITH
                 *
                 , case when cardinality(call_trace_address) = 0 then array[0] else call_trace_address end as call_trace_address_filled 
             FROM {{ source('sudoswap_v2_ethereum','LSSVMPair_call_swapTokenForSpecificNFTs') }}
-            WHERE success
+            WHERE call_success
             {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}

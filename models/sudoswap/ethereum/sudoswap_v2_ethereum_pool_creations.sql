@@ -49,7 +49,7 @@ with
               call_block_time,
               call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ETH') }}
-        WHERE success
+        WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
@@ -65,7 +65,7 @@ with
               call_block_time,
               call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ETH') }}
-        WHERE success
+        WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
@@ -81,7 +81,7 @@ with
             , call_block_time
             , call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ERC20') }}
-        WHERE success
+        WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
@@ -97,7 +97,7 @@ with
             , call_block_time
             , call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ERC20') }}
-        WHERE success
+        WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
