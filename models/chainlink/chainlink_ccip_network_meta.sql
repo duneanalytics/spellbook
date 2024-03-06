@@ -14,7 +14,7 @@ SELECT
 blockchain, 
 router AS router, 
 cast(chain_selector AS UINT256) AS chain_selector,
-'version' 
+"version" 
 FROM (VALUES 
  ('ethereum', 0xe561d5e02207fb5eb32cca20a699e0d8919a1476, '5009297550715157269', 'v1.0.0')
 , ('optimism', 0x261c05167db67b2b619f9d312e0753f3721ad6e8, '3734403246176062136', 'v1.0.0')
@@ -31,4 +31,4 @@ FROM (VALUES
 , ('base', 0x881e3A65B4d4a04dD529061dd0071cf975F58bCD, '15971525489660198786', 'v1.2.0')
 , ('bnb', 0x34B03Cb9086d7D758AC55af71584F81A598759FE, '11344663589394136015', 'v1.2.0')
 )
-AS a (blockchain, router, chain_selector, 'version')
+AS a (blockchain, router, chain_selector, "version")
