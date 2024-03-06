@@ -93,7 +93,7 @@ WITH
             ,sp.call_trace_address as info_trace_address
             ,roy.call_trace_address as royalty_call_trace_address
             ,sp.numItems 
-            ,sp_start.nftIds
+            ,sp_start.nftIds as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice --sp.spotPrice --for some reason spot price is sometimes inaccurate? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
@@ -108,6 +108,7 @@ WITH
             ,p.pool_address
             ,sp.call_tx_hash
             ,sp.call_block_time
+            ,sp.call_block_number
         FROM (
             SELECT 
                 *
@@ -145,7 +146,7 @@ WITH
             ,sp.call_trace_address as info_trace_address
             ,roy.call_trace_address as royalty_call_trace_address
             ,sp.numItems 
-            ,sp_start.nftIds
+            ,sp_start.nftIds as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
@@ -160,6 +161,7 @@ WITH
             ,p.pool_address
             ,sp.call_tx_hash
             ,sp.call_block_time
+            ,sp.call_block_number
         FROM (
             SELECT 
                 *
@@ -191,71 +193,50 @@ WITH
     , trades as (
         SELECT 
             trade_category
-            , numItems as number_of_items
-            , nftIds
+            , numItems/cardinality(token_ids) as number_of_items_unnested
+            , token_ids
             , spotPrice as amount_raw
-            , spotPrice/pow(10,COALESCE(tk.decimals,18)) as amount_original
-            , spotPrice/pow(10,COALESCE(tk.decimals,18))*p.price as amount_usd
             , output_tradeFee as trade_fee_amount_raw
-            , output_tradeFee/pow(10,COALESCE(tk.decimals,18)) as trade_fee
-            , output_tradeFee/pow(10,COALESCE(tk.decimals,18))*p.price as trade_fee_amount_usd
-            , feeMultiplier/1e18 as trade_fee_percentage
             , output_protocolFee as protocol_fee_amount_raw
-            , output_protocolFee/pow(10,COALESCE(tk.decimals,18)) as protocol_fee
-            , output_protocolFee/pow(10,COALESCE(tk.decimals,18))*p.price as protocol_fee_amount_usd
-            , protocolFeeMultiplier/1e18 as protocol_fee_percentage
             , royalty_fee_amount_raw
-            , royalty_fee_amount_raw/pow(10,COALESCE(tk.decimals,18)) as royalty_fee
-            , royalty_fee_amount_raw/pow(10,COALESCE(tk.decimals,18))*p.price as royalty_fee_amount_usd
-            , case when spotPrice = 0 then 0 else cast(royalty_fee_amount_raw as double)/cast(spotPrice as double) end as royalty_fee_percentage
             , token
-            , tk.symbol as token_symbol
             , nft_contract_address
-            , nft.name as nft_name
             , nft_type
             , pool_type
             , bonding_curve_type
             , pool_address
             , call_block_time as block_time
+            , call_block_number as block_number
             , call_tx_hash as tx_hash
-            , tx."from" as tx_from
-            , tx.to as tx_to
         FROM (
             SELECT * FROM sell_nft_base
             UNION ALL 
             SELECT * FROM buy_nft_base
         ) tr
-        LEFT JOIN tokens.erc20 tk ON tk.contract_address = tr.token AND tk.blockchain = 'ethereum'
-        LEFT JOIN tokens.nft nft ON nft.contract_address = tr.nft_contract_address AND nft.blockchain = 'ethereum'
-        LEFT JOIN prices.usd p ON p.minute = date_trunc('minute',tr.call_block_time) AND p.blockchain = 'ethereum' AND p.contract_address = tr.token
-        LEFT JOIN ethereum.transactions tx ON tx.hash = tr.call_tx_hash
     )
 
--- unnest nftIds, also need to unnest erc1155 by amount.
-
--- SELECT
---      'ethereum' as blockchain
---     , 'sudoswap' as project
---     , 'v2' as project_version
---     , block_time
---     , block_number
---     , tx_hash
---     , project_contract_address
---     , buyer
---     , seller
---     , nft_contract_address
---     , one_nft_token_id as nft_token_id --nft.trades prefers each token id be its own row
---     , uint256 '1' as nft_amount
---     , trade_type
---     , trade_category
---     , currency_contract
---     , cast(price_raw/number_of_items as uint256) as price_raw
---     , cast(platform_fee_amount_raw/number_of_items as uint256) as platform_fee_amount_raw
---     , uint256 '0' as royalty_fee_amount_raw
---     , cast(pool_fee_amount_raw/number_of_items as uint256) as pool_fee_amount_raw
---     , protocolfee_recipient as platform_fee_address
---     , cast(null as varbinary) as royalty_fee_address
---     , row_number() over (partition by tx_hash order by one_nft_token_id) as sub_tx_trade_id
--- FROM trades
--- CROSS JOIN UNNEST(nft_token_id) as foo(one_nft_token_id)
-
+SELECT
+    'ethereum' as blockchain
+    , 'sudoswap' as project
+    , 'v2' as version
+    , block_time
+    , block_number
+    , tx_hash
+    , pool_address as project_contract_address
+    , case when trade_category = 'sell' then pool_address else tx_from end as buyer
+    , case when trade_category = 'buy' then pool_address else tx_from end as seller
+    , nft_contract_address
+    , one_nft_token_id as token_id
+    , number_of_items_unnested as nft_amount
+    , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
+    , trade_category
+    , token as currency_contract
+    , cast(amount_original/number_of_items_unnested as uint256) as price_raw
+    , cast(platform_fee_amount_raw/number_of_items_unnested as uint256) as platform_fee_amount_raw
+    , cast(pool_fee_amount_raw/number_of_items_unnested as uint256) as pool_fee_amount_raw
+    , cast(royalty_fee_amount_raw/number_of_items_unnested as uint256) as royalty_fee_amount_raw
+    , cast(null as varbinary) as platform_fee_address --come back and fill this in later
+    , cast(null as varbinary) as royalty_fee_address
+    , row_number() over (partition by tx_hash order by one_nft_token_id) as sub_tx_trade_id
+FROM trades t
+LEFT JOIN unnest(token_ids) as t(one_nft_token_id) ON TRUE
