@@ -130,7 +130,6 @@ models:
         description: 'Address of the pool'
         tests:
           - unique
-      - *pool_address
       - *nft_contract_address
       - *creator_address
       - *bonding_curve
