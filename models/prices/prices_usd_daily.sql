@@ -21,7 +21,7 @@ select
     min_by(price,minute) as price_open,
     max(price) as price_high,
     min(price) as price_low,
-    max_by(price,minute) as price_close,
+    max_by(price,minute) as price_close
 from {{ source('prices', 'usd') }}
 group by 1,2,3,4,5
 )
