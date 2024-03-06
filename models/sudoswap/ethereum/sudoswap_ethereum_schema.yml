@@ -124,7 +124,7 @@ models:
     config:
       tags: [ 'ethereum','sudoswap','pool_creations' ]
     description: >
-      sudoswap pool creations on Ethereum
+      sudoswap v2 pool creations on Ethereum
     columns:
       - name: pool_address # unique
         description: 'Address of the pool'

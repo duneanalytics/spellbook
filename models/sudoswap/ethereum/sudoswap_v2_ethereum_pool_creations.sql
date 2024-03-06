@@ -1,6 +1,6 @@
 {{ config(
         alias = 'pool_creations',
-        schema = 'sudoswap_ethereum',
+        schema = 'sudoswap_v2_ethereum',
         
         materialized = 'incremental',
         file_format = 'delta',
