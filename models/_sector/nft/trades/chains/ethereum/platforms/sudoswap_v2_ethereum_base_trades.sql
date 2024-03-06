@@ -6,84 +6,18 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                            "project",
+                            "sudoswap",
+                            \'["ilemi"]\') }}'
     )
 }}
---base table CTEs
+
 WITH
     pools as (
         SELECT 
-             output_pair AS pool_address,
-             nft_contract_address,
-             nft_type,
-             case when token = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 then 'ETH' else 'ERC20' end as token_type,
-             token,
-             CASE
-                WHEN bonding_curve = 0xe5d78fec1a7f42d2F3620238C498F088A866FdC5 THEN 'linear'
-                WHEN bonding_curve = 0xfa056C602aD0C0C4EE4385b3233f2Cb06730334a THEN 'exponential'
-                WHEN bonding_curve = 0xc7fB91B6cd3C67E02EC08013CEBb29b1241f3De5 THEN 'xyk'
-                WHEN bonding_curve = 0x1fD5876d4A3860Eb0159055a3b7Cb79fdFFf6B67 then 'GDA'
-                ELSE 'other'
-              END as bonding_curve_type,
-              CASE
-                WHEN pool_type_raw = 0 THEN 'token'
-                WHEN pool_type_raw = 1 THEN 'nft'
-                WHEN pool_type_raw = 2 THEN 'trade'
-              END AS pool_type,
-              contract_address as pool_factory,
-              call_block_time,
-              call_tx_hash
-        FROM (
-             SELECT 
-                  output_pair,
-                  _nft AS nft_contract_address,
-                --   _assetRecipient,
-                  _bondingCurve as bonding_curve,
-                  _poolType as pool_type_raw,
-                  'ERC721' as nft_type,
-                  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as token,
-                  contract_address,
-                  call_block_time,
-                  call_tx_hash
-            FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ETH') }}
-            UNION ALL
-            SELECT
-                  output_pair,
-                  _nft AS nft_contract_address,
-                --   _assetRecipient,
-                  _bondingCurve as bonding_curve,
-                  _poolType as pool_type_raw,
-                  'ERC1155' as nft_type,
-                  0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as token,
-                  contract_address,
-                  call_block_time,
-                  call_tx_hash
-            FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ETH') }}
-            UNION ALL 
-            SELECT 
-                output_pair
-                , from_hex(json_extract_scalar(params,'$.nft')) as nft_contract_address
-                , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
-                , cast(json_extract_scalar(params,'$.poolType') as int) as pool_type_raw
-                , 'ERC1155' as nft_type
-                , from_hex(json_extract_scalar(params,'$.token')) as token_type
-                , contract_address
-                , call_block_time
-                , call_tx_hash
-            FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ERC20') }}
-            UNION ALL 
-            SELECT 
-                output_pair
-                , from_hex(json_extract_scalar(params,'$.nft')) as nft_contract_address
-                , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
-                , cast(json_extract_scalar(params,'$.poolType') as int) as pool_type_raw
-                , 'ERC721' as nft_type
-                , from_hex(json_extract_scalar(params,'$.token')) as token_type
-                , contract_address
-                , call_block_time
-                , call_tx_hash
-            FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ERC20') }}
-        )
-        -- WHERE output_pair = 0xcdb8f114d2fb28a4b85bb1ab6e09444006ef5385
+        *
+        FROM {{ ref('sudoswap_v2_ethereum_pool_creations')}}
     )
 
         , sell_nft_base as (
@@ -94,17 +28,17 @@ WITH
             ,roy.call_trace_address as royalty_call_trace_address
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
-            ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice --sp.spotPrice --for some reason spot price is sometimes inaccurate? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
+            ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
-            ,p.token
+            ,p.token_contract_address
             ,p.nft_type
             ,p.nft_contract_address
             ,p.pool_type
-            ,p.bonding_curve_type
+            ,p.bonding_curve
             ,p.pool_address
             ,sp.call_tx_hash
             ,sp.call_block_time
@@ -135,8 +69,6 @@ WITH
             AND sp_start.call_trace_address_filled = slice(roy.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
             AND cardinality(roy.output_0) is not null --ignore if no royalty returned.
         LEFT JOIN pools p ON p.pool_address = sp_start.contract_address
-        -- WHERE sp.contract_address = 0xcdb8f114d2fb28a4b85bb1ab6e09444006ef5385
-        -- WHERE sp_start.call_tx_hash = 0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
     )
     
     , buy_nft_base as (
@@ -153,11 +85,11 @@ WITH
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
-            ,p.token
+            ,p.token_contract_address
             ,p.nft_type
             ,p.nft_contract_address
             ,p.pool_type
-            ,p.bonding_curve_type
+            ,p.bonding_curve
             ,p.pool_address
             ,sp.call_tx_hash
             ,sp.call_block_time
@@ -165,12 +97,10 @@ WITH
         FROM (
             SELECT 
                 *
-                --need this for a clean join below on trace_address, since top level calls are empty for trace address
                 , case when cardinality(call_trace_address) = 0 then array[0] else call_trace_address end as call_trace_address_filled 
             FROM {{ source('sudoswap_v2_ethereum','LSSVMPair_call_swapTokenForSpecificNFTs') }}
             ) sp_start
         LEFT JOIN (
-            --each curve calculates info with all the data we need before a swap.
             SELECT * FROM {{ source('sudoswap_v2_ethereum','ExponentialCurve_call_getSellInfo') }}
             UNION ALL 
             SELECT * FROM {{ source('sudoswap_v2_ethereum','LinearCurve_call_getSellInfo') }}
@@ -181,13 +111,11 @@ WITH
         ) sp ON sp_start.call_tx_hash = sp.call_tx_hash
             AND sp_start.call_block_number = sp.call_block_number
             AND sp_start.call_trace_address_filled = slice(sp.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
-        --royalty is only called once per NFT contract, even if there are multiple token ids
         LEFT JOIN {{ source('sudoswap_v2_ethereum','RoyaltyEngine_call_getRoyalty') }} roy 
             ON roy.call_tx_hash = sp.call_tx_hash
             AND roy.call_block_number = sp.call_block_number
             AND sp_start.call_trace_address_filled = slice(roy.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
         LEFT JOIN pools p ON p.pool_address = sp_start.contract_address
-        -- WHERE sp.contract_address = 0xcdb8f114d2fb28a4b85bb1ab6e09444006ef5385
     )
     
     , trades as (
@@ -199,11 +127,11 @@ WITH
             , output_tradeFee as trade_fee_amount_raw
             , output_protocolFee as protocol_fee_amount_raw
             , royalty_fee_amount_raw
-            , token
+            , token_contract_address
             , nft_contract_address
             , nft_type
             , pool_type
-            , bonding_curve_type
+            , bonding_curve
             , pool_address
             , call_block_time as block_time
             , call_block_number as block_number
@@ -230,7 +158,7 @@ SELECT
     , number_of_items_unnested as nft_amount
     , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
     , trade_category
-    , token as currency_contract
+    , token_contract_address as currency_contract
     , cast(amount_original/number_of_items_unnested as uint256) as price_raw
     , cast(platform_fee_amount_raw/number_of_items_unnested as uint256) as platform_fee_amount_raw
     , cast(pool_fee_amount_raw/number_of_items_unnested as uint256) as pool_fee_amount_raw
