@@ -1,6 +1,7 @@
 {{
     config(
         schema='boost',
+        alias='claimed_legacy'
     )
 }}
 

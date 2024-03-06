@@ -1361,4 +1361,3 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
-
