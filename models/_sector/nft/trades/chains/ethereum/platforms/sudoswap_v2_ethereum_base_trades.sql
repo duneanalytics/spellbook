@@ -123,6 +123,7 @@ WITH
     , trades as (
         SELECT 
             trade_category
+            , numItems as number_of_items
             , numItems/cardinality(token_ids) as number_of_items_unnested
             , token_ids
             , spotPrice as amount_raw
