@@ -173,6 +173,7 @@ SELECT
     , 'v2' as project_version
     , block_time
     , cast(date_trunc('day', block_time) as date) as block_date
+    , cast(date_trunc('month', block_time) as date) as block_month
     , block_number
     , tx_hash
     , pool_address as project_contract_address
