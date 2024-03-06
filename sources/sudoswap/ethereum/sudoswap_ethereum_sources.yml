@@ -63,6 +63,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: GDACurve_call_getSellInfo
         loaded_at_field: evt_block_time
+      - name: ExponentialCurve_call_getBuyInfo
+        loaded_at_field: evt_block_time
+      - name: LinearCurve_call_getBuyInfo
+        loaded_at_field: evt_block_time
+      - name: XykCurve_call_getBuyInfo
+        loaded_at_field: evt_block_time
+      - name: GDACurve_call_getBuyInfo
+        loaded_at_field: evt_block_time
       - name: RoyaltyEngine_call_getRoyalty
         loaded_at_field: evt_block_time
         

@@ -29,7 +29,7 @@ WITH
             ,sp_start.tokenRecipient as trade_recipient
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
-            ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
+            ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as amount_raw --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
             ,sp.output_tradeFee
@@ -81,7 +81,7 @@ WITH
             ,sp_start.nftRecipient as trade_recipient
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
-            ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice
+            ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as amount_raw
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
             ,sp.output_tradeFee
@@ -103,13 +103,13 @@ WITH
             FROM {{ source('sudoswap_v2_ethereum','LSSVMPair_call_swapTokenForSpecificNFTs') }}
             ) sp_start
         LEFT JOIN (
-            SELECT * FROM {{ source('sudoswap_v2_ethereum','ExponentialCurve_call_getSellInfo') }}
+            SELECT * FROM {{ source('sudoswap_v2_ethereum','ExponentialCurve_call_getBuyInfo') }}
             UNION ALL 
-            SELECT * FROM {{ source('sudoswap_v2_ethereum','LinearCurve_call_getSellInfo') }}
+            SELECT * FROM {{ source('sudoswap_v2_ethereum','LinearCurve_call_getBuyInfo') }}
             UNION ALL 
-            SELECT * FROM {{ source('sudoswap_v2_ethereum','XykCurve_call_getSellInfo') }}
+            SELECT * FROM {{ source('sudoswap_v2_ethereum','XykCurve_call_getBuyInfo') }}
             UNION ALL 
-            SELECT * FROM {{ source('sudoswap_v2_ethereum','GDACurve_call_getSellInfo') }}
+            SELECT * FROM {{ source('sudoswap_v2_ethereum','GDACurve_call_getBuyInfo') }}
         ) sp ON sp_start.call_tx_hash = sp.call_tx_hash
             AND sp_start.call_block_number = sp.call_block_number
             AND sp_start.call_trace_address_filled = slice(sp.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
@@ -126,9 +126,9 @@ WITH
             , numItems as number_of_items
             , numItems/cardinality(token_ids) as number_of_items_unnested
             , token_ids
-            , spotPrice as amount_raw
+            , amount_raw
             , output_tradeFee as trade_fee_amount_raw
-            , output_protocolFee as protocol_fee_amount_raw
+            , output_protocolFee as platform_fee_amount_raw
             , royalty_fee_amount_raw
             , token_contract_address
             , nft_contract_address
@@ -167,7 +167,7 @@ SELECT
     , cast(platform_fee_amount_raw/number_of_items_unnested as uint256) as platform_fee_amount_raw
     , cast(pool_fee_amount_raw/number_of_items_unnested as uint256) as pool_fee_amount_raw
     , cast(royalty_fee_amount_raw/number_of_items_unnested as uint256) as royalty_fee_amount_raw
-    , cast(null as varbinary) as platform_fee_address --come back and fill this in later
+    , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
     , cast(null as varbinary) as royalty_fee_address
     , row_number() over (partition by tx_hash order by one_nft_token_id) as sub_tx_trade_id
 FROM trades t
