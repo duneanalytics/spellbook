@@ -381,6 +381,6 @@ WITH pool_labels AS (
     AND l.day = s.day
     LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
-    WHERE supply > 0
+    WHERE supply > 1
 
     {% endmacro %}

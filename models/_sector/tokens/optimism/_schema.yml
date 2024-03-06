@@ -127,7 +127,7 @@ models:
       - name: decimals
       - name: collection_name
 
-  - name: tokens_optimism_base_balances_daily
+  - name: tokens_optimism_balances_daily_agg_base
     meta:
       blockchain: optimism
       sector: tokens
@@ -145,13 +145,36 @@ models:
           - name: amount
           - name: type
 
-  - name: tokens_optimism_balances_daily
+  - name: tokens_optimism_balances_daily_agg
     meta:
       blockchain: optimism
       sector: tokens
       contributors: aalan3
     config:
-      tags: ['tokens','balances', 'base']
+      tags: ['tokens','balances', 'optimism']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_optimism_balances_daily
+    meta:
+      blockchain: optimism
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'optimism' ]
     description: "Token balances daily enriched"
     columns:
       - name: day

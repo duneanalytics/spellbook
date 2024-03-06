@@ -3,11 +3,11 @@ version: 2
 models:
   - name: nft_wash_trades
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades']
+      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades', 'zksync']
     description: >
         NFT wash trades labelling
     columns:
@@ -204,6 +204,18 @@ models:
       blockchain: celo
       sector: nft
       contributors: tomfutago
+    config:
+      tags: [ 'nft', 'wash_trades' ]
+    description: >
+      NFT wash trades labelling
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *unique_trade_id
+  - name: nft_zksync_wash_trades
+    meta:
+      blockchain: zksync
+      sector: nft
+      contributors: lgingerich
     config:
       tags: [ 'nft', 'wash_trades' ]
     description: >
