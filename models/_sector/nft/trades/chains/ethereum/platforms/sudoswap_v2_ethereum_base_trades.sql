@@ -150,7 +150,7 @@ WITH
 SELECT
     'ethereum' as blockchain
     , 'sudoswap' as project
-    , 'v2' as version
+    , 'v2' as project_version
     , block_time
     , block_number
     , tx_hash
