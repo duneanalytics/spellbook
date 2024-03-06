@@ -94,19 +94,19 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
 
- - name: sudoswap_v2_base_base_trades
-   meta:
-     blockchain: base
-     sector: nft
-     project: sudoswap
-     contributors: [ 'ilemi' ]
-   config:
-     tags: [ 'base', 'nft', 'trades', 'sudoswap' ]
-   description: "sudoswap v2 base trades"
-   tests:
-     - check_columns_nft_base_trades
-     - dbt_utils.unique_combination_of_columns:
-         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+  - name: sudoswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: nft
+      project: sudoswap
+      contributors: [ 'ilemi' ]
+    config:
+      tags: [ 'base', 'nft', 'trades', 'sudoswap' ]
+    description: "sudoswap v2 base trades"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
     #  - check_seed:
     #      seed_file: ref('sudoswap_v2_base_base_trades_seed')
     #      match_columns:
