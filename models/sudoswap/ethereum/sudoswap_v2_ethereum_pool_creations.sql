@@ -49,9 +49,7 @@ with
               call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ETH') }}
         WHERE 1=1
-          {% if not is_incremental() %}
-          AND call_block_time >= TIMESTAMP '{{project_start_date}}'
-          {% else %}
+          {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         UNION ALL
@@ -67,9 +65,7 @@ with
               call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ETH') }}
         WHERE 1=1
-          {% if not is_incremental() %}
-          AND call_block_time >= TIMESTAMP '{{project_start_date}}'
-          {% else %}
+          {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         UNION ALL 
@@ -85,9 +81,7 @@ with
             , call_tx_hash
         FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ERC20') }}
         WHERE 1=1
-          {% if not is_incremental() %}
-          AND call_block_time >= TIMESTAMP '{{project_start_date}}'
-          {% else %}
+          {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
         UNION ALL 
@@ -113,9 +107,7 @@ with
       ON tx.block_time = cre.call_block_time
       AND tx.hash = cre.call_tx_hash
       AND tx.success
-      {% if not is_incremental() %}
-      AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
-      {% else %}
+      {% if is_incremental() %}
       AND tx.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
   )
