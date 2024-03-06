@@ -3,10 +3,11 @@
     
     schema = 'kyberswap_aggregator',
     alias = 'trades',
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    post_hook='{{ expose_spells(\'["arbitrum", "base"]\',
                             "project",
                             "kyberswap",
-                            \'["nhd98z"]\') }}'
+                            \'["nhd98z", "Henrystats"]\') }}'
     )
 }}
 
@@ -17,6 +18,7 @@
     ,ref('kyberswap_aggregator_optimism_trades')
     ,ref('kyberswap_aggregator_bnb_trades')
     ,ref('kyberswap_aggregator_polygon_trades')
+    ,ref('kyberswap_aggregator_base_trades')
 ] %}
 
 
@@ -50,7 +52,7 @@ FROM (
         trace_address
     FROM {{ aggregator_dex_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('block_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
