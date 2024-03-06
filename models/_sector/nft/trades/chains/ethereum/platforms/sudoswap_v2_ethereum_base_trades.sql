@@ -26,7 +26,7 @@ WITH
             ,sp_start.call_trace_address_filled as swap_trace_address
             ,sp.call_trace_address as info_trace_address
             ,roy.call_trace_address as royalty_call_trace_address
-            ,sp.tokenRecipient as trade_recipient
+            ,sp_start.tokenRecipient as trade_recipient
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
@@ -78,7 +78,7 @@ WITH
             ,sp_start.call_trace_address_filled as swap_trace_address
             ,sp.call_trace_address as info_trace_address
             ,roy.call_trace_address as royalty_call_trace_address
-            ,sp.nftRecipient as trade_recipient
+            ,sp_start.nftRecipient as trade_recipient
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice
