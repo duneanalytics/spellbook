@@ -69,6 +69,35 @@ FROM (VALUES
         ,(0x1145E7848c8B64c6cab86Fd6D378733385c5C3Ba, 'Lyra', 'Optimism', 'L2OutputOracleProxy','to_address','Bedrock','Lyra: L2OutputOracleProxy')
         ,(0x03e820562ffd2e0390787caD706EaF1FF98C2608, 'Lyra', 'Optimism', 'L2OutputOracle','from_address','Bedrock','Lyra: L2OutputOracle')
         ---
+        ,(0xFf00000000000000000000000000000000081457, 'Blast', 'Optimism', 'L1BatchInbox','to_address','Bedrock','Blast: L1BatchInbox')
+        ,(0x415c8893D514F9BC5211d36eEDA4183226b84AA7, 'Blast', 'Optimism', 'L1BatchInbox','from_address','Bedrock','Blast: L1BatchInbox')
+
+        ,(0xaEbA6c3042B463DfAA6A2DFA96486D5A92186cFF, 'Blast', 'Optimism', 'L2OutputOracle','to_address','Bedrock','Blast: L2OutputOracle')
+        ,(0x826D1B0D4111Ad9146Eb8941D7Ca2B6a44215c76, 'Blast', 'Optimism', 'L2OutputOracleProxy','to_address','Bedrock','Blast: L2OutputOracleProxy')
+        ,(0x082b616Ec99167B2FEdee053F07db6795D4dA821, 'Blast', 'Optimism', 'L2OutputOracle','from_address','Bedrock','Blast: L2OutputOracle')
+        ---
+        ,(0xAEbA8e2307A22B6824a9a7a39f8b016C357Cd1Fe, 'Manta Pacific', 'Optimism', 'L1BatchInbox','to_address','Bedrock','Manta Pacific: L1BatchInbox')
+        ,(0xA76E31D8471D569EfDd3D95d1b11Ce6710f4533F, 'Manta Pacific', 'Optimism', 'L1BatchInbox','from_address','Bedrock','Manta Pacific: L1BatchInbox')
+
+        ,(0x1E5e634981564fc645dcbC6546aE618d7870B30a, 'Manta Pacific', 'Optimism', 'L2OutputOracle','to_address','Bedrock','Manta Pacific: L2OutputOracle')
+        ,(0x30c789674ad3B458886BBC9abf42EEe19EA05C1D, 'Manta Pacific', 'Optimism', 'L2OutputOracleProxy','to_address','Bedrock','Manta Pacific: L2OutputOracleProxy')
+        ,(0x853bDfF715eFeDc280C16241dD30A6d651f90aCa, 'Manta Pacific', 'Optimism', 'L2OutputOracle','from_address','Bedrock','Manta Pacific: L2OutputOracle')
+        ---
+        ,(0x0C57B7f3bAc278bE091431B52470fBAdBc4240E6, 'Hypr Network', 'Optimism', 'L1BatchInbox','to_address','Bedrock','Hypr Network: L1BatchInbox')
+        ,(0x994c288de8418c8D3c5a4D21A69f35bF9641781C, 'Hypr Network', 'Optimism', 'L1BatchInbox','from_address','Bedrock','Hypr Network: L1BatchInbox')
+
+        ,(0x2246d85AC397d289d49a92C804201738C4Bd2d73, 'Hypr Network', 'Optimism', 'L2OutputOracle','to_address','Bedrock','Hypr Network: L2OutputOracle')
+        ,(0x3E4F4Eb77a9c1f88c0e1F5aDCc9d3521Ce157FdD, 'Hypr Network', 'Optimism', 'L2OutputOracleProxy','to_address','Bedrock','Hypr Network: L2OutputOracleProxy')
+        ,(0xeF2169180a2eda91B695eA5e5C4f4547C013840c, 'Hypr Network', 'Optimism', 'L2OutputOracle','from_address','Bedrock','Hypr Network: L2OutputOracle')
+        ---
+        ,(0xfF000000000000000000000000000000000420fC, 'Fraxtal', 'Optimism', 'L1BatchInbox','to_address','Bedrock','Fraxtal: L1BatchInbox')
+        ,(0x6017f75108f251a488B045A7ce2a7C15b179d1f2, 'Fraxtal', 'Optimism', 'L1BatchInbox','from_address','Bedrock','Fraxtal: L1BatchInbox')
+
+        ,(0x84c2f365733c6560bd49D8768d9c23B07A9DD630, 'Fraxtal', 'Optimism', 'L2OutputOracle','to_address','Bedrock','Fraxtal: L2OutputOracle')
+        ,(0x66CC916Ed5C6C2FA97014f7D1cD141528Ae171e4, 'Fraxtal', 'Optimism', 'L2OutputOracleProxy','to_address','Bedrock','Fraxtal: L2OutputOracleProxy')
+        ,(0xFb90465f3064fF63FC460F01A6307eC73d64bc50, 'Fraxtal', 'Optimism', 'L2OutputOracle','from_address','Bedrock','Fraxtal: L2OutputOracle')
+
+        ---
 
         ,(0xa4b10ac61e79ea1e150df70b8dda53391928fd14, 'Arbitrum', 'Arbitrum','SequencerInbox','from_address','','Arbitrum: Sequencer')
         ,(0xcce5c6cff61c49b4d53dd6024f8295f3c5230513, 'Arbitrum','Arbitrum','SequencerInbox','from_address','','Arbitrum: Sequencer 2')
