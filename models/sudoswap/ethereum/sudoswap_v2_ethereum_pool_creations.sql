@@ -12,6 +12,7 @@
                                     \'["niftytable","0xRob"]\') }}'
         )
 }}
+
 with
   pool_creations as (
       SELECT 

@@ -26,6 +26,7 @@ WITH
             ,sp_start.call_trace_address_filled as swap_trace_address
             ,sp.call_trace_address as info_trace_address
             ,roy.call_trace_address as royalty_call_trace_address
+            ,sp.tokenRecipient as trade_recipient
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
@@ -77,6 +78,7 @@ WITH
             ,sp_start.call_trace_address_filled as swap_trace_address
             ,sp.call_trace_address as info_trace_address
             ,roy.call_trace_address as royalty_call_trace_address
+            ,sp.nftRecipient as trade_recipient
             ,sp.numItems 
             ,sp_start.nftIds as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as spotPrice
@@ -133,6 +135,7 @@ WITH
             , pool_type
             , bonding_curve
             , pool_address
+            , trade_recipient
             , call_block_time as block_time
             , call_block_number as block_number
             , call_tx_hash as tx_hash
@@ -151,8 +154,8 @@ SELECT
     , block_number
     , tx_hash
     , pool_address as project_contract_address
-    , case when trade_category = 'sell' then pool_address else tx_from end as buyer
-    , case when trade_category = 'buy' then pool_address else tx_from end as seller
+    , case when trade_category = 'sell' then pool_address else trade_recipient end as buyer
+    , case when trade_category = 'buy' then pool_address else trade_recipient end as seller
     , nft_contract_address
     , one_nft_token_id as token_id
     , number_of_items_unnested as nft_amount
