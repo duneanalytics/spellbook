@@ -127,7 +127,7 @@ WITH
             , numItems/cardinality(token_ids) as number_of_items_unnested
             , token_ids
             , amount_raw
-            , output_tradeFee as trade_fee_amount_raw
+            , output_tradeFee as pool_fee_amount_raw
             , output_protocolFee as platform_fee_amount_raw
             , royalty_fee_amount_raw
             , token_contract_address
