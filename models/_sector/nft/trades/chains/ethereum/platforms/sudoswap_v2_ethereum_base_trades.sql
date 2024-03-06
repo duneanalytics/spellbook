@@ -20,7 +20,7 @@ WITH
         FROM {{ ref('sudoswap_v2_ethereum_pool_creations')}}
     )
 
-        , sell_nft_base as (
+    , sell_nft_base as (
         SELECT
            'sell' as trade_category
             ,sp_start.call_trace_address_filled as swap_trace_address
