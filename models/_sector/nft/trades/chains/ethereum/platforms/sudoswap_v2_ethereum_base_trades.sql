@@ -163,7 +163,7 @@ SELECT
     , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
     , trade_category
     , token_contract_address as currency_contract
-    , cast(amount_original/number_of_items_unnested as uint256) as price_raw
+    , cast(amount_raw/number_of_items_unnested as uint256) as price_raw
     , cast(platform_fee_amount_raw/number_of_items_unnested as uint256) as platform_fee_amount_raw
     , cast(pool_fee_amount_raw/number_of_items_unnested as uint256) as pool_fee_amount_raw
     , cast(royalty_fee_amount_raw/number_of_items_unnested as uint256) as royalty_fee_amount_raw
