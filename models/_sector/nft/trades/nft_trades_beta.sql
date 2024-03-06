@@ -10,5 +10,6 @@
     )
 }}
 
+-- add words for force CI to run with this
 -- macros/models/sector/nft
 {{ enrich_nft_trades(ref('nft_base_trades'))}}
