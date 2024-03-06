@@ -49,7 +49,7 @@ WITH
                 *
                 --need this for a clean join below on trace_address, since top level calls are empty for trace address
                 , case when cardinality(call_trace_address) = 0 then array[0] else call_trace_address end as call_trace_address_filled 
-            FROM {{ source('sudoswap_v2_base','LSSVMPair_call_swapNFTsForToken') }}
+            FROM {{ source('sudoswap_v2_base','LLSVMPair_call_swapNFTsForToken') }} --lol decoded with wrong name LLSVM instead of LSSVM, sorry future someone
             WHERE call_success
             {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -110,7 +110,7 @@ WITH
             SELECT 
                 *
                 , case when cardinality(call_trace_address) = 0 then array[0] else call_trace_address end as call_trace_address_filled 
-            FROM {{ source('sudoswap_v2_base','LSSVMPair_call_swapTokenForSpecificNFTs') }}
+            FROM {{ source('sudoswap_v2_base','LLSVMPair_call_swapTokenForSpecificNFTs') }}
             WHERE call_success
             {% if is_incremental() %}
             AND call_block_time >= date_trunc('day', now() - interval '7' day)

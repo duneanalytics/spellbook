@@ -14,9 +14,9 @@ sources:
         loaded_at_field: call_block_time
       - name: LSSVMPairFactory_call_createPairERC1155ERC20
         loaded_at_field: call_block_time
-      - name: LSSVMPair_call_swapNFTsForToken
+      - name: LLSVMPair_call_swapNFTsForToken
         loaded_at_field: evt_block_time
-      - name: LSSVMPair_call_swapTokenForSpecificNFTs
+      - name: LLSVMPair_call_swapTokenForSpecificNFTs
         loaded_at_field: evt_block_time
       - name: ExponentialCurve_call_getSellInfo
         loaded_at_field: evt_block_time
