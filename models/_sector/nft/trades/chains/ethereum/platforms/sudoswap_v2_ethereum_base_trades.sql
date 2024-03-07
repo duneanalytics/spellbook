@@ -158,8 +158,8 @@ WITH
             , trade_category
             , token_contract_address as currency_contract
             , cast(amount_raw/(numItems/cardinality(token_ids)) as uint256) as price_raw
-            , cast(platform_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as platform_fee_amount_raw
-            , cast(pool_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as pool_fee_amount_raw
+            , cast(output_protocolFee/(numItems/cardinality(token_ids)) as uint256) as platform_fee_amount_raw
+            , cast(output_tradeFee/(numItems/cardinality(token_ids)) as uint256) as pool_fee_amount_raw
             , cast(royalty_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as royalty_fee_amount_raw
             , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
             , cast(null as varbinary) as royalty_fee_address

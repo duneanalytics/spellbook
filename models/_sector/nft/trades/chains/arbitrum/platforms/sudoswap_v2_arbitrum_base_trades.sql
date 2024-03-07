@@ -141,33 +141,6 @@ WITH
     )
     
     , trades as (
-        SELECT 
-            trade_category
-            , numItems as number_of_items
-            , numItems/cardinality(token_ids) as number_of_items_unnested
-            , token_ids
-            , amount_raw
-            , output_tradeFee as pool_fee_amount_raw
-            , output_protocolFee as platform_fee_amount_raw
-            , royalty_fee_amount_raw
-            , token_contract_address
-            , nft_contract_address
-            , nft_type
-            , pool_type
-            , bonding_curve
-            , pool_address
-            , trade_recipient
-            , call_block_time as block_time
-            , call_block_number as block_number
-            , call_tx_hash as tx_hash
-        FROM (
-            SELECT * FROM sell_nft_base
-            UNION ALL 
-            SELECT * FROM buy_nft_base
-        ) tr
-    )
-    
-    , trades as (
         SELECT
             'arbitrum' as blockchain
             , 'sudoswap' as project
@@ -187,8 +160,8 @@ WITH
             , trade_category
             , token_contract_address as currency_contract
             , cast(amount_raw/(numItems/cardinality(token_ids)) as uint256) as price_raw
-            , cast(platform_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as platform_fee_amount_raw
-            , cast(pool_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as pool_fee_amount_raw
+            , cast(output_protocolFee/(numItems/cardinality(token_ids)) as uint256) as platform_fee_amount_raw
+            , cast(output_tradeFee/(numItems/cardinality(token_ids)) as uint256) as pool_fee_amount_raw
             , cast(royalty_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as royalty_fee_amount_raw
             , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
             , cast(null as varbinary) as royalty_fee_address
