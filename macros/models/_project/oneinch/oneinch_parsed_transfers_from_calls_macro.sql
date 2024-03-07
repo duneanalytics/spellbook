@@ -31,7 +31,7 @@ select
     , case
         when {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) then bytearray_to_uint256(substr(input, 37, 32)) -- transfer, mint, burn
         when {{ selector }} = {{ transferFrom_selector }} then bytearray_to_uint256(substr(input, 69, 32)) -- transferFrom
-        when {{ selector }} = {{ withdraw_selector }} then bytearray_to_uint256(substr(input, 5)) -- withdraw
+        when {{ selector }} = {{ withdraw_selector }} then bytearray_to_uint256(substr(input, 5, 32)) -- withdraw
         else value -- native, deposit
     end as amount
     , case
