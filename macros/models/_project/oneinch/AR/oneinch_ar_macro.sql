@@ -223,12 +223,10 @@ with
 pools_list as (
     select
         pool as pool_address
-        , token0
-        , token1
         , tokens
     from {{ ref('dex_raw_pools') }}
     where type = 'uniswap_compatible'
-    group by 1, 2, 3
+    group by 1, 2
 )
 
 
