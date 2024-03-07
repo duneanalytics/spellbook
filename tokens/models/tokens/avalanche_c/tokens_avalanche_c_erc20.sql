@@ -239,4 +239,8 @@ FROM (VALUES
         ,(0x609268b9c47c7be0a8d77ae93c31d2bf6859d175, 'LONG', 18)
         ,(0xa25eaf2906fa1a3a13edac9b9657108af7b703e3, 'ggAVAX', 18)
         ,(0x13e793e76c38a6362f3f712c4ae365a9174f9b56, 'FOX', 9)
+        ,(0xE15bCB9E0EA69e6aB9FA080c4c4A5632896298C3, 'BAL', 18)   
+        ,(0x228a48df6819CCc2eCa01e2192ebAFfFdAD56c19, 'VCHF', 18)   
+        ,(0x7678e162f38ec9ef2Bfd1d0aAF9fd93355E5Fa0b, 'VEUR', 18)   
+        ,(0x12D8CE035c5DE3Ce39B1fDD4C1d5a745EAbA3b8C, 'ankrETH', 18)           
     ) AS temp_table (contract_address, symbol, decimals)

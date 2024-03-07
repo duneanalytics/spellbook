@@ -220,4 +220,7 @@ FROM (VALUES
         ,(0xe3b3FE7bcA19cA77Ad877A5Bebab186bEcfAD906, 'sFRAX', 18)   
         ,(0x641441c631e2F909700d2f41FD87F0aA6A6b4EDb, 'USX', 18)   
         ,(0x6dbF2155B0636cb3fD5359FCcEFB8a2c02B6cb51, 'plsRDNT', 18)   
+        ,(0x1DEBd73E752bEaF79865Fd6446b0c970EaE7732f, 'cbETH', 18)   
+        ,(0x8b5e4C9a188b1A187f2D1E80b1c2fB17fA2922e1, 'GOLD', 18)   
+        ,(0x223738a747383d6f9f827d95964e4d8e8ac754ce, 'auraBAL', 18)   
      ) AS temp_table (contract_address, symbol, decimals)
