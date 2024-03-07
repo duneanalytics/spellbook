@@ -161,13 +161,15 @@ WITH
             , case when numItems > 0 then 'multiple' else 'single' end as trade_type
             , trade_category
             , token_contract_address as currency_contract
-            , cast(amount_raw/numItems as uint256) as price_raw
-            , cast(output_protocolFee/numItems as uint256) as platform_fee_amount_raw
-            , cast(output_tradeFee/numItems as uint256) as pool_fee_amount_raw
-            , cast(royalty_fee_amount_raw/numItems as uint256) as royalty_fee_amount_raw
+            , cast(case when nft_type = 'ERC721' then amount_raw/numItems else amount_raw end as uint256) as price_raw
+            , cast(case when nft_type = 'ERC721' then output_protocolFee/numItems else output_protocolFee end as uint256) as platform_fee_amount_raw
+            , cast(case when nft_type = 'ERC721' then output_tradeFee/numItems else output_tradeFee end as uint256) as pool_fee_amount_raw
+            , cast(case when nft_type = 'ERC721' then royalty_fee_amount_raw/numItems else royalty_fee_amount_raw end as uint256) as royalty_fee_amount_raw
             , 0x6132912d8009268dcc457c003a621a0de405dbe0 as platform_fee_address --factory recieves the fees
             , royalty_fee_address
             , row_number() over (partition by call_tx_hash order by one_nft_token_id) as sub_tx_trade_id
+            , nft_type
+            , cast(amount_raw/numItems as uint256) as spot_price_raw
         FROM (
             SELECT * FROM sell_nft_base
             UNION ALL 
