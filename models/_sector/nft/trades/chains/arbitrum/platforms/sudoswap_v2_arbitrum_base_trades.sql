@@ -166,29 +166,39 @@ WITH
             SELECT * FROM buy_nft_base
         ) tr
     )
+    
+    , trades as (
+        SELECT
+            'arbitrum' as blockchain
+            , 'sudoswap' as project
+            , 'v2' as project_version
+            , call_block_time as block_time
+            , cast(date_trunc('day', call_block_time) as date) as block_date
+            , cast(date_trunc('month', call_block_time) as date) as block_month
+            , call_block_number as block_number
+            , call_tx_hash as tx_hash
+            , pool_address as project_contract_address
+            , case when trade_category = 'sell' then pool_address else trade_recipient end as buyer
+            , case when trade_category = 'buy' then pool_address else trade_recipient end as seller
+            , nft_contract_address
+            , one_nft_token_id as nft_token_id
+            , (numItems/cardinality(token_ids)) as nft_amount
+            , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
+            , trade_category
+            , token_contract_address as currency_contract
+            , cast(amount_raw/(numItems/cardinality(token_ids)) as uint256) as price_raw
+            , cast(platform_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as platform_fee_amount_raw
+            , cast(pool_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as pool_fee_amount_raw
+            , cast(royalty_fee_amount_raw/(numItems/cardinality(token_ids)) as uint256) as royalty_fee_amount_raw
+            , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
+            , cast(null as varbinary) as royalty_fee_address
+            , row_number() over (partition by tx_hash order by one_nft_token_id) as sub_tx_trade_id
+        FROM (
+            SELECT * FROM sell_nft_base
+            UNION ALL 
+            SELECT * FROM buy_nft_base
+        ) tr
+        LEFT JOIN unnest(token_ids) as t(one_nft_token_id) ON TRUE
+    )
 
-SELECT
-    'arbitrum' as blockchain
-    , 'sudoswap' as project
-    , 'v2' as project_version
-    , block_time
-    , block_number
-    , tx_hash
-    , pool_address as project_contract_address
-    , case when trade_category = 'sell' then pool_address else trade_recipient end as buyer
-    , case when trade_category = 'buy' then pool_address else trade_recipient end as seller
-    , nft_contract_address
-    , one_nft_token_id as nft_token_id
-    , number_of_items_unnested as nft_amount
-    , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
-    , trade_category
-    , token_contract_address as currency_contract
-    , cast(amount_raw/number_of_items_unnested as uint256) as price_raw
-    , cast(platform_fee_amount_raw/number_of_items_unnested as uint256) as platform_fee_amount_raw
-    , cast(pool_fee_amount_raw/number_of_items_unnested as uint256) as pool_fee_amount_raw
-    , cast(royalty_fee_amount_raw/number_of_items_unnested as uint256) as royalty_fee_amount_raw
-    , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
-    , cast(null as varbinary) as royalty_fee_address
-    , row_number() over (partition by tx_hash order by one_nft_token_id) as sub_tx_trade_id
-FROM trades t
-LEFT JOIN unnest(token_ids) as t(one_nft_token_id) ON TRUE
+{{ add_nft_tx_data('trades', 'arbitrum') }}
