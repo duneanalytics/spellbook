@@ -174,7 +174,7 @@ uniswap_pool_created_logs as (
 )
 
 
-, _curve_base_pool_created_calls as (
+, curve_base_pool_created_calls as (
     {% for blockchain in blockchains %}
         {% for selector, data in curvefi_compatible_base_config.items() %}
             select
@@ -204,17 +204,8 @@ uniswap_pool_created_logs as (
     {% endfor %}
 )
 
-, curve_base_pool_created_calls as (
-    select * from (
-        select 
-            *
-            , row_number() over(partition by blockchain, pool order by trace_address desc) as rn
-        from _curve_base_pool_created_calls
-    )
-    where rn = 1 -- remove duplicates
-)
-
-, _curve_meta_pool_created_calls as (
+-- will be included later
+, curve_meta_pool_created_calls as (
     {% for blockchain in blockchains %}
         {% for selector, data in curvefi_compatible_meta_config.items() %}
             select
@@ -244,17 +235,6 @@ uniswap_pool_created_logs as (
         {% endif %}
     {% endfor %}
 )
-
-, curve_meta_pool_created_calls as (
-    select * from (
-        select 
-            *
-            , row_number() over(partition by blockchain, pool order by trace_address desc) as rn
-        from _curve_meta_pool_created_calls
-    )
-    where rn = 1 -- remove duplicates
-)
-
 
 , creation_traces as (
     {% for blockchain in blockchains %}
@@ -306,7 +286,9 @@ uniswap_pool_created_logs as (
         , contract_address
         , tx_hash
     from uniswap_pool_created_logs
+
     union all
+    
     select 
         blockchain
         , type
