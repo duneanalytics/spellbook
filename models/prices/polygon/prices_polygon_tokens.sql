@@ -90,4 +90,5 @@ FROM
     ('tel-telcoin', 'polygon', 'TEL', 0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32,2),
     ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18),
     ('ata-automata', 'polygon', 'ATA', 0x0df0f72EE0e5c9B7ca761ECec42754992B2Da5BF, 18)
+    ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
