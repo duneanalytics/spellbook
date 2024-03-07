@@ -154,7 +154,7 @@ WITH
             , nft_contract_address
             , one_nft_token_id as nft_token_id
             , (numItems/cardinality(token_ids)) as nft_amount
-            , case when number_of_items > 0 then 'multiple' else 'single' end as trade_type
+            , case when numItems > 0 then 'multiple' else 'single' end as trade_type
             , trade_category
             , token_contract_address as currency_contract
             , cast(amount_raw/(numItems/cardinality(token_ids)) as uint256) as price_raw
