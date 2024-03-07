@@ -1,7 +1,7 @@
  {{
     config(
         schema='boost_optimism',
-        alias='deployed'
+        alias='deployed',
         materialized='incremental',
         file_format='delta',
         incremental_strategy='merge',

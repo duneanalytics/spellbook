@@ -1,7 +1,7 @@
  {{
     config(
         schema='boost_polygon',
-        alias='claimed'
+        alias='claimed',
         materialized='incremental',
         file_format='delta',
         incremental_strategy='merge',
