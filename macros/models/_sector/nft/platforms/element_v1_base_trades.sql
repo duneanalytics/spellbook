@@ -26,7 +26,7 @@ SELECT
         ELSE NULL 
   END AS platform_fee_address,
   CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
-        ELSE NULL 
+        ELSE 0
   END AS platform_fee_amount_raw,
   CAST(0 AS UINT256) AS royalty_fee_amount_raw,
   cast('0' AS VARBINARY) AS royalty_fee_address,
@@ -64,7 +64,7 @@ SELECT
         ELSE NULL 
   END AS platform_fee_address,
   CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
-        ELSE NULL 
+        ELSE 0
   END AS platform_fee_amount_raw,
   CAST(0 AS UINT256) AS royalty_fee_amount_raw,
   cast('0' AS VARBINARY) AS royalty_fee_address,
@@ -102,7 +102,7 @@ SELECT
         ELSE NULL 
   END AS platform_fee_address,
   CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
-        ELSE NULL 
+        ELSE 0
   END AS platform_fee_amount_raw,
   CAST(0 AS UINT256) AS royalty_fee_amount_raw,
   cast('0' AS VARBINARY) AS royalty_fee_address,
@@ -140,7 +140,7 @@ SELECT
         ELSE NULL 
   END AS platform_fee_address,
   CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
-        ELSE NULL 
+        ELSE 0
   END AS platform_fee_amount_raw,
   CAST(0 AS UINT256) AS royalty_fee_amount_raw,
   cast('0' AS VARBINARY) AS royalty_fee_address,
