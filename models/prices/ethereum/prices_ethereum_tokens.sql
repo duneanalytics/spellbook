@@ -1662,7 +1662,6 @@ FROM
     ('pol-polygon-ecosystem-token','ethereum','POL',0x455e53cbb86018ac2b8092fdcd39d8444affc3f6, 18),
     ('pyusd-paypal-usd','ethereum','BYUSD',0x6c3ea9036406852006290770bedfcaba0e23a0e8, 6),
     ('loom-loom-network','ethereum','LOOM',0x42476f744292107e34519f9c357927074ea3f75d, 18),
-    ('cgpt-chaingpt','ethereum','CPGT',0x25931894a86d47441213199621f1f2994e1c39aa, 18),
     ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
     ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
     ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18)
