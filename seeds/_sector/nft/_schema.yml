@@ -225,6 +225,7 @@ seeds:
         seller: varbinary
         nft_contract_address: varbinary
         price_raw: uint256
+        pool_fee_amount_raw: uint256
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
@@ -237,6 +238,7 @@ seeds:
         seller: varbinary
         nft_contract_address: varbinary
         price_raw: uint256
+        pool_fee_amount_raw: uint256
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
@@ -249,6 +251,7 @@ seeds:
         seller: varbinary
         nft_contract_address: varbinary
         price_raw: uint256
+        pool_fee_amount_raw: uint256
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256

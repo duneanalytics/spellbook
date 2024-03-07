@@ -163,7 +163,7 @@ WITH
             , cast(output_protocolFee/numItems as uint256) as platform_fee_amount_raw
             , cast(output_tradeFee/numItems as uint256) as pool_fee_amount_raw
             , cast(royalty_fee_amount_raw/numItems as uint256) as royalty_fee_amount_raw
-            , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
+            , 0x6132912d8009268dcc457c003a621a0de405dbe0 as platform_fee_address --factory recieves the fees
             , cast(null as varbinary) as royalty_fee_address
             , row_number() over (partition by call_tx_hash order by one_nft_token_id) as sub_tx_trade_id
         FROM (
