@@ -433,7 +433,7 @@ WITH raw_token_list AS (
     ,(0x2dd1b4d4548accea497050619965f91f78b3b532, 'sFRAX', 18, 'underlying')
     ,(0x3b08fcd15280e7b5a6e404c4abb87f7c774d1b2e, 'OVN', 18, 'underlying')
     ,(0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 'ankrETH', 18, 'underlying')
-    ,(0x00e1724885473b63bce08a9f0a52f35b0979e35a, 'OATH', 18, 'receipt')
+    ,(0x00e1724885473b63bce08a9f0a52f35b0979e35a, 'OATH', 18, 'underlying')
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT contract_address, symbol, decimals, token_type, 'manual' AS token_mapping_source
