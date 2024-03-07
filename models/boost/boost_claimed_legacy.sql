@@ -99,9 +99,7 @@ select distinct
     claim_tx_hash,
     block_time,
     claim_fee_eth,
-    coalesce(c.action_type, '') as action_type,
-    coalesce(c.action_tx_hash, cast(NULL as varbinary)) action_tx_hash,
-    coalesce(c.action_network, '') action_network
-from unified_claims_legacy l
-left join dune.rabbithole.dataset_rabbithole_action_transactions c
-on l.boost_id = c.quest_id and l.claimer_address = c.user_wallet_address
+    '' as action_type,
+    cast(NULL as varbinary) action_tx_hash,
+    '' as action_network
+from unified_claims_legacy
