@@ -19,6 +19,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_zksync_base_trades_seed')
+
   - name: syncswap_zksync_base_trades
     meta:
       blockchain: zksync
