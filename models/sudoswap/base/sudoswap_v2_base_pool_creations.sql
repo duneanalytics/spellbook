@@ -19,7 +19,7 @@ with
           output_pair AS pool_address,
           nft_contract_address,
           nft_type,
-          case when token = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 then 'ETH' else 'ERC20' end as token_type,
+          case when token = 0x0000000000000000000000000000000000000000 then 'ETH' else 'ERC20' end as token_type,
           token as token_contract_address,
           CASE
             WHEN bonding_curve = 0xe5d78fec1a7f42d2F3620238C498F088A866FdC5 THEN 'linear'
@@ -44,7 +44,7 @@ with
               _bondingCurve as bonding_curve,
               _poolType as pool_type_raw,
               'ERC721' as nft_type,
-              0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as token,
+              0x0000000000000000000000000000000000000000 as token,
               contract_address,
               call_block_time,
               call_tx_hash
@@ -60,7 +60,7 @@ with
               _bondingCurve as bonding_curve,
               _poolType as pool_type_raw,
               'ERC1155' as nft_type,
-              0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 as token,
+              0x0000000000000000000000000000000000000000 as token,
               contract_address,
               call_block_time,
               call_tx_hash
