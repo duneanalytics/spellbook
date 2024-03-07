@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_bnb_bep20
-    meta:
-      blockchain: bnb
-      sector: tokens
-      project: bep20
-      contributors: hildobby
-    config:
-      tags: ['tokens', 'metadata', 'bep20', 'bnb']
-    description: "BEP20 Token Addresses, Symbols and Decimals"
-    columns:
-      - name: contract_address
-        description: "BEP20 token contract address on BNB"
-        tests:
-          - unique
-      - name: symbol
-        description: "BEP20 token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an BEP20 token can be"
-
   - name: tokens_bnb_nft_curated
     meta:
       blockchain: bnb
@@ -58,7 +39,7 @@ models:
           - accepted_values:
               values: [ 'bep721', 'bep1155']
         description: >
-          The token standard. This is the set of rules that the contract must respect 
+          The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.
           If you are adding a token with a new standard, remember to add it the accepted values list.
 

@@ -51,7 +51,7 @@ models:
             values: ['for', 'against', 'abstain']
       - &reason
         name: reason
-        description: "Optional onchain commments to explain votes"
+        description: "Optional onchain comments to explain votes"
 
   - name: compound_v2_ethereum_proposals
     meta:
@@ -118,22 +118,22 @@ models:
       - name: decimals_mantissa
         description: "10 raise to power decimals of underlying asset"
 
-  - name: compound_v2_ethereum_supply
+  - name: compound_ethereum_supply
     meta:
       blockchain: ethereum
       sector: lending
-      project: compound_v2
-      contributors: [bizzyvinci, hosuke]
+      project: compound
+      contributors: [bizzyvinci, hosuke, tomfutago]
     config:
-      tags: ['ethereum', 'compound', 'compound_v2', 'supply', 'lending']
-    description: "All compound v2 transactions involving supply transactions on ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_block_number
-            - evt_index
+      tags: ['ethereum', 'compound', 'compound', 'supply', 'lending']
+    description: "All compound transactions involving supply transactions on ethereum"
     columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
       - &version
         name: version
         description: "Compound version"
@@ -161,42 +161,38 @@ models:
       - &usd_amount
         name: usd_amount
         description: "Token amount in USD"
-      - &evt_tx_hash
-        name: evt_tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "Transaction hash of the event"
       - &evt_index
         name: evt_index
         description: "Event index"
-      - &evt_block_time
-        name: evt_block_time
+      - &block_time
+        name: block_time
         description: "Timestamp for block event time in UTC"
-      - &evt_block_number
-        name: evt_block_number
+      - &block_number
+        name: block_number
         description: "Event block number"
       - &block_date
         name: block_date
         description: "UTC event block date"
 
-  - name: compound_v2_ethereum_borrow
+  - name: compound_ethereum_borrow
     meta:
       blockchain: ethereum
       sector: lending
-      project: compound_v2
-      contributors: [bizzyvinci, hosuke]
+      project: compound
+      contributors: bizzyvinci, hosuke, tomfutago
     config:
-      tags: ['ethereum', 'compound', 'compound_v2', 'borrow', 'lending']
-    description: "All compound v2 transactions involving borrow transactions on ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_block_number
-            - evt_index
+      tags: ['lending', 'borrow', 'compound', 'ethereum']
+    description: "All Compound transactions involving borrow transactions on Ethereum"
     columns:
+      - *blockchain
+      - *project
       - *version
       - *transaction_type
       - *symbol
-      - *token_address_lending
+      - *token_address
       - &borrower
         name: borrower
         description: "Borrower wallet address"
@@ -206,8 +202,7 @@ models:
       - *liquidator
       - *amount
       - *usd_amount
-      - *evt_tx_hash
+      - *block_time
+      - *block_number
+      - *tx_hash
       - *evt_index
-      - *evt_block_time
-      - *evt_block_number
-      - *block_date

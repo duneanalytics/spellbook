@@ -1,7 +1,6 @@
 {{ config(
     schema = 'rabbithole_optimism',
     alias = 'rewards',
-    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,6 +11,6 @@
 
 {{rabbithole_referral_rewards(
         blockchain = "optimism"
-        ,QuestFactory_evt_MintFeePaid = source('rabbithole_optimism','QuestFactory_evt_MintFeePaid')
+        ,QuestFactory_evt_MintFeePaid = source('boost_optimism','QuestFactory_evt_MintFeePaid')
         )
     }}

@@ -9,6 +9,8 @@ SELECT *
 FROM
 (
         SELECT
+                blockchain,
+                version,
                 pool_id,
                 token_address,
                 normalized_weight

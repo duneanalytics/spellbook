@@ -1,0 +1,52 @@
+version: 2
+
+sources:    
+  - name: kyber_base
+    description: "Base decoded tables related to Kyberswap contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: ElasticPool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: ElasticPool_evt_Burn
+        loaded_at_field: evt_block_time
+      - name: ElasticPool_evt_BurnRTokens
+        loaded_at_field: evt_block_time  
+      - name: Factory_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: ElasticPool_evt_Swap
+        loaded_at_field: evt_block_time
+      
+
+  - name: aerodrome_base
+    description: "Base decoded tables related to Aerodrome pools contracts"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: Pool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: Pool_evt_Burn
+        loaded_at_field: evt_block_time 
+      - name: PoolFactory_call_getFee
+        loaded_at_field: call_block_time 
+      - name: Pool_evt_Fees
+        loaded_at_field: evt_block_time 
+
+  - name: uniswap_v3_base
+    description: "Base decoded tables related to Uniswap v3 contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: UniswapV3Pool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: UniswapV3Pool_evt_Collect
+        loaded_at_field: evt_block_time
+      - name: UniswapV3Pool_evt_Burn
+        loaded_at_field: evt_block_time  
+
+    
+
+

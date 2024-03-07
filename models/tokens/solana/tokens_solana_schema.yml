@@ -63,3 +63,29 @@ models:
       - name: call_block_time
       - name: call_block_slot
       - name: call_tx_signer
+
+
+  - name: tokens_solana_transfers
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','transfers','erc20','nft','spl']
+    description: >
+        get all spl token transfers (will add in token2022 later)
+    columns:
+      - name: block_time
+      - name: block_date
+      - name: block_slot
+      - name: action
+      - name: token_mint_address
+      - name: amount
+      - name: from_owner
+      - name: to_owner
+      - name: from_token_account
+      - name: to_token_account
+      - name: tx_signer 
+      - name: tx_id
+      - name: outer_instruction_index
+      - name: inner_instruction_index
+      - name: outer_executing_account

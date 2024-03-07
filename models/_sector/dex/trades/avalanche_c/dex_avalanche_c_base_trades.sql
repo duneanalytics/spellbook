@@ -10,6 +10,22 @@
     , ref('airswap_avalanche_c_base_trades')
     , ref('sushiswap_v1_avalanche_c_base_trades')
     , ref('sushiswap_v2_avalanche_c_base_trades')
+    , ref('fraxswap_avalanche_c_base_trades')
+    , ref('trader_joe_v1_avalanche_c_base_trades')
+    , ref('trader_joe_v2_avalanche_c_base_trades')
+    , ref('trader_joe_v2_1_avalanche_c_base_trades')
+    , ref('balancer_v2_avalanche_c_base_trades')
+    , ref('glacier_v2_avalanche_c_base_trades')
+    , ref('glacier_v3_avalanche_c_base_trades')
+    , ref('gmx_avalanche_c_base_trades')
+    , ref('pharaoh_avalanche_c_base_trades')
+    , ref('kyberswap_avalanche_c_base_trades')
+    , ref('platypus_finance_avalanche_c_base_trades')
+    , ref('openocean_avalanche_c_base_trades')
+    , ref('woofi_avalanche_c_base_trades')
+    , ref('curvefi_avalanche_c_base_trades')
+    , ref('hashflow_avalanche_c_base_trades')
+    , ref('uniswap_v2_avalanche_c_base_trades')
 ] %}
 
 WITH base_union AS (

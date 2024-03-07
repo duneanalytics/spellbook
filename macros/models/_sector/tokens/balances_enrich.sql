@@ -1,27 +1,31 @@
-{%- macro balances_enrich(balances_base) %}
+{%- macro balances_enrich(balances_raw, daily=false) %}
 select
     balances.blockchain,
+    {% if daily %}balances.day,{% endif %}
     balances.block_number,
     balances.block_time,
-    balances.tx_hash,
-    balances.tx_index,
-    balances.tx_from,
-    balances.tx_to,
-    balances.wallet_address,
+    balances.address,
     balances.token_address,
-    balances.change_amount_raw,
-    balances.change_amount_raw / power(10, erc20_tokens.decimals) as change_amount,
-    balances.change_amount_raw / power(10, prices.decimals) * prices.price as change_amount_usd,
-    balance_raw,
-    balances.balance_raw / power(10, erc20_tokens.decimals) as balance,
-    (balances.balance_raw / power(10, prices.decimals) * prices.price)  as balance_usd,
-    prices.price as price_rate
-from {{ balances_base }} balances
-left join {{ ref('tokens_erc20') }}  erc20_tokens on
+    balances.token_standard,
+    balances.balance_raw,
+    CASE
+        WHEN balances.token_standard = 'erc20' THEN balances.balance_raw / power(10, erc20_tokens.decimals)
+        WHEN balances.token_standard = 'native' THEN balances.balance_raw / power(10, 18)
+        ELSE balances.balance_raw
+    END as balance,
+    erc20_tokens.symbol as token_symbol,
+    token_id,
+    nft_tokens.name as collection_name
+from {{balances_raw}} balances
+left join {{ source('tokens', 'erc20') }} erc20_tokens on
     erc20_tokens.blockchain = balances.blockchain
-    and erc20_tokens.contract_address = balances.token_address
-left join {{ source('prices', 'usd') }} prices on
-    prices.blockchain = balances.blockchain
-    and prices.contract_address = balances.token_address
-    and prices.minute = date_trunc('minute', balances.block_time)
+    AND erc20_tokens.contract_address = balances.token_address
+left join {{ ref('tokens_nft') }} nft_tokens on (
+   nft_tokens.blockchain = balances.blockchain AND (
+   CASE
+        WHEN (token_standard = 'erc721' OR token_standard = 'erc1155') THEN nft_tokens.contract_address = balances.token_address
+        ELSE false
+    END
+    )
+)
 {% endmacro %}

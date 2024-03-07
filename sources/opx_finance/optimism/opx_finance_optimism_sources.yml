@@ -1,0 +1,23 @@
+version: 2
+
+sources: 
+  - name: opx_finance_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on opx_finance
+    tables:
+      - name: Vault_evt_CollectMarginFees
+        loaded_at_field: evt_block_time
+
+      - name: PositionRouter_evt_ExecuteDecreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: PositionRouter_evt_ExecuteIncreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: Vault_evt_DecreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: Vault_evt_IncreasePosition
+        loaded_at_field: evt_block_time

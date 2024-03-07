@@ -15,12 +15,13 @@
     )
 }}
 
+
 select
     t.*,
     p.price * t.amount_raw / 1e18 AS amount_usd
 
 from (
-    select
+    select distinct --distinct to deduplicate traces that appear to be duplicates, with same trace address (just one has an extra 0 at the end)
         'zksync' as blockchain,
         'ETH' as symbol,
         s.address,
@@ -29,7 +30,7 @@ from (
         et.block_time,
         -CAST(et.value AS INT256) as amount_raw,
         et.tx_hash as tx_hash, --different to the tx hash in block explorer and zksync.transactions
-        array_join(et.trace_address, ',') as trace_address
+        case when element_at(trace_address, -1) = 0 then array_join(trim_array(trace_address, 1), ',') else array_join(et.trace_address, ',') end as trace_address
     from {{ source('zksync', 'traces') }} et
     join {{ ref('safe_zksync_safes') }} s on et."from" = s.address
         and et."from" != et.to -- exclude calls to self to guarantee unique key property
@@ -46,7 +47,7 @@ from (
 
     union all
 
-    select
+    select distinct --distinct to deduplicate traces that appear to be duplicates, with same trace address (just one has an extra 0 at the end)
         'zksync' as blockchain,
         'ETH' as symbol,
         s.address,
@@ -55,7 +56,7 @@ from (
         et.block_time,
         CAST(et.value AS INT256) as amount_raw,
         et.tx_hash as tx_hash, --different to the tx hash in block explorer and zksync.transactions
-        array_join(et.trace_address, ',') as trace_address
+        case when element_at(trace_address, -1) = 0 then array_join(trim_array(trace_address, 1), ',') else array_join(et.trace_address, ',') end as trace_address
     from {{ source('zksync', 'traces') }} et
     join {{ ref('safe_zksync_safes') }} s on et.to = s.address
         and et."from" != et.to -- exclude calls to self to guarantee unique key property

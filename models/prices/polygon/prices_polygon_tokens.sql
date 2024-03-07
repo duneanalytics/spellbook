@@ -25,14 +25,15 @@ FROM
     ('matic-polygon', 'polygon', 'MATIC', 0x0000000000000000000000000000000000001010, 18),
     ('dai-dai', 'polygon', 'DAI', 0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 18),
     ('dquick-dragon-quick', 'polygon', 'dQUICK', 0x958d208Cdf087843e9AD98d23823d32E17d723A1, 18),
-    ('usdc-usd-coin', 'polygon', 'USDC', 0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 6),
+    ('usdc-usd-coin', 'polygon', 'USDC.e', 0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 6),
+    ('usdc-usd-coin', 'polygon', 'USDC', 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359, 6),
     ('usdt-tether', 'polygon', 'USDT', 0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 6),
     ('stmatic-lido-staked-matic','polygon','stMATIC',0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4,18),
     ('sushi-sushi','polygon','SUSHI',0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a,18),
     ('wbtc-wrapped-bitcoin', 'polygon', 'WBTC', 0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6, 8),
     ('bets-betswirl', 'polygon', 'BETS', 0x9246a5f10a79a5a939b0c2a75a3ad196aafdb43b, 18),
     ('eth-ethereum', 'polygon', 'WETH', 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 18),
-    ('wmatic-wrapped-matic-wormhole', 'polygon', 'WMATIC', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 18),
+    ('matic-polygon', 'polygon', 'WMATIC', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 18),
     ('link-chainlink', 'polygon', 'LINK', 0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39, 18),
     ('ghst-aavegotchi', 'polygon', 'GHST', 0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7, 18),
     ('gltr-gax-liquidity-token-reward', 'polygon', 'GLTR', 0x3801C3B3B5c98F88a9c9005966AA96aa440B9Afc, 18),
@@ -84,5 +85,9 @@ FROM
     ('pla-playdapp','polygon','PLA',0x8765f05adce126d70bcdf1b0a48db573316662eb,18),
     ('comp-compoundd', 'polygon', 'COMP', 0x8505b9d2254a7ae468c0e9dd10ccea3a837aef5c,18),
     ('voxel-voxies','polygon','VOXEL',0xd0258a3fD00f38aa8090dfee343f10A9D4d30D3F,18),
-    ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18)
+    ('gtc-gitcoin', 'polygon', 'GTC', 0x3d93f3bc2cb79c31b4df652cd332d84d16317889,18),
+    ('gmt-stepn', 'polygon', 'GMT', 0x714db550b574b3e927af3d93e26127d15721d4c2,8),
+    ('tel-telcoin', 'polygon', 'TEL', 0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32,2),
+    ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18),
+    ('ata-automata', 'polygon', 'ATA', 0x0df0f72EE0e5c9B7ca761ECec42754992B2Da5BF, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

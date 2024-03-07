@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_scroll
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: sushiswap_v2_scroll
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: zebra_scroll
+    tables:
+      - name: ZebraV2Factory_evt_PoolCreated
+      - name: ZebraV2Pool_evt_Swap
+  - name: scrollswap_scroll
+    tables:
+      - name: Factory_evt_PairCreated
+      - name: Pair_evt_Swap

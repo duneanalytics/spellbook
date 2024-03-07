@@ -4,13 +4,13 @@ models:
 
   - name: referral_rewards
     meta:
-      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon
-      sector: nft
-      contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil
+      blockchain: ethereum, optimism, arbitrum, base, zora, polygon
+      sector: referral
+      contributors: 0xRob, datadanne
     config:
-      tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal']
+      tags: ['referral','rewards', 'ethereum', 'optimism', 'arbitrum', 'base', 'zora', 'polygon']
     description: >
-        NFT mints
+        Referral rewards
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

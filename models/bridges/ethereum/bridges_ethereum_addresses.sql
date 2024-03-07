@@ -107,7 +107,6 @@ FROM (VALUES ('ethereum', 0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc
 
   ,('ethereum', 0xcd9d4988c0ae61887b075ba77f08cbfad2b65068, 'Optimism', 'Synthetix: L2 Deposit')
   ,('ethereum', 0x5fd79d46eba7f351fe49bff9e87cdea6c821ef9f, 'Optimism', 'Synthetix: L2 Deposit Escrow')
-  -- ,('ethereum', 0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Optimism: Gateway') --duplicate & renamed
   ,('ethereum', 0xf20c38fcddf0c790319fd7431d17ea0c2bc9959c, 'Optimism', 'Optimism: Legacy Bridge')
   ,('ethereum', 0xe681f80966a8b1ffadecf8068bd6f99034791c95, 'Optimism', 'Optimism: Legacy Bridge')
   ,('ethereum', 0xc51f137e19f1ae6944887388fd12b2b6dfd12594, 'Optimism', 'Synthetix: Legacy Optimism Bridge')
@@ -125,6 +124,7 @@ FROM (VALUES ('ethereum', 0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc
   ,('ethereum', 0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Optimism: L1StandardBridge Proxy')
   ,('ethereum', 0x4afdd3a48e13b305e98d9eead67b1b5867e370df, 'Optimism', 'Optimism: L1ERC721Bridge')
   ,('ethereum', 0x5a7749f83b81b301cab5f48eb8516b986daef23d, 'Optimism', 'Optimism: L1ERC721BridgeProxy')
+  ,('ethereum', 0x39Ea01a0298C315d149a490E34B59Dbf2EC7e48F, 'Optimism', 'Optimism: SynthetixBridgeToOptimism')
   ,('ethereum', 0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon', 'ERC20 Bridge')
   ,('ethereum', 0xabea9132b05a70803a4e85094fd0e1800777fbef, 'zkSync', 'zkSync Lite Bridge')
   ,('ethereum', 0x32400084c286cf3e17e7b677ea9583e60a000324, 'zkSync', 'zkSync Era Bridge')

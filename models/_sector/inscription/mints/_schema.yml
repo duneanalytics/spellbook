@@ -1,0 +1,480 @@
+version: 2
+
+models:
+  - name: inscription_ethereum_mints
+    meta: 
+      blockchain: ethereum
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'ethereum']
+    description: >
+      Inscription mints on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "the block number of the block that the offer was created in"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in block"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &inscription_standard
+        name: inscription_standard
+        description: "Inscription standard"
+      - &inscription_symbol
+        name: inscription_symbol
+        description: "Symbol of inscription"
+      - &operation
+        name: operation
+        description: "Operation"
+      - &amount
+        name: amount
+        description: "Amount of inscriptions"
+      - &full_inscription
+        name: full_inscription
+        description: "Full inscription information as found in the transaction's call data"
+      - &vin
+        name: vin
+        description: "Input of transaction"
+      - &vout
+        name: vout
+        description: "Output of transaction"
+
+  - name: inscription_arbitrum_mints
+    meta: 
+      blockchain: arbitrum
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'arbitrum']
+    description: >
+      Inscription mints on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_avalanche_c_mints
+    meta: 
+      blockchain: avalanche_c
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'avalanche_c']
+    description: >
+      Inscription mints on Avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_bnb_mints
+    meta: 
+      blockchain: bnb
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'bnb']
+    description: >
+      Inscription mints on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_fantom_mints
+    meta: 
+      blockchain: fantom
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'fantom']
+    description: >
+      Inscription mints on Fantom
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_gnosis_mints
+    meta: 
+      blockchain: gnosis
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'gnosis']
+    description: >
+      Inscription mints on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_optimism_mints
+    meta: 
+      blockchain: optimism
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'optimism']
+    description: >
+      Inscription mints on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_polygon_mints
+    meta: 
+      blockchain: polygon
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'polygon']
+    description: >
+      Inscription mints on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_base_mints
+    meta: 
+      blockchain: base
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'base']
+    description: >
+      Inscription mints on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_celo_mints
+    meta: 
+      blockchain: celo
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'celo']
+    description: >
+      Inscription mints on Celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_zksync_mints
+    meta: 
+      blockchain: zksync
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'zksync']
+    description: >
+      Inscription mints on zkSync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_zora_mints
+    meta: 
+      blockchain: zora
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'zora']
+    description: >
+      Inscription mints on Zora Network
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_scroll_mints
+    meta: 
+      blockchain: scroll
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'scroll']
+    description: >
+      Inscription mints on Scroll
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_goerli_mints
+    meta: 
+      blockchain: goerli
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'goerli']
+    description: >
+      Inscription mints on Goerli Testnet
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+      

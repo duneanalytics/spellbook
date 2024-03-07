@@ -1,6 +1,6 @@
 {{
     config(
-    alias = 'cross_chain_trades'
+    alias = 'crosschain_trades'
         ,materialized='incremental'
         ,incremental_strategy = 'merge'
         ,file_format = 'delta'
@@ -82,9 +82,9 @@ SELECT
     ,cross_chain_trades.source_chain
     ,cross_chain_trades.destination_chain
 FROM cross_chain_trades
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = cross_chain_trades.token_bought_address
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = cross_chain_trades.token_sold_address
     AND erc20b.blockchain = cross_chain_trades.source_chain
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

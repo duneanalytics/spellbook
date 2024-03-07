@@ -3,9 +3,9 @@ version: 2
 models:
   - name: dex_trades_beta
     meta:
-      blockchain: arbitrum, base, bnb, celo, ethereum, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
       sector: dex
-      contributors: 0xRob, hosuke, jeff-dude
+      contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
       tags: [ 'dex', 'trades', 'beta' ]
     tests:
@@ -99,9 +99,9 @@ models:
 
   - name: dex_base_trades
     meta:
-      blockchain: arbitrum, base, bnb, celo, ethereum, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
       sector: dex
-      contributors: 0xRob, hosuke, jeff-dude
+      contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
       tags: [ 'dex' ]
     tests:

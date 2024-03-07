@@ -5,45 +5,47 @@ models:
     meta:
       blockchain: ethereum
       sector: tokens
-      contributors: aalan3
+      contributors: aalan3, jeff-dude
     config:
       tags: ['tokens','transfers', 'ethereum']
     description: >
-      Token transfers
+      Token base transfers
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_number
-            - tx_index
-            - evt_index
-            - trace_address
+            - block_date
+            - unique_key
     columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row"
       - name: blockchain
         description: "The blockchain of the transfers"
-      - name: block_datetime
+      - name: block_date
         description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
       - name: block_number
         description: "The block number"
       - name: tx_hash
         description: "The transaction hash"
-      - name: tx_index
-        description: "The transaction index"
-      - name: tx_from
-        description: "The transaction sender"
-      - name: tx_to
-        description: "The transaction receiver"
       - name: evt_index
         description: "The log event index of the transfer if any"
       - name: trace_address
         description: "The trace address of the transfer if any"
       - name: token_standard
         description: "The token standard of the transfer"
-      - name: contract_address
-        description: "The contract address of the transfer"
-      - name: to
-        description: "The receiver of the transfer"
+      - name: tx_from
+        description: "The transaction sender"
+      - name: tx_to
+        description: "The transaction receiver"
+      - name: tx_index
+        description: "The transaction index"
       - name: from
         description: "The sender of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: contract_address
+        description: "The contract address of the transfer"
       - name: amount_raw
         description: "The raw amount of the transfer"
 
@@ -51,134 +53,57 @@ models:
     meta:
       blockchain: ethereum
       sector: tokens
-      contributors: aalan3
+      contributors: aalan3, jeff-dude
     config:
       tags: ['tokens','transfers', 'ethereum']
     description: >
       Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
     columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row"
       - name: blockchain
         description: "The blockchain of the transfers"
       - name: block_date
         description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
       - name: block_number
         description: "The block number"
       - name: tx_hash
         description: "The transaction hash"
-      - name: tx_index
-        description: "The transaction index"
-      - name: tx_from
-        description: "The transaction sender"
-      - name: tx_to
-        description: "The transaction receiver"
       - name: evt_index
         description: "The log event index of the transfer if any"
       - name: trace_address
         description: "The trace address of the transfer if any"
       - name: token_standard
         description: "The token standard of the transfer"
-      - name: contract_address
-        description: "The contract address of the transfer"
-      - name: to
-        description: "The receiver of the transfer"
+      - name: tx_from
+        description: "The transaction sender"
+      - name: tx_to
+        description: "The transaction receiver"
+      - name: tx_index
+        description: "The transaction index"
       - name: from
         description: "The sender of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: contract_address
+        description: "The contract address of the transfer"
+      - name: symbol
+        description: "The token symbol transferred"
       - name: amount_raw
         description: "The raw amount of the transfer"
       - name: amount
         description: "The formatted amount of the transfer"
-      - name: usd_price
+      - name: price_usd
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
-
-  - name: tokens_ethereum_base_balances_erc20
-    meta:
-      blockchain: ethereum
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'ethereum']
-    description: "Token Balances itermediary table for erc20"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - token_address
-            - wallet_address
-    columns:
-      - name: blockchain
-      - name: block_date
-      - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
-      - name: token_address
-      - name: wallet_address
-      - name: change_amount_raw
-      - name: balance_raw
-
-  - name: tokens_ethereum_base_balances_native
-    meta:
-      blockchain: ethereum
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'ethereum']
-    description: "Token Balances itermediary table for native ETH"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_index
-            - token_address
-            - wallet_address
-    columns:
-      - name: blockchain
-      - name: block_date
-      - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
-      - name: token_address
-      - name: wallet_address
-      - name: change_amount_raw
-      - name: balance_raw
-
-  - name: tokens_ethereum_base_balances
-    meta:
-      blockchain: ethereum
-      sector: tokens
-      contributors: aalan3
-    config:
-      tags: ['tokens','balances', 'ethereum']
-    description: "Token balances base"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - token_standard
-            - block_number
-            - tx_index
-            - token_address
-            - wallet_address
-    columns:
-      - name: blockchain
-      - name: block_date
-      - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
-      - name: token_address
-      - name: wallet_address
-      - name: change_amount_raw
-      - name: balance_raw
 
   - name: tokens_ethereum_balances
     meta:
@@ -189,20 +114,79 @@ models:
       tags: ['tokens','balances', 'ethereum']
     description: "Token balances enriched"
     columns:
-      - name: blockchain
       - name: block_date
       - name: block_number
-      - name: tx_hash
-      - name: tx_index
-      - name: tx_from
-      - name: tx_to
-      - name: token_standard
+      - name: type
       - name: token_address
       - name: wallet_address
-      - name: change_amount_raw
-      - name: change_amount_usd
       - name: balance_raw
+      - name: balance
       - name: balance_usd
       - name: price_rate
-      - name: amount_usd
-        description: "The USD amount of the transfer"
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_ethereum_balances_daily_agg_base
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances daily base"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_ethereum_balances_daily_agg
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_ethereum_balances_daily
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'ethereum' ]
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name

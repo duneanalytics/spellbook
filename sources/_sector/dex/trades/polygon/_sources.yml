@@ -1,0 +1,62 @@
+version: 2
+
+
+sources:
+  - name: uniswap_v3_polygon
+  - name: airswap_polygon
+    tables:
+      - name: Swap_v3_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
+  - name: quickswap_polygon
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: sushi_polygon
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: sushiswap_v3_polygon
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: honeyswap_polygon
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: quickswap_v3_polygon
+    tables:
+      - name: AlgebraPool_evt_Swap
+      - name: AlgebraFactory_evt_Pool
+  - name: balancer_v2_polygon
+    tables:
+      - name: Vault_evt_Swap
+  - name: fraxswap_polygon
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: dodoex_polygon
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DPPAdvanced_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: kyber_polygon
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+  - name: clipper_polygon
+    tables:
+      - name: ClipperDirectExchange_evt_Swapped
+      - name: ClipperVerifiedExchange_evt_Swapped
+      - name: ClipperCove_evt_CoveSwapped
+  - name: xchange_polygon
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
+  - name: dooar_polygon
+    tables:
+      - name: DooarSwapV2Pair_evt_Swap
+      - name: DooarSwapV2Factory_evt_PairCreated

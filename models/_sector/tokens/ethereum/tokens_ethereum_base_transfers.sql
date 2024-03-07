@@ -1,16 +1,15 @@
 {{ config(
-        schema = 'tokens_ethereum',
-        alias = 'base_transfers',
-        partition_by = ['token_standard', 'block_date'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['unique_key'],
-        )
+    schema = 'tokens_ethereum',
+    alias = 'base_transfers',
+    partition_by = ['block_date'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['block_date','unique_key'],
+    )
 }}
 
--- TODO: use variable for native_contract_address
 {{transfers_base(
     blockchain='ethereum',
     traces = source('ethereum','traces'),
@@ -20,12 +19,15 @@
 )}}
 
 UNION ALL
-SELECT * FROM
+
+SELECT *
+FROM
 (
-{{transfers_base_wrapped_token(
-    blockchain='ethereum',
-    transactions = source('ethereum','transactions'),
-    wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
-    wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
-)}}
+    {{transfers_base_wrapped_token(
+        blockchain='ethereum',
+        transactions = source('ethereum','transactions'),
+        wrapped_token_deposit = source('zeroex_ethereum', 'weth9_evt_deposit'),
+        wrapped_token_withdrawal = source('zeroex_ethereum', 'weth9_evt_withdrawal'),
+    )
+    }}
 )

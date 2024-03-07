@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: moolainterestbearingmoo_celo
+    description: "Decoded contracts for Moola on Celo"
+
+    tables:
+      - name: LendingPool_evt_ReserveDataUpdated
+        loaded_at_field: evt_block_time
+        description: "Provides the liqudity index, stable and variable borrow rates for Moola reserves."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+        - &contract_address
+          name: contract_address
+          description: "Moola token contract address"       
+        - &evt_block_number
+          name: evt_block_number
+          description: "Event block number"  
+        - &evt_block_time
+          name: evt_block_time
+          description: "Timestamp for block event time in UTC"
+        - &evt_index
+          name: evt_index
+          description: "Event index"  
+        - &evt_tx_hash
+          name: evt_tx_hash
+          description: "Transaction hash of the event" 
+        - name: liqudityIndex
+          description: "Liqudity index value of the reserve"
+        - name: liqudityRate
+          description: "Liqudity rate value of the reserve"
+        - &reserve
+          name: reserve
+          description: "Moola reserve contract address"
+        - name: stableBorrowRate
+          description: "Stable borrow rate value of the reserve"  
+        - name: variableBorrowIndex
+          description: "Variable borrow index value of the reserve"
+        - name: variableBorrowRate
+          description: "Variable borrow rate value of the reserve" 

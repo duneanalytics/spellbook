@@ -1,7 +1,6 @@
 {{ config(
     schema = 'rabbithole_arbitrum',
     alias = 'rewards',
-    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,6 +11,6 @@
 
 {{rabbithole_referral_rewards(
         blockchain = "arbitrum"
-        ,QuestFactory_evt_MintFeePaid = source('rabbithole_arbitrum','QuestFactory_evt_MintFeePaid')
+        ,QuestFactory_evt_MintFeePaid = source('boost_arbitrum','QuestFactory_evt_MintFeePaid')
         )
     }}

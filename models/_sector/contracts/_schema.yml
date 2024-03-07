@@ -3,7 +3,7 @@ version: 2
 models:
   - name: contracts_project_name_mappings
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -21,7 +21,7 @@ models:
 
   - name: contracts_contract_mapping
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -58,8 +58,8 @@ models:
       - &creator_address
         name: creator_address
         description: "Attribution to the highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
-      - &deployer_address
-        name: deployer_address
+      - &trace_deployer_address
+        name: trace_deployer_address
         description: "Attribution to the mapped deployer address at the creation trace, handles for ~most deterministic deployers and smart wallet creations."
       - &created_time
         name: created_time
@@ -134,7 +134,7 @@ models:
   
   - name: contracts_predeploys
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -156,7 +156,7 @@ models:
 
   - name: contracts_contract_creator_address_list
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -173,7 +173,7 @@ models:
 
   - name: contracts_contract_overrides
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -187,7 +187,7 @@ models:
 
   - name: contracts_self_destruct_contracts
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -211,7 +211,7 @@ models:
     
   - name: contracts_deterministic_contract_creators
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: chuxin, msilb7
     config:
@@ -224,7 +224,7 @@ models:
   
   - name: contracts_disperse_contracts
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: msilb7
     config:
@@ -241,7 +241,7 @@ models:
   
   - name: contracts_system_predeploys
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, polygon, bnb, gnosis, fantom, base, goerli, zora
       sector: contracts
       contributors: msilb7
     config:
@@ -255,5 +255,6 @@ models:
               - blockchain
     columns:
       - *blockchain
+      - *contract_project
       - *contract_address
       - *contract_name

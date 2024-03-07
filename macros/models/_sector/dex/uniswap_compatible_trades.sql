@@ -59,6 +59,10 @@ FROM
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
+    , taker_column_name = 'recipient'
+    , maker_column_name = null
+    , optional_columns = ['f.fee']
+    , pair_column_name = 'pool'
     )
 %}
 WITH dexs AS
@@ -66,21 +70,29 @@ WITH dexs AS
     SELECT
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
-        , t.recipient AS taker
-        , CAST(NULL as VARBINARY) as maker
+        , t.{{ taker_column_name }} AS taker
+        , {% if maker_column_name %}
+                t.{{ maker_column_name }}
+            {% else %}
+                cast(null as varbinary)
+            {% endif %} as maker
         , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
         , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
         , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address as project_contract_address
-        , f.fee
+        {% if optional_columns %}
+            {% for optional_column in optional_columns %}
+            , {{ optional_column }}
+            {% endfor %}
+        {% endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
-        ON f.pool = t.contract_address
+        ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}

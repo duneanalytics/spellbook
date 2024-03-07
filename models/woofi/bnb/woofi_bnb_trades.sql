@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "woofi",
-                                    \'["scoffie"]\') }}'
+                                    \'["scoffie", "tomfutago"]\') }}'
 )
 }}
     
@@ -22,11 +22,11 @@ WITH dexs as
             ,'1' AS version
             ,"from" AS taker
             ,to AS maker
-            ,fromAmount AS token_bought_amount_raw
-            ,toAmount AS token_sold_amount_raw
+            ,toAmount AS token_bought_amount_raw
+            ,fromAmount AS token_sold_amount_raw
             ,NULL AS amount_usd
-            ,fromToken AS token_bought_address
-            ,toToken AS token_sold_address
+            ,toToken AS token_bought_address
+            ,fromToken AS token_sold_address
             ,contract_address AS project_contract_address
             ,evt_tx_hash AS tx_hash
             ,evt_index
@@ -48,11 +48,11 @@ WITH dexs as
             ,'1' AS version
             ,"from" AS taker
             ,to AS maker
-            ,fromAmount AS token_bought_amount_raw
-            ,toAmount AS token_sold_amount_raw
+            ,toAmount AS token_bought_amount_raw
+            ,fromAmount AS token_sold_amount_raw
             ,NULL AS amount_usd
-            ,fromToken AS token_bought_address
-            ,toToken AS token_sold_address
+            ,toToken AS token_bought_address
+            ,fromToken AS token_sold_address
             ,contract_address AS project_contract_address
             ,evt_tx_hash AS tx_hash
             ,evt_index
@@ -71,11 +71,11 @@ WITH dexs as
             ,'2' AS version
             ,"from" AS taker
             ,to AS maker
-            ,fromAmount AS token_bought_amount_raw
-            ,toAmount AS token_sold_amount_raw
+            ,toAmount AS token_bought_amount_raw
+            ,fromAmount AS token_sold_amount_raw
             ,NULL AS amount_usd
-            ,fromToken AS token_bought_address
-            ,toToken AS token_sold_address
+            ,toToken AS token_bought_address
+            ,fromToken AS token_sold_address
             ,contract_address AS project_contract_address
             ,evt_tx_hash AS tx_hash
             ,evt_index
@@ -145,10 +145,10 @@ INNER JOIN {{ source('bnb', 'transactions')}} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'bnb'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'bnb'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought

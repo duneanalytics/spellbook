@@ -44,7 +44,7 @@ where et.success = true
     and bytearray_substring(et.input, 1, 4) in (
         0x0ec78d9e, -- setup method v0.1.0
         0xa97ab18a, -- setup method v1.0.0
-        0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2
+        0xb63e800d -- setup method v1.1.0, v1.1.1, v1.2.0, v1.3.0, v1.3.0L2, v1.4.1, v.1.4.1L2
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}

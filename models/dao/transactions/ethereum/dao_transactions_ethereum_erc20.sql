@@ -82,8 +82,7 @@ SELECT
     COALESCE(er.symbol, CAST(NULL as VARCHAR)) as asset,
     CAST(t.value AS double) as raw_value, 
     t.value/POW(10, COALESCE(er.decimals, 18)) as value, 
-    t.value/POW(10, COALESCE(er.decimals, 18)) * p.price as usd_value,
-    -- COALESCE(p.price, dp.median_price) as usd_value, 
+    t.value/POW(10, COALESCE(er.decimals, 18)) *  COALESCE(p.price, dp.median_price) as usd_value,
     t.tx_hash, 
     t.tx_index,
     t.address_interacted_with,
@@ -94,7 +93,7 @@ INNER JOIN
 dao_tmp dt 
     ON t.dao_wallet_address = dt.dao_wallet_address
 LEFT JOIN 
-{{ ref('tokens_erc20') }} er
+{{ source('tokens', 'erc20') }} er
     ON t.token = er.contract_address
     AND er.blockchain = 'ethereum'
 LEFT JOIN 
@@ -108,15 +107,14 @@ LEFT JOIN
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
-{#
--- LEFT JOIN comment out until dex_prices is migrated
--- {{ ref('dex_prices') }} dp 
---     ON dp.hour = date_trunc('hour', t.block_time)
---     AND dp.contract_address = t.token 
---     AND dp.blockchain = 'ethereum'
---     AND dp.hour >= DATE '{{transactions_start_date}}'
---     {% if is_incremental() %}
---     AND dp.hour >= date_trunc('day', now() - interval '7' Day)
---     {% endif %}
-#}
+LEFT JOIN
+{{ ref('dex_prices') }} dp 
+    ON dp.hour = date_trunc('hour', t.block_time)
+    AND dp.contract_address = t.token 
+    AND dp.blockchain = 'ethereum'
+    AND dp.hour >= DATE '{{transactions_start_date}}'
+    {% if is_incremental() %}
+    AND dp.hour >= date_trunc('day', now() - interval '7' Day)
+    {% endif %}
+
 

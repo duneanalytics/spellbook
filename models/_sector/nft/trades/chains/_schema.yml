@@ -1,0 +1,55 @@
+version: 2
+
+# we don't include any tests here for performance reasons as the chain unions are only views.
+models:
+ - name: nft_ethereum_base_trades
+   meta:
+     blockchain: ethereum
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['ethereum', 'nft', 'trades']
+   description: "NFT ethereum base trades"
+   columns:
+     - &blockchain
+       name: blockchain
+     - &project
+       name: project
+     - &project_version
+       name: project_version
+     - &tx_hash
+       name: tx_hash
+     - &sub_tx_trade_id
+       name: sub_tx_trade_id
+     - &trade_type
+       name: trade_type
+     - &trade_category
+       name: trade_category
+     - &price_raw
+       name: price_raw
+     - &tx_data_marker
+         name: tx_data_marker
+     - &currency_contract
+       name: currency_contract
+
+ - name: nft_arbitrum_base_trades
+   meta:
+     blockchain: arbitrum
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: [ 'arbitrum', 'nft', 'trades' ]
+   description: "NFT arbitrum base trades"
+   columns:
+     - *blockchain
+     - *project
+     - *project_version
+     - *tx_hash
+     - *sub_tx_trade_id
+     - *trade_type
+     - *trade_category
+     - *price_raw
+     - *tx_data_marker
+     - *currency_contract
+
+

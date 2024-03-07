@@ -1,0 +1,94 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_optimism
+  - name: sushi_optimism
+    tables:
+      - name: ConstantProductPool_evt_Swap
+      - name: StablePool_evt_Swap
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: zipswap_optimism
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: balancer_v2_optimism
+    tables:
+      - name: Vault_evt_Swap
+  - name: wardenswap_optimism
+    tables:
+      - name: WardenRouterV2_L2_evt_Trade
+  - name: dodo_optimism
+    tables:
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: kyber_optimism
+    tables:
+      - name: DMM_Pool_evt_Swap
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+  - name: kyberswap_optimism
+    tables:
+      - name: DMM_Factory_evt_PoolCreated
+  - name: clipper_optimism
+    tables:
+      - name: ClipperPackedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperCove_evt_CoveSwapped
+  - name: opx_finance_optimism
+    tables:
+      - name: Router_evt_Swap
+  - name: velodrome_optimism
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: velodrome_v2_optimism
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
+  - name: synthetix_optimism
+    tables:
+      - name: SNX_evt_SynthExchange
+  - name: openxswap_optimism
+    tables:
+      - name: Aggregator_evt_Swap
+  - name: openocean_v2_optimism
+    tables:
+      - name: OpenOceanExchangeProxy_evt_Swapped
+  - name: chainhop_optimism
+    tables:
+      - name: TransferSwapper_evt_DirectSwap
+  - name: curvefi_optimism
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: MetaPoolSwap_evt_TokenExchangeUnderlying
+      - name: MetaPoolSwap_evt_TokenExchange
+      - name: wstETH_swap_evt_TokenExchange
+  - name: gridex_optimism
+    tables:
+      - name: GridFactory_evt_GridCreated
+      - name: Grid_evt_Swap
+  - name: solidly_v3_optimism
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+  - name: dackieswap_v2_optimism
+    tables:
+      - name: DackieFactory_evt_PairCreated
+      - name: DackiePair_evt_Swap
+  - name: dackieswap_v3_optimism
+    tables:
+      - name: DonaswapV3Factory_evt_PoolCreated
+      - name: DackieV3Pool_evt_Swap
+  - name: wombat_exchange_optimism
+    tables:
+      - name: CrossChainPool_evt_SwapV2
+  - name: elk_finance_optimism
+    tables:
+      - name: ElkFactory_evt_PairCreated
+      - name: ElkPair_evt_Swap
+  - name: fraxswap_optimism
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated

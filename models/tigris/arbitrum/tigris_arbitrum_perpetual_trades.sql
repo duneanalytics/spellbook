@@ -111,8 +111,12 @@ SELECT
     t.pair as market, 
     t.project_contract_address as market_address,
     t.volume_usd,
-    t.fees as fee_usd, 
-    t.margin_change as margin_usd,
+    CASE
+        WHEN margin_asset = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 THEN t.fees * pe.price
+        WHEN margin_asset = 0x763e061856b3e74a6c768a859dc2543a56d299d5 THEN t.fees * pe.price
+        ELSE t.fees
+    END fee_usd,
+    t.margin_change_usd as margin_usd,
     CONCAT(t.trade_type, '_', COALESCE((CASE WHEN t.direction = 'true' THEN 'long' WHEN t.direction = 'false' THEN 'short' END), 'Unspecified')) as trade, 
     'tigris_trade' as project, 
     t.version, 
@@ -139,9 +143,15 @@ INNER JOIN
     AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
 LEFT JOIN 
-{{ ref('tokens_erc20') }} er 
-    ON t.margin_asset = er.contract_address 
-    AND er.blockchain = 'arbitrum'
+{{ source('tokens_arbitrum', 'erc20') }} er 
+    ON t.margin_asset = er.contract_address
+LEFT JOIN {{ source('prices', 'usd') }} pe 
+    ON pe.minute = date_trunc('minute', t.evt_block_time)
+    AND pe.blockchain = 'arbitrum'
+    AND pe.symbol = 'WETH'
+    {% if is_incremental() %}
+    AND pe.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 
 
 

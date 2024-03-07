@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: tofu_bnb_base_trades
+    meta:
+      blockchain: bnb
+      project: tofu
+      contributors: [ theachenyj ]
+    config:
+      tags: [ 'bnb','tofu','v1','events' ]
+    description: >
+      Tofu v1 events on BSC
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: liquidifty_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: nft
+      project: liquidifty
+      contributors: bizzyvinci
+    config:
+      tags: [ 'liquidifty', 'nft', 'trades' ]
+    description: "NFT trades on liquidifty on BNB blockchain"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: nftb_bnb_base_trades
+    meta:
+      blockchain: bnb
+      project: nftb
+      contributors: [ scoffie ]
+    config:
+      tags: [ 'bnb','nftb','v1','events' ]
+    description: >
+      nftb v1 events on bnb
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: nftrade_bnb_base_trades
+    meta:
+      blockchain: bnb
+      project: nftrade
+      contributors: [ Henrystats ]
+    config:
+      tags: [ 'bnb','nftrade','v1','events' ]
+    description: >
+      nftrade v1 events on bnb
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

@@ -1,11 +1,6 @@
 {{ config(
-    
     schema = 'balancer_base',
-    alias = 'trades',
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+    alias = 'trades'
     )
 }}
 

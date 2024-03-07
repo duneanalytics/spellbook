@@ -1,0 +1,136 @@
+version: 2
+
+sources: 
+  - name: trader_joe_avalanche_c
+    description: "Avalanche decoded tables related to Trader Joe contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: JoePair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Pair swap event decoded table" 
+        columns:
+          - &amount0In
+            name: amount0In
+            description: "Amount 0 In"
+          - &amount0Out
+            name: amount0Out
+            description: "Amount 0 Out"
+          - &amount1In
+            name: amount1In
+            description: "Amount 1 In"
+          - &amount1Out
+            name: amount1Out
+            description: "Amount 1 Out"
+          - &contract_address
+            name: contract_address
+            description: "Avalanche C-chain address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+          - &sender
+            name: sender
+            description: "Swap Initiator"
+          - &to
+            name: to
+            description: "Recipient"
+      - name: JoeFactory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: "Factory pair create decoded table" 
+        columns:
+          - &_0
+            name: _0
+            description: "0"
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pair
+            name: pair
+            description: "pair address"
+          - &token0
+            name: token0
+            description: "token 0"
+          - &token1
+            name: token1
+            description: "token 1"
+      - name: LBPair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Liquidity book Pair swap event decoded table" 
+        columns:
+          - &amountIn
+            name: amountIn
+            description: "Token Sold Amount"
+          - &amountOut
+            name: amountOut
+            description: "Token Bought Amount"
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &fees
+            name: fees
+            description: "Fees paid for swap"
+          - &id
+            name: id
+            description: "id"
+          - &recipient
+            name: recipient
+            description: "Address receiving the tokens bought"
+          - *sender
+          - &swapForY
+            name: swapForY
+            description: "Direction of trade"
+          - &volatilityAccumulated
+            name: volatilityAccumulated
+            description: "volatilityAccumulated"
+      - name: LBFactory_evt_LBPairCreated
+        loaded_at_field: evt_block_time
+        description: "Liquidity Book Factory pair create decoded table" 
+        columns:
+          - &LBPair
+            name: LBPair
+            description: "LBPair"
+          - &binStep
+            name: binStep
+            description: "binStep"
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pid
+            name: pid
+            description: "pid"
+          - &tokenX
+            name: tokenX
+            description: "tokenX"
+          - &tokenY
+            name: tokenY
+            description: "tokenY"
+
+  - name: trader_joe_v2_1_avalanche_c
+    description: "avalanche_c chain decoded tables related to Trader Joe contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: LBPair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "Liquidity book Pair swap event decoded table" 
+
+      - name: LBFactory_evt_LBPairCreated
+        loaded_at_field: evt_block_time
+        description: "Liquidity Book Factory pair create decoded table" 

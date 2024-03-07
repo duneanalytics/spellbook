@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: tofunft_arbitrum
+    tables:
+      - name: MarketNG_call_run
+      - name: MarketNG_evt_EvInventoryUpdate
+  - name: stealcam_arbitrum
+    tables:
+      - name: Stealcam_evt_Stolen
+      - name: Stealcam_call_mint
+
+  - name: treasure_trove_arbitrum
+    tables:
+      - name: TreasureMarketplaceV2_evt_BidAccepted
+      - name: TreasureMarketplaceV2_evt_ItemSold
+      - name: TreasureMarketplaceV1_evt_ItemSold
+
+  - name: element_ex_arbitrum
+    tables:
+        - name: NFTransfersFeature_evt_ERC721BuyOrderFilled
+        - name: NFTransfersFeature_evt_ERC721SellOrderFilled
+        - name: NFTransfersFeature_evt_ERC1155BuyOrderFilled
+        - name: NFTransfersFeature_evt_ERC1155SellOrderFilled

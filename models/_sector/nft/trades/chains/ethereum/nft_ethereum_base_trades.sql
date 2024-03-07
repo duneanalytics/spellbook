@@ -8,22 +8,25 @@
 
 {% set nft_models = [
  ref('archipelago_ethereum_base_trades')
-,ref('superrare_ethereum_base_trades')
-,ref('foundation_ethereum_base_trades')
 ,ref('blur_ethereum_base_trades')
 ,ref('blur_seaport_ethereum_base_trades')
 ,ref('blur_v2_ethereum_base_trades')
+,ref('collectionswap_ethereum_base_trades')
+,ref('cryptopunks_ethereum_base_trades')
 ,ref('element_ethereum_base_trades')
+,ref('foundation_ethereum_base_trades')
+,ref('liquidifty_ethereum_base_trades')
+,ref('looksrare_seaport_ethereum_base_trades')
+,ref('looksrare_v1_ethereum_base_trades')
+,ref('looksrare_v2_ethereum_base_trades')
+,ref('sudoswap_ethereum_base_trades')
+,ref('superrare_ethereum_base_trades')
+,ref('trove_ethereum_base_trades')
 ,ref('x2y2_ethereum_base_trades')
 ,ref('zora_v1_ethereum_base_trades')
 ,ref('zora_v2_ethereum_base_trades')
 ,ref('zora_v3_ethereum_base_trades')
-,ref('cryptopunks_ethereum_base_trades')
-,ref('sudoswap_ethereum_base_trades')
-,ref('collectionswap_ethereum_base_trades')
-,ref('looksrare_v1_ethereum_base_trades')
-,ref('looksrare_v2_ethereum_base_trades')
-,ref('looksrare_seaport_ethereum_base_trades')
+,ref('magiceden_ethereum_base_trades')
 ] %}
 
 with base_union as (

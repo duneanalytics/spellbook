@@ -18,7 +18,7 @@ WITH indexed_sandwich_trades AS (
         AND front.token_bought_address=back.token_sold_address
         AND front.evt_index + 1 < back.evt_index
         {% if is_incremental() %}
-        AND back.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
         AND front.block_time=victim.block_time
@@ -28,12 +28,12 @@ WITH indexed_sandwich_trades AS (
         AND front.token_sold_address=victim.token_sold_address
         AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
         {% if is_incremental() %}
-        AND victim.block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
     WHERE front.blockchain='{{blockchain}}'
     {% if is_incremental() %}
-    AND front.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('front.block_time') }}
     {% endif %}
     )
 
@@ -71,11 +71,11 @@ INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.hash=s.tx_hash
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
-AND dt.block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('dt.block_time') }}
 {% endif %}
 
 {% endmacro %}

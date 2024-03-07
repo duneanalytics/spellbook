@@ -6,8 +6,16 @@
 }}
 -- (project, project_version, model)
 {% set nft_models = [
-     ref('aurem_polygon_base_trades')
+     ref('aavegotchi_polygon_base_trades')
+    ,ref('aurem_polygon_base_trades')
     ,ref('dew_polygon_base_trades')
+    ,ref('decentraland_polygon_base_trades')
+    ,ref('element_polygon_base_trades')
+    ,ref('fractal_polygon_base_trades')
+    ,ref('rarible_polygon_base_trades')
+    ,ref('tofu_polygon_base_trades')
+    ,ref('magiceden_polygon_base_trades')
+    ,ref('magiceden_v2_polygon_base_trades')
 ] %}
 
 with base_union as (
@@ -17,9 +25,9 @@ SELECT * FROM  (
         blockchain,
         project,
         project_version,
-        cast(date_trunc('day', block_time) as date) as block_date,
-        cast(date_trunc('month', block_time) as date) as block_month,
         block_time,
+        block_date,
+        block_month,
         block_number,
         tx_hash,
         project_contract_address,

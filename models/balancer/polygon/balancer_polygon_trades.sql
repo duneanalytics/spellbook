@@ -1,10 +1,6 @@
 {{ config(
-    
-    alias = 'trades',
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+    schema = 'balancer_polygon',
+    alias = 'trades'
     )
 }}
 

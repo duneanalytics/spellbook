@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: quixotic_optimism
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+      - name: Seaport_call_matchOrders
+      - name: Seaport_call_matchAdvancedOrders
+      - name: Exchange_evt_SellOrderFilled
+

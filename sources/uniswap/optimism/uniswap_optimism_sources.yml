@@ -1,0 +1,105 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_optimism
+    description: "Optimism decoded tables related to Uniswap v3 contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &amount1
+            name: amount1
+          - &amount0
+            name: amount0
+          - &contract_address
+            name: contract_address
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - &liquidity
+            name: liquidity
+          - &recipient
+            name: recipient
+          - &sender
+            name: sender
+          - &sqrtPriceX96
+            name: sqrtPriceX96
+          - &tick
+            name: tick
+
+      - name: factory_evt_poolcreated
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &fee
+            name: fee
+          - &pool
+            name: pool
+          - &tickSpacing
+            name: tickSpacing
+          - &token0
+            name: token0
+          - &token1
+            name: token1
+
+      - name: Pair_evt_Flash
+        loaded_at_field: evt_block_time
+
+  - name: uniswap_v2_optimism
+    description: "optimism decoded tables related to Uniswap v2 contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &amount0In
+            name: amount0In
+          - &amount0Out
+            name: amount0Out
+          - &amount1In
+            name: amount1In
+          - &amount1Out
+            name: amount1Out
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - *sender
+          - &to
+            name: to
+
+      - name: UniswapV2Factory_evt_PairCreated
+        loaded_at_field: evt_block_time
+        description: "" # to-do
+        columns:
+          - &_0
+            name: _0
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pair
+            name: pair
+          - *token0
+          - *token1

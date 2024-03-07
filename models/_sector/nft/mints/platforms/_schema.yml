@@ -1,0 +1,221 @@
+version: 2
+
+models:
+  - name: zora_ethereum_mints
+    meta:
+      blockchain: ethereum
+      project: zora
+      contributors: hildobby
+    config:
+      tags: ['zora', 'ethereum', 'mints']
+    description: >
+        Zora Mints on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - token_id
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_standard
+        description: "Token standard"
+      - name: token_id
+        description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
+      - name: total_price
+        description: "Total price paid"
+      - name: total_price_usd
+        description: "Total price paid in USD"
+      - name: recipient
+        description: "Recipient"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
+
+  - name: zora_optimism_mints
+    meta:
+      blockchain: optimism
+      project: zora
+      contributors: hildobby
+    config:
+      tags: ['zora', 'optimism', 'mints']
+    description: >
+        Zora Mints on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - token_id
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_standard
+        description: "Token standard"
+      - name: token_id
+        description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
+      - name: total_price
+        description: "Total price paid"
+      - name: total_price_usd
+        description: "Total price paid in USD"
+      - name: recipient
+        description: "Recipient"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
+
+  - name: zora_base_mints
+    meta:
+      blockchain: optimism
+      project: base
+      contributors: hildobby
+    config:
+      tags: ['base', 'optimism', 'mints']
+    description: >
+        Zora Mints on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - token_id
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_standard
+        description: "Token standard"
+      - name: token_id
+        description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
+      - name: total_price
+        description: "Total price paid"
+      - name: total_price_usd
+        description: "Total price paid in USD"
+      - name: recipient
+        description: "Recipient"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
+
+  - name: zora_zora_mints
+    meta:
+      blockchain: optimism
+      project: zora
+      contributors: hildobby
+    config:
+      tags: ['zora', 'mints']
+    description: >
+        Zora Mints on Zora
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - token_id
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_standard
+        description: "Token standard"
+      - name: token_id
+        description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
+      - name: total_price
+        description: "Total price paid"
+      - name: total_price_usd
+        description: "Total price paid in USD"
+      - name: recipient
+        description: "Recipient"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"
+
+  - name: zora_mints
+    meta:
+      blockchain: ethereum, optimism, base, goerli
+      project: zora
+      contributors: hildobby
+    config:
+      tags: ['zora', 'mints']
+    description: >
+        Zora Mints across chains
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_standard
+        description: "Token standard"
+      - name: token_id
+        description: "Token ID"
+      - name: quantity
+        description: "Amount minted"
+      - name: total_price
+        description: "Total price paid"
+      - name: total_price_usd
+        description: "Total price paid in USD"
+      - name: recipient
+        description: "Recipient"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+      - name: contract_address
+        description: "Contract address"
+      - name: tx_from
+        description: "Address that originated the transaction"
+      - name: tx_to
+        description: "Destination address of transaction"

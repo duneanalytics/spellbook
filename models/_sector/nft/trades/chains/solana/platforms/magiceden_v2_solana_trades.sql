@@ -70,9 +70,30 @@ with
         FROM nested_logs
     )
 
+    , priced_tokens as (
+        SELECT
+            symbol
+            , to_base58(contract_address) as token_mint_address
+        FROM {{ ref('prices_usd_latest') }} p
+        WHERE p.blockchain = 'solana'
+        {% if is_incremental() %}
+        AND {{incremental_predicate('minute')}}
+        {% endif %}
+    )
+
     , trades as (
         SELECT
             case when account_buyer = call_tx_signer then 'buy' else 'sell' end as trade_category
+            , case 
+                when contains(trade.call_account_arguments, '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug') then 'HXD'
+                when pt.token_mint_address is not null then pt.symbol
+                else 'SOL'
+                end as trade_token_symbol
+            , case
+                when contains(trade.call_account_arguments, '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug') then '3dgCCb15HMQSA4Pn3Tfii5vRk7aRqTH95LJjxzsG2Mug'
+                when pt.token_mint_address is not null then pt.token_mint_address
+                else 'So11111111111111111111111111111111111111112'
+                end as trade_token_mint
             --price should include all fees paid by user
             , buyerPrice
                 + coalesce(coalesce(takerFeeBp,takerFeeRaw)/1e4*buyerPrice,0)
@@ -122,6 +143,7 @@ with
                 , call_block_slot
                 , call_tx_id
                 , call_tx_signer
+                , call_account_arguments
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_executeSaleV2') }}
             {% if is_incremental() %}
@@ -150,6 +172,7 @@ with
                 , call_block_slot
                 , call_tx_id
                 , call_tx_signer
+                , call_account_arguments
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_mip1ExecuteSaleV2') }}
             {% if is_incremental() %}
@@ -178,6 +201,7 @@ with
                 , call_block_slot
                 , call_tx_id
                 , call_tx_signer
+                , call_account_arguments
                 , row_number() over (partition by call_tx_id order by call_outer_instruction_index asc, call_inner_instruction_index asc) as call_order
             FROM {{ source('magic_eden_solana','m2_call_ocpExecuteSaleV2') }}
             {% if is_incremental() %}
@@ -188,6 +212,7 @@ with
         LEFT JOIN royalty_logs rl ON trade.call_tx_id = rl.call_tx_id
             AND trade.call_block_slot = rl.call_block_slot
             AND trade.call_order = rl.log_order
+        LEFT JOIN priced_tokens pt ON contains(trade.call_account_arguments, pt.token_mint_address)
     )
 
     , raw_nft_trades as (
@@ -202,10 +227,10 @@ with
             , t.account_buyer as buyer
             , t.account_seller as seller
             , t.price as amount_raw --magiceden does not include fees in the emitted price
-            , t.price/1e9 as amount_original
-            , t.price/1e9 * sol_p.price as amount_usd
-            , 'SOL' as currency_symbol
-            , 'So11111111111111111111111111111111111111112' as currency_address
+            , t.price/pow(10, p.decimals) as amount_original
+            , t.price/pow(10, p.decimals) * p.price as amount_usd
+            , t.trade_token_symbol as currency_symbol
+            , t.trade_token_mint as currency_address
             , cast(null as varchar) as account_merkle_tree
             , cast(null as bigint) leaf_id
             , t.account_tokenMint as account_mint
@@ -216,26 +241,31 @@ with
             , t.call_block_slot as block_slot
             , t.call_tx_signer as tx_signer
             , t.taker_fee as taker_fee_amount_raw --taker fees = platform fees
-            , t.taker_fee/1e9 as taker_fee_amount
-            , t.taker_fee/1e9 * sol_p.price as taker_fee_amount_usd
+            , t.taker_fee/pow(10, p.decimals) as taker_fee_amount
+            , t.taker_fee/pow(10, p.decimals) * p.price as taker_fee_amount_usd
             , case when t.taker_fee = 0 OR t.price = 0 then 0 else t.taker_fee/t.price end as taker_fee_percentage
             , t.maker_fee as maker_fee_amount_raw
-            , t.maker_fee/1e9 as maker_fee_amount
-            , t.maker_fee/1e9 * sol_p.price as maker_fee_amount_usd
+            , t.maker_fee/pow(10, p.decimals) as maker_fee_amount
+            , t.maker_fee/pow(10, p.decimals) * p.price as maker_fee_amount_usd
             , case when t.maker_fee = 0 OR t.price = 0 then 0 else t.maker_fee/t.price end as maker_fee_percentage
             , cast(null as double) as amm_fee_amount_raw
             , cast(null as double) as amm_fee_amount
             , cast(null as double) as amm_fee_amount_usd
             , cast(null as double) as amm_fee_percentage
             , t.royalty as royalty_fee_amount_raw
-            , t.royalty/1e9 as royalty_fee_amount
-            , t.royalty/1e9 * sol_p.price as royalty_fee_amount_usd
+            , t.royalty/pow(10, p.decimals) as royalty_fee_amount
+            , t.royalty/pow(10, p.decimals) * p.price as royalty_fee_amount_usd
             , case when t.royalty = 0 OR t.price = 0 then 0 else t.royalty/t.price end as royalty_fee_percentage
             , t.instruction
             , t.outer_instruction_index
             , coalesce(t.inner_instruction_index,0) as inner_instruction_index
         FROM trades t
-        LEFT JOIN {{ source('prices', 'usd') }} sol_p ON sol_p.blockchain = 'solana' and sol_p.symbol = 'SOL' and sol_p.minute = date_trunc('minute', t.call_block_time) --get sol_price
+        LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'solana' 
+            and to_base58(p.contract_address) = t.trade_token_mint 
+            and p.minute = date_trunc('minute', t.call_block_time)
+            {% if is_incremental() %}
+            and {{incremental_predicate('p.minute')}}
+            {% endif %}
     )
 
 SELECT
