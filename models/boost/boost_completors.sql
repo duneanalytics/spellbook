@@ -2,10 +2,7 @@
     config(
         schema='boost',
         alias='completors',
-        materialized='incremental',
-        file_format='delta',
-        incremental_strategy ='merge',
-        unique_key=['claimer_address']
+        materialized='table',
     )
 }}
 

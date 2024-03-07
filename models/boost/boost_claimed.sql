@@ -5,7 +5,8 @@
         materialized='incremental',
         file_format='delta',
         incremental_strategy='merge',
-        unique_key=['boost_address', 'claim_tx_hash', 'action_tx_hash']
+        unique_key=['boost_address', 'claim_tx_hash', 'action_tx_hash'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -104,4 +105,7 @@ left join {{ source('prices','usd') }} p
 on date_trunc('hour', block_time) = p.minute
     and p.blockchain = reward_network
     and reward_token_address = p.contract_address
+{% if is_incremental() %}
+where minute >= date_trunc('day', now() - interval '3' day)
+{% endif %}
 order by block_time desc

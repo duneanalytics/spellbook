@@ -2,6 +2,11 @@
     config(
         schema='boost_polygon',
         alias='claimed'
+        materialized='incremental',
+        file_format='delta',
+        incremental_strategy='merge',
+        unique_key=['boost_address', 'claim_tx_hash', 'action_tx_hash'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
