@@ -28,13 +28,14 @@ WITH
             ,roy.call_trace_address as royalty_call_trace_address
             ,sp_start.tokenRecipient as trade_recipient
             ,sp.numItems 
-            ,sp_start.nftIds as token_ids
+            ,case when p.nft_type = 'ERC1155' then array[p.nft_id] else sp_start.nftIds end as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as amount_raw --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
+            ,cast(roy.output_0 as varbinary) as royalty_fee_address
             ,p.token_contract_address
             ,p.nft_type
             ,p.nft_contract_address
@@ -90,13 +91,14 @@ WITH
             ,roy.call_trace_address as royalty_call_trace_address
             ,sp_start.nftRecipient as trade_recipient
             ,sp.numItems 
-            ,sp_start.nftIds as token_ids
+            ,case when p.nft_type = 'ERC1155' then array[p.nft_id] else sp_start.nftIds end as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as amount_raw
             ,sp.feeMultiplier
             ,sp.protocolFeeMultiplier
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
+            ,cast(roy.output_0 as varbinary) as royalty_fee_address
             ,p.token_contract_address
             ,p.nft_type
             ,p.nft_contract_address
@@ -162,7 +164,7 @@ WITH
             , cast(output_tradeFee/numItems as uint256) as pool_fee_amount_raw
             , cast(royalty_fee_amount_raw/numItems as uint256) as royalty_fee_amount_raw
             , 0xa020d57ab0448ef74115c112d18a9c231cc86000 as platform_fee_address --factory recieves the fees
-            , cast(null as varbinary) as royalty_fee_address
+            , royalty_fee_address
             , row_number() over (partition by call_tx_hash order by one_nft_token_id) as sub_tx_trade_id
         FROM (
             SELECT * FROM sell_nft_base

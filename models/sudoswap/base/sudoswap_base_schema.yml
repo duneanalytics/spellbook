@@ -40,6 +40,9 @@ models:
       - &nft_type
         name: nft_type
         description: "ERC721 or ERC1155 pool type"
+      - &nft_id
+        name: nft_id
+        description: "id of ERC1155 token if it's an 1155 pool"
       - &token_type
         name: token_type
         description: "the token type used for trading the NFTs"

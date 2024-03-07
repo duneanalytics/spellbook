@@ -44,6 +44,7 @@ with
               _bondingCurve as bonding_curve,
               _poolType as pool_type_raw,
               'ERC721' as nft_type,
+              cast(null as uint256) as nft_id,
               0x0000000000000000000000000000000000000000 as token,
               contract_address,
               call_block_time,
@@ -60,6 +61,7 @@ with
               _bondingCurve as bonding_curve,
               _poolType as pool_type_raw,
               'ERC1155' as nft_type,
+              json_extract_scalar(params,'$.nftId') as nft_id,
               0x0000000000000000000000000000000000000000 as token,
               contract_address,
               call_block_time,
@@ -76,6 +78,7 @@ with
             , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
             , cast(json_extract_scalar(params,'$.poolType') as int) as pool_type_raw
             , 'ERC1155' as nft_type
+            , json_extract_scalar(params,'$.nftId') as nft_id
             , from_hex(json_extract_scalar(params,'$.token')) as token_type
             , contract_address
             , call_block_time
@@ -92,6 +95,7 @@ with
             , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
             , cast(json_extract_scalar(params,'$.poolType') as int) as pool_type_raw
             , 'ERC721' as nft_type
+            , cast(null as uint256) as nft_id
             , from_hex(json_extract_scalar(params,'$.token')) as token_type
             , contract_address
             , call_block_time
