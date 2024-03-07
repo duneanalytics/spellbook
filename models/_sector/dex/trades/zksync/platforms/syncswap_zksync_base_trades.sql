@@ -10,6 +10,8 @@
     )
 }}
 
+{% set syncswap_start_date = "2023-03-24" %}
+
 WITH 
     -- All SyncSwap Pools
     pools AS (
@@ -35,6 +37,8 @@ WITH
             AND topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822 -- swap
             {% if is_incremental() %}
             AND {{incremental_predicate('block_time')}}
+            {% else %}
+            AND block_time >= timestamp '{{syncswap_start_date}}'
             {% endif %}
     )
     
