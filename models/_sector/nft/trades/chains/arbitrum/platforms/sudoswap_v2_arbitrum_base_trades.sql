@@ -178,4 +178,33 @@ WITH
         LEFT JOIN unnest(token_ids) as t(one_nft_token_id) ON TRUE
     )
 
-{{ add_nft_tx_data('trades', 'arbitrum') }}
+    , trades_final as (
+        SELECT 
+        blockchain
+        , project
+        , project_version
+        , block_time
+        , block_number
+        , tx_hash
+        , project_contract_address
+        , buyer
+        , seller
+        , nft_contract_address
+        , nft_token_id
+        , nft_amount
+        , trade_type
+        , trade_category
+        , currency_contract
+        , price_raw + platform_fee_amount_raw + pool_fee_amount_raw + royalty_fee_amount_raw as price_raw
+        , platform_fee_amount_raw
+        , pool_fee_amount_raw
+        , royalty_fee_amount_raw
+        , platform_fee_address
+        , royalty_fee_address
+        , sub_tx_trade_id
+        , nft_type
+        , spot_price_raw
+        FROM trades
+    )
+
+{{ add_nft_tx_data('trades_final', 'arbitrum') }}
