@@ -1660,7 +1660,7 @@ FROM
     ('gala-gala','ethereum','GALA',0xd1d2eb1b1e90b638588728b4130137d262c87cae, 8),
     ('prime-echelon-prime','ethereum','PRIME',0xb23d80f5fefcddaa212212f028021b41ded428cf, 18),
     ('pol-polygon-ecosystem-token','ethereum','POL',0x455e53cbb86018ac2b8092fdcd39d8444affc3f6, 18),
-    ('pyusd-paypal-usd','ethereum','BYUSD',0x6c3ea9036406852006290770bedfcaba0e23a0e8, 6),
+    ('pyusd-paypal-usd','ethereum','PYUSD',0x6c3ea9036406852006290770bedfcaba0e23a0e8, 6),
     ('loom-loom-network','ethereum','LOOM',0x42476f744292107e34519f9c357927074ea3f75d, 18),
     ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
     ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
