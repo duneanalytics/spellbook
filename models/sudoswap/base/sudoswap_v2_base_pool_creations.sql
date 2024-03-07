@@ -61,7 +61,7 @@ with
               _bondingCurve as bonding_curve,
               _poolType as pool_type_raw,
               'ERC1155' as nft_type,
-              json_extract_scalar(params,'$.nftId') as nft_id,
+              _nftId as nft_id,
               0x0000000000000000000000000000000000000000 as token,
               contract_address,
               call_block_time,
