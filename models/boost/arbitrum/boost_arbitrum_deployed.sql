@@ -6,7 +6,6 @@
         file_format='delta',
         incremental_strategy='merge',
         unique_key=['boost_address', 'boost_id'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
