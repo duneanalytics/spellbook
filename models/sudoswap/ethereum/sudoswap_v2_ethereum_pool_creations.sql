@@ -19,6 +19,7 @@ with
           output_pair AS pool_address,
           nft_contract_address,
           nft_type,
+          nft_id,
           case when token = 0x0000000000000000000000000000000000000000 then 'ETH' else 'ERC20' end as token_type,
           token as token_contract_address,
           CASE
@@ -78,7 +79,7 @@ with
             , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
             , cast(json_extract_scalar(params,'$.poolType') as int) as pool_type_raw
             , 'ERC1155' as nft_type
-            , json_extract_scalar(params,'$.nftId') as nft_id
+            , cast(json_extract_scalar(params,'$.nftId') as uint256) as nft_id
             , from_hex(json_extract_scalar(params,'$.token')) as token_type
             , contract_address
             , call_block_time
