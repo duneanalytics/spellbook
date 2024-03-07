@@ -35,7 +35,7 @@ WITH
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
-            ,cast(roy.output_0 as varbinary) as royalty_fee_address
+            ,cast(roy.output_0[1] as varbinary) as royalty_fee_address
             ,p.token_contract_address
             ,p.nft_type
             ,p.nft_contract_address
@@ -98,7 +98,7 @@ WITH
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
-            ,cast(roy.output_0 as varbinary) as royalty_fee_address
+            ,cast(roy.output_0[1] as varbinary) as royalty_fee_address
             ,p.token_contract_address
             ,p.nft_type
             ,p.nft_contract_address
