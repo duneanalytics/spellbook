@@ -58,6 +58,7 @@ WITH pool_labels AS (
         SELECT 
             day,
             contract_address AS token,
+            decimals,
             bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
@@ -197,9 +198,9 @@ WITH pool_labels AS (
             b.token,
             symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price) AS pool_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals)) AS token_balance,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price) AS pool_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
