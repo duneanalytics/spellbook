@@ -33,7 +33,7 @@ WITH
         token_mint_address
       ) AS fee_token_mint_address
     FROM
-      solana.account_activity
+      {{ source('solana','account_activity') }}
     WHERE
       block_time >= TIMESTAMP '{{project_start_date}}'
       AND tx_success
