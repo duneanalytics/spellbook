@@ -99,8 +99,8 @@ from (
         {% endif %}
     )
 )
-left join (select pool_address as first_pool, array[token0, token1] as first_pool_tokens from pools_list) using(first_pool) -- replace array[token0, token1] with an array with tokens when it appears in the dex.raw_pools table
-left join (select pool_address as last_pool, array[token0, token1] as last_pool_tokens from pools_list) using(last_pool) -- replace array[token0, token1] with an array with tokens when it appears in the dex.raw_pools table
+left join (select pool_address as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
+left join (select pool_address as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
 
 
 
