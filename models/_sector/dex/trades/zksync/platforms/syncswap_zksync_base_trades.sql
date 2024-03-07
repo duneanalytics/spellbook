@@ -1,11 +1,23 @@
+{{
+    config(
+        schema = 'syncswap_zksync',
+        alias = 'base_trades',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['tx_hash', 'evt_index'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
 WITH 
     -- All SyncSwap Pools
     pools AS (
         SELECT pool, token0, token1
-        FROM syncswap_zksync.SyncSwapClassicPoolFactory_evt_PoolCreated 
+        FROM ref('syncswap_zksync', 'SyncSwapClassicPoolFactory_evt_PoolCreated') 
         UNION ALL 
         SELECT pool, token0, token1
-        FROM syncswap_zksync.SyncSwapStablePoolFactory_evt_PoolCreated
+        FROM ref('syncswap_zksync', 'SyncSwapStablePoolFactory_evt_PoolCreated')
     )
 
     , logs AS ( 
@@ -17,7 +29,7 @@ WITH
             , varbinary_to_uint256(bytearray_substring(data, 33, 32)) AS token_1_in
             , varbinary_to_uint256(bytearray_substring(data, 65, 32)) AS token_0_out
             , varbinary_to_uint256(bytearray_substring(data, 97, 32)) AS token_1_out
-        FROM zksync.logs 
+        FROM source('zksync_logs') 
         LEFT JOIN pools ON contract_address = pool
         WHERE contract_address IN (SELECT pool FROM pools) 
             AND topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822 -- swap
