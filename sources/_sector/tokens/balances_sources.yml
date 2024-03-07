@@ -90,3 +90,33 @@ sources:
           - name: token_id
           - name: amount
           - name: type
+
+  - name: tokens_scroll
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_scroll
+        identifier: balances_scroll_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_avalanche_c
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_avalanche_c
+        identifier: balances_avalanche_c_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
