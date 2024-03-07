@@ -268,7 +268,8 @@ pools_list as (
                         method=method,
                         method_data=method_data,
                         blockchain=blockchain,
-                        traces_cte=traces_cte
+                        traces_cte=traces_cte,
+                        start_date=contract_data['start'],
                     ) 
                 }} 
             {% elif method_data.router_type in ['unoswap'] %}
@@ -281,7 +282,8 @@ pools_list as (
                         blockchain=blockchain,
                         traces_cte=traces_cte,
                         pools_list=pools_list,
-                        native=native
+                        native=native,
+                        start_date=contract_data['start'],
                     )
                 }}
             {% endif %}
