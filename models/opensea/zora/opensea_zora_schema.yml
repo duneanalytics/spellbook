@@ -194,6 +194,7 @@ models:
 
   
   - name: opensea_v4_zora_events
+  
     meta:
       blockchain: zora
       project: opensea
