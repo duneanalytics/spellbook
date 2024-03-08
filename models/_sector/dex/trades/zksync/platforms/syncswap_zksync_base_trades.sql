@@ -55,7 +55,7 @@ SELECT
     , IF(token_0_out = 0, token1, token0) AS token_bought_address
     , IF(token_0_in = 0, token1, token0) AS token_sold_address
     , tx_from AS taker
-    , CAST(NULL AS VARCHAR) AS maker
+    , CAST(NULL AS VARBINARY) AS maker
     , contract_address AS project_contract_address
     , tx_hash
     , index AS evt_index
