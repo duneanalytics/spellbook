@@ -117,9 +117,9 @@ src_EAS_evt_Revoked as (
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
-)
+),
 
-with attestations as (
+attestations as (
   select
     '{{ blockchain }}' as blockchain,
     '{{ project }}' as project,
