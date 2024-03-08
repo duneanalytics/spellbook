@@ -25,7 +25,7 @@ select
     , trace_address as transfer_trace_address
     , case 
         when {{ selector }} in ({{ deposit_selector }}, {{ withdraw_selector }}) then "to" -- deposit, withdraw
-        when value > uint256 '0' then "to" -- native
+        when value > uint256 '0' then 0xae -- native
         else "to" -- transfer, transferFrom, mint, burn
     end as contract_address
     , case
