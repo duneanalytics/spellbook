@@ -79,7 +79,7 @@ WITH
     FROM
       {{ ref('dex_solana_trades') }} AS trades
       JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
-      LEFT JOIN prices.usd AS feeTokenPrices ON (
+      LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
         AND date_trunc('minute', block_time) = minute
