@@ -10,74 +10,42 @@
     )
 }}
 
+{%
+  set config_sources = [
+    {'version': '1', 'contract': 'NftMarketplace', 'seller': 'evt_tx_from'},
+    {'version': '2', 'contract': 'NftMarketplace', 'seller': 'evt_tx_from'},
+    {'version': '4', 'contract': 'NftMarketplace', 'seller': 'seller'},
+    {'version': '5', 'contract': 'AANftMarketplace', 'seller': 'seller'},
+    {'version': '6', 'contract': 'AANFTMarketplace', 'seller': 'seller'},
+    {'version': '7', 'contract': 'AANFTMarketplace', 'seller': 'seller'},
+  ]
+%}
+
 with
 
 base_trades_combined as (
-    select
-      eb.evt_block_time as block_time,
-      eb.evt_block_number as block_number,
-      eb.nftAddress as nft_contract_address,
-      eb.tokenId as nft_token_id,
-      uint256 '1' as nft_amount,
-      eb.seller,
-      eb.buyer,
-      eb.price as price_raw,
-      eb.contract_address as project_contract_address,
-      eb.evt_tx_hash as tx_hash,
-      eb.evt_index
-    from {{ source('zk_markets_zksync', 'AANFTMarketplace_evt_ItemBought') }} eb
-    {% if is_incremental() %}
-    where {{incremental_predicate('eb.evt_block_time')}}
-    {% endif %}
-
-    union all
-
-    select
-      eb.evt_block_time as block_time,
-      eb.evt_block_number as block_number,
-      eb.nftAddress as nft_contract_address,
-      eb.tokenId as nft_token_id,
-      uint256 '1' as nft_amount,
-      eb.seller,
-      eb.buyer,
-      eb.price as price_raw,
-      eb.contract_address as project_contract_address,
-      eb.evt_tx_hash as tx_hash,
-      eb.evt_index
-    from {{ source('zk_markets_zksync', 'NftMarketplace_evt_ItemBought') }} eb
-    {% if is_incremental() %}
-    where {{incremental_predicate('eb.evt_block_time')}}
-    {% endif %}
-
-    union all
-
-    select
-      cb.call_block_time as block_time,
-      cb.call_block_number as block_number,
-      cb.nftAddress as nft_contract_address,
-      cb.tokenId as nft_token_id,
-      uint256 '1' as nft_amount,
-      nft."from" as seller,
-      nft.to as buyer,
-      tx.value as price_raw,
-      cb.contract_address as project_contract_address,
-      cb.call_tx_hash as tx_hash,
-      tx.index as evt_index
-    from {{ source('zk_markets_zksync', 'AANftMarketplace_call_buyItem') }} cb
-      join {{ ref('nft_zksync_transfers') }} nft
-        on cb.nftAddress = nft.contract_address
-       and cb.tokenId = nft.token_id
-       and cb.call_tx_hash = nft.tx_hash
-      join {{ source('zksync', 'transactions') }} tx
-        on cb.call_block_number = tx.block_number
-       and cb.call_tx_hash = tx.hash
-    where cb.call_success
-      and tx.success
+    {% for src in config_sources %}
+      select
+        'v{{ src["version"] }}' as project_version,
+        eb.evt_block_time as block_time,
+        eb.evt_block_number as block_number,
+        eb.nftAddress as nft_contract_address,
+        eb.tokenId as nft_token_id,
+        uint256 '1' as nft_amount,
+        eb.{{ src["seller"] }} as seller,
+        eb.buyer,
+        eb.price as price_raw,
+        eb.contract_address as project_contract_address,
+        eb.evt_tx_hash as tx_hash,
+        eb.evt_index
+      from {{ source('zk_markets_v' ~ src["version"] ~ '_zksync', src["contract"] ~ '_evt_ItemBought') }} eb
       {% if is_incremental() %}
-      and {{incremental_predicate('cb.call_block_time')}}
-      and {{incremental_predicate('nft.block_time')}}
-      and {{incremental_predicate('tx.block_time')}}
+      where {{incremental_predicate('eb.evt_block_time')}}
       {% endif %}
+      {% if not loop.last %}
+      union all
+      {% endif %}
+    {% endfor %}
 ),
 
 royalties as (
@@ -123,7 +91,7 @@ base_trades as (
     select
       'zksync' as blockchain,
       'zk_markets' as project,
-      '1' as project_version,
+      t.project_version,
       t.block_time,
       cast(date_trunc('day', t.block_time) as date) as block_date,
       cast(date_trunc('month', t.block_time) as date) as block_month,
