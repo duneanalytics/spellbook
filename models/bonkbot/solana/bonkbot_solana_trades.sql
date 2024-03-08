@@ -51,6 +51,8 @@ WITH
   botTrades AS (
     SELECT
       block_time,
+      DATE_TRUNC('day', block_time) AS block_date,
+      DATE_TRUNC('month', block_time) AS block_month,
       amount_usd,
       IF(
         token_sold_mint_address = '{{wsol_token}}',
@@ -102,6 +104,8 @@ WITH
   )
 SELECT
   block_time,
+  block_date,
+  block_month,
   amount_usd,
   type,
   token_bought_amount,
