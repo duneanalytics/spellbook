@@ -19,10 +19,22 @@ models:
             - tx_index
             - outer_instruction_index
             - inner_instruction_index
-      - check_dex_base_trades_seed:
+      - check_seed:
           seed_file: ref('bonkbot_solana_trades_seed')
-          filter:
-            version: 2
+          match_columns:
+            - blockchain
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+          check_columns:
+            - fee_token_amount
+            - fee_token_address
+            - project
+            - version
+            - project_contract_address
+            - token_bought_address
+            - token_sold_address
+            - user
 
     columns:
       - &blockchain
