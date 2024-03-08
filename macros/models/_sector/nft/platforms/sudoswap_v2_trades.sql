@@ -138,6 +138,8 @@ WITH
             , 'sudoswap' as project
             , 'v2' as project_version
             , call_block_time as block_time
+            , cast(date_trunc('day', call_block_time) as date) as block_date
+            , cast(date_trunc('month', call_block_time) as date) as block_month
             , call_block_number as block_number
             , call_tx_hash as tx_hash
             , pool_address as project_contract_address
