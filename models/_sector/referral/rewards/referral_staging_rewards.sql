@@ -30,7 +30,11 @@
  ref('paragraph_optimism_rewards'),
  ref('paragraph_base_rewards'),
  ref('paragraph_zora_rewards'),
- ref('paragraph_polygon_rewards')
+ ref('paragraph_polygon_rewards'),
+ ref('fabric_ethereum_rewards'),
+ ref('fabric_optimism_rewards'),
+ ref('fabric_base_rewards'),
+ ref('fabric_zora_rewards')
 ] %}
 
 SELECT *
