@@ -45,7 +45,7 @@ WITH
 SELECT
     'zksync' AS blockchain
     , 'SyncSwap' As project
-    , NULL AS version
+    , '1' AS version
     , CAST(date_trunc('month', block_time) AS DATE) AS block_month
     , CAST(date_trunc('day', block_time) AS DATE) AS block_date
     , block_time AS block_time
@@ -55,7 +55,7 @@ SELECT
     , IF(token_0_out = 0, token1, token0) AS token_bought_address
     , IF(token_0_in = 0, token1, token0) AS token_sold_address
     , tx_from AS taker
-    , NULL AS maker
+    , CAST(NULL AS VARCHAR) AS maker
     , contract_address AS project_contract_address
     , tx_hash
     , index AS evt_index
