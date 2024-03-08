@@ -31,7 +31,7 @@ WITH
             , varbinary_to_uint256(bytearray_substring(data, 33, 32)) AS token_1_in
             , varbinary_to_uint256(bytearray_substring(data, 65, 32)) AS token_0_out
             , varbinary_to_uint256(bytearray_substring(data, 97, 32)) AS token_1_out
-        FROM source('zksync', 'logs') 
+        FROM {{ source('zksync', 'logs') }}
         LEFT JOIN pools ON contract_address = pool
         WHERE contract_address IN (SELECT pool FROM pools) 
             AND topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822 -- swap
