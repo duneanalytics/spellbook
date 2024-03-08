@@ -25,9 +25,6 @@ transfers as (
         , block_time
         , tx_hash
         , trace_address as transfer_trace_address
-        , "from"
-        , "to"
-        , value
         , case
             when {{ selector }} = {{ transfer_selector }} then 'transfer'
             when {{ selector }} = {{ transferFrom_selector }} then 'transferFrom'
