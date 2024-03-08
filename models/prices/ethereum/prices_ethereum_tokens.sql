@@ -1665,7 +1665,6 @@ FROM
     ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
     ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
     ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18)
-
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
