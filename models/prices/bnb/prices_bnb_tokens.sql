@@ -213,7 +213,7 @@ FROM
     ('weth-wrapped-ether-wormhole', 'bnb', 'WETH', 0x4db5a66e937a9f4473fa95b1caf1d1e1d62e29ea,18),
     ('ageur-ageur', 'bnb', 'AGEUR', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89,18),
     ('sol-wrapped-sol-wormhole', 'bnb', 'SOL', 0xfa54ff1a158b5189ebba6ae130ced6bbd3aea76e,9),
-    ('usdc-usd-coin-wormhole', 'bnb', 'USDC', 0xb04906e95ab5d797ada81508115611fee694c2b3,6),
+    --('usdc-usd-coin-wormhole', 'bnb', 'USDC', 0xb04906e95ab5d797ada81508115611fee694c2b3,6),
     ('mim-magic-internet-money', 'bnb', 'MIM', 0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba,18),
     ('usdp-paxos-standard-token', 'bnb', 'USDP', 0xb7f8cd00c5a06c0537e2abff0b58033d02e5e094,18),
     ('axlusdc-axelar-wrapped-usdc', 'bnb', 'AXLUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3,6)
@@ -224,5 +224,4 @@ where contract_address not in (
     ,0x43f3918ff115081cfbfb256a5bde1e8d181f2907 -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
     ,0x7ddee176f665cd201f93eede625770e2fd911990 -- GALA doesn't exists on BSC, it's a scam-token address.
     ,0xe552fb52a4f19e44ef5a967632dbc320b0820639 -- METIS has bad price feed since PolyNetwork incident and will be replaced by new contract
-    ,0xb04906e95ab5d797ada81508115611fee694c2b3 -- USDC wormhole is not active
 )
