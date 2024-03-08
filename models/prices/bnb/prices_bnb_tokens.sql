@@ -224,4 +224,5 @@ where contract_address not in (
     ,0x43f3918ff115081cfbfb256a5bde1e8d181f2907 -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
     ,0x7ddee176f665cd201f93eede625770e2fd911990 -- GALA doesn't exists on BSC, it's a scam-token address.
     ,0xe552fb52a4f19e44ef5a967632dbc320b0820639 -- METIS has bad price feed since PolyNetwork incident and will be replaced by new contract
+    ,0xb04906e95ab5d797ada81508115611fee694c2b3 -- USDC wormhole is not active
 )
