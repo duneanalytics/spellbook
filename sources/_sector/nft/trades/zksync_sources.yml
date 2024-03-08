@@ -7,6 +7,15 @@ sources:
   - name: zonic_zksync
     tables:
       - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+  - name: kreator_land_zksync
+    tables: 
+      - name: Seaport_evt_OrderFulfilled
+  - name: element_ex_zksync
+    tables: 
+      - name: OrdersFeature_evt_ERC721SellOrderFilled
+      - name: OrdersFeature_evt_ERC721BuyOrderFilled
+      - name: OrdersFeature_evt_ERC1155SellOrderFilled
+      - name: OrdersFeature_evt_ERC1155BuyOrderFilled
   - name: zk_markets_zksync
     tables:
       - name: AANftMarketplace_call_buyItem

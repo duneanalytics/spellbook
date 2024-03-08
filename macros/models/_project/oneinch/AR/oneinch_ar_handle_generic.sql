@@ -33,6 +33,7 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_type
     , null as ordinary
     , null as pools
     , remains

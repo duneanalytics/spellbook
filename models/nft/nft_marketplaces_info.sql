@@ -46,7 +46,7 @@ FROM (VALUES
     , ('quix', 'Quix', 'Direct', NULL)
     , ('bluesweep', 'bluesweep', 'Aggregator', 'bluesweep_xyz')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
-    , ('magiceden', 'MagicEden', 'Direct', 'MagicEden')
+    , ('magiceden', 'Magic Eden', 'Direct', 'MagicEden')
     , ('oxalus', 'Oxalus', 'Aggregator', 'Oxalus_io')
     , ('tofu', 'tofuNFT', 'Direct', 'tofuNFT')
     , ('skillet', 'Skillet', 'Aggregator', 'SkilletNFT')
