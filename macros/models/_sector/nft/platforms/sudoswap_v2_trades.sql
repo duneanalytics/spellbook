@@ -192,3 +192,4 @@ blockchain
 , nft_type
 , spot_price_raw
 FROM trades
+{% endmacro %}

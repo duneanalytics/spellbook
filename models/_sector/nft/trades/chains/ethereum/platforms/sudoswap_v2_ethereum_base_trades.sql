@@ -14,5 +14,5 @@
 
 {{sudoswap_v2_trades(
      blockchain = 'ethereum'
-     ,platform_fee_address = '0xa020d57ab0448ef74115c112d18a9c231cc86000'
+     ,platform_fee_address = '0xa020d57ab0448ef74115c112d18a9c231cc86000')
 }}

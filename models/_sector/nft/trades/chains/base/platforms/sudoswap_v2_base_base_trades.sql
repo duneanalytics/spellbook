@@ -15,7 +15,7 @@
 WITH trades_final as (
 {{sudoswap_v2_trades(
      blockchain = 'base'
-     ,platform_fee_address = '0x8ce608ce2b5004397faef1556bfe33bdfbe4696d'
+     ,platform_fee_address = '0x8ce608ce2b5004397faef1556bfe33bdfbe4696d')
 }})
 
 {{ add_nft_tx_data('trades_final', 'base') }}

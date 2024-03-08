@@ -15,7 +15,7 @@
 WITH trades_final as (
 {{sudoswap_v2_trades(
      blockchain = 'arbitrum'
-     ,platform_fee_address = '0x6132912d8009268dcc457c003a621a0de405dbe0'
+     ,platform_fee_address = '0x6132912d8009268dcc457c003a621a0de405dbe0')
 }})
 
 {{ add_nft_tx_data('trades_final', 'arbitrum') }}
