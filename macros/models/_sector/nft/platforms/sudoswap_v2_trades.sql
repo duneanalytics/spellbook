@@ -173,6 +173,8 @@ blockchain
 , project
 , project_version
 , block_time
+, block_date
+, block_month
 , block_number
 , tx_hash
 , project_contract_address
