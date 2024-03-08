@@ -1,5 +1,5 @@
 {{ config(
-     alias = 'etv_liquidity_withdrawal'
+     alias = 'evt_liquidity_withdrawal'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",
