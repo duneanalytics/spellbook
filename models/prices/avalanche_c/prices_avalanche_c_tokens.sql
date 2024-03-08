@@ -57,6 +57,5 @@ FROM
     ('uni-uniswap','avalanche_c','UNI',0x8ebaf22b6f053dffeaf46f4dd9efa95d89ba8580,18),
     ('mkr-maker','avalanche_c','MKR',0x88128fd4b259552a9a1d457f435a6527aab72d42,18),
     ('busd-binance-usd','avalanche_c','MKR',0x9c9e5fd8bbc25984b178fdce6117defa39d2db39,18),
-    ('comp-compoundd','avalanche_c','COMP',0xc3048e19e76cb9a3aa9d77d8c03c29fc906e2437,18),
-    ('eurc-eurc','avalanche_c','EURC',0xc891eb4cbdeff6e073e859e987815ed1505c2acd,6)
+    ('comp-compoundd','avalanche_c','COMP',0xc3048e19e76cb9a3aa9d77d8c03c29fc906e2437,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
