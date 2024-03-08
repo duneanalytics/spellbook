@@ -16,10 +16,10 @@ WITH
     -- All SyncSwap Pools
     pools AS (
         SELECT pool, token0, token1
-        FROM ref('syncswap_zksync_SyncSwapClassicPoolFactory_evt_PoolCreated') 
+        FROM {{ source('syncswap_zksync', 'SyncSwapClassicPoolFactory_evt_PoolCreated') }}
         UNION ALL 
         SELECT pool, token0, token1
-        FROM ref('syncswap_zksync_SyncSwapStablePoolFactory_evt_PoolCreated')
+        FROM {{ source('syncswap_zksync', 'SyncSwapStablePoolFactory_evt_PoolCreated') }}
     )
 
     , logs AS ( 
