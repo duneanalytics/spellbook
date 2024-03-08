@@ -96,9 +96,6 @@ with
 src_EAS_evt_Attested as (
   select *
   from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Attested') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
 ),
 
 src_EAS_call_attest as (
@@ -106,85 +103,48 @@ src_EAS_call_attest as (
     *,
     replace(replace(replace(request, '\"', '"'), '"{', '{'), '}"', '}') as clean_request
   from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_call_attest') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('call_block_time') }}
-  {% endif %}
 ),
 
 src_EAS_evt_Revoked as (
   select *
   from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Revoked') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
-),
-
-attestations as (
-  select
-    '{{ blockchain }}' as blockchain,
-    '{{ project }}' as project,
-    '{{ version }}' as version,
-    ea.{{ schema_column_name }} as schema_uid,
-    ea.uid as attestation_uid,
-    ea.attester,
-    ea.recipient,
-    ca.request,
-    try_cast(json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as boolean) as is_revocable,
-    from_hex(json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes)) as ref_uid,
-    json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
-    try_cast(json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as uint256) as raw_value,
-    cast(
-      if(
-        json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) <> '0',
-        from_unixtime(try_cast(json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as bigint))
-      ) as timestamp
-    ) as expiration_time,
-    cast(er.evt_block_time as timestamp) as revocation_time,
-    if(er.evt_block_time is not null, 'revoked', 'valid') as attestation_state,
-    if(er.evt_block_time is not null, true, false) as is_revoked,
-    ea.contract_address,
-    ea.evt_block_number as block_number,
-    ea.evt_block_time as block_time, -- attestation created
-    ea.evt_tx_hash as tx_hash,
-    ea.evt_index
-  from src_EAS_evt_Attested ea
-    join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash and ea.uid = ca.output_0
-    left join src_EAS_evt_Revoked er on ea.{{ schema_column_name }} = er.{{ schema_column_name }} and ea.uid = er.uid
-  where ca.call_success
-
-  {% if is_incremental() %}
-  union all
-
-  select
-    a.blockchain,
-    a.project,
-    a.version,
-    a.schema_uid,
-    a.attestation_uid,
-    a.attester,
-    a.recipient,
-    a.request,
-    a.is_revocable,
-    a.ref_uid,
-    a.raw_data,
-    a.raw_value,
-    a.expiration_time,
-    er.evt_block_time as revocation_time,
-    'revoked' as attestation_state,
-    true as is_revoked,
-    a.contract_address,
-    a.block_number,
-    a.block_time, -- attestation created
-    a.tx_hash,
-    a.evt_index
-  from src_EAS_evt_Revoked er
-    join {{ this }} a on er.{{ schema_column_name }} = a.schema_uid and er.uid = a.attestation_uid -- checking against main model to backfill data
-    left join src_EAS_evt_Attested ea on er.evt_tx_hash = ea.evt_tx_hash -- skip records included in this load increment (top select in union all)
-  where ea.evt_tx_hash is null
-  {% endif %}
 )
 
-select distinct * from attestations
+select
+  '{{ blockchain }}' as blockchain,
+  '{{ project }}' as project,
+  '{{ version }}' as version,
+  ea.{{ schema_column_name }} as schema_uid,
+  ea.uid as attestation_uid,
+  ea.attester,
+  ea.recipient,
+  ca.request,
+  try_cast(json_query(ca.clean_request, 'lax $.data[*].revocable' omit quotes) as boolean) as is_revocable,
+  from_hex(json_query(ca.clean_request, 'lax $.data[*].refUID' omit quotes)) as ref_uid,
+  json_query(ca.clean_request, 'lax $.data[*].data' omit quotes) as raw_data,
+  try_cast(json_query(ca.clean_request, 'lax $.data[*].value' omit quotes) as uint256) as raw_value,
+  cast(
+    if(
+      json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) <> '0',
+      from_unixtime(try_cast(json_query(ca.clean_request, 'lax $.data[*].expirationTime' omit quotes) as bigint))
+    ) as timestamp
+  ) as expiration_time,
+  cast(er.evt_block_time as timestamp) as revocation_time,
+  if(er.evt_block_time is not null, 'revoked', 'valid') as attestation_state,
+  if(er.evt_block_time is not null, true, false) as is_revoked,
+  ea.contract_address,
+  ea.evt_block_number as block_number,
+  ea.evt_block_time as block_time, -- attestation created
+  ea.evt_tx_hash as tx_hash,
+  ea.evt_index
+from src_EAS_evt_Attested ea
+  join src_EAS_call_attest ca on ea.evt_tx_hash = ca.call_tx_hash and ea.uid = ca.output_0
+  left join src_EAS_evt_Revoked er on ea.{{ schema_column_name }} = er.{{ schema_column_name }} and ea.uid = er.uid
+where ca.call_success
+  {% if is_incremental() %}
+  and ( {{ incremental_predicate('ea.evt_block_time') }}
+     or {{ incremental_predicate('er.evt_block_time') }} )
+  {% endif %}
 
 {% endmacro %}
 
