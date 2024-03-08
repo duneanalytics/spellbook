@@ -110,7 +110,7 @@ src_EAS_evt_Revoked as (
   from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Revoked') }}
 )
 
-select
+select distinct
   '{{ blockchain }}' as blockchain,
   '{{ project }}' as project,
   '{{ version }}' as version,
