@@ -53,7 +53,6 @@ FROM
     ('fld-fold','avalanche_c','FLD',0x88F89BE3E9b1dc1C5F208696fb9cABfcc684bD5F,18),
     ('egs-emingunsirer','avalanche_c','EGS',0xc92f165f5e20979576A7Ba48f16eb45361c078a2,18), 
     ('coq-coq-inu','avalanche_c','COQ',0x420fca0121dc28039145009570975747295f2329,18),
-    ('stg-stargate-finance','avalanche_c','STG',0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590,18),
     ('grt-the-graph','avalanche_c','GRT',0x8a0cac13c7da965a312f08ea4229c37869e85cb9,18),
     ('uni-uniswap','avalanche_c','UNI',0x8ebaf22b6f053dffeaf46f4dd9efa95d89ba8580,18),
     ('mkr-maker','avalanche_c','MKR',0x88128fd4b259552a9a1d457f435a6527aab72d42,18),
