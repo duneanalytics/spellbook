@@ -9,6 +9,8 @@
         )
 }}
 
+
+-- test test test
 select
     'ethereum' as blockchain,
     date_trunc('day', evt_block_time) as day,
