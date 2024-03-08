@@ -43,7 +43,7 @@ WITH
             FROM {{ source('sudoswap_v2_' ~ blockchain,'LSSVMPair_call_swapNFTsForToken') }}
             WHERE call_success
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('call_block_time')}}
             {% endif %}
             ) sp_start
         LEFT JOIN (
@@ -59,7 +59,7 @@ WITH
             AND sp_start.call_block_number = sp.call_block_number
             AND sp_start.call_trace_address_filled = slice(sp.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
             {% if is_incremental() %}
-            AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('sp.call_block_time')}}
             {% endif %}
         --royalty is only called once per NFT contract, even if there are multiple token ids
         LEFT JOIN {{ source('sudoswap_v2_' ~ blockchain,'RoyaltyEngine_call_getRoyalty') }} roy
@@ -68,7 +68,7 @@ WITH
             AND sp_start.call_trace_address_filled = slice(roy.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
             AND cardinality(roy.output_0) is not null --ignore if no royalty returned.
             {% if is_incremental() %}
-            AND roy.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('roy.call_block_time')}}
             {% endif %}
         LEFT JOIN pools p ON p.pool_address = sp_start.contract_address
     )
@@ -105,7 +105,7 @@ WITH
             FROM {{ source('sudoswap_v2_' ~ blockchain,'LSSVMPair_call_swapTokenForSpecificNFTs') }}
             WHERE call_success
             {% if is_incremental() %}
-            AND call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('call_block_time')}}
             {% endif %}
             ) sp_start
         LEFT JOIN (
@@ -120,14 +120,14 @@ WITH
             AND sp_start.call_block_number = sp.call_block_number
             AND sp_start.call_trace_address_filled = slice(sp.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
             {% if is_incremental() %}
-            AND sp.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('sp.call_block_time')}}
             {% endif %}
         LEFT JOIN {{ source('sudoswap_v2_' ~ blockchain,'RoyaltyEngine_call_getRoyalty') }} roy
             ON roy.call_tx_hash = sp.call_tx_hash
             AND roy.call_block_number = sp.call_block_number
             AND sp_start.call_trace_address_filled = slice(roy.call_trace_address,1,cardinality(sp_start.call_trace_address_filled))
             {% if is_incremental() %}
-            AND roy.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{incremental_predicate('roy.call_block_time')}}
             {% endif %}
         LEFT JOIN pools p ON p.pool_address = sp_start.contract_address
     )
