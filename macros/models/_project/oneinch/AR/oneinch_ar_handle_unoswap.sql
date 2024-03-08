@@ -49,7 +49,11 @@ select
     , call_error
     , call_type
     , ordinary
-    , transform(pools, x -> cast(x['pool'] as varbinary)) as pools
+    , transform(pools, x -> map_from_entries(array[
+        ('type', substr(cast(x['pool_type'] as varbinary), 1, 1))
+        , ('info', substr(cast(x['pool'] as varbinary), 1, 12))
+        , ('address', substr(cast(x['pool'] as varbinary), 13))
+    ])) as pools
     , remains
     , '{{ method_data.router_type }}' as router_type
 from (
