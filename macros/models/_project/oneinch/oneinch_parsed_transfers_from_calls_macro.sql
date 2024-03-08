@@ -66,7 +66,7 @@ transfers as (
             or value > uint256 '0' -- native, deposit
         )
         and call_type = 'call'
-        and tx_success
+        and (tx_success or tx_success is null)
         and success
 )
 -- the wrapper deposit includes two transfers: native and wrapper
