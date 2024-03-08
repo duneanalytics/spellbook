@@ -19,6 +19,10 @@ models:
             - tx_index
             - outer_instruction_index
             - inner_instruction_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bonkbot_solana_trades_seed')
+          filter:
+            version: 2
 
     columns:
       - &blockchain
