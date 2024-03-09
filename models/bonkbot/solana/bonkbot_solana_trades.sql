@@ -88,9 +88,14 @@ WITH
         AND date_trunc('minute', block_time) = minute
         AND minute >= TIMESTAMP '{{project_start_date}}'
       )
+      JOIN solana.transactions ON (
+        trades.tx_id = id
+        AND solana.transactions.block_time >= TIMESTAMP '{{project_start_date}}'
+      )
     WHERE
       trades.block_time >= TIMESTAMP '{{project_start_date}}'
       AND trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      AND solana.transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
   ),
   highestInnerInstructionIndexForEachTrade AS (
     SELECT
