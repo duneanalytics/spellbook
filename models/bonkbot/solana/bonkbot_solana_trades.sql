@@ -50,9 +50,9 @@ WITH
   ),
   botTrades AS (
     SELECT
-      block_time,
-      DATE_TRUNC('day', block_time) AS block_date,
-      DATE_TRUNC('month', block_time) AS block_month,
+      trades.block_time,
+      DATE_TRUNC('day', trades.block_time) AS block_date,
+      DATE_TRUNC('month', trades.block_time) AS block_month,
       'Solana' AS blockchain,
       amount_usd,
       IF(
