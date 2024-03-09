@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'token_bought_address', 'token_sold_address'],
+    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'token_bought_address', 'token_sold_address'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
                                 "dex",
