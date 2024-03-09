@@ -833,5 +833,5 @@ FROM (VALUES
         (0xf0f326af3b1Ed943ab95C29470730CC8Cf66ae47, 'bwAJNA', 18),
         (0xb829b68f57cc546da7e5806a929e53be32a4625d, 'axlETH', 18),
         (0x11c1879227d463b60db18c17c20ae739ae8e961a, 'axlBAL', 18),
-        (0x0d97f261b1e88845184f678e2d1e7a98d9fd38de, 'TYBG', )
+        (0x0d97f261b1e88845184f678e2d1e7a98d9fd38de, 'TYBG', 18)
      ) AS temp_table (contract_address, symbol, decimals)
