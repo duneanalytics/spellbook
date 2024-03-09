@@ -44,14 +44,14 @@ transfers as (
         , case
             when {{ selector }} in ({{ transferFrom_selector }}, {{ burn_selector }}) then substr(input, 17, 20) -- transferFrom, burn
             when {{ selector }} = {{ mint_selector }} then {{ null_address }} -- mint
-            when {{ selector }} = {{ withdraw_selector }} then "to" -- withdraw
+            when {{ selector }} = {{ withdraw_selector }} then "from" -- withdraw
             else "from" -- transfer, native, deposit
         end as transfer_from
         , case
             when {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}) then substr(input, 17, 20) -- transfer, mint
             when {{ selector }} = {{ transferFrom_selector }} then substr(input, 49, 20) -- transferFrom
             when {{ selector }} = {{ burn_selector }} then {{ null_address }} -- burn
-            when {{ selector }} = {{ withdraw_selector }} then "from" -- withdraw
+            when {{ selector }} = {{ withdraw_selector }} then "to" -- withdraw
             else "to" -- native, deposit
         end as transfer_to
     from {{ source(blockchain, 'traces') }}
