@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('agave_gnosis_base_supply')
+    ref('agave_gnosis_base_supply'),
+    ref('aave_v3_gnosis_base_supply')
   ]
 %}
 

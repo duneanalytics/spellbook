@@ -37,3 +37,11 @@ sources:
     tables:
       - name: ExchangeV5_evt_SellOrderFilled
 
+  - name: element_ex_optimism
+    freshness:
+    tables:
+      - name: ElementEx_evt_ERC721BuyOrderFilled
+      - name: ElementEx_evt_ERC721SellOrderFilled
+      - name: ElementEx_evt_ERC1155BuyOrderFilled
+      - name: ElementEx_evt_ERC1155SellOrderFilled
+

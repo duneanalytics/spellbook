@@ -105,7 +105,7 @@ models:
     meta:
       blockchain: base
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'base', 'amm', 'trades', 'dex' ]
     description: >
@@ -155,7 +155,7 @@ models:
     meta:
       blockchain: base
       sector: dex
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'balancer', 'base', 'amm', 'trades', 'dex', 'beta' ]
     description: >
@@ -192,7 +192,7 @@ models:
     meta:
       blockchain: base
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['base', 'balancer', 'pools', 'fees']
     description: >
@@ -205,6 +205,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -224,6 +225,7 @@ models:
       Token weights in Balancer pools.
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - &token_address
         name: token_address
@@ -248,6 +250,7 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -322,7 +325,7 @@ models:
     meta:
       blockchain: base
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['base', 'bpt', 'transfers']
     description: >
@@ -335,6 +338,7 @@ models:
             - block_date
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: block_date
       - name: block_month
@@ -427,7 +431,7 @@ models:
     meta:
       blockchain: base
       project: balancer_v2
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['base', 'bpt', 'supply']
     description: >

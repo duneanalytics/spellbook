@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: gas_base_fees
+    meta:
+      blockchain: base
+      sector: gas
+      contributors: soispoke, lgingerich
+    config:
+      tags: ['base', 'gas', 'fees']
+    description: >
+        Gas Fees on Base rollup Layer 2
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"    
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+      - &tx_sender
+        name: tx_sender
+        description: "Initiated the transaction"
+      - &tx_receiver
+        name: tx_receiver
+        description: "Received the transaction"
+      - &native_token_symbol
+        name: native_token_symbol
+        description: "Symbol of native token (ETH) for the Ethereum Blockchain"
+      - &tx_amount_native
+        name: tx_amount_native
+        description: "Amount of native tokens (ETH) transferred from sender to recipient"
+      - &tx_amount_usd
+        name: tx_amount_usd
+        description: "Amount of $USD transferred from sender to recipient"
+      - &tx_fee_native
+        name: tx_fee_native
+        description: "Total amount of native tokens (ETH) paid in gas fees"
+      - &tx_fee_usd
+        name: tx_fee_usd
+        description: "Total amount of $USD paid in gas fees"
+      - &burned_native
+        name: burned_native
+        description: "Total amount of native tokens (ETH) burned for this transaction, not applicable to L2 because transactions only indirectly burn gas on L1"
+      - &burned_usd
+        name: burned_usd
+        description: "Total amount of $USD burned for this transaction, not applicable to L2 because transactions only indirectly burn gas on L1"    
+      - &validator
+        name: validator
+        description: "Address of blockchain validator for this transaction within the block, also referred to as miner before the Merge when Ethereum's consensus mechanism was PoW"  
+      - &gas_price_gwei
+        name: gas_price_gwei
+        description: "Gas price (per gas unit) denoted in gwei"
+      - &gas_price_usd
+        name: gas_price_usd
+        description: "Gas price (per gas unit) denoted in $USD"
+      - &gas_used
+        name: gas_used
+        description: "Amount of L2 gas units consumed by the transaction"
+      - &gas_limit
+        name: gas_limit
+        description: "Maximum amount of gas units that can be consumed by the transaction on zksync L2"
+      - &gas_usage_percent
+        name: gas_usage_percent
+        description: "Percentage of Gas Used relative to the gas limit on zksync L2"
+      - &type
+        name: type
+        description: "Legacy (Pre Typed-Transactions), AccessList (EIP-2930), DynamicFee (EIP-1559), EIP-712, or Priority (L1 -> L2 Transactions)"

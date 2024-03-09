@@ -1,14 +1,17 @@
 {{ config(
         schema = 'tokens_optimism',
         alias = 'balances_daily',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(\'["optimism"]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["0xRob"]\') }}'
         )
 }}
 
 {{
-    balances_enrich(
-        balances_base = ref('tokens_optimism_base_balances_daily'),
-        blockchain = 'optimism',
-        daily=true,
-    )
+balances_daily(
+    balances_daily_agg = ref('tokens_optimism_balances_daily_agg'),
+    start_date = '2021-01-14',
+)
 }}
