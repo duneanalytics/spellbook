@@ -23,8 +23,8 @@ models:
           match_columns:
             - blockchain
             - tx_id
+            - tx_index
             - outer_instruction_index
-            - inner_instruction_index
           check_columns:
             - fee_token_amount
             - fee_token_address
