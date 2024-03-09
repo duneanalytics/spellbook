@@ -429,6 +429,7 @@ WITH raw_token_list AS (
     ,(0x20279b6d57Ba6D3eF852f34800e43e39d46d6487, 'MERK', 18, 'underlying')
     ,(0x9cfB13E6c11054ac9fcB92BA89644F30775436e4, 'axl-wstETH', 18, 'underlying')
     ,(0xc55E93C62874D8100dBd2DfE307EDc1036ad5434, 'mooBIFI', 18, 'receipt')
+    ,(0x10398AbC267496E49106B07dd6BE13364D10dC71, 'HAI', 18, 'underlying')
 
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )

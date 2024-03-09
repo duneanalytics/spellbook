@@ -1089,6 +1089,12 @@ WITH curated_list AS (
       ,(0xF1C0dF2381Ac4a6Cac9C866DdbdE3c3D641a1337, 'Layer3')
       ,(0x13845Fc81a84765f417A058b1F4B8e0C98e1F2Ee, 'KyberSwap')
       ,(0x219bf2CFF75B392d60978F7D0429B78385c19988, 'Unlooped')
+      ,(0xbd8ec4cb226ebae228f8829e2ec23070b09165d3, 'HAI')
+      ,(0x0d97f261b1e88845184f678e2d1e7a98d9fd38de, 'Based God')
+      ,(0xFa893f4c92A09747d112DfD6D6957ddd24F2A1d7, 'Holograph')
+      ,(0xC51d9D28f720EBF82eFA7137835857Bd6037aFBD, 'Zeroex (0x)')
+      ,(0x000000c397124D0375555F435e201F83B636C26C, 'Zeroex (0x)')
+      ,(0x88d9bc8a0c50fCF7cDd160b906D64c312bef79d6, 'Synthswap')
 
   ) as temp_table (creator_address, contract_project)
 )
