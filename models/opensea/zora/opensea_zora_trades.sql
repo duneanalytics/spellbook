@@ -34,5 +34,6 @@ SELECT
       tx_from,
       tx_to,
       unique_trade_id
+      
 FROM {{ ref('opensea_zora_events') }}
 WHERE evt_type = 'Trade'
