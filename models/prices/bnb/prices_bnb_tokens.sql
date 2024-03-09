@@ -209,7 +209,7 @@ FROM
     ('ata-automata', 'bnb', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
     ('bonk-bonk', 'bnb', 'BONK', 0xa697e272a73744b343528c3bc4702f2565b2f422, 5),
     ('pepe-pepe', 'bnb', 'PEPE', 0x25d887ce7a35172c62febfd67a1856f20faebb00,18),
-    ('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
+    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
     ('weth-wrapped-ether-wormhole', 'bnb', 'WETH', 0x4db5a66e937a9f4473fa95b1caf1d1e1d62e29ea,18),
     ('ageur-ageur', 'bnb', 'AGEUR', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89,18),
     ('sol-wrapped-sol-wormhole', 'bnb', 'SOL', 0xfa54ff1a158b5189ebba6ae130ced6bbd3aea76e,9),
