@@ -72,7 +72,7 @@ models:
       - &top_level_contract_address
         name: top_level_contract_address
         description: "Top-Level contract address"
-        - &top_level_time
+      - &top_level_time
         name: top_level_time
         description: "Top-Level contract creation transaction block time"
       - &top_level_tx_hash
