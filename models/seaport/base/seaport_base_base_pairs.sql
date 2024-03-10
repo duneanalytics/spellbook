@@ -70,7 +70,7 @@ with iv_offer_consideration as (
             , zone
             , offer_idx
             , offer_item
-        from {{ source('opensea_base', 'Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_base', 'Seaport_evt_OrderFulfilled') }}
         cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
         {% if not is_incremental() %}
         where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
@@ -132,7 +132,7 @@ with iv_offer_consideration as (
             , zone
             , consideration_item
             , consideration_idx
-        from {{ source('opensea_base','Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_base','Seaport_evt_OrderFulfilled') }}
         cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
         {% if not is_incremental() %}
         where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
