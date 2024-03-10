@@ -6,14 +6,14 @@ Thank you for taking the time to submit code in Spellbook. A few things to consi
 - Refer to [docs](#spellbook-contribution-docs) section below to answer questions
 - Dune team will review submitted PRs as soon as possible
 
-## Spellbook sub-projects
+# IMPORTANT: To speed up your contribution (PR) process, keep these tips in mind
 
-To prepare for Spellbook to scale in size, Dune team has started to pilot sub-projects:
-
-- For a quick overview, see [the GH discussion on the topic](https://github.com/duneanalytics/spellbook/discussions/5238)
-  - Please ask questions and continue the conversation there
-- The first spell lineage to move: `tokens.erc20` and all upstream spells which help build it
-  - **_Note_**: Please navigate to [tokens](/tokens) root directory to find tokens objects
+- Each commit will rerun the CI which builds all the models and runs all tests ([see example](https://github.com/duneanalytics/spellbook/actions/runs/8202519819/job/22433451880?pr=5519)
+- Hardcode a WHERE filter for only 7 days of history on tables when testing, to make the CI run faster.
+- Install dbt locally (pip install dbt), and run `dbt compile` to quickly test for syntax errors on your own machine.
+- Make sure your unique key columns are EXACTLY the same in the model config, schema, and seed match.
+- You can't have nulls in your unique key columns - be sure to COALESCE() where needed otherwise the tests will say you have duplicates.
+- You are able to query the CI tables and errors in dune when it finishes running. For example, in the "run initial models" and "test initial models" there will be a schema that looks like this `test_schema.git_dunesql_4da8bae_sudoswap_v2_base_pool_creations` which can be temporarily queried in Dune for roughly an hour or two. Use this to quickly QA and test for errors.
 
 ## Spellbook contribution docs
 
