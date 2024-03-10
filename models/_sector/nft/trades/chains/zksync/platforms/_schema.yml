@@ -62,3 +62,31 @@ models:
            - price_raw
            - platform_fee_amount_raw
            - royalty_fee_amount_raw
+
+ - name: kreatorland_zksync_base_trades
+   meta:
+     blockchain: zksync
+     project: kreatorland
+     contributors: thetroyharris
+   config:
+     tags: [ 'zksync','kreatorland','base_trades' ]
+   description: >
+     Kreatorland trades on zksync
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: element_zksync_base_trades
+   meta:
+     blockchain: zksync
+     project: element
+     contributors: thetroyharris
+   config:
+     tags: [ 'zksync','element','base_trades' ]
+   description: >
+     Element trades on zksync
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
