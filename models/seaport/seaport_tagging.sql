@@ -2,7 +2,7 @@
         tags = [ 'static'],
         alias = 'tagging',
         unique_key = ['blockchain', 'tagging_method', 'identifier'],
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon", "zora"]\',
                                     "project",
                                     "seaport",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@ ref('seaport_arbitrum_tagging')
 , ref('seaport_ethereum_tagging')
 , ref('seaport_optimism_tagging')
 , ref('seaport_polygon_tagging')
+, ref('seaport_zora_tagging')
 ] %}
 
 SELECT *

@@ -2,7 +2,7 @@
         
         alias = 'traces',
         unique_key = ['blockchain', 'block_number', 'tx_hash', 'evt_index', 'order_hash', 'trace_side', 'trace_index'],
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon", "zora"]\',
                                     "project",
                                     "seaport",
                                     \'["hildobby"]\') }}'
@@ -17,6 +17,7 @@ ref('seaport_arbitrum_traces')
 , ref('seaport_ethereum_traces')
 , ref('seaport_optimism_traces')
 , ref('seaport_polygon_traces')
+, ref('seaport_zora_traces')
 ] %}
 
 SELECT *

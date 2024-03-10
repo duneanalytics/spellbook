@@ -1,105 +1,13 @@
 version: 2
 
 models:
-  - name: seaport_base_traces
+  - name: seaport_zora_base_pairs
     meta:
-      blockchain: base
-      project: seaport
-      contributors: hildobby
-    config:
-      tags: ['seaport', 'base', 'traces']
-    description: >
-        Seaport emitted event traces on Base
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - evt_index
-            - order_hash
-            - trace_side
-            - trace_index
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: block_date
-        description: "UTC event block date"
-      - name: block_time
-        description: "UTC event block time"
-      - name: block_number
-        description: "Block number in which the transaction was executed"
-      - name: trace_side
-        tests:
-          - accepted_values:
-              values: ['consideration', 'offer']
-        description: "Side of the trace"
-      - name: order_hash
-        description: "Unique trade identifier hash"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: token_standard
-        tests:
-          - accepted_values:
-              values: ['native', 'erc20', 'erc721', 'erc1155']
-        description: "Token standard"
-      - name: trace_index
-        description: "Index of the trace"
-      - name: seaport_contract_address
-        description: "Seaport contract address"
-      - name: seaport_version
-        description: "Seaport version"
-      - name: token_address
-        description: "Token address"
-      - name: amount
-        description: "Amount"
-      - name: identifier
-        description: "Token identified"
-      - name: recipient
-        description: "Recipient"
-      - name: offerer
-        description: "Offerer"
-      - name: zone
-        description: "Seaport zone"
-      - name: evt_index
-        description: "Event index"
-
-  - name: seaport_base_tagging
-    meta:
-      blockchain: base
-      project: seaport
-      contributors: hildobby
-    config:
-      tags: ['seaport', 'base', 'tagging']
-    description: >
-        Seaport tagging to identify the different protocols using Seaport on Base 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tagging_method
-            - identifier
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: tagging_method
-        description: "Identification method"
-        tests:
-          - accepted_values:
-              values: ['zone', 'fee_recipient', 'tx_data_salt']
-      - name: identifier
-        description: "Identifier hash"
-      - name: protocol
-        description: "Protocol"
-      - name: protocol_type
-        description: "Type of Protocol"
-
-  - name: seaport_base_base_pairs
-    meta:
-      blockchain: base
+      blockchain: zora
       project: seaport
       contributors: sohwak
     config:
-      tags: ['base','seaport','base_pairs','sohwak']
+      tags: ['zora','seaport','base_pairs','sohwak']
     description: >
         Exploded table from Seaport trade events with `offer` and `consideration` array columns
     tests:
@@ -208,15 +116,15 @@ models:
         name: is_moved_nft
         description: "Transferred NFT if `true`, because it is traded or just transferred."
 
-  - name: seaport_base_trades
+  - name: seaport_zora_trades
     meta:
-      blockchain: base
+      blockchain: zora
       project: seaport
       contributors: sohwak
     config:
-      tags: ['base','seaport','base_pairs','sohwak']
+      tags: ['zora','seaport','base_pairs','sohwak']
     description: >
-        Seaport trades on base
+        Seaport trades on zora
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -227,6 +135,10 @@ models:
             - token_id
             - sub_type
             - sub_idx
+      - check_seaport_seed:
+          blockchain: zora
+          project: seaport
+          version: v1
     columns:
       - &blockchain
         name: blockchain
@@ -358,3 +270,95 @@ models:
         name: estimated_price
         description: "True if it is bundle trade and dividened price"
       - *is_private
+
+  - name: seaport_zora_traces
+    meta:
+      blockchain: zora
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'zora', 'traces']
+    description: >
+        Seaport emitted event traces on zora
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - evt_index
+            - order_hash
+            - trace_side
+            - trace_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: trace_side
+        tests:
+          - accepted_values:
+              values: ['consideration', 'offer']
+        description: "Side of the trace"
+      - name: order_hash
+        description: "Unique trade identifier hash"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: token_standard
+        tests:
+          - accepted_values:
+              values: ['native', 'erc20', 'erc721', 'erc1155']
+        description: "Token standard"
+      - name: trace_index
+        description: "Index of the trace"
+      - name: seaport_contract_address
+        description: "Seaport contract address"
+      - name: seaport_version
+        description: "Seaport version"
+      - name: token_address
+        description: "Token address"
+      - name: amount
+        description: "Amount"
+      - name: identifier
+        description: "Token identified"
+      - name: recipient
+        description: "Recipient"
+      - name: offerer
+        description: "Offerer"
+      - name: zone
+        description: "Seaport zone"
+      - name: evt_index
+        description: "Event index"
+
+  - name: seaport_zora_tagging
+    meta:
+      blockchain: zora
+      project: seaport
+      contributors: hildobby
+    config:
+      tags: ['seaport', 'zora', 'tagging']
+    description: >
+        Seaport tagging to identify the different protocols using Seaport on zora 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tagging_method
+            - identifier
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: tagging_method
+        description: "Identification method"
+        tests:
+          - accepted_values:
+              values: ['zone', 'fee_recipient', 'tx_data_salt']
+      - name: identifier
+        description: "Identifier hash"
+      - name: protocol
+        description: "Protocol"
+      - name: protocol_type
+        description: "Type of Protocol"
