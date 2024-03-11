@@ -8,3 +8,7 @@ sources:
   - name: radiant_capital_arbitrum
     tables:
       - name: LendingPool_evt_FlashLoan
+
+  - name: the_granary_arbitrum
+    tables:
+      - name: LendingPool_evt_FlashLoan
