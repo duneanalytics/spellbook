@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v2_avalanche_c_base_borrow'),
     ref('aave_v3_avalanche_c_base_borrow'),
-    ref('benqi_avalanche_c_base_borrow')
+    ref('benqi_avalanche_c_base_borrow'),
+    ref('granary_avalanche_c_base_borrow')
   ]
 %}
 
