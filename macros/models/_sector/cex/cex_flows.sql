@@ -22,7 +22,7 @@ SELECT '{{blockchain}}' AS blockchain
 , t.evt_index
 , t.unique_key
 FROM {{transfers}} t
-INNER JOIN {{addresses}} a ON a.address IN (t."from", t.to)
+INNER JOIN {{addresses}} a ON a.address = t."from" OR a.address = t.to
 {% if is_incremental() %}
 WHERE {{incremental_predicate('block_time')}}
 {% endif %}
