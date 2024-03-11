@@ -104,9 +104,5 @@ FROM
     ('wavax-wrapped-avax-wormhole', 'polygon', 'WAVAX', 0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b, 18),
     ('tbtc-tbtc', 'polygon', 'TBTC', 0x236aa50979d5f3de3bd1eeb40e81137f22ab794b, 18),
     ('ldo-lido-dao', 'polygon', 'LDO', 0xc3c7d422809852031b44ab29eec9f1eff2a58756, 18),
-    ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6),
-    ('truehn-true-human-nature', 'polygon', 'TRUEHN', 0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9),
-    ('ghst-aavegotchi', 'polygon', 'GHST', 0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7,18),
-    ('bklay-orbit-bridge-bsc-klay', 'polygon', 'BKLAY', 0x0a02d33031917d836bd7af02f9f7f6c74d67805f,18),
-    ('truehn-true-human-nature', 'polygon', 'TRUEHN', 0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9)
+    ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
