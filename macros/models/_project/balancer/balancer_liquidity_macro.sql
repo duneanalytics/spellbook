@@ -55,7 +55,7 @@ WITH pool_labels AS (
     ),
 
     bpt_prices AS(
-        SELECT 
+        SELECT DISTINCT
             day,
             contract_address AS token,
             decimals,
@@ -63,7 +63,6 @@ WITH pool_labels AS (
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         AND version = '{{version}}'
-        GROUP BY 1, 2, 3, 4
     ),
     
     eth_prices AS (
