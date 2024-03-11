@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v3_base_base_flashloans'),
-    ref('seamlessprotocol_base_base_flashloans')
+    ref('seamlessprotocol_base_base_flashloans'),
+    ref('granary_base_base_flashloans')
   ]
 %}
 

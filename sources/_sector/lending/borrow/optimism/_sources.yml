@@ -39,3 +39,9 @@ sources:
       - name: sowstETH_evt_Borrow
       - name: sowstETH_evt_RepayBorrow
       - name: sowstETH_evt_LiquidateBorrow
+
+  - name: the_granary_optimism
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
