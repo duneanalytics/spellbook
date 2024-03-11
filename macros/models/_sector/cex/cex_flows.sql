@@ -1,14 +1,6 @@
-{{config(
-        schema = 'cex_ethereum',
-        alias = 'flows',
-        partition_by = ['block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['flow_type', 'unique_key']
-        )}}
+{% macro cex_flows(blockchain, transfers, addresses) %}
 
-SELECT t.blockchain
+SELECT '{{blockchain}}' AS blockchain
 , CAST(date_trunc('month', block_time) AS date) AS block_month
 , block_time
 , block_number
@@ -29,8 +21,10 @@ SELECT t.blockchain
 , t.tx_hash
 , t.evt_index
 , t.unique_key
-FROM {{ ref('tokens_ethereum_transfers')}} t
-INNER JOIN {{ ref('cex_ethereum_addresses')}} a ON a.address IN (t."from", t.to)
+FROM {{transfers}} t
+INNER JOIN {{addresses}} a ON a.address = t."from" OR a.address = t.to
 {% if is_incremental() %}
 WHERE {{incremental_predicate('block_time')}}
 {% endif %}
+
+{% endmacro %}
