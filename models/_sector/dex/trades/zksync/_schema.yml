@@ -20,6 +20,25 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_zksync_base_trades_seed')
 
+  - name: uniswap_v3_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: uniswap
+      contributors: intensodefi
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap zksync v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_zksync_base_trades_seed')
+          filter:
+            version: 3
+            
   - name: syncswap_zksync_base_trades
     meta:
       blockchain: zksync
