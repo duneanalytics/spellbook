@@ -12,7 +12,8 @@
     ref('compound_v3_base_base_supply'),
     ref('seamlessprotocol_base_base_supply'),
     ref('moonwell_base_base_supply'),
-    ref('sonne_finance_base_base_supply')
+    ref('sonne_finance_base_base_supply'),
+    ref('granary_base_base_supply')
   ]
 %}
 

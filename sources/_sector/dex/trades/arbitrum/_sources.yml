@@ -123,3 +123,7 @@ sources:
     tables:
       - name: SharkyPair_evt_Swap
       - name: SharkyFactory_evt_PairCreated
+  - name: wombatexchange_arbitrum
+    tables:
+      - name: CrossChainPool_evt_SwapV2
+  

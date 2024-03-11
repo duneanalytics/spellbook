@@ -8,3 +8,7 @@ sources:
   - name: seamlessprotocol_base
     tables:
       - name: L2Pool_evt_FlashLoan
+
+  - name: the_granary_base
+    tables:
+      - name: LendingPool_evt_FlashLoan

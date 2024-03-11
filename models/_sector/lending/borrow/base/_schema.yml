@@ -156,7 +156,7 @@ models:
       project: seamlessprotocol
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'seamlessprotocol', 'base']
+      tags: ['lending', 'borrow', 'aave', 'seamlessprotocol', 'base']
     description: "Seamless Protocol borrow transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -190,7 +190,7 @@ models:
       project: moonwell
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'moonwell', 'base']
+      tags: ['lending', 'borrow', 'compound', 'moonwell', 'base']
     description: "Moonwell borrow transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -224,7 +224,7 @@ models:
       project: sonne_finance
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'sonne_finance', 'base']
+      tags: ['lending', 'borrow', 'compound', 'sonne_finance', 'base']
     description: "Sonne Finance borrow transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -235,6 +235,40 @@ models:
             - evt_index
       - check_lending_base_borrow_seed:
           seed_file: ref('sonne_finance_base_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_base_base_borrow
+    meta:
+      blockchain: base
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'granary', 'base']
+    description: "Granary borrow transactions on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('granary_base_base_borrow_seed')
     columns:
       - *blockchain
       - *project

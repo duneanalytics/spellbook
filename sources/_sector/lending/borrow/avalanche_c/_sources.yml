@@ -21,3 +21,9 @@ sources:
       - name: QiAvax_evt_RepayBorrow
       - name: QiErc20Delegate_evt_LiquidateBorrow
       - name: QiAvax_evt_LiquidateBorrow
+
+  - name: the_granary_avalanche_c
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

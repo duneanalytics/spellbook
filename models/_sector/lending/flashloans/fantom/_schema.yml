@@ -103,3 +103,34 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: granary_fantom_base_flashloans
+    meta:
+      blockchain: fantom
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'granary', 'fantom']
+    description: "Granary flashloans transactions on Fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('granary_fantom_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
