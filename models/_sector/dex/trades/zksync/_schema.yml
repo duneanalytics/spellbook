@@ -22,13 +22,13 @@ models:
 
   - name: uniswap_v3_zksync_base_trades
     meta:
-      blockchain: base
+      blockchain: zksync
       sector: dex
       project: uniswap
       contributors: intensodefi
     config:
-      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v3' ]
-    description: "uniswap base v3 base trades"
+      tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap zksync v3 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
