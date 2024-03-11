@@ -125,7 +125,7 @@ models:
     config:
       tags: ['oneinch', 'calls', 'transfers']
     description: >
-        1inch transfers within calls
+        1inch blockchains meta
     columns:
       - name: blockchain
         tests:
@@ -230,6 +230,7 @@ models:
             - tx_hash
             - call_trace_address
             - transfer_trace_address
+            - transfer_native
     columns:
       - name: blockchain
         tests:
