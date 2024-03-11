@@ -1652,7 +1652,19 @@ FROM
     ('ethx-stader-ethx','ethereum','ETHx',0xA35b1B31Ce002FBF2058D22F30f95D405200A15b, 18),
     ('rseth-rseth','ethereum','rsETH',0xa1290d69c65a6fe4df752f95823fae25cb99e5a7, 18),
     ('pufeth-pufeth','ethereum','pufETH',0xD9A442856C234a39a81a089C06451EBAa4306a72, 18),
-    ('yup-yup','ethereum','YUP',0x69bBC3F8787d573F1BBDd0a5f40C7bA0Aee9BCC9, 18)
+    ('yup-yup','ethereum','YUP',0x69bBC3F8787d573F1BBDd0a5f40C7bA0Aee9BCC9, 18),
+    ('jesus-jesus-coin','ethereum','JESUS',0xba386a4ca26b85fd057ab1ef86e3dc7bdeb5ce70, 18),
+    ('bonk-bonk','ethereum','BONK',0x1151cb3d861920e07a38e03eead12c32178567f6, 5),
+    ('bad-bad-idea-ai','ethereum','BAD',0x32b86b99441480a7e5bd3a26c124ec2373e3f015, 18),
+    ('meme-memecoin','ethereum','MEME',0xb131f4a55907b10d1f0a50d8ab8fa09ec342cd74, 18),
+    ('gala-gala','ethereum','GALA',0xd1d2eb1b1e90b638588728b4130137d262c87cae, 8),
+    ('prime-echelon-prime','ethereum','PRIME',0xb23d80f5fefcddaa212212f028021b41ded428cf, 18),
+    ('pol-polygon-ecosystem-token','ethereum','POL',0x455e53cbb86018ac2b8092fdcd39d8444affc3f6, 18),
+    ('pyusd-paypal-usd','ethereum','PYUSD',0x6c3ea9036406852006290770bedfcaba0e23a0e8, 6),
+    ('loom-loom-network','ethereum','LOOM',0x42476f744292107e34519f9c357927074ea3f75d, 18),
+    ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
+    ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
+    ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
