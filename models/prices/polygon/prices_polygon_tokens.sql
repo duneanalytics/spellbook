@@ -103,6 +103,6 @@ FROM
     ('bat-basic-attention-token', 'polygon', 'BAT', 0x3cef98bb43d732e2f285ee605a8158cde967d219, 18),
     ('wavax-wrapped-avax-wormhole', 'polygon', 'WAVAX', 0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b, 18),
     ('tbtc-tbtc', 'polygon', 'TBTC', 0x236aa50979d5f3de3bd1eeb40e81137f22ab794b, 18),
-    ('ldo-lido-dao', 'polygon', 'LDO', 0xc3c7d422809852031b44ab29eec9f1eff2a58756, 18)
+    ('ldo-lido-dao', 'polygon', 'LDO', 0xc3c7d422809852031b44ab29eec9f1eff2a58756, 18),
     ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
