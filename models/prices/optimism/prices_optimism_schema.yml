@@ -32,7 +32,7 @@ models:
     meta:
       blockchain: optimism
       sector: prices
-      contributors: aalan3, jeff-dude
+      contributors: aalan3, jeff-dude, rantum
     config:
       tags: [ 'prices', 'tokens', 'usd', 'optimism' ]
     description: "Price tokens on optimism chain"
