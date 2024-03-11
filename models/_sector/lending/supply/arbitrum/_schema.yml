@@ -254,3 +254,37 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: granary_arbitrum_base_supply
+    meta:
+      blockchain: arbitrum
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'granary', 'arbitrum']
+    description: "Granary supply transactions on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('granary_arbitrum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
