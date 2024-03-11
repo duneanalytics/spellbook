@@ -8996,5 +8996,6 @@ FROM (VALUES (0x3f9463bdb502ec2079bf39da6c924d4022ff9f4c, 'biubiu.tools', 18),
             ,(0x7fE440bC581DA8fF0173a588D3f7603814393763, 'bwAJNA', 18)
             ,(0xaf204776c7245bf4147c2612bf6e5972ee483701, 'sDAI', 18)
             ,(0xce11e14225575945b8e6dc0d4f2dd4c570f79d9f, 'OLAS', 18)
-            ,(0x004626A008B1aCdC4c74ab51644093b155e59A23, 'stEUR', 18)                 
+            ,(0x004626A008B1aCdC4c74ab51644093b155e59A23, 'stEUR', 18)             
+            ,(0x1509706a6c66CA549ff0cB464de88231DDBe213B, 'AURA', 18)                      
      ) AS temp_table (contract_address, symbol, decimals)
