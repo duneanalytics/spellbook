@@ -39391,7 +39391,7 @@ FROM (VALUES
         ,(0xb2D007293a421471586D6BC3FBfEB1990fdFa2e6, 'gVEC', 18)
         ,(0xf073bAC22DAb7FaF4a3Dd6c6189a70D54110525C, 'genETH', 18)
         ,(0x7FA768E035F956c41d6aeaa3Bd857e7E5141CAd5, 'instETH', 18)        
-	    ,(0x747e550a7b848ace786c3cfe754aa78febc8a022, 'DODO', 18)
+        ,(0x747e550a7b848ace786c3cfe754aa78febc8a022, 'DODO', 18)
         ,(0x77fe53233f5fc6fab7576e1e9ed61296ed829e96, 'V-JEPA', 9)
         ,(0x2a4701ac59e0ec6b95becbaf88315ca9b722c2ba, 'HAO', 9)
         ,(0x66dce194bc18c79e0da2a77755e348d0d0ab7c23, 'TREMP', 9)
