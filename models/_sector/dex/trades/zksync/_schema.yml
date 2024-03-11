@@ -38,3 +38,20 @@ models:
           seed_file: ref('uniswap_zksync_base_trades_seed')
           filter:
             version: 3
+            
+  - name: syncswap_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: syncswap
+      contributors: thetroyharris
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'syncswap' ]
+    description: "SyncSwap zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('syncswap_zksync_base_trades_seed')

@@ -39383,4 +39383,5 @@ FROM (VALUES
         ,(0xCe6E54DaA1ea95fb3530859d69D4bdb978dd821b, 'ORBK', 18)
         ,(0x8C282C35B5E1088bb208991c151182A782637699, 'MONAI', 18)
         ,(0x857FfC55B1Aa61A7fF847C82072790cAE73cd883, 'EEFI', 18)
+        ,(0x51fa2efd62ee56a493f24ae963eace7d0051929e, 'psdnOCEAN', 18)        
      ) AS temp_table (contract_address, symbol, decimals)

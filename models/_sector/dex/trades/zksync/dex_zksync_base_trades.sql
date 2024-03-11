@@ -6,8 +6,9 @@
 }}
 
 {% set base_models = [
-    ref('maverick_zksync_base_trades'),
-    ref('uniswap_v3_zksync_base_trades'),
+    ref('maverick_zksync_base_trades')
+    , ref('syncswap_zksync_base_trades')
+    , ref('uniswap_v3_zksync_base_trades')
 ] %}
 
 WITH base_union AS (
