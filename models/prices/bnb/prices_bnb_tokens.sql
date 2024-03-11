@@ -223,7 +223,7 @@ FROM
     ('dis-disney', 'bnb', 'DIS', 0xe2ecc66e14efa96e9c55945f79564f468882d24c,18),
     --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), --not active
     ('shib-shiba-inu', 'bnb', 'SHIB', 0x2859e4544c4bb03966803b044a93563bd2d0dd4d,18),
-    ('btt-bittorrent', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
+    ('bttc-bittorrent-chain', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
     ('aitech-solidus-ai-tech', 'bnb', 'AITECH', 0x2d060ef4d6bf7f9e5edde373ab735513c0e4f944,18),
     ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8cb3c6e7d085626e7a1347aafdf001f6,18),
     --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not in API
