@@ -107,7 +107,7 @@ FROM
     ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6),
     --('bklay-orbit-bridge-bsc-klay', 'polygon', 'BKLAY', 0x0a02d33031917d836bd7af02f9f7f6c74d67805f,18), --inactive
     ('kek-kek', 'polygon', 'KEK', 0x42e5e06ef5b90fe15f853f59299fc96259209c5c,18),
-    ('mesh-meshswap-protocol', 'polygon', 'MESH', 0x82362ec182db3cf7829014bc61e9be8a2e82868a,18),
+    --('mesh-meshswap-protocol', 'polygon', 'MESH', 0x82362ec182db3cf7829014bc61e9be8a2e82868a,18), --inactive
     --('xdg-decentral-games-governance', 'polygon', 'XDG', 0xc6480da81151b2277761024599e8db2ad4c388c8,18), --inactive
     ('shib-shiba-inu-pos', 'polygon', 'SHIB', 0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec,18),
     ('dg-decentral-games', 'polygon', 'DG', 0xef938b6da8576a896f6e0321ef80996f4890f9c4,18),
