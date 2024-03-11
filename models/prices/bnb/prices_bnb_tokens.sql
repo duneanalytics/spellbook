@@ -226,7 +226,7 @@ FROM
     ('btt-bittorrent', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
     ('aitech-solidus-ai-tech', 'bnb', 'AITECH', 0x2d060ef4d6bf7f9e5edde373ab735513c0e4f944,18),
     ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8cb3c6e7d085626e7a1347aafdf001f6,18),
-    ('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18),
+    --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not in API
     ('trias-trias-token', 'bnb', 'TRIAS', 0xa4838122c683f732289805fc3c207febd55babdd,18),
     ('pzp-playzap', 'bnb', 'PZP', 0x6ad9e9c098a45b2b41b519119c31c3dcb02accb2,18),
     ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9)
