@@ -530,4 +530,7 @@ SELECT contract_address, symbol, decimals
 ,(0xf33687811f3ad0cd6b48dd4b39f9f977bd7165a2, 'truMATIC', 18)
 ,(0xfcbb00df1d663eee58123946a30ab2138bf9eb2a, 'csMATIC', 18)
 ,(0x2934b36ca9a4b31e633c5be670c8c8b28b6aa015, 'THX', 18)   
+,(0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 'EGX', 6)
+,(0x2aeb3acbeb4c604451c560d89d88d95d54c2c2cc, 'MTLSTR', 6)
+,(0xf07a8cc2d26a87d6bbcf6e578d7f5202f3ed9642, 'MSGLD', 6)   
 ) AS temp_table (contract_address, symbol, decimals)
