@@ -5,3 +5,7 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: syncswap_zksync
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapStablePoolFactory_evt_PoolCreated

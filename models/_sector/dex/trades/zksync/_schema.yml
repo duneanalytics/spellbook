@@ -19,3 +19,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_zksync_base_trades_seed')
+
+  - name: syncswap_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: syncswap
+      contributors: thetroyharris
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'syncswap' ]
+    description: "SyncSwap zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('syncswap_zksync_base_trades_seed')
