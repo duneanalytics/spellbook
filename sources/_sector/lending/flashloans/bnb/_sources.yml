@@ -8,3 +8,7 @@ sources:
   - name: aave_v3_bnb
     tables:
       - name: Pool_evt_FlashLoan
+
+  - name: the_granary_bnb
+    tables:
+      - name: LendingPool_evt_FlashLoan

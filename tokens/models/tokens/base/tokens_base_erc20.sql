@@ -831,7 +831,6 @@ FROM (VALUES
         (0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed, 'DEGEN', 18),
         (0x91F45aa2BdE7393e0AF1CC674FFE75d746b93567, 'FRAME', 18),
         (0xf0f326af3b1Ed943ab95C29470730CC8Cf66ae47, 'bwAJNA', 18),
-        (0xb829b68f57cc546da7e5806a929e53be32a4625d, 'axlETH', 18)
-
-
+        (0xb829b68f57cc546da7e5806a929e53be32a4625d, 'axlETH', 18),
+        (0x11c1879227d463b60db18c17c20ae739ae8e961a, 'axlBAL', 18)
      ) AS temp_table (contract_address, symbol, decimals)

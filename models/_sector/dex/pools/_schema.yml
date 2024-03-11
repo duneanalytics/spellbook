@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dex_pools_beta
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'pools', 'beta' ]
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - name: pool
+        description: "DEX pool smart contract address"
+        tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: tokens
+        description: "List of tokens in pool"
+      - name: token_symbols
+        description: "Symbols of tokens in pool"
+      - name: tokens_in_pool
+        description: "Number of tokens in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
