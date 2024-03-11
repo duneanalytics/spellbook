@@ -90,5 +90,19 @@ FROM
     ('tel-telcoin', 'polygon', 'TEL', 0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32,2),
     ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18),
     ('ata-automata', 'polygon', 'ATA', 0x0df0f72EE0e5c9B7ca761ECec42754992B2Da5BF, 18),
+    ('bonk-bonk', 'polygon', 'BONK', 0xe5b49820e5a1063f6f4ddf851327b5e8b2301048, 5),
+    ('rndr-render-token', 'polygon', 'RNDR', 0x61299774020da444af134c82fa83e3810b309991, 18),
+    ('uni-uniswap', 'polygon', 'UNI', 0xb33eaad8d922b1083446dc23f610c2567fb5180f, 18),
+    ('ape-apecoin', 'polygon', 'APE', 0xb7b31a6bc18e48888545ce79e83e06003be70930, 18),
+    ('mkr-maker', 'polygon', 'MKR', 0x6f7c932e7684666c9fd1d44527765433e01ff61d, 18),
+    ('cbeth-coinbase-wrapped-staked-eth', 'polygon', 'CBETH', 0x4b4327db1600b8b1440163f667e199cef35385f5, 18),
+    ('busd-binance-usd', 'polygon', 'BUSD', 0x9c9e5fd8bbc25984b178fdce6117defa39d2db39, 18),
+    ('reth-rocket-pool-eth', 'polygon', 'RETH', 0x0266f4f08d82372cf0fcbccc0ff74309089c74d1, 18),
+    ('lusd-liquity-usd', 'polygon', 'LUSD', 0x23001f892c0c82b79303edc9b9033cd190bb21c7, 18),
+    ('tusd-trueusd', 'polygon', 'TUSD', 0x2e1ad108ff1d8c782fcbbb89aad783ac49586756, 18),
+    ('bat-basic-attention-token', 'polygon', 'BAT', 0x3cef98bb43d732e2f285ee605a8158cde967d219, 18),
+    ('wavax-wrapped-avax-wormhole', 'polygon', 'WAVAX', 0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b, 18),
+    ('tbtc-tbtc', 'polygon', 'TBTC', 0x236aa50979d5f3de3bd1eeb40e81137f22ab794b, 18),
+    ('ldo-lido-dao', 'polygon', 'LDO', 0xc3c7d422809852031b44ab29eec9f1eff2a58756, 18)
     ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

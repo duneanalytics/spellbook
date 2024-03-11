@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: avalanche_c
       sector: prices
-      contributors: aalan3, jeff-dude
+      contributors: aalan3, jeff-dude, rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'avalanche_c']
     description: "Price tokens on avalanche_c chain"
