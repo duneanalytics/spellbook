@@ -111,7 +111,7 @@ FROM
     ('xdg-decentral-games-governance', 'polygon', 'XDG', 0xc6480da81151b2277761024599e8db2ad4c388c8,18),
     ('shib-shiba-inu-pos', 'polygon', 'SHIB', 0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec,18),
     ('dg-decentral-games', 'polygon', 'DG', 0xef938b6da8576a896f6e0321ef80996f4890f9c4,18),
-    ('pgx-pegaxy-stone', 'polygon', 'PEG', 0xc1c93d475dc82fe72dbc7074d55f5a734f8ceeae,18),
+    ('pgx-pegaxy-stone', 'polygon', 'PGX', 0xc1c93d475dc82fe72dbc7074d55f5a734f8ceeae,18),
     ('klima-klimadao', 'polygon', 'KLIMA', 0x4e78011ce80ee02d2c3e649fb657e45898257815,9),
     ('bct-toucan-protocol-base-carbon-tonne', 'polygon', 'BCT', 0x2f800db0fdb5223b3c3f354886d907a671414a7f,18),
     ('mv-gensokishi-metaverse', 'polygon', 'MV', 0xa3c322ad15218fbfaed26ba7f616249f7705d945,18),
@@ -125,7 +125,7 @@ FROM
     ('rndr-render-token', 'polygon', 'RNDR', 0x61299774020da444af134c82fa83e3810b309991,18),
     --('mimatic-mai', 'polygon', 'miMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1,18),
     ('fish-polycat-finance', 'polygon', 'FISH', 0x3a3df212b7aa91aa0402b9035b098891d276572b,18),
-    ('pbos-phobos-token', 'polygon', 'FISH', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18),
+    ('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18),
     ('pyr-vulcan-forged', 'polygon', 'PYR', 0x430ef9263e76dae63c84292c3409d61c598e9682,18),
     ('geod-geodnet-token', 'polygon', 'GEOD', 0xac0f66379a6d7801d7726d5a943356a172549adb,18),
     ('naka-nakamoto-games', 'polygon', 'NAKA', 0x311434160d7537be358930def317afb606c0d737,18)
