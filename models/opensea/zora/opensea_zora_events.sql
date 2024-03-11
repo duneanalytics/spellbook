@@ -65,5 +65,4 @@ SELECT *
                 ,sub_type
                 ,fee_wallet_name
           FROM {{ ref('opensea_v4_zora_events') }}
-        
        )
