@@ -105,10 +105,10 @@ FROM
     ('tbtc-tbtc', 'polygon', 'TBTC', 0x236aa50979d5f3de3bd1eeb40e81137f22ab794b, 18),
     ('ldo-lido-dao', 'polygon', 'LDO', 0xc3c7d422809852031b44ab29eec9f1eff2a58756, 18),
     ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6),
-    ('bklay-orbit-bridge-bsc-klay', 'polygon', 'BKLAY', 0x0a02d33031917d836bd7af02f9f7f6c74d67805f,18),
+    --('bklay-orbit-bridge-bsc-klay', 'polygon', 'BKLAY', 0x0a02d33031917d836bd7af02f9f7f6c74d67805f,18), --inactive
     ('kek-kek', 'polygon', 'KEK', 0x42e5e06ef5b90fe15f853f59299fc96259209c5c,18),
     ('mesh-meshswap-protocol', 'polygon', 'MESH', 0x82362ec182db3cf7829014bc61e9be8a2e82868a,18),
-    ('xdg-decentral-games-governance', 'polygon', 'XDG', 0xc6480da81151b2277761024599e8db2ad4c388c8,18),
+    --('xdg-decentral-games-governance', 'polygon', 'XDG', 0xc6480da81151b2277761024599e8db2ad4c388c8,18), --inactive
     ('shib-shiba-inu-pos', 'polygon', 'SHIB', 0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec,18),
     ('dg-decentral-games', 'polygon', 'DG', 0xef938b6da8576a896f6e0321ef80996f4890f9c4,18),
     ('pgx-pegaxy-stone', 'polygon', 'PGX', 0xc1c93d475dc82fe72dbc7074d55f5a734f8ceeae,18),
@@ -123,9 +123,9 @@ FROM
     ('rbw-rainbow-token', 'polygon', 'RBW', 0x431cd3c9ac9fc73644bf68bf5691f4b83f9e104f,18),
     ('gmee-gamee', 'polygon', 'GMEE', 0xcf32822ff397ef82425153a9dcb726e5ff61dca7,18),
     ('rndr-render-token', 'polygon', 'RNDR', 0x61299774020da444af134c82fa83e3810b309991,18),
-    --('mimatic-mai', 'polygon', 'miMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1,18),
+    --('mimatic-mai', 'polygon', 'miMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1,18), --not found in API
     ('fish-polycat-finance', 'polygon', 'FISH', 0x3a3df212b7aa91aa0402b9035b098891d276572b,18),
-    ('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18),
+    --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18), --inactive
     ('pyr-vulcan-forged', 'polygon', 'PYR', 0x430ef9263e76dae63c84292c3409d61c598e9682,18),
     ('geod-geodnet-token', 'polygon', 'GEOD', 0xac0f66379a6d7801d7726d5a943356a172549adb,18),
     ('naka-nakamoto-games', 'polygon', 'NAKA', 0x311434160d7537be358930def317afb606c0d737,18)
