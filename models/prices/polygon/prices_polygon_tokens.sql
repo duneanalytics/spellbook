@@ -122,7 +122,6 @@ FROM
     ('qi-qidao', 'polygon', 'QI', 0x580a84c73811e1839f75d86d75d88cca0c241ff4,18),
     ('rbw-rainbow-token', 'polygon', 'RBW', 0x431cd3c9ac9fc73644bf68bf5691f4b83f9e104f,18),
     ('gmee-gamee', 'polygon', 'GMEE', 0xcf32822ff397ef82425153a9dcb726e5ff61dca7,18),
-    ('rndr-render-token', 'polygon', 'RNDR', 0x61299774020da444af134c82fa83e3810b309991,18),
     --('mimatic-mai', 'polygon', 'miMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1,18), --not found in API
     ('fish-polycat-finance', 'polygon', 'FISH', 0x3a3df212b7aa91aa0402b9035b098891d276572b,18),
     --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18), --inactive
