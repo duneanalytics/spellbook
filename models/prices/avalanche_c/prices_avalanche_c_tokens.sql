@@ -62,5 +62,5 @@ FROM
     ('husky-husky-avax','avalanche_c','HUSKY',0x65378b697853568da9ff8eab60c13e1ee9f4a654,18),
     ('xava-avalaunch','avalanche_c','XAVA',0xd1c3f94de7e5b45fa4edbba472491a9f4b166fc4,18),
     ('qi-benqi','avalanche_c','QI',0x8729438eb15e2c8b576fcc6aecda6a148776c0f5,18),
-    ('wolf-landwolf-on-avax','avalanche_c','WOLF',0x8729438eb15e2c8b576fcc6aecda6a148776c0f5,18)
+    ('wolf-landwolf-on-avax','avalanche_c','WOLF',0x4f94b8aef08c92fefe416af073f1df1e284438ec,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
