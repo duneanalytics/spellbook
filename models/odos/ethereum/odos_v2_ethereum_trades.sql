@@ -1,6 +1,6 @@
 {{ config(
     alias = 'trades'
-    ,schema = 'odos_v2_base'
+    ,schema = 'odos_v2_ethereum'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
@@ -22,12 +22,12 @@ with event_data AS (
         CAST(NULL as double) as amount_usd,
         CASE
             WHEN inputToken = 0x0000000000000000000000000000000000000000
-            THEN 0x4200000000000000000000000000000000000006 -- WETH
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
             ELSE inputToken
         END AS token_sold_address,
         CASE
             WHEN outputToken = 0x0000000000000000000000000000000000000000
-            THEN 0x4200000000000000000000000000000000000006 -- WETH
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
             ELSE outputToken
         END AS token_bought_address,
         contract_address AS project_contract_address,
@@ -35,7 +35,7 @@ with event_data AS (
         evt_index,
         array[-1] as trace_address
     FROM
-    {{ source('odos_v2_base', 'OdosRouterV2_evt_Swap') }}
+    {{ source('odos_v2_ethereum', 'OdosRouterV2_evt_Swap') }}
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% else %}
@@ -44,7 +44,7 @@ with event_data AS (
 )
 
 SELECT
-    'base' AS blockchain,
+    'ethereum' AS blockchain,
     'odos'     AS project,
     '2'        AS version,
     TRY_CAST(date_trunc('DAY', e.block_time) AS date)    AS block_date,
@@ -77,7 +77,7 @@ SELECT
     e.evt_index,
     e.trace_address
 FROM event_data e
-INNER JOIN {{ source('base', 'transactions') }} tx
+INNER JOIN {{ source('ethereum', 'transactions') }} tx
     ON e.tx_hash = tx.hash
     {% if not is_incremental() %}
 	AND tx.block_time >= DATE '{{project_start_date}}'
@@ -86,14 +86,14 @@ INNER JOIN {{ source('base', 'transactions') }} tx
 	{% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = e.token_bought_address
-    AND erc20a.blockchain = 'base'
+    AND erc20a.blockchain = 'ethereum'
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = e.token_sold_address
-    AND erc20b.blockchain = 'base'
+    AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', e.block_time)
     AND p_bought.contract_address = e.token_bought_address
-    AND p_bought.blockchain = 'base'
+    AND p_bought.blockchain = 'ethereum'
     {% if not is_incremental() %}
 	AND p_bought.minute >= DATE '{{project_start_date}}'
 	{% else %}
@@ -102,7 +102,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', e.block_time)
     AND p_sold.contract_address = e.token_sold_address
-    AND p_sold.blockchain = 'base'
+    AND p_sold.blockchain = 'ethereum'
     {% if not is_incremental() %}
 	AND p_sold.minute >= DATE '{{project_start_date}}'
 	{% else %}
