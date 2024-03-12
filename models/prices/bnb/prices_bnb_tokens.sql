@@ -217,6 +217,7 @@ FROM
     ('mim-magic-internet-money', 'bnb', 'MIM', 0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba,18),
     ('usdp-paxos-standard-token', 'bnb', 'USDP', 0xb7f8cd00c5a06c0537e2abff0b58033d02e5e094,18),
     ('axlusdc-axelar-wrapped-usdc', 'bnb', 'AXLUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3,6),
+    ('fdusd-first-digital-usd', 'bnb', 'FDUSD', 0xc5f0f7b66764f6ec8c8dff7ba683102295e16409,18), 
     ('df-dforce-token', 'bnb', 'DF', 0x4a9a2b2b04549c3927dd2c9668a5ef3fca473623,18),
     ('usx-dforce-usd', 'bnb', 'USX', 0xb5102cee1528ce2c760893034a4603663495fd72,18),
     ('strainz-strainz-nft', 'bnb', 'STRAINZ', 0xacc870d9e560f784ceff365f56e1f12161324478,4),
