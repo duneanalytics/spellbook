@@ -112,7 +112,7 @@ FROM
     ('titano-titano', 'bnb', 'TITANO', 0x4e3cabd3ad77420ff9031d19899594041c420aee, 18),
     ('tlm-alien-worlds', 'bnb', 'TLM', 0x2222227e22102fe3322098e4cbfe18cfebd57c95, 4),
     ('tpt-token-pocket', 'bnb', 'TPT', 0xeca41281c24451168a37211f0bc2b8645af45092, 4),
-    ('tusd-trueusd', 'bnb', 'TUSD', 0x14016e85a25aeb13065688cafb43044c2ef86784, 18),
+    ('tusd-trueusd', 'bnb', 'TUSD', 0x40af3827F39D0EAcBF4A168f8D4ee67c121D11c9, 18),
     ('uni-uniswap', 'bnb', 'UNI', 0xbf5140a22578168fd562dccf235e5d43a02ce9b1, 18),
     ('usdc-usd-coin', 'bnb', 'USDC', 0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d, 18),
     ('usdex-usdex', 'bnb', 'USDEX', 0x829c09fcc46d9fd31967272aba245bef9f727f93, 18),
