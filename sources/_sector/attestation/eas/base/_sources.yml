@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: base_eas_base
+  - name: attestationstation_v1_base
     tables:
       - name: SchemaRegistry_evt_Registered
       - name: SchemaRegistry_call_register

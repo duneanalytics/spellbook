@@ -8,6 +8,7 @@ models:
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS schema registry"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -74,6 +75,7 @@ models:
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS schema registry details"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -110,6 +112,7 @@ models:
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS attestations"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -172,6 +175,7 @@ models:
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS attestation details"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
