@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'eas_optimism',
     alias = 'attestations',
     materialized = 'incremental',

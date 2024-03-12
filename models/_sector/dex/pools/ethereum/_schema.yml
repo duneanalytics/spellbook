@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: dex_ethereum_pools
+
+  - name: uniswap_v2_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: hildobby, Henrystats
+    config:
+      tags: [ 'ethereum', 'dex', 'pools', 'uniswap', 'v2']
+    description: "uniswap ethereum v2 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: uniswap_v3_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: hildobby, Henrystats
+    config:
+      tags: [ 'ethereum', 'dex', 'pools', 'uniswap', 'v3']
+    description: "uniswap ethereum v3 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
