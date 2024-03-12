@@ -81,7 +81,7 @@ models:
    meta:
      blockchain: zksync
      project: element
-     contributors: thetroyharris
+     contributors: ['0xRob', 'thetroyharris']
    config:
      tags: [ 'zksync','element','base_trades' ]
    description: >
