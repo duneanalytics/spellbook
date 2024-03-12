@@ -167,7 +167,7 @@ FROM
     ('sfo-starfish-os' ,'bnb' ,'SFO' ,0xc544d8ab2b5ed395b96e3ec87462801eca579ae1 ,18),
     ('baby-babyswap' ,'bnb' ,'BABY' ,0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657 ,18),
     ('sol-solana' ,'bnb' ,'SOL' ,0x570a5d26f7765ecb712c0924e4de545b89fd43df ,18),
-    ('trx-tron' ,'bnb' ,'TRX' ,0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3 ,18),
+    ('trx-tron' ,'bnb' ,'TRX' ,0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3 ,6),
     ('sss-starsharks' ,'bnb' ,'SSS' ,0xc3028fbc1742a16a5d69de1b334cbce28f5d7eb3 ,18)    ,
     ('sfp-safepal-token', 'bnb' ,'SFP' ,0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb ,18),
     ('ssg-surviving-soldiers','bnb' ,'SSG' ,0xa0c8c80ed6b7f09f885e826386440b2349f0da7e ,18),
