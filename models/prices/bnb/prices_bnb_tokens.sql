@@ -216,8 +216,9 @@ FROM
     --('usdc-usd-coin-wormhole', 'bnb', 'USDC', 0xb04906e95ab5d797ada81508115611fee694c2b3,6),
     ('mim-magic-internet-money', 'bnb', 'MIM', 0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba,18),
     ('usdp-paxos-standard-token', 'bnb', 'USDP', 0xb7f8cd00c5a06c0537e2abff0b58033d02e5e094,18),
-    ('axlusdc-axelar-wrapped-usdc', 'bnb', 'AXLUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3,6)
-
+    ('axlusdc-axelar-wrapped-usdc', 'bnb', 'AXLUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3,6),
+    ('bttc-bittorrent-chain', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
+    ('fdusd-first-digital-usd', 'bnb', 'FDUSD', 0xc5f0f7b66764f6ec8c8dff7ba683102295e16409,18) 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
