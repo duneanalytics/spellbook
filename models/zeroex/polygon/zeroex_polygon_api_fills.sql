@@ -322,11 +322,13 @@ SELECT distinct
         max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN (0x2791bca1f2de4661ed88a30c99a7a9449aa84174,0x7ceb23fd6bc0add59e62ac25578270cff1b9f619,0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270,0xc2132d05d31c914a87c6611c10748aeb04b58e8f,
-            0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6,0x8f3cf7ad23cd3cadbd9735aff958023239c6a063,0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4) AND  mp.price IS NOT NULL
+        CASE WHEN maker_token IN (0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270,
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6, 0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 
+                        0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4,0x7ceb23fd6bc0add59e62ac25578270cff1b9f619) AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN (0x2791bca1f2de4661ed88a30c99a7a9449aa84174,0x7ceb23fd6bc0add59e62ac25578270cff1b9f619,0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270,0xc2132d05d31c914a87c6611c10748aeb04b58e8f,
-                0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6,0x8f3cf7ad23cd3cadbd9735aff958023239c6a063,0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4)  AND  tp.price IS NOT NULL
+             WHEN taker_token IN (0x2791bca1f2de4661ed88a30c99a7a9449aa84174,0x7ceb23fd6bc0add59e62ac25578270cff1b9f619,0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270,
+                0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6,0x8f3cf7ad23cd3cadbd9735aff958023239c6a063
+                ,0x3a58a54c066fdc0f2d55fc9c89f0415c92ebf3c4, 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619)  AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,

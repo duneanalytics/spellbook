@@ -25,5 +25,9 @@ FROM
   {{ source('avalanche_c', 'traces') }} traces
 left join {{ref('chainlink_ccip_network_meta')}} network_meta on network_meta.chain_selector = bytearray_to_uint256(bytearray_substring(input, 5, 32))
 WHERE
-  traces."to" = (SELECT router FROM {{ref('chainlink_ccip_network_meta')}} WHERE blockchain = 'avalanche_c')
+    (
+    traces."to" = (SELECT router FROM {{ref('chainlink_ccip_network_meta')}} WHERE blockchain = 'avalanche_c' AND "version" = 'v1.0.0')
+    OR
+    traces."to" = (SELECT router FROM {{ref('chainlink_ccip_network_meta')}} WHERE blockchain = 'avalanche_c' AND "version" = 'v1.2.0')
+  )
   AND bytearray_substring(input, 1, 4) = 0x96f4e9f9
