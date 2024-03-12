@@ -243,5 +243,5 @@ FROM (VALUES
         ,(0x228a48df6819CCc2eCa01e2192ebAFfFdAD56c19, 'VCHF', 18)   
         ,(0x7678e162f38ec9ef2Bfd1d0aAF9fd93355E5Fa0b, 'VEUR', 18)   
         ,(0x12D8CE035c5DE3Ce39B1fDD4C1d5a745EAbA3b8C, 'ankrETH', 18)    
-        ,(0x420FcA0121DC28039145009570975747295f2329, 'MEOW', 18)       
+        ,(0x8aD25B0083C9879942A64f00F20a70D3278f6187, 'MEOW', 18)       
     ) AS temp_table (contract_address, symbol, decimals)
