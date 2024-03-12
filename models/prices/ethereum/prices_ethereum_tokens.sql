@@ -1665,6 +1665,7 @@ FROM
     ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
     ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
     ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18),
+    ('weeth-wrapped-eeth','ethereum','WEETH',0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee, 18),      
     ('titanx-titan-x','ethereum','TITANX',0xf19308f923582a6f7c465e5ce7a9dc1bec6665b1, 18),
     --('flc-floor-protocol','ethereum','FLC',0x102c776ddb30c754ded4fdcc77a19230a60d4e4f, 18), --not found in API 
     ('dragonx-dragonxwin','ethereum','DRAGONX',0x96a5399d07896f757bd4c6ef56461f58db951862, 18),
