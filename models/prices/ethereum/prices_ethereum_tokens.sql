@@ -322,11 +322,13 @@ FROM
     ('sand-the-sandbox', 'ethereum', 'SAND', 0x3845badade8e6dff049820680d1f14bd3903a5d0, 18),
     ('sdao-singularitydao', 'ethereum', 'SDAO', 0x993864e43caa7f7f12953ad6feb1d1ca635b875f, 18),
     ('sent-sentinel', 'ethereum', 'SENT', 0xa44e5137293e855b1b7bc7e2c6f8cd796ffcb037, 8),
+    ('seed-garden', 'ethereum', 'SEED', 0x5eed99d066a8caf10f3e4327c1b3d8b673485eed, 18),
     ('shib-shiba-inu', 'ethereum', 'SHIB', 0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce, 18),
     ('skl-skale', 'ethereum', 'SKL', 0x00c83aecc790e8a4453e5dd3b0b4b3680501a7a7, 18),
     ('slp-smooth-love-potion', 'ethereum', 'SLP', 0xcc8fa225d80b9c7d42f96e9570156c65d6caaa25, 0),
     ('sngls-singulardtv', 'ethereum', 'SNGLS', 0xaec2e87e0a235266d9c5adc9deb4b2e29b54d009, 0),
     ('snt-status', 'ethereum', 'SNT', 0x744d70fdbe2ba4cf95131626614a1763df805b9e, 18),
+    ('soon-nonbeta', 'ethereum', 'OS', 0x6100dd79fcaa88420750dcee3f735d168abcb771, 18),
     ('sos-opendao', 'ethereum', 'SOS', 0x3b484b82567a09e2588a13d54d032153f0c0aee0, 18),
     ('spank-spankchain', 'ethereum', 'SPANK', 0x42d6622dece394b54999fbd73d108123806f6a18, 18),
     ('srm-serum', 'ethereum', 'SRM', 0x476c5e26a75bd202a9683ffd34359c0cc15be0ff, 6),
@@ -1675,7 +1677,6 @@ FROM
     ('paw-pawswap','ethereum','PAW',0xdc63269ea166b70d4780b3a11f5c825c2b761b01,18),
     ('psiacc-psi-gate','ethereum','PSI/ACC',0xbfe178cf147fda6490f69fe7e6ae038ff09d2980,18),
     ('topia-hytopia','ethereum','TOPIA',0xccccb68e1a848cbdb5b60a974e07aae143ed40c3,18),
-    ('soon-nonbeta','ethereum','NON',0x6100dd79fcaa88420750dcee3f735d168abcb771,18),
     ('ox-open-exchange-token','ethereum','OX',0x78a0a62fba6fb21a83fe8a3433d44c73a4017a6f,18),
     ('kizuna-kizuna','ethereum','KIZUNA',0x470c8950c0c3aa4b09654bc73b004615119a44b5,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
