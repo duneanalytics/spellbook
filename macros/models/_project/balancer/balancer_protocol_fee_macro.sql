@@ -68,7 +68,7 @@ WITH pool_labels AS (
         SELECT 
             l.day,
             s.token_address AS token,
-            18 AS decimals
+            18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
         FROM {{ ref('balancer_liquidity') }} l
         LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON s.token_address = l.pool_address 
