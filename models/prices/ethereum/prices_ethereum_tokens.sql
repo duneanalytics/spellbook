@@ -1664,7 +1664,8 @@ FROM
     ('loom-loom-network','ethereum','LOOM',0x42476f744292107e34519f9c357927074ea3f75d, 18),
     ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
     ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
-    ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18)
+    ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18),
+    ('weeth-wrapped-eeth','ethereum','WEETH',0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee, 18)        
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
