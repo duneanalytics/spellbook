@@ -89,9 +89,9 @@ WITH
   )
 SELECT
   DATE_FORMAT(mbv.day, '%Y-%m-%d') AS date,
-  mbv.usd_burned as revenue,
   'polygon' as chain,
-  'geodnet' as name
+  'geodnet' as name,
+   mbv.usd_burned as revenue
 FROM
   daily_burned_value mbv
 ORDER BY
