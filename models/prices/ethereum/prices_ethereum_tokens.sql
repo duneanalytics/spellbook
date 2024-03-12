@@ -1677,7 +1677,6 @@ FROM
     ('paw-pawswap','ethereum','PAW',0xdc63269ea166b70d4780b3a11f5c825c2b761b01,18),
     ('psiacc-psi-gate','ethereum','PSI/ACC',0xbfe178cf147fda6490f69fe7e6ae038ff09d2980,18),
     ('topia-hytopia','ethereum','TOPIA',0xccccb68e1a848cbdb5b60a974e07aae143ed40c3,18),
-    ('soon-nonbeta','ethereum','NON',0x6100dd79fcaa88420750dcee3f735d168abcb771,18),
     ('ox-open-exchange-token','ethereum','OX',0x78a0a62fba6fb21a83fe8a3433d44c73a4017a6f,18),
     ('kizuna-kizuna','ethereum','KIZUNA',0x470c8950c0c3aa4b09654bc73b004615119a44b5,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
