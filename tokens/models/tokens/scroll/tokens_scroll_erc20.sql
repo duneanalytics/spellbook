@@ -20,5 +20,4 @@ FROM (VALUES
         ,(0xeDEAbc3A1e7D21fE835FFA6f83a710c70BB1a051, 'LUSD', 18)
         ,(0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32, 'wstETH', 18)
         ,(0x60D01EC2D5E98Ac51C8B4cF84DfCCE98D527c747, 'iZi', 18)
-        ,(0x60D01EC2D5E98Ac51C8B4cF84DfCCE98D527c747, 'iZi', 18)
      ) AS temp_table (contract_address, symbol, decimals)
