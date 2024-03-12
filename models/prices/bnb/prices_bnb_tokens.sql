@@ -216,7 +216,20 @@ FROM
     --('usdc-usd-coin-wormhole', 'bnb', 'USDC', 0xb04906e95ab5d797ada81508115611fee694c2b3,6),
     ('mim-magic-internet-money', 'bnb', 'MIM', 0xfe19f0b51438fd612f6fd59c1dbb3ea319f433ba,18),
     ('usdp-paxos-standard-token', 'bnb', 'USDP', 0xb7f8cd00c5a06c0537e2abff0b58033d02e5e094,18),
-    ('axlusdc-axelar-wrapped-usdc', 'bnb', 'AXLUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3,6)
+    ('axlusdc-axelar-wrapped-usdc', 'bnb', 'AXLUSDC', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3,6),
+    ('df-dforce-token', 'bnb', 'DF', 0x4a9a2b2b04549c3927dd2c9668a5ef3fca473623,18),
+    ('usx-dforce-usd', 'bnb', 'USX', 0xb5102cee1528ce2c760893034a4603663495fd72,18),
+    ('strainz-strainz-nft', 'bnb', 'STRAINZ', 0xacc870d9e560f784ceff365f56e1f12161324478,4),
+    ('dis-disney', 'bnb', 'DIS', 0xe2ecc66e14efa96e9c55945f79564f468882d24c,18),
+    --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), --not active
+    ('shib-shiba-inu', 'bnb', 'SHIB', 0x2859e4544c4bb03966803b044a93563bd2d0dd4d,18),
+    ('bttc-bittorrent-chain', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
+    ('aitech-solidus-ai-tech', 'bnb', 'AITECH', 0x2d060ef4d6bf7f9e5edde373ab735513c0e4f944,18),
+    ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8cb3c6e7d085626e7a1347aafdf001f6,18),
+    --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not in API
+    ('trias-trias-token', 'bnb', 'TRIAS', 0xa4838122c683f732289805fc3c207febd55babdd,18),
+    ('pzp-playzap', 'bnb', 'PZP', 0x6ad9e9c098a45b2b41b519119c31c3dcb02accb2,18),
+    ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
