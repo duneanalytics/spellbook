@@ -190,3 +190,26 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_avalanche_c_balances_latest
+    meta:
+      blockchain: avalanche_c
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'avalanche_c' ]
+    description: "Latest token balances"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name

@@ -191,3 +191,26 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_arbitrum_balances_latest
+    meta:
+      blockchain: arbitrum
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'arbitrum' ]
+    description: "Latest token balances"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
