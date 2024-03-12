@@ -10,3 +10,8 @@ sources:
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
+
+  - name: the_granary_bnb
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
