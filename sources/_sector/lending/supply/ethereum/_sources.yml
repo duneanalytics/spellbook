@@ -67,3 +67,8 @@ sources:
       - name: SErc20Delegate_evt_Redeem
       - name: SEther_evt_Mint
       - name: SEther_evt_Redeem
+
+  - name: the_granary_ethereum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

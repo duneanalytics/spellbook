@@ -14,6 +14,7 @@
     zonic_base_trades(
         blockchain = 'base',
         min_block_number = 2882386,
-        project_start_date = '2023-08-20'
+        project_start_date = '2023-08-20',
+        c_alternative_token_address = '0x4200000000000000000000000000000000000006'
     )
 }}

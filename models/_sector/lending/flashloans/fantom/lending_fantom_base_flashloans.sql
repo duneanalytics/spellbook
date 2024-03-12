@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('aave_v3_fantom_base_flashloans')
+    ref('aave_v3_fantom_base_flashloans'),
+    ref('granary_fantom_base_flashloans')
   ]
 %}
 
