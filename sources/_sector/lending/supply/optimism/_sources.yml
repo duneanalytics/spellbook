@@ -29,3 +29,8 @@ sources:
       - name: soWETH_evt_Redeem
       - name: sowstETH_evt_Mint
       - name: sowstETH_evt_Redeem
+
+  - name: the_granary_optimism
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

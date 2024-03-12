@@ -14,6 +14,12 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
+    columns:
+      - &schema_uid
+        name: schema_uid
+        description: "Schema unique identifier"
+        tests:
+          - not_null
 
   - name: eas_polygon_schema_details
     meta:
@@ -29,6 +35,13 @@ models:
           combination_of_columns:
             - schema_uid
             - ordinality
+    columns:
+      - *schema_uid
+      - &ordinality
+        name: ordinality
+        description: "Incremental unique number to order fields within each Schema"
+        tests:
+          - not_null
 
   - name: eas_polygon_attestations
     meta:
@@ -38,12 +51,19 @@ models:
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'polygon' ]
-    description: "EAS schema registry on Polygon"
+    description: "EAS attestations on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
             - attestation_uid
+    columns:
+      - *schema_uid
+      - &attestation_uid
+        name: attestation_uid
+        description: "Attestation unique identifier"
+        tests:
+          - not_null
 
   - name: eas_polygon_attestation_details
     meta:
@@ -53,10 +73,14 @@ models:
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas', 'polygon' ]
-    description: "EAS schema registry details on Polygon"
+    description: "EAS attestation details on Polygon"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
             - attestation_uid
             - ordinality
+    columns:
+      - *schema_uid
+      - *attestation_uid
+      - *ordinality

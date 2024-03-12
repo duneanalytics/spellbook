@@ -15,6 +15,6 @@
     blockchain = 'base',
     project = 'eas',
     version = '1',
-    decoded_project_name = 'base_eas'
+    decoded_project_name = 'attestationstation_v1'
   )
 }}
