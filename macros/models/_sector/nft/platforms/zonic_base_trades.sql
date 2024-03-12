@@ -7,7 +7,8 @@
         c_native_token_address = '0x0000000000000000000000000000000000000000',
         c_alternative_token_address = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000',
         zonic_fee_address_address = '0xc353de8af2ee32da2eeae58220d3c8251ee1adcf',
-        project_decoded_as = 'zonic'
+        project_decoded_as = 'zonic',
+        royalty_fee_receive_address_to_skip = []
     )
 %}
 
@@ -58,6 +59,11 @@ with events_raw as (
         {{zonic_fee_address_address}} --platform fee address
         ,er.seller
         ,er.project_contract_address
+        {% if royalty_fee_receive_address_to_skip %}
+          {% for receive_address in royalty_fee_receive_address_to_skip %}
+          ,{{ receive_address }}
+          {% endfor %}
+        {% endif %}
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above

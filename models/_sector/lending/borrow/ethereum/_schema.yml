@@ -428,3 +428,37 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: granary_ethereum_base_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'compound', 'granary', 'ethereum']
+    description: "Granary borrow transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('granary_ethereum_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
