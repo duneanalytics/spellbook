@@ -1,13 +1,13 @@
 {{ config(
-        schema = 'tokens_avalance_c',
+        schema = 'tokens_avalanche_c',
         alias = 'balances_latest',
         materialized = 'view',
-        post_hook = '{{ expose_spells(\'["avalance_c"]\',
+        post_hook = '{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xRob"]\') }}'
         )
 }}
 
-select * from {{ref('tokens_avalance_c_balances_daily')}}
+select * from {{ref('tokens_avalanche_c_balances_daily')}}
 where day = date_trunc('day',now())
