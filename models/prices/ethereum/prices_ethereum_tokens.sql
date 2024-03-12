@@ -1664,7 +1664,19 @@ FROM
     ('loom-loom-network','ethereum','LOOM',0x42476f744292107e34519f9c357927074ea3f75d, 18),
     ('ondo-ondo','ethereum','ONDO',0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3, 18),
     ('wtao-wrapped-tao','ethereum','WTAO',0x77e06c9eccf2e797fd462a92b6d7642ef85b0a44, 9),
-    ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18)
+    ('tbtc-tbtc','ethereum','TBTC',0x18084fba666a33d37592fa2633fd49a74dd93a88, 18),
+    ('titanx-titan-x','ethereum','TITANX',0xf19308f923582a6f7c465e5ce7a9dc1bec6665b1, 18),
+    --('flc-floor-protocol','ethereum','FLC',0x102c776ddb30c754ded4fdcc77a19230a60d4e4f, 18), --not found in API 
+    ('dragonx-dragonxwin','ethereum','DRAGONX',0x96a5399d07896f757bd4c6ef56461f58db951862, 18),
+    ('grai-gravita-protocol','ethereum','GRAI',0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4, 18),
+    ('ppg-pudgypenguins','ethereum','PPG',0x30f7c830e0c2f4bec871df809d73e27ef19eb151, 18),
+    ('bitcoin-harrypotterobamasonic10inu-eth','ethereum','BITCOIN',0x72e4f9f808c49a2a61de9c5896298920dc4eeea9, 8),
+    ('paw-pawswap','ethereum','PAW',0xdc63269ea166b70d4780b3a11f5c825c2b761b01,18),
+    ('psiacc-psi-gate','ethereum','PSI/ACC',0xbfe178cf147fda6490f69fe7e6ae038ff09d2980,18),
+    ('topia-hytopia','ethereum','TOPIA',0xccccb68e1a848cbdb5b60a974e07aae143ed40c3,18),
+    ('soon-nonbeta','ethereum','NON',0x6100dd79fcaa88420750dcee3f735d168abcb771,18),
+    ('ox-open-exchange-token','ethereum','OX',0x78a0a62fba6fb21a83fe8a3433d44c73a4017a6f,18),
+    ('kizuna-kizuna','ethereum','KIZUNA',0x470c8950c0c3aa4b09654bc73b004615119a44b5,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
