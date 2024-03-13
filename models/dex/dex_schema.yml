@@ -293,9 +293,6 @@ models:
       - *pool
       - *token0
       - *token1
-      - &tokens
-        name: tokens
-        description: "Tokens in the pool"
       - *creation_block_time
       - *creation_block_number
       - name: contract_address
@@ -323,7 +320,6 @@ models:
       - *pool
       - *token0
       - *token1
-      - *tokens
       - *creation_block_time
       - *creation_block_number
       - name: contract_address
