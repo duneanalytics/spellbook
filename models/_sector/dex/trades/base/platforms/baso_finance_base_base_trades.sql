@@ -14,7 +14,7 @@
     uniswap_compatible_v2_trades(
         blockchain = 'base',
         project = 'baso_finance',
-        version = '2',
+        version = '1',
         Pair_evt_Swap = source('baso_finance_base', 'Pair_evt_Swap'),
         Factory_evt_PairCreated = source('baso_finance_base', 'PairFactory_evt_PairCreated')
     )
