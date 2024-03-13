@@ -116,9 +116,9 @@ models:
     columns:
       - name: block_date
       - name: block_number
-      - name: type
+      - name: token_standard
       - name: token_address
-      - name: wallet_address
+      - name: address
       - name: balance_raw
       - name: balance
       - name: balance_usd
@@ -144,7 +144,7 @@ models:
           - name: address
           - name: token_id
           - name: amount
-          - name: type
+          - name: token_standard
 
   - name: tokens_arbitrum_balances_daily_agg
     meta:
@@ -158,9 +158,9 @@ models:
       - name: day
       - name: block_date
       - name: block_number
-      - name: type
+      - name: token_standard
       - name: token_address
-      - name: wallet_address
+      - name: address
       - name: balance_raw
       - name: balance
       - name: balance_usd
@@ -181,9 +181,9 @@ models:
       - name: day
       - name: block_date
       - name: block_number
-      - name: type
+      - name: token_standard
       - name: token_address
-      - name: wallet_address
+      - name: address
       - name: balance_raw
       - name: balance
       - name: balance_usd
@@ -204,9 +204,9 @@ models:
       - name: day
       - name: block_date
       - name: block_number
-      - name: type
+      - name: token_standard
       - name: token_address
-      - name: wallet_address
+      - name: address
       - name: balance_raw
       - name: balance
       - name: balance_usd
