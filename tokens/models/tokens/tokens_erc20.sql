@@ -11,41 +11,60 @@
     )
 }}
 
-{% set models = {
-    'tokens_arbitrum': {'blockchain': 'arbitrum', 'model': ref('tokens_arbitrum_erc20')},
-    'tokens_avalanche_c': {'blockchain': 'avalanche_c', 'model': ref('tokens_avalanche_c_erc20')},
-    'tokens_base': {'blockchain': 'base', 'model': ref('tokens_base_erc20')},
-    'tokens_bnb': {'blockchain': 'bnb', 'model': ref('tokens_bnb_bep20')},
-    'tokens_celo': {'blockchain': 'celo', 'model': ref('tokens_celo_erc20')},
-    'tokens_ethereum': {'blockchain': 'ethereum', 'model': ref('tokens_ethereum_erc20')},
-    'tokens_fantom': {'blockchain': 'fantom', 'model': ref('tokens_fantom_erc20')},
-    'tokens_gnosis': {'blockchain': 'gnosis', 'model': ref('tokens_gnosis_erc20')},
-    'tokens_goerli': {'blockchain': 'goerli', 'model': ref('tokens_goerli_erc20')},
-    'tokens_optimism': {'blockchain': 'optimism', 'model': ref('tokens_optimism_erc20')},
-    'tokens_polygon': {'blockchain': 'polygon', 'model': ref('tokens_polygon_erc20')},
-    'tokens_scroll': {'blockchain': 'scroll', 'model': ref('tokens_scroll_erc20')},
-    'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')},
-    'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
+/*
+    the main source for erc20 tokens is dune.definedfi.dataset_tokens -- an automated source pulled into Dune
+    in order to maintain the same amount of coverage of tokens as before, and provide future addition framework, each chain still contains a static file to add for any missing in the automated source
+*/
+
+{% set static_models = {
+    'tokens_arbitrum': {'blockchain': 'arbitrum', 'model': ref('tokens_arbitrum_erc20')}
+    ,'tokens_avalanche_c': {'blockchain': 'avalanche_c', 'model': ref('tokens_avalanche_c_erc20')}
+    ,'tokens_base': {'blockchain': 'base', 'model': ref('tokens_base_erc20')}
+    ,'tokens_bnb': {'blockchain': 'bnb', 'model': ref('tokens_bnb_bep20')}
+    ,'tokens_celo': {'blockchain': 'celo', 'model': ref('tokens_celo_erc20')}
+    ,'tokens_ethereum': {'blockchain': 'ethereum', 'model': ref('tokens_ethereum_erc20')}
+    ,'tokens_fantom': {'blockchain': 'fantom', 'model': ref('tokens_fantom_erc20')}
+    ,'tokens_gnosis': {'blockchain': 'gnosis', 'model': ref('tokens_gnosis_erc20')}
+    ,'tokens_goerli': {'blockchain': 'goerli', 'model': ref('tokens_goerli_erc20')}
+    ,'tokens_optimism': {'blockchain': 'optimism', 'model': ref('tokens_optimism_erc20')}
+    ,'tokens_polygon': {'blockchain': 'polygon', 'model': ref('tokens_polygon_erc20')}
+    ,'tokens_scroll': {'blockchain': 'scroll', 'model': ref('tokens_scroll_erc20')}
+    ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')}
+    ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
 } %}
 
-with manual_tokens as (
-    SELECT *
-    FROM
+with
+  automated_source as (
+    /*
+        todo: find out how to use source jinja for uploaded data with three namespaces
+        todo: move evms schema to a subproject, establish as a source, otherwise we can't call as ref() here in this subproject
+    */
+    select
+      i.blockchain
+      , t.address as contract_address
+      , t.symbol
+      , t.decimals
+    from
+      dune.definedfi.dataset_tokens as t
+      join evms.info as i on t.networkid = i.chain_id
+), static_source as (
+    select *
+    from
     (
-        {% for key, value in models.items() %}
-        SELECT
+        {% for key, value in static_models.items() %}
+        select
             '{{ value.blockchain }}' as blockchain
             , contract_address
             , symbol
             , decimals
-        FROM
+        from
             {{ value.model }}
         {% if value.blockchain == 'optimism' %}
-        WHERE
-            symbol IS NOT NULL --This can be removed if/when all other chains show all ERC20 tokens, rather than only mapped ones
+        where
+            symbol is not null --This can be removed if/when all other chains show all ERC20 tokens, rather than only mapped ones
         {% endif %}
         {% if not loop.last %}
-        UNION ALL
+        union all
         {% endif %}
         {% endfor %}
     )
@@ -53,4 +72,9 @@ with manual_tokens as (
 select
     *
 from
-    manual_tokens
+    automated_source
+union distinct
+select
+    *
+from
+    static_source
