@@ -100,3 +100,4 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} etes
     OR (etes.pubkey IS NOT NULL AND d.pubkey=etes.pubkey)
     OR (etes.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=etes.withdrawal_credentials))
     AND etes.sub_entity IS NOT NULL
+    
