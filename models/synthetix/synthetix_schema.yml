@@ -3,12 +3,12 @@ version: 2
 models:
   - name: synthetix_perpetual_trades
     meta:
-      blockchain: optimism
+      blockchain: optimism, base
       sector: perpetual
       project: synthetix
-      contributors: msilb7, drethereum, rplust
+      contributors: msilb7, drethereum, rplust, Henrystats
     config:
-      tags: ['optimism', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps','cross-chain']
+      tags: ['optimism', 'base', 'synthetix', 'kwenta', 'decentrex', 'perpetuals', 'perps','cross-chain']
     description: >
       Synthetix perpetuals trades/swaps
     columns:

@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v3_optimism_base_supply'),
-    ref('sonne_finance_optimism_base_supply')
+    ref('sonne_finance_optimism_base_supply'),
+    ref('granary_optimism_base_supply')
   ]
 %}
 

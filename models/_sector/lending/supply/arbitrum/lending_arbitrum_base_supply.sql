@@ -12,7 +12,8 @@
     ref('compound_v3_arbitrum_base_supply'),
     ref('radiant_arbitrum_base_supply'),
     ref('lodestar_v0_arbitrum_base_supply'),
-    ref('lodestar_v1_arbitrum_base_supply')
+    ref('lodestar_v1_arbitrum_base_supply'),
+    ref('granary_arbitrum_base_supply')
   ]
 %}
 

@@ -4,3 +4,15 @@ sources:
   - name: agave_gnosis
     tables:
       - name: LendingPool_evt_FlashLoan
+
+  - name: aave_v3_gnosis
+    tables:
+      - name: Pool_evt_FlashLoan
+
+  - name: real_rmm_v1_gnosis
+    tables:
+      - name: LendingPool_evt_FlashLoan
+
+  - name: real_rmm_v2_gnosis
+    tables:
+      - name: Pool_evt_FlashLoan

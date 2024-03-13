@@ -83,10 +83,10 @@ models:
         description: "the position of this event log within this transaction"
   - name: kyberswap_aggregator_trades
     meta:
-      blockchain: avalanche_c, optimism, ethereum, arbitrum, bnb, polygon
+      blockchain: avalanche_c, optimism, ethereum, arbitrum, bnb, polygon, base
       sector: dex_aggregator
       project: kyberswap
-      contributors: nhd98z
+      contributors: nhd98z, Henrystats
     config:
       tags:  ['arbitrum', 'avalanche_c', 'optimism', 'ethereum', 'bnb', 'polygon', 'dex', 'aggregator', 'trades', 'kyberswap', 'nhd98z']
     description: >
