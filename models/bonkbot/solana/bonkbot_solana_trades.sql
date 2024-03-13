@@ -5,12 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'token_bought_address', 'token_sold_address'],
-    post_hook='{{ expose_spells(\'["solana"]\',
-                                "sector",
-                                "dex",
-                                \'["whale_hunter"]\') }}'
-    )
+    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index', 'token_bought_address', 'token_sold_address']
+   )
 }}
 
 {% set project_start_date = '2023-08-17' %}
