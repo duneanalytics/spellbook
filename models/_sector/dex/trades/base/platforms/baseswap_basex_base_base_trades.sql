@@ -13,7 +13,7 @@
     uniswap_compatible_v3_trades(
         blockchain = 'base'
         , project = 'baseswap'
-        , version = '3'
+        , version = 'basex'
         , Pair_evt_Swap = source('basex_base', 'UniswapV3Pool_evt_Swap')
         , Factory_evt_PoolCreated = source('basex_base', 'UniswapV3Factory_evt_PoolCreated')
     )
