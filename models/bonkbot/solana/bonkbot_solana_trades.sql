@@ -34,7 +34,7 @@ WITH
       {% if is_incremental() %}
       {{ incremental_predicate('block_time') }}
       {% else %}
-      block_time >= '{{project_start_date}}'
+      block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       AND tx_success
       AND (
@@ -89,7 +89,7 @@ WITH
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
-        AND minute >= '{{project_start_date}}'
+        AND minute >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
       )
       JOIN {{ source('solana','transactions') }} AS transactions ON (
@@ -97,7 +97,7 @@ WITH
         {% if is_incremental() %}
         AND {{ incremental_predicate('transactions.block_time') }}
         {% else %}
-        AND transactions.block_time >= '{{project_start_date}}'
+        AND transactions.block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
       )
     WHERE
@@ -106,7 +106,7 @@ WITH
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
-      AND trades.block_time >= '{{project_start_date}}'
+      AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
   ),
   highestInnerInstructionIndexForEachTrade AS (
