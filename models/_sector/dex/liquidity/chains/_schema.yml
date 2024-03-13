@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: dex_ethereum_liquidity
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'liquidity', 'beta' ]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool
+            - token_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - name: pool
+      - name: token_address
+      - name: day
+      - name: balance
+      - name: balance_raw
+      - name: balance_usd
+      - name: type
