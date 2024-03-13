@@ -861,3 +861,20 @@ models:
           seed_file: ref('crescentswap_base_base_trades_seed')
           filter:
             version: 1
+
+  - name: baso_finance_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: baso_finance
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'baso_finance' ]
+    description: "baso finance base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('baso_finance_base_base_trades_seed')
