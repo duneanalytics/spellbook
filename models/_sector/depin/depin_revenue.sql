@@ -1,4 +1,8 @@
-{{ config(materialized="table") }}
+{{ config(
+     schema = 'depin'
+	  , alias = 'revenue'
+	  , materialized = 'table'
+) }}
 with
     results as (
         {{

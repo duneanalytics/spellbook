@@ -1,6 +1,7 @@
 {{ config(
     schema = 'depin'
     , alias = 'geodnet_revenue'
+    , materialized = 'table'
     )
 }}
 
