@@ -185,6 +185,7 @@ blockchain
 , trade_category
 , currency_contract
 , price_raw + platform_fee_amount_raw + pool_fee_amount_raw + royalty_fee_amount_raw as price_raw
+, price_raw as spot_price_raw
 , platform_fee_amount_raw
 , pool_fee_amount_raw
 , royalty_fee_amount_raw
