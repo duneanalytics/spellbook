@@ -1,10 +1,9 @@
 {{ config(
-tags=['prod_exclude'],
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["optimism", "ethereum"]\',
                                 "project",
                                 "odos",
-                                \'["Henrystats"]\') }}'
+                                \'["Henrystats", "amalashkevich"]\') }}'
         )
 }}
 
@@ -14,7 +13,8 @@ tags=['prod_exclude'],
 */
 
 {% set odos_models = [
-ref('odos_avalanche_c_trades')
+  ref('odos_ethereum_trades'),
+  ref('odos_optimism_trades')
 ] %}
 
 

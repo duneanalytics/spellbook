@@ -1,16 +1,30 @@
 version: 2
 
 models:
-  - name: odos_trades
+  - name: odos_v2_ethereum_trades
     meta:
-      blockchain: optimism, ethereum
+      blockchain: ethereum
       sector: dex
       project: odos
-      contributors: Henrystats
+      contributors: amalashkevich
     config:
-      tags: ['avalanche_c', 'odos','trades', 'dex', 'aggregator']
+      tags: ['ethereum','trades', 'odos','dex']
     description: >
-        odos trades on all chains across all contracts and versions. This table will load odos aggregator trades downstream.
+        A table containing all trades of odos v2 on ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index 
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: ethereum
+          project: odos
+          version: 2
     columns:
       - &blockchain
         name: blockchain
@@ -20,7 +34,10 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -75,9 +92,45 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the transaction"
-      - &trace_address
-        name: trace_address
-        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
-        description: "the position of this event log within this transaction"
+        description: ""
+      - &trace_address
+        name: trace_address
+        description: ""
+
+  - name: odos_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: odos
+      contributors: amalashkevich
+    config:
+      tags: ['ethereum','trades', 'odos','dex']
+    description: >
+        A table containing all trades of odos on ethereum.
+    columns:
+      - *blockchain
+      - *project 
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *trace_address
