@@ -44,7 +44,7 @@ WITH
     
 SELECT
     'zksync' AS blockchain
-    , 'SyncSwap' As project
+    , 'syncswap' As project
     , '1' AS version
     , CAST(date_trunc('month', block_time) AS DATE) AS block_month
     , CAST(date_trunc('day', block_time) AS DATE) AS block_date
