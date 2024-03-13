@@ -1,9 +1,9 @@
 {{
     config(
-        schema = 'tokens_zora',
-        alias = 'erc20',
-        tags = ['static'],
-        materialized = 'table'
+        schema = 'tokens_zora'
+        ,alias = 'erc20'
+        ,tags = ['static']
+        ,materialized = 'table'
     )
 }}
 
