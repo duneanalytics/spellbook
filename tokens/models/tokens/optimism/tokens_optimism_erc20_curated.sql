@@ -429,7 +429,11 @@ WITH raw_token_list AS (
     ,(0x20279b6d57Ba6D3eF852f34800e43e39d46d6487, 'MERK', 18, 'underlying')
     ,(0x9cfB13E6c11054ac9fcB92BA89644F30775436e4, 'axl-wstETH', 18, 'underlying')
     ,(0xc55E93C62874D8100dBd2DfE307EDc1036ad5434, 'mooBIFI', 18, 'receipt')
-
+    ,(0x3ee6107d9c93955acbb3f39871d32b02f82b78ab, 'stERN', 18, 'underlying')
+    ,(0x2dd1b4d4548accea497050619965f91f78b3b532, 'sFRAX', 18, 'underlying')
+    ,(0x3b08fcd15280e7b5a6e404c4abb87f7c774d1b2e, 'OVN', 18, 'underlying')
+    ,(0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 'ankrETH', 18, 'underlying')
+    ,(0x00e1724885473b63bce08a9f0a52f35b0979e35a, 'OATH', 18, 'underlying')
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT contract_address, symbol, decimals, token_type, 'manual' AS token_mapping_source

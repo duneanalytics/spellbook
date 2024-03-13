@@ -1,6 +1,6 @@
 {{
   config(
-    
+    tags = ['prod_exclude'], 
     alias='ccip_fulfilled_transactions',
     materialized='incremental',
     file_format='delta',

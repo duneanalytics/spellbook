@@ -62,3 +62,8 @@ sources:
       - name: lwstETH_evt_Redeem
       - name: lGMX_evt_Mint
       - name: lGMX_evt_Redeem
+
+  - name: the_granary_arbitrum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
