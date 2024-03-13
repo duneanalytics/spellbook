@@ -19,7 +19,7 @@
 {{
     generic_spot_v2_compatible_trades(
         blockchain = 'arbitrum',
-        project = 'wombatexchange',
+        project = 'wombat_exchange',
         sources = config_sources
     )
 }}
