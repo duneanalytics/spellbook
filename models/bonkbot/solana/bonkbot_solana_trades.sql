@@ -31,7 +31,9 @@ WITH
     FROM
       {{ source('solana','account_activity') }}
     WHERE
-      block_time >= TIMESTAMP '{{project_start_date}}'
+      {% if is_incremental() %}
+      {{ incremental_predicate('block_time') }}
+      {% endif %}
       AND tx_success
       AND (
         (
@@ -82,16 +84,22 @@ WITH
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
         AND date_trunc('minute', block_time) = minute
-        AND minute >= TIMESTAMP '{{project_start_date}}'
+        {% if is_incremental() %}
+        {{ incremental_predicate('minute') }}
+        {% endif %}
       )
       JOIN {{ source('solana','transactions') }} AS transactions ON (
         trades.tx_id = id
-        AND transactions.block_time >= TIMESTAMP '{{project_start_date}}'
+        {% if is_incremental() %}
+        {{ incremental_predicate('transactions.block_time') }}
+        {% endif %}
       )
     WHERE
-      trades.block_time >= TIMESTAMP '{{project_start_date}}'
-      AND trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      {% if is_incremental() %}
+      {{ incremental_predicate('trades.block_time') }}
+      {% endif %}
   ),
   highestInnerInstructionIndexForEachTrade AS (
     SELECT
