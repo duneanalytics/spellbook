@@ -15,3 +15,10 @@ sources:
       - name: TreasureMarketplaceV2_evt_BidAccepted
       - name: TreasureMarketplaceV2_evt_ItemSold
       - name: TreasureMarketplaceV1_evt_ItemSold
+
+  - name: element_ex_arbitrum
+    tables:
+        - name: NFTransfersFeature_evt_ERC721BuyOrderFilled
+        - name: NFTransfersFeature_evt_ERC721SellOrderFilled
+        - name: NFTransfersFeature_evt_ERC1155BuyOrderFilled
+        - name: NFTransfersFeature_evt_ERC1155SellOrderFilled

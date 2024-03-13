@@ -372,6 +372,8 @@ WITH pool_labels AS (
         l.pool_address AS contract_address,
         CASE WHEN pl.pool_type = 'LP' AND median_price IS NOT NULL
         THEN p.median_price
+        WHEN l.liquidity = 0 AND median_price IS NOT NULL 
+        THEN p.median_price
         ELSE l.liquidity / s.supply 
         END AS bpt_price
     FROM tvl l
@@ -381,6 +383,6 @@ WITH pool_labels AS (
     AND l.day = s.day
     LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
-    WHERE supply > 0
+    WHERE supply > 1
 
     {% endmacro %}

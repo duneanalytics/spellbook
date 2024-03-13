@@ -4,3 +4,7 @@ sources:
   - name: aave_v3_fantom
     tables:
       - name: Pool_evt_FlashLoan
+
+  - name: the_granary_fantom
+    tables:
+      - name: LendingPool_evt_FlashLoan

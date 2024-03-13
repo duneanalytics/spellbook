@@ -17,7 +17,8 @@
     ref('uwulend_ethereum_base_supply'),
     ref('spark_ethereum_base_supply'),
     ref('fluxfinance_ethereum_base_supply'),
-    ref('strike_ethereum_base_supply')
+    ref('strike_ethereum_base_supply'),
+    ref('granary_ethereum_base_supply')
   ]
 %}
 

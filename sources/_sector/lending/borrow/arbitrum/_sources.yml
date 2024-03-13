@@ -86,3 +86,9 @@ sources:
       - name: lGMX_evt_Borrow
       - name: lGMX_evt_RepayBorrow
       - name: lGMX_evt_LiquidateBorrow
+
+  - name: the_granary_arbitrum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
