@@ -64,19 +64,22 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
-    bpt_prices AS(
+    bpt_prices AS( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
         SELECT 
-            day,
-            contract_address AS token,
-            bpt_price AS price,
-            decimals
-        FROM {{ ref('balancer_bpt_prices') }}
-        WHERE blockchain = '{{blockchain}}'
-        AND version = '{{version}}'
+            l.day,
+            s.token_address AS token,
+            18 AS decimals,
+            SUM(protocol_liquidity_usd / supply) AS price
+        FROM {{ ref('balancer_liquidity') }} l
+        LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON s.token_address = l.pool_address 
+        AND l.blockchain = s.blockchain AND s.day = l.day
+        WHERE l.blockchain = '{{blockchain}}'
+        AND l.version = '{{version}}'
+        AND s.supply > 0
         {% if is_incremental() %}
-        AND {{ incremental_predicate('day') }}
+        AND {{ incremental_predicate('l.day') }}
         {% endif %}
-        GROUP BY 1, 2, 3, 4
+        GROUP BY 1, 2, 3
     ),
 
     daily_protocol_fee_collected AS (

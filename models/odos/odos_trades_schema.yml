@@ -3,7 +3,7 @@ version: 2
 models:
   - name: odos_trades
     meta:
-      blockchain: avalanche_c
+      blockchain: optimism, ethereum
       sector: dex
       project: odos
       contributors: Henrystats
