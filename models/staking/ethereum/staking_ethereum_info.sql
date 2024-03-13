@@ -126,4 +126,7 @@ FROM (VALUES
     , ('MonoMesa.eth', 'MonoMesa')
     , ('buffalospace.eth', 'buffalospace00')
     , ('kzg.eth', 'kassandraETH')
+    , ('Renzo', 'RenzoProtocol')
+    , ('Cumberland', 'CumberlandSays')
+    , ('Galaxy Digital', 'GalaxyHQ')
     ) AS temp_table (entity, x_username)
