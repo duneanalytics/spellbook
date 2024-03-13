@@ -228,4 +228,5 @@ FROM (VALUES
         ,(0x2Dc5dD89A3662567B78FC3a78E1E2c81D9e4D419, 'BANANIA', 18)   
         ,(0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe, 'weETH', 18)   
         ,(0x9623063377AD1B27544C965cCd7342f7EA7e88C7, 'GRT', 18)   
+        ,(0x2416092f143378750bb29b79eD961ab195CcEea5, 'ezETH', 18)   
      ) AS temp_table (contract_address, symbol, decimals)
