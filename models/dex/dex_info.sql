@@ -40,6 +40,7 @@ FROM (VALUES
     , ('airswap', 'AirSwap', 'Direct', 'airswap')
     , ('wombat', 'Wombat Exchange', 'Direct', 'WombatExchange')
     , ('wombat_exchange', 'Wombat Exchange', 'Direct', 'WombatExchange')
+    , ('wombatexchange', 'Wombat Exchange', 'Direct', 'WombatExchange')
     , ('defiswap', 'DeFi Swap', 'Direct', 'defi_swap')
     , ('gmx', 'GMX', 'Direct', 'GMX_IO')
     , ('clipper', 'Clipper', 'Direct', 'Clipper_DEX')
