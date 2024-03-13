@@ -75,4 +75,4 @@ models:
       - name: cex
         description: "Is it a CEX?"
       - name: payment_infra
-        description: "Is it payment infra"
+        description: "Is it payment infrastructure custodian?"
