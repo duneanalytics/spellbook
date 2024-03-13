@@ -1,15 +1,16 @@
 {{ config(
 	
 	alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["optimism", "base"]\',
                                 "project",
                                 "synthetix",
-                                \'["msilb7", "drethereum", "rplust"]\') }}'
+                                \'["msilb7", "drethereum", "rplust", "Henrystats"]\') }}'
 	)
 }}
 
 {% set synthetix_perpetual_trade_models = [
  ref('synthetix_optimism_perpetual_trades')
+ ,ref('synthetix_base_perpetual_trades')
 ] %}
 
 

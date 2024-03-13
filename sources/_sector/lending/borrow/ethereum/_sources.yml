@@ -83,3 +83,9 @@ sources:
       - name: SEther_evt_Borrow
       - name: SEther_evt_RepayBorrow
       - name: SEther_evt_LiquidateBorrow
+
+  - name: the_granary_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

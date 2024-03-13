@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'gas_bnb',
     alias = 'fees',
     partition_by = ['block_month'],
     materialized = 'incremental',

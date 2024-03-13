@@ -3,11 +3,11 @@ version: 2
 models:
   - name: tokens_nft
     meta:
-      blockchain: avalanche_c, bnb, ethereum, gnosis, optimism, fantom
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base, celo, zora, zksync
       sector: tokens
       contributors: hildobby, 0xManny, dot2dotseurat, soispoke
     config:
-      tags: ['tokens','nft', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism', 'fantom']
+      tags: ['tokens','nft', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base','celo','zora','zksync']
     description: >
         Crosschain NFT (ERC721 and ERC1155) tokens
     columns:

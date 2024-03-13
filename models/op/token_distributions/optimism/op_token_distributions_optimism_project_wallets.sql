@@ -81,6 +81,10 @@ FROM (values
     ,(0x4d728e92394e3d04cfadf58e075ce84c14949077, 'Velodrome', 'Multisig')
     ,(0xc34fd9b40afb41ac528abb3c7ef643a6ba3667e3, 'Rabbithole', 'Intermediate')
     ,(0x36fb9537ac34470ca382adaf4c68af0ec441f189, 'Galxe', 'CEX Deposit')
+    ,(0x1dfbd4d180a4a5dcf1e2cb63531588d0a39d442f, 'Paytire', 'Multisig')
+    ,(0x2431bfa47bb3d494bd720fac71960f27a54b6fe7, 'Dhannte', 'Multisig')
+    ,(0x19793c7824be70ec58bb673ca42d2779d12581be, 'Parcel', 'Multisig')
+    ,(0xaaba37fb284667647d315b9d45c1830598b24081, 'WakeUp Labs', 'Multisig')
 
     --quix - should come from CB
     ,(0x5Ad4A019F77e82940f6Dd15A5215362AF061A742,'Quix','Distributor')

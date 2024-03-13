@@ -3,12 +3,12 @@ version: 2
 models:
   - name: lending_supply
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync
       sector: lending
-      project: aave, moola, compound
+      project: aave, compound
       contributors: tomfutago
     config:
-      tags: ['lending', 'supply', 'aave', 'moola', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom']
+      tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync']
     description: "All lending transactions involving supply transactions"
     tests:
       - dbt_utils.unique_combination_of_columns:

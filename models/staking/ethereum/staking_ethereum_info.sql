@@ -109,7 +109,6 @@ FROM (VALUES
     , ('benjaminchodroff.eth', 'benchodroff')
     , ('jzchew.et', 'jzjmt3')
     , ('ctrl-alt.eth', 'grntwrght')
-    , ('Jesse Rinaldi', 'tgejesse421')
     , ('mas.eth', 'PrudentAnon')
     , ('johnc.eth', 'calabreum')
     , ('Senator Briggs', 'Briggs')
