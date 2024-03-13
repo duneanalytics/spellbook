@@ -96,4 +96,4 @@ SELECT
 FROM
   daily_burned_value mbv
 ORDER BY
-  1 DESC;
+  1 DESC
