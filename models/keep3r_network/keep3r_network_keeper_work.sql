@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'evt_keeper_work'
+    schema = 'keep3r_network'
+    , alias = 'keeper_work'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

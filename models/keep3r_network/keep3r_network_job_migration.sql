@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'evt_job_migration'
+    schema = 'keep3r_network'
+    , alias = 'job_migration'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

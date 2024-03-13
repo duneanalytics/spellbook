@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'evt_liquidity_credits_reward'
+    schema = 'keep3r_network'
+    , alias = 'liquidity_credits_reward'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",
