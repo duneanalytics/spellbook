@@ -160,3 +160,7 @@ sources:
     tables:
       - name: factory_evt_PoolCreated
       - name: pool_evt_Swap
+  - name: baso_finance_base
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap

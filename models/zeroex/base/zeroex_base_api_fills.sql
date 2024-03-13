@@ -188,9 +188,9 @@ SELECT
         max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
         swap_flag,
         matcha_limit_order_flag,
-        CASE WHEN maker_token IN (0x04068da6c83afcfa0e13ba15a6696662335d5b75,0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83,0x74b23882a30290451a17c44f4f05243b6b58c76d,0x049d68029688eabf473097a2fc38ef61633a3c7a,0x82f0b8b456c1a451378467398982d4834b6829c1, 0x321162cd933e2be498cd2267a90534a804051b11)
+        CASE WHEN maker_token IN (0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xeb466342c4d449bc9f53a865d5cb90586f405215 )
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-             WHEN taker_token IN (0x04068da6c83afcfa0e13ba15a6696662335d5b75,0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83,0x74b23882a30290451a17c44f4f05243b6b58c76d,0x049d68029688eabf473097a2fc38ef61633a3c7a,0x82f0b8b456c1a451378467398982d4834b6829c1, 0x321162cd933e2be498cd2267a90534a804051b11)     
+             WHEN taker_token IN (0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xeb466342c4d449bc9f53a865d5cb90586f405215,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca )
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
