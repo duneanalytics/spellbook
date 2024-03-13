@@ -25,6 +25,7 @@
     , ref('woofi_avalanche_c_base_trades')
     , ref('curvefi_avalanche_c_base_trades')
     , ref('hashflow_avalanche_c_base_trades')
+    , ref('uniswap_v2_avalanche_c_base_trades')
 ] %}
 
 WITH base_union AS (

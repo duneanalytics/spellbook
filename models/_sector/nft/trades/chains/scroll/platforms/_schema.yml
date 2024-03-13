@@ -1,0 +1,30 @@
+version: 2
+
+models:
+ - name: zonic_scroll_base_trades
+   meta:
+     blockchain: scroll
+     project: zonic
+     contributors: 0xRob, tomfutago
+   config:
+     tags: [ 'scroll','zonic', 'trades' ]
+   description: >
+     Zonic events on Scroll
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: element_scroll_base_trades
+   meta:
+     blockchain: scroll
+     project: element
+     contributors: 0xRob
+   config:
+     tags: [ 'scroll','element', 'trades' ]
+   description: >
+     Element events on Scroll
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

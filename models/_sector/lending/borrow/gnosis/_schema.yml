@@ -112,3 +112,109 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: aave_v3_gnosis_base_borrow
+    meta:
+      blockchain: gnosis
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'gnosis']
+    description: "Aave v3 borrow transactions on Gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_gnosis_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: realt_rmm_v1_gnosis_base_borrow
+    meta:
+      blockchain: gnosis
+      sector: lending
+      project: realt_rmm
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'realt_rmm', 'gnosis']
+    description: "RealT RMM v1 borrow transactions on Gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('realt_rmm_gnosis_base_borrow_seed')
+          filter:
+            version: 1
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: realt_rmm_v2_gnosis_base_borrow
+    meta:
+      blockchain: gnosis
+      sector: lending
+      project: realt_rmm
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'realt_rmm', 'gnosis']
+    description: "RealT RMM v2 borrow transactions on Gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('realt_rmm_gnosis_base_borrow_seed')
+          filter:
+            version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

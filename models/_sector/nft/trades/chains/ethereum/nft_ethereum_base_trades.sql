@@ -26,6 +26,7 @@
 ,ref('zora_v1_ethereum_base_trades')
 ,ref('zora_v2_ethereum_base_trades')
 ,ref('zora_v3_ethereum_base_trades')
+,ref('magiceden_ethereum_base_trades')
 ] %}
 
 with base_union as (

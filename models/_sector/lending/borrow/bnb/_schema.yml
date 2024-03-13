@@ -112,3 +112,71 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: aave_v3_bnb_base_borrow
+    meta:
+      blockchain: bnb
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'bnb']
+    description: "Aave v3 borrow transactions on bnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_bnb_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_bnb_base_borrow
+    meta:
+      blockchain: bnb
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'granary', 'bnb']
+    description: "Granary borrow transactions on bnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('granary_bnb_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
