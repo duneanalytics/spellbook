@@ -25,9 +25,9 @@ WITH
       ) AS t (time)
       {% if is_incremental() %}
       WHERE
-        time > (
+        time >= (
           SELECT
-            CAST(COALESCE(MAX(date), '2023-04-20 00:00')) AS timestamp
+            CAST(COALESCE(MAX(date), '2023-04-27 00:00')) AS timestamp - interval '7' day
           FROM
             {{ this }}
         )
@@ -44,9 +44,9 @@ WITH
       a.contract_address = 0xAC0F66379A6d7801D7726d5a943356A172549Adb
       AND a.to = 0x000000000000000000000000000000000000dead
       {% if is_incremental() %}
-      AND a.evt_block_time > (
+      AND a.evt_block_time >= (
         SELECT
-          CAST(COALESCE(MAX(date), '2023-04-20 00:00')) AS timestamp
+          CAST(COALESCE(MAX(date), '2023-04-27 00:00')) AS timestamp - interval '7' day
         FROM
           {{ this }}
       )
@@ -62,9 +62,9 @@ WITH
       blockchain = 'polygon'
       AND contract_address = 0xac0f66379a6d7801d7726d5a943356a172549adb
       {% if is_incremental() %}
-      AND hour > (
+      AND hour >= (
         SELECT
-          CAST(COALESCE(MAX(date), '2023-04-20 00:00')) AS timestamp
+          CAST(COALESCE(MAX(date), '2023-04-27 00:00')) AS timestamp - interval '7' day
         FROM
           {{ this }}
       )
