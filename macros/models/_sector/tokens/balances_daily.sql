@@ -14,17 +14,6 @@ with changed_balances as (
     from {{balances_daily_agg}}
     where day < date(date_trunc('day',now()))
 )
-
-,days as (
-    select *
-    from unnest(
-         sequence(cast('{{start_date}}' as date)
-                , date(date_trunc('day',now()))
-                , interval '1' day
-                )
-         ) as foo(day)
-)
-
 , forward_fill as (
     select
         blockchain
@@ -35,10 +24,11 @@ with changed_balances as (
         ,token_standard
         ,token_id
         ,balance
-        from days d
+        from {{ref('tokens_days')}} d
         left join changed_balances b
             ON  d.day >= b.day
             and (b.next_update_day is null OR d.day < b.next_update_day) -- perform forward fill
+        where d.day >= cast('{{start_date}}' as date)
 )
 
 select
