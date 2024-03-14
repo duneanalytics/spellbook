@@ -1,4 +1,6 @@
-{{ config(alias = 'agora_proposals'
+{{ config(
+    alias = 'agora_proposals'
+    ,partition_by = ['start_timestamp']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
@@ -7,10 +9,10 @@
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
-                                    \'["chain_l"]\') }}'
+                                    \'["chain_l", "chuxin"]\') }}'
     )
 }}
-
+-- v5
 SELECT
   p.proposal_id AS proposal_id,
   '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
@@ -100,6 +102,9 @@ FROM
       AND NOT CAST("proposalID" AS VARCHAR) IN (
         '90839767999322802375479087567202389126141447078032129455920633707568400402209'
       )
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
@@ -114,7 +119,9 @@ GROUP BY
   s.time,
   e.time,
   pc.proposalId
+
 UNION ALL
+
 SELECT
   p.proposal_id,
   '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
@@ -188,6 +195,9 @@ FROM
       {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCreated') }}
     WHERE
       votingModule IS NOT NULL
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
@@ -202,7 +212,9 @@ GROUP BY
   s.time,
   e.time,
   pc.proposalId
+
 UNION ALL
+
 SELECT
   p.proposal_id,
   '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
@@ -294,6 +306,9 @@ FROM
         0x3f3bc08d05d9bde20f495e76334daeeda34ce94ed656704186693a3f2dbaa790,
         0xe50f250eed689783da7eab4b13a2c7e0dddb32dee9f3185872903a17a70e120c
       )
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('evt_block_time') }}
+      {% endif %}
       --  AND LOWER(description) LIKE '%test vote%'
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
@@ -311,7 +326,7 @@ GROUP BY
   pc.proposalId
 
 UNION ALL
-
+-- v6
 SELECT
   p.proposal_id,
   '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
@@ -398,6 +413,9 @@ FROM (
     votingModule
   FROM
     {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalCreated') }}
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
 ) as p
 LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
