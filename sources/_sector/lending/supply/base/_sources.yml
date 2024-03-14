@@ -51,3 +51,8 @@ sources:
       - name: sobUSDC_evt_Redeem
       - name: sobWETH_evt_Mint
       - name: sobWETH_evt_Redeem
+
+  - name: the_granary_base
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

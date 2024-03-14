@@ -115,6 +115,8 @@ FROM
     ('busd-binance-usd', 'BUSD', 0x9c9e5fd8bbc25984b178fdce6117defa39d2db39,18),
     ('cbeth-coinbase-wrapped-staked-eth', 'cbETH', 0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2,18),
     ('grain-granary', 'GRAIN', 0xfD389Dc9533717239856190F42475d3f263a270d,18),
-    ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6)
+    ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6),
+    ('tbtc-tbtc', 'TBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40, 18),
+    ('axlusdc-axelar-wrapped-usdc', 'AXLUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6)
 
 ) as temp (token_id, symbol, contract_address, decimals)
