@@ -1,5 +1,7 @@
 
-{{ config(alias = 'snapshot_proposals'
+{{ config(
+    alias = 'snapshot_proposals'
+    ,partition_by = ['start_timestamp']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
@@ -305,6 +307,9 @@ FROM
         0x7b9a8eee9f90c7af6587afc5aef0db050c1e5ee9277d3aa18d8624976fb466bd,
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('FROM_UNIXTIME("start")') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
@@ -594,6 +599,9 @@ FROM
     WHERE
       "space" = 'opcollective.eth'
       AND "type" = 'approval'
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('FROM_UNIXTIME("start")') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
@@ -897,6 +905,9 @@ FROM
         0x7b9a8eee9f90c7af6587afc5aef0db050c1e5ee9277d3aa18d8624976fb466bd,
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('FROM_UNIXTIME("start")') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
