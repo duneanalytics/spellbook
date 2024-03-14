@@ -1,7 +1,10 @@
 {{ config(
     schema = 'depin'
     , alias = 'geodnet_revenue'
-    , materialized = 'table'
+    , materialized = 'incremental'
+    , file_format = 'delta',
+    , incremental_strategy = 'merge'
+    , unique_key = ['date', 'chain', 'name']
     )
 }}
 
@@ -20,6 +23,15 @@ WITH
           INTERVAL '1' hour
         )
       ) AS t (time)
+      {% if is_incremental() %}
+      WHERE
+        time > (
+          SELECT
+            COALESCE(MAX(day), '2023-04-20 00:00')
+          FROM
+            {{ this }}
+        )
+      {% endif %}
   ),
   burn_events AS (
     SELECT
@@ -31,6 +43,14 @@ WITH
     WHERE
       a.contract_address = 0xAC0F66379A6d7801D7726d5a943356A172549Adb
       AND a.to = 0x000000000000000000000000000000000000dead
+      {% if is_incremental() %}
+      AND a.evt_block_time > (
+        SELECT
+          COALESCE(MAX(evt_day), '2023-04-20 00:00')
+        FROM
+          {{ this }}
+      )
+      {% endif %}
   ),
   raw_prices AS (
     SELECT
@@ -41,6 +61,14 @@ WITH
     WHERE
       blockchain = 'polygon'
       AND contract_address = 0xac0f66379a6d7801d7726d5a943356a172549adb
+      {% if is_incremental() %}
+      AND hour > (
+        SELECT
+          COALESCE(MAX(day), '2023-04-20 00:00')
+        FROM
+          {{ this }}
+      )
+      {% endif %}
     GROUP BY
       2,
       3
