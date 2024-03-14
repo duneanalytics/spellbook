@@ -37,7 +37,6 @@ with
   automated_source as (
     /*
         todo: find out how to use source jinja for uploaded data with three namespaces
-        todo: move evms schema to a subproject, establish as a source, otherwise we can't call as ref() here in this subproject
     */
     select
       i.blockchain
@@ -46,7 +45,7 @@ with
       , t.decimals
     from
       dune.definedfi.dataset_tokens as t
-      join evms.info as i on t.networkid = i.chain_id
+      join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
 ), static_source as (
     select *
     from
