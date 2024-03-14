@@ -42,7 +42,7 @@ with dexs AS (
             CAST(-1 as integer) AS evt_index
         FROM {{ ref('paraswap_v6_fantom_trades_decoded') }}     
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE blockTime >= date_trunc('day', now() - interval '7' day)
         {% endif %}      
 )
 
