@@ -56,7 +56,7 @@ sources:
       - name: AugustusSwapper6_0_evt_SwappedDirect
         loaded_at_field: evt_block_time
       # v6      
-      - name: AugustusV6_call_swapExactAmountIn # ptest_v4_ethereum.ptest_v4_call_swapExactAmountIn       
+      - name: AugustusV6_call_swapExactAmountIn
         loaded_at_field: call_block_time
       - name: AugustusV6_call_swapExactAmountInOnUniswapV2
         loaded_at_field: call_block_time

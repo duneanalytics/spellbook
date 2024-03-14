@@ -1,17 +1,19 @@
-{ { config(
+{{ config(
     alias = 'trades',
     schema = 'paraswap_base'
-) } } { %
-set
-    paraswap_models = [
- ref('paraswap_v5_base_trades')
- ,ref('paraswap_v6_base_trades')
-] % }
-SELECT
-    *
-FROM
-    (
-        { % for dex_model in paraswap_models % }
+
+)
+}}
+
+{% set paraswap_models = [
+ref('paraswap_v5_base_trades')
+,ref('paraswap_v6_base_trades')
+ ] %}
+
+
+SELECT *
+FROM (
+        {% for dex_model in paraswap_models %}
         SELECT
             blockchain,
             project,
@@ -37,8 +39,10 @@ FROM
             tx_to,
             trace_address,
             evt_index
-        FROM
-            { { dex_model } } { % if not loop.last % }
-        UNION
-        ALL { % endif % } { % endfor % }
-    );
+        FROM {{ dex_model }}
+    {% if not loop.last %}
+        UNION ALL
+    {% endif %}
+    {% endfor %}
+    )
+;

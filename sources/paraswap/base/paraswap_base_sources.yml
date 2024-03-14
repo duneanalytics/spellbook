@@ -1,9 +1,9 @@
 version: 2
 
-sources:
+sources: 
   - name: paraswap_base
     freshness:
-      warn_after: { count: 12, period: hour }
+          warn_after: { count: 12, period: hour }
     description: >
       Decoded event table for swaps on paraswap
     tables:
