@@ -8,15 +8,12 @@
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
-                                    \'["chain_l"]\') }}'
+                                    \'["chain_l", "chuxin"]\') }}'
     )
 }}
 
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(p.proposal_id AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
+  CAST(p.proposal_id AS VARCHAR) AS proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Single-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Single-Choice Proposal'
   CONCAT(
@@ -320,10 +317,7 @@ GROUP BY
   p.platform
 UNION ALL
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(p.proposal_id AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
+  CAST(p.proposal_id AS VARCHAR) AS proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Multi-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Multi-Choice Proposal'
   CONCAT(
@@ -612,10 +606,7 @@ GROUP BY
   p.platform
 UNION ALL
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(p.proposal_id AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
+  CAST(p.proposal_id AS VARCHAR) AS proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
   CONCAT(
