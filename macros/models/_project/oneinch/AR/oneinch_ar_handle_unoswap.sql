@@ -7,8 +7,7 @@
         blockchain,
         traces_cte,
         pools_list,
-        native,
-        start_date
+        native
     )
 %}
 
@@ -49,11 +48,7 @@ select
     , call_error
     , call_type
     , ordinary
-    , transform(pools, x -> map_from_entries(array[
-        ('type', substr(cast(x['pool_type'] as varbinary), 1, 1))
-        , ('info', substr(cast(x['pool'] as varbinary), 1, 12))
-        , ('address', substr(cast(x['pool'] as varbinary), 13))
-    ])) as pools
+    , transform(pools, x -> cast(x['pool'] as varbinary)) as pools
     , remains
     , '{{ method_data.router_type }}' as router_type
 from (
@@ -101,13 +96,11 @@ from (
         join traces_cte using(call_block_number, call_tx_hash, call_trace_address)
         {% if is_incremental() %}
             where {{ incremental_predicate('call_block_time') }}
-        {% else %}
-            where call_block_time >= timestamp '{{ start_date }}'
         {% endif %}
     )
 )
-left join (select pool_address as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
-left join (select pool_address as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
+left join (select pool_address as first_pool, array[token0, token1] as first_pool_tokens from pools_list) using(first_pool) -- replace array[token0, token1] with an array with tokens when it appears in the dex.raw_pools table
+left join (select pool_address as last_pool, array[token0, token1] as last_pool_tokens from pools_list) using(last_pool) -- replace array[token0, token1] with an array with tokens when it appears in the dex.raw_pools table
 
 
 
