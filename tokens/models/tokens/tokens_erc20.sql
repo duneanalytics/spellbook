@@ -40,20 +40,20 @@ with
     */
     with raw_source as (
         select
-        i.blockchain
-        , t.address as contract_address
-        , t.symbol
-        , t.decimals
-        , row_number() over (
-            partition by
-            i.blockchain,
-            t.address
-            order by
-            t.createdat desc
-        ) as rn
+            i.blockchain
+            , t.address as contract_address
+            , t.symbol
+            , t.decimals
+            , row_number() over (
+                partition by
+                    i.blockchain,
+                    t.address
+                order by
+                    t.createdat desc
+            ) as rn
         from
-        dune.definedfi.dataset_tokens as t
-        join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
+            {{ source("definedfi", "dataset_tokens", dune=True) }} as t
+            join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
     )
     select
         *
