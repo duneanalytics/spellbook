@@ -1,6 +1,5 @@
 {{ config(
     alias = 'proposal_votes'
-    ,partition_by = ['date_timestamp']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'

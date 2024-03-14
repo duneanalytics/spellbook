@@ -2,7 +2,6 @@
 
 {{ config(
     alias = 'proposals'
-    ,partition_by = ['start_timestamp']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
