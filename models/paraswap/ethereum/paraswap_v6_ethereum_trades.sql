@@ -28,12 +28,12 @@ with dexs AS (
             method,       
             CASE 
                 WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- wavax 
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
                 ELSE from_hex(destToken)
             END AS token_bought_address,
             CASE 
                 WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- wavax 
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
                 ELSE from_hex(srcToken)
             END AS token_sold_address,
             projectContractAddress as project_contract_address,
