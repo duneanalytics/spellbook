@@ -1,16 +1,17 @@
 -- Proposals Available On Agora And Snapshot Platform
 
-{{ config(alias = 'proposals'
+{{ config(
+    alias = 'proposals'
+    ,partition_by = ['start_timestamp']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
     ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
-    ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.start_timestamp')]
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
-                                    \'["chain_l"]\') }}'
+                                    \'["chain_l", "chuxin"]\') }}'
     )
 }}
 
@@ -59,5 +60,4 @@ WITH all_proposals AS (
 )
 
 SELECT *
-FROM
-    all_proposals
+FROM all_proposals
