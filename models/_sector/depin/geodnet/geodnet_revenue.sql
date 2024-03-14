@@ -27,7 +27,7 @@ WITH
       WHERE
         time > (
           SELECT
-            COALESCE(MAX(date), CAST('2023-04-20 00:00' AS timestamp))
+            CAST(COALESCE(MAX(date), '2023-04-20 00:00')) AS timestamp
           FROM
             {{ this }}
         )
@@ -46,7 +46,7 @@ WITH
       {% if is_incremental() %}
       AND a.evt_block_time > (
         SELECT
-          COALESCE(MAX(date), CAST('2023-04-20 00:00' AS timestamp))
+          CAST(COALESCE(MAX(date), '2023-04-20 00:00')) AS timestamp
         FROM
           {{ this }}
       )
@@ -64,7 +64,7 @@ WITH
       {% if is_incremental() %}
       AND hour > (
         SELECT
-          COALESCE(MAX(date), CAST('2023-04-20 00:00' AS timestamp))
+          CAST(COALESCE(MAX(date), '2023-04-20 00:00')) AS timestamp
         FROM
           {{ this }}
       )
