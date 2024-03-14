@@ -2,7 +2,7 @@
     schema = 'depin'
     , alias = 'geodnet_revenue'
     , materialized = 'incremental'
-    , file_format = 'delta',
+    , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['date', 'chain', 'name']
     )
