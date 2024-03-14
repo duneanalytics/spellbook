@@ -35,9 +35,6 @@
 
 with
   automated_source as (
-    /*
-        todo: find out how to use source jinja for uploaded data with three namespaces
-    */
     with raw_source as (
         select
             i.blockchain
