@@ -48,7 +48,7 @@ from(
     where balance > 0
     ) b
 left join {{source('prices','usd')}} p
-    on (token_standard != 'native'
+    on (token_standard = 'erc20'
     and b.blockchain = p.blockchain
     and b.token_address = p.contract_address
     and b.day = p.minute)
