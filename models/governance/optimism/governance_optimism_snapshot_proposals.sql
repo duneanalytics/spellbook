@@ -8,12 +8,12 @@
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
-                                    \'["chain_l", "chuxin"]\') }}'
+                                    \'["chain_l"]\') }}'
     )
 }}
 
 SELECT
-  CAST(p.proposal_id AS VARCHAR) AS proposal_id,
+  p.proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Single-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Single-Choice Proposal'
   CONCAT(
@@ -84,7 +84,7 @@ FROM
   (
     -- Select Single-Choice proposals from snapshot platform based on specific criteria
     SELECT
-      id AS proposal_id,
+      cast(id as varchar) AS proposal_id,
       CONCAT(
         CAST(
           COALESCE(
@@ -317,7 +317,7 @@ GROUP BY
   p.platform
 UNION ALL
 SELECT
-  CAST(p.proposal_id AS VARCHAR) AS proposal_id,
+  p.proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Multi-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Multi-Choice Proposal'
   CONCAT(
@@ -377,7 +377,7 @@ FROM
   (
     -- Select Multi-Choice proposals from snapshot platform based on specific criteria
     SELECT
-      id AS proposal_id,
+      cast(id as varchar) AS proposal_id,
       CONCAT(
         CAST(
           COALESCE(
@@ -606,7 +606,7 @@ GROUP BY
   p.platform
 UNION ALL
 SELECT
-  CAST(p.proposal_id AS VARCHAR) AS proposal_id,
+  p.proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
   CONCAT(
@@ -677,7 +677,7 @@ FROM
   (
     -- Select test proposals from snapshot platform based on specific criteria
     SELECT
-      id AS proposal_id,
+      cast(id as varchar) AS proposal_id,
       CONCAT(
         CAST(
           COALESCE(

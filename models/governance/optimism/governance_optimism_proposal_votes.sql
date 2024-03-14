@@ -7,7 +7,7 @@
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
-                                    \'["chain_l", "chuxin"]\') }}'
+                                    \'["chain_l"]\') }}'
     )
 }}
 
