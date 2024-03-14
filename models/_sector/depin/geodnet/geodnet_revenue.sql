@@ -25,12 +25,12 @@ WITH
       ) AS t (time)
       {% if is_incremental() %}
       WHERE
-        time >= (
-          SELECT
-            CAST(COALESCE(MAX(date), '2023-04-27 00:00')) AS timestamp - interval '7' day
-          FROM
-            {{ this }}
-        )
+          time >= (
+            SELECT
+              CAST(COALESCE(MAX(date), '2023-04-27 00:00') AS timestamp) - INTERVAL '7' DAY
+            FROM
+              {{ this }}
+          )
       {% endif %}
   ),
   burn_events AS (
@@ -46,7 +46,7 @@ WITH
       {% if is_incremental() %}
       AND a.evt_block_time >= (
         SELECT
-          CAST(COALESCE(MAX(date), '2023-04-27 00:00')) AS timestamp - interval '7' day
+          CAST(COALESCE(MAX(date), '2023-04-27 00:00') AS timestamp) - interval '7' day
         FROM
           {{ this }}
       )
@@ -64,7 +64,7 @@ WITH
       {% if is_incremental() %}
       AND hour >= (
         SELECT
-          CAST(COALESCE(MAX(date), '2023-04-27 00:00')) AS timestamp - interval '7' day
+          CAST(COALESCE(MAX(date), '2023-04-27 00:00') AS timestamp) - interval '7' day
         FROM
           {{ this }}
       )
