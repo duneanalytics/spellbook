@@ -38,35 +38,46 @@ with
     /*
         todo: find out how to use source jinja for uploaded data with three namespaces
     */
-    select
-      i.blockchain
-      , t.address as contract_address
-      , t.symbol
-      , t.decimals
-    from
-      dune.definedfi.dataset_tokens as t
-      join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
-), static_source as (
-    select *
-    from
-    (
-        {% for key, value in static_models.items() %}
+    with raw_source as (
         select
-            '{{ value.blockchain }}' as blockchain
-            , contract_address
-            , symbol
-            , decimals
+        i.blockchain
+        , t.address as contract_address
+        , t.symbol
+        , t.decimals
+        , row_number() over (
+            partition by
+            i.blockchain,
+            t.address
+            order by
+            t.createdat desc
+        ) as rn
         from
-            {{ value.model }}
-        {% if value.blockchain == 'optimism' %}
-        where
-            symbol is not null --This can be removed if/when all other chains show all ERC20 tokens, rather than only mapped ones
-        {% endif %}
-        {% if not loop.last %}
-        union all
-        {% endif %}
-        {% endfor %}
+        dune.definedfi.dataset_tokens as t
+        join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
     )
+    select
+        *
+    from
+        raw_source
+    where
+        rn = 1
+), static_source as (
+    {% for key, value in static_models.items() %}
+    select
+        '{{ value.blockchain }}' as blockchain
+        , contract_address
+        , symbol
+        , decimals
+    from
+        {{ value.model }}
+    {% if value.blockchain == 'optimism' %}
+    where
+        symbol is not null --This can be removed if/when all other chains show all ERC20 tokens, rather than only mapped ones
+    {% endif %}
+    {% if not loop.last %}
+    union all
+    {% endif %}
+    {% endfor %}
 )
 select
     *
