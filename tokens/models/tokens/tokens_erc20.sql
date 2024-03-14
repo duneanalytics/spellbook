@@ -53,7 +53,10 @@ with
             join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
     )
     select
-        *
+        blockchain
+        , contract_address
+        , symbol
+        , decimals
     from
         raw_source
     where
