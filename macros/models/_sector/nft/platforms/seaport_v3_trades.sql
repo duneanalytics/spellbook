@@ -434,14 +434,14 @@ with source_ethereum_transactions as (
              end is_price
             ,false as is_netprice -- it has to be calculated.
             ,case when is_platform_fee then false -- to os fee wallet has to be excluded
-                  when offer_first_item_type in ('erc721','erc1155') and eth_erc_idx = 1 then false  -- buy = first transfer is is profit
-                  when offer_first_item_type in ('erc20','native') and eth_erc_idx = eth_erc_cnt then false  -- offer_accepted = last transfer is is profit
+                  when offer_first_item_type in ('erc721','erc1155') and eth_erc_idx = 1 then false  -- buy = first transfer is profit
+                  when offer_first_item_type in ('erc20','native') and eth_erc_idx = eth_erc_cnt then false  -- offer_accepted = last transfer is profit
                   when eth_erc_idx > 0 then true  -- else is all creator fees
                   else false
              end is_creator_fee
             ,sum(case when is_platform_fee then null -- to os fee wallet has to be excluded
-                      when offer_first_item_type in ('erc721','erc1155') and eth_erc_idx = 1 then null  -- buy = first transfer is is profit
-                      when offer_first_item_type in ('erc20','native') and eth_erc_idx = eth_erc_cnt then null  -- offer_accepted = last transfer is is profit
+                      when offer_first_item_type in ('erc721','erc1155') and eth_erc_idx = 1 then null  -- buy = first transfer is profit
+                      when offer_first_item_type in ('erc20','native') and eth_erc_idx = eth_erc_cnt then null  -- offer_accepted = last transfer is profit
                       when eth_erc_idx > 0 then 1  -- else is all creator fees
                  end) over (partition by tx_hash, evt_index order by eth_erc_idx) as creator_fee_idx
             ,case when item_type in ('erc721','erc1155') then true
