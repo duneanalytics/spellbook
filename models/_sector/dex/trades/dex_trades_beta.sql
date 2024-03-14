@@ -76,6 +76,7 @@ WITH curve AS (
     {% endfor %}
 )
 
+
 {% set cte_to_union = [
     'curve'
     , 'as_is_dexs'
