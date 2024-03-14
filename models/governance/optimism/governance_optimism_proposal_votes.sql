@@ -7,7 +7,7 @@
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
                                       "governance",
-                                    \'["chain_l"]\') }}'
+                                    \'["chain_l", "chuxin"]\') }}'
     )
 }}
 
@@ -28,6 +28,10 @@ SELECT
   END AS choice_name
 FROM
   {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
+{% if is_incremental() %}
+WHERE
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 
 UNION ALL
 
@@ -48,6 +52,10 @@ SELECT
   END AS choice_name
 FROM
   {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_VoteCast') }}
+{% if is_incremental() %}
+WHERE
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 
 UNION ALL
 
@@ -70,3 +78,6 @@ FROM
   {{ source('snapshot','votes') }}
 WHERE
   "space" = 'opcollective.eth'
+{% if is_incremental() %}
+AND {{ incremental_predicate('from_unixtime(created)') }}
+{% endif %}
