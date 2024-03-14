@@ -187,8 +187,7 @@ blockchain
 , case when trade_category = 'buy' 
     then price_raw + platform_fee_amount_raw + royalty_fee_amount_raw --when purchasing, the user pays for the spot price + fees to the pool
     else price_raw --when selling, the pool pays out just the spot price since fees are deducted from amount out to user
-    end as price_raw 
-, price_raw as spot_price_raw
+    end as price_raw --trade pool fees are virtualized and NOT included
 , platform_fee_amount_raw
 , pool_fee_amount_raw
 , royalty_fee_amount_raw
