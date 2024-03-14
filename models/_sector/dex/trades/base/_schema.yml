@@ -767,6 +767,25 @@ models:
           filter:
             version: 1
 
+  - name: baseswap_basex_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: baseswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+    description: "baseswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('baseswap_basex_base_base_trades_seed')
+          filter:
+            version: 3
+
   - name: synthswap_base_base_trades
     meta:
       blockchain: base
