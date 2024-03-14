@@ -144,5 +144,4 @@ FROM (VALUES
     , ('voltswap', 'VoltSwap', 'Direct', 'VoltSwapFinance')
     , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
-    , ('SyncSwap', 'SyncSwap', 'Direct', 'SyncSwap')
     ) AS temp_table (project, name, marketplace_type, x_username)
