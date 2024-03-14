@@ -52,11 +52,11 @@ left join {{ref('prices_usd_daily')}} p
     on (token_standard = 'erc20'
     and b.blockchain = p.blockchain
     and b.token_address = p.contract_address
-    and b.day = p.minute)
+    and b.day = p.day)
     or (token_standard = 'native'
     and p.blockchain is null
     and p.contract_address is null
     and p.symbol = '{{native_token}}'
-    and b.day = p.minute)
+    and b.day = p.day)
 
 {% endmacro %}
