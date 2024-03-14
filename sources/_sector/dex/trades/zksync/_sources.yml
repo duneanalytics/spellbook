@@ -17,3 +17,7 @@ sources:
     tables:
       - name: SyncSwapClassicPoolFactory_evt_PoolCreated
       - name: SyncSwapStablePoolFactory_evt_PoolCreated
+  - name: mute_zksync
+    tables:
+      - name: MuteSwitchFactoryDynamic_evt_PairCreated
+      - name: MuteSwitchPairDynamic_evt_Swap
