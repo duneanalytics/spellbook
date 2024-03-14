@@ -204,7 +204,7 @@ GROUP BY
   pc.proposalId
 UNION ALL
 SELECT
-  p.proposal_idAS proposal_id,
+  p.proposal_id,
   '<a href="https://vote.optimism.io/proposals/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
   CONCAT(
