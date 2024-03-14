@@ -12,6 +12,7 @@ with changed_balances as (
     ,balance
     ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg}}
+    where day < date(date_trunc('day',now()))
 )
 
 ,days as (
