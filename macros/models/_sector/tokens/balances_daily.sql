@@ -14,7 +14,6 @@ with changed_balances as (
     from {{balances_daily_agg}}
 )
 
-
 ,days as (
     select *
     from unnest(
