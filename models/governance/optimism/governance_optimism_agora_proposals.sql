@@ -104,7 +104,7 @@ FROM
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
-  LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
+  LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = cast(pc.proposalId as varchar)
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -192,7 +192,7 @@ FROM
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
-  LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
+  LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = cast(pc.proposalId as varchar)
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -299,7 +299,7 @@ FROM
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
   LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
   LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
-  LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
+  LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalCanceled') }} AS pc ON p.proposal_id = cast(pc.proposalId as varchar)
 GROUP BY
   p.proposal_id,
   p.proposal_description,
@@ -402,7 +402,7 @@ FROM (
 LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 LEFT JOIN {{ source('optimism','blocks') }} AS s ON p.start_block = s.number
 LEFT JOIN {{ source('optimism','blocks') }} AS e ON p.end_block = e.number
-LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalCanceled') }} AS pc ON p.proposal_id = pc.proposalId
+LEFT JOIN {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalCanceled') }} AS pc ON p.proposal_id = cast(pc.proposalId as varchar)
 GROUP BY
   p.proposal_id,
   p.proposal_description,
