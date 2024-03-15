@@ -31,7 +31,7 @@ WITH latest_deadline AS (
 {% if is_incremental() %}
 ,update_deadline as (
   SELECT 
-    {{ dbt_utils.star(from={{ this }}, except = ["end_timestamp"]) }}
+    {{ dbt_utils.star(from=ref('governance_optimism_agora_proposals'), except = ["end_timestamp"]) }}
     ,CASE WHEN d.deadline IS NOT NULL THEN d.deadline ELSE end_timestamp END as end_timestamp
   FROM {{ this }} as t
   LEFT JOIN latest_deadline as d
