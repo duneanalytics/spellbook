@@ -1,19 +1,6 @@
 {%- macro balances_daily_enriched(balances_daily_agg_base, start_date, native_token='ETH') %}
 
-with changed_balances as (
-    select
-    blockchain
-    ,day
-    ,address
-    ,token_address
-    ,token_standard
-    ,token_id
-    ,balance_raw
-    ,next_update_day
-    from {{balances_daily_agg_base}}
-    where day < date(date_trunc('day',now()))
-)
-, forward_fill as (
+with forward_fill as (
     select
         blockchain
         ,d.day as day
@@ -23,9 +10,10 @@ with changed_balances as (
         ,token_id
         ,balance_raw
         from {{ref('tokens_days')}} d
-        left join changed_balances b
+        left join {{balances_daily_agg_base}} b
             ON  d.day >= b.day
             and (b.next_update_day is null OR d.day < b.next_update_day) -- perform forward fill
+            and b.day < date(date_trunc('day',now()))
         where d.day >= cast('{{start_date}}' as date)
 )
 
