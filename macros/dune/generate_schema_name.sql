@@ -15,7 +15,7 @@
 
     {%- else -%}
 
-        {{ default_schema }}_{{ custom_schema_name | trim }}
+        {{ default_schema }}_x_{{ custom_schema_name | trim }}
 
     {%- endif -%}
 
