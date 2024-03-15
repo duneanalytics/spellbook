@@ -3,6 +3,7 @@
 with forward_fill as (
     select
         blockchain
+        ,b.day as balance_day
         ,d.day as day
         ,address
         ,token_address
@@ -19,6 +20,7 @@ with forward_fill as (
 
 select
     b.blockchain,
+    b.balance_day,
     b.day,
     b.address,
     b.token_address,
