@@ -56,7 +56,7 @@ models:
         name: max_fee_per_blob_gas
         description: "max fee per blob gas of the blob"
       - &excess_blob_gas
-        nmae: excess_blob_gas
+        name: excess_blob_gas
         description: "excess blob gas of the blob"
       - &blob_base_fee_per_gas
         name: blob_base_fee_per_gas
