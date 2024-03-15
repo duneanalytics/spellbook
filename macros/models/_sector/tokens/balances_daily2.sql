@@ -8,7 +8,7 @@ with changed_balances as (
     ,token_address
     ,token_standard
     ,token_id
-    ,balance
+    ,balance_raw
     ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg_base}}
     where day < date(date_trunc('day',now()))
@@ -21,7 +21,7 @@ with changed_balances as (
         ,token_address
         ,token_standard
         ,token_id
-        ,balance
+        ,balance_raw
         from {{ref('tokens_days')}} d
         left join changed_balances b
             ON  d.day >= b.day
@@ -32,8 +32,6 @@ with changed_balances as (
 select
     b.blockchain,
     b.day,
-    b.block_number,
-    b.block_time,
     b.address,
     b.token_address,
     b.token_standard,
@@ -46,10 +44,14 @@ select
     erc20_tokens.symbol as token_symbol,
     token_id,
     nft_tokens.name as collection_name,
-    b.balance * p.price as balance_usd
+    CASE
+        WHEN b.token_standard = 'erc20' THEN (b.balance_raw / power(10, erc20_tokens.decimals)) * p.price
+        WHEN b.token_standard = 'native' THEN (b.balance_raw / power(10, 18)) * p.price
+        ELSE b.balance_raw
+    END as balance_usd
 from(
     select * from forward_fill
-    where balance > 0
+    where balance_raw > 0
     ) b
 left join {{ ref('tokens_nft') }} nft_tokens on (
    nft_tokens.blockchain = b.blockchain
