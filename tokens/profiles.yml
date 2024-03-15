@@ -7,6 +7,6 @@ spellbook-local:
       password: trino
       host: trino
       port: 1234
-      database: hive
+      database: hive2
       schema: wizard
       threads: 1
