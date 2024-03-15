@@ -19,6 +19,34 @@
     ref('governance_optimism_snapshot_proposals')
 ] %}
 
+WITH latest_deadline AS (
+  SELECT
+    cast(proposalId as varchar) as proposal_id
+    ,max_by(b.time, evt_block_time) as deadline
+    ,max(evt_block_time) as latest_updated_at
+  FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalDeadlineUpdated') }} as d
+  JOIN {{ source( 'optimism' , 'blocks') }} as b 
+    on d.deadline = b.number
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
+  GROUP BY 1
+
+  UNION ALL
+
+  SELECT
+    cast(proposalId as varchar) as proposal_id
+    ,max_by(b.time, evt_block_time) as deadline
+    ,max(evt_block_time) as latest_updated_at
+  FROM {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalDeadlineUpdated') }} as d
+  JOIN {{ source( 'optimism' , 'blocks') }} as b 
+    on d.deadline = b.number
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
+  GROUP BY 1
+)
+
 WITH all_proposals AS (
     SELECT *
     FROM (
