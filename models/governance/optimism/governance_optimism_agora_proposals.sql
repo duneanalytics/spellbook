@@ -17,6 +17,9 @@ WITH latest_deadline AS (
     ,max_by(deadline, evt_block_time) as deadline
     ,max(evt_block_time) as latest_updated_at
   FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalDeadlineUpdated') }}
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
   GROUP BY 1
 
   UNION ALL
@@ -26,6 +29,9 @@ WITH latest_deadline AS (
     ,max_by(deadline, evt_block_time) as deadline
     ,max(evt_block_time) as latest_updated_at
   FROM {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalDeadlineUpdated') }}
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
   GROUP BY 1
 )
 {% if is_incremental() %}
@@ -473,3 +479,31 @@ WITH latest_deadline AS (
     p.votingModule,
     p.proposal_created_at
 )
+SELECT
+  p.proposal_id,
+  p.proposal_created_at,
+  p.proposal_link,
+  p.proposal_type,
+  p.proposal_description,
+  p.start_block,
+  p.start_timestamp,
+  p.end_block,
+  CASE WHEN d.deadline IS NOT NULL THEN d.deadline ELSE p.end_timestamp END as end_timestamp,
+  p.platform,
+  p.highest_weightage_vote,
+  p.highest_weightage_voter,
+  p.highest_weightage_voter_percentage,
+  p.total_for_votingWeightage,
+  p.total_abstain_votingWeightage,
+  p.total_against_votingWeightage,
+  p.unique_for_votes,
+  p.unique_abstain_votes,
+  p.unique_against_votes,
+  p.unique_votes_count,
+  p.total_votes_casted,
+  p.proposal_status
+FROM all_proposals as p
+LEFT JOIN latest_deadline as d
+  ON p.proposal_id = d.proposal_id
+  AND d.latest_updated_at > p.proposal_created_at
+  AND d.deadline != p.end_timestamp
