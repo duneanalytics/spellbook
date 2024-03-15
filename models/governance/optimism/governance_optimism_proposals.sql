@@ -2,10 +2,8 @@
 
 {{ config(
     alias = 'proposals'
-    ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
-    ,incremental_strategy = 'merge'
     ,unique_key = ['proposal_id']
     ,post_hook='{{ expose_spells(\'["optimism"]\',
                                       "sector",
@@ -27,58 +25,53 @@ WITH latest_deadline AS (
   FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalDeadlineUpdated') }} as d
   JOIN {{ source( 'optimism' , 'blocks') }} as b 
     on d.deadline = b.number
-  {% if is_incremental() %}
-  WHERE {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
   GROUP BY 1
 
   UNION ALL
 
   SELECT
     cast(proposalId as varchar) as proposal_id
+    ,d.deadline as deadline_block
     ,max_by(b.time, evt_block_time) as deadline
     ,max(evt_block_time) as latest_updated_at
   FROM {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalDeadlineUpdated') }} as d
   JOIN {{ source( 'optimism' , 'blocks') }} as b 
     on d.deadline = b.number
-  {% if is_incremental() %}
-  WHERE {{ incremental_predicate('evt_block_time') }}
-  {% endif %}
-  GROUP BY 1
+  GROUP BY 1, 2
 )
 
-WITH all_proposals AS (
+,all_proposals AS (
     SELECT *
     FROM (
         {% for model in models %}
         SELECT
-            proposal_id,
-            proposal_link,
-            proposal_type,
-            proposal_description,
-            start_block,
-            start_timestamp,
-            end_block,
-            end_timestamp,
-            platform,
-            highest_weightage_vote,
-            highest_weightage_voter,
-            highest_weightage_voter_percentage,
-            total_for_votingWeightage,
-            total_abstain_votingWeightage,
-            total_against_votingWeightage,
-            unique_for_votes,
-            unique_abstain_votes,
-            unique_against_votes,
-            unique_votes_count,
-            total_votes_casted,
-            proposal_status
+            m.proposal_id,
+            m.proposal_link,
+            m.proposal_type,
+            m.proposal_description,
+            m.start_block,
+            m.start_timestamp,
+            coalesce(d.deadline_block, m.end_block) as end_block,
+            coalesce(d.deadline, m.end_timestamp) as end_timestamp,
+            m.platform,
+            m.highest_weightage_vote,
+            m.highest_weightage_voter,
+            m.highest_weightage_voter_percentage,
+            m.total_for_votingWeightage,
+            m.total_abstain_votingWeightage,
+            m.total_against_votingWeightage,
+            m.unique_for_votes,
+            m.unique_abstain_votes,
+            m.unique_against_votes,
+            m.unique_votes_count,
+            m.total_votes_casted,
+            m.proposal_status
         FROM
-            {{ model }}
-        {% if is_incremental() %}
-        WHERE
-            {{ incremental_predicate('start_timestamp') }}
-        {% endif %}
+            {{ model }} as m
+        LEFT JOIN latest_deadline as d
+            ON m.proposal_id = d.proposal_id
+            AND d.latest_updated_at > m.proposal_created_at
+            AND d.deadline != m.end_timestamp
         {% if not loop.last %}
         UNION ALL
         {% endif %}
