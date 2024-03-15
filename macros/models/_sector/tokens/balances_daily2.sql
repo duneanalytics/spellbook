@@ -54,17 +54,13 @@ from(
     where balance_raw > 0
     ) b
 left join {{ ref('tokens_nft') }} nft_tokens on (
-   nft_tokens.blockchain = b.blockchain
+   nft_tokens.blockchain = 'ethereum'
    AND nft_tokens.contract_address = b.token_address
    AND b.token_standard in ('erc721', 'erc1155')
    )
-left join {{ source('tokens', 'erc20') }} erc20_tokens on
-    erc20_tokens.blockchain = b.blockchain
-    AND erc20_tokens.contract_address = b.token_address
-    AND b.token_standard = 'erc20'
 left join {{ref('prices_usd_daily')}} p
     on (token_standard = 'erc20'
-    and b.blockchain = p.blockchain
+    and b.blockchain = 'ethereum'
     and b.token_address = p.contract_address
     and b.day = p.day)
     or (token_standard = 'native'
@@ -72,5 +68,9 @@ left join {{ref('prices_usd_daily')}} p
     and p.contract_address is null
     and p.symbol = '{{native_token}}'
     and b.day = p.day)
+left join {{ source('tokens', 'erc20') }} erc20_tokens on
+    erc20_tokens.blockchain = 'ethereum'
+    AND erc20_tokens.contract_address = b.token_address
+    AND b.token_standard = 'erc20'
 
 {% endmacro %}
