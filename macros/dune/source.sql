@@ -4,6 +4,6 @@
     {% set newrel = rel.replace_path(database=database) %}
     {% do return(newrel) %}
   {%- else -%}
-      {% do return(rel) %}
+    {% do return(rel) %}
   {%- endif -%}
 {% endmacro %}
