@@ -43,7 +43,6 @@ select
     END as balance,
     erc20_tokens.symbol as token_symbol,
     token_id,
-    nft_tokens.name as collection_name,
     CASE
         WHEN b.token_standard = 'erc20' THEN (b.balance_raw / power(10, erc20_tokens.decimals)) * p.price
         WHEN b.token_standard = 'native' THEN (b.balance_raw / power(10, 18)) * p.price
@@ -53,11 +52,6 @@ from(
     select * from forward_fill
     where balance_raw > 0
     ) b
-left join {{ ref('tokens_nft') }} nft_tokens on (
-   nft_tokens.blockchain = b.blockchain
-   AND nft_tokens.contract_address = b.token_address
-   AND b.token_standard in ('erc721', 'erc1155')
-   )
 left join {{ source('tokens', 'erc20') }} erc20_tokens on
     erc20_tokens.blockchain = b.blockchain
     AND erc20_tokens.contract_address = b.token_address
