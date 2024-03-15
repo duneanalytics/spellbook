@@ -9,14 +9,14 @@ with changed_balances as (
     ,token_standard
     ,token_id
     ,balance_raw
-    ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
+    ,lead(day) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg_base}}
     where day < date(date_trunc('day',now()))
 )
 , forward_fill as (
     select
         blockchain
-        ,cast(d.day as timestamp) as day
+        ,d.day as day
         ,address
         ,token_address
         ,token_standard
