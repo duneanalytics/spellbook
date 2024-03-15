@@ -5,7 +5,6 @@ with changed_balances as (
     blockchain
     ,day
     ,address
-    ,token_symbol
     ,token_address
     ,token_standard
     ,token_id
@@ -19,7 +18,6 @@ with changed_balances as (
         blockchain
         ,cast(d.day as timestamp) as day
         ,address
-        ,token_symbol
         ,token_address
         ,token_standard
         ,token_id
