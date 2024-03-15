@@ -511,3 +511,7 @@ LEFT JOIN latest_deadline as d
   ON p.proposal_id = d.proposal_id
   AND d.latest_updated_at > p.proposal_created_at
   AND d.deadline != p.end_timestamp
+
+UNION
+
+SELECT * FROM update_deadline
