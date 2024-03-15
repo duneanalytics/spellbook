@@ -1,37 +1,6 @@
 version: 2
 
 models:
-  - name: base_fees
-    meta:
-      blockchain: ethereum
-      sector: blobs
-      project: blobs
-      contributors: [0xrob, msilb7, lorenz234]
-    config:
-      tags: ['blob', 'blobs', 'base_fee']
-    description: 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - block_time_cte
-    columns:
-      - &block_number
-        name: block_number
-        description: "Block number of the transaction"
-      - &block_time
-        name: block_time
-        description: "UTC event block time of the transaction"
-      - &max_output
-        name: max_output
-        description: "max output of the blob fee"
-      - &excess_blob_gas
-        nmae: excess_blob_gas
-        description: "excess blob gas of the blob"
-      - &blob_base_fee_per_gas
-        name: blob_base_fee_per_gas
-        description: "gas price of the blob"
-
   - name: transactions
     meta:
       blockchain: ethereum

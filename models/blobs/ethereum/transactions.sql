@@ -68,7 +68,7 @@ left JOIN {{ source('ethereum','transactions') }} t
     AND t.type = '3'
     AND contains(t.blob_versioned_hashes, b.versioned_hash)
     AND t.block_date >= cast('2024-03-12' as date)
-LEFT JOIN {{ source('blobs','base_fees') }} gp --ref. https://dune.com/queries/3521876
+LEFT JOIN {{ source('resident_wizards','dataset_blob_base_fees_lookup') }} gp --ref. https://dune.com/queries/3521876 
         ON l.excess_blob_gas = gp.excess_blob_gas
 
 
