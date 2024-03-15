@@ -25,7 +25,7 @@ WITH latest_deadline AS (
     cast(proposalId as varchar) as proposal_id
     ,max_by(deadline, evt_block_time) as deadline
     ,max(evt_block_time) as latest_updated_at
-  FROM {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_ProposalDeadlineUpdated') }}
+  FROM {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_ProposalDeadlineUpdated') }}
   GROUP BY 1
 )
 {% if is_incremental() %}

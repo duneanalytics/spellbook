@@ -18,3 +18,5 @@ sources:
       - name: OptimismGovernorV6_evt_ProposalCreated
       - name: OptimismGovernorV6_evt_VoteCast
       - name: OptimismGovernorV6_evt_ProposalCanceled
+      - name: OptimismGovernorV5_evt_ProposalDeadlineUpdated
+      - name: OptimismGovernorV6_evt_ProposalDeadlineUpdated
