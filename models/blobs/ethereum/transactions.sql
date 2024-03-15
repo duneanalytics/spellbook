@@ -77,7 +77,7 @@ left JOIN {{ source('ethereum','transactions') }} t
     {% if is_incremental() %}
     AND t.block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ source('resident_wizards','dataset_blob_base_fees_lookup') }} gp --ref. https://dune.com/queries/3521876 
+LEFT JOIN {{ source('resident_wizards','dataset_blob_base_fees_lookup', dune=True) }} gp --ref. https://dune.com/queries/3521876 
     ON l.excess_blob_gas = gp.excess_blob_gas
     {% if is_incremental() %}
     AND t.block_date >= date_trunc('day', now() - interval '7' day)
