@@ -40,9 +40,29 @@ WITH latest_deadline AS (
 )
 {% if is_incremental() %}
 ,update_deadline as (
-  SELECT 
-    {{ dbt_utils.star(from=ref('governance_optimism_agora_proposals'), except = ["end_timestamp"]) }}
-    ,CASE WHEN d.deadline IS NOT NULL THEN d.deadline ELSE end_timestamp END as end_timestamp
+    SELECT 
+    t.proposal_id,
+    t.proposal_created_at,
+    t.proposal_link,
+    t.proposal_type,
+    t.proposal_description,
+    t.start_block,
+    t.start_timestamp,
+    t.end_block,
+    CASE WHEN d.deadline IS NOT NULL THEN d.deadline ELSE t.end_timestamp END as end_timestamp,
+    t.platform,
+    t.highest_weightage_vote,
+    t.highest_weightage_voter,
+    t.highest_weightage_voter_percentage,
+    t.total_for_votingWeightage,
+    t.total_abstain_votingWeightage,
+    t.total_against_votingWeightage,
+    t.unique_for_votes,
+    t.unique_abstain_votes,
+    t.unique_against_votes,
+    t.unique_votes_count,
+    t.total_votes_casted,
+    t.proposal_status
   FROM {{ this }} as t
   LEFT JOIN latest_deadline as d
     ON t.proposal_id = d.proposal_id
