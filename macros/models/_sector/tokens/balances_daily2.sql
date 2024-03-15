@@ -9,7 +9,7 @@ with changed_balances as (
     ,token_standard
     ,token_id
     ,balance_raw
-    ,lead(day) over (partition by token_address,address,token_id order by day asc) as next_update_day
+    ,next_update_day
     from {{balances_daily_agg_base}}
     where day < date(date_trunc('day',now()))
 )
