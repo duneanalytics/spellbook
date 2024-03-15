@@ -28,7 +28,10 @@ WITH
                                   substr(try_cast(data as varchar), 11), --dbl ch -eck if need
                                   regexp_extract_all(substr(try_cast(data as varchar), 11), '.{64}') as sData
                                 FROM
-                                  {{ srcTable }}
+                                  {{ srcTable }} 
+                                  {% if is_incremental() %}
+                                    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+                                  {% endif %}
                               ) AS s1
                           ) as s2
                       )
@@ -97,5 +100,5 @@ select
                           '{{ method }}' as method{% if inOrOut == 'out' %},
                           output_spentAmount as spentAmount{% endif %}
             from
-              {{tableOuter}}
+              {{tableOuter}}              
 {% endmacro %}

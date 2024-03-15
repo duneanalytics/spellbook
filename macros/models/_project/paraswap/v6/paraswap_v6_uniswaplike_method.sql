@@ -25,7 +25,10 @@
                   '{{ method_name }}' as method{% if extra_field %},
                   {{ extra_field }}{% endif %}                  
                 FROM
-                  {{ table_name }}
+                  {{ table_name }}                  
                 WHERE
                   call_success = TRUE
+                  {% if is_incremental() %}
+                    AND call_block_time >= date_trunc('day', now() - interval '7' day)
+                  {% endif %}
 {% endmacro %}
