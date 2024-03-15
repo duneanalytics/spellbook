@@ -145,4 +145,5 @@ FROM (VALUES
     , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
     , ('mute', 'Mute', 'Direct', 'Mute')
+    , ('just_test_swap', 'just_test_swap', 'Direct', 'just_test_swap')
     ) AS temp_table (project, name, marketplace_type, x_username)
