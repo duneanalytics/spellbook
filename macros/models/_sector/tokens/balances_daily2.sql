@@ -9,12 +9,12 @@ with forward_fill as (
         ,token_standard
         ,token_id
         ,balance_raw
-        from {{ref('tokens_days')}} d
-        left join {{balances_daily_agg_base}} b
+        from {{balances_daily_agg_base}} b
+        right join {{ref('tokens_days')}} d
             ON  d.day >= b.day
             and (b.next_update_day is null OR d.day < b.next_update_day) -- perform forward fill
             and b.day < date(date_trunc('day',now()))
-        where d.day >= cast('{{start_date}}' as date)
+        where d.day >= cast('{{start_date}}' as date) and balance_raw > 0
 )
 
 select
@@ -37,10 +37,7 @@ select
         WHEN b.token_standard = 'native' THEN (b.balance_raw / power(10, 18)) * p.price
         ELSE b.balance_raw
     END as balance_usd
-from(
-    select * from forward_fill
-    where balance_raw > 0
-    ) b
+from forward_fill b
 left join {{ ref('tokens_nft') }} nft_tokens on (
    nft_tokens.blockchain = 'ethereum'
    AND nft_tokens.contract_address = b.token_address
