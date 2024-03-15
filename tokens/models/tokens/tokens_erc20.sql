@@ -49,7 +49,7 @@ with
                     t.createdat desc
             ) as rn
         from
-            {{ source("definedfi", "dataset_tokens", dune=True) }} as t
+            {{ source("definedfi", "dataset_tokens") }} as t
             join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
     )
     select

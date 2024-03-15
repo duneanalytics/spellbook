@@ -2,5 +2,6 @@ version: 2
 
 sources:
   - name: definedfi
+    database: dune
     tables:
       - name: dataset_tokens
