@@ -11,8 +11,8 @@
 }}
 
 {{
-balances_daily(
-    balances_daily_agg = ref('tokens_ethereum_balances_daily_agg'),
+balances_daily_enriched(
+    balances_daily_agg_base = ref('tokens_ethereum_balances_daily_agg_base'),
     start_date = '2015-07-30',
 )
 }}
