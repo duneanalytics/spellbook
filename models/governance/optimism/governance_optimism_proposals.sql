@@ -50,6 +50,7 @@ WITH latest_deadline AS (
             m.proposal_link,
             m.proposal_type,
             m.proposal_description,
+            m.proposal_created_at,
             m.start_block,
             m.start_timestamp,
             coalesce(d.deadline_block, m.end_block) as end_block,
