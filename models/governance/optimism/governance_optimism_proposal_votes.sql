@@ -126,7 +126,7 @@ SELECT
     WHEN choice = '2' THEN 'against'
     WHEN choice = '3' THEN 'abstain'
     WHEN choice = '4' THEN 'voted'
-  END AS choice_name
+  END AS choice_name,
   NULL as params
 FROM
   {{ source('snapshot','votes') }}
