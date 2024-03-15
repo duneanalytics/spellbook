@@ -9,7 +9,7 @@ models:
       contributors: [msilb7, 0xrob, lorenz234]
     config:
       tags: ['blob', 'blobs', 'BLOB_TX_TYPE']
-    description: 
+    description: Combines blobs data with their corresponding L1 transaction data
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
