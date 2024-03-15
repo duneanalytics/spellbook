@@ -26,7 +26,8 @@ SELECT
     WHEN support = 1 THEN 'for'
     WHEN support = 2 THEN 'abstain'
     WHEN support = 3 THEN 'voted'
-  END AS choice_name
+  END AS choice_name,
+  NULL as params
 FROM
   {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCast') }}
 {% if is_incremental() %}
@@ -51,8 +52,59 @@ SELECT
     WHEN support = 2 THEN 'abstain'
     WHEN support = 3 THEN 'voted'
   END AS choice_name
+  ,params
+FROM
+  {{ source('optimism_governor_optimism','OptimismGovernorV5_evt_VoteCastWithParams') }}
+{% if is_incremental() %}
+WHERE
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
+
+UNION ALL
+
+SELECT
+  CAST(proposalId as VARCHAR) AS proposal_id,
+  'agora' AS platform,
+  evt_tx_hash AS tx_hash,
+  evt_block_time AS date_timestamp,
+  voter,
+  reason,
+  weight / POWER(10, 18) AS votingWeightage,
+  support AS choice,
+  CASE
+    WHEN support = 0 THEN 'against'
+    WHEN support = 1 THEN 'for'
+    WHEN support = 2 THEN 'abstain'
+    WHEN support = 3 THEN 'voted'
+  END AS choice_name,
+  NULL as params
 FROM
   {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_VoteCast') }}
+{% if is_incremental() %}
+WHERE
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
+
+UNION ALL
+
+SELECT
+  CAST(proposalId as VARCHAR) AS proposal_id,
+  'agora' AS platform,
+  evt_tx_hash AS tx_hash,
+  evt_block_time AS date_timestamp,
+  voter,
+  reason,
+  weight / POWER(10, 18) AS votingWeightage,
+  support AS choice,
+  CASE
+    WHEN support = 0 THEN 'against'
+    WHEN support = 1 THEN 'for'
+    WHEN support = 2 THEN 'abstain'
+    WHEN support = 3 THEN 'voted'
+  END AS choice_name
+  ,params
+FROM
+  {{ source('optimism_governor_optimism','OptimismGovernorV6_evt_VoteCastWithParams') }}
 {% if is_incremental() %}
 WHERE
     {{ incremental_predicate('evt_block_time') }}
@@ -75,6 +127,7 @@ SELECT
     WHEN choice = '3' THEN 'abstain'
     WHEN choice = '4' THEN 'voted'
   END AS choice_name
+  NULL as params
 FROM
   {{ source('snapshot','votes') }}
 WHERE
