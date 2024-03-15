@@ -11,11 +11,11 @@
 
     {%- elif custom_schema_name is none -%}
 
-        {{ default_schema }}
+        {{ default_schema }}___
 
     {%- else -%}
 
-        {{ default_schema }}_x_{{ custom_schema_name | trim }}
+        {{ default_schema }}_{{ custom_schema_name | trim }}
 
     {%- endif -%}
 
