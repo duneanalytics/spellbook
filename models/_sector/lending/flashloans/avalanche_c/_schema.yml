@@ -138,3 +138,34 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: granary_avalanche_c_base_flashloans
+    meta:
+      blockchain: avalanche_c
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'granary', 'avalanche_c']
+    description: "Granary flashloans transactions on Avalanche_c"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('granary_avalanche_c_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
