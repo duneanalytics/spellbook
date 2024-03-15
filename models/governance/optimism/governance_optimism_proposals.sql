@@ -2,6 +2,7 @@
 
 {{ config(
     alias = 'proposals'
+    ,materialized = 'table'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
     ,unique_key = ['proposal_id']
