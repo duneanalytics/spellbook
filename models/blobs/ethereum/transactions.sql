@@ -59,17 +59,29 @@ FROM (
             length(to_hex(sha256(from_hex(substr(cast(kzg_commitment as varchar), 3))))) - 62 + 1 -- Calculate the start position for the last 31 bytes
         )) as versioned_hash
         FROM {{ source('beacon','blobs') }} b 
+        {% if is_incremental() %}
+        WHERE b.block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     ) b 
 left JOIN {{ source('ethereum','blocks') }} l
     ON b.parent_root = l.parent_beacon_block_root
     AND l.date >= cast('2024-03-12' as date)
+    {% if is_incremental() %}
+    AND l.date >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 left JOIN {{ source('ethereum','transactions') }} t
     ON t.block_number = l.number 
     AND t.type = '3'
     AND contains(t.blob_versioned_hashes, b.versioned_hash)
     AND t.block_date >= cast('2024-03-12' as date)
+    {% if is_incremental() %}
+    AND t.block_date >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 LEFT JOIN {{ source('resident_wizards','dataset_blob_base_fees_lookup') }} gp --ref. https://dune.com/queries/3521876 
-        ON l.excess_blob_gas = gp.excess_blob_gas
+    ON l.excess_blob_gas = gp.excess_blob_gas
+    {% if is_incremental() %}
+    AND t.block_date >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
 
 
 

@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: arbitrum_ethereum
+    description: >
+      Decoded tables related to arbitrum L2<>L1 transactions.
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: SequencerInbox_evt_SequencerBatchDeliveredFromOrigin
+        loaded_at_field: evt_block_time
+
+      - name: SequencerInbox_call_addSequencerL2BatchFromOrigin
+        loaded_at_field: call_block_time
+
+      - name: SequencerInbox_call_addSequencerL2Batch
+        loaded_at_field: call_block_time
+
+      - name: SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder
+        loaded_at_field: call_block_time
