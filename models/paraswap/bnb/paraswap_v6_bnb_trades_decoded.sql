@@ -5,11 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'txHash', 'method', 'callTraceAddress'],
-    post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "paraswap_v6",
-                                \'["eptighte", "mwamedacen"]\') }}'
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'txHash', 'method', 'callTraceAddress']
     )
 }}
 
