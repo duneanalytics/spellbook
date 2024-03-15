@@ -532,6 +532,8 @@ LEFT JOIN latest_deadline as d
   AND d.latest_updated_at > p.proposal_created_at
   AND d.deadline != p.end_timestamp
 
+{% if is_incremental() %}
 UNION
 
 SELECT * FROM update_deadline
+{% endif %}
