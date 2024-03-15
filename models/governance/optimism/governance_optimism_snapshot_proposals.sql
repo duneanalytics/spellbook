@@ -25,6 +25,7 @@ SELECT
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
+  p.proposal_created_at,
   p.platform,
   MAX(v.votingWeightage) AS highest_weightage_vote,
   MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
@@ -296,7 +297,8 @@ FROM
       FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
-      'snapshot' AS platform
+      'snapshot' AS platform,
+      FROM_UNIXTIME("created") AS proposal_created_at
     FROM
       {{ source('snapshot','proposals') }}
     WHERE
@@ -318,7 +320,8 @@ GROUP BY
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
-  p.platform
+  p.platform,
+  p.proposal_created_at
 UNION ALL
 SELECT
   p.proposal_id,
@@ -332,6 +335,7 @@ SELECT
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
+  p.proposal_created_at,
   p.platform,
   MAX(v.votingWeightage) AS highest_weightage_vote,
   MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
@@ -592,7 +596,8 @@ FROM
       FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
-      'snapshot' AS platform
+      'snapshot' AS platform,
+      FROM_UNIXTIME("created") AS proposal_created_at
     FROM
       {{ source('snapshot','proposals') }}
     WHERE
@@ -610,7 +615,8 @@ GROUP BY
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
-  p.platform
+  p.platform,
+  p.proposal_created_at
 UNION ALL
 SELECT
   p.proposal_id,
@@ -624,6 +630,7 @@ SELECT
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
+  p.proposal_created_at,
   p.platform,
   MAX(v.votingWeightage) AS highest_weightage_vote,
   MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
@@ -895,7 +902,8 @@ FROM
       FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
-      'snapshot' AS platform
+      'snapshot' AS platform,
+      FROM_UNIXTIME("created") AS proposal_created_at
     FROM
       {{ source('snapshot','proposals') }}
     WHERE
@@ -916,4 +924,5 @@ GROUP BY
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
-  p.platform
+  p.platform,
+  p.proposal_created_at
