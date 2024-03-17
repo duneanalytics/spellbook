@@ -1697,7 +1697,13 @@ FROM
     ('toad-toad','ethereum','TOAD',0x01e1d7cBD3Bc0EB1030485F33708421011459459,18),
     ('zat-zeusaitrading','ethereum','ZAT',0x6311FCFEF61E75e11c6E78949D7849f3b07e3A15,9),
     ('fric-frictionless','ethereum','FRIC',0x23Fa3Aa82858E7aD1F0f04352f4bb7F5E1BbFb68,18),
-    ('wbrge-wrapped-brge','ethereum','WBRGE',0x6602E9319f2c5eC0Ba31ffcdc4301d7Ef03b709E,18)
+    ('wbrge-wrapped-brge','ethereum','WBRGE',0x6602E9319f2c5eC0Ba31ffcdc4301d7Ef03b709E,18),
+    ('paal-paal-ai','ethereum','PAAL',0x14feE680690900BA0ccCfC76AD70Fd1b95D10e16,9),
+    ('0x0-0x0ai-ai-smart-contract','ethereum','0x0',0x5a3e6A77ba2f983eC0d371ea3B475F8Bc0811AD5,9),
+    ('aix-aigentx','ethereum','AIX',0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5,18),
+    ('aimbot-aimbot','ethereum','AIMBOT',0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7,18),
+    ('ags-aegis','ethereum','AGS',0xdB2F2bCCe3efa95EDA95a233aF45F3e0d4f00e2A,8),
+    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
