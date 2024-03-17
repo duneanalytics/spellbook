@@ -245,7 +245,7 @@ FROM
     ('lar-larace-governance-token', 'bnb', 'LAR', 0x052775Cf897b3eC894F26b8d801C514123c305D1,18),
     ('cpo-cryptopolis', 'bnb', 'CPO', 0xea395DFaFEd39924988b475f2Ca7f4C72655203A,18),
     ('realm-realm', 'bnb', 'REALM', 0x464FdB8AFFC9bac185A7393fd4298137866DCFB8,18),
-    ('aipad-aipad', 'bnb', 'AIPAD', 0xE55d97A97ae6A17706ee281486E98A84095d8AAf,18),
+    -- ('aipad-aipad', 'bnb', 'AIPAD', 0xE55d97A97ae6A17706ee281486E98A84095d8AAf,18),
     ('wsi-wesendit', 'bnb', 'WSI', 0x837A130aED114300Bab4f9f1F4f500682f7efd48,18),
     ('ibat-battle-infinity', 'bnb', 'IBAT', 0x19cd9B8e42d4EF62c3EA124110D5Cfd283CEaC43,9),
     ('nazar-nazar-protocol', 'bnb', 'NAZAR', 0x79c1e9bBD694d166AbB1d03429FC90904dd0E7B7,18),
