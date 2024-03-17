@@ -40153,4 +40153,5 @@ FROM (VALUES
         ,(0x8b9b95292f890df47fff5ac9cbe93d5fc242bd51, 'BEFI', 18)
         ,(0x8e4d27d772099e18900caf5dcc36cb612dcee886, 'ARCX', 18)
         ,(0xadd353fb2e2c563383ff3272a500f3e7134dafe4, 'TUNA', 18)
+        ,(0x1495bc9e44Af1F8BCB62278D2bEC4540cF0C05ea, 'DEAI', 18)
      ) AS temp_table (contract_address, symbol, decimals)
