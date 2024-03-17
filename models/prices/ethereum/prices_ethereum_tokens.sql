@@ -1690,7 +1690,7 @@ FROM
     ('scarce-no-decimal','ethereum','SCARE',0x8B4d316E40Ac4BAf08957963210c6CFf683a152b,0),
     ('palai-paladinai','ethereum','PALAI',0x3Cb48AeB3D1abaDc23d2D8a6894B3A68338381C2,9),
     ('maga-maga','ethereum','MAGA',0x25D01B5b39E58843291586a5D8afdDf744BdEB13,9),
-    --('root-the-root-network','ethereum','ROOT',0xa3d4BEe77B05d4a0C943877558Ce21A763C4fa29,6),
+    ('root3-the-root-network','ethereum','ROOT',0xa3d4BEe77B05d4a0C943877558Ce21A763C4fa29,6),
     ('duel-duel-token','ethereum','DUEL',0x943Af2ece93118B973c95c2F698EE9D15002e604,18),
     ('lila-liquidlayer-token','ethereum','LILA',0x96aDD417293a49E80f024734e96CFd8b355bCc14,18),
     ('undx-unodex','ethereum','UNDX',0x185ece9Bc75164F9FC0fbE44738E8dd1863f8464,18),
