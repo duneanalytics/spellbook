@@ -250,7 +250,7 @@ FROM
     ('ibat-battle-infinity', 'bnb', 'IBAT', 0x19cd9B8e42d4EF62c3EA124110D5Cfd283CEaC43,9),
     ('nazar-nazar-protocol', 'bnb', 'NAZAR', 0x79c1e9bBD694d166AbB1d03429FC90904dd0E7B7,18),
     ('spin-spintop', 'bnb', 'SPIN', 0x6AA217312960A21aDbde1478DC8cBCf828110A67,18),
-    ('ext-exatech-poai-blockchain', 'bnb', 'EXT', 0x623be4fde518A00AC49a870bd439cfD5c35E08Ed,9),
+    --('ext-exatech-poai-blockchain', 'bnb', 'EXT', 0x623be4fde518A00AC49a870bd439cfD5c35E08Ed,9),
     ('tfi-trustfi-network-token', 'bnb', 'TFI', 0x7565ab68D3F9DaDff127F864103C8c706Cf28235,18),
     ('fuse-fuse-network', 'bnb', 'FUSE', 0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3,18),
     ('ava-ava', 'bnb', 'AVA', 0x83B79F74F225E8F9a29fC67CB1678e7909d7D73d,18),

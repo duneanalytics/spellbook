@@ -74,7 +74,7 @@ FROM
     ('alot-dexalot','avalanche_c','ALOT',0x093783055F9047C2BfF99c4e414501F8A147bC69,18),
     ('majin-majin','avalanche_c','MAJIN',0x73f49d00AC1B520F94d11248808c40774aeb0802,18),
     ('egs-emingunsirer','avalanche_c','EGS',0xc92f165f5e20979576A7Ba48f16eb45361c078a2,18),
-    ('snowy-fantastic-protocol-snowy-token','avalanche_c','SNOWY',0x6da767394f079c1524B3e797D2110C23c3ecf322,18),
+    --('snowy-fantastic-protocol-snowy-token','avalanche_c','SNOWY',0x6da767394f079c1524B3e797D2110C23c3ecf322,18),
     ('monk-monkoshi','avalanche_c','MONK',0x7a5424A1AfB6C786f5dd603847683980Fdb2cda7,18),
     ('man-man-man-man','avalanche_c','MAN',0xBEd472c62A5Aa4dD734B6bF5EbA1413d86AAbA6b,18),
     ('bobs-bobs','avalanche_c','BOBS',0xf5f3216E9fed36F8cCf08D310FEc6FBf7f06200f,18),
