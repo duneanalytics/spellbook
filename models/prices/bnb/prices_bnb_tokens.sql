@@ -237,7 +237,6 @@ FROM
     ('squidgrow-squidgrow-1', 'bnb', 'SquidGrow', 0xd8Fa690304D2B2824D918C0c7376e2823704557A,9),
     ('strx-strikex', 'bnb', 'STRX', 0xd6fDDe76B8C1C45B33790cc8751D5b88984c44ec,18),
     ('token-tokenfi', 'bnb', 'TOKEN', 0x4507cEf57C46789eF8d1a19EA45f4216bae2B528,9),
-    ('sin-sinverse', 'bnb', 'SIN', 0x6397de0F9aEDc0F7A8Fa8B438DDE883B9c201010,18),
     ('scar-scarquest', 'bnb', 'SCAR', 0x8d9fB713587174Ee97e91866050c383b5cEE6209,18),
     ('hdv-hydracoin', 'bnb', 'HDV', 0x8Cd0d76C0ad377378aB6Ce878a7BE686223497eE,5),
     ('dck-dexcheck', 'bnb', 'DCK', 0x16faF9DAa401AA42506AF503Aa3d80B871c467A3,18),
