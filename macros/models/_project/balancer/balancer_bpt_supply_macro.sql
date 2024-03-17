@@ -133,7 +133,7 @@ WITH pool_labels AS (
     LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
-    WHERE l.pool_type IN ('WP', 'WP2T', 'LBP', 'IP', 'SP', 'LP')
+    WHERE l.pool_type IN ('WP', 'WP2T', 'LBP', 'IP', 'SP', 'LP', 'ECLP')
     GROUP BY 1, 2, 3, 4, 5
     HAVING SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) >= 0  --simple filter to remove outliers
 

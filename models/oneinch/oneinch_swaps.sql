@@ -110,7 +110,7 @@ tokens as (
         , false as second_side
         , protocol = 'LOP' and (
             position('RFQ' in method) > 0
-            or not element_at(flags, 'multiple') and element_at(flags, 'partial')
+            or coalesce(not element_at(flags, 'multiple') and element_at(flags, 'partial'), false)
         ) as contracts_only
     from calls
 
@@ -213,7 +213,7 @@ select
     , user
     , receiver
     , coalesce(element_at(flags, 'fusion'), false) as fusion -- to delete in the next step
-    , position('RFQ' in method) > 0 and not second_side as contracts_only -- to delete in the next step
+    , not second_side and (position('RFQ' in method) > 0 or coalesce(not element_at(flags, 'multiple') and element_at(flags, 'partial'), false)) as contracts_only -- to delete in the next step
     , second_side -- to delete in the next step
     , order_hash
     , map_concat(flags, map_from_entries(array[
