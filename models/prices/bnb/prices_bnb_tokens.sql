@@ -253,7 +253,7 @@ FROM
     ('ext-exatech-poai-blockchain', 'bnb', 'EXT', 0x623be4fde518A00AC49a870bd439cfD5c35E08Ed,9),
     ('tfi-trustfi-network-token', 'bnb', 'TFI', 0x7565ab68D3F9DaDff127F864103C8c706Cf28235,18),
     ('fuse-fuse-network', 'bnb', 'FUSE', 0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3,18),
-    ('ava-avantly', 'bnb', 'AVA', 0x83B79F74F225E8F9a29fC67CB1678e7909d7D73d,18),
+    --('ava-avantly', 'bnb', 'AVA', 0x83B79F74F225E8F9a29fC67CB1678e7909d7D73d,18),
     ('ai-flourishing-ai', 'bnb', 'AI', 0xA9b038285F43cD6fE9E16B4C80B4B9bCcd3C161b,18),
     ('kalm-kalm', 'bnb', 'KALM', 0x4BA0057f784858a48fe351445C672FF2a3d43515,18),
     ('xai-grok', 'bnb', 'XAI', 0x0009Ae5a69B037eA74A900783fab457fa605ae5d,9),
