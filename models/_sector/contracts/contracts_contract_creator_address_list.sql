@@ -1096,6 +1096,7 @@ WITH curated_list AS (
       ,(0x000000c397124D0375555F435e201F83B636C26C, 'Zeroex (0x)')
       ,(0x88d9bc8a0c50fCF7cDd160b906D64c312bef79d6, 'Synthswap')
       ,(0xd1236a6A111879d9862f8374BA15344b6B233Fbd, 'MakerDAO')
+      ,(0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459, 'PartyDAO')
 
   ) as temp_table (creator_address, contract_project)
 )
