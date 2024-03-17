@@ -77,6 +77,6 @@ FROM
     ('snowy-fantastic-protocol-snowy-token','avalanche_c','SNOWY',0x6da767394f079c1524B3e797D2110C23c3ecf322,18),
     ('monk-monkoshi','avalanche_c','MONK',0x7a5424A1AfB6C786f5dd603847683980Fdb2cda7,18),
     ('man-man-man-man','avalanche_c','MAN',0xBEd472c62A5Aa4dD734B6bF5EbA1413d86AAbA6b,18),
-    ('bobs-bobsn','avalanche_c','BOBS',0xf5f3216E9fed36F8cCf08D310FEc6FBf7f06200f,18),
+    ('bobs-bobs','avalanche_c','BOBS',0xf5f3216E9fed36F8cCf08D310FEc6FBf7f06200f,18),
     ('roco-roco-finance','avalanche_c','ROCO',0xb2a85C5ECea99187A977aC34303b80AcbDdFa208,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
