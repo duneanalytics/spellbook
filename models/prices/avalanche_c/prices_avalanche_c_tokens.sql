@@ -64,7 +64,7 @@ FROM
     ('qi-benqi','avalanche_c','QI',0x8729438eb15e2c8b576fcc6aecda6a148776c0f5,18),
     ('wolf-landwolf-on-avax','avalanche_c','WOLF',0x4f94b8aef08c92fefe416af073f1df1e284438ec,18),
     ('meat-meat','avalanche_c','MEAT',0x47c3118Ad183712Acd42648e9E522e13690f29a0,6),
-    ('coq-coq-inu','avalanche_c','COQINU',0x420FcA0121DC28039145009570975747295f2329,18),
+    ('coq-coq-inu','avalanche_c','COQ',0x420FcA0121DC28039145009570975747295f2329,18),
     ('loong-loong-2024','avalanche_c','LOONG',0x5A2C298902f5ba4C3d8B88f9F7cf8f5be72303B9,18),
     ('micro-micro-coq','avalanche_c','MICRO',0xeFD6aA06EB95e0ab23dE9aC0977d870888b89A71,18),
     ('willy-willy','avalanche_c','WILLY',0x403b78F9F817a55b66030c7B2ddab063D28c2c0C,18),
