@@ -1697,7 +1697,7 @@ FROM
     ('toad-toad','ethereum','TOAD',0x01e1d7cBD3Bc0EB1030485F33708421011459459,18),
     ('zat-zeusaitrading','ethereum','ZAT',0x6311FCFEF61E75e11c6E78949D7849f3b07e3A15,9),
     ('fric-frictionless','ethereum','FRIC',0x23Fa3Aa82858E7aD1F0f04352f4bb7F5E1BbFb68,18),
-    ('wbrge-ordbridge','ethereum','wBRGE',0x6602E9319f2c5eC0Ba31ffcdc4301d7Ef03b709E,18)
+    ('wbrge-ordbridge','ethereum','WBRGE',0x6602E9319f2c5eC0Ba31ffcdc4301d7Ef03b709E,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
