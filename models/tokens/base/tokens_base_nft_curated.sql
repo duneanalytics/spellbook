@@ -10,5 +10,6 @@ FROM
   ,(0xF882c982a95F4D3e8187eFE12713835406d11840, 'Merkly ONFT',  'MERK')
   ,(0x36a358b3Ba1FB368E35b71ea40c7f4Ab89bFd8e1, 'l2telegraph.xyz', 'l2t')
   ,(0x29D24B2AC84E51F842fb8c1533CD972eb83c65Ce, 'L2Marathon', 'MarathonRunner')
+  ,(0x273ca93a52b817294830ed7572aa591ccfa647fd, 'EIP-4844 is Based','4844')
 
 ) as temp_table (contract_address, name, symbol)
