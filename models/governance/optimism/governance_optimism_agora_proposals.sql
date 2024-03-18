@@ -119,6 +119,7 @@ SELECT
     p.proposal_created_at
 
   UNION ALL
+  
   -- v6
   SELECT
     p.proposal_id,
