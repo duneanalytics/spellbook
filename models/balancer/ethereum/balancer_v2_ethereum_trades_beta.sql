@@ -47,7 +47,7 @@ WITH
             dexs.evt_index,
             dexs_base.pool_id,
             dexs_base.swap_fee
-        FROM {{ ref('dex_trades_beta') }} dexs
+        FROM {{ ref('dex_trades') }} dexs
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
                 AND dexs.evt_index = dexs_base.evt_index

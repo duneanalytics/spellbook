@@ -1,5 +1,6 @@
 
-{{ config(alias = 'snapshot_proposals'
+{{ config(
+    alias = 'snapshot_proposals'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
@@ -13,10 +14,7 @@
 }}
 
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(p.proposal_id AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
+  p.proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Single-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Single-Choice Proposal'
   CONCAT(
@@ -27,6 +25,7 @@ SELECT
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
+  p.proposal_created_at,
   p.platform,
   MAX(v.votingWeightage) AS highest_weightage_vote,
   MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
@@ -71,6 +70,7 @@ SELECT
   ) AS unique_against_votes,
   COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
+  COUNT(DISTINCT v.voter) AS unique_voters,
   CASE
     WHEN (
       SUM(
@@ -87,7 +87,7 @@ FROM
   (
     -- Select Single-Choice proposals from snapshot platform based on specific criteria
     SELECT
-      id AS proposal_id,
+      cast(id as varchar) AS proposal_id,
       CONCAT(
         CAST(
           COALESCE(
@@ -298,7 +298,8 @@ FROM
       FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
-      'snapshot' AS platform
+      'snapshot' AS platform,
+      FROM_UNIXTIME("created") AS proposal_created_at
     FROM
       {{ source('snapshot','proposals') }}
     WHERE
@@ -308,6 +309,9 @@ FROM
         0x7b9a8eee9f90c7af6587afc5aef0db050c1e5ee9277d3aa18d8624976fb466bd,
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('FROM_UNIXTIME("start")') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
@@ -317,13 +321,11 @@ GROUP BY
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
-  p.platform
+  p.platform,
+  p.proposal_created_at
 UNION ALL
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(p.proposal_id AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
+  p.proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Multi-Choice Proposal' AS proposal_type, -- Set the proposal type to 'Multi-Choice Proposal'
   CONCAT(
@@ -334,6 +336,7 @@ SELECT
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
+  p.proposal_created_at,
   p.platform,
   MAX(v.votingWeightage) AS highest_weightage_vote,
   MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
@@ -378,12 +381,13 @@ SELECT
   ) AS unique_against_votes,
   COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
+  COUNT(DISTINCT v.voter) AS unique_voters,
   '' AS proposal_status
 FROM
   (
     -- Select Multi-Choice proposals from snapshot platform based on specific criteria
     SELECT
-      id AS proposal_id,
+      cast(id as varchar) AS proposal_id,
       CONCAT(
         CAST(
           COALESCE(
@@ -594,12 +598,16 @@ FROM
       FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
-      'snapshot' AS platform
+      'snapshot' AS platform,
+      FROM_UNIXTIME("created") AS proposal_created_at
     FROM
       {{ source('snapshot','proposals') }}
     WHERE
       "space" = 'opcollective.eth'
       AND "type" = 'approval'
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('FROM_UNIXTIME("start")') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
@@ -609,13 +617,11 @@ GROUP BY
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
-  p.platform
+  p.platform,
+  p.proposal_created_at
 UNION ALL
 SELECT
-  CONCAT(
-    SUBSTRING(CAST(p.proposal_id AS VARCHAR), 1, 35),
-    '...'
-  ) AS proposal_id,
+  p.proposal_id,
   '<a href="https://snapshot.org/#/opcollective.eth/proposal/' || CAST(p.proposal_id AS varchar) || '" target="_blank">To Read More</a>' AS proposal_link,
   'Test Proposal' AS proposal_type, -- Set the proposal type to 'Test Proposal'
   CONCAT(
@@ -626,6 +632,7 @@ SELECT
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
+  p.proposal_created_at,
   p.platform,
   MAX(v.votingWeightage) AS highest_weightage_vote,
   MAX_BY(v.voter, v.votingWeightage) AS highest_weightage_voter,
@@ -670,6 +677,7 @@ SELECT
   ) AS unique_against_votes,
   COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
+  COUNT(DISTINCT v.voter) AS unique_voters,
   CASE
     WHEN (
       SUM(
@@ -686,7 +694,7 @@ FROM
   (
     -- Select test proposals from snapshot platform based on specific criteria
     SELECT
-      id AS proposal_id,
+      cast(id as varchar) AS proposal_id,
       CONCAT(
         CAST(
           COALESCE(
@@ -897,7 +905,8 @@ FROM
       FROM_UNIXTIME("start") AS start_timestamp,
       "end" AS end_block,
       FROM_UNIXTIME("end") AS end_timestamp,
-      'snapshot' AS platform
+      'snapshot' AS platform,
+      FROM_UNIXTIME("created") AS proposal_created_at
     FROM
       {{ source('snapshot','proposals') }}
     WHERE
@@ -906,6 +915,9 @@ FROM
         0x7b9a8eee9f90c7af6587afc5aef0db050c1e5ee9277d3aa18d8624976fb466bd,
         0xe4a520e923a4669fceb53c88caa13699c2fd94608df08b9a804506ac808a02f9
       )
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('FROM_UNIXTIME("start")') }}
+      {% endif %}
   ) AS p
   LEFT JOIN {{ ref('governance_optimism_proposal_votes') }} AS v ON p.proposal_id = v.proposal_id
 GROUP BY
@@ -915,4 +927,5 @@ GROUP BY
   p.start_timestamp,
   p.end_block,
   p.end_timestamp,
-  p.platform
+  p.platform,
+  p.proposal_created_at
