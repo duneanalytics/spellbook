@@ -1678,7 +1678,31 @@ FROM
     ('psiacc-psi-gate','ethereum','PSI/ACC',0xbfe178cf147fda6490f69fe7e6ae038ff09d2980,18),
     ('topia-hytopia','ethereum','TOPIA',0xccccb68e1a848cbdb5b60a974e07aae143ed40c3,18),
     ('ox-open-exchange-token','ethereum','OX',0x78a0a62fba6fb21a83fe8a3433d44c73a4017a6f,18),
-    ('kizuna-kizuna','ethereum','KIZUNA',0x470c8950c0c3aa4b09654bc73b004615119a44b5,18)
+    ('kizuna-kizuna','ethereum','KIZUNA',0x470c8950c0c3aa4b09654bc73b004615119a44b5,18),
+    ('x-xcom','ethereum','X',0xaBeC00542D141BDdF58649bfe860C6449807237c,18),
+    --('poof-poof-token','ethereum','POOF',0x888ceA2BBDD5D47a4032cf63668D7525C74af57A,18),
+    ('kompete-kompete-token','ethereum','KOMPETE',0x1E0b2992079B620AA13A7c2E7c88D2e1E18E46E9,10),
+    ('sst-smartset-token','ethereum','SST',0x15F73a3AB443ee6EbF36c605C7868159cE5d028C,9),
+    ('nerd-nerdbot','ethereum','NERD',0xED1273928bA97EEd7B49e82C2F39D512D7591112,18),
+    ('crimingo-criminal-flamingo','ethereum','CRIMINGO',0xEdAA2fa0FD153b78eFdE805b0A46225bb95e3CA1,18),
+    ('linq-linq','ethereum','LINQ',0x3e34eabF5858a126cb583107E643080cEE20cA64,18),
+    ('xd-xd-token','ethereum','XD',0x3005003BDA885deE7c74182e5FE336e9E3Df87bB,18),
+    ('scarce-no-decimal','ethereum','SCARCE',0x8B4d316E40Ac4BAf08957963210c6CFf683a152b,0),
+    ('palai-paladinai','ethereum','PALAI',0x3Cb48AeB3D1abaDc23d2D8a6894B3A68338381C2,9),
+    ('maga-maga','ethereum','MAGA',0x25D01B5b39E58843291586a5D8afdDf744BdEB13,9),
+    ('root3-the-root-network','ethereum','ROOT',0xa3d4BEe77B05d4a0C943877558Ce21A763C4fa29,6),
+    ('duel-duel-token','ethereum','DUEL',0x943Af2ece93118B973c95c2F698EE9D15002e604,18),
+    ('lila-liquidlayer-token','ethereum','LILA',0x96aDD417293a49E80f024734e96CFd8b355bCc14,18),
+    ('undx-unodex','ethereum','UNDX',0x185ece9Bc75164F9FC0fbE44738E8dd1863f8464,18),
+    ('toad-toad','ethereum','TOAD',0x01e1d7cBD3Bc0EB1030485F33708421011459459,18),
+    ('zat-zeusaitrading','ethereum','ZAT',0x6311FCFEF61E75e11c6E78949D7849f3b07e3A15,9),
+    ('fric-frictionless','ethereum','FRIC',0x23Fa3Aa82858E7aD1F0f04352f4bb7F5E1BbFb68,18),
+    ('wbrge-wrapped-brge','ethereum','WBRGE',0x6602E9319f2c5eC0Ba31ffcdc4301d7Ef03b709E,18),
+    ('paal-paal-ai','ethereum','PAAL',0x14feE680690900BA0ccCfC76AD70Fd1b95D10e16,9),
+    ('0x0-0x0ai-ai-smart-contract','ethereum','0x0',0x5a3e6A77ba2f983eC0d371ea3B475F8Bc0811AD5,9),
+    ('aix-aigentx','ethereum','AIX',0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5,18),
+    ('aimbot-aimbot','ethereum','AIMBOT',0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7,18),
+    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

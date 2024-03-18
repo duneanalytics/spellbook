@@ -134,5 +134,9 @@ FROM
     ('lqty-liquity','arbitrum','LQTY',0xfb9e5d956d889d91a82737b9bfcdac1dce3e1449,18),
     ('axlusdc-axelar-wrapped-usdc','arbitrum','AXLUSDC',0xeb466342c4d449bc9f53a865d5cb90586f405215,6),
     ('tbtc-tbtc','arbitrum','TBTC',0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40,18),
-    ('y2k-y2k','arbitrum','Y2K',0x65c936f008bc34fe819bce9fa5afd9dc2d49977f, 18)         
+    ('y2k-y2k','arbitrum','Y2K',0x65c936f008bc34fe819bce9fa5afd9dc2d49977f, 18),
+    ('you-u-protocol','arbitrum','YOU',0xF93fc7d6508ae2faF8Fc5675e896Bc38d6e7212C, 18),
+    ('bets-betswirl','arbitrum','BETS',0x94025780a1aB58868D9B2dBBB775f44b32e8E6e5, 18),
+    ('joe-trader-joe','arbitrum','JOE',0x371c7ec6D8039ff7933a2AA28EB827Ffe1F52f07, 18),
+    ('nola-nola','arbitrum','NOLA',0xF8388c2B6Edf00E2E27eEF5200B1beFB24cE141d, 18)              
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
