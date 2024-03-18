@@ -1,38 +1,94 @@
 {{
   config(
-    tags = ['prod_exclude'], 
+    
     alias='ccip_fulfilled_transactions',
+    partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'trace_address', 'node_address']
+    unique_key=['tx_hash', 'tx_index', 'caller_address']
   )
 }}
 
-{% set incremental_interval = '7' %}
-
 WITH
+  ethereum_usd AS (
+    SELECT
+      minute as block_time,
+      price as usd_amount
+    FROM
+      {{ source('prices', 'usd') }} price
+    WHERE
+      symbol = 'ETH'
+      {% if is_incremental() %}
+        AND
+          {{ incremental_predicate('minute') }}
+      {% endif %}      
+  ),
   ccip_fulfilled_transactions AS (
     SELECT
-      ccip_send_traces.tx_hash as tx_hash,
-      ccip_send_traces.block_time as block_time,
-      cast(date_trunc('day', ccip_send_traces.block_time) as date) as date_start,
-      ccip_send_traces."from" as "node_address",
-      ccip_send_traces.trace_address as trace_address
+      tx.hash as tx_hash,
+      tx.index as tx_index,
+      MAX(tx.block_time) as tx_block_time,
+      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
+      tx."from" as caller_address,
+      MAX(
+        (cast((gas_used) as double) / 1e18) * gas_price
+      ) as token_amount,
+      MAX(ethereum_usd.usd_amount) as usd_amount
     FROM
-      {{ ref('chainlink_ethereum_ccip_send_traces') }} ccip_send_traces
-      WHERE
-        ccip_send_traces.tx_success = true
+      {{ source('ethereum', 'transactions') }} tx
+      RIGHT JOIN {{ ref('chainlink_ethereum_ccip_send_requested_logs_v1') }} ccip_v1_logs ON ccip_v1_logs.tx_hash = tx.hash
       {% if is_incremental() %}
-        AND ccip_send_traces.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}  
+        AND 
+          {{ incremental_predicate('tx.block_time') }}
+      {% endif %}
+      LEFT JOIN ethereum_usd ON date_trunc('minute', tx.block_time) = ethereum_usd.block_time
+    {% if is_incremental() %}
+      WHERE
+        {{ incremental_predicate('tx.block_time') }}
+    {% endif %}      
+    GROUP BY
+      tx.hash,
+      tx.index,
+      tx."from"
+
+    UNION
+
+    SELECT
+      tx.hash as tx_hash,
+      tx.index as tx_index,
+      MAX(tx.block_time) as tx_block_time,
+      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
+      tx."from" as caller_address,
+      MAX(
+        (cast((gas_used) as double) / 1e18) * gas_price
+      ) as token_amount,
+      MAX(ethereum_usd.usd_amount) as usd_amount
+    FROM
+      {{ source('ethereum', 'transactions') }} tx
+      RIGHT JOIN {{ ref('chainlink_ethereum_ccip_send_requested_logs_v1_2') }} ccip_v2_logs ON ccip_v2_logs.tx_hash = tx.hash
+      {% if is_incremental() %}
+        AND
+          {{ incremental_predicate('tx.block_time') }}
+      {% endif %}
+      LEFT JOIN ethereum_usd ON date_trunc('minute', tx.block_time) = ethereum_usd.block_time
+    {% if is_incremental() %}
+      WHERE
+        {{ incremental_predicate('tx.block_time') }}
+    {% endif %}      
+    GROUP BY
+      tx.hash,
+      tx.index,
+      tx."from"
   )
 SELECT
  'ethereum' as blockchain,
-  block_time,
-  date_start,
-  node_address,
+  tx_block_time as block_time,
+  date_month,
+  caller_address,
+  token_amount,
+  usd_amount,
   tx_hash,
-  trace_address
+  tx_index
 FROM
   ccip_fulfilled_transactions
