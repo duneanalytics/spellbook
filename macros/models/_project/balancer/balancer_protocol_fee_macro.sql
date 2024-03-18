@@ -86,6 +86,7 @@ WITH pool_labels AS (
             decimals,
             price,
             LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM bpt_prices_1
     ),
 
     daily_protocol_fee_collected AS (
