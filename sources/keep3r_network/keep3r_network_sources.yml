@@ -20,7 +20,7 @@ sources:
 
   - name: keep3r_network_optimism
     description: >
-      Decoded events for [keep3r.network] - Optimism .
+      Decoded events for [keep3r.network] - Optimism.
     tables:
       - name: Keep3rSidechain_evt_LiquidityAddition
       - name: Keep3rSidechain_evt_LiquidityWithdrawal
@@ -30,7 +30,7 @@ sources:
 
   - name: keep3r_network_polygon
     description: >
-      Decoded events for [keep3r.network] - Poligon.
+      Decoded events for [keep3r.network] - Polygon.
     tables:
       - name: Keep3rSidechain_evt_LiquidityAddition
       - name: Keep3rSidechain_evt_LiquidityWithdrawal

@@ -76,9 +76,6 @@ WITH pool_labels AS (
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
         AND s.supply > 0
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('l.day') }}
-        {% endif %}
         GROUP BY 1, 2, 3
     ),
 

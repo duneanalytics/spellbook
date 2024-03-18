@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_zksync_base_trades
+    tests:
+      - check_dex_info_relationship
 
   - name: maverick_zksync_base_trades
     meta:
@@ -74,3 +76,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('syncswap_zksync_base_trades_seed')
+
+  - name: mute_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: mute
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'mute' ]
+    description: "Mute zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mute_zksync_base_trades_seed')

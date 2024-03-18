@@ -95,3 +95,7 @@ sources:
     tables:
       - name: SubscriptionTokenV1_evt_ReferralPayout
       - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: basepaint_base
+    tables:
+      - name: BasePaintRewards_evt_Transfer
+      - name: BasePaint_evt_TransferSingle

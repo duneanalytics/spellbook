@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_fantom_base_trades
+    tests:
+      - check_dex_info_relationship
 
   - name: sushiswap_v1_fantom_base_trades
     meta:
