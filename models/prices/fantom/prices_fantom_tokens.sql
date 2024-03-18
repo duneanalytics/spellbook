@@ -78,6 +78,7 @@ FROM
     --('stg-stargate-finance', 'fantom', 'STG', 0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590, 18), --not found in API 
     ('spa-spartacus', 'fantom', 'SPA', 0x5602df4a94eb6c680190accfa2a475621e0ddbdc, 9),
     ('space-space-token', 'fantom', 'SPACE', 0x5f7f94a1dd7b15594d17543beb8b30b111dd464c, 18),
-    ('woo-wootrade', 'fantom', 'WOO', 0x6626c47c00f1d87902fc13eecfac3ed06d5e8d8a, 18)
+    ('woo-wootrade', 'fantom', 'WOO', 0x6626c47c00f1d87902fc13eecfac3ed06d5e8d8a, 18),
+    ('cekke-cekke-cronje', 'fantom', 'CEKKE', 0x3bc34d8Ace32D768a3F76e17AAEF2B1D8f261e1D, 18)
     --('vemp-vemp', 'fantom', 'VEMP', 0x526f1dc408cfe7fc5330ab9f1e78474ceff2a5dd, 18) --not found in API 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

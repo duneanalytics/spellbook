@@ -1,6 +1,6 @@
 {{ config(
     schema = 'dex'
-    , alias = 'trades_beta'
+    , alias = 'trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -75,6 +75,7 @@ WITH curve AS (
     {% endif %}
     {% endfor %}
 )
+
 
 {% set cte_to_union = [
     'curve'

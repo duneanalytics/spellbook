@@ -30,6 +30,10 @@ models:
         name: proposal_description
         description: "A brief description of the proposal"
 
+      - &proposal_created_at
+        name: proposal_created_at
+        description: "Block time when a proposal was created onchain"
+
       - &start_block
         name: start_block
         description: "The block number when the voting started"
@@ -94,6 +98,10 @@ models:
         name: total_votes_casted
         description: "The total number of votes cast on the proposal, excluding abstaining votes"
 
+      - &unique_voters
+        name: unique_voters
+        description: "The total number of distinct voter addresses that cast votes on the proposal"
+
       - &proposal_status
         name: proposal_status
         description: "The current status of the proposal"
@@ -117,6 +125,8 @@ models:
 
       - *proposal_description
 
+      - *proposal_created_at
+
       - *start_block
 
       - *start_timestamp
@@ -148,6 +158,8 @@ models:
       - *unique_votes_count
 
       - *total_votes_casted
+
+      - *unique_voters
 
       - *proposal_status
 
@@ -170,6 +182,8 @@ models:
 
       - *proposal_description
 
+      - *proposal_created_at
+
       - *start_block
 
       - *start_timestamp
@@ -201,6 +215,8 @@ models:
       - *unique_votes_count
 
       - *total_votes_casted
+
+      - *unique_voters
 
       - *proposal_status
   
@@ -244,4 +260,3 @@ models:
       - &choice_name
         name: choice_name
         description: "Voter's voting choice's name for the proposal"
-      

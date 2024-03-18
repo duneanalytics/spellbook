@@ -62,5 +62,19 @@ FROM
     ('husky-husky-avax','avalanche_c','HUSKY',0x65378b697853568da9ff8eab60c13e1ee9f4a654,18),
     ('xava-avalaunch','avalanche_c','XAVA',0xd1c3f94de7e5b45fa4edbba472491a9f4b166fc4,18),
     ('qi-benqi','avalanche_c','QI',0x8729438eb15e2c8b576fcc6aecda6a148776c0f5,18),
-    ('wolf-landwolf-on-avax','avalanche_c','WOLF',0x4f94b8aef08c92fefe416af073f1df1e284438ec,18)
+    ('wolf-landwolf-on-avax','avalanche_c','WOLF',0x4f94b8aef08c92fefe416af073f1df1e284438ec,18),
+    ('meat-meat','avalanche_c','MEAT',0x47c3118Ad183712Acd42648e9E522e13690f29a0,6),
+    ('loong-loong-2024','avalanche_c','LOONG',0x5A2C298902f5ba4C3d8B88f9F7cf8f5be72303B9,18),
+    ('micro-micro-coq','avalanche_c','MICRO',0xeFD6aA06EB95e0ab23dE9aC0977d870888b89A71,18),
+    ('willy-willy','avalanche_c','WILLY',0x403b78F9F817a55b66030c7B2ddab063D28c2c0C,18),
+    ('nochill-avax-has-no-chill','avalanche_c','NOCHILL',0xAcFb898Cff266E53278cC0124fC2C7C94C8cB9a5,18),
+    ('bear-bear-coin-on-avax','avalanche_c','BEAR',0x19c79F282d151995D91f6dbdda2739701F9C47AA,18),
+    ('tech-tech','avalanche_c','TECH',0x5Ac04b69bDE6f67C0bd5D6bA6fD5D816548b066a,18),
+    ('alot-dexalot','avalanche_c','ALOT',0x093783055F9047C2BfF99c4e414501F8A147bC69,18),
+    ('majin-majin','avalanche_c','MAJIN',0x73f49d00AC1B520F94d11248808c40774aeb0802,18),
+    --('snowy-fantastic-protocol-snowy-token','avalanche_c','SNOWY',0x6da767394f079c1524B3e797D2110C23c3ecf322,18),
+    ('monk-monkoshi','avalanche_c','MONK',0x7a5424A1AfB6C786f5dd603847683980Fdb2cda7,18),
+    ('man-man-man-man','avalanche_c','MAN',0xBEd472c62A5Aa4dD734B6bF5EbA1413d86AAbA6b,18),
+    ('bobs-bobs','avalanche_c','BOBS',0xf5f3216E9fed36F8cCf08D310FEc6FBf7f06200f,18),
+    ('roco-roco-finance','avalanche_c','ROCO',0xb2a85C5ECea99187A977aC34303b80AcbDdFa208,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
