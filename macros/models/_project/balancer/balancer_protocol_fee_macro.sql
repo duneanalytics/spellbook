@@ -138,8 +138,9 @@ WITH pool_labels AS (
             ON p2.token = d.token_address
             AND p2.day = d.day
         LEFT JOIN bpt_prices p3
-            ON p3.day <= d.day
-            AND d.day < p3.day_of_next_change
+            ON p2.token = d.token_address
+            AND p3.day <= d.day
+            AND d.day < p3.day_of_next_change     
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
