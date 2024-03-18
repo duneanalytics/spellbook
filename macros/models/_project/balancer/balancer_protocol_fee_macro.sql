@@ -64,7 +64,7 @@ WITH pool_labels AS (
         WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
-    bpt_prices AS( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
+    bpt_prices_1 AS ( --special calculation for this spell, in order to achieve completeness without relying on prices.usd
         SELECT 
             l.day,
             s.token_address AS token,
@@ -77,6 +77,16 @@ WITH pool_labels AS (
         AND l.version = '{{version}}'
         AND s.supply > 0
         GROUP BY 1, 2, 3
+    ),
+
+    bpt_prices AS (
+        SELECT  
+            day,
+            token,
+            decimals,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM bpt_prices_1
     ),
 
     daily_protocol_fee_collected AS (
@@ -129,7 +139,8 @@ WITH pool_labels AS (
             AND p2.day = d.day
         LEFT JOIN bpt_prices p3
             ON p3.token = d.token_address
-            AND p3.day = d.day
+            AND p3.day <= d.day
+            AND d.day < p3.day_of_next_change     
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
