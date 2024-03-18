@@ -81,7 +81,6 @@ FROM
     ('woo-wootrade', 'fantom', 'WOO', 0x6626c47c00f1d87902fc13eecfac3ed06d5e8d8a, 18),
     ('cekke-cekke-cronje', 'fantom', 'CEKKE', 0x3bc34d8Ace32D768a3F76e17AAEF2B1D8f261e1D, 18),
     --('vemp-vemp', 'fantom', 'VEMP', 0x526f1dc408cfe7fc5330ab9f1e78474ceff2a5dd, 18) --not found in API 
-    ('axlusdc-axelar-wrapped-usdc', 'fantom', 'AXLUSDC', 0x1B6382DBDEa11d97f24495C9A90b7c88469134a4, 6),
-    ('mpx-morphex', 'fantom', 'MPX', 0x66eEd5FF1701E6ed8470DC391F05e27B1d0657eb, 18),
+    ('mpx-morphex', 'fantom', 'MPX', 0x66eed5ff1701e6ed8470dc391f05e27b1d0657eb, 18),
     ('unidx-unidex', 'fantom', 'UNIDX', 0x0483a76D80D0aFEC6bd2afd12C1AD865b9DF1471, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
