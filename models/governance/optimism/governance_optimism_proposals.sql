@@ -67,6 +67,7 @@ WITH latest_deadline AS (
             m.unique_against_votes,
             m.unique_votes_count,
             m.total_votes_casted,
+            m.unique_voters,
             m.proposal_status
         FROM
             {{ model }} as m

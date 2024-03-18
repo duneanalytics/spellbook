@@ -70,6 +70,7 @@ SELECT
   ) AS unique_against_votes,
   COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
+  COUNT(DISTINCT v.voter) AS unique_voters,
   CASE
     WHEN (
       SUM(
@@ -380,6 +381,7 @@ SELECT
   ) AS unique_against_votes,
   COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
+  COUNT(DISTINCT v.voter) AS unique_voters,
   '' AS proposal_status
 FROM
   (
@@ -675,6 +677,7 @@ SELECT
   ) AS unique_against_votes,
   COUNT(v.choice) AS unique_votes_count,
   SUM(v.votingWeightage) AS total_votes_casted,
+  COUNT(DISTINCT v.voter) AS unique_voters,
   CASE
     WHEN (
       SUM(

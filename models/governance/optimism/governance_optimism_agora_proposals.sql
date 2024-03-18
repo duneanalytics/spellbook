@@ -72,6 +72,7 @@ SELECT
     ) AS unique_against_votes,
     COUNT(v.choice) AS unique_votes_count,
     SUM(v.votingWeightage) AS total_votes_casted,
+    COUNT(DISTINCT v.voter) AS unique_voters,
     CASE
       WHEN pc.proposalId IS NOT NULL THEN 'cancelled'
       WHEN votingModule IS NOT NULL THEN NULL
@@ -179,6 +180,7 @@ SELECT
     ) AS unique_against_votes,
     COUNT(v.choice) AS unique_votes_count,
     SUM(v.votingWeightage) AS total_votes_casted,
+    COUNT(DISTINCT v.voter) AS unique_voters,
     CASE
       WHEN pc.proposalId IS NOT NULL THEN 'cancelled'
       WHEN votingModule IS NOT NULL THEN NULL
