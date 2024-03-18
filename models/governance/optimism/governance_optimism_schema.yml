@@ -260,4 +260,3 @@ models:
       - &choice_name
         name: choice_name
         description: "Voter's voting choice's name for the proposal"
-      
