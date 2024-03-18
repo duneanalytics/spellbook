@@ -55,6 +55,7 @@ FROM
     ('bat-basic-attention-token', 'ethereum', 'BAT', 0x0d8775f648430679a709e98d2b0cb6250d2887ef, 18),
     ('bent-bent-finance', 'ethereum', 'BENT', 0x01597e397605bf280674bf292623460b4204c375, 18),
     ('bico-biconomy', 'ethereum', 'BICO', 0xf17e65822b568b3903685a7c9f496cf7656cc6c2, 18),
+    ('bifi-beefyfinance', 'ethereum', 'BIFI', 0xb1f1ee126e9c96231cc3d3fad7c08b4cf873b1f1, 18),
     ('bit-bitdao', 'ethereum', 'BIT', 0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5, 18),
     ('bix-bibox-token', 'ethereum', 'BIX', 0xb3104b4b9da82025e8b9f8fb28b3553ce2f67069, 18),
     ('blt-bloom', 'ethereum', 'BLT', 0x107c4504cd79c5d2696ea0030a8dd4e92601b82e, 18),
