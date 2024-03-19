@@ -1,6 +1,6 @@
 {{ config(
         
-        alias = 'trades',
+        alias = 'trades_legacy',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',

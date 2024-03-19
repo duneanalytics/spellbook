@@ -164,3 +164,7 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: basex_base
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated

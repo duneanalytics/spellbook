@@ -50,7 +50,7 @@ sources:
     description: "Prices tables across blockchains"
     tables:
       - name: balances_bnb
-        identifier: balances_bnb_0001
+        identifier: balances_bnb_0002
         description: "Raw balances data"
         columns:
           - name: block_number
