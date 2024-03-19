@@ -50,6 +50,7 @@ WITH
         {% endif %}  
         GROUP BY 1, 5
     )
+    
 SELECT
     'avalanche_c' as blockchain,
     date_start,
