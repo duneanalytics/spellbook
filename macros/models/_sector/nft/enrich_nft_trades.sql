@@ -35,7 +35,7 @@ WITH prices_patch as (
     {% endif %}
     UNION ALL
     SELECT
-        0x0000000000000000000000000000000000000000 as contract_address
+        {{ var("ETH_ERC20_ADDRESS") }} as contract_address
         ,'base' as blockchain
         ,18 as decimals
         ,minute
@@ -48,7 +48,7 @@ WITH prices_patch as (
     {% endif %}
     UNION ALL
     SELECT
-        0x0000000000000000000000000000000000000000 as contract_address
+        {{ var("ETH_ERC20_ADDRESS") }} as contract_address
         ,'arbitrum' as blockchain
         ,18 as decimals
         ,minute
