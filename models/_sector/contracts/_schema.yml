@@ -85,6 +85,9 @@ models:
       - &created_tx_index
         name: created_tx_index
         dedscription: "Index of the contract creation transaction within its block"
+      - &top_level_contract_address
+        name: top_level_contract_address
+        description: "Top-Level contract address"
       - &top_level_time
         name: top_level_time
         description: "Top-Level contract creation transaction block time"
