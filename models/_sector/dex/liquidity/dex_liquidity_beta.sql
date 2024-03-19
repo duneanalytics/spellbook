@@ -1,7 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'liquidity_beta'
-    , materialized = 'view'
+    , materialized = 'incremental'
     , unique_key = ['pool', 'token_address', 'day']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
@@ -16,16 +16,15 @@ WITH base_union AS (
     FROM (
         {% for base_model in base_models %}
         SELECT
-            blockchain
+            day
+            , blockchain
             , project
             , version
             , pool
             , token_address
-            , balance 
-            , balance_raw
+            , token_symbol
+            , balance
             , balance_usd 
-            , type 
-            , fee
         FROM 
             {{ base_model }}
         {% if is_incremental() %}

@@ -14,7 +14,6 @@ SELECT
     b.token_address,
     b.token_symbol,
     b.balance,
-    b.balance_raw,
     b.balance_usd
 FROM 
 {{ pools_model }} p 

@@ -29,5 +29,4 @@ models:
       - name: token_symbol
       - name: day
       - name: balance
-      - name: balance_raw
       - name: balance_usd

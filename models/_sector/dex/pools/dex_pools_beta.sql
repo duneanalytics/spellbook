@@ -1,7 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'pools_beta'
-    , materialized = 'view'
+    , materialized = 'incremental'
     , unique_key = ['pool']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
     )
