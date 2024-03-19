@@ -26,8 +26,8 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: pool
       - name: token_address
+      - name: token_symbol
       - name: day
       - name: balance
       - name: balance_raw
       - name: balance_usd
-      - name: type

@@ -5,37 +5,23 @@
     )
 %}
 
-WITH 
-
-unnest_pool as (
-    SELECT 
-        p.blockchain,
-        p.project,
-        p.version,
-        p.pool,
-        t.token as token_address 
-    FROM 
-    {{ pools_model }} p 
-    CROSS JOIN UNNEST(p.tokens) AS t(token)
-)
-
 SELECT 
     b.day,
-    up.blockchain,
-    up.project,
-    up.version,
-    up.pool,
-    up.token_address,
+    p.blockchain,
+    p.project,
+    p.version,
+    p.pool,
+    b.token_address,
+    b.token_symbol,
     b.balance,
     b.balance_raw,
-    b.balance_usd,
-    b.type
+    b.balance_usd
 FROM 
-unnest_pool up 
+{{ pools_model }} p 
 LEFT JOIN 
 {{ balances_model }} b 
-    ON up.pool = b.wallet_address 
-    AND up.token_address = b.token_address
+    ON p.pool = b.address 
+    AND b.token_standard = 'erc20'
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('b.day') }}
 {% endif %}
