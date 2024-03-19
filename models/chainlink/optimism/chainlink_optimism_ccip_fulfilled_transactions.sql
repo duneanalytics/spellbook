@@ -32,7 +32,7 @@ WITH
       cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
       tx."from" as caller_address,
       MAX(
-        (cast((gas_used) as double) / 1e18) * gas_price
+        ((gas_price * gas_used) + l1_fee) / 1e18
       ) as token_amount,
       MAX(optimism_usd.usd_amount) as usd_amount
     FROM
