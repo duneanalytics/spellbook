@@ -20,7 +20,7 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      symbol = 'ETH'
+      symbol = 'MATIC'
       {% if is_incremental() %}
         AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}      
@@ -37,7 +37,7 @@ WITH
       ) as token_amount,
       MAX(base_usd.usd_amount) as usd_amount
     FROM
-      {{ source('base', 'transactions') }} tx
+      {{ source('polygon', 'transactions') }} tx
       LEFT JOIN base_usd ON date_trunc('minute', tx.block_time) = base_usd.block_time
     WHERE
       success = false
@@ -50,7 +50,7 @@ WITH
       tx."from"
   )
 SELECT
- 'base' as blockchain,
+ 'polygon' as blockchain,
   block_time,
   date_month,
   caller_address,

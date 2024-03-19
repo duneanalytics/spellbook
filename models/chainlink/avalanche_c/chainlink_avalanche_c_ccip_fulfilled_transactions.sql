@@ -18,7 +18,7 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      symbol = 'ETH'
+      symbol = 'AVAX'
       {% if is_incremental() %}
         AND
           {{ incremental_predicate('minute') }}
