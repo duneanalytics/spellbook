@@ -1,7 +1,7 @@
 {{ config(
      schema = 'depin'
 	  , alias = 'revenue'
-	  , materialized = 'table'
+	  , materialized = 'view'
 ) }}
 with
     results as (
