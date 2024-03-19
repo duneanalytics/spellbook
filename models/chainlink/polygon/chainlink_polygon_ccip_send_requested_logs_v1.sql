@@ -7,7 +7,7 @@
 }}
 
 SELECT
-  'arbitrum' as blockchain,
+  'polygon' as blockchain,
   block_hash,
   contract_address,
   data,
@@ -27,7 +27,7 @@ SELECT
   onramp_meta.chain_selector as destination_selector,
   onramp_meta.blockchain as destination_blockchain
 FROM
-  {{ source('arbitrum', 'logs') }} logs
-left join {{ref('chainlink_arbitrum_ccip_onramp_meta')}} onramp_meta on onramp_meta.onramp = contract_address
+  {{ source('polygon', 'logs') }} logs
+left join {{ref('chainlink_polygon_ccip_onramp_meta')}} onramp_meta on onramp_meta.onramp = contract_address
 WHERE
   topic0 = 0xaffc45517195d6499808c643bd4a7b0ffeedf95bea5852840d7bfcf63f59e821 -- CCIPSendRequested v1.0.0
