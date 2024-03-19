@@ -221,8 +221,8 @@ WITH pool_labels AS (
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day 
         AND p3.token = b.token
-        WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
+        WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
     weighted_pool_liquidity_estimates AS (
