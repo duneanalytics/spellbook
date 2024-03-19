@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'depin'
-    , alias = 'geodnet_revenue'
+    schema = 'geodnet'
+    , alias = 'revenue'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
