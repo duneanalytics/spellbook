@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: cex_base_addresses
+    meta:
+      blockchain: base
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','addresses', 'deposits', 'withdrawals', 'base']
+    description: "All CEX-tied addresses identified on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Address"
+      - name: cex_name
+        description: "Name of centralised exchange"
+      - name: distinct_name
+        description: "Distinct name of centralised exchange address"
+      - name: added_by
+        description: "Who added the address"
+      - name: added_date
+        description: "Date the address was added on"

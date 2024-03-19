@@ -34,7 +34,8 @@
  ref('fabric_ethereum_rewards'),
  ref('fabric_optimism_rewards'),
  ref('fabric_base_rewards'),
- ref('fabric_zora_rewards')
+ ref('fabric_zora_rewards'),
+ ref('basepaint_base_rewards')
 ] %}
 
 SELECT *

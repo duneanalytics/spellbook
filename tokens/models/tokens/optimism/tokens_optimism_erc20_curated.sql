@@ -434,6 +434,8 @@ WITH raw_token_list AS (
     ,(0x3b08fcd15280e7b5a6e404c4abb87f7c774d1b2e, 'OVN', 18, 'underlying')
     ,(0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 'ankrETH', 18, 'underlying')
     ,(0x00e1724885473b63bce08a9f0a52f35b0979e35a, 'OATH', 18, 'underlying')
+    ,(0x4dd03dfd36548c840b563745e3fbec320f37ba7e, 'stataOptUSDCn', 6, 'underlying')
+    ,(0x035c93db04E5aAea54E6cd0261C492a3e0638b37, 'stataOptUSDT', 6, 'underlying')
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT contract_address, symbol, decimals, token_type, 'manual' AS token_mapping_source

@@ -1,0 +1,12 @@
+spellbook-local:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      user: trino
+      password: trino
+      host: trino
+      port: 1234
+      database: hive
+      schema: wizard
+      threads: 1
