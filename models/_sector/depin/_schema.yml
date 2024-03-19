@@ -14,7 +14,6 @@ models:
             - date
             - chain
             - name
-            - revenue
     columns:
       - &date
         name: date
