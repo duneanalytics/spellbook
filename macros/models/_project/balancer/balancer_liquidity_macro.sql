@@ -74,6 +74,15 @@ WITH pool_labels AS (
         GROUP BY 1
     ),
 
+    gyro_prices AS (
+        SELECT
+            token_address,
+            decimals,
+            price
+        FROM {{ ref('gyroscope_gyro_tokens') }}
+        WHERE blockchain = '{{blockchain}}'
+    ),
+
     swaps_changes AS (
         SELECT
             day,
@@ -197,9 +206,9 @@ WITH pool_labels AS (
             b.token,
             symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price) AS pool_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, p4.decimals)) AS token_balance,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, p4.decimals)) * COALESCE(p1.price, p2.price, p4.price, 0) AS protocol_liquidity_usd,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, p4.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price, p4.price, 0) AS pool_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -212,6 +221,7 @@ WITH pool_labels AS (
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day 
         AND p3.token = b.token
+        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
