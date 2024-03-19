@@ -20,7 +20,7 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      symbol = 'ETH'
+      symbol = 'BNB'
       {% if is_incremental() %}
         AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}      
