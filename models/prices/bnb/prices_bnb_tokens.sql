@@ -230,8 +230,34 @@ FROM
     --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not in API
     ('trias-trias-token', 'bnb', 'TRIAS', 0xa4838122c683f732289805fc3c207febd55babdd,18),
     ('pzp-playzap', 'bnb', 'PZP', 0x6ad9e9c098a45b2b41b519119c31c3dcb02accb2,18),
-    ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9)
-
+    ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9),
+    ('ai-any-inu', 'bnb', 'AI', 0x2598c30330D5771AE9F983979209486aE26dE875,18),
+    ('wam-wam', 'bnb', 'WAM', 0xeBBAefF6217d22E7744394061D874015709b8141,18),
+    ('gq-galactic-quadrant', 'bnb', 'GQ', 0xF700D4c708C2be1463E355F337603183D20E0808,18),
+    ('squidgrow-squidgrow-1', 'bnb', 'SquidGrow', 0xd8Fa690304D2B2824D918C0c7376e2823704557A,9),
+    ('strx-strikex', 'bnb', 'STRX', 0xd6fDDe76B8C1C45B33790cc8751D5b88984c44ec,18),
+    ('token-tokenfi', 'bnb', 'TOKEN', 0x4507cEf57C46789eF8d1a19EA45f4216bae2B528,9),
+    ('hdv-hydracoin', 'bnb', 'HDV', 0x8Cd0d76C0ad377378aB6Ce878a7BE686223497eE,5),
+    ('dck-dexcheck', 'bnb', 'DCK', 0x16faF9DAa401AA42506AF503Aa3d80B871c467A3,18),
+    ('czgoat-cz-the-goat', 'bnb', 'CZGOAT', 0xa2C17A6Fd0aFE27afa2630A7528bC673089E6b8d,9),
+    ('gzone-gamezone', 'bnb', 'GZONE', 0xb6ADB74efb5801160Ff749b1985Fd3bD5000e938,18),
+    ('wefin-efin-decentralized', 'bnb', 'WEFIN', 0xaE459484c895a335ceC08058290D94551DBf5fbB,8),
+    ('lar-larace-governance-token', 'bnb', 'LAR', 0x052775Cf897b3eC894F26b8d801C514123c305D1,18),
+    ('cpo-cryptopolis', 'bnb', 'CPO', 0xea395DFaFEd39924988b475f2Ca7f4C72655203A,18),
+    ('realm-realm', 'bnb', 'REALM', 0x464FdB8AFFC9bac185A7393fd4298137866DCFB8,18),
+    ('aipad-aipadtech', 'bnb', 'AIPAD', 0xE55d97A97ae6A17706ee281486E98A84095d8AAf,18),
+    ('wsi-wesendit', 'bnb', 'WSI', 0x837A130aED114300Bab4f9f1F4f500682f7efd48,18),
+    ('ibat-battle-infinity', 'bnb', 'IBAT', 0x19cd9B8e42d4EF62c3EA124110D5Cfd283CEaC43,9),
+    ('nazar-nazar-protocol', 'bnb', 'NAZAR', 0x79c1e9bBD694d166AbB1d03429FC90904dd0E7B7,18),
+    ('spin-spintop', 'bnb', 'SPIN', 0x6AA217312960A21aDbde1478DC8cBCf828110A67,18),
+    --('ext-exatech-poai-blockchain', 'bnb', 'EXT', 0x623be4fde518A00AC49a870bd439cfD5c35E08Ed,9),
+    ('tfi-trustfi-network-token', 'bnb', 'TFI', 0x7565ab68D3F9DaDff127F864103C8c706Cf28235,18),
+    ('fuse-fuse-network', 'bnb', 'FUSE', 0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3,18),
+    ('ava-ava', 'bnb', 'AVA', 0x83B79F74F225E8F9a29fC67CB1678e7909d7D73d,18),
+    ('ai-flourishing-ai', 'bnb', 'AI', 0xA9b038285F43cD6fE9E16B4C80B4B9bCcd3C161b,18),
+    ('kalm-kalm', 'bnb', 'KALM', 0x4BA0057f784858a48fe351445C672FF2a3d43515,18),
+    ('xai-grok', 'bnb', 'XAI', 0x0009Ae5a69B037eA74A900783fab457fa605ae5d,9),
+    ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
