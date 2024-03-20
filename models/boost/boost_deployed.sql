@@ -41,7 +41,7 @@ from
     from {{ model }}
     {% if is_incremental() %}
     where
-        {{ incremental_predicate('block_time') }}
+        {{ incremental_predicate('creation_time') }}
     {% endif %}
     {% if not loop.last %}
     union all
