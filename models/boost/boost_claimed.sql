@@ -55,6 +55,10 @@ quest_claims_enriched as (
         {{ incremental_predicate('b.creation_time') }}
     {% endif %}
     where block_time > date '2023-11-12'
+    {% if is_incremental() %}
+    and
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
 ),
 unified_claims as (
     select
