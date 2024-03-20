@@ -1,0 +1,133 @@
+version: 1
+
+models:
+  # - name: dex_lps
+  #   meta:
+  #     blockchain: ethereum
+  #     sector: dex
+  #     contributors: 0xrusowsky
+  #   config:
+  #     tags: [ 'dex', 'lps' ]
+  #   tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #           - blockchain
+  #           - project
+  #           - version
+  #           - tx_hash
+  #           - evt_index
+  #   columns:
+  #     - &blockchain
+  #       name: blockchain
+  #       description: "Blockchain where the DEX is deployed"
+  #     - &project
+  #       name: project
+  #       description: "Project name of the DEX"
+  #       tests:
+  #         - relationships:
+  #             to: ref('dex_info')
+  #             field: project
+  #     - &version
+  #       name: version
+  #       description: "Version of the contract built and deployed by the DEX project"
+  #     - &block_month
+  #       name: block_month
+  #       description: "Month of the event block time"
+  #     - &block_time
+  #       name: block_time
+  #       description: "UTC event block time of each DEX trade"
+  #     - &block_number
+  #       name: block_number
+  #       description: "Block number of each DEX trade"
+  #     - &token0_symbol
+  #       name: token0_symbol
+  #       description: "Token symbol for token bought in the trade"
+  #     - &token1_symbol
+  #       name: token1_symbol
+  #       description: "Token symbol for token sold in the trade"
+  #     - &token_pair
+  #       name: token_pair
+  #       description: "Token symbol pair for each token involved in the trade"
+  #     - &token0_amount_raw
+  #       name: token0_amount_raw
+  #       description: "Raw amount of token0"
+  #     - &token1_amount_raw
+  #       name: token1_amount_raw
+  #       description: "Raw amount of token1"
+  #     - &liquidity_amount_raw
+  #       name: liquidity_amount_raw
+  #       description: "Raw amount of liquidity provided"
+  #     - &token0_amount_usd
+  #       name: token0_amount_usd
+  #       description: "USD value of amount token0 provided at time of execution"
+  #     - &token1_amount_usd
+  #       name: token1_amount_usd
+  #       description: "USD value of amount token1 provided at time of execution"
+  #     - &liquidity_usd
+  #       name: liquidity_usd
+  #       description: "USD value of the liquidity provided at time of execution"
+  #       tests:
+  #         - dbt_utils.accepted_range:
+  #             max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+  #     - &token0_address
+  #       name: token0_address
+  #       description: "Contract address of the token bought"
+  #     - &token1_address
+  #       name: token1_address
+  #       description: "Contract address of the token sold"
+  #     - &pool_address
+  #       name: pool_address
+  #       description: "Project contract address which executed the trade on the blockchain"
+  #     - &liquidity_provider
+  #       name: liquidity_provider
+  #       description: "Address of the liquidity provider (LP)"
+  #     - &position_id
+  #       name: position_id
+  #       description: "ID of the NFT that represents the liquidity position. Zero if they didn't use the NFTPositionManager."
+  #     - &tick_lower
+  #       name: tick_lower
+  #       description: "Lower tick of the position."
+  #     - &tick_upper
+  #       name: tick_upper
+  #       description: "Upper tick of the position."
+  #     - &tx_hash
+  #       name: tx_hash
+  #       description: "Unique transaction hash value tied to each transaction on the DEX"
+  #     - &evt_index
+  #       name: evt_index
+  #       description: "Index of the corresponding trade event"
+
+  - name: dex_base_lps
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: 0xrusowsky
+    config:
+      tags: [ 'dex' ]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token0_amount_raw
+      - *token1_amount_raw
+      - *liquidity_amount_raw
+      - *token0_address
+      - *token1_address
+      - *pool_address
+      - *liquidity_provider
+      - *position_id
+      - *tick_lower
+      - *tick_upper
+      - *tx_hash
+      - *evt_index
