@@ -121,7 +121,7 @@ left join {{ source('prices','usd') }} p
 on date_trunc('hour', block_time) = p.minute
     and p.blockchain = reward_network
     and reward_token_address = p.contract_address
-{% if is_incremental() %}
-where minute >= date_trunc('day', now() - interval '3' day)
-{% endif %}
+    {% if is_incremental() %}
+    and {{ incremental_predicate('p.minute') }}
+    {% endif %}
 order by block_time desc
