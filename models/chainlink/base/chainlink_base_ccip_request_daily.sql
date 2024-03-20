@@ -58,7 +58,8 @@ SELECT
   date_month,
   fulfilled_requests,
   reverted_requests,
-  total_requests
+  total_requests,
+  caller_address
 FROM
   ccip_request_daily
 ORDER BY
