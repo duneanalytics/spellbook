@@ -6,7 +6,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['date_start']
+    unique_key=['date_start', 'caller_address']
   )
 }}
 
@@ -58,7 +58,8 @@ SELECT
   date_month,
   fulfilled_requests,
   reverted_requests,
-  total_requests
+  total_requests,
+  caller_address
 FROM
   ccip_request_daily
 ORDER BY

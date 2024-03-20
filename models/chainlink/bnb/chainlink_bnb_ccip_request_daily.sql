@@ -6,7 +6,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['date_start']
+    unique_key=['date_start', 'caller_address']
   )
 }}
 
