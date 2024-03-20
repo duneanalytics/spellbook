@@ -2,6 +2,12 @@ version: 2
 
 models:
   - name: jupiter_solana_perp_events
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - position_change
+          - position_key
+          - tx_id
     meta:
       blockchain: solana
       contributors: [ilemi]
