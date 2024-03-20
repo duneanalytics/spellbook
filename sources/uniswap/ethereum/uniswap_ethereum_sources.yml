@@ -247,3 +247,37 @@ sources:
 
       - name: Pair_evt_Flash
         loaded_at_field: evt_block_time
+
+      - name: NonfungibleTokenPositionManager_evt_IncreaseLiquidity
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &tokenId
+            name: tokenId
+
+      - name: NonfungibleTokenPositionManager_evt_DecreaseLiquidity
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *tokenId
+
+      - name: NonfungibleTokenPositionManager_evt_Transfer
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *tokenId
+          - &from
+            name: from
+          - *to
