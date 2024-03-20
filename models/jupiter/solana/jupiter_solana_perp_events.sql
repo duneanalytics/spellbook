@@ -43,7 +43,7 @@ WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
 AND bytearray_substring(data,1+8,8) = 0xf5715534d6bb9984 -- IncreasePosition
 AND tx_success = true
 {% if is_incremental() %}
-AND block_time >= date_trunc('day', now() - interval '1' day)
+AND {{ incremental_predicate('block_time') }}
 {% endif %}
 
 UNION ALL 
