@@ -1,8 +1,6 @@
 {{
   config(
-    
     alias='ccip_reverted_transactions',
-    partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -13,49 +11,47 @@
 {% set incremental_interval = '7' %}
 
 WITH
-  base_usd AS (
-    SELECT
-      minute as block_time,
-      price as usd_amount
-    FROM
-      {{ source('prices', 'usd') }} price
-    WHERE
-      symbol = 'ETH'
-      {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
-  ),
   ccip_reverted_transactions AS (
     SELECT
-      tx.hash as tx_hash,
-      tx.index as tx_index,
-      MAX(tx.block_time) as block_time,
-      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
-      tx."from" as "caller_address",
-      MAX(
-        ((gas_price * gas_used) + l1_fee) / 1e18
-      ) as token_amount,
-      MAX(base_usd.usd_amount) as usd_amount
+      ccip_send_logs_v1.tx_hash as tx_hash,
+      ccip_send_logs_v1.block_time as block_time,
+      cast(date_trunc('day', ccip_send_logs_v1.block_time) as date) as date_start,
+      ccip_send_logs_v1.tx_from as caller_address,
+      ccip_send_logs_v1.tx_index as tx_index
     FROM
-      {{ source('base', 'transactions') }} tx
-      LEFT JOIN base_usd ON date_trunc('minute', tx.block_time) = base_usd.block_time
-    WHERE
-      success = false
+      {{ ref('chainlink_base_ccip_send_requested_logs_v1') }} ccip_send_logs_v1
+      LEFT JOIN {{ source('base', 'transactions') }} tx ON
+        ccip_send_logs_v1.tx_hash = tx.hash
+      WHERE
+        tx.success = false
       {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
-    GROUP BY
-      tx.hash,
-      tx.index,
-      tx."from"
+        AND ccip_send_logs_v1.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
+
+    UNION
+
+    SELECT
+      ccip_send_logs_v1_2.tx_hash as tx_hash,
+      ccip_send_logs_v1_2.block_time as block_time,
+      cast(date_trunc('day', ccip_send_logs_v1_2.block_time) as date) as date_start,
+      ccip_send_logs_v1_2.tx_from as caller_address,
+      ccip_send_logs_v1_2.tx_index as tx_index
+    FROM
+      {{ ref('chainlink_base_ccip_send_requested_logs_v1_2') }} ccip_send_logs_v1_2
+      LEFT JOIN {{ source('base', 'transactions') }} tx ON
+        ccip_send_logs_v1_2.tx_hash = tx.hash
+      WHERE
+        tx.success = false
+      {% if is_incremental() %}
+        AND ccip_send_logs_v1_2.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
+        
   )
 SELECT
  'base' as blockchain,
   block_time,
-  date_month,
+  date_start,
   caller_address,
-  token_amount,
-  usd_amount,
   tx_hash,
   tx_index
 FROM

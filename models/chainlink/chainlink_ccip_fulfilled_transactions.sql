@@ -25,10 +25,8 @@ FROM (
     SELECT
       blockchain,
       block_time,
-      date_month,
+      date_start,
       caller_address,
-      token_amount,
-      usd_amount,
       tx_hash,
       tx_index
     FROM {{ ref(model) }}
