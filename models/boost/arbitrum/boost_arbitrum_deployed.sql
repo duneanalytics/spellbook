@@ -43,3 +43,7 @@ select
     evt_block_time as creation_time,
     creator
 from {{source('boost_arbitrum', 'QuestFactory_evt_QuestCreated')}}
+{% if is_incremental() %}
+where
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
