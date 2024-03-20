@@ -3,7 +3,7 @@
         
         schema = 'jupiter_solana',
         alias = 'perp_events',
-        partition_by = ['month'],
+        partition_by = ['block_month'],
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
@@ -38,6 +38,7 @@ SELECT
     , to_base58(bytearray_substring(data,1+16+32+1+32,32)) as custody_collateral_key --ties to the token mint of the collateral token
     , block_slot
     , block_time
+    , date_trunc('month', block_time) as block_month
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
@@ -72,6 +73,7 @@ SELECT
     , to_base58(bytearray_substring(data,1+16+32+1+32,32)) as custody_collateral_key --ties to the token mint of the collateral token
     , block_slot
     , block_time
+    , date_trunc('month', block_time) as block_month
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
@@ -102,6 +104,7 @@ SELECT
     , to_base58(bytearray_substring(data,1+16+32+1+32,32)) as custody_collateral_key --ties to the token mint of the collateral token
     , block_slot
     , block_time
+    , date_trunc('month', block_time) as block_month
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
