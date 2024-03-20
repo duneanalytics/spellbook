@@ -33,6 +33,7 @@ FROM (
             {% if is_incremental() %}
             AND et.block_time >= date_trunc('day', now() - interval '7' day)
             {% endif %}
+        AND et."from" != 0x1ef753934c40a72a60eab12a68b6f8854439aa78
         GROUP BY et."from", et.block_time
     ) coinbase
 GROUP BY coinbase.address
