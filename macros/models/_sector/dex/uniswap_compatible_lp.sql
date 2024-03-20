@@ -17,7 +17,7 @@ WITH id_to_lp AS
         distinct t.tokenId
         ,t.to AS lp_address
     FROM
-        {{ NonfungibleTokenPositionManager_evt_Transfer }}
+        {{ NonfungibleTokenPositionManager_evt_Transfer }} t
     WHERE
         t."from" = 0x0000000000000000000000000000000000000000
 )
