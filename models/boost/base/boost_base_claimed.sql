@@ -6,6 +6,7 @@
         file_format='delta',
         incremental_strategy='merge',
         unique_key=['boost_address', 'claim_tx_hash', 'action_tx_hash'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -48,3 +49,8 @@ select
     {% endif %}
     {% endfor %}
 from {{source('boost_base', 'QuestFactory_evt_QuestClaimedData')}}
+{% if is_incremental() %}
+where
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
+

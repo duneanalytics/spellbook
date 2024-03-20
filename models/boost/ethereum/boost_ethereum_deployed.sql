@@ -6,6 +6,7 @@
         file_format='delta',
         incremental_strategy='merge',
         unique_key=['boost_address', 'boost_id'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_time')]
     )
 }}
 
@@ -44,3 +45,7 @@ select
     evt_block_time as creation_time,
     creator
 from {{source('boost_ethereum', 'QuestFactory_evt_QuestCreated')}}
+{% if is_incremental() %}
+where
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}

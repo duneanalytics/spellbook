@@ -6,6 +6,7 @@
         file_format='delta',
         incremental_strategy='merge',
         unique_key=['boost_address', 'boost_id'],
+        incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -38,6 +39,10 @@ from
     {% for model in boost_deployed_models %}
     select *
     from {{ model }}
+    {% if is_incremental() %}
+    where
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
     {% if not loop.last %}
     union all
     {% endif %}
