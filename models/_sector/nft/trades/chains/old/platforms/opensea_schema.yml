@@ -3,13 +3,13 @@ version: 2
 models:
   - name: opensea_events
     meta:
-      blockchain: ethereum, solana, polygon, zora
+      blockchain: ethereum, solana
       project: opensea
-      contributors: rchen8, soispoke, kaiblade
+      contributors: rchen8, soispoke
     config:
-      tags: ['ethereum','solana','zora', 'polygon','opensea','events']
+      tags: ['ethereum','solana', 'opensea','events']
     description: >
-       OpenSea events on Ethereum, Solana, Polygon and Zora
+       OpenSea events on Ethereum, Solana
     columns:
       - &blockchain
         name: blockchain
