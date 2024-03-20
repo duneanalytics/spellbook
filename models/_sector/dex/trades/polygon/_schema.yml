@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_polygon_base_trades
+    tests:
+      - check_dex_info_relationship
 
   - name: uniswap_v3_polygon_base_trades
     meta:

@@ -10,6 +10,7 @@
  ref('alienswap_base_base_trades')
  ,ref('element_base_base_trades')
  ,ref('zonic_base_base_trades')
+ ,ref('sudoswap_v2_base_base_trades')
 ] %}
 
 with base_union as (

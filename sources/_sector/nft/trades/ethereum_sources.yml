@@ -127,4 +127,22 @@ sources:
       - name: PaymentProcessor_evt_AcceptOfferERC1155
       - name: TrustedForwarder_call_forwardCall
 
+  - name: sudoswap_v2_ethereum
+    tables:
+      - name: LSSVMPairFactory_call_createPairERC721ETH
+      - name: LSSVMPairFactory_call_createPairERC1155ETH
+      - name: LSSVMPairFactory_call_createPairERC721ERC20
+      - name: LSSVMPairFactory_call_createPairERC1155ERC20
+      - name: LSSVMPair_call_swapNFTsForToken
+      - name: LSSVMPair_call_swapTokenForSpecificNFTs
+      - name: ExponentialCurve_call_getSellInfo
+      - name: LinearCurve_call_getSellInfo
+      - name: XykCurve_call_getSellInfo
+      - name: GDACurve_call_getSellInfo
+      - name: ExponentialCurve_call_getBuyInfo
+      - name: LinearCurve_call_getBuyInfo
+      - name: XykCurve_call_getBuyInfo
+      - name: GDACurve_call_getBuyInfo
+      - name: RoyaltyEngine_call_getRoyalty
+
 #  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.

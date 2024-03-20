@@ -19,12 +19,6 @@ FROM (
     , created_time
     , created_block_number
     , created_tx_hash
-    , top_level_time
-    , top_level_block_number
-    , top_level_tx_hash
-    , top_level_tx_from
-    , top_level_tx_to
-    , top_level_tx_method_id
     , created_tx_from
     , created_tx_to
     , created_tx_method_id
@@ -42,12 +36,6 @@ FROM (
             ,ct.block_time as created_time
             ,ct.block_number as created_block_number
             ,ct.tx_hash as created_tx_hash
-            ,t.block_time as top_level_time
-            ,t.block_number as top_level_block_number
-            ,t.hash as top_level_tx_hash
-            ,t."from" AS top_level_tx_from
-            ,t.to AS top_level_tx_to
-            ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
             ,t."from" AS created_tx_from
             ,t.to AS created_tx_to
             ,bytearray_substring(t.data,1,4) AS created_tx_method_id
@@ -79,12 +67,6 @@ FROM (
             ,ct.evt_block_time as created_time
             ,ct.evt_block_number as created_block_number
             ,ct.evt_tx_hash as created_tx_hash
-            ,t.block_time as top_level_time
-            ,t.block_number as top_level_block_number
-            ,t.hash as top_level_tx_hash
-            ,t."from" AS top_level_tx_from
-            ,t.to AS top_level_tx_to
-            ,bytearray_substring(t.data,1,4) AS top_level_tx_method_id
             ,t."from" AS created_tx_from
             ,t.to AS created_tx_to
             ,bytearray_substring(t.data,1,4) AS created_tx_method_id

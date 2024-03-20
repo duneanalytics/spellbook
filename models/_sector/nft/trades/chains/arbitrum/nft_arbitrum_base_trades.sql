@@ -11,6 +11,7 @@
 ,ref('tofu_arbitrum_base_trades')
 ,ref('trove_v1_arbitrum_base_trades')
 ,ref('trove_v2_arbitrum_base_trades')
+,ref('sudoswap_v2_arbitrum_base_trades')
 ,ref('element_arbitrum_base_trades')
 ] %}
 
