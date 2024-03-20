@@ -4,6 +4,7 @@
     )
 }}
 
+
 {% set balancer_models = [
     ref('balancer_v1_ethereum_trades'),
     ref('balancer_v2_ethereum_trades')
