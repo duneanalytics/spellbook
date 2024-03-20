@@ -982,8 +982,6 @@ models:
       - &caller_address
         name: caller_address
         description: "Caller Address"
-      - *token_amount
-      - *usd_amount
       - *tx_index
 
   - name: chainlink_arbitrum_ccip_gas_daily
@@ -1028,7 +1026,6 @@ models:
           combination_of_columns:
             - blockchain
             - date_start
-            - caller_address
     columns:
       - *blockchain
       - *date_start
@@ -1036,7 +1033,6 @@ models:
       - *fulfilled_requests
       - *reverted_requests
       - *total_requests
-      - *caller_address
 
   - name: chainlink_arbitrum_ccip_reverted_transactions
     meta:
@@ -1061,8 +1057,6 @@ models:
       - *caller_address
       - *tx_hash
       - *tx_index
-      - *token_amount
-      - *usd_amount
 
   - name: chainlink_arbitrum_ccip_reward_daily
     meta:

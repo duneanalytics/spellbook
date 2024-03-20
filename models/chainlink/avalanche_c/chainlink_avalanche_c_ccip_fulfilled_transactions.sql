@@ -1,8 +1,6 @@
 {{
   config(
-    
     alias='ccip_fulfilled_transactions',
-    partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -10,84 +8,50 @@
   )
 }}
 
+{% set incremental_interval = '7' %}
+
 WITH
-  avalanche_c_usd AS (
-    SELECT
-      minute as block_time,
-      price as usd_amount
-    FROM
-      {{ source('prices', 'usd') }} price
-    WHERE
-      symbol = 'AVAX'
-      {% if is_incremental() %}
-        AND
-          {{ incremental_predicate('minute') }}
-      {% endif %}      
-  ),
   ccip_fulfilled_transactions AS (
     SELECT
-      tx.hash as tx_hash,
-      tx.index as tx_index,
-      MAX(tx.block_time) as tx_block_time,
-      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
-      tx."from" as caller_address,
-      MAX(
-        (cast((gas_used) as double) / 1e18) * gas_price
-      ) as token_amount,
-      MAX(avalanche_c_usd.usd_amount) as usd_amount
+      ccip_send_logs_v1.tx_hash as tx_hash,
+      ccip_send_logs_v1.block_time as block_time,
+      cast(date_trunc('day', ccip_send_logs_v1.block_time) as date) as date_start,
+      ccip_send_logs_v1.tx_from as caller_address,
+      ccip_send_logs_v1.tx_index as tx_index
     FROM
-      {{ source('avalanche_c', 'transactions') }} tx
-      RIGHT JOIN {{ ref('chainlink_avalanche_c_ccip_send_requested_logs_v1') }} ccip_v1_logs ON ccip_v1_logs.tx_hash = tx.hash
-      {% if is_incremental() %}
-        AND 
-          {{ incremental_predicate('tx.block_time') }}
-      {% endif %}
-      LEFT JOIN avalanche_c_usd ON date_trunc('minute', tx.block_time) = avalanche_c_usd.block_time
-    {% if is_incremental() %}
+      {{ ref('chainlink_avalanche_c_ccip_send_requested_logs_v1') }} ccip_send_logs_v1
+      LEFT JOIN {{ source('avalanche_c', 'transactions') }} tx ON
+        ccip_send_logs_v1.tx_hash = tx.hash
       WHERE
-        {{ incremental_predicate('tx.block_time') }}
-    {% endif %}      
-    GROUP BY
-      tx.hash,
-      tx.index,
-      tx."from"
+        tx.success = true
+      {% if is_incremental() %}
+        AND ccip_send_logs_v1.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
 
     UNION
 
     SELECT
-      tx.hash as tx_hash,
-      tx.index as tx_index,
-      MAX(tx.block_time) as tx_block_time,
-      cast(date_trunc('month', MAX(tx.block_time)) as date) as date_month,
-      tx."from" as caller_address,
-      MAX(
-        (cast((gas_used) as double) / 1e18) * gas_price
-      ) as token_amount,
-      MAX(avalanche_c_usd.usd_amount) as usd_amount
+      ccip_send_logs_v1_2.tx_hash as tx_hash,
+      ccip_send_logs_v1_2.block_time as block_time,
+      cast(date_trunc('day', ccip_send_logs_v1_2.block_time) as date) as date_start,
+      ccip_send_logs_v1_2.tx_from as caller_address,
+      ccip_send_logs_v1_2.tx_index as tx_index
     FROM
-      {{ source('avalanche_c', 'transactions') }} tx
-      RIGHT JOIN {{ ref('chainlink_avalanche_c_ccip_send_requested_logs_v1_2') }} ccip_v2_logs ON ccip_v2_logs.tx_hash = tx.hash
-      {% if is_incremental() %}
-        AND
-          {{ incremental_predicate('tx.block_time') }}
-      {% endif %}
-      LEFT JOIN avalanche_c_usd ON date_trunc('minute', tx.block_time) = avalanche_c_usd.block_time
-    {% if is_incremental() %}
+      {{ ref('chainlink_avalanche_c_ccip_send_requested_logs_v1_2') }} ccip_send_logs_v1_2
+      LEFT JOIN {{ source('avalanche_c', 'transactions') }} tx ON
+        ccip_send_logs_v1_2.tx_hash = tx.hash
       WHERE
-        {{ incremental_predicate('tx.block_time') }}
-    {% endif %}      
-    GROUP BY
-      tx.hash,
-      tx.index,
-      tx."from"
+        tx.success = true
+      {% if is_incremental() %}
+        AND ccip_send_logs_v1_2.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+      {% endif %}
+        
   )
 SELECT
  'avalanche_c' as blockchain,
-  tx_block_time as block_time,
-  date_month,
+  block_time,
+  date_start,
   caller_address,
-  token_amount,
-  usd_amount,
   tx_hash,
   tx_index
 FROM

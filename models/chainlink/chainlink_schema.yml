@@ -1946,10 +1946,8 @@ models:
       - *tx_index
       - *tx_hash
       - &caller_address
-        name: trace_address
-        description: "Trace Address"
-      - *token_amount
-      - *usd_amount
+        name: caller_address
+        description: "Caller Address"
 
   - name: chainlink_ccip_gas_daily
     meta:
@@ -2093,8 +2091,6 @@ models:
       - *tx_index
       - *tx_hash
       - *caller_address
-      - *token_amount
-      - *usd_amount
 
   - name: chainlink_ccip_reward_daily
     meta:

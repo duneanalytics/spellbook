@@ -97,7 +97,6 @@ models:
           combination_of_columns:
             - blockchain
             - date_start
-            - caller_address
     columns:
       - *blockchain
       - *date_start
@@ -111,7 +110,6 @@ models:
       - &total_requests
         name: total_requests
         description: "Total Requests"
-      - *caller_address
 
   - name: chainlink_base_ccip_reverted_transactions
     meta:
@@ -136,12 +134,6 @@ models:
       - *caller_address
       - *tx_hash
       - *tx_index
-      - &token_amount
-        name: token_amount
-        description: "Token Amount"
-      - &usd_amount
-        name: usd_amount
-        description: "USD Amount"
 
   - name: chainlink_base_ccip_reward_daily
     meta:
@@ -162,8 +154,12 @@ models:
       - *blockchain
       - *date_start
       - *date_month
-      - *token_amount
-      - *usd_amount
+      - &token_amount
+        name: token_amount
+        description: "Token Amount"
+      - &usd_amount
+        name: usd_amount
+        description: "USD Amount"
       - &token
         name: token
         description: "Token"
