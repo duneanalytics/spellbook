@@ -6,7 +6,6 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
-        incremental_predicates = ['DBT_INTERNAL_DEST.day >= date_trunc(\'day\', now() - interval \'1\' day)'],
         unique_key = ['position_change','position_key','tx_id'],
         post_hook='{{ expose_spells(\'["jupiter"]\',
                                     "project",
