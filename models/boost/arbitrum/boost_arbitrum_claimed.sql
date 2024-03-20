@@ -49,3 +49,7 @@ select
     {% endif %}
     {% endfor %}
 from {{source('boost_arbitrum', 'QuestFactory_evt_QuestClaimedData')}}
+{% if is_incremental() %}
+where
+    {{ incremental_predicate('evt_block_time') }}
+{% endif %}
