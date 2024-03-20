@@ -1,6 +1,5 @@
  {{
   config(
-        
         schema = 'jupiter_solana',
         alias = 'perp_events',
         partition_by = ['block_month'],
