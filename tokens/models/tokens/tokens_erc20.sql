@@ -2,7 +2,6 @@
     config(
         schema = 'tokens'
         ,alias = 'erc20'
-        ,tags = ['static']
         ,materialized = 'table'
         ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","scroll","zksync","zora"]\',
                         "sector",
