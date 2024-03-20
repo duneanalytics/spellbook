@@ -1,0 +1,33 @@
+{{ config(
+    schema = 'addresses_events_bitcoin'
+    
+    , alias = 'first_funded_by'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'append'
+    , unique_key = ['address']
+    )
+}}
+
+WITH first_appearance AS (
+    SELECT address
+    , MIN(block_time) AS block_time
+    , MIN(block_height) AS block_height
+    , MIN_BY(tx_id, block_height) AS tx_id
+    FROM {{ source('bitcoin', 'outputs') }} o
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('block_time')}}
+    {% endif %}
+    GROUP BY 1
+    )
+
+SELECT 'bitcoin' AS blockchain
+, fa.address
+, array_agg(i.address) AS first_funded_by
+, fa.block_time
+, fa.block_height
+, fa.tx_id
+FROM first_appearance fa 
+INNER JOIN {{ source('bitcoin', 'inputs') }} i ON fa.block_height=i.block_height
+    AND fa.tx_id=i.tx_id
+GROUP BY 1, 2, 4, 5, 6
