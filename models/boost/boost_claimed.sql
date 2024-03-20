@@ -77,6 +77,10 @@ unified_claims as (
         action_tx_hash,
         action_network
     from {{ ref("boost_claimed_legacy") }} 
+    {% if is_incremental() %}
+    where
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
     union all
     select 
         reward_network, 
