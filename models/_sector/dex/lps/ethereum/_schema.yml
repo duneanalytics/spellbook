@@ -5,7 +5,7 @@ models:
     tests:
       - check_dex_info_relationship
 
-  - name: uniswap_v3_ethereum_base_trades
+  - name: uniswap_v3_ethereum_base_lps
     meta:
       blockchain: ethereum
       sector: dex

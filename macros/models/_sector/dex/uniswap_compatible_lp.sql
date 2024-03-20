@@ -1,4 +1,4 @@
-{% macro uniswap_compatible_v3_lp(
+{% macro uniswap_compatible_v3_lps(
     blockchain = null
     , project = null
     , version = null

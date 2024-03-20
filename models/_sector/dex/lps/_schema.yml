@@ -112,22 +112,22 @@ models:
             - version
             - tx_hash
             - evt_index
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *block_month
-      - *block_number
-      - *token0_amount_raw
-      - *token1_amount_raw
-      - *liquidity_amount_raw
-      - *token0_address
-      - *token1_address
-      - *pool_address
-      - *liquidity_provider
-      - *position_id
-      - *tick_lower
-      - *tick_upper
-      - *tx_hash
-      - *evt_index
+    # columns:
+    #   - blockchain
+    #   - project
+    #   - version
+    #   - block_time
+    #   - block_month
+    #   - block_number
+    #   - amount0_raw
+    #   - amount1_raw
+    #   - liquidity_amount_raw
+    #   - token0_address
+    #   - token1_address
+    #   - pool_address
+    #   - liquidity_provider
+    #   - position_id
+    #   - tick_lower
+    #   - tick_upper
+    #   - tx_hash
+    #   - evt_index

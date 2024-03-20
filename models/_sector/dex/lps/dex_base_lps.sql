@@ -11,7 +11,7 @@
 }}
 
 {% set models = [
-    ref('dex_ethereum_base_ls')
+    ref('dex_ethereum_base_lps')
 ] %}
 
 with base_union as (
