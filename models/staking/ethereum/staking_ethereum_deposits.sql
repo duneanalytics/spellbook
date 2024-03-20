@@ -71,8 +71,8 @@ SELECT distinct d.block_time
 , d.deposit_index
 , d.pubkey
 , d.signature
-, d.withdrawal_credentials_type
 , d.withdrawal_address
+, d.withdrawal_credentials_type
 , d.withdrawal_credentials
 , d.evt_index
 FROM deposit_events d
