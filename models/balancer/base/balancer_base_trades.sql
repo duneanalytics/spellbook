@@ -4,6 +4,7 @@
     )
 }}
 
+
 {% set balancer_models = [
     ref('balancer_v2_base_trades')
 ] %}

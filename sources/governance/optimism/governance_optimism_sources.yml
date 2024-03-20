@@ -15,3 +15,10 @@ sources:
       - name: OptimismGovernorV5_evt_ProposalCreated
       - name: OptimismGovernorV5_evt_VoteCast
       - name: OptimismGovernorV5_evt_ProposalCanceled
+      - name: OptimismGovernorV6_evt_ProposalCreated
+      - name: OptimismGovernorV6_evt_VoteCast
+      - name: OptimismGovernorV6_evt_ProposalCanceled
+      - name: OptimismGovernorV5_evt_ProposalDeadlineUpdated
+      - name: OptimismGovernorV6_evt_ProposalDeadlineUpdated
+      - name: OptimismGovernorV5_evt_VoteCastWithParams
+      - name: OptimismGovernorV6_evt_VoteCastWithParams

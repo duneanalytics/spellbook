@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dex_trades_beta
+  - name: dex_trades
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
       sector: dex

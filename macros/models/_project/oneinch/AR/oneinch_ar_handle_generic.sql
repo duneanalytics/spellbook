@@ -5,7 +5,8 @@
         method,
         method_data,
         blockchain,
-        traces_cte
+        traces_cte,
+        start_date
     )
 %}
 
@@ -43,6 +44,8 @@ from (
     from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
     {% if is_incremental() %}
         where {{ incremental_predicate('call_block_time') }}
+    {% else %}
+        where call_block_time >= timestamp '{{ start_date }}'
     {% endif %}
 )
 join traces_cte using(call_block_number, call_tx_hash, call_trace_address)

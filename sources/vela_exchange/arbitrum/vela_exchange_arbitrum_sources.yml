@@ -12,3 +12,4 @@ sources:
       - name: VaultUtils_evt_DecreasePosition
         loaded_at_field: evt_block_time
       - name: VaultUtils_evt_LiquidatePosition
+        loaded_at_field: evt_block_time

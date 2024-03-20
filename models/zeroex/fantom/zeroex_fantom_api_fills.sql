@@ -288,10 +288,10 @@ SELECT
         swap_flag,
         matcha_limit_order_flag,
         CASE WHEN maker_token IN (0x04068da6c83afcfa0e13ba15a6696662335d5b75,0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83,0x74b23882a30290451a17c44f4f05243b6b58c76d
-                ,0x049d68029688eabf473097a2fc38ef61633a3c7a,0x321162cd933e2be498cd2267a90534a804051b11) AND  mp.price IS NOT NULL
+                ,0x049d68029688eabf473097a2fc38ef61633a3c7a,0x321162cd933e2be498cd2267a90534a804051b11,0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e) AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
              WHEN taker_token IN (0x04068da6c83afcfa0e13ba15a6696662335d5b75,0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83,0x74b23882a30290451a17c44f4f05243b6b58c76d,
-                0x049d68029688eabf473097a2fc38ef61633a3c7a, 0x321162cd933e2be498cd2267a90534a804051b11)  AND  tp.price IS NOT NULL   
+                0x049d68029688eabf473097a2fc38ef61633a3c7a, 0x321162cd933e2be498cd2267a90534a804051b11,0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e)  AND  tp.price IS NOT NULL   
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd, 

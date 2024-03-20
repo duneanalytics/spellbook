@@ -12,6 +12,7 @@
     ,"created_month"
     ,"created_block_number"
     ,"created_tx_hash"
+    ,"top_level_contract_address"
     ,"top_level_tx_hash"
     ,"top_level_block_number"
     ,"top_level_time"
@@ -52,6 +53,7 @@ WITH get_contracts as (
     ,c.created_time 
     ,c.created_month
 
+    
     ,c.created_tx_hash
     ,c.created_block_number
     ,c.created_tx_from
@@ -59,6 +61,7 @@ WITH get_contracts as (
     ,c.created_tx_method_id
     ,c.created_tx_index
 
+    ,c.top_level_contract_address
     ,c.top_level_time
     ,c.top_level_tx_hash
     ,c.top_level_block_number
@@ -77,7 +80,7 @@ WITH get_contracts as (
       SELECT
       blockchain, trace_creator_address, contract_address, creator_address, trace_deployer_address,created_time, created_month
       ,created_tx_hash, created_block_number, created_tx_from, created_tx_to, created_tx_method_id, created_tx_index
-      ,top_level_time, top_level_tx_hash, top_level_block_number, top_level_tx_from, top_level_tx_to, top_level_tx_method_id
+      ,top_level_contract_address,top_level_time, top_level_tx_hash, top_level_block_number, top_level_tx_from, top_level_tx_to, top_level_tx_method_id
       ,code_bytelength, token_standard_erc20 AS token_standard, code, code_deploy_rank_by_chain, is_self_destruct
       , CAST(NULL as varchar) AS contract_project, cast(NULL as varchar) AS contract_name
       ,1 as map_rank
@@ -88,7 +91,7 @@ WITH get_contracts as (
       SELECT
       p.blockchain, trace_creator_address, contract_address, creator_address, creator_address AS trace_deployer_address, created_time, DATE_TRUNC('month',created_time) AS created_month
       ,created_tx_hash, 0 AS created_block_number, NULL AS created_tx_from, NULL AS created_tx_to, NULL AS created_tx_method_id, NULL AS created_tx_index
-      ,NULL AS top_level_time, NULL AS top_level_tx_hash, NULL AS top_level_block_number, NULL AS top_level_tx_from, NULL AS top_level_tx_to, NULL AS top_level_tx_method_id
+      ,contract_address AS top_level_contract_address,NULL AS top_level_time, NULL AS top_level_tx_hash, NULL AS top_level_block_number, NULL AS top_level_tx_from, NULL AS top_level_tx_to, NULL AS top_level_tx_method_id
       ,bytearray_length(oc.code) AS code_bytelength, NULL AS token_standard, oc.code, NULL AS code_deploy_rank_by_chain, NULL AS is_self_destruct
       , p.contract_project, p.contract_name
       ,2 as map_rank
@@ -124,7 +127,7 @@ WITH get_contracts as (
       ) as t_mapped
     on c.contract_address = t_mapped.contract_address
     AND c.blockchain = t_mapped.blockchain
-  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28
+  group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
   ) a
   where contract_address is not NULL 
   group by 1,2
@@ -141,7 +144,7 @@ SELECT
   , u.is_self_destruct
   , u.created_tx_hash, u.created_block_number, u.created_tx_from
   , u.created_tx_to, u.created_tx_method_id, u.created_tx_index
-  , u.top_level_time, u.top_level_tx_hash, u.top_level_block_number
+  , u.top_level_contract_address, u.top_level_time, u.top_level_tx_hash, u.top_level_block_number
   , u.top_level_tx_from, u.top_level_tx_to , u.top_level_tx_method_id
   , u.code_bytelength
   , u.token_standard
@@ -161,7 +164,7 @@ FROM (
   , contract_name, creator_address, trace_deployer_address, created_time
   , created_tx_hash, created_block_number, created_tx_from
   , created_tx_to, created_tx_method_id, created_tx_index
-  , top_level_time, top_level_tx_hash, top_level_block_number
+  , top_level_contract_address, top_level_time, top_level_tx_hash, top_level_block_number
   , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
   , code_bytelength , token_standard 
   , code
@@ -202,6 +205,7 @@ FROM (
       ,c.created_tx_method_id
       ,c.created_tx_index
 
+      ,c.top_level_contract_address
       ,c.top_level_time
       ,c.top_level_tx_hash
       ,c.top_level_block_number

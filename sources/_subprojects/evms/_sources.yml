@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: evms
+    description: "Cross-chain EVM raw data"
+    tables:
+      - name: info
+        description: "Blockchain metadata for all EVM compatible chains"
