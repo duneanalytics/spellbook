@@ -22,6 +22,10 @@ with quest_claimed_data as (
     {% for model in boost_claimed_models %}
     select *
     from {{ model }}
+    {% if is_incremental() %}
+    where
+        {{ incremental_predicate('block_time') }}
+    {% endif %}
     {% if not loop.last %}
     union all
     {% endif %}
