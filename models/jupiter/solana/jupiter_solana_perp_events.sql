@@ -36,7 +36,7 @@ SELECT
     , to_base58(bytearray_substring(data,1+16+32+1+32,32)) as custody_collateral_key --ties to the token mint of the collateral token
     , block_slot
     , block_time
-    , date_trunc('month', block_time) as block_month
+    , cast(date_trunc('month', block_time) as date) as block_month
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
