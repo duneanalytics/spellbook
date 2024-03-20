@@ -77,13 +77,25 @@ with
     union all
     {% endif %}
     {% endfor %}
+), clean_static_source as (
+    select
+        s.blockchain,
+        s.contract_address,
+        s.symbol,
+        s.decimals
+    from
+        static_source as s
+        left join automated_source as a on s.blockchain = a.blockchain
+        and s.contract_address = a.contract_address
+    where
+        a.contract_address is null
 )
 select
     *
 from
     automated_source
-union distinct
+union all
 select
     *
 from
-    static_source
+    clean_static_source
