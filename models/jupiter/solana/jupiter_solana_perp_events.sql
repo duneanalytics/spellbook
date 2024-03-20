@@ -71,14 +71,14 @@ SELECT
     , to_base58(bytearray_substring(data,1+16+32+1+32,32)) as custody_collateral_key --ties to the token mint of the collateral token
     , block_slot
     , block_time
-    , date_trunc('month', block_time) as block_month
+    , cast(date_trunc('month', block_time) as date) as block_month
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
 AND bytearray_substring(data,1+8,8) = 0x409c2b4a6d83107f -- DecreasePosition
 AND tx_success = true
 {% if is_incremental() %}
-AND block_time >= date_trunc('day', now() - interval '1' day)
+AND {{ incremental_predicate('block_time') }}
 {% endif %}
 
 UNION ALL 
@@ -102,12 +102,12 @@ SELECT
     , to_base58(bytearray_substring(data,1+16+32+1+32,32)) as custody_collateral_key --ties to the token mint of the collateral token
     , block_slot
     , block_time
-    , date_trunc('month', block_time) as block_month
+    , cast(date_trunc('month', block_time) as date) as block_month
     , tx_id
 FROM {{ source('solana','instruction_calls') }}
 WHERE executing_account = 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu'
 AND bytearray_substring(data,1+8,8) IN (0x68452084d423bf2f, 0x806547a880485654) --LiquidatePosition, LiquidateFullPosition
 AND tx_success = true
 {% if is_incremental() %}
-AND block_time >= date_trunc('day', now() - interval '1' day)
+AND {{ incremental_predicate('block_time') }}
 {% endif %}
