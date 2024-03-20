@@ -30,7 +30,7 @@ WITH
       {{ ref('chainlink_arbitrum_ccip_fulfilled_transactions') }} fulfilled
       FULL OUTER JOIN {{ ref('chainlink_arbitrum_ccip_reverted_transactions') }} reverted ON
         reverted.block_time = fulfilled.block_time AND
-        reverted.node_address = fulfilled.node_address
+        reverted.caller_address = fulfilled.caller_address
     {% if is_incremental() %}
       WHERE
         fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
