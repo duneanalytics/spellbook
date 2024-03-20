@@ -1260,6 +1260,7 @@ models:
           combination_of_columns:
             - blockchain
             - date_start
+            - caller_address
     columns:
       - *blockchain
       - *date_start
@@ -1267,6 +1268,7 @@ models:
       - *fulfilled_requests
       - *reverted_requests
       - *total_requests
+      - *caller_address
 
   - name: chainlink_avalanche_c_ccip_reverted_transactions
     meta:

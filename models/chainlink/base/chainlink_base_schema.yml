@@ -97,6 +97,7 @@ models:
           combination_of_columns:
             - blockchain
             - date_start
+            - caller_address
     columns:
       - *blockchain
       - *date_start
@@ -110,6 +111,7 @@ models:
       - &total_requests
         name: total_requests
         description: "Total Requests"
+      - *caller_address
 
   - name: chainlink_base_ccip_reverted_transactions
     meta:
