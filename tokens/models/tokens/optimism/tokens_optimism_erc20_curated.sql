@@ -1,8 +1,11 @@
-{{ config( alias = 'erc20_curated', tags=['static'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["msilb7"]\') }}')}}
+{{
+    config(
+        schema = 'tokens_optimism'
+        , alias = 'erc20_curated'
+        , tags = ['static']
+        , materialized = 'table'
+    )
+}}
 
 -- token_type: What best describes this token? Is it a vault or LP token, or a lowest-level underlying token?
   -- underlying: This is the rawest form of the token (i.e. USDC, DAI, WETH, OP, UNI, GTC) - Counted in On-Chain Value
@@ -438,5 +441,10 @@ WITH raw_token_list AS (
     ,(0x035c93db04E5aAea54E6cd0261C492a3e0638b37, 'stataOptUSDT', 6, 'underlying')
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
-SELECT contract_address, symbol, decimals, token_type, 'manual' AS token_mapping_source
-        FROM raw_token_list
+SELECT
+  contract_address
+  , symbol
+  , decimals
+  , token_type
+  , 'manual' AS token_mapping_source
+FROM raw_token_list
