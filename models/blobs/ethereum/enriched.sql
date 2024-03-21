@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash','blob_index'],
+    unique_key = ['tx_hash','blob_index','blob_versioned_hash','blob_parent_root'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "blobs",
@@ -44,7 +44,6 @@ FROM (
         b.block_epoch
         , b.block_slot
         , b.block_time
-        , b.block_date
         , b.index
         , b.proposer_index
         , b.kzg_commitment
