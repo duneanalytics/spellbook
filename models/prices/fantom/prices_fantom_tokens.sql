@@ -81,5 +81,7 @@ FROM
     ('woo-wootrade', 'fantom', 'WOO', 0x6626c47c00f1d87902fc13eecfac3ed06d5e8d8a, 18),
     ('cekke-cekke-cronje', 'fantom', 'CEKKE', 0x3bc34d8Ace32D768a3F76e17AAEF2B1D8f261e1D, 18),
     --('vemp-vemp', 'fantom', 'VEMP', 0x526f1dc408cfe7fc5330ab9f1e78474ceff2a5dd, 18) --not found in API 
-    ('unidx-unidex', 'fantom', 'UNIDX', 0x0483a76D80D0aFEC6bd2afd12C1AD865b9DF1471, 18)
+    ('unidx-unidex', 'fantom', 'UNIDX', 0x0483a76D80D0aFEC6bd2afd12C1AD865b9DF1471, 18),
+    ('bay-moon-bay', 'fantom', 'BAY', 0xd361474bB19C8b98870bb67F5759cDF277Dee7F9, 18),
+    ('usdc-usdc-stargate-bridge', 'fantom', 'USDC', 0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
