@@ -11,7 +11,6 @@
                                     \'["msilb7","lorenz234"]\') }}'
 )}}
 
-
 SELECT
     t.block_time
     , t.block_number
@@ -25,8 +24,6 @@ SELECT
     , b.versioned_hash AS blob_versioned_hash
     , b.block_epoch AS blob_block_epoch
     , b.block_slot AS blob_block_slot
-    , b.block_time AS blob_block_time
-    , b.block_date AS blob_block_date
     , b.index AS blob_index
     , b.proposer_index AS blob_proposer_index
     , b.kzg_commitment AS blob_kzg_commitment
@@ -41,7 +38,7 @@ SELECT
     , t.max_fee_per_blob_gas
     , l.excess_blob_gas
     , gp.blob_base_fee as blob_base_fee_per_gas
-    , CARDINALITY(b.versioned_hash) AS blobs_per_tx
+    , CARDINALITY(t.blob_versioned_hashes) AS blobs_per_tx
 FROM (
     SELECT
         b.block_epoch
