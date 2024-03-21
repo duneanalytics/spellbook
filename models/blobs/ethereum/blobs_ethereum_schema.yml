@@ -14,7 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - index
+            - blob_index
     columns:
       - &block_time
         name: block_time
