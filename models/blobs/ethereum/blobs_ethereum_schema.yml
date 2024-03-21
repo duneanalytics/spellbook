@@ -52,12 +52,6 @@ models:
       - &blob_block_slot
         name: blob_block_slot
         description: "coming soon"
-      - &blob_block_time
-        name: blob_block_time
-        description: "coming soon"
-      - &blob_block_date
-        name: blob_block_date
-        description: "coming soon"
       - &blob_index
         name: blob_index
         description: "coming soon"
