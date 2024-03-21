@@ -115,6 +115,7 @@ FROM
     , (0xe8239B17034c372CDF8A5F8d3cCb7Cf1795c4572, 'RockX', 'RockX 2', 'Staking Pool')
     , (0xea674fdde714fd979de3edf0f56aa9716b898ec8, 'Ethermine', 'Ethermine', 'Staking Pool')
     , (0x25e821b7197b146f7713c3b89b6a4d83516b912d, 'ether.fi', 'ether.fi', 'Liquid Restaking')
+    , (0x7ef5d450be41fcbc6191cb09789c5783da53f3fc, 'Copper.co', 'Copper.co', 'Staking Pool')
     , (0x44894aeee56c2dd589c1d5c8cb04b87576967f97, 'Upbit', 'Upbit 1', 'CEX')
     , (0xcf95237ce34d4b5bf1e7de4474ee1dcc01f24ca9, 'Upbit', 'Upbit 2', 'CEX')
     , (0x3085140568d02b7dca5db4070375040a6b2ece5b, 'Upbit', 'Upbit 3', 'CEX')
