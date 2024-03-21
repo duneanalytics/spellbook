@@ -6,6 +6,7 @@
 
 {% set paraswap_models = [
 ref('paraswap_v5_optimism_trades')
+,ref('paraswap_v6_optimism_trades')
 ] %}
 
 
