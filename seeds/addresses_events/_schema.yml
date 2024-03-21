@@ -10,7 +10,7 @@ seeds:
         block_number: bigint
         tx_hash: varbinary
 
-  - name: first_funded_by_seed
+  - name: first_funded_by_seed_bitcoin
     config:
       column_types:
         blockchain: varchar
