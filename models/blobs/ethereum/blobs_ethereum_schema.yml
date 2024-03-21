@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: transactions
+  - name: enriched
     meta:
       blockchain: ethereum
       sector: blobs
       project: blobs
       contributors: [msilb7, 0xrob, lorenz234]
     config:
-      tags: ['blob', 'blobs', 'BLOB_TX_TYPE']
+      tags: ['blob', 'blobs', 'BLOB_TX_TYPE', 'enriched']
     description: Combines blobs data with their corresponding L1 transaction data
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -46,6 +46,45 @@ models:
       - &blob_versioned_hash
         name: blob_versioned_hash
         description: "hash of the blob"
+      - &blob_block_epoch
+        name: blob_block_epoch
+        description: "coming soon"
+      - &blob_block_slot
+        name: blob_block_slot
+        description: "coming soon"
+      - &blob_block_time
+        name: blob_block_time
+        description: "coming soon"
+      - &blob_block_date
+        name: blob_block_date
+        description: "coming soon"
+      - &blob_index
+        name: blob_index
+        description: "coming soon"
+      - &blob_proposer_index
+        name: blob_proposer_index
+        description: "coming soon"
+      - &blob_kzg_commitment
+        name: blob_kzg_commitment
+        description: "coming soon"
+      - &blob_kzg_commitment_inclusion_proof
+        name: blob_kzg_commitment_inclusion_proof
+        description: "coming soon"
+      - &blob_kzg_proof
+        name: blob_kzg_proof
+        description: "coming soon"
+      - &blob_body_root
+        name: blob_body_root
+        description: "coming soon"
+      - &blob_parent_root
+        name: blob_parent_root
+        description: "coming soon"
+      - &blob_state_root
+        name: blob_state_root
+        description: "coming soon"
+      - &blob_signature
+        name: blob_signature
+        description: "coming soon"
       - &used_blob_byte_count
         name: used_blob_byte_count
         description: "byte size of the blob"
@@ -61,9 +100,6 @@ models:
       - &blob_base_fee_per_gas
         name: blob_base_fee_per_gas
         description: "gas price of the blob"
-      - &unique_id
-        name: unique_id
-        description: "unique count id for blob since inception"
-      - &num_blobs_per_tx
-        name: num_blobs_per_tx
+      - &blobs_per_tx
+        name: blobs_per_tx
         description: "number of blobs in the L1 transaction"

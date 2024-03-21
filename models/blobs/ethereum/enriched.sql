@@ -1,6 +1,6 @@
 {{ config(
     schema = 'blobs_ethereum',
-    alias = 'blobs_transactions',    
+    alias = 'blobs_enriched',    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -23,15 +23,25 @@ SELECT
     , l.base_fee_per_gas AS tx_l1_base_fee
     , t.blob_versioned_hashes
     , b.versioned_hash AS blob_versioned_hash
+    , b.block_epoch AS blob_block_epoch
+    , b.block_slot AS blob_block_slot
+    , b.block_time AS blob_block_time
+    , b.block_date AS blob_block_date
+    , b.index AS blob_index
+    , b.proposer_index AS blob_proposer_index
+    , b.kzg_commitment AS blob_kzg_commitment
+    , b.kzg_commitment_inclusion_proof AS blob_kzg_commitment_inclusion_proof
+    , b.kzg_proof AS blob_kzg_proof
+    , b.body_root AS blob_body_root
+    , b.parent_root AS blob_parent_root
+    , b.state_root AS blob_state_root
+    , b.signature AS blob_signature
     , b.used_blob_byte_count -- commented out of blob query for now, since it's slow
     , b.blob_byte_count AS blobgas_used_by_blob
     , t.max_fee_per_blob_gas
     , l.excess_blob_gas
     , gp.blob_base_fee as blob_base_fee_per_gas
-    , ROW_NUMBER() OVER (ORDER BY t.block_time ASC) AS unique_id
-    , CARDINALITY(b.versioned_hash) AS num_blobs_per_tx
-    --, SUM(used_blob_byte_count) AS blobgas_purchased
-    --, SUM(blob_byte_count) AS blobgas_purchased
+    , CARDINALITY(b.versioned_hash) AS blobs_per_tx
 FROM (
     SELECT
         b.block_epoch
@@ -40,9 +50,13 @@ FROM (
         , b.block_date
         , b.index
         , b.proposer_index
+        , b.kzg_commitment
+        , b.kzg_commitment_inclusion_proof
+        , b.kzg_proof
         , b.body_root
         , b.parent_root
         , b.state_root
+        , b.signature
         -- belows expression is very slow
         ,ceil( cast(length(regexp_replace(cast(blob as varchar), '0*$', '')) - 2 as double) /2 ) AS used_blob_byte_count -- handle for last byte having a 0 at the end
         ,bytearray_length(blob) AS blob_byte_count
@@ -58,16 +72,13 @@ FROM (
             ),
             length(to_hex(sha256(from_hex(substr(cast(kzg_commitment as varchar), 3))))) - 62 + 1 -- Calculate the start position for the last 31 bytes
         )) as versioned_hash
-        FROM {{ source('beacon','blobs') }} b 
-        {% if is_incremental() %}
-        WHERE b.block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+    FROM {{ source('beacon','blobs') }} b 
     ) b 
 left JOIN {{ source('ethereum','blocks') }} l
     ON b.parent_root = l.parent_beacon_block_root
     AND l.date >= cast('2024-03-12' as date)
     {% if is_incremental() %}
-    AND l.date >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('blocks.time')}}
     {% endif %}
 left JOIN {{ source('ethereum','transactions') }} t
     ON t.block_number = l.number 
@@ -75,18 +86,8 @@ left JOIN {{ source('ethereum','transactions') }} t
     AND contains(t.blob_versioned_hashes, b.versioned_hash)
     AND t.block_date >= cast('2024-03-12' as date)
     {% if is_incremental() %}
-    AND t.block_date >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('transactions.block_time')}}
     {% endif %}
-LEFT JOIN {{ source('resident_wizards','dataset_blob_base_fees_lookup', dune=True) }} gp --ref. https://dune.com/queries/3521876 
+LEFT JOIN {{ source('resident_wizards','dataset_blob_base_fees_lookup', database="dune") }} gp --ref. https://dune.com/queries/3521876 
     ON l.excess_blob_gas = gp.excess_blob_gas
-    {% if is_incremental() %}
-    AND t.block_date >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-
-
-
-
-
-
-
 
