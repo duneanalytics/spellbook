@@ -71,8 +71,8 @@ SELECT distinct d.block_time
 , d.deposit_index
 , d.pubkey
 , d.signature
-, d.withdrawal_credentials_type
 , d.withdrawal_address
+, d.withdrawal_credentials_type
 , d.withdrawal_credentials
 , d.evt_index
 FROM deposit_events d
@@ -100,3 +100,4 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} etes
     OR (etes.pubkey IS NOT NULL AND d.pubkey=etes.pubkey)
     OR (etes.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=etes.withdrawal_credentials))
     AND etes.sub_entity IS NOT NULL
+    
