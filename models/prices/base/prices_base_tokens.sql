@@ -65,5 +65,6 @@ FROM
     ('gmr1-gamer', 'base', 'GMR', 0xa617c0c739845b2941bd8edd05c9f993ecc97c18, 18),
     ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18),
     ('bswap-baseswap', 'base', 'BSWAP', 0x78a087d713be963bf307b18f2ff8122ef9a63ae9,18),
-    ('unidx-unidex', 'base', 'UNIDX', 0x6B4712AE9797C199edd44F897cA09BC57628a1CF, 18)
+    ('unidx-unidex', 'base', 'UNIDX', 0x6B4712AE9797C199edd44F897cA09BC57628a1CF, 18),
+    ('brett-brett-base', 'base', 'BRETT', 0x532f27101965dd16442E59d40670FaF5eBB142E4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
