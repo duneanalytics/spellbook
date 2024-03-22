@@ -44,7 +44,8 @@ where
 )
 -- temporary fix to exclude duplicates
 and tx_hash not in (
-0xa56e69f4b2394d469c32143bc574bcb9229eadef3ff05f72eb9a778673c24d0b
-,0x90573e006f0a2b5fa322d1da8bbfe0d1cd3c6409d1e9b72a26a7c7952d7aa767
-
+select tx_hash from
+trades
+group by tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx
+having count(*) > 1
 )
