@@ -1,5 +1,5 @@
 {{ config(
-    schema='campfire_avalanche_c',
+    schema='hyperspace_avalanche_c',
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -7,30 +7,36 @@
     unique_key = ['block_number','tx_hash','sub_tx_trade_id']
 )}}
 
-{% set project_start_date = '2022-03-14' %}
+{% set project_start_date = '2023-09-01' %}
 
 WITH 
 
 base_trades as (
 SELECT 
     'avalanche_c' as blockchain,
-    'campfire' as project,
+    'hyperspace' as project,
     'v1' as project_version,
     evt_block_time as block_time,
     date_trunc('day',evt_block_time) as block_date,
     date_trunc('month',evt_block_time) as block_month,
-    nftTokenId as nft_token_id,
+    erc721TokenId as nft_token_id,
     'secondary' as trade_type,
     UINT256 '1' as nft_amount,
     CASE 
-        WHEN kind = UINT256 '1' THEN 'Buy'
+        WHEN direction = UINT256 '0' THEN 'Buy'
         ELSE 'Sell'
     END as trade_category,
-    seller,
-    buyer,
-    price as price_raw,
+    CASE 
+        WHEN direction = UINT256 '0' THEN maker 
+        ELSE taker
+    END as seller, 
+    CASE 
+        WHEN direction = UINT256 '0' THEN taker
+        ELSE maker
+    END as buyer,
+    erc20TokenAmount as price_raw,
     0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7 as currency_contract,
-    nftContractAddress as nft_contract_address,
+    erc721Token as nft_contract_address,
     evt_tx_hash as tx_hash,
     contract_address as project_contract_address,
     evt_block_number as block_number,
@@ -40,7 +46,7 @@ SELECT
     CAST(NULL as VARBINARY) as platform_fee_address,
     evt_index as sub_tx_trade_id
 FROM 
-{{ source('campfire_avalanche_c', 'CampfireMarket_evt_Sale') }}
+{{ source('hyperspace_avalanche_c', 'ERC721OrdersFeature_evt_ERC721OrderFilled') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}

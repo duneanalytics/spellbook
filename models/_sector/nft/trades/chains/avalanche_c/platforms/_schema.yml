@@ -1,21 +1,21 @@
 version: 2
 
 models:
-  - name: campfire_avalanche_c_base_trades
+  - name: hyperspace_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
       sector: nft
-      project: campfire
+      project: hyperspace
       contributors: Henrystats
     config:
       tags: ['avalanche', 'nft', 'trades', 'campfore']
-    description: "Campfire base trades"
+    description: "hyperspace base trades"
     tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
       - check_seed:
-          seed_file: ref('campfire_avalanche_c_base_trades_seed')
+          seed_file: ref('hyperspace_avalanche_c_base_trades_seed')
           match_columns:
             - block_number
             - tx_hash
