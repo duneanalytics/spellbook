@@ -23,15 +23,15 @@ SELECT
     'secondary' as trade_type,
     UINT256 '1' as nft_amount,
     CASE 
-        WHEN direction = UINT256 0 THEN 'Buy'
+        WHEN direction = 0 THEN 'Buy'
         ELSE 'Sell'
     END as trade_category,
     CASE 
-        WHEN direction = UINT256 0 THEN maker 
+        WHEN direction = 0 THEN maker 
         ELSE taker
     END as seller, 
     CASE 
-        WHEN direction = UINT256 0 THEN taker
+        WHEN direction = 0 THEN taker
         ELSE maker
     END as buyer,
     erc20TokenAmount as price_raw,
