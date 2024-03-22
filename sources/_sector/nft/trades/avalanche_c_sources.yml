@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: campfire_avalanche_c
+    tables:
+      - name: CampfireMarket_evt_Sale
