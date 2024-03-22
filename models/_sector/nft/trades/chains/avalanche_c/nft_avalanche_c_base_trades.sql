@@ -7,7 +7,7 @@
 
 
 {% set nft_models = [
- ref('hyperspace_avalanche_c_base_trades')
+ ref('joepegs_avalanche_c_base_trades')
 ] %}
 
 
