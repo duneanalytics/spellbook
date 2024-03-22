@@ -20,7 +20,7 @@ models:
         description: 'Date of the event'
       - &blockchain
         name: blockchain
-        description: 'Chain of the event'
+        description: 'Blockchain of the project'
       - &project
         name: project
         description: 'Name of the project'
