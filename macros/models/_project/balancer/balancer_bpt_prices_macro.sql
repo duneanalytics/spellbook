@@ -184,7 +184,7 @@ WITH pool_labels AS (
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL 
-        AND p.pool_type IN ('WP', 'WP2T') -- filters for weighted pools with pricing assets
+        AND p.pool_type IN ('weighted') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
         AND w.version = '{{version}}'
         GROUP BY 1, 2, 3, 4
@@ -223,7 +223,7 @@ WITH pool_labels AS (
         FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }} v
         LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
         WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
-        AND l.pool_type = 'LP'
+        AND l.pool_type = 'linear'
     ), 
 
     all_trades_info AS (
@@ -379,7 +379,7 @@ WITH pool_labels AS (
         l.version,
         18 AS decimals,
         l.pool_address AS contract_address,
-        CASE WHEN pl.pool_type = 'LP' AND median_price IS NOT NULL
+        CASE WHEN pl.pool_type = 'linear' AND median_price IS NOT NULL
         THEN p.median_price
         WHEN l.liquidity = 0 AND median_price IS NOT NULL 
         THEN p.median_price
