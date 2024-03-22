@@ -285,7 +285,7 @@ with source_ethereum_transactions as (
                   ,contract_address as platform_contract_address
             from (select *
                     from {{ Seaport_call_matchOrders }}
-                    cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
+                    cross join unnest(output_0) with ordinality as foo(execution,execution_idx)
                    where call_success
                      and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
                  {% if not is_incremental() %}
