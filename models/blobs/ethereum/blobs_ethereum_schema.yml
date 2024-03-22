@@ -13,9 +13,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - tx_hash
             - blob_index
-            - blob_versioned_hash
-            - blob_parent_root
     columns:
       - &block_time
         name: block_time
