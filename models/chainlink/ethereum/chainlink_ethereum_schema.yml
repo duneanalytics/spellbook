@@ -1176,17 +1176,17 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - trace_address
-            - node_address
+            - tx_index
+            - caller_address
     columns:
       - *blockchain
       - *block_time
       - *date_start
-      - *node_address
       - *tx_hash
-      - &trace_address
-        name: trace_address
-        description: "Trace Address"
+      - &caller_address
+        name: caller_address
+        description: "Caller Address"
+      - *tx_index
 
   - name: chainlink_ethereum_ccip_gas_daily
     meta:
@@ -1252,15 +1252,15 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - trace_address
-            - node_address
+            - tx_index
+            - caller_address
     columns:
       - *blockchain
       - *block_time
       - *date_start
-      - *node_address
+      - *caller_address
       - *tx_hash
-      - *trace_address
+      - *tx_index
 
   - name: chainlink_ethereum_ccip_reward_daily
     meta:
@@ -1368,7 +1368,9 @@ models:
       - &destination
         name: destination
         description: "Destination"
-      - *trace_address
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
 
   - name: chainlink_ethereum_ccip_tokens_locked_logs
     meta:
@@ -1524,3 +1526,69 @@ models:
       - *usd_amount
       - *operator_name
       - *nop_address
+
+  - name: chainlink_ethereum_ccip_send_requested_logs_v1
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "logs", "ethereum"]
+    description: >
+      Chainlink CCIP Send Requested Logs v1
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &fee_token_amount
+        name: fee_token_amount
+        description: "Fee Token Amount"
+      - &origin_selector
+        name: origin_selector
+        description: "Origin Selector"
+      - &fee_token
+        name: fee_token
+        description: "Fee Token"
+      - &destination_selector
+        name: destination_selector
+        description: "Destination Selector"
+      - *destination_blockchain
+
+  - name: chainlink_ethereum_ccip_send_requested_logs_v1_2
+    meta:
+      blockchain: "ethereum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "logs", "ethereum"]
+    description: >
+      Chainlink CCIP Send Requested Logs v1_2
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *fee_token_amount
+      - *origin_selector
+      - *fee_token
+      - *destination_selector
+      - *destination_blockchain
