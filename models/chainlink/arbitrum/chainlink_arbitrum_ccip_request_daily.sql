@@ -1,5 +1,6 @@
 {{
   config(
+    
     alias='ccip_request_daily',
     partition_by=['date_month'],
     materialized='incremental',
