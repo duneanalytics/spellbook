@@ -23,7 +23,7 @@ SELECT
     'secondary' as trade_type,
     UINT256 '1' as nft_amount,
     CASE 
-        WHEN kind = UNIT256 '1' THEN 'Buy'
+        WHEN kind = UINT256 '1' THEN 'Buy'
         ELSE 'Sell'
     END as trade_category,
     seller,
