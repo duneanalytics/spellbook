@@ -167,6 +167,7 @@ WITH pool_labels AS (
         l.name AS pool_symbol,
         '{{version}}' as version,
         '{{blockchain}}' as blockchain,
+        l.pool_type,
         f.token_address,
         f.token_symbol,
         SUM(f.token_amount_raw) as token_amount_raw,
