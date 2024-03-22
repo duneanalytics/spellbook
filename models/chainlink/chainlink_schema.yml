@@ -1942,7 +1942,7 @@ models:
     columns:
       - *blockchain
       - *block_time
-      - *date_month
+      - *date_start
       - *tx_index
       - *tx_hash
       - &caller_address
@@ -2633,6 +2633,7 @@ models:
       - *block_time
       - *index
       - *tx_index
+      - *tx_from
       - *fee_token_amount
       - &origin_selector
         name: origin_selector
@@ -2687,6 +2688,7 @@ models:
       - *block_time
       - *index
       - *tx_index
+      - *tx_from
       - *fee_token_amount
       - *origin_selector
       - *fee_token
