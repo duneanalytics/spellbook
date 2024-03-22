@@ -1,10 +1,11 @@
 {{
   config(
+    tags = ['prod_exclude'],
     alias='ccip_fulfilled_transactions',
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'caller_address']
+    unique_key=['tx_hash', 'trace_address', 'node_address']
   )
 }}
 
@@ -13,43 +14,17 @@
 WITH
   ccip_fulfilled_transactions AS (
     SELECT
-      ccip_send_logs_v1.tx_hash as tx_hash,
-      ccip_send_logs_v1.block_time as block_time,
-      cast(date_trunc('day', ccip_send_logs_v1.block_time) as date) as date_start,
-      ccip_send_logs_v1.tx_from as caller_address,
-      ccip_send_logs_v1.tx_index as tx_index
+      ccip_send_traces.tx_hash as tx_hash,
+      ccip_send_traces.block_time as block_time,
+      cast(date_trunc('day', ccip_send_traces.block_time) as date) as date_start,
+      ccip_send_traces."from" as "node_address",
+      ccip_send_traces.trace_address as trace_address
     FROM
-      {{ ref('chainlink_arbitrum_ccip_send_requested_logs_v1') }} ccip_send_logs_v1
-      LEFT JOIN {{ source('arbitrum', 'transactions') }} tx ON
-        ccip_send_logs_v1.tx_hash = tx.hash
-        {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-        {% endif %}
+      {{ ref('chainlink_arbitrum_ccip_send_traces') }} ccip_send_traces
       WHERE
-        tx.success = true
+        ccip_send_traces.tx_success = true
       {% if is_incremental() %}
-        AND ccip_send_logs_v1.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}
-
-    UNION
-
-    SELECT
-      ccip_send_logs_v1_2.tx_hash as tx_hash,
-      ccip_send_logs_v1_2.block_time as block_time,
-      cast(date_trunc('day', ccip_send_logs_v1_2.block_time) as date) as date_start,
-      ccip_send_logs_v1_2.tx_from as caller_address,
-      ccip_send_logs_v1_2.tx_index as tx_index
-    FROM
-      {{ ref('chainlink_arbitrum_ccip_send_requested_logs_v1_2') }} ccip_send_logs_v1_2
-      LEFT JOIN {{ source('arbitrum', 'transactions') }} tx ON
-        ccip_send_logs_v1_2.tx_hash = tx.hash
-        {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-        {% endif %}
-      WHERE
-        tx.success = true
-      {% if is_incremental() %}
-        AND ccip_send_logs_v1_2.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND ccip_send_traces.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
       {% endif %}
         
   )
@@ -57,8 +32,8 @@ SELECT
  'arbitrum' as blockchain,
   block_time,
   date_start,
-  caller_address,
+  node_address,
   tx_hash,
-  tx_index
+  trace_address
 FROM
   ccip_fulfilled_transactions
