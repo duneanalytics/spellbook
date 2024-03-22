@@ -16,6 +16,7 @@ models:
             - tx_hash
             - blob_index
             - blob_kzg_commitment
+            - block_time
     columns:
       - &block_time
         name: block_time
