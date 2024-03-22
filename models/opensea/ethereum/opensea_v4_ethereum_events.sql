@@ -1,7 +1,6 @@
 {{ config(
     schema = 'opensea_v4_ethereum',
     alias = 'events',
-    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
