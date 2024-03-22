@@ -12,17 +12,17 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date
-            - chain
-            - name
+            - blockchain
+            - project
     columns:
       - &date
         name: date
         description: 'Date of the event'
-      - &chain
-        name: chain
-        description: 'Chain of the event'
-      - &name
-        name: name
+      - &blockchain
+        name: blockchain
+        description: 'Blockchain of the project'
+      - &project
+        name: project
         description: 'Name of the project'
       - &revenue
         name: revenue

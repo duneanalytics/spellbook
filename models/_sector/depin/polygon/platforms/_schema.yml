@@ -1,7 +1,7 @@
 version: 1
 
 models:
-  - name: geodnet_revenue
+  - name: geodnet_polygon_revenue
     meta:
       blockchain: polygon
       sector: depin
@@ -12,17 +12,17 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date
-            - chain
-            - name
+            - blockchain
+            - project
     columns:
       - &date
         name: date
         description: 'Date of the event'
-      - &chain
-        name: chain
+      - &blockchain
+        name: blockchain
         description: 'Chain of the event'
-      - &name
-        name: name
+      - &project
+        name: project
         description: 'Name of the project'
       - &revenue
         name: revenue

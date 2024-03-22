@@ -1,22 +1,24 @@
 {{ config(
-    schema = 'geodnet'
+    schema = 'geodnet_polygon'
     , alias = 'revenue'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['date', 'chain', 'name']
+    , unique_key = ['date', 'blockchain', 'project']
     )
 }}
+
+{% set project_start_date = '2023-04-20' %}
 
 WITH
   hour_series AS (
     SELECT
       time AS hour,
-      DATE_TRUNC('day', time) AS day
+      CAST(date_trunc('DAY', time) AS date) AS day
     FROM
       UNNEST (
         sequence(
-          CAST('2023-04-20 00:00' AS timestamp),
+          TIMESTAMP '{{project_start_date}}',
           CAST(
             DATE_TRUNC('hour', CURRENT_TIMESTAMP) AS timestamp
           ),
@@ -24,13 +26,7 @@ WITH
         )
       ) AS t (time)
       {% if is_incremental() %}
-      WHERE
-          time >= (
-            SELECT
-              CAST(COALESCE(MAX(date), '2023-04-27 00:00') AS timestamp) - INTERVAL '7' DAY
-            FROM
-              {{ this }}
-          )
+      WHERE {{ incremental_predicate('time') }}
       {% endif %}
   ),
   burn_events AS (
@@ -39,17 +35,14 @@ WITH
       DATE_TRUNC('day', a.evt_block_time) AS evt_day,
       CAST(value AS double) / pow(10, b.decimals) AS tokens_burned
     FROM {{ source('erc20_polygon', 'evt_transfer') }} a
-      JOIN {{ source('tokens', 'erc20') }} b ON a.contract_address = b.contract_address
+    INNER JOIN {{ source('tokens', 'erc20') }} b
+        ON a.contract_address = b.contract_address
+        AND b.blockchain = 'polygon'
     WHERE
       a.contract_address = 0xAC0F66379A6d7801D7726d5a943356A172549Adb
       AND a.to = 0x000000000000000000000000000000000000dead
       {% if is_incremental() %}
-      AND a.evt_block_time >= (
-        SELECT
-          CAST(COALESCE(MAX(date), '2023-04-27 00:00') AS timestamp) - interval '7' day
-        FROM
-          {{ this }}
-      )
+      AND {{ incremental_predicate('a.evt_block_time') }}
       {% endif %}
   ),
   raw_prices AS (
@@ -62,12 +55,7 @@ WITH
       blockchain = 'polygon'
       AND contract_address = 0xac0f66379a6d7801d7726d5a943356a172549adb
       {% if is_incremental() %}
-      AND hour >= (
-        SELECT
-          CAST(COALESCE(MAX(date), '2023-04-27 00:00') AS timestamp) - interval '7' day
-        FROM
-          {{ this }}
-      )
+      AND {{ incremental_predicate('hour') }}
       {% endif %}
     GROUP BY
       2,
@@ -116,12 +104,11 @@ WITH
     GROUP BY
       day
   )
-SELECT
-  DATE_FORMAT(mbv.day, '%Y-%m-%d') AS date,
-  'polygon' as chain,
-  'geodnet' as name,
+SELECT DATE_FORMAT(mbv.day, '%Y-%m-%d') AS DATE,
+  'polygon' as blockchain,
+  'geodnet' as project,
    mbv.usd_burned as revenue
 FROM
-  daily_burned_value mbv
+    daily_burned_value mbv
 ORDER BY
-  1 DESC
+    1 DESC

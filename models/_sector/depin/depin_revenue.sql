@@ -8,15 +8,15 @@ with
         {{
             dbt_utils.union_relations(
                 relations=[
-                    ref("geodnet_revenue")
+                    ref("geodnet_polygon_revenue")
                 ]
             )
         }}
     )
 select 
     date, 
-    chain,
-    name,
+    blockchain,
+    project,
     revenue
 from results
 
