@@ -89,7 +89,7 @@ WITH id_to_lp AS
         , b.amount1
         , f.token0 AS token0_address
         , f.token1 AS token1_address
-        , m.contract_address AS pool_address
+        , b.contract_address AS pool_address
     FROM
         {{ Pair_evt_Burn }} b
     INNER JOIN
