@@ -19,9 +19,12 @@ WITH
       ccip_send_logs_v1.tx_from as caller_address,
       ccip_send_logs_v1.tx_index as tx_index
     FROM
-      {{ ref('chainlink_arbitrum_ccip_send_requested_logs_v1') }} ccip_send_logs_v1
-      LEFT JOIN {{ source('arbitrum', 'transactions') }} tx ON
+      {{ ref('chainlink_bnb_ccip_send_requested_logs_v1') }} ccip_send_logs_v1
+      LEFT JOIN {{ source('bnb', 'transactions') }} tx ON
         ccip_send_logs_v1.tx_hash = tx.hash
+        {% if is_incremental() %}
+            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}
       WHERE
         tx.success = false
       {% if is_incremental() %}
@@ -37,9 +40,12 @@ WITH
       ccip_send_logs_v1_2.tx_from as caller_address,
       ccip_send_logs_v1_2.tx_index as tx_index
     FROM
-      {{ ref('chainlink_arbitrum_ccip_send_requested_logs_v1_2') }} ccip_send_logs_v1_2
-      LEFT JOIN {{ source('arbitrum', 'transactions') }} tx ON
+      {{ ref('chainlink_bnb_ccip_send_requested_logs_v1_2') }} ccip_send_logs_v1_2
+      LEFT JOIN {{ source('bnb', 'transactions') }} tx ON
         ccip_send_logs_v1_2.tx_hash = tx.hash
+        {% if is_incremental() %}
+            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}
       WHERE
         tx.success = false
       {% if is_incremental() %}
@@ -48,7 +54,7 @@ WITH
         
   )
 SELECT
- 'arbitrum' as blockchain,
+ 'bnb' as blockchain,
   block_time,
   date_start,
   caller_address,

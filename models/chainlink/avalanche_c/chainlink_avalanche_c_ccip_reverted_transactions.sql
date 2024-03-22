@@ -22,6 +22,9 @@ WITH
       {{ ref('chainlink_avalanche_c_ccip_send_requested_logs_v1') }} ccip_send_logs_v1
       LEFT JOIN {{ source('avalanche_c', 'transactions') }} tx ON
         ccip_send_logs_v1.tx_hash = tx.hash
+        {% if is_incremental() %}
+            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}
       WHERE
         tx.success = false
       {% if is_incremental() %}
@@ -40,6 +43,9 @@ WITH
       {{ ref('chainlink_avalanche_c_ccip_send_requested_logs_v1_2') }} ccip_send_logs_v1_2
       LEFT JOIN {{ source('avalanche_c', 'transactions') }} tx ON
         ccip_send_logs_v1_2.tx_hash = tx.hash
+        {% if is_incremental() %}
+            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {% endif %}
       WHERE
         tx.success = false
       {% if is_incremental() %}
