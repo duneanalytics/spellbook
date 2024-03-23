@@ -1,7 +1,6 @@
 {{ config(
     schema = 'staking_ethereum',
     alias = 'entities',
-    
     unique_key = ['depositor_address', 'tx_from', 'pubkey'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
@@ -16,6 +15,7 @@
      , ('withdrawal_credentials', ref('staking_ethereum_entities_withdrawal_credentials'), 'main')
      , ('tx_from', ref('staking_ethereum_entities_batch_contracts_tx_from'), 'sub')
      , ('pubkey', ref('staking_ethereum_entities_batch_contracts_pubkey'), 'sub')
+
 
      , ('depositor_address', ref('staking_ethereum_entities_coinbase'), 'main')
      , ('depositor_address', ref('staking_ethereum_entities_binance'), 'main')

@@ -19,7 +19,7 @@ WITH pools AS (
       t.tokens,
       w.weights,
       cc.symbol,
-      'WP' AS pool_type
+      'weighted' AS pool_type
     FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -43,7 +43,7 @@ WITH pools AS (
       t.tokens,
       w.weights,
       cc.symbol,
-      'WP' AS pool_type
+      'weighted' AS pool_type
     FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolV2Factory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -67,7 +67,7 @@ WITH pools AS (
       t.tokens,
       w.weights,
       cc.symbol,
-      'WP2T' AS pool_type
+      'weighted' AS pool_type
     FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPool2TokensFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -84,7 +84,7 @@ WITH pools AS (
     t.tokens,
     0 AS weights,
     cc.symbol,
-    'SP' AS pool_type
+    'stable' AS pool_type
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -98,7 +98,7 @@ WITH pools AS (
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'SP' AS pool_type
+    'stable' AS pool_type
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -126,7 +126,7 @@ WITH pools AS (
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'SP' AS pool_type
+    'stable' AS pool_type
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -140,7 +140,7 @@ WITH pools AS (
     element AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'LP' AS pool_type
+    'linear' AS pool_type
   FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_optimism', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -176,7 +176,7 @@ settings AS (
 SELECT 
   'optimism' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('SP', 'LP', 'LBP', 'ECLP') 
+  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'ECLP') 
     THEN LOWER(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))

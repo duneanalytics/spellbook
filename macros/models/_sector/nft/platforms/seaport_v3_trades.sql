@@ -272,10 +272,17 @@ with source_ethereum_transactions as (
                   ,dense_rank() over (partition by call_tx_hash order by call_trace_address) as evt_index
                   ,'match_ord' as sub_type
                   ,execution_idx as sub_idx
+                  {% if blockchain in ('ethereum', 'polygon') %}
+                  ,from_hex(json_extract_scalar(json_extract_scalar("_0"[1],'$.parameters'),'$.zone')) as zone
+                  ,from_hex(json_extract_scalar(json_extract_scalar("_0"[1],'$.parameters'),'$.offerer')) as offerer
+                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar("_0"[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
+                  ,json_extract_scalar(json_extract_scalar(json_extract_scalar("_0"[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
+                  {% else %}
                   ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.zone')) as zone
                   ,from_hex(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offerer')) as offerer
                   ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.offer[0]'),'$.itemType') as offer_first_item
                   ,json_extract_scalar(json_extract_scalar(json_extract_scalar(orders[1],'$.parameters'),'$.consideration[0]'),'$.itemType') as consider_first_item
+                  {% endif %}
                   ,from_hex(json_extract_scalar(execution,'$.offerer')) as sender
                   ,from_hex(json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.token')) as token_contract_address
                   ,json_extract_scalar(json_extract_scalar(execution,'$.item'),'$.amount') as original_amount
@@ -285,7 +292,11 @@ with source_ethereum_transactions as (
                   ,contract_address as platform_contract_address
             from (select *
                     from {{ Seaport_call_matchOrders }}
+                    {% if blockchain in ('ethereum', 'polygon') %}
+                    cross join unnest(output_0) with ordinality as foo(execution,execution_idx)
+                    {% else %}
                     cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
+                    {% endif %}
                    where call_success
                      and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
                  {% if not is_incremental() %}

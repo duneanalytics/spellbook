@@ -217,6 +217,42 @@ seeds:
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
 
+  - name: sudoswap_v2_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_v2_base_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_v2_arbitrum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
   - name: aurem_polygon_base_trades_seed
     config:
       column_types:
@@ -240,7 +276,7 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
-    
+
   - name: alienswap_base_base_trades_seed
     config:
       column_types:
@@ -252,7 +288,7 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
-        
+
   - name: tevaera_zksync_base_trades_seed
     config:
       column_types:
@@ -276,7 +312,7 @@ seeds:
         platform_fee_amount_raw: uint256
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
-        
+
   - name: element_base_base_trades_seed
     config:
       column_types:
