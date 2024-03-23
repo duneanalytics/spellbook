@@ -103,6 +103,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x16C473448E770Ff647c69CBe19e28528877fba1B, 'prod', 'Copium_Capital'),
                  (0x4FC4a61a3b99A1ad4A61b03f3752CA12B4A17646, 'prod', 'Rizzolver'),
                  (0xD1508A211D98bb81195dC1F9533eDcdf68aDF036, 'prod', 'Furucombo'),
+                 (0x8646Ee3c5e82b495Be8F9FE2f2f213701EeD0edc, 'prod', 'Seasolver_v2')
+                 (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'barn', 'Seasolver_v2')
                  (0x279fb872beaF64E94890376725C423c0820eDA97, 'barn', 'Furucombo'),                 
                  (0x2854C9A92cd1dC65BdDF45aFE397D9d75D4718C8, 'barn', 'Rizzolver'),
                  (0x8E8C00aD7011AabEa0E06e984cfA7194CF8b16b0, 'barn', 'Copium_Capital'),
@@ -177,7 +179,6 @@ known_solver_metadata (address, environment, name) as (
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
                  (0x2caef7f0ee82fb0abf1ab0dcd3a093803002e705, 'test', 'Test Solver 1'),
                  (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2'),
-                 (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'staging', 'Seasolver2')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
