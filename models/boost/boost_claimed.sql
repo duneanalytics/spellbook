@@ -50,10 +50,6 @@ quest_claims_enriched as (
     from quest_claimed_data c
     left join {{ ref("boost_deployed") }} b
     on c.boost_address = b.boost_address
-    {% if is_incremental() %}
-    and
-        {{ incremental_predicate('b.creation_time') }}
-    {% endif %}
     where block_time > date '2023-11-12'
     {% if is_incremental() %}
     and
