@@ -90,7 +90,7 @@ with tx_batch_appends as (
       hash as tx_hash,
       block_time,
       block_number
-      FROM ethereum.transactions
+      FROM {{ source('ethereum','transactions') }}
       WHERE "from" = 0xC1b634853Cb333D3aD8663715b08f41A3Aec47cc
       AND to = 0x1c479675ad559DC151F6Ec7ed3FbF8ceE79582B6
       AND bytearray_substring(data, 1, 4) = 0x3e5aa082 --addSequencerL2BatchFromBlobs
