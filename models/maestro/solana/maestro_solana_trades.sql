@@ -39,7 +39,7 @@ WITH
       0 AS fee_token_amount,
       '{{wsol_token}}' AS fee_token_mint_address
     FROM
-      solana.transactions
+      {{ source('solana','transactions') }}
     WHERE
       {% if is_incremental() %}
       {{ incremental_predicate('block_time') }}
