@@ -14,7 +14,7 @@
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
-  allFeePayments AS (
+  feePayments AS (
     SELECT
       tx_id,
       'SOL' AS feeTokenType,
