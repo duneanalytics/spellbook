@@ -1,7 +1,12 @@
 {{ config(
         schema = 'tokens_bnb',
         alias = 'balances',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["bnb"]\',
+                        spell_type = "sector",
+                        spell_name = "balances",
+                        contributors = \'["aalan3"]\') }}'
         )
 }}
 
