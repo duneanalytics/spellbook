@@ -69,6 +69,9 @@ models:
       - &created_tx_index
         name: created_tx_index
         description: "Index of the contract creation transaction within its block"
+      - &top_level_contract_address
+        name: top_level_contract_address
+        description: "Top-Level contract address"
       - &top_level_time
         name: top_level_time
         description: "Top-Level contract creation transaction block time"
@@ -170,12 +173,6 @@ models:
       - *created_tx_to
       - *created_tx_method_id
       - *created_tx_index
-      - *top_level_time
-      - *top_level_block_number
-      - *top_level_tx_hash
-      - *top_level_tx_from
-      - *top_level_tx_to
-      - *top_level_tx_method_id
       - *code_bytelength
       - *code
       - &reinitialize_rank
@@ -205,6 +202,7 @@ models:
       - *contract_address
       - *created_time
       - *created_month
+      - *top_level_contract_address
       - *top_level_time
       - *created_tx_hash
       - *created_block_number

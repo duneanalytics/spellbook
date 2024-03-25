@@ -1,0 +1,11 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+  - name: boost_arbitrum
+    description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
+    tables:
+      - name: QuestFactory_evt_QuestCreated
+      - name: QuestFactory_evt_QuestClaimedData
+      - name: QuestFactory_evt_QuestClaimed
+      - name: QuestFactory_evt_Quest1155Claimed
+      - name: QuestFactory_evt_ReceiptMinted
