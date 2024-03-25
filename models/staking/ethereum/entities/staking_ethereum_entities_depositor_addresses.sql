@@ -83,7 +83,6 @@ FROM
     , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell 1', 'Liquid Restaking')
     , (0xb3d9cf8e163bbc840195a97e81f8a34e295b8f39, 'Swell', 'Swell 2', 'Liquid Restaking')
     , (0x5e6342d8090665be14eeb8154c8a87b7249a4889, 'Swell', 'Swell 3', 'Liquid Restaking')
-    , (0x63952722f3b57a18a792e9e5d98b40e9f89ac8bf, 'Cumberland', 'Cumberland 1', 'CEX')
     , (0x68bd0309ba98d65285a290c923ed6830ceaf2666, 'Galaxy Digital', 'Galaxy Digital', 'CEX')
     , (0x5180db0237291a6449dda9ed33ad90a38787621c, 'Frax Finance', 'Frax Finance Investor Custodian', 'Liquid Staking')
     , (0x234ee9e35f8e9749a002fc42970d570db716453b, 'Gate.io', 'Gate.io 1', 'CEX')
