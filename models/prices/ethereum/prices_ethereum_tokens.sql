@@ -1703,7 +1703,8 @@ FROM
     ('0x0-0x0ai-ai-smart-contract','ethereum','0x0',0x5a3e6A77ba2f983eC0d371ea3B475F8Bc0811AD5,9),
     ('aix-aigentx','ethereum','AIX',0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5,18),
     ('aimbot-aimbot','ethereum','AIMBOT',0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7,18),
-    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18)
+    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18),
+    ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
