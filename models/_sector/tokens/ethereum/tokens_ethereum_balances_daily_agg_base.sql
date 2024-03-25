@@ -14,7 +14,7 @@ with balances_raw as (
 )
 
 {{
-    balances_daily_agg(
+    balances_daily_agg_with_lead(
         balances_raw = 'balances_raw'
     )
 }}
