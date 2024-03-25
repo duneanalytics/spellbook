@@ -12,7 +12,7 @@
 WITH first_appearance AS (
     SELECT address
     , MIN(block_time) AS block_time
-    , MIN(block_height) AS block_height
+    , CAST(MIN(block_height) AS BIGINT) AS block_height
     , MIN_BY(tx_id, block_height) AS tx_id
     FROM {{ source('bitcoin', 'outputs') }} o
     {% if is_incremental() %}
