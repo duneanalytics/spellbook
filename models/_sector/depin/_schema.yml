@@ -1,0 +1,29 @@
+version: 1
+
+models:
+  - name: depin_revenue
+    meta:
+      blockchain: ['polygon']
+      sector: depin
+      contributors: 0xnirmal
+    config:
+      tags: ['depin', 'revenue']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+            - blockchain
+            - project
+    columns:
+      - &date
+        name: date
+        description: 'Date of the event'
+      - &blockchain
+        name: blockchain
+        description: 'Blockchain of the project'
+      - &project
+        name: project
+        description: 'Name of the project'
+      - &revenue
+        name: revenue
+        description: 'Revenue of the project'
