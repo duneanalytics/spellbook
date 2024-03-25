@@ -1460,11 +1460,11 @@ sources:
           - name: pool
           - name: output_0
 
-  - name: balancer_gnosis
+  - name: xavefinance_avalanche_c
     description: >
-      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Gnosis.
+      Decoded tables related to Xave Finance, a project built on Balancer, on Avalanche C-Chain.
     tables:
-      - name: ChildChainGaugeFactory_call_create
+      - name: FXPoolFactory_call_newFXPool
         columns:
           - name: contract_address
           - name: call_tx_hash
@@ -1472,5 +1472,50 @@ sources:
           - name: call_trace_address
           - name: call_block_time
           - name: call_block_number
-          - name: pool
-          - name: output_0          
+          - name: _assetsToRegister
+          - name: _name
+          - name: _percentFee
+          - name: _symbol
+          - name: output_0
+          - name: vault
+
+  - name: xavefinance_ethereum
+    description: >
+      Decoded tables related to Xave Finance, a project built on Balancer, on Polygon.
+    tables:
+      - name: FXPoolFactory_call_newFXPool
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: _assetsToRegister
+          - name: _name
+          - name: _percentFee
+          - name: _symbol
+          - name: output_0
+          - name: vault
+
+  - name: xavefinance_polygon
+    description: >
+      Decoded tables related to Xave Finance, a project built on Balancer, on Polygon.
+    tables:
+      - name: FXPoolFactory_call_newFXPool
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: _assetsToRegister
+          - name: _name
+          - name: _percentFee
+          - name: _symbol
+          - name: output_0
+          - name: vault          
+
+
+          
