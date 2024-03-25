@@ -26,9 +26,9 @@ FROM (
       blockchain,
       block_time,
       date_start,
-      node_address,
+      caller_address,
       tx_hash,
-      trace_address
+      tx_index
     FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL

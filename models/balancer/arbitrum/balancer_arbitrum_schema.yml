@@ -234,7 +234,7 @@ models:
         description: "transaction.to"
       - *evt_index
 
-  - name: balancer_v2_arbitrum_trades_beta
+  - name: balancer_v2_arbitrum_trades
     meta:
       blockchain: arbitrum
       sector: dex
@@ -369,7 +369,7 @@ models:
       - name: contract_address
       - name: bpt_price
 
-  - name: balancer_v2_arbitrum_trades
+  - name: balancer_v2_arbitrum_trades_legacy
     meta:
       blockchain: arbitrum
       sector: dex
