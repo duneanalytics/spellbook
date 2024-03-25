@@ -10,13 +10,16 @@
 }}
 
 WITH first_appearance AS (
-    SELECT address
-    , MIN(block_time) AS block_time
-    , CAST(MIN(block_height) AS BIGINT) AS block_height
-    , MIN_BY(tx_id, block_height) AS tx_id
+    SELECT o.address
+    , MIN(o.block_time) AS block_time
+    , CAST(MIN(o.block_height) AS BIGINT) AS block_height
+    , MIN_BY(o.tx_id, o.block_height) AS tx_id
     FROM {{ source('bitcoin', 'outputs') }} o
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
+    LEFT JOIN {{this}} ffb ON o.address = ffb.address WHERE ffb.address IS NULL
+    {% else %}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('o.block_time')}}
     {% endif %}
     GROUP BY 1
     )
