@@ -229,4 +229,5 @@ FROM (VALUES
     , (0xf899b0906f43ea1381e2c13868ebf130edb6c231, 'UNISWAP', 18)
     , (0x9af23c8773adc2a899cba10b60718af3cf06c647, 'FAIRINU', 18)
     , (0x11c1879227d463b60db18c17c20ae739ae8e961a, 'axlBAL', 18)
+    , (0x2dc5dd89a3662567b78fc3a78e1e2c81d9e4d419, 'BANANIA', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
