@@ -238,6 +238,18 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+
+  UNION ALL
+
+  SELECT
+    cc.output_0 AS pool_id,
+    token AS token_address,
+    0 AS normalized_weight,
+    cc._name,
+    'FX' AS pool_type
+  FROM {{ source('xavefinance_ethereum', 'FXPoolFactory_call_newFXPool') }} cc
+  CROSS JOIN UNNEST(_assetsToRegister) AS t (token)
+  WHERE call_success
 ),
 
 settings AS (
