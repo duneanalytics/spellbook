@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: joepegs_avalanche_c
+    tables:
+      - name: JoepegExchange_evt_TakerBid
+      - name: JoepegExchange_evt_TakerAsk
+      - name: JoepegExchange_evt_RoyaltyPayment
