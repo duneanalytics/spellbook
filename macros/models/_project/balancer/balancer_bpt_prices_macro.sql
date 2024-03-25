@@ -379,6 +379,7 @@ WITH pool_labels AS (
         l.version,
         18 AS decimals,
         l.pool_address AS contract_address,
+        pl.pool_type,
         CASE WHEN pl.pool_type = 'linear' AND median_price IS NOT NULL
         THEN p.median_price
         WHEN l.liquidity = 0 AND median_price IS NOT NULL 

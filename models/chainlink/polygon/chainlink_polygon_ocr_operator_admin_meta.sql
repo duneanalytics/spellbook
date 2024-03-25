@@ -49,6 +49,7 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xD56FBFF05D2e1cdbeb5CB50e8055dAD0cf864792, '{{linkforest}}'),
   (0xD48fc6E2B73C2988fA50C994181C0CdCa850D62a, '{{linkforest}}'),
   (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
+  (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x4dc81f63CB356c1420D4620414f366794072A3a8, '{{matrixedlink}}'),
   (0xAB35418fB9f8B13E3e6857c36A0769b9F94a87EC, '{{newroad}}'),
