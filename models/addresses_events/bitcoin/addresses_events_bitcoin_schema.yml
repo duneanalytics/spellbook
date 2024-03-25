@@ -9,10 +9,10 @@ models:
       contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'bitcoin']
-    description: "Table showing who first funded each Avalanche address in BTC"
+    description: "Table showing who first funded each Bitcoin address in BTC"
     tests:
       - check_seed:
-          seed_file: ref('first_funded_by_seed')
+          seed_file: ref('first_funded_by_seed_bitcoin')
           filter:
             blockchain: bitcoin
           match_columns:
@@ -26,11 +26,11 @@ models:
       - name: blockchain
         description: "Blockchain"
       - name: address
-        description: "Concerned Avalanche address"
+        description: "Concerned Bitcoin address"
         tests:
           - unique
       - name: first_funded_by
-        description: "Which Avalanche address first funded the address with BTC"
+        description: "Which Bitcoin address first funded the address with BTC"
       - name: block_time
         description: "The block time on which the address was first funded with BTC"
       - name: block_height
