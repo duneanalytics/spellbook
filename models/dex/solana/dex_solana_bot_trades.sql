@@ -7,7 +7,7 @@
                         blockchains = \'["solana"]\',
                         spell_type = "sector",
                         spell_name = "bot_trades",
-                        contributors = \'["hosuke"]\') }}'
+                        contributors = \'["whale_hunter", "hosuke"]\') }}'
     )
 }}
 
@@ -15,6 +15,7 @@
 
 {% set solana_trading_bot = [
     ref('bonkbot_solana_bot_trades')
+    , ref('banana_gun_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
