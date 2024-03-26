@@ -7,9 +7,9 @@ models:
       project: opensea
       contributors: rchen8, soispoke
     config:
-      tags: ['ethereum','solana','opensea','events']
+      tags: ['ethereum','solana', 'opensea','events']
     description: >
-       OpenSea events on Ethereum and Solana
+       OpenSea events on Ethereum, Solana
     columns:
       - &blockchain
         name: blockchain

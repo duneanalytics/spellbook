@@ -1532,7 +1532,6 @@ FROM
     ('cook-cook', 'ethereum', 'COOK', 0xFF75CEd57419bcaEBe5F05254983b013B0646eF5, 18),
     ('door-shytoshis-vision', 'ethereum', 'DOOR', 0x2805390F81A7F19c2c49300A094aa500597b1862, 9),
     ('flixx-flixxo', 'ethereum', 'FLIXX', 0xf04a8ac553FceDB5BA99A64799155826C136b0Be, 18),
-    ('flona-flona', 'ethereum', 'FLONA', 0xEf27252B567F6B3fe35b34A85bE322917abE524A, 18),
     ('kol-kollect', 'ethereum', 'KOL', 0x1CC30e2EAc975416060Ec6FE682041408420d414, 18),
     ('ldn-ludena-protocol', 'ethereum', 'LDN', 0xb29663Aa4E2e81e425294193616c1B102B70a158, 18),
     ('sdex-smardex', 'ethereum', 'SDEX', 0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF, 18),
@@ -1703,7 +1702,10 @@ FROM
     ('0x0-0x0ai-ai-smart-contract','ethereum','0x0',0x5a3e6A77ba2f983eC0d371ea3B475F8Bc0811AD5,9),
     ('aix-aigentx','ethereum','AIX',0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5,18),
     ('aimbot-aimbot','ethereum','AIMBOT',0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7,18),
-    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18)
+    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18),
+    ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18),
+    ('pxeth-pirex-ether', 'ethereum', 'PXETH',0x04c154b66cb340f3ae24111cc767e0184ed00cc6,18),
+    ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
