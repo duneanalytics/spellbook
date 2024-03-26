@@ -60,6 +60,15 @@ with
         raw_source
     where
         rn = 1
+), clean_automated_source as (
+    select
+        *
+    from
+        automated_source
+    where
+        contract_address not in (
+            0xeb9951021698b42e4399f9cbb6267aa35f82d59d --incorrect decimal assignment in raw source
+        )
 ), static_source as (
     {% for key, value in static_models.items() %}
     select
@@ -93,7 +102,7 @@ with
 select
     *
 from
-    automated_source
+    clean_automated_source
 union all
 select
     *
