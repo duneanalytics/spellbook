@@ -30,6 +30,6 @@ FROM
     ('busd-binance-usd', 'gnosis', 'BUSD', 0xdd96b45877d0e8361a4ddb732da741e97f3191ff, 18),
     ('crv-curve-dao-token', 'gnosis', 'CRV', 0x712b3d230f3c1c19db860d80619288b1f0bdd0bd, 18),
     ('link-chainlink', 'gnosis', 'LINK', 0xe2e73a1c69ecf83f464efce6a5be353a37ca09b2, 18),
-    ('sushi-sushi', 'gnosis', 'SUSHI', 0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce, 18)
-
+    ('sushi-sushi', 'gnosis', 'SUSHI', 0x2995d1317dcd4f0ab89f4ae60f3f020a4f17c7ce, 18),
+    ('wsteth-wrapped-liquid-staked-ether-20', 'gnosis', 'WSTETH', 0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 18)     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
