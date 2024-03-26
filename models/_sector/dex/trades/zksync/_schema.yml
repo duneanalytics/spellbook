@@ -93,3 +93,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('mute_zksync_base_trades_seed')
+
+  - name: pancakeswap_v3_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: pancakeswap
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'pancakeswap' ]
+    description: "Pancakeswap V3 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      # - check_dex_base_trades_seed:
+      #     seed_file: ref('pancakeswap_v3_zksync_base_trades_seed')
