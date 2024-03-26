@@ -19,8 +19,10 @@ SELECT 'solana' AS blockchain
 FROM {{ source('system_program_solana', 'system_program_call_Transfer') }} s
 {% if is_incremental() %}
 LEFT JOIN {{this}} ffb ON s.account_to = ffb.account_to WHERE ffb.account_to IS NULL
+{% else %}
+WHERE 1 = 1
 {% endif %}
 {% if is_incremental() %}
-WHERE {{incremental_predicate('s.call_block_time')}}
+AND {{incremental_predicate('s.call_block_time')}}
 {% endif %}
 GROUP BY 1, 2
