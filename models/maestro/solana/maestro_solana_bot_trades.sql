@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'trades',
+    alias = 'bot_trades',
     schema = 'maestro_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
