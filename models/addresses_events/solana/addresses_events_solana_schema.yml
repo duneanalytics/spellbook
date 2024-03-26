@@ -20,8 +20,9 @@ models:
             - address
           check_columns:
             - first_funded_by
-            - block_height
+            - block_slot
             - tx_id
+            - tx_index
     columns:
       - name: blockchain
         description: "Blockchain"
