@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: pepe_boost_solana_trades
+  - name: pepe_boost_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
