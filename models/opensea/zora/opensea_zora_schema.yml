@@ -1,15 +1,47 @@
 version: 2
 
 models:
-  - name: opensea_events
+  - name: opensea_v4_zora_events
+  
     meta:
-      blockchain: ethereum, solana
+      blockchain: zora
       project: opensea
-      contributors: rchen8, soispoke
+      contributors: kaiblade
     config:
-      tags: ['ethereum','solana', 'opensea','events']
+      tags: ['zora','opensea','events','seaport']
     description: >
-       OpenSea events on Ethereum, Solana
+        Opensea events on zora, from Seaport v1.4, v1.5
+    tests:
+      - check_columns_nft_old_events
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+      - check_seed:
+          seed_file: ref('opensea_zora_seaport_trades_samples')
+          filter:
+            blockchain: zora
+            project: opensea
+            version: v4
+          check_columns:
+            - buyer
+            - seller
+            - amount_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - sub_idx
+            - nft_contract_address
+            - token_id
     columns:
       - &blockchain
         name: blockchain
@@ -99,7 +131,7 @@ models:
         name: platform_fee_amount_usd
         description:  "Platform fee amount in USD"
       - &platform_fee_percentage
-        name: platform_fee_percentage
+        name: platform_fee_amount_usd
         description:  "Platform fee in % of the amount paid for a given trade"
       - &royalty_fee_amount_raw
         name: royalty_fee_amount_raw
@@ -122,3 +154,69 @@ models:
       - &unique_trade_id
         name: unique_trade_id
         description:  "Unique trade ID"
+        tests:
+          - unique
+      - &original_currency_contract
+        name:  original_currency_contract
+        description: "original currency"
+      - &currency_decimals
+        name:  currency_decimals
+        description:  "Token Decimal"
+      - &platform_fee_receive_address
+        name: platform_fee_receive_address
+        description:  "Platform fee receive address"
+      - &royalty_fee_receive_address_1
+        name: royalty_fee_receive_address_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_receive_address_2
+        name: royalty_fee_receive_address_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_receive_address_3
+        name: royalty_fee_receive_address_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_receive_address_4
+        name: royalty_fee_receive_address_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_receive_address_5
+        name: royalty_fee_receive_address_5
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_amount_raw_1
+        name: royalty_fee_amount_raw_1
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_amount_raw_2
+        name: royalty_fee_amount_raw_2
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_amount_raw_3
+        name: royalty_fee_amount_raw_3
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_amount_raw_4
+        name: royalty_fee_amount_raw_4
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &royalty_fee_amount_raw_5
+        name: royalty_fee_amount_raw_5
+        description:  "Wallet addresses receiving fees from the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Event index of transaction event"
+      - &right_hash
+        name: right_hash
+        description: "right 8 character of data column on Transaction"
+      - &zone_address
+        name: zone_address
+        description: "zone address of Seaport transaction"
+      - &estimated_price
+        name: estimated_price
+        description: "True if it is bundle trade and dividened price"
+      - &is_private
+        name: is_private
+        description: "True if it is private sale"
+      - &sub_idx
+        name: sub_idx
+        description: "Generated value used in seaport internally"
+      - &sub_type
+        name: sub_type
+        description: "Generated value used in seaport internally"
+      - &fee_wallet_name
+        name: fee_wallet_name
+        description: "Address name when a specific pre-specified fee address is included."
+
