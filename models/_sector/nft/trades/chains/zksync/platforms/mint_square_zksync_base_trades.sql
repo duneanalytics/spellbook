@@ -89,35 +89,39 @@ WITH mintsquare_trades AS (
     FROM {{ source('mint_square_zksync','StrategyAnyItemFromCollectionForFixedPrice_call_viewProtocolFee') }}
     )
 
+WITH base_trades AS (
+    SELECT
+        'zksync' AS blockchain
+        , 'mint_square' AS project
+        , 'v1' AS project_version
+        , m.block_time
+        , CAST(date_trunc('day', m.block_time) AS date) AS block_date
+        , CAST(date_trunc('month', m.block_time) AS date) AS block_month
+        , m.block_number
+        , m.tx_hash
+        , m.project_contract_address
+        , m.trade_category
+        , 'secondary' AS trade_type
+        , m.nft_contract_address
+        , m.nft_token_id
+        , m.nft_amount
+        , m.buyer
+        , m.seller
+        , m.currency_contract
+        , m.price_raw
+        , CAST(COALESCE((pf.fee_percentage/100) * CAST(m.price_raw AS uint256),  DOUBLE '0') AS UINT256) AS platform_fee_amount_raw
+        , COALESCE(roy.amount, uint256 '0') AS royalty_fee_amount_raw
+        , CAST(null AS varbinary) AS platform_fee_address
+        , roy.royaltyRecipient AS royalty_fee_address
+        , m.evt_index AS sub_tx_trade_id
+    FROM mintsquare_trades m
+    LEFT JOIN royalties roy ON roy.block_time=m.block_time
+        AND roy.tx_hash = m.tx_hash
+        AND roy.nft_contract_address = m.nft_contract_address
+        AND roy.nft_token_id = m.nft_token_id
+        AND roy.id = m.id
+    LEFT JOIN platform_fees pf ON pf.contract_address = m.strategy
+)
 
-SELECT
-    'zksync' AS blockchain
-    , 'mint_square' AS project
-    , 'v1' AS project_version
-    , m.block_time
-    , CAST(date_trunc('day', m.block_time) AS date) AS block_date
-    , CAST(date_trunc('month', m.block_time) AS date) AS block_month
-    , m.block_number
-    , m.tx_hash
-    , m.project_contract_address
-    , m.trade_category
-    , 'secondary' AS trade_type
-    , m.nft_contract_address
-    , m.nft_token_id
-    , m.nft_amount
-    , m.buyer
-    , m.seller
-    , m.currency_contract
-    , m.price_raw
-    , CAST(COALESCE((pf.fee_percentage/100) * CAST(m.price_raw AS uint256),  DOUBLE '0') AS UINT256) AS platform_fee_amount_raw
-    , COALESCE(roy.amount, uint256 '0') AS royalty_fee_amount_raw
-    , CAST(null AS varbinary) AS platform_fee_address
-    , roy.royaltyRecipient AS royalty_fee_address
-    , m.evt_index AS sub_tx_trade_id
-FROM mintsquare_trades m
-LEFT JOIN royalties roy ON roy.block_time=m.block_time
-    AND roy.tx_hash = m.tx_hash
-    AND roy.nft_contract_address = m.nft_contract_address
-    AND roy.nft_token_id = m.nft_token_id
-    AND roy.id = m.id
-LEFT JOIN platform_fees pf ON pf.contract_address = m.strategy
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'zksync') }}
