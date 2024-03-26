@@ -1,4 +1,4 @@
-{% set blockchain = 'scroll' %}
+{% set blockchain = 'celo' %}
 
 {{ config(
         
