@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: sol_trading_bot_solana_trades
+  - name: sol_trading_bot_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
