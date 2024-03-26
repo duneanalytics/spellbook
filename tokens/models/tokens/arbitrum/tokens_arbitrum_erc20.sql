@@ -8,7 +8,7 @@
 }}
 
 SELECT
-    contract_address
+    contract_address --test comment to force run, will revert asap
     , symbol
     , decimals
 FROM (VALUES
