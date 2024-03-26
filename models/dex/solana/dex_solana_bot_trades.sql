@@ -3,10 +3,11 @@
         schema = 'dex_solana',
         alias = 'bot_trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "dex",
-                                    \'["hosuke"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["solana"]\',
+                        spell_type = "sector",
+                        spell_name = "bot_trades",
+                        contributors = \'["hosuke"]\') }}'
     )
 }}
 

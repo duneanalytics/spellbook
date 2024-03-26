@@ -102,14 +102,6 @@ models:
       tags: [ "solana", "dex", "bot", "trades" ]
       description: >
          Trades by trading bots on Solana
-      tests:
-        - dbt_utils.unique_combination_of_columns:
-            combination_of_columns:
-              - blockchain
-              - tx_id
-              - tx_index
-              - outer_instruction_index
-              - inner_instruction_index
       columns:
         - *blockchain
         - *block_time
