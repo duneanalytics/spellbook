@@ -92,7 +92,7 @@ WITH mintsquare_trades AS (
 , base_trades AS (
     SELECT
         'zksync' AS blockchain
-        , 'mint_square' AS project
+        , 'mintsquare' AS project
         , 'v1' AS project_version
         , m.block_time
         , CAST(date_trunc('day', m.block_time) AS date) AS block_date
