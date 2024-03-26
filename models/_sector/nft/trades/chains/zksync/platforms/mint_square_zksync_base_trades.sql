@@ -89,7 +89,7 @@ WITH mintsquare_trades AS (
     FROM {{ source('mint_square_zksync','StrategyAnyItemFromCollectionForFixedPrice_call_viewProtocolFee') }}
     )
 
-WITH base_trades AS (
+, base_trades AS (
     SELECT
         'zksync' AS blockchain
         , 'mint_square' AS project
