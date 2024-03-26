@@ -18,7 +18,7 @@ SELECT 'solana' AS blockchain
 , MIN_BY(s.call_tx_index, (s.call_block_slot, s.call_tx_index)) AS tx_index
 FROM {{ source('system_program_solana', 'system_program_call_Transfer') }} s
 {% if is_incremental() %}
-LEFT JOIN {{this}} ffb ON s.account_to = ffb.account_to WHERE ffb.account_to IS NULL
+LEFT JOIN {{this}} ffb ON s.account_to = ffb.address WHERE ffb.address IS NULL
 {% else %}
 WHERE 1 = 1
 {% endif %}
