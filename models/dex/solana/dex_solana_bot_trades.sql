@@ -17,6 +17,12 @@
     ref('bonkbot_solana_bot_trades')
     , ref('trojan_solana_bot_trades')
     , ref('banana_gun_solana_bot_trades')
+    , ref('sol_trading_bot_solana_bot_trades')
+    , ref('pepe_boost_solana_bot_trades')
+    , ref('maestro_solana_bot_trades')
+    , ref('shuriken_solana_bot_trades')
+    , ref('magnum_solana_bot_trades')
+    , ref('readyswap_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
