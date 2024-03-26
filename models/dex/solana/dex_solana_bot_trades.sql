@@ -15,6 +15,7 @@
 
 {% set solana_trading_bot = [
     ref('bonkbot_solana_bot_trades')
+    , ref('trojan_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
