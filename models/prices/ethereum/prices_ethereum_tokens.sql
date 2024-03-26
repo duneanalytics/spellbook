@@ -1532,7 +1532,6 @@ FROM
     ('cook-cook', 'ethereum', 'COOK', 0xFF75CEd57419bcaEBe5F05254983b013B0646eF5, 18),
     ('door-shytoshis-vision', 'ethereum', 'DOOR', 0x2805390F81A7F19c2c49300A094aa500597b1862, 9),
     ('flixx-flixxo', 'ethereum', 'FLIXX', 0xf04a8ac553FceDB5BA99A64799155826C136b0Be, 18),
-    ('flona-flona', 'ethereum', 'FLONA', 0xEf27252B567F6B3fe35b34A85bE322917abE524A, 18),
     ('kol-kollect', 'ethereum', 'KOL', 0x1CC30e2EAc975416060Ec6FE682041408420d414, 18),
     ('ldn-ludena-protocol', 'ethereum', 'LDN', 0xb29663Aa4E2e81e425294193616c1B102B70a158, 18),
     ('sdex-smardex', 'ethereum', 'SDEX', 0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF, 18),
