@@ -17,9 +17,11 @@ WITH first_appearance AS (
     FROM {{ source('bitcoin', 'outputs') }} o
     {% if is_incremental() %}
     LEFT JOIN {{this}} ffb ON o.address = ffb.address WHERE ffb.address IS NULL
+    {% else %}
+    WHERE 1 = 1
     {% endif %}
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('o.block_time')}}
+    AND {{incremental_predicate('o.block_time')}}
     {% endif %}
     GROUP BY 1
     )
