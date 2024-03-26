@@ -27,7 +27,7 @@ WITH mintsquare_trades AS (
             , ta.evt_block_number AS block_number
             , ta.evt_index
             , ta.strategy
-        FROM {{ source('mint_square_zksync','Marketplace_evt_TakerASk') }} ta
+        FROM {{ source('mint_square_zksync','Marketplace_evt_TakerAsk') }} ta
         {% if is_incremental() %}
         WHERE ta.{{incremental_predicate('evt_block_time')}}
         {% endif %}
