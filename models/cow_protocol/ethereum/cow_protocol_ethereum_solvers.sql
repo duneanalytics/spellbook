@@ -63,7 +63,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x149d0f9282333681Ee41D30589824b2798E9fb47, 'prod', 'PLM'),
                  (0xe18B5632DF2Ec339228DD65e4D9F004eF59653d3, 'prod', 'Atlas'),
                  (0xA21740833858985e4D801533a808786d3647Fb83, 'prod', 'Laertes'),
-                 (0x398890BE7c4FAC5d766E1AEFFde44B2EE99F38EF, 'prod', 'Seasolver'),
+                 (0x398890BE7c4FAC5d766E1AEFFde44B2EE99F38EF, 'prod', 'Seasolver_v1'),
                  (0x97Ec0a17432D71a3234EF7173C6B48a2C0940896, 'prod', 'Quasilabs'),
                  (0xF5181183D43796120a004130d0CaeE5B2DF2D441, 'prod', 'DMA'),
                  (0xbff9a1b539516f9e20c7b621163e676949959a66, 'prod', 'Raven'),
@@ -103,6 +103,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x16C473448E770Ff647c69CBe19e28528877fba1B, 'prod', 'Copium_Capital'),
                  (0x4FC4a61a3b99A1ad4A61b03f3752CA12B4A17646, 'prod', 'Rizzolver'),
                  (0xD1508A211D98bb81195dC1F9533eDcdf68aDF036, 'prod', 'Furucombo'),
+                 (0x8646Ee3c5e82b495Be8F9FE2f2f213701EeD0edc, 'prod', 'Seasolver_v2'),
+                 (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'barn', 'Seasolver_v2'),
                  (0x279fb872beaF64E94890376725C423c0820eDA97, 'barn', 'Furucombo'),                 
                  (0x2854C9A92cd1dC65BdDF45aFE397D9d75D4718C8, 'barn', 'Rizzolver'),
                  (0x8E8C00aD7011AabEa0E06e984cfA7194CF8b16b0, 'barn', 'Copium_Capital'),
@@ -114,7 +116,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x1857afb4da9bd4cc1c6e5287ad41cb5be469f14e, 'barn', 'Raven'),
                  (0x5B2F5e5C94a5De698e2DeC7f30E90069eb3b12bb, 'barn', 'DMA'),
                  (0x872A1B63A739190D0780721d57D8d92ef766Db35, 'barn', 'Quasilabs'),
-                 (0x8a4e90e9AFC809a69D2a3BDBE5fff17A12979609, 'barn', 'Seasolver'),
+                 (0x8a4e90e9AFC809a69D2a3BDBE5fff17A12979609, 'barn', 'Seasolver_v1'),
                  (0x0a308697e1d3a91dcB1e915C51F8944AaEc9015F, 'barn', 'Laertes'),
                  (0x8567351D6989d83513D3BC3ad951CcCe363941e3, 'barn', 'Atlas'),
                  (0x109BF9E0287Cc95cc623FBE7380dD841d4bdEb03, 'barn', 'Otex'),
@@ -176,8 +178,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x84e5c8518c248de590d5302fd7c32d2ae6b0123c, 'service', 'Withdraw'),
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
                  (0x2caef7f0ee82fb0abf1ab0dcd3a093803002e705, 'test', 'Test Solver 1'),
-                 (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2'),
-                 (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'staging', 'Seasolver2')
+                 (0x56d4ed5e49539ebb1366c7d6b8f2530f1e4fe753, 'test', 'Test Solver 2')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
