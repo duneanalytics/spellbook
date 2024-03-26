@@ -128,4 +128,5 @@ FROM (VALUES
     , ('Renzo', 'RenzoProtocol')
     , ('Cumberland', 'CumberlandSays')
     , ('Galaxy Digital', 'GalaxyHQ')
+    , ('Copper.co', 'CopperHQ')
     ) AS temp_table (entity, x_username)
