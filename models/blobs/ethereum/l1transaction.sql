@@ -25,7 +25,7 @@ SELECT
     , l.excess_blob_gas
     , gp.blob_base_fee as blob_base_fee_per_gas
     , CARDINALITY(t.blob_versioned_hashes) AS blobs_per_tx
-FROM {{ ref('blobs_ethereum_enriched.sql') }} b
+FROM {{ ref('blobs_enriched') }} b
 left JOIN {{ source('ethereum','blocks') }} l
     ON b.parent_root = l.parent_beacon_block_root
     AND l.date >= cast('2024-03-12' as date)
