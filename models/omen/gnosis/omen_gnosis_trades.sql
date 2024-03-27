@@ -56,11 +56,11 @@ trades AS (
 
 prices AS (
     SELECT 
-        minute
-        ,contract_address
-        ,decimals
-        ,symbol
-        ,price
+        DATE_TRUNC('day',minute) AS day
+        ,MAX(contract_address) AS contract_address
+        ,MAX(decimals) AS decimals
+        ,MAX(symbol) AS symbol
+        ,APPROX_PERCENTILE(price,0.5) AS price
     FROM
         {{ source('prices', 'usd') }}
     WHERE
@@ -70,6 +70,7 @@ prices AS (
         {% else %}
         AND minute >= DATE '{{project_start_date}}'
         {% endif %}
+    GROUP BY 1
 ),
 
 final AS (
@@ -104,7 +105,7 @@ final AS (
         ON
         t3.contract_address = t2.collateralToken
         AND 
-        t3.minute = date_trunc('minute', t1.block_time)
+        t3.day = t1.block_day--date_trunc('minute', t1.block_time)
 )
 
 SELECT * FROM final
