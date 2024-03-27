@@ -83,6 +83,8 @@ models:
             - block_day
             - tx_hash
             - questionId 
+            - conditionId
+            - conditionIds_index
     columns:
       - *block_time
       - *block_day

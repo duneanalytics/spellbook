@@ -6,7 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_day', 'tx_hash', 'questionId'],
+    unique_key = ['block_day', 'tx_hash', 'questionId', 'conditionId', 'conditionIds_index'],
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                 "project",
                                 "omen",
