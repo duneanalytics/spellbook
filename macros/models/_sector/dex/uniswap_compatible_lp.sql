@@ -118,8 +118,8 @@ SELECT
     , lp_data.evt_index
     , lp_data.lp_address
     , lp_data.position_id
-    , lp.tick_lower
-    , lp.tick_upper
+    , lp_data.tick_lower
+    , lp_data.tick_upper
     , CAST(lp_data.liquidity AS UINT256) AS liquidity_raw
     , CAST(lp_data.amount0 AS UINT256) AS amount0_raw
     , CAST(lp_data.amount1 AS UINT256) AS amount1_raw
