@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: omen_gnosis_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis','trades', 'omen','dex']
+    description: >
+        A table containing all trades of omen on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - tx_hash
+            - evt_index 
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_day
+        name: block_day
+        description: "UTC event block day of each trade"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &evt_index
+        name: evt_index
+        description: ""
+      - &fixedProductMarketMaker
+        name: fixedProductMarketMaker
+        description: "Address of the Fixed Product Market Maker"
+      - &collateralToken
+        name: collateralToken
+        description: "Address of the collateral token"
+      - &symbol
+        name: symbol
+        description: "Symbol of the collateral token"
+      - &address
+        name: address
+        description: "Address of buyer/seller"
+      - &outcomeIndex
+        name: outcomeIndex
+        description: "Index of the outcome choosen"
+      - &amount
+        name: amount
+        description: "Amount in native currency that was bought/sold"
+      - &amount_usd
+        name: amount
+        description: "Amount in USD that was bought/sold"
+      - &feeAmount
+        name: feeAmount
+        description: "Fee amount in native currency that was charged"
+      - &feeAmount_usd
+        name: feeAmount
+        description: "Fee amount in USD that was charged"
+      - &outcomeTokens
+        name: outcomeTokens
+        description: "Amount to tokens Minted/Burnt"
+
+  - name: omen_gnosis_markets
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis','markets', 'omen','dex']
+    description: >
+        A table containing all omen markets on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - tx_hash
+            - questionId 
+    columns:
+      - *block_time
+      - *block_day
+      - *tx_hash
+      - &questionId
+        name: questionId
+        description: "Question ID"
+      - &conditionId
+        name: conditionId
+        description: "Condition ID"
+      - &oracle
+        name: oracle
+        description: "Address of Oracle"
+      - &outcomeSlotCount
+        name: outcomeSlotCount
+        description: "Number of outcomes"
+      - &question
+        name: question
+        description: "Question"
+      - *fixedProductMarketMaker
+      - &conditionalTokens
+        name: conditionalTokens
+        description: "Conditional Token"
+      - *collateralToken
+      - &fee
+        name: fee
+        description: "Fee of the market"
+      - &conditionIds_index
+        name: conditionIds_index
+        description: "Index of conditionID"
