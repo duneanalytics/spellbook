@@ -72,7 +72,7 @@ prices AS (
         {% endif %}
 ),
 
-trades_usd AS (
+final AS (
     SELECT
         t1.block_time
         ,t1.block_day
@@ -105,4 +105,4 @@ trades_usd AS (
         t3.minute = date_trunc('minute', t1.block_time)
 )
 
-SELECT * FROM trades
+SELECT * FROM final

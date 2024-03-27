@@ -80,7 +80,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - tx_hash
             - fixedProductMarketMaker
             - questionId 
             - conditionId
@@ -115,3 +114,91 @@ models:
       - &conditionIds_index
         name: conditionIds_index
         description: "Index of conditionID"
+
+  - name: omen_gnosis_liquidity
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis','liquidity', 'omen','dex']
+    description: >
+        A table containing all omen markets on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash 
+            - evt_index
+            - amount_index
+    columns:
+      - *block_time
+      - *block_day
+      - *tx_hash
+      - *evt_index
+      - *fixedProductMarketMaker
+      - &funder
+        name: funder
+        description: "Address on the wallet adding/removing liquidity"
+      - &shares
+        name: shares
+        description: "Amount of shares"
+      - &collateralRemovedFromFeePool
+        name: collateralRemovedFromFeePool
+        description: "Colateral removed"
+      - &amount_index
+        name: amount_index
+        description: "amount index"
+      - &amounts
+        name: amounts
+        description: "Amounts added/removed"
+      - &action
+        name: action
+        description: "Cam be Min or Burn"
+
+  - name: omen_gnosis_payout
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis','payout', 'omen','dex']
+    description: >
+        A table containing all omen markets on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash 
+            - evt_index
+            - indexSets_index
+    columns:
+      - *block_time
+      - *block_day
+      - *tx_hash
+      - *evt_index
+      - *tx_from
+      - *tx_to
+      - &evt_contract_address
+        name: evt_contract_address
+        description: "Address of ConditionalTokens"
+      - &redeemer
+        name: redeemer
+        description: "Address on the wallet redeemeing"
+      - *collateralToken
+      - &parentCollectionId
+        name: parentCollectionId
+        description: "parent Collection Id"
+      - *conditionId
+      - &payout
+        name: payout
+        description: "payout in native currency"
+      - &indexSets_index
+        name: indexSets_index
+        description: "Index of indexSets"
+      - &indexSets
+        name: indexSets
+        description: "indexSets"
+
