@@ -31,3 +31,7 @@ sources:
     tables:
       - name: UniswapV2Pool_evt_Swap
       - name: SwapFactory_evt_PairCreated
+  - name: spacefi_v1_zksync
+    tables:
+      - name: zkswap_finance_zksync
+      - name: Factory_evt_PairCreated
