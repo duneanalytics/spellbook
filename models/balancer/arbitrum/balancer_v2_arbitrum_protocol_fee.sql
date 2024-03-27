@@ -4,7 +4,7 @@
     config(
         schema = 'balancer_v2_arbitrum',
         alias = 'protocol_fee', 
-        materialized = 'table',
+        materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_id', 'token_address'],
