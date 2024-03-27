@@ -80,7 +80,7 @@ WITH id_to_lp AS
         {{ Factory_evt_PoolCreated }} f
         ON f.pool = b.contract_address
     LEFT JOIN
-        {{ NonfungibleTokenPositionManager_evt_IncreaseLiquidity }} pm
+        {{ NonfungibleTokenPositionManager_evt_DecreaseLiquidity }} pm
         ON b.owner = pm.contract_address and b.evt_tx_hash = pm.evt_tx_hash
     LEFT JOIN id_to_lp AS id
         ON pm.tokenId = id.tokenId
