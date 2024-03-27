@@ -106,30 +106,36 @@ WITH id_to_lp AS
     {% endif %}
 )
 
-SELECT
-    '{{ blockchain }}' AS blockchain
-    , '{{ project }}' AS project
-    , '{{ version }}' AS version
-    , lp_data.event_type
-    , lp_data.block_number
-    , lp_data.block_time
-    , date_trunc('MONTH', lp_data.block_time) AS block_month
-    , lp_data.lp_address as liquidity_provider
-    , lp_data.position_id
-    , lp_data.tick_lower
-    , lp_data.tick_upper
-    , CAST(lp_data.liquidity AS UINT256) AS liquidity_raw
-    , CAST(lp_data.amount0 AS UINT256) AS amount0_raw
-    , CAST(lp_data.amount1 AS UINT256) AS amount1_raw
-    , lp_data.token0_address
-    , lp_data.token1_address
-    , lp_data.pool_address
-    , lp_data.tx_hash
-    , lp_data.evt_index
-FROM
-    (
-        select * from mints
-        union all
-        select * from burns
-    ) lp_data
+SELECT *
+FROM (
+    SELECT
+        '{{ blockchain }}' AS blockchain
+        , '{{ project }}' AS project
+        , '{{ version }}' AS version
+        , event_type
+        , block_number
+        , block_time
+        , date_trunc('MONTH', block_time) AS block_month
+        , lp_address as liquidity_provider
+        , position_id
+        , tick_lower
+        , tick_upper
+        , CAST(liquidity AS UINT256) AS liquidity_raw
+        , CAST(amount0 AS UINT256) AS amount0_raw
+        , CAST(amount1 AS UINT256) AS amount1_raw
+        , token0_address
+        , token1_address
+        , pool_address
+        , tx_hash
+        , evt_index
+        , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+    FROM
+        (
+            select * from mints
+            union all
+            select * from burns
+        ) lp_data
+) lp_data
+WHERE
+    duplicates_rank = 1
 {% endmacro %}
