@@ -85,6 +85,8 @@ final AS (
         ,t3.symbol
         ,t1.address
         ,t1.outcomeIndex
+        ,t1.amount AS amount_raw
+        ,t3.decimals
         ,t1.amount/POWER(10,t3.decimals) AS amount
         ,t1.amount/POWER(10,t3.decimals) * t3.price AS amount_usd
         ,t1.feeAmount/POWER(10,t3.decimals) AS feeAmount
