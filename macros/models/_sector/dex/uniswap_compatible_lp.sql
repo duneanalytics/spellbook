@@ -30,8 +30,8 @@ WITH id_to_lp AS
         , m.evt_block_time AS block_time
         , m.evt_tx_hash AS tx_hash
         , m.evt_index
-        , CASE WHEN m.owner = {{ position_manager_addr }} THEN id.lp_address ELSE m.owner END AS lp_address
-        , CASE WHEN m.owner = {{ position_manager_addr }} THEN cast(pm.tokenId AS double) ELSE 0 END AS position_id
+        , CASE WHEN m.owner = CAST({{ position_manager_addr }} AS varbinary) THEN id.lp_address ELSE m.owner END AS lp_address
+        , CASE WHEN m.owner = CAST({{ position_manager_addr }} AS varbinary) THEN cast(pm.tokenId AS double) ELSE 0 END AS position_id
         , m.tickLower AS tick_lower
         , m.tickUpper AS tick_upper
         , m.amount AS liquidity
