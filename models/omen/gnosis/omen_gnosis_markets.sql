@@ -45,10 +45,34 @@ Realitio_LogNewQuestion AS (
         {% endif %}
 ), 
 
+QuestionIdAnnouncement AS (
+    SELECT
+        block_time,
+        block_hash,
+        tx_hash,
+        contract_address,
+        topic1 AS realitioQuestionId,
+        topic2 AS conditionQuestionId,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 1, 32))) AS low,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 33, 32))) AS high
+    FROM 
+        {{source('gnosis','logs') }}
+    WHERE
+        --QuestionIdAnnouncement
+        topic0 = 0xab038c0885722fffdf6864cf016c56fa921a1506541dac4fcd59d65963916cb1
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '7' day)
+        {% else %}
+        AND block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
+        
+),
+
 ConditionPreparation AS (
     SELECT
         block_time,
         block_hash,
+        tx_hash,
         contract_address,
         topic1 AS conditionId,
         VARBINARY_SUBSTRING(topic2, 13, 20) AS oracle,
@@ -58,12 +82,31 @@ ConditionPreparation AS (
         {{source('gnosis','logs') }}
     WHERE
         topic0 = 0xab3760c3bd2bb38b5bcf54dc79802ed67338b4cf29f3054ded67ed24661e4177 --ConditionalTokens_evt_ConditionPreparation
-         {% if is_incremental() %}
+        {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '7' day)
         {% else %}
         AND block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
 ), 
+
+ConditionPreparation_end AS (
+    SELECT 
+        t1.block_time,
+        t1.block_hash,
+        t1.contract_address,
+        t1.conditionId,
+        t1.oracle,
+        COALESCE(t2.realitioQuestionId, t1.questionId) AS questionId,
+        t1.outcomeSlotCount
+    FROM
+        ConditionPreparation t1
+    LEFT JOIN
+        QuestionIdAnnouncement t2
+        ON
+        t2.tx_hash = t1.tx_hash
+        AND
+        t2.conditionQuestionId = t1.questionId
+),
 
 FixedProductMarketMakerCreation AS (
     SELECT
@@ -120,7 +163,7 @@ prediction_market_info AS (
     t3.fee,
     t3.conditionIds_index
   FROM Realitio_LogNewQuestion AS t1
-  INNER JOIN ConditionPreparation AS t2
+  INNER JOIN ConditionPreparation_end AS t2
     ON t2.questionId = t1.questionId
   INNER JOIN FixedProductMarketMakerCreation AS t3
     ON 
