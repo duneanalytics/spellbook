@@ -2,10 +2,11 @@
         schema = 'tokens_ethereum',
         alias = 'balances',
         materialized = 'view',
-        post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["aalan3"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["ethereum"]\',
+                        spell_type = "sector",
+                        spell_name = "balances",
+                        contributors = \'["aalan3"]\') }}'
         )
 }}
 

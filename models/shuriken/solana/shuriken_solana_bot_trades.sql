@@ -1,6 +1,6 @@
 {{ config(
-    alias = 'trades',
-    schema = 'bonkbot_solana',
+    alias = 'bot_trades',
+    schema = 'shuriken_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,25 +9,17 @@
    )
 }}
 
-{% set project_start_date = '2023-08-17' %}
-{% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
+{% set project_start_date = '2024-01-14' %}
+{% set fee_receiver = '9cSuF94JWPb1HQzWMcifJzkoggwAtfjsojcUqny5XuJy' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
   allFeePayments AS (
     SELECT
       tx_id,
-      IF(balance_change > 0, 'SOL', 'SPL') AS feeTokenType,
-      IF(
-        balance_change > 0,
-        balance_change / 1e9,
-        token_balance_change
-      ) AS fee_token_amount,
-      IF(
-        balance_change > 0,
-        '{{wsol_token}}',
-        token_mint_address
-      ) AS fee_token_mint_address
+      'SOL' AS feeTokenType,
+      balance_change / 1e9 AS fee_token_amount,
+      '{{wsol_token}}' AS fee_token_mint_address
     FROM
       {{ source('solana','account_activity') }}
     WHERE
@@ -37,16 +29,8 @@ WITH
       block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       AND tx_success
-      AND (
-        (
-          address = '{{fee_receiver}}'
-          AND balance_change > 0 -- SOL fee payments
-        )
-        OR (
-          token_balance_owner = '{{fee_receiver}}'
-          AND token_balance_change > 0 -- SPL fee payments
-        )
-      )
+      AND balance_change > 0
+      AND address = '{{fee_receiver}}'
   ),
   botTrades AS (
     SELECT
