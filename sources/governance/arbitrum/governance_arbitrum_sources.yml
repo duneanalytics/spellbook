@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: dune
+    description: >
+      Decoded table for proposals and their voting on Snapshot platform
+    tables:
+      - name: shot.dataset_proposals_view
+      - name: shot.dataset_votes_view

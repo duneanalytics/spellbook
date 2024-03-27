@@ -1,0 +1,195 @@
+version: 2
+
+models:
+  - name: governance_arbitrum_snapshot_single_choice_proposals
+    meta:
+      blockchain: arbitrum
+      sector: governance
+      project: governance
+      contributors: ARDev097
+    config:
+      tags: ['arbitrum','snapshot','governance','proposals','single-choice']
+
+    description: >
+        A table containing arbitrum governance single choice type proposals available on Snapshot platform
+
+    columns:
+      - &proposal_id
+        name: proposal_id
+        description: "The unique identifier of the proposal"
+      
+      - &proposal_title
+        name: proposal_title
+        description: "The title of the proposal on respective platform"
+
+      - &proposal_type
+        name: proposal_type
+        description: "The type of proposal"
+
+      - &proposal_description
+        name: proposal_description
+        description: "A brief description of the proposal"
+      
+      - &proposal_link
+        name: proposal_link
+        description: "A snapshot link of the proposal"
+      
+      - &proposal_choice
+        name: proposal_choice
+        description: "Different options(choice) available for voting, on which user can vote"
+      
+      - &voter_address
+        name: voter_address
+        description: "The unique voter address"
+
+      - &voting_weightage
+        name: votingWeightage
+        description: "The voting weight of the voter's"
+      
+      - &voting_choice
+        name: voting_choice
+        description: "Voter's voting choice for the proposal"
+      
+      - &voting_choice_name
+        name: voting_choice_name
+        description: "Voter's voting choice's name for the proposal"
+      
+      - &voting_reason
+        name: voting_reason
+        description: "Voter's voting reason"
+      
+      - &voting_timestamp
+        name: voting_timestamp
+        description: "Voter's voting timestamp"
+
+      - &voting_year
+        name: voting_year
+        description: "Voter's voting year"
+      
+      - &voting_month
+        name: voting_month
+        description: "Voter's voting month"
+      
+      - &voting_date
+        name: voting_date
+        description: "Voter's voting date"
+  
+  - name: governance_arbitrum_snapshot_basic_proposals
+    meta:
+      blockchain: arbitrum
+      sector: governance
+      project: governance
+      contributors: ARDev097
+    config:
+      tags: ['arbitrum','snapshot','governance','proposals','basic']
+
+    description: >
+        A table containing arbitrum governance basic type proposals available on Snapshot platform
+
+    columns:
+      - *proposal_id 
+      - *proposal_title
+      - *proposal_type
+      - *proposal_description
+      - *proposal_link
+      - *proposal_choice
+      - *voter_address
+      - *voting_weightage
+      - *voting_choice
+      - *voting_choice_name
+      - *voting_reason
+      - *voting_timestamp
+      - *voting_year
+      - *voting_month
+      - *voting_date
+  
+  - name: governance_arbitrum_snapshot_approval_proposals
+    meta:
+      blockchain: arbitrum
+      sector: governance
+      project: governance
+      contributors: ARDev097
+    config:
+      tags: ['arbitrum','snapshot','governance','proposals','approval']
+
+    description: >
+        A table containing arbitrum governance approval type proposals available on Snapshot platform
+
+    columns:
+      - *proposal_id 
+      - *proposal_title
+      - *proposal_type
+      - *proposal_description
+      - *proposal_link
+      - *proposal_choice
+      - *voter_address
+      - *voting_weightage
+      - *voting_choice
+      - *voting_reason
+      - *voting_timestamp
+      - *voting_year
+      - *voting_month
+      - *voting_date
+      - &voting_choice_separated
+        name: voting_choice_separated
+        description: "Voting choice separated from voting"
+      
+      - &separated_voting_choice_name
+        name: separated_voting_choice_name
+        description: "Corresponding name of separated voting choice"
+  
+  - name: governance_arbitrum_snapshot_ranked_choice_proposals
+    meta:
+      blockchain: arbitrum
+      sector: governance
+      project: governance
+      contributors: ARDev097
+    config:
+      tags: ['arbitrum','snapshot','governance','proposals','ranked_choice']
+
+    description: >
+        A table containing arbitrum governance ranked_choice type proposals available on Snapshot platform
+
+    columns:
+      - *proposal_id 
+      - *proposal_title
+      - *proposal_type
+      - *proposal_description
+      - *proposal_link
+      - *proposal_choice
+      - *voter_address
+      - *voting_weightage
+      - *voting_choice
+      - *voting_reason
+      - *voting_timestamp
+      - *voting_year
+      - *voting_month
+      - *voting_date
+
+  - name: governance_arbitrum_snapshot_weighted_proposals
+    meta:
+      blockchain: arbitrum
+      sector: governance
+      project: governance
+      contributors: ARDev097
+    config:
+      tags: ['arbitrum','snapshot','governance','proposals','weighted']
+
+    description: >
+        A table containing arbitrum governance weighted type proposals available on Snapshot platform
+
+    columns:
+      - *proposal_id 
+      - *proposal_title
+      - *proposal_type
+      - *proposal_description
+      - *proposal_link
+      - *proposal_choice
+      - *voter_address
+      - *voting_weightage
+      - *voting_choice
+      - *voting_reason
+      - *voting_timestamp
+      - *voting_year
+      - *voting_month
+      - *voting_date
