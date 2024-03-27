@@ -23,10 +23,14 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(fees[1], '"', 4) AS VARBINARY)
+        ELSE NULL 
+  END AS platform_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
+        ELSE 0
+  END AS platform_fee_amount_raw,
+  CAST(0 AS UINT256) AS royalty_fee_amount_raw,
+  cast('0' AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -58,10 +62,14 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(fees[1], '"', 4) AS VARBINARY)
+        ELSE NULL 
+  END AS platform_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
+        ELSE 0
+  END AS platform_fee_amount_raw,
+  CAST(0 AS UINT256) AS royalty_fee_amount_raw,
+  cast('0' AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -93,10 +101,14 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(fees[1], '"', 4) AS VARBINARY)
+        ELSE NULL 
+  END AS platform_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
+        ELSE 0
+  END AS platform_fee_amount_raw,
+  CAST(0 AS UINT256) AS royalty_fee_amount_raw,
+  cast('0' AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -128,10 +140,14 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(fees[1], '"', 4) AS VARBINARY)
+        ELSE NULL 
+  END AS platform_fee_address,
+  CASE WHEN cardinality(fees) > 0 THEN CAST(split_part(split_part(fees[1], '"amount":', 2), '}', 1) AS UINT256)
+        ELSE 0
+  END AS platform_fee_amount_raw,
+  CAST(0 AS UINT256) AS royalty_fee_amount_raw,
+  cast('0' AS VARBINARY) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
