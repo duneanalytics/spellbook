@@ -24,10 +24,7 @@ WITH pool_labels AS (
             decimals,
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = '{{blockchain}}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
-        {% endif %}           
+        WHERE blockchain = '{{blockchain}}'          
         GROUP BY 1, 2, 3
 
     ),
@@ -39,9 +36,6 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('hour') }}
-        {% endif %}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -77,9 +71,6 @@ WITH pool_labels AS (
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
         AND s.supply > 0
-        {% if is_incremental() %}
-        AND l.day >= now() - interval '2' day
-        {% endif %}     
         GROUP BY 1, 2, 3
     ),
 
@@ -100,10 +91,7 @@ WITH pool_labels AS (
             token AS token_address,
             SUM(protocol_fees) AS protocol_fee_amount_raw
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
-        CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('b.evt_block_time') }}
-        {% endif %}        
+        CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)   
         GROUP BY 1, 2, 3 
 
         UNION ALL          
@@ -118,10 +106,6 @@ WITH pool_labels AS (
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
             AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F --ProtocolFeesCollector address, which is the same across all chains
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('t.evt_block_time') }}
-        AND {{ incremental_predicate('b.evt_block_time') }}
-        {% endif %}     
         GROUP BY 1, 2, 3
     ),
 
