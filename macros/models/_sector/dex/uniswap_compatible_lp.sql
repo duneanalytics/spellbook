@@ -31,7 +31,7 @@ WITH id_to_lp AS
         , m.evt_tx_hash AS tx_hash
         , m.evt_index
         , CASE WHEN m.owner = 0xc36442b4a4522e871399cd717abdd847ab11fe88 THEN id.lp_address ELSE m.owner END AS lp_address
-        , CASE WHEN m.owner = 0xc36442b4a4522e871399cd717abdd847ab11fe88 THEN cast(pm.tokenId AS double) ELSE 0 END AS position_id
+        , CASE WHEN m.owner = 0xc36442b4a4522e871399cd717abdd847ab11fe88 THEN cast(pm.tokenId AS double) END AS position_id
         , m.tickLower AS tick_lower
         , m.tickUpper AS tick_upper
         , m.amount AS liquidity
@@ -64,16 +64,8 @@ WITH id_to_lp AS
         ,b.evt_block_time AS block_time
         ,b.evt_tx_hash AS tx_hash
         ,b.evt_index
-        , {% if position_manager_addr %}
-                id.lp_address
-            {% else %}
-                b.owner
-            {% endif %} AS lp_address
-        , {% if position_manager_addr %}
-                cast(pm.tokenId AS double)
-            {% else %}
-                0
-            {% endif %} AS position_id
+        , CASE WHEN b.owner = 0xc36442b4a4522e871399cd717abdd847ab11fe88 THEN id.lp_address ELSE b.owner END AS lp_address
+        , CASE WHEN b.owner = 0xc36442b4a4522e871399cd717abdd847ab11fe88 THEN cast(pm.tokenId AS double) END AS position_id
         , b.tickLower AS tick_lower
         , b.tickUpper AS tick_upper
         , b.amount AS liquidity
