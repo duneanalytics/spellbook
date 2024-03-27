@@ -116,7 +116,7 @@ SELECT
     , date_trunc('MONTH', lp_data.block_time) AS block_month
     , lp_data.tx_hash
     , lp_data.evt_index
-    , lp_data.lp_address
+    , lp_data.lp_address as liquidity_provider
     , lp_data.position_id
     , lp_data.tick_lower
     , lp_data.tick_upper
