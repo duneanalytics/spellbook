@@ -1,4 +1,4 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'arbitrum' %}
 
 {{ config(
         

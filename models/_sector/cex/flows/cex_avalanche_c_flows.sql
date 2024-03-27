@@ -1,4 +1,4 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'avalanche_c' %}
 
 {{ config(
         
