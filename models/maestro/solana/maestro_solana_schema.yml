@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: bonkbot_solana_bot_trades
+  - name: maestro_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
-      project: bonkbot
+      project: maestro
       contributors: whale_hunter
     config:
-      tags: ["solana", "dex", "bonkbot", "trades"]
+      tags: ["solana", "dex", "maestro", "trades"]
     description: >
-      Bonkbot trades on Solana
+      Maestro trades on Solana
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,7 +20,7 @@ models:
             - outer_instruction_index
             - inner_instruction_index
       - check_seed:
-          seed_file: ref('bonkbot_solana_trades_seed')
+          seed_file: ref('maestro_solana_trades_seed')
           match_columns:
             - blockchain
             - tx_id
