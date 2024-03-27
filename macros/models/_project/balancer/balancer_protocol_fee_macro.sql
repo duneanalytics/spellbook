@@ -78,8 +78,7 @@ WITH pool_labels AS (
         AND l.version = '{{version}}'
         AND s.supply > 0
         {% if is_incremental() %}
-        AND ({{ incremental_predicate('l.day') }}
-        OR {{ incremental_predicate('s.day') }})
+        AND l.day >= now() - interval '2' day
         {% endif %}     
         GROUP BY 1, 2, 3
     ),
