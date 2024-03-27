@@ -11,6 +11,7 @@
     , ref('syncswap_zksync_base_trades')
     , ref('uniswap_v3_zksync_base_trades')
     , ref('mute_zksync_base_trades')
+    , ref('spacefi_v1_zksync_base_trades')
 ] %}
 
 WITH base_union AS (
