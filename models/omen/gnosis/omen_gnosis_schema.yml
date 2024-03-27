@@ -54,6 +54,12 @@ models:
       - &amount
         name: amount
         description: "Amount in native currency that was bought/sold"
+      - &amount_raw
+        name: amount_raw
+        description: "Amount in native currency that was bought/sold test"
+      - &decimals
+        name: decimals
+        description: "decimals"
       - &amount_usd
         name: amount
         description: "Amount in USD that was bought/sold"
