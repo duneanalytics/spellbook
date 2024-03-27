@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blob_index','blob_kzg_commitment'],
+    unique_key = ['blob_block_slot','blob_index','blob_kzg_commitment'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "blobs",
