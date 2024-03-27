@@ -23,3 +23,7 @@ sources:
     tables:
       - name: MuteSwitchFactoryDynamic_evt_PairCreated
       - name: MuteSwitchPairDynamic_evt_Swap
+  - name: spacefi_v1_zksync
+    tables:
+      - name: UniswapV2Pool_evt_Swap
+      - name: SwapFactory_evt_PairCreated
