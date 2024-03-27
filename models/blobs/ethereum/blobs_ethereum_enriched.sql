@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'blobs_ethereum',
-    alias = 'blobs_enriched',    
+    schema = 'blobs_ethereum_enriched',
+    alias = 'blobs_ethereum_enriched',    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

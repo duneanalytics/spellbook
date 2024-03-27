@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'blobs_ethereum',
-    alias = 'blobs_l1transaction',    
+    schema = 'blobs_ethereum_l1transactions',
+    alias = 'blobs_ethereum_l1transactions',    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -25,7 +25,7 @@ SELECT
     , l.excess_blob_gas
     , gp.blob_base_fee as blob_base_fee_per_gas
     , CARDINALITY(t.blob_versioned_hashes) AS blobs_per_tx
-FROM {{ ref('enriched') }} b
+FROM {{ ref('blobs_ethereum_enriched') }} b
 left JOIN {{ source('ethereum','blocks') }} l
     ON b.blob_parent_root = l.parent_beacon_block_root
     AND l.date >= cast('2024-03-12' as date)

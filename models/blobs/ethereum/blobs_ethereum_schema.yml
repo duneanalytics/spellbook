@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: enriched
+  - name: blobs_ethereum_enriched
     meta:
       blockchain: ethereum
       sector: blobs
@@ -9,7 +9,7 @@ models:
       contributors: msilb7, 0xrob, lorenz234
     config:
       tags: ['blob', 'blobs', 'enriched', 'decoded']
-    description: Blob table but enriched with size & hash.
+    description: Blob table but enriched with size & blob version hash.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -63,7 +63,7 @@ models:
         name: blobgas_used_by_blob
         description: "gas units used by blob"
         
-  - name: l1transaction
+  - name: blobs_ethereum_l1transactions
     meta:
       blockchain: ethereum
       sector: blobs
@@ -71,7 +71,7 @@ models:
       contributors: msilb7, 0xrob, lorenz234
     config:
       tags: ['blob', 'blobs', 'BLOB_TX_TYPE', 'L1', 'transaction']
-    description: Combines blobs data with their corresponding L1 transaction data
+    description: Combines blobs data with their corresponding L1 transaction.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
