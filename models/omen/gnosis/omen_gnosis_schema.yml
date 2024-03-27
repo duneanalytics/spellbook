@@ -80,8 +80,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_day
             - tx_hash
+            - fixedProductMarketMaker
             - questionId 
             - conditionId
             - conditionIds_index
