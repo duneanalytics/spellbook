@@ -30,12 +30,12 @@ WITH id_to_lp AS
         ,m.evt_block_time AS block_time
         ,m.evt_tx_hash AS tx_hash
         ,m.evt_index
-        , {% if m.owner = position_manager_addr %}
+        , {% if id.lp_address %}
                 id.lp_address
             {% else %}
                 m.owner
             {% endif %} AS lp_address
-        , {% if m.owner = position_manager_addr %}
+        , {% if id.lp_address %}
                 cast(pm.tokenId AS double)
             {% else %}
                 0
