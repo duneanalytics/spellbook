@@ -20,9 +20,9 @@ WITH base_union AS (
             , block_time
             , block_month
             , block_number
-            , token0_amount_raw
-            , token1_amount_raw
-            , liquidity_amount_raw
+            , amount0_raw
+            , amount1_raw
+            , liquidity_raw
             , token0_address
             , token1_address
             , pool_address
