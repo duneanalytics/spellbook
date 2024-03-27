@@ -27,7 +27,7 @@ SELECT
     , CARDINALITY(t.blob_versioned_hashes) AS blobs_per_tx
 FROM {{ ref('enriched') }} b
 left JOIN {{ source('ethereum','blocks') }} l
-    ON b.parent_root = l.parent_beacon_block_root
+    ON b.blob_parent_root = l.parent_beacon_block_root
     AND l.date >= cast('2024-03-12' as date)
     {% if is_incremental() %}
     AND {{ incremental_predicate('b.block_time')}}
@@ -36,7 +36,7 @@ left JOIN {{ source('ethereum','blocks') }} l
 left JOIN {{ source('ethereum','transactions') }} t
     ON t.block_number = l.number 
     AND t.type = '3'
-    AND contains(t.blob_versioned_hashes, b.versioned_hash)
+    AND contains(t.blob_versioned_hashes, b.blob_versioned_hash)
     AND t.block_date >= cast('2024-03-12' as date)
     {% if is_incremental() %}
     AND {{ incremental_predicate('b.block_time')}}
