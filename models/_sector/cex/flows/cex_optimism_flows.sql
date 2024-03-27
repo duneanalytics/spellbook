@@ -13,6 +13,6 @@
 
 {{cex_flows(
         blockchain = blockchain
-        , transfers = ref('tokens_optimism_transfers')
-        , addresses = ref('cex_optimism_addresses')
+        , transfers = ref('tokens_' + blockchain + '_transfers')
+        , addresses = ref('cex_' + blockchain + '_addresses')
 )}}
