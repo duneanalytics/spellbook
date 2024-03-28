@@ -1,14 +1,14 @@
 {{ config(
     schema = 'dex'
-    , alias = 'pools_beta'
+    , alias = 'liquidity_beta'
     , materialized = 'incremental'
-    , unique_key = ['pool']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
+    , unique_key = ['pool', 'token_address', 'day']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
 
 {% set base_models = [
-    ref('dex_ethereum_pools')
+    ref('dex_ethereum_liquidity')
 ] %}
 
 WITH base_union AS (
@@ -16,21 +16,20 @@ WITH base_union AS (
     FROM (
         {% for base_model in base_models %}
         SELECT
-            blockchain
+            day
+            , blockchain
             , project
             , version
             , pool
-            , fee
-            , tokens
-            , tokens_in_pool
-            , creation_block_time
-            , creation_block_number
-            , contract_address
+            , token_address
+            , token_symbol
+            , balance
+            , balance_usd 
         FROM 
             {{ base_model }}
         {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('block_time') }}
+            {{ incremental_predicate('day') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
