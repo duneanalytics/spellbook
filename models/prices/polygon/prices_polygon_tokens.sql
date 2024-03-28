@@ -122,7 +122,8 @@ FROM
     ('fish-polycat-finance', 'polygon', 'FISH', 0x3a3df212b7aa91aa0402b9035b098891d276572b,18),
     --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18), --inactive
     ('pyr-vulcan-forged', 'polygon', 'PYR', 0x430ef9263e76dae63c84292c3409d61c598e9682,18),
-    ('geod-geodnet-token', 'polygon', 'GEOD', 0xac0f66379a6d7801d7726d5a943356a172549adb,18)
+    ('geod-geodnet-token', 'polygon', 'GEOD', 0xac0f66379a6d7801d7726d5a943356a172549adb,18),
+    ('par-parallel', 'polygon', 'PAR', 0xe2aa7db6da1dae97c5f5c6914d285fbfcc32a128,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
