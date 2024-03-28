@@ -1,5 +1,5 @@
 {{ config(
-    
+
     alias = 'base_pairs',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -35,7 +35,7 @@ with iv_offer_consideration as (
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc'
-            end as consideration_first_item_type       
+            end as consideration_first_item_type
             ,offerer as sender
             ,recipient as receiver
             ,zone
@@ -70,7 +70,7 @@ with iv_offer_consideration as (
             , zone
             , offer_idx
             , offer_item
-        from {{ source('opensea_optimism', 'Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_optimism', 'Seaport_evt_OrderFulfilled') }}
         cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
         {% if not is_incremental() %}
         where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
@@ -99,7 +99,7 @@ with iv_offer_consideration as (
                 when '2' then 'erc721'
                 when '3' then 'erc1155'
                 else 'etc'
-            end as consideration_first_item_type        
+            end as consideration_first_item_type
             ,recipient as sender
             ,from_hex(json_extract_scalar(consideration_item,'$.recipient')) as receiver
             ,zone
@@ -132,7 +132,7 @@ with iv_offer_consideration as (
             , zone
             , consideration_item
             , consideration_idx
-        from {{ source('opensea_optimism','Seaport_evt_OrderFulfilled') }}
+        from {{ source('seaport_optimism','Seaport_evt_OrderFulfilled') }}
         cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
         {% if not is_incremental() %}
         where evt_block_time >= TIMESTAMP '{{c_seaport_first_date}}'  -- seaport first txn
