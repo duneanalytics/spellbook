@@ -146,4 +146,5 @@ FROM (VALUES
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
     , ('mute', 'Mute', 'Direct', 'Mute')
     , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
+    , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
     ) AS temp_table (project, name, marketplace_type, x_username)

@@ -31,3 +31,7 @@ sources:
     tables:
       - name: UniswapV2Pool_evt_Swap
       - name: SwapFactory_evt_PairCreated
+  - name: gemswap_zksync
+    tables:
+      - name: ZGemPair_evt_Swap
+      - name: ZGemFactory_evt_PairCreated
