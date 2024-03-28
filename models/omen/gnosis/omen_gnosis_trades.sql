@@ -54,25 +54,6 @@ trades AS (
 
 ),
 
-prices AS (
-    SELECT 
-        DATE_TRUNC('day',minute) AS day
-        ,MAX(contract_address) AS contract_address
-        ,MAX(decimals) AS decimals
-        ,MAX(symbol) AS symbol
-        ,APPROX_PERCENTILE(price,0.5) AS price
-    FROM
-        {{ source('prices', 'usd') }}
-    WHERE
-        blockchain = 'gnosis'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
-        {% else %}
-        AND minute >= DATE '{{project_start_date}}'
-        {% endif %}
-    GROUP BY 1
-),
-
 final AS (
     SELECT
         t1.block_time
@@ -83,29 +64,24 @@ final AS (
         ,t1.evt_index
         ,t2.fixedProductMarketMaker
         ,t2.collateralToken
-        ,t3.symbol
         ,t1.address
+        ,s.outcomeSlot
         ,t1.outcomeIndex
-        ,t1.amount AS amount_raw
-        ,t3.decimals
-        ,t1.amount/POWER(10,t3.decimals) AS amount
-        ,t1.amount/POWER(10,t3.decimals) * t3.price AS amount_usd
-        ,t1.feeAmount/POWER(10,t3.decimals) AS feeAmount
-        ,t1.feeAmount/POWER(10,t3.decimals) * t3.price AS feeAmount_usd
-        ,t1.outcomeTokens
-        ,t1.action
+        ,t1.amount
+        ,t1.feeAmount
+        ,CASE  
+            WHEN s.outcomeSlot = t1.outcomeIndex
+                THEN t1.outcomeTokens
+            ELSE 0
+        END AS outcomeTokens
+        ,t1.action 
     FROM
-        trades t1 
+        trades t1
     LEFT JOIN 
         {{ ref('omen_gnosis_markets') }} t2
         ON
         t2.fixedProductMarketMaker = t1.evt_contract_address
-    LEFT JOIN
-        prices t3
-        ON
-        t3.contract_address = t2.collateralToken
-        AND 
-        t3.day = t1.block_day--date_trunc('minute', t1.block_time)
+    CROSS JOIN UNNEST(SEQUENCE(0, TRY_CAST(t2.outcomeSlotCount AS INTEGER) - 1 ) ) AS s(outcomeSlot)
 )
 
 SELECT * FROM final

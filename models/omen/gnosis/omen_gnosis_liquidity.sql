@@ -27,7 +27,7 @@ FPMMFundingAdded AS (
         t.evt_contract_address,
         t.funder,
         t.sharesMinted,
-        s.SEQUENCE_NUMBER AS amountAdded_index,
+        s.SEQUENCE_NUMBER - 1 AS amountAdded_index,
         VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 65 + 32 * s.SEQUENCE_NUMBER, 32))) AS amountsAdded
     FROM (
         SELECT
@@ -64,7 +64,7 @@ FPMMFundingRemoved AS (
         t.funder,
         t.collateralRemovedFromFeePool,
         t.sharesBurnt,
-        s.SEQUENCE_NUMBER AS amountsRemoved_index,
+        s.SEQUENCE_NUMBER - 1 AS amountsRemoved_index,
         VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 97 + 32 * s.SEQUENCE_NUMBER, 32))) AS amountsRemoved
     FROM (
         SELECT

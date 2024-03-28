@@ -48,27 +48,18 @@ models:
       - &address
         name: address
         description: "Address of buyer/seller"
+      - &outcomeSlot
+        name: outcomeSlot
+        description: "Index every outcome"
       - &outcomeIndex
         name: outcomeIndex
         description: "Index of the outcome choosen"
       - &amount
         name: amount
         description: "Amount in native currency that was bought/sold"
-      - &amount_raw
-        name: amount_raw
-        description: "Amount in native currency that was bought/sold test"
-      - &decimals
-        name: decimals
-        description: "decimals"
-      - &amount_usd
-        name: amount
-        description: "Amount in USD that was bought/sold"
       - &feeAmount
         name: feeAmount
         description: "Fee amount in native currency that was charged"
-      - &feeAmount_usd
-        name: feeAmount
-        description: "Fee amount in USD that was charged"
       - &outcomeTokens
         name: outcomeTokens
         description: "Amount to tokens Minted/Burnt"
@@ -163,14 +154,14 @@ models:
         name: action
         description: "Cam be Min or Burn"
 
-  - name: omen_gnosis_payout
+  - name: omen_gnosis_payouts
     meta:
       blockchain: gnosis
       sector: dex
       project: omen
       contributors: hdser
     config:
-      tags: ['gnosis','payout', 'omen','dex']
+      tags: ['gnosis','payouts', 'omen','dex']
     description: >
         A table containing all omen markets on Gnosis
     tests:

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'omen_gnosis',
-    alias = 'payout',
+    alias = 'payouts',
     
     partition_by = ['block_day'],
     materialized = 'incremental',
@@ -33,7 +33,7 @@ PayoutRedemption AS (
         t.parentCollectionId,
         t.conditionId,
         t.payout,
-        s.SEQUENCE_NUMBER AS indexSets_index,
+        s.SEQUENCE_NUMBER -1 AS indexSets_index,
         VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 97 + 32 * s.SEQUENCE_NUMBER, 32))) AS indexSets
     FROM (
         SELECT
