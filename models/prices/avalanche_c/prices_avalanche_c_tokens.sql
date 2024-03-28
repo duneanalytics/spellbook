@@ -79,5 +79,5 @@ FROM
     ('roco-roco-finance','avalanche_c','ROCO',0xb2a85C5ECea99187A977aC34303b80AcbDdFa208,18),
     ('vchf-vnx-swiss-franc','avalanche_c','VCHF',0x228a48df6819ccc2eca01e2192ebafffdad56c19,18),
     ('veur-vnx-euro','avalanche_c','VEUR',0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b,18),
-    ('yavax-yieldyak-gavax','avalanche_c','YYAVAX',0xf7d9281e8e363584973f946201b82ba72c965d27,18)
+    ('yyavax-yieldyak-gavax','avalanche_c','YYAVAX',0xf7d9281e8e363584973f946201b82ba72c965d27,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
