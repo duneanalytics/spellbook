@@ -133,6 +133,8 @@ models:
     columns:
       - *block_time
       - *block_day
+      - *tx_from
+      - *tx_to
       - *tx_hash
       - *evt_index
       - *fixedProductMarketMaker
@@ -148,9 +150,7 @@ models:
       - &amount_index
         name: amount_index
         description: "amount index"
-      - &amounts
-        name: amounts
-        description: "Amounts added/removed"
+      - *amount
       - &action
         name: action
         description: "Cam be Min or Burn"
@@ -175,10 +175,10 @@ models:
     columns:
       - *block_time
       - *block_day
-      - *tx_hash
-      - *evt_index
       - *tx_from
       - *tx_to
+      - *tx_hash
+      - *evt_index
       - &evt_contract_address
         name: evt_contract_address
         description: "Address of ConditionalTokens"
@@ -200,3 +200,75 @@ models:
         name: indexSets
         description: "indexSets"
 
+  - name: omen_gnosis_resolution
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis','resolution', 'omen','dex']
+    description: >
+        A table containing all omen markets resolutions on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash 
+            - evt_index
+            - payoutNumerators_index
+    columns:
+      - *block_time
+      - *block_day
+      - *tx_from
+      - *tx_to
+      - *tx_hash
+      - *evt_index
+      - *evt_contract_address
+      - *conditionId
+      - *oracle
+      - *questionId
+      - *conditionId
+      - &payoutNumerators_index
+        name: payoutNumerators_index
+        description: "Index of payoutNumerators"
+      - &payoutNumerator
+        name: payoutNumerator
+        description: "payoutNumerator"
+
+  - name: omen_gnosis_reserves_delta
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis','reserves_delta', 'omen','dex']
+    description: >
+        A table containing all omen markets on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash 
+            - evt_index
+            - outcomeSlot
+    columns:
+      - *block_time
+      - *block_day
+      - *tx_from
+      - *tx_to
+      - *tx_hash
+      - *evt_index
+      - *fixedProductMarketMaker
+      - *address
+      - *shares
+      - *amount_index
+      - *amount
+      - &fees
+        name: fees
+        description: "fees"
+      - *action
+      - &reserves_delta
+        name: reserves_delta
+        description: "reserves_delta"

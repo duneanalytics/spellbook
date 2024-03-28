@@ -14,7 +14,7 @@
     )
 }}
 
-{% set project_start_date = '2024-01-01' %}
+{% set project_start_date = '2020-12-01' %}
 
 
 WITH

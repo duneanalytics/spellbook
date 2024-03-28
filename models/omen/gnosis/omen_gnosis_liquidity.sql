@@ -14,7 +14,7 @@
     )
 }}
 
-{% set project_start_date = '2024-01-01' %}
+{% set project_start_date = '2020-12-01' %}
 
 
 WITH 
@@ -22,6 +22,8 @@ WITH
 FPMMFundingAdded AS (
     SELECT
         t.block_time,
+        t.tx_from,
+        t.tx_to,
         t.tx_hash,
         t.evt_index,
         t.evt_contract_address,
@@ -33,6 +35,8 @@ FPMMFundingAdded AS (
         SELECT
             block_time,
             tx_hash,
+            tx_from,
+            tx_to,
             index AS evt_index,
             contract_address AS evt_contract_address,
             VARBINARY_SUBSTRING(topic1, 13, 20) AS funder,
@@ -58,6 +62,8 @@ FPMMFundingAdded AS (
 FPMMFundingRemoved AS (
     SELECT
         t.block_time,
+        t.tx_from,
+        t.tx_to,
         t.tx_hash,
         t.evt_index,
         t.evt_contract_address,
@@ -70,6 +76,8 @@ FPMMFundingRemoved AS (
         SELECT
             block_time,
             tx_hash,
+            tx_from,
+            tx_to,
             index AS evt_index,
             contract_address AS evt_contract_address,
             VARBINARY_SUBSTRING(topic1, 13, 20) AS funder,
@@ -96,14 +104,16 @@ final AS (
     SELECT 
         block_time,
         DATE_TRUNC('day', block_time) AS block_day,
+        tx_from,
+        tx_to,
         tx_hash,
         evt_index,
-        evt_contract_address,
+        evt_contract_address AS fixedProductMarketMaker,
         funder,
         sharesMinted AS shares,
         NULL AS collateralRemovedFromFeePool,
         amountAdded_index AS amount_index,
-        amountsAdded AS amounts,
+        amountsAdded AS amount,
         'Mint' AS action
     FROM
         FPMMFundingAdded
@@ -111,14 +121,16 @@ final AS (
     SELECT 
         block_time,
         DATE_TRUNC('day', block_time) AS block_day,
+        tx_from,
+        tx_to,
         tx_hash,
         evt_index,
-        evt_contract_address,
+        evt_contract_address AS fixedProductMarketMaker,
         funder,
         sharesBurnt AS shares,
         collateralRemovedFromFeePool,
         amountsRemoved_index AS amount_index,
-        amountsRemoved AS amounts,
+        amountsRemoved AS amount,
         'Burn' AS action
     FROM
         FPMMFundingRemoved
