@@ -34,3 +34,11 @@ sources:
   - name: zk_markets_v7_zksync
     tables:
       - name: AANFTMarketplace_evt_ItemBought
+  - name: mint_square_zksync
+    tables:
+      - name: Marketplace_evt_TakerAsk
+      - name: Marketplace_evt_TakerBid
+      - name: Marketplace_evt_RoyaltyPayment
+      - name: StrategyHighestBidderAuctionSale_call_viewProtocolFee
+      - name: StrategyStandardSaleForFixedPrice_call_viewProtocolFee
+      - name: StrategyAnyItemFromCollectionForFixedPrice_call_viewProtocolFee
