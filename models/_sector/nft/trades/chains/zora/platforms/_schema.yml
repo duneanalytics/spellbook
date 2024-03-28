@@ -1,0 +1,16 @@
+version: 2
+
+models:
+ - name: zonic_zora_base_trades
+   meta:
+     blockchain: zora
+     sector: nft
+     project: zonic
+     contributors: tomfutago
+   config:
+     tags: ['zora', 'nft', 'trades', 'zonic']
+   description: "zonic base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
