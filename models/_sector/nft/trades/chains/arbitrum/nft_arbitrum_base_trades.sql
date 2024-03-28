@@ -13,6 +13,7 @@
 ,ref('trove_v2_arbitrum_base_trades')
 ,ref('sudoswap_v2_arbitrum_base_trades')
 ,ref('element_arbitrum_base_trades')
+,ref('zonic_arbitrum_base_trades')
 ] %}
 
 
