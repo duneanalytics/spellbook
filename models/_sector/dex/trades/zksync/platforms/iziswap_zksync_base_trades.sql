@@ -43,7 +43,7 @@ WITH
             , CASE WHEN sellXEarnY THEN tokenX ELSE tokenY END AS token_sold_address
             , CASE WHEN sellXEarnY THEN amountY ELSE amountX END AS token_bought_amount_raw 
             , CASE WHEN sellXEarnY THEN amountX ELSE amountY END AS token_sold_amount_raw
-        FROM {{ source('iziswap_v1_zksync', 'iZiSwapPool_evt_Swap') }}
+        FROM {{ source('iziswap_v2_zksync', 'iZiSwapPool_evt_Swap') }}
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% else %}
