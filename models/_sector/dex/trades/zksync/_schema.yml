@@ -138,7 +138,7 @@ models:
       contributors: lgingerich
     config:
       tags: [ 'zksync', 'dex', 'trades', 'dracula_finance' ]
-    description: "Dracula Finance" zksync base trades"
+    description: "Dracula Finance zksync base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
