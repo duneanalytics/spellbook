@@ -376,7 +376,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: balancer_v2_ethereum_trades
+  - name: balancer_v2_ethereum_trades_legacy
     meta:
       blockchain: ethereum
       sector: dex
@@ -425,7 +425,7 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: balancer_v2_ethereum_trades_beta
+  - name: balancer_v2_ethereum_trades
     meta:
       blockchain: ethereum
       sector: dex

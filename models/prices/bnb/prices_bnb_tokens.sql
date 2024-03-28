@@ -50,7 +50,6 @@ FROM
     ('dex-dexira', 'bnb', 'DEX', 0x147e07976e1ae78287c33aafaab87760d32e50a5, 18),
     ('dexe-dexe', 'bnb', 'DEXE', 0x039cb485212f996a9dbb85a9a75d898f94d38da6, 18),
     ('dexshare-dexshare', 'bnb', 'DEXSHARE', 0xf4914e6d97a75f014acfcf4072f11be5cffc4ca6, 18),
-    ('dg-decentral-games', 'bnb', 'DG', 0x9fdc3ae5c814b79dca2556564047c5e7e5449c19, 18),
     ('dodo-dodo', 'bnb', 'DODO', 0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2, 18),
     ('doge-dogecoin', 'bnb', 'DOGE', 0x4206931337dc273a630d328da6441786bfad668f, 8),
     ('dot-polkadot', 'bnb', 'DOT', 0x7083609fce4d1d8dc0c979aab8c869ea2c873402, 18),
@@ -264,4 +263,5 @@ where contract_address not in (
     ,0x43f3918ff115081cfbfb256a5bde1e8d181f2907 -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
     ,0x7ddee176f665cd201f93eede625770e2fd911990 -- GALA doesn't exists on BSC, it's a scam-token address.
     ,0xe552fb52a4f19e44ef5a967632dbc320b0820639 -- METIS has bad price feed since PolyNetwork incident and will be replaced by new contract
+    ,0x9fdc3ae5c814b79dca2556564047c5e7e5449c19 -- DG, bad price feed
 )

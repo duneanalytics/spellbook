@@ -101,7 +101,7 @@ models:
         name: evt_index
         description: "Event index"
 
-  - name: balancer_v2_avalanche_c_trades
+  - name: balancer_v2_avalanche_c_trades_legacy
     meta:
       blockchain: avalanche_c
       sector: dex
@@ -150,7 +150,7 @@ models:
       - name: tx_to
       - name: evt_index
 
-  - name: balancer_v2_avalanche_c_trades_beta
+  - name: balancer_v2_avalanche_c_trades
     meta:
       blockchain: avalanche_c
       sector: dex

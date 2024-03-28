@@ -9,10 +9,11 @@ WITH pool_labels AS (
             SELECT
                 address,
                 name,
+                pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
             FROM {{ ref('labels_balancer_v2_pools') }}
             WHERE blockchain = '{{blockchain}}'
-            GROUP BY 1, 2) 
+            GROUP BY 1, 2, 3) 
         WHERE num = 1
     ),
 
@@ -72,10 +73,9 @@ WITH pool_labels AS (
             SUM(protocol_liquidity_usd / supply) AS price
         FROM {{ ref('balancer_liquidity') }} l
         LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON s.token_address = l.pool_address 
-        AND l.blockchain = s.blockchain AND s.day = l.day
+        AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
-        AND s.supply > 0
         GROUP BY 1, 2, 3
     ),
 
@@ -167,6 +167,7 @@ WITH pool_labels AS (
         l.name AS pool_symbol,
         '{{version}}' as version,
         '{{blockchain}}' as blockchain,
+        l.pool_type,
         f.token_address,
         f.token_symbol,
         SUM(f.token_amount_raw) as token_amount_raw,
@@ -179,6 +180,6 @@ WITH pool_labels AS (
         ON r.day = f.day
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
-    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 12
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 13
 
 {% endmacro %}

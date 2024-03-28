@@ -20,3 +20,5 @@ sources:
           - name: orderHash
           - name: recipient
           - name: zone
+      - name: Seaport_evt_OrdersMatched
+        loaded_at_field: evt_block_time

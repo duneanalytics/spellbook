@@ -354,7 +354,7 @@ models:
       - name: contract_address
       - name: bpt_price
 
-  - name: balancer_v2_polygon_trades
+  - name: balancer_v2_polygon_trades_legacy
     meta:
       blockchain: polygon
       sector: dex
@@ -403,7 +403,7 @@ models:
       - name: tx_to
       - name: evt_index
 
-  - name: balancer_v2_polygon_trades_beta
+  - name: balancer_v2_polygon_trades
     meta:
       blockchain: polygon
       sector: dex

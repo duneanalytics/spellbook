@@ -181,7 +181,7 @@ models:
       - name: block_number
       - name: swap_fee_percentage
 
-  - name: balancer_v2_gnosis_trades
+  - name: balancer_v2_gnosis_trades_legacy
     meta:
       blockchain: gnosis
       sector: dex
@@ -230,7 +230,7 @@ models:
       - name: tx_to
       - name: evt_index
 
-  - name: balancer_v2_gnosis_trades_beta
+  - name: balancer_v2_gnosis_trades
     meta:
       blockchain: gnosis
       sector: dex

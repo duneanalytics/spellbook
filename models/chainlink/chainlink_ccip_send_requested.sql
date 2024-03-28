@@ -25,9 +25,10 @@ FROM (
     SELECT
       blockchain,
       evt_block_time,
-      fee_amount,
+      fee_token_amount,
       token,
-      destination_chain_selector,
+      fee_token,
+      destination_selector,
       destination_blockchain       
     FROM {{ ref(model) }}
     {% if not loop.last %}

@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: banana_gun_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: banana_gun
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "banana_gun", "trades"]
+    description: >
+      Banana Gun trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_seed:
+          seed_file: ref('banana_gun_solana_trades_seed')
+          match_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+          check_columns:
+            - fee_token_amount
+            - fee_token_address
+            - project
+            - version
+            - project_contract_address
+            - token_bought_address
+            - token_sold_address
+            - user
+
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the trade occured"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &type
+        name: type
+        description: "Wether the trade is a buy or sell"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &fee_usd
+        name: fee_usd
+        description: "USD value of the fee at time of execution"
+      - &fee_token_amount
+        name: fee_token_amount
+        description: "Value of the fee paid at time of execution in the original currency"
+      - &fee_token_symbol
+        name: fee_token_symbol
+        description: "Token symbol for fee token"
+      - &fee_token_address
+        name: fee_token_address
+        description: "Contract address of the fee token"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &user
+        name: user
+        description: "Address which initiated the trade"
+      - &tx_id
+        name: tx_id
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_index
+        name: tx_index
+        description: "Index of the corresponding transaction in the block"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "Outer instruction index of the corresponding trade event in the transaction"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "Inner instruction index of the corresponding trade event in the transaction"
+      - &is_last_trade_in_transaction
+        name: is_last_trade_in_transaction
+        description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
