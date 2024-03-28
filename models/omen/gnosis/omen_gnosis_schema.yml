@@ -17,6 +17,7 @@ models:
             - block_day
             - tx_hash
             - evt_index 
+            - outcomeSlot
     columns:
       - &block_time
         name: block_time
