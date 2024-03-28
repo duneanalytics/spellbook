@@ -19,4 +19,3 @@
         Factory_evt_PoolCreated = source('derpdex_v1_zksync', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
-
