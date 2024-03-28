@@ -16,6 +16,6 @@
         project = 'dracula_finance',
         version = '1',
         Pair_evt_Swap = source('dracula_finance_zksync', 'DraculaPair_evt_Swap'),
-        Factory_evt_PoolCreated = source('dracula_finance_zksync', 'DraculaFactory_evt_PairCreated')
+        Factory_evt_PairCreated = source('dracula_finance_zksync', 'DraculaFactory_evt_PairCreated')
     )
 }}
