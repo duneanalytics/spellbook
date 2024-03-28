@@ -11,7 +11,7 @@
 }}
 
 {{
-    uniswap_compatible_v3_trades(
+    uniswap_compatible_v2_trades(
         blockchain = 'zksync',
         project = 'vesync',
         version = '1',
