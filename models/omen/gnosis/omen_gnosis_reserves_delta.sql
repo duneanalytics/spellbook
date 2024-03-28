@@ -33,8 +33,8 @@ WITH final AS (
         ,NULL AS fees
         ,action
         ,CASE
-            WHEN action = 'Mint' THEN CAST(amounts AS INT256)
-            WHEN action = 'Burn' THEN CAST(-amounts AS INT256)
+            WHEN action = 'Mint' THEN CAST(amount AS INT256)
+            WHEN action = 'Burn' THEN CAST(-amount AS INT256)
         END AS reserves_delta
     FROM
         {{ ref('omen_gnosis_liquidity') }}
