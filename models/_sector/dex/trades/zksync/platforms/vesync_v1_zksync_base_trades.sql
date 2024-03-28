@@ -16,6 +16,6 @@
         project = 'vesync',
         version = '1',
         Pair_evt_Swap = source('vesync_v1_zksync', 'Pair_evt_Swap'),
-        Factory_evt_PoolCreated = source('vesync_v1_zksync', 'PairFactory_evt_PairCreated')
+        Factory_evt_PairCreated = source('vesync_v1_zksync', 'PairFactory_evt_PairCreated')
     )
 }}
