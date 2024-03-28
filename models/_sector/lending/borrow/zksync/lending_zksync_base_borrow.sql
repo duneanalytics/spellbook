@@ -9,6 +9,7 @@
 {%
   set models = [
     ref('zerolend_zksync_base_borrow')
+    , ref('reactorfusion_zksync_base_borrow')
   ]
 %}
 

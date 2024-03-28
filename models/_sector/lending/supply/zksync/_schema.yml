@@ -112,3 +112,37 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: reactorfusion_zksync_base_supply
+    meta:
+      blockchain: zksync
+      sector: lending
+      project: reactorfusion
+      contributors: lgingerich
+    config:
+      tags: ['lending', 'supply', 'reactorfusion', 'zksync']
+    description: "Reactorfusion supply transactions on zkSync"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      # - check_lending_base_supply_seed:
+      #     seed_file: ref('zerolend_zksync_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
