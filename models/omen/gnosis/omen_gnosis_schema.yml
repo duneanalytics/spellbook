@@ -252,7 +252,7 @@ models:
             - block_time
             - tx_hash 
             - evt_index
-            - outcomeSlot
+            - amount_index
     columns:
       - *block_time
       - *block_day
