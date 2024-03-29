@@ -13,6 +13,7 @@
     , ref('uniswap_v3_zksync_base_trades')
     , ref('mute_zksync_base_trades')
     , ref('spacefi_v1_zksync_base_trades')
+    , ref('vesync_v1_zksync_base_trades')
     , ref('dracula_finance_zksync_base_trades')
 ] %}
 
