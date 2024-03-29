@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'etv_liquidity_addition'
+    schema = 'keep3r_network'
+    , alias = 'liquidity_addition'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",

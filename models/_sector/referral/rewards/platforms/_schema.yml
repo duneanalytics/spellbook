@@ -582,3 +582,106 @@ models:
       - *sub_tx_id
       - *tx_from
       - *tx_to
+
+  - name: fabric_base_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+  - name: fabric_ethereum_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+  - name: fabric_optimism_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+  - name: fabric_zora_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to
+
+  - name: basepaint_base_rewards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+            - tx_hash
+            - sub_tx_id
+      - check_seed:
+          seed_file: ref('basepaint_base_rewards_seed')
+          match_columns:
+            - tx_hash
+          check_columns:
+            - referrer_address
+            - referee_address
+            - reward_amount_raw
+    columns:
+      - *project
+      - *tx_hash
+      - *category
+      - *referrer_address
+      - *referee_address
+      - *currency_contract
+      - *reward_amount_raw
+      - *sub_tx_id
+      - *tx_from
+      - *tx_to

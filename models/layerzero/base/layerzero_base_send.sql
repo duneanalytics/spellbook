@@ -35,7 +35,7 @@ WITH send_detail AS (
         CASE WHEN bytearray_length(_destination) >= 40
             THEN bytearray_reverse(bytearray_substring(bytearray_reverse(_destination), 21))
             ELSE _destination END AS remote_contract_address
-    FROM {{ source ('layezero_base', 'Endpoint_call_send') }} s
+    FROM {{ source ('layerzero_base', 'Endpoint_call_send') }} s
     INNER JOIN {{ source('base','transactions') }} t on t.block_number = s.call_block_number
         AND t.hash = s.call_tx_hash
         {% if not is_incremental() %}

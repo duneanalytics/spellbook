@@ -6,46 +6,45 @@
   )
 }}
 
+WITH combined_logs AS (
+  SELECT
+    ccip_logs_v1.blockchain,
+    ccip_logs_v1.block_time,
+    ccip_logs_v1.fee_token_amount / 1e18 AS fee_token_amount,
+    token_addresses.token_symbol AS token,
+    ccip_logs_v1.fee_token,
+    ccip_logs_v1.destination_selector,
+    ccip_logs_v1.destination_blockchain,
+    ccip_logs_v1.tx_hash
+  FROM
+    {{ ref('chainlink_optimism_ccip_send_requested_logs_v1') }} ccip_logs_v1
+    LEFT JOIN {{ ref('chainlink_optimism_ccip_token_meta') }} token_addresses ON token_addresses.token_contract = ccip_logs_v1.fee_token
+
+  UNION ALL
+
+  SELECT
+    ccip_logs_v1_2.blockchain,
+    ccip_logs_v1_2.block_time,
+    ccip_logs_v1_2.fee_token_amount / 1e18 AS fee_token_amount,
+    token_addresses.token_symbol AS token,
+    ccip_logs_v1_2.fee_token,
+    ccip_logs_v1_2.destination_selector,
+    ccip_logs_v1_2.destination_blockchain,
+    ccip_logs_v1_2.tx_hash
+  FROM
+    {{ ref('chainlink_optimism_ccip_send_requested_logs_v1_2') }} ccip_logs_v1_2
+    LEFT JOIN {{ ref('chainlink_optimism_ccip_token_meta') }} token_addresses ON token_addresses.token_contract = ccip_logs_v1_2.fee_token
+)
+
 SELECT
-  MAX(ccip_traces.blockchain) AS blockchain,
-  MAX(ccip_traces.block_time) AS evt_block_time,
-  MAX(reward_evt_transfer.value / 1e18) AS fee_amount,
-  MAX(token_addresses.token_symbol) AS token,
-  MAX(ccip_traces.chain_selector) as destination_chain_selector,
-  MAX(ccip_traces.destination) as destination_blockchain
+  MAX(blockchain) AS blockchain,
+  MAX(block_time) AS evt_block_time,
+  SUM(fee_token_amount) AS fee_token_amount,
+  MAX(token) AS token,
+  MAX(fee_token) AS fee_token,
+  MAX(destination_selector) AS destination_selector,
+  MAX(destination_blockchain) AS destination_blockchain
 FROM
-  {{ ref('chainlink_optimism_ccip_send_traces') }} ccip_traces
-  LEFT JOIN {{ source('erc20_optimism', 'evt_Transfer') }} reward_evt_transfer ON reward_evt_transfer.evt_tx_hash = ccip_traces.tx_hash
-  LEFT JOIN {{ ref('chainlink_optimism_ccip_token_meta') }} token_addresses ON token_addresses.token_contract = reward_evt_transfer.contract_address
-  LEFT JOIN {{ ref('chainlink_optimism_ccip_tokens_locked_logs') }} tokens_locked ON tokens_locked.tx_hash = ccip_traces.tx_hash
-WHERE
-    (
-        (
-            ccip_traces.value > 0
-            AND reward_evt_transfer.contract_address IN (
-                SELECT
-                    token_contract
-                FROM
-                    {{ ref('chainlink_optimism_ccip_token_meta') }}
-                WHERE
-                    token_symbol = 'WETH'
-            )
-        )
-        OR (
-            ccip_traces.value <= 0
-            AND reward_evt_transfer.contract_address IN (
-                SELECT
-                    token_contract
-                FROM
-                    {{ ref('chainlink_optimism_ccip_token_meta') }}
-                WHERE
-                    token_symbol != 'WETH'
-            )
-        )
-    )
-    AND (
-        tokens_locked.tx_hash IS NULL
-        OR tokens_locked.total_tokens != reward_evt_transfer.value
-    )
+  combined_logs
 GROUP BY
-  ccip_traces.tx_hash
+  tx_hash

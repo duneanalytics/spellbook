@@ -20,6 +20,7 @@
 ,ref('looksrare_v1_ethereum_base_trades')
 ,ref('looksrare_v2_ethereum_base_trades')
 ,ref('sudoswap_ethereum_base_trades')
+,ref('sudoswap_v2_ethereum_base_trades')
 ,ref('superrare_ethereum_base_trades')
 ,ref('trove_ethereum_base_trades')
 ,ref('x2y2_ethereum_base_trades')

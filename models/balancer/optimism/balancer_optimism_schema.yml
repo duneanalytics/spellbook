@@ -364,7 +364,7 @@ models:
       - name: contract_address
       - name: bpt_price
 
-  - name: balancer_v2_optimism_trades
+  - name: balancer_v2_optimism_trades_legacy
     meta:
       blockchain: optimism
       sector: dex
@@ -413,7 +413,7 @@ models:
       - name: tx_to
       - name: evt_index
 
-  - name: balancer_v2_optimism_trades_beta
+  - name: balancer_v2_optimism_trades
     meta:
       blockchain: optimism
       sector: dex

@@ -14,6 +14,8 @@
     zonic_base_trades(
         blockchain = 'zksync',
         min_block_number = 269129,
-        project_start_date = '2023-03-27'
+        project_start_date = '2023-03-27',
+        c_alternative_token_address = '0x000000000000000000000000000000000000800a',
+        royalty_fee_receive_address_to_skip = ['0x0000000000000000000000000000000000008001']
     )
 }}

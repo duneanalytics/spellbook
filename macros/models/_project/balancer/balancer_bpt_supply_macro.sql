@@ -67,8 +67,8 @@ WITH pool_labels AS (
     premints AS (
         SELECT 
             p.address AS bpt, 
-            CASE WHEN pool_type = 'LP' THEN CAST('5192296858534827628530496329220095' AS INT256) / POWER(10, 18)
-                WHEN pool_type IN ('SP') THEN CAST(m.delta AS INT256) / POWER(10, 18)
+            CASE WHEN pool_type IN ('linear') THEN CAST('5192296858534827628530496329220095' AS INT256) / POWER(10, 18)
+                WHEN pool_type IN ('stable') THEN CAST(m.delta AS INT256) / POWER(10, 18)
                 ELSE 0
             END AS preminted_bpts
         FROM pool_labels p 
@@ -81,7 +81,7 @@ WITH pool_labels AS (
             DATE_TRUNC('day', evt_block_time) AS block_date, 
             tokenOut,
             pool_type,
-            CASE WHEN pool_type IN ('WP', 'WP2T') 
+            CASE WHEN pool_type IN ('weighted') 
             THEN 0
             ELSE SUM(amountOut / POWER(10, 18)) 
             END AS ajoins
@@ -96,7 +96,7 @@ WITH pool_labels AS (
             DATE_TRUNC('day', evt_block_time) AS block_date, 
             tokenIn,
             pool_type,
-            CASE WHEN pool_type IN ('WP', 'WP2T') 
+            CASE WHEN pool_type IN ('weighted') 
             THEN 0
             ELSE SUM(amountIn / POWER(10, 18)) 
             END AS aexits
@@ -133,7 +133,7 @@ WITH pool_labels AS (
     LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
-    WHERE l.pool_type IN ('WP', 'WP2T', 'LBP', 'IP', 'SP', 'LP')
+    WHERE l.pool_type IN ('weighted', 'LBP', 'investment', 'stable', 'linear', 'ECLP', 'managed', 'FX')
     GROUP BY 1, 2, 3, 4, 5
     HAVING SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) >= 0  --simple filter to remove outliers
 

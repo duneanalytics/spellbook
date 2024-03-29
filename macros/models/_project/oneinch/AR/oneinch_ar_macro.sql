@@ -223,11 +223,10 @@ with
 pools_list as (
     select
         pool as pool_address
-        , token0
-        , token1
+        , tokens
     from {{ ref('dex_raw_pools') }}
-    where type = 'uniswap_compatible'
-    group by 1, 2, 3
+    where type in ('uniswap_compatible', 'curve_compatible')
+    group by 1, 2
 )
 
 
@@ -269,7 +268,8 @@ pools_list as (
                         method=method,
                         method_data=method_data,
                         blockchain=blockchain,
-                        traces_cte=traces_cte
+                        traces_cte=traces_cte,
+                        start_date=contract_data['start'],
                     ) 
                 }} 
             {% elif method_data.router_type in ['unoswap'] %}
@@ -282,7 +282,8 @@ pools_list as (
                         blockchain=blockchain,
                         traces_cte=traces_cte,
                         pools_list=pools_list,
-                        native=native
+                        native=native,
+                        start_date=contract_data['start'],
                     )
                 }}
             {% endif %}

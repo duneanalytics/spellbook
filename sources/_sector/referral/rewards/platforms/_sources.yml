@@ -79,3 +79,23 @@ sources:
     tables:
       - name: FeeManager_evt_FeeDistributed
       - name: ERC721_call_mintWithReferrer
+  - name: fabric_base
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: fabric_ethereum
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: fabric_optimism
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: fabric_zora
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: basepaint_base
+    tables:
+      - name: BasePaintRewards_evt_Transfer
+      - name: BasePaint_evt_TransferSingle

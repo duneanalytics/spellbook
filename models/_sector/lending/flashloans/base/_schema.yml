@@ -111,7 +111,7 @@ models:
       project: seamlessprotocol
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'seamlessprotocol', 'base']
+      tags: ['lending', 'flashloans', 'aave', 'seamlessprotocol', 'base']
     description: "Seamless Protocol flashloans transactions on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -120,6 +120,37 @@ models:
             - evt_index
       - check_lending_base_flashloans_seed:
           seed_file: ref('seamlessprotocol_base_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_base_base_flashloans
+    meta:
+      blockchain: base
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'granary', 'base']
+    description: "Granary flashloans transactions on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('granary_base_base_flashloans_seed')
     columns:
       - *blockchain
       - *project

@@ -125,7 +125,7 @@ models:
     config:
       tags: ['oneinch', 'calls', 'transfers']
     description: >
-        1inch transfers within calls
+        1inch blockchains meta
     columns:
       - name: blockchain
         tests:
@@ -195,7 +195,7 @@ models:
 
   - name: oneinch_parsed_transfers_from_calls
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'celo', 'zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'celo', 'scroll']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -208,6 +208,7 @@ models:
       - name: block_time
       - name: tx_hash
       - name: transfer_trace_address
+      - name: type
       - name: contract_address
       - name: amount
       - name: transfer_from
@@ -229,6 +230,7 @@ models:
             - tx_hash
             - call_trace_address
             - transfer_trace_address
+            - transfer_native
     columns:
       - name: blockchain
         tests:

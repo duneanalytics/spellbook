@@ -1,0 +1,92 @@
+version: 2
+
+models:
+  - name: boost_base_deployed
+    meta:
+      blockchain: base
+      project: boost
+      contributors: raho, pntemi
+    config:
+      tags: ["base", "boost", "boost_inbox", "quest"]
+    description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - boost_address
+            - boost_id
+    columns:
+      - &reward_network
+        name: reward_network
+        description: "Blockchain which the Boost was deployed"
+      - &contract_address
+        name: boost_address
+        description: "Contract address of the Boost"
+      - &boost_id
+        name: boost_id
+        description: "ID of the Boost"
+      - &boost_name
+        name: boost_name
+        description: "Name of the Boost"
+      - &action_type
+        name: action_type
+        description: "Boost action type"
+      - &action_network
+        name: action_network
+        description: "Boost action network"
+      - &project_name
+        name: project_name
+        description: "Name of the project the Boost is for"
+      - &boost_type
+        name: boost_type
+        description: "ERC20 or ERC1155"
+      - &start_time
+        name: start_time
+        description: "Time the Boost goes/went live"
+      - &end_time
+        name: end_time
+        description: "Time the Boost ends"
+      - &reward_amount_raw
+        name: reward_amount_raw
+        description: "Raw reward amount"
+      - &reward_token_address
+        name: reward_token_address
+        description: "Reward token contract address"
+      - &max_participants
+        name: max_participants
+        description: "Maximum number of Boost completions"
+      - &evt_block_time
+        name: creation_time
+        description: "Time the Boost was created"
+      - &creator
+        name: creation_address
+        description: "Wallet address of the creator"
+
+  - name: boost_base_claimed
+    meta:
+      blockchain: base
+      project: boost
+      contributors: raho, pntemi
+    config:
+      tags: ["base", "boost", "boost_inbox", "quest"]
+    description: "Reward claimed from Boost completion"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - boost_address
+            - claim_tx_hash
+            - action_tx_hash
+    columns:
+      - name: reward_network
+      - name: boost_address
+      - name: boost_id
+      - name: boost_name
+      - name: claimer_address
+      - name: reward_amount_raw
+      - name: reward_token_address
+      - name: claim_tx_hash
+      - name: block_time
+      - name: claim_fee_eth
+      - name: action_type
+      - name: action_tx_hash
+      - name: action_network
+
