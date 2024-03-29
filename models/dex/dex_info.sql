@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana", "zksync"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
@@ -145,4 +145,11 @@ FROM (VALUES
     , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
     , ('mute', 'Mute', 'Direct', 'Mute')
+    , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
+    , ('ezkalibur', 'eZKalibur', 'Direct', 'eZKalibur')
+    , ('wagmi', 'Wagmi', 'Direct', 'Wagmi')
+    , ('zkswap_finance', 'zkSwap Finance', 'Direct', 'zkSwapFinance')
+    , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
+    , ('vesync', 'veSync', 'Direct', 'veSync')
+    , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
     ) AS temp_table (project, name, marketplace_type, x_username)

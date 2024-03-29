@@ -83,6 +83,7 @@ WITH pool_labels AS (
             p.name AS pool_symbol,
             '1' AS version,
             'ethereum' AS blockchain,
+            'V1' AS pool_type,
             w.token_address,
             t.symbol AS token_symbol,
             token_balance_raw,

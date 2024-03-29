@@ -696,7 +696,6 @@ FROM
     ('xcur-curate', 'ethereum', 'XCUR', 0xe1c7e30c42c24582888c758984f6e382096786bd, 8),
     ('xdefi-xdefi', 'ethereum', 'XDEFI', 0x72b886d09c117654ab7da13a14d603001de0b777, 18),
     ('yld-yield', 'ethereum', 'YLD', 0xf94b5c5651c888d928439ab6514b93944eee6f48, 18),
-    ('dg-decentral-games', 'ethereum', 'DG', 0xee06a81a695750e71a662b51066f2c74cf4478a0, 18),
     ('apy-apyfinance', 'ethereum', 'APY', 0x95a4492f028aa1fd432ea71146b433e7b4446611, 18),
     ('arcx-arc-governance', 'ethereum', 'ARCX', 0x1321f1f1aa541a56c31682c57b80ecfccd9bb288, 18),
     ('blocks-blocks', 'ethereum', 'BLOCKS', 0x8a6d4c8735371ebaf8874fbd518b56edd66024eb, 18),
@@ -1532,7 +1531,6 @@ FROM
     ('cook-cook', 'ethereum', 'COOK', 0xFF75CEd57419bcaEBe5F05254983b013B0646eF5, 18),
     ('door-shytoshis-vision', 'ethereum', 'DOOR', 0x2805390F81A7F19c2c49300A094aa500597b1862, 9),
     ('flixx-flixxo', 'ethereum', 'FLIXX', 0xf04a8ac553FceDB5BA99A64799155826C136b0Be, 18),
-    ('flona-flona', 'ethereum', 'FLONA', 0xEf27252B567F6B3fe35b34A85bE322917abE524A, 18),
     ('kol-kollect', 'ethereum', 'KOL', 0x1CC30e2EAc975416060Ec6FE682041408420d414, 18),
     ('ldn-ludena-protocol', 'ethereum', 'LDN', 0xb29663Aa4E2e81e425294193616c1B102B70a158, 18),
     ('sdex-smardex', 'ethereum', 'SDEX', 0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF, 18),
@@ -1704,7 +1702,9 @@ FROM
     ('aix-aigentx','ethereum','AIX',0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5,18),
     ('aimbot-aimbot','ethereum','AIMBOT',0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7,18),
     ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18),
-    ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18)
+    ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18),
+    ('pxeth-pirex-ether', 'ethereum', 'PXETH',0x04c154b66cb340f3ae24111cc767e0184ed00cc6,18),
+    ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1729,4 +1729,5 @@ where contract_address not in (
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
+    ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
 )

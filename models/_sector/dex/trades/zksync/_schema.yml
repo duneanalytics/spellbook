@@ -93,3 +93,143 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('mute_zksync_base_trades_seed')
+
+  - name: pancakeswap_v3_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: pancakeswap
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'pancakeswap' ]
+    description: "Pancakeswap V3 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_zksync_base_trades_seed')
+          filter:
+            version: 3
+            
+  - name: spacefi_v1_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: spacefi
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'spacefi' ]
+    description: "SpaceFi V1 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spacefi_zksync_base_trades_seed')
+
+  - name: wagmi_v1_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: wagmi
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'wagmi' ]
+    description: "Wagmi V1 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wagmi_zksync_base_trades_seed')
+          
+  - name: zkswap_finance_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: zkswap_finance
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'zkswap_finance' ]
+    description: "zkSwap Finance zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('zkswap_finance_zksync_base_trades_seed')
+          
+  - name: gemswap_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: gemswap
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'gemswap' ]
+    description: "Gemswap zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gemswap_zksync_base_trades_seed')
+          
+  - name: vesync_v1_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: vesync
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'vesync' ]
+    description: "veSync V1 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('vesync_zksync_base_trades_seed')
+          
+  - name: dracula_finance_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: dracula_finance
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'dracula_finance' ]
+    description: "Dracula Finance zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dracula_finance_zksync_base_trades_seed')
+
+  - name: ezkalibur_v2_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: ezkalibur
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'ezkalibur' ]
+    description: "eZKalibur V1 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ezkalibur_zksync_base_trades_seed')
+          filter:
+            version: 2
