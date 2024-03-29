@@ -8,6 +8,7 @@
     )
 }}
 
+
 {% set balancer_models = [
     ref('balancer_arbitrum_trades'),
     ref('balancer_avalanche_c_trades'),

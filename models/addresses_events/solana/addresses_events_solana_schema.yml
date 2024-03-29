@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: addresses_events_solana_first_funded_by
+    meta:
+      blockchain: solana
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'solana']
+    description: "Table showing who first funded each Solana address in SOL"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed_solana')
+          filter:
+            blockchain: solana
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_slot
+            - tx_id
+            - tx_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Solana address"
+        tests:
+          - unique
+      - name: first_funded_by
+        description: "Which Solana address first funded the address with SOL"
+      - name: block_time
+        description: "The block time on which the address was first funded with SOL"
+      - name: block_slot
+        description: "The block number on which the address was first funded with SOL"
+      - name: tx_id
+        description: "The transaction hash on which the address was first funded with SOL"
+      - name: tx_index
+        description: "The index of the transaction in the block"

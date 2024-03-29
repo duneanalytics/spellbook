@@ -6,6 +6,7 @@
 
 {% set paraswap_models = [
 ref('paraswap_v5_avalanche_c_trades')
+,ref('paraswap_v6_avalanche_c_trades')
 ] %}
 
 
