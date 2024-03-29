@@ -35,6 +35,10 @@ sources:
     tables:
       - name: EZKaliburPair_evt_Swap
       - name: EZKaliburFactory_evt_PairCreated
+  - name: wagmi_v1_zksync
+    tables:
+      - name: UniswapV3Pair_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
   - name: zkswap_finance_zksync
     tables:
       - name: ZFPair_evt_Swap
