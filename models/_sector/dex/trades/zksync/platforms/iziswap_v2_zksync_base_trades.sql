@@ -21,8 +21,8 @@ SELECT
     , evt_index
     , evt_block_time AS block_time
     , evt_block_number AS block_number
-    , CAST(DATE_TRUNC('month', block_time) AS DATE) AS block_month
-    , CAST(DATE_TRUNC('day', block_time) AS DATE) AS block_date
+    , CAST(DATE_TRUNC('month', evt_block_time) AS DATE) AS block_month
+    , CAST(DATE_TRUNC('day', evt_block_time) AS DATE) AS block_date
     , CASE WHEN sellXEarnY THEN tokenY ELSE tokenX END AS token_bought_address 
     , CASE WHEN sellXEarnY THEN tokenX ELSE tokenY END AS token_sold_address
     , CASE WHEN sellXEarnY THEN amountY ELSE amountX END AS token_bought_amount_raw 
