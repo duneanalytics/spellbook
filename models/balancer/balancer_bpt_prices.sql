@@ -27,6 +27,7 @@ FROM (
         version,
         decimals,
         contract_address,
+        pool_type,
         bpt_price
     FROM {{ bpt_prices }}
     {% if not loop.last %}

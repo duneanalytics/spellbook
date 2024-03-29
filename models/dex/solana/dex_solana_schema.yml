@@ -4,7 +4,7 @@ models:
   - name: dex_solana_trades
     meta:
       blockchain: solana
-      contributors: [ilemi]
+      contributors: ["ilemi"]
     config:
       tags: ['solana','dex']  
     description: >
@@ -62,10 +62,10 @@ models:
       - &fee_usd
         name: fee_usd
         description: "Whirlpool fee usd paid on swap"
-      - &token_bought_mint_address
+      - &token_bought_address
         name: token_bought_address
         description: "token mint address of the token bought"
-      - &token_sold_mint_address
+      - &token_sold_address
         name: token_sold_address
         description: "token mint address of the token sold"
       - &token_bought_vault
@@ -92,3 +92,56 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: dex_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      contributors: ["whale_hunter", "hosuke"]
+    config:
+      tags: [ "solana", "dex", "bot", "trades" ]
+      description: >
+         Trades by trading bots on Solana
+      columns:
+        - *blockchain
+        - *block_time
+        - &block_date
+          name: block_date
+          description: "UTC event block date of each DEX trade"
+        - *block_month
+        - *amount_usd
+        - &type
+          name: type
+          description: "Wether the trade is a buy or sell"
+        - *token_bought_amount
+        - *token_bought_symbol
+        - *token_bought_address
+        - *token_sold_amount
+        - *token_sold_symbol
+        - *token_sold_address
+        - *fee_usd
+        - &fee_token_amount
+          name: fee_token_amount
+          description: "Value of the fee paid at time of execution in the original currency"
+        - &fee_token_symbol
+          name: fee_token_symbol
+          description: "Token symbol for fee token"
+        - &fee_token_address
+          name: fee_token_address
+          description: "Contract address of the fee token"
+        - *project
+        - *version
+        - *token_pair
+        - &project_contract_address
+          name: project_contract_address
+          description: "Project contract address which executed the trade on the blockchain"
+        - &user
+          name: user
+          description: "Address which initiated the trade"
+        - *tx_id
+        - *tx_index
+        - *outer_instruction_index
+        - *inner_instruction_index
+        - &is_last_trade_in_transaction
+          name: is_last_trade_in_transaction
+          description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
