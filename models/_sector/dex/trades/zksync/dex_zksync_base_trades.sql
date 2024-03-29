@@ -14,6 +14,7 @@
     , ref('mute_zksync_base_trades')
     , ref('spacefi_v1_zksync_base_trades')
     , ref('derpdex_v1_zksync_base_trades')
+    , ref('ezkalibur_v2_zksync_base_trades')
     , ref('wagmi_v1_zksync_base_trades')
     , ref('zkswap_finance_zksync_base_trades')
     , ref('gemswap_zksync_base_trades')
