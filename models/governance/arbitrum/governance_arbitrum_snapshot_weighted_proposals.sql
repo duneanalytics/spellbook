@@ -26,8 +26,8 @@ SELECT
   YEAR(FROM_UNIXTIME(dv.created)) AS voting_year,
   MONTH(FROM_UNIXTIME(dv.created)) AS voting_month,
   DAY_OF_MONTH(FROM_UNIXTIME(dv.created)) AS voting_date
-FROM {{ source('dune','shot.dataset_proposals_view') }} AS dp
-JOIN {{ source('dune','shot.dataset_votes_view') }} AS dv
+FROM {{ source("shot","dataset_proposals_view", database="dune") }} AS dp
+JOIN {{ source("shot","dataset_votes_view", database="dune") }} AS dv
   ON dp.id = dv.proposal
 WHERE
   dp."space" = 'arbitrumfoundation.eth' AND dp."type" = 'weighted' 
