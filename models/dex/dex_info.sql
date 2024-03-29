@@ -147,4 +147,6 @@ FROM (VALUES
     , ('mute', 'Mute', 'Direct', 'Mute')
     , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
     , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
+    , ('vesync', 'veSync', 'Direct', 'veSync')
+    , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
     ) AS temp_table (project, name, marketplace_type, x_username)
