@@ -146,6 +146,7 @@ FROM (VALUES
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
     , ('mute', 'Mute', 'Direct', 'Mute')
     , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
+    , ('zkswap_finance', 'zkSwap Finance', 'Direct', 'zkSwapFinance')
     , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
     , ('vesync', 'veSync', 'Direct', 'veSync')
     , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
