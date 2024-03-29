@@ -14,6 +14,11 @@
     , ref('mute_zksync_base_trades')
     , ref('spacefi_v1_zksync_base_trades')
     , ref('derpdex_v1_zksync_base_trades')
+    , ref('wagmi_v1_zksync_base_trades')
+    , ref('zkswap_finance_zksync_base_trades')
+    , ref('gemswap_zksync_base_trades')
+    , ref('vesync_v1_zksync_base_trades')
+    , ref('dracula_finance_zksync_base_trades')
 ] %}
 
 WITH base_union AS (

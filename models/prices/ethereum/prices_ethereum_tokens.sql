@@ -696,7 +696,6 @@ FROM
     ('xcur-curate', 'ethereum', 'XCUR', 0xe1c7e30c42c24582888c758984f6e382096786bd, 8),
     ('xdefi-xdefi', 'ethereum', 'XDEFI', 0x72b886d09c117654ab7da13a14d603001de0b777, 18),
     ('yld-yield', 'ethereum', 'YLD', 0xf94b5c5651c888d928439ab6514b93944eee6f48, 18),
-    ('dg-decentral-games', 'ethereum', 'DG', 0xee06a81a695750e71a662b51066f2c74cf4478a0, 18),
     ('apy-apyfinance', 'ethereum', 'APY', 0x95a4492f028aa1fd432ea71146b433e7b4446611, 18),
     ('arcx-arc-governance', 'ethereum', 'ARCX', 0x1321f1f1aa541a56c31682c57b80ecfccd9bb288, 18),
     ('blocks-blocks', 'ethereum', 'BLOCKS', 0x8a6d4c8735371ebaf8874fbd518b56edd66024eb, 18),
@@ -1730,4 +1729,5 @@ where contract_address not in (
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
+    ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
 )
