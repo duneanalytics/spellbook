@@ -31,6 +31,10 @@ sources:
     tables:
       - name: UniswapV2Pool_evt_Swap
       - name: SwapFactory_evt_PairCreated
+  - name: derpdex_v1_zksync
+    tables:
+      - name: UniswapV3Pair_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
   - name: ezkalibur_v2_zksync
     tables:
       - name: EZKaliburPair_evt_Swap
