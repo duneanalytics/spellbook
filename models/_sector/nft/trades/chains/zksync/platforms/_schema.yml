@@ -118,3 +118,28 @@ models:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: mint_square_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: nft
+      project: mint_square
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'nft', 'trades', 'mint_square' ]
+    description: "Mint Square base trades on zkSync"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('mintsquare_zksync_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
