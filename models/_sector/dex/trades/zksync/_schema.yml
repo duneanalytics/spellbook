@@ -250,3 +250,41 @@ models:
           seed_file: ref('ezkalibur_zksync_base_trades_seed')
           filter:
             version: 2
+
+  - name: iziswap_v1_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: iziswap
+      contributors: thetroyharris
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'iziswap' ]
+    description: "iziswap v1 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('iziswap_zksync_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: iziswap_v2_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: iziswap
+      contributors: thetroyharris
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'iziswap' ]
+    description: "iziswap v2 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('iziswap_zksync_base_trades_seed')
+          filter:
+            version: 2

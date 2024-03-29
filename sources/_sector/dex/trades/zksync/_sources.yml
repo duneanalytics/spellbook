@@ -59,3 +59,9 @@ sources:
     tables:
       - name: DraculaPair_evt_Swap
       - name: DraculaFactory_evt_PairCreated
+  - name: iziswap_v1_zksync
+    tables:
+      - name: iZiSwapPool_evt_Swap
+  - name: iziswap_v2_zksync
+    tables:
+      - name: iZiSwapPool_evt_Swap
