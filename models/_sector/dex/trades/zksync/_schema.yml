@@ -129,3 +129,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('spacefi_zksync_base_trades_seed')
+
+  - name: dracula_finance_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: dracula_finance
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'dracula_finance' ]
+    description: "Dracula Finance zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dracula_finance_zksync_base_trades_seed')
