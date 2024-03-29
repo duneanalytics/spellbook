@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'iziswap_v1_zksync',
+        schema = 'iziswap_v2_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,13 +10,13 @@
     )
 }}
 
-{% set iziswap_v1_start_date = "2023-03-28" %}
+{% set iziswap_v2_start_date = "2023-07-17" %}
 
 SELECT
     'zksync' AS blockchain
     , 'iziswap' AS project
     , contract_address AS project_contract_address
-    , '1' AS version
+    , '2' AS version
     , evt_tx_hash AS tx_hash
     , evt_index
     , evt_block_time AS block_time
@@ -29,10 +29,10 @@ SELECT
     , CASE WHEN sellXEarnY THEN amountX ELSE amountY END AS token_sold_amount_raw
     , CAST(evt_tx_from AS VARBINARY) AS taker
     , CAST(evt_tx_to AS VARBINARY) AS maker
-FROM {{ source('iziswap_v1_zksync', 'iZiSwapPool_evt_Swap') }}
+FROM {{ source('iziswap_v2_zksync', 'iZiSwapPool_evt_Swap') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}
-WHERE evt_block_time >= TIMESTAMP '{{iziswap_v1_start_date}}'
+WHERE evt_block_time >= TIMESTAMP '{{iziswap_v2_start_date}}'
 {% endif %}
 
