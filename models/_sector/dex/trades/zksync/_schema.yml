@@ -130,6 +130,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('spacefi_zksync_base_trades_seed')
 
+  - name: gemswap_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: gemswap
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'gemswap' ]
+    description: "Gemswap zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gemswap_zksync_base_trades_seed')
+          
   - name: vesync_v1_zksync_base_trades
     meta:
       blockchain: zksync
