@@ -13,6 +13,9 @@
     , ref('uniswap_v3_zksync_base_trades')
     , ref('mute_zksync_base_trades')
     , ref('spacefi_v1_zksync_base_trades')
+    , ref('velocore_v0_zksync_base_trades')
+    , ref('velocore_v1_zksync_base_trades')
+    , ref('velocore_v2_zksync_base_trades')
 ] %}
 
 WITH base_union AS (

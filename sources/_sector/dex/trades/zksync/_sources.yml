@@ -31,3 +31,14 @@ sources:
     tables:
       - name: UniswapV2Pool_evt_Swap
       - name: SwapFactory_evt_PairCreated
+  - name: velocore_v0_zksync
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: velocore_v1_zksync
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: velocore_v2_zksync
+    tables:
+      - name: VaultStorage_evt_Swap
