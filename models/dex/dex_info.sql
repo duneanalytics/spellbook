@@ -153,4 +153,5 @@ FROM (VALUES
     , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
     , ('vesync', 'veSync', 'Direct', 'veSync')
     , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
+    , ('velocore', 'Velocore', 'Direct', 'Velocore')
     ) AS temp_table (project, name, marketplace_type, x_username)
