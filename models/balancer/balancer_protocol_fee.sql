@@ -28,6 +28,7 @@ FROM (
         pool_symbol,
         '2' AS version,
         blockchain,
+        pool_type,
         token_address,
         token_symbol,
         token_amount_raw,

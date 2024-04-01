@@ -10,6 +10,11 @@ models:
       tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism', 'fantom', 'base']
     description: >
         Crosschain ERC20 tokens
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
     columns:
       - name: contract_address
         description: "ERC20 Token's contract address"

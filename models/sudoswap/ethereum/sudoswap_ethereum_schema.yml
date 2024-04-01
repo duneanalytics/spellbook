@@ -116,6 +116,41 @@ models:
       - *creation_block_time
       - *creation_tx_hash
 
+  - name: sudoswap_v2_ethereum_pool_creations
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'ethereum','sudoswap','pool_creations' ]
+    description: >
+      sudoswap v2 pool creations on Ethereum
+    columns:
+      - name: pool_address # unique
+        description: 'Address of the pool'
+        tests:
+          - unique
+      - *nft_contract_address
+      - *creator_address
+      - *bonding_curve
+      - *pool_type
+      - *pool_factory
+      - *creation_block_time
+      - *creation_tx_hash
+      - &nft_type
+        name: nft_type
+        description: "ERC721 or ERC1155 pool type"
+      - &nft_id
+        name: nft_id
+        description: "id of ERC1155 token if it's an 1155 pool"
+      - &token_type
+        name: token_type
+        description: "the token type used for trading the NFTs"
+      - &token_contract_address
+        name: token_contract_address
+        description: "address of token used for trading the NFTs"
+
+
   - name: sudoswap_ethereum_pool_trades_agg_day
     meta:
       blockchain: ethereum

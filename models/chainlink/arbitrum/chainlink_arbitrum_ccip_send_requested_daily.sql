@@ -16,7 +16,7 @@ SELECT
   'arbitrum' as blockchain,
   cast(date_trunc('day', evt_block_time) AS date) AS date_start,
   MAX(cast(date_trunc('month', evt_block_time) AS date)) AS date_month,
-  SUM(ccip_send_requested.fee_amount) as fee_amount,
+  SUM(ccip_send_requested.fee_token_amount) as fee_amount,
   ccip_send_requested.token as token,
   ccip_send_requested.destination_blockchain AS destination_blockchain,
   COUNT(ccip_send_requested.destination_blockchain) AS count

@@ -50,6 +50,7 @@ WITH
         {% endif %}  
         GROUP BY 1, 5
     )
+    
 SELECT
     'bnb' as blockchain,
     date_start,

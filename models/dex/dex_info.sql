@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana", "zksync"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
@@ -40,6 +40,7 @@ FROM (VALUES
     , ('airswap', 'AirSwap', 'Direct', 'airswap')
     , ('wombat', 'Wombat Exchange', 'Direct', 'WombatExchange')
     , ('wombat_exchange', 'Wombat Exchange', 'Direct', 'WombatExchange')
+    , ('wombatexchange', 'Wombat Exchange', 'Direct', 'WombatExchange')
     , ('defiswap', 'DeFi Swap', 'Direct', 'defi_swap')
     , ('gmx', 'GMX', 'Direct', 'GMX_IO')
     , ('clipper', 'Clipper', 'Direct', 'Clipper_DEX')
@@ -137,8 +138,19 @@ FROM (VALUES
     , ('rocketswap', 'RocketSwap', 'Direct', 'RocketSwap_Labs')
     , ('alienbase', 'AlienBase', 'Direct', 'alienbasedex')
     , ('swapbased', 'SwapBased', 'Direct', 'swap_based')
+    , ('baso_finance', 'Baso Finance', 'Direct', 'Baso_Finance')
     , ('synthswap', 'SynthSwap', 'Direct', 'synthswapio')
     , ('energon', 'Energon', 'Direct', 'EnergonDex')
     , ('voltswap', 'VoltSwap', 'Direct', 'VoltSwapFinance')
     , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
+    , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
+    , ('mute', 'Mute', 'Direct', 'Mute')
+    , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
+    , ('derpdex', 'DerpDEX', 'Direct', 'DerpDEX')
+    , ('ezkalibur', 'eZKalibur', 'Direct', 'eZKalibur')
+    , ('wagmi', 'Wagmi', 'Direct', 'Wagmi')
+    , ('zkswap_finance', 'zkSwap Finance', 'Direct', 'zkSwapFinance')
+    , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
+    , ('vesync', 'veSync', 'Direct', 'veSync')
+    , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
     ) AS temp_table (project, name, marketplace_type, x_username)

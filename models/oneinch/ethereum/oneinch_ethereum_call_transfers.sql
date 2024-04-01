@@ -10,7 +10,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'call_trace_address', 'transfer_trace_address']
+        unique_key = ['tx_hash', 'call_trace_address', 'transfer_trace_address', 'transfer_native']
     )
 }}
 

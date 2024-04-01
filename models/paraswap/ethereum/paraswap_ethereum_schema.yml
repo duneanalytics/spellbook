@@ -195,6 +195,60 @@ models:
       - *trace_address
       - *evt_index
 
+  - name: paraswap_v6_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: paraswap_v6
+      contributors: eptighte, mwamedacen
+    config:
+      tags: ['ethereum','paraswap_v6','trades', 'paraswap','dex']
+    description: >
+        Paraswap V6 contract aggregator trades on ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - method
+            - trace_address            
+
+      - check_dex_aggregator_seed:
+         blockchain: ethereum
+         project: paraswap
+         version: 6
+    columns:
+      - *blockchain
+      - *project
+      - *version  
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index       
+      - &method
+        name: method
+        description: "Method"   
+
+
   - name: paraswap_ethereum_trades
     meta:
       blockchain: ethereum
@@ -229,3 +283,65 @@ models:
       - *tx_to
       - *trace_address
       - *evt_index
+
+
+  - name: paraswap_v6_ethereum_trades_decoded
+    description: "Paraswap V6 trades decoded"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - txHash
+            - method
+            - callTraceAddress                        
+    columns:
+      - name: blockTime
+        description: "Block time"        
+      - name: blockNumber
+        description: "Block number"        
+      - name: txHash
+        description: "Transaction hash"        
+      - name: projectContractAddress
+        description: "Project contract address"        
+      - name: callTraceAddress
+        description: "Call trace address"        
+      - name: srcToken
+        description: "Source token"        
+      - name: destToken
+        description: "Destination token"        
+      - name: fromAmount
+        description: "From amount"        
+      - name: spentAmount
+        description: "Spent amount"        
+      - name: toAmount
+        description: "To amount"        
+      - name: quotedAmount
+        description: "Quoted amount"        
+      - name: receivedAmount
+        description: "Received amount"        
+      - name: metadata
+        description: "Metadata"        
+      - name: beneficiary
+        description: "Beneficiary"
+      - name: method
+        description: "Method"
+      - name: side
+        description: "Side"        
+      - name: feeCode
+        description: "Fee code"
+      - name: partnerShare
+        description: "Partner share"
+      - name: paraswapShare
+        description: "Paraswap share"
+      - name: partnerAddress
+        description: "Partner address"
+      - name: feeBps
+        description: "Fee in basis points"
+      - name: isReferral
+        description: "Is referral"
+      - name: isTakeSurplus
+        description: "Is take surplus"
+

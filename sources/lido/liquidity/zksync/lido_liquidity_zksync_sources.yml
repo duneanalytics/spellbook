@@ -1,0 +1,18 @@
+version: 2
+
+sources:    
+  - name: syncswap_zksync
+    description: "Zksync decoded tables related to SyncSwap contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: SyncSwapAquaPoolFactory_v2_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: AquaPool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: AquaPool_evt_Burn
+        loaded_at_field: evt_block_time  
+      - name: AquaPool_evt_Swap
+        loaded_at_field: evt_block_time 
+
