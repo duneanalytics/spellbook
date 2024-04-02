@@ -32,6 +32,7 @@ FROM (
     pool_symbol,
     version,
     blockchain,
+    pool_type,
     token_address,
     token_symbol,
     token_balance_raw,
