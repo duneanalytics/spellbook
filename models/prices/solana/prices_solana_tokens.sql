@@ -317,7 +317,6 @@ FROM
         ('speero-speero','solana','SPEERO','C7K4Tot6fnnNwhWpqw9H277QPcP56vHAEeXubRHDyCo9',6),
         ('burrrd-burrrd','solana','BURRRD','F8qtcT3qnwQ24CHksuRrSELtm5k9ob8j64xAzj3JjsMs',4),
         ('ewon-ewon-mucks','solana','EWON','252ezuEq49e24uwSdEt16WoTc4Fw4SQLwWdhvH847Uer',7),
-        ('eth-ethereum','solana','ETH','7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs',8),
         ('eth-ethereum','solana','soETH','2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk',6),
         ('graph-solgraph','solana','GRAPH','9uXvdyPLknsSHnx6csn5wTLjxYXhPbe9Q7Ewzys7buNx',9),
         ('ogcinu-the-og-cheems-inu','solana','OGCINU','5doZSgpsKVJk9u58hsmDsq8N6oNtELvsycoFJ42P327p',6),
