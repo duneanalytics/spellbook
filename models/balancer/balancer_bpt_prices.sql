@@ -15,7 +15,8 @@
     ref('balancer_v2_gnosis_bpt_prices'),
     ref('balancer_v2_optimism_bpt_prices'),
     ref('balancer_v2_avalanche_c_bpt_prices'),
-    ref('balancer_v2_base_bpt_prices')    
+    ref('balancer_v2_base_bpt_prices'),    
+    ref('balancer_v2_zkevm_bpt_prices')
 ] %}
 
 SELECT *

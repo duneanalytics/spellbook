@@ -200,10 +200,35 @@ models:
       - *model_name
       - *label_type
 
+  - name: labels_balancer_v2_pools_zkevm
+    meta:
+      blockchain: zkevm
+      sector: labels
+      project: balancer_v2
+      contributors: balancerlabs
+    config:
+      tags: ['labels', 'zkevm', 'balancer', 'pools']
+    description: 'Balancer V2 liquidity pools created on Polygon zkevm.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
 
   - name: labels_balancer_v2_pools
     meta:
-      blockchain: ethereum, polygon, arbitrum, optimism
+      blockchain: ethereum, polygon, arbitrum, optimism, gnosis, base, avalanche_c, zkevm
       sector: labels
       project: balancer_v2
       contributors: balancerlabs
@@ -215,6 +240,10 @@ models:
           'polygon',
           'arbitrum',
           'optimism',
+          'avalanche_c', 
+          'base', 
+          'gnosis', 
+          'zkevm',
           'balancer',
           'pools',
         ]
@@ -233,12 +262,12 @@ models:
 
   - name: labels_balancer_v2_gauges
     meta:
-      blockchain: ethereum, polygon, optimism, arbitrum, avalanche_c, base, gnosis
+      blockchain: ethereum, polygon, optimism, arbitrum, avalanche_c, base, gnosis, zkevm
       sector: labels
       project: balancer_v2
       contributors: jacektrocinski, viniabussafi
     config:
-      tags: ['labels', 'ethereum', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'base', 'gnosis','gauges']
+      tags: ['labels', 'ethereum', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'base', 'gnosis', 'zkevm', 'gauges']
     description: 'Balancer v2 gauge labels.'
     columns:
       - *blockchain
@@ -426,3 +455,28 @@ models:
       - *updated_at
       - *model_name
       - *label_type            
+
+  - name: labels_balancer_v2_gauges_zkevm
+    meta:
+      blockchain: zkevm
+      sector: labels
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['labels', 'zkevm', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type         
