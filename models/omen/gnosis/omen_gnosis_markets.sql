@@ -161,7 +161,11 @@ prediction_market_info AS (
     t3.conditionalTokens,
     t3.collateralToken,
     t3.fee,
-    t3.conditionIds_index
+    t3.conditionIds_index,
+    REGEXP_REPLACE(REVERSE(SPLIT_PART(REVERSE(t1.question), '␟', 2)), '[^A-Za-z]', '') AS category,
+    FROM_UNIXTIME(t1.opening_ts) AS opening_time,
+    FROM_UNIXTIME(t1.opening_ts+t1.timeout) AS closing_time,
+    FROM_UNIXTIME(t1.created) AS creation_time
   FROM Realitio_LogNewQuestion AS t1
   INNER JOIN ConditionPreparation_end AS t2
     ON t2.questionId = t1.questionId

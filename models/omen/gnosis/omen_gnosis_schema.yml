@@ -112,6 +112,9 @@ models:
       - &conditionIds_index
         name: conditionIds_index
         description: "Index of conditionID"
+      - &category
+        name: category
+        description: "Category of question"
 
   - name: omen_gnosis_liquidity
     meta:
