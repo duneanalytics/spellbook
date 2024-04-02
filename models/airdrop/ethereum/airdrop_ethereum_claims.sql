@@ -47,6 +47,7 @@
     , ref('value_defi_ethereum_airdrop_claims')
     , ref('alchemydao_ethereum_airdrop_claims')
     , ref('arkham_ethereum_airdrop_claims')
+    , ref('etherfi_ethereum_airdrop_claims')
 ] %}
 
 SELECT *
