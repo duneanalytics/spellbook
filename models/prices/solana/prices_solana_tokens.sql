@@ -592,7 +592,7 @@ FROM
         ('mdf-matrixetf','solana','MDF','ALQ9KMWjFmxVbew3vMkJj3ypbAKuorSgGst6svCHEe2z',6),
         ('ovol-ovols-floor-index','solana','OVOL','4v3UTV9jibkhPfHi5amevropw6vFKVWo7BmxwQzwEwq6',2),
         ('bome20-book-of-meme-20','solana','BOME2.0','Dnbs9JokenN8qTqgp7BQUpibSwQTc9QjXiZkt1gau5bj',9),
-        ('solfriends-solana-friends','solana','SOLFRIENDS','4z7YbzgeyvNXbhJMGbLoThosnmpPAi3EURiKaKR4Cn3H','6'),
+        ('solfriends-solana-friends','solana','SOLFRIENDS','4z7YbzgeyvNXbhJMGbLoThosnmpPAi3EURiKaKR4Cn3H',6),
         ('nova-nova-finance','solana','NOVA','BDrL8huis6S5tpmozaAaT5zhE5A7ZBAB2jMMvpKEeF8A',9),
         ('trwp-danol-tremp','solana','TRWP','5DANMZQrrKKJna7QMteohHbZaCffjDDcBDmgmXYoJBbv',9),
         ('bobr-bobr-kurwa','solana','BOBR','CpKCKT3bTBpW6cATXC5EEceKXKGcdCmMPQFhFdva1VMA',6),
