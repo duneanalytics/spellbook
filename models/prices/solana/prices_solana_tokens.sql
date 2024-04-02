@@ -11,6 +11,7 @@ SELECT
     , blockchain
     , symbol
     , from_base58(contract_address) as contract_address
+    , contract_address as raw_contract_address
     , decimals
 FROM
 (
