@@ -14,7 +14,8 @@
 
 {% set odos_models = [
   ref('odos_ethereum_trades'),
-  ref('odos_optimism_trades')
+  ref('odos_optimism_trades'),
+  ref('odos_base_trades')
 ] %}
 
 
