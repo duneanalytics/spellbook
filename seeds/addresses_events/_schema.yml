@@ -26,7 +26,6 @@ seeds:
       column_types:
         blockchain: varchar
         address: varchar
-        first_funded_by: array(varchar)
         block_height: bigint
         tx_id: varbinary
 

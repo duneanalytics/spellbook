@@ -19,7 +19,6 @@ models:
             - blockchain
             - address
           check_columns:
-            - first_funded_by
             - block_height
             - tx_id
     columns:
