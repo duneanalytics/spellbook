@@ -669,6 +669,9 @@ FROM (VALUES
     , (0x9a552417cfc942A5C88Ab474756d3D9962f917C0, 'Crypto.com', 'Crypto.com 18', 'hildobby', date '2023-11-19')
     , (0xA0b73E1Ff0B80914AB6fe0444E65848C4C34450b, 'Crypto.com', 'Crypto.com 19', 'hildobby', date '2023-11-19')
     , (0xae45a8240147e6179ec7c9f92c5a18f9a97b3fca, 'Crypto.com', 'Crypto.com Deposit Funder', 'hildobby', date '2023-11-15')
+    , (0x3aa370aacf4cb08c7e1e7aa8e8ff9418d73c7e0f, 'Crypto.com', 'Crypto.com USDC-WETH', 'hildobby', date '2024-04-02')
+    , (0x9ef7e917fb41cc02f78a5c99b42f497ed8979350, 'Crypto.com', 'Crypto.com CRO-WETH', 'hildobby', date '2024-04-02')
+    , (0x35e8777ec43cb99e935588dcd0305268f06c1274, 'Crypto.com', 'Crypto.com CRO-USDC', 'hildobby', date '2024-04-02')
     -- Wirex
     , (0x2f13d388b85e0ecd32e7c3d7f36d1053354ef104, 'Wirex', 'Wirex 1', 'hildobby', date '2023-11-19')
     , (0xE3f277382419535245a345e923898c2d43f7CBE5, 'Wirex', 'Wirex 2', 'hildobby', date '2023-11-19')
