@@ -107,6 +107,11 @@ WITH mintsquare_trades AS (
         , m.nft_amount
         , m.buyer
         , m.seller
+        , CASE
+            WHEN currency = 0x0000000000000000000000000000000000000000 THEN 0x000000000000000000000000000000000000800a -- Fix ETH
+            WHEN currency = 0x8Ebe4A94740515945ad826238Fc4D56c6B8b0e60 THEN 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91 -- Fix WETH
+            ELSE currency
+          END AS currency_contract
         , m.currency_contract
         , m.price_raw
         , CAST(COALESCE((pf.fee_percentage/100) * CAST(m.price_raw AS uint256),  DOUBLE '0') AS UINT256) AS platform_fee_amount_raw
