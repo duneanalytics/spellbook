@@ -263,7 +263,7 @@ FROM
     --('cgpt-chaingpt', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18), --not found in api 
     ('ai-sleepless-ai', 'bnb', 'AI', 0xbda011d7f8ec00f66c1923b049b94c67d148d8b2,18),
     ('usdv-verified-usd', 'bnb', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253,6),
-    ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,6),
+    ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,18),
     --('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),--not found in api 
     ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
