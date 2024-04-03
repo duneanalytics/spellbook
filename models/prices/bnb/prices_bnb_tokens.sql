@@ -208,7 +208,7 @@ FROM
     ('ata-automata', 'bnb', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
     ('bonk-bonk', 'bnb', 'BONK', 0xa697e272a73744b343528c3bc4702f2565b2f422, 5),
     ('pepe-pepe', 'bnb', 'PEPE', 0x25d887ce7a35172c62febfd67a1856f20faebb00,18),
-    ('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
+    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
     ('weth-wrapped-ether-wormhole', 'bnb', 'WETH', 0x4db5a66e937a9f4473fa95b1caf1d1e1d62e29ea,18),
     ('ageur-ageur', 'bnb', 'AGEUR', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89,18),
     ('sol-wrapped-sol-wormhole', 'bnb', 'SOL', 0xfa54ff1a158b5189ebba6ae130ced6bbd3aea76e,9),
@@ -221,12 +221,12 @@ FROM
     ('usx-dforce-usd', 'bnb', 'USX', 0xb5102cee1528ce2c760893034a4603663495fd72,18),
     ('strainz-strainz-nft', 'bnb', 'STRAINZ', 0xacc870d9e560f784ceff365f56e1f12161324478,4),
     ('dis-disney', 'bnb', 'DIS', 0xe2ecc66e14efa96e9c55945f79564f468882d24c,18),
-    ('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), -
+    --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), -
     ('shib-shiba-inu', 'bnb', 'SHIB', 0x2859e4544c4bb03966803b044a93563bd2d0dd4d,18),
     ('bttc-bittorrent-chain', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
     ('aitech-solidus-ai-tech', 'bnb', 'AITECH', 0x2d060ef4d6bf7f9e5edde373ab735513c0e4f944,18),
     ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8cb3c6e7d085626e7a1347aafdf001f6,18),
-    ('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), 
+    --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), 
     ('trias-trias-token', 'bnb', 'TRIAS', 0xa4838122c683f732289805fc3c207febd55babdd,18),
     ('pzp-playzap', 'bnb', 'PZP', 0x6ad9e9c098a45b2b41b519119c31c3dcb02accb2,18),
     ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9),
