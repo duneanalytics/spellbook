@@ -1540,7 +1540,31 @@ sources:
           - name: _percentFee
           - name: _symbol
           - name: output_0
-          - name: vault          
+          - name: vault       
+
+  - name: balancer_zkevm
+    tables:
+      - name: AaveLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the AaveLinearPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol             
 
   - name: balancer_v2_zkevm
     tables:
@@ -1705,3 +1729,31 @@ sources:
           - name: call_block_number
           - name: pool
           - name: output_0    
+
+  - name: gyroscope_zkevm
+    tables:
+      - name: GyroECLPPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Gyroscope ECLP contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: capManager
+          - name: capParams                 
+          - name: contract_address
+            description: "Address of the ComposableStablePoolFactory contract"
+          - name: derivedECLPParams
+          - name: eclpParams
+          - name: name
+          - *output_0
+          - *owner
+          - name: pauseManager
+          - name: pauseParams
+          - *swapFeePercentage
+          - *rateProviders
+          - *symbol
+          - *tokens
