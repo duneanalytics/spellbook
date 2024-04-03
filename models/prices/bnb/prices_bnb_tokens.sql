@@ -256,16 +256,7 @@ FROM
     ('ai-flourishing-ai', 'bnb', 'AI', 0xA9b038285F43cD6fE9E16B4C80B4B9bCcd3C161b,18),
     ('kalm-kalm', 'bnb', 'KALM', 0x4BA0057f784858a48fe351445C672FF2a3d43515,18),
     ('xai-grok', 'bnb', 'XAI', 0x0009Ae5a69B037eA74A900783fab457fa605ae5d,9),
-    ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18),
-    ('rdnt-radiant-capital', 'bnb', 'RDNT', 0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df,18),
-    ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8Cb3C6e7d085626E7a1347AafDf001f6,18),
-    ('cyber-cyberconnect', 'bnb', 'CYBER', 0x14778860e937f509e651192a90589de711fb88a9,18),
-    ('cgpt-chaingpt', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18),
-    ('ai-sleepless-ai', 'bnb', 'AI', 0xbda011d7f8ec00f66c1923b049b94c67d148d8b2,18),
-    ('usdv-verified-usd', 'bnb', 'AI', 0x323665443cef804a3b5206103304bd4872ea4253,6),
-    ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,6),
-    ('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),
-    ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18)
+    ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
