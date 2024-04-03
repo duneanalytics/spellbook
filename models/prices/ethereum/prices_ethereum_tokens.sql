@@ -1705,7 +1705,7 @@ FROM
     ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18),
     ('pxeth-pirex-ether', 'ethereum', 'PXETH',0x04c154b66cb340f3ae24111cc767e0184ed00cc6,18),
     ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18),
-    ('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18),
+    --('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18), --not in API 
     ('cswap-chainswap', 'ethereum', 'CSWAP',0xae41b275aaaf484b541a5881a2dded9515184cca,18),
     ('bobo-bobo-coin', 'ethereum', 'BOBO',0xb90b2a35c65dbc466b04240097ca756ad2005295,18),
     ('bvm-bvm', 'ethereum', 'BVM',0x069d89974f4edabde69450f9cf5cf7d8cbd2568d,18),
