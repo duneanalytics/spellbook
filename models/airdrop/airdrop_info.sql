@@ -56,7 +56,7 @@ FROM (VALUES
     , ('velodrome', 'Velodrome', NULL, NULL, NULL, NULL, TRUE, 'VelodromeFi', '2022-06-01 20:54', NULL)
     , ('etherfi', 'ether.fi', 91785, 68000000, NULL, 1000000000, TRUE, 'ether_fi', '2024-03-18 10:35', NULL)
     , ('dymension', 'Dymension', 528523, 606000000, 212800000, 1000000000, TRUE, 'dymension', '2024-02-06 13:00', NULL)
-    , ('ethena', 'Ethena', NULL, 750000000, NULL, NULL, TRUE, 'ethena_labs', '2024-04-02 07:00:47', NULL)
+    , ('ethena', 'Ethena', 61843, 750000000, NULL, NULL, TRUE, 'ethena_labs', '2024-04-02 07:00:47', NULL)
     , ('jupiter', 'Jupiter', 957935, 2700000000, NULL, NULL, TRUE, 'JupiterExchange', '2024-01-01 00:00', NULL)
     , ('aptos', 'Aptos', 124828, 450000000, NULL, NULL, TRUE, 'Aptos', '2022-10-01 00:00', NULL)
     , ('jito', 'Jito', 13133, 439000000, NULL, NULL, TRUE, 'jito_sol', '2023-12-01 00:00', NULL)
