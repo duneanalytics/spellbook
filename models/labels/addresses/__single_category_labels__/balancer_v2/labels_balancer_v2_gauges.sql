@@ -13,7 +13,8 @@
     , ref('labels_balancer_v2_gauges_optimism')
     , ref('labels_balancer_v2_gauges_avalanche_c')
     , ref('labels_balancer_v2_gauges_base')        
-    , ref('labels_balancer_v2_gauges_gnosis')        
+    , ref('labels_balancer_v2_gauges_gnosis')   
+    , ref('labels_balancer_v2_gauges_zkevm')                 
 ] %}
 
 SELECT *
