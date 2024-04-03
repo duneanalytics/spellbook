@@ -654,7 +654,7 @@ models:
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'auragi']
     description: "auragi Arbitrum  base trades"
-     tests:
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
