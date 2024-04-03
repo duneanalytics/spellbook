@@ -1705,7 +1705,7 @@ FROM
     ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18),
     ('pxeth-pirex-ether', 'ethereum', 'PXETH',0x04c154b66cb340f3ae24111cc767e0184ed00cc6,18),
     ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18),
-    ('strk-starknet', 'ethereum', 'STRK',0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766,18)
+    ('strk-starknet', 'ethereum', 'STRK',0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766,18),
     ('ela-elastos', 'ethereum', 'ELA', 0xe6fd75ff38adca4b97fbcd938c86b98772431867,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
