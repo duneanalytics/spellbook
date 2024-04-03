@@ -10,8 +10,6 @@ SELECT
    node_address,
    operator_name
 FROM (values
-  (0x89da56e409dDef3C52BdCfBeFC9b595870880bAA, 'alphachain'),
-  (0xd877d01d972D28dBd28ed138c63173D07A024E5C, 'chainlayer'),
   (0x5b7fFA174f432A4Ad6F3b493ddAf5F5BCA0BaaA1, 'cryptomanufaktur'),
   (0xb8F87E376Ef984d154DA9C63b9D06740369F2B49, 'dextrac'),
   (0x206598DAc5206fc1c26745050eEbD3Ee80F4e6ba, 'everstake'),
@@ -22,6 +20,7 @@ FROM (values
   (0xB5A91c2adFbcB2DA16DC542Eb5c7c54e4c8D45a5, 'linkriver'),
   (0xeC55779329cBb18B49F748870C8Ad4328f6E7fC8, 'newroad'),
   (0x4499a00546aBa51124dfd7b27A17e7653cF125df, 'northwestnodes'),
+  (0x9F36617a44caCc71868aC6FC6C5BE3c9Aa2E3775, 'omniscience'),
   (0x93246EfeffC97238B5dE72F14AbbC29fd5F66b65, 'p2porg'),
   (0xed462A9F2Bc31eA3f3255597091897585cDaA344, 'piertwo'),
   (0x8c6Bb4E3Ce25F723b9C9433904a2b585A68763c8, 'prophet'),

@@ -6,7 +6,9 @@
         method_data,
         blockchain,
         traces_cte,
-        pools_list
+        pools_list,
+        native,
+        start_date
     )
 %}
 
@@ -24,15 +26,19 @@ select
     , call_trace_address
     , call_success
     , call_selector
-    , coalesce(  
-        src_token_address, -- if src_token_address not in params
-        if(first_direction = 0, first_token0, first_token1) -- -> if first_direction = 0, then first_token0 is src_token_address, else it's 1 -> first_token1
-    ) as src_token_address 
-    , if( 
-        last_direction is null, -- if 1 or 0 pools in array
-        if(first_direction = 0, first_token1, first_token0), -- -> THEN if first_direction = 0, then first_token1 is dst_token_address, else it's 1 -> first_token0
-        if(last_direction = 0, last_token1, last_token0) -- -> ELSE if last_direction = 0, then last_token1 is dst_token_address, else it's 1 -> last_token0
-    ) as dst_token_address 
+    , coalesce(
+        src_token_address -- src_token_address from params
+        , try(case -- try to get src_token_address from first pool: pools[1]
+            when pools[1]['pool_type'] = 2 then first_pool_tokens[cast(pools[1]['src_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get src token address from first_pool_tokens by src token index
+            else first_pool_tokens[cast(pools[1]['direction'] as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get src token address from first_pool_tokens by direction
+    end)) as src_token_address
+    , coalesce(
+        dst_token_address -- dst_token_address from params
+        , try(case -- try to get dst_token_address from last pool: reverse(pools)[1]
+            when reverse(pools)[1]['unwrap'] = 1 then {{native}} -- when flaf 'unwrap' is set, than set dst token address to native address
+            when reverse(pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
+            else last_pool_tokens[cast(bitwise_xor(reverse(pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
+    end)) as dst_token_address
     , src_receiver
     , dst_receiver
     , src_token_amount
@@ -41,8 +47,13 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_type
     , ordinary
-    , pools
+    , transform(pools, x -> map_from_entries(array[
+        ('type', substr(cast(x['pool_type'] as varbinary), 1, 1))
+        , ('info', substr(cast(x['pool'] as varbinary), 1, 12))
+        , ('address', substr(cast(x['pool'] as varbinary), 13))
+    ])) as pools
     , remains
     , '{{ method_data.router_type }}' as router_type
 from (
@@ -65,46 +76,38 @@ from (
         , call_gas_used
         , call_output
         , call_error
-        , if(cardinality(call_pools) > 0, true, false) as ordinary -- if call_pools is not empty
-        , if(cardinality(call_pools) > 0
-            , try(substr(cast(call_pools[1] as varbinary), 13)) -- get first pool from call_pools
-            , substr(call_input, call_input_length - 20 - mod(call_input_length - 4, 32) + 1, 20) -- if pools arr is empty, get pool address from call_input
-        ) as first_pool
-        , if(cardinality(call_pools) > 1
-            , try(substr(cast(call_pools[cardinality(call_pools)] as varbinary), 13)) -- get last pool from call_pools if pools arr length 2+
-        ) as last_pool
-        , if(cardinality(call_pools) > 0
-            , try(bitwise_and( -- binary AND to allocate significant bit: bin byte & bit weight
-                bytearray_to_bigint(substr(cast(call_pools[1] as varbinary), {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: direction_bit / 8 + 1 -- integer division
-                , cast(pow(2, 8 - mod({{ method_data.direction_bit }}, 8)) as bigint) -- 2 ^ (8 - direction_bit % 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-            )) -- get direction from pools
-            , try(bitwise_and( -- binary AND
-                bytearray_to_bigint(substr(call_input, call_input_length - mod(call_input_length - 4, 32) - 32 + {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: input_length - input_length % 8 - 32 + direction_bit / 8 + 1
-                , cast(pow(2, 8 - mod({{ method_data.direction_bit }}, 8)) as bigint) -- 2 ^ (8 - direction_bit % 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-            )) -- get direction from input
-        ) as first_direction
-        , if(cardinality(call_pools) > 1
-            , try(bitwise_and( -- binary AND to allocate significant bit: bin byte & bit weight
-                bytearray_to_bigint(substr(cast(call_pools[cardinality(call_pools)] as varbinary), {{ method_data.direction_bit }} / 8 + 1, 1)) -- current byte: direction_bit / 8 + 1 -- integer division
-                , cast(pow(2, 8 - mod({{ method_data.direction_bit }}, 8)) as bigint) -- 2 ^ (8 - direction_bit % 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-            )) -- get direction from pools
-        ) as last_direction
-        , if(cardinality(call_pools) > 0
-            , transform(call_pools, x -> cast(x as varbinary))
-            , array[substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32)]
-        ) as pools
+        , call_type
+        , ordinary
+        , substr(cast(call_pools[1] as varbinary), 13) as first_pool
+        , substr(cast(reverse(call_pools)[1] as varbinary), 13) as last_pool
+        , transform(call_pools, x -> map_from_entries(array[
+            ('pool', x) -- raw pool data in uint256
+            , ('pool_type', bitwise_right_shift(bitwise_and(x, {{ method_data.get("pool_type_mask", "null") }}), {{ method_data.get("pool_type_offset", "null") }}))
+            , ('direction', bitwise_xor(bit_count(bitwise_and(x, {{ method_data.direction_mask }}), 256), if({{ contract_data.version }} < 6, 0, 1))) -- until v6, the set direction bit meant the reverse direction, starting from v6, the set direction bit means the ordinary direction
+            , ('unwrap', bit_count(bitwise_and(x, {{ method_data.get("unwrap_mask", "null") }}), 256))
+            , ('src_token_index', bitwise_right_shift(bitwise_and(x, {{ method_data.get("src_token_mask", "null") }}), {{ method_data.get("src_token_offset", "null") }}))
+            , ('dst_token_index', bitwise_right_shift(bitwise_and(x, {{ method_data.get("dst_token_mask", "null") }}), {{ method_data.get("dst_token_offset", "null") }}))
+        ])) as pools
         , remains
     from (
-        select *, {{ method_data["pools"] }} as call_pools
+        select
+            *
+            , if(cardinality({{ method_data["pools"] }}) > 0
+                , {{ method_data["pools"] }}
+                , array[bytearray_to_uint256(substr(call_input, call_input_length - 32 - mod(call_input_length - 4, 32) + 1, 32))]
+            ) as call_pools
+            , cardinality({{ method_data["pools"] }}) > 0 as ordinary -- true if call pools is not empty
         from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
+        join traces_cte using(call_block_number, call_tx_hash, call_trace_address)
         {% if is_incremental() %}
             where {{ incremental_predicate('call_block_time') }}
+        {% else %}
+            where call_block_time >= timestamp '{{ start_date }}'
         {% endif %}
     )
-    join traces_cte using(call_block_number, call_tx_hash, call_trace_address)
 )
-left join (select pool_address as first_pool, token0 as first_token0, token1 as first_token1 from pools_list) using(first_pool)
-left join (select pool_address as last_pool, token0 as last_token0, token1 as last_token1 from pools_list) using(last_pool)
+left join (select pool_address as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
+left join (select pool_address as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
 
 
 

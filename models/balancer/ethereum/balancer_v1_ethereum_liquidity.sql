@@ -1,12 +1,9 @@
 {{
     config(
         schema='balancer_v1_ethereum',
-        alias = 'liquidity',
-        
-        materialized = 'incremental',
+        alias = 'liquidity',       
+        materialized = 'table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['day', 'pool_id', 'token_address'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "balancer_v1",
@@ -29,9 +26,6 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
-        {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
         GROUP BY 1, 2, 3
     ),
 
@@ -42,9 +36,6 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
         AND symbol = 'ETH'
-        {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
         GROUP BY 1
     ),
 
@@ -55,9 +46,6 @@ WITH pool_labels AS (
             token,
             cumulative_amount
         FROM {{ ref('balancer_ethereum_balances') }} b
-        {% if is_incremental() %}
-        WHERE day >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
     ),
     
    cumulative_usd_balance AS (
@@ -88,7 +76,6 @@ WITH pool_labels AS (
         GROUP BY 1, 2
     )
     
-
         SELECT
             b.day,
             w.pool_id,
@@ -96,6 +83,7 @@ WITH pool_labels AS (
             p.name AS pool_symbol,
             '1' AS version,
             'ethereum' AS blockchain,
+            'V1' AS pool_type,
             w.token_address,
             t.symbol AS token_symbol,
             token_balance_raw,

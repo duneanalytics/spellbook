@@ -1,0 +1,44 @@
+version: 2
+
+sources:
+  - name: tevaera_zksync
+    tables:
+      - name: TevaMarket_evt_NewSale
+  - name: zonic_zksync
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+  - name: kreator_land_zksync
+    tables: 
+      - name: Seaport_evt_OrderFulfilled
+  - name: element_ex_zksync
+    tables: 
+      - name: OrdersFeature_evt_ERC721SellOrderFilled
+      - name: OrdersFeature_evt_ERC721BuyOrderFilled
+      - name: OrdersFeature_evt_ERC1155SellOrderFilled
+      - name: OrdersFeature_evt_ERC1155BuyOrderFilled
+  - name: zk_markets_v1_zksync
+    tables:
+      - name: NftMarketplace_evt_ItemBought
+  - name: zk_markets_v2_zksync
+    tables:
+      - name: NftMarketplace_evt_ItemBought
+  - name: zk_markets_v4_zksync
+    tables:
+      - name: NftMarketplace_evt_ItemBought
+  - name: zk_markets_v5_zksync
+    tables:
+      - name: AANftMarketplace_evt_ItemBought
+  - name: zk_markets_v6_zksync
+    tables:
+      - name: AANFTMarketplace_evt_ItemBought
+  - name: zk_markets_v7_zksync
+    tables:
+      - name: AANFTMarketplace_evt_ItemBought
+  - name: mint_square_zksync
+    tables:
+      - name: Marketplace_evt_TakerAsk
+      - name: Marketplace_evt_TakerBid
+      - name: Marketplace_evt_RoyaltyPayment
+      - name: StrategyHighestBidderAuctionSale_call_viewProtocolFee
+      - name: StrategyStandardSaleForFixedPrice_call_viewProtocolFee
+      - name: StrategyAnyItemFromCollectionForFixedPrice_call_viewProtocolFee

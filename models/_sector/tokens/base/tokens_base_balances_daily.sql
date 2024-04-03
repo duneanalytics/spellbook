@@ -1,14 +1,18 @@
 {{ config(
         schema = 'tokens_base',
         alias = 'balances_daily',
-        materialized = 'view'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["base"]\',
+                        spell_type = "sector",
+                        spell_name = "balances",
+                        contributors = \'["0xRob"]\') }}'
         )
 }}
 
 {{
-    balances_enrich(
-        balances_base = ref('tokens_base_base_balances_daily'),
-        blockchain = 'base',
-        daily=true,
-    )
+balances_daily(
+    balances_daily_agg = ref('tokens_base_balances_daily_agg'),
+    start_date = '2023-07-15',
+)
 }}

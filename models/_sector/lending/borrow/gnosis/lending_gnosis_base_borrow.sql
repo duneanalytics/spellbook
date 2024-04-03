@@ -8,7 +8,10 @@
 
 {%
   set models = [
-    ref('agave_gnosis_base_borrow')
+    ref('agave_gnosis_base_borrow'),
+    ref('aave_v3_gnosis_base_borrow'),
+    ref('realt_rmm_v1_gnosis_base_borrow'),
+    ref('realt_rmm_v2_gnosis_base_borrow')
   ]
 %}
 

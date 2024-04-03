@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_arbitrum_base_trades
+    tests:
+      - check_dex_info_relationship
 
   - name: uniswap_v3_arbitrum_base_trades
     meta:
@@ -652,10 +654,27 @@ models:
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'auragi']
     description: "auragi Arbitrum  base trades"
-    tests:
+     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('auragi_arbitrum_base_trades_seed')
+          
+  - name: wombat_exchange_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: wombatexchange
+      contributors: 
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'wombat_exchange' ]
+    description: "wombatexchange arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wombat_exchange_arbitrum_base_trades_seed')

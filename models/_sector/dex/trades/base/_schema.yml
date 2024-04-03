@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_base_base_trades
+    tests:
+      - check_dex_info_relationship
 
   - name: uniswap_v3_base_base_trades
     meta:
@@ -557,3 +559,343 @@ models:
           seed_file: ref('uniswap_base_base_trades_seed')
           filter:
             version: 2
+
+
+  - name: soswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: soswap
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'soswap' ]
+    description: "soswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('soswap_base_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: elk_finance_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: elk_finance
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'elk_finance' ]
+    description: "elk_finance base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_base_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: oasisswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: oasisswap
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'oasisswap' ]
+    description: "oasisswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('oasisswap_base_base_trades_seed')
+          filter:
+            version: 1
+  
+
+  - name: leetswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: leetswap_v2
+      contributors: archie 
+    config:
+      tags: [ 'base', 'dex', 'trades', 'leetswap' ]
+    description: "leetswap_v2 base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_v2_base_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: openocean_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'base', 'dex', 'trades', 'openocean' ]
+    description: "openocean base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_base_base_trades_seed')
+
+  - name: rocketswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: rocketswap
+      contributors: intensodefi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
+    description: "rocketswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rocketswap_base_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: wombat_exchange_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: wombat_exchange
+      contributors: Henrystats
+    config:
+      tags: [ 'base', 'dex', 'trades', 'wombat_exchange' ]
+    description: "wombat exchange base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wombat_exchange_base_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: icecreamswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: icecreamswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'icecreamswap' ]
+    description: "icecreamswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('icecreamswap_base_base_trades_seed')
+
+  - name: alienbase_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: alienbase
+      contributors: intensodefi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'alienbase' ]
+    description: "alienbase base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('alienbase_base_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: swapbased_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: swapbased
+      contributors: intensodefi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'swapbased' ]
+    description: "swapbased base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swapbased_base_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: gridex_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: gridex
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'gridex' ]
+    description: "gridex base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gridex_base_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: baseswap_basex_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: baseswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+    description: "baseswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('baseswap_basex_base_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: synthswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: synthswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'synthswap' ]
+    description: "synthswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('synthswap_base_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: solidly_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: solidly
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'solidly' ]
+    description: "solidly base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidly_base_base_trades_seed')
+          filter:
+            version: 3
+            
+  - name: energon_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: energon
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'energon' ]
+    description: "energon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('energon_base_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: voltswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: voltswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'voltswap' ]
+    description: "voltswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('voltswap_base_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: crescentswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: crescentswap
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'crescentswap' ]
+    description: "crescentswap base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('crescentswap_base_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: baso_finance_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: baso_finance
+      contributors: sofiat
+    config:
+      tags: [ 'base', 'dex', 'trades', 'baso_finance' ]
+    description: "baso finance base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('baso_finance_base_base_trades_seed')

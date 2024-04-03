@@ -8,7 +8,9 @@
 
 {%
   set models = [
-    ref('radiant_bnb_base_supply')
+    ref('radiant_bnb_base_supply'),
+    ref('aave_v3_bnb_base_supply'),
+    ref('granary_bnb_base_supply')
   ]
 %}
 

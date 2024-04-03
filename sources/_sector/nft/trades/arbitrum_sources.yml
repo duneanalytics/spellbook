@@ -15,3 +15,31 @@ sources:
       - name: TreasureMarketplaceV2_evt_BidAccepted
       - name: TreasureMarketplaceV2_evt_ItemSold
       - name: TreasureMarketplaceV1_evt_ItemSold
+
+  - name: element_ex_arbitrum
+    tables:
+        - name: NFTransfersFeature_evt_ERC721BuyOrderFilled
+        - name: NFTransfersFeature_evt_ERC721SellOrderFilled
+        - name: NFTransfersFeature_evt_ERC1155BuyOrderFilled
+        - name: NFTransfersFeature_evt_ERC1155SellOrderFilled
+  - name: sudoswap_v2_arbitrum
+    freshness:
+    tables:
+      - name: LSSVMPairFactory_call_createPairERC721ETH
+      - name: LSSVMPairFactory_call_createPairERC1155ETH
+      - name: LSSVMPairFactory_call_createPairERC721ERC20
+      - name: LSSVMPairFactory_call_createPairERC1155ERC20
+      - name: LSSVMPair_call_swapNFTsForToken
+      - name: LSSVMPair_call_swapTokenForSpecificNFTs
+      - name: ExponentialCurve_call_getSellInfo
+      - name: LinearCurve_call_getSellInfo
+      - name: XykCurve_call_getSellInfo
+      - name: GDACurve_call_getSellInfo
+      - name: ExponentialCurve_call_getBuyInfo
+      - name: LinearCurve_call_getBuyInfo
+      - name: XykCurve_call_getBuyInfo
+      - name: GDACurve_call_getBuyInfo
+      - name: RoyaltyEngine_call_getRoyalty
+  - name: zonic_arbitrum
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled

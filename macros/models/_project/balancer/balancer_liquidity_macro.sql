@@ -32,29 +32,37 @@ WITH pool_labels AS (
             sum(sample_size) AS sample_size
         FROM {{ ref('dex_prices') }}
         GROUP BY 1, 2
-        HAVING sum(sample_size) > 9
+        HAVING sum(sample_size) > 3
     ),
+
+    dex_prices_2 AS(
+        SELECT 
+            day,
+            token,
+            price,
+            lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
+        FROM dex_prices_1
+    ),    
 
     dex_prices AS (
         SELECT
-            *,
-            LEAD(DAY, 1, NOW()) OVER (
-                PARTITION BY token
-                ORDER BY
-                    DAY
-            ) AS day_of_next_change
-        FROM dex_prices_1
+            day,
+            token,
+            price,
+            LEAD(DAY, 1, NOW()) OVER (PARTITION BY token ORDER BY DAY) AS day_of_next_change
+        FROM dex_prices_2
+        WHERE (price < previous_price * 1e4 AND price > previous_price / 1e4)
     ),
 
     bpt_prices AS(
-        SELECT 
+        SELECT DISTINCT
             day,
             contract_address AS token,
+            decimals,
             bpt_price
         FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         AND version = '{{version}}'
-        GROUP BY 1, 2, 3
     ),
     
     eth_prices AS (
@@ -64,6 +72,15 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'usd') }}
         WHERE symbol = 'ETH'
         GROUP BY 1
+    ),
+
+    gyro_prices AS (
+        SELECT
+            token_address,
+            decimals,
+            price
+        FROM {{ ref('gyroscope_gyro_tokens') }}
+        WHERE blockchain = '{{blockchain}}'
     ),
 
     swaps_changes AS (
@@ -189,9 +206,9 @@ WITH pool_labels AS (
             b.token,
             symbol AS token_symbol,
             cumulative_amount as token_balance_raw,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, 0) AS protocol_liquidity_usd,
-            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price) AS pool_liquidity_usd
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, p4.decimals)) AS token_balance,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, p4.decimals)) * COALESCE(p1.price, p2.price, p4.price, 0) AS protocol_liquidity_usd,
+            cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals, p3.decimals, p4.decimals)) * COALESCE(p1.price, p2.price, p3.bpt_price, p4.price, 0) AS pool_liquidity_usd
         FROM calendar c
         LEFT JOIN cumulative_balance b ON b.day <= c.day
         AND c.day < b.day_of_next_change
@@ -204,6 +221,7 @@ WITH pool_labels AS (
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day 
         AND p3.token = b.token
+        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
@@ -224,7 +242,7 @@ WITH pool_labels AS (
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL 
-        AND p.pool_type IN ('WP', 'WP2T') -- filters for weighted pools with pricing assets
+        AND p.pool_type IN ('weighted') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
         AND w.version = '{{version}}'        
         GROUP BY 1, 2, 3, 4
@@ -246,6 +264,7 @@ WITH pool_labels AS (
         p.pool_symbol,
         '{{version}}' AS version,
         '{{blockchain}}' AS blockchain,
+        p.pool_type,
         c.token AS token_address,
         c.token_symbol,
         c.token_balance_raw,

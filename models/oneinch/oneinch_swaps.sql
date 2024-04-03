@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
-        unique_key = ['blockchain', 'tx_hash', 'call_trace_address', 'second_side'],
+        unique_key = ['unique_key'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base"]\',
                                 "project",
                                 "oneinch",
@@ -37,15 +37,16 @@
         'call_from',
         'call_to',
         'call_gas_used',
+        'call_type',
         'contract_name',
         'protocol',
         'protocol_version',
         'method',
         'order_hash',
-        'fusion',
+        'flags',
         'remains',
         'native_token_symbol',
-        '_call_trace_address'
+        '_call_trace_address',
     ]
 %}
 
@@ -106,8 +107,11 @@ tokens as (
         , _dst_token_address
         , _dst_token_native
         , dst_token_amount
-        , if(position('RFQ' in method) > 0, true, false) as contracts_only -- RFQ limit orders
         , false as second_side
+        , protocol = 'LOP' and (
+            position('RFQ' in method) > 0
+            or coalesce(not element_at(flags, 'multiple') and element_at(flags, 'partial'), false)
+        ) as contracts_only
     from calls
 
     union all
@@ -123,8 +127,8 @@ tokens as (
         , _src_token_address as _dst_token_address
         , _src_token_native as _dst_token_native
         , src_token_amount as dst_token_amount
-        , false as contracts_only
         , true as second_side
+        , false as contracts_only
     from calls
     where
         protocol = 'LOP'
@@ -205,12 +209,18 @@ select
     , call_from
     , call_to
     , call_gas_used
+    , call_type
     , user
     , receiver
-    , fusion
-    , contracts_only
-    , second_side
+    , coalesce(element_at(flags, 'fusion'), false) as fusion -- to delete in the next step
+    , not second_side and (position('RFQ' in method) > 0 or coalesce(not element_at(flags, 'multiple') and element_at(flags, 'partial'), false)) as contracts_only -- to delete in the next step
+    , second_side -- to delete in the next step
     , order_hash
+    , map_concat(flags, map_from_entries(array[
+        ('direct', cardinality(call_trace_address) = 0)
+        , ('second_side', second_side)
+        , ('contracts_only', contracts_only)
+    ])) as flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
@@ -229,5 +239,6 @@ select
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
     , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
+    , {{dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, ',')", "second_side"])}} as unique_key
 from swaps
 join amounts using(blockchain, block_number, tx_hash, call_trace_address, second_side)

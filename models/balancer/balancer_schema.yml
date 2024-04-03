@@ -178,6 +178,7 @@ models:
       - name: version
       - name: decimals
       - name: contract_address
+      - name: pool_type
       - name: bpt_price
 
   - name: balancer_liquidity
@@ -208,6 +209,7 @@ models:
         description: 'Version of Balancer in which pool was deployed'
       - name: blockchain
         description: 'Blockchain in which pool was deployed'      
+      - name: pool_type
       - name: token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -306,6 +308,7 @@ models:
       - name: pool_symbol
       - *version
       - *blockchain
+      - name: pool_type
       - name: token_address
       - name: token_symbol
       - name: token_amount_raw
@@ -380,3 +383,24 @@ models:
       - *pool_id
       - name: token_address
       - name: normalized_weight
+
+  - name: balancer_single_recipient_gauges
+    meta:
+      blockchain: ethereum
+      contributors: viniabussafi
+    config:
+      tags: ['ethereum', 'gauges']
+    description: >
+      These gauges are deployed by the SingleRecipientGauge contract and this mapping manually links each gauge to it's correspondent pool and project
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - gauge_address
+            - pool_id 
+            - project
+            - blockchain
+    columns:
+      - name: gauge_address
+      - name: pool_id
+      - name: project
+      - name: blockchain

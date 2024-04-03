@@ -127,3 +127,6 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: PairFactory_evt_PairCreated
+  - name: wombatexchange_arbitrum
+    tables:
+      - name: CrossChainPool_evt_SwapV2

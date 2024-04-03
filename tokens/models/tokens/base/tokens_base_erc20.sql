@@ -1,837 +1,232 @@
-{{ config(
-    tags=[ 'static']
-    , alias = 'erc20'
-    , materialized = 'table'
-    , post_hook='{{ expose_spells(\'["base"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["hildobby"]\') }}'
+{{
+    config(
+        schema = 'tokens_base'
+        ,alias = 'erc20'
+        ,tags=['static']
+        ,materialized = 'table'
     )
 }}
 
-SELECT contract_address, symbol, decimals
+SELECT
+    contract_address
+    , symbol
+    , decimals
 FROM (VALUES
-        (0x4158734D47Fc9692176B5085E0F52ee0Da5d47F1, 'BAL', 18),
-        (0x30136B90e532141FeD006c61105cff3668b5c774, 'BLUE', 18),
-        (0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22, 'cbETH', 18),
-        (0xE2B21D4684b2bA62F3BE1FE286eacb90D26E394d, 'COC', 18),
-        (0x9e1028F5F1D5eDE59748FFceE5532509976840E0, 'COMP', 18),
-        (0x8Ee73c484A26e0A5df2Ee2a4960B789967dd0415, 'CRV', 18),
-        (0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb, 'DAI', 18),
-        (0x4621b7A9c75199271F773Ebd9A499dbd165c3191, 'DOLA', 18),
-        (0xD08a2917653d4E460893203471f0000826fb4034, 'FARM', 18),
-        (0x09188484e1Ab980DAeF53a9755241D759C5B7d60, 'GRG', 18),
-        (0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3, 'HAN', 18),
-        (0x3e7eF8f50246f725885102E8238CBba33F276747, 'HANeP', 18),
-        (0xc5102fe9359fd9a28f877a67e36b0f050d81a3cc, 'HOP', 18),
-        (0xE7798f023fC62146e8Aa1b36Da45fb70855a77Ea, 'iFARM', 18),
-        (0x235226d2050C001FE78dED104364F9C2eB852E42, 'INFC', 18),
-        (0x8Fbd0648971d56f1f2c35Fa075Ff5Bc75fb0e39D, 'MBS', 18),
-        (0xc2106ca72996e49bBADcB836eeC52B765977fd20, 'NFTE', 18),
-        (0x7C34073C56285944F9A5384137186abFAe1C3bf0, 'PLG', 18),
-        (0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c, 'rETH', 18),
-        (0x1f73EAf55d696BFFA9b0EA16fa987B93b0f4d302, 'RPL', 18),
-        (0x7D49a065D17d6d4a55dc13649901fdBB98B2AFBA, 'SUSHI', 18),
-        (0x236aa50979D5f3De3Bd1Eeb40E81137F22ab794b, 'tBTC', 18),
-        (0xf34e0cff046e154CAfCae502C7541b9E5FD8C249, 'THALES', 18),
-        (0xA81a52B4dda010896cDd386C7fBdc5CDc835ba23, 'TRAC', 18),
-        (0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA, 'USDbC', 6),
-        (0x4200000000000000000000000000000000000006, 'WETH', 18),
-        (0x3bB4445D30AC020a84c1b5A8A2C6248ebC9779D0, 'ZRX', 18),
-        (0x88399348f1be999a22cf17c3add5b7709b53af0b,'UAPE',18),
-        (0x498932ae685ac0c79cb74a20f8aaf9beaf22c914,'BBMX',18),
-        (0xb0fbcb979806a54d4262efc2d30443a35a02d77d,'Toshi',8),
-        (0xd4be5c874945aecd9243c0e518c2c96fe7403476,'BASED',18),
-        (0xf3740954b530527c873d583651b2ef16d431062e,'BSDINU',18),
-        (0x09b80f636802d98f19f8bf1a3be10fa41cf45614,'🫂V0',18),
-        (0x28ed8909de1b3881400413ea970cce377a004cca,'Punk',18),
-        (0xfa980ced6895ac314e7de34ef1bfae90a5add21b,'PRIME',18),
-        (0x4b1b0ce9613cd9ffc490b0ea7947238a056d73b9,'FOO',18),
-        (0x3c4b8061cded46a0d705a6be8722f11b8a7d9687,'UDOGE',6),
-        (0x4b28fa45ea3a2aa3a2a5ff65bc6096efb62e4806,'YAB',18),
-        (0x2bc254853c5d58ff19deea6b574bb2f3eb9289ca,'Roshi',18),
-        (0x6922bf6133bb200153d8d41921ce14a03865a86a,'phoenix',9),
-        (0xbefd5c25a59ef2c1316c5a4944931171f30cd3e4,'GOLD',18),
-        (0x2e1d05399319fd14d1df28e7109d8a990c4fc127,'TEST',18),
-        (0x542b25497be740e12d69cdacf85912be0d054d74,'BASEB',18),
-        (0x4bd8333a480322abf385497227f521b5adf94759,'BOYS',18),
-        (0x0a467e4385eb3bd891a7cd950b929d21e5bd15a4,'BDOGE',18),
-        (0x06015a624e6a924c877b57868247bf46cc40c343,'BMOON',18),
-        (0x03e41b83624e77f84baf69c5f9d27fcf6197e0e5,'UPLONLY',18),
-        (0x5165d9c49d2d6467ed82cca0a8e1561c50ad802c,'BROZ',18),
-        (0xcbffb5f50b27e8437300083064be69626085393c,'RLB',18),
-        (0x0c547534fac674e323a41a9de8931ebc21212e83,'mr.b',18),
-        (0x4a292bd0f963a9146d8e5b6a8aa34bdd0848f43c,'DHADRIEN',18),
-        (0x527bb8424126a16fddf2a86e2504b5ed95de5443,'BET',18),
-        (0x3dc12f295dc5a8cf90b68f5a6b9164c75bbbeafd,'SHIKINU',18),
-        (0x9ed58dae43e40669a3903582131ae523bba2f493,'PANDA',18),
-        (0xccaed52539987d3af40662b93d4bf424e86e7110,'bshib',9),
-        (0x3e02e03b9e9a64dfb47c766d49cadb75e672f3bf,'ASS',18),
-        (0xbdfa96234fd62089c81fde2e81cc686f74063e34,'BITCOIN',9),
-        (0x0bf0ba3962a189d56f358143f38b7ffd26b8d48f,'BASE',18),
-        (0xa8fabbebfaa4079b567c9d8662bf6ae8793a7ff5,'PIPPIN',18),
-        (0xb6c3c2baa0df3a526d945c71095a38334f1cbb2e,'$BRE',9),
-        (0x4bd3bcb855892ece8c026129df2a5b7215bf10aa,'Clown',18),
-        (0x0090d5ba792f2eb066ca51a7ba554db3f976bdc7,'COY',18),
-        (0x420f1d2f38bcacda17ab85dcce500a3fc0e177da,'X Based',18),
-        (0xd8c3303d8792118a87193ca1f01ad6da7a6397b5,'OHMSTRONG',9),
-        (0xef9a9ff7eb496cda9f3fa71db5807a4559d297c0,'JC',18),
-        (0xee3e071c22e4ea086e0fdf8bdd861656bb59f2fd,'ANTICODE',18),
-        (0x48e356f709e9b2f87bbe816857f5dc98e7fcf666,'CyberCat',18),
-        (0x348e8292a85df2e629f541b58eadceec22c7af43,'TOMBSHI',18),
-        (0x04170bd897dfb0c3fa533c5d0e6e6b35a6b1573b,'KUKU',3),
-        (0x940953f267c70329fd93476bcce3d661ae3a8f3d,'GOLD2.0',8),
-        (0x37bd306c95cf94ce4acd0c9631e07eeb8180c1f6,'Memes',18),
-        (0x7f7595c7f017e77a33b96a4281423c335d01b1db,'SEI',18),
-        (0xdd2ea5b2ad57a2a53162d182050d01901fe82a71,'DRAGON',18),
-        (0xb521192a79b804ebdc27cd0c6169962e37421c86,'BUSB',18),
-        (0xcc856abdc5df8c75570c11f6ddf3108f0d875013,'BANAN',8),
-        (0x7bec36d90e7bf6326f86d272712d8d77dc9ef283,'BASE CHILL',18),
-        (0x9d7a9ec72f1feb9f75ebc55402c03377e8f5d197,'0xWallet',18),
-        (0x1840e857d7830e405e9bd9ac622acb69c2841ba5,'LPT',8),
-        (0x71c8458adb411db401dfb710a54fc6f6e2583753,'UNISHIB',18),
-        (0x0520b2b6aac406f0cbfe4f157f12282e5331c238,'UCAT',18),
-        (0x71cf2a05cb1837076594c5db83436417e12c8afe,'ODOS',18),
-        (0xdfcf39dd082dea946fa73aa6844b135a25c14924,'LUNA',18),
-        (0x9bf0569e905d79c41ef071f26dce658a2a91810a,'(W_W)',18),
-        (0x8318f53c338786475c836f731af68a0a04e16f35,'ELONvsZUCK',9),
-        (0xe134fc0e54110755b8a0790b879525e9e97d3223,'X',9),
-        (0x445cc85d8c7ad5caf6433ebb0738c71e96ba3ad2,'MOON',18),
-        (0x71b35ecb35104773537f849fbc353f81303a5860,'WETH',18),
-        (0x61269a1a9c216b5f0d6f14d2d576d9bd7c9b2b79,'Las',18),
-        (0xe398b421e82f056cda6a9d89e0bc1c37c48a8277,'memes',18),
-        (0xe4becc9938c1ab721f0a8770c29df055276a8dc3,'KOBE',18),
-        (0xd07379a755a8f11b57610154861d694b2a0f615a,'BASE',18),
-        (0x4bed5d80217f8913fb4a23825b3655b2bd5c4e3b,'BAPE',18),
-        (0x57d0c60284b492cf780e63bb94ec29221e7576a5,'test',9),
-        (0x9fcfad26412261483e9819251db429f6d5f42eef,'4THBASE',18),
-        (0x829a90f2175819af491a9f064342be7f2173a591,'BPEPE',18),
-        (0xc721ece2775341fe804da8ea25072aceae1cbf15,'CRYPTO',9),
-        (0xcc54698cf02dfc233afc0524ece3ae57ed603052,'STARS',18),
-        (0x4ab6c771632a1a4fd844af3102d60816fa3428f0,'ORC',18),
-        (0xffe920630d546127d91662362ca006bc679d2fc2,'DOGE',18),
-        (0x9bb168e7ff1c0f2fbdd844b4348c755dc7500fe1,'HAIRY',18),
-        (0x6d7c8203e25fed9639c504c62437888d9df20a0e,'SOLANA',18),
-        (0x650e52ac086904c58f5703870951b34442f4c649,'XIXI',18),
-        (0x9dd49cd40f3ea69791d5d0b05769ffde707df09c,'DENO',18),
-        (0x487674d4fc93a647a7953079a2476430ec974084,'D',18),
-        (0x6067451115b40d49046a17c2f9a6246363f61c72,'X',9),
-        (0x2dc1cda9186a4993bd36de60d08787c0c382bead,'MAG',18),
-        (0x2c0d83d5ffcbe43de5474ed6555253109ae2d80d,'Grimace',18),
-        (0x09deb3cf353186e7a84abfd7434bf643f77eb686,'BOT',18),
-        (0xd92d3c08cb4ca752d15ca07345ea89ea0e2b02bd,'COSMO',18),
-        (0x7f58f710391f388e45b57eec26a84c4da3b5027f,'JUMP',9),
-        (0xab5315a119daa8fd477f4f05c7a27902b5a62ca2,'BRE',18),
-        (0x1a781b52907e2f64b85259dcb04f0cb06e94ee51,'RFL',18),
-        (0xd884d846816a4170cbf7764223f7ba4b9adb136e,'BTD',18),
-        (0x3d2abc8226751336a969099fbc7bdfc2b1a750c3,'BRISE',18),
-        (0xb68a7f85a41eef30b9566650de453d11cd092824,'XXXX',9),
-        (0x72e2b62f52e2b653196556b42b5509f7de1e74cf,'Sats',9),
-        (0xe7e82109bed6035883cabb3a8b3e7caff26f3637,'UNI SHIBA INU',18),
-        (0x77078c748d39f63aab4acf716cf106280b64cd6f,'BNOVA',18),
-        (0x635b3db751b22050be9b3fce8646c29d06e07dda,'PLATINUM',18),
-        (0x75f5244bdbaf618ff73a28cb58fa3a829105683d,'BalderINU',9),
-        (0xc0cfe5aa683a01b92e64a43b289dce8453a2af2d,'KTOSHI',18),
-        (0xc306eae34928194c63ff67dc69f3adba7f24be8a,'BaseEveryDay',18),
-        (0x63e71271719f03d7233f4fa306b6ea868d0f52ff,'BINU',18),
-        (0x052d2583978cce71846d3149392da2bc47bfff33,'Base',18),
-        (0xbfff0f4ad194e3e7fbca4e05dba217e33093ff3d,'BAZED',18),
-        (0xf831726541deb9170e670e08520f070d384fa8b6,'UNIBALD',6),
-        (0x17b9e20f347e4b28000b36c03c7393c8834b9579,'Phoenix',18),
-        (0x52c45d3068c937cb1e6b4a7f2c2a66b85056dd24,'SHARD',8),
-        (0xad1a4f25485cbfeb9c58ef866cfec33c98d0f10f,'AKITA',18),
-        (0xea788c6a668f0a45ce606c58bafc7edd4df21463,'TUMBLR',18),
-        (0xba71cb8ef2d59de7399745793657838829e0b147,'SIAM',18),
-        (0x2fdabd0781324d9f4f042c047063c1dcf925a2d6,'CPI',9),
-        (0x030911e5a61e8e7fdf69d84aeddf80f5df6cca0c,'BVOLT',18),
-        (0x84616c05f88c4c78583cb21cfa1c7517daf7c2be,'OS',18),
-        (0x5801c902b8c1c018e25310da915e888813488d40,'BLUE',18),
-        (0x6928ee5aa4020612df03f148d0816535e519cf72,'BBOOST',18),
-        (0x92e0405a8a719720304f236b51db7fc79349f33b,'WF',18),
-        (0x4afb52b9ef54e43c2ec5f1998f92219315f5bdaf,'BASEUP',18),
-        (0x2573cfdd2eb13054812f6c7580e16d0e050aa027,'BAPE',18),
-        (0xbc170de8b0c1462c032080b738fac89c14f681ac,'ORCA',18),
-        (0x980eb532c374e15c4b8e9c6d950a124c587f17b2,'XBase',18),
-        (0xc0380a46d714a3e70f7d4d1744e029f6105a9933,'BULLET',3),
-        (0x2a89dcc4f8638d54275fa3db0fa69336a47dcc8e,'PSY',18),
-        (0x2629e5e4df1991331227da8c2c5741924bedb92d,'BabyCat',18),
-        (0xe472263ca547700bd513afc6f8d05cb59ab45797,'KUKU',3),
-        (0x87f5c95e28697b4c7add1e671014c01068c022e6,'CHEEMS',3),
-        (0x590ea8ed05816e6f84e746bd1e648c569c0cf9c8,'test',18),
-        (0x6fecb4d944c235c7046d118297d514e7ec6f52ad,'MUSK',18),
-        (0x41861bca254df09678d5010d86653483802bd4da,'BASESFM',18),
-        (0x3905f874b2dccd5c461194fccee06f17d68add59,'MEMEBOT',18),
-        (0x6635990132e313474528a918a9bb70e3636165d6,'SFM',18),
-        (0x83d28eeab64e540186e195dce746e4649ddce3d7,'PANDA',18),
-        (0x19286425bd275036a9c2846f8627ae1ee3053864,'BEAR',18),
-        (0xe646653943b9645d6e46912dc101f6c53821428d,'ELON',18),
-        (0x41f1368d4fca8d131a9f819992be4833908e52d0,'DeMeme',18),
-        (0xfe05879f00dddf763c52abe88b7d62ddcbf21bf1,'ROSHI',18),
-        (0x74171bc29c75388354d8046fe619d63aac42153d,'XRP',18),
-        (0x361b8671969be3055ec774951d9db22d6b026109,'NOTBALD',18),
-        (0x0392935aa93220e13e1aecdf27647a6f1caa1992,'YOTSUBA',18),
-        (0x1ea821131b46e910d8d1aba3e005f542d07634db,'UNIBALD',18),
-        (0x022c6d65e6785c813592c72cda27f607de57b7f8,'KITTY',18),
-        (0x3a10787b63e062faaa4e59535136c02e7fdf7f9f,'BMEME',18),
-        (0xe26d8637d0a24592879795c7892dcf256f537e11,'HOLA',18),
-        (0xba68123c0b15a9c5bc7b46fe3d8ba899df60f707,'POKE',18),
-        (0x6ecf2911eb3d4a7eccee9e57eb08c5d69a7da53a,'𝕏',18),
-        (0x7b396572d0795d4a854ffcae426c56cf45919924,'MeMes',3),
-        (0x01282212ec91d1303f0d4d7fbb93a95301feb1f7,'MooN',18),
-        (0x3541df3bf048e0761fabee131b9e2f8153277d7e,'BTD',18),
-        (0x845144c3a6b8061c05acac9af6b6a05fcf790c04,'BASEUNI',18),
-        (0xb0d68cd0d2f8218119201fe31bd0d8d58cd0b96e,'Pump',18),
-        (0x824dfd36f5b18bd3468ec3a51351c9ed964346ed,'SPRK',18),
-        (0x08de5d50e2c1a0d58a02fe348df7bde07b0fd046,'가즈아',18),
-        (0x5f5e4210f3c3c8118db827a4eb08146de6c592fd,'test',18),
-        (0x3f0af4a02d322cc556b23e733af3aa605df778a4,'STONKS',18),
-        (0x69405e10c7a24d35c160ae1e600c4b3ad104b625,'BUNI',3),
-        (0xab8a1c03b8e4e1d21c8ddd6edf9e07f26e843492,'OGRE',18),
-        (0x356177b452dbae18b5a4b43b7b5324bfbae235be,'DFD',18),
-        (0x28096f04212a12d8335d69e55c2ec519c62161d1,'SHIT',18),
-        (0x5da7f589b02ff743d301ed9372f064d9a182c4e0,'FOX',8),
-        (0xa4e331a873b209676d4e37d9553f2779803ec41b,'DOGE',18),
-        (0xf71f3ad5df23cc78362cd5fb312182e1e300c34d,'CryptoAI',18),
-        (0xaff968866d4db0b2b68f44974ae94f1e0fc5e011,'XFBOT',18),
-        (0x88894de47ab90dec9b9ddf4f50a93d2b4662dd10,'DOGEPAW',18),
-        (0xbf5e51bd3262c071f081f5844fc4eb59e39a04ed,'MOON',9),
-        (0x74b1f982f2eb774e5eff07152181e192c394aeeb,'MAKI',18),
-        (0x1194f9d8877019b496a2154d5abcef6352918c81,'TPEPE',18),
-        (0x59aaa8951bda26d38e7e13b4363e398abf03cb9d,'VVS',18),
-        (0x8376fd311b2ee5db730e0ee21f53b22ece88e326,'SHIBAX',18),
-        (0x6b4712ae9797c199edd44f897ca09bc57628a1cf,'UNIDX',18),
-        (0x0fa70e156cd3b03ac4080bfe55bd8ab50f5bcb98,'YOU',18),
-        (0xd6167430c5ce5b0614a6a6e39c2d626188a518ec,'PIPPIN',18),
-        (0xe69775a43cea30f9b1ad5d575cb4725d193d408c,'FRIEND',3),
-        (0xc9c6af99b3a09adfb2502ad34d076f697c981e56,'test',6),
-        (0xc49954d52f1389bb65b87313c62f326902d1da3e,'MOKI',18),
-        (0xa4220a2b0cb10bf5fdc3b8c3d9e13728f5e7ca56,'MOCHI',8),
-        (0xf734eec9e190450fd56989c56befe776ba3e44c1,'MARK',18),
-        (0x3a5261a98b96457a53ee2d0f4ff50b2db67764f5,'NewLimit',18),
-        (0x77cfae4f1955ea0092e05ca0114e1395b991e916,'WELL',18),
-        (0xa9d62e20703e04254767ac31d5d69b520f0f733a,'NORUG',18),
-        (0x7d1b04f97dda1fddf0ad9ef5a606e4a956261ac8,'BASED',18),
-        (0x6d497d823448567090d9f42835d8dc33e17f2904,'NMS',9),
-        (0xb63cdf0880eaaf4d1586d347f0d7bec41acd7e2f,'unibase',18),
-        (0x18d41c98231fb2868a1205d61b29e3eb34b8a0c1,'USD Base Coin',18),
-        (0x4c3f3d0e5adadf1a062cad7de73b2299b4652d1f,'$XXX',8),
-        (0xb7629d3e4eefda019f8ee3a20c2f6959cc94a9bf,'UNIINU',9),
-        (0x4376c94784f10b7a65283f8e3487bb02869d9b9f,'DIAMOND',18),
-        (0xffb3461a481d768f2d19d2ea3de5c55d9748dc2b,'MoonX',18),
-        (0xb72f3ad792cb332df8b0524143102d78f0405fe2,'UNI',18),
-        (0xfca70cd83b5c761c52433d7db63146ec5273ff3a,'GHOST',18),
-        (0x716912e36cf22c26132ce46c0a4d1655f0e7343c,'CBOT',18),
-        (0x86c8839c4f90a40ab0d7f157c1029b566d82c615,'NSBF',18),
-        (0x4a50f3375332636051005716d262f6af1f858ee9,'撤池死妈',18),
-        (0x19892385c2aded379eff40ff14adb54a2bf8e57c,'FLOKUNI',9),
-        (0x7d7c4a49f87812d5a3743124f02fab43ccc8209b,'DONTBUY',9),
-        (0xd1ce481ef725d15fc61e26cc4c079f906b598677,'FANTOM',18),
-        (0x6946c1629cafd790adf3988a076100258538fc92,'MeMes',3),
-        (0xe9773947af6656098d5449959d227a342428eb2d,'ROSEGOLD',18),
-        (0x4a3a60f8a2cb0399215fb52f343a6926a6ab9949,'BASEUP',18),
-        (0x27051ed6e25e1dda9f03a554f3a6cec3ae375968,'MEDICI',18),
-        (0xc7745ba977ba0c79c62d7bd3e07d29e7a5e1dfe2,'FRIEND',18),
-        (0xd7b89d7c56ed90e49c02108c3528881bc7893a64,'Memes',18),
-        (0x674b0b6b95a9e6e7135d15dd1dadffeac3d5e3b8,'LUNA',18),
-        (0x897a628b5d1cd6bed693e12c70f0dfeaf6a93bf6,'LUNA',18),
-        (0x7d8461e7b9509ae35299fc9d1d770f8125f45e5f,'XAI',18),
-        (0x964a74014a609d8c209e6736e39a924b10d99bb8,'BOB',18),
-        (0x03d53fb63a7f3a09fbb009faa1d3f52c49880c1f,'OWAI',18),
-        (0x186da313e8f9eebd06e858cb16cb9546d7fb0bcd,'ACME',18),
-        (0x8c4cc4f74c545b4c4960485dbfdabd7f8987bae3,'FROG',18),
-        (0x8086b4a8907c6e132c243387f60bcee9adb64f4b,'Toshi',18),
-        (0x9ec307ce7051d903428d797f7a96791aaf618618,'UNIPEPE',6),
-        (0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657,'BABY',18),
-        (0x60c3d8cf471b3ec7e17296cd9291f8f415654217,'IrisBot',18),
-        (0xf989e48856152d9e6d790bbc305abf979aac091b,'XCL',18),
-        (0x023c9e3d9f66ba02b1134c2de33ead6d3c5277cc,'UMoon',18),
-        (0x9e97c29ae4c6fab85790973697517a3c68dce423,'BITCOIN',18),
-        (0x778e678b12e3cf6fe4284d8919e570f0f49e0a68,'EPR',18),
-        (0x5bedd8fb043ba371494657788c658d9e79249e89,'GNS',18),
-        (0x5770e72d3cf7ee15b0859bc898d3fb71eb039d2a,'KEVIN',18),
-        (0xf2176125f5b77ad6701aec70f799335bf49f50f1,'BAG',18),
-        (0xfb625c62a852c918215f9055bd3a92caaed7f1e6,'OSHARE',18),
-        (0x5d3d72171cf705bf95066c712a748e9f53a8bd1a,'AMB',18),
-        (0xc88629bec19d8c06b7e0bf10428c24eae0625b38,'APP',18),
-        (0x77dec5ca86c12ab9b3a7ce17f3ecb883b468d4ba,'UNICHAD',18),
-        (0x8135a836ec9e3388a7072f227e19c7e5a4f187b5,'BaseDragon',18),
-        (0x5fe5876a1799887012b65708a08d01d9d09785e3,'PIMP',0),
-        (0xc3c6c6aa9b4aedc34d26438dd7266a6d65605dcf,'101',18),
-        (0xd0265f152a9c53d3c3c513ee4af70d8ccc22bd66,'BLUCK',18),
-        (0xed4e41093189c3a2b6a805d143a9a3ba556933d9,'UNICOIN',18),
-        (0x87c4c89eb4e319ee2e30e79484677c01437cc7dc,'ToshiPrinter',18),
-        (0x412470509b49efe409028483b5799300d5f1fd11,'tesr',18),
-        (0xee2c583ebbc2865eed03e28c5f0c6440326ee1cd,'UNIX',18),
-        (0x27d2decb4bfc9c76f0309b8e88dec3a601fe25a8,'BALD',18),
-        (0x940590ce5a5a3d169cf5b37876849e89290422f1,'WTF',18),
-        (0x869fe12d250f8a6a3a2e4e8ba7c34b9cd1e7d710,'MILADY',18),
-        (0x3ed4bb8666d97ddfff83382e0958ca764d5fcdde,'BASEDOGE',18),
-        (0xc615b26ed441822c2e94e2100220705ebb7ca576,'TOSH',18),
-        (0xc43ca75ab56cce9e91cc780ee31c302dcb15dedc,'BONE',18),
-        (0x951e0e1057b33fd05725af31ef8888b80315e3dd,'UFEG',18),
-        (0x1c512d242ffbc38a28dcb904fdbdef632c6edee3,'OHN',18),
-        (0x2a666ea117fec887a87e227d51be6eae4be8b6e4,'BULLET',3),
-        (0x0bc6ad6ecf6d9da0e9fbb3b9a2810fde6d111d28,'UNIINU',9),
-        (0x9070eb48831d20abbcaea853cce6ccb41de8f0e4,'ODOS',18),
-        (0x822e8cf2ebc0c25590fa570c4d08023293772450,'UNICORN',18),
-        (0xf2b28615add298e85de584d8ca713186a0c9dc3a,'SPACE',18),
-        (0xc15088d6696d686172414ffe46e5c9efa07a64b1,'UPEPE',18),
-        (0x580bb4f8100d63bd18efa9e94c54d09dbf69282d,'BUS',18),
-        (0xc97f8b9dc6c21c950f3aa8d53d1b82457267bb5b,'Memes',18),
-        (0xefbe2195f8c7e30cfe270fcaa8b1492f70e1b5f2,'CuteCat',18),
-        (0xa43bf1994dcba35a6e8f81b4ea19e57ad19aaec6,'BREAD',9),
-        (0xdd9717efc0c41be79f3b6ca22e122c81cddc3a77,'BULLET',3),
-        (0x4a831e0b854d101246ce9dc430512c0b44f16a04,'X.Cyber',18),
-        (0xb0cf919c14d3738b5f4f7d46cc7229423f0d2d56,'MUSK',8),
-        (0xdfcbb8a2ed67ff21b85857d8b4cae07d4acc78a5,'SPACE',18),
-        (0x4d850862d73b6c9d7fe2836988a2a91037b75b8b,'TEST',18),
-        (0x45305b5c2fbdea20831647849e18e36b8b89de72,'PIPPIN',18),
-        (0xb5955c18b66e11d37dd33f8bbd34f59bbf6e9982,'CHAPPIE',18),
-        (0x5a5af7ebe2dc3dea0d2d74ba655123b4d30e2615,'BOOST',9),
-        (0xa9dcfab3c6c184d21a8ecda1d1fa678d528df5f5,'RoD',18),
-        (0x28ba8cda99ce54d8ac87c6f5754feec3783b189f,'MARK',18),
-        (0x7f5373ae26c3e8ffc4c77b7255df7ec1a9af52a6,'axlUSDT',6),
-        (0x705680430892c799672336eef847c2ce3185a751,'BRE',18),
-        (0xc833a9a54f033b2ad5250f7f2c79e3af0cefa001,'SB',18),
-        (0xaf662337d854a2bb91c2e9891898e11aab0b8b26,'OS',18),
-        (0x676db610717b813576a78b6eaa33ead417d17868,'YIFY',18),
-        (0xb8d39d53bfdd96ec66486c56f14bb239fffba7f4,'Unimeme',18),
-        (0xfe3e0f325750f16514b01c0420e7bc89aa932c24,'MVD',18),
-        (0xc9db1767c8b05805b71d1a8e0e0f133734c2a2be,'JUMP',18),
-        (0xba5e6fa2f33f3955f0cef50c63dcc84861eab663,'BASED',18),
-        (0x506b9049c74708f2f901f3733b400684128cc610,'BROZ',18),
-        (0xeb466342c4d449bc9f53a865d5cb90586f405215,'axlUSDC',6),
-        (0x5599a9d3f175997c3db2f939719ee8df0b0a3813,'BASEAI',18),
-        (0x6b0afbc9aafced975ecf0ec0cb7f370008b24901,'AUTH',18),
-        (0xb83915c5b7dd332b3583236e01788cc67832be0f,'KETAI',18),
-        (0x8b5dcd6246a76f6eddfb3440fc9b3188a0d48a91,'GNS',18),
-        (0x474327ea96cbfecaf6f664386c16a712066008a1,'BASED',18),
-        (0x51866500e8fe75349359b33d0ed1557fe37d0ff5,'BASEGO',18),
-        (0x0868d3aecd29fe4e4f4490b4d3d0e937c6ef07ec,'SIS',18),
-        (0xd3532210faf14e7cb12b7c4a479da4cc4ede196f,'FREEX',18),
-        (0xb4bd6f6aecdda08c64576a72f26801aae25b761d,'RLB',18),
-        (0x447c80e14f6e0672f09f8c70d3b0394690e444e9,'Babyuni',18),
-        (0xf005c7fb43567cd46333e5af91970965976b8766,'科太币',18),
-        (0xbc8a14dd5194def2c11d8670b537eb8270e23951,'Shrimps',18),
-        (0xe4843328576d0cc47c1249d8fd8c674e3606fda3,'SUN',18),
-        (0x69acce18aaf01a9352bda5d63d11da3861931e04,'科太币',18),
-        (0x99811470921536451a627944d9ff2cbfaf5b4259,'SUPER',9),
-        (0x5c46a576216fd05436a1a47aee60abb047237965,'YFI',18),
-        (0xd28a21db3ec627b497a9e76c483b6f73fe5990e8,'BPD',18),
-        (0xd249e4a04d59b2e9a81c5d551fa3eaa32ae54319,'test',9),
-        (0x6324065012b16da37aa4086edb49aa9d3754e691,'BTCBR',18),
-        (0xd9bb73daec967fd45c8df13b7cd5912eb8f1ac88,'UNICHAD',18),
-        (0xeefe4d8f78e6b772f1d81f2de6a75e4de42294b0,'MOON',18),
-        (0xb2313f61c02fd0c6fca4ffd8e9b8a127a37a347d,'PRERICH',18),
-        (0xc9b6abd7584735bb0cd745102d28bf1377027037,'PUNK',18),
-        (0x0711cf2942ff624dc1ebc72ada9306d37edc9bf3,'FIRE',18),
-        (0x155c5afb2ce31f0b1e6526234a3d105256a96da5,'PYUSD',18),
-        (0xe8694b6bb4c870faa6f0846644b730824588be33,'AOE',18),
-        (0x5cfa1411be5e8ed38c7591c1779e988673e375d0,'wiBOT',18),
-        (0xdce8fd19d16330cee317108e6e02e4ab32882065,'EGD',18),
-        (0x3ec3e693e1f14e6c90698ddd49c70f1b33ab0b76,'BULLET',3),
-        (0x2f3b1a07e3efb1fcc64bd09b86bd0fa885d93552,'MST',18),
-        (0xcdbdaff8207ac6587ae11bd7efc187ed60271489,'BTD',18),
-        (0x49c8fbf113e1ea6b5f943ef7ca3f0fa5ab6f04fd,'GLADIATOR',18),
-        (0xcad9f148d2a8cdda33c30ab3f31c2284168dc83e,'大吊币',18),
-        (0xef3b8512196ab65f8603b82d1fa5a29bb5adfed0,'LICK',18),
-        (0xda6b36a6bfb33fb47d515a516c0c4cea868ff3db,'ROCKET',18),
-        (0x86ee92901f9ec336d1f9767aa162589eb81f3b4c,'TOSHITAX',18),
-        (0x6cbac25c01ff2d59647baa470d14aa8c30cf66cd,'BaseX',18),
-        (0xbff9e93db2fae1d32d38c5a88886e235534eb5cf,'PYUSD',18),
-        (0x82b5a76706caa4425d543a6b8440eecfa3f1b4d4,'JOYBOY',8),
-        (0xf112265c7b7348fd4145a9293ce184d170d78081,'GOD',18),
-        (0x24bd086379ff41abcda58e19d55587dd9240636f,'TRUMP',18),
-        (0xed6e6dfa1b700fe766a2b045d73abf5070e24a5c,'SPACE',18),
-        (0x8b7cadfa9317ce58c087d8421f01ceee1f579c68,'Babyuni',6),
-        (0x0c46a1c0d89d2162dc7e5eb186c9767be8a6a258,'GOGO',18),
-        (0x798f2025daed85a2ad1b723edf028c90ce753994,'币coin',18),
-        (0x70ad8399aa676a341615d8b7b818345816a38d9e,'MUSK',18),
-        (0xab064a1853e5ea8a6d5f5a9ff8655f08f122cb0b,'Cheems',4),
-        (0x7e0da49525e0b6704c30fb2db30fa53af4aa8f5e,'Test5',18),
-        (0xefe65f6fae1609086cb02f7826eeea6634f17f64,'Cardano',18),
-        (0x59a2ff3d1b488beed09a1c4baaf6864541be8888,'科场币',18),
-        (0xc28e91648e69cd641935fc1c64d97d2fc2b7e6f0,'Hibase',18),
-        (0x5926dae8a10573553dd47688b0b838f605157894,'BUSB',18),
-        (0x8f5bfa0ee5ad1657570b09b308d4e2f0e236ccee,'0USDT',18),
-        (0x6be6d5e9f1c9a8eb2e784403599dbaa87cc5fe06,'Bitc',18),
-        (0xb5bd123f4affa4a33e63c7973520d9804648b000,'SAT',18),
-        (0x889de9e301d5387a11c68f803373c1159b0d6826,'ABBOT',18),
-        (0x5f66077abf1ca841e577c3c5d15c29558e5f8162,'YABADABADOO',18),
-        (0xfffb7488ab5ddde106b5bef56e7c179700509842,'BRE',18),
-        (0xa011e20b00253a971f8c7e00525058e7d62af34d,'NAAN',18),
-        (0x9aadc47383296f426aafe30b872bfdc091bfd660,'soso',18),
-        (0x488e7cdee678da25225acf020d5888b007e0d638,'EGG',18),
-        (0xe4a2a1a85a067b6263cb7664ac9d005540057084,'UNISHIB',18),
-        (0xdfd04ee126d9d88a04324442ad7a0a65b7fdf62d,'TURBO',18),
-        (0xe8cfc3bf3a700a433fd8e3dbd2ee0cb1c425fcfd,'SPACE',18),
-        (0xe3bdaf1ff1cd42436e0b071ab47f4569e5def4f4,'MMY',18),
-        (0xf943824362a0dda1591477cb67807793ba3e0e01,'UNIBASE2.0',18),
-        (0x764d3ab8264379665eaa773d5eb1a5d967d23d1b,'joeb',18),
-        (0xe7ea6a99048264a6407163a10caf88781252fc3f,'COLIN',18),
-        (0x7200f076e7a792a899a16eafc2c7815ff79f2a12,'ENGINE',18),
-        (0xf6fb8b4f20e8333d28f5588dacbc79c199d4ff51,'BPEPE',18),
-        (0x1881564b0803afe2b12fcec016a973ddcaaeb9d3,'$Shdw',18),
-        (0x76881df3e68b50882e2ed4583a5126b32275182c,'Babybase',9),
-        (0x3ba7273924f6e051aa06411030746a2b32de163a,'test',9),
-        (0xaf00059d2c87f08ce458364d78bf8c30e9a2fa23,'MEOW',18),
-        (0x7afb55d01207325d9b34d238d6dc8c874a90e0db,'WF',18),
-        (0x593219b92aee47486ffee6bf47354d8a45f6c414,'WHITE',18),
-        (0x8dd9ba318e09c226f540d5e7744b41af5f2484d1,'DOG1',18),
-        (0x41b5db6b25464290e2a17b5581baeb2f0b665e5b,'科太币',18),
-        (0x78a09db01227405552026044455c38e97897e99f,'BLS',18),
-        (0x671950d8ca4ed0f20a4bcebd1733b3dc30e1028a,'BTD',18),
-        (0x329b7e856e626b808571cc7a5134d68c5b4cfe15,'DeWhales',18),
-        (0x885037903a5e49860b5ba1a7fd554041604ad013,'DIP',18),
-        (0x3676d670f685964419d818e8b81f3c5a187a29d7,'UNICAT',9),
-        (0x7d478555028a17f988bcb8b545d07368d160781b,'XD',18),
-        (0x5ec04efafc059fa465ddbce69bb34dc91b7c0305,'OATH',18),
-        (0xac157f9552f8aa12696fbfb9576376a38f22fa1d,'SAFEBASE',18),
-        (0x19246664f1f834ee26f8a4d6fe6e048f15be02f1,'BaseDayOne',18),
-        (0xfd6205128a8cda24ce44a78e1f12b025b6a6487c,'LUNA',18),
-        (0xfe7c60c074bb6950ce86f6c79570335a68917e22,'sBALD',18),
-        (0x6848a335b77c6647154b16b77b3a6026f0b32b90,'NOTBALD',18),
-        (0xd42a620017fabcca9152c4509bbb78f5d4f384ba,'科太币',18),
-        (0x8be0c069c3e21f8ffbd45807a379b84304192e5e,'DRKBASE',18),
-        (0x31d1c8bea264ed84c3d4899009eea1254e3168a5,'TEST',18),
-        (0x756e368783da78bc7f9b122421f030dcdd3836f4,'DOG1',18),
-        (0x3a3fea7dfed2af73cba882e4b3ad57c624de6095,'STONKS',18),
-        (0x8161a41f260aa59fd52c180056bb008c912e7033,'UNIX',18),
-        (0x10ff48c2ef5378a05ede218a6aed9e5f52854fdc,'MOON',18),
-        (0x1eba7a6a72c894026cd654ac5cdcf83a46445b08,'SHIB',18),
-        (0x5fd6dcc05365a6673daf60cd1916a67de01696b8,'OPF',18),
-        (0xdf61a70b5510f82c2565089eadd80d603331633f,'TEST',18),
-        (0x7effe55c30f131b984f8f7fe04740b3e80c7d312,'DOWN',18),
-        (0x211d6bb1070cb5785b0967d2119537ff015df493,'BPEPE',18),
-        (0x90262fb3051f89be3d9adcfff84440fa0a7cf4bc,'MOON',18),
-        (0x40c1130db1586b5bb5e0a15876a02375e706a367,'GRETA',9),
-        (0xa3ff851ec03bc9b43d76e6927ae235d06af191b0,'POKE',18),
-        (0x2128e1dca0242b52868de092a4a7994695b01fb8,'MAKI',18),
-        (0xf14b32bd27dbf8431bb6131d2bc402c4991d1634,'TURBO',18),
-        (0x6c9bac28ea18a9b514f5ab0dd554a38428747906,'FLIP',18),
-        (0x15f4838385eb5f6b60b39cbb4d6918a69638cf61,'NUDE',4),
-        (0x5bd88d8d4ba2ed079aac7f82a1abca6307114f6b,'RFL',18),
-        (0xdb6ddbbf1193e0f6920ce1d1066087ffae18baee,'test',9),
-        (0x43389a3fc9bcbbb647721d9a17a728ba2c7d22a7,'OCW',18),
-        (0x7465b1870baec48463fe1bdbf71939651019da4e,'WHIZS',18),
-        (0x02ad7f3001f6b7ab5ee3c777d46ccf8a71b1458f,'UNICORN',18),
-        (0xc54f4479898fce145e5a02929f7c98bc99382d11,'UNCAT',6),
-        (0x77224c6fe41a629e1e5c807e2bcb7a03021e9aae,'SATO',18),
-        (0xcba5986c305adb436b4f1a6ddd662a0331403d19,'HBAR',18),
-        (0x790f472beaaa0c7f48f0fba0f36206d9dda21f8d,'OCS2.0',18),
-        (0x05d08818c7ec374fc1c37353b1fe64986c9f8a18,'LUNA',18),
-        (0xa946335e69465bb57267ca7f8efcd67356a752d5,'PepeJoseX',18),
-        (0xb2e533a0a40231218c7f2ff4b02a79c14c0a5694,'GLASSES',18),
-        (0x8544fe9d190fd7ec52860abbf45088e81ee24a8c,'TOSHI',18),
-        (0xc7914cee2acb643d73e50759ca383dc3e93f6fcd,'MOON',18),
-        (0x30e9772068d3cd5eaf0d9605280ec55ba74c37ca,'UNICHAD',18),
-        (0x9d71e145f27962870b409d2896253048bf260a22,'SAFEBLUE',18),
-        (0xb6904b6692a4dda41098861e3c67698403ee382a,'MOON',18),
-        (0x802f2df71db5bcfd7d607d3d327d1d1cf5bd1ec9,'SAINT',18),
-        (0xe31fec783b69c92895586b755c7bbbf000716576,'babyUni',9),
-        (0x57d3ee325c85342a3f5a73f11e6162f3eaaab0ec,'ELON',18),
-        (0x0eef67a47ddd41904a8a7df81afc9383877c2782,'MASK',18),
-        (0x03080aa08c37641b268b1c5e61bfcf57490f08ee,'BULB',18),
-        (0xfc5e7c116367e2e95ab8be6d7bc3c4f335fcf666,'CyberCat',4),
-        (0x825dadfbcc0c7fa93cc1f30dfd93e1b40c3431ea,'KRIOS',18),
-        (0x50da2df8516abd418bf3f60b8e074b9e2915241e,'SOLAR',18),
-        (0x6bbbf2251a837d5c2804fac31502e8f8d5558de7,'PYSHARE',18),
-        (0x6d437216343ec425e08ed95b8b1d0c3c0a0afdd8,'🐶',18),
-        (0x9889f80b0cd786cbb9a109b8da479b0b1661b656,'BSAFU',18),
-        (0xbc0de9d8682844ca773c579c8dc5c1f26cac8665,'KTK',18),
-        (0xbc1f644e5850e1f4b133c62fa0c414e38d452039,'Moonbase',8),
-        (0x85e8a3087c90992badd74be44f18626b2359f490,'FriendToken',18),
-        (0xdf8118f28c4c4bcb07d5d2474fb9ef0fb6291cba,'SHIBARIUM',1),
-        (0xb90c9dd073487b68eda0a4d48d2a884c8fdc300b,'JN',18),
-        (0xdfb8ea7c04e94bd673f7ceac0d289901eff33aee,'PEPUNI',9),
-        (0xb7918daa08d40f8d774acfeea1211d2d65218d98,'KUKU',3),
-        (0x7388f8076ccba591d96e9999f1e641e4ba74e17d,'BULLET',3),
-        (0x5598a452144443a3fa79fc764e5ef79aa678236d,'BASE',18),
-        (0x1ce5507baf7cb0b60f957fd56463ebca1fcfeaa9,'NICE',18),
-        (0xedb5a9ef13d1736558f2b749b3fcdd87064d6b46,'MINU',9),
-        (0x148f77199cc4cabf66a3f3e2c8ff5905e674bb46,'ARMS',9),
-        (0xf44b799f63ebb70ece95efc4356325616ccb08b4,'TEST',18),
-        (0x374cb0ed20c1f2b87b78d1d1f0ad3f0d5f68f53c,'BlackDoge',4),
-        (0x48151c2a01ecbc449672ee5e526dfb252db306b6,'PYSHARE',18),
-        (0xe68eac1b70f164686b88ee5d3a070467e90c756d,'Diors',18),
-        (0xf508dbe4e2ac1e5c9503e6c56d4bf2fcca66a4ab,'TURBO',18),
-        (0x51c4437195689342fa132ad5cbfd5ea8855d6bca,'TDAO',18),
-        (0x501e98a05e2860062488dcc48d9788f9627b0323,'科太nd4.eth',18),
-        (0x750806268ca5a4616f95d8f6a04f7e8bf85edace,'BTD',18),
-        (0xc394f5d26d83af8fed1625992071b5d164f1225e,'DEB',6),
-        (0x0a7df211de68b10e9a833a42d8d30b9f0358ab6d,'BTD',18),
-        (0x08d3dbb06253480594c972c2536ccd682882f042,'SUSHIBA',18),
-        (0x5af7ccb46e7266ade38e165a83777e038b3ee1f2,'CPEPE',18),
-        (0xe8968658c1c00378c7bbef4de74a56152bd09a74,'PIPPIN',18),
-        (0xa5468185520d3b26d91922e231a0f3c4b027f98c,'AIBASE',18),
-        (0x60a259c9b8e5eda9d5f1a7d7803578c5d8d6691f,'GOOD',18),
-        (0xc505a885ff1fb0a704391309a1d8a5bc81f2f563,'BASEUP',18),
-        (0xb6302a25d63e54749cebc05d8c5d14ea108cdf3e,'BOOM',18),
-        (0xb355d661dc4bdc9020f47452cead018ee72efe11,'BWOLF',10),
-        (0x59a64802a3d7feb1ca1fec6e5c2a0a935bed4109,'UNITOSHI',18),
-        (0x4b5343c18fed80b19cc39191d893e45c09f13a61,'bstax',18),
-        (0xd16cb0c49cfd2684d4d77509701bbebac093d3b4,'NTR',18),
-        (0xd0488bf918ec41c844e8adf3e808c05f85f808a1,'ENGINE',18),
-        (0x42c75e803979d7e62f8bde9a21a46d11f587017d,'BWOOF',18),
-        (0xa9eb863c3c0545d6b4e9f7ea9c740efa9210a69c,'LUBOT',18),
-        (0xf5b53630bd01cf14ab79baf5fae16a603b815196,'GOLD2.0',9),
-        (0xdaa4b97a1bf2ea986bd824d81a14e2e64c87b912,'babypunk',18),
-        (0x45622e5bce7524d911210a25f4f83b6c8766b735,'Balls',18),
-        (0x3bb78fbd52d3caed0d8d30215f35ddf081e6fbef,'NFTs',18),
-        (0xeaaf199fcf8d31005bcd88e9678fe7de290f7601,'CB',18),
-        (0xbf4a99d04c94382b38ec15f3aaeef0e18f167355,'Xhero',18),
-        (0x151e25260662ee39b9fac9da7be8b09ebe29422d,'CARDANO',18),
-        (0xf292aeacc206a713fa1068067b3fc84d83c921ce,'BPUNK',18),
-        (0x2710b58f7392e40d3210876d38fdc0faf4986daf,'SHIB',18),
-        (0x72963ec5fc7e4909b27805dfef15e11a161d314f,'HOPPY',9),
-        (0x8497023e8197069a167bd5fa27b1ca3f7243c080,'HTDE',18),
-        (0xfcd48276e1da6d321e4b77f92d524bd1edce8b96,'WOOF',18),
-        (0x65c99a8697b6963f47c3d7808d45d36ad6d5605c,'MEMES',18),
-        (0x60bc3d6f2168ce072847008fd19d87650826c046,'MEVFree',18),
-        (0xa227d9a6c01a02d690cc855e12dfb2e77c05cbee,'USDT',18),
-        (0x15721e387b80c13e08dbf1ff669896014b854388,'똥코인',18),
-        (0x90f538f55683b696d585427767d298a7ab6352b4,'BSB',18),
-        (0xb0b333ad62975c602c5680d580deb0220f8f2416,'BASEMOON',18),
-        (0xd33278230610217dceb2c868035f910146715c8f,'pig',9),
-        (0x37defbc399e5737d53dfb5533d9954572f5b19bf,'BLAZE',9),
-        (0xc9dde283efc7183961c5c3a10a29f6b19a01a955,'PayPal',18),
-        (0xcae13a0a39e2e88f902f817c18a9b7d5f355fdc7,'Doraemon',18),
-        (0x6dd5aaf6f7de71743ef6f450ae6a4ca31faa1703,'test 1',9),
-        (0xe330b05bb58e5502ad79693b94bd8ed51036ac71,'VIEW',6),
-        (0xe40185ec615cfb41b9d89c7d90783b5a2e0644f2,'Memes',18),
-        (0xb22a910217b760e9ed19a1f82837734d3558dc71,'BDO',18),
-        (0xe1f9ac62a2f34881f6fe0f84322de9d7024c2b8e,'MOCHI',8),
-        (0x9595b5d5ac7e73bfeae7de3a49b9f8dc792d99c9,'SUMMER',18),
-        (0x7df6072effd5f628375a3a5c63337110d5bd0a57,'AUTISM',18),
-        (0x695950511525d0b7dde34634d12c91ae7ce96a5d,'FileDoge',18),
-        (0xf31a3f15a6766cf701799d4d1f0f49e9448d3da8,'tesr',18),
-        (0x4a6d65b4978b977cdf4e10307a5e50aae61ca373,'XNXX',18),
-        (0xe4871de371cb5bbe7ae2e83a8568b07b8745ff9a,'Unishib',18),
-        (0xc787a01f737f31fd3cc1d3f856e33d45fc42f4b1,'SILVER',18),
-        (0x6aa4e4291fec425a56f09907f6de7476ad986459,'UNIBIT',18),
-        (0x0babc096925fe17245c11c862889717851911730,'BASO',18),
-        (0x71c7845f45e9d09733db6709e3026c4b7daee1fd,'STG',18),
-        (0x8082650308b355570148fd493ad3668b58745c2a,'BULLET',18),
-        (0x2b219c8074ae7236c959b8beaa4424bf86c3ccb5,'RISE',18),
-        (0xc1bc0e1521d4ece2332c2673914caa99dfe77cc0,'Unidoge',18),
-        (0xf7a63622553523dea621312a12371429a5ffdb8c,'RFL',18),
-        (0x05082a2df6658c93ed610a9d1a33a04f95181e82,'punkX',18),
-        (0x69a3f51cb3c2cfe2d5058e3f98ac1556e0322047,'Japan',18),
-        (0x39207556261acf5845d7b139bc3f9e9750a9dc82,'LUNA',18),
-        (0xe285701c87d4c7a686470b9564b19a2c928b74b0,'SHARK',18),
-        (0x19cfa0b2a5eb533db0f55b49d6fa291c104bc009,'PICASSO',18),
-        (0xf57022d777aa7050ef4602132d4f718f9e637c74,'UBASE',18),
-        (0x370b5d39b4ebf1f9451e61d7c7988625c4d8ec74,'BRE',18),
-        (0x382bf880d4046231a90b834ada54931899dd1c5f,'YUMY',18),
-        (0x80e2d2c27cb47946554ee4c64a9e8ae9571c9e62,'nd4',18),
-        (0x69665cd12e57993ea679f24a09e121089c67f9a5,'X',18),
-        (0xdbf2e30509160df521af82ecc2619b9149ba4afc,'UniKing',18),
-        (0x4d6e9f11a2ad9851807ea42b8a8c01f0dece5095,'KENNEL',18),
-        (0x7faee94ef9d96a0ac6d931dd8820a2538918c941,'BUNIBOT',18),
-        (0xc5258b9a5ba8ed87e29d015febfca39be49c5b3a,'$META',18),
-        (0x11c377170448a102480b54a6a94f0be293920555,'PYSHARE',18),
-        (0x594fc28b49457b52b3bf57fa909522c9d0198666,'科场币',18),
-        (0xdf159f5965f4e2b62a1d4ba59efe671c8eea4c37,'Pixiu',6),
-        (0xbd2dbb8ecea9743ca5b16423b4eaa26bdcfe5ed2,'SYNTH',18),
-        (0xdea4d966d886505c56126e51843c4dbfedcd5f05,'OHMZ',18),
-        (0xd880006ce242d35c2cbf7d57abf7e00d7d5b2882,'RODEO',18),
-        (0xa25e48c8b654989537cf93b35195f50f95cce77f,'UNIPUNK',1),
-        (0x3bb7052220c7b6977bb57e06536600bd71db0ef7,'IOS',18),
-        (0xfa0439d77aafb8f8cce1288adf0bbc2bdaa8f0b6,'BASEGO',18),
-        (0x606b5d8a1bb59c81945f5623c5766a71432ff1d1,'UNIDOGE',18),
-        (0xc253ac74406e9747c952f840f4ad56dc57347fec,'MBOT',18),
-        (0x0de3c6b54e6417752b911aaeaf7163db2c0803c4,'ketaibi',18),
-        (0x61f8b15a5381efad32c9670f0aec8aa2f7f6cfc7,'EMT',18),
-        (0xfbf1efe30061cbc358646a11cc5a4795233569d7,'YFII',18),
-        (0x30e0e6258587e5abbebfeb8a78dc34b14e0ecb9e,'BBC',18),
-        (0x42b67dd8453a2ae204eacffa910b860514022275,'BUNIBOT',18),
-        (0x787f9c23212e802077b87f94d9a81ddfb529bd73,'SHIBM',18),
-        (0x6d9ff3b95a199a8d48773aa8076bf421722e46a6,'JAKE',18),
-        (0xf85564346237f4fe01be8fee5eeda877fc6cb9cd,'Zach Kirkhorn',9),
-        (0x52d68921e606795fba50c7161d881103eb3bd7f8,'BaoCang',18),
-        (0xf54d1bf5ff3457d6812e6826d549a939302612ae,'CASINO',18),
-        (0x7ce34ba405dcf3f472a0957770a8d5a3637ef80d,'BERA',18),
-        (0x77dd9de17290d58572c1992170ac4da69d46dfc0,'DGWC',18),
-        (0xa7b0a582bb393df9e658a5a2cd72494292ec171d,'TEST',18),
-        (0xff6c9e9e0da2cd5cbc1ea8cfd83db3da15d4f592,'BABYUNI',18),
-        (0x496ba72cc2e374ebe9f6e4cf3cbe8d484625e5e7,'DOBO',18),
-        (0x158486e432da5c0577749da745a7abb8e4357094,'PRO',18),
-        (0x5c3d79770aa15c8a5834f0e633dbe285dd82d899,'MUSK',18),
-        (0x391b7daefd795a80fba407c922f7373137d96973,'KUKU',3),
-        (0x7905fe8614fbab96a897af84e706c23afdfa2a0a,'BASEUP',18),
-        (0xb5ae8f503bfb19d867ee8089ca28c5c82bafb02d,'ToshiX',18),
-        (0x2632b46f20d32ea4699fd109b49867531c8699f1,'HOPIUM',18),
-        (0xcfd633c00b42306cb4ede458aa1776d8af47da46,'UNIX',18),
-        (0x5d38372508d64924e0f77e7820c52523fb78f7f3,'test',18),
-        (0xe1c1e4d2d0cacb6b5b0cb99571de5a261fb622e3,'WLD',18),
-        (0x384660a8c2bac68a2d4bb68964a9ec6e2cda2e31,'UBANK',18),
-        (0x9e562cd558beef6330158c8a539cc2a0fe41a128,'Gladiator',18),
-        (0x95a5e4f26d7e60981b093c439a2e14a4a618cf6f,'OHMSTRONG',18),
-        (0x64881cbc4a8e8dfaa099dfed8f9db7a77e514c07,'PEPE',18),
-        (0x2a2583df484b17d296c869a4a83dc74b950e473b,'SEI',18),
-        (0x6d9a0ee9cdb6456030fea88dce27818a9fe7f8d0,'ABASE',18),
-        (0xff5272731180513ee08d93747a7b86548456aa1e,'Toshi',18),
-        (0x55f6ec541a953510e3c193a9392e27048adef0f2,'Pyusd',18),
-        (0xd9015935eb9d9d80a7dfd3be9bdccd0f9ebc61b2,'BTAMA',18),
-        (0x6058f1f1984c498b1012484148496aaf59532eae,'LUMER',18),
-        (0xa62f5f23eec9e9f7a4f6a3af657c4f14f1bffc1f,'COMESHOO1',18),
-        (0x55ba42a3dac6ab829eafe0ae84487fd1ab4427cd,'WAFFLE',18),
-        (0xc36f91f5168e5761065cfe6cf7b1b5312902425a,'bae',18),
-        (0xf4b3f9e459776439075571731aa130e61bbde6e9,'BLAST',9),
-        (0xa1cbe1a04900f7ed60dd677477fe6be1cc01ddce,'UNICAT',18),
-        (0x4b1e7de60cd4c69c5445e0ab7d57ae9e9af3d65d,'PYUSD',18),
-        (0x4f3399a0894b53e349080d313ae23088f344e5bd,'MTC',18),
-        (0xf790dba6eca258a82f1c9100134ad78997a482e1,'OOO',18),
-        (0xf881f4da116149328248914d68fb029c04fdd284,'69',18),
-        (0xcf9305cd628560244857ea2bc40e803ba9bd37ad,'BAPE',18),
-        (0x201790dbf49feb3730064f7ad3e2ccc927865d90,'BTD',18),
-        (0x53066c6f3abeb4a92261e6304c7cbb5ddd75853d,'SENT',18),
-        (0x997a21e5894400d4869d76ceddd1771ab9eadde1,'ASBOT',18),
-        (0x3a9330a9a2f88860347d75eff6566a16391a7c79,'SAOB',4),
-        (0xba624a966b743f174e4c667b1ed60c3b6cdfd236,'UNIpepe',18),
-        (0x81e8294a3027a4a0858928e08fbf1dca151364ca,'UNIBASE',9),
-        (0xb8d291c675941c388a5a4df8221f6ab33511c769,'NEKO',18),
-        (0x0efdb7200ad517617e2d505e455465de5dad9fec,'GOKU',18),
-        (0xf5e360ea7114eb4c34b26a19de1e585d9a5abaa7,'UNIBALD',6),
-        (0x7e31d3293d9f61cb46235e7c9862c3d3016af596,'YOC',18),
-        (0x17ba2ce432f3c82d5ccc7b08022382a0507a4d97,'HOWIE',18),
-        (0x59628ff0e00f4c23a941e7795e5a33afa815763e,'DOLLAR',18),
-        (0xd8f46b96026c037ab782e729ba1487c0dc4d5ab3,'FRIEND',18),
-        (0xc9364c3bdef695a2427575774186fb481577f620,'FSHARE',18),
-        (0xcaf7c95ba8755c731f7cb7c60cc22c3d65404981,'Shrimp',18),
-        (0xd2251185ea0991924ba141bc790e09e5316eca86,'SILVER',18),
-        (0x7ff176ec3e39e6e1756903bad98d669f35636615,'BLUE',18),
-        (0x3df9682f8ae7cc731f5d73129e52481a1084e902,'BRE',18),
-        (0xe1a005cdae7476d1268ee1ff8a73bebc75326b6c,'CRYPTO',3),
-        (0xcac9ae85e7742854044e75f920500c8f6f0e6100,'owlto',18),
-        (0x8e7067a29be5682596bb3bd6bea2d53d49a78ceb,'BRIAN',9),
-        (0x30eb03822bd4a697e3916b62c15598152938e7c7,'Dog',18),
-        (0xc90a9a3ffc1358f53b71770da7db78e564b7b69e,'DOLAN',18),
-        (0xa912e695d8b7259604c004ce7d5bbff714713cb5,'BASEGO',18),
-        (0xe4484a973b9e285b24b79f76a616199eed0c5628,'BTSHARE',18),
-        (0x218aff2244b1eb14807ba9f1b3bab5044fd5af7d,'BAT',18),
-        (0xc87c49ea834ea286a2b312f0f5a091931fd490d2,'HRLM',18),
-        (0x3292afaa94607db238e4ef1489c37042313be1f1,'MEDIC',9),
-        (0xa36a548379cd184b86ec6561453263134718121f,'TOSHIBA',18),
-        (0x17b5fa6001839d37cb71a73830bf9f1b07ece3cb,'HTS',18),
-        (0x4be8886bbb62bb299918592506c04d9b8d6a9df2,'BLAZE',18),
-        (0xac8e4a61b8442be895bcfc8d94e2dce1d42012ab,'Sats2.0',18),
-        (0x239dc51b56116b25da4b69a15a9cdd3738fdd2ec,'LEAGUE',18),
-        (0xa5cec5af66bbc5c50fe0b1c5dcbd73a0ce61a091,'CUBE',18),
-        (0x25ebcdf89006c059c30fe68a522ef9fc69d73c5f,'BMM',18),
-        (0xf9c32a798fb81af557a8a936a207fffc114fb4c7,'BINGO',18),
-        (0x4c272790e7e9b8f4e398fc2c48ca3dfd597e4ad9,'ECHO',18),
-        (0xc07f94e5879c7f5d64401c9e8b44eaec3ffdc619,'Grimace',18),
-        (0x767b045100be6630a70d5f460ab40bd329aa2bfc,'HOCHI',8),
-        (0xdb10466993717f01e937e74f9a90d6e0b5f3f8ae,'PEPELE',18),
-        (0x0ceafef0a65a7ec82c1f51007327f2dc48690424,'GOLDENGIRLS',18),
-        (0xedbd835d5aa6287ab52cd8ecf53546c9b7d46a43,'FOX',8),
-        (0xfb825e93822dd971ebdfdb2180a751958dbd5e16,'GND',18),
-        (0xcda930f19f95513685839e47902c8efbb4bdfa73,'BULB',18),
-        (0xfd72aa08376774019bbdd20258716d9773f1fe57,'Gladiator',18),
-        (0x35d3e0b18c68071e5c563a64658860f874a66aed,'SILVER',18),
-        (0xa9c9dcb054421dedc9d9006cffe843d0a5cd6339,'SUS',18),
-        (0x0afb795bafef8865c9253cde1650ea246c6cfb20,'UBL',18),
-        (0x33d6ecd3af57722465080810f0b7773e868168df,'BLEND',18),
-        (0x16b71d4249d1b74f3ae2f9c791e38e2bd2b5835e,'BLUNA',18),
-        (0x90de0eccf5bfa8cd8de44d0a89f14d222eae04a8,'test',18),
-        (0x618cdcb51c7098168eab7b4dc6b583189a3a08ac,'pepeshibdog',18),
-        (0x565146fb6f4be792f5747a8c339a8a204e47c33e,'KETAI',18),
-        (0x31ed44dcea7eff1292aaf46ee51ec1eb2bac7fa0,'UniETH',18),
-        (0x8318412dbc3c687de3141bc439c7c1226c0db0c7,'BJOY',18),
-        (0xba8e7355c48370fc2d5fff8bb04a151b33bf4db5,'babykitty',18),
-        (0x6e1db553c07c26db3742d2081a583a1ca78b110b,'SHITCOIN',18),
-        (0xea26e09cc4a01e0b45a1e46e0936df092526b803,'BINO',18),
-        (0xae26c316fd891d0397ead0a2d38f0d831e305151,'CHK',18),
-        (0xff3b7a53e36182a4a3097fb77c6806482526f4c2,'AIRBOT',18),
-        (0x0df861c8da22167c223c7bad5accb969577e46d3,'POKE',18),
-        (0xeaec4630248504256a3b393bdb3e6b38f67eae2a,'FROG',18),
-        (0x8b61cf10351c8bc318c150a222dc924ab9b8f98e,'BRE',18),
-        (0x351c7054ac6f8b394def5ed406f4d884665a9256,'EXAMPLE',18),
-        (0x376584de7d2649e792df20aa3614d9f6fadc28bf,'PEPE',18),
-        (0xab19391232019de3ad3b3d86644ea0f8d3e29a4f,'Base UP',18),
-        (0x67cd6b0758b639f9341b26804dfb75d91512b5c8,'BAG',18),
-        (0xf9db5875e0bae4557dad700bf35a91c3708727a2,'BM',18),
-        (0xd2d954d929c48f9d53b571c60dddc0850e7e134e,'K0',3),
-        (0xef175ddd8cc66840508b7b282602a25620bb017d,'basetech',9),
-        (0xab081b11df9fde7ead24be2c6e0ff2aaa0bf226e,'(BASE)',18),
-        (0x1b9bc9c7639ad9eb501153bd25fe5641cc80bfe6,'科太币',18),
-        (0xafd718367c6fde0e1c61883c95192654a7c30f11,'BASETOOL',18),
-        (0xd52111079c29b12196f6704cb4f51bf356dddc86,'DOJO',18),
-        (0x432d02ba1f26a95336450269c6430a9ed24f91d4,'MEMES',3),
-        (0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,'USD+',6),
-        (0xc1be7b99570639e9846347f86f1e15f9aee2fcba,'UNIBASE',18),
-        (0x7d643553065c7a8f2b56d63154ec0d2ad95e6f97,'BTD',18),
-        (0x3d93eedbfbac95b0ab1ce15ea0c1c3d06f5bf5e5,'BANAN',18),
-        (0x7dde27ef15c62fa577a119468fdc7d6a7c7d4c35,'BAPE',18),
-        (0x153a738e06a4204ffe1c2fd762cf3edc0519d294,'SAIBOT',18),
-        (0x1d963d57c65d4a02b2d379c5104b39378a95ccda,'LMEOW',18),
-        (0x3f81db1d5dbfa4882cd8d683c3f6e88fbd8ba3fe,'BASED',18),
-        (0x51a8d5307290f8e8db66a52e716f58bf5f459778,'BUS',18),
-        (0x9ba961a84a3e0bd6b3c93798e3c9bf945deff143,'BPULSE',18),
-        (0xeddf619d30c5116397bc73e98c3dbf840dac5eb4,'PUMP',18),
-        (0x92d7c503661d97c32cd92fb90bf7fe2390ccb0ce,'KETAI',18),
-        (0xa8545bb15bf4ac6d1b843f331414209a5f8bfd31,'BOOST2.0',18),
-        (0x6653dd4b92a0e5bf8ae570a98906d9d6fd2eec09,'RCKT',18),
-        (0xd126f78f2c9067a1c4504d08f05ba716e25b5eed,'UP',18),
-        (0x35176bb912ffcab3b67b6e03efd617003b9cf7b1,'SEED',18),
-        (0xe3241d24d1c626f1fcb2ca5fda73296adf44a1c9,'BULLET',18),
-        (0x6c336ad293e95dde6840e44e468412ea5906839a,'BASEGO',18),
-        (0xdf377168363896637cf100557cdf6eb1a3d73206,'BASEEE',18),
-        (0x3022a19f0f101177344d2cadd1056bb3bedd66e7,'PIPPIN',18),
-        (0x7c48d6d053a8004ec634c0d7950b1de2d6a2d7c4,'AERO',18),
-        (0x6cc909b10c1ba5fa95a93e219106c95f8df80acb,'MEMEKING',18),
-        (0x6b12d6f62b32d059dee0d455ea2375f87f0e41ef,'$MYST',8),
-        (0xfe264795e7b13d0c42cf49742eab1945d899f5eb,'BREKT',18),
-        (0xeac0e08cbd77ed8851639a58b796e12eed338169,'BBOOST',18),
-        (0xcd3eda8e015f3109c404668fb9f86778337622ee,'UNI',18),
-        (0xfb3c50ae5b08c6210467f11eb9fcb54636d89529,'APE',18),
-        (0x9c639e52bdcf79b25dd5d8430c6ead211a50fdaa,'MMF',18),
-        (0x790f1583a15164612db66338ab197fcc0b46f51c,'INDIA',18),
-        (0xf90b5e5854a48edb4151d620a4f0742cdaec31e8,'MOMO',18),
-        (0x5c1d0c79cb0d623dc57cc017ce994bb4eca762fb,'TEST',9),
-        (0x012f31659fa114aa8d5598081dc6266b265ed485,'SOLAR',18),
-        (0x3fe81f3bb452534eb23d3ed7b1161cd31d6853ba,'FORTUNE',18),
-        (0x81481675dcc3a0c830be813ed50895e88953fb59,'babydogeshibinudogpepeeolon69in',18),
-        (0xd34ab85a106e7ebab99014a43dc0b9bc1d98b0c4,'UPEPE',18),
-        (0xf9d9a990797a09cbdb441778d7dd73db70076ce3,'KeTaiCoin',18),
-        (0x6121e3c64c5f7501747d9bb2708872aa5068cd79,'test',18),
-        (0xf93c7e472096597bdf0354e1481197bed882002d,'BSB',18),
-        (0x93b055b0b39962c2db3d542f74593c1192aa75ac,'BASEGO',18),
-        (0xa5625bf8ed50a1c1c67978003857b6e9c6b85bf1,'PUMP',18),
-        (0x17aec0f0a7465ecd1cff2bcdc615986f24c91915,'ZEROBOT',18),
-        (0x6171a3535cdd2bd4fc0eaabcad526e156714e509,'DIR',18),
-        (0xcb750d07ef9a0d59d262280b0dc5a6cc47389de3,'ZRX',18),
-        (0x199b10a03ea939fb8efa346d5c6543662b6cbeff,'PIPPIN',18),
-        (0x0e0bd8ee7976a6fccf6cbd83890bb416a62b317c,'KISHU',18),
-        (0x77b019e8d0a73d4f796198ce4ab70fe67a40e602,'BPUMP',18),
-        (0xc032ec9670fd3d649fa3906e33350174971456f0,'XRP',9),
-        (0x37d3ce28b5b0fe0d8e20fe5a1ebadf894ca6bbb8,'FORTUNE',18),
-        (0x952af3b92237be7f8142d67d8c15b1dcb9c34dc1,'BDAO',18),
-        (0x781b69435df39ca4b4e861d19b714f295c82615c,'DAMN',18),
-        (0xa02abd58902460cee424f063d62163ae04461ebd,'LUNA',18),
-        (0x3b22ee274c82e2851303ecaac729f8e82acdb69b,'JUMP',18),
-        (0xddbb2873c04506df59d681b74bc65f84537cd70b,'BYC',18),
-        (0xcdbe302ea75861b0a4b70543ea21a5084b2ae38c,'Base.tech',2),
-        (0xa11293e2f50c31448ffdba4dd1dd984e677fdb9c,'ETHXY',18),
-        (0xc3155116aefbc2e22c94da816cc2eff463ac2122,'SQUID',18),
-        (0x357f21b409cea7e38f894f624cb21fa8a59bc5fa,'我日你妈狗庄',18),
-        (0x2574fd35e8912b59ac62ca9448f5f27e08340e10,'PEPE3.0',18),
-        (0xe716ff74f3d21fae1922d93d92f23be34cce3397,'SMINEM',18),
-        (0xf67b0405b7b88738d5121b29b765520432b516c9,'X',18),
-        (0x0a7e7e800212fe6a248064f4daaf2ba9fc2a760f,'BOYS',18),
-        (0x8cf9d7bb03bd6084e906fd7f67d8add226ecdd71,'MMY',18),
-        (0xdd4ac477d7c98a1fca789efdb9c56b14e25bc35d,'BTC',18),
-        (0x87845adb6317430a755752018a8db4d1c438b9fd,'NODE',18),
-        (0xf23b020536e2e17aa906a5871282636261446fec,'BEBE',18),
-        (0x5a26844b0fa18d770407feef582fa0cb6ea3d5b1,'BSTR',18),
-        (0xcb5a8f18758d5e0a6e06059371d6c7ab1b54020a,'BGPT',18),
-        (0x4d23101c5e1785b6f7a83084247851899d7d7793,'Uniun',18),
-        (0xa77aeb835fb14fdfe67aaa31e6e5e3f2f1848ce6,'CYBER',18),
-        (0x60f6b26c9d5f2577ccea8864f375e79ec92093e3,'GOD',18),
-        (0x582ac83c67320e1bfba4d5ca94891b601a735ee2,'POOCOIN',18),
-        (0xc5e48538de26d28eb64a99a27c99c951d06e0cd9,'test',9),
-        (0x4199f00bd6a0f5a22d50de36b70570ee77e83077,'KNUCKLES',18),
-        (0x44c01e8286c27c952cd8c7929f4757ce232ac400,'mr.b',18),
-        (0xe9f2999b764cf117e56d02a923adf9ac7007fe92,'GLD',18),
-        (0x5a0e66dc55158d6a4b3c59285ec371bc93bc2264,'BOLD',18),
-        (0x9e53e88dcff56d3062510a745952dec4cefdff9e,'DOG',18),
-        (0x5ea785bd3cc8c41921434e0a76037ee66c1b3adc,'4x',18),
-        (0xe7eb8cc354d5efdbf513a9cc61d3e73714680de8,'BOOST',18),
-        (0x9f2f717ef0073a9978fd9902c25aed338d7202fb,'CHEEMS',18),
-        (0xcaf12d74a0c83fce3f09fda8536cef98b07553aa,'BORBIT',18),
-        (0x0000d103aa0a533dfb5c504c0300f1480bb58000,'TOMORROW',18),
-        (0x36824b46e6f08c96605b45b756e25685905472b6,'BBank',18),
-        (0xd56918649c26befcf4ed64dcb75c042339879c67,'BASEEE',18),
-        (0xb06bb80997520cd784c2fed8e715baf4f464d563,'MMYSHARE',18),
-        (0xb66fb6ad253bf3d1a27bb17ba4777814f415859a,'EXCELBOT',18),
-        (0x78a087d713be963bf307b18f2ff8122ef9a63ae9,'BSWAP',18),
-        (0xa3c0b6e6fbb50c3133b6d0edb4ba71f0a4d987c8,'ToshiX',18),
-        (0x037a60d9fd3d492e37b0fc3e0349f5add7332763,'HTD',18),
-        (0x4db9219c26369ddd01097408276d9213d416e058,'GLADIATOR',3),
-        (0x1cc6441d7b2f6ca2e2ece4a70ff5aa75e47a3aa9,'BDO',18),
-        (0x1f1b7487a95260957152656a36ab0af10634ac0c,'BASEG',18),
-        (0x88c5887bbd40ede80fefff61883575ec135d289d,'PIGGY',18),
-        (0xcb4e58b8358a4b8b035f656d104e347a654955b6,'UniMoon',18),
-        (0xc1d53693327f1774ecb7d790bf1a7c3d298490f7,'+NIOƆꓕIꓭ',18),
-        (0x4699150c96fcc5628ebc5a8d024640e5eef1e776,'HRR',18),
-        (0x4be9a1dc580bcd88d01a73f000367325caa78470,'SBMRGD',18),
-        (0xf0706131a709be9d820171c323ab9d0efcabef81,'UNIDOGE',1),
-        (0xc4cd4ef5d8307bd14b539d47a3fc10b402921a19,'Base.tech',2),
-        (0xb3b3fc64acbe82c31e056bf762d9571aed13b5ba,'HODL',18),
-        (0x5533b1815fcfca409bb844a99df6790dd8f63528,'Wojak',18),
-        (0xcd739465497aa5b39bcf4badddd6d3723409ee27,'BMar',18),
-        (0x35932ac2fec368e17e8ec170ed8089740c1edcfe,'UNIBOT',9),
-        (0x39042eba4b553c7e64a749add69630cf6176c9f0,'BULLET',3),
-        (0x8dbe93c16016f37ab01fef4064ba4711f16b3781,'KVB',18),
-        (0xb42ae71d004ab53fb5f117c55ba812871acacc4e,'IN',18),
-        (0x27ec35c9508285a67a2efe7b62618c959dd74be8,'BUNI',9),
-        (0x982a90ccd93e62309f6b23df037c30d125c12b32,'SILVER',18),
-        (0x4cf1191440461beb2a09817dba2f782adadbf673,'BTRADE',18),
-        (0xe96c379aa1368b8899e3dae4abe655adf23ff0a4,'FORTUNE',18),
-        (0x26851d322f3ea0714e2f162cf21ca5458fdb3d68,'XBASE',18),
-        (0xf899b0906f43ea1381e2c13868ebf130edb6c231,'UNISWAP',18),
-        (0x2fd715029da3af0ef480b0ea56616102a4c832de,'OS',18),
-        (0xcd911239e19e42879a8c60785f35523c2c14b856,'PEPE2.0',18),
-        (0x39f5e841c2149088e9617d35d2464a66ce125924,'Diamondhandmillionaire',18),
-        (0x90e029d522cf3e6fa9905f4c8653219f528b8226,'BULB',18),
-        (0x5071a604f6362d0bd22e2de309857bc5eea59afe,'CIVIC',18),
-        (0xf8e0901f6f0f8f7e102717a4746bda3c188412b7,'MUSK',18),
-        (0x30b880030abbe59a7e1b52a9384620b90db51590,'INDIA',18),
-        (0xff5ffd9c12d6a6aab2aad42f0ba74aa62d673cd1,'XD',18),
-        (0xd0c960d6e3a63631ad4b01e329da7837c64fd0ea,'BM2.0',18),
-        (0x71e8f538f47397cd9a544041555cafc7a0ce9ae3,'BOOST',18),
-        (0x9af23c8773adc2a899cba10b60718af3cf06c647,'FAIRINU',18),
-        (0x0827fb6c0ac160f01f216f1af9f17454fc85d814,'UNIBASE',18),
-        (0x2b58de3e29fa83aa6cd9cf99fa1c9a38080de84e,'KENTO',18),
-        (0x7ce8cce224eead05aed541343b3571be439ec3a8,'PIRATE',18),
-        (0xf55029b9a61e43b9be78f5a3927f9f9d14f8ac46,'UNILORD',18),
-        (0x7b67d256146604c0610b06c804ef30327092378f,'SEX',18),
-        (0x9b6545904530e4bdd139fc7dd93d89d9852bd779,'SILVER',9),
-        (0x9873ae59cd967e3f911cc71d2396805afd19db82,'CPAI',18),
-        (0x90d7b8aa927348696d4ca93ec896d2a59b0e0223,'GGOLD',9),
-        (0x3ae01c775f06dcbc0d9a8307e0842d54ee06e443,'OS',18),
-        (0x70368091b4c5f9d58b6b9273972f1003524bef88,'Bram',18),
-        (0x1355846a72b6341a0dcdd42bc215a0d8aebbe052,'LUNA',18),
-        (0x75bfabda570c1b998930e76c266e9866db6cc627,'FRIEND',18),
-        (0x4a3a6dd60a34bb2aba60d73b4c88315e9ceb6a3d,'MIM',18),
-        (0x23ee2343b892b1bb63503a4fabc840e0e2c6810f,'AXL',6),
-        (0x1a49655a4AFca3D004E058ef0ea0D45eC158ae80,'AERO',18),
-        (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913,'USDC',6),
-        (0x940181a94A35A4569E4529A3CDfB74e38FD98631,'AERO',18),
-        (0xeB585163DEbB1E637c6D617de3bEF99347cd75c8, 'cbXEN', 18),
-        (0xFF0C532FDB8Cd566Ae169C1CB157ff2Bdc83E105, 'Fren Pet', 18),
-        (0xf3F4aA6B2D396eE1656F5fd177F441bE822FFfBb, 'FRIEND', 8),
-        (0xd5046B976188EB40f6DE40fB527F89c05b323385, 'BaseX', 18),
-        (0xC1985d7a3429cDC85E59E2E4Fcc805b857e6Ee2E, 'hETH', 18),
-        (0xE3B53AF74a4BF62Ae5511055290838050bf764Df, 'STG', 18),
-        (0x6944C9F9997fB1ccf8191300F104cd11636623D9, 'GROK', 8),
-        (0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93, 'crvUSD', 18),
-        (0x1dd2d631c92b1aCdFCDd51A0F7145A50130050C4, 'ALB', 18),
-        (0x54016a4848a38f257B6E96331F7404073Fd9c32C, 'SCALE', 18),
-        (0x4A0a76645941d8C7ba059940B3446228F0DB8972, 'CAROL', 18),
-        (0x071267674754F086DC6fDf5cb03288db4074F434, 'BDRIP', 18),
-        (0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452, 'wstETH', 18),
-        (0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4, 'eUSD', 18),
-        (0x7905EA12CC81a215A5F1D0F46DF73a53E19E9264, 'TAG', 18),
-        (0x9483ab65847A447e36d21af1CaB8C87e9712ff93, 'wUSDR', 9),
-        (0x64b88c73A5DfA78D1713fE1b4c69a22d7E0faAa7, 'MAV', 18),
-        (0xbf1aeA8670D2528E08334083616dD9C5F3B087aE, 'MAI', 18),
-        (0xFF8adeC2221f9f4D8dfbAFa6B9a297d17603493D, 'WELL', 18),
-        (0x5607718c64334eb5174CB2226af891a6ED82c7C6, 'OG Points', 18),
-        (0x4c5d8A75F3762c1561D96f177694f67378705E98, 'PYTH', 6),
-        (0xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921, 'BTRST', 18),
-        (0x28fe69Ff6864C1C218878BDCA01482D36B9D57b1, 'KNC', 18),
-        (0xFd4330b0312fdEEC6d4225075b82E00493FF2e3f, 'SDEX', 18),
-        (0x703D57164CA270b0B330A87FD159CfEF1490c0a5, 'SOFI', 18),
-        (0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44, 'DEUS', 18),
-        (0x434769c82fB928150B87C4Ae6320Bf71F92dCCa5, 'ECO', 18),
-        (0x4E0dA40b9063dC48364C1C0fFB4AE9d091fc2270, 'EDG', 18),
-        (0xaFB2820316e7Bc5Ef78d295AB9b8Bb2257534576, 'R', 18),
-        (0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed, 'DEGEN', 18),
-        (0x91F45aa2BdE7393e0AF1CC674FFE75d746b93567, 'FRAME', 18),
-        (0xf0f326af3b1Ed943ab95C29470730CC8Cf66ae47, 'bwAJNA', 18)
-
-
-
-     ) AS temp_table (contract_address, symbol, decimals)
+    (0x9ed58dae43e40669a3903582131ae523bba2f493, 'PANDA', 18)
+    , (0x0bc6ad6ecf6d9da0e9fbb3b9a2810fde6d111d28, 'UNIINU', 9)
+    , (0xc15088d6696d686172414ffe46e5c9efa07a64b1, 'UPEPE', 18)
+    , (0x8b7cadfa9317ce58c087d8421f01ceee1f579c68, 'Babyuni', 6)
+    , (0xa227d9a6c01a02d690cc855e12dfb2e77c05cbee, 'USDT', 18)
+    , (0xb3b3fc64acbe82c31e056bf762d9571aed13b5ba, 'HODL', 18)
+    , (0xfe8b128ba8c78aabc59d4c64cee7ff28e9379921, 'BTRST', 18)
+    , (0x4e0da40b9063dc48364c1c0ffb4ae9d091fc2270, 'EDG', 18)
+    , (0x4158734d47fc9692176b5085e0f52ee0da5d47f1, 'BAL', 18)
+    , (0x03e41b83624e77f84baf69c5f9d27fcf6197e0e5, 'UPLONLY', 18)
+    , (0x0520b2b6aac406f0cbfe4f157f12282e5331c238, 'UCAT', 18)
+    , (0x4ab6c771632a1a4fd844af3102d60816fa3428f0, 'ORC', 18)
+    , (0x9e97c29ae4c6fab85790973697517a3c68dce423, 'BITCOIN', 18)
+    , (0xe4a2a1a85a067b6263cb7664ac9d005540057084, 'UNISHIB', 18)
+    , (0x501e98a05e2860062488dcc48d9788f9627b0323, '科太nd4.eth', 18)
+    , (0xc1bc0e1521d4ece2332c2673914caa99dfe77cc0, 'Unidoge', 18)
+    , (0x0827fb6c0ac160f01f216f1af9f17454fc85d814, 'UNIBASE', 18)
+    , (0xf0f326af3b1ed943ab95c29470730cc8cf66ae47, 'bwAJNA', 18)
+    , (0xb63cdf0880eaaf4d1586d347f0d7bec41acd7e2f, 'unibase', 18)
+    , (0x869fe12d250f8a6a3a2e4e8ba7c34b9cd1e7d710, 'MILADY', 18)
+    , (0x69acce18aaf01a9352bda5d63d11da3861931e04, '科太币', 18)
+    , (0x3c4b8061cded46a0d705a6be8722f11b8a7d9687, 'UDOGE', 6)
+    , (0x57d0c60284b492cf780e63bb94ec29221e7576a5, 'test', 9)
+    , (0x2a89dcc4f8638d54275fa3db0fa69336a47dcc8e, 'PSY', 18)
+    , (0x19892385c2aded379eff40ff14adb54a2bf8e57c, 'FLOKUNI', 9)
+    , (0xbff9e93db2fae1d32d38c5a88886e235534eb5cf, 'PYUSD', 18)
+    , (0x7e0da49525e0b6704c30fb2db30fa53af4aa8f5e, 'Test5', 18)
+    , (0x93b055b0b39962c2db3d542f74593c1192aa75ac, 'BASEGO', 18)
+    , (0x88c5887bbd40ede80fefff61883575ec135d289d, 'PIGGY', 18)
+    , (0xffe920630d546127d91662362ca006bc679d2fc2, 'DOGE', 18)
+    , (0x447c80e14f6e0672f09f8c70d3b0394690e444e9, 'Babyuni', 18)
+    , (0x3ba7273924f6e051aa06411030746a2b32de163a, 'test', 9)
+    , (0xf4b3f9e459776439075571731aa130e61bbde6e9, 'BLAST', 9)
+    , (0xac8e4a61b8442be895bcfc8d94e2dce1d42012ab, 'Sats2.0', 18)
+    , (0x3b22ee274c82e2851303ecaac729f8e82acdb69b, 'JUMP', 18)
+    , (0x445cc85d8c7ad5caf6433ebb0738c71e96ba3ad2, 'MOON', 18)
+    , (0x0392935aa93220e13e1aecdf27647a6f1caa1992, 'YOTSUBA', 18)
+    , (0xcac9ae85e7742854044e75f920500c8f6f0e6100, 'owlto', 18)
+    , (0x92d7c503661d97c32cd92fb90bf7fe2390ccb0ce, 'KETAI', 18)
+    , (0xcc54698cf02dfc233afc0524ece3ae57ed603052, 'STARS', 18)
+    , (0x845144c3a6b8061c05acac9af6b6a05fcf790c04, 'BASEUNI', 18)
+    , (0x69665cd12e57993ea679f24a09e121089c67f9a5, 'X', 18)
+    , (0xf85564346237f4fe01be8fee5eeda877fc6cb9cd, 'Zach Kirkhorn', 9)
+    , (0xb5ae8f503bfb19d867ee8089ca28c5c82bafb02d, 'ToshiX', 18)
+    , (0x17b5fa6001839d37cb71a73830bf9f1b07ece3cb, 'HTS', 18)
+    , (0x31ed44dcea7eff1292aaf46ee51ec1eb2bac7fa0, 'UniETH', 18)
+    , (0xf9d9a990797a09cbdb441778d7dd73db70076ce3, 'KeTaiCoin', 18)
+    , (0x2629e5e4df1991331227da8c2c5741924bedb92d, 'BabyCat', 18)
+    , (0xc88629bec19d8c06b7e0bf10428c24eae0625b38, 'APP', 18)
+    , (0x5599a9d3f175997c3db2f939719ee8df0b0a3813, 'BASEAI', 18)
+    , (0x798f2025daed85a2ad1b723edf028c90ce753994, '币coin', 18)
+    , (0x02ad7f3001f6b7ab5ee3c777d46ccf8a71b1458f, 'UNICORN', 18)
+    , (0x0efdb7200ad517617e2d505e455465de5dad9fec, 'GOKU', 18)
+    , (0x155c5afb2ce31f0b1e6526234a3d105256a96da5, 'PYUSD', 18)
+    , (0x6bbbf2251a837d5c2804fac31502e8f8d5558de7, 'PYSHARE', 18)
+    , (0xdfb8ea7c04e94bd673f7ceac0d289901eff33aee, 'PEPUNI', 9)
+    , (0x7388f8076ccba591d96e9999f1e641e4ba74e17d, 'BULLET', 3)
+    , (0x148f77199cc4cabf66a3f3e2c8ff5905e674bb46, 'ARMS', 9)
+    , (0xf44b799f63ebb70ece95efc4356325616ccb08b4, 'TEST', 18)
+    , (0x48151c2a01ecbc449672ee5e526dfb252db306b6, 'PYSHARE', 18)
+    , (0xb0b333ad62975c602c5680d580deb0220f8f2416, 'BASEMOON', 18)
+    , (0x30eb03822bd4a697e3916b62c15598152938e7c7, 'Dog', 18)
+    , (0xa36a548379cd184b86ec6561453263134718121f, 'TOSHIBA', 18)
+    , (0x3e7ef8f50246f725885102e8238cbba33f276747, 'HANeP', 18)
+    , (0x5fe5876a1799887012b65708a08d01d9d09785e3, 'PIMP', 0)
+    , (0xbc8a14dd5194def2c11d8670b537eb8270e23951, 'Shrimps', 18)
+    , (0x5598a452144443a3fa79fc764e5ef79aa678236d, 'BASE', 18)
+    , (0x3bb7052220c7b6977bb57e06536600bd71db0ef7, 'IOS', 18)
+    , (0x218aff2244b1eb14807ba9f1b3bab5044fd5af7d, 'BAT', 18)
+    , (0xf9c32a798fb81af557a8a936a207fffc114fb4c7, 'BINGO', 18)
+    , (0x6cc909b10c1ba5fa95a93e219106c95f8df80acb, 'MEMEKING', 18)
+    , (0x84616c05f88c4c78583cb21cfa1c7517daf7c2be, 'OS', 18)
+    , (0x4d23101c5e1785b6f7a83084247851899d7d7793, 'Uniun', 18)
+    , (0xd0c960d6e3a63631ad4b01e329da7837c64fd0ea, 'BM2.0', 18)
+    , (0x3ae01c775f06dcbc0d9a8307e0842d54ee06e443, 'OS', 18)
+    , (0x4c5d8a75f3762c1561d96f177694f67378705e98, 'PYTH', 6)
+    , (0x69405e10c7a24d35c160ae1e600c4b3ad104b625, 'BUNI', 3)
+    , (0x5cfa1411be5e8ed38c7591c1779e988673e375d0, 'wiBOT', 18)
+    , (0xcae13a0a39e2e88f902f817c18a9b7d5f355fdc7, 'Doraemon', 18)
+    , (0x239dc51b56116b25da4b69a15a9cdd3738fdd2ec, 'LEAGUE', 18)
+    , (0xe3241d24d1c626f1fcb2ca5fda73296adf44a1c9, 'BULLET', 18)
+    , (0xb66fb6ad253bf3d1a27bb17ba4777814f415859a, 'EXCELBOT', 18)
+    , (0x287f0d88e29a3d7aeb4d0c10bae5b902db69b17d, 'EPOCH', 18)
+    , (0x9d7a9ec72f1feb9f75ebc55402c03377e8f5d197, '0xWallet', 18)
+    , (0xf831726541deb9170e670e08520f070d384fa8b6, 'UNIBALD', 6)
+    , (0x6635990132e313474528a918a9bb70e3636165d6, 'SFM', 18)
+    , (0x7200f076e7a792a899a16eafc2c7815ff79f2a12, 'ENGINE', 18)
+    , (0x41b5db6b25464290e2a17b5581baeb2f0b665e5b, '科太币', 18)
+    , (0xe285701c87d4c7a686470b9564b19a2c928b74b0, 'SHARK', 18)
+    , (0xfa0439d77aafb8f8cce1288adf0bbc2bdaa8f0b6, 'BASEGO', 18)
+    , (0xba8e7355c48370fc2d5fff8bb04a151b33bf4db5, 'babykitty', 18)
+    , (0x351c7054ac6f8b394def5ed406f4d884665a9256, 'EXAMPLE', 18)
+    , (0x27ec35c9508285a67a2efe7b62618c959dd74be8, 'BUNI', 9)
+    , (0x5607718c64334eb5174cb2226af891a6ed82c7c6, 'OG Points', 18)
+    , (0x716912e36cf22c26132ce46c0a4d1655f0e7343c, 'CBOT', 18)
+    , (0xefbe2195f8c7e30cfe270fcaa8b1492f70e1b5f2, 'CuteCat', 18)
+    , (0xe4843328576d0cc47c1249d8fd8c674e3606fda3, 'SUN', 18)
+    , (0x55f6ec541a953510e3c193a9392e27048adef0f2, 'Pyusd', 18)
+    , (0xc5e48538de26d28eb64a99a27c99c951d06e0cd9, 'test', 9)
+    , (0x542b25497be740e12d69cdacf85912be0d054d74, 'BASEB', 18)
+    , (0x4bd3bcb855892ece8c026129df2a5b7215bf10aa, 'Clown', 18)
+    , (0x88894de47ab90dec9b9ddf4f50a93d2b4662dd10, 'DOGEPAW', 18)
+    , (0xffb3461a481d768f2d19d2ea3de5c55d9748dc2b, 'MoonX', 18)
+    , (0x9ec307ce7051d903428d797f7a96791aaf618618, 'UNIPEPE', 6)
+    , (0xf989e48856152d9e6d790bbc305abf979aac091b, 'XCL', 18)
+    , (0xf943824362a0dda1591477cb67807793ba3e0e01, 'UNIBASE2.0', 18)
+    , (0xa5468185520d3b26d91922e231a0f3c4b027f98c, 'AIBASE', 18)
+    , (0x4b1e7de60cd4c69c5445e0ab7d57ae9e9af3d65d, 'PYUSD', 18)
+    , (0xcb5a8f18758d5e0a6e06059371d6c7ab1b54020a, 'BGPT', 18)
+    , (0xa81a52b4dda010896cdd386c7fbdc5cdc835ba23, 'TRAC', 18)
+    , (0x3dc12f295dc5a8cf90b68f5a6b9164c75bbbeafd, 'SHIKINU', 18)
+    , (0x1194f9d8877019b496a2154d5abcef6352918c81, 'TPEPE', 18)
+    , (0x7d7c4a49f87812d5a3743124f02fab43ccc8209b, 'DONTBUY', 9)
+    , (0x790f472beaaa0c7f48f0fba0f36206d9dda21f8d, 'OCS2.0', 18)
+    , (0xe31fec783b69c92895586b755c7bbbf000716576, 'babyUni', 9)
+    , (0xc0380a46d714a3e70f7d4d1744e029f6105a9933, 'BULLET', 3)
+    , (0xc9c6af99b3a09adfb2502ad34d076f697c981e56, 'test', 6)
+    , (0x6aa4e4291fec425a56f09907f6de7476ad986459, 'UNIBIT', 18)
+    , (0xff6c9e9e0da2cd5cbc1ea8cfd83db3da15d4f592, 'BABYUNI', 18)
+    , (0xa11293e2f50c31448ffdba4dd1dd984e677fdb9c, 'ETHXY', 18)
+    , (0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3, 'HAN', 18)
+    , (0x88399348f1be999a22cf17c3add5b7709b53af0b, 'UAPE', 18)
+    , (0xf2176125f5b77ad6701aec70f799335bf49f50f1, 'BAG', 18)
+    , (0x4d850862d73b6c9d7fe2836988a2a91037b75b8b, 'TEST', 18)
+    , (0xc7914cee2acb643d73e50759ca383dc3e93f6fcd, 'MOON', 18)
+    , (0xcaf7c95ba8755c731f7cb7c60cc22c3d65404981, 'Shrimp', 18)
+    , (0x4c272790e7e9b8f4e398fc2c48ca3dfd597e4ad9, 'ECHO', 18)
+    , (0x0afb795bafef8865c9253cde1650ea246c6cfb20, 'UBL', 18)
+    , (0xd08a2917653d4e460893203471f0000826fb4034, 'FARM', 18)
+    , (0xb0fbcb979806a54d4262efc2d30443a35a02d77d, 'Toshi', 8)
+    , (0x1ea821131b46e910d8d1aba3e005f542d07634db, 'UNIBALD', 18)
+    , (0x3a10787b63e062faaa4e59535136c02e7fdf7f9f, 'BMEME', 18)
+    , (0x7df6072effd5f628375a3a5c63337110d5bd0a57, 'AUTISM', 18)
+    , (0x384660a8c2bac68a2d4bb68964a9ec6e2cda2e31, 'UBANK', 18)
+    , (0x25ebcdf89006c059c30fe68a522ef9fc69d73c5f, 'BMM', 18)
+    , (0x357f21b409cea7e38f894f624cb21fa8a59bc5fa, '我日你妈狗庄', 18)
+    , (0x2fd715029da3af0ef480b0ea56616102a4c832de, 'OS', 18)
+    , (0xc1985d7a3429cdc85e59e2e4fcc805b857e6ee2e, 'hETH', 18)
+    , (0x3bb4445d30ac020a84c1b5a8a2c6248ebc9779d0, 'ZRX', 18)
+    , (0x8086b4a8907c6e132c243387f60bcee9adb64f4b, 'Toshi', 18)
+    , (0x822e8cf2ebc0c25590fa570c4d08023293772450, 'UNICORN', 18)
+    , (0xe330b05bb58e5502ad79693b94bd8ed51036ac71, 'VIEW', 6)
+    , (0xcb4e58b8358a4b8b035f656d104e347a654955b6, 'UniMoon', 18)
+    , (0xe2b21d4684b2ba62f3be1fe286eacb90d26e394d, 'COC', 18)
+    , (0xe134fc0e54110755b8a0790b879525e9e97d3223, 'X', 9)
+    , (0x87f5c95e28697b4c7add1e671014c01068c022e6, 'CHEEMS', 3)
+    , (0x3f0af4a02d322cc556b23e733af3aa605df778a4, 'STONKS', 18)
+    , (0x8376fd311b2ee5db730e0ee21f53b22ece88e326, 'SHIBAX', 18)
+    , (0xc9dde283efc7183961c5c3a10a29f6b19a01a955, 'PayPal', 18)
+    , (0xdbf2e30509160df521af82ecc2619b9149ba4afc, 'UniKing', 18)
+    , (0x767b045100be6630a70d5f460ab40bd329aa2bfc, 'HOCHI', 8)
+    , (0xea788c6a668f0a45ce606c58bafc7edd4df21463, 'TUMBLR', 18)
+    , (0xe68eac1b70f164686b88ee5d3a070467e90c756d, 'Diors', 18)
+    , (0x11c377170448a102480b54a6a94f0be293920555, 'PYSHARE', 18)
+    , (0x7dde27ef15c62fa577a119468fdc7d6a7c7d4c35, 'BAPE', 18)
+    , (0xa5625bf8ed50a1c1c67978003857b6e9c6b85bf1, 'PUMP', 18)
+    , (0xeb585163debb1e637c6d617de3bef99347cd75c8, 'cbXEN', 18)
+    , (0x4afb52b9ef54e43c2ec5f1998f92219315f5bdaf, 'BASEUP', 18)
+    , (0xb83915c5b7dd332b3583236e01788cc67832be0f, 'KETAI', 18)
+    , (0xdfd04ee126d9d88a04324442ad7a0a65b7fdf62d, 'TURBO', 18)
+    , (0x60bc3d6f2168ce072847008fd19d87650826c046, 'MEVFree', 18)
+    , (0xfbf1efe30061cbc358646a11cc5a4795233569d7, 'YFII', 18)
+    , (0xa8545bb15bf4ac6d1b843f331414209a5f8bfd31, 'BOOST2.0', 18)
+    , (0x582ac83c67320e1bfba4d5ca94891b601a735ee2, 'POOCOIN', 18)
+    , (0x0a467e4385eb3bd891a7cd950b929d21e5bd15a4, 'BDOGE', 18)
+    , (0xb7629d3e4eefda019f8ee3a20c2f6959cc94a9bf, 'UNIINU', 9)
+    , (0xe8694b6bb4c870faa6f0846644b730824588be33, 'AOE', 18)
+    , (0x7effe55c30f131b984f8f7fe04740b3e80c7d312, 'DOWN', 18)
+    , (0x2710b58f7392e40d3210876d38fdc0faf4986daf, 'SHIB', 18)
+    , (0x6d9a0ee9cdb6456030fea88dce27818a9fe7f8d0, 'ABASE', 18)
+    , (0xa1cbe1a04900f7ed60dd677477fe6be1cc01ddce, 'UNICAT', 18)
+    , (0xcf9305cd628560244857ea2bc40e803ba9bd37ad, 'BAPE', 18)
+    , (0x565146fb6f4be792f5747a8c339a8a204e47c33e, 'KETAI', 18)
+    , (0xd34ab85a106e7ebab99014a43dc0b9bc1d98b0c4, 'UPEPE', 18)
+    , (0x3676d670f685964419d818e8b81f3c5a187a29d7, 'UNICAT', 9)
+    , (0x9d71e145f27962870b409d2896253048bf260a22, 'SAFEBLUE', 18)
+    , (0x6ecf2911eb3d4a7eccee9e57eb08c5d69a7da53a, '𝕏', 18)
+    , (0xf71f3ad5df23cc78362cd5fb312182e1e300c34d, 'CryptoAI', 18)
+    , (0x889de9e301d5387a11c68f803373c1159b0d6826, 'ABBOT', 18)
+    , (0xb8d291c675941c388a5a4df8221f6ab33511c769, 'NEKO', 18)
+    , (0xa912e695d8b7259604c004ce7d5bbff714713cb5, 'BASEGO', 18)
+    , (0xd2d954d929c48f9d53b571c60dddc0850e7e134e, 'K0', 3)
+    , (0xc1be7b99570639e9846347f86f1e15f9aee2fcba, 'UNIBASE', 18)
+    , (0x81481675dcc3a0c830be813ed50895e88953fb59, 'babydogeshibinudogpepeeolon69in', 18)
+    , (0x434769c82fb928150b87c4ae6320bf71f92dcca5, 'ECO', 18)
+    , (0x030911e5a61e8e7fdf69d84aeddf80f5df6cca0c, 'BVOLT', 18)
+    , (0xdd9717efc0c41be79f3b6ca22e122c81cddc3a77, 'BULLET', 3)
+    , (0xfe7c60c074bb6950ce86f6c79570335a68917e22, 'sBALD', 18)
+    , (0xedb5a9ef13d1736558f2b749b3fcdd87064d6b46, 'MINU', 9)
+    , (0x5533b1815fcfca409bb844a99df6790dd8f63528, 'Wojak', 18)
+    , (0xdd2ea5b2ad57a2a53162d182050d01901fe82a71, 'DRAGON', 18)
+    , (0x4bed5d80217f8913fb4a23825b3655b2bd5c4e3b, 'BAPE', 18)
+    , (0x19286425bd275036a9c2846f8627ae1ee3053864, 'BEAR', 18)
+    , (0x4a3a60f8a2cb0399215fb52f343a6926a6ab9949, 'BASEUP', 18)
+    , (0xd42a620017fabcca9152c4509bbb78f5d4f384ba, '科太币', 18)
+    , (0xba624a966b743f174e4c667b1ed60c3b6cdfd236, 'UNIpepe', 18)
+    , (0x618cdcb51c7098168eab7b4dc6b583189a3a08ac, 'pepeshibdog', 18)
+    , (0x3f81db1d5dbfa4882cd8d683c3f6e88fbd8ba3fe, 'BASED', 18)
+    , (0x39042eba4b553c7e64a749add69630cf6176c9f0, 'BULLET', 3)
+    , (0xa43bf1994dcba35a6e8f81b4ea19e57ad19aaec6, 'BREAD', 9)
+    , (0x6cbac25c01ff2d59647baa470d14aa8c30cf66cd, 'BaseX', 18)
+    , (0x43389a3fc9bcbbb647721d9a17a728ba2c7d22a7, 'OCW', 18)
+    , (0x825dadfbcc0c7fa93cc1f30dfd93e1b40c3431ea, 'KRIOS', 18)
+    , (0xd0488bf918ec41c844e8adf3e808c05f85f808a1, 'ENGINE', 18)
+    , (0xdf159f5965f4e2b62a1d4ba59efe671c8eea4c37, 'Pixiu', 6)
+    , (0xc9364c3bdef695a2427575774186fb481577f620, 'FSHARE', 18)
+    , (0xab19391232019de3ad3b3d86644ea0f8d3e29a4f, 'Base UP', 18)
+    , (0xe9f2999b764cf117e56d02a923adf9ac7007fe92, 'GLD', 18)
+    , (0xf55029b9a61e43b9be78f5a3927f9f9d14f8ac46, 'UNILORD', 18)
+    , (0x023c9e3d9f66ba02b1134c2de33ead6d3c5277cc, 'UMoon', 18)
+    , (0x59a64802a3d7feb1ca1fec6e5c2a0a935bed4109, 'UNITOSHI', 18)
+    , (0xd33278230610217dceb2c868035f910146715c8f, 'pig', 9)
+    , (0xf5e360ea7114eb4c34b26a19de1e585d9a5abaa7, 'UNIBALD', 6)
+    , (0xe7eb8cc354d5efdbf513a9cc61d3e73714680de8, 'BOOST', 18)
+    , (0xf899b0906f43ea1381e2c13868ebf130edb6c231, 'UNISWAP', 18)
+    , (0x9af23c8773adc2a899cba10b60718af3cf06c647, 'FAIRINU', 18)
+    , (0x11c1879227d463b60db18c17c20ae739ae8e961a, 'axlBAL', 18)  
+) AS temp_table (contract_address, symbol, decimals)

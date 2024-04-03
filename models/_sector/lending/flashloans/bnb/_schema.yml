@@ -103,3 +103,65 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: aave_v3_bnb_base_flashloans
+    meta:
+      blockchain: bnb
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'bnb']
+    description: "Aave v3 flashloans transactions on bnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('aave_bnb_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_bnb_base_flashloans
+    meta:
+      blockchain: bnb
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'granary', 'bnb']
+    description: "Granary flashloans transactions on bnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('granary_bnb_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

@@ -33,3 +33,10 @@ from trades
 where (    fee_wallet_name = 'opensea'
            or right_hash = 0x360c6ebe
          )
+-- temporary fix to exclude duplicates
+and tx_hash not in (
+select tx_hash from
+trades
+group by tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx
+having count(*) > 1
+)

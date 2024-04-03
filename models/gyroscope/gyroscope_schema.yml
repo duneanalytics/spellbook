@@ -86,3 +86,22 @@ models:
       - &evt_index 
         name: evt_index
         description: "Event index"
+
+  - name: gyroscope_gyro_tokens
+    meta:
+      blockchain: arbitrum, ethereum, optimism
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'ethereum', 'optimism',]
+    description: >
+      These tokens are being launched in Gyroscope pools, priced at 1 USD, a value that tends to grow marginally over time. This list is an approximation to price these tokens while they're not available on prices.usd and dex.prices
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - token_address
+    columns:
+      - name: blockchain
+      - name: token_address
+      - name: token_symbol
+      - name: price

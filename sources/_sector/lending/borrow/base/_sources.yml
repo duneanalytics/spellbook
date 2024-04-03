@@ -65,3 +65,9 @@ sources:
       - name: sobWETH_evt_Borrow
       - name: sobWETH_evt_RepayBorrow
       - name: sobWETH_evt_LiquidateBorrow
+
+  - name: the_granary_base
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
