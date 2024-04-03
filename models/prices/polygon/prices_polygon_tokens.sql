@@ -126,7 +126,7 @@ FROM
     ('par-parallel', 'polygon', 'PAR', 0xe2aa7db6da1dae97c5f5c6914d285fbfcc32a128,18),
     ('mim-magic-internet-money', 'polygon', 'MIM', 0x49a0400587a7f65072c87c4910449fdcc5c47242,18),
     ('cone-bitcone', 'polygon', 'CONE', 0xba777ae3a3c91fcd83ef85bfe65410592bdd0f7c,18),
-    ('pzcx-zen-exchange-token', 'polygon', 'PZCZ', 0xdd75542611d57c4b6e68168b14c3591c539022ed,18),
+    ('pzcx-zen-exchange-token', 'polygon', 'PZCX', 0xdd75542611d57c4b6e68168b14c3591c539022ed,18),
     ('orbs-orbs', 'polygon', 'ORBS', 0x614389eaae0a6821dc49062d56bda3d9d45fa2ff,18),
     ('mask-mask-network', 'polygon', 'MASK', 0x2b9e7ccdf0f4e5b24757c1e1a80e311e34cb10c7,18),
     ('ice-decentral-games-ice', 'polygon', 'ICE', 0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c,18)
