@@ -8,6 +8,7 @@
 {% set pancake_models = [
     ref('pancakeswap_v2_arbitrum_amm_trades')
 ,   ref('pancakeswap_v3_arbitrum_amm_trades')
+,   ref('pancakeswap_v2_arbitrum_stableswap_trades')
 ] %}
 
 
