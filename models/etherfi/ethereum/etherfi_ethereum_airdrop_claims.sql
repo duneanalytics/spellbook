@@ -38,7 +38,7 @@ SELECT 'ethereum' AS blockchain
 , {{etherfi_token_address}} AS token_address
 , 'ETHFI' AS token_symbol
 , t.evt_index
-FROM {{ source('etherfi_ethereum', 'MerkleDistributorWithDeadline_evt_Claimed') }} t
+FROM {{ source('ethfi_ethereum', 'MerkleDistributorWithDeadline_evt_Claimed') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{etherfi_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
