@@ -16,6 +16,7 @@
 
 {% set project_start_date = '2020-12-01' %}
 
+
 WITH final AS (
     SELECT 
         block_time
