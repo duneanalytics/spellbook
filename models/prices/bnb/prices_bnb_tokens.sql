@@ -258,7 +258,6 @@ FROM
     ('xai-grok', 'bnb', 'XAI', 0x0009Ae5a69B037eA74A900783fab457fa605ae5d,9),
     ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18),
     ('rdnt-radiant-capital', 'bnb', 'RDNT', 0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df,18),
-    ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8Cb3C6e7d085626E7a1347AafDf001f6,18),
     ('cyber-cyberconnect', 'bnb', 'CYBER', 0x14778860e937f509e651192a90589de711fb88a9,18),
     --('cgpt-chaingpt', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18), --not found in api 
     ('ai-sleepless-ai', 'bnb', 'AI', 0xbda011d7f8ec00f66c1923b049b94c67d148d8b2,18),
