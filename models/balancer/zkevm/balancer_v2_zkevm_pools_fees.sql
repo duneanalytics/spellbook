@@ -21,7 +21,7 @@ WITH registered_pools AS (
     SELECT
         DISTINCT poolAddress AS pool_address
     FROM
-        {{ source ('balancer_zkevm', 'Vault_evt_PoolRegistered') }}
+        {{ source ('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }}
 )
 SELECT
     'zkevm' AS blockchain,

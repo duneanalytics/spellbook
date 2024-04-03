@@ -25,7 +25,7 @@ WITH
             bytearray_substring(swaps.poolId, 1, 20) AS contract_address,
             fees.swap_fee_percentage,
             ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
-        FROM {{ source('balancer_zkevm', 'Vault_evt_Swap') }} swaps
+        FROM {{ source('balancer_v2_zkevm', 'Vault_evt_Swap') }} swaps
         LEFT JOIN {{ ref('balancer_v2_zkevm_pools_fees') }} fees
             ON fees.contract_address = bytearray_substring(swaps.poolId, 1, 20)
             AND ARRAY[fees.block_number] || ARRAY[fees.index] < ARRAY[swaps.evt_block_number] || ARRAY[swaps.evt_index]
@@ -51,7 +51,7 @@ WITH
             swap.evt_index
         FROM
             swap_fees
-            INNER JOIN {{ source('balancer_zkevm', 'Vault_evt_Swap') }} swap
+            INNER JOIN {{ source('balancer_v2_zkevm', 'Vault_evt_Swap') }} swap
                 ON swap.evt_block_number = swap_fees.evt_block_number
                 AND swap.evt_tx_hash = swap_fees.evt_tx_hash
                 AND swap.evt_index = swap_fees.evt_index

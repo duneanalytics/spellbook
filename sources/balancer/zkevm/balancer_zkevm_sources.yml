@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: balancer_zkevm
+  - name: balancer_v2_zkevm
     description: >
       Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on zkevm.
     tables:
@@ -30,11 +30,6 @@ sources:
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
-
-  - name: balancer_v2_zkevm
-    description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on zkevm.
-    tables:
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.

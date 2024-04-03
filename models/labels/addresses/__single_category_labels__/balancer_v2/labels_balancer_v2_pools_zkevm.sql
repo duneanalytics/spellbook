@@ -20,7 +20,7 @@ WITH pools AS (
       w.weights,
       cc.symbol,
       'weighted' AS pool_type
-    FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+    FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('balancer_v2_zkevm', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
       AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
@@ -37,7 +37,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'LBP' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_zkevm', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
@@ -51,7 +51,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'stable' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_zkevm', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
@@ -65,8 +65,8 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'linear' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_zkevm', 'AaveLinearPoolFactory_call_create') }} cc
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_zkevm', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
@@ -79,7 +79,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'linear' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_zkevm', 'YearnLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
@@ -93,7 +93,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'linear' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_zkevm', 'GearboxLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
@@ -107,7 +107,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'linear' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('balancer_v2_zkevm', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
@@ -121,7 +121,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'ECLP' AS pool_type
-  FROM {{ source('balancer_zkevm', 'Vault_evt_PoolRegistered') }} c
+  FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('gyroscope_zkevm', 'GyroECLPPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
