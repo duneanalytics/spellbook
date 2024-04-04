@@ -10,7 +10,7 @@ models:
       blockchain: zora
       sector: dex
       project: uniswap
-      contributors: Henrystats
+      contributors: ilemi
     config:
       tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap zora v2 base trades"
