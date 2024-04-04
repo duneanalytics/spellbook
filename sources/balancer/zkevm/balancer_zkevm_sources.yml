@@ -167,3 +167,22 @@ sources:
           - name: tokens
           - name: assetManager
             description: 'Address of the contract which managed the asset from the vault'
+
+      - name: Vault_evt_Swap
+        loaded_at_field: evt_block_time
+        description: ""
+        columns:
+          - name: amountIn
+          - name: amountOut
+          - name: contract_address
+          - name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - name: evt_index
+            description: "Index value of the transaction"
+          - name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - name: poolId
+          - name: tokenIn
+          - name: tokenOut
