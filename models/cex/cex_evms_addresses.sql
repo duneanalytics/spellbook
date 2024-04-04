@@ -1195,7 +1195,7 @@ FROM (VALUES
     , (0xA0FCA8fA8E9C6aA77305f94bE0e03908d0a42900, 'BingX', 'BingX 5', 'hildobby', date '2023-11-17')
     , (0xda43c54Ce5083885F561E05fd6220b7096bE246c, 'BingX', 'BingX 6', 'hildobby', date '2023-11-17')
     , (0xBB936d7CD3cDc6AC01088916d939cA5207cD84c2, 'BingX', 'BingX 7', 'hildobby', date '2023-11-17')
-    , (0x406c22b8740ae955b04fd11c2061e053807e2a69, 'BingX', 'BingX 7', 'hildobby', date '2024-04-04')
+    , (0x406c22b8740ae955b04fd11c2061e053807e2a69, 'BingX', 'BingX 8', 'hildobby', date '2024-04-04')
     , (0xb48c5ca99d33a8625e125f69ac8e07f3dffe34a0, 'BingX', 'BingX Deposit Funder 1', 'hildobby', date '2023-11-17')
     -- Bitvavo
     , (0x04A6b67FAC93e507d2642f129f5cB8aD474f9823, 'Bitvavo', 'Bitvavo 1', 'hildobby', date '2023-11-17')
@@ -1662,7 +1662,7 @@ FROM (VALUES
     , (0x781229c7a798c33EC788520a6bBe12a79eD657FC, 'Zonda', 'Zonda 2', 'hildobby', date '2023-11-23')
     , (0x0FF24158220A14398F047a80a513617Ddc4f5289, 'Zonda', 'Zonda 3', 'hildobby', date '2023-11-23')
     , (0x2b645268E2fbb384B423e50089657395F749763a, 'Zonda', 'Zonda 4', 'hildobby', date '2023-11-23')
-    , (0x6edf968da408a9640b8865826429a977a11c5048, 'Zonda', 'Zonda 4', 'hildobby', date '2024-04-04')
+    , (0x6edf968da408a9640b8865826429a977a11c5048, 'Zonda', 'Zonda 5', 'hildobby', date '2024-04-04')
     -- Zero Hash
     , (0xcfc0f98f30742b6d880f90155d4ebb885e55ab33, 'Zero Hash', 'Zero Hash 1', 'hildobby', date '2023-03-13')
     , (0xa1271A8A80748abd3F0DaFD4914aD2F481264447, 'Zero Hash', 'Zero Hash 2', 'hildobby', date '2024-04-04')
