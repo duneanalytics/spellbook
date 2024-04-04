@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'syncswap_zksync',
+        schema = 'syncswap_v1_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,7 +10,7 @@
     )
 }}
 
-{% set syncswap_start_date = "2023-03-24" %}
+{% set syncswap_v1_start_date = "2023-03-24" %}
 
 WITH 
     -- All SyncSwap Pools
@@ -27,7 +27,7 @@ WITH
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% else %}
-        WHERE evt_block_time >= timestamp '{{syncswap_start_date}}'
+        WHERE evt_block_time >= timestamp '{{syncswap_v1_start_date}}'
         {% endif %}
 
         UNION
@@ -35,7 +35,7 @@ WITH
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% else %}
-        WHERE evt_block_time >= timestamp '{{syncswap_start_date}}'
+        WHERE evt_block_time >= timestamp '{{syncswap_v1_start_date}}'
         {% endif %}
     )
     

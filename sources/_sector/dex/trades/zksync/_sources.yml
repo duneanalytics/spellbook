@@ -17,7 +17,7 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
-  - name: syncswap_zksync
+  - name: syncswap_v1_zksync
     tables:
       - name: SyncSwapClassicPoolFactory_evt_PoolCreated
       - name: SyncSwapClassicPool_evt_Swap
