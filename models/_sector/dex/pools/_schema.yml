@@ -27,8 +27,6 @@ models:
         description: "Version of the contract built and deployed by the DEX project"
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
-          - unique
       - name: fee
         description: "Defined fee"
       - name: tokens

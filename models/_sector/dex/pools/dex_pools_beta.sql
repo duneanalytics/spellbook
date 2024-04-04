@@ -2,7 +2,7 @@
     schema = 'dex'
     , alias = 'pools_beta'
     , materialized = 'incremental'
-    , unique_key = ['pool', 'blockchain']
+    , unique_key = ['pool', 'blockchain', 'contract_address']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
     )
 }}
@@ -32,7 +32,7 @@ WITH base_union AS (
             {{ base_model }}
         {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('block_time') }}
+            {{ incremental_predicate('creation_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
