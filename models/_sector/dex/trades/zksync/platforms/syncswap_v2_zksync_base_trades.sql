@@ -15,9 +15,9 @@
 WITH 
     -- All SyncSwap V2 Pools
     pools AS (
-        SELECT pool, token0, token1
-        FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPoolFactory_evt_PoolCreated') }}
-        UNION ALL 
+        -- SELECT pool, token0, token1
+        -- FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPoolFactory_evt_PoolCreated') }}
+        -- UNION ALL 
         SELECT pool, token0, token1
         FROM {{ source('syncswap_v2_zksync', 'SyncSwapStablePoolFactory_evt_PoolCreated') }}
         UNION ALL 
@@ -26,14 +26,14 @@ WITH
     )
     
     , base AS (
-        SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPool_evt_Swap') }}
-        {% if is_incremental() %}
-        WHERE {{incremental_predicate('evt_block_time')}}
-        {% else %}
-        WHERE evt_block_time >= timestamp '{{syncswap_v2_start_date}}'
-        {% endif %}
+        -- SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPool_evt_Swap') }}
+        -- {% if is_incremental() %}
+        -- WHERE {{incremental_predicate('evt_block_time')}}
+        -- {% else %}
+        -- WHERE evt_block_time >= timestamp '{{syncswap_v2_start_date}}'
+        -- {% endif %}
 
-        UNION        
+        -- UNION        
         
         SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapStablePool_evt_Swap') }}
         {% if is_incremental() %}
