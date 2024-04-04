@@ -30,7 +30,7 @@ sources:
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
             description: 'Pool specialization'
-            
+
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
@@ -81,10 +81,10 @@ sources:
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
           - name: poolId
             description: 'Balancer pool contract address'
           - name: tokens
@@ -103,10 +103,10 @@ sources:
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
           - name: poolId
             description: 'Balancer pool contract address'
           - name: token
@@ -125,10 +125,10 @@ sources:
         columns:
           - name: contract_address
             description: 'LBP contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
           - name: endTime
           - namne: endWeights
           - name: startTime
@@ -144,10 +144,10 @@ sources:
         columns:
           - name: contract_address
             description: 'Balancer v2 Composable Stable Pool Factory contract address.'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
           - name: pool
             description: 'Ethereum address for the Composable Stable Pool created in the transaction.'
 
@@ -158,12 +158,12 @@ sources:
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
-          - *tokens
+          - name: tokens
           - name: assetManager
             description: 'Address of the contract which managed the asset from the vault'
