@@ -18,6 +18,7 @@
     {'contract': 'soSNX'},
     {'contract': 'soSUSD'},
     {'contract': 'soUSDC'},
+    {'contract': 'soUSDCe'},
     {'contract': 'soUSDT'},
     {'contract': 'soWBTC'},
     {'contract': 'soWETH'},
