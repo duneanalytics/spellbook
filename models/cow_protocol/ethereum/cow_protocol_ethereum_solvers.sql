@@ -104,6 +104,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x4FC4a61a3b99A1ad4A61b03f3752CA12B4A17646, 'prod', 'Rizzolver'),
                  (0xD1508A211D98bb81195dC1F9533eDcdf68aDF036, 'prod', 'Furucombo'),
                  (0x8646Ee3c5e82b495Be8F9FE2f2f213701EeD0edc, 'prod', 'Seasolver_v2'),
+                 (0x9528e8c42F7e109bADED964E2D927fD5B6ca71E9, 'prod', 'Odos'),
+                 (0xf13eaf9093a210EBdaBa581f5448ffA545EE2E65, 'barn', 'Odos'),
                  (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'barn', 'Seasolver_v2'),
                  (0x279fb872beaF64E94890376725C423c0820eDA97, 'barn', 'Furucombo'),                 
                  (0x2854C9A92cd1dC65BdDF45aFE397D9d75D4718C8, 'barn', 'Rizzolver'),
