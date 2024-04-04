@@ -26,6 +26,15 @@ WITH
     )
     
     , base AS (
+        SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPool_evt_Swap') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('evt_block_time')}}
+        {% else %}
+        WHERE evt_block_time >= timestamp '{{syncswap_v2_start_date}}'
+        {% endif %}
+
+        UNION    
+
         SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapStablePool_evt_Swap') }}
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
