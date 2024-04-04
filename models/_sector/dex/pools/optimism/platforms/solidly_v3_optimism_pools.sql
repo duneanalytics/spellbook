@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'fraxswap_optimism',
+    schema = 'solidly_v3_optimism',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,9 +12,10 @@
 {{
     uniswap_compatible_pools(
         blockchain = 'optimism'
-        , project = 'fraxswap'
-        , version = '1'
-        , Factory_evt_PairCreated = source('fraxswap_optimism', 'FraxswapFactory_evt_PairCreated')
-        , hardcoded_fee = 0.3
+        , project = 'solidly'
+        , version = '3'
+        , Factory_evt_PairCreated = source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated')
+        , pool_column_name = 'pool'
+        , fee_column_name = 'fee'
     )
 }}

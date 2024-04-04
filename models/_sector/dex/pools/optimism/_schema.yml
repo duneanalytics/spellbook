@@ -32,3 +32,48 @@ models:
           combination_of_columns:
             - pool
             - contract_address
+
+  - name: fraxswap_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: fraxswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'fraxswap', 'v1']
+    description: "Fraxswap optimism v1 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: solidly_v3_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: solidly
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'solidly', 'v3']
+    description: "Solidly optimism v3 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: sushiswap_v2_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'suhsiswap', 'v3']
+    description: "Sushiswap optimism v2 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
