@@ -27,6 +27,9 @@ sources:
       - name: soUSDC_evt_Borrow
       - name: soUSDC_evt_RepayBorrow
       - name: soUSDC_evt_LiquidateBorrow
+      - name: soUSDCe_evt_Borrow
+      - name: soUSDCe_evt_RepayBorrow
+      - name: soUSDCe_evt_LiquidateBorrow
       - name: soUSDT_evt_Borrow
       - name: soUSDT_evt_RepayBorrow
       - name: soUSDT_evt_LiquidateBorrow
