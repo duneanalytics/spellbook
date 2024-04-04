@@ -1,5 +1,5 @@
 {{ config(
-    
+
     alias = 'dex',
     materialized = 'table',
     file_format = 'delta',
@@ -9,9 +9,6 @@
                                 \'["ilemi", "kaiblade"]\') }}')
 }}
 
-{# -- Enable once balances work again
-,ref('labels_trader_portfolios')
-#}
 {% set dex_models = [
  ref('labels_sandwich_attackers')
 ,ref('labels_dex_aggregator_traders')
