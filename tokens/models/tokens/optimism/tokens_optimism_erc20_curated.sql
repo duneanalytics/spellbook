@@ -439,6 +439,7 @@ WITH raw_token_list AS (
     ,(0x00e1724885473b63bce08a9f0a52f35b0979e35a, 'OATH', 18, 'underlying')
     ,(0x4dd03dfd36548c840b563745e3fbec320f37ba7e, 'stataOptUSDCn', 6, 'underlying')
     ,(0x035c93db04E5aAea54E6cd0261C492a3e0638b37, 'stataOptUSDT', 6, 'underlying')
+    ,(0xfc2e6e6bcbd49ccf3a5f029c79984372dcbfe527, 'OLAS', 18, 'underlying')    
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT

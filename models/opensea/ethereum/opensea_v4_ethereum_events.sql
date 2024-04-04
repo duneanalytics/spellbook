@@ -1,7 +1,6 @@
 {{ config(
     schema = 'opensea_v4_ethereum',
     alias = 'events',
-
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -40,6 +39,14 @@ where
           ,0x004c00500000ad104d7dbd00e3ae0a5c00560c00
           ,0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd
           ,0x000000e7ec00e7b300774b00001314b8610022b8 -- newly added on seaport v1.4
+          ,0x000056f7000000ece9003ca63978907a00ffd100 -- new signed zone for seaport v1.6
           )
  or  fee_wallet_name = 'opensea'
+)
+-- temporary fix to exclude duplicates
+and tx_hash not in (
+select tx_hash from
+trades
+group by tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx
+having count(*) > 1
 )

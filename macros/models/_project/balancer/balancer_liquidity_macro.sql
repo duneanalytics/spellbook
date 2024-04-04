@@ -264,6 +264,7 @@ WITH pool_labels AS (
         p.pool_symbol,
         '{{version}}' AS version,
         '{{blockchain}}' AS blockchain,
+        p.pool_type,
         c.token AS token_address,
         c.token_symbol,
         c.token_balance_raw,
