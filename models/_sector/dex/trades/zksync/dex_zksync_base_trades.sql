@@ -10,6 +10,7 @@
     , ref('pancakeswap_v2_zksync_base_trades')
     , ref('pancakeswap_v3_zksync_base_trades')
     , ref('syncswap_zksync_base_trades')
+    , ref('syncswap_v2_zksync_base_trades')
     , ref('uniswap_v3_zksync_base_trades')
     , ref('mute_zksync_base_trades')
     , ref('spacefi_v1_zksync_base_trades')
