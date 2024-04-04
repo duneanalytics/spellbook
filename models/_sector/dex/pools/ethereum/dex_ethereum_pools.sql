@@ -21,6 +21,7 @@ WITH base_union AS (
             , pool
             , fee
             , tokens
+            , token_symbols
             , tokens_in_pool
             , creation_block_time
             , creation_block_number

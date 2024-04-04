@@ -8,6 +8,9 @@
 {% set base_models = [
     ref('uniswap_v2_optimism_pools')
     ,ref('uniswap_v3_optimism_pools_array')
+    ,ref('solidly_v3_optimism_pools')
+    ,ref('sushiswap_v2_optimism_pools')
+    ,ref('fraxswap_optimism_pools')
 ] %}
 
 WITH base_union AS (
@@ -21,6 +24,7 @@ WITH base_union AS (
             , pool
             , fee
             , tokens
+            , token_symbols
             , tokens_in_pool
             , creation_block_time
             , creation_block_number

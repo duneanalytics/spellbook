@@ -2,7 +2,7 @@
     schema = 'dex'
     , alias = 'pools_beta'
     , materialized = 'incremental'
-    , unique_key = ['pool']
+    , unique_key = ['pool', 'blockchain']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
     )
 }}
@@ -23,6 +23,7 @@ WITH base_union AS (
             , pool
             , fee
             , tokens
+            , token_symbols
             , tokens_in_pool
             , creation_block_time
             , creation_block_number

@@ -8,6 +8,13 @@ models:
       contributors: Henrystats
     config:
       tags: [ 'dex', 'pools', 'beta' ]
+    description: "Dex pools across all projects & blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+            - blockchain
     columns:
       - &blockchain
         name: blockchain
