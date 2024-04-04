@@ -233,6 +233,8 @@ FROM (VALUES
     , (0x4F86D1d365434bfBC1E818534d353FfC1A06F8Fe, 'Coinbase', 'Coinbase Deposit Funder 12', 'hildobby', date '2023-11-19')
     , (0x55E6513DBCdD1dCAf4c6710AC423C698a56Eb68A, 'Coinbase', 'Coinbase Deposit Funder 13', 'hildobby', date '2023-11-19')
     , (0xe49916B3ff411fC6A83dC31f130E2e85Be4a9385, 'Coinbase', 'Coinbase Deposit Funder 14', 'hildobby', date '2023-11-19')
+    , (0xa2b57dd51c464e863a5efc70c8116ec46791e38f, 'Coinbase', 'Coinbase Deposit Funder 15', 'hildobby', date '2024-04-04')
+    , (0xe1597df1f0e1920f7a296cef27babb40baeeabfc, 'Coinbase', 'Coinbase Deposit Funder 16', 'hildobby', date '2024-04-04')
     , (0x6F52730DBA7B02beeFcAF0D6998c9AE901Ea04f9, 'Coinbase', 'Coinbase Cold 1', 'hildobby', date '2023-11-19')
     , (0xEbA20D0f74ECc13130579d21bB53D63C96258652, 'Coinbase', 'Coinbase Cold 2', 'hildobby', date '2023-11-19')
     , (0x281055Afc982d96fAB65b3a49cAc8b878184Cb16, 'Coinbase', 'Coinbase Cold 3', 'hildobby', date '2023-11-19')
@@ -478,7 +480,8 @@ FROM (VALUES
     , (0x2eFB50e952580f4ff32D8d2122853432bbF2E204, 'Robinhood', 'Robinhood 4', 'hildobby', date '2023-11-15')
     , (0x7Ce672223ca12c990f179034645bdf8348472442, 'Robinhood', 'Robinhood Cumberland Deposit', 'hildobby', date '2023-11-20')
     , (0x6081258689a75d253d87ce902a8de3887239fe80, 'Robinhood', 'Robinhood Withdrawals', 'hildobby', date '2023-11-15')
-    , (0x97972fA6D980aA9B93D1b584541055840302dE05, 'Robinhood', 'Robinhood Deposit Funder', 'hildobby', date '2023-11-16')
+    , (0x97972fA6D980aA9B93D1b584541055840302dE05, 'Robinhood', 'Robinhood Deposit Funder 1', 'hildobby', date '2023-11-16')
+    , (0x7222de11e132c6f315789eeb5c0182cabd4a9530, 'Robinhood', 'Robinhood Deposit Funder 2', 'hildobby', date '2024-04-04')
     , (0x4A5b84fb4c7666692C49F2E11664710AA4D0d2a0, 'Robinhood', 'Robinhood Deprecated 1', 'hildobby', date '2023-11-16')
     , (0xA0116A92A032D17a9Ce431EaBE75C5B5F29E2d5E, 'Robinhood', 'Robinhood Deprecated 2', 'hildobby', date '2023-11-24')
     -- CoinList
@@ -559,6 +562,7 @@ FROM (VALUES
     , (0x735FD3c55A8be1aEb3544C7e29eBa3ea23500A1C, 'Kraken', 'Kraken 54', 'hildobby', date '2023-11-20')
     , (0x6d0Cf1F651f5Ae585d24DcaA188d44E389E93D26, 'Kraken', 'Kraken 55', 'hildobby', date '2023-11-20')
     , (0xA2f443492bbB1b041FCEee5194e2bc133ecC6407, 'Kraken', 'Kraken 56', 'hildobby', date '2023-11-20')
+    , (0x4b6f17856215eab57c29ebfa18b0a0f74a3627bb, 'Kraken', 'Kraken 57', 'hildobby', date '2024-04-04')
     , (0xe6a02eeFC2612b13f2B3B914009576ce5495Ec0e, 'Kraken', 'Kraken Withdrawals 1', 'hildobby', date '2023-11-20')
     , (0xe9f7ecae3a53d2a67105292894676b00d1fab785, 'Kraken', 'Kraken Hot Wallet', 'hildobby', date '2022-08-28')
     , (0xD4039ECC40AedA0582036437cf3ec02845DA4C13, 'Kraken', 'Kraken ETH Staking', 'hildobby', date '2023-11-20')
@@ -638,6 +642,7 @@ FROM (VALUES
     , (0x9AC5637d295FEA4f51E086C329d791cC157B1C84, 'KuCoin', 'KuCoin 23', 'hildobby', date '2023-11-23')
     , (0xcD5F3c15120a1021155174719Ec5FCf2c75aDf5b, 'KuCoin', 'KuCoin 24', 'hildobby', date '2023-11-23')
     , (0xB9F79Fc4B7A2F5fB33493aB5D018dB811c9c2f02, 'KuCoin', 'KuCoin 25', 'hildobby', date '2023-11-23')
+    , (0xd91efec7e42f80156d1d9f660a69847188950747, 'KuCoin', 'KuCoin 26', 'hildobby', date '2024-04-04')
     , (0x061f7937b7b2bc7596539959804f86538b6368dc, 'KuCoin', 'KuCoin Deposit Funder 1', 'hildobby', date '2023-08-31')
     , (0x2602669a92fccf44e5319ff51b0f453aab9db021, 'KuCoin', 'KuCoin Deposit Funder 2', 'hildobby', date '2023-08-31')
     , (0xcE0d2213A0eAFF4176D90B39879b7B4F870fA428, 'KuCoin', 'KuCoin Deposit Funder 3', 'hildobby', date '2023-11-23')
@@ -716,6 +721,7 @@ FROM (VALUES
     , (0x8EaFEE3d0DF538A1e04487a43239c1C73B50032d, 'BitMart', 'BitMart 10', 'hildobby', date '2023-11-18')
     , (0xf3d4aa3C6925B38D40C2ae4C7A935d83666Ae5f7, 'BitMart', 'BitMart 11', 'hildobby', date '2023-11-23')
     , (0x8c128DBA2cB66399341AA877315BE1054be75da8, 'BitMart', 'BitMart 12', 'hildobby', date '2023-11-23')
+    , (0x6d0d19bdddc5ed1dd501430c9621dd37ebd9062d, 'BitMart', 'BitMart 13', 'hildobby', date '2024-04-04')
     , (0x1Aac8BC17DA523b9bC7470B0C9eD47a83760ACef, 'BitMart', 'BitMart Deployer', 'hildobby', date '2023-11-16')
     , (0xF8f21a32648a540dd8e982ff47BEF6Be2e823F9E, 'BitMart', 'BitMart Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- LAToken
@@ -779,6 +785,7 @@ FROM (VALUES
     , (0x47E3aC26C5A8f1715DabFE1DB00e4bf1F54aFe23, 'Bithumb', 'Bithumb Deposit Funder 2', 'hildobby', date '2023-11-23')
     , (0xB470faEa0dc6E1a99DbB4fA95B5bE47D9C27e00A, 'Bithumb', 'Bithumb Deposit Funder 3', 'hildobby', date '2023-11-23')
     , (0x83761c6785427F5A27a07c92a9dcFa99947bC4AD, 'Bithumb', 'Bithumb Deposit Funder 4', 'hildobby', date '2023-11-24')
+    , (0xa5dab3c7a3821f6440a10d634e766bfd2750e54e, 'Bithumb', 'Bithumb Deposit Funder 5', 'hildobby', date '2024-04-04')
     -- Bitso
     , (0x58b704065b7aff3ed351052f8560019e05925023, 'Bitso', 'Bitso 1', 'hildobby', date '2023-09-12')
     , (0x29d5527caa78f1946a409fa6acaf14a0a4a0274b, 'Bitso', 'Bitso 2', 'hildobby', date '2023-09-12')
@@ -793,6 +800,7 @@ FROM (VALUES
     , (0x0392b64b8bfda184f0a72ce37d73dc7df978c4f7, 'Stake.com', 'Stake.com 8', 'hildobby', date '2023-11-19')
     , (0x019D0706D65c4768ec8081eD7CE41F59Eef9b86c, 'Stake.com', 'Stake.com 9', 'hildobby', date '2023-11-23')
     , (0xA29148c2A656E5Ddc68acB95626D6B64A1131c06, 'Stake.com', 'Stake.com 10', 'hildobby', date '2023-11-23')
+    , (0x787b8840100d9baadd7463f4a73b5ba73b00c6ca, 'Stake.com', 'Stake.com 11', 'hildobby', date '2024-04-04')
     -- Rollbit
     , (0xcbd6832ebc203e49e2b771897067fce3c58575ac, 'Rollbit', 'Rollbit 1', 'hildobby', date '2023-11-15')
     , (0xEf8801eaf234ff82801821FFe2d78D60a0237F97, 'Rollbit', 'Rollbit 2', 'hildobby', date '2023-11-15')
@@ -1681,6 +1689,8 @@ FROM (VALUES
     , (0x9fb01a2584aac5aae3fab1ed25f86c5269b32999, 'GGBTC.com', 'GGBTC.com 1', 'hildobby', date '2023-04-06')
     -- IndoEx LTD
     , (0xb1a34309af7f29b4195a6b589737f86e14597ddc, 'IndoEx LTD', 'IndoEx LTD 1', 'hildobby', date '2023-04-06')
+    -- Wealthsimple
+    , (0xa21a16ec22a940990922220e4ab5bf4c2310f556, 'Wealthsimple', 'Wealthsimple 1', 'hildobby', date '2024-04-04')
     -- Kryptono
     , (0xe8a0e282e6a3e8023465accd47fae39dd5db010b, 'Kryptono', 'Kryptono 1', 'hildobby', date '2023-04-06')
     , (0x629a7144235259336ea2694167f3c8b856edd7dc, 'Kryptono', 'Kryptono 2', 'hildobby', date '2023-04-06')
