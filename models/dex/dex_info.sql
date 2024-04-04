@@ -147,7 +147,6 @@ FROM (VALUES
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
     , ('mute', 'Mute', 'Direct', 'Mute')
     , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
-    , ('derpdex', 'DerpDEX', 'Direct', 'DerpDEX')
     , ('ezkalibur', 'eZKalibur', 'Direct', 'eZKalibur')
     , ('wagmi', 'Wagmi', 'Direct', 'Wagmi')
     , ('zkswap_finance', 'zkSwap Finance', 'Direct', 'zkSwapFinance')
