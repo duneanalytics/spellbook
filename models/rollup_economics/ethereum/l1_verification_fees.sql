@@ -34,6 +34,8 @@ with verify_txns as (
       t.to = 0x3dB52cE065f728011Ac6732222270b3F2360d919
       -- L1 transactions settle here post-Boojum
       OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
+      -- L1 transactions settle here post-EIP4844
+      OR t.to = 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD
     )
     AND (
       -- L1 transactions use these method ID's pre-Boojum

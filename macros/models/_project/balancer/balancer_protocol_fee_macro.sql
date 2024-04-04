@@ -73,10 +73,9 @@ WITH pool_labels AS (
             SUM(protocol_liquidity_usd / supply) AS price
         FROM {{ ref('balancer_liquidity') }} l
         LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON s.token_address = l.pool_address 
-        AND l.blockchain = s.blockchain AND s.day = l.day
+        AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
-        AND s.supply > 0
         GROUP BY 1, 2, 3
     ),
 
