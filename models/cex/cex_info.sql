@@ -308,4 +308,6 @@ FROM (VALUES
         , ('Zero Hash', 'ZeroHashX', FALSE, TRUE)
         , ('Mercuryo', 'Mercuryo_io', FALSE, TRUE)
         , ('Wealthsimple', 'Wealthsimple', FALSE, TRUE)
+        , ('HashKey Exchange', 'HashKeyExchange', FALSE, TRUE)
+        , ('Gamdom', 'gamdom', FALSE, TRUE)
     ) AS temp_table (cex_name, x_username, cex, payment_infra)
