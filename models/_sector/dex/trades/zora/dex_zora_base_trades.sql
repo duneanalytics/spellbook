@@ -9,7 +9,7 @@
     ref('uniswap_v2_zora_base_trades')
 ] %}
 
-WITH base_union AS (
+WITH base_union AS ( 
     SELECT *
     FROM (
         {% for base_model in base_models %}
