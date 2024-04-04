@@ -138,5 +138,10 @@ FROM
     ('you-u-protocol','arbitrum','YOU',0xF93fc7d6508ae2faF8Fc5675e896Bc38d6e7212C, 18),
     ('bets-betswirl','arbitrum','BETS',0x94025780a1aB58868D9B2dBBB775f44b32e8E6e5, 18),
     ('joe-trader-joe','arbitrum','JOE',0x371c7ec6D8039ff7933a2AA28EB827Ffe1F52f07, 18),
-    ('nola-nola','arbitrum','NOLA',0xF8388c2B6Edf00E2E27eEF5200B1beFB24cE141d, 18)              
+    ('nola-nola','arbitrum','NOLA',0xF8388c2B6Edf00E2E27eEF5200B1beFB24cE141d, 18),
+    ('xpet-xpettech','arbitrum','XPET',0x00cbcf7b3d37844e44b888bc747bdd75fcf4e555, 18),
+    ('bpet-xpettech-bpet','arbitrum','BPET',0x6daf586b7370b14163171544fca24abcc0862ac5, 18),
+    ('sundae-sundae-token','arbitrum','SUNDAE',0x352f4bf396a7353a0877f99e99757e5d294df374, 18),
+    ('gns-gains-network','arbitrum','GNS',0x18c11fd286c5ec11c3b683caa813b77f5163a122, 18),
+    ('gswift-gameswift','arbitrum','GSWIFT',0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
