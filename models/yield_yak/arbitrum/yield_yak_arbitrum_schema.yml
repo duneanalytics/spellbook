@@ -98,3 +98,33 @@ models:
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
+  - name: yield_yak_arbitrum_balances
+    meta:
+      blockchain: arbitrum
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+    description: >
+        yield yak vault/farm/pool balances on arbitrum as a temporal table
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - from_time
+    columns:
+      - name: blockchain
+        description: "Blockchain on which the YRT contract is deployed"
+      - &contract_address 
+        name: contract_address
+        description: "Address of the YRT smart contract"  
+      - &from_time
+        name: from_time
+        description: "UTC time from which the contract held this balance in its respective deposit token"
+      - &to_time
+        name: to_time
+        description: "UTC time until which the contract held this balance in its respective deposit token"
+      - &deposit_token_balance
+        name: deposit_token_balance
+        description: "Balance of deposit tokens held in the contract in the time window specified"
