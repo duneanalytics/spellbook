@@ -133,6 +133,7 @@ FROM
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
+    ,0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c -- ICE DG, bad price feed
     ,0x431cd3c9ac9fc73644bf68bf5691f4b83f9e104f -- RBW, bad price feed
     ,0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- XEN, bad price feed because of mXEN<>XEN
     ,0x311434160d7537be358930def317afb606c0d737 -- NAKA, bad price feed
