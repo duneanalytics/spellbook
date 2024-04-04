@@ -2,7 +2,6 @@
     schema = 'dex'
     , alias = 'pools_beta'
     , materialized = 'view'
-    , unique_key = ['pool', 'blockchain', 'contract_address']
     )
 }}
 
