@@ -9,7 +9,7 @@
       , post_hook='{{ expose_spells(\'["zkevm"]\',
                                   "project",
                                   "balancer_v2",
-                                  \'["hildobby"]\') }}'
+                                  \'["hildobby", "viniabussafi"]\') }}'
   )
 }}
 
@@ -25,9 +25,10 @@ WITH flashloans AS (
     , erc20.decimals AS currency_decimals
     , f.contract_address
     FROM {{ source('balancer_v2_zkevm','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ source('tokens_zkevm', 'erc20') }} erc20 ON f.token = erc20.contract_address
+    LEFT JOIN {{ source('tokens', 'erc20') }} erc20 ON f.token = erc20.contract_address
+    WHERE blockchain = 'zkevm'
         {% if is_incremental() %}
-        WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+        AND f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     )
 
