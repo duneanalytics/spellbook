@@ -1,15 +1,13 @@
 {{ config(
-    schema = 'dex'
-    , alias = 'pools_beta'
-    , materialized = 'incremental'
-    , unique_key = ['pool']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')]
+    schema = 'dex_optimism'
+    , alias = 'pools'
+    , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-     ref('dex_ethereum_pools')
-    ,ref('dex_optimism_pools')
+    ref('uniswap_v2_optimism_pools')
+    ,ref('uniswap_v3_optimism_pools_array')
 ] %}
 
 WITH base_union AS (
@@ -29,10 +27,6 @@ WITH base_union AS (
             , contract_address
         FROM 
             {{ base_model }}
-        {% if is_incremental() %}
-        WHERE
-            {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

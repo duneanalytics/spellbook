@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: dex_optimism_pools
+
+  - name: uniswap_v2_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'uniswap', 'v2']
+    description: "uniswap optimism v2 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: uniswap_v3_optimism_pools_array
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'uniswap', 'v3']
+    description: "uniswap optimism v3 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
