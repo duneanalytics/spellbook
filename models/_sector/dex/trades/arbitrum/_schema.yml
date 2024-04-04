@@ -216,7 +216,9 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
           filter:
-            version: 2
+            version:
+              - 2
+              - stableswap
 
 
   - name: balancer_v2_arbitrum_base_trades
