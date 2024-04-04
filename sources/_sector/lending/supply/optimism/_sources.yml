@@ -21,6 +21,8 @@ sources:
       - name: soSUSD_evt_Redeem
       - name: soUSDC_evt_Mint
       - name: soUSDC_evt_Redeem
+      - name: soUSDCe_evt_Mint
+      - name: soUSDCe_evt_Redeem
       - name: soUSDT_evt_Mint
       - name: soUSDT_evt_Redeem
       - name: soWBTC_evt_Mint
