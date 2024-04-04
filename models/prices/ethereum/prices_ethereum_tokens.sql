@@ -1704,7 +1704,18 @@ FROM
     ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18),
     ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18),
     ('pxeth-pirex-ether', 'ethereum', 'PXETH',0x04c154b66cb340f3ae24111cc767e0184ed00cc6,18),
-    ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18)
+    ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18),
+    --('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18), --not in API 
+    ('cswap-chainswap', 'ethereum', 'CSWAP',0xae41b275aaaf484b541a5881a2dded9515184cca,18),
+    ('bobo-bobo-coin', 'ethereum', 'BOBO',0xb90b2a35c65dbc466b04240097ca756ad2005295,18),
+    ('bvm-bvm', 'ethereum', 'BVM',0x069d89974f4edabde69450f9cf5cf7d8cbd2568d,18),
+    ('naka-nakachain', 'ethereum', 'NAKA',0xfae30394a76796dc3df37c2714f5fc12083dfdb0,18),
+    ('pooh-pooh', 'ethereum', 'POOH',0xb69753c06bb5c366be51e73bfc0cc2e3dc07e371,18),
+    ('mumu-mumu', 'ethereum', 'MUMU',0x2f573070e6090b3264fe707e2c9f201716f123c7,18),
+    ('wrld-nft-worlds', 'ethereum', 'WRLD',0xd5d86fc8d5c0ea1ac1ac5dfab6e529c9967a45e9,18),
+    ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,18),
+    ('deai-zero1-token', 'ethereum', 'DEAI',0x1495bc9e44af1f8bcb62278d2bec4540cf0c05ea,18),
+    ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
