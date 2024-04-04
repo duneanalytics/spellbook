@@ -130,7 +130,7 @@ sources:
           - name: evt_block_time
           - name: evt_block_number
           - name: endTime
-          - namne: endWeights
+          - name: endWeights
           - name: startTime
           - name: startWeights
 
