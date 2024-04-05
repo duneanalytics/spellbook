@@ -2,10 +2,11 @@
         schema = 'tokens_polygon',
         alias = 'balances_daily',
         materialized = 'view',
-        post_hook = '{{ expose_spells(\'["polygon"]\',
-                                    "sector",
-                                    "tokens",
-                                    \'["0xRob"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["polygon"]\',
+                        spell_type = "sector",
+                        spell_name = "balances",
+                        contributors = \'["0xRob"]\') }}'
         )
 }}
 

@@ -696,7 +696,6 @@ FROM
     ('xcur-curate', 'ethereum', 'XCUR', 0xe1c7e30c42c24582888c758984f6e382096786bd, 8),
     ('xdefi-xdefi', 'ethereum', 'XDEFI', 0x72b886d09c117654ab7da13a14d603001de0b777, 18),
     ('yld-yield', 'ethereum', 'YLD', 0xf94b5c5651c888d928439ab6514b93944eee6f48, 18),
-    ('dg-decentral-games', 'ethereum', 'DG', 0xee06a81a695750e71a662b51066f2c74cf4478a0, 18),
     ('apy-apyfinance', 'ethereum', 'APY', 0x95a4492f028aa1fd432ea71146b433e7b4446611, 18),
     ('arcx-arc-governance', 'ethereum', 'ARCX', 0x1321f1f1aa541a56c31682c57b80ecfccd9bb288, 18),
     ('blocks-blocks', 'ethereum', 'BLOCKS', 0x8a6d4c8735371ebaf8874fbd518b56edd66024eb, 18),
@@ -1532,7 +1531,6 @@ FROM
     ('cook-cook', 'ethereum', 'COOK', 0xFF75CEd57419bcaEBe5F05254983b013B0646eF5, 18),
     ('door-shytoshis-vision', 'ethereum', 'DOOR', 0x2805390F81A7F19c2c49300A094aa500597b1862, 9),
     ('flixx-flixxo', 'ethereum', 'FLIXX', 0xf04a8ac553FceDB5BA99A64799155826C136b0Be, 18),
-    ('flona-flona', 'ethereum', 'FLONA', 0xEf27252B567F6B3fe35b34A85bE322917abE524A, 18),
     ('kol-kollect', 'ethereum', 'KOL', 0x1CC30e2EAc975416060Ec6FE682041408420d414, 18),
     ('ldn-ludena-protocol', 'ethereum', 'LDN', 0xb29663Aa4E2e81e425294193616c1B102B70a158, 18),
     ('sdex-smardex', 'ethereum', 'SDEX', 0x5DE8ab7E27f6E7A1fFf3E5B337584Aa43961BEeF, 18),
@@ -1703,7 +1701,24 @@ FROM
     ('0x0-0x0ai-ai-smart-contract','ethereum','0x0',0x5a3e6A77ba2f983eC0d371ea3B475F8Bc0811AD5,9),
     ('aix-aigentx','ethereum','AIX',0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5,18),
     ('aimbot-aimbot','ethereum','AIMBOT',0x0c48250Eb1f29491F1eFBeEc0261eb556f0973C7,18),
-    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18)
+    ('ait-ait-protocol','ethereum','AIT',0x89d584A1EDB3A70B3B07963F9A3eA5399E38b136,18),
+    ('tuna-tunachain', 'ethereum', 'TUNA',0xadd353fb2e2c563383ff3272a500f3e7134dafe4,18),
+    ('pxeth-pirex-ether', 'ethereum', 'PXETH',0x04c154b66cb340f3ae24111cc767e0184ed00cc6,18),
+    ('sdai-savings-dai', 'ethereum', 'SDAI',0x83f20f44975d03b1b09e64809b757c47f942beea,18),
+    ('strk-starknet', 'ethereum', 'STRK',0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766,18),
+    ('ela-elastos', 'ethereum', 'ELA', 0xe6fd75ff38adca4b97fbcd938c86b98772431867,18),
+    ('frxeth-frax-ether', 'ethereum', 'FRXETH',0x5e8422345238f34275888049021821e8e08caa1f,18),  
+    --('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18), --not in API 
+    ('cswap-chainswap', 'ethereum', 'CSWAP',0xae41b275aaaf484b541a5881a2dded9515184cca,18),
+    ('bobo-bobo-coin', 'ethereum', 'BOBO',0xb90b2a35c65dbc466b04240097ca756ad2005295,18),
+    ('bvm-bvm', 'ethereum', 'BVM',0x069d89974f4edabde69450f9cf5cf7d8cbd2568d,18),
+    ('naka-nakachain', 'ethereum', 'NAKA',0xfae30394a76796dc3df37c2714f5fc12083dfdb0,18),
+    ('pooh-pooh', 'ethereum', 'POOH',0xb69753c06bb5c366be51e73bfc0cc2e3dc07e371,18),
+    ('mumu-mumu', 'ethereum', 'MUMU',0x2f573070e6090b3264fe707e2c9f201716f123c7,18),
+    ('wrld-nft-worlds', 'ethereum', 'WRLD',0xd5d86fc8d5c0ea1ac1ac5dfab6e529c9967a45e9,18),
+    ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,18),
+    ('deai-zero1-token', 'ethereum', 'DEAI',0x1495bc9e44af1f8bcb62278d2bec4540cf0c05ea,18),
+    ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1728,4 +1743,5 @@ where contract_address not in (
     ,0xac6fe9aa6b996d15f23e2e9a384fe64607bba7d5   -- RAM
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
+    ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
 )

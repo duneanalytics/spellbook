@@ -38,4 +38,6 @@ FROM (VALUES
     , (0xa84b5b903f62ea61dfaac3f88123cc6b21bb81ab, 'amDAI', 18)
     , (0xcbfbdd24531b713e04818bcff9c7458fd72e6c82, 'BASE', 18)
     , (0xbec3a3238fac0f6a79443ade963a00456af6833e, 'USDD', 18)
+    , (0x87A1fdc4C726c459f597282be639a045062c0E46, 'stataPolUSDT', 6)
+    , (0x2dCa80061632f3F87c9cA28364d1d0c30cD79a19, 'stataPolUSDCn', 6)
 ) AS temp_table (contract_address, symbol, decimals)
