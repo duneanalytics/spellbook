@@ -75,16 +75,16 @@ matched as (
         e.evt_index,
         e.evt_block_time,
         e.evt_block_number,
-        transform(e.consideration, x -> convert_consideration('x')) as consideration,
-        transform(e.offer, x -> convert_offer('x')) as offer,
+        transform(e.consideration, x -> {{convert_consideration('x')}}) as consideration,
+        transform(e.offer, x -> {{convert_offer('x'))}} as offer,
         e.offerer,    -- offers the items in offer[] and if consideration[] is fulfilled
         e.recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         e.orderHash,
         e.zone,
         matched.evt_index as ordersmatched_evt_index,
         pe.evt_index as matched_evt_index,
-        transform(pe.consideration, x -> convert_consideration('x')) as matched_consideration,
-        transform(pe.offer, x -> convert_offer('x')) as matched_offer,
+        transform(pe.consideration, x -> {{convert_consideration('x')}}) as matched_consideration,
+        transform(pe.offer, x -> {{convert_offer('x')}}) as matched_offer,
         pe.offerer as matched_offerer,    -- offers the items in offer[] and if consideration[] is fulfilled
         pe.recipient as matched_recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         pe.orderHash as matched_orderHash,
