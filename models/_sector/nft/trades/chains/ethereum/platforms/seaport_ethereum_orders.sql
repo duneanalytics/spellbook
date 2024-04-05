@@ -1,6 +1,6 @@
 {{ config(
     schema = 'seaport_ethereum',
-    alias = 'test',
+    alias = 'orders',
     materialized = 'table',
     file_format = 'delta',
     )
