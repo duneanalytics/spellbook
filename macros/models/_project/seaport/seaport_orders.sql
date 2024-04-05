@@ -1,21 +1,15 @@
 -- utility macro's:
--- convert itemType
--- https://github.com/ProjectOpenSea/seaport/blob/main/docs/SeaportDocumentation.md#order
-{% macro convert_itemType(itemType_column) %}
-case {{itemType_column}}
-    when '0' then 'native'
-    when '1' then 'erc20'
-    when '2' then 'erc721'
-    when '3' then 'erc1155'
-    when '4' then 'erc721_with_criteria'
-    when '5' then 'erc1155_with_criteria'
-end
-{% endmacro %}
-
 -- convert offer (SpentItem[]) to a ROW
 {% macro convert_offer(col) %}
 cast(ROW(
-    {{convert_itemType('json_extract_scalar({{col}}, \'$.itemType\')')}}
+    case json_extract_scalar({{col}}, '$.itemType')  -- https://github.com/ProjectOpenSea/seaport/blob/main/docs/SeaportDocumentation.md#order
+        when '0' then 'native'
+        when '1' then 'erc20'
+        when '2' then 'erc721'
+        when '3' then 'erc1155'
+        when '4' then 'erc721_with_criteria'
+        when '5' then 'erc1155_with_criteria'
+    end
     ,from_hex(json_extract_scalar({{col}}, '$.token'))
     ,cast(json_extract_scalar({{col}}, '$.identifier') as uint256)
     ,cast(json_extract_scalar({{col}}, '$.amount') as uint256))
@@ -25,7 +19,14 @@ as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256))
 -- convert consideration (ReceivedItem[]) to a ROW
 {% macro convert_consideration(col) %}
 cast(ROW(
-    {{convert_itemType('json_extract_scalar({{col}}, \'$.itemType\')')}}
+    case json_extract_scalar({{col}}, '$.itemType')
+        when '0' then 'native'
+        when '1' then 'erc20'
+        when '2' then 'erc721'
+        when '3' then 'erc1155'
+        when '4' then 'erc721_with_criteria'
+        when '5' then 'erc1155_with_criteria'
+    end
     ,from_hex(json_extract_scalar({{col}}, '$.token'))
     ,cast(json_extract_scalar({{col}}, '$.identifier') as uint256)
     ,cast(json_extract_scalar({{col}}, '$.amount') as uint256)
