@@ -13,7 +13,7 @@ end
 {% endmacro %}
 
 -- convert offer (SpentItem[]) to a ROW
-{% macro convert_offer({{col}}) %}
+{% macro convert_offer(col) %}
 cast(ROW(
     convert_itemType(cast(json_extract_scalar({{col}}, '$.itemType') as int))
     ,from_hex(json_extract_scalar({{col}}, '$.token'))
