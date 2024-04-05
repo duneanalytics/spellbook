@@ -1,6 +1,9 @@
 version: 2
 
 sources:
+  - name: campfire_avalanche_c
+    tables:
+      - name: CampfireMarket_evt_Sale
   - name: hyperspace_avalanche_c
     tables:
       - name: ERC721OrdersFeature_evt_ERC721OrderFilled
