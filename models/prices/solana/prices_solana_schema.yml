@@ -22,9 +22,7 @@ models:
           - accepted_values:
               values: [ "solana" ]
       - name: contract_address
-        description: "Contract address in varbinary typed of the token, if any"
-      - name: raw_contract_address
-        description: "Raw contract address in varchar of the token, if any"
+        description: "Contract address of the token, if any"
       - name: symbol
         description: "Token symbol"
       - name: decimals
