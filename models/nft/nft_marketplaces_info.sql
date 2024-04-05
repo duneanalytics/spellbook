@@ -63,4 +63,8 @@ FROM (VALUES
     , ('stealcam', 'Stealcam', 'Direct', 'trystealcam')
     , ('collectionswap', 'Collectionswap', 'Direct', 'collectionswap')
     , ('decentraland', 'Decentraland', 'Direct', 'decentraland')
+    , ('kreatorland', 'Libera', 'Direct', 'Kreatorland')
+    , ('mooar', 'MOOAR', 'Direct', 'mooarofficial')
+    , ('aurem', 'Aurem', 'Direct', 'Aurem_io')
+    , ('tevaero', 'Tevaera', 'Direct', 'tevaera')
     ) AS temp_table (project, name, marketplace_type, x_username)
