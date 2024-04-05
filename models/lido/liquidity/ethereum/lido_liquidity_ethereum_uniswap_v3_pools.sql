@@ -122,6 +122,20 @@ group by 1
     AND blockchain = 'ethereum'
     AND contract_address IN (SELECT address  FROM tokens      )
     GROUP BY 1, 2,3,4
+    UNION ALL --mETH prices before 2023-12-31
+    SELECT DISTINCT
+      DATE_TRUNC('day', minute) AS time,
+      0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa  AS token, --mETH
+      decimals, 
+      'mETH',
+      AVG(price) AS price
+    FROM
+      {{source('prices','usd')}} p
+    WHERE DATE_TRUNC('day', p.minute) <= DATE '2023-12-30'
+    AND DATE_TRUNC('day', p.minute) >=  DATE '2023-12-01'
+    AND blockchain = 'ethereum'
+    AND symbol = 'WETH'
+    GROUP BY 1, 2,3,4
     UNION ALL
     SELECT DISTINCT
       DATE_TRUNC('day', minute),
