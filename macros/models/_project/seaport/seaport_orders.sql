@@ -2,7 +2,7 @@
 -- convert itemType
 -- https://github.com/ProjectOpenSea/seaport/blob/main/docs/SeaportDocumentation.md#order
 {% macro convert_itemType(itemType_column) %}
-case itemType_column
+case {{itemType_column}}
     when 0 then 'native'
     when 1 then 'erc20'
     when 2 then 'erc721'
@@ -13,23 +13,23 @@ end
 {% endmacro %}
 
 -- convert offer (SpentItem[]) to a ROW
-{% macro convert_offer(col) %}
+{% macro convert_offer({{col}}) %}
 cast(ROW(
-    convert_itemType(cast(json_extract_scalar(col, '$.itemType') as int))
-    ,from_hex(json_extract_scalar(col, '$.token'))
-    ,cast(json_extract_scalar(col, '$.identifier') as uint256)
-    ,cast(json_extract_scalar(col, '$.amount') as uint256))
+    convert_itemType(cast(json_extract_scalar({{col}}, '$.itemType') as int))
+    ,from_hex(json_extract_scalar({{col}}, '$.token'))
+    ,cast(json_extract_scalar({{col}}, '$.identifier') as uint256)
+    ,cast(json_extract_scalar({{col}}, '$.amount') as uint256))
 as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256))
 {% endmacro %}
 
 -- convert consideration (ReceivedItem[]) to a ROW
 {% macro convert_consideration(col) %}
 cast(ROW(
-    convert_itemType(cast(json_extract_scalar(col, '$.itemType') as int))
-    ,from_hex(json_extract_scalar(col, '$.token'))
-    ,cast(json_extract_scalar(col, '$.identifier') as uint256)
-    ,cast(json_extract_scalar(col, '$.amount') as uint256)
-    ,from_hex(json_extract_scalar(col, '$.recipient')))
+    convert_itemType(cast(json_extract_scalar({{col}}, '$.itemType') as int))
+    ,from_hex(json_extract_scalar({{col}}, '$.token'))
+    ,cast(json_extract_scalar({{col}}, '$.identifier') as uint256)
+    ,cast(json_extract_scalar({{col}}, '$.amount') as uint256)
+    ,from_hex(json_extract_scalar({{col}}, '$.recipient')))
 as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256, recipient varbinary))
 {% endmacro %}
 
