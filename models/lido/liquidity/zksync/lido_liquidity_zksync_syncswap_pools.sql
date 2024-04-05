@@ -1,7 +1,7 @@
 {{ config(
     schema='lido_liquidity_zksync',
     alias = 'syncswap_pools',
-     
+    tags=['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

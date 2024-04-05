@@ -1937,17 +1937,17 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - trace_address
-            - node_address
+            - tx_index
+            - caller_address
     columns:
       - *blockchain
       - *block_time
       - *date_start
-      - *node_address
+      - *tx_index
       - *tx_hash
-      - &trace_address
-        name: trace_address
-        description: "Trace Address"
+      - &caller_address
+        name: caller_address
+        description: "Caller Address"
 
   - name: chainlink_ccip_gas_daily
     meta:
@@ -2082,15 +2082,15 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - trace_address
-            - node_address
+            - tx_index
+            - caller_address
     columns:
       - *blockchain
       - *block_time
       - *date_start
-      - *node_address
+      - *tx_index
       - *tx_hash
-      - *trace_address
+      - *caller_address
 
   - name: chainlink_ccip_reward_daily
     meta:
@@ -2175,16 +2175,18 @@ models:
     columns:
       - *blockchain
       - *evt_block_time
-      - &fee_amount
-        name: fee_amount
-        description: "Fee Amount"
-      - *token
+      - &fee_token_amount
+        name: fee_token_amount
+        description: "Fee Token Amount"
+      - &fee_token
+        name: fee_token
+        description: "Fee Token"
       - &destination_blockchain
         name: destination_blockchain
         description: "Destination Blockchain"
-      - &destination_chain_selector
-        name: destination_chain_selector
-        description: "Destination Chain Selector"
+      - &destination_selector
+        name: destination_selector
+        description: "Destination Selector"
 
   - name: chainlink_ccip_send_requested_daily
     meta:
@@ -2230,7 +2232,9 @@ models:
       - *blockchain
       - *date_start
       - *date_month
-      - *fee_amount
+      - &fee_amount
+        name: fee_amount
+        description: "Fee Amount"
       - *token
       - *destination_blockchain
       - &count
@@ -2291,7 +2295,9 @@ models:
       - &destination
         name: destination
         description: "Destination"
-      - *trace_address
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
 
   - name: chainlink_ccip_tokens_locked_logs
     meta:
@@ -2580,3 +2586,111 @@ models:
       - *usd_amount
       - *operator_name
       - *nop_address
+
+  - name: chainlink_ccip_send_requested_logs_v1
+    meta:
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "base",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        [
+          "chainlink",
+          "ccip",
+          "send",
+          "requested",
+          "logs",
+          "arbitrum",
+          "avalanche_c",
+          "base",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
+    description: >
+      Chainlink CCIP Send Requested Logs v1
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+      - *fee_token_amount
+      - &origin_selector
+        name: origin_selector
+        description: "Origin Selector"
+      - *fee_token
+      - *destination_selector
+      - *destination_blockchain
+
+  - name: chainlink_ccip_send_requested_logs_v1_2
+    meta:
+      blockchain:
+        [
+          "arbitrum",
+          "avalanche_c",
+          "base",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags:
+        [
+          "chainlink",
+          "ccip",
+          "send",
+          "requested",
+          "logs",
+          "arbitrum",
+          "avalanche_c",
+          "base",
+          "bnb",
+          "ethereum",
+          "optimism",
+          "polygon",
+        ]
+    description: >
+      Chainlink CCIP Send Requested Logs v1_2
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+      - *fee_token_amount
+      - *origin_selector
+      - *fee_token
+      - *destination_selector
+      - *destination_blockchain

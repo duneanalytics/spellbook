@@ -11,7 +11,8 @@
     ref('tevaera_zksync_base_trades'),
     ref('kreatorland_zksync_base_trades'),
     ref('element_zksync_base_trades'),
-    ref('zk_markets_zksync_base_trades')
+    ref('zk_markets_zksync_base_trades'),
+    ref('mint_square_zksync_base_trades')
 ] %}
 
 {% for nft_model in nft_models %}
