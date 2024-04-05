@@ -45,8 +45,8 @@ WITH basic as (
         e.evt_index,
         e.evt_block_time,
         e.evt_block_number,
-        transform(e.consideration, x -> convert_consideration(x)) as consideration,
-        transform(e.offer, x -> convert_offer(x)) as offer,
+        transform(e.consideration, x -> {{convert_consideration(x)}}) as consideration,
+        transform(e.offer, x -> {{convert_offer(x)}}) as offer,
         e.offerer,    -- offers the items in offer[] and if consideration[] is fulfilled
         e.recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         e.orderHash,
