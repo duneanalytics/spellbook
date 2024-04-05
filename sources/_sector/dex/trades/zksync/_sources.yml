@@ -23,6 +23,14 @@ sources:
       - name: SyncSwapClassicPool_evt_Swap
       - name: SyncSwapStablePoolFactory_evt_PoolCreated
       - name: SyncSwapStablePool_evt_Swap
+  - name: syncswap_v2_zksync
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Swap
+      - name: SyncSwapStablePoolFactory_evt_PoolCreated
+      - name: SyncSwapStablePool_evt_Swap
+      - name: SyncSwapAquaPoolFactory_evt_PoolCreated
+      - name: SyncSwapAquaPool_evt_Swap      
   - name: mute_zksync
     tables:
       - name: MuteSwitchFactoryDynamic_evt_PairCreated
