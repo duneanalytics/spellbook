@@ -3,20 +3,22 @@
 	  , alias = 'revenue'
 	  , materialized = 'view'
 ) }}
-with
-    results as (
-        {{
-            dbt_utils.union_relations(
-                relations=[
-                    ref("geodnet_polygon_revenue")
-                ]
-            )
-        }}
-    )
-select 
-    date, 
-    blockchain,
-    project,
-    revenue
-from results
 
+
+{% set models = [
+ ref("geodnet_polygon_revenue")
+] %}
+
+SELECT * FROM (
+{% for model in models %}
+    SELECT
+        date,
+        blockchain,
+        project,
+        revenue
+    FROM {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+{% endfor %}
+)
