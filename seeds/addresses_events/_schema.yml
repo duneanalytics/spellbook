@@ -10,6 +10,7 @@ seeds:
         block_number: bigint
         tx_hash: varbinary
 
+
   - name: first_funded_by_seed_solana
     config:
       column_types:
@@ -19,6 +20,14 @@ seeds:
         block_slot: bigint
         tx_id: varchar
         tx_index: bigint
+
+  - name: first_funded_by_seed_bitcoin
+    config:
+      column_types:
+        blockchain: varchar
+        address: varchar
+        block_height: bigint
+        tx_id: varbinary
 
   - name: first_activity_seed
     config:
