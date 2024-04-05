@@ -309,3 +309,60 @@ models:
           seed_file: ref('iziswap_zksync_base_trades_seed')
           filter:
             version: 2
+
+  - name: velocore_v0_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: velocore
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'velocore' ]
+    description: "Velocore v0 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velocore_zksync_base_trades_seed')
+          filter:
+            version: 0
+
+  - name: velocore_v1_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: velocore
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'velocore' ]
+    description: "Velocore v1 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velocore_zksync_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: velocore_v2_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: velocore
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'velocore' ]
+    description: "Velocore v2 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('velocore_zksync_base_trades_seed')
+          filter:
+            version: 2
