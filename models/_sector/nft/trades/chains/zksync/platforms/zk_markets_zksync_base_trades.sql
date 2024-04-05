@@ -63,6 +63,7 @@ royalties as (
           on tc.block_number = tr.block_number
          and tc.tx_hash = tr.tx_hash
       where tr.amount_raw > 0
+        and tr.contract_address = 0x000000000000000000000000000000000000800a -- to match currency_contract on base_trades
         and tr."from" in (tc.project_contract_address, tc.buyer) -- only include transfer from marketplace or buyer
         and tr.to not in (
           tc.project_contract_address,
