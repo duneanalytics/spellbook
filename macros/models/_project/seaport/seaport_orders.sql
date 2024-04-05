@@ -19,7 +19,7 @@ cast(ROW(
     ,from_hex(json_extract_scalar(col, '$.token'))
     ,cast(json_extract_scalar(col, '$.identifier') as uint256)
     ,cast(json_extract_scalar(col, '$.amount') as uint256))
-as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256)
+as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256))
 {% endmacro %}
 
 -- convert consideration (ReceivedItem[]) to a ROW
@@ -29,8 +29,8 @@ cast(ROW(
     ,from_hex(json_extract_scalar(col, '$.token'))
     ,cast(json_extract_scalar(col, '$.identifier') as uint256)
     ,cast(json_extract_scalar(col, '$.amount') as uint256)
-    ,from_hex(json_extract_scalar(col, '$.recipient')) as recipient)
-as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256, recipient varbinary)
+    ,from_hex(json_extract_scalar(col, '$.recipient')))
+as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256, recipient varbinary))
 {% endmacro %}
 
 
