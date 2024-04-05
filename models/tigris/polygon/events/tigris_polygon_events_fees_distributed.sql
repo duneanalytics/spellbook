@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'version', 'protocol_version']
     )
 }}
@@ -63,7 +64,7 @@ fees_v2 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_polygon', fees_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

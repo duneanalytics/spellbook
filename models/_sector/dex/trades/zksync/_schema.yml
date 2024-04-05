@@ -60,7 +60,7 @@ models:
           filter:
             version: 3
             
-  - name: syncswap_zksync_base_trades
+  - name: syncswap_v1_zksync_base_trades
     meta:
       blockchain: zksync
       sector: dex
@@ -68,7 +68,7 @@ models:
       contributors: thetroyharris
     config:
       tags: [ 'zksync', 'dex', 'trades', 'syncswap' ]
-    description: "SyncSwap zksync base trades"
+    description: "SyncSwap V1 zksync base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -76,6 +76,27 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('syncswap_zksync_base_trades_seed')
+          filter:
+            version: 1          
+
+  - name: syncswap_v2_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: syncswap
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'syncswap' ]
+    description: "SyncSwap V2 zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('syncswap_zksync_base_trades_seed')
+          filter:
+            version: 2
 
   - name: mute_zksync_base_trades
     meta:

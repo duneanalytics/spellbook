@@ -132,6 +132,7 @@ FROM (VALUES
     , ('sharkyswap', 'Sharky Swap', 'Direct', 'SharkySwapFi')
     , ('zebra', 'Zebra', 'Direct', 'zebra')
     , ('scrollswap', 'ScrollSwap', 'Direct', 'scrollswap')
+    , ('auragi', 'Auragi', 'Direct', 'AuragiFinance')
     , ('soswap','Soswap','Direct','RaiFinance')
     , ('elk_finance', 'Elk Finance', 'Direct', 'Elk Finance')   
     , ('leetswap', 'Leetswap', 'Direct', 'LeetSwap')
