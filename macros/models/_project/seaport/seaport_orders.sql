@@ -59,12 +59,12 @@ WITH basic as (
         null as matched_recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         null as matched_orderHash,
         null as matched_zone
-    from Seaport_evt_OrderFulfilled e
-    left join Seaport_evt_OrdersMatched anti -- anti join so we don't overlap with any matched orders
+    from {{Seaport_evt_OrderFulfilled}} e
+    left join {{Seaport_evt_OrdersMatched}} anti -- anti join so we don't overlap with any matched orders
         on e.evt_block_number = anti.evt_block_number
         and e.evt_tx_hash = anti.evt_tx_hash
         and contains(anti.orderHashes, e.orderHash)
-        where anti.evt_index is null
+    where anti.evt_index is null
 ),
 
 matched as (
@@ -88,12 +88,12 @@ matched as (
         pe.recipient as matched_recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         pe.orderHash as matched_orderHash,
         pe.zone as matched_zone
-    from Seaport_evt_OrderFulfilled e  -- event
-    inner join Seaport_evt_OrdersMatched matched
+    from {{Seaport_evt_OrderFulfilled}} e  -- event
+    inner join {{Seaport_evt_OrdersMatched}} matched
         on e.evt_block_number = matched.evt_block_number
         and e.evt_tx_hash = matched.evt_tx_hash
         and contains(matched.orderHashes, e.orderHash)
-    inner join Seaport_evt_OrderFulfilled pe -- paired event
+    inner join {{Seaport_evt_OrderFulfilled}} pe -- paired event
         on e.evt_block_number = pe.evt_block_number
         and e.evt_tx_hash = pe.evt_tx_hash
         and e.evt_index = pe.evt_index - 1 -- events should be emitted after each other
