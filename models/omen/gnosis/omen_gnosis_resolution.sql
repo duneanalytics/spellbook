@@ -31,7 +31,6 @@ ConditionResolution AS (
         ,t.conditionId
         ,t.oracle
         ,t.questionId
-        --,t.outcomeSlotCount
         ,s.SEQUENCE_NUMBER -1 AS payoutNumerators_index
         ,VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 65 + 32 * s.SEQUENCE_NUMBER, 32))) AS payoutNumerator
     FROM (

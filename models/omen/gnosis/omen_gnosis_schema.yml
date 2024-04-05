@@ -21,10 +21,10 @@ models:
     columns:
       - &block_time
         name: block_time
-        description: "UTC event block time of each DEX trade"
+        description: "Event UTC block time of each prediction market trade"
       - &block_day
         name: block_day
-        description: "UTC event block day of each trade"
+        description: "Event UTC block day of each prediction market trade"
       - &tx_from
         name: tx_from
         description: "Address which initiated the transaction"
@@ -33,37 +33,37 @@ models:
         description: "Address which received the transaction"
       - &tx_hash
         name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+        description: "Unique transaction hash value tied to each transaction on the prediction market"
       - &evt_index
         name: evt_index
-        description: ""
+        description: "Index of the log event in the block"
       - &fixedProductMarketMaker
         name: fixedProductMarketMaker
         description: "Address of the Fixed Product Market Maker"
       - &collateralToken
         name: collateralToken
         description: "Address of the collateral token"
-      - &symbol
-        name: symbol
-        description: "Symbol of the collateral token"
       - &address
         name: address
-        description: "Address of buyer/seller"
+        description: "Address of buyer or seller"
       - &outcomeSlot
         name: outcomeSlot
-        description: "Index every outcome"
+        description: "Outcome slot for the specific Fixed Product Market Maker"
       - &outcomeIndex
         name: outcomeIndex
         description: "Index of the outcome choosen"
       - &amount
         name: amount
-        description: "Amount in native currency that was bought/sold"
+        description: "Amount in native currency that was bought or sold"
       - &feeAmount
         name: feeAmount
         description: "Fee amount in native currency that was charged"
       - &outcomeTokens
         name: outcomeTokens
-        description: "Amount to tokens Minted/Burnt"
+        description: "Amount of conditional tokens that minted or burnt by the Fixed Product Market Maker"
+      - &action
+        name: action
+        description: "Action excetuted by the trader, 'Buy' or 'Sell'"
 
   - name: omen_gnosis_markets
     meta:
@@ -154,9 +154,7 @@ models:
         name: amount_index
         description: "amount index"
       - *amount
-      - &action
-        name: action
-        description: "Cam be Min or Burn"
+      - *action
 
   - name: omen_gnosis_payouts
     meta:

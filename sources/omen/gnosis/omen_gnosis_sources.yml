@@ -1,0 +1,163 @@
+version: 2
+
+sources:
+  - name: omen_gnosis
+    description: "Decoded contracts for Gnosis"
+    tables:
+    - name: Realitio_v2_1_evt_LogNewAnswer
+      loaded_at_field: evt_block_time
+      description: "L2 Standard Token Factory - Creation Events."
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      columns:
+      - &contract_address
+          name: contract_address
+          description: "Contract address"  
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash of the event" 
+      - &evt_tx_from
+        name: evt_tx_from
+        description: "Transaction from" 
+      - &evt_tx_to
+        name: evt_tx_to
+        description: "Transaction to" 
+      - &evt_index
+        name: evt_index
+        description: "Event index"  
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event block number"  
+      - &evt_block_date
+        name: evt_block_date
+        description: "Date for block event time in UTC"
+      - &answer
+        name: answer
+        description: "answer"
+      - &bond
+        name: bond
+        description: "bond"
+      - &history_hash
+        name: history_hash
+        description: "history_hash"
+      - &is_commitment
+        name: is_commitment
+        description: "is_commitment"
+      - &question_id
+        name: question_id
+        description: "question_id"
+      - &ts
+        name: ts
+        description: "ts"
+      - &user
+        name: user
+        description: "user"
+
+    - name: Realitio_v2_1_evt_LogNewQuestion
+      loaded_at_field: evt_block_time
+      description: "L2 Standard Token Factory - Creation Events."
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      columns:
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - &arbitrator
+        name: arbitrator
+        description: "arbitrator"
+      - &content_hash
+        name: content_hash
+        description: "content_hash"
+      - &created
+        name: created
+        description: "created"
+      - &nonce
+        name: nonce
+        description: "nonce"
+      - &opening_ts
+        name: opening_ts
+        description: "opening_ts"
+      - &question
+        name: question
+        description: "question"
+      - *question_id
+      - &template_id
+        name: template_id
+        description: "template_id"
+      - &timeout
+        name: timeout
+        description: "timeout"
+      - *user
+
+    - name: ConditionalTokens_evt_ConditionPreparation
+      loaded_at_field: evt_block_time
+      description: "L2 Standard Token Factory - Creation Events."
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      columns:
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - &conditionId
+        name: conditionId
+        description: "conditionId"
+      - &oracle
+        name: oracle
+        description: "oracle"
+      - &outcomeSlotCount
+        name: outcomeSlotCount
+        description: "outcomeSlotCount"
+      - &questionId
+        name: questionId
+        description: "questionId"
+
+    - name: FPMMDeterministicFactory_evt_FixedProductMarketMakerCreation
+      loaded_at_field: evt_block_time
+      description: "L2 Standard Token Factory - Creation Events."
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      columns:
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - &collateralToken
+        name: collateralToken
+        description: "collateralToken"
+      - &conditionalTokens
+        name: conditionalTokens
+        description: "conditionalTokens"
+      - &creator
+        name: creator
+        description: "creator"
+      - &fee
+        name: fee
+        description: "fee"
+      - *outcomeSlotCount
+      - &fixedProductMarketMaker
+        name: fixedProductMarketMaker
+        description: "fixedProductMarketMaker"
+      - &conditionIds
+        name: conditionIds
+        description: "conditionIds"
