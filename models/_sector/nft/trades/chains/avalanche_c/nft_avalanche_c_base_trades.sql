@@ -7,7 +7,7 @@
 
 
 {% set nft_models = [
- ref('joepegs_avalanche_c_base_trades')
+ ref('chikn_avalanche_c_base_trades')
 ] %}
 
 
