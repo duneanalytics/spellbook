@@ -208,7 +208,7 @@ FROM
     ('ata-automata', 'bnb', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
     ('bonk-bonk', 'bnb', 'BONK', 0xa697e272a73744b343528c3bc4702f2565b2f422, 5),
     ('pepe-pepe', 'bnb', 'PEPE', 0x25d887ce7a35172c62febfd67a1856f20faebb00,18),
-    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
+    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18), --not found in api 
     ('weth-wrapped-ether-wormhole', 'bnb', 'WETH', 0x4db5a66e937a9f4473fa95b1caf1d1e1d62e29ea,18),
     ('ageur-ageur', 'bnb', 'AGEUR', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89,18),
     ('sol-wrapped-sol-wormhole', 'bnb', 'SOL', 0xfa54ff1a158b5189ebba6ae130ced6bbd3aea76e,9),
@@ -221,12 +221,12 @@ FROM
     ('usx-dforce-usd', 'bnb', 'USX', 0xb5102cee1528ce2c760893034a4603663495fd72,18),
     ('strainz-strainz-nft', 'bnb', 'STRAINZ', 0xacc870d9e560f784ceff365f56e1f12161324478,4),
     ('dis-disney', 'bnb', 'DIS', 0xe2ecc66e14efa96e9c55945f79564f468882d24c,18),
-    --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), --not active
+    --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), --inactive
     ('shib-shiba-inu', 'bnb', 'SHIB', 0x2859e4544c4bb03966803b044a93563bd2d0dd4d,18),
     ('bttc-bittorrent-chain', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
     ('aitech-solidus-ai-tech', 'bnb', 'AITECH', 0x2d060ef4d6bf7f9e5edde373ab735513c0e4f944,18),
     ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8cb3c6e7d085626e7a1347aafdf001f6,18),
-    --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not in API
+    -- ('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not found in api 
     ('trias-trias-token', 'bnb', 'TRIAS', 0xa4838122c683f732289805fc3c207febd55babdd,18),
     ('pzp-playzap', 'bnb', 'PZP', 0x6ad9e9c098a45b2b41b519119c31c3dcb02accb2,18),
     ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9),
@@ -256,7 +256,15 @@ FROM
     ('ai-flourishing-ai', 'bnb', 'AI', 0xA9b038285F43cD6fE9E16B4C80B4B9bCcd3C161b,18),
     ('kalm-kalm', 'bnb', 'KALM', 0x4BA0057f784858a48fe351445C672FF2a3d43515,18),
     ('xai-grok', 'bnb', 'XAI', 0x0009Ae5a69B037eA74A900783fab457fa605ae5d,9),
-    ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18)
+    ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18),
+    ('rdnt-radiant-capital', 'bnb', 'RDNT', 0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df,18),
+    ('cyber-cyberconnect', 'bnb', 'CYBER', 0x14778860e937f509e651192a90589de711fb88a9,18),
+    --('cgpt-chaingpt', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18), --not found in api 
+    ('ai-sleepless-ai', 'bnb', 'AI', 0xbda011d7f8ec00f66c1923b049b94c67d148d8b2,18),
+    ('usdv-verified-usd', 'bnb', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253,6),
+    -- ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,18), --DEFI does not match CoinPaprika source: DEFI  
+    --('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),--not found in api 
+    ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.

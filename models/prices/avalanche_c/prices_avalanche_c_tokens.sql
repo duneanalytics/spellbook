@@ -75,9 +75,19 @@ FROM
     --('snowy-fantastic-protocol-snowy-token','avalanche_c','SNOWY',0x6da767394f079c1524B3e797D2110C23c3ecf322,18),
     ('monk-monkoshi','avalanche_c','MONK',0x7a5424A1AfB6C786f5dd603847683980Fdb2cda7,18),
     ('man-man-man-man','avalanche_c','MAN',0xBEd472c62A5Aa4dD734B6bF5EbA1413d86AAbA6b,18),
-    ('bobs-bobs','avalanche_c','BOBS',0xf5f3216E9fed36F8cCf08D310FEc6FBf7f06200f,18),
+    --('bobs-bobs','avalanche_c','BOBS',0xf5f3216E9fed36F8cCf08D310FEc6FBf7f06200f,18),
     ('roco-roco-finance','avalanche_c','ROCO',0xb2a85C5ECea99187A977aC34303b80AcbDdFa208,18),
     ('vchf-vnx-swiss-franc','avalanche_c','VCHF',0x228a48df6819ccc2eca01e2192ebafffdad56c19,18),
     ('veur-vnx-euro','avalanche_c','VEUR',0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b,18),
-    ('yyavax-yieldyak-gavax','avalanche_c','YYAVAX',0xf7d9281e8e363584973f946201b82ba72c965d27,18)
+    -- ('yyavax-yieldyak-gavax','avalanche_c','YYAVAX',0xf7d9281e8e363584973f946201b82ba72c965d27,18), -- inactive
+    ('kimbo-kimbo','avalanche_c','KIMBO',0x184ff13b3ebcb25be44e860163a5d8391dd568c1,18),
+    ('gec-gecko-inu','avalanche_c','GEC',0xe8385cecb013561b69beb63ff59f4d10734881f3,18),
+    ('hec-heroeschained','avalanche_c','HEC',0xc7f4debc8072e23fe9259a5c0398326d8efb7f5c,18),
+    ('png-pangolin','avalanche_c','PNG',0x60781c2586d68229fde47564546784ab3faca982,18),
+    ('cly-colony','avalanche_c','CLY',0xec3492a2508ddf4fdc0cd76f31f340b30d1793e6,18),
+    ('rocket-team-rocket','avalanche_c','ROCKET',0x5039af99956f13a4e2c4b29e745e4d27e07b45ff,18),
+    ('spell-spell-token','avalanche_c','SPELL',0xce1bffbd5374dac86a2893119683f4911a2f7814,18),
+    ('gurs-gursonavax','avalanche_c','GURS',0x223a368ad0e7396165fc629976d77596a51f155c,18),
+    ('hon-heroes-of-nft','avalanche_c','HON',0xed2b42d3c9c6e97e11755bb37df29b6375ede3eb,18),
+    ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
