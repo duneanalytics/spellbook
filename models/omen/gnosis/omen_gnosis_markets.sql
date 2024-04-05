@@ -18,6 +18,7 @@
 
 WITH 
 
+
 Realitio_LogNewQuestion AS (
     SELECT
         block_time,
