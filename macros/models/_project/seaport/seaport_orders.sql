@@ -3,19 +3,19 @@
 -- https://github.com/ProjectOpenSea/seaport/blob/main/docs/SeaportDocumentation.md#order
 {% macro convert_itemType(itemType_column) %}
 case {{itemType_column}}
-    when 0 then 'native'
-    when 1 then 'erc20'
-    when 2 then 'erc721'
-    when 3 then 'erc1155'
-    when 4 then 'erc721_with_criteria'
-    when 5 then 'erc1155_with_criteria'
+    when '0' then 'native'
+    when '1' then 'erc20'
+    when '2' then 'erc721'
+    when '3' then 'erc1155'
+    when '4' then 'erc721_with_criteria'
+    when '5' then 'erc1155_with_criteria'
 end
 {% endmacro %}
 
 -- convert offer (SpentItem[]) to a ROW
 {% macro convert_offer(col) %}
 cast(ROW(
-    convert_itemType(cast(json_extract_scalar({{col}}, '$.itemType') as int))
+    {{convert_itemType('json_extract_scalar({{col}}, \'$.itemType\')')}}
     ,from_hex(json_extract_scalar({{col}}, '$.token'))
     ,cast(json_extract_scalar({{col}}, '$.identifier') as uint256)
     ,cast(json_extract_scalar({{col}}, '$.amount') as uint256))
@@ -25,7 +25,7 @@ as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256))
 -- convert consideration (ReceivedItem[]) to a ROW
 {% macro convert_consideration(col) %}
 cast(ROW(
-    convert_itemType(cast(json_extract_scalar({{col}}, '$.itemType') as int))
+    {{convert_itemType('json_extract_scalar({{col}}, \'$.itemType\')')}}
     ,from_hex(json_extract_scalar({{col}}, '$.token'))
     ,cast(json_extract_scalar({{col}}, '$.identifier') as uint256)
     ,cast(json_extract_scalar({{col}}, '$.amount') as uint256)
@@ -45,8 +45,8 @@ WITH basic as (
         e.evt_index,
         e.evt_block_time,
         e.evt_block_number,
-        transform(e.consideration, x -> {{convert_consideration(x)}}) as consideration,
-        transform(e.offer, x -> {{convert_offer(x)}}) as offer,
+        transform(e.consideration, x -> {{convert_consideration('x')}}) as consideration,
+        transform(e.offer, x -> {{convert_offer('x')}}) as offer,
         e.offerer,    -- offers the items in offer[] and if consideration[] is fulfilled
         e.recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         e.orderHash,
@@ -74,16 +74,16 @@ matched as (
         e.evt_index,
         e.evt_block_time,
         e.evt_block_number,
-        transform(e.consideration, x -> convert_consideration(x)) as consideration,
-        transform(e.offer, x -> convert_offer(x)) as offer,
+        transform(e.consideration, x -> convert_consideration('x')) as consideration,
+        transform(e.offer, x -> convert_offer('x')) as offer,
         e.offerer,    -- offers the items in offer[] and if consideration[] is fulfilled
         e.recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         e.orderHash,
         e.zone,
         matched.evt_index as ordersmatched_evt_index,
         pe.evt_index as matched_evt_index,
-        transform(pe.consideration, x -> convert_consideration(x)) as matched_consideration,
-        transform(pe.offer, x -> convert_offer(x)) as matched_offer,
+        transform(pe.consideration, x -> convert_consideration('x')) as matched_consideration,
+        transform(pe.offer, x -> convert_offer('x')) as matched_offer,
         pe.offerer as matched_offerer,    -- offers the items in offer[] and if consideration[] is fulfilled
         pe.recipient as matched_recipient,  -- receives the items in offer[] and gives the consideration[] items to fill the order
         pe.orderHash as matched_orderHash,
