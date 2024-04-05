@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dex_zora_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: uniswap_v2_zora_base_trades
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: ilemi
+    config:
+      tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap zora v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_zora_base_trades_seed')
+          filter:
+            version: 2
