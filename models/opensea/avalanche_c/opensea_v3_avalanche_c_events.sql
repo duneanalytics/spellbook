@@ -27,7 +27,7 @@ WITH fee_wallets as (
      ,native_token_symbol = 'AVAX'
      ,start_date = '2022-09-06'
     )
-  }}
+  }} 
 )
 
 select *
