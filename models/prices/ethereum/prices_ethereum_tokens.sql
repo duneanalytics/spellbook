@@ -1718,7 +1718,8 @@ FROM
     ('wrld-nft-worlds', 'ethereum', 'WRLD',0xd5d86fc8d5c0ea1ac1ac5dfab6e529c9967a45e9,18),
     ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,18),
     ('deai-zero1-token', 'ethereum', 'DEAI',0x1495bc9e44af1f8bcb62278d2bec4540cf0c05ea,18),
-    ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18)
+    ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18),
+    ('tree-tree-capital', 'ethereum', 'TREE',0xba25b2281214300e4e649fead9a6d6acd25f1c0a,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
