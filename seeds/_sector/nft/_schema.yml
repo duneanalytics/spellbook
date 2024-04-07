@@ -397,6 +397,16 @@ seeds:
         royalty_fee_amount_raw: uint256
         nft_token_id: uint256
 
+  - name: chikn_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        nft_token_id: uint256 
+        
   - name: campfire_avalanche_c_base_trades_seed
     config:
       column_types:
