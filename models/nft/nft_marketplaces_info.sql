@@ -67,4 +67,5 @@ FROM (VALUES
     , ('mooar', 'MOOAR', 'Direct', 'mooarofficial')
     , ('aurem', 'Aurem', 'Direct', 'Aurem_io')
     , ('tevaero', 'Tevaera', 'Direct', 'tevaera')
+    , ('hyperspace', 'Hyperspace', 'Direct', 'hyperspacexyz')
     ) AS temp_table (project, name, marketplace_type, x_username)
