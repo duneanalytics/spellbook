@@ -644,7 +644,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('sharkyswap_arbitrum_base_trades_seed')
-
+  
+  - name: auragi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: auragi
+      contributors: archie
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'auragi']
+    description: "auragi Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('auragi_arbitrum_base_trades_seed')
+          
   - name: wombat_exchange_arbitrum_base_trades
     meta:
       blockchain: arbitrum

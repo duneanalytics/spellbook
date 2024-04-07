@@ -2,7 +2,7 @@
         tags = [ 'static'],
         schema='dex',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "solana", "zksync"]\',
                                     "sector",
                                     "dex",
                                     \'["hildobby"]\') }}')
@@ -132,6 +132,7 @@ FROM (VALUES
     , ('sharkyswap', 'Sharky Swap', 'Direct', 'SharkySwapFi')
     , ('zebra', 'Zebra', 'Direct', 'zebra')
     , ('scrollswap', 'ScrollSwap', 'Direct', 'scrollswap')
+    , ('auragi', 'Auragi', 'Direct', 'AuragiFinance')
     , ('soswap','Soswap','Direct','RaiFinance')
     , ('elk_finance', 'Elk Finance', 'Direct', 'Elk Finance')   
     , ('leetswap', 'Leetswap', 'Direct', 'LeetSwap')
@@ -145,4 +146,12 @@ FROM (VALUES
     , ('crescentswap', 'CrescentSwap', 'Direct', 'CrescentSwap')
     , ('syncswap', 'SyncSwap', 'Direct', 'SyncSwap')
     , ('mute', 'Mute', 'Direct', 'Mute')
+    , ('spacefi', 'SpaceFi', 'Direct', 'SpaceFi')
+    , ('ezkalibur', 'eZKalibur', 'Direct', 'eZKalibur')
+    , ('wagmi', 'Wagmi', 'Direct', 'Wagmi')
+    , ('zkswap_finance', 'zkSwap Finance', 'Direct', 'zkSwapFinance')
+    , ('gemswap', 'GemSwap', 'Direct', 'GemSwap')
+    , ('vesync', 'veSync', 'Direct', 'veSync')
+    , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
+    , ('velocore', 'Velocore', 'Direct', 'Velocore')
     ) AS temp_table (project, name, marketplace_type, x_username)
