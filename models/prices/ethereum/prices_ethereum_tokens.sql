@@ -1722,7 +1722,10 @@ FROM
     ('tree-tree-capital', 'ethereum', 'TREE',0xba25b2281214300e4e649fead9a6d6acd25f1c0a,18),
     ('alt-altlayer', 'ethereum', 'ALT', 0x8457ca5040ad67fdebbcc8edce889a335bc0fbfb, 18),
     ('pixel-pixels', 'ethereum', 'PIXEL', 0x3429d03c6f7521aec737a0bbf2e5ddcef2c3ae31, 18),
-    ('olas-autonolas', 'ethereum', 'OLAS', 0x0001a500a6b18995b03f44bb040a5ffc28e45cb0, 18)
+    ('olas-autonolas', 'ethereum', 'OLAS', 0x0001a500a6b18995b03f44bb040a5ffc28e45cb0, 18),
+    ('mnt-mantle', 'ethereum', 'MNT', 0x3c3a81e81dc49a522a592e7622a7e711c06bf354, 18),
+    ('arkm-arkham', 'ethereum', 'ARKM', 0x6e2a43be0b1d33b726f0ca3b8de60b3482b8b050, 18),
+    ('floki-floki-inu', 'ethereum', 'FLOKI', 0xcf0c122c6b73ff809c693db761e7baebe62b6a2e, 18)
         
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
