@@ -264,8 +264,7 @@ FROM
     ('usdv-verified-usd', 'bnb', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253,6),
     -- ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,18), --DEFI does not match CoinPaprika source: DEFI  
     --('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),--not found in api 
-    ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18),
-    ('ai-sleepless-ai', 'bnb', 'AI', 0xBDA011D7F8EC00F66C1923B049B94c67d148d8b2,18)
+    ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
