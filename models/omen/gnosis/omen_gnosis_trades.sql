@@ -62,8 +62,7 @@ final AS (
         ,t1.tx_to 
         ,t1.tx_hash 
         ,t1.evt_index
-        ,t2.fixedProductMarketMaker
-        ,t2.collateralToken
+        ,t1.evt_contract_address AS fixedProductMarketMaker
         ,t1.address
         ,s.outcomeSlot
         ,t1.outcomeIndex
@@ -77,10 +76,6 @@ final AS (
         ,t1.action 
     FROM
         trades t1
-    LEFT JOIN 
-        {{ ref('omen_gnosis_markets') }} t2
-        ON
-        t2.fixedProductMarketMaker = t1.evt_contract_address
     CROSS JOIN UNNEST(SEQUENCE(0, TRY_CAST(t2.outcomeSlotCount AS INTEGER) - 1 ) ) AS s(outcomeSlot)
 )
 
