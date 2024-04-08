@@ -1721,7 +1721,8 @@ FROM
     ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18),
     ('ethfi-etherfi', 'ethereum', 'ETHFI',0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb,18),
     ('alt-altlayer', 'ethereum', 'ALT',0x8457ca5040ad67fdebbcc8edce889a335bc0fbfb,18),
-    ('aevo-aevo', 'ethereum', 'AEVO',0xb528edbef013aff855ac3c50b381f253af13b997,18)
+    ('aevo-aevo', 'ethereum', 'AEVO',0xb528edbef013aff855ac3c50b381f253af13b997,18),
+    ('tree-tree-capital', 'ethereum', 'TREE',0xba25b2281214300e4e649fead9a6d6acd25f1c0a,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
