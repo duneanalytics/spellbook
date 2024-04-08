@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'project', 'version', 'schema_uid', 'attestation_uid'],
-    post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon", "scroll"]\',
+    post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon", "scroll", "celo"]\',
                                 "sector",
                                 "attestation",
                                 \'["tomfutago"]\') }}'
@@ -20,7 +20,8 @@
     ref('eas_ethereum_attestations'),
     ref('eas_optimism_attestations'),
     ref('eas_polygon_attestations'),
-    ref('eas_scroll_attestations')
+    ref('eas_scroll_attestations'),
+    ref('eas_celo_attestations')
   ]
 %}
 
