@@ -15,7 +15,7 @@
     )
 }}
 
-{% set project_start_date = ''2023-09-01' %}
+{% set project_start_date = '2023-09-01' %}
 
 select
     t.*,
