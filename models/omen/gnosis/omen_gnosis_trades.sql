@@ -220,7 +220,6 @@ prediction_market_info AS (
 ),
 
 
-
 final AS (
     SELECT
         t1.block_time
