@@ -12,7 +12,20 @@ with
 
 src_Borrow as (
   {% for src in sources %}
-    select contract_address, borrower, borrowAmount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    select
+      contract_address,
+      {% if src["borrower_column_name"] -%}
+        {{ src["borrower_column_name"] }} as 
+      {%- endif %}
+      borrower,
+      {% if src["borrowAmount_column_name"] -%}
+        {{ src["borrowAmount_column_name"] }} as 
+      {%- endif %}
+      borrowAmount,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number
     from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Borrow' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
@@ -25,7 +38,18 @@ src_Borrow as (
 
 src_Repay as (
   {% for src in sources %}
-    select contract_address, borrower, payer, repayAmount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    select
+      contract_address,
+      borrower,
+      payer,
+      {% if src["repayAmount_column_name"] -%}
+        {{ src["repayAmount_column_name"] }} as 
+      {%- endif %}
+      repayAmount,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number
     from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_RepayBorrow' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
@@ -38,7 +62,18 @@ src_Repay as (
 
 src_LiquidationCall as (
   {% for src in sources %}
-    select contract_address, borrower, liquidator, repayAmount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
+    select
+      contract_address,
+      borrower,
+      liquidator,
+      {% if src["repayAmount_column_name"] -%}
+        {{ src["repayAmount_column_name"] }} as 
+      {%- endif %}
+      repayAmount,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number
     from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_LiquidateBorrow' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}

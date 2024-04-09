@@ -598,8 +598,6 @@ models:
         +schema: transfers_arbitrum
       polygon:
         +schema: transfers_polygon
-      avalanche_c:
-        +schema: transfers_avalanche_c
       fantom:
         +schema: transfers_fantom
       base:
@@ -773,9 +771,6 @@ models:
         +schema: ironbank_ethereum
       optimism:
         +schema: ironbank_optimism
-
-    keep3r_network:
-      +schema: keep3r_network
 
     airswap:
       +schema: airswap

@@ -2,6 +2,8 @@ version: 2
 
 models:
   - name: dex_arbitrum_base_trades
+    tests:
+      - check_dex_info_relationship
 
   - name: uniswap_v3_arbitrum_base_trades
     meta:
@@ -22,6 +24,24 @@ models:
           filter:
             version: 3
 
+  - name: uniswap_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap arbitrum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_arbitrum_base_trades_seed')
+          filter:
+            version: 2
 
   - name: sushiswap_v1_arbitrum_base_trades
     meta:
@@ -196,7 +216,9 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('pancakeswap_arbitrum_base_trades_seed')
           filter:
-            version: 2
+            version:
+              - 2
+              - stableswap
 
 
   - name: balancer_v2_arbitrum_base_trades
@@ -590,3 +612,71 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gridex_arbitrum_base_trades_seed')
+  
+  - name: sterling_finance_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sterling_finance
+      contributors: ARDev097
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'sterling_finance']
+    description: "sterling_finance Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sterling_finance_arbitrum_base_trades_seed') 
+
+  - name: sharkyswap_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: sharkyswap
+      contributors: ARDev097
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'sharkyswap']
+    description: "sharkyswap Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sharkyswap_arbitrum_base_trades_seed')
+  
+  - name: auragi_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: auragi
+      contributors: archie
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'auragi']
+    description: "auragi Arbitrum  base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('auragi_arbitrum_base_trades_seed')
+          
+  - name: wombat_exchange_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: wombatexchange
+      contributors: 
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'wombat_exchange' ]
+    description: "wombatexchange arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wombat_exchange_arbitrum_base_trades_seed')

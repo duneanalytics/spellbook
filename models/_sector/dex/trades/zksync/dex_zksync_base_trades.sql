@@ -7,6 +7,25 @@
 
 {% set base_models = [
     ref('maverick_zksync_base_trades')
+    , ref('pancakeswap_v2_zksync_base_trades')
+    , ref('pancakeswap_v3_zksync_base_trades')
+    , ref('syncswap_v1_zksync_base_trades')
+    , ref('syncswap_v2_zksync_base_trades')
+    , ref('uniswap_v3_zksync_base_trades')
+    , ref('mute_zksync_base_trades')
+    , ref('spacefi_v1_zksync_base_trades')
+    , ref('derpdex_v1_zksync_base_trades')
+    , ref('ezkalibur_v2_zksync_base_trades')
+    , ref('wagmi_v1_zksync_base_trades')
+    , ref('zkswap_finance_zksync_base_trades')
+    , ref('gemswap_zksync_base_trades')
+    , ref('vesync_v1_zksync_base_trades')
+    , ref('dracula_finance_zksync_base_trades')
+    , ref('iziswap_v1_zksync_base_trades')
+    , ref('iziswap_v2_zksync_base_trades')
+    , ref('velocore_v0_zksync_base_trades')
+    , ref('velocore_v1_zksync_base_trades')
+    , ref('velocore_v2_zksync_base_trades')
 ] %}
 
 WITH base_union AS (

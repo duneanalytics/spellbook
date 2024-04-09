@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "project",
                                     "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski", "thetroyharris"]\') }}'
+                                    \'["metacrypto", "jacektrocinski", "thetroyharris", "viniabussafi"]\') }}'
     ) 
 }}
 
@@ -25,6 +25,7 @@ WITH registered_pools AS (
 )
 SELECT
     'avalanche_c' AS blockchain,
+    '2' AS version,    
     logs.contract_address,
     logs.tx_hash,
     logs.tx_index,

@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'project', 'version', 'schema_uid'],
-    post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon"]\',
+    post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon", "scroll", "celo"]\',
                                 "sector",
                                 "attestation",
                                 \'["tomfutago"]\') }}'
@@ -19,7 +19,9 @@
     ref('eas_base_schemas'),
     ref('eas_ethereum_schemas'),
     ref('eas_optimism_schemas'),
-    ref('eas_polygon_schemas')
+    ref('eas_polygon_schemas'),
+    ref('eas_scroll_schemas'),
+    ref('eas_celo_schemas')
   ]
 %}
 

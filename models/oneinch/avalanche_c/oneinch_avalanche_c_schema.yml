@@ -46,6 +46,7 @@ models:
       - name: call_gas_used
       - name: call_output
       - name: call_error
+      - name: call_type
       - name: maker
       - name: receiver
       - name: maker_asset
@@ -53,6 +54,7 @@ models:
       - name: taker_asset
       - name: taking_amount
       - name: order_hash
+      - name: flags
       - name: remains
       - name: minute
       - name: block_month
@@ -102,6 +104,7 @@ models:
       - name: call_gas_used
       - name: call_output
       - name: call_error
+      - name: call_type
       - name: src_receiver
       - name: dst_receiver
       - name: src_token_address
@@ -109,7 +112,7 @@ models:
       - name: src_token_amount
       - name: dst_token_amount
       - name: dst_token_amount_min
-      - name: ordinary
+      - name: flags
       - name: pools
       - name: router_type
       - name: remains
@@ -132,6 +135,7 @@ models:
             - tx_hash
             - call_trace_address
             - transfer_trace_address
+            - transfer_native
     columns:
       - name: blockchain
         tests:

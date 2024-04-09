@@ -10,7 +10,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+                                    \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
     )
 }}
 
@@ -91,10 +91,10 @@ trades_with_token_units as (
            sell_price,
            buy_price
     FROM trades_with_prices
-             LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} ts
-                             ON ts.contract_address = sell_token
-             LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} tb
-                             ON tb.contract_address =
+             LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ts
+                             ON ts.blockchain='ethereum' AND ts.contract_address = sell_token
+             LEFT OUTER JOIN {{ source('tokens', 'erc20') }} tb
+                             ON tb.blockchain='ethereum' AND tb.contract_address =
                                 (CASE
                                      WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                                          THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -134,6 +134,7 @@ orders_and_trades as (
 uid_to_app_id as (
     SELECT
       distinct uid,
+      evt_tx_hash as hash,
       from_hex(JSON_EXTRACT_SCALAR(trade, '$.appData')) AS app_data,
       from_hex(JSON_EXTRACT_SCALAR(trade, '$.receiver')) AS receiver,
       cast(JSON_EXTRACT_SCALAR(trade, '$.sellAmount') as uint256) AS limit_sell_amount,
@@ -244,6 +245,7 @@ valued_trades as (
     FROM trades_with_token_units trades
     JOIN uid_to_app_id
         ON uid = trades.order_uid
+        AND hash=tx_hash
     LEFT OUTER JOIN eth_flow_senders efs
             ON trades.order_uid = efs.order_uid
 )

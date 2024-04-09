@@ -4,7 +4,7 @@
     alias = 'schema_details',
     materialized = 'view',
     unique_key = ['blockchain', 'project', 'version', 'schema_uid', 'ordinality'],
-    post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon"]\',
+    post_hook = '{{ expose_spells(\'["arbitrum", "base", "ethereum", "optimism", "polygon", "scroll", "celo"]\',
                                 "sector",
                                 "attestation",
                                 \'["tomfutago"]\') }}'
@@ -17,7 +17,9 @@
     ref('eas_base_schema_details'),
     ref('eas_ethereum_schema_details'),
     ref('eas_optimism_schema_details'),
-    ref('eas_polygon_schema_details')
+    ref('eas_polygon_schema_details'),
+    ref('eas_scroll_schema_details'),
+    ref('eas_celo_schema_details')
   ]
 %}
 

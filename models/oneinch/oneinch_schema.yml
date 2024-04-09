@@ -53,6 +53,7 @@ models:
       - name: taker_asset
       - name: taking_amount
       - name: order_hash
+      - name: flags
       - name: remains
       - name: minute
       - name: block_month
@@ -124,7 +125,7 @@ models:
     config:
       tags: ['oneinch', 'calls', 'transfers']
     description: >
-        1inch transfers within calls
+        1inch blockchains meta
     columns:
       - name: blockchain
         tests:
@@ -189,12 +190,12 @@ models:
       - name: src_token_amount
       - name: dst_token_address
       - name: dst_token_amount
-      - name: fusion
       - name: order_hash
+      - name: flags
 
   - name: oneinch_parsed_transfers_from_calls
     meta:
-      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'celo', 'zksync']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'celo', 'scroll']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
@@ -207,6 +208,7 @@ models:
       - name: block_time
       - name: tx_hash
       - name: transfer_trace_address
+      - name: type
       - name: contract_address
       - name: amount
       - name: transfer_from
@@ -228,6 +230,7 @@ models:
             - tx_hash
             - call_trace_address
             - transfer_trace_address
+            - transfer_native
     columns:
       - name: blockchain
         tests:
@@ -259,13 +262,6 @@ models:
       tags: ['oneinch', 'swaps']
     description: >
         1inch swaps - all user exchanges using 1inch aggregation router & limit order protocol
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
-            - second_side
     columns:
       - name: blockchain
         tests:
@@ -291,14 +287,16 @@ models:
       - name: call_from
       - name: call_to
       - name: call_gas_used
+      - name: call_type
       - name: user
       - name: receiver
       - name: fusion
       - name: contracts_only
       - name: second_side
+      - name: order_hash
+      - name: flags
         tests:
           - not_null
-      - name: order_hash
       - name: remains
       - name: src_token_address
       - name: src_token_symbol
@@ -317,6 +315,10 @@ models:
       - name: minute
       - name: block_month
       - name: swap_id
+      - name: unique_key
+        tests:
+          - unique
+          - not_null
 
   - name: oneinch_lop_own_trades
     meta:

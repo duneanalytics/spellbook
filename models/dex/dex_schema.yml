@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dex_trades
+  - name: dex_trades_legacy
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
       sector: dex
@@ -293,10 +293,14 @@ models:
       - *pool
       - *token0
       - *token1
+      - &tokens
+        name: tokens
+        description: "Tokens in the pool"
       - *creation_block_time
       - *creation_block_number
       - name: contract_address
         description: "Contract address used to create the pool"
+      - name: rn
 
   - name: dex_raw_pools
     meta:
@@ -319,6 +323,7 @@ models:
       - *pool
       - *token0
       - *token1
+      - *tokens
       - *creation_block_time
       - *creation_block_number
       - name: contract_address

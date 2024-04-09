@@ -33,6 +33,32 @@ WITH prices_patch as (
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
     {% endif %}
+    UNION ALL
+    SELECT
+        {{ var("ETH_ERC20_ADDRESS") }} as contract_address
+        ,'base' as blockchain
+        ,18 as decimals
+        ,minute
+        ,price
+        ,'ETH' as symbol
+    FROM {{ ref('prices_usd_forward_fill') }}
+    WHERE blockchain is null AND symbol = 'ETH'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('minute')}}
+    {% endif %}
+    UNION ALL
+    SELECT
+        {{ var("ETH_ERC20_ADDRESS") }} as contract_address
+        ,'arbitrum' as blockchain
+        ,18 as decimals
+        ,minute
+        ,price
+        ,'ETH' as symbol
+    FROM {{ ref('prices_usd_forward_fill') }}
+    WHERE blockchain is null AND symbol = 'ETH'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('minute')}}
+    {% endif %}
 ),
 enrichments as (
 SELECT

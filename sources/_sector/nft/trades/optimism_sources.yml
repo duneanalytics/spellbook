@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: tofu_nft_optimism
+    tables:
+      - name: MarketNG_call_run
+      - name: MarketNG_evt_EvInventoryUpdate
+
+  - name: zonic_optimism
+    freshness:
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+
+  - name: quixotic_v2_optimism
+    freshness:
+    tables:
+      - name: ExchangeV2_evt_BuyOrderFilled
+      - name: ExchangeV2_evt_DutchAuctionFilled
+      - name: ExchangeV2_evt_SellOrderFilled
+
+  - name: quixotic_v3_optimism
+    freshness:
+    tables:
+      - name: ExchangeV3_evt_BuyOrderFilled
+      - name: ExchangeV3_evt_DutchAuctionFilled
+      - name: ExchangeV3_evt_SellOrderFilled
+
+  - name: quixotic_v4_optimism
+    freshness:
+    tables:
+      - name: ExchangeV4_evt_BuyOrderFilled
+      - name: ExchangeV4_evt_DutchAuctionFilled
+      - name: ExchangeV4_evt_SellOrderFilled
+
+  - name: quixotic_v5_optimism
+    freshness:
+    tables:
+      - name: ExchangeV5_evt_SellOrderFilled
+
+  - name: element_ex_optimism
+    freshness:
+    tables:
+      - name: ElementEx_evt_ERC721BuyOrderFilled
+      - name: ElementEx_evt_ERC721SellOrderFilled
+      - name: ElementEx_evt_ERC1155BuyOrderFilled
+      - name: ElementEx_evt_ERC1155SellOrderFilled
+

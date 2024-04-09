@@ -89,5 +89,52 @@ FROM
     ('gmt-stepn', 'polygon', 'GMT', 0x714db550b574b3e927af3d93e26127d15721d4c2,8),
     ('tel-telcoin', 'polygon', 'TEL', 0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32,2),
     ('mana-decentraland', 'polygon', 'MANA', 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4,18),
-    ('ata-automata', 'polygon', 'ATA', 0x0df0f72EE0e5c9B7ca761ECec42754992B2Da5BF, 18)
+    ('ata-automata', 'polygon', 'ATA', 0x0df0f72EE0e5c9B7ca761ECec42754992B2Da5BF, 18),
+    ('bonk-bonk', 'polygon', 'BONK', 0xe5b49820e5a1063f6f4ddf851327b5e8b2301048, 5),
+    ('rndr-render-token', 'polygon', 'RNDR', 0x61299774020da444af134c82fa83e3810b309991, 18),
+    ('uni-uniswap', 'polygon', 'UNI', 0xb33eaad8d922b1083446dc23f610c2567fb5180f, 18),
+    ('ape-apecoin', 'polygon', 'APE', 0xb7b31a6bc18e48888545ce79e83e06003be70930, 18),
+    ('mkr-maker', 'polygon', 'MKR', 0x6f7c932e7684666c9fd1d44527765433e01ff61d, 18),
+    ('cbeth-coinbase-wrapped-staked-eth', 'polygon', 'CBETH', 0x4b4327db1600b8b1440163f667e199cef35385f5, 18),
+    ('busd-binance-usd', 'polygon', 'BUSD', 0x9c9e5fd8bbc25984b178fdce6117defa39d2db39, 18),
+    ('reth-rocket-pool-eth', 'polygon', 'RETH', 0x0266f4f08d82372cf0fcbccc0ff74309089c74d1, 18),
+    ('lusd-liquity-usd', 'polygon', 'LUSD', 0x23001f892c0c82b79303edc9b9033cd190bb21c7, 18),
+    ('tusd-trueusd', 'polygon', 'TUSD', 0x2e1ad108ff1d8c782fcbbb89aad783ac49586756, 18),
+    ('bat-basic-attention-token', 'polygon', 'BAT', 0x3cef98bb43d732e2f285ee605a8158cde967d219, 18),
+    ('wavax-wrapped-avax-wormhole', 'polygon', 'WAVAX', 0x2c89bbc92bd86f8075d1decc58c7f4e0107f286b, 18),
+    ('tbtc-tbtc', 'polygon', 'TBTC', 0x236aa50979d5f3de3bd1eeb40e81137f22ab794b, 18),
+    ('ldo-lido-dao', 'polygon', 'LDO', 0xc3c7d422809852031b44ab29eec9f1eff2a58756, 18),
+    ('egx-enegra', 'polygon', 'EGX', 0x8db0a6d1b06950b4e81c4f67d1289fc7b9359c7f, 6),
+    --('bklay-orbit-bridge-bsc-klay', 'polygon', 'BKLAY', 0x0a02d33031917d836bd7af02f9f7f6c74d67805f,18), --inactive
+    ('kek-kek', 'polygon', 'KEK', 0x42e5e06ef5b90fe15f853f59299fc96259209c5c,18),
+    --('mesh-meshswap-protocol', 'polygon', 'MESH', 0x82362ec182db3cf7829014bc61e9be8a2e82868a,18), --inactive
+    --('xdg-decentral-games-governance', 'polygon', 'XDG', 0xc6480da81151b2277761024599e8db2ad4c388c8,18), --inactive
+    ('shib-shiba-inu-pos', 'polygon', 'SHIB', 0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec,18),
+    ('pgx-pegaxy-stone', 'polygon', 'PGX', 0xc1c93d475dc82fe72dbc7074d55f5a734f8ceeae,18),
+    ('klima-klimadao', 'polygon', 'KLIMA', 0x4e78011ce80ee02d2c3e649fb657e45898257815,9),
+    ('bct-toucan-protocol-base-carbon-tonne', 'polygon', 'BCT', 0x2f800db0fdb5223b3c3f354886d907a671414a7f,18),
+    ('mv-gensokishi-metaverse', 'polygon', 'MV', 0xa3c322ad15218fbfaed26ba7f616249f7705d945,18),
+    ('rond-rond-coin', 'polygon', 'ROND', 0x204820b6e6feae805e376d2c6837446186e57981,18),
+    ('elon-dogelon-mars', 'polygon', 'ELON', 0xe0339c80ffde91f3e20494df88d4206d86024cdf,18),
+    ('qi-qidao', 'polygon', 'QI', 0x580a84c73811e1839f75d86d75d88cca0c241ff4,18),
+    ('gmee-gamee', 'polygon', 'GMEE', 0xcf32822ff397ef82425153a9dcb726e5ff61dca7,18),
+    --('mimatic-mai', 'polygon', 'miMATIC', 0xa3fa99a148fa48d14ed51d610c367c61876997f1,18), --not found in API
+    ('fish-polycat-finance', 'polygon', 'FISH', 0x3a3df212b7aa91aa0402b9035b098891d276572b,18),
+    --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9,18), --inactive
+    ('pyr-vulcan-forged', 'polygon', 'PYR', 0x430ef9263e76dae63c84292c3409d61c598e9682,18),
+    ('geod-geodnet-token', 'polygon', 'GEOD', 0xac0f66379a6d7801d7726d5a943356a172549adb,18),
+    ('par-parallel', 'polygon', 'PAR', 0xe2aa7db6da1dae97c5f5c6914d285fbfcc32a128,18),
+    ('mim-magic-internet-money', 'polygon', 'MIM', 0x49a0400587a7f65072c87c4910449fdcc5c47242,18),
+    ('cone-bitcone', 'polygon', 'CONE', 0xba777ae3a3c91fcd83ef85bfe65410592bdd0f7c,18),
+    ('pzcx-zen-exchange-token', 'polygon', 'PZCX', 0xdd75542611d57c4b6e68168b14c3591c539022ed,18),
+    ('orbs-orbs', 'polygon', 'ORBS', 0x614389eaae0a6821dc49062d56bda3d9d45fa2ff,18),
+    ('mask-mask-network', 'polygon', 'MASK', 0x2b9e7ccdf0f4e5b24757c1e1a80e311e34cb10c7,18),
+    ('ice-decentral-games-ice', 'polygon', 'ICE', 0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+where contract_address not in (
+    0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
+    ,0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c -- ICE DG, bad price feed
+    ,0x431cd3c9ac9fc73644bf68bf5691f4b83f9e104f -- RBW, bad price feed
+    ,0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- XEN, bad price feed because of mXEN<>XEN
+    ,0x311434160d7537be358930def317afb606c0d737 -- NAKA, bad price feed
+)

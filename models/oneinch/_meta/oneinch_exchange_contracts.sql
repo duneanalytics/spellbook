@@ -48,6 +48,8 @@ contracts as (
         , ('1inch'                , 0x1111111254760f7ab3f16433eea9304126dcd199, 'AggregationRouterV4'         , array['optimism'])
         , ('1inch'                , 0x1111111254eeb25477b68fb85ed929f73a960582, 'AggregationRouterV5'         , array['ethereum', 'bnb', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'gnosis', 'fantom', 'base'])
         , ('1inch'                , 0x6e2b76966cbd9cf4cc2fa0d76d24d5241e0abc2f, 'AggregationRouterV5'         , array['zksync'])
+        , ('1inch'                , 0x111111125421ca6dc452d289314280a0f8842a65, 'AggregationRouterV6'         , array['ethereum', 'bnb', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'gnosis', 'fantom', 'base'])
+        , ('1inch'                , 0x6fd4383cb451173d5f9304f041c7bcbf27d561ff, 'AggregationRouterV6'         , array['zksync'])
         , ('MetaMask'             , 0x881d40237659c251811cec9c364ef91dc08d300c, 'MetaSwap'                    , array['ethereum'])
         , ('CoW Swap'             , 0x9008d19f58aabd9ed0d60971565aa8510560ab41, 'GPv2Settlement'              , array['ethereum', 'gnosis'])
         , ('MetaMask'             , 0x1a1ec25dc08e98e5e93f1104b5e5cdd298707d31, 'MetaSwap'                    , array['bnb', 'polygon', 'avalanche_c'])

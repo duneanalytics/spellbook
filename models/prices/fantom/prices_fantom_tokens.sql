@@ -71,5 +71,18 @@ FROM
     ('3share-3share', 'fantom', '3SHARE', 0x6437adac543583c4b31bf0323a0870430f5cc2e7, 18),
     ('ico-axelar', 'fantom', 'AXL', 0x8b1f4432f943c465a973fedc6d7aa50fc96f1f65, 6),
     ('grain-granary', 'fantom', 'GRAIN', 0x02838746d9e1413e07ee064fcbada57055417f21, 18),
-    ('mim-magic-internet-money', 'fantom', 'MIM', 0x82f0b8b456c1a451378467398982d4834b6829c1, 18)
+    ('mim-magic-internet-money', 'fantom', 'MIM', 0x82f0b8b456c1a451378467398982d4834b6829c1, 18),
+    ('link-chainlink', 'fantom', 'LINK', 0xb3654dc3d10ea7645f8319668e8f54d2574fbdc8, 18),
+    ('axlusdc-axelar-wrapped-usdc', 'fantom', 'AXLUSDC', 0x1b6382dbdea11d97f24495c9a90b7c88469134a4, 6),
+    ('orbs-orbs', 'fantom', 'ORBS', 0x43a8cab15d06d3a5fe5854d714c37e7e9246f170, 18),
+    --('stg-stargate-finance', 'fantom', 'STG', 0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590, 18), --not found in API 
+    ('spa-spartacus', 'fantom', 'SPA', 0x5602df4a94eb6c680190accfa2a475621e0ddbdc, 9),
+    ('space-space-token', 'fantom', 'SPACE', 0x5f7f94a1dd7b15594d17543beb8b30b111dd464c, 18),
+    ('woo-wootrade', 'fantom', 'WOO', 0x6626c47c00f1d87902fc13eecfac3ed06d5e8d8a, 18),
+    ('cekke-cekke-cronje', 'fantom', 'CEKKE', 0x3bc34d8Ace32D768a3F76e17AAEF2B1D8f261e1D, 18),
+    --('vemp-vemp', 'fantom', 'VEMP', 0x526f1dc408cfe7fc5330ab9f1e78474ceff2a5dd, 18) --not found in API 
+    ('unidx-unidex', 'fantom', 'UNIDX', 0x0483a76D80D0aFEC6bd2afd12C1AD865b9DF1471, 18),
+    ('bay-moon-bay', 'fantom', 'BAY', 0xd361474bB19C8b98870bb67F5759cDF277Dee7F9, 18),
+    ('usdc-usdc-stargate-bridge', 'fantom', 'USDC', 0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf, 6),
+    ('fusdt-frapped-usdt', 'fantom', 'FUSDT', 0x049d68029688eabf473097a2fc38ef61633a3c7a, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -5,3 +5,82 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: pancakeswap_v2_zksync
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_zksync
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: uniswap_v3_zksync
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: syncswap_zksync
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Swap
+      - name: SyncSwapStablePoolFactory_evt_PoolCreated
+      - name: SyncSwapStablePool_evt_Swap
+  - name: syncswap_v2_zksync
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Swap
+      - name: SyncSwapStablePoolFactory_evt_PoolCreated
+      - name: SyncSwapStablePool_evt_Swap
+      - name: SyncSwapAquaPoolFactory_evt_PoolCreated
+      - name: SyncSwapAquaPool_evt_Swap      
+  - name: mute_zksync
+    tables:
+      - name: MuteSwitchFactoryDynamic_evt_PairCreated
+      - name: MuteSwitchPairDynamic_evt_Swap
+  - name: spacefi_v1_zksync
+    tables:
+      - name: UniswapV2Pool_evt_Swap
+      - name: SwapFactory_evt_PairCreated
+  - name: derpdex_v1_zksync
+    tables:
+      - name: UniswapV3Pair_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: ezkalibur_v2_zksync
+    tables:
+      - name: EZKaliburPair_evt_Swap
+      - name: EZKaliburFactory_evt_PairCreated
+  - name: wagmi_v1_zksync
+    tables:
+      - name: UniswapV3Pair_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: zkswap_finance_zksync
+    tables:
+      - name: ZFPair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: gemswap_zksync
+    tables:
+      - name: ZGemPair_evt_Swap
+      - name: ZGemFactory_evt_PairCreated
+  - name: vesync_v1_zksync
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: dracula_finance_zksync
+    tables:
+      - name: DraculaPair_evt_Swap
+      - name: DraculaFactory_evt_PairCreated
+  - name: iziswap_v1_zksync
+    tables:
+      - name: iZiSwapPool_evt_Swap
+  - name: iziswap_v2_zksync
+    tables:
+      - name: iZiSwapPool_evt_Swap
+  - name: velocore_v0_zksync
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: velocore_v1_zksync
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: velocore_v2_zksync
+    tables:
+      - name: VaultStorage_evt_Swap

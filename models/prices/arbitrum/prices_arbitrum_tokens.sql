@@ -127,5 +127,21 @@ FROM
     ('vela-vela-token','arbitrum','VELA',0x088cd8f5ef3652623c22d48b1605dcfe860cd704,18),
     ('choke-artichoke','arbitrum','CHOKE',0x6fc2680d8ad8e8312191441b4eca9eff8d06b45a,18),
     ('cbeth-coinbase-wrapped-staked-eth','arbitrum','CBETH',0x1debd73e752beaf79865fd6446b0c970eae7732f, 18),        
-    ('aeth-ankreth','arbitrum','AETH',0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18)        
+    ('aeth-ankreth','arbitrum','AETH',0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18),
+    ('pepe-pepe','arbitrum','PEPE',0x25d887ce7a35172c62febfd67a1856f20faebb00,18),
+    ('bonk-bonk','arbitrum','BONK',0x09199d9a5f4448d0848e4395d065e1ad9c4a1f74,5),
+    ('sweth-swell-ethereum','arbitrum','SWETH',0xbc011a12da28e8f0f528d9ee5e7039e22f91cf18,18),
+    ('lqty-liquity','arbitrum','LQTY',0xfb9e5d956d889d91a82737b9bfcdac1dce3e1449,18),
+    ('axlusdc-axelar-wrapped-usdc','arbitrum','AXLUSDC',0xeb466342c4d449bc9f53a865d5cb90586f405215,6),
+    ('tbtc-tbtc','arbitrum','TBTC',0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40,18),
+    ('y2k-y2k','arbitrum','Y2K',0x65c936f008bc34fe819bce9fa5afd9dc2d49977f, 18),
+    ('you-u-protocol','arbitrum','YOU',0xF93fc7d6508ae2faF8Fc5675e896Bc38d6e7212C, 18),
+    ('bets-betswirl','arbitrum','BETS',0x94025780a1aB58868D9B2dBBB775f44b32e8E6e5, 18),
+    ('joe-trader-joe','arbitrum','JOE',0x371c7ec6D8039ff7933a2AA28EB827Ffe1F52f07, 18),
+    ('nola-nola','arbitrum','NOLA',0xF8388c2B6Edf00E2E27eEF5200B1beFB24cE141d, 18),
+    ('xpet-xpettech','arbitrum','XPET',0x00cbcf7b3d37844e44b888bc747bdd75fcf4e555, 18),
+    ('bpet-xpettech-bpet','arbitrum','BPET',0x6daf586b7370b14163171544fca24abcc0862ac5, 18),
+    ('sundae-sundae-token','arbitrum','SUNDAE',0x352f4bf396a7353a0877f99e99757e5d294df374, 18),
+    ('gns-gains-network','arbitrum','GNS',0x18c11fd286c5ec11c3b683caa813b77f5163a122, 18),
+    ('gswift-gameswift','arbitrum','GSWIFT',0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

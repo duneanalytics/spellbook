@@ -7,6 +7,7 @@
 {% set paraswap_models = [
     ref('paraswap_v4_polygon_trades')
     ,ref('paraswap_v5_polygon_trades')
+    ,ref('paraswap_v6_polygon_trades')
 ] %}
 
 

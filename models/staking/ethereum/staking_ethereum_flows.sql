@@ -78,8 +78,8 @@ SELECT block_time
 , pubkey
 , signature
 , withdrawal_address
-, withdrawal_credentials
 , withdrawal_credentials_type
+, withdrawal_credentials
 , 0 AS amount_full_withdrawn
 , 0 AS amount_partial_withdrawn
 , tx_hash
@@ -105,8 +105,8 @@ SELECT w.block_time
 , i.pubkey
 , NULL AS signature
 , w."address" AS withdrawal_address
-, NULL AS withdrawal_credentials
 , NULL AS withdrawal_credentials_type
+, NULL AS withdrawal_credentials
 , CASE WHEN w.amount/1e9 BETWEEN 20 AND 32 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN 32 END AS amount_full_withdrawn
 , CASE WHEN w.amount/1e9 < 20 THEN w.amount/1e9 WHEN w.amount/1e9 > 32 THEN (w.amount/1e9)-32 END AS amount_partial_withdrawn
 , NULL AS tx_hash

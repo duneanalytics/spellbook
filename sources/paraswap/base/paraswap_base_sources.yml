@@ -1,0 +1,34 @@
+version: 2
+
+sources: 
+  - name: paraswap_base
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on paraswap
+    tables:
+      - name: AugustusSwapper_evt_BoughtV3
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapper_evt_SwappedV3
+        loaded_at_field: evt_block_time
+      # v6
+      - name: AugustusV6_call_swapExactAmountIn
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnUniswapV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnUniswapV3
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnCurveV1
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnCurveV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnBalancerV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOut
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOutOnUniswapV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOutOnUniswapV3
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOutOnBalancerV2
+        loaded_at_field: call_block_time

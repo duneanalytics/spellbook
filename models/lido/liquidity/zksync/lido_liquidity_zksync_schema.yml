@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: lido_liquidity_zksync_syncswap_pools
+    meta:
+      blockchain: zksync
+      project: lido
+      contributors: pipistrella
+    config:
+      tags: ['zksync','lido','liquidity']
+    description: 
+        Lido wstETH liquidity pools on SyncSwap Zksync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - blockchain
+            - time
+    columns:
+      - &pool_name
+        name: pool_name
+        description: "Liquidity pool's name consisting of the its blockchain, DEX project, symbols of tokens and fee value"
+      - &pool
+        name: pool
+        description: "Liquidity pool's address"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &fee
+        name: fee
+        description: "Liquidity pool's trading fee"
+      - &time
+        name: time
+        description: "UTC event block date truncated to the day mark"
+      - &main_token
+        name: main_token
+        description: "Main token's address"
+      - &main_token_symbol
+        name: main_token_symbol
+        description: "Token symbol for main pool's token"
+      - &paired_token
+        name: paired_token
+        description: "Paired token's address"
+      - &paired_token_symbol
+        name: paired_token_symbol
+        description: "Token symbol for paired pool's token"
+      - &main_token_reserve
+        name: main_token_reserve
+        description: "Liquidity reserve of the main token in the pool"
+      - &paired_token_reserve
+        name: paired_token_reserve
+        description: "Liquidity reserve of the paired token in the pool"
+      - &main_token_usd_price
+        name: main_token_usd_price
+        description: "Price of the main token in the pool in USD"
+      - &paired_token_usd_price
+        name: paired_token_usd_price
+        description: "Price of the paired token in the pool in USD"
+      - &trading_volume
+        name: trading_volume
+        description: "USD value of the trade"

@@ -23,7 +23,7 @@ WITH
         SELECT
             cast(date_trunc('day', price.minute) as date) as "date_start",
             token_meta.token_symbol as symbol,
-            MAX(price.price) as usd_amount
+            AVG(price.price) as usd_amount
         FROM
             {{ source('prices', 'usd') }} price
         JOIN token_meta ON price.symbol = token_meta.token_symbol
@@ -50,6 +50,7 @@ WITH
         {% endif %}  
         GROUP BY 1, 5
     )
+    
 SELECT
     'avalanche_c' as blockchain,
     date_start,

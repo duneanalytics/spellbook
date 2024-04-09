@@ -112,3 +112,37 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: granary_fantom_base_borrow
+    meta:
+      blockchain: fantom
+      sector: lending
+      project: granary
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'granary', 'fantom']
+    description: "Granary borrow transactions on Fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('granary_fantom_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

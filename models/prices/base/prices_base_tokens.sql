@@ -63,5 +63,22 @@ FROM
     ('dai-overnight-dai', 'base', 'DAI+', 0x65a2508C429a6078a7BC2f7dF81aB575BD9D9275, 18),
     ('rats-ratsbase', 'base', 'RATS', 0x06c4c7f8011fbfb6a9654ee4142532f9bb3c52b8, 9),
     ('gmr1-gamer', 'base', 'GMR', 0xa617c0c739845b2941bd8edd05c9f993ecc97c18, 18),
-    ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18)
+    ('usd-plus-overnight', 'base', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376,18),
+    ('bswap-baseswap', 'base', 'BSWAP', 0x78a087d713be963bf307b18f2ff8122ef9a63ae9,18),
+    ('unidx-unidex', 'base', 'UNIDX', 0x6B4712AE9797C199edd44F897cA09BC57628a1CF, 18),
+    ('brett-brett-base', 'base', 'BRETT', 0x532f27101965dd16442E59d40670FaF5eBB142E4, 18),
+    ('reth-rocket-pool-eth', 'base', 'RETH', 0xb6fe221fe9eef5aba221c348ba20a1bf5e73624c, 18),
+    ('bal-balancer', 'base', 'BAL', 0x4158734d47fc9692176b5085e0f52ee0da5d47f1, 18),
+    ('dog-the-doge-nft', 'base', 'DOG', 0xafb89a09d82fbde58f18ac6437b3fc81724e4df6, 18),
+    ('higher-higher', 'base', 'HIGHER', 0x0578d8a44db98b23bf096a382e016e29a5ce0ffe, 18),
+    --('stg-stargate-finance', 'base', 'STG', 0xe3b53af74a4bf62ae5511055290838050bf764df, 18), token_id not found in API 
+    ('keycat-keyboard-cat-base', 'base', 'KEYCAT', 0x9a26f5433671751c3276a065f57e5a02d2817973, 18),
+    ('briun-briun-armstrung', 'base', 'BRIUN', 0x8c81b4c816d66d36c4bf348bdec01dbcbc70e987, 18),
+    ('benji-basenji', 'base', 'BENJI', 0xbc45647ea894030a4e9801ec03479739fa2485f0, 18),
+    ('roost-roost', 'base', 'ROOST', 0xe1abd004250ac8d1f199421d647e01d094faa180, 18),
+    ('tybg-base-god', 'base', 'TYBG', 0x0d97f261b1e88845184f678e2d1e7a98d9fd38de, 18),
+    ('circle-burning-circle', 'base', 'CIRCLE', 0x5babfc2f240bc5de90eb7e19d789412db1dec402, 18),
+    ('poncho-poncho', 'base', 'PONCHO', 0xc2fe011c3885277c7f0e7ffd45ff90cadc8ecd12, 18),
+    ('babybrett-baby-brett', 'base', 'BABYBRETT', 0x52de0096836bada37c83d6648e0615c40f2d9e51, 18),
+    ('coinye-coinye-west', 'base', 'COINYE', 0x0028e1e60167b48a938b785aa5292917e7eaca8b, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

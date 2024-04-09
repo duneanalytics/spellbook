@@ -45,6 +45,7 @@ from
     ,(0x74de5d4FCbf63E00296fd95d33236B9794016631, 'Metamask', 'Metamask Swaps') -- Ethereum L1
     ,(0x881d40237659c251811cec9c364ef91dc08d300c, 'Metamask', 'Metamask Swaps') -- Ethereum L1
     ,(0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA, 'Circle', 'USDbC') --Base
+    ,(0x1833c6171e0a3389b156eaedb301cffbf328b463, 'Circle', 'UpgradeableOptimismMintableERC20') --Base
     --Non-Contract Labels
     ,(0x80C67432656d59144cEFf962E8fAF8926599bCF8, 'Orbiter Finance', 'Bridge')
     ,(0xf332761c673b59B21fF6dfa8adA44d78c12dEF09, 'OKX', 'OKX DEX')

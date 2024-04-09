@@ -175,3 +175,17 @@ models:
       - *block_month
       - *tx_hash
       - *evt_index
+
+  - name: nft_scroll_approvals
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *token_standard
+      - *block_month
+      - *tx_hash
+      - *evt_index

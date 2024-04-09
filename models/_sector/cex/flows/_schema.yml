@@ -1,0 +1,476 @@
+version: 2
+
+models:
+  - name: cex_ethereum_flows
+    meta:
+      blockchain: ethereum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'ethereum']
+    description: "All CEX-tied flows identified on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_month
+        name: block_month
+        description: "Block month"
+      - &block_time
+        name: block_time
+        description: "Block time"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &cex_name
+        name: cex_name
+        description: "Name of centralised exchange"
+      - &distinct_name
+        name: distinct_name
+        description: "Distinct name of centralised exchange address"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &flow_type
+        name: flow_type
+        description: "Flow type"
+      - &amount
+        name: amount
+        description: "Amount"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount"
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount"
+      - &from
+        name: from
+        description: "from address"
+      - &to
+        name: to
+        description: "to address"
+      - &tx_from
+        name: tx_from
+        description: "Address that executed the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address that the transaction points towards"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &unique_key
+        name: unique_key
+        description: "The transfer's unique key"
+
+  - name: cex_arbitrum_flows
+    meta:
+      blockchain: arbitrum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'arbitrum']
+    description: "All CEX-tied flows identified on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_avalanche_c_flows
+    meta:
+      blockchain: avalanche_c
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'avalanche_c']
+    description: "All CEX-tied flows identified on Avalanche"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_base_flows
+    meta:
+      blockchain: base
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'base']
+    description: "All CEX-tied flows identified on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_bnb_flows
+    meta:
+      blockchain: bnb
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'bnb']
+    description: "All CEX-tied flows identified on BNB"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_celo_flows
+    meta:
+      blockchain: celo
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'celo']
+    description: "All CEX-tied flows identified on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_gnosis_flows
+    meta:
+      blockchain: gnosis
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'gnosis']
+    description: "All CEX-tied flows identified on Gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_optimism_flows
+    meta:
+      blockchain: optimism
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'optimism']
+    description: "All CEX-tied flows identified on Optimism Mainnet"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_polygon_flows
+    meta:
+      blockchain: polygon
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'polygon']
+    description: "All CEX-tied flows identified on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_scroll_flows
+    meta:
+      blockchain: scroll
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'scroll']
+    description: "All CEX-tied flows identified on Scroll"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_zksync_flows
+    meta:
+      blockchain: zksync
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'zksync']
+    description: "All CEX-tied flows identified on zkSync"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_zora_flows
+    meta:
+      blockchain: zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'zora']
+    description: "All CEX-tied flows identified on ZORA Network"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key

@@ -1,20 +1,16 @@
 {{ config(
-tags=['prod_exclude'],
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c"]\',
+        post_hook='{{ expose_spells(\'["optimism", "ethereum"]\',
                                 "project",
                                 "odos",
-                                \'["Henrystats"]\') }}'
+                                \'["Henrystats", "amalashkevich"]\') }}'
         )
 }}
 
-/*
-    note: this spell has not been migrated to dunesql, as there are duplicates issues and issue is not resolved
-        please migrate to dunesql & fix duplicates to ensure up-to-date logic & data
-*/
-
 {% set odos_models = [
-ref('odos_avalanche_c_trades')
+  ref('odos_ethereum_trades'),
+  ref('odos_optimism_trades'),
+  ref('odos_base_trades')
 ] %}
 
 
@@ -26,6 +22,7 @@ FROM (
         project,
         version,
         block_date,
+        block_month,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
@@ -43,12 +40,11 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address, --ensure field is explicitly cast as array<bigint> in base models
+        trace_address,
         evt_index
     FROM {{ aggregator_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-)
-;
+);

@@ -4,7 +4,7 @@
 {% set column_list = [
      'blockchain', 'trace_creator_address', 'creator_address', 'trace_deployer_address'
     ,'contract_address', 'created_time', 'created_month', 'created_block_number', 'created_tx_hash'
-    ,'top_level_time', 'top_level_block_number', 'top_level_tx_hash', 'top_level_tx_from', 'top_level_tx_to', 'top_level_tx_method_id'
+    ,'top_level_contract_address','top_level_time', 'top_level_block_number', 'top_level_tx_hash', 'top_level_tx_from', 'top_level_tx_to', 'top_level_tx_method_id'
     ,'created_tx_from', 'created_tx_to', 'created_tx_method_id', 'created_tx_index'
     ,'code', 'code_bytelength', 'token_standard_erc20','code_deploy_rank_by_chain', 'is_self_destruct'
     ,'creator_address_lineage', 'tx_method_id_lineage'
@@ -74,12 +74,13 @@ WITH check_date AS (
         ,created_month
         ,created_block_number
         ,created_tx_hash
-        ,top_level_time
-        ,top_level_block_number
-        ,top_level_tx_hash
-        ,top_level_tx_from
-        ,top_level_tx_to
-        ,top_level_tx_method_id
+        ,contract_address AS top_level_contract_address
+        ,created_time AS top_level_time
+        ,created_block_number AS top_level_block_number
+        ,created_tx_hash AS top_level_tx_hash
+        ,created_tx_from as top_level_tx_from
+        ,created_tx_to AS top_level_tx_to
+        ,created_tx_method_id AS top_level_tx_method_id
         ,created_tx_from
         ,created_tx_to
         ,created_tx_method_id
@@ -141,6 +142,7 @@ WITH check_date AS (
       ,s.created_month
       ,s.created_block_number
       ,s.created_tx_hash
+      ,s.top_level_contract_address
       ,s.top_level_time
       ,s.top_level_block_number
       ,s.top_level_tx_hash
@@ -213,6 +215,8 @@ WITH check_date AS (
 
         -- when deterministic, pull the tx-level data
         ,case when nd.creator_address IS NOT NULL
+          then b.top_level_contract_address ELSE COALESCE(u.top_level_contract_address, b.top_level_contract_address ) END AS top_level_contract_address
+        ,case when nd.creator_address IS NOT NULL
           then b.top_level_time ELSE COALESCE(u.top_level_time, b.top_level_time ) END AS top_level_time
         ,case when nd.creator_address IS NOT NULL
           then b.top_level_block_number else COALESCE(u.top_level_block_number, b.top_level_block_number ) end AS top_level_block_number
@@ -283,6 +287,7 @@ WITH check_date AS (
     ,created_month
     ,is_self_destruct
     ,'creator contracts' as source
+    ,top_level_contract_address
     ,top_level_time
     ,created_tx_hash
     ,created_block_number
@@ -316,6 +321,6 @@ WITH check_date AS (
           ) ts 
   ON u.contract_address = ts.contract_address
 
-  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28
   
 {% endmacro %}

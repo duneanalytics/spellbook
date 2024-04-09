@@ -446,10 +446,10 @@ SELECT
         swap_flag,
         matcha_limit_order_flag,
         CASE WHEN maker_token IN (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,0xdac17f958d2ee523a2206206994597c13d831ec7,
-                0x4fabb145d64652a948d72533023f6e7a623c7c53,0x6b175474e89094c44da98b954eedeac495271d0f) AND  mp.price IS NOT NULL
+                0x4fabb145d64652a948d72533023f6e7a623c7c53,0x6b175474e89094c44da98b954eedeac495271d0f,0xae7ab96520de3a18e5e111b5eaab095312d7fe84) AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
              WHEN taker_token IN (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,0xdac17f958d2ee523a2206206994597c13d831ec7,
-                0x4fabb145d64652a948d72533023f6e7a623c7c53,0x6b175474e89094c44da98b954eedeac495271d0f)  AND  tp.price IS NOT NULL
+                0x4fabb145d64652a948d72533023f6e7a623c7c53,0x6b175474e89094c44da98b954eedeac495271d0f,0xae7ab96520de3a18e5e111b5eaab095312d7fe84)  AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
              END AS volume_usd,
@@ -494,5 +494,5 @@ AND mp.minute >= date_trunc('day', now() - interval '7' day)
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 {% endif %}
 
-LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} ts ON ts.contract_address = taker_token
-LEFT OUTER JOIN {{ source('tokens_ethereum', 'erc20') }} ms ON ms.contract_address = maker_token
+LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = 'ethereum'
+LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = 'ethereum'

@@ -178,6 +178,7 @@ models:
       - name: version
       - name: decimals
       - name: contract_address
+      - name: pool_type
       - name: bpt_price
 
   - name: balancer_liquidity
@@ -208,6 +209,7 @@ models:
         description: 'Version of Balancer in which pool was deployed'
       - name: blockchain
         description: 'Blockchain in which pool was deployed'      
+      - name: pool_type
       - name: token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -228,7 +230,7 @@ models:
   - name: balancer_transfers_bpt
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
@@ -241,6 +243,7 @@ models:
             - block_date
     columns:
       - *blockchain
+      - name: version
       - *contract_address
       - *block_date
       - *evt_tx_hash
@@ -260,7 +263,7 @@ models:
   - name: balancer_pools_fees
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
@@ -274,6 +277,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -304,6 +308,7 @@ models:
       - name: pool_symbol
       - *version
       - *blockchain
+      - name: pool_type
       - name: token_address
       - name: token_symbol
       - name: token_amount_raw
@@ -320,7 +325,7 @@ models:
   - name: balancer_bpt_supply
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: thetroyharris
+      contributors: thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
     description: >
@@ -374,6 +379,28 @@ models:
             - token_address
     columns:
       - *blockchain
+      - name: version
       - *pool_id
       - name: token_address
       - name: normalized_weight
+
+  - name: balancer_single_recipient_gauges
+    meta:
+      blockchain: ethereum
+      contributors: viniabussafi
+    config:
+      tags: ['ethereum', 'gauges']
+    description: >
+      These gauges are deployed by the SingleRecipientGauge contract and this mapping manually links each gauge to it's correspondent pool and project
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - gauge_address
+            - pool_id 
+            - project
+            - blockchain
+    columns:
+      - name: gauge_address
+      - name: pool_id
+      - name: project
+      - name: blockchain

@@ -3,11 +3,12 @@ version: 2
 models:
   - name: eas_schemas
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo
       sector: attestation
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS schema registry"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -42,8 +43,8 @@ models:
       - &resolver
         name: resolver
         description: "Optional contract assigned to the Schema for more complex use cases"
-      - &Schema
-        name: Schema
+      - &schema
+        name: schema
         description: "ABI encoded Schema field types"
       - &schema_array
         name: schema_array
@@ -69,11 +70,12 @@ models:
 
   - name: eas_schema_details
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo
       sector: attestation
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS schema registry details"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -105,11 +107,12 @@ models:
 
   - name: eas_attestations
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo
       sector: attestation
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS attestations"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -167,11 +170,12 @@ models:
 
   - name: eas_attestation_details
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo
       sector: attestation
       contributors: tomfutago
     config:
       tags: [ 'attestation', 'eas' ]
+    description: "EAS attestation details"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -193,6 +197,7 @@ models:
       - &decoded_data
         name: decoded_data
         description: "Decoded data chunk (if successful otherwise blank) related to data_type/field_name pair"
+      - *is_revoked
       - *block_number
       - *block_time
       - *tx_hash
