@@ -60,7 +60,7 @@ WITH final AS (
         ,address
         --,NULL AS shares
         ,outcomeSlot AS outcomeIndex
-        ,outcomeTokens AS outcomeTokens_amount
+        ,outcomeTokens_amount
         --,amount
         ,feeAmount AS fees
         ,action
