@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'syncswap_zksync',
+        schema = 'syncswap_v2_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,39 +10,52 @@
     )
 }}
 
-{% set syncswap_start_date = "2023-03-24" %}
+{% set syncswap_v2_start_date = "2024-02-12" %}
 
 WITH 
-    -- All SyncSwap Pools
+    -- All SyncSwap V2 Pools
     pools AS (
         SELECT pool, token0, token1
-        FROM {{ source('syncswap_zksync', 'SyncSwapClassicPoolFactory_evt_PoolCreated') }}
+        FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPoolFactory_evt_PoolCreated') }}
         UNION ALL 
         SELECT pool, token0, token1
-        FROM {{ source('syncswap_zksync', 'SyncSwapStablePoolFactory_evt_PoolCreated') }}
+        FROM {{ source('syncswap_v2_zksync', 'SyncSwapStablePoolFactory_evt_PoolCreated') }}
+        UNION ALL 
+        SELECT pool, token0, token1
+        FROM {{ source('syncswap_v2_zksync', 'SyncSwapAquaPoolFactory_evt_PoolCreated') }}
     )
     
     , base AS (
-        SELECT * FROM {{ source('syncswap_zksync', 'SyncSwapStablePool_evt_Swap') }}
+        SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapClassicPool_evt_Swap') }}
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% else %}
-        WHERE evt_block_time >= timestamp '{{syncswap_start_date}}'
+        WHERE evt_block_time >= timestamp '{{syncswap_v2_start_date}}'
+        {% endif %}
+
+        UNION    
+
+        SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapStablePool_evt_Swap') }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('evt_block_time')}}
+        {% else %}
+        WHERE evt_block_time >= timestamp '{{syncswap_v2_start_date}}'
         {% endif %}
 
         UNION
-        SELECT * FROM {{ source('syncswap_zksync', 'SyncSwapClassicPool_evt_Swap') }}
+
+        SELECT * FROM {{ source('syncswap_v2_zksync', 'SyncSwapAquaPool_evt_Swap') }}
         {% if is_incremental() %}
         WHERE {{incremental_predicate('evt_block_time')}}
         {% else %}
-        WHERE evt_block_time >= timestamp '{{syncswap_start_date}}'
+        WHERE evt_block_time >= timestamp '{{syncswap_v2_start_date}}'
         {% endif %}
     )
     
 SELECT
     'zksync' AS blockchain
     , 'syncswap' As project
-    , '1' AS version
+    , '2' AS version
     , CAST(date_trunc('month', evt_block_time) AS DATE) AS block_month
     , CAST(date_trunc('day', evt_block_time) AS DATE) AS block_date
     , evt_block_time AS block_time

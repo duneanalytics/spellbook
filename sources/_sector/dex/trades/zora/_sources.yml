@@ -1,0 +1,4 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_zora
