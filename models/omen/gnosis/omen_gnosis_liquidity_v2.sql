@@ -1,7 +1,7 @@
 {{ config(
     schema = 'omen_gnosis',
-    alias = 'liquidity',
-
+    alias = 'liquidity2',
+    
     partition_by = ['block_day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -29,8 +29,13 @@ FPMMFundingAdded AS (
         t.evt_contract_address,
         t.funder,
         t.sharesMinted,
-        s.SEQUENCE_NUMBER - 1 AS amountAdded_index,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 65 + 32 * s.SEQUENCE_NUMBER, 32))) AS amountsAdded
+        ARRAY_AGG(s.SEQUENCE_NUMBER - 1 ORDER BY s.SEQUENCE_NUMBER) AS outcomeIndex,
+        ARRAY_AGG(
+            VARBINARY_TO_UINT256(
+                VARBINARY_LTRIM(
+                    VARBINARY_SUBSTRING(t.data, 65 + 32 * s.SEQUENCE_NUMBER, 32)
+                )
+            ) ORDER BY s.SEQUENCE_NUMBER) AS outcomeTokens_amount
     FROM (
         SELECT
             block_time,
@@ -55,9 +60,10 @@ FPMMFundingAdded AS (
             {% endif %}
     ) AS t
     CROSS JOIN UNNEST(SEQUENCE(1, TRY_CAST(t.amountsAdded_size AS INTEGER)) ) AS s(SEQUENCE_NUMBER)
-
+    GROUP BY
+        1,2,3,4,5,6,7,8
+   
 ),
-
 
 FPMMFundingRemoved AS (
     SELECT
@@ -70,8 +76,13 @@ FPMMFundingRemoved AS (
         t.funder,
         t.collateralRemovedFromFeePool,
         t.sharesBurnt,
-        s.SEQUENCE_NUMBER - 1 AS amountsRemoved_index,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 97 + 32 * s.SEQUENCE_NUMBER, 32))) AS amountsRemoved
+        ARRAY_AGG(s.SEQUENCE_NUMBER - 1 ORDER BY s.SEQUENCE_NUMBER) AS outcomeIndex,
+        ARRAY_AGG(
+            VARBINARY_TO_UINT256(
+                VARBINARY_LTRIM(
+                    VARBINARY_SUBSTRING(t.data, 97 + 32 * s.SEQUENCE_NUMBER, 32)
+                )
+            ) ORDER BY s.SEQUENCE_NUMBER) AS outcomeTokens_amount
     FROM (
         SELECT
             block_time,
@@ -97,8 +108,9 @@ FPMMFundingRemoved AS (
             {% endif %}
     ) AS t
     CROSS JOIN UNNEST(SEQUENCE(1, TRY_CAST(t.amountsRemoved_size AS INTEGER)) ) AS s(SEQUENCE_NUMBER) 
+    GROUP BY
+        1,2,3,4,5,6,7,8,9
 ),
-
 
 final AS (
     SELECT 
@@ -112,9 +124,9 @@ final AS (
         funder,
         sharesMinted AS shares,
         NULL AS collateralRemovedFromFeePool,
-        amountAdded_index AS amount_index,
-        amountsAdded AS amount,
-        'Mint' AS action
+        outcomeIndex,
+        outcomeTokens_amount,
+        'Add' AS action
     FROM
         FPMMFundingAdded
     UNION ALL
@@ -129,9 +141,9 @@ final AS (
         funder,
         sharesBurnt AS shares,
         collateralRemovedFromFeePool,
-        amountsRemoved_index AS amount_index,
-        amountsRemoved AS amount,
-        'Burn' AS action
+        outcomeIndex,
+        outcomeTokens_amount,
+        'Remove' AS action
     FROM
         FPMMFundingRemoved
 )
