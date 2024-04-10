@@ -40,7 +40,7 @@ WITH final AS (
                 END
         ) AS reserves_delta
     FROM
-        {{ ref('omen_gnosis_liquidity') }}
+        {{ ref('omen_gnosis_liquidity_v2') }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
@@ -72,7 +72,7 @@ WITH final AS (
                 END
         ) AS reserves_delta
     FROM
-        {{ ref('omen_gnosis_trades') }}
+        {{ ref('omen_gnosis_trades_v2') }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' day)
     {% else %}
