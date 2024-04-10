@@ -55,6 +55,22 @@ events as (
     {% endif %}
 ),
 
+royalty_payment as (
+    SELECT 
+        evt_tx_hash,
+        collection,
+        tokenId,
+        SUM(amount) as amount, 
+        MIN_BY(royaltyRecipient, evt_index) as royaltyRecipient,
+        COUNT(*) as number_of_payments -- when there are multiple payments, the royalty_fee_address is null 
+    FROM 
+    {{ source('joepegs_avalanche_c', 'JoepegExchange_evt_RoyaltyPayment') }}
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('evt_block_time')}}
+    {% endif %}
+    GROUP BY 1, 2, 3 
+), 
+
 base_trades as (
     SELECT 
         'avalanche_c' as blockchain,
@@ -77,19 +93,19 @@ base_trades as (
         ee.evt_block_number as block_number,
         CAST(NULL as UINT256) as platform_fee_amount_raw,
         ra.amount as royalty_fee_amount_raw,
-        ra.royaltyRecipient as royalty_fee_address,
+        CASE 
+            WHEN number_of_payments = 1 THEN royaltyRecipient
+            ELSE CAST(NULL as VARBINARY)
+        END as royalty_fee_address,
         CAST(NULL as VARBINARY) as platform_fee_address,
         ee.evt_index as sub_tx_trade_id
     FROM 
     events ee 
     LEFT JOIN 
-    {{ source('joepegs_avalanche_c', 'JoepegExchange_evt_RoyaltyPayment') }} ra 
+    royalty_payment ra 
         ON ee.evt_tx_hash = ra.evt_tx_hash 
         AND ee.nft_contract_address = ra.collection
         AND ee.nft_token_id = ra.tokenId
-        {% if is_incremental() %}
-        AND {{incremental_predicate('ra.evt_block_time')}}
-        {% endif %}
 )
 
 {{add_nft_tx_data('base_trades','avalanche_c')}}
