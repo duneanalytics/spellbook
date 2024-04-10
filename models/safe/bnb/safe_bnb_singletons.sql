@@ -6,7 +6,7 @@
         post_hook='{{ expose_spells(\'["bnb"]\',
                                     "project",
                                     "safe",
-                                    \'["tschubotz"]\') }}'
+                                    \'["tschubotz", "peterrliem"]\') }}'
     ) 
 }}
 
@@ -30,3 +30,8 @@ union
 
 select distinct singleton as address 
 from {{ source('gnosis_safe_bnb', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+
+union
+
+select distinct singleton as address 
+from {{ source('gnosis_safe_bnb', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}
