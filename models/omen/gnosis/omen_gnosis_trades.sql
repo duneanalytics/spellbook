@@ -219,7 +219,6 @@ prediction_market_info AS (
         t3.conditionId = t2.conditionId
 ),
 
-
 final AS (
     SELECT
         t1.block_time
