@@ -97,13 +97,13 @@ models:
   #       name: evt_index
   #       description: "Index of the corresponding trade event"
 
-  - name: dex_base_lps
+  - name: alm_base_trades
     meta:
       blockchain: ethereum
-      sector: dex
+      sector: alm
       contributors: 0xrusowsky
     config:
-      tags: [ 'dex' ]
+      tags: [ 'alm' ]
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -112,6 +112,7 @@ models:
             - version
             - tx_hash
             - evt_index
+            - vault_address
     # columns:
     #   - blockchain
     #   - project

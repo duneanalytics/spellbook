@@ -5,20 +5,19 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'vault_address']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 {% set models = [
-    ref('dex_ethereum_base_lps')
+    ref('alm_ethereum_base_trades')
 ] %}
 
-with base_union as (
+WITH base_union AS (
     SELECT *
-    FROM
-    (
-        {% for model in models %}
+    FROM (
+        {% for base_model in base_models %}
         SELECT
             blockchain
             , project
@@ -26,21 +25,18 @@ with base_union as (
             , block_time
             , block_month
             , block_number
-            , amount0_raw
-            , amount1_raw
-            , liquidity_raw
+            , pool_address
+            , vault_address
             , token0_address
             , token1_address
-            , pool_address
-            , liquidity_provider
-            , position_id
-            , tick_lower
-            , tick_upper
-            , tx_hash
-            , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
-        FROM
-            {{ model }}
+            , volume_usd
+            , volume0
+            , volume1
+            , volume0_raw
+            , volume1_raw
+            , row_number() over (partition by tx_hash, evt_index, vault_address order by tx_hash asc, evt_index asc) as duplicates_rank
+        FROM 
+            {{ base_model }}
         {% if is_incremental() %}
         WHERE
             {{ incremental_predicate('block_time') }}

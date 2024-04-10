@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'dex_ethereum'
-    , alias = 'base_lps'
+    schema = 'alm_ethereum'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_ethereum_base_lps')
+    ref('arrakis_v2_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -20,19 +20,16 @@ WITH base_union AS (
             , block_time
             , block_month
             , block_number
-            , amount0_raw
-            , amount1_raw
-            , liquidity_raw
+            , pool_address
+            , vault_address
             , token0_address
             , token1_address
-            , pool_address
-            , liquidity_provider
-            , position_id
-            , tick_lower
-            , tick_upper
-            , tx_hash
-            , evt_index
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+            , volume_usd
+            , volume0
+            , volume1
+            , volume0_raw
+            , volume1_raw
+            , row_number() over (partition by tx_hash, evt_index, vault_address order by tx_hash asc, evt_index asc) as duplicates_rank
         FROM 
             {{ base_model }}
         {% if is_incremental() %}
