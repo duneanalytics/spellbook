@@ -143,6 +143,7 @@ models:
       - name: evt_index
         description: "Index of the corresponding trade event"
 
+
   - name: pancakeswap_arbitrum_trades
     meta:
       blockchain: arbitrum

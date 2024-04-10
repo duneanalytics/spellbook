@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
     )
 }}
@@ -38,7 +39,7 @@ open_position as (
     FROM {{ ref('tigris_arbitrum_events_open_position') }}
     WHERE open_type = 'open_position'
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ), 
 
@@ -122,7 +123,7 @@ limit_order as (
         protocol_version
     FROM {{ ref('tigris_arbitrum_events_limit_order') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ), 
 
@@ -188,7 +189,7 @@ close_position as (
         AND c.positions_contract = lo.positions_contract
         AND c.protocol_version = lo.protocol_version
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('c.evt_block_time') }}
     {% endif %}
 
 ), 
@@ -229,7 +230,7 @@ liquidate_position as (
         AND lp.positions_contract = lo.positions_contract
         AND lp.protocol_version = lo.protocol_version
     {% if is_incremental() %}
-    WHERE lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('lp.evt_block_time') }}
     {% endif %}
 ),
 
@@ -288,7 +289,7 @@ add_margin as (
                 AND am.protocol_version = l.protocol_version
                 AND am.evt_block_time > l.evt_block_time
             {% if is_incremental() %}
-            WHERE am.evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{ incremental_predicate('am.evt_block_time') }}
             {% endif %}
             GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
         ) tmp 
@@ -346,7 +347,7 @@ modify_margin as (
         AND mm.positions_contract = lo.positions_contract
         AND mm.protocol_version = lo.protocol_version
     {% if is_incremental() %}
-    WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('mm.evt_block_time') }}
     {% endif %}
 ),
 
@@ -381,7 +382,7 @@ limit_cancel as (
         AND lc.positions_contract = op.positions_contract
         AND lc.protocol_version = op.protocol_version
     {% if is_incremental() %}
-    WHERE lc.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('lc.evt_block_time') }}
     {% endif %}
 ),
 
@@ -457,5 +458,5 @@ LEFT JOIN {{ source('prices', 'usd') }} pe
     AND pe.blockchain = 'arbitrum'
     AND pe.symbol = 'WETH'
     {% if is_incremental() %}
-    AND pe.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('pe.minute') }}
     {% endif %}

@@ -19,23 +19,9 @@ models:
             - tx_index
             - outer_instruction_index
             - inner_instruction_index
-      - check_seed:
+      - check_bot_trades_seed:
           seed_file: ref('maestro_solana_trades_seed')
-          match_columns:
-            - blockchain
-            - tx_id
-            - tx_index
-            - outer_instruction_index
-            - inner_instruction_index
-          check_columns:
-            - fee_token_amount
-            - fee_token_address
-            - project
-            - version
-            - project_contract_address
-            - token_bought_address
-            - token_sold_address
-            - user
+          blockchain: solana
 
     columns:
       - &blockchain

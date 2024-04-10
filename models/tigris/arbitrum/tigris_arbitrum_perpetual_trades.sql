@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -140,7 +141,7 @@ INNER JOIN
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN 
 {{ source('tokens_arbitrum', 'erc20') }} er 
@@ -150,7 +151,7 @@ LEFT JOIN {{ source('prices', 'usd') }} pe
     AND pe.blockchain = 'arbitrum'
     AND pe.symbol = 'WETH'
     {% if is_incremental() %}
-    AND pe.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('pe.minute') }}
     {% endif %}
 
 
