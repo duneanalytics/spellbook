@@ -129,4 +129,5 @@ FROM (VALUES
     , ('Cumberland', 'CumberlandSays')
     , ('Galaxy Digital', 'GalaxyHQ')
     , ('Copper.co', 'CopperHQ')
+    , ('Kelp DAO', 'KelpDAO')
     ) AS temp_table (entity, x_username)
