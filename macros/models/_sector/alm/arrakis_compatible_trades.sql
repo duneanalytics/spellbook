@@ -183,7 +183,7 @@ WITH arrakis_vaults AS
                 FROM time_series AS ts
                 LEFT JOIN {{ Pair_evt_Swap }} AS s
                     ON ts.pool_address = s.contract_address AND ts.block_time = s.evt_block_time
-                GROUP BY 1,2
+                GROUP BY 1,2,4
             ) AS p
         ) AS p_adj
     ) AS p
