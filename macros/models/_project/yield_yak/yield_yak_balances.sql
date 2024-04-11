@@ -4,14 +4,7 @@
 %}
 
 {% set future_date = '2099-12-31 00:00:00.000' %}
-
-{% set strategies_result = run_query(yield_yak_strategies(blockchain)) %}
-
-{% if execute %}
-{% set strategies_list = strategies_result.columns[0].values() %}
-{% else %}
-{% set strategies_list = [] %}
-{% endif %}
+{% set namespace_blockchain = 'yield_yak_' + blockchain %}
 
 WITH
 
@@ -29,8 +22,7 @@ latest_balances AS (
 {% endif %}
 
 deposits_withdraws_reinvests AS (
-    {% for strategy in strategies_list %}
-        {% set strategy_dict = fromjson(strategy) %}
+    {% for strategy in yield_yak_strategies(blockchain) %}
         SELECT
             d.contract_address
             , d.evt_block_time
@@ -39,7 +31,7 @@ deposits_withdraws_reinvests AS (
             , d.amount AS deposit_amount
             , 0 AS withdraw_amount
             , NULL AS new_total_deposits
-        FROM {{ strategy_dict['namespace_blockchain'] + '.' + strategy_dict['name'] + '_evt_Deposit' }} d
+        FROM {{ source(namespace_blockchain, strategy + '_evt_Deposit') }} d
         {% if is_incremental() %}
         LEFT JOIN
         latest_balances b
@@ -58,7 +50,7 @@ deposits_withdraws_reinvests AS (
             , 0 AS deposit_amount
             , w.amount AS withdraw_amount
             , NULL AS new_total_deposits
-        FROM {{ strategy_dict['namespace_blockchain'] + '.' + strategy_dict['name'] + '_evt_Withdraw' }} w
+        FROM {{ source(namespace_blockchain, strategy + '_evt_Withdraw') }} w
         {% if is_incremental() %}
         LEFT JOIN
         latest_balances b
@@ -77,7 +69,7 @@ deposits_withdraws_reinvests AS (
             , 0 AS deposit_amount
             , 0 AS withdraw_amount
             , r.newTotalDeposits AS new_total_deposits
-        FROM {{ strategy_dict['namespace_blockchain'] + '.' + strategy_dict['name'] + '_evt_Reinvest' }} r
+        FROM {{ source(namespace_blockchain, strategy + '_evt_Reinvest') }} r
         {% if is_incremental() %}
         LEFT JOIN
         latest_balances b
@@ -122,9 +114,9 @@ FROM (
         contract_address
         , evt_block_time AS from_time
         , date_add('millisecond', -1, LEAD(evt_block_time, 1, TIMESTAMP '{{ future_date }}') OVER (PARTITION BY contract_address ORDER BY evt_block_time, evt_block_number, evt_index)) AS to_time
-        , SUM(COALESCE(new_total_deposits, 0)) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY evt_block_time, evt_block_number, evt_index)
-            + SUM(deposit_amount) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY evt_block_time, evt_block_number, evt_index)
-            - SUM(withdraw_amount) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY evt_block_time, evt_block_number, evt_index) AS deposit_token_balance
+        , CAST(SUM(COALESCE(new_total_deposits, 0)) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY evt_block_time, evt_block_number, evt_index) AS INT256)
+            + CAST(SUM(deposit_amount) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY evt_block_time, evt_block_number, evt_index) AS INT256)
+            - CAST(SUM(withdraw_amount) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY evt_block_time, evt_block_number, evt_index) AS INT256) AS deposit_token_balance
     FROM (
         SELECT
             *

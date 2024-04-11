@@ -3,12 +3,136 @@
     )
 %}
 
-SELECT
-    DISTINCT json_object('name': name, 'namespace_blockchain': CONCAT(namespace, '_{{ blockchain }}')) AS strategy
-FROM {{ source(blockchain, 'contracts') }}
-WHERE
-    namespace = 'yield_yak'
-    -- This next line ensures we're only getting the contracts which have the required Reinvest, Deposit and Withdraw tables.
-    AND cardinality(filter(abi, x -> json_extract_scalar(x, '$.name') IN ('Reinvest', 'Deposit', 'Withdraw') AND json_extract_scalar(x, '$.type') = 'event')) = 3
+{% if blockchain == 'avalanche_c' %}
+
+{{
+    return([
+        'AaveStrategyAvaxV1',
+        'AaveStrategyV1',
+        'AaveV3StrategyAvaxV1',
+        'AaveV3StrategyV1',
+        'AnkrAvaxPlatypusStrategy',
+        'AutoPoolStrategy',
+        'AxialStrategyForLP',
+        'AxialStrategyForMetapoolLP',
+        'BalancerDirectJoinStrategy',
+        'BenqiStrategyAvaxV1',
+        'BenqiStrategyForLP',
+        'BenqiStrategyQiV1',
+        'BenqiStrategyQiV2',
+        'BenqiStrategyV1',
+        'BenqiStrategyV2',
+        'BenqiStrategyV3',
+        'BirdyStrategyForLP',
+        'BlizzStrategyAvaxV1',
+        'BlizzStrategyV1',
+        'BoostedJoeStrategyForLP',
+        'CompoundingBamboo',
+        'CompoundingBets',
+        'CompoundingBlp',
+        'CompoundingGondola',
+        'CompoundingJoe',
+        'CompoundingJoeV3',
+        'CompoundingXava',
+        'CompoundingYYStaking',
+        'CurveStrategyForLPV1',
+        'CycleStrategyV1',
+        'DeltaPrimeDepositorStrategy',
+        'DexStrategyAVAXWithSwapV2',
+        'DexStrategySA',
+        'DexStrategySAWithSwap',
+        'DexStrategySAWithSwapV2',
+        'DexStrategyV4',
+        'DexStrategyV5',
+        'DexStrategyV5Reflection',
+        'DexStrategyV6',
+        'DexStrategyV6a',
+        'EchidnaStrategy',
+        'EchidnaStrategyForLP',
+        'ElevenStrategyForLPV1',
+        'ElkStrategyV1',
+        'FrostStrategyForLP',
+        'FrostStrategyForSA',
+        'GlacierStrategy',
+        'GmxStrategyForGLP',
+        'GmxStrategyForGMX',
+        'GondolaStrategyForLP',
+        'GondolaStrategyForPoolBTC',
+        'GondolaStrategyForPoolDAI',
+        'GondolaStrategyForPoolDAIeUSDTe',
+        'GondolaStrategyForPoolETH',
+        'GondolaStrategyForPoolUSDT',
+        'GondolaStrategyForPoolV2',
+        'HakuStrategyForLP',
+        'JoeLendingStrategyAvaxV1',
+        'JoeLendingStrategyV1',
+        'JoeLendingStrategyV2',
+        'JoeStrategyForLP',
+        'JoeStrategyV1',
+        'JoeStrategyV2',
+        'JoeStrategyV3',
+        'JoeStrategyV4',
+        'KassandraIndexStrategy',
+        'KassandraIndexStrategyK3C',
+        'KassandraStrategyForLP',
+        'KassandraStrategyForSA',
+        'LydiaStrategyForLP',
+        'LydiaStrategyForLPa',
+        'LydiaStrategyForLPb',
+        'MarginswapStrategyV1',
+        'MasterYakStrategyForLP',
+        'MasterYakStrategyForSA',
+        'MemeRushStrategy',
+        'MoreMoneyStrategy',
+        'OliveStrategyForLPb',
+        'OliveStrategyForSA',
+        'PangolinV2StrategyForLP',
+        'PangolinV2VariableRewardsStrategyForLP',
+        'PenguinStrategyForLP',
+        'PenguinStrategyForLPb',
+        'PlatypusStrategy',
+        'SonicStrategyForSA',
+        'StableVaultStrategyForS3F',
+        'StargateStrategyForLP',
+        'StormStrategyForLP',
+        'StormStrategyForSA',
+        'SynapseStrategy',
+        'UnipoolStrategyV1',
+        'UspPlatypusStrategy',
+        'VectorStrategyForDexLP',
+        'VectorStrategyForSA',
+        'VectorStrategyForSAV2',
+        'WombatStrategy',
+        'WoofiSuperchargerStrategy',
+        'XavaStrategyForLP',
+        'YYAvaxJoeStrategy',
+        'YYAvaxPlatypusStrategy',
+        'YetiStrategyForLP',
+        'ZabuStrategyForLP',
+        'ZabuStrategyForSA'
+    ])
+}}
+
+{% elif blockchain == 'arbitrum' %}
+
+{{
+    return([
+        'AutoPoolStrategy',
+        'BalancerDirectJoinStrategy',
+        'CompoundingBets',
+        'CompoundingJoe',
+        'CompoundingYYStaking',
+        'DeltaPrimeDepositorStrategy',
+        'GmxStrategyForGLPArbitrum',
+        'LevelStrategy',
+        'SiloStrategy',
+        'SushiStrategyForLP',
+        'SynapseStrategy',
+        'SynapseStrategyV2',
+        'WombexStrategy'
+    ])
+}}
+
+{% endif %}
 
 {% endmacro %}
