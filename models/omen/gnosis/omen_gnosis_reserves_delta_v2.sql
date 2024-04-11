@@ -29,8 +29,8 @@ WITH final AS (
        -- ,shares
         ,outcomeIndex 
         ,outcomeTokens_amount
-        --,NULL AS amount
-        ,NULL AS fees
+        ,amount
+        ,collateralRemovedFromFeePool AS fees
         ,action
         ,TRANSFORM(
             outcomeTokens_amount, 
@@ -61,7 +61,7 @@ WITH final AS (
         --,NULL AS shares
         ,outcomeSlot AS outcomeIndex
         ,outcomeTokens_amount
-        --,amount
+        ,amount
         ,feeAmount AS fees
         ,action
         ,TRANSFORM(
