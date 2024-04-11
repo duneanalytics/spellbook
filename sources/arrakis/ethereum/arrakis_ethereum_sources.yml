@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: arrakis_v2_ethereum
+  - name: arrakis_finance_ethereum
     description: "Ethereum decoded tables related to Arrakis Finance contracts"
     freshness:
       warn_after: { count: 12, period: hour }

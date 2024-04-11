@@ -18,6 +18,6 @@
         , Pair_evt_Burn = source('uniswap_v3_ethereum', 'Pair_evt_Burn')
         , Pair_evt_Swap = source('uniswap_v3_ethereum', 'Pair_evt_Swap')
         , Factory_evt_PoolCreated = source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated')
-        , ArrakisV2Factory_evt_VaultCreated = source('arrakis_v2_ethereum', 'ArrakisV2Factory_evt_VaultCreated')
+        , ArrakisV2Factory_evt_VaultCreated = source('arrakis_finance_ethereum', 'ArrakisV2Factory_evt_VaultCreated')
     )
 }}
