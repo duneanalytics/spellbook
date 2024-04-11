@@ -17,7 +17,7 @@ latest_balances AS (
     FROM
     {{ this }} t
     WHERE
-        t.to_block_time = TIMESTAMP '{{ future_date }}'
+        t.to_time = TIMESTAMP '{{ future_date }}'
 ),
 {% endif %}
 
@@ -38,7 +38,7 @@ deposits_withdraws_reinvests AS (
             ON b.contract_address = d.contract_address
         WHERE
             ({{ incremental_predicate('d.evt_block_time') }}
-            AND d.evt_block_time > b.from_block_time)
+            AND d.evt_block_time > b.from_time)
             OR b.contract_address IS NULL -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
         {% endif %}
         UNION ALL
@@ -57,7 +57,7 @@ deposits_withdraws_reinvests AS (
             ON b.contract_address = w.contract_address
         WHERE
             ({{ incremental_predicate('w.evt_block_time') }}
-            AND w.evt_block_time > b.from_block_time)
+            AND w.evt_block_time > b.from_time)
             OR b.contract_address IS NULL -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
         {% endif %}
         UNION ALL
@@ -76,7 +76,7 @@ deposits_withdraws_reinvests AS (
             ON b.contract_address = r.contract_address
         WHERE
             ({{ incremental_predicate('r.evt_block_time') }}
-            AND r.evt_block_time > b.from_block_time)
+            AND r.evt_block_time > b.from_time)
             OR b.contract_address IS NULL -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
         {% endif %}
         {% if not loop.last %}
