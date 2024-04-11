@@ -182,7 +182,7 @@ WITH arrakis_vaults AS
                     , CASE WHEN s.tick IS NOT NULL THEN 1 END AS index_check
                 FROM time_series AS ts
                 LEFT JOIN {{ Pair_evt_Swap }} AS s
-                    ON ts.pool_address = s.pool_address AND ts.block_time = s.evt_block_time
+                    ON ts.pool_address = s.contract_address AND ts.block_time = s.evt_block_time
                 GROUP BY 1,2
             ) AS p
         ) AS p_adj
@@ -215,14 +215,14 @@ WITH arrakis_vaults AS
         , lp.liquidity
     from liquidity_ts as lp
     inner join (
-        SELECT evt_block_time as block_time
-            , evt_block_number as block_number
-            , evt_tx_hash as tx_hash
-            , evt_index
-            , contract_address AS pool_address
-            , lag(cast(sqrtPriceX96 as double), 1) over (partition by contract_address order by evt_block_number, evt_index) / pow(2,96) as prev_sqrt_price
-            , cast(sqrtPriceX96 as double) / pow(2,96) as sqrt_price
-            , abs(cast(amount1 as double)) as volume1
+        SELECT s.evt_block_time as block_time
+            , s.evt_block_number as block_number
+            , s.evt_tx_hash as tx_hash
+            , s.evt_index
+            , a.pool_address
+            , lag(cast(s.sqrtPriceX96 as double), 1) over (partition by a.pool_address order by s.evt_block_number, s.evt_index) / pow(2,96) as prev_sqrt_price
+            , cast(s.sqrtPriceX96 as double) / pow(2,96) as sqrt_price
+            , abs(cast(s.amount1 as double)) as volume1
         FROM {{ Pair_evt_Swap }} AS s
         INNER JOIN arrakis_vaults AS a
             ON a.creation_time <= s.evt_block_time AND a.pool_address = s.contract_address
