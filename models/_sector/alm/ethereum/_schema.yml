@@ -1,10 +1,6 @@
 version: 2
 
 models:
-  - name: alm_ethereum_base_trades
-    tests:
-      - check_dex_info_relationship
-
   - name: arrakis_finance_ethereum_base_trades
     meta:
       blockchain: ethereum
