@@ -210,7 +210,7 @@ WITH arrakis_vaults AS
         , s.tx_hash
         , s.evt_index
         , s.pool_address
-        , greatest(least(s.sqrt_rice, sqrt(lp.pb)), sqrt(lp.pa)) as sqrt_price
+        , greatest(least(s.sqrt_price, sqrt(lp.pb)), sqrt(lp.pa)) as sqrt_price
         , greatest(least(s.prev_sqrt_price, sqrt(lp.pb)), sqrt(lp.pa)) as prev_sqrt_price
         , lp.liquidity
     from liquidity_ts as lp
