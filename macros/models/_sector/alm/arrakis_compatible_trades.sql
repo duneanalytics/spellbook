@@ -223,6 +223,13 @@ WITH arrakis_vaults AS
             , lag(cast(sqrtPriceX96 as double), 1) over (partition by contract_address order by evt_block_number, evt_index) / pow(2,96) as prev_sqrt_price
             , cast(sqrtPriceX96 as double) / pow(2,96) as sqrt_price
             , abs(cast(amount1 as double)) as volume1
+        FROM {{ Pair_evt_Swap }} AS s
+        INNER JOIN arrakis_vaults AS a
+            ON a.creation_time <= s.evt_block_time AND a.pool_address = s.contract_address
+        {% if is_incremental() %}
+        WHERE
+            {{ incremental_predicate('s.evt_block_time') }}
+        {% endif %}
     ) AS s ON s.block_time = lp.block_time AND s.pool_address = lp.pool_address
     -- overlapping ranges only
     where sqrt(lp.pa) <= (case when s.sqrt_price > s.prev_sqrt_price then s.sqrt_price else s.prev_sqrt_price end)
