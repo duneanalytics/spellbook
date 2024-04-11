@@ -5,15 +5,15 @@ models:
     tests:
       - check_dex_info_relationship
 
-  - name: arrakis_v2_ethereum_base_trades
+  - name: arrakis_finance_ethereum_base_trades
     meta:
       blockchain: ethereum
       sector: alm
-      project: arrakis
+      project: arrakis_finance
       contributors: 0xrusowsky
     config:
-      tags: [ 'ethereum', 'alm', 'arrakis', 'dex', 'trades' ]
-    description: "arrakis finance ethereum v2 base trades"
+      tags: [ 'ethereum', 'alm', 'arrakis', 'arrakis_finance', 'trades' ]
+    description: "arrakis finance ethereum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

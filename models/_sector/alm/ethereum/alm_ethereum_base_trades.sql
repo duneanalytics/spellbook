@@ -6,7 +6,7 @@
 }}
 
 {% set base_models = [
-    ref('arrakis_v2_ethereum_base_trades')
+    ref('arrakis_finance_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (
