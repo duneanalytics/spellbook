@@ -23,8 +23,9 @@
     , ref('dex_polygon_base_trades')
     , ref('dex_zksync_base_trades')
     , ref('dex_scroll_base_trades')
+    , ref('dex_zora_base_trades')
 ] %}
-
+ 
 with base_union as (
     SELECT *
     FROM
