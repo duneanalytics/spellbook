@@ -1,16 +1,14 @@
 {{ config(
     schema = 'tokens_ethereum',
-    alias = 'base_transfers',
+    alias = 'base_transfers_append',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date','unique_key'],
+    incremental_strategy = 'append'
     )
 }}
 
-{{transfers_base(
+{{transfers_base_append(
     blockchain='ethereum',
     traces = source('ethereum','traces'),
     transactions = source('ethereum','transactions'),

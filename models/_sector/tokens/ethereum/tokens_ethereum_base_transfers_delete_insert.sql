@@ -1,16 +1,15 @@
 {{ config(
     schema = 'tokens_ethereum',
-    alias = 'base_transfers',
+    alias = 'base_transfers_delete_insert',
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    incremental_strategy = 'delete+insert',
     unique_key = ['block_date','unique_key'],
     )
 }}
 
-{{transfers_base(
+{{transfers_base_delete_insert(
     blockchain='ethereum',
     traces = source('ethereum','traces'),
     transactions = source('ethereum','transactions'),

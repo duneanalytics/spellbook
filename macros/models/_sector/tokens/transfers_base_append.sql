@@ -1,4 +1,4 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
+{% macro transfers_base_append(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 
 WITH transfers AS (
@@ -89,4 +89,13 @@ INNER JOIN {{ transactions }} tx ON
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
     and tx.block_time >= date '2024-01-01'
+
+
+{% if is_incremental() %}
+LEFT JOIN {{ this }} as tgt
+    ON tgt.block_date = t.block_date
+    AND tgt.unique_key = {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(t.trace_address, ',')"])}}
+WHERE tgt.unique_key IS NULL
+{% endif %}
+
 {% endmacro %}
