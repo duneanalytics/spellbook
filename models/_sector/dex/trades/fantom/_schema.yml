@@ -1,0 +1,188 @@
+version: 2
+
+models:
+  - name: dex_fantom_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: sushiswap_v1_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'sushiswap', 'v1']
+    description: "Sushiswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_fantom_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: sushiswap_v2_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: sushiswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'sushiswap', 'v2']
+    description: "Sushiswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_fantom_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: spiritswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spiritswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spiritswap', 'uniswap', 'v2']
+    description: "Spiritswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spiritswap_fantom_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: spookyswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spookyswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spookyswap', 'uniswap', 'v2']
+    description: "Spookyswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spookyswap_fantom_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: wigoswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: wigoswap
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'wigoswap', 'uniswap', 'v2']
+    description: "Wigoswap fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wigoswap_fantom_base_trades_seed')
+
+  - name: equalizer_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: equalizer
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'equalizer', 'uniswap', 'v2']
+    description: "Equalizer fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('equalizer_fantom_base_trades_seed')
+
+  - name: spartacus_exchange_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: spartacus_exchange
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'spartacus_exchange', 'uniswap', 'v2']
+    description: "spartacus_exchange fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spartacus_exchange_fantom_base_trades_seed')
+
+  - name: openocean_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'fantom', 'dex', 'trades', 'openocean' ]
+    description: "openocean fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_fantom_base_trades_seed')
+
+
+  - name: beethoven_x_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: beethoven_x
+      contributors: msilb7, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'beethoven_x']
+    description: "beethoven_x fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beethoven_x_fantom_base_trades_seed')
+
+
+  - name: curvefi_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: curvefi
+      contributors: Henrystats, 0xRob, tomfutago
+    config:
+      tags: ['fantom', 'dex', 'trades', 'curvefi']
+    description: "Curvefi fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('curvefi_fantom_base_trades_seed')

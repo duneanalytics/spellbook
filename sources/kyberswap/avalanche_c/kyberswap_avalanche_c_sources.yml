@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: kyber_avalanche_c
+    description: "Avalanche (C-Chain) decoded tables related to Kyberswap contract"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: AggregationRouter_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: MetaAggregationRouter_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: MetaAggregationRouterV2_evt_Swapped
+        loaded_at_field: evt_block_time

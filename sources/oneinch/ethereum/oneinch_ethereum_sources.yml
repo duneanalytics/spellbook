@@ -1,0 +1,191 @@
+version: 2
+
+sources:
+  - name: oneinch_ethereum
+    description: "decoded events and function calls for 1inch on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: ExchangeV1_call_aggregate
+        loaded_at_field: call_block_time
+      - name: ExchangeV2_call_aggregate
+        loaded_at_field: call_block_time
+      - name: ExchangeV3_call_aggregate
+        loaded_at_field: call_block_time
+      - name: ExchangeV4_call_aggregate
+        loaded_at_field: call_block_time
+      - name: ExchangeV5_call_aggregate
+        loaded_at_field: call_block_time
+      - name: ExchangeV6_call_aggregate
+        loaded_at_field: call_block_time
+      - name: ExchangeV7_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV1_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV2_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV2_call_discountedSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV2_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: AggregationRouterV3_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: AggregationRouterV3_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV3_call_discountedSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV3_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV3_call_unoswapWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_unoswapWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_discountedSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_uniswapV3Swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_uniswapV3SwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_uniswapV3SwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_clipperSwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV4_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3Swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQCompact
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV1_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV1_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV2_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV2_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV2_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV2_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV2_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: LimitOrderProtocolV2_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: MerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time
+      - name: FusionWhitelistRegistryV1_evt_Registered
+        loaded_at_field: evt_block_time
+      - name: FusionWhitelistRegistryV1_evt_Unregistered
+        loaded_at_field: evt_block_time
+      - name: FusionWhitelistRegistryV1_evt_Promotion
+        loaded_at_field: evt_block_time
+      - name: FusionWhitelistRegistryV2_evt_Registered
+        loaded_at_field: evt_block_time
+      - name: FusionWhitelistRegistryV2_evt_Unregistered
+        loaded_at_field: evt_block_time
+      - name: FusionWhitelistRegistryV2_evt_Promotion
+        loaded_at_field: evt_block_time
+      - name: AggregationRouterV6_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillOrderArgs
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillContractOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillContractOrderArgs
+        loaded_at_field: call_block_time
+      
+
+  - name: onesplit_ethereum
+    description: "decoded events and function calls for onesplit on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneSplit_call_swap
+        loaded_at_field: call_block_time
+      - name: OneSplit_call_goodSwap
+        loaded_at_field: call_block_time
+
+
+  - name: oneproto_ethereum
+    description: "decoded events and function calls for oneproto on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: OneSplitAudit_evt_Swapped
+        loaded_at_field: evt_block_time

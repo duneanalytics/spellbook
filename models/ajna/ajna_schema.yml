@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: ajna_erc20_pools
+    meta:
+      blockchain: arbitrum, base, ethereum, optimism, polygon
+      project: ajna
+      contributors: [gunboats]
+    config:
+      tag: ['ajna', 'cross-chain', 'borrowing', 'lending']
+      description: 'All deployed ERC-20 pools across all chains on Ajna'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain that the pool is deployed"
+      - &version
+        name: version
+        description: "Version of deployed pools (6 for original L1, 9 for griefing vector fix, 10 for L2 burn fix)"
+      - &collateral
+        name: collateral
+        description: "Collateral token address"
+      - &quote
+        name: quote
+        description: "Quote token address"
+      - &pool_address
+        name: pool_address
+        description: "Pool address"
+      - &name
+        name: name
+        description: "Name of pool in format of blockchain-version-collateral/quote-6 character of pool address"
+      - &collateral_symbol
+        name: collateral_symbol
+        description: "Symbol of collateral"
+      - &quote_symbol
+        name: quote_symbol
+        description: "Symbol of quote"
+      - &starting_interest_rate
+        name: starting_interest_rate
+        description: Initial interest rate set by deployer
+      - &tx_hash
+        name: tx_hash
+        description: TX hash of deployment
+      - &block_time
+        name: block_time
+        description: Time of deployment
+      - &block_number
+        name: block_number
+        description: Block number that pool was deployed

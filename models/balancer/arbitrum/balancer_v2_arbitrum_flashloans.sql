@@ -25,14 +25,14 @@ WITH flashloans AS (
     , erc20.decimals AS currency_decimals
     , f.contract_address
     FROM {{ source('balancer_v2_arbitrum','Vault_evt_FlashLoan') }} f
-    LEFT JOIN {{ ref('tokens_arbitrum_erc20') }} erc20 ON f.token = erc20.contract_address
+    LEFT JOIN {{ source('tokens_arbitrum', 'erc20') }} erc20 ON f.token = erc20.contract_address
         {% if is_incremental() %}
         WHERE f.evt_block_time >= date_trunc('day', now() - interval '7' Day)
         {% endif %}
     )
 
 SELECT 'arbitrum' AS blockchain
-, 'Balancer' AS project
+, 'balancer' AS project
 , '2' AS version
 , CAST(date_trunc('Month', flash.block_time) as date) as block_month
 , flash.block_time

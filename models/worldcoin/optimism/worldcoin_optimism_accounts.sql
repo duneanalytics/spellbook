@@ -16,7 +16,7 @@ SELECT
     created_tx_from AS worldcoin_deployer_address,
     contract_address AS account_address,
     created_time,
-    creation_tx_hash,
+    created_tx_hash,
     created_block_number,
     contract_project,
     contract_name,

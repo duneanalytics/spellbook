@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: aave_v2_avalanche_c
+    tables:
+      - name: LendingPool_evt_FlashLoan
+
+  - name: aave_v3_avalanche_c
+    tables:
+      - name: Pool_evt_FlashLoan
+
+  - name: the_granary_avalanche_c
+    tables:
+      - name: LendingPool_evt_FlashLoan

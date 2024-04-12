@@ -1,0 +1,170 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_base
+  - name: sushiswap_base
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: sushiswap_v3_base
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+  - name: aerodrome_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: PoolFactory_evt_PoolCreated
+  - name: pancakeswap_v2_base
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_base
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: balancer_v2_base
+    tables:
+      - name: Vault_evt_Swap
+  - name: dodo_base
+    tables:
+      - name: DPPOracle_evt_DODOSwap
+  - name: maverick_v1_base
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
+  - name: smardex_base
+    tables:
+      - name: SmardexPair_evt_Swap
+      - name: SmardexFactory_evt_PairCreated
+  - name: dackieswap_base
+    tables:
+      - name: DackieV3Pool_evt_Swap
+      - name: DackieV3Factory_evt_PoolCreated
+  - name: baseswap_base
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: scale_base
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: woofi_base
+    tables:
+      - name: WooPPV2_evt_WooSwap
+  - name: basevelocimeter_base
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: moonbase_base
+    tables:
+      - name: UniswapFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: horizondex_base
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: plantbaseswap_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: sobal_base
+    tables:
+      - name: Vault_evt_Swap
+  - name: derpdex_base
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: Pair_evt_Swap
+  - name: torus_base
+    tables:
+      - name: TorusFactory_evt_PairCreated
+      - name: TorusPair_evt_Swap
+  - name: throne_exchange_base
+    tables:
+      - name: ThroneV2Factory_evt_PairCreated
+      - name: ThroneV2Pair_evt_Swap  
+      - name: ThroneV3Factory_evt_PoolCreated
+      - name: ThroneV3Pool_evt_Swap  
+  - name: sharkswap_base
+    tables:
+      - name: SharkswapFactory_evt_PairCreated
+      - name: SharkswapPair_evt_Swap
+  - name: citadelswap_base
+    tables:
+      - name: CitadelFactory_evt_PairCreated
+      - name: CitadelPair_evt_Swap
+  - name: autotronic_base
+    tables:
+      - name: AutotronicFactory_evt_PairCreated
+      - name: AutotronicPair_evt_Swap
+  - name: soswap_base
+    tables:
+      - name: RaiFactory_evt_PairCreated
+      - name: RaiPair_evt_Swap
+  - name: elk_finance_base
+    tables:
+      - name: ElkFactory_evt_PairCreated
+      - name: ElkPair_evt_Swap
+  - name: oasisswap_base
+    tables:
+      - name: OasisSwapFactory_evt_PairCreated
+      - name: OasisSwapPair_evt_Swap
+  - name: leetswap_v2_base
+    tables:
+      - name: LeetSwapV2Factory_evt_PairCreated
+      - name: LeetSwapV2Pair_evt_Swap
+  - name: wombat_exchange_base
+    tables:
+      - name: CrossChainPool_evt_SwapV2
+  - name: openocean_v2_base
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
+  - name: rocketswap_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: icecreamswap_base
+    tables:
+      - name: IceCreamSwapFactory_evt_PairCreated
+      - name: pool_evt_Swap
+  - name: alienbase_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: swapbased_base
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: gridex_base
+    tables:
+      - name: GridFactory_evt_GridCreated
+      - name: pool_evt_Swap
+  - name: synthswap_base
+    tables:
+      - name: SynthFactory_evt_PairCreated
+  - name: synth_base
+    tables:
+      - name: SynthPair_evt_Swap
+  - name: solidly__base
+    tables:
+      - name: factory_evt_PoolCreated
+      - name: pool_evt_Swap
+  - name: energon_base
+    tables:
+      - name: EnergonDexFactory_evt_PairCreated
+      - name: EnergonDexPair_evt_Swap
+  - name: volt_base
+    tables:
+      - name: factory_evt_PairCreated
+      - name: pool_evt_Swap
+  - name: crescent_base
+    tables:
+      - name: factory_evt_PoolCreated
+      - name: pool_evt_Swap
+  - name: baso_finance_base
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: basex_base
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated

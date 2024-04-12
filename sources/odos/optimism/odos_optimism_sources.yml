@@ -1,0 +1,20 @@
+version: 2
+
+sources: 
+  - name: odos_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on odos
+    tables:
+      - name: OdosRouter_evt_Swapped
+        loaded_at_field: evt_block_time
+  
+  - name: odos_v2_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on odos_v2
+    tables:
+      - name: OdosRouterV2_evt_Swap
+        loaded_at_field: evt_block_time

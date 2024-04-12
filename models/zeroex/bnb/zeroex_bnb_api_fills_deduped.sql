@@ -65,9 +65,9 @@ AS
 SELECT  a.blockchain
       , '0x API'  as project
       , cast(null as varchar) as version
-      , a.block_time
       , a.block_date
       , a.block_month
+      , a.block_time
       , b.taker_symbol AS taker_symbol
       , b.maker_symbol AS maker_symbol
       , CASE WHEN lower(b.taker_symbol) > lower(b.maker_symbol) THEN concat(b.maker_symbol, '-', b.taker_symbol) ELSE concat(b.taker_symbol, '-', b.maker_symbol) END AS token_pair

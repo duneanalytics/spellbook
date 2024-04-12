@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'etv_keeper_work'
+    schema = 'keep3r_network'
+    , alias = 'keeper_work'
     , post_hook = '{{ expose_spells(\'["ethereum", "optimism", "polygon"]\',
                                 "project", 
                                 "keep3r",
@@ -26,7 +27,16 @@
       ) }}
     UNION
     SELECT
-      *,
+      contract_address,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number,
+      _credit,
+      _gasLeft,
+      _job,
+      _keeper,
+      _payment,
       'ethereum' as blockchain
     FROM
       {{ source(
@@ -35,7 +45,16 @@
       ) }}
       UNION
     SELECT
-      *,
+      contract_address,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number,
+      _credit,
+      _gasLeft,
+      _job,
+      _keeper,
+      _payment,
       'optimism' as blockchain
     FROM
       {{ source(
@@ -44,7 +63,16 @@
       ) }}
       UNION
     SELECT
-      *,
+      contract_address,
+      evt_tx_hash,
+      evt_index,
+      evt_block_time,
+      evt_block_number,
+      _credit,
+      _gasLeft,
+      _job,
+      _keeper,
+      _payment,
       'polygon' as blockchain
     FROM
       {{ source(

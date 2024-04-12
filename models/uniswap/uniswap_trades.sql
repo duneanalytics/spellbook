@@ -1,9 +1,9 @@
 {{ config(
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "bnb", "base", "celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "bnb", "base", "celo", "avalanche_c"]\',
                                 "project",
                                 "uniswap",
-                                \'["jeff-dude","mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago"]\') }}'
+                                \'["jeff-dude", "mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago", "phu"]\') }}'
         )
 }}
 
@@ -15,6 +15,7 @@ ref('uniswap_ethereum_trades')
 , ref('uniswap_bnb_trades')
 , ref('uniswap_base_trades')
 , ref('uniswap_celo_trades')
+, ref('uniswap_avalanche_c_trades')
 ] %}
 
 

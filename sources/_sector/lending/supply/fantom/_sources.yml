@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: aave_v3_fantom
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+      - name: Pool_evt_RedeemUnderlying
+
+  - name: the_granary_fantom
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

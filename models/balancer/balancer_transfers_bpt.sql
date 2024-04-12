@@ -1,11 +1,10 @@
 {{ config(
     schema = 'balancer',
-    
     alias = 'transfers_bpt',
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
                                 "project",
                                 "balancer",
-                                \'["thetroyharris", "victorstefenon"]\') }}'
+                                \'["thetroyharris", "victorstefenon", "viniabussafi"]\') }}'
     )
 }}
 
@@ -19,12 +18,12 @@
     ref('balancer_v2_polygon_transfers_bpt')
 ] %}
 
-
 SELECT *
 FROM (
     {% for model in balancer_models %}
     SELECT
         blockchain
+      , version    
       , contract_address
       , block_date
       , evt_tx_hash

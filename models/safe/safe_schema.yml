@@ -3,11 +3,11 @@ version: 2
 models:
   - name: safe_safes_all
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, goerli, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, goerli, optimism, polygon, zksync
       project: safe
-      contributors: tschubotz, danielpartida
+      contributors: tschubotz, danielpartida, kryptaki
     config:
-      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe']
+      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe','zksync']
     description: >
         Lists all Safes across chains.
     columns:
@@ -29,3 +29,102 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Tx hash of Safe creation"
+
+  - name: safe_transactions_all
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, goerli, optimism, polygon, zksync
+      project: safe
+      contributors: kryptaki
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe', 'zksync']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - &block_month
+        name: block_month
+      - &block_time
+        name: block_time
+        description: "Datetime of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas 
+        description: "Gas limit set for transaction"
+      - &gas_used
+        name: gas_used
+        description: "Gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
+
+  - name: safe_native_transfers_all
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, goerli, optimism, polygon, zksync
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'bnb', 'celo','ethereum', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe', 'zksync']
+    description: "Native gas token transfers into or out of Safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - *block_month
+      - *block_time
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred ETH"
+      - *tx_hash
+      - *trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"

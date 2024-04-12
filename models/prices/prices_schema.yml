@@ -3,9 +3,9 @@ version: 2
 models:
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora
       sector: prices
-      contributors: aalan3
+      contributors: aalan3, hildobby
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
@@ -28,7 +28,7 @@ models:
 
   - name: prices_native_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora
       sector: prices
       contributors: aalan3, jeff-dude
     config:
@@ -108,3 +108,59 @@ models:
       - name: price
         description: "USD price of a token"
         test: not_null
+
+  - name: prices_trusted_tokens
+    meta:
+      sector: prices
+      contributors: hosuke
+    config:
+      tags: [ 'prices', 'stability' ]
+    description: "List of trusted tokens across blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: contract_address
+        description: "Contract address of the token"
+
+  - name: prices_usd_daily
+    meta:
+      sector: prices
+      contributors: aalan3
+    config:
+      tags: ['prices', 'usd', 'daily']
+    description: "Daily aggregated prices table across blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - contract_address
+            - symbol
+    columns:
+      - name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "daily average USD price of a token"
+      - name: price_open
+        description: "daily opening USD price of a token"
+      - name: price_high
+        description: "daily maximum USD price of a token"
+      - name: price_low
+        description: "daily minimum USD price of a token"
+      - name: price_close
+        description: "daily closing USD price of a token"

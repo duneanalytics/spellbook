@@ -1,1060 +1,164 @@
 version: 2
 
 models:
-  - name: oneinch_v1_ethereum_trades
+  - name: oneinch_ethereum_lop
     meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
+      blockchain: ['ethereum']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['ethereum','oneinch', 'v1', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
+      tags: ['oneinch', 'lop', 'calls']
+    description: >
+        1inch limit order protocol calls
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - blockchain
-            - project
-            - version
             - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 1
+            - call_trace_address
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the aggregator project is deployed"
-      - &project
-        name: project
-        description: "Name of the aggregator project"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the project"
-      - &block_date
-        name: block_date
-        description: "UTC event block date of the trade"
-      - &block_time
-        name: block_time
-        description: "UTC event block time of the trade"
-      - &token_bought_symbol
-        name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
-      - &token_sold_symbol
-        name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
-      - &token_pair
-        name: token_pair
-        description: "Token symbol pair for each token involved in the trade"
-      - &token_bought_amount
-        name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
-      - &token_sold_amount
-        name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
-      - &token_bought_amount_raw
-        name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
-      - &token_sold_amount_raw
-        name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
-      - &amount_usd
-        name: amount_usd
-        description: "USD value of the trade at time of execution"
-      - &token_bought_address
-        name: token_bought_address
-        description: "Contract address of the token bought"
-      - &token_sold_address
-        name: token_sold_address
-        description: "Contract address of the token sold"
-      - &taker
-        name: taker
-        description: "Address of trader who purchased a token"
-      - &maker
-        name: maker
-        description: "Address of trader who sold a token"
-      - &project_contract_address
-        name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
-      - &tx_hash
-        name: tx_hash
-        description: "Transaction hash of the trade's settlement"
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-        #description: "" todo: what to use here?
-      - &evt_index
-        name: evt_index
-        description: "Index of the corresponding trade event"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of the trade"
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: maker
+      - name: receiver
+      - name: maker_asset
+      - name: making_amount
+      - name: taker_asset
+      - name: taking_amount
+      - name: order_hash
+      - name: flags
+      - name: remains
+      - name: minute
+      - name: block_month
 
-  - name: oneinch_v2_ethereum_trades
+  - name: oneinch_ethereum_ar
     meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
+      blockchain: ['ethereum']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['ethereum','oneinch', 'v2', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
+      tags: ['oneinch', 'ar', 'calls']
+    description: >
+        1inch aggregation router calls
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - blockchain
-            - project
-            - version
             - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 2
+            - call_trace_address
     columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: src_receiver
+      - name: dst_receiver
+      - name: src_token_address
+      - name: dst_token_address
+      - name: src_token_amount
+      - name: dst_token_amount
+      - name: dst_token_amount_min
+      - name: flags
+      - name: pools
+      - name: router_type
+      - name: remains
+      - name: minute
+      - name: block_month
 
-  - name: oneinch_v3_ethereum_trades
+  - name: oneinch_ethereum_call_transfers
     meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
+      blockchain: ['ethereum']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['ethereum','oneinch', 'v3', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
+      tags: ['oneinch', 'calls']
+    description: >
+        1inch transfers within calls
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
             - blockchain
-            - project
-            - version
             - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 3
+            - call_trace_address
+            - transfer_trace_address
+            - transfer_native
     columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_v4_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'v4', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 4
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_v5_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'v5', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 5
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_onesplit_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'onesplit', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 1split
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_oneproto_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'oneproto', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 1proto
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_zeroex_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', '0x', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: ZRX
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_unoswap_v3_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'unoswap', 'unoswap_v3', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_unoswap_v4_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'unoswap', 'unoswap_v4', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 'UNI v2'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_unoswap_v5_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'unoswap', 'unoswap_v5', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_uniswap_v3_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'uniswap', 'uniswap_v3', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 'UNI v3'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_clipper_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'clipper', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch
-          version: 'Clipper v1'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_v1_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'v1', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: '1'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_v2_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'v2', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: '2'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_v3_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'v3', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: '3'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_embedded_rfq_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'eRFQ v1', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: 'eRFQ v1'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_rfq_v1_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'RFQ v1', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: 'RFQ v1'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_rfq_v2_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'RFQ v2', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: 'RFQ v2'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_limit_order_protocol_rfq_v3_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'limit_order_protocol', 'RFQ v3', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: ethereum
-          project: 1inch Limit Order Protocol
-          version: 'RFQ v3'
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
-
-  - name: oneinch_ethereum_trades
-    meta:
-      blockchain: ethereum
-      project: oneinch
-      contributors: [jeff-dude, dsalv, k06a]
-    config:
-      tags: ['ethereum','oneinch', 'trades', 'dex', 'aggregator']
-    description: > #todo: find a viable description to put here
-        1inch aggregator trades on the Ethereum mainnet
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *trace_address
-      - *evt_index
-      - *block_month
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: transfer_trace_address
+        tests:
+          - not_null
+      - name: contract_address
+      - name: amount
+      - name: transfer_native
+      - name: transfer_from
+      - name: transfer_to
+      - name: transfers_between_players
+      - name: minute
+      - name: block_month
 
   - name: oneinch_ethereum_airdrop_claims
     meta:
@@ -1072,143 +176,31 @@ models:
             - recipient
             - evt_index
     columns:
-      - *blockchain
-      - *block_time
-      - &block_number
-        name: block_number
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_time
+      - name: block_number
         description: "Block number of transaction"
-      - *project
-      - &airdrop_number
-        name: airdrop_number
+      - name: project
+        description: "Project name"
+      - name: airdrop_number
         description: "Airdrop identifier number"
-      - &recipient
-        name: recipient
+      - name: recipient
         description: "Airdrop recipient"
-      - &contract_address
-        name: contract_address
+      - name: contract_address
         description: "Contract addressed used"
-      - *tx_hash
+      - name: tx_hash
+        description: "Transaction hash"
       - name: amount_raw
         description: "Raw amount of tokens"
       - name: amount_original
         description: "Original amount of tokens"
       - name: amount_usd
         description: "USD value of tokens"
-      - &token_address
-        name: token_address
+      - name: token_address
         description: "Token address"
-      - &token_symbol
-        name: token_symbol
+      - name: token_symbol
         description: "Token symbol"
-      - *evt_index
-
-
-  - name: oneinch_ethereum_calls_transfers
-    meta:
-      blockchain: ['ethereum']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        oneinch ethereum calls & transfers
-
-    columns:
-      - &blockchain_not_null
-        name: blockchain
-        tests:
-          - not_null
-      - *block_time
-      - &tx_hash_not_null
-        name: tx_hash
-        tests:
-          - not_null
-      - *tx_from
-      - *tx_to
-      - &tx_success
-        name: tx_success
-      - &call_success
-        name: call_success
-      - &call_trace_address
-        name: call_trace_address
-      - &call_from
-        name: call_from
-      - &call_to
-        name: call_to
-      - &call_selector
-        name: call_selector
-      - &protocol
-        name: protocol
-      - &transfer_trace_address
-        name: transfer_trace_address
-      - *contract_address
-      - &amount
-        name: amount
-      - &native_token
-        name: native_token
-      - &transfer_from
-        name: transfer_from
-      - &transfer_to
-        name: transfer_to
-      - &transfers_between_players
-        name: transfers_between_players
-      - &rn_tta_asc
-        name: rn_tta_asc
-      - &rn_tta_desc
-        name: rn_tta_desc
-      - &call_output
-        name: call_output
-      - &call_input
-        name: call_input
-      - &minute
-        name: minute
-      - &block_month_not_null
-        name: block_month
-        tests:
-          - not_null
-      - &unique_call_transfer_id
-        name: unique_call_transfer_id
-        tests:
-          - unique
-          - not_null
-
-
-
-
-
-
-  - name: oneinch_ethereum_ar_calls_transfers
-    meta:
-      blockchain: ['ethereum']
-      sector: oneinch
-      contributors: ['grkhr']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        oneinch ethereum calls & transfers
-    columns:
-      - *blockchain
-      - *block_time
-      - *tx_hash
-      - *tx_from
-      - *tx_success
-      - *call_success
-      - *call_trace_address
-      - &caller
-        name: caller
-      - *call_selector
-      - *transfer_trace_address
-      - *contract_address
-      - *amount
-      - *native_token
-      - *transfer_from
-      - *transfer_to
-      - &rn_ta_asc
-        name: rn_ta_asc
-      - &rn_ta_desc
-        name: rn_ta_desc
-      - *call_output
-      - *call_input
-      - *minute
-      - *block_month
-      - *unique_call_transfer_id
+      - name: evt_index
+        description: "Event index"

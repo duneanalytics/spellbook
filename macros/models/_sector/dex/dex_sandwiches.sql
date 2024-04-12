@@ -1,56 +1,81 @@
 {% macro dex_sandwiches(blockchain, transactions) %}
 
-SELECT distinct s1.blockchain
-, s1.project
-, s1.version
-, s1.block_time
-, CAST(date_trunc('month', s1.block_time) AS date) AS block_month
-, tx1.block_number
-, s1.token_sold_address
-, s1.token_bought_address
-, s1.token_sold_symbol
-, s1.token_bought_symbol
-, s1.maker
-, s1.taker
-, s1.tx_hash
-, s1.tx_from
-, s1.tx_to
-, s1.project_contract_address
-, s1.token_pair
-, tx1.index
-, s1.token_sold_amount_raw
-, s1.token_bought_amount_raw
-, s1.token_sold_amount
-, s1.token_bought_amount
-, s1.amount_usd
-, s1.evt_index
---, CASE WHEN s1.tx_from=s2.tx_from THEN 'tx_from' ELSE 'taker' END AS commonality
---, CASE WHEN s1.token_bought_address=s2.token_sold_address THEN 'token_sold' ELSE 'token_bought' END AS sandwiched_token
---, CASE WHEN s1.token_bought_address<s1.token_sold_address THEN 0 ELSE 1 END AS token_order
-FROM {{ ref('dex_trades') }} s1
-INNER JOIN {{ ref('dex_trades') }} s2 ON s1.blockchain='{{blockchain}}'
-    AND s2.blockchain='{{blockchain}}'
-    AND s1.block_time=s2.block_time
-    AND s1.project=s2.project
-    AND s1.version=s2.version
-    AND s1.tx_hash!=s2.tx_hash
-    AND s1.project_contract_address=s2.project_contract_address
+-- Checking that each frontrun trade has a matching backrun and at least one victim in between
+WITH indexed_sandwich_trades AS (
+    SELECT DISTINCT front.block_time
+    , t.tx_hash_all AS tx_hash
+    , front.project
+    , front.version
+    , front.project_contract_address
+    , t.evt_index_all AS evt_index
+    FROM {{ ref('dex_trades') }} front
+    INNER JOIN {{ ref('dex_trades') }} back ON back.blockchain='{{blockchain}}'
+        AND front.block_time=back.block_time
+        AND front.project_contract_address=back.project_contract_address
+        AND front.tx_from=back.tx_from
+        AND front.tx_hash!=back.tx_hash
+        AND front.token_sold_address=back.token_bought_address
+        AND front.token_bought_address=back.token_sold_address
+        AND front.evt_index + 1 < back.evt_index
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('back.block_time') }}
+        {% endif %}
+    INNER JOIN {{ ref('dex_trades') }} victim ON victim.blockchain='{{blockchain}}'
+        AND front.block_time=victim.block_time
+        AND front.project_contract_address=victim.project_contract_address
+        AND front.tx_from!=victim.tx_from
+        AND front.token_bought_address=victim.token_bought_address
+        AND front.token_sold_address=victim.token_sold_address
+        AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('victim.block_time') }}
+        {% endif %}
+    CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
+    WHERE front.blockchain='{{blockchain}}'
     {% if is_incremental() %}
-    AND s1.block_time >= date_trunc('day', now() - interval '7' day)
-    AND s2.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('front.block_time') }}
     {% endif %}
-INNER JOIN {{transactions}} tx1 ON tx1.block_time=s1.block_time
-    AND tx1.hash=s1.tx_hash
+    )
+
+-- Joining back with dex.trades to get the rest of the data & adding block_number and tx_index to the mix
+SELECT dt.blockchain
+, dt.project
+, dt.version
+, dt.block_time
+, dt.block_month
+, tx.block_number
+, dt.token_sold_address
+, dt.token_bought_address
+, dt.token_sold_symbol
+, dt.token_bought_symbol
+, dt.maker
+, dt.taker
+, dt.tx_hash
+, dt.tx_from
+, dt.tx_to
+, dt.project_contract_address
+, dt.token_pair
+, tx.index AS tx_index
+, dt.token_sold_amount_raw
+, dt.token_bought_amount_raw
+, dt.token_sold_amount
+, dt.token_bought_amount
+, dt.amount_usd
+, dt.evt_index
+FROM {{ ref('dex_trades') }} dt
+INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
+    AND dt.tx_hash=s.tx_hash
+    AND dt.project_contract_address=s.project_contract_address
+    AND dt.evt_index=s.evt_index
+-- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
+INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
+    AND tx.hash=s.tx_hash
     {% if is_incremental() %}
-    AND tx1.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
-INNER JOIN {{transactions}} tx2 ON tx2.block_time=s2.block_time
-    AND tx2.hash=s2.tx_hash
-    AND (s1.tx_from=s2.tx_from OR s1.taker=s2.taker)
-    AND ((tx1.index>tx2.index AND s1.token_bought_address=s2.token_sold_address)
-        OR (tx1.index<tx2.index AND s1.token_sold_address=s2.token_bought_address))
-    {% if is_incremental() %}
-    AND tx2.block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+WHERE dt.blockchain='{{blockchain}}'
+{% if is_incremental() %}
+AND {{ incremental_predicate('dt.block_time') }}
+{% endif %}
 
 {% endmacro %}

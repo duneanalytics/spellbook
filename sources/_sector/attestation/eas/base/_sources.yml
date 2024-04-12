@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: attestationstation_v1_base
+    tables:
+      - name: SchemaRegistry_evt_Registered
+      - name: SchemaRegistry_call_register
+      - name: EAS_evt_Attested
+      - name: EAS_call_attest
+      - name: EAS_evt_Revoked

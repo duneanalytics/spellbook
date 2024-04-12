@@ -1,0 +1,81 @@
+version: 2
+
+sources:
+  - name: oneinch_base
+    description: "decoded events and function calls for 1inch on ethereum"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: AggregationRouterV5_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_unoswapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3Swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_uniswapV3SwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_clipperSwapToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQ
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV5_call_fillOrderRFQCompact
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_swap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_clipperSwap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_clipperSwapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswap3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_unoswapTo3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswap3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo2
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_ethUnoswapTo3
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillOrderArgs
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillContractOrder
+        loaded_at_field: call_block_time
+      - name: AggregationRouterV6_call_fillContractOrderArgs
+        loaded_at_field: call_block_time

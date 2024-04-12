@@ -1,0 +1,69 @@
+version: 2
+
+sources:
+  - name: aave_v3_arbitrum
+    tables:
+      - name: L2Pool_evt_Supply
+      - name: L2Pool_evt_Withdraw
+
+  - name: compound_v3_arbitrum
+    tables:
+      - name: Comet_evt_SupplyCollateral
+      - name: cUSDCv3Native_evt_SupplyCollateral
+      - name: Comet_evt_WithdrawCollateral
+      - name: cUSDCv3Native_evt_WithdrawCollateral
+      - name: Comet_evt_AbsorbCollateral
+      - name: cUSDCv3Native_evt_AbsorbCollateral
+
+  - name: radiant_capital_arbitrum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+
+  - name: lodestar_arbitrum
+    tables:
+      - name: lETH_V2_evt_Mint
+      - name: lETH_V2_evt_Redeem
+      - name: lWBTC_V2_evt_Mint
+      - name: lWBTC_V2_evt_Redeem
+      - name: lUSDC_V2_evt_Mint
+      - name: lUSDC_V2_evt_Redeem
+      - name: lUSDT_V2_evt_Mint
+      - name: lUSDT_V2_evt_Redeem
+      - name: lMAGIC_V2_evt_Mint
+      - name: lMAGIC_V2_evt_Redeem
+      - name: lARB_V2_evt_Mint
+      - name: lARB_V2_evt_Redeem
+      - name: lDAI_V2_evt_Mint
+      - name: lDAI_V2_evt_Redeem
+      - name: lFRAX_V2_evt_Mint
+      - name: lFRAX_V2_evt_Redeem
+      - name: lDPX_V2_evt_Mint
+      - name: lDPX_V2_evt_Redeem
+      - name: lETH_V3_evt_Mint
+      - name: lETH_V3_evt_Redeem
+      - name: lWBTC_V3_evt_Mint
+      - name: lWBTC_V3_evt_Redeem
+      - name: lUSDC_V3_evt_Mint
+      - name: lUSDC_V3_evt_Redeem
+      - name: lUSDT_V3_evt_Mint
+      - name: lUSDT_V3_evt_Redeem
+      - name: lMAGIC_V3_evt_Mint
+      - name: lMAGIC_V3_evt_Redeem
+      - name: lARB_V3_evt_Mint
+      - name: lARB_V3_evt_Redeem
+      - name: lDAI_V3_evt_Mint
+      - name: lDAI_V3_evt_Redeem
+      - name: lFRAX_V3_evt_Mint
+      - name: lFRAX_V3_evt_Redeem
+      - name: lDPX_V3_evt_Mint
+      - name: lDPX_V3_evt_Redeem
+      - name: lwstETH_evt_Mint
+      - name: lwstETH_evt_Redeem
+      - name: lGMX_evt_Mint
+      - name: lGMX_evt_Redeem
+
+  - name: the_granary_arbitrum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

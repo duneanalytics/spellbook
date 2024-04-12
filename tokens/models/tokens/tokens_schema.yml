@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: tokens_erc20
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, fantom, polygon, base
+      sector: tokens
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy
+    config:
+      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism', 'fantom', 'base']
+    description: >
+        Crosschain ERC20 tokens
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: contract_address
+        description: "ERC20 Token's contract address"
+      - name: symbol
+        description: "ERC20 Token's symbol"
+      - name: decimals
+        description: "ERC20 Token's number of decimals"
+
+
+  - name: tokens_native
+    meta:
+      blockchain: avalanche_c, bnb, ethereum, gnosis, optimism, ethereum, arbitrum, solana, fantom
+      sector: tokens
+      contributors: ilemi
+    config:
+      tags: ['tokens','native', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism','ethereum','solana','arbitrum', 'fantom']
+    description: >
+        The chain native token and symbol, and the prices.usd symbol/address that is closest.
+    columns:
+      - name: chain
+        description: "the chain, as it's named in Dune"
+      - name: symbol
+        description: "Token's symbol"
+      - name: price_symbol
+        description: "Token's prices.usd symbol"
+      - name: price_address
+        description: "Token's prices.usd contract address"
+      - name: decimals
+        description: "Token's number of decimals"

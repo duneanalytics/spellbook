@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: tokens_zora_nft_curated
+    meta:
+      blockchain: zora
+      sector: nft
+      contributors: msilb7, dot2dotseurat
+    config:
+      tags: ['tokens', 'zora', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+
+  - name: tokens_zora_nft
+    meta:
+      blockchain: zora
+      sector: nft
+      contributors: msilb7, dot2dotseurat
+    config:
+      tags: [ 'tokens', 'zora', 'nft', 'erc721', 'erc1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: standard
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
+        description: >
+          The token standard. This is the set of rules that the contract must respect 
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.   
+
+  - name: tokens_zora_nft_standards
+    meta:
+      blockchain: zora
+      sector: nft
+      contributors: 0xRob, msilb7
+    config:
+      tags: [ 'nft','zora' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155' ]
+

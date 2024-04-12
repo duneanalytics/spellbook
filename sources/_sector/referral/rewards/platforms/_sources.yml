@@ -1,0 +1,101 @@
+version: 2
+
+sources:
+  - name: zora_ethereum
+    tables:
+      - name: ProtocolRewards_evt_RewardsDeposit
+  - name: zora_optimism
+    tables:
+      - name: ProtocolRewards_evt_RewardsDeposit
+  - name: zora_base
+    tables:
+      - name: ProtocolRewards_evt_RewardsDeposit
+  - name: zora_zora
+    tables:
+      - name: ProtocolRewards_evt_RewardsDeposit
+  - name: boost_arbitrum
+    tables:
+      - name: QuestFactory_evt_MintFeePaid
+  - name: boost_base
+    tables:
+      - name: QuestFactory_evt_MintFeePaid
+  - name: boost_optimism
+    tables:
+      - name: QuestFactory_evt_MintFeePaid
+  - name: boost_polygon
+    tables:
+      - name: QuestFactory_evt_MintFeePaid
+  - name: sound_xyz_ethereum
+    tables:
+      - name: RangeEditionMinter_evt_Minted
+      - name: MerkleDropMinter_evt_Minted
+      - name: RangeEditionMinterV2_evt_Minted
+      - name: MerkleDropMinterV2_evt_Minted
+      - name: SuperMinterV2_evt_Minted
+  - name: sound_xyz_optimism
+    tables:
+      - name: RangeEditionMinter_evt_Minted
+      - name: MerkleDropMinterV2_evt_Minted
+      - name: RangeEditionMinterV2_evt_Minted
+      - name: MerkleDropMinterV2_1_evt_Minted
+      - name: SuperMinterV2_evt_Minted
+  - name: sound_xyz_base
+    tables:
+      - name: SuperMinterV2_evt_Minted
+  - name: slugs_optimism
+    tables:
+      - name: Slugs_evt_NewSlug
+  - name: mint_fun_ethereum
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mint_fun_optimism
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mint_fun_base
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mint_fun_zora
+    tables:
+      - name: MintPayout_evt_MintDeposit
+  - name: mirror_optimism
+    tables:
+      - name: WritingEditions_evt_RewardsDistributed
+  - name: mirror_base
+    tables:
+      - name: WritingEditions_evt_RewardsDistributed
+  - name: paragraph_optimism
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+      - name: ERC721_call_mintWithReferrer
+  - name: paragraph_base
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+      - name: ERC721_call_mintWithReferrer
+  - name: paragraph_zora
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+      - name: ERC721_call_mintWithReferrer
+  - name: paragraph_polygon
+    tables:
+      - name: FeeManager_evt_FeeDistributed
+      - name: ERC721_call_mintWithReferrer
+  - name: fabric_base
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: fabric_ethereum
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: fabric_optimism
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: fabric_zora
+    tables:
+      - name: SubscriptionTokenV1_evt_ReferralPayout
+      - name: SubscriptionTokenV1Factory_call_deploySubscription
+  - name: basepaint_base
+    tables:
+      - name: BasePaintRewards_evt_Transfer
+      - name: BasePaint_evt_TransferSingle

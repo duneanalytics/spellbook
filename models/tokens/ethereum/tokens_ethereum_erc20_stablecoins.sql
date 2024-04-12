@@ -32,5 +32,6 @@ FROM (VALUES
           (0x1456688345527bE1f37E9e627DA0837D6f08C925, 'USDP',	18,	'Pax Dollar'),
           (0xdac17f958d2ee523a2206206994597c13d831ec7, 'USDT',	6,	'Tether'),
           (0xa47c8bf37f92abed4a126bda807a7b7498661acd, 'UST',	18,	'Wrapped UST Token'),
-          (0xa693b19d2931d498c5b318df961919bb4aee87a5, 'UST',	6,	'UST (Wormhole)')
+          (0xa693b19d2931d498c5b318df961919bb4aee87a5, 'UST',	6,	'UST (Wormhole)'),
+          (0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 'GYD', 18, 'Gyro Dollar')
      ) AS temp_table (contract_address, symbol, decimals, name)

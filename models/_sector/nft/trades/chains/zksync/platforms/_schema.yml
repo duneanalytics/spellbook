@@ -1,0 +1,145 @@
+version: 2
+
+models:
+  - name: tevaera_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: nft
+      project: tevaera
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'nft', 'trades', 'tevaera' ]
+    description: "Tevaera base trades on zkSync"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('tevaera_zksync','TevaMarket_evt_NewSale')
+      - check_seed:
+          seed_file: ref('tevaera_zksync_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+
+  - name: zonic_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: nft
+      project: zonic
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'nft', 'trades', 'zonic' ]
+    description: "Zonic base trades on zkSync"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('zonic_zksync','ZonicMarketplace_evt_ZonicBasicOrderFulfilled')
+      - check_seed:
+          seed_file: ref('zonic_zksync_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+
+  - name: kreatorland_zksync_base_trades
+    meta:
+      blockchain: zksync
+      project: kreatorland
+      contributors: thetroyharris
+    config:
+      tags: [ 'zksync','kreatorland','base_trades' ]
+    description: >
+      Kreatorland trades on zksync
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: zk_markets_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: nft
+      project: zk_markets
+      contributors: tomfutago
+    config:
+      tags: [ 'zksync', 'nft', 'trades', 'zk_markets' ]
+    description: "zkMarkets base trades on zkSync"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('zk_markets_zksync_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+            
+  - name: element_zksync_base_trades
+    meta:
+      blockchain: zksync
+      project: element
+      contributors: ['0xRob', 'thetroyharris']
+    config:
+      tags: [ 'zksync','element','base_trades' ]
+    description: >
+      Element trades on zksync
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: mint_square_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: nft
+      project: mint_square
+      contributors: lgingerich
+    config:
+      tags: [ 'zksync', 'nft', 'trades', 'mint_square' ]
+    description: "Mint Square base trades on zkSync"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('mintsquare_zksync_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id

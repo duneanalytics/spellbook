@@ -32,5 +32,13 @@ with model as (
     {% endif %}
     {% endfor %}
 )
-{{ add_tx_from_and_to('model', blockchain) }}
+
+{{
+    add_tx_columns(
+        model_cte = 'model'
+        , blockchain = blockchain
+        , columns = ['from', 'to']
+    )
+}}
+
 {% endmacro %}

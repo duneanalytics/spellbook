@@ -17,6 +17,9 @@
     , ref('phoenix_v1_trades')
     , ref('lifinity_v1_trades')
     , ref('lifinity_v2_trades')
+    , ref('meteora_v1_solana_trades')
+    , ref('meteora_v2_solana_trades')
+    , ref('goosefx_ssl_v2_solana_trades')   
 ] %}
 
 {% for dex in solana_dexes %}

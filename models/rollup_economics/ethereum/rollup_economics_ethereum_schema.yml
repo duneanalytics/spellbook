@@ -9,7 +9,7 @@ models:
       contributors: niftytable
     config:
       tags: ['rollup', 'l2']
-    description: Gas fees paid by rollups for posting transaction data on Ethereum
+    description: Gas fees paid by rollups for posting transaction data or state updates on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,6 +25,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of the transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of the transaction"
       - &data_length
         name: data_length
         description: "byte length of the data posted to l1"
@@ -34,6 +37,12 @@ models:
       - &gas_spent_usd
         name: gas_spent_usd
         description: "fee paid to post data on L1 in usd"
+      - &gas_used
+        name: gas_used
+        description: "Gas units used by L1 Transactions"
+      - &calldata_gas_used
+        name: calldata_gas_used
+        description: "Gas units used by calldata (input data) by L1 Transactions"
 
   - name: l1_verification_fees
     meta:
@@ -43,7 +52,7 @@ models:
       contributors: niftytable
     config:
       tags: ['rollup', 'l2']
-    description: Gas fees paid by rollups for verifying proofs on Ethereum
+    description: Gas fees paid by rollups for posting proofs on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -53,11 +62,14 @@ models:
       - *name
       - *hash
       - *block_time
+      - *block_number
       - &proof_size_mb
         name: proof_size_mb
         description: "size of proofs posted to l1 in MBs"
       - *gas_spent
       - *gas_spent_usd
+      - *gas_used
+      - *calldata_gas_used
 
   - name: l2_revenue
     meta:

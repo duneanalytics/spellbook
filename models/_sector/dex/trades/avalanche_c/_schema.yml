@@ -1,0 +1,382 @@
+version: 2
+
+models:
+  - name: dex_avalanche_c_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: uniswap_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, mtitus6
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap avalanche_c v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: airswap_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: airswap
+      contributors: tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'airswap' ]
+    description: "Airswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('airswap_avalanche_c_base_trades_seed')
+
+
+  - name: sushiswap_v1_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: sushiswap
+      contributors: hosuke, zhongyiio, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'sushiswap', 'v1']
+    description: "Sushiswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: sushiswap_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'sushiswap', 'v2']
+    description: "Sushiswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: trader_joe_v1_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: trader_joe
+      contributors: jeff-dude, mtitus6, hosuke
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'trader_joe', 'v1' ]
+    description: "Trader Joe avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: trader_joe_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: trader_joe
+      contributors: Henrystats, hosuke
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'trader_joe', 'v2' ]
+    description: "Trader Joe avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: trader_joe_v2_1_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+    description: "Trader Joe avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+          filter:
+            version: 2.1
+
+  - name: balancer_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: fraxswap_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: fraxswap
+      contributors: zhongyiio, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: glacier_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: glacier
+      contributors: discochuck, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'glacier', 'uniswap', 'v2']
+    description: "Glacier avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('glacier_avalanche_c_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: glacier_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: glacier
+      contributors: discochuck, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'glacier', 'uniswap', 'v3']
+    description: "Glacier avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('glacier_avalanche_c_base_trades_seed')
+          filter:
+            version: 3
+            
+  - name: gmx_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'gmx' ]
+    description: "GMX avalanche_c v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gmx_avalanche_c_base_trades_seed')
+
+  - name: pharaoh_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: pharaoh
+      contributors: discochuck, hosuke
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'pharaoh' ]
+    description: "pharaoh avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pharaoh_avalanche_c_base_trades_seed')
+
+
+  - name: kyberswap_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: kyberswap
+      contributors: zhongyiio, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_avalanche_c_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic
+              - elastic_2
+
+  - name: platypus_finance_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: platypus_finance
+      contributors: umer_h_adil, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'platypus_finance' ]
+    description: "Platypus Finance avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('platypus_finance_avalanche_c_base_trades_seed')
+          
+  - name: openocean_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: openocean
+      contributors: Henrystats, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'openocean' ]
+    description: "openocean avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('openocean_avalanche_c_base_trades_seed')
+
+  - name: woofi_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: woofi
+      contributors: scoffie, tomfutago
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'woofi' ]
+    description: "woofi avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('woofi_avalanche_c_base_trades_seed')
+          
+  - name: curvefi_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: curvefi
+      contributors: Henrystats, tomfutago
+    config:
+      tags: ['avalanche_c', 'dex', 'trades', 'curvefi']
+    description: "Curvefi avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('curvefi_avalanche_c_base_trades_seed')
+
+
+  - name: hashflow_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: hashflow
+      contributors: hosuke
+    config:
+      tags: [ 'avalanche_c','hashflow','trades','dex','hosuke' ]
+    description: >
+      Hashflow contract trades on Avalanche C-Chain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hashflow_avalanche_c_base_trades_seed')
+
+  - name: uniswap_v2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'avalance_c', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap avalanche_c v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 2

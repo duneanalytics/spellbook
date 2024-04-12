@@ -1,0 +1,133 @@
+version: 2
+
+models:
+  - name: dex_celo_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: uniswap_v3_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: uniswap
+      contributors: jeff-dude, masquot, soispoke, tomfutago
+    config:
+      tags: [ 'celo', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap celo v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_celo_base_trades_seed')
+
+
+  - name: mento_v1_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: mento
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'mento']
+    description: "Mento trades on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mento_celo_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: mento_v2_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: mento
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'mento']
+    description: "Mento trades on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mento_celo_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: curvefi_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: curvefi
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'curvefi']
+    description: "Curvefi Celo base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('curvefi_celo_base_trades_seed')
+            
+
+  - name: sushiswap_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'sushiswap']
+    description: "Sushiswap Celo base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_celo_base_trades_seed')
+            
+
+  - name: ubeswap_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: ubeswap
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'ubeswap']
+    description: "Ubeswap Celo base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ubeswap_celo_base_trades_seed')
+            
+
+  - name: carbonhood_celo_base_trades
+    meta:
+      blockchain: celo
+      sector: dex
+      project: carbonhood
+      contributors: tomfutago
+    config:
+      tags: ['celo', 'dex', 'trades', 'carbonhood']
+    description: "Carbonhood trades on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbonhood_celo_base_trades_seed')

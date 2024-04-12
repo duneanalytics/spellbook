@@ -194,3 +194,63 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_op_nft_traders
+    meta:
+      blockchain: optimism
+      sector: labels
+      category: nft
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'nft', 'traders', 'archetypes']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_op_nft_minters
+    meta:
+      blockchain: optimism
+      sector: labels
+      category: nft
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'nft', 'minters', 'archetypes']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_op_habitual_wash_traders
+    meta:
+      blockchain: optimism
+      sector: labels
+      category: nft
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'nft', 'wash traders', 'archetypes']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type

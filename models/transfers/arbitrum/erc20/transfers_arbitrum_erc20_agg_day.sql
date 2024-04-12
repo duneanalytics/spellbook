@@ -21,7 +21,7 @@ select
 FROM 
 {{ ref('transfers_arbitrum_erc20') }} tr
 LEFT JOIN 
-{{ ref('tokens_arbitrum_erc20') }} t on t.contract_address = tr.token_address
+{{ source('tokens_arbitrum', 'erc20') }} t on t.contract_address = tr.token_address
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
 WHERE tr.evt_block_time >= date_trunc('day', now() - interval '3' Day)

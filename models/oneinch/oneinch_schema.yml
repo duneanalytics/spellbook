@@ -1,37 +1,447 @@
 version: 2
 
 models:
-  - name: oneinch_contract_addresses
+  - name: oneinch_lop
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'metadata']
+      tags: ['oneinch', 'lop', 'calls']
     description: >
-        (dictionary) contract addresses of 1inch and other projects for internal use
+        1inch limit order protocol calls
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - contract_address
+            - tx_hash
+            - call_trace_address
     columns:
-      - &blockchain
-        name: blockchain
-      - &project
-        name: project
-      - &contract_name
-        name: contract_name
-      - &contract_type
-        name: contract_type
-      - &contract_address
-        name: contract_address
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: maker
+      - name: receiver
+      - name: maker_asset
+      - name: making_amount
+      - name: taker_asset
+      - name: taking_amount
+      - name: order_hash
+      - name: flags
+      - name: remains
+      - name: minute
+      - name: block_month
+
+  - name: oneinch_ar
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'ar', 'calls']
+    description: >
+        1inch aggregation router calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: src_receiver
+      - name: dst_receiver
+      - name: src_token_address
+      - name: dst_token_address
+      - name: src_token_amount
+      - name: dst_token_amount
+      - name: dst_token_amount_min
+      - name: ordinary
+      - name: pools
+      - name: router_type
+      - name: remains
+      - name: minute
+      - name: block_month
+
+  - name: oneinch_blockchains
+    meta:
+      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'calls', 'transfers']
+    description: >
+        1inch blockchains meta
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+          - unique
+      - name: chain_id
+      - name: native_token_symbol
+      - name: wrapped_native_token_address
+      - name: explorer_link
+      - name: first_deploy_at
+      - name: fusion_settlement_addresses
+
+  - name: oneinch_calls
+    meta:
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base', 'zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'raw']
+    description: >
+        all calls of 1inch aggregation router & limit order protocol
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: remains
+      - name: maker
+      - name: receiver
+      - name: src_token_address
+      - name: src_token_amount
+      - name: dst_token_address
+      - name: dst_token_amount
+      - name: order_hash
+      - name: flags
+
+  - name: oneinch_parsed_transfers_from_calls
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync', 'celo', 'scroll']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'internal']
+    description: >
+        parsed transfers from calls
+    columns:
+      - name: blockchain
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+      - name: transfer_trace_address
+      - name: type
+      - name: contract_address
+      - name: amount
+      - name: transfer_from
+      - name: transfer_to
+
+  - name: oneinch_call_transfers
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'calls', 'transfers']
+    description: >
+        transfers within calls of 1inch aggregation router & limit order protocol
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+            - transfer_trace_address
+            - transfer_native
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: transfer_trace_address
+      - name: contract_address
+      - name: amount
+      - name: transfer_native
+      - name: transfer_from
+      - name: transfer_to
+      - name: transfers_between_players
+      - name: minute
+      - name: block_month
+
+  - name: oneinch_swaps
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'swaps']
+    description: >
+        1inch swaps - all user exchanges using 1inch aggregation router & limit order protocol
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_gas_used
+      - name: call_type
+      - name: user
+      - name: receiver
+      - name: fusion
+      - name: contracts_only
+      - name: second_side
+      - name: order_hash
+      - name: flags
+        tests:
+          - not_null
+      - name: remains
+      - name: src_token_address
+      - name: src_token_symbol
+      - name: src_token_decimals
+      - name: src_token_amount
+      - name: dst_token_address
+      - name: dst_token_symbol
+      - name: dst_token_decimals
+      - name: dst_token_amount
+      - name: amount_usd
+      - name: sources_amount_usd
+      - name: transfers_amount_usd
+      - name: user_amount_usd
+      - name: tokens
+      - name: transfers
+      - name: minute
+      - name: block_month
+      - name: swap_id
+      - name: unique_key
+        tests:
+          - unique
+          - not_null
+
+  - name: oneinch_lop_own_trades
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'lop', 'trades']
+    description: >
+        1inch limit order protocol trades - special for dex.trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_month
+      - name: block_number
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: evt_index
+        tests:
+          - not_null
+
+  - name: oneinch_ar_trades
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base', 'zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'ar', 'trades']
+    description: >
+        1inch aggregation router trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - trace_address
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: project
+      - name: version
+      - name: block_date
+      - name: block_month
+      - name: block_time
+      - name: token_bought_symbol
+      - name: token_sold_symbol
+      - name: token_pair
+      - name: token_bought_amount
+      - name: token_sold_amount
+      - name: token_bought_amount_raw
+      - name: token_sold_amount_raw
+      - name: amount_usd
+      - name: token_bought_address
+      - name: token_sold_address
+      - name: taker
+      - name: maker
+      - name: project_contract_address
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: trace_address
+        tests:
+          - not_null
+      - name: evt_index
+
+  - name: oneinch_fusion_resolvers
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        fusion resolvers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - last_changed_at
+    columns:
+      - name: address
+        tests:
+          - not_null
+      - name: name
+      - name: status
+      - name: last_changed_at
+      - name: kyc
 
   - name: oneinch_fusion_executors
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
       tags: ['oneinch', 'metadata']
     description: >
@@ -42,311 +452,25 @@ models:
             - chain_id
             - resolver_executor
     columns:
-      - &resolver_address_not_null
-        name: resolver_address
+      - name: resolver_address
         tests:
           - not_null
-      - &resolver_name
-        name: resolver_name
-      - &resolver_status
-        name: resolver_status
-      - &resolver_last_changed_at
-        name: resolver_last_changed_at
-      - &resolver_kyc
-        name: resolver_kyc
-      - &resolver_executor_not_null
-        name: resolver_executor
+      - name: resolver_executor
         tests:
           - not_null
-      - *blockchain
-      - &chain_id_not_null
-        name: chain_id
+      - name: chain_id
         tests:
           - not_null
-      - &executor_promotions
-        name: executor_promotions
-      - &first_promoted_at
-        name: first_promoted_at
-      - &last_promoted_at
-        name: last_promoted_at
-      - &tx_hash_example
-        name: tx_hash_example
-
-
-  - name: oneinch_protocols
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'metadata']
-    description: >
-        protocols, methods, offsets
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - blockchain
-            - selector
-    columns:
-      - &contract_id_not_null
-        name: contract_id
-        tests:
-          - not_null
-      - &contract_address_not_null
-        name: contract_address
-        tests:
-          - not_null
-      - *contract_name
-      - &blockchain_not_null
-        name: blockchain
-        tests:
-          - not_null
-      - &created_at
-        name: created_at
-      - &selector_not_null
-        name: selector
-        tests:
-          - not_null
-      - &method
-        name: method
-      - &protocol
-        name: protocol
-      - &version
-        name: version
-      - &main
-        name: main
-      - &offsets
-        name: offsets
-      - &signature
-        name: signature
-
-  - name: oneinch_calls
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        calls all chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
-    columns:
-      - *blockchain_not_null
-      - &block_time
-        name: block_time
-      - &tx_hash_not_null
-        name: tx_hash
-        tests:
-          - not_null
-      - &tx_from
-        name: tx_from
-      - &tx_to
-        name: tx_to
-      - &tx_success
-        name: tx_success
-      - &call_success
-        name: call_success
-      - &call_trace_address_not_null
-        name: call_trace_address
-        tests:
-          - not_null
-      - &call_from
-        name: call_from
-      - &call_to
-        name: call_to
-      - &call_selector
-        name: call_selector
-      - *protocol
-      - &call_input
-        name: call_input
-      - &call_output
-        name: call_output
-
-
-  - name: oneinch_ar_calls
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        calls all chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - call_trace_address
-    columns:
-      - *blockchain_not_null
-      - *block_time
-      - *tx_hash_not_null
-      - *tx_from
-      - *tx_success
-      - *call_success
-      - *call_trace_address_not_null
-      - &caller
-        name: caller
-      - *call_from
-      - *call_to
-      - *call_selector
-      - *protocol
-      - *call_input
-      - *call_output
-
-
-  - name: oneinch_calls_transfers_amounts
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        calls transfer amounts all chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - unique_call_transfer_id
-    columns:
-      - *blockchain_not_null
-      - *block_time
-      - *tx_hash_not_null
-      - *tx_from
-      - *tx_success
-      - *call_success
-      - *call_trace_address_not_null
-      - *call_from
-      - *call_to
-      - *call_selector
-      - *protocol
-      - &transfer_trace_address
-        name: transfer_trace_address
-      - *contract_address
-      - &amount
-        name: amount
-      - &native_token
-        name: native_token
-      - &transfer_from
-        name: transfer_from
-      - &transfer_to
-        name: transfer_to
-      - &transfer_top_level
-        name: transfer_top_level
-      - &transfers_between_players
-        name: transfers_between_players
-      - &rn_tta_asc
-        name: rn_tta_asc
-      - &rn_tta_desc
-        name: rn_tta_desc
-      - *call_output
-      - *call_input
-      - &minute
-        name: minute
-      - &block_month_not_null
-        name: block_month
-        tests:
-          - not_null
-      - &unique_call_transfer_id
-        name: unique_call_transfer_id
-        tests:
-          - unique
-          - not_null
-
-
-  - name: oneinch_ar_calls_transfers_amounts
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        calls transfer amounts all chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - unique_call_transfer_id
-    columns:
-      - *blockchain_not_null
-      - *block_time
-      - *tx_hash_not_null
-      - *tx_from
-      - *tx_success
-      - *call_success
-      - *call_trace_address_not_null
-      - *call_from
-      - *caller
-      - *call_to
-      - *call_selector
-      - *protocol
-      - *transfer_trace_address
-      - *contract_address
-      - *amount
-      - *native_token
-      - *transfer_from
-      - *transfer_to
-      - *transfer_top_level
-      - *transfers_between_players
-      - *rn_tta_asc
-      - *rn_tta_desc
-      - *call_output
-      - *call_input
-      - *minute
-      - *block_month_not_null
-      - *unique_call_transfer_id
-
-
-  - name: oneinch_exchange_contracts
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        exchange contracts
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - blockchain
-    columns:
-      - *project
-      - *contract_address_not_null
-      - *contract_id_not_null
-      - *contract_name
-      - *blockchain
-      - *created_at
-      - &creator
-        name: creator
-      - &creation_tx_hash
-        name: creation_tx_hash
-      - &abi
-        name: abi
-      - &params
-        name: params
-      - &namespaces
-        name: namespaces
-      - &names
-        name: names
+      - name: first_promoted_at
+      - name: last_promoted_at
 
   - name: oneinch_fusion_farms
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'metadata']
     description: >
         fusion farms
     tests:
@@ -355,117 +479,74 @@ models:
             - resolver_address
             - farm_address
     columns:
-      - *resolver_address_not_null
-      - *resolver_name
-      - *resolver_status
-      - *resolver_last_changed_at
-      - *resolver_kyc
-      - &resolver_registered_delegatee_at
-        name: resolver_registered_delegatee_at
-      - &farm_address_not_null
-        name: farm_address
+      - name: resolver_address
         tests:
           - not_null
-      - &farm_ownership_transferred_at
-        name: farm_ownership_transferred_at
-      - &farm_last_created_at
-        name: farm_last_created_at
-      - &farm_last_default_token
-        name: farm_last_default_token
-      - &farm_last_distributor
-        name: farm_last_distributor
-      - &farm_last_distributor_set_up_at
-        name: farm_last_distributor_set_up_at
+      - name: resolver_name
+      - name: resolver_status
+      - name: resolver_last_changed_at
+      - name: resolver_kyc
+      - name: resolver_registered_delegatee_at
+      - name: farm_address
+        tests:
+          - not_null
+      - name: farm_ownership_transferred_at
+      - name: farm_last_created_at
+      - name: farm_last_default_token
+      - name: farm_last_distributor
+      - name: farm_last_distributor_set_up_at
 
-  - name: oneinch_fusion_resolvers
+  - name: oneinch_exchange_contracts
     meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
+      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base', 'zksync']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['contracts', 'metadata']
     description: >
-        fusion resolvers
+        exchange contracts
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - blockchain
+    columns:
+      - name: project
+      - name: contract_address
+      - name: contract_id
+      - name: contract_name
+      - name: blockchain
+        tests:
+          - not_null
+      - name: created_at
+      - name: creator
+      - name: creation_tx_hash
+      - name: abi
+      - name: params
+      - name: namespaces
+      - name: names
+
+  - name: oneinch_fusion_accounts
+    meta:
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'metadata']
+    description: >
+        fusion resolvers EOA
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
-            - last_changed_at
-    columns:
-      - &address_not_null
-        name: address
-        tests:
-          - not_null
-      - &name
-        name: name
-      - &status
-        name: status
-      - &last_changed_at_not_null
-        name: last_changed_at
-        tests:
-          - not_null
-      - &kyc
-        name: kyc
-  
-  - name: oneinch_fusion_settlements
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        fusion settlements
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
             - blockchain
     columns:
-      - *contract_address_not_null
-      - *blockchain_not_null
-
-
-  - name: oneinch_methods
-    meta:
-      blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','base','zksync']
-      sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
-    config:
-      tags: ['oneinch', 'raw']
-    description: >
-        protocols methods
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - blockchain
-            - selector
-    columns:
-      - *project
-      - *contract_address_not_null
-      - *contract_id_not_null
-      - *contract_name
-      - *blockchain_not_null
-      - &contract_created_at
-        name: contract_created_at
-      - *creator
-      - *selector_not_null
-      - &protocol_not_null
-        name: protocol
+      - name: blockchain
         tests:
           - not_null
-      - *main
-      - *method
-      - &receiver
-        name: receiver
-      - *signature
-
-
-
-
-
-
-
-
-
+      - name: address
+        tests:
+          - not_null
+      - name: resolver_name
+      - name: resolver_address
+      

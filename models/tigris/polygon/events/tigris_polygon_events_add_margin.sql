@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'margin', 'protocol_version']
     )
 }}
@@ -25,6 +26,7 @@ WITH
     ,'TradingV3_evt_AddToPosition'
     , 'TradingV4_evt_AddToPosition'
     , 'TradingV5_evt_AddToPosition'
+    , 'TradingV6_evt_AddToPosition'
 ] %}
 
 {% set add_margin_v1_call_tables = [
@@ -118,7 +120,7 @@ add_margin_v2 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_polygon', add_margin_trading_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

@@ -1,0 +1,24 @@
+version: 2
+
+sources: 
+  - name: nex_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event tables for Perpetual trades on nex
+    tables:
+
+      - name: Vault_evt_CollectMarginFees
+        loaded_at_field: evt_block_time
+
+      - name: PositionRouter_evt_ExecuteDecreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: PositionRouter_evt_ExecuteIncreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: Vault_evt_DecreasePosition
+        loaded_at_field: evt_block_time
+
+      - name: Vault_evt_IncreasePosition
+        loaded_at_field: evt_block_time

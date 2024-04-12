@@ -1,0 +1,112 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_bnb
+  - name: airswap_bnb
+    tables:
+      - name: Light_evt_Swap
+      - name: Swap_v3_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
+  - name: sushi_bnb
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: sushi_v2_bnb
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: fraxswap_bnb
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: trader_joe_v2_1_bnb
+  - name: trader_joe_v2_bnb
+  - name: pancakeswap_v2_bnb
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+      - name: PancakeSwapMMPool_evt_Swap
+      - name: PancakeStableSwap_evt_TokenExchange
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
+  - name: pancakeswap_v3_bnb
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: biswap_bnb
+    tables:
+      - name: BiswapPair_evt_Swap
+      - name: BiswapFactory_evt_PairCreated
+  - name: biswap_v3_bnb
+    tables:
+      - name: BiswapPoolV3_evt_Swap
+      - name: BiswapFactoryV3_evt_NewPool
+  - name: babyswap_bnb
+    tables:
+      - name: BabyPair_evt_Swap
+      - name: BabyFactory_evt_PairCreated
+  - name: wombat_bnb
+    tables:
+      - name: Pool_evt_Swap
+      - name: HighCovRatioFeePool_evt_Swap
+      - name: DynamicPool_evt_Swap
+      - name: mWOM_Pool_evt_Swap
+      - name: qWOM_WOMPool_evt_Swap
+      - name: WMX_WOM_Pool_evt_Swap
+  - name: mdex_bnb
+    tables:
+      - name: MdexPair_evt_Swap
+      - name: MdexFactory_evt_PairCreated
+  - name: dodoex_bnb
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPP_evt_DODOSwap
+      - name: DPPAdvanced_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: izumi_bnb
+    tables:
+      - name: iZiSwapPool_evt_Swap
+  - name: maverick_v1_bnb
+    tables:
+      - name: pool_evt_Swap
+      - name: factory_evt_PoolCreated
+  - name: nomiswap_bnb
+    tables:
+      - name: NomiswapPair_evt_Swap
+      - name: NomiswapFactory_evt_PairCreated
+  - name: kyber_bnb
+    tables:
+      - name: DMMPool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticFactoryV2_evt_PoolCreated
+  - name: xchange_bnb
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
+  - name: thena_fi_bnb
+    tables:
+      - name: pair_evt_swap
+      - name: PairFactoryUpgradeable_evt_Pool
+      - name: PairFactoryUpgradeable_evt_PairCreated
+  - name: thena_bnb
+    tables:
+      - name: AlgebraPool_evt_Swap
+  - name: ellipsis_finance_bnb
+    tables:
+      - name: StableSwap_evt_TokenExchange
+      - name: StableSwap_evt_TokenExchangeUnderlying
+  - name: onepunch_quick_bnb
+    tables:
+      - name: QuickLiquidityProvider_evt_QuoteAccepted
+  - name: onepunch_normal_bnb
+    tables:
+      - name: DexLiquidityProvider_evt_QuoteAccepted
+  - name: woofi_bnb
+    tables:
+      - name: WooPP_evt_WooSwap
+      - name: WooRouter_evt_WooRouterSwap
+      - name: WooRouterV2_evt_WooRouterSwap

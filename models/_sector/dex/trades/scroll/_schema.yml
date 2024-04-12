@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: dex_scroll_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: uniswap_v3_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: uniswap
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'uniswap' ]
+    description: "Uniswap v3 scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_scroll_base_trades_seed')
+
+  - name: sushiswap_v2_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'sushiswap' ]
+    description: "Sushiswap v2 scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_scroll_base_trades_seed')
+
+  - name: zebra_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: zebra
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'zebra' ]
+    description: "Zebra scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('zebra_scroll_base_trades_seed')
+
+  - name: scrollswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: scrollswap
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'scrollswap' ]
+    description: "Zebra scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('scrollswap_scroll_base_trades_seed')

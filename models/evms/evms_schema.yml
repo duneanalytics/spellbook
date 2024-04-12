@@ -3,7 +3,7 @@ version: 2
 models:
   - name: evms_transactions
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -76,7 +76,7 @@ models:
 
   - name: evms_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -127,7 +127,7 @@ models:
 
   - name: evms_traces_decoded
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -153,7 +153,7 @@ models:
 
   - name: evms_logs
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -183,7 +183,7 @@ models:
 
   - name: evms_logs_decoded
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -209,7 +209,7 @@ models:
 
   - name: evms_blocks
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -232,7 +232,7 @@ models:
 
   - name: evms_contracts
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -268,7 +268,7 @@ models:
       
   - name: evms_creation_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -288,7 +288,7 @@ models:
 
   - name: evms_erc20_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -317,7 +317,7 @@ models:
 
   - name: evms_erc20_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -340,7 +340,7 @@ models:
 
   - name: evms_erc1155_transferssingle
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -365,7 +365,7 @@ models:
 
   - name: evms_erc1155_transfersbatch
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -390,7 +390,7 @@ models:
 
   - name: evms_erc1155_approvalsforall
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -415,7 +415,7 @@ models:
 
   - name: evms_erc721_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -436,7 +436,7 @@ models:
 
   - name: evms_erc721_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -459,7 +459,7 @@ models:
 
   - name: evms_erc721_approvalsforall
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -479,7 +479,7 @@ models:
 
   - name: evms_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll
       sector: evms
       contributors: hildobby
     config:
@@ -533,7 +533,7 @@ models:
   
   - name: evm_smart_account_method_ids
     meta:
-      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo
+      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
       project: method_ids
       contributors: msilb7
     config:
@@ -552,3 +552,23 @@ models:
       - &contract_project 
         name: contract_project
         description: "Project associated with the method"
+
+  - name: base_evm_smart_account_method_ids
+    meta:
+      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
+      project: method_ids
+      contributors: msilb7
+    config:
+      tags: ['method_ids','methods','function','signature']
+    description: >
+        A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - method_id
+    columns:
+      - *blockchain
+      - *method_id 
+      - *method_descriptor 
+      - *contract_project 

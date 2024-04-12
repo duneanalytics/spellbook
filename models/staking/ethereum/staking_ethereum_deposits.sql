@@ -30,7 +30,7 @@ WITH deposit_events AS (
     , ROW_NUMBER() OVER (PARTITION BY d.evt_block_number, d.evt_tx_hash, from_big_endian_64(reverse(d.amount)) ORDER BY d.evt_index) AS table_merging_deposits_id
     FROM {{ source('eth2_ethereum', 'DepositContract_evt_DepositEvent') }} d
     {% if not is_incremental() %}
-    WHERE d.evt_block_time >= TIMESTAMP '2020-10-14'
+    WHERE d.evt_block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
     WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
@@ -49,7 +49,7 @@ WITH deposit_events AS (
     AND t.value > UINT256 '0'
     AND success
     {% if not is_incremental() %}
-    AND t.block_time >= TIMESTAMP '2020-10-14'
+    AND t.block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
@@ -63,20 +63,23 @@ SELECT distinct d.block_time
 , ete.entity
 , ete.entity_unique_name
 , ete.category AS entity_category
+, etes.sub_entity
+, etes.sub_entity_unique_name
+, etes.sub_entity_category
 , d.tx_hash
 , et."from" AS tx_from
 , d.deposit_index
 , d.pubkey
 , d.signature
-, d.withdrawal_credentials_type
 , d.withdrawal_address
+, d.withdrawal_credentials_type
 , d.withdrawal_credentials
 , d.evt_index
 FROM deposit_events d
 INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number=d.block_number
     AND et.hash=d.tx_hash
     {% if not is_incremental() %}
-    AND et.block_time >= TIMESTAMP '2020-10-14'
+    AND et.block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
     AND et.block_time >= date_trunc('day', now() - interval '7' day)
@@ -90,3 +93,11 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} ete
     OR (ete.tx_from IS NOT NULL AND et."from"=ete.tx_from)
     OR (ete.pubkey IS NOT NULL AND d.pubkey=ete.pubkey)
     OR (ete.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=ete.withdrawal_credentials))
+    AND ete.entity IS NOT NULL
+LEFT JOIN {{ ref('staking_ethereum_entities')}} etes
+    ON ((etes.depositor_address IS NOT NULL AND ett.depositor_address=etes.depositor_address)
+    OR (etes.tx_from IS NOT NULL AND et."from"=etes.tx_from)
+    OR (etes.pubkey IS NOT NULL AND d.pubkey=etes.pubkey)
+    OR (etes.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=etes.withdrawal_credentials))
+    AND etes.sub_entity IS NOT NULL
+    

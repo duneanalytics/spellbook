@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: alienswap_base
+    tables:
+        - name: Alienswap_evt_OrderFulfilled
+  - name: element_ex_base
+    tables:
+        - name: ElementEx_evt_ERC721SellOrderFilled
+        - name: ElementEx_evt_ERC721BuyOrderFilled
+        - name: ElementEx_evt_ERC1155SellOrderFilled
+        - name: ElementEx_evt_ERC1155BuyOrderFilled
+  - name: zonic_base
+    freshness:
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
+
+  - name: sudoswap_v2_base
+    freshness:
+    tables:
+      - name: LSSVMPairFactory_call_createPairERC721ETH
+      - name: LSSVMPairFactory_call_createPairERC1155ETH
+      - name: LSSVMPairFactory_call_createPairERC721ERC20
+      - name: LSSVMPairFactory_call_createPairERC1155ERC20
+      - name: LSSVMPair_call_swapNFTsForToken
+        identifier: LLSVMPair_call_swapNFTsForToken    # @andrew: lol decoded with wrong name LLSVM instead of LSSVM, sorry future someone
+      - name: LSSVMPair_call_swapTokenForSpecificNFTs
+        identifier: LLSVMPair_call_swapTokenForSpecificNFTs  # @andrew: lol decoded with wrong name LLSVM instead of LSSVM, sorry future someone
+      - name: ExponentialCurve_call_getSellInfo
+      - name: LinearCurve_call_getSellInfo
+      - name: XykCurve_call_getSellInfo
+      - name: GDACurve_call_getSellInfo
+      - name: ExponentialCurve_call_getBuyInfo
+      - name: LinearCurve_call_getBuyInfo
+      - name: XykCurve_call_getBuyInfo
+      - name: GDACurve_call_getBuyInfo
+      - name: RoyaltyEngine_call_getRoyalty

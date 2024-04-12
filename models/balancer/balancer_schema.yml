@@ -159,29 +159,32 @@ models:
 
   - name: balancer_bpt_prices
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
       sector: dex
-      contributors: thetroyharris, victorstefenon
+      contributors: thetroyharris, victorstefenon, viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis']
+      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base']
     description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
       - name: blockchain
-      - name: hour
+      - name: day
+      - name: version
+      - name: decimals
       - name: contract_address
-      - name: median_price
+      - name: pool_type
+      - name: bpt_price
 
-  - name: balancer_v2_liquidity
+  - name: balancer_liquidity
     meta:
       blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
-      project: balancer_v2
+      project: balancer
       contributors: viniabussafi
     config:
       tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base']
@@ -199,11 +202,15 @@ models:
       - name: day
         description: 'UTC event block time truncated to the day mark'
       - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - *blockchain
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
+      - name: pool_type
       - name: token_address
-        description: 'Contract address for the token'
       - name: token_symbol
         description: 'Symbol of the token'
       - name: token_balance_raw
@@ -212,17 +219,22 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'
+
 
   - name: balancer_transfers_bpt
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
-      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on Arbitrum.
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -231,6 +243,7 @@ models:
             - block_date
     columns:
       - *blockchain
+      - name: version
       - *contract_address
       - *block_date
       - *evt_tx_hash
@@ -250,7 +263,7 @@ models:
   - name: balancer_pools_fees
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
@@ -264,6 +277,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -271,3 +285,122 @@ models:
       - name: block_time
       - name: block_number
       - name: swap_fee_percentage
+
+  - name: balancer_protocol_fee
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - *pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - *version
+      - *blockchain
+      - name: pool_type
+      - name: token_address
+      - name: token_symbol
+      - name: token_amount_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+      - name: treasury_share
+        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - name: treasury_revenue_usd
+        description: "Total revenue directed to Balancer DAO's treasury"
+
+  - name: balancer_bpt_supply
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: thetroyharris, viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+    description: >
+      The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - name: day
+      - name: pool_type
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: supply
+
+  - name: balancer_token_whitelist
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+    description: >
+      These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name 
+            - chain
+    columns:
+      - name: address
+      - name: name
+      - name: chain
+
+  - name: balancer_pools_tokens_weights
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+    description: >
+      Token weights in Balancer pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool_id
+            - token_address
+    columns:
+      - *blockchain
+      - name: version
+      - *pool_id
+      - name: token_address
+      - name: normalized_weight
+
+  - name: balancer_single_recipient_gauges
+    meta:
+      blockchain: ethereum
+      contributors: viniabussafi
+    config:
+      tags: ['ethereum', 'gauges']
+    description: >
+      These gauges are deployed by the SingleRecipientGauge contract and this mapping manually links each gauge to it's correspondent pool and project
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - gauge_address
+            - pool_id 
+            - project
+            - blockchain
+    columns:
+      - name: gauge_address
+      - name: pool_id
+      - name: project
+      - name: blockchain

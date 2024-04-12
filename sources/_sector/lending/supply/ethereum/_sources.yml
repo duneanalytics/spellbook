@@ -1,0 +1,74 @@
+version: 2
+
+sources:
+  - name: aave_ethereum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+      - name: LendingPool_evt_RedeemUnderlying
+
+  - name: aave_v2_ethereum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+
+  - name: aave_v3_ethereum
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+
+  - name: compound_v2_ethereum
+    tables:
+      - name: cErc20_evt_Mint
+      - name: cEther_evt_Mint
+      - name: cErc20_evt_Redeem
+      - name: cEther_evt_Redeem
+
+  - name: compound_v3_ethereum
+    tables:
+      - name: Comet_evt_SupplyCollateral
+      - name: cWETHv3_evt_SupplyCollateral
+      - name: Comet_evt_WithdrawCollateral
+      - name: cWETHv3_evt_WithdrawCollateral
+      - name: Comet_evt_AbsorbCollateral
+      - name: cWETHv3_evt_AbsorbCollateral
+
+  - name: radiant_capital_ethereum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+
+  - name: uwulend_ethereum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+
+  - name: spark_protocol_ethereum
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+
+  - name: fluxfinance_ethereum
+    tables:
+      - name: fUSDC_evt_Mint
+      - name: fUSDC_evt_Redeem
+      - name: fDAI_evt_Mint
+      - name: fDAI_evt_Redeem
+      - name: fUSDT_evt_Mint
+      - name: fUSDT_evt_Redeem
+      - name: fFRAX_evt_Mint
+      - name: fFRAX_evt_Redeem
+      - name: fOUSG_evt_Mint
+      - name: fOUSG_evt_Redeem
+
+  - name: strike_lending_ethereum
+    tables:
+      - name: SErc20Delegate_evt_Mint
+      - name: SErc20Delegate_evt_Redeem
+      - name: SEther_evt_Mint
+      - name: SEther_evt_Redeem
+
+  - name: the_granary_ethereum
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

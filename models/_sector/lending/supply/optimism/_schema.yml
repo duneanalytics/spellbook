@@ -1,0 +1,182 @@
+version: 2
+
+models:
+  - name: lending_optimism_base_supply
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'optimism']
+    description: "All lending supply transactions on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        tests:
+          - not_null
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        tests:
+          - not_null
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "Withdrawn to wallet address"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Event block number"
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        tests:
+          - not_null
+
+  - name: aave_v3_optimism_base_supply
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'optimism']
+    description: "Aave v3 supply transactions on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_optimism_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: sonne_finance_optimism_base_supply
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: sonne_finance
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'sonne_finance', 'compound', 'optimism']
+    description: "Sonne Finance supply transactions on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('sonne_finance_optimism_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_optimism_base_supply
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'granary', 'compound', 'optimism']
+    description: "Granary supply transactions on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('granary_optimism_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

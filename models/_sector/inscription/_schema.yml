@@ -1,0 +1,123 @@
+version: 2
+
+models:
+  - name: inscription_mints
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints']
+    description: >
+      Inscription mints across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "the block number of the block that the offer was created in"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in block"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &inscription_standard
+        name: inscription_standard
+        description: "Inscription standard"
+      - &inscription_symbol
+        name: inscription_symbol
+        description: "Symbol of inscription"
+      - &operation
+        name: operation
+        description: "Operation"
+      - &amount
+        name: amount
+        description: "Amount of inscriptions"
+      - &full_inscription
+        name: full_inscription
+        description: "Full inscription information as found in the transaction's call data"
+      - &vin
+        name: vin
+        description: "Input of transaction"
+      - &vout
+        name: vout
+        description: "Output of transaction"
+
+  - name: inscription_deploys
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys']
+    description: >
+      Inscription deploys across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - &mint_limit
+        name: mint_limit
+        description: "Limit"
+      - &max_supply
+        name: max_supply
+        description: "Maximum supply"
+      - *full_inscription
+
+  - name: inscription_all
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'all']
+    description: >
+      All inscriptions across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *full_inscription

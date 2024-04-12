@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: glacier_avalanche_c_trades
+  - name: glacier_v2_avalanche_c_trades
     meta:
       blockchain: avalanche_c 
       sector: dex
-      project: glacier
+      project: glacier_v2
       contributors: discochuck 
     config:
       tags: ['avalanche_c','glacier','trades','dex']
     description: >
-        glacier contract trades on avalanche_c
+        glacier v2 contract trades on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,17 +23,20 @@ models:
       - check_dex_seed:
           blockchain: avalanche_c 
           project: glacier
-          version: 1
+          version: 2
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
-        description: "Project name of the DEX"  
+        description: "Project name of the DEX"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
@@ -90,4 +93,86 @@ models:
         description: "Address which received the transaction"
       - &evt_index
         name: evt_index
-        description: ""
+
+  - name: glacier_v3_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: glacier_v3
+      contributors: discochuck
+    config:
+      tags: ['avalanche_c','glacier','trades','dex']
+    description: >
+        glacier V3 contract trades on avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_seed:
+          blockchain: avalanche_c
+          project: glacier
+          version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
+  - name: glacier_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c 
+      sector: dex
+      project: glacier
+      contributors: discochuck 
+    config:
+      tags: ['avalanche_c','glacier','trades','dex']
+    description: >
+        glacier contract trades on avalanche_c
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index

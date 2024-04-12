@@ -19,10 +19,6 @@ models:
               - version
               - tx_hash
               - evt_index
-      - check_dex_seed:
-          blockchain: fantom
-          project: beethoven_x
-          version: 1
     columns:
       - &blockchain
         name: blockchain
@@ -90,3 +86,108 @@ models:
       - &evt_index
         name: evt_index
         description: ""
+
+  - name: beethoven_x_fantom_pools_tokens_weights
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'beethoven_x', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Beethoven X pools.
+    columns:
+      - *blockchain
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: 'Contract address for the token'
+      - &normalized_weight
+        name: normalized_weight
+        description: 'Weight of the token in the pool.'
+
+  - name: beethoven_x_fantom_liquidity
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'balancer', 'pools', 'liquidity']
+    description: >
+      Beethoven X v2 pools liquidity by token in Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+        description: 'UTC event block time truncated to the day mark'
+      - *pool_id
+      - name: pool_address
+      - name: pool_symbol
+        description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
+      - *token_address
+      - name: token_symbol
+        description: 'Symbol of the token'
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
+
+  - name: beethoven_x_fantom_pools_fees
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: jacektrocinski, thetroyharris, tomfutago
+    config:
+      tags: ['fantom', 'balancer', 'pools_fees']
+    description: >
+      Beethoven X swap fees stored at the pool level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - &contract_address
+        name: contract_address
+        description: 'fantom address for the liquidity pool used in transaction'
+        tests:
+          - not_null
+      - *tx_hash
+      - &index
+        name: index
+        description: ''
+        tests:
+          - not_null
+      - &tx_index
+        name: tx_index
+        description: ''
+        tests:
+          - not_null
+      - *block_time
+      - &block_number
+        name: block_number
+        description: 'Block number'
+        tests:
+          - not_null
+      - &swap_fee_percentage
+        name: swap_fee_percentage
+        description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
+        tests:
+          - not_null
+

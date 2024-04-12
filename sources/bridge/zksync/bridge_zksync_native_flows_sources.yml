@@ -1,0 +1,131 @@
+version: 2
+
+sources:
+  - name: zksync_v2_ethereum
+    description: Decoded contracts for zkSync Era on Ethereum
+
+    tables:
+    - name: DiamondProxy_evt_NewPriorityRequest
+      description: Main zkSync Era rollup contract, L1 -> L2 event
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      loaded_at_field: evt_block_time
+      columns:
+        - &contract_address_bridge
+          name: contract_address
+          description: Bridge contract address      
+        - &evt_tx_hash
+          name: evt_tx_hash
+          description: Transaction hash of the event
+        - &evt_index
+          name: evt_index
+          description: Index value of the transaction"
+        - &evt_block_time
+          name: evt_block_time
+          description: Timestamp for block event time in UTC
+        - &evt_block_number
+          name: evt_block_number
+          description: Event block number
+        - &expirationTimestamp
+          name: expirationTimestamp
+          description: Transaction expiration timestamp in UNIX
+        - &factoryDeps
+          name: factoryDeps
+          description: factoryDeps
+        - &transaction
+          name: transaction
+          description: Transaction details
+        - &txHash 
+          name: txHash
+          description: L2 receiving transaction hash of the event
+        - &txId
+          name: txId
+          description: txId
+
+    - name: L1ERC20Bridge_evt_DepositInitiated
+      description: ERC20 Deposit Events
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      loaded_at_field: evt_block_time
+      columns:
+        - *contract_address_bridge
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - &amount
+          name: amount
+          description: Raw amount of the token being bridged
+        - &from
+          name: from
+          description: Address initiating the bridge transaction
+        - &l1Token
+          name: l1Token
+          description: L1 token contract address for the bridged asset
+        - &l2DepositTxHash
+          name: l2DepositTxHash
+          description: L2 receiving transaction hash of the event
+        - &to
+          name: to
+          description: Address receiving the assets of the source bridge transaction
+
+  - name: zksync_era_zksync
+    description: Decoded contracts for zkSync Era on zkSync Era
+
+    tables:
+    - name: L2EthToken_evt_Withdrawal
+      description: ETH withdrawal event from zkSync Era to Ethereum
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      loaded_at_field: evt_block_time
+      columns:
+        - &contract_address_token
+          name: contract_address
+          description: Token contract address (ETH)
+        - *evt_tx_hash
+        - &evt_tx_from
+          name: evt_tx_from
+          description: Transaction event from address
+        - &evt_tx_to
+          name: evt_tx_to
+          description: Transaction event to address
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - &_amount
+          name: _amount
+          description: Raw amount of the token being bridged
+        - &_l1Receiver
+          name: _l1Receiver
+          description: Address receiving the assets of the source bridge transaction
+        - &_l2Sender
+          name: _l2Sender
+          description: Address initiating the bridge transaction
+
+    - name: L2ERC20Bridge_evt_WithdrawalInitiated
+      description: "aToken initialization events, stable debt tokens."
+      freshness:
+        warn_after: { count: 12, period: hour }
+        error_after: { count: 24, period: hour }
+      loaded_at_field: evt_block_time
+      columns:
+        - *contract_address_bridge
+        - *evt_tx_hash
+        - *evt_tx_from
+        - *evt_tx_to
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - *amount
+        - &l1Receiver
+          name: l1Receiver
+          description: Address receiving the assets of the source bridge transaction
+        - &l2Sender
+          name: l2Sender
+          description: Address initiating the bridge transaction
+        - &l2Token
+          name: l2Token
+          description: L2 token contract address for the bridged asset

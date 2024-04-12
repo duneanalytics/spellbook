@@ -1,0 +1,31 @@
+version: 2
+
+sources: 
+  - name: unidex_optimism
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Optimism decoded tables related to Unidex Protocol
+    tables:
+      - name: metaaggregator_settlement_evt_Trade
+        loaded_at_field: evt_block_time
+      - name: trading_evt_NewOrder
+        loaded_at_field: evt_block_time
+        description: "Details the new positions opened in V1"
+      - name: trading_evt_ClosePosition
+        loaded_at_field: evt_block_time
+        description: "Details the swaps to close existing positions in V1"
+      - name: tradingv2_evt_NewOrder
+        loaded_at_field: evt_block_time
+        description: "Details the new positions opened in V2"
+      - name: tradingv2_evt_ClosePosition
+        loaded_at_field: evt_block_time
+        description: "Details the swaps to close existing positions in V2"
+      - name: tradingv3_evt_NewOrder
+        loaded_at_field: evt_block_time
+        description: "Details the new positions opened in V3"
+      - name: tradingv3_evt_ClosePosition
+        loaded_at_field: evt_block_time
+        description: "Details the swaps to close existing positions in V3"
+  
+      

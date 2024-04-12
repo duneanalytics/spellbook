@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: aerodrome_base
+    description: "decoded events and function calls for aerodrome v2 on base"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: Voter_evt_GaugeCreated
+        loaded_at_field: evt_block_time

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools_fees']
     description: >
@@ -18,6 +18,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - &contract_address
         name: contract_address
         description: 'Arbitrum address for the liquidity pool used in transaction'
@@ -58,7 +59,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'bpt', 'transfers']
     description: >
@@ -73,6 +74,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
+      - name: version
       - *contract_address
       - &block_date
         name: block_date
@@ -106,12 +108,14 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer pools.
     columns:
+      - *blockchain
+      - name: version
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
@@ -128,7 +132,7 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -139,6 +143,8 @@ models:
             - pool_id
             - token_address
     columns:
+      - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -228,11 +234,48 @@ models:
         description: "transaction.to"
       - *evt_index
 
+  - name: balancer_v2_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
+    config:
+      tags: [ 'balancer', 'arbitrum', 'amm', 'trades', 'dex', 'beta' ]
+    description: >
+      DEX trades on balancer v2 on arbitrum
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *pool_id
+      - *swap_fee
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
   - name: balancer_v2_arbitrum_liquidity
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon, viniabussafi
+      contributors: victorstefenon, viniabussafi, thetroyharris
     config:
       tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
     description: >
@@ -247,8 +290,13 @@ models:
       - name: day
         description: 'UTC event block time truncated to the day mark'
       - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -258,8 +306,13 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'
+
 
   - name: balancer_v2_arbitrum_flashloans
     meta:
@@ -297,34 +350,30 @@ models:
     meta:
       blockchain: arbitrum
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['arbitrum', 'bpt', 'prices']
     description: >
-      Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
+      Balancer Pool Token (BPT) daily price by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
-      - *contract_address
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
+      - name: contract_address
+      - name: bpt_price
 
-  - name: balancer_v2_arbitrum_trades
+  - name: balancer_v2_arbitrum_trades_legacy
     meta:
       blockchain: arbitrum
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'arbitrum', 'amm', 'trades', 'dex' ]
     description: >
@@ -368,3 +417,61 @@ models:
       - name: tx_from
       - name: tx_to
       - name: evt_index
+
+  - name: balancer_v2_arbitrum_protocol_fee
+    meta:
+      blockchain: arbitrum
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: token_symbol
+      - name: token_amount_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+      - name: treasury_share
+        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - name: treasury_revenue_usd
+        description: "Total revenue directed to Balancer DAO's treasury"
+        
+  - name: balancer_v2_arbitrum_bpt_supply
+    meta:
+      blockchain: arbiturm
+      project: balancer_v2
+      contributors: thetroyharris, viniabussafi
+    config:
+      tags: ['arbiturm', 'bpt', 'supply']
+    description: >
+      Balancer Pool Token (BPT) supply for ComposableStablePools versions 4 and 5.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - name: day
+      - name: pool_type
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: supply

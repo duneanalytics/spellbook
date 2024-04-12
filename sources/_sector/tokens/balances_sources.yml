@@ -1,0 +1,122 @@
+
+version: 2
+sources:
+  - name: tokens_ethereum
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_ethereum
+        identifier: balances_ethereum_0004
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_arbitrum
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_arbitrum
+        identifier: balances_arbitrum_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_base
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_base
+        identifier: balances_base_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_bnb
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_bnb
+        identifier: balances_bnb_0002
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_optimism
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_optimism
+        identifier: balances_optimism_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_polygon
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_polygon
+        identifier: balances_polygon_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_scroll
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_scroll
+        identifier: balances_scroll_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_avalanche_c
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_avalanche_c
+        identifier: balances_avalanche_c_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type

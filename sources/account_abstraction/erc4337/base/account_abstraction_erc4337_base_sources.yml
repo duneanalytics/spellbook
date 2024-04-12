@@ -1,0 +1,41 @@
+version: 2
+
+sources:
+  - name: erc4337_base
+    description: >
+      Decoded tables related to erc4337.
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: EntryPoint_v0_6_evt_UserOperationEvent
+        description: >
+          Decoded table related to the erc4337 user operation events version v0.6.
+        loaded_at_field: evt_block_time
+
+      - name: EntryPoint_v0_6_call_handleOps
+        description: >
+          Decoded table related to the erc4337 handle operation calls, version v0.6.
+        loaded_at_field: evt_block_time
+
+      - name: EntryPoint_v0_6_evt_AccountDeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.6.
+        loaded_at_field: evt_block_time
+
+      - name: EntryPoint_v0_7_evt_UserOperationEvent
+        description: >
+          Decoded table related to the erc4337 user operation events version v0.7.
+        loaded_at_field: evt_block_time
+
+      - name: EntryPoint_v0_7_call_handleOps
+        description: >
+          Decoded table related to the erc4337 handle operation calls, version v0.7.
+        loaded_at_field: evt_block_time
+
+      - name: EntryPoint_v0_7_evt_AccountDeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.7.
+        loaded_at_field: evt_block_time
+
+      

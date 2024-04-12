@@ -1,6 +1,32 @@
 version: 2
 
 models:
+  - name: cex_evms_addresses
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','addresses', 'deposits', 'withdrawals']
+    description: "All CEX-tied addresses identified across EVM chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "Address"
+      - name: cex_name
+        description: "Name of centralised exchange"
+      - name: distinct_name
+        description: "Distinct name of centralised exchange address"
+        tests:
+          - unique
+      - name: added_by
+        description: "Who added the address"
+      - name: added_date
+        description: "Date the address was added on"
+
   - name: cex_addresses
     meta:
       blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, bitcoin, fantom
@@ -27,3 +53,26 @@ models:
         description: "Who added the address"
       - name: added_date
         description: "Date the address was added on"
+
+  - name: cex_info
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'fantom', 'base', 'zksync', 'celo', 'zora', 'info']
+    description: >
+        CEXs info
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cex_name
+    columns:
+      - name: cex_name
+        description: "CEX name"
+      - name: x_username
+        description: "Username on X"
+      - name: cex
+        description: "Is it a CEX?"
+      - name: payment_infra
+        description: "Is it payment infrastructure custodian?"

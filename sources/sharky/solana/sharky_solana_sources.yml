@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: sharky_solana
+    description: "sharky decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: sharky_call_offerLoan
+        loaded_at_field: call_block_time
+      - name: sharky_call_rescindLoan
+        loaded_at_field: call_block_time
+      - name: sharky_call_takeLoan
+        loaded_at_field: call_block_time
+      - name: sharky_call_takeLoanV3
+        loaded_at_field: call_block_time
+      - name: sharky_call_takeLoanV3Compressed
+        loaded_at_field: call_block_time
+      - name: sharky_call_repayLoan
+        loaded_at_field: call_block_time
+      - name: sharky_call_repayLoanEscrow
+        loaded_at_field: call_block_time
+      - name: sharky_call_repayLoanV3
+        loaded_at_field: call_block_time
+      - name: sharky_call_repayLoanV3Compressed
+        loaded_at_field: call_block_time
+      - name: sharky_call_forecloseLoan
+        loaded_at_field: call_block_time
+      - name: sharky_call_forecloseLoanEscrow
+        loaded_at_field: call_block_time
+      - name: sharky_call_forecloseLoanV3
+        loaded_at_field: call_block_time
+      - name: sharky_call_forecloseLoanV3Compressed
+        loaded_at_field: call_block_time
+      - name: sharky_call_extendLoan
+        loaded_at_field: call_block_time
+      - name: sharky_call_extendLoanEscrow
+        loaded_at_field: call_block_time
+      - name: sharky_call_extendLoanV3
+        loaded_at_field: call_block_time
+      - name: sharky_call_extendLoanV3Compressed
+        loaded_at_field: call_block_time

@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'protocol_version']
     )
 }}
@@ -35,7 +36,8 @@ pairs as (
     'TradingV2_evt_LimitOrderExecuted',
     'TradingV3_evt_LimitOrderExecuted',
     'TradingV4_evt_LimitOrderExecuted',
-    'TradingV5_evt_LimitOrderExecuted'
+    'TradingV5_evt_LimitOrderExecuted',
+    'TradingV6_evt_LimitOrderExecuted'
 ] %}
 
 limit_orders_v1 AS (
@@ -98,7 +100,7 @@ limit_orders_v2 AS (
             ON t.asset = ta.asset_id
             AND ta.protocol_version = '2'
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

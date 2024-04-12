@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: keep3r_network_ethereum
+    description: >
+      Decoded events for [keep3r.network](https://keep3r.network/), a marketplace for posting and accepting jobs to help run decentralized infrastructure.
+      The scope of Keep3r Network is not to manage the jobs themselves, but to allow contracts to register as jobs for keepers, and keepers to register themselves as available to perform jobs. A "keeper" is a term used to refer to an external person and/or team that executes a job.
+      See their [docs](https://docs.keep3r.network/) for more.
+    tables:
+      - name: Keep3r_evt_LiquidityAddition
+      - name: Keep3r_v2_evt_LiquidityAddition
+      - name: Keep3r_evt_LiquidityWithdrawal
+      - name: Keep3r_v2_evt_LiquidityWithdrawal
+      - name: Keep3r_evt_JobMigrationSuccessful
+      - name: Keep3r_v2_evt_JobMigrationSuccessful
+      - name: Keep3r_evt_KeeperWork
+      - name: Keep3r_v2_evt_KeeperWork
+      - name: Keep3r_evt_LiquidityCreditsReward
+      - name: Keep3r_v2_evt_LiquidityCreditsReward
+
+  - name: keep3r_network_optimism
+    description: >
+      Decoded events for [keep3r.network] - Optimism.
+    tables:
+      - name: Keep3rSidechain_evt_LiquidityAddition
+      - name: Keep3rSidechain_evt_LiquidityWithdrawal
+      - name: Keep3rSidechain_evt_JobMigrationSuccessful
+      - name: Keep3rSidechain_evt_KeeperWork
+      - name: Keep3rSidechain_evt_LiquidityCreditsReward
+
+  - name: keep3r_network_polygon
+    description: >
+      Decoded events for [keep3r.network] - Polygon.
+    tables:
+      - name: Keep3rSidechain_evt_LiquidityAddition
+      - name: Keep3rSidechain_evt_LiquidityWithdrawal
+      - name: Keep3rSidechain_evt_JobMigrationSuccessful
+      - name: Keep3rSidechain_evt_KeeperWork
+      - name: Keep3rSidechain_evt_LiquidityCreditsReward

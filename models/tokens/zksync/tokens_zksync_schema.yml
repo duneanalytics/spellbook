@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_zksync_erc20
-    meta:
-      blockchain: zksync
-      sector: tokens
-      project: erc20
-      contributors: lgingerich
-    config:
-      tags: ['table', 'erc20']
-    description: "ERC20 Token Addresses, Symbols and Decimals"
-    columns:
-      - name: contract_address
-        description: "ERC20 token contract address"
-        tests:
-          - unique
-      - name: symbol
-        description: "ERC20 token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 token can be"
-
   - name: tokens_zksync_nft_curated
     meta:
       blockchain: zksync
@@ -62,10 +43,10 @@ models:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
-          The token standard. This is the set of rules that the contract must respect 
+          The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.
           If you are adding a token with a new standard, remember to add it the accepted values list.
-          
+
 
   - name: tokens_zksync_nft_standards
     meta:

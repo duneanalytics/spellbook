@@ -1,11 +1,11 @@
 version: 2
 
 models:
-  - name: camelot_v1_arbitrum_trades
+  - name: camelot_v2_arbitrum_trades
     meta:
       blockchain: arbitrum
       sector: dex
-      project: camelot_v1
+      project: camelot_v2
       contributors: ytoast
     config:
       tags: [ 'arbitrum','dex','trades', 'camelot', 'ytoast']
@@ -23,7 +23,7 @@ models:
       - check_dex_seed:
           blockchain: arbitrum
           project: camelot
-          version: 1
+          version: 2
     columns:
       - &blockchain
         name: blockchain

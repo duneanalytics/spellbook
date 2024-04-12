@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: ellipsis_finance_bnb
+    description: "decoded events for ellipsis finance on bnb"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: FactoryPool_call_add_base_pool
+        loaded_at_field: call_block_time
+      - name: FactoryPool_v2_call_add_base_pool
+        loaded_at_field: call_block_time
+      - name: FactoryPool_evt_PlainPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: FactoryPool_v2_evt_PlainPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: FactoryPool_evt_MetaPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: FactoryPool_v2_evt_MetaPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: FactoryPool_v3_evt_CryptoPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: FactoryPool_v4_evt_CryptoPoolDeployed
+        loaded_at_field: evt_block_time
+      - name: AirdropClaim_evt_Claimed
+        loaded_at_field: evt_block_time

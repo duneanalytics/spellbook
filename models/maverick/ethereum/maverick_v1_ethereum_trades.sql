@@ -35,7 +35,7 @@ WITH dexs AS
     INNER JOIN {{ source('maverick_v1_ethereum', 'factory_evt_PoolCreated') }} f
         ON f.poolAddress = t.contract_address
     {% if is_incremental() %}
-    WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 SELECT
@@ -76,12 +76,12 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'ethereum'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
@@ -92,7 +92,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_bought.minute') }}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -102,5 +102,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_sold.minute') }}
     {% endif %}

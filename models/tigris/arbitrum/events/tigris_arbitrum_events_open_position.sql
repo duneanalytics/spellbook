@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'protocol_version']
     )
 }}
@@ -31,7 +32,8 @@ pairs as (
     'TradingV2_evt_PositionOpened',
     'TradingV3_evt_PositionOpened',
     'TradingV4_evt_PositionOpened',
-    'TradingV5_evt_PositionOpened'
+    'TradingV5_evt_PositionOpened',
+    'TradingV6_evt_PositionOpened'
 ] %} 
 
 open_position_v1 AS (
@@ -108,7 +110,7 @@ open_position_v2 AS (
             ON CAST(json_extract_scalar(tradeInfo, '$.asset') as double) = CAST(ta.asset_id as double)
             AND ta.protocol_version = '2'
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day) 
+        WHERE {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -137,3 +139,5 @@ INNER JOIN
 {{ ref('tigris_arbitrum_events_contracts_positions') }} c 
     ON a.project_contract_address = c.trading_contract
     AND a.version = c.trading_contract_version
+
+    -- reload
