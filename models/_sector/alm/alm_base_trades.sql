@@ -34,6 +34,8 @@ WITH base_union AS (
             , volume1
             , volume0_raw
             , volume1_raw
+            , tx_hash
+            , evt_index
             , row_number() over (partition by tx_hash, evt_index, vault_address order by tx_hash asc, evt_index asc) as duplicates_rank
         FROM 
             {{ model }}
