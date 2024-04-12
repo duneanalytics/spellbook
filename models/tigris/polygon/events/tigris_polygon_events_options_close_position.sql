@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'positions_contract']
     )
 }}
@@ -14,7 +15,8 @@ WITH
 
 {% set close_position_tables = [
     'options_evt_TradeClosed',
-    'Options_V2_evt_TradeClosed'
+    'Options_V2_evt_TradeClosed',
+    'Options_V3_evt_TradeClosed'
 ] %}
 
 close_position_v2 AS (
@@ -33,7 +35,7 @@ close_position_v2 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_polygon', close_position) }} t
         {% if is_incremental() %}
-        WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

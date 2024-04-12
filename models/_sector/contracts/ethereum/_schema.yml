@@ -1,0 +1,230 @@
+version: 2
+
+models:
+
+  - name: contracts_ethereum_contract_mapping
+    meta:
+      blockchain: ethereum
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['evm', 'ethereum', 'contracts', 'addresses']
+    description: "Mapping of contracts to its creators and names on Ethereum."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+
+            
+    columns:
+      - &created_month
+        name: created_month
+        description: "Monthly partition, when the contract was created"
+      - &blockchain
+        name: blockchain
+        description: "Name of chain in Dune database"
+      - &trace_creator_address
+        name: trace_creator_address
+        description: "Address creating the contract in the transaction trace"
+      - &contract_address
+        name: contract_address
+        description: "Address of the contract"
+      - &contract_project
+        name: contract_project
+        description: "Project name of the contract"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol of the contract, if any"
+      - &contract_name
+        name: contract_name
+        description: "Contract name"
+      - &creator_address
+        name: creator_address
+        description: "Highest-level contract creator address (i.e. which address deployed the factory which deployed contracts), or the tx_from when the contract creator address is non-deterministic."
+      - &trace_deployer_address
+        name: trace_deployer_address
+        description: "Attribution to the mapped deployer address at the creation trace, handles for ~most deterministic deployers and smart wallet creations."
+      - &created_time
+        name: created_time
+        description: "contract creation time"
+      - &is_self_destruct
+        name: is_self_destruct
+        description: "Flag if it is a self destruct contract"
+      - &created_tx_hash
+        name: created_tx_hash
+        description: "Contract creation transaction hash"
+      - &created_block_number
+        name: created_block_number
+        description: "Contract creation block number"
+      - &created_tx_from
+        name: created_tx_from
+        description: "Contract creation transaction from address"
+      - &created_tx_to
+        name: created_tx_to
+        description: "Contract creation transaction to address"
+      - &created_tx_method_id
+        name: created_tx_method_id
+        description: "Method ID of the transaction. This is useful for determining how a contract was deployed (i.e Safe transaction vs traditional deployment)"
+      - &created_tx_index
+        name: created_tx_index
+        description: "Index of the contract creation transaction within its block"
+      - &top_level_contract_address
+        name: top_level_contract_address
+        description: "Top-Level contract address"
+      - &top_level_time
+        name: top_level_time
+        description: "Top-Level contract creation transaction block time"
+      - &top_level_tx_hash
+        name: top_level_tx_hash
+        description: "Top-Level contract creation transaction hash"
+      - &top_level_block_number
+        name: top_level_block_number
+        description: "Top-Level contract creation transaction block number"
+      - &top_level_tx_from
+        name: top_level_tx_from
+        description: "Top-Level contract creation transaction from address"
+      - &top_level_tx_to
+        name: top_level_tx_to
+        description: "Top-Level contract creation transaction to address"
+      - &top_level_tx_method_id
+        name: top_level_tx_method_id
+        description: "Method ID of the top-level transaction. This is useful for determining how the top-level contract was deployed (i.e Safe transaction vs traditional deployment)"
+      
+      - &code_bytelength
+        name: code_bytelength
+        description: "Length of the deployed code, measured in bytes. This is used for spam filtering"
+      - &token_standard
+        name: token_standard
+        description: "What token standard the contract is. For non-tokens, this field will be null."
+        
+      - &code
+        name: code
+        description: "Runtime bytecode of the contract"
+
+      - &code_deploy_rank_by_chain
+        name: code_deploy_rank_by_chain
+        description: "Was this the 1st, 2rd, 3rd, etc time the same exact bytecode was deployed by chain? (1 = 1st). This can be used for spam filtering."
+      - &is_eoa_deployed
+        name: is_eoa_deployed
+        description: "Was the contract deployed by an EOA (test if the trace creator = the transaction sender)"
+      - &is_smart_wallet_deployed
+        name: is_smart_wallet_deployed
+        description: "Was the contract deployed by a smart wallet (i.e. Gnosis Safe, ERC4337 wallet)"
+      - &is_deterministic_deployer_deployed
+        name: is_deterministic_deployer_deployed
+        description: "Was the contract deployed by a deterministic deployer factory (i.e. create2)"
+
+  - name: contracts_ethereum_find_self_destruct_contracts
+    meta:
+      blockchain: ethereum
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['evm', 'contracts', 'addresses']
+    description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+
+    columns:
+      - *blockchain
+      - *created_time
+      - *created_block_number
+      - *created_tx_hash
+      - *contract_address
+      - &destructed_time
+        name: destructed_time
+        description: "Block Time when contract was destructed"
+      - &destructed_block_number
+        name: destructed_block_number
+        description: "Block Number when contract was destructed"
+      - &destructed_tx_hash
+        name: destructed_tx_hash
+        description: "Tx Hash where contract was destructed"
+
+  - name: contracts_ethereum_base_starting_level
+    meta:
+      blockchain: ethereum
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['evm', 'ethereum', 'contracts', 'addresses']
+    description: "Base Level for mapping of contracts to its creators and names on Ethereum."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+
+            
+    columns:
+      - *blockchain
+      - *trace_creator_address
+      - *contract_address
+        
+      - *created_time
+      - *created_month
+      - *created_block_number
+      - *created_tx_hash
+      - *created_tx_from
+      - *created_tx_to
+      - *created_tx_method_id
+      - *created_tx_index
+      - *code_bytelength
+      - *code
+      - &reinitialize_rank
+        name: reinitialize_rank
+        description: "Rank of the same contract being deployed in descending order - used to only ensure we get the most recent contract instance (allowlist & self-destructs can cause duplicates)."
+
+  - name: contracts_ethereum_base_iterated_creators
+    meta:
+      blockchain: ethereum
+      sector: contracts
+      contributors: chuxin, msilb7
+    config:
+      tags: ['evm', 'ethereum', 'contracts', 'addresses']
+    description: "Iterated creators for mapping of contracts to its creators and names on Ethereum."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+
+            
+    columns:
+      - *blockchain
+      - *trace_creator_address
+      - *creator_address
+      - *trace_deployer_address
+      - *contract_address
+      - *created_time
+      - *created_month
+      - *top_level_contract_address
+      - *top_level_time
+      - *created_tx_hash
+      - *created_block_number
+      - *top_level_tx_hash
+      - *top_level_block_number
+      - *top_level_tx_from
+      - *top_level_tx_to
+      - *top_level_tx_method_id
+      - *created_tx_from
+      - *created_tx_to
+      - *created_tx_method_id
+      - *created_tx_index
+      - *code_bytelength
+      - *code_deploy_rank_by_chain
+      - *code
+      - *is_self_destruct
+      - &creator_address_lineage
+        name: creator_address_lineage
+        description: "array of the lineage of creator addresses until the top-level creator"
+      - &tx_method_id_lineage
+        name: tx_method_id_lineage
+        description: "array of the lineage of tx method ids until the top-level creator"
+      - &token_standard_erc20
+        name: token_standard_erc20
+        description: "Token Standard ERC20 Only"

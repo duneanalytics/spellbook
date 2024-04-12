@@ -1,6 +1,65 @@
 version: 2
 
 models:
+  - name: moola_celo_supply
+    meta:
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'moola', 'aave_v2', 'celo']
+    description: "All Moola supply transactions on Celo"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "Withdrawn to wallet address"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD"
+      - &block_month
+        name: block_month
+        description: "Block Month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
   - name: moola_celo_interest_rates
     meta:
       blockchain: celo
@@ -14,9 +73,7 @@ models:
       - &reserve
         name: reserve
         description: "Moola reserve contract address"
-      - &symbol
-        name: symbol
-        description: "Symbol of the reserve"
+      - *symbol
       - &evt_block_hour
         name: evt_block_hour
         description: "Block timestamp truncated to hours"
@@ -29,60 +86,6 @@ models:
       - &variable_borrow_apy
         name: variable_borrow_apy
         description: "Hourly variable borrow interest rate value of the reserve"
-        
-  - name: moola_celo_supply
-    meta:
-      blockchain: celo
-      sector: lending
-      project: moola
-      contributors: tomfutago
-    config:
-      tags: ['celo', 'moola', 'supply', 'lending', 'aave_v2']
-    description: "All Moola transactions involving supply transactions on celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - evt_tx_hash
-            - evt_index
-    columns:
-      - &evt_block_month
-        name: evt_block_month
-        description: "Block Month column used to partition data in this table"
-      - &transaction_type
-        name: transaction_type
-        description: "Transaction type"
-      - *symbol
-      - &token_address
-        name: token_address
-        description: "Moola reserve contract address"  
-      - &depositor
-        name: depositor
-        description: "Depositor wallet address"
-      - &withdrawn_to
-        name: withdrawn_to
-        description: "The wallet address where the tokens are withdrawn"
-      - &liquidator
-        name: liquidator
-        description: "Liquidator wallet address"
-      - &amount
-        name: amount
-        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
-      - &amount_usd
-        name: amount_usd
-        description: "Token amount in USD" 
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: "Transaction hash of the event"
-      - &evt_index
-        name: evt_index
-        description: "Event index"   
-      - &evt_block_time
-        name: evt_block_time
-        description: "Timestamp for block event time in UTC"
-      - &evt_block_number
-        name: evt_block_number
-        description: "Event block number"
 
   - name: moola_celo_borrow
     meta:
@@ -91,59 +94,54 @@ models:
       project: moola
       contributors: tomfutago
     config:
-      tags: ['celo', 'moola', 'borrow', 'lending', 'aave_v2']
-    description: "All Moola transactions involving borrow transactions on Celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - transaction_type
-            - evt_tx_hash
-            - evt_index
+      tags: ['lending', 'borrow', 'moola', 'aave_v2', 'celo']
+    description: "All Moola borrow transactions on Celo"
     columns:
-      - *evt_block_month
+      - *blockchain
+      - *project
+      - *version
       - *transaction_type
       - *symbol
       - *token_address
-      - &borrower
-        name: borrower
+      - name: borrower
         description: "Borrower wallet address"
-      - &repayer
-        name: repayer
+      - name: repayer
         description: "Repayer wallet address"
       - *liquidator
       - *amount
-      - *amount_usd
-      - *evt_tx_hash
+      - *usd_amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
       - *evt_index
-      - *evt_block_time
-      - *evt_block_number
 
   - name: moola_celo_flashloans
     meta:
-     blockchain: celo
-     sector: lending
-     contributors: tomfutago
+      blockchain: celo
+      sector: lending
+      project: moola
+      contributors: tomfutago
     config:
-      tags: ['celo', 'moola', 'flashloans', 'lending', 'aave_v2']
-    description: "Moola flashloans on Celo"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_tx_hash
-            - evt_index
+      tags: ['lending', 'flashloans', 'moola', 'aave_v2', 'celo']
+    description: "All Moola flashloans transactions on Celo"
     columns:
-      - *evt_block_month
-      - *evt_block_time
-      - *evt_block_number
+      - *blockchain
+      - *project
+      - *version
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
       - *amount
-      - *amount_usd
-      - *evt_tx_hash
-      - *evt_index
-      - name: fee
-        description: "Flashloan fee"
-      - *token_address
+      - *usd_amount
+      - &fee
+        name: fee
       - *symbol
-      - name: recipient
-        description: "Flashloan recipient"
-      - name: contract_address
-        description: "Flashload contract address"
+      - *token_address
+      - &contract_address
+        name: contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

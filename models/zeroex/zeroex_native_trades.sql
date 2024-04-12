@@ -25,6 +25,7 @@ FROM (
       block_month  as block_month,
       block_date  as block_date,
       block_time  as block_time,
+      block_number  as block_number,
       maker_symbol as  token_bought_symbol,
       taker_symbol  as  token_sold_symbol,
       token_pair  as token_pair,

@@ -27,7 +27,7 @@ with source_ethereum_transactions as (
 )
 ,ref_tokens_erc20 as (
     select *
-    from {{ ref('tokens_erc20') }}
+    from {{ source('tokens', 'erc20') }}
     where blockchain = '{{ blockchain }}'
 )
 ,ref_nft_aggregators as (
@@ -66,6 +66,7 @@ with source_ethereum_transactions as (
       cross join unnest(orderhashes) with ordinality as foo(om_order_hash,om_order_id)
      where contract_address in (0x00000000000001ad428e4906ae43d8f9852d0dd6 -- Seaport v1.4
                                ,0x00000000000000adc04c56bf30ac9d3c0aaf14dc -- Seaport v1.5
+                               ,0x0000000000000068F116a894984e2DB1123eB395 -- Seaport v1.6
                                )
     ) group by 1,2,3,4  -- deduplicate order hash re-use in advanced matching
 )
@@ -133,6 +134,7 @@ with source_ethereum_transactions as (
         cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
         where contract_address in (0x00000000000001ad428e4906ae43d8f9852d0dd6 -- Seaport v1.4
                                  ,0x00000000000000adc04c56bf30ac9d3c0aaf14dc -- Seaport v1.5
+                                 ,0x0000000000000068F116a894984e2DB1123eB395 -- Seaport v1.6
                                  )
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
@@ -201,6 +203,7 @@ with source_ethereum_transactions as (
         cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
        where contract_address in (0x00000000000001ad428e4906ae43d8f9852d0dd6 -- Seaport v1.4
                                  ,0x00000000000000adc04c56bf30ac9d3c0aaf14dc -- Seaport v1.5
+                                 ,0x0000000000000068F116a894984e2DB1123eB395 -- Seaport v1.6
                                  )
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn

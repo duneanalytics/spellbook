@@ -1,113 +1,161 @@
 version: 2
 
 models:
-  - name: oneinch_zksync_calls_transfers
+  - name: oneinch_zksync_lop
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['grkhr', 'max-morrow']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'lop', 'calls']
     description: >
-        oneinch zksync calls & transfers
-
+        1inch limit order protocol calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
     columns:
-      - &blockchain
-        name: blockchain
+      - name: blockchain
         tests:
           - not_null
-      - &block_time
-        name: block_time
-      - &tx_hash
-        name: tx_hash
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
         tests:
           - not_null
-      - &tx_from
-        name: tx_from
-      - &tx_to
-        name: tx_to
-      - &tx_success
-        name: tx_success
-      - &call_success
-        name: call_success
-      - &call_trace_address
-        name: call_trace_address
-      - &call_from
-        name: call_from
-      - &call_to
-        name: call_to
-      - &call_selector
-        name: call_selector
-      - &protocol
-        name: protocol
-      - &transfer_trace_address
-        name: transfer_trace_address
-      - &contract_address
-        name: contract_address
-      - &amount
-        name: amount
-      - &native_token
-        name: native_token
-      - &transfer_from
-        name: transfer_from
-      - &transfer_to
-        name: transfer_to
-      - &transfers_between_players
-        name: transfers_between_players
-      - &rn_tta_asc
-        name: rn_tta_asc
-      - &rn_tta_desc
-        name: rn_tta_desc
-      - &call_output
-        name: call_output
-      - &call_input
-        name: call_input
-      - &minute
-        name: minute
-      - &block_month
-        name: block_month
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
         tests:
           - not_null
-      - &unique_call_transfer_id
-        name: unique_call_transfer_id
-        tests:
-          - unique
-          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: maker
+      - name: receiver
+      - name: maker_asset
+      - name: making_amount
+      - name: taker_asset
+      - name: taking_amount
+      - name: order_hash
+      - name: flags
+      - name: remains
+      - name: minute
+      - name: block_month
 
-
-  - name: oneinch_zksync_ar_calls_transfers
+  - name: oneinch_zksync_ar
     meta:
       blockchain: ['zksync']
       sector: oneinch
-      contributors: ['grkhr']
+      contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'raw']
+      tags: ['oneinch', 'ar', 'calls']
     description: >
-        oneinch zksync calls & transfers
-
+        1inch aggregation router calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
     columns:
-      - *blockchain
-      - *block_time
-      - *tx_hash
-      - *tx_from
-      - *tx_success
-      - *call_success
-      - *call_trace_address
-      - &caller
-        name: caller
-      - *call_selector
-      - *transfer_trace_address
-      - *contract_address
-      - *amount
-      - *native_token
-      - *transfer_from
-      - *transfer_to
-      - &rn_ta_asc
-        name: rn_ta_asc
-      - &rn_ta_desc
-        name: rn_ta_desc
-      - *call_output
-      - *call_input
-      - *minute
-      - *block_month
-      - *unique_call_transfer_id
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: tx_from
+      - name: tx_to
+      - name: tx_success
+      - name: tx_nonce
+      - name: tx_gas_used
+      - name: tx_gas_price
+      - name: tx_priority_fee_per_gas
+      - name: contract_name
+      - name: protocol
+      - name: protocol_version
+      - name: method
+      - name: call_selector
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: call_from
+      - name: call_to
+      - name: call_success
+      - name: call_gas_used
+      - name: call_output
+      - name: call_error
+      - name: call_type
+      - name: src_receiver
+      - name: dst_receiver
+      - name: src_token_address
+      - name: dst_token_address
+      - name: src_token_amount
+      - name: dst_token_amount
+      - name: dst_token_amount_min
+      - name: flags
+      - name: pools
+      - name: router_type
+      - name: remains
+      - name: minute
+      - name: block_month
+
+  - name: oneinch_zksync_call_transfers
+    meta:
+      blockchain: ['zksync']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'calls']
+    description: >
+        1inch transfers within calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - call_trace_address
+            - transfer_trace_address
+            - transfer_native
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: call_trace_address
+        tests:
+          - not_null
+      - name: transfer_trace_address
+        tests:
+          - not_null
+      - name: contract_address
+      - name: amount
+      - name: transfer_native
+      - name: transfer_from
+      - name: transfer_to
+      - name: transfers_between_players
+      - name: minute
+      - name: block_month

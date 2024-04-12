@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: aave_v2_avalanche_c
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: aave_v3_avalanche_c
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
+
+  - name: benqi_finance_avalanche_c
+    tables:
+      - name: QiErc20Delegate_evt_Borrow
+      - name: QiAvax_evt_Borrow
+      - name: QiErc20Delegate_evt_RepayBorrow
+      - name: QiAvax_evt_RepayBorrow
+      - name: QiErc20Delegate_evt_LiquidateBorrow
+      - name: QiAvax_evt_LiquidateBorrow
+
+  - name: the_granary_avalanche_c
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

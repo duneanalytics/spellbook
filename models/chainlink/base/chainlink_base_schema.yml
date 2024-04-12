@@ -1,0 +1,499 @@
+version: 2
+
+models:
+  - name: chainlink_base_ccip_fulfilled_transactions
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "fulfilled", "transactions", "base"]
+    description: >
+      Chainlink CCIP Fulfilled Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - caller_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block Time"
+      - &date_start
+        name: date_start
+        description: "Date Start"
+      - &caller_address
+        name: caller_address
+        description: "Caller Address"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction Hash"
+      - &tx_index
+        name: tx_index
+        description: "Transaction Index"
+
+  - name: chainlink_base_ccip_gas_daily
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "gas", "daily", "base"]
+    description: >
+      Chainlink CCIP Gas Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - &date_month
+        name: date_month
+        description: "Date Month"
+      - &node_address
+        name: node_address
+        description: "Node Address"
+      - &operator_name
+        name: operator_name
+        description: "Operator Name"
+      - &fulfilled_token_amount
+        name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - &fulfilled_usd_amount
+        name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - &reverted_token_amount
+        name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - &reverted_usd_amount
+        name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - &total_token_amount
+        name: total_token_amount
+        description: "Total Token Amount"
+      - &total_usd_amount
+        name: total_usd_amount
+        description: "Total USD Amount"
+
+  - name: chainlink_base_ccip_request_daily
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "request", "daily", "base"]
+    description: >
+      Chainlink CCIP Request Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &fulfilled_requests
+        name: fulfilled_requests
+        description: "Fulfilled Requests"
+      - &reverted_requests
+        name: reverted_requests
+        description: "Reverted Requests"
+      - &total_requests
+        name: total_requests
+        description: "Total Requests"
+
+  - name: chainlink_base_ccip_reverted_transactions
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "reverted", "transactions", "base"]
+    description: >
+      Chainlink CCIP Reverted Transactions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - caller_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_start
+      - *caller_address
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_base_ccip_reward_daily
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "reward", "daily", "base"]
+    description: >
+      Chainlink CCIP Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - token
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &token_amount
+        name: token_amount
+        description: "Token Amount"
+      - &usd_amount
+        name: usd_amount
+        description: "USD Amount"
+      - &token
+        name: token
+        description: "Token"
+
+  - name: chainlink_base_ccip_send_requested
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "base"]
+    description: >
+      Chainlink CCIP Send Requested
+    columns:
+      - *blockchain
+      - &evt_block_time
+        name: evt_block_time
+        description: "Event Block Time"
+      - &fee_amount
+        name: fee_amount
+        description: "Fee Amount"
+      - *token
+      - &destination_blockchain
+        name: destination_blockchain
+        description: "Destination Blockchain"
+      - &destination_chain_selector
+        name: destination_chain_selector
+        description: "Destination Chain Selector"
+
+  - name: chainlink_base_ccip_send_requested_daily
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "daily", "base"]
+    description: >
+      Chainlink CCIP Send Requested Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - token
+            - destination_blockchain
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *fee_amount
+      - *token
+      - *destination_blockchain
+      - &count
+        name: count
+        description: "Count"
+
+  - name: chainlink_base_ccip_send_traces
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "traces", "base"]
+    description: >
+      Chainlink CCIP Send Traces
+    columns:
+      - *blockchain
+      - &block_hash
+        name: block_hash
+        description: "Block Hash"
+      - &block_number
+        name: block_number
+        description: "Block Number"
+      - *block_time
+      - *tx_hash
+      - &from
+        name: from
+        description: "From"
+      - &to
+        name: to
+        description: "To"
+      - &input
+        name: input
+        description: "Input"
+      - &output
+        name: output
+        description: "Output"
+      - &tx_success
+        name: tx_success
+        description: "Transaction Success"
+      - &value
+        name: value
+        description: "Value"
+      - &chain_selector
+        name: chain_selector
+        description: "Chain Selector"
+      - &destination
+        name: destination
+        description: "Destination"
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
+
+  - name: chainlink_base_ccip_tokens_locked_logs
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "tokens", "locked", "logs", "base"]
+    description: >
+      Chainlink CCIP Tokens Locked Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - &contract_address
+        name: contract_address
+        description: "Contract Address"
+      - &data
+        name: data
+        description: "Data"
+      - &topic0
+        name: topic0
+        description: "Topic 0"
+      - &topic1
+        name: topic1
+        description: "Topic 1"
+      - &topic2
+        name: topic2
+        description: "Topic 2"
+      - &topic3
+        name: topic3
+        description: "Topic 3"
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - &index
+        name: index
+        description: "Index"
+      - *tx_index
+      - &total_tokens
+        name: total_tokens
+        description: "Total Tokens"
+
+  - name: chainlink_base_ccip_transmitted_fulfilled
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "transmitted", "fulfilled", "base"]
+    description: >
+      Chainlink CCIP Transmitted Fulfilled
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_base_ccip_transmitted_reverted
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "transmitted", "reverted", "base"]
+    description: >
+      Chainlink CCIP Transmitted Reverted
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_base_ccip_transmitted_logs
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "transmitted", "logs", "base"]
+    description: >
+      Chainlink CCIP Transmitted Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_base_ccip_nop_paid_logs
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "nop", "paid", "logs", "base"]
+    description: >
+      Chainlink CCIP Nop Paid Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &nop_address
+        name: nop_address
+        description: "Nop Address"
+      - *total_tokens
+
+  - name: chainlink_base_ccip_nop_reward_daily
+    meta:
+      blockchain: "base"
+
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "nop", "reward", "daily", "base"]
+    description: >
+      Chainlink CCIP Nop Reward Daily
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date_start
+            - nop_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *token_amount
+      - *usd_amount
+      - *operator_name
+      - *nop_address
+
+  - name: chainlink_base_ccip_send_requested_logs_v1
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "logs", "base"]
+    description: >
+      Chainlink CCIP Send Requested Logs v1
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &fee_token_amount
+        name: fee_token_amount
+        description: "Fee Token Amount"
+      - &origin_selector
+        name: origin_selector
+        description: "Origin Selector"
+      - &fee_token
+        name: fee_token
+        description: "Fee Token"
+      - &destination_selector
+        name: destination_selector
+        description: "Destination Selector"
+      - *destination_blockchain
+
+  - name: chainlink_base_ccip_send_requested_logs_v1_2
+    meta:
+      blockchain: "base"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "logs", "base"]
+    description: >
+      Chainlink CCIP Send Requested Logs v1_2
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *fee_token_amount
+      - *origin_selector
+      - *fee_token
+      - *destination_selector
+      - *destination_blockchain

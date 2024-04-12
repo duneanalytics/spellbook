@@ -35,7 +35,7 @@ WITH send_detail AS (
         CASE WHEN bytearray_length(_destination) >= 40
             THEN bytearray_reverse(bytearray_substring(bytearray_reverse(_destination), 21))
             ELSE _destination END AS remote_contract_address
-    FROM {{ source ('layezero_base', 'Endpoint_call_send') }} s
+    FROM {{ source ('layerzero_base', 'Endpoint_call_send') }} s
     INNER JOIN {{ source('base','transactions') }} t on t.block_number = s.call_block_number
         AND t.hash = s.call_tx_hash
         {% if not is_incremental() %}
@@ -169,7 +169,7 @@ LEFT JOIN trans_detail t ON s.block_number = t.block_number
     AND s.call_send_index = 1
 LEFT JOIN {{ ref('layerzero_chain_list') }} cls ON cls.chain_id = s.source_chain_id
 LEFT JOIN {{ ref('layerzero_chain_list') }} cld ON cld.chain_id = s.destination_chain_id
-LEFT JOIN {{ ref('tokens_erc20') }} erc ON erc.blockchain = 'base' AND erc.contract_address = t.currency_contract
+LEFT JOIN {{ source('tokens', 'erc20') }} erc ON erc.blockchain = 'base' AND erc.contract_address = t.currency_contract
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.blockchain = 'base' AND p.contract_address = t.currency_contract
     AND p.minute = date_trunc('minute', s.block_time)
     {% if not is_incremental() %}

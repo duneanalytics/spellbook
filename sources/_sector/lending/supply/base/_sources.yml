@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: aave_v3_base
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+      - name: Pool_evt_RedeemUnderlying
+
+  - name: compound_v3_base
+    tables:
+      - name: Comet_evt_SupplyCollateral
+      - name: cUSDbCv3Comet_evt_SupplyCollateral
+      - name: Comet_evt_WithdrawCollateral
+      - name: cUSDbCv3Comet_evt_WithdrawCollateral
+      - name: Comet_evt_AbsorbCollateral
+      - name: cUSDbCv3Comet_evt_AbsorbCollateral
+
+  - name: seamlessprotocol_base
+    tables:
+      - name: L2Pool_evt_Supply
+      - name: L2Pool_evt_Withdraw
+      - name: L2Pool_evt_RedeemUnderlying
+
+  - name: moonwell_base
+    tables:
+      - name: mcbETH_evt_Mint
+      - name: mcbETH_evt_Redeem
+      - name: mDAI_evt_Mint
+      - name: mDAI_evt_Redeem
+      - name: mUSDC_evt_Mint
+      - name: mUSDC_evt_Redeem
+      - name: mUSDCnative_evt_Mint
+      - name: mUSDCnative_evt_Redeem
+      - name: mWETH_evt_Mint
+      - name: mWETH_evt_Redeem
+      - name: mwstETH_evt_Mint
+      - name: mwstETH_evt_Redeem
+      - name: mrETH_evt_Mint
+      - name: mrETH_evt_Redeem
+
+  - name: sonne_finance_base
+    tables:
+      - name: sobcbETH_evt_Mint
+      - name: sobcbETH_evt_Redeem
+      - name: sobDAI_evt_Mint
+      - name: sobDAI_evt_Redeem
+      - name: sobUSDbC_evt_Mint
+      - name: sobUSDbC_evt_Redeem
+      - name: sobUSDC_evt_Mint
+      - name: sobUSDC_evt_Redeem
+      - name: sobWETH_evt_Mint
+      - name: sobWETH_evt_Redeem
+
+  - name: the_granary_base
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

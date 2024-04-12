@@ -1,6 +1,6 @@
 {{ config(
+        schema = 'balancer_avalanche_c',
         alias = 'pools_tokens_weights',
-        
         )
 }}
 
@@ -8,6 +8,8 @@ SELECT *
 FROM
 (
         SELECT
+                blockchain,
+                version,
                 pool_id,
                 token_address,
                 normalized_weight

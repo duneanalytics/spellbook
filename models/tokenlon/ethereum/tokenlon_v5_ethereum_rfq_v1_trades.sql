@@ -38,6 +38,15 @@ WITH dexs AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day) 
     {% endif %}
+), prices AS (
+    SELECT DISTINCT
+      DATE_TRUNC('hour', minute) AS hour,
+      contract_address,
+      blockchain,
+      decimals,
+      AVG(price) AS price
+    FROM {{ source('prices', 'usd') }}
+    GROUP BY DATE_TRUNC('hour', minute), contract_address,blockchain,decimals
 )
 
 SELECT
@@ -55,8 +64,8 @@ SELECT
     END                                                         AS token_pair,
     dexs.token_bought_amount_raw / power(10, erc20a.decimals)   AS token_bought_amount,
     dexs.token_sold_amount_raw / power(10, erc20b.decimals)     AS token_sold_amount,
-    CAST(dexs.token_bought_amount_raw AS DECIMAL(38, 0))        AS token_bought_amount_raw,
-    CAST(dexs.token_sold_amount_raw AS DECIMAL(38, 0))          AS token_sold_amount_raw,
+    CAST(dexs.token_bought_amount_raw AS UINT256)        AS token_bought_amount_raw,
+    CAST(dexs.token_sold_amount_raw AS UINT256)          AS token_sold_amount_raw,
     coalesce(dexs.
         amount_usd, 
         (dexs.token_bought_amount_raw / power(10, p_bought.decimals)) * p_bought.price, 
@@ -81,29 +90,29 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     {% if is_incremental() %}
     AND tx.block_time >= date_trunc('day', now() - interval '7' day) 
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a 
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a 
     ON erc20a.contract_address = dexs.token_bought_address
     AND erc20a.blockchain = 'ethereum'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b 
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b 
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought 
-    ON p_bought.minute = date_trunc('minute', dexs.block_time)
+LEFT JOIN prices p_bought
+    ON p_bought.hour = date_trunc('hour', dexs.block_time)
     AND p_bought.contract_address = dexs.token_bought_address
     AND p_bought.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND p_bought.minute >= {{project_start_date}}
+    AND p_bought.hour >= {{project_start_date}}
     {% endif %} 
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_bought.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
-    ON p_sold.minute = date_trunc('minute', dexs.block_time)
+LEFT JOIN prices p_sold
+    ON p_sold.hour = date_trunc('hour', dexs.block_time)
     AND p_sold.contract_address = dexs.token_sold_address
     AND p_sold.blockchain = 'ethereum' 
     {% if not is_incremental() %}
-    AND p_sold.minute >= {{project_start_date}}
+    AND p_sold.hour >= {{project_start_date}}
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND p_sold.hour >= date_trunc('day', now() - interval '7' day)
     {% endif %}

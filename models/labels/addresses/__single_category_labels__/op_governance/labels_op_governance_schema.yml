@@ -1,0 +1,169 @@
+version: 2
+
+models:
+  - name: labels_op_governance_voters
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'voters', 'governance']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - &blockchain
+        name: blockchain
+        description: 'Blockchain'
+      - &address
+        name: address
+        description: 'Address of Optimism voter'
+      - &name
+        name: name
+        description: 'Persona label attributed to voters based on voting behaviour and usage'
+      - &category
+        name: category
+        description: 'Label category'
+      - &contributor
+        name: contributor
+        description: 'Wizard(s) contributing to labels'
+      - &source
+        name: source
+        description: 'How were labels generated (could be static or query)'
+      - &created_at
+        name: created_at
+        description: 'When were labels created'
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
+
+  - name: labels_op_governance_delegators
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'delegators', 'governance']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_op_governance_retropgf_proposal_submitters
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'retropgf', 'proposal submitters', 'governance']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+
+  - name: labels_op_governance_retropgf_voters
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'retropgf', 'voters', 'governance']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+
+  - name: labels_op_governance_derived_archetype
+    meta:
+      blockchain: optimism
+      sector: labels
+      project: op_governance
+      contributors: kaiblade
+    config:
+      tags: ['labels', 'optimism', 'derived archetype', 'governance']
+    description: '{{ doc("op_address_archetype_labels_description") }}'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+            - category
+            - model_name
+            - blockchain
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type

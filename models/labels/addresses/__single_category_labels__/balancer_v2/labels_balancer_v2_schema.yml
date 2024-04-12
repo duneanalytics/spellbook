@@ -233,12 +233,12 @@ models:
 
   - name: labels_balancer_v2_gauges
     meta:
-      blockchain: ethereum, polygon, optimism, arbitrum
+      blockchain: ethereum, polygon, optimism, arbitrum, avalanche_c, base, gnosis
       sector: labels
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
-      tags: ['labels', 'ethereum', 'polygon', 'optimism', 'arbitrum', 'gauges']
+      tags: ['labels', 'ethereum', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'base', 'gnosis','gauges']
     description: 'Balancer v2 gauge labels.'
     columns:
       - *blockchain
@@ -257,7 +257,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'gauges']
     description: 'Balancer v2 gauge labels.'
@@ -282,7 +282,7 @@ models:
       blockchain: polygon
       sector: labels
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'polygon', 'gauges']
     description: 'Balancer v2 gauge labels.'
@@ -307,7 +307,7 @@ models:
       blockchain: arbitrum
       sector: labels
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'arbitrum', 'gauges']
     description: 'Balancer v2 gauge labels.'
@@ -332,7 +332,7 @@ models:
       blockchain: optimism
       sector: labels
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'optimism', 'gauges']
     description: 'Balancer v2 gauge labels.'
@@ -351,3 +351,78 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_balancer_v2_gauges_avalanche_c
+    meta:
+      blockchain: avalanche_c
+      sector: labels
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['labels', 'avalanche_c', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type      
+
+  - name: labels_balancer_v2_gauges_base
+    meta:
+      blockchain: base
+      sector: labels
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['labels', 'base', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type        
+
+  - name: labels_balancer_v2_gauges_gnosis
+    meta:
+      blockchain: gnosis
+      sector: labels
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['labels', 'gnosis', 'gauges']
+    description: 'Balancer v2 gauge labels.'
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type            

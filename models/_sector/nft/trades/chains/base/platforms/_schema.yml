@@ -1,0 +1,123 @@
+version: 2
+
+models:
+  - name: alienswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: nft
+      project: alienswap
+      contributors: [ 'ARDev097']
+    config:
+      tags: [ 'base', 'nft', 'trades', 'alienswap' ]
+    description: "AlienSwap base trades"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+      - check_seed:
+          seed_file: ref('alienswap_base_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+
+  - name: element_base_base_trades
+    meta:
+      blockchain: base
+      sector: nft
+      project: element
+      contributors: ['Henrystats' ]
+    config:
+      tags: [ 'base', 'nft', 'trades', 'element' ]
+    description: "element base trades"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('element_ex_base','ElementEx_evt_ERC721BuyOrderFilled')
+            - source('element_ex_base','ElementEx_evt_ERC721SellOrderFilled')
+            - source('element_ex_base','ElementEx_evt_ERC1155BuyOrderFilled')
+            - source('element_ex_base','ElementEx_evt_ERC1155SellOrderFilled')
+      - check_seed:
+          seed_file: ref('element_base_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+
+  - name: zonic_base_base_trades
+    meta:
+      blockchain: base
+      sector: nft
+      project: zonic
+      contributors: tomfutago
+    config:
+      tags: [ 'base', 'nft', 'trades', 'zonic' ]
+    description: "Zonic base trades on Base"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('zonic_base','ZonicMarketplace_evt_ZonicBasicOrderFulfilled')
+      - check_seed:
+          seed_file: ref('zonic_base_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+
+  - name: sudoswap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: nft
+      project: sudoswap
+      contributors: [ 'ilemi' ]
+    config:
+      tags: [ 'base', 'nft', 'trades', 'sudoswap' ]
+    description: "sudoswap v2 base trades"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+      - check_seed:
+          seed_file: ref('sudoswap_v2_base_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw

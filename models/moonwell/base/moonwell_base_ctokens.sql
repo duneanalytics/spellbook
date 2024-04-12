@@ -1,0 +1,17 @@
+{{
+	config(
+		schema = 'moonwell_base',
+		alias = 'ctokens'
+	)
+}}
+
+select asset_symbol, ctoken_address, asset_address
+from (values
+  	('WETH', 0x628ff693426583d9a7fb391e54366292f509d457, 0x4200000000000000000000000000000000000006),
+  	('cbETH', 0x3bf93770f2d4a794c3d9ebefbaebae2a8f09a5e5, 0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22),
+  	('USDC', 0xedc817a28e8b93b03976fbd4a3ddbc9f7d176c22, 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913),
+  	('DAI', 0x73b06d8d18de422e269645eace15400de7462417, 0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb),
+  	('wstETH', 0x627fe393bc6edda28e99ae648fd6ff362514304b, 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452),
+  	('rETH', 0xCB1DaCd30638ae38F2B94eA64F066045B7D45f44, 0xB6fe221Fe9EeF5aBa221c348bA20A1Bf5e73624c),
+  	('USDbC', 0x703843c3379b52f9ff486c9f5892218d2a065cc8, 0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA)
+) as x (asset_symbol, ctoken_address, asset_address)

@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: aave_v3_optimism
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+      - name: Pool_evt_RedeemUnderlying
+
+  - name: sonne_finance_optimism
+    tables:
+      - name: soDAI_evt_Mint
+      - name: soDAI_evt_Redeem
+      - name: soMAI_evt_Mint
+      - name: soMAI_evt_Redeem
+      - name: soOP_evt_Mint
+      - name: soOP_evt_Redeem
+      - name: soSNX_evt_Mint
+      - name: soSNX_evt_Redeem
+      - name: soSUSD_evt_Mint
+      - name: soSUSD_evt_Redeem
+      - name: soUSDC_evt_Mint
+      - name: soUSDC_evt_Redeem
+      - name: soUSDT_evt_Mint
+      - name: soUSDT_evt_Redeem
+      - name: soWBTC_evt_Mint
+      - name: soWBTC_evt_Redeem
+      - name: soWETH_evt_Mint
+      - name: soWETH_evt_Redeem
+      - name: sowstETH_evt_Mint
+      - name: sowstETH_evt_Redeem
+
+  - name: the_granary_optimism
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

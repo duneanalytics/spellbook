@@ -1,0 +1,464 @@
+version: 2
+
+models:
+  - name: inscription_ethereum_deploys
+    meta: 
+      blockchain: ethereum
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'ethereum']
+    description: >
+      Inscription deploys on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "the block number of the block that the offer was created in"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in block"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &inscription_standard
+        name: inscription_standard
+        description: "Inscription standard"
+      - &inscription_symbol
+        name: inscription_symbol
+        description: "Symbol of inscription"
+      - &operation
+        name: operation
+        description: "Operation"
+      - &mint_limit
+        name: mint_limit
+        description: "Limit"
+      - &max_supply
+        name: max_supply
+        description: "Maximum supply"
+      - &full_inscription
+        name: full_inscription
+        description: "Full inscription information as found in the transaction's call data"
+
+  - name: inscription_arbitrum_deploys
+    meta: 
+      blockchain: arbitrum
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'arbitrum']
+    description: >
+      Inscription deploys on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_avalanche_c_deploys
+    meta: 
+      blockchain: avalanche_c
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'avalanche_c']
+    description: >
+      Inscription deploys on Avalanche
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_bnb_deploys
+    meta: 
+      blockchain: bnb
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'bnb']
+    description: >
+      Inscription deploys on BNB
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_fantom_deploys
+    meta: 
+      blockchain: fantom
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'fantom']
+    description: >
+      Inscription deploys on Fantom
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_gnosis_deploys
+    meta: 
+      blockchain: gnosis
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'gnosis']
+    description: >
+      Inscription deploys on Gnosis
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_optimism_deploys
+    meta: 
+      blockchain: optimism
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'optimism']
+    description: >
+      Inscription deploys on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_polygon_deploys
+    meta: 
+      blockchain: polygon
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'polygon']
+    description: >
+      Inscription deploys on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_base_deploys
+    meta: 
+      blockchain: base
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'base']
+    description: >
+      Inscription deploys on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_celo_deploys
+    meta: 
+      blockchain: celo
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'celo']
+    description: >
+      Inscription deploys on Celo
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_zksync_deploys
+    meta: 
+      blockchain: zksync
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'zksync']
+    description: >
+      Inscription deploys on zkSync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_zora_deploys
+    meta: 
+      blockchain: zora
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'zora']
+    description: >
+      Inscription deploys on Zora Network
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_scroll_deploys
+    meta: 
+      blockchain: scroll
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'scroll']
+    description: >
+      Inscription deploys on Scroll
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_goerli_deploys
+    meta: 
+      blockchain: goerli
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'goerli']
+    description: >
+      Inscription deploys on Goerli Testnet
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+      

@@ -1,0 +1,94 @@
+version: 2
+
+sources:
+  - name: aave_v3_arbitrum
+    tables:
+      - name: L2Pool_evt_Borrow
+      - name: L2Pool_evt_Repay
+      - name: L2Pool_evt_LiquidationCall
+
+  - name: compound_v3_arbitrum
+    tables:
+      - name: Comet_evt_Supply
+      - name: cUSDCv3Native_evt_Supply
+      - name: Comet_evt_Withdraw
+      - name: cUSDCv3Native_evt_Withdraw
+      - name: Comet_evt_Transfer
+      - name: cUSDCv3Native_evt_Transfer
+      - name: Comet_evt_AbsorbDebt
+      - name: cUSDCv3Native_evt_AbsorbDebt
+
+  - name: radiant_capital_arbitrum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: lodestar_arbitrum
+    tables:
+      - name: lETH_V2_evt_Borrow
+      - name: lETH_V2_evt_RepayBorrow
+      - name: lETH_V2_evt_LiquidateBorrow
+      - name: lWBTC_V2_evt_Borrow
+      - name: lWBTC_V2_evt_RepayBorrow
+      - name: lWBTC_V2_evt_LiquidateBorrow
+      - name: lUSDC_V2_evt_Borrow
+      - name: lUSDC_V2_evt_RepayBorrow
+      - name: lUSDC_V2_evt_LiquidateBorrow
+      - name: lUSDT_V2_evt_Borrow
+      - name: lUSDT_V2_evt_RepayBorrow
+      - name: lUSDT_V2_evt_LiquidateBorrow
+      - name: lMAGIC_V2_evt_Borrow
+      - name: lMAGIC_V2_evt_RepayBorrow
+      - name: lMAGIC_V2_evt_LiquidateBorrow
+      - name: lARB_V2_evt_Borrow
+      - name: lARB_V2_evt_RepayBorrow
+      - name: lARB_V2_evt_LiquidateBorrow
+      - name: lDAI_V2_evt_Borrow
+      - name: lDAI_V2_evt_RepayBorrow
+      - name: lDAI_V2_evt_LiquidateBorrow
+      - name: lFRAX_V2_evt_Borrow
+      - name: lFRAX_V2_evt_RepayBorrow
+      - name: lFRAX_V2_evt_LiquidateBorrow
+      - name: lDPX_V2_evt_Borrow
+      - name: lDPX_V2_evt_RepayBorrow
+      - name: lDPX_V2_evt_LiquidateBorrow
+      - name: lETH_V3_evt_Borrow
+      - name: lETH_V3_evt_RepayBorrow
+      - name: lETH_V3_evt_LiquidateBorrow
+      - name: lWBTC_V3_evt_Borrow
+      - name: lWBTC_V3_evt_RepayBorrow
+      - name: lWBTC_V3_evt_LiquidateBorrow
+      - name: lUSDC_V3_evt_Borrow
+      - name: lUSDC_V3_evt_RepayBorrow
+      - name: lUSDC_V3_evt_LiquidateBorrow
+      - name: lUSDT_V3_evt_Borrow
+      - name: lUSDT_V3_evt_RepayBorrow
+      - name: lUSDT_V3_evt_LiquidateBorrow
+      - name: lMAGIC_V3_evt_Borrow
+      - name: lMAGIC_V3_evt_RepayBorrow
+      - name: lMAGIC_V3_evt_LiquidateBorrow
+      - name: lARB_V3_evt_Borrow
+      - name: lARB_V3_evt_RepayBorrow
+      - name: lARB_V3_evt_LiquidateBorrow
+      - name: lDAI_V3_evt_Borrow
+      - name: lDAI_V3_evt_RepayBorrow
+      - name: lDAI_V3_evt_LiquidateBorrow
+      - name: lFRAX_V3_evt_Borrow
+      - name: lFRAX_V3_evt_RepayBorrow
+      - name: lFRAX_V3_evt_LiquidateBorrow
+      - name: lDPX_V3_evt_Borrow
+      - name: lDPX_V3_evt_RepayBorrow
+      - name: lDPX_V3_evt_LiquidateBorrow
+      - name: lwstETH_evt_Borrow
+      - name: lwstETH_evt_RepayBorrow
+      - name: lwstETH_evt_LiquidateBorrow
+      - name: lGMX_evt_Borrow
+      - name: lGMX_evt_RepayBorrow
+      - name: lGMX_evt_LiquidateBorrow
+
+  - name: the_granary_arbitrum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

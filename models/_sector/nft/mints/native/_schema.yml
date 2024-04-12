@@ -52,7 +52,76 @@ models:
       sector: nft
       contributors: chuxin
     config:
-      tags: [ 'nft','ethereum' ]
+      tags: [ 'nft','optimism' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+      
+  - name: nft_base_native_mints
+    meta:
+      blockchain: base
+      sector: nft
+      contributors: chuxin
+    config:
+      tags: [ 'nft','base' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_zora_native_mints
+    meta:
+      blockchain: zora
+      sector: nft
+      contributors: chuxin
+    config:
+      tags: [ 'nft','zora' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_zksync_native_mints
+    meta:
+      blockchain: zksync
+      sector: nft
+      contributors: lgingerich
+    config:
+      tags: [ 'nft','zksync' ]
     description: >
       NFT native (i.e., non-platform) mints
     tests:

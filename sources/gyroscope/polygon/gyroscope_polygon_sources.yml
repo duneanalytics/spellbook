@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: gyroscope_polygon
+    description: >
+      Decoded tables related to gyroscope E-CLP pools on polygon.
+    tables:
+      - name: GyroECLPPoolFactory_evt_PoolCreated
+        description: >
+          Decoded table of gyroscope pool created
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'creator address'
+          - name: evt_tx_hash
+            description: 'Primary key of the transaction'
+          - name: evt_index
+            description: 'Index value of the transaction'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+          - name: evt_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - name: pool
+            description: 'created ECLP pool address'

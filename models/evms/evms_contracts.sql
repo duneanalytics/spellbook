@@ -1,8 +1,8 @@
 {{ config(
-        
+
         alias = 'contracts',
         unique_key=['blockchain', 'address', 'created_at'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -22,6 +22,8 @@
      , ('base', source('base', 'contracts'))
      , ('goerli', source('goerli', 'contracts'))
      , ('zksync', source('zksync', 'contracts'))
+     , ('zora', source('zora', 'contracts'))
+     , ('scroll', source('scroll', 'contracts'))
 ] %}
 
 SELECT *
@@ -29,6 +31,7 @@ FROM (
         {% for contracts_model in contracts_models %}
         SELECT
         '{{ contracts_model[0] }}' AS blockchain
+        , abi_id
         , abi
         , address
         , "from"

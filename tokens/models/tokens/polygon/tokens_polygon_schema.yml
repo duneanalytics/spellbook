@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: tokens_polygon_erc20
+    meta:
+      blockchain: polygon
+      sector: tokens
+      project: erc20
+      contributors: sohwak, rantum
+    config:
+      tags: ['table', 'metadata', 'erc20', 'polygon']
+    description: "ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address on Polygon"
+        tests:
+          - unique
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"

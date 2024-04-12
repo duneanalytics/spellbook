@@ -16,6 +16,38 @@ seeds:
         maker_fee_amount_raw: double
         royalty_fee_amount_raw: double
 
+  - name: magiceden_v3_solana_trades_seed
+    config:
+      column_types:
+        block_slot: bigint
+        tx_id: varchar
+        buyer: varchar
+        seller: varchar
+        outer_instruction_index: int
+        inner_instruction_index: int
+        account_merkle_tree: varchar
+        leaf_id: bigint
+        amount_raw: double
+        taker_fee_amount_raw: double
+        maker_fee_amount_raw: double
+        royalty_fee_amount_raw: double
+
+  - name: magiceden_mmm_solana_trades_seed
+    config:
+      column_types:
+        block_slot: bigint
+        tx_id: varchar
+        buyer: varchar
+        seller: varchar
+        outer_instruction_index: int
+        inner_instruction_index: int
+        account_mint: varchar
+        amount_raw: double
+        taker_fee_amount_raw: double
+        maker_fee_amount_raw: double
+        royalty_fee_amount_raw: double
+        amm_fee_amount_raw: double
+
   - name: tensorswap_v1_solana_trades_seed
     config:
       column_types:
@@ -46,4 +78,3 @@ seeds:
         taker_fee_amount_raw: double
         maker_fee_amount_raw: double
         royalty_fee_amount_raw: double
-

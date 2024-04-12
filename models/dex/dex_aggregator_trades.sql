@@ -15,22 +15,21 @@
         )
 }}
 
-/********************************************************
-spells with issues, to be excluded in short term:
--- ,ref('odos_trades') contains duplicates and not migrated to dunesql
-********************************************************/
-
 {% set dex_aggregator_models = [
     ref('cow_protocol_trades')
-    ,ref('oneinch_ethereum_trades')
     ,ref('openocean_trades')
     ,ref('paraswap_trades')
     ,ref('lifi_trades')
-    ,ref('yield_yak_avalanche_c_trades')
+    ,ref('yield_yak_trades')
     ,ref('bebop_trades')
     ,ref('dodo_aggregator_trades')
     ,ref('zeroex_trades')
     ,ref('kyberswap_aggregator_trades')
+    ,ref('tokenlon_trades')
+    ,ref('firebird_finance_optimism_trades')
+    ,ref('oneinch_ar_trades')
+    ,ref('unidex_optimism_trades')
+    ,ref('odos_trades')
 ] %}
 
 {% for aggregator_model in dex_aggregator_models %}

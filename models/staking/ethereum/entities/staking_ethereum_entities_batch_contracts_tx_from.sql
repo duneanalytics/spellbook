@@ -12,6 +12,7 @@ WITH tagged_entities AS (
     FROM (VALUES
         (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'MEV Protocol', 'Liquid Staking')
         , (0xcDBF58a9A9b54a2C43800c50C7192946dE858321, 'Bitpanda', 'CEX')
+        , (0xb10edd6fa6067dba8d4326f1c8f0d1c791594f13, 'Bitpanda', 'CEX')
         , (0x70D5cCC14a1a264c05Ff48B3ec6751b0959541aA, 'Binance US', 'CEX')
         ) 
         x (funds_origin, entity, category)
@@ -20,8 +21,8 @@ WITH tagged_entities AS (
 , batch_contracts AS (
     SELECT contract
     FROM (VALUES
-        (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270) -- Kiln 1
-        , (0x9b8c989ff27e948f55b53bb19b3cc1947852e394) -- Kiln 2
+        (0x9b8c989ff27e948f55b53bb19b3cc1947852e394) -- Kiln 1
+        , (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270) -- Kiln 2
         , (0x1BDc639EaBF1c5EbC020Bb79E2dD069A8b6fe865) -- BatchDeposit
         , (0xe8239B17034c372CDF8A5F8d3cCb7Cf1795c4572) -- Batch Deposit
         ) AS temp_table (contract)

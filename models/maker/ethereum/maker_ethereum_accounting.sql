@@ -1,5 +1,5 @@
 {{ config(
-        
+        tags = ['prod_exclude'],
         alias = 'accounting',
         partition_by = ['dt'],
         materialized = 'table',
@@ -10,7 +10,10 @@
                                 \'["lyt", "adcv", "SebVentures", "steakhouse", "hosuke"]\') }}'
         )
 }}
-
+/*
+    note: this spell has been disable for now, as it's rebuilt as matview on the app
+        to reactive the spell, we will need to break it down into multiple spells that feed into a final spell, as the trino engine fails on stage count limit hit
+*/
 WITH dao_wallet AS (
     SELECT * FROM (VALUES
         ( 0x9e1585d9ca64243ce43d42f7dd7333190f66ca09 , 'RWF Core Unit Multisig + Operational 1', 'Fixed', 'RWF-001')

@@ -17,6 +17,10 @@ concurrency:
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    strategy:
+      matrix:
+        project: [ 'tokens', 'spellbook' ]
+      max-parallel: 1
     timeout-minutes: 90
 
     steps:
@@ -25,46 +29,53 @@ jobs:
 
       - name: Setup variables
         run: |
-            echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-8)" >> $GITHUB_ENV
-            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-
+          echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
+          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+          if [[ "${{ matrix.project }}" == "tokens" ]]; then
+            echo "PROJECT_DIR=tokens" >> $GITHUB_ENV
+            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/tokens" >> $GITHUB_ENV
+          elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
+            echo "PROJECT_DIR=." >> $GITHUB_ENV
+            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
+          fi
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
       - name: Get latest manifest
-        run: "aws s3 cp s3://manifest-spellbook-dunesql/manifest.json manifest.json"
+        run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
 
       - name: dbt dependencies
+        working-directory: ${{env.PROJECT_DIR}}
         run: "dbt deps"
-      
+
       - name: Activate DuneSQL Cluster
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        run: "dbt compile $PROFILE"
+        run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
 
       - name: check schemas
         run: |
-          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state .)
+          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir ${PROJECT_DIR})
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
       - name: dbt seed
-        run: "dbt seed $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --state ."
+        run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test initial model(s)
-        run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Set environment variable for incremental model count
         run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  | wc -l)" >> $GITHUB_ENV
+          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  --project-dir ${PROJECT_DIR} | wc -l)" >> $GITHUB_ENV
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state ."
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"

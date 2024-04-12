@@ -9,7 +9,7 @@ models:
     config:
       tags: ["maverick", "ethereum", "mav", "dex"]
     description: >
-      A table containing all trades of Maverick on Ethereuem
+      A table containing all trades of Maverick on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

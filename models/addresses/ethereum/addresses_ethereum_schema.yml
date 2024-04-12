@@ -1,42 +1,6 @@
 version: 2
 
 models:
-  - name: addresses_ethereum_dex
-    meta:
-      blockchain: ethereum
-      sector: dex
-      project: addresses
-      contributors: soispoke
-    config:
-      tags: ['table', 'dex', 'addresses', 'ethereum']
-    description: "Known decentralised exchange addresses"
-    columns:
-      - name: address
-        description: "Address of known DEX"
-        tests:
-          - unique
-      - name: dex_name
-        description: "Name of decentralised exchange"
-      - name: distinct_name
-        description: "Distinct name of decentralised exchange address"
-
-  - name: addresses_ethereum_bridges
-    meta:
-      blockchain: ethereum
-      sector: bridges
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'bridges', 'addresses', 'ethereum']
-    description: "Known bridge addresses"
-    columns:
-      - name: address
-        description: "Address of known Bridges"
-      - name: bridge_name
-        description: "Name of protocol behind the bridge"
-      - name: description
-        description: "Description of the bridge"
-
   - name: addresses_ethereum_ofac_sanctioned
     meta:
       blockchain: ethereum
@@ -106,6 +70,8 @@ models:
         description: "Address of known L2 Batch Submitter"
       - name: protocol_name
         description: "Protocol Name"
+      - name: codebase
+        description: "What codebase is the rollup based on"
       - name: submitter_type
         description: "Submitter Type (i.e. state vs transaction batch)"
       - name: role_type
@@ -114,3 +80,47 @@ models:
         description: "Version of the batch submitter"
       - name: description
         description: "Additional descriptiors of the address"
+  
+  - name: addresses_ethereum_optimism_batchinbox_combinations
+    meta:
+      blockchain: ethereum
+      sector: l2_batch_submitters
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
+    description: "Unique combinations of Optimism batch inbox addresses across versions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - l1_batch_inbox_from_address
+              - l1_batch_inbox_to_address
+    columns:
+      - name: protocol_name
+        description: "Protocol Name"
+      - name: l1_batch_inbox_from_address
+        description: "l1_batch_inbox_from_address"
+      - name: l1_batch_inbox_to_address
+        description: "l1_batch_inbox_to_address"
+  
+  - name: addresses_ethereum_optimism_outputoracle_combinations
+    meta:
+      blockchain: ethereum
+      sector: l2_batch_submitters
+      project: addresses
+      contributors: msilb7
+    config:
+      tags: ['table', 'L2', 'batch submitters', 'addresses', 'ethereum', 'optimism']
+    description: "Unique combinations of Optimism output oracle addresses across versions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - l2_output_oracle_from_address
+              - l2_output_oracle_to_address
+    columns:
+      - name: protocol_name
+        description: "Protocol Name"
+      - name: l2_output_oracle_from_address
+        description: "l2_output_oracle_from_address"
+      - name: l2_output_oracle_to_address
+        description: "l2_output_oracle_to_address"

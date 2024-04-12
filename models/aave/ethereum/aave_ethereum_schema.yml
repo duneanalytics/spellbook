@@ -1,234 +1,62 @@
 version: 2
 
 models:
- - name: aave_v2_ethereum_interest_rates
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v2
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
-   description: "Hourly aave interest rates on ethereum"
-   columns:
-     - &reserve
-       name: reserve
-       description: "Aave reserve contract address"
-     - &symbol
-       name: symbol
-       description: "Symbol of the reserve"
-     - &hour
-       name: hour
-       description: "Block timestamp truncated to hours"
-     - &deposit_apy
-       name: deposit_apy
-       description: "Hourly deposit interest rate value of the reserve"
-     - &stable_borrow_apy
-       name: stable_borrow_apy
-       description: "Hourly stable borrow interest rate value of the reserve" 
-     - &variable_borrow_apy
-       name: variable_borrow_apy
-       description: "Hourly variable borrow interest rate value of the reserve"
+  - name: aave_v2_ethereum_interest_rates
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_v2
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
+    description: "Hourly aave interest rates on ethereum"
+    columns:
+      - &reserve
+        name: reserve
+        description: "Aave reserve contract address"
+      - &symbol
+        name: symbol
+        description: "Symbol of the reserve"
+      - &hour
+        name: hour
+        description: "Block timestamp truncated to hours"
+      - &deposit_apy
+        name: deposit_apy
+        description: "Hourly deposit interest rate value of the reserve"
+      - &stable_borrow_apy
+        name: stable_borrow_apy
+        description: "Hourly stable borrow interest rate value of the reserve" 
+      - &variable_borrow_apy
+        name: variable_borrow_apy
+        description: "Hourly variable borrow interest rate value of the reserve"
 
- - name: aave_ethereum_interest_rates
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
-   description: "Hourly aave interest rates on ethereum"
-   columns:
-     - *reserve
-     - *symbol
-     - *hour
-     - *deposit_apy
-     - *stable_borrow_apy
-     - *variable_borrow_apy
-       
- - name: aave_v2_ethereum_supply
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v2
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v2', 'supply', 'aave', 'lending']
-   description: "All aave v2 transactions involving supply transactions on ethereum"
-   columns:
-     - &version
-       name: version
-       description: "Aave version"
-     - &transaction_type
-       name: transaction_type
-       description: "The transaction type"
-     - *symbol
-     - &token_address
-       name: token_address
-       description: "Aave reserve contract address"  
-     - &depositor
-       name: depositor
-       description: "Depositor wallet address"
-     - &withdrawn_to
-       name: withdrawn_to
-       description: "The wallet address where the tokens are withdrawn"
-     - &liquidator
-       name: liquidator
-       description: "Liquidator wallet address"
-     - &amount
-       name: amount
-       description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
-     - &usd_amount
-       name: usd_amount
-       description: "Token amount in USD" 
-     - &evt_tx_hash
-       name: evt_tx_hash
-       description: "Transaction hash of the event"
-     - &evt_index
-       name: evt_index
-       description: "Event index"   
-     - &evt_block_time
-       name: evt_block_time
-       description: "Timestamp for block event time in UTC"
-     - &evt_block_number
-       name: evt_block_number
-       description: "Event block number"
-       
- - name: aave_v1_ethereum_supply
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v1
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v1', 'supply', 'aave', 'lending']
-   description: "All aave v1 transactions involving supply transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - *depositor
-     - *withdrawn_to
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number
-       
- - name: aave_v2_ethereum_borrow
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v2
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v2', 'borrow', 'aave', 'lending']
-   description: "All aave v2 transactions involving borrow transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - &borrower
-       name: borrower
-       description: "Borrower wallet address"
-     - &repayer
-       name: repayer
-       description: "Repayer wallet address"
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number
-       
- - name: aave_v1_ethereum_borrow
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave_v1
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave_v1', 'borrow', 'aave', 'lending']
-   description: "All aave v1 transactions involving borrow transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - *borrower
-     - *repayer
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number
-       
- - name: aave_ethereum_supply
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
-   description: "All aave transactions involving supply transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - *depositor
-     - *withdrawn_to
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number 
-       
- - name: aave_ethereum_borrow
-   meta:
-     blockchain: ethereum
-     sector: lending
-     project: aave
-     contributors: batwayne, chuxin
-   config:
-     tags: ['ethereum', 'aave', 'borrow', 'aave', 'lending']
-   description: "All aave v1 transactions involving borrow transactions on ethereum"
-   columns:
-     - *version
-     - *transaction_type
-     - *symbol
-     - *token_address
-     - *borrower
-     - *repayer
-     - *liquidator
-     - *amount
-     - *usd_amount
-     - *evt_tx_hash
-     - *evt_index
-     - *evt_block_time
-     - *evt_block_number
+  - name: aave_ethereum_interest_rates
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
+    description: "Hourly aave interest rates on ethereum"
+    columns:
+      - *reserve
+      - *symbol
+      - *hour
+      - *deposit_apy
+      - *stable_borrow_apy
+      - *variable_borrow_apy
 
- - name: aave_ethereum_votes
-   meta:
-    blockchain: ethereum
-    sector: dao
-    contributors: soispoke
-   config:
+  - name: aave_ethereum_votes
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: soispoke
+    config:
       tags:   ['ethereum', 'votes', 'dao', 'cross-chain']
-   description: >
+    description: >
       DAO votes on all chains across all contracts and versions
-   columns:
+    columns:
       - name: blockchain
       - name: project
         description: "Project name of the DAO"
@@ -268,18 +96,130 @@ models:
             values: ['for', 'against', 'abstain']
       - &reason
         name: reason
-        description: "Optional onchain commments to explain votes"
+        description: "Optional onchain comments to explain votes"
 
- - name: aave_ethereum_proposals
-   meta:
-    blockchain: ethereum
-    sector: dao
-    contributors: soispoke
-   config:
+  - name: aave_ethereum_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
+    description: "All aave transactions involving supply transactions on ethereum"
+    columns:
+      - &version
+        name: version
+        description: "Aave version"
+      - &transaction_type
+        name: transaction_type
+        description: "The transaction type"
+      - *symbol
+      - &token_address
+        name: token_address
+        description: "Aave reserve contract address"  
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "The wallet address where the tokens are withdrawn"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD" 
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"   
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
+
+  - name: aave_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'ethereum']
+    description: "All Aave transactions involving borrow transactions on Ethereum"
+    columns:
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *tx_hash
+      - *evt_index
+      - *block_time
+      - *block_number
+
+  - name: aave_ethereum_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'ethereum']
+    description: "All Aave transactions involving flashloans transactions on Ethereum"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - *version
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - *amount
+      - *usd_amount
+      - &fee
+        name: fee
+      - *symbol
+      - *token_address
+      - &contract_address
+        name: contract_address
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_ethereum_proposals
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: soispoke
+    config:
       tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
-   description: >
+    description: >
       DAO proposals on all chains across all contracts and versions
-   columns:
+    columns:
       - name: blockchain
       - name: project
         description: "Project name of the DAO"
@@ -315,127 +255,3 @@ models:
       - &description
         name: description
         description: "Description of the proposal"
-
- - name: aave_v1_ethereum_flashloans
-   meta:
-    blockchain: ethereum
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['ethereum', 'flashloans']
-   description: >
-      Aave v1 flashloans on Ethereum
-   tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-   columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
-
- - name: aave_v2_ethereum_flashloans
-   meta:
-    blockchain: ethereum
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['ethereum', 'flashloans']
-   description: >
-      Aave v2 flashloans on Ethereum
-   tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-   columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
-
- - name: aave_v3_ethereum_flashloans
-   meta:
-    blockchain: ethereum
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['ethereum', 'flashloans']
-   description: >
-      Aave v3 flashloans on Ethereum
-   tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-   columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month
-
- - name: aave_ethereum_flashloans
-   meta:
-    blockchain: ethereum
-    sector: lending
-    contributors: hildobby
-   config:
-      tags: ['ethereum', 'flashloans']
-   description: >
-      All Aave flashloans on Ethereum
-   tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-   columns:
-      - name: blockchain
-      - name: project
-      - name: version
-      - name: block_time
-      - name: block_number
-      - name: amount
-      - name: amount_usd
-      - name: tx_hash
-      - name: evt_index
-      - name: fee
-      - name: currency_contract
-      - name: currency_symbol
-      - name: recipient
-      - name: contract_address
-      - name: block_month

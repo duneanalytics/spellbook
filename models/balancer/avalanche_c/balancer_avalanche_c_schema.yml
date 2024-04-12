@@ -101,11 +101,11 @@ models:
         name: evt_index
         description: "Event index"
 
-  - name: balancer_v2_avalanche_c_trades
+  - name: balancer_v2_avalanche_c_trades_legacy
     meta:
       blockchain: avalanche_c
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: [ 'balancer', 'avalanche_c', 'amm', 'trades', 'dex' ]
     description: >
@@ -150,16 +150,55 @@ models:
       - name: tx_to
       - name: evt_index
 
+  - name: balancer_v2_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
+    config:
+      tags: [ 'balancer', 'avalanche_c', 'amm', 'trades', 'dex', 'beta' ]
+    description: >
+      DEX trades on balancer v2 on avalanche_c
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - name: block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *pool_id
+      - *swap_fee
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+
   - name: balancer_avalanche_c_pools_tokens_weights
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['avalanche_c', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer pools.
     columns:
+      - *blockchain
+      - name: version
       - *pool_id
       - &token_address
         name: token_address
@@ -172,7 +211,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['avalanche_c', 'balancer', 'pools', 'tokens', 'weights']
     description: >
@@ -183,6 +222,8 @@ models:
             - pool_id
             - token_address
     columns:
+      - *blockchain
+      - name: version
       - *pool_id
       - *token_address
       - *normalized_weight
@@ -191,7 +232,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: victorstefenon
+      contributors: victorstefenon, viniabussafi, thetroyharris
     config:
       tags: ['avalanche_c', 'balancer', 'pools', 'liquidity']
     description: >
@@ -206,9 +247,13 @@ models:
       - name: day
         description: 'UTC event block time truncated to the day mark'
       - *pool_id
+      - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
-      - *blockchain
+      - name: version
+        description: 'Version of Balancer in which pool was deployed'
+      - name: blockchain
+        description: 'Blockchain in which pool was deployed'      
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -218,14 +263,19 @@ models:
         description: 'Scaled balance of the token in the pool'
       - name: protocol_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
       - name: pool_liquidity_usd
         description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'
+
 
   - name: balancer_v2_avalanche_c_bpt_prices
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'bpt', 'prices']
     description: >
@@ -234,26 +284,21 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - hour
+            - day
             - contract_address
     columns:
-      - *blockchain
-      - &hour
-        name: hour
-        description: 'UTC event block time truncated to the hour mark'
-        tests:
-          - not_null
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
       - name: contract_address
-        description: 'avalanche address for the liquidity pool used in transaction'
-      - &median_price
-        name: median_price
-        description: 'BPT median price'
+      - name: bpt_price
 
   - name: balancer_v2_avalanche_c_transfers_bpt
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: victorstefenon, thetroyharris
+      contributors: victorstefenon, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'bpt', 'transfers']
     description: >
@@ -265,13 +310,13 @@ models:
             - evt_index
             - block_date
     columns:
-      - *blockchain
-      - &contract_address
-        name: contract_address
-        description: "Address of BPT being transfered"
-      - *block_date
-      - *block_month
-      - *evt_index
+      - name: blockchain
+      - name: version
+      - name: contract_address
+      - name: block_date
+      - name: block_month
+      - name: evt_tx_hash
+      - name: evt_index
       - &evt_block_time
         name: evt_block_time
         description: 'Block time of transfer event'
@@ -292,7 +337,7 @@ models:
     meta:
       blockchain: avalanche_c
       project: balancer_v2
-      contributors: jacektrocinski, thetroyharris
+      contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
       tags: ['avalanche_c', 'balancer', 'pools', 'fees']
     description: >
@@ -305,6 +350,7 @@ models:
             - index
     columns:
       - name: blockchain
+      - name: version
       - name: contract_address
       - name: tx_hash
       - name: index
@@ -345,6 +391,60 @@ models:
       - name: contract_address
       - name: block_month
 
+  - name: balancer_v2_avalanche_c_protocol_fee
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['avalanche_c', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: token_symbol
+      - name: token_amount_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+      - name: treasury_share
+        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - name: treasury_revenue_usd
+        description: "Total revenue directed to Balancer DAO's treasury"
 
-
-
+  - name: balancer_v2_avalanche_c_bpt_supply
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: thetroyharris, viniabussafi
+    config:
+      tags: ['avalanche_c', 'bpt', 'supply']
+    description: >
+      Balancer Pool Token (BPT) supply for ComposableStablePools versions 4 and 5.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - name: day
+      - name: pool_type
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: supply

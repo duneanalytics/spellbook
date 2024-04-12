@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: agave_gnosis
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: aave_v3_gnosis
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
+
+  - name: real_rmm_v1_gnosis
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: real_rmm_v2_gnosis
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall

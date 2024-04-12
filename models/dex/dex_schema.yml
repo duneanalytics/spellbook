@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dex_trades
+  - name: dex_trades_legacy
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
       sector: dex
@@ -221,18 +221,111 @@ models:
       - *blockchain
       - *project
       - *version
-      - name: pool
+      - &pool
+        name: pool
         description: "DEX pool smart contract address"
-      - name: fee
+      - &fee
+        name: fee
         description: "Defined fee"
-      - name: token0
+      - &token0
+        name: token0
         description: "First token in pool"
-      - name: token1
+      - &token1
+        name: token1
         description: "Second token in pool"
-      - name: creation_block_time
+      - &creation_block_time
+        name: creation_block_time
         description: "Block time of pool creation"
-      - name: creation_block_number
+      - &creation_block_number
+        name: creation_block_number
         description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: dex_raw_pool_initializations
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
+      sector: dex
+      contributors: grkhr
+    config:
+      tags: ['dex', 'cross-chain', 'pools']
+    description: >
+      DEX raw pools initialization calls
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+            - tx_hash
+            - call_trace_address
+    columns:
+      - *blockchain
+      - &type
+        name: type
+        description: "Pool implementation standard"
+      - *version
+      - *block_time
+      - *pool
+      - *token0
+      - *token1
+      - *tx_hash
+      - &call_trace_address
+        name: call_trace_address
+
+  - name: dex_raw_pool_creations
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
+      sector: dex
+      contributors: grkhr
+    config:
+      tags: ['dex', 'cross-chain', 'pools']
+    description: >
+      DEX raw pools on all chains across all contracts and versions parsed from logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - *type
+      - *version
+      - *pool
+      - *token0
+      - *token1
+      - &tokens
+        name: tokens
+        description: "Tokens in the pool"
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"
+      - name: rn
+
+  - name: dex_raw_pools
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
+      sector: dex
+      contributors: grkhr
+    config:
+      tags: ['dex', 'cross-chain', 'pools']
+    description: >
+      DEX raw pools on all chains across all contracts and versions parsed from logs + filtered degen pools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - *type
+      - *version
+      - *pool
+      - *token0
+      - *token1
+      - *tokens
+      - *creation_block_time
+      - *creation_block_number
       - name: contract_address
         description: "Contract address used to create the pool"
 
@@ -351,7 +444,7 @@ models:
 
   - name: dex_sandwiches
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync
       sector: dex
       contributors: hildobby
     config:
@@ -391,17 +484,58 @@ models:
       - *token_bought_amount_raw
       - *token_sold_amount
       - *token_bought_amount
-      - name: amount_usd
-        description: "USD value of the trade at time of execution"
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_sandwiched
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiched']
+    description: >
+      DEX MEV Sandwiched Trades across chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
       - *evt_index
 
   - name: dex_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, solana
       sector: dex
       contributors: hildobby
     config:
-      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'info']
+      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'solana', 'info']
     description: >
         DEXs info
     tests:
@@ -417,3 +551,65 @@ models:
         description: "Type of marketplace"
       - name: x_username
         description: "Username on X"
+
+  - name: dex_addresses
+    meta:
+      blockchain: arbitrum, base, bnb, ethereum, optimism, polygon
+      sector: dex
+      project: addresses
+      contributors: rantum
+    config:
+      tags: ['table', 'dex', 'addresses', 'arbitrum', 'base', 'bnb', 'ethereum', 'optimism', 'polygon']
+    description: "Known decentralised exchange addresses"
+    columns:
+      - name: blockchain
+        description: "Name of blockchain"
+      - name: address
+        description: "Address of known DEX"
+      - name: dex_name
+        description: "Name of decentralised exchange"
+      - name: distinct_name
+        description: "Distinct name of decentralised exchange address"
+
+  - name: dex_atomic_arbitrages
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'atomic', 'arbitrages']
+    description: >
+      DEX MEV Arbitrage Trades across all Chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index

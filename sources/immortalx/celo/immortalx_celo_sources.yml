@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: immortalx_celo
+    tables:
+      - name: Dex_evt_InitializeMarket
+      - name: Dex_evt_IncreasePosition
+      - name: Dex_evt_DecreasePosition

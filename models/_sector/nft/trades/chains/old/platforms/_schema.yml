@@ -1,0 +1,39 @@
+version: 2
+
+models:
+
+  - name: element_avalanche_c_events
+    meta:
+      blockchain: avalanche_c
+      project: element
+      contributors: hildobby
+    config:
+      tags: [ 'avalanche_c','element','events' ]
+    description: >
+      Element events on Avalanche
+    tests:
+      - check_columns_nft_old_events
+
+  - name: mooar_polygon_events
+    meta:
+      blockchain: polygon
+      project: mooar
+      contributors: springzh
+    config:
+      tags: [ 'polygon','mooar','events','springzh' ]
+    description: >
+      Mooar events on Polygon
+    tests:
+      - check_columns_nft_old_events
+
+  - name: oneplanet_polygon_events
+    meta:
+      blockchain: polygon
+      project: oneplanet
+      contributors: springzh
+    config:
+      tags: [ 'polygon','oneplanet','events','springzh' ]
+    description: >
+      OnePlanet events on Polygon
+    tests:
+      - check_columns_nft_old_events

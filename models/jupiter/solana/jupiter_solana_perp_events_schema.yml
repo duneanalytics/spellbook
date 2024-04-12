@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: jupiter_solana_perp_events
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - position_change
+          - position_key
+          - tx_id
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','jupiter','perps']
+    description: >
+        solana perp events
+    columns:
+      - name: position_change
+        description: position change (increase, decrease, liquidation)
+      - name: size_usd
+        description: size usd change during position change
+      - name: collateral_usd
+        description: collateral usd change during position change
+      - name: collateral_token
+        description: collateral token change during position change
+      - name: fee_usd
+        description: fee usd taken from position change
+      - name: price_usd
+        description: price usd change during position change
+      - name: liq_fee_usd
+        description: liquidation fee usd taken from position change
+      - name: pnl_direction
+        description: pnl direction (negative, positive as 0,1 respectively)
+      - name: pnl_usd
+        description: pnl usd change during position change
+      - name: owner
+        description: owner of the position 
+      - name: position_key
+        description: account of the position
+      - name: position_side
+        description: position side (long, short as 1,2 respectively)
+      - name: custody_position_key
+        description: custody key of the token mint of position being taken on
+      - name: custody_collateral_key
+        description: custody key of the token mint of collateral being taken on
+      - name: block_slot
+      - name: block_time 
+      - name: block_month
+      - name: tx_id

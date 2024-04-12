@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: goosefx_solana
+    description: "goosefx_solana decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: gfx_ssl_v2_call_createPair
+        loaded_at_field: call_block_time
+      - name: gfx_ssl_v2_call_swap
+        loaded_at_field: call_block_time
+        

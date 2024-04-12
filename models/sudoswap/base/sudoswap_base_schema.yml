@@ -1,0 +1,51 @@
+version: 2
+
+models:
+
+  - name: sudoswap_v2_base_pool_creations
+    meta:
+      blockchain: base
+      project: sudoswap
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'base','sudoswap','pool_creations' ]
+    description: >
+      sudoswap v2 pool creations on base
+    columns:
+      - name: pool_address # unique
+        description: 'Address of the pool'
+        tests:
+          - unique
+      - &nft_contract_address
+        name: nft_contract_address
+        description: "Address of the NFT contract"
+      - &creator_address
+        name: creator_address
+        description: "Address of the pool creator"
+      - &pool_type
+        name: pool_type
+        description: "Type of pool"
+      - &bonding_curve
+        name: bonding_curve
+        description: "Type of bonding curve"
+      - &pool_factory
+        name: pool_factory
+        description: "the factory used to create the pool"
+      - &creation_block_time
+        name: creation_block_time
+        description: "time the pool was created"
+      - &creation_tx_hash
+        name: creation_tx_hash
+        description: "hash of the tx the pool was created"
+      - &nft_type
+        name: nft_type
+        description: "ERC721 or ERC1155 pool type"
+      - &nft_id
+        name: nft_id
+        description: "id of ERC1155 token if it's an 1155 pool"
+      - &token_type
+        name: token_type
+        description: "the token type used for trading the NFTs"
+      - &token_contract_address
+        name: token_contract_address
+        description: "address of token used for trading the NFTs"

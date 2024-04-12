@@ -1,12 +1,9 @@
 {{ config(
-    
-    alias = 'trades',
-    post_hook = '{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+    schema = 'balancer_gnosis',
+    alias = 'trades'
     )
 }}
+
 
 {% set balancer_models = [
     ref('balancer_v2_gnosis_trades')

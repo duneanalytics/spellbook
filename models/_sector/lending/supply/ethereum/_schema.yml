@@ -1,0 +1,464 @@
+version: 2
+
+models:
+  - name: lending_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave, compound
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
+    description: "All lending supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        tests:
+          - not_null
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        tests:
+          - not_null
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "Withdrawn to wallet address"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Event block number"
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        tests:
+          - not_null
+
+  - name: aave_v1_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'ethereum']
+    description: "Aave v1 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_ethereum_base_supply_seed')
+          filter:
+            version: 1
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_v2_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'ethereum']
+    description: "Aave v2 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_ethereum_base_supply_seed')
+          filter:
+            version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_v3_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'ethereum']
+    description: "Aave v3 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_ethereum_base_supply_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: compound_v2_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound
+      contributors: bizzyvinci, hosuke, tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'ethereum']
+    description: "Compound v2 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('compound_ethereum_base_supply_seed')
+          filter:
+            version: 2
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: compound_v3_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: compound
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'ethereum']
+    description: "Compound v3 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('compound_ethereum_base_supply_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: radiant_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: radiant
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'radiant', 'ethereum']
+    description: "Radiant supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('radiant_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: uwulend_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: uwulend
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'uwulend', 'ethereum']
+    description: "Uwulend supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('uwulend_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: spark_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: spark
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'spark', 'ethereum']
+    description: "Spark Protocol supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('spark_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: fluxfinance_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: fluxfinance
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'fluxfinance', 'ethereum']
+    description: "Flux Finance supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('fluxfinance_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: strike_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: strike
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'compound', 'strike', 'ethereum']
+    description: "Strike supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('strike_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: granary
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'granary', 'ethereum']
+    description: "Granary supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('granary_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
                                 "beethoven_x",
-                                \'["msilb7"]\') }}'
+                                \'["msilb7", "tomfutago"]\') }}'
     )
 }}
 -- First swap event 2021-01-19
@@ -24,20 +24,20 @@ WITH dexs AS
         ,CAST(NULL AS VARBINARY) AS taker --not in the event table, so we rely on the transaction "from"
         ,CAST(NULL AS VARBINARY) AS maker
         --tokenIn: what the user receives. So we map this to token bought
-        ,t.amountIn AS token_bought_amount_raw
-        ,t.amountOut AS token_sold_amount_raw
+        ,t.amountOut AS token_bought_amount_raw
+        ,t.amountIn AS token_sold_amount_raw
         ,NULL AS amount_usd
-        ,t.tokenIn AS token_bought_address
-        ,t.tokenOut AS token_sold_address
-        ,t.poolId as project_contract_address
+        ,t.tokenOut AS token_bought_address
+        ,t.tokenIn AS token_sold_address
+        ,bytearray_substring(t.poolId, 1, 20) as project_contract_address
         ,t.evt_tx_hash AS tx_hash
         ,t.evt_index
     FROM
         {{ source('beethoven_x_fantom', 'Vault_evt_Swap') }} t
-    WHERE t.tokenIn != bytearray_substring(t.poolId, 1, 10)
-        AND t.tokenOut != bytearray_substring(t.poolId, 1, 10)
+    WHERE t.tokenIn != bytearray_substring(t.poolId, 1, 20)
+        AND t.tokenOut != bytearray_substring(t.poolId, 1, 20)
     {% if is_incremental() %}
-    AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 SELECT
@@ -79,12 +79,12 @@ INNER JOIN {{ source('fantom', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
-LEFT JOIN {{ ref('tokens_erc20') }} erc20a
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address 
     AND erc20a.blockchain = 'fantom'
-LEFT JOIN {{ ref('tokens_erc20') }} erc20b
+LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'fantom'
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
@@ -95,7 +95,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_bought.minute') }}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -105,5 +105,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_sold.minute') }}
     {% endif %}

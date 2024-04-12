@@ -1,0 +1,45 @@
+version: 2
+
+sources: 
+  - name: paraswap_fantom
+    freshness:
+          warn_after: { count: 12, period: hour }
+    description: >
+      Decoded event table for swaps on paraswap
+    tables:
+      - name: AugustusSwapperV5_evt_BoughtV3
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_SwappedV3
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_Bought2
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_Swapped2
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_Bought
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_Swapped
+        loaded_at_field: evt_block_time
+      - name: AugustusSwapperV5_evt_SwappedDirect
+        loaded_at_field: evt_block_time
+      # v6 
+      - name: AugustusV6_call_swapExactAmountIn
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnUniswapV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnUniswapV3
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnCurveV1
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnCurveV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountInOnBalancerV2
+        loaded_at_field: call_block_time        
+      - name: AugustusV6_call_swapExactAmountOut
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOutOnUniswapV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOutOnUniswapV3
+        loaded_at_field: call_block_time
+      - name: AugustusV6_call_swapExactAmountOutOnBalancerV2
+        loaded_at_field: call_block_time        
+  

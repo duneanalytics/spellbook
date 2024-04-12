@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash', 'project_contract_address', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zksync"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -24,6 +24,8 @@
      , (ref('dex_optimism_sandwiches'))
      , (ref('dex_polygon_sandwiches'))
      , (ref('dex_base_sandwiches'))
+     , (ref('dex_celo_sandwiches'))
+     , (ref('dex_zksync_sandwiches'))
 ] %}
 
 SELECT *
@@ -46,7 +48,7 @@ FROM (
         , tx_to
         , project_contract_address
         , token_pair
-        , index
+        , tx_index
         , token_sold_amount_raw
         , token_bought_amount_raw
         , token_sold_amount

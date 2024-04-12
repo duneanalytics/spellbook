@@ -1,0 +1,91 @@
+version: 2
+
+sources:
+  - name: aave_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: aave_v2_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: aave_v3_ethereum
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
+
+  - name: compound_v2_ethereum
+    tables:
+      - name: cErc20_evt_Borrow
+      - name: cEther_evt_Borrow
+      - name: cErc20_evt_RepayBorrow
+      - name: cEther_evt_RepayBorrow
+      - name: cErc20_evt_LiquidateBorrow
+      - name: cEther_evt_LiquidateBorrow
+
+  - name: compound_v3_ethereum
+    tables:
+      - name: Comet_evt_Supply
+      - name: cWETHv3_evt_Supply
+      - name: Comet_evt_Withdraw
+      - name: cWETHv3_evt_Withdraw
+      - name: Comet_evt_Transfer
+      - name: cWETHv3_evt_Transfer
+      - name: Comet_evt_AbsorbDebt
+      - name: cWETHv3_evt_AbsorbDebt
+
+  - name: radiant_capital_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: uwulend_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall
+
+  - name: spark_protocol_ethereum
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
+
+  - name: fluxfinance_ethereum
+    tables:
+      - name: fUSDC_evt_Borrow
+      - name: fUSDC_evt_RepayBorrow
+      - name: fUSDC_evt_LiquidateBorrow
+      - name: fDAI_evt_Borrow
+      - name: fDAI_evt_RepayBorrow
+      - name: fDAI_evt_LiquidateBorrow
+      - name: fUSDT_evt_Borrow
+      - name: fUSDT_evt_RepayBorrow
+      - name: fUSDT_evt_LiquidateBorrow
+      - name: fFRAX_evt_Borrow
+      - name: fFRAX_evt_RepayBorrow
+      - name: fFRAX_evt_LiquidateBorrow
+      - name: fOUSG_evt_Borrow
+      - name: fOUSG_evt_RepayBorrow
+      - name: fOUSG_evt_LiquidateBorrow
+
+  - name: strike_lending_ethereum
+    tables:
+      - name: SErc20Delegate_evt_Borrow
+      - name: SErc20Delegate_evt_RepayBorrow
+      - name: SErc20Delegate_evt_LiquidateBorrow
+      - name: SEther_evt_Borrow
+      - name: SEther_evt_RepayBorrow
+      - name: SEther_evt_LiquidateBorrow
+
+  - name: the_granary_ethereum
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

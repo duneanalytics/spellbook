@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
     )
 }}
@@ -38,7 +39,7 @@ open_position as (
     FROM {{ ref('tigris_arbitrum_events_open_position') }}
     WHERE open_type = 'open_position'
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ), 
 
@@ -122,7 +123,7 @@ limit_order as (
         protocol_version
     FROM {{ ref('tigris_arbitrum_events_limit_order') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ), 
 
@@ -188,7 +189,7 @@ close_position as (
         AND c.positions_contract = lo.positions_contract
         AND c.protocol_version = lo.protocol_version
     {% if is_incremental() %}
-    WHERE c.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('c.evt_block_time') }}
     {% endif %}
 
 ), 
@@ -229,7 +230,7 @@ liquidate_position as (
         AND lp.positions_contract = lo.positions_contract
         AND lp.protocol_version = lo.protocol_version
     {% if is_incremental() %}
-    WHERE lp.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('lp.evt_block_time') }}
     {% endif %}
 ),
 
@@ -288,7 +289,7 @@ add_margin as (
                 AND am.protocol_version = l.protocol_version
                 AND am.evt_block_time > l.evt_block_time
             {% if is_incremental() %}
-            WHERE am.evt_block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{ incremental_predicate('am.evt_block_time') }}
             {% endif %}
             GROUP BY 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
         ) tmp 
@@ -346,7 +347,7 @@ modify_margin as (
         AND mm.positions_contract = lo.positions_contract
         AND mm.protocol_version = lo.protocol_version
     {% if is_incremental() %}
-    WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('mm.evt_block_time') }}
     {% endif %}
 ),
 
@@ -381,54 +382,81 @@ limit_cancel as (
         AND lc.positions_contract = op.positions_contract
         AND lc.protocol_version = op.protocol_version
     {% if is_incremental() %}
-    WHERE lc.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('lc.evt_block_time') }}
     {% endif %}
+),
+
+events_combined as (
+    SELECT * FROM open_position
+
+    UNION ALL 
+
+    SELECT * FROM close_position
+
+    UNION ALL 
+
+    SELECT * FROM liquidate_position
+
+    UNION ALL 
+
+    SELECT * FROM add_margin
+
+    UNION ALL 
+
+    SELECT * FROM modify_margin
+
+    UNION ALL 
+
+    SELECT * FROM limit_order
+
+    UNION ALL 
+
+    SELECT * FROM limit_cancel
 )
 
 SELECT 
     'arbitrum' as blockchain, 
-    * 
-FROM open_position
-
-UNION ALL
-
-SELECT 
-    'arbitrum' as blockchain,
-    *
-FROM close_position
-
-UNION ALL
-
-SELECT 
-    'arbitrum' as blockchain, 
-    * 
-FROM liquidate_position
-
-UNION ALL
-
-SELECT 
-    'arbitrum' as blockchain,
-    *
-FROM add_margin
-
-UNION ALL
-
-SELECT 
-    'arbitrum' as blockchain,
-    *
-FROM modify_margin
-
-UNION ALL 
-
-SELECT 
-    'arbitrum' as blockchain,
-    *
-FROM limit_order
-
-UNION ALL 
-
-SELECT 
-    'arbitrum' as blockchain,
-    *
+    block_month,
+    day,
+    project_contract_address,
+    evt_block_time,
+    evt_index,
+    evt_tx_hash,
+    position_id,
+    ec.price,
+    new_margin,
+    CASE
+        WHEN margin_asset = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 THEN new_margin * pe.price
+        WHEN margin_asset = 0x763e061856b3e74a6c768a859dc2543a56d299d5 THEN new_margin * pe.price
+        ELSE new_margin 
+    END as new_margin_usd,
+    leverage,
+    CASE
+        WHEN margin_asset = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 THEN volume_usd * pe.price
+        WHEN margin_asset = 0x763e061856b3e74a6c768a859dc2543a56d299d5 THEN volume_usd * pe.price
+        ELSE volume_usd
+    END as volume_usd,
+    margin_asset,
+    pair,
+    direction,
+    referral,
+    trader,
+    margin_change,
+    CASE
+        WHEN margin_asset = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 THEN margin_change * pe.price
+        WHEN margin_asset = 0x763e061856b3e74a6c768a859dc2543a56d299d5 THEN margin_change * pe.price
+        ELSE margin_change
+    END as margin_change_usd,
+    version,
+    trade_type,
+    positions_contract,
+    protocol_version
 FROM 
-limit_cancel
+events_combined ec 
+LEFT JOIN {{ source('prices', 'usd') }} pe 
+    ON pe.minute = date_trunc('minute', ec.evt_block_time)
+    AND pe.blockchain = 'arbitrum'
+    AND pe.symbol = 'WETH'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('pe.minute') }}
+    {% endif %}

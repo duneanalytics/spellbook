@@ -1,0 +1,73 @@
+version: 2
+
+sources:
+  - name: aave_v3_base
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
+
+  - name: compound_v3_base
+    tables:
+      - name: Comet_evt_Supply
+      - name: cUSDbCv3Comet_evt_Supply
+      - name: Comet_evt_Withdraw
+      - name: cUSDbCv3Comet_evt_Withdraw
+      - name: Comet_evt_Transfer
+      - name: cUSDbCv3Comet_evt_Transfer
+      - name: Comet_evt_AbsorbDebt
+      - name: cUSDbCv3Comet_evt_AbsorbDebt
+
+  - name: seamlessprotocol_base
+    tables:
+      - name: L2Pool_evt_Borrow
+      - name: L2Pool_evt_Repay
+      - name: L2Pool_evt_LiquidationCall
+
+  - name: moonwell_base
+    tables:
+      - name: mcbETH_evt_Borrow
+      - name: mcbETH_evt_RepayBorrow
+      - name: mcbETH_evt_LiquidateBorrow
+      - name: mDAI_evt_Borrow
+      - name: mDAI_evt_RepayBorrow
+      - name: mDAI_evt_LiquidateBorrow
+      - name: mUSDC_evt_Borrow
+      - name: mUSDC_evt_RepayBorrow
+      - name: mUSDC_evt_LiquidateBorrow
+      - name: mUSDCnative_evt_Borrow
+      - name: mUSDCnative_evt_RepayBorrow
+      - name: mUSDCnative_evt_LiquidateBorrow
+      - name: mWETH_evt_Borrow
+      - name: mWETH_evt_RepayBorrow
+      - name: mWETH_evt_LiquidateBorrow
+      - name: mwstETH_evt_Borrow
+      - name: mwstETH_evt_RepayBorrow
+      - name: mwstETH_evt_LiquidateBorrow
+      - name: mrETH_evt_Borrow
+      - name: mrETH_evt_RepayBorrow
+      - name: mrETH_evt_LiquidateBorrow
+
+  - name: sonne_finance_base
+    tables:
+      - name: sobcbETH_evt_Borrow
+      - name: sobcbETH_evt_RepayBorrow
+      - name: sobcbETH_evt_LiquidateBorrow
+      - name: sobDAI_evt_Borrow
+      - name: sobDAI_evt_RepayBorrow
+      - name: sobDAI_evt_LiquidateBorrow
+      - name: sobUSDbC_evt_Borrow
+      - name: sobUSDbC_evt_RepayBorrow
+      - name: sobUSDbC_evt_LiquidateBorrow
+      - name: sobUSDC_evt_Borrow
+      - name: sobUSDC_evt_RepayBorrow
+      - name: sobUSDC_evt_LiquidateBorrow
+      - name: sobWETH_evt_Borrow
+      - name: sobWETH_evt_RepayBorrow
+      - name: sobWETH_evt_LiquidateBorrow
+
+  - name: the_granary_base
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

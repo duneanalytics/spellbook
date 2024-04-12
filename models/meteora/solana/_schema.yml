@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: meteora_v1_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','dex']  
+    description: >
+        all meteora amm dex trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+            - tx_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &trade_source
+        name: trade_source
+        description: "Was the trade a direct call to the pool or did it go through another program like Jupiter (Dex Aggregator)"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &fee_tier
+        name: fee_tier
+        description: "fee tier (fee %)"
+      - &fee_usd
+        name: fee_usd
+        description: "fee usd paid on swap"
+      - &token_bought_mint_address
+        name: token_bought_address
+        description: "token mint address of the token bought"
+      - &token_sold_mint_address
+        name: token_sold_address
+        description: "token mint address of the token sold"
+      - &token_bought_vault
+        name: token_bought_vault
+        description: "token associated address, of the token bought"
+      - &token_sold_vault
+        name: token_sold_vault
+        description: "token associated address, of the token sold"
+      - &project_program_id
+        name: project_program_id
+        description: "Project program id that the trade was executed on - like the pool id"
+      - &trader_id
+        name: trader_id
+        description: "id (address) of trader who purchased a token"
+      - &tx_id
+        name: tx_id
+        description: "Unique transaction id value tied to each transaction on the DEX"
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: "top level instruction index for a given transaction id"
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: "inner instruction index for a given transaction id"
+      - &tx_index
+        name: tx_index
+        description: "index of the transaction in the block slot"
+
+  - name: meteora_v2_solana_trades
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','dex']  
+    description: >
+        all meteora lb_clmm dex trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+            - tx_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *trade_source
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *fee_tier
+      - *fee_usd
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index
+      

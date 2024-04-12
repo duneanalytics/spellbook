@@ -11,18 +11,21 @@ select
     ,r.tx_hash
     ,r.category
     ,r.referrer_address
-    ,coalesce(r.referee_address, r.tx_from) as referee_address
+    ,r.referee_address
     ,r.currency_contract
     ,r.reward_amount_raw
     ,r.project_contract_address
     ,r.sub_tx_id
-    ,(r.referrer_address != 0x0000000000000000000000000000000000000000) as is_referral
+    ,(r.referrer_address != 0x0000000000000000000000000000000000000000
+      and r.reward_amount_raw > uint256 '0'
+      and r.referrer_address != r.referee_address
+      ) as is_referral
     ,r.tx_from
     ,r.tx_to
     ,r.reward_amount_raw/pow(10,coalesce(erc.decimals,18)) as reward_amount
     ,r.reward_amount_raw/pow(10,coalesce(erc.decimals,18))*p.price as reward_amount_usd
 from {{model}} r
-left join {{ref('tokens_erc20')}} erc
+left join {{source('tokens', 'erc20')}} erc
     on erc.blockchain = r.blockchain
     and erc.contract_address = r.currency_contract
 left join {{source('prices','usd')}} p

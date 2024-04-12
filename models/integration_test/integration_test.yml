@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: test_incremental_table
+    description: "integration test for an incremental model"
+    config:
+      tags: ['integration_test']
+      columns:
+        - name: blockchain
+          tests:
+            - not_null
+
+  - name: test_view
+    description: "integration test for a view"
+    config:
+      tags: ['integration_test']
+      columns:
+        - name: blockchain
+          tests:
+            - not_null

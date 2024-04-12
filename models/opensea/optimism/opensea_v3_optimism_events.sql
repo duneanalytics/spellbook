@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v3_optimism',
     alias = 'events',
-    
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -19,9 +19,9 @@ WITH fee_wallets as (
      {{ seaport_v3_trades(
      blockchain = 'optimism'
      ,source_transactions = source('optimism','transactions')
-     ,Seaport_evt_OrderFulfilled = source('opensea_optimism','Seaport_evt_OrderFulfilled')
-     ,Seaport_call_matchAdvancedOrders = source('opensea_optimism','Seaport_call_matchAdvancedOrders')
-     ,Seaport_call_matchOrders = source('opensea_optimism','Seaport_call_matchOrders')
+     ,Seaport_evt_OrderFulfilled = source('seaport_optimism','Seaport_evt_OrderFulfilled')
+     ,Seaport_call_matchAdvancedOrders = source('seaport_optimism','Seaport_call_matchAdvancedOrders')
+     ,Seaport_call_matchOrders = source('seaport_optimism','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,native_token_address = '0x0000000000000000000000000000000000000000'
      ,alternative_token_address = '0x4200000000000000000000000000000000000006'

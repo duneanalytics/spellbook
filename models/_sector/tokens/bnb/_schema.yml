@@ -1,0 +1,190 @@
+version: 2
+
+models:
+  - name: tokens_bnb_base_transfers
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: aalan3, jeff-dude
+    config:
+      tags: ['tokens','transfers', 'bnb']
+    description: >
+      Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row"
+      - name: blockchain
+        description: "The blockchain of the transfers"
+      - name: block_date
+        description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
+      - name: block_number
+        description: "The block number"
+      - name: tx_hash
+        description: "The transaction hash"
+      - name: evt_index
+        description: "The log event index of the transfer if any"
+      - name: trace_address
+        description: "The trace address of the transfer if any"
+      - name: token_standard
+        description: "The token standard of the transfer"
+      - name: tx_from
+        description: "The transaction sender"
+      - name: tx_to
+        description: "The transaction receiver"
+      - name: tx_index
+        description: "The transaction index"
+      - name: from
+        description: "The sender of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: contract_address
+        description: "The contract address of the transfer"
+      - name: amount_raw
+        description: "The raw amount of the transfer"
+
+  - name: tokens_bnb_transfers
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: aalan3, jeff-dude
+    config:
+      tags: ['tokens','transfers', 'bnb']
+    description: >
+      Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - unique_key
+    columns:
+      - name: unique_key
+        description: "Surrogate key to identify unique row"
+      - name: blockchain
+        description: "The blockchain of the transfers"
+      - name: block_date
+        description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
+      - name: block_number
+        description: "The block number"
+      - name: tx_hash
+        description: "The transaction hash"
+      - name: evt_index
+        description: "The log event index of the transfer if any"
+      - name: trace_address
+        description: "The trace address of the transfer if any"
+      - name: token_standard
+        description: "The token standard of the transfer"
+      - name: tx_from
+        description: "The transaction sender"
+      - name: tx_to
+        description: "The transaction receiver"
+      - name: tx_index
+        description: "The transaction index"
+      - name: from
+        description: "The sender of the transfer"
+      - name: to
+        description: "The receiver of the transfer"
+      - name: contract_address
+        description: "The contract address of the transfer"
+      - name: symbol
+        description: "The token symbol transferred"
+      - name: amount_raw
+        description: "The raw amount of the transfer"
+      - name: amount
+        description: "The formatted amount of the transfer"
+      - name: price_usd
+        description: "The USD price used to calculate the amount_usd"
+      - name: amount_usd
+        description: "The USD amount of the transfer"
+
+  - name: tokens_bnb_balances
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'bnb']
+    description: "Token balances enriched"
+    columns:
+      - name: block_number
+      - name: block_time
+      - name: address
+      - name: token_address
+      - name: token_standard
+      - name: balance_raw
+      - name: balance
+      - name: token_symbol
+      - name: token_id
+      - name: collection_name
+
+  - name: tokens_bnb_balances_daily_agg_base
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'bnb']
+    description: "Token balances daily base"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_bnb_balances_daily_agg
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'bnb']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_bnb_balances_daily
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'bnb' ]
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name

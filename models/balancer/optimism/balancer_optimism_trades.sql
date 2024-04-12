@@ -1,12 +1,9 @@
 {{ config(
-    
-    alias = 'trades',
-    post_hook = '{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+    schema = 'balancer_optimism',
+    alias = 'trades'
     )
 }}
+
 
 {% set balancer_models = [
     ref('balancer_v2_optimism_trades')

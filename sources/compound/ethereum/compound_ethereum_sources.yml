@@ -1,0 +1,89 @@
+version: 2
+
+sources: 
+  - name: compound_v2_ethereum
+    description: "Ethereum decoded tables related to Compound v2 contract"
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: GovernorBravoDelegate_evt_VoteCast
+        loaded_at_field: evt_block_time
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "DAO governor contract address"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "UTC event block time"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &proposalId
+            name: proposalId
+          - &reason
+            name: reason
+          - &voter
+            name: voter
+          - &votes
+            name: votes
+      - name: GovernorBravoDelegate_evt_ProposalCreated
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &calldatas
+            name: calldatas
+          - &description
+            name: description
+          - &endBlock
+            name: endBlock
+          - &id
+            name: id
+          - &proposer
+            name: proposer
+          - &signatures
+            name: signatures
+          - &startBlock
+            name: startBlock
+          - &targets
+            name: targets
+          - &values
+            name: values
+      - name: GovernorBravoDelegate_evt_ProposalCanceled
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: GovernorBravoDelegate_evt_ProposalExecuted
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id
+      - name: GovernorBravoDelegate_evt_ProposalQueued
+        loaded_at_field: evt_block_time
+        columns:
+          - *contract_address
+          - &eta
+            name: eta
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *id

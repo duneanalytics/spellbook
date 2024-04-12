@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: dex_gnosis_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: sushiswap_v1_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: sushiswap
+      contributors: hosuke, tomfutago
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'sushiswap', 'v1']
+    description: "Sushiswap gnosis base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_gnosis_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: sushiswap_v2_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: sushiswap
+      contributors: hosuke, tomfutago
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'sushiswap', 'v2']
+    description: "Sushiswap gnosis base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_gnosis_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: balancer_v2_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago
+    config:
+      tags: [ 'gnosis', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 gnosis base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_gnosis_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: honeyswap_v2_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: honeyswap
+      contributors: 0xr3x, jeff-dude, masquot, soispoke, tomfutago
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'honeyswap', 'v2']
+    description: "Honeyswap gnosis base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('honeyswap_gnosis_base_trades_seed')
+          filter:
+            version: 2

@@ -1,10 +1,10 @@
 {{ config(
         alias = 'liquidity',
          
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "base", "zksync"]\',
                                 "project",
                                 "lido_liquidity",
-                                \'["ppclunghe", "gregshestakovlido", "hosuke"]\') }}'
+                                \'["pipistrella", "zergil1397", "hosuke"]\') }}'
         )
 }}
 
@@ -17,6 +17,7 @@
  ref('lido_liquidity_arbitrum_curve_pools'),
  ref('lido_liquidity_arbitrum_balancer_pools'),
  ref('lido_liquidity_arbitrum_camelot_pools'),
+ ref('lido_liquidity_arbitrum_ramses_pools'),
  ref('lido_liquidity_optimism_kyberswap_pools'),
  ref('lido_liquidity_optimism_kyberswap_v2_pools'),
  ref('lido_liquidity_optimism_uniswap_v3_pools'),
@@ -38,8 +39,12 @@
  ref('lido_liquidity_ethereum_maverick_pools'),
  ref('lido_liquidity_ethereum_uniswap_v3_pools'),
  ref('lido_liquidity_ethereum_pancakeswap_v3_pools'),
- ref('lido_liquidity_ethereum_uniswap_v2_pools')
- 
+ ref('lido_liquidity_ethereum_uniswap_v2_pools'),
+ ref('lido_liquidity_ethereum_solidly_pools'),
+ ref('lido_liquidity_base_kyberswap_pools'),
+ ref('lido_liquidity_base_aerodrome_pools'),
+ ref('lido_liquidity_base_uniswap_v3_pools'),
+ ref('lido_liquidity_zksync_syncswap_pools'),
 ] %}
 
 {% set project_start_date =  '2020-12-15'%} 

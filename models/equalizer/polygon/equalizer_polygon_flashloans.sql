@@ -1,5 +1,6 @@
 {{ config(
-     partition_by = ['block_month']
+      partition_by = ['block_month']
+      , schema = 'equalizer_polygon'
       , alias = 'flashloans'
       , materialized = 'incremental'
       , file_format = 'delta'
@@ -28,7 +29,7 @@ SELECT 'polygon' AS blockchain
 , flash.receiver AS recipient
 , flash.contract_address
 FROM {{ source('equalizer_polygon','FlashLoanProvider_evt_FlashLoan') }} flash
-LEFT JOIN {{ ref('tokens_polygon_erc20') }} tok ON tok.contract_address=flash.token
+LEFT JOIN {{ source('tokens_polygon', 'erc20') }} tok ON tok.contract_address=flash.token
 LEFT JOIN {{ source('prices','usd') }} pu ON pu.blockchain = 'polygon'  
   AND pu.contract_address = flash.token
   AND pu.minute = date_trunc('minute', flash.evt_block_time)

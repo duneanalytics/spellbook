@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
                                     "labels",
-                                    \'["hildobby"]\') }}')}}
+                                    \'["hildobby","rantum"]\') }}')}}
 
 SELECT blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type
 FROM (VALUES
@@ -122,4 +122,28 @@ FROM (VALUES
     , ('ethereum', 0x76943c0d61395d8f2edf9060e1533529cae05de6, 'Optimism: Lido Bridge', 'bridge', 'msilb7', 'static', DATE '2022-10-12' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x324c7ec7fb2bc61646ac2f22f6d06ab29b6c87a3, 'Optimism: Teleportr v1', 'bridge', 'msilb7', 'static', DATE '2022-10-12' , now(), 'bridges_ethereum', 'identifier')
     , ('ethereum', 0x52ec2f3d7c5977a8e558c8d9c6000b615098e8fc, 'Optimism: Teleportr v2', 'bridge', 'msilb7', 'static', DATE '2022-10-12' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0xbEb5Fc579115071764c7423A4f12eDde41f106Ed, 'Optimism: OptimismPortal', 'bridge', 'msilb7', 'static', DATE '2023-06-06' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0xabea9132b05a70803a4e85094fd0e1800777fbef, 'zkSync Lite Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x32400084c286cf3e17e7b677ea9583e60a000324, 'zkSync Era Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0xae0ee0a63a2ce6baeeffe56e7714fb4efe48d419, 'Starknet StarkGate Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x49048044d57e1c92a77f79988d21fa8faf74e97e, 'Base Portal', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x1a0ad011913a150f69f6a19df447a0cfd9551054, 'Zora: Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x296f55f8fb28e498b858d0bcda06d955b2cb3f97, 'Stargate: Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole: Portal Token Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x95fc37a27a2f68e3a647cdc081f0a89bb47c3012, 'Mantle: L1 Standard Bridge Proxy', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x3b95bc951ee0f553ba487327278cac44f29715e5, 'Manta Pacific Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x6571d6be3d8460cf5f7d6711cd9961860029d85f, 'Synapse Bridge Zap 3', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x2a3dd3eb832af982ec71669e178424b10dca2ede, 'Polygon: zkEVM Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0xd5f0f8db993d26f5df89e70a83d32b369dccdaa0, 'Symbiosis Bridge', 'bridge', 'rantum', 'static', DATE '2023-11-08' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x4F4495243837681061C4743b74B3eEdf548D56A5, 'Axelar:Gateway', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf, 'Polygon: ERC20 Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x401F6c983eA34274ec46f84D70b31C151321188b, 'Polygon: Plasma Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x3154Cf16ccdb4C6d922629664174b904d80F2C35, 'Base Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x9de443AdC5A411E83F1878Ef24C3F52C61571e72, 'Base: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x051f1d88f0af5763fb888ec4378b4d8b29ea3319, 'Linea: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x41527B2d03844dB6b0945f25702cB958b6d55989, 'zkSynk Era: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x57891966931Eb4Bb6FB81430E6cE0A03AAbDe063, 'zkSynk Era Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    , ('ethereum', 0x2D001d79E5aF5F65a939781FE228B267a8Ed468B, 'Mantle: Lido Bridge', 'bridge', 'ppclunghe', 'static', DATE '2023-12-10' , now(), 'bridges_ethereum', 'identifier')
+    
+
     ) AS x (blockchain, address, name, category, contributor, source, created_at, updated_at, model_name, label_type)

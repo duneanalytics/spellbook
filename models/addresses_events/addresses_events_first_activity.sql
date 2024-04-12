@@ -2,10 +2,10 @@
 (
     alias = 'first_activity'
     
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo"]\',
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora"]\',
                                     "sector",
                                     "addresses_events",
-                                    \'["Henrystats"]\') }}'
+                                    \'["Henrystats", "hildobby"]\') }}'
 )
 }}
 
@@ -19,6 +19,8 @@
 , ref('addresses_events_optimism_first_activity')
 , ref('addresses_events_polygon_first_activity')
 , ref('addresses_events_celo_first_activity')
+, ref('addresses_events_zksync_first_activity')
+, ref('addresses_events_zora_first_activity')
 ] %}
 
 SELECT *

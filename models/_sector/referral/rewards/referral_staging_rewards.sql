@@ -1,7 +1,6 @@
 {{ config(
     schema = 'referral',
     alias = 'staging_rewards',
-    
     materialized = 'view'
     )
 }}
@@ -11,14 +10,33 @@
  ref('zora_ethereum_rewards'),
  ref('zora_optimism_rewards'),
  ref('zora_base_rewards'),
+ ref('zora_zora_rewards'),
  ref('rabbithole_arbitrum_rewards'),
  ref('rabbithole_base_rewards'),
  ref('rabbithole_optimism_rewards'),
  ref('rabbithole_polygon_rewards'),
- ref('soundxyz_ethereum_rewards'),
- ref('soundxyz_optimism_rewards')
+ ref('soundxyz_v1_ethereum_rewards'),
+ ref('soundxyz_v1_optimism_rewards'),
+ ref('soundxyz_v2_ethereum_rewards'),
+ ref('soundxyz_v2_optimism_rewards'),
+ ref('soundxyz_v2_base_rewards'),
+ ref('slugs_optimism_rewards'),
+ ref('mintfun_ethereum_rewards'),
+ ref('mintfun_optimism_rewards'),
+ ref('mintfun_base_rewards'),
+ ref('mintfun_zora_rewards'),
+ ref('mirror_optimism_rewards'),
+ ref('mirror_base_rewards'),
+ ref('paragraph_optimism_rewards'),
+ ref('paragraph_base_rewards'),
+ ref('paragraph_zora_rewards'),
+ ref('paragraph_polygon_rewards'),
+ ref('fabric_ethereum_rewards'),
+ ref('fabric_optimism_rewards'),
+ ref('fabric_base_rewards'),
+ ref('fabric_zora_rewards'),
+ ref('basepaint_base_rewards')
 ] %}
-
 
 SELECT *
 FROM (

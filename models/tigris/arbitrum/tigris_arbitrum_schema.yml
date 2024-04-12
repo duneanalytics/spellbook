@@ -136,6 +136,9 @@ models:
       - &new_margin
         name: new_margin
         description: "new margin balance"
+      - &new_margin_usd
+        name: new_margin_usd
+        description: "new margin balance in usd"
       - &leverage
         name: leverage 
         description: "leverage used for trade"
@@ -156,6 +159,9 @@ models:
       - &margin_change
         name: margin_change
         description: "change in margin"
+      - &margin_change_usd
+        name: margin_change_usd
+        description: "change in margin in usd"
       - &trade_type
         name: trade_type
         description: "trade type"

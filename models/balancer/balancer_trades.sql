@@ -1,5 +1,4 @@
 {{ config(
-    
     schema = 'balancer',
     alias = 'trades',
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
@@ -8,6 +7,7 @@
                                 \'["bizzyvinci", "thetroyharris"]\') }}'
     )
 }}
+
 
 {% set balancer_models = [
     ref('balancer_arbitrum_trades'),

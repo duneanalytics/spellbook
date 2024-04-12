@@ -1,0 +1,148 @@
+version: 2
+
+models:
+  - name: lending_fantom_base_borrow
+    meta:
+      blockchain: fantom
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'fantom']
+    description: "All lending borrow transactions on Fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+        tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the lending project"
+        tests:
+          - not_null
+      - &transaction_type
+        name: transaction_type
+        description: "Transaction type"
+        tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+        tests:
+          - not_null
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction"
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Event block number"
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+        tests:
+          - not_null
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+        tests:
+          - not_null
+
+  - name: aave_v3_fantom_base_borrow
+    meta:
+      blockchain: fantom
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'fantom']
+    description: "Aave v3 borrow transactions on Fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_fantom_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: granary_fantom_base_borrow
+    meta:
+      blockchain: fantom
+      sector: lending
+      project: granary
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'granary', 'fantom']
+    description: "Granary borrow transactions on Fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('granary_fantom_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index

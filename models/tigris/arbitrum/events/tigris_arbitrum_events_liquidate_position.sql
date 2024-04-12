@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'protocol_version']
     )
 }}
@@ -25,6 +26,7 @@ WITH
     ,'TradingV3_evt_PositionLiquidated'
     ,'TradingV4_evt_PositionLiquidated'
     ,'TradingV5_evt_PositionLiquidated'
+    ,'TradingV6_evt_PositionLiquidated'
 ] %}
 
 liquidate_position_v1 AS (
@@ -67,7 +69,7 @@ liquidate_position_v2 AS (
             contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_arbitrum', liquidate_position_trading_evt) }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -97,3 +99,4 @@ INNER JOIN
     ON a.project_contract_address = c.trading_contract
     AND a.version = c.trading_contract_version
 
+-- reload

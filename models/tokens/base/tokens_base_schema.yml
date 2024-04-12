@@ -1,25 +1,6 @@
 version: 2
 
 models:
-  - name: tokens_base_erc20
-    meta:
-      blockchain: base
-      sector: tokens
-      project: erc20
-      contributors: hildobby
-    config:
-      tags: ['table', 'erc20', 'base']
-    description: "All ERC20 Token Addresses on Base - with mapped Symbols and Decimals if known."
-    columns:
-      - name: contract_address
-        description: "ERC20 token contract address on Base"
-        tests:
-          - unique
-      - name: symbol
-        description: "ERC20 token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 token can be"
-
   - name: tokens_base_nft_curated
     meta:
       blockchain: base
@@ -58,9 +39,9 @@ models:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
-          The token standard. This is the set of rules that the contract must respect 
+          The token standard. This is the set of rules that the contract must respect
           to be compatible with the common standards. Accepted values are presently standards represented.
-          If you are adding a token with a new standard, remember to add it the accepted values list.   
+          If you are adding a token with a new standard, remember to add it the accepted values list.
 
   - name: tokens_base_nft_standards
     meta:
@@ -81,4 +62,3 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
-

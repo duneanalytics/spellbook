@@ -3,11 +3,11 @@ version: 2
 models:
   - name: nft_transfers
     meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora
       sector: nft
       contributors: hildobby
     config:
-      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'transfers']
+      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'transfers']
     description: >
         NFT transfers
     tests:
@@ -315,6 +315,50 @@ models:
       blockchain: zksync
       sector: nft
       contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_zora_transfers
+    meta:
+      blockchain: zora
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_scroll_transfers
+    meta:
+      blockchain: scroll
+      sector: nft
+      contributors: 0xRob
     config:
       tags: [ 'nft', 'transfers' ]
     description: >

@@ -91,8 +91,7 @@ SELECT
     , tk.call_block_time as created_at
 FROM tokens tk
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint
-WHERE tk.decimals != 0
-and m.master_edition is null
+WHERE m.master_edition is null
 
 UNION ALL
 

@@ -51,7 +51,16 @@ models:
         description: "Category of entity"
         tests:
           - accepted_values:
-              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others']
+      - name: sub_entity
+        description: "Identified sub entity name"
+      - name: sub_entity_unique_name
+        description: "Unique name of identified sub entity"
+      - name: sub_entity_category
+        description: "Category of sub entity"
+        tests:
+          - accepted_values:
+              values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others']
 
   - name: staking_ethereum_deposits
     meta:
@@ -81,6 +90,12 @@ models:
         description: "Unique name of depositor if identified"
       - name: entity_category
         description: "Category of depositor if identified"
+      - name: sub_entity
+        description: "Name of sub depositor if any identified"
+      - name: sub_entity_unique_name
+        description: "Unique name of sub depositor if any identified"
+      - name: sub_entity_category
+        description: "Category of sub entity depositor if any identified"
       - name: tx_hash
         description: "Transaction hash of deposit"
       - name: tx_from
@@ -123,6 +138,12 @@ models:
         description: "Unique name of depositor if identified"
       - name: entity_category
         description: "Category of depositor if identified"
+      - name: sub_entity
+        description: "Name of sub depositor if any identified"
+      - name: sub_entity_unique_name
+        description: "Unique name of sub depositor if any identified"
+      - name: sub_entity_category
+        description: "Category of sub entity depositor if any identified"
       - name: tx_from
         description: "The address that executed the transaction"
       - name: deposit_index

@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: eas_arbitrum_schemas
+    meta:
+      blockchain: arbitrum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'arbitrum' ]
+    description: "EAS schema registry on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+    columns:
+      - &schema_uid
+        name: schema_uid
+        description: "Schema unique identifier"
+        tests:
+          - not_null
+
+  - name: eas_arbitrum_schema_details
+    meta:
+      blockchain: arbitrum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'arbitrum' ]
+    description: "EAS schema registry details on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+            - ordinality
+    columns:
+      - *schema_uid
+      - &ordinality
+        name: ordinality
+        description: "Incremental unique number to order fields within each Schema"
+        tests:
+          - not_null
+
+  - name: eas_arbitrum_attestations
+    meta:
+      blockchain: arbitrum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'arbitrum' ]
+    description: "EAS attestations on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+            - attestation_uid
+    columns:
+      - *schema_uid
+      - &attestation_uid
+        name: attestation_uid
+        description: "Attestation unique identifier"
+        tests:
+          - not_null
+
+  - name: eas_arbitrum_attestation_details
+    meta:
+      blockchain: arbitrum
+      sector: attestation
+      project: eas
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas', 'arbitrum' ]
+    description: "EAS attestation details on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schema_uid
+            - attestation_uid
+            - ordinality
+    columns:
+      - *schema_uid
+      - *attestation_uid
+      - *ordinality
