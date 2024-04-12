@@ -39,9 +39,7 @@ sources:
         loaded_at_field: evt_block_time
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
-          - &contract_address
-            name: contract_address
-            description: "Contract address"
+          - *contract_address
           - &evt_block_number
             name: evt_block_number
             description: "Event block number"
