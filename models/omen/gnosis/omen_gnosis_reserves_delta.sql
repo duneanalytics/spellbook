@@ -1,12 +1,12 @@
 {{ config(
     schema = 'omen_gnosis',
     alias = 'reserves_delta',
-
+    
     partition_by = ['block_day'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_day', 'tx_hash', 'evt_index','amount_index'],
+    unique_key = ['block_day', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                 "project",
                                 "omen",
@@ -26,15 +26,19 @@ WITH final AS (
         ,evt_index
         ,fixedProductMarketMaker
         ,funder AS address
-        ,shares
-        ,amount_index 
+       -- ,shares
+        ,outcomeIndex 
+        ,outcomeTokens_amount
         ,amount
-        ,NULL AS fees
+        ,collateralRemovedFromFeePool AS fees
         ,action
-        ,CASE
-            WHEN action = 'Mint' THEN CAST(amount AS INT256)
-            WHEN action = 'Burn' THEN CAST(-amount AS INT256)
-        END AS reserves_delta
+        ,TRANSFORM(
+            outcomeTokens_amount, 
+            x -> CASE
+                    WHEN action = 'Add' THEN CAST(x AS INT256)
+                    WHEN action = 'Remove' THEN CAST(-x AS INT256)
+                END
+        ) AS reserves_delta
     FROM
         {{ ref('omen_gnosis_liquidity') }}
     {% if is_incremental() %}
@@ -54,15 +58,19 @@ WITH final AS (
         ,evt_index
         ,fixedProductMarketMaker
         ,address
-        ,outcomeTokens AS shares
-        ,outcomeSlot AS amount_index
+        --,NULL AS shares
+        ,outcomeSlot AS outcomeIndex
+        ,outcomeTokens_amount
         ,amount
         ,feeAmount AS fees
         ,action
-        ,CASE
-            WHEN action = 'Buy' THEN CAST(amount AS INT256) - CAST(feeAmount + outcomeTokens AS INT256)
-            WHEN action = 'Sell' THEN CAST(outcomeTokens AS INT256) - CAST(amount + feeAmount AS INT256)
-        END AS reserves_delta
+        ,TRANSFORM(
+            outcomeTokens_amount, 
+            x -> CASE
+                    WHEN action = 'Buy' THEN CAST(amount AS INT256) - CAST(feeAmount + x AS INT256)
+                    WHEN action = 'Sell' THEN CAST(x AS INT256) - CAST(amount + feeAmount AS INT256)
+                END
+        ) AS reserves_delta
     FROM
         {{ ref('omen_gnosis_trades') }}
     {% if is_incremental() %}

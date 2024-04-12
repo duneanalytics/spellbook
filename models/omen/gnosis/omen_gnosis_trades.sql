@@ -1,7 +1,7 @@
 {{ config(
     schema = 'omen_gnosis',
     alias = 'trades',
-
+    
     partition_by = ['block_day'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -108,7 +108,7 @@ QuestionIdAnnouncement AS (
         {% else %}
         AND block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
-
+        
 ),
 
 ConditionPreparation AS (
@@ -177,7 +177,7 @@ FixedProductMarketMakerCreation AS (
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %} 
-
+        
 ),
 
 
@@ -221,31 +221,51 @@ prediction_market_info AS (
 
 final AS (
     SELECT
-        t1.block_time
-        ,t1.block_day
-        ,t1.tx_from 
-        ,t1.tx_to 
-        ,t1.tx_hash 
-        ,t1.evt_index
-        ,t1.evt_contract_address AS fixedProductMarketMaker
-        ,t1.address
-        ,s.outcomeSlot
-        ,t1.outcomeIndex
-        ,t1.amount
-        ,t1.feeAmount
-        ,CASE  
-            WHEN s.outcomeSlot = t1.outcomeIndex
-                THEN t1.outcomeTokens
-            ELSE 0
-        END AS outcomeTokens
-        ,t1.action 
-    FROM
-        trades t1
-    LEFT JOIN 
-        prediction_market_info t2
-        ON
-        t2.fixedProductMarketMaker = t1.evt_contract_address
-    CROSS JOIN UNNEST(SEQUENCE(0, TRY_CAST(t2.outcomeSlotCount AS INTEGER) - 1 ) ) AS s(outcomeSlot)
+        block_time
+        ,block_day
+        ,tx_from 
+        ,tx_to 
+        ,tx_hash 
+        ,evt_index
+        ,fixedProductMarketMaker
+        ,address
+        ,ARRAY_AGG(outcomeSlot ORDER BY outcomeSlot) AS outcomeSlot
+        ,outcomeIndex
+        ,amount
+        ,feeAmount
+        ,ARRAY_AGG(outcomeTokens_amount ORDER BY outcomeSlot) AS outcomeTokens_amount
+        ,action 
+    FROM (
+        SELECT
+            t1.block_time
+            ,t1.block_day
+            ,t1.tx_from 
+            ,t1.tx_to 
+            ,t1.tx_hash 
+            ,t1.evt_index
+            ,t1.evt_contract_address AS fixedProductMarketMaker
+            ,t1.address
+            ,s.outcomeSlot
+            ,t1.outcomeIndex
+            ,t1.amount
+            ,t1.feeAmount
+            ,CASE  
+                WHEN s.outcomeSlot = t1.outcomeIndex
+                    THEN t1.outcomeTokens
+                ELSE 0
+            END AS outcomeTokens_amount
+            ,t1.action 
+        FROM
+            trades t1
+        LEFT JOIN 
+            prediction_market_info t2
+            ON
+            t2.fixedProductMarketMaker = t1.evt_contract_address
+        CROSS JOIN UNNEST(SEQUENCE(0, TRY_CAST(t2.outcomeSlotCount AS INTEGER) - 1 ) ) AS s(outcomeSlot)
+    )
+    GROUP BY 
+    1,2,3,4,5,6,7,8, 10,11,12, 14
 )
 
 SELECT * FROM final
+

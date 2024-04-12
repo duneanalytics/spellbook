@@ -1,12 +1,12 @@
 {{ config(
     schema = 'omen_gnosis',
     alias = 'liquidity',
-
+    
     partition_by = ['block_day'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'tx_hash', 'evt_index', 'amount_index'],
+    unique_key = ['block_time', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                 "project",
                                 "omen",
@@ -29,8 +29,13 @@ FPMMFundingAdded AS (
         t.evt_contract_address,
         t.funder,
         t.sharesMinted,
-        s.SEQUENCE_NUMBER - 1 AS amountAdded_index,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 65 + 32 * s.SEQUENCE_NUMBER, 32))) AS amountsAdded
+        ARRAY_AGG(s.SEQUENCE_NUMBER - 1 ORDER BY s.SEQUENCE_NUMBER) AS outcomeIndex,
+        ARRAY_AGG(
+            VARBINARY_TO_UINT256(
+                VARBINARY_LTRIM(
+                    VARBINARY_SUBSTRING(t.data, 65 + 32 * s.SEQUENCE_NUMBER, 32)
+                )
+            ) ORDER BY s.SEQUENCE_NUMBER) AS outcomeTokens_amount
     FROM (
         SELECT
             block_time,
@@ -55,9 +60,59 @@ FPMMFundingAdded AS (
             {% endif %}
     ) AS t
     CROSS JOIN UNNEST(SEQUENCE(1, TRY_CAST(t.amountsAdded_size AS INTEGER)) ) AS s(SEQUENCE_NUMBER)
-
+    GROUP BY
+        1,2,3,4,5,6,7,8
+   
 ),
 
+ConditionalTokens_evt_PositionSplit AS (
+    SELECT
+        contract_address,
+        evt_tx_hash,
+        evt_tx_from,
+        evt_tx_to,
+        evt_index,
+        evt_block_time,
+        evt_block_number,
+        evt_block_date,
+        amount,
+        collateralToken,
+        conditionId,
+        parentCollectionId,
+        partition,
+        stakeholder
+    FROM 
+        {{source('omen_gnosis','ConditionalTokens_evt_PositionSplit') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+), 
+
+add_liquidity AS (
+    SELECT 
+        t1.block_time,
+        DATE_TRUNC('day', t1.block_time) AS block_day,
+        t1.tx_from,
+        t1.tx_to,
+        t1.tx_hash,
+        t1.evt_index,
+        t1.evt_contract_address AS fixedProductMarketMaker,
+        t1.funder,
+        t1.sharesMinted AS shares,
+        NULL AS collateralRemovedFromFeePool,
+        t1.outcomeIndex,
+        t1.outcomeTokens_amount,
+        COALESCE(t2.amount,0) AS amount,
+        'Add' AS action
+    FROM
+        FPMMFundingAdded t1
+    LEFT JOIN
+        ConditionalTokens_evt_PositionSplit t2 
+    ON 
+        t2.evt_tx_hash = t1.tx_hash
+),
 
 FPMMFundingRemoved AS (
     SELECT
@@ -70,8 +125,13 @@ FPMMFundingRemoved AS (
         t.funder,
         t.collateralRemovedFromFeePool,
         t.sharesBurnt,
-        s.SEQUENCE_NUMBER - 1 AS amountsRemoved_index,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(t.data, 97 + 32 * s.SEQUENCE_NUMBER, 32))) AS amountsRemoved
+        ARRAY_AGG(s.SEQUENCE_NUMBER - 1 ORDER BY s.SEQUENCE_NUMBER) AS outcomeIndex,
+        ARRAY_AGG(
+            VARBINARY_TO_UINT256(
+                VARBINARY_LTRIM(
+                    VARBINARY_SUBSTRING(t.data, 97 + 32 * s.SEQUENCE_NUMBER, 32)
+                )
+            ) ORDER BY s.SEQUENCE_NUMBER) AS outcomeTokens_amount
     FROM (
         SELECT
             block_time,
@@ -97,43 +157,64 @@ FPMMFundingRemoved AS (
             {% endif %}
     ) AS t
     CROSS JOIN UNNEST(SEQUENCE(1, TRY_CAST(t.amountsRemoved_size AS INTEGER)) ) AS s(SEQUENCE_NUMBER) 
+    GROUP BY
+        1,2,3,4,5,6,7,8,9
 ),
 
 
+ConditionalTokens_evt_PositionsMerge AS (
+    SELECT
+        contract_address,
+        evt_tx_hash,
+        evt_tx_from,
+        evt_tx_to,
+        evt_index,
+        evt_block_time,
+        evt_block_number,
+        evt_block_date,
+        amount,
+        collateralToken,
+        conditionId,
+        parentCollectionId,
+        partition,
+        stakeholder
+    FROM 
+        {{source('omen_gnosis','ConditionalTokens_evt_PositionsMerge') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% else %}
+    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+), 
+
+remove_liquidity AS (
+    SELECT 
+        t1.block_time,
+        DATE_TRUNC('day', t1.block_time) AS block_day,
+        t1.tx_from,
+        t1.tx_to,
+        t1.tx_hash,
+        t1.evt_index,
+        t1.evt_contract_address AS fixedProductMarketMaker,
+        t1.funder,
+        t1.sharesBurnt AS shares,
+        t1.collateralRemovedFromFeePool,
+        t1.outcomeIndex,
+        t1.outcomeTokens_amount,
+        COALESCE(t2.amount,0) AS amount,
+        'Remove' AS action
+    FROM
+        FPMMFundingRemoved t1
+    LEFT JOIN
+        ConditionalTokens_evt_PositionsMerge t2 
+    ON 
+        t2.evt_tx_hash = t1.tx_hash
+),
+
 final AS (
-    SELECT 
-        block_time,
-        DATE_TRUNC('day', block_time) AS block_day,
-        tx_from,
-        tx_to,
-        tx_hash,
-        evt_index,
-        evt_contract_address AS fixedProductMarketMaker,
-        funder,
-        sharesMinted AS shares,
-        NULL AS collateralRemovedFromFeePool,
-        amountAdded_index AS amount_index,
-        amountsAdded AS amount,
-        'Mint' AS action
-    FROM
-        FPMMFundingAdded
+    SELECT * FROM add_liquidity
     UNION ALL
-    SELECT 
-        block_time,
-        DATE_TRUNC('day', block_time) AS block_day,
-        tx_from,
-        tx_to,
-        tx_hash,
-        evt_index,
-        evt_contract_address AS fixedProductMarketMaker,
-        funder,
-        sharesBurnt AS shares,
-        collateralRemovedFromFeePool,
-        amountsRemoved_index AS amount_index,
-        amountsRemoved AS amount,
-        'Burn' AS action
-    FROM
-        FPMMFundingRemoved
+    SELECT * FROM remove_liquidity
 )
 
 SELECt * FROM final
