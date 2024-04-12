@@ -1,5 +1,6 @@
 {{ config(
     alias = 'proposal_votes'
+    ,tags = ['prod_exclude']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'
