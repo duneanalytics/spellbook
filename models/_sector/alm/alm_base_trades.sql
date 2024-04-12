@@ -42,9 +42,6 @@ WITH base_union AS (
             {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
     )
     WHERE
         duplicates_rank = 1
