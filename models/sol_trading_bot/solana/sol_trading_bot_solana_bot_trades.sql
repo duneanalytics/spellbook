@@ -10,8 +10,10 @@
 }}
 
 {% set project_start_date = '2023-11-10' %}
-{% set buy_fee_receiver = 'HEPL5rTb6n1Ax6jt9z2XMPFJcDe9bSWvWQpsK7AMcbZg' %}
-{% set sell_fee_receiver = 'K1LRSA1DSoKBtC5DkcvnermRQ62YxogWSCZZPWQrdG5' %}
+{% set buy_fee_receiver_1 = 'HEPL5rTb6n1Ax6jt9z2XMPFJcDe9bSWvWQpsK7AMcbZg' %}
+{% set sell_fee_receiver_1 = 'K1LRSA1DSoKBtC5DkcvnermRQ62YxogWSCZZPWQrdG5' %}
+{% set buy_fee_receiver_2 = 'F34kcgMgCF7mYWkwLN3WN7KrFprr2NbwxuLvXx4fbztj' %}
+{% set sell_fee_receiver_2 = '96aFQc9qyqpjMfqdUeurZVYRrrwPJG2uPV6pceu4B1yb' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -32,8 +34,10 @@ WITH
       AND tx_success
       AND balance_change > 0
       AND (
-        address = '{{buy_fee_receiver}}'
-        OR address = '{{sell_fee_receiver}}'
+        address = '{{buy_fee_receiver_1}}'
+        OR address = '{{sell_fee_receiver_1}}'
+        OR address = '{{buy_fee_receiver_2}}'
+        OR address = '{{sell_fee_receiver_2}}'
       )
   ),
   botTrades AS (
@@ -89,10 +93,14 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{buy_fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND trades.trader_id != '{{sell_fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{buy_fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{sell_fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{buy_fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{sell_fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{buy_fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{sell_fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{buy_fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{sell_fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{buy_fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{sell_fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
