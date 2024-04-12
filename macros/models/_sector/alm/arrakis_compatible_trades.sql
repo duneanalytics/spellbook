@@ -251,12 +251,12 @@ select distinct '{{ blockchain }}' AS blockchain
     , a.token1_address
     , v.volume1 AS volume1_raw
     , v.volume1 / p.price AS volume0_raw
-    , v.volume1 / power(10, i.decimals1) AS volume1
-    , v.volume1 / (p.price * power(10, i.decimals0)) AS volume0
+--     , v.volume1 / power(10, i.decimals1) AS volume1
+--     , v.volume1 / (p.price * power(10, i.decimals0)) AS volume0
     , p.price
     , p.price_usd
-    , v.volume1 / power(10, i.decimals1) * p.price_usd AS volume_usd
-    , v.volume1 / (p.price * power(10, i.decimals0)) * p.price_usd AS volume_usd_2
+--     , v.volume1 / power(10, i.decimals1) * p.price_usd AS volume_usd
+--     , v.volume1 / (p.price * power(10, i.decimals0)) * p.price_usd AS volume_usd_2
 from (
     select block_time
         , block_number
