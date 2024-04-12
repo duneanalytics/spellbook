@@ -268,6 +268,6 @@ from (
     from vault_swaps
     group by 1,2,3,4,5,6
 ) as v
-inner join prices_usd_ts as p on p.block_time = v.block_time and p.pool_address = v.pool_address
+inner join pool_price_usd_ts as p on p.block_time = v.block_time and p.pool_address = v.pool_address
 inner join arrakis_vaults as a on a.pool_address = p.pool_address and a.vault_address = v.vault_address
 {% endmacro %}
