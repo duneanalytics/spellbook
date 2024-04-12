@@ -272,6 +272,8 @@ from (
         , pool_address
         , vault_address
         , sum(liquidity * abs(prev_sqrt_price - sqrt_price)) as volume1
+        , sum(swap_volume0) as swap_volume0
+        , sum(swap_volume1) as swap_volume1
     from vault_swaps
     group by 1,2,3,4,5,6
 ) as v
