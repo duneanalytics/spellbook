@@ -17,7 +17,7 @@
 WITH base_union AS (
     SELECT *
     FROM (
-        {% for base_model in base_models %}
+        {% for model in models %}
         SELECT
             blockchain
             , project
@@ -29,19 +29,22 @@ WITH base_union AS (
             , vault_address
             , token0_address
             , token1_address
---             , volume_usd
---             , volume0
---             , volume1
+            , volume_usd
+            , volume0
+            , volume1
             , volume0_raw
             , volume1_raw
             , row_number() over (partition by tx_hash, evt_index, vault_address order by tx_hash asc, evt_index asc) as duplicates_rank
         FROM 
-            {{ base_model }}
+            {{ model }}
         {% if is_incremental() %}
         WHERE
             {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
     )
     WHERE
         duplicates_rank = 1
