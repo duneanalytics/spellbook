@@ -214,6 +214,8 @@ WITH arrakis_vaults AS
         , greatest(least(s.sqrt_price, sqrt(lp.pb)), sqrt(lp.pa)) as sqrt_price
         , greatest(least(s.prev_sqrt_price, sqrt(lp.pb)), sqrt(lp.pa)) as prev_sqrt_price
         , lp.liquidity
+        , s.volume0 as swap_volume0
+        , s.volume1 as swap_volume1
     from liquidity_ts as lp
     inner join (
         SELECT s.evt_block_time as block_time
@@ -223,6 +225,7 @@ WITH arrakis_vaults AS
             , a.pool_address
             , lag(cast(s.sqrtPriceX96 as double), 1) over (partition by a.pool_address order by s.evt_block_number, s.evt_index) / pow(2,96) as prev_sqrt_price
             , cast(s.sqrtPriceX96 as double) / pow(2,96) as sqrt_price
+            , abs(cast(s.amount0 as double)) as volume0
             , abs(cast(s.amount1 as double)) as volume1
         FROM {{ Pair_evt_Swap }} AS s
         INNER JOIN arrakis_vaults AS a
@@ -248,13 +251,15 @@ select distinct '{{ blockchain }}' AS blockchain
     , a.pool_address
     , a.vault_address
     , a.token0_address
-    , t0.symbol AS token0_symbol    
     , a.token1_address
-    , t1.symbol AS token1_symbol
-    , v.volume1 AS volume1_raw
     , v.volume1 / p.price AS volume0_raw
-    , v.volume1 / power(10, coalesce(t1.decimals, 18)) AS volume1
     , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) AS volume0
+    , v.swap_volume0 / power(10, coalesce(t0.decimals, 18)) AS swap_volume0
+    , t0.symbol AS token0_symbol    
+    , v.volume1 AS volume1_raw
+    , v.volume1 / power(10, coalesce(t1.decimals, 18)) AS volume1
+    , v.swap_volume1 / power(10, coalesce(t1.decimals, 18)) AS swap_volume1
+    , t1.symbol AS token1_symbol
     , p.price
     , p.price_usd
     , v.volume1 / power(10, coalesce(t1.decimals, 18)) * p.price_usd AS volume_usd
