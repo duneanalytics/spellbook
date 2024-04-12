@@ -248,15 +248,17 @@ select distinct '{{ blockchain }}' AS blockchain
     , a.pool_address
     , a.vault_address
     , a.token0_address
+    , t0.symbol AS token0_symbol    
     , a.token1_address
+    , t1.symbol AS token1_symbol
     , v.volume1 AS volume1_raw
     , v.volume1 / p.price AS volume0_raw
---     , v.volume1 / power(10, i.decimals1) AS volume1
---     , v.volume1 / (p.price * power(10, i.decimals0)) AS volume0
+    , v.volume1 / power(10, coalesce(t1.decimals, 18)) AS volume1
+    , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) AS volume0
     , p.price
     , p.price_usd
---     , v.volume1 / power(10, i.decimals1) * p.price_usd AS volume_usd
---     , v.volume1 / (p.price * power(10, i.decimals0)) * p.price_usd AS volume_usd_2
+    , v.volume1 / power(10, coalesce(t1.decimals, 18)) * p.price_usd AS volume_usd
+    , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) * p.price_usd AS volume_usd_2
 from (
     select block_time
         , block_number
@@ -270,4 +272,6 @@ from (
 ) as v
 inner join pool_price_usd_ts as p on p.block_time = v.block_time and p.pool_address = v.pool_address
 inner join arrakis_vaults as a on a.pool_address = p.pool_address and a.vault_address = v.vault_address
+left join {{ source('tokens', 'erc20') }} as t0 on t0.address = a.token0_address and t0.blockchain = '{{ blockchain }}'
+left join {{ source('tokens', 'erc20') }} as t1 on t1.address = a.token1_address and t1.blockchain = '{{ blockchain }}'
 {% endmacro %}
