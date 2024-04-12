@@ -272,6 +272,6 @@ from (
 ) as v
 inner join pool_price_usd_ts as p on p.block_time = v.block_time and p.pool_address = v.pool_address
 inner join arrakis_vaults as a on a.pool_address = p.pool_address and a.vault_address = v.vault_address
-left join {{ source('tokens', 'erc20') }} as t0 on t0.address = a.token0_address and t0.blockchain = '{{ blockchain }}'
-left join {{ source('tokens', 'erc20') }} as t1 on t1.address = a.token1_address and t1.blockchain = '{{ blockchain }}'
+left join {{ source('tokens', 'erc20') }} as t0 on t0.contract_address = a.token0_address and t0.blockchain = '{{ blockchain }}'
+left join {{ source('tokens', 'erc20') }} as t1 on t1.contract_address = a.token1_address and t1.blockchain = '{{ blockchain }}'
 {% endmacro %}
