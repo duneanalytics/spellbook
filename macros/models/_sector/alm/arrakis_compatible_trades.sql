@@ -204,7 +204,7 @@ WITH arrakis_vaults AS
 ------------------------------------------------------------------------------------------
 
 ,vault_swaps as (
-    select s.block_time
+    select distinct s.block_time
         , s.block_number
         , s.tx_hash
         , s.evt_index
@@ -222,7 +222,8 @@ WITH arrakis_vaults AS
             , s.evt_tx_hash as tx_hash
             , s.evt_index
             , a.pool_address
-            , lag(cast(s.sqrtPriceX96 as double), 1) over (partition by a.pool_address order by s.evt_block_number, s.evt_index) / pow(2,96) as prev_sqrt_price
+            , a.vault_address
+            , lag(cast(s.sqrtPriceX96 as double), 1) over (partition by a.pool_address, a.vault_address order by s.evt_block_number, s.evt_index) / pow(2,96) as prev_sqrt_price
             , cast(s.sqrtPriceX96 as double) / pow(2,96) as sqrt_price
             , abs(cast(s.amount0 as double)) as volume0
             , abs(cast(s.amount1 as double)) as volume1
@@ -233,7 +234,7 @@ WITH arrakis_vaults AS
         WHERE
             {{ incremental_predicate('s.evt_block_time') }}
         {% endif %}
-    ) AS s ON s.block_time = lp.block_time AND s.evt_index = lp.evt_index AND s.pool_address = lp.pool_address
+    ) AS s ON s.block_time = lp.block_time AND s.evt_index = lp.evt_index AND s.pool_address = lp.pool_address AND s.vault_address = lp.vault_address
     -- overlapping ranges only
     where sqrt(lp.pa) <= (case when s.sqrt_price > s.prev_sqrt_price then s.sqrt_price else s.prev_sqrt_price end)
         and (case when s.prev_sqrt_price < s.sqrt_price then s.prev_sqrt_price else s.sqrt_price end) <= sqrt(lp.pb)
