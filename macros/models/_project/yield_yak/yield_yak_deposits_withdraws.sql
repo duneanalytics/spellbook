@@ -34,7 +34,7 @@ combined AS (
         LEFT JOIN
         {{ source(blockchain, 'transactions') }} t
             ON t.hash = s.evt_tx_hash
-        {% if is_incremental() -%}
+        {%- if is_incremental() %}
         LEFT JOIN
         existing_contracts c
             ON c.contract_address = s.contract_address
@@ -43,7 +43,7 @@ combined AS (
             AND s.evt_block_number > c.latest_block_number)
             OR c.contract_address IS NULL -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
         {%- endif %}
-        {%- if not loop.last -%}
+        {% if not loop.last -%}
         UNION ALL
         {%- endif -%}
     {%- endfor %}
