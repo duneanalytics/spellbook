@@ -62,6 +62,9 @@ FROM
     ('xmr-monero', null, 'XMR', null, null),
     ('xrp-xrp', null, 'XRP', null, null),
     ('xtz-tezos', null, 'XTZ', null, null),
-    ('zec-zcash', null, 'ZEC', null, null)
+    ('zec-zcash', null, 'ZEC', null, null),
+    ('astr-astar', null, 'ASTR', null, null),
+    ('dym-dymension-iou', null, 'DYM', null, null),
+    ('manta-manta-network', null, 'MANTA', null, null)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
