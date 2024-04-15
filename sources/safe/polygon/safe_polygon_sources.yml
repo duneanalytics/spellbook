@@ -99,21 +99,21 @@ sources:
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
           - *contract_address
-          - &evt_block_number
+          - *evt_block_number
             name: evt_block_number
             description: "Event block number"
-          - &evt_block_time
+          - *evt_block_time
             name: evt_block_time
             description: "Event block time"
-          - &evt_index
+          - *evt_index
             name: evt_index
             description: "Event index"
-          - &evt_tx_hash
+          - *evt_tx_hash
             name: evt_tx_hash
             description: "Event tx hash"
-          - &proxy
+          - *proxy
             name: proxy
             description: "Address of created Safe proxy"
-          - &singleton
+          - *singleton
             name: singleton
             description: "Singleton"
