@@ -1,6 +1,6 @@
 {{ config(
 	    schema = 'yield_yak',
-        alias = 'balances',
+        alias = 'withdraws',
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
                                 "project",
                                 "yield_yak",
@@ -9,21 +9,25 @@
 }}
 
 {%- set yield_yak_models = [
-ref('yield_yak_avalanche_c_balances')
-,ref('yield_yak_arbitrum_balances')
+ref('yield_yak_avalanche_c_withdraws')
+,ref('yield_yak_arbitrum_withdraws')
 ] -%}
 
 
 SELECT *
 FROM (
-    {%- for balances_model in yield_yak_models %}
+    {%- for withdraws_model in yield_yak_models %}
     SELECT
         blockchain
         , contract_address
-        , from_time
-        , to_time
-        , deposit_token_balance
-    FROM {{ balances_model }}
+        , tx_hash
+        , evt_index
+        , tx_index
+        , block_time
+        , block_number
+        , user_address
+        , withdraw_amount
+    FROM {{ withdraws_model }}
     {% if not loop.last -%}
     UNION ALL
     {%- endif -%}
