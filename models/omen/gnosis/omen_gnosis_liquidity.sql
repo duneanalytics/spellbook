@@ -151,9 +151,13 @@ FPMMFundingRemoved AS (
             --FPMMDeterministicFactory_evt_FPMMFundingRemoved
             topic0 = 0x8b4b2c8ebd04c47fc8bce136a85df9b93fcb1f47c8aa296457d4391519d190e7
             {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '7' day)
+            AND 
+            block_time >= date_trunc('day', now() - interval '7' day)
+            AND 
+            {{ incremental_predicate('block_time') }}
             {% else %}
-            AND block_time >= TIMESTAMP '{{project_start_date}}'
+            AND 
+            block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
     ) AS t
     CROSS JOIN UNNEST(SEQUENCE(1, TRY_CAST(t.amountsRemoved_size AS INTEGER)) ) AS s(SEQUENCE_NUMBER) 
@@ -181,7 +185,10 @@ ConditionalTokens_evt_PositionsMerge AS (
     FROM 
         {{source('omen_gnosis','ConditionalTokens_evt_PositionsMerge') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE 
+        evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('evt_block_time') }}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

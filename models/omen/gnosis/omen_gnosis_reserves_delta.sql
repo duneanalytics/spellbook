@@ -42,7 +42,10 @@ WITH final AS (
     FROM
         {{ ref('omen_gnosis_liquidity') }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE 
+        block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('block_time') }}
     {% else %}
     WHERE block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -74,7 +77,10 @@ WITH final AS (
     FROM
         {{ ref('omen_gnosis_trades') }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE 
+        block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('block_time') }}
     {% else %}
     WHERE block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}

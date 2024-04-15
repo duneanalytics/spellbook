@@ -47,7 +47,10 @@ trades AS (
             topic0 = 0xadcf2a240ed9300d681d9a3f5382b6c1beed1b7e46643e0c7b42cbe6e2d766b4 -- Sell
         )
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
@@ -81,7 +84,10 @@ Realitio_LogNewQuestion AS (
     FROM 
         {{source('omen_gnosis','Realitio_v2_1_evt_LogNewQuestion') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE 
+        evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('evt_block_time') }}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -104,7 +110,10 @@ QuestionIdAnnouncement AS (
         --QuestionIdAnnouncement
         topic0 = 0xab038c0885722fffdf6864cf016c56fa921a1506541dac4fcd59d65963916cb1
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('evt_block_time') }}
         {% else %}
         AND block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
@@ -128,7 +137,10 @@ ConditionPreparation AS (
     FROM 
         {{source('omen_gnosis','ConditionalTokens_evt_ConditionPreparation') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE 
+        evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('evt_block_time') }}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -173,7 +185,10 @@ FixedProductMarketMakerCreation AS (
         {{source('omen_gnosis','FPMMDeterministicFactory_evt_FixedProductMarketMakerCreation') }}
         ,UNNEST(conditionIds) t(conditionId)
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE 
+        evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND 
+        {{ incremental_predicate('evt_block_time') }}
     {% else %}
     WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %} 
