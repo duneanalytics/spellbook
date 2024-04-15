@@ -8,15 +8,15 @@ models:
       project: omen
       contributors: hdser
     config:
-      tags: ['gnosis','trades', 'omen','dex']
+      tags: ['gnosis', 'trades', 'omen', 'dex']
     description: >
-        A table containing all trades of omen on Gnosis
+      A table containing all trades of omen on Gnosis
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_day
             - tx_hash
-            - evt_index 
+            - evt_index
             - outcomeSlot
     columns:
       - &block_time
@@ -48,19 +48,19 @@ models:
         description: "Outcome slot for the specific Fixed Product Market Maker"
       - &outcomeIndex
         name: outcomeIndex
-        description: "Index of the outcome choosen"
+        description: "Index of the outcome chosen"
       - &amount
         name: amount
         description: "Amount in native currency that was bought or sold"
       - &feeAmount
         name: feeAmount
         description: "Fee amount in native currency that was charged"
-      - &outcomeTokens
-        name: outcomeTokens
-        description: "Amount of conditional tokens that minted or burnt by the Fixed Product Market Maker"
+      - &outcomeTokens_amount
+        name: outcomeTokens_amount
+        description: "Amount of conditional tokens that were minted or burnt by the Fixed Product Market Maker"
       - &action
         name: action
-        description: "Action excetuted by the trader, 'Buy' or 'Sell'"
+        description: "Action executed by the trader, 'Buy' or 'Sell'"
 
   - name: omen_gnosis_liquidity
     meta:
@@ -69,16 +69,15 @@ models:
       project: omen
       contributors: hdser
     config:
-      tags: ['gnosis','liquidity', 'omen','dex']
+      tags: ['gnosis', 'liquidity', 'omen', 'dex']
     description: >
-        A table containing all omen markets on Gnosis
+      A table containing all omen liquidity management on Gnosis
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
-            - tx_hash 
+            - tx_hash
             - evt_index
-            - amount_index
     columns:
       - *block_time
       - *block_day
@@ -89,16 +88,15 @@ models:
       - *fixedProductMarketMaker
       - &funder
         name: funder
-        description: "Address on the wallet adding/removing liquidity"
+        description: "Address of the wallet adding or removing liquidity"
       - &shares
         name: shares
-        description: "Amount of shares"
+        description: "Amount of shares involved in liquidity transactions"
       - &collateralRemovedFromFeePool
         name: collateralRemovedFromFeePool
-        description: "Colateral removed"
-      - &amount_index
-        name: amount_index
-        description: "amount index"
+        description: "Collateral removed from the fee pool"
+      - *outcomeIndex
+      - *outcomeTokens_amount
       - *amount
       - *action
 
@@ -109,16 +107,15 @@ models:
       project: omen
       contributors: hdser
     config:
-      tags: ['gnosis','reserves_delta', 'omen','dex']
+      tags: ['gnosis', 'reserves_delta', 'omen', 'dex']
     description: >
-        A table containing all omen markets on Gnosis
+      A table monitoring the changes in reserves for all omen markets on Gnosis
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
-            - tx_hash 
+            - tx_hash
             - evt_index
-            - amount_index
     columns:
       - *block_time
       - *block_day
@@ -129,12 +126,14 @@ models:
       - *fixedProductMarketMaker
       - *address
       - *shares
-      - *amount_index
+      - &amount_index
+        name: amount_index
+        description: "Index associated with amount changes"
       - *amount
       - &fees
         name: fees
-        description: "fees"
+        description: "Fee amounts associated with transactions"
       - *action
       - &reserves_delta
         name: reserves_delta
-        description: "reserves_delta"
+        description: "Change in reserves triggered by transaction activities"
