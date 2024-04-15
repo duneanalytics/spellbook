@@ -12,7 +12,7 @@
 
 {{
     yield_yak_deposits_withdraws(
-        blockchain = 'arbitrum',
+        blockchain = 'avalanche_c',
         event_name = 'Withdraw'
     )
 }}
