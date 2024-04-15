@@ -1,5 +1,5 @@
 {{ config(
-        
+
         alias = 'contracts',
         unique_key=['blockchain', 'address', 'created_at'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
@@ -31,6 +31,7 @@ FROM (
         {% for contracts_model in contracts_models %}
         SELECT
         '{{ contracts_model[0] }}' AS blockchain
+        , abi_id
         , abi
         , address
         , "from"

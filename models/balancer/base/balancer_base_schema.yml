@@ -101,7 +101,7 @@ models:
         name: evt_index
         description: "Event index"
 
-  - name: balancer_v2_base_trades
+  - name: balancer_v2_base_trades_legacy
     meta:
       blockchain: base
       sector: dex
@@ -151,7 +151,7 @@ models:
       - name: trace_address
       - name: evt_index
 
-  - name: balancer_v2_base_trades_beta
+  - name: balancer_v2_base_trades
     meta:
       blockchain: base
       sector: dex

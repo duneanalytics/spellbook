@@ -50,7 +50,6 @@ FROM
     ('dex-dexira', 'bnb', 'DEX', 0x147e07976e1ae78287c33aafaab87760d32e50a5, 18),
     ('dexe-dexe', 'bnb', 'DEXE', 0x039cb485212f996a9dbb85a9a75d898f94d38da6, 18),
     ('dexshare-dexshare', 'bnb', 'DEXSHARE', 0xf4914e6d97a75f014acfcf4072f11be5cffc4ca6, 18),
-    ('dg-decentral-games', 'bnb', 'DG', 0x9fdc3ae5c814b79dca2556564047c5e7e5449c19, 18),
     ('dodo-dodo', 'bnb', 'DODO', 0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2, 18),
     ('doge-dogecoin', 'bnb', 'DOGE', 0x4206931337dc273a630d328da6441786bfad668f, 8),
     ('dot-polkadot', 'bnb', 'DOT', 0x7083609fce4d1d8dc0c979aab8c869ea2c873402, 18),
@@ -209,7 +208,7 @@ FROM
     ('ata-automata', 'bnb', 'ATA', 0xA2120b9e674d3fC3875f415A7DF52e382F141225, 18),
     ('bonk-bonk', 'bnb', 'BONK', 0xa697e272a73744b343528c3bc4702f2565b2f422, 5),
     ('pepe-pepe', 'bnb', 'PEPE', 0x25d887ce7a35172c62febfd67a1856f20faebb00,18),
-    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18),
+    --('beam-beam-token', 'bnb', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce,18), --not found in api 
     ('weth-wrapped-ether-wormhole', 'bnb', 'WETH', 0x4db5a66e937a9f4473fa95b1caf1d1e1d62e29ea,18),
     ('ageur-ageur', 'bnb', 'AGEUR', 0x12f31b73d812c6bb0d735a218c086d44d5fe5f89,18),
     ('sol-wrapped-sol-wormhole', 'bnb', 'SOL', 0xfa54ff1a158b5189ebba6ae130ced6bbd3aea76e,9),
@@ -222,20 +221,55 @@ FROM
     ('usx-dforce-usd', 'bnb', 'USX', 0xb5102cee1528ce2c760893034a4603663495fd72,18),
     ('strainz-strainz-nft', 'bnb', 'STRAINZ', 0xacc870d9e560f784ceff365f56e1f12161324478,4),
     ('dis-disney', 'bnb', 'DIS', 0xe2ecc66e14efa96e9c55945f79564f468882d24c,18),
-    --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), --not active
+    --('pooh-winniethepooh', 'bnb', 'POOH', 0xed3de203dd2ab770560e49b70d4cd6b74f7f9b21,5), --inactive
     ('shib-shiba-inu', 'bnb', 'SHIB', 0x2859e4544c4bb03966803b044a93563bd2d0dd4d,18),
     ('bttc-bittorrent-chain', 'bnb', 'BTT', 0x352cb5e19b12fc216548a2677bd0fce83bae434b,18),
     ('aitech-solidus-ai-tech', 'bnb', 'AITECH', 0x2d060ef4d6bf7f9e5edde373ab735513c0e4f944,18),
     ('rcm-read2n', 'bnb', 'RCM', 0x7102f5bb8cb3c6e7d085626e7a1347aafdf001f6,18),
-    --('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not in API
+    -- ('litt-litlab-games', 'bnb', 'LITT', 0xcebef3df1f3c5bfd90fde603e71f31a53b11944d,18), --not found in api 
     ('trias-trias-token', 'bnb', 'TRIAS', 0xa4838122c683f732289805fc3c207febd55babdd,18),
     ('pzp-playzap', 'bnb', 'PZP', 0x6ad9e9c098a45b2b41b519119c31c3dcb02accb2,18),
-    ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9)
-
+    ('babygrok-baby-grok', 'bnb', 'BABYGROK', 0x88da9901b3a02fe24e498e1ed683d2310383e295,9),
+    ('ai-any-inu', 'bnb', 'AI', 0x2598c30330D5771AE9F983979209486aE26dE875,18),
+    ('wam-wam', 'bnb', 'WAM', 0xeBBAefF6217d22E7744394061D874015709b8141,18),
+    ('gq-galactic-quadrant', 'bnb', 'GQ', 0xF700D4c708C2be1463E355F337603183D20E0808,18),
+    ('squidgrow-squidgrow-1', 'bnb', 'SquidGrow', 0xd8Fa690304D2B2824D918C0c7376e2823704557A,9),
+    ('strx-strikex', 'bnb', 'STRX', 0xd6fDDe76B8C1C45B33790cc8751D5b88984c44ec,18),
+    ('token-tokenfi', 'bnb', 'TOKEN', 0x4507cEf57C46789eF8d1a19EA45f4216bae2B528,9),
+    ('hdv-hydracoin', 'bnb', 'HDV', 0x8Cd0d76C0ad377378aB6Ce878a7BE686223497eE,5),
+    ('dck-dexcheck', 'bnb', 'DCK', 0x16faF9DAa401AA42506AF503Aa3d80B871c467A3,18),
+    ('czgoat-cz-the-goat', 'bnb', 'CZGOAT', 0xa2C17A6Fd0aFE27afa2630A7528bC673089E6b8d,9),
+    ('gzone-gamezone', 'bnb', 'GZONE', 0xb6ADB74efb5801160Ff749b1985Fd3bD5000e938,18),
+    ('wefin-efin-decentralized', 'bnb', 'WEFIN', 0xaE459484c895a335ceC08058290D94551DBf5fbB,8),
+    ('lar-larace-governance-token', 'bnb', 'LAR', 0x052775Cf897b3eC894F26b8d801C514123c305D1,18),
+    ('cpo-cryptopolis', 'bnb', 'CPO', 0xea395DFaFEd39924988b475f2Ca7f4C72655203A,18),
+    ('realm-realm', 'bnb', 'REALM', 0x464FdB8AFFC9bac185A7393fd4298137866DCFB8,18),
+    ('aipad-aipadtech', 'bnb', 'AIPAD', 0xE55d97A97ae6A17706ee281486E98A84095d8AAf,18),
+    ('wsi-wesendit', 'bnb', 'WSI', 0x837A130aED114300Bab4f9f1F4f500682f7efd48,18),
+    ('ibat-battle-infinity', 'bnb', 'IBAT', 0x19cd9B8e42d4EF62c3EA124110D5Cfd283CEaC43,9),
+    ('nazar-nazar-protocol', 'bnb', 'NAZAR', 0x79c1e9bBD694d166AbB1d03429FC90904dd0E7B7,18),
+    ('spin-spintop', 'bnb', 'SPIN', 0x6AA217312960A21aDbde1478DC8cBCf828110A67,18),
+    --('ext-exatech-poai-blockchain', 'bnb', 'EXT', 0x623be4fde518A00AC49a870bd439cfD5c35E08Ed,9),
+    ('tfi-trustfi-network-token', 'bnb', 'TFI', 0x7565ab68D3F9DaDff127F864103C8c706Cf28235,18),
+    ('fuse-fuse-network', 'bnb', 'FUSE', 0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3,18),
+    ('ava-ava', 'bnb', 'AVA', 0x83B79F74F225E8F9a29fC67CB1678e7909d7D73d,18),
+    ('ai-flourishing-ai', 'bnb', 'AI', 0xA9b038285F43cD6fE9E16B4C80B4B9bCcd3C161b,18),
+    ('kalm-kalm', 'bnb', 'KALM', 0x4BA0057f784858a48fe351445C672FF2a3d43515,18),
+    ('xai-grok', 'bnb', 'XAI', 0x0009Ae5a69B037eA74A900783fab457fa605ae5d,9),
+    ('sis-symbiosis-finance', 'bnb', 'SIS', 0xF98b660AdF2ed7d9d9D9dAACC2fb0CAce4F21835,18),
+    ('rdnt-radiant-capital', 'bnb', 'RDNT', 0xf7de7e8a6bd59ed41a4b5fe50278b3b7f31384df,18),
+    ('cyber-cyberconnect', 'bnb', 'CYBER', 0x14778860e937f509e651192a90589de711fb88a9,18),
+    --('cgpt-chaingpt', 'bnb', 'CGPT', 0x9840652dc04fb9db2c43853633f0f62be6f00f98,18), --not found in api 
+    ('ai-sleepless-ai', 'bnb', 'AI', 0xbda011d7f8ec00f66c1923b049b94c67d148d8b2,18),
+    ('usdv-verified-usd', 'bnb', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253,6),
+    -- ('defi-defi-eth', 'bnb', 'DEFI', 0x6d106c0b8d2f47c5465bdbd58d1be253762cbbc1,18), --DEFI does not match CoinPaprika source: DEFI  
+    --('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),--not found in api 
+    ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
     ,0x43f3918ff115081cfbfb256a5bde1e8d181f2907 -- ANT (aragon) doesn't exists on BSC, it's a scam-token address.
     ,0x7ddee176f665cd201f93eede625770e2fd911990 -- GALA doesn't exists on BSC, it's a scam-token address.
     ,0xe552fb52a4f19e44ef5a967632dbc320b0820639 -- METIS has bad price feed since PolyNetwork incident and will be replaced by new contract
+    ,0x9fdc3ae5c814b79dca2556564047c5e7e5449c19 -- DG, bad price feed
 )

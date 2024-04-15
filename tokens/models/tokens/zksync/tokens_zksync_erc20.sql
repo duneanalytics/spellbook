@@ -1,58 +1,32 @@
-{{ config(
+{{
+    config(
         schema = 'tokens_zksync'
-        , alias = 'erc20'
-        , tags=['static']
-        )
+        ,alias = 'erc20'
+        ,tags = ['static']
+        ,materialized = 'table'
+    )
 }}
 
-SELECT contract_address, symbol, decimals
+SELECT
+    contract_address
+    , symbol
+    , decimals
 FROM (VALUES
-        (0x000000000000000000000000000000000000800a, 'ETH', 18)
-        ,(0x5aea5775959fbc2557cc8789bc1bf90a239d9a91, 'WETH', 18)
-        ,(0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4, 'USDC.e', 6)
-        ,(0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181, 'BUSD', 18)
-        ,(0x493257fd37edb34451f62edf8d2a0c418852ba4c, 'USDT.e', 6)
-        ,(0x47ef4a5641992a72cfd57b9406c9d9cefee8e0c4, 'ZAT', 18)
-        ,(0x1bbd33384869b30a323e15868ce46013c82b86fb, 'nETH', 8)
-        ,(0x8e86e46278518efc1c5ced245cba2c7e3ef11557, 'USD+', 6)
-        ,(0x47260090ce5e83454d5f05a0abbb2c953835f777, 'SPACE', 18)
-        ,(0x0e97c7a0f8b2c9885c8ac9fc6136e829cbc21d42, 'MUTE', 18)
-        ,(0xe0ef1c039a36ec77339e7277ecd4d48e57b61eec, 'ySYNC', 18)
-        ,(0x787c09494ec8bcb24dcaf8659e7d5d69979ee508, 'MAV', 18)
-        ,(0xfc7e56298657b002b3e656400e746b7212912757, 'zkUSD', 6)
-        ,(0xbbeb516fb02a01611cbbe0453fe3c580d7281011, 'WBTC', 8)
-        ,(0x5f7cbcb391d33988dad74d6fd683aadda1123e4d, 'RF', 18)
-        ,(0x22d8b71599e14f20a49a397b88c1c878c86f5579, 'eETH', 8)
-        ,(0x16a9494e257703797d747540f01683952547ee5b, 'iZi', 18)
-        ,(0x85d84c774cf8e9ff85342684b0e795df72a24908, 'VC', 18)
-        ,(0x503234f203fc7eb888eec8513210612a43cf6115, 'LUSD', 18)
-        ,(0xc5db68f30d21cbe0c9eac7be5ea83468d69297e6, 'rfETH', 18)
-        ,(0x1181d7be04d80a8ae096641ee1a87f7d557c6aeb, 'nUSDC', 8)
-        ,(0xc2B13Bb90E33F1E191b8aA8F44Ce11534D5698E3, 'COMBO', 18)
-        ,(0x42c1c56be243c250AB24D2ecdcC77F9cCAa59601, 'PERP', 18)
-        ,(0xBbD1bA24d589C319C86519646817F2F153c9B716, 'DVF', 18)
-        ,(0x9E22D758629761FC5708c171d06c2faBB60B5159, 'WOO', 18)
-        ,(0x6F1A89C16a49549508a2b6D2ac6F34523AA2A545, 'xcRMRK', 18)
-        ,(0x140D5bc5b62d6cB492B1A475127F50d531023803, 'DERI', 18)
-        ,(0x9929bCAC4417A21d7e6FC86F6Dae1Cc7f27A2e41, 'DEXTF', 18)
-        ,(0xD63eF5e9C628c8a0E8984CDfb7444AEE44B09044, 'GOVI', 18)
-        ,(0x3f0B8B206A7FBdB3ecFc08c9407CA83F5aB1Ce59, '1INCH', 18)
-        ,(0xdd9f72afED3631a6C85b5369D84875e6c42f1827, 'SIS', 18)
-        ,(0xf755cF4f0887279a8BCBE5E39eE062a5B7188401, 'LQTY', 18)
-        ,(0xFD282F16a64c6D304aC05d1A58Da15bed0467c71, 'PEPE', 18)
-        ,(0x32Fd44bB869620C0EF993754c8a00Be67C464806, 'rETH', 18)
-        ,(0x1CF8553Da5a75C20cdC33532cb19Ef7E3bFFf5BC, 'RPL', 18)
-        ,(0xa0C1BC64364d39c7239bd0118b70039dBe5BbdAE, 'UFI', 18)
-        ,(0x75Af292c1c9a37b3EA2E6041168B4E48875b9ED5, 'cbETH', 18)
-        ,(0xbe9f8C0d6f0Fd7e46CDaCCA340747EA2f247991D, 'IBEX', 18)
-        ,(0x3D79F1e3f6AFd3F30EA450aFffb8632AED59B46f, 'RAISE', 18)
-        ,(0x458A2E32eAbc7626187E6b75f29D7030a5202bD4, 'LSD', 18)
-        ,(0x668cc2668Eeeaf8075d38E72EF54fa546BF3C39c, 'ETHx', 18)
-        ,(0x6ee46Cb7cD2f15Ee1ec9534cf29a5b51C83283e6, 'KNC', 18)
-        ,(0xB83CFB285fc8D936E8647FA9b1cC641dBAae92D9, 'BEL', 18)
-        ,(0x1ab721f531Cab4c87d536bE8B985EAFCE17f0184, 'ZZ', 18)
-        ,(0x26b7F317C440E57db2fb4b377A3f1b3BBF5463C7, 'BITCOIN', 18)
-        ,(0x2d850F34E957BA3dcbEe47fc2c79ff78044fB12e, 'BYN', 18)
-        ,(0xD7C6210f3d6011D6B1BdDfA60440fe763340Df4c, 'WAGMI', 18)
-        ,(0x97003aC71CC4a096E06C73e753d9b84f0039A064, 'POOL', 18)
-     ) AS temp_table (contract_address, symbol, decimals)
+    (0xf755cf4f0887279a8bcbe5e39ee062a5b7188401, 'LQTY', 18)
+    , (0x6ee46cb7cd2f15ee1ec9534cf29a5b51c83283e6, 'KNC', 18)
+    , (0xd7c6210f3d6011d6b1bddfa60440fe763340df4c, 'WAGMI', 18)
+    , (0x1bbd33384869b30a323e15868ce46013c82b86fb, 'nETH', 8)
+    , (0xa0c1bc64364d39c7239bd0118b70039dbe5bbdae, 'UFI', 18)
+    , (0x97003ac71cc4a096e06c73e753d9b84f0039a064, 'POOL', 18)
+    , (0x6f1a89c16a49549508a2b6d2ac6f34523aa2a545, 'xcRMRK', 18)
+    , (0x668cc2668eeeaf8075d38e72ef54fa546bf3c39c, 'ETHx', 18)
+    , (0x3d79f1e3f6afd3f30ea450afffb8632aed59b46f, 'RAISE', 18)
+    , (0x2d850f34e957ba3dcbee47fc2c79ff78044fb12e, 'BYN', 18)
+    , (0xc5db68f30d21cbe0c9eac7be5ea83468d69297e6, 'rfETH', 18)
+    , (0x26b7f317c440e57db2fb4b377a3f1b3bbf5463c7, 'BITCOIN', 18)
+    , (0x22d8b71599e14f20a49a397b88c1c878c86f5579, 'eETH', 8)
+    , (0x1cf8553da5a75c20cdc33532cb19ef7e3bfff5bc, 'RPL', 18)
+    , (0xe0ef1c039a36ec77339e7277ecd4d48e57b61eec, 'ySYNC', 18)
+    , (0x9e22d758629761fc5708c171d06c2fabb60b5159, 'WOO', 18)
+    , (0x140d5bc5b62d6cb492b1a475127f50d531023803, 'DERI', 18)
+) AS temp_table (contract_address, symbol, decimals)

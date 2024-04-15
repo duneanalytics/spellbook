@@ -34,6 +34,7 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xB8C6E43f37E04A2411562a13c1C48B3ad5975cf4, '{{inotel}}'),
   (0x4564A9c6061f6f1F2Eadb954B1b3C241D2DC984e, '{{linkforest}}'),
   (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
+  (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x4dc81f63CB356c1420D4620414f366794072A3a8, '{{matrixedlink}}'),
   (0x0921E157b690c4F89F7C2a210cFd8bF3964F6776, '{{northwestnodes}}'),
