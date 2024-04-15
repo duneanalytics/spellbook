@@ -28,7 +28,7 @@ deposits_withdraws_reinvests AS (
         , d.tx_index
         , d.block_time
         , d.block_number
-        , d.amount AS deposit_amount
+        , d.deposit_amount
         , 0 AS withdraw_amount
         , NULL AS new_total_deposits
     FROM {{ ref(namespace_blockchain + '_deposits') }} d
@@ -49,7 +49,7 @@ deposits_withdraws_reinvests AS (
         , w.block_time
         , w.block_number
         , 0 AS deposit_amount
-        , w.amount AS withdraw_amount
+        , w.withdraw_amount
         , NULL AS new_total_deposits
     FROM {{ ref(namespace_blockchain + '_withdraws') }} w
     {% if is_incremental() -%}
