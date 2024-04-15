@@ -42,8 +42,7 @@ WITH arrakis_vaults AS
 
 , mints AS
 (
-    SELECT 'mint' AS event_type
-        , m.evt_block_number AS block_number
+    SELECT m.evt_block_number AS block_number
         , m.evt_block_time AS block_time
         , m.evt_tx_hash AS tx_hash
         , m.evt_index
@@ -51,8 +50,6 @@ WITH arrakis_vaults AS
         , m.tickLower AS tick_lower
         , m.tickUpper AS tick_upper
         , m.amount AS liquidity
-        , m.amount0 AS amount0
-        , m.amount1 AS amount1
         , m.contract_address AS pool_address
     FROM
         {{ Pair_evt_Mint }} as m
@@ -67,17 +64,14 @@ WITH arrakis_vaults AS
 
 , burns AS
 (
-    SELECT 'burn' AS event_type
-        ,b.evt_block_number AS block_number
-        ,b.evt_block_time AS block_time
-        ,b.evt_tx_hash AS tx_hash
-        ,b.evt_index
-        ,b.owner AS vault_address
+    SELECT b.evt_block_number AS block_number
+        , b.evt_block_time AS block_time
+        , b.evt_tx_hash AS tx_hash
+        , b.evt_index
+        , b.owner AS vault_address
         , b.tickLower AS tick_lower
         , b.tickUpper AS tick_upper
-        , b.amount AS liquidity
-        , b.amount0
-        , b.amount1
+        , -b.amount AS liquidity
         , b.contract_address AS pool_address
     FROM
         {{ Pair_evt_Burn }} as b
