@@ -93,14 +93,16 @@ WITH arrakis_vaults AS
 , lp_data AS (
     SELECT block_number
         , block_time
+        , evt_index
         , pool_address
         , vault_address
         , tick_lower
         , tick_upper
-        , SUM(liquidity) OVER (PARTITION BY tick_lower, tick_upper, pool_address ORDER BY block_number ASC) AS liquidity
+        , SUM(liquidity) OVER (PARTITION BY tick_lower, tick_upper, pool_address, vault_address ORDER BY block_number ASC, evt_index ASC) AS liquidity
     FROM (
         SELECT block_number
             , block_time
+            , evt_index
             , pool_address
             , vault_address
             , tick_lower
@@ -111,7 +113,7 @@ WITH arrakis_vaults AS
             UNION ALL
             SELECT * FROM burns
         ) mints_and_burns
-        GROUP BY 1,2,3,4,5,6
+        GROUP BY 1,2,3,4,5,6,7
     ) lp_data
 )
 
@@ -134,30 +136,34 @@ WITH arrakis_vaults AS
 , liquidity_ts AS (
     SELECT * FROM (
         SELECT DISTINCT block_time
+            , evt_index
             , pool_address
             , vault_address
             , tick_lower
             , tick_upper
             , POWER(1.0001, tick_lower) AS pa
             , POWER(1.0001, tick_upper) AS pb
-            , MIN(liquidity) OVER (PARTITION BY pool_address, tick_lower, tick_upper, adj_index ORDER BY block_time) AS liquidity
+            , MIN(liquidity) OVER (PARTITION BY pool_address, tick_lower, tick_upper, adj_index ORDER BY block_time ASC, evt_index ASC) AS liquidity
         FROM (
-            SELECT *, SUM(index_check) OVER (PARTITION BY pool_address, tick_lower, tick_upper ORDER BY block_time) AS adj_index
+            SELECT *, SUM(index_check) OVER (PARTITION BY pool_address, tick_lower, tick_upper ORDER BY block_time ASC, evt_index ASC) AS adj_index
             FROM (
                 SELECT ts.*
+                    , l.evt_index
                     , l.liquidity
                     , CASE WHEN l.liquidity IS NOT NULL THEN 1 END AS index_check
                 FROM (
-                    SELECT ts.*, l.vault_address, l.tick_lower, l.tick_upper
+                    SELECT DISTINCT ts.*, l.vault_address, l.tick_lower, l.tick_upper
                     FROM time_series AS ts
                     INNER JOIN lp_data AS l
                         ON ts.pool_address = l.pool_address
                 ) AS ts
                 LEFT JOIN lp_data AS l
-                    ON ts.block_time = l.block_time AND ts.pool_address = l.pool_address AND ts.vault_address = l.vault_address AND ts.tick_lower = l.tick_lower and ts.tick_upper = l.tick_upper
+                    ON ts.block_time = l.block_time AND
+                       ts.pool_address = l.pool_address AND ts.vault_address = l.vault_address AND
+                       ts.tick_lower = l.tick_lower AND ts.tick_upper = l.tick_upper
             ) AS l
         ) AS l_adj
-    ) WHERE liquidity is not null
+    ) WHERE liquidity is not null AND liquidity > 0
 )
 
 ------------------------------------------------------------------------------------------
@@ -234,7 +240,7 @@ WITH arrakis_vaults AS
         WHERE
             {{ incremental_predicate('s.evt_block_time') }}
         {% endif %}
-    ) AS s ON s.block_time = lp.block_time AND s.pool_address = lp.pool_address
+    ) AS s ON s.block_time = lp.block_time AND s.evt_index = lp.evt_index AND s.pool_address = lp.pool_address
     -- overlapping ranges only
     where sqrt(lp.pa) <= (case when s.sqrt_price > s.prev_sqrt_price then s.sqrt_price else s.prev_sqrt_price end)
         and (case when s.prev_sqrt_price < s.sqrt_price then s.prev_sqrt_price else s.sqrt_price end) <= sqrt(lp.pb)
