@@ -1730,7 +1730,8 @@ FROM
     ('floki-floki-inu', 'ethereum', 'FLOKI', 0xcf0c122c6b73ff809c693db761e7baebe62b6a2e, 18),
     ('sect-sect-bot', 'ethereum', 'SECT', 0x24edded3f03abb2e9d047464294133378bddb596, 18),
     ('ena-ethena', 'ethereum', 'ENA', 0x57e114B691Db790C35207b2e685D4A43181e6061, 18),
-    ('next-connext-eth', 'ethereum', 'NEXT', 0xFE67A4450907459c3e1FFf623aA927dD4e28c67a, 18)
+    ('next-connext-eth', 'ethereum', 'NEXT', 0xFE67A4450907459c3e1FFf623aA927dD4e28c67a, 18),
+    ('trump-maga', 'ethereum', 'TRUMP', 0x576e2BeD8F7b46D34016198911Cdf9886f78bea7, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
