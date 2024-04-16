@@ -113,7 +113,7 @@ FROM (
     SELECT
         contract_address
         , block_time AS from_time
-        , date_add('millisecond', -1, LEAD(block_time, 1, TIMESTAMP '{{ future_date }}') OVER (PARTITION BY contract_address ORDER BY block_number, tx_index, evt_index)) AS to_time
+        , COALESCE(date_add('millisecond', -1, LEAD(block_time) OVER (PARTITION BY contract_address ORDER BY block_number, tx_index, evt_index)), TIMESTAMP '{{ future_date }}') AS to_time
         , CAST(SUM(COALESCE(new_total_deposits, 0)) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY block_number, tx_index, evt_index) AS INT256)
             + CAST(SUM(deposit_amount) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY block_number, tx_index, evt_index) AS INT256)
             - CAST(SUM(withdraw_amount) OVER (PARTITION BY contract_address, reinvest_partition ORDER BY block_number, tx_index, evt_index) AS INT256) AS deposit_token_balance
