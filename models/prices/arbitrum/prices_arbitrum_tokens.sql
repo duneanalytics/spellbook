@@ -144,6 +144,5 @@ FROM
     ('sundae-sundae-token','arbitrum','SUNDAE',0x352f4bf396a7353a0877f99e99757e5d294df374, 18),
     ('gns-gains-network','arbitrum','GNS',0x18c11fd286c5ec11c3b683caa813b77f5163a122, 18),
     ('gswift-gameswift','arbitrum','GSWIFT',0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18),
-    ('ezeth-renzo-restaked-eth','arbitrum','EZETH',0x2416092f143378750bb29b79ed961ab195cceea5, 18),
-    ('rseth-rseth','arbitrum','EZETH',0x2416092f143378750bb29b79ed961ab195cceea5, 18)
+    ('ezeth-renzo-restaked-eth','arbitrum','EZETH',0x2416092f143378750bb29b79ed961ab195cceea5, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
