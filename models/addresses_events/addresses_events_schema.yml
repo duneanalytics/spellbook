@@ -3,7 +3,7 @@ version: 2
 models:
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, zksync
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, zksync, base, scroll
       sector: addresses_events
       project: addresses
       contributors: hildobby, Henrystats
@@ -32,10 +32,10 @@ models:
 
   - name: addresses_events_first_activity
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
+      contributors: Henrystats, hildobby
     config:
       tags: ['table', 'first_activity', 'addresses_events', 'mainnets']
     description: "Table showing first activity of each address on every chain"
