@@ -1,39 +1,3 @@
-{% macro get_apy_from_array() %}
-    CREATE OR REPLACE FUNCTION get_apy_from_array(recent_reinvest_info ARRAY(varchar))
-    RETURNS decimal(18, 6)
-    NOT DETERMINISTIC
-    -- This function gets the APY from an array of recent reinvest-related data.
-    -- The calculation uses the growth in the ratio between the totalDeposits and totalSupply for the strategy (at inception these are 1:1).
-    -- It uses the most recent 25 reinvests and weights them as pwers of 2, so (sum of 2^i * value / sum of 2^i). This means a recent reinvest
-    -- counts twice as strongly as the reinvest before that when it comes to calculating the APY.
-    BEGIN
-        DECLARE filtered_info ARRAY(VARCHAR);
-        SET filtered_info = filter(recent_reinvest_info, x -> json_extract_scalar(x, '$.ratio_growth') IS NOT NULL);
-        IF cardinality(filtered_info) > 0 THEN
-            RETURN CAST(
-                reduce(
-                    filtered_info,
-                    json_object('n': 1, 'weighted_ratio_growth': 0, 'weighted_time_between_reinvests': 0, 'scaling_factor': 0),
-                    (s, x) -> json_object(
-                        'n': CAST(json_extract_scalar(s, '$.n') AS integer) + 1,
-                        'weighted_ratio_growth': CAST(json_extract_scalar(s, '$.weighted_ratio_growth') AS double) + POWER(2, CAST(json_extract_scalar(s, '$.n') AS double)) * CAST(json_extract_scalar(x, '$.ratio_growth') AS double),
-                        'weighted_time_between_reinvests': CAST(json_extract_scalar(s, '$.weighted_time_between_reinvests') AS double) + POWER(2, CAST(json_extract_scalar(s, '$.n') AS double)) * CAST(json_extract_scalar(x, '$.time_between_reinvests') AS double),
-                        'scaling_factor': CAST(json_extract_scalar(s, '$.scaling_factor') AS double) + POWER(2, CAST(json_extract_scalar(s, '$.n') AS double))
-                    ),
-                    s -> least(
-                        POWER(
-                            CAST(json_extract_scalar(s, '$.weighted_ratio_growth') AS double) / CAST(json_extract_scalar(s, '$.scaling_factor') AS double),
-                            31536000000 / (CAST(json_extract_scalar(s, '$.weighted_time_between_reinvests') AS double) / CAST(json_extract_scalar(s, '$.scaling_factor') AS double))
-                        ) - 1,
-                        999999999 -- Sort of setting the max as 1 billion % by doing this
-                    )
-                ) AS decimal(18, 6)
-            );
-        END IF;
-        RETURN NULL;
-    END
-{% endmacro %}
-
 {%- macro yield_yak_reinvests(
         blockchain = null
     )
@@ -111,6 +75,15 @@ add_reinvests_array AS (
         , ARRAY_AGG(json_object('ratio_growth': ratio_growth, 'time_between_reinvests': time_between_reinvests)) OVER (PARTITION BY contract_address ORDER BY block_number, tx_index, evt_index ROWS BETWEEN 25 PRECEDING AND CURRENT ROW) AS recent_reinvest_info
         {%- endif %}
     FROM add_ratio_growth
+),
+
+slice_reinvests_to_size AS (
+    SELECT
+        *
+        -- This line ensures the recent reinvest info is at most of length 25
+        , slice(recent_reinvest_info, greatest(1, cardinality(recent_reinvest_info) - 25 + 1), 25) AS sliced_recent_reinvest_info
+        , filter(slice(recent_reinvest_info, greatest(1, cardinality(recent_reinvest_info) - 25 + 1), 25), x -> json_extract_scalar(x, '$.ratio_growth') IS NOT NULL) AS filtered_recent_reinvest_info
+    FROM add_reinvests_array
 )
 
 SELECT
@@ -124,10 +97,36 @@ SELECT
     , reinvest_by_address
     , new_total_deposits
     , new_total_supply
-    , get_apy_from_array(slice(recent_reinvest_info, greatest(1, cardinality(recent_reinvest_info) - 25 + 1), 25)) AS apy
+    -- The below gets the APY from an array of recent reinvest-related data.
+    -- The calculation uses the growth in the ratio between the totalDeposits and totalSupply for the strategy (at inception these are 1:1).
+    -- It uses the most recent 25 reinvests and weights them as powers of 2, so (sum of 2^i * value / sum of 2^i). This means a recent reinvest
+    -- counts twice as strongly as the reinvest before that when it comes to calculating the APY.
+    -- We've done it like this because custom user functions cannot be declared and when defining it as an in-line function we got an error message
+    -- as part of the PR saying that inline functions were not allowed in views.
+    , CASE WHEN cardinality(filtered_recent_reinvest_info) > 0 THEN
+        CAST(
+            reduce(
+                filtered_recent_reinvest_info,
+                json_object('n': 1, 'weighted_ratio_growth': 0, 'weighted_time_between_reinvests': 0, 'scaling_factor': 0),
+                (s, x) -> json_object(
+                    'n': CAST(json_extract_scalar(s, '$.n') AS integer) + 1,
+                    'weighted_ratio_growth': CAST(json_extract_scalar(s, '$.weighted_ratio_growth') AS double) + POWER(2, CAST(json_extract_scalar(s, '$.n') AS double)) * CAST(json_extract_scalar(x, '$.ratio_growth') AS double),
+                    'weighted_time_between_reinvests': CAST(json_extract_scalar(s, '$.weighted_time_between_reinvests') AS double) + POWER(2, CAST(json_extract_scalar(s, '$.n') AS double)) * CAST(json_extract_scalar(x, '$.time_between_reinvests') AS double),
+                    'scaling_factor': CAST(json_extract_scalar(s, '$.scaling_factor') AS double) + POWER(2, CAST(json_extract_scalar(s, '$.n') AS double))
+                ),
+                s -> least(
+                    POWER(
+                        CAST(json_extract_scalar(s, '$.weighted_ratio_growth') AS double) / CAST(json_extract_scalar(s, '$.scaling_factor') AS double),
+                        31536000000 / (CAST(json_extract_scalar(s, '$.weighted_time_between_reinvests') AS double) / CAST(json_extract_scalar(s, '$.scaling_factor') AS double))
+                    ) - 1,
+                    999999999 -- Sort of setting the max as 1 billion % by doing this
+                )
+            ) AS decimal(18, 6)
+        )
+        ELSE NULL END AS apy
     , ratio
-    -- This line ensures the recent reinvest info is at most of length 25 and we need it for later incremental calculations
-    , slice(recent_reinvest_info, greatest(1, cardinality(recent_reinvest_info) - 25 + 1), 25) AS recent_reinvest_info
-FROM add_reinvests_array
+    -- We need this for future incremental model additions
+    , sliced_recent_reinvest_info AS recent_reinvest_info
+FROM slice_reinvests_to_size
 
 {%- endmacro -%}
