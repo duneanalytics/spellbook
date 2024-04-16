@@ -19,6 +19,7 @@
 
 WITH
 
+
 trades AS (
     SELECT
         block_time
@@ -27,7 +28,7 @@ trades AS (
         ,tx_to 
         ,tx_hash 
         ,index AS evt_index
-        ,contract_address AS evt_contract_address
+        ,contract_address AS fixedProductMarketMaker
         ,varbinary_substring(topic1,13,20)  AS address
         ,varbinary_to_uint256(varbinary_ltrim(topic2)) AS outcomeIndex
         ,varbinary_to_uint256(varbinary_ltrim(varbinary_substring(data,1,32)))AS amount
@@ -57,230 +58,54 @@ trades AS (
 
 ),
 
-
-
--- TO BE UPDATED
-
-Realitio_LogNewQuestion AS (
-    SELECT
-        contract_address,
-        evt_tx_hash,
-        evt_tx_from,
-        evt_tx_to,
-        evt_index,
-        evt_block_time,
-        evt_block_number,
-        evt_block_date,
-        arbitrator,
-        content_hash,
-        created,
-        nonce,
-        opening_ts,
-        question,
-        question_id,
-        template_id,
-        timeout,
-        user
-    FROM 
-        {{source('omen_gnosis','Realitio_v2_1_evt_LogNewQuestion') }}
-    {% if is_incremental() %}
-    WHERE 
-        evt_block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
-        {{ incremental_predicate('evt_block_time') }}
-    {% else %}
-    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-), 
-
-QuestionIdAnnouncement AS (
-    -- RealitioScalarAdapter contract
-    SELECT
-        block_time AS evt_block_time,
-        --block_hash,
-        tx_hash AS evt_tx_hash,
-        contract_address,
-        topic1 AS realitioQuestionId,
-        topic2 AS conditionQuestionId,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 1, 32))) AS low,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 33, 32))) AS high
-    FROM 
-        {{source('gnosis','logs') }}
-    WHERE
-        --QuestionIdAnnouncement
-        topic0 = 0xab038c0885722fffdf6864cf016c56fa921a1506541dac4fcd59d65963916cb1
-        {% if is_incremental() %}
-        AND 
-        block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
-        {{ incremental_predicate('evt_block_time') }}
-        {% else %}
-        AND block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-        
-),
-
-ConditionPreparation AS (
-    SELECT
-        contract_address,
-        evt_tx_hash,
-        evt_tx_from,
-        evt_tx_to,
-        evt_index,
-        evt_block_time,
-        evt_block_number,
-        evt_block_date,
-        conditionId,
-        oracle,
-        outcomeSlotCount,
-        questionId
-    FROM 
-        {{source('omen_gnosis','ConditionalTokens_evt_ConditionPreparation') }}
-    {% if is_incremental() %}
-    WHERE 
-        evt_block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
-        {{ incremental_predicate('evt_block_time') }}
-    {% else %}
-    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-), 
-
-ConditionPreparation_end AS (
+trades_slot AS (
     SELECT 
-        t1.evt_block_time,
-        COALESCE(t2.evt_tx_hash, t1.evt_tx_hash) AS evt_tx_hash,
-        t1.contract_address,
-        t1.conditionId,
-        t1.oracle,
-        COALESCE(t2.realitioQuestionId, t1.questionId) AS questionId,
-        t1.outcomeSlotCount
+        t1.block_time
+        ,t1.block_day
+        ,t1.tx_from 
+        ,t1.tx_to 
+        ,t1.tx_hash 
+        ,t1.evt_index
+        ,t1.fixedProductMarketMaker
+        ,t1.address
+        ,t1.outcomeIndex
+        ,SEQUENCE(0,COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ) AS outcomeSlot
+        ,t1.amount
+        ,t1.feeAmount
+        ,TRANSFORM(SEQUENCE(0, COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ), x -> IF(x = t1.outcomeIndex, t1.outcomeTokens, 0)) AS outcomeTokens_amount
+        ,t1.action
     FROM
-        ConditionPreparation t1
-    LEFT JOIN
-        QuestionIdAnnouncement t2
+        trades  t1
+    LEFT JOIN 
+        {{source('omen_gnosis','ConditionalTokens_evt_PositionsMerge') }} t2
         ON
-        t2.evt_tx_hash = t1.evt_tx_hash
+        t2.evt_tx_hash = t1.tx_hash
         AND
-        t2.conditionQuestionId = t1.questionId
-),
-
-FixedProductMarketMakerCreation AS (
-    SELECT
-        contract_address,
-        evt_tx_hash,
-        evt_tx_from,
-        evt_tx_to,
-        evt_index,
-        evt_block_time,
-        evt_block_number,
-        evt_block_date,
-        collateralToken,
-        conditionalTokens,
-        creator,
-        fee,
-        fixedProductMarketMaker,
-        conditionId
-    FROM 
-        {{source('omen_gnosis','FPMMDeterministicFactory_evt_FixedProductMarketMakerCreation') }}
-        ,UNNEST(conditionIds) t(conditionId)
-    {% if is_incremental() %}
-    WHERE 
-        evt_block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
-        {{ incremental_predicate('evt_block_time') }}
-    {% else %}
-    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
-    {% endif %} 
-        
-),
-
-
-
-prediction_market_info AS (
-    SELECT
-        DATE_TRUNC('day', t1.evt_block_time) AS block_day,
-        t1.evt_block_time AS block_time_LogNewQuestion,
-        t1.evt_tx_hash AS tx_hash_LogNewQuestion,
-
-        t2.evt_block_time AS block_time_ConditionPreparationn,
-        t2.evt_tx_hash AS tx_hash_ConditionPreparation,
-
-        t3.evt_block_time AS block_time_FixedProductMarketMakerCreation,
-        t3.evt_tx_hash AS tx_hash_FixedProductMarketMakerCreation,
-
-        t2.questionId,
-        t2.conditionId,
-        t2.oracle,
-        t2.outcomeSlotCount,
-        t1.question,
-        t3.fixedProductMarketMaker,
-        t3.conditionalTokens,
-        t3.collateralToken,
-        t3.fee,
-        REGEXP_REPLACE(REVERSE(SPLIT_PART(REVERSE(t1.question), '␟', 2)), '[^A-Za-z]', '') AS category,
-        FROM_UNIXTIME(t1.opening_ts) AS opening_time,
-        t1.timeout,
-        FROM_UNIXTIME(t1.created) AS creation_time
-    FROM 
-        Realitio_LogNewQuestion t1
-    INNER JOIN 
-        ConditionPreparation_end t2
-        ON 
-        t2.questionId = t1.question_id
-    INNER JOIN 
-        FixedProductMarketMakerCreation t3
-        ON 
-        t3.conditionId = t2.conditionId
+        t2.evt_index < t1.evt_index
+        AND
+        t2.amount = CAST(t1.amount AS UINT256) + CAST(t1.feeAmount AS UINT256)
+    LEFT JOIN 
+        {{source('omen_gnosis','ConditionalTokens_evt_PositionSplit') }} t3
+        ON
+        t3.evt_tx_hash = t1.tx_hash
+        AND
+        t3.evt_index < t1.evt_index
+        AND
+        t3.amount = CAST(t1.amount AS UINT256) - CAST(t1.feeAmount AS UINT256)
 ),
 
 final AS (
-    SELECT
-        block_time
-        ,block_day
-        ,tx_from 
-        ,tx_to 
-        ,tx_hash 
-        ,evt_index
-        ,fixedProductMarketMaker
-        ,address
-        ,ARRAY_AGG(outcomeSlot ORDER BY outcomeSlot) AS outcomeSlot
-        ,outcomeIndex
-        ,amount
-        ,feeAmount
-        ,ARRAY_AGG(outcomeTokens_amount ORDER BY outcomeSlot) AS outcomeTokens_amount
-        ,action 
-    FROM (
-        SELECT
-            t1.block_time
-            ,t1.block_day
-            ,t1.tx_from 
-            ,t1.tx_to 
-            ,t1.tx_hash 
-            ,t1.evt_index
-            ,t1.evt_contract_address AS fixedProductMarketMaker
-            ,t1.address
-            ,s.outcomeSlot
-            ,t1.outcomeIndex
-            ,t1.amount
-            ,t1.feeAmount
-            ,CASE  
-                WHEN s.outcomeSlot = t1.outcomeIndex
-                    THEN t1.outcomeTokens
-                ELSE 0
-            END AS outcomeTokens_amount
-            ,t1.action 
-        FROM
-            trades t1
-        LEFT JOIN 
-            prediction_market_info t2
-            ON
-            t2.fixedProductMarketMaker = t1.evt_contract_address
-        CROSS JOIN UNNEST(SEQUENCE(0, TRY_CAST(t2.outcomeSlotCount AS INTEGER) - 1 ) ) AS s(outcomeSlot)
-    )
-    GROUP BY 
-    1,2,3,4,5,6,7,8, 10,11,12, 14
+    SELECT 
+        *
+        ,TRANSFORM(
+            outcomeTokens_amount, 
+            x -> CASE
+                    WHEN action = 'Buy' THEN CAST(amount AS INT256) - CAST(feeAmount + x AS INT256)
+                    WHEN action = 'Sell' THEN CAST(x AS INT256) - CAST(amount + feeAmount AS INT256)
+                END
+        ) AS reserves_delta
+    FROM    
+        trades_slot
 )
 
 SELECT * FROM final
-
