@@ -25,15 +25,11 @@ combined AS (
             s.contract_address
             , s.evt_tx_hash AS tx_hash
             , s.evt_index
-            , t.index AS tx_index
             , s.evt_block_time AS block_time
             , s.evt_block_number AS block_number
             , s.account AS user_address
             , s.amount AS {{ event_name.lower() }}_amount
         FROM {{ source(namespace_blockchain, strategy + '_evt_' + event_name) }} s
-        LEFT JOIN
-        {{ source(blockchain, 'transactions') }} t
-            ON t.hash = s.evt_tx_hash
         {%- if is_incremental() %}
         LEFT JOIN
         existing_contracts c
@@ -51,7 +47,17 @@ combined AS (
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , *
-FROM combined
+    , c.contract_address
+    , c.tx_hash
+    , c.evt_index
+    , t.index AS tx_index
+    , c.block_time
+    , c.block_number
+    , c.user_address
+    , c.{{ event_name.lower() }}_amount
+FROM combined c
+LEFT JOIN
+{{ source(blockchain, 'transactions') }} t
+    ON t.hash = c.tx_hash
 
 {%- endmacro -%}

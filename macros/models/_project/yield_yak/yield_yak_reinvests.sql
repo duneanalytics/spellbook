@@ -27,10 +27,8 @@ combined AS (
             s.contract_address
             , s.evt_tx_hash AS tx_hash
             , s.evt_index
-            , t.index AS tx_index
             , s.evt_block_time AS block_time
             , s.evt_block_number AS block_number
-            , t."from" AS reinvest_by_address
             , s.newTotalDeposits AS new_total_deposits
             , s.newTotalSupply AS new_total_supply
             , CASE WHEN s.newTotalSupply = 0 THEN 1 ELSE (1.0 * s.newTotalDeposits) / (1.0 * s.newTotalSupply) END AS ratio
@@ -40,9 +38,6 @@ combined AS (
             , c.latest_recent_reinvest_info
             {%- endif %}
         FROM {{ source(namespace_blockchain, strategy + '_evt_Reinvest') }} s
-        LEFT JOIN
-        {{ source(blockchain, 'transactions') }} t
-            ON t.hash = s.evt_tx_hash
         {%- if is_incremental() %}
         LEFT JOIN
         existing_contracts c
@@ -58,12 +53,23 @@ combined AS (
     {%- endfor %}
 ),
 
+add_tx_index AS (
+    SELECT
+        c.*
+        , t.index AS tx_index
+        , t."from" AS reinvest_by_address
+    FROM combined c
+    LEFT JOIN
+    {{ source(blockchain, 'transactions') }} t
+        ON t.hash = c.tx_hash
+),
+
 add_ratio_growth AS (
     SELECT
         *
         , ratio / LAG(ratio{% if is_incremental() %}, 1, latest_ratio{% endif %}) OVER (PARTITION BY contract_address ORDER BY block_number, tx_index, evt_index) AS ratio_growth
         , DATE_DIFF('millisecond', LAG(block_time{% if is_incremental() %}, 1, latest_block_time{% endif %}) OVER (PARTITION BY contract_address ORDER BY block_number, tx_index, evt_index), block_time) AS time_between_reinvests
-    FROM combined
+    FROM add_tx_index
 ),
 
 add_reinvests_array AS (
