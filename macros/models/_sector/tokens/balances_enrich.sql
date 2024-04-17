@@ -2,6 +2,7 @@
 select
     balances.blockchain,
     {% if daily %}balances.day,{% endif %}
+    {% if daily %}balances.next_update_day,{% endif %}
     balances.block_number,
     balances.block_time,
     balances.address,
