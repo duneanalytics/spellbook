@@ -71,4 +71,5 @@ FROM (VALUES
     , ('zk_markets', 'zkMarkets', 'Direct', 'zkmarkets')
     , ('campfire', 'Campfire', 'Direct', '0xCampfire')
     , ('joepegs', 'Joepegs', 'Direct', 'joepegsnft')
+    , ('alienswap', 'AlienSwap', 'Direct & Aggregator', 'AlienSwap_NFT')
     ) AS temp_table (project, name, marketplace_type, x_username)
