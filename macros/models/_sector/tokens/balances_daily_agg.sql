@@ -1,11 +1,20 @@
 {%- macro balances_daily_agg(balances_raw) %}
 select
-    *,
+    blockchain,
+    day,
+    block_number,
+    block_time,
+    address,
+    token_address,
+    token_standard,
+    token_id,
+    balance_raw,
+    lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day,
     {{ dbt_utils.generate_surrogate_key(['day', 'address', 'token_address', 'token_standard', 'token_id']) }} as unique_key
 from (
     select
         blockchain,
-        cast(date_trunc('day', block_time) as date) as day,
+        cast(date_trunc('day', block_time) as timestamp) as day,
         block_number,
         block_time,
         address,

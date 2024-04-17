@@ -9,5 +9,14 @@
         )
 }}
 
-select * from {{ref('tokens_ethereum_balances_daily')}}
-where day = date_trunc('day',now())
+with balances_latest as (
+select * from {{ref('tokens_ethereum_balances_daily_agg')}}
+where next_update_day is null -- last known record
+)
+
+{{
+    balances_enrich(
+        balances_raw = 'balances_latest',
+    )
+}}
+

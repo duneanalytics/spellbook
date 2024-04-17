@@ -10,15 +10,15 @@ with changed_balances as (
     ,token_standard
     ,token_id
     ,balance
-    ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
+    ,next_update_day
     from {{balances_daily_agg}}
 )
 
 ,days as (
     select *
     from unnest(
-         sequence(cast('{{start_date}}' as date)
-                , date(date_trunc('day',now()))
+         sequence(cast('{{start_date}}' as timestamp)
+                , cast(date_trunc('day',now()) as timestamp)
                 , interval '1' day
                 )
          ) as foo(day)
@@ -27,7 +27,7 @@ with changed_balances as (
 , forward_fill as (
     select
         blockchain
-        ,cast(d.day as timestamp) as day
+        ,d.day
         ,address
         ,token_symbol
         ,token_address
@@ -42,20 +42,20 @@ with changed_balances as (
 
 select
     b.*
-    ,b.balance * p.price as balance_usd
+    ,b.balance * p.price_close as balance_usd
 from(
     select * from forward_fill
     where balance > 0
     ) b
-left join {{source('prices','usd')}} p
+left join {{source('prices','usd_daily')}} p
     on (token_standard = 'erc20'
     and b.blockchain = p.blockchain
     and b.token_address = p.contract_address
-    and b.day = p.minute)
+    and b.day = p.day)
     or (token_standard = 'native'
     and p.blockchain is null
     and p.contract_address is null
     and p.symbol = '{{native_token}}'
-    and b.day = p.minute)
+    and b.day = p.day)
 
 {% endmacro %}

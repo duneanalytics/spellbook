@@ -10,7 +10,6 @@
         )
 }}
 
-select * from (
 select
     cast(date_trunc('day', minute) as date) as day,
     blockchain,
@@ -24,6 +23,4 @@ select
     max_by(price,minute) as price_close
 from {{ source('prices', 'usd') }}
 group by 1,2,3,4,5
-)
-where day < cast(date_trunc('day',now()) as date) -- exclude ongoing day
 
