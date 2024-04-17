@@ -39,4 +39,5 @@ FROM (VALUES
     , (0xe2b4179dc78206e98ee3130ff64fc152923f6d23, 'POTION', 10)
     , (0xef888bca6ab6b1d26dbec977c455388ecd794794, 'RGT', 18)
     , (0xb86af5eb59a8e871bfa573fa656123ea86f47c3a, 'CWETHLP', 18)
+    , (0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 'sUSDe', 18)
 ) AS temp_table (contract_address, symbol, decimals)
