@@ -12,6 +12,7 @@ select
     lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day,
     {{ dbt_utils.generate_surrogate_key(['day', 'address', 'token_address', 'token_standard', 'token_id']) }} as unique_key
 from (
+select * from (
     select
         blockchain,
         cast(date_trunc('day', block_time) as timestamp) as day,
@@ -28,6 +29,6 @@ from (
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
 ) where row_number = 1
-
+)
 
 {% endmacro %}
