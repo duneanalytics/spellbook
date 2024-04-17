@@ -52,4 +52,24 @@ models:
      - *tx_data_marker
      - *currency_contract
 
+ - name: nft_fantom_base_trades
+   meta:
+     blockchain: fantom
+     sector: nft
+     contributors: hildobby
+   config:
+     tags: [ 'fantom', 'nft', 'trades' ]
+   description: "NFT Fantom base trades"
+   columns:
+     - *blockchain
+     - *project
+     - *project_version
+     - *tx_hash
+     - *sub_tx_trade_id
+     - *trade_type
+     - *trade_category
+     - *price_raw
+     - *tx_data_marker
+     - *currency_contract
+
 
