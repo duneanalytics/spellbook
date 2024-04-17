@@ -1,6 +1,7 @@
 {{ config(
         schema = 'tokens_polygon',
         alias = 'balances_daily',
+        tags=['prod_exclude'],
         materialized = 'view',
         post_hook = '{{ expose_spells(
                         blockchains = \'["polygon"]\',

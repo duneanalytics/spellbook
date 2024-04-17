@@ -1,5 +1,6 @@
 {{ config(
         schema = 'tokens_polygon',
+        tags=['prod_exclude'],
         alias = 'balances_daily_agg',
         materialized = 'view'
         )

@@ -1,6 +1,7 @@
 {{ config(
         schema = 'tokens_polygon',
         alias = 'balances_daily_agg_base',
+        tags=['prod_exclude'],
         file_format = 'delta',
         materialized='incremental',
         incremental_strategy='merge',
