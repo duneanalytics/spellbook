@@ -111,7 +111,6 @@ FPMMFundingRemoved AS (
         {% endif %}
 ),
 
-
 remove_liquidity AS (
     SELECT 
         block_time,
