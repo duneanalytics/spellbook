@@ -17,6 +17,12 @@ as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256))
 {% endmacro %}
 
 -- convert consideration (ReceivedItem[]) to a ROW
+-- consideration
+--  + item_type (varchar)
+--  + token (varbin)
+--  + identifier (uint256)
+--  + amount (uint256)
+--  + recipient ( varbin)
 {% macro convert_consideration(col) %}
 cast(ROW(
     case json_extract_scalar({{col}}, '$.itemType')
