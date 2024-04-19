@@ -34,5 +34,6 @@ FROM
     ('wsteth-wrapped-liquid-staked-ether-20', 'gnosis', 'WSTETH', 0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 18),
     ('sdai-savings-dai', 'gnosis', 'SDAI',0xaf204776c7245bF4147c2612BF6e5972Ee483701,18),
     ('eure-monerium-eur-emoney', 'gnosis', 'EURe', 0xcB444e90D8198415266c6a2724b7900fb12FC56E, 18),
-    ('olas-autonolas', 'gnosis', 'OLAS', 0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f, 18)     
+    ('olas-autonolas', 'gnosis', 'OLAS', 0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f, 18),
+    ('steth-lido-staked-ether-on-xDAI', 'gnosis', 'stETH', 0xae7ab96520de3a18e5e111b5eaab095312d7fe84, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
