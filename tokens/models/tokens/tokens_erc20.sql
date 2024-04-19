@@ -6,7 +6,7 @@
         ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","scroll","zksync","zora"]\',
                         "sector",
                         "tokens",
-                        \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude"]\') }}'
+                        \'["bh2smith", "0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude"]\') }}'
     )
 }}
 
