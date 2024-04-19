@@ -4,7 +4,6 @@
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'
-
     )
 }}
 
