@@ -131,7 +131,6 @@ remove_liquidity AS (
         FPMMFundingRemoved 
 ),
 
-
 final AS (
     SELECT * FROM add_liquidity
     UNION ALL
