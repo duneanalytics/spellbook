@@ -1,4 +1,4 @@
-{% macro seaport_trades(seaport_orders) %}
+{% macro seaport_trades(seaport_orders,blockchain) %}
 WITH filter as (
 select * from (
     select *
@@ -18,8 +18,29 @@ select * from (
 where not (is_buy = is_sell) -- exclude complex orders where both sides contain NFTs
 )
 
-
-
+select
+      '{{blockchain}}' as blockchain
+    , 'seaport' as project -- replace
+    , 'vx.x' as project_version -- replace
+    , o.evt_block_time as block_time
+    , cast(date_trunc('day', o.evt_block_time) as date) as block_date
+    , cast(date_trunc('month', o.evt_block_time) as date) as block_month
+    , o.evt_block_number as block_number
+    , -- token_id
+    , 'secondary' as trade_type
+    , -- get amount
+    , case when is_buy then o.offerer else o.recipient end as seller
+    , case when is_buy then o.recipient else o.offerer end as buyer
+    , case when is_buy then 'buy' when is_sell then 'sell' else 'match' end as trade_category
+    , -- price_raw
+    , -- currency_contract
+    , -- nft_contract_address
+    , o.evt_tx_hash as tx_hash
+    , -- platform_fee_amount_raw
+    , -- royalty_fee_amount_raw
+    , -- platform_fee_address
+    , -- royalty_fee_address
+    , o.evt_index as sub_tx_trade_id
 )
     o.contract_address,
     o.evt_tx_hash,

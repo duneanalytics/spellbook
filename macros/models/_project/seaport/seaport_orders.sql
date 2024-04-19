@@ -44,7 +44,7 @@ as ROW(item_type varchar, token varbinary, identifier uint256, amount uint256, r
 -- this macro is used to extract all the order information out of the emitted seaport events.
 -- it will NOT impose any additional assumptions on the emitted data (such as what sides is part of the sale, what side is the royalty payment, ...)
 -- imposing these assumptions and reducing them to valid trade information should be done by downstream models/macro's
-{% macro seaport_orders(Seaport_evt_OrderFulfilled, Seaport_evt_OrdersMatched) %}
+{% macro seaport_orders(blockchainSeaport_evt_OrderFulfilled, Seaport_evt_OrdersMatched) %}
 WITH basic as (
     SELECT
         e.contract_address,
