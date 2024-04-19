@@ -1,9 +1,10 @@
 {{
     config(
-    schema = 'tokens_ethereum'
-    ,alias = 'erc20'
-    ,tags = ['static']
-    ,materialized = 'table'
+        schema = 'tokens_ethereum'
+        ,alias = 'erc20'
+        ,tags = ['static']
+        ,materialized = 'table'
+
     )
 }}
 
