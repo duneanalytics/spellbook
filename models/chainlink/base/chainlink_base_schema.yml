@@ -273,6 +273,12 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "base"]
     description: >
       Chainlink CCIP Tokens Transferred Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
     columns:
       - *blockchain
       - *block_hash
