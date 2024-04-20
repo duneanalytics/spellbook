@@ -68,7 +68,7 @@ WITH base_locks AS (
     ),
     
     days_seq AS (
-        SELECT sequence(CAST(MIN(day) AS TIMESTAMP), CAST(now() AS TIMESTAMP), interval '1' day) as day
+        SELECT sequence(CAST(MIN(day) AS TIMESTAMP), CAST(now() AS TIMESTAMP) + interval '1' year, interval '1' day) as day
         FROM bpt_locked_balance
     ),
 
@@ -80,7 +80,7 @@ WITH base_locks AS (
         SELECT
             day,
             provider,
-            LEAD(DAY, 1, NOW()) OVER (
+            LEAD(DAY, 1, NOW() + interval '1' year) OVER (
                 PARTITION BY provider
                 ORDER BY day
             ) AS day_of_next_change,
