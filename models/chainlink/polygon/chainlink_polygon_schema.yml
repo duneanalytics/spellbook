@@ -1411,7 +1411,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - tx_index
+            - index
     columns:
       - *blockchain
       - *block_hash
