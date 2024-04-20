@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['flow_type', 'block_time', 'tx_hash'],
+    unique_key = ['flow_type', 'block_time', 'evt_index', 'tx_hash'],
   )
 }}
 
@@ -24,6 +24,7 @@ staked_nxm_history as (
     cast(sd.amount as double) / 1e18 as amount,
     cast(null as double) as topup_amount,
     sd.user,
+    sd.evt_index,
     sd.evt_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_StakeDeposited') }} sd
   {% if is_incremental() %}
@@ -44,6 +45,7 @@ staked_nxm_history as (
     cast(null as double) as amount,
     cast(de.topUpAmount as double) / 1e18 as topup_amount,
     de.user,
+    de.evt_index,
     de.evt_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_DepositExtended') }} de
   {% if is_incremental() %}
@@ -64,6 +66,7 @@ staked_nxm_history as (
     -1 * cast((w.amountStakeWithdrawn) as double) / 1e18 as amount,
     cast(null as double) as topup_amount,
     w.user,
+    w.evt_index,
     w.evt_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_Withdraw') }} w
   where w.amountStakeWithdrawn > 0
@@ -85,6 +88,7 @@ staked_nxm_history as (
     -1 * cast(eb.amount as double) / 1e18 as amount,
     cast(null as double) as topup_amount,
     cast(null as varbinary) as user,
+    eb.evt_index,
     eb.evt_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_StakeBurned') }} eb
   {% if is_incremental() %}
@@ -105,5 +109,6 @@ select
   amount,
   topup_amount,
   user,
+  evt_index,
   tx_hash
 from staked_nxm_history

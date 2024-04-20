@@ -234,6 +234,7 @@ models:
           combination_of_columns:
             - flow_type
             - block_time
+            - evt_index
             - tx_hash
     columns:
       - &flow_type
@@ -270,6 +271,7 @@ models:
       - &user
         name: user
         description: "staking user"
+      - *evt_index
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value"
