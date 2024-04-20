@@ -16,7 +16,7 @@ with recursive deposit_chain (pool_address, token_id, tranche_id, new_tranche_id
     sum(amount) as total_amount,
     max_by(is_active, block_time) as is_active,
     1 as chain_level
-  from {{ ref('nexusmutual_ethereum_staking_pools_history')} }
+  from {{ ref('nexusmutual_ethereum_staking_pools_history') }}
   where flow_type = 'deposit'
   group by 1,2,3,4
   
