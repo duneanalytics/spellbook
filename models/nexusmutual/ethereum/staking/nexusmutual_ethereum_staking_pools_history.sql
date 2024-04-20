@@ -71,7 +71,7 @@ staked_nxm_history as (
   from {{ source('nexusmutual_ethereum', 'StakingPool_evt_Withdraw') }} w
   where w.amountStakeWithdrawn > 0
   {% if is_incremental() %}
-  where {{ incremental_predicate('w.evt_block_time') }}
+  and {{ incremental_predicate('w.evt_block_time') }}
   {% endif %}
 
   union all
