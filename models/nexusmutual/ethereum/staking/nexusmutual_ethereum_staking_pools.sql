@@ -44,7 +44,7 @@ staking_pools_created as (
     initialPoolFee as initial_pool_fee,
     maxPoolFee as max_management_fee,
     productInitParams as params
-  from nexusmutual_ethereum.Cover_call_createStakingPool
+  from {{ source('nexusmutual_ethereum', 'Cover_call_createStakingPool') }}
   where call_success
     and contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62
 ),
@@ -79,7 +79,7 @@ staking_pool_products_updated as (
       cast(json_query(t.json, 'lax $.targetWeight') as double) as target_weight,
       cast(json_query(t.json, 'lax $.setTargetPrice') as boolean) as set_target_price,
       cast(json_query(t.json, 'lax $.targetPrice') as double) as target_price
-    from nexusmutual_ethereum.StakingProducts_call_setProducts as p
+    from {{ source('nexusmutual_ethereum', 'StakingProducts_call_setProducts') }} as p
       cross join unnest(params) as t(json)
     where call_success
       and contract_address = 0xcafea573fBd815B5f59e8049E71E554bde3477E4
@@ -110,7 +110,7 @@ staking_pool_managers_history as (
     manager,
     call_trace_address,
     call_tx_hash as tx_hash
-  from nexusmutual_ethereum.TokenController_call_assignStakingPoolManager
+  from {{ source('nexusmutual_ethereum', 'TokenController_call_assignStakingPoolManager') }}
   where call_success
   union all
   select distinct
@@ -119,9 +119,9 @@ staking_pool_managers_history as (
     m.output_0 as manager,
     m.call_trace_address,
     m.call_tx_hash as tx_hash
-  from nexusmutual_ethereum.StakingProducts_evt_ProductUpdated pu
-    inner join nexusmutual_ethereum.StakingProducts_call_setProducts sp on pu.evt_tx_hash = call_tx_hash and pu.evt_block_number = sp.call_block_number
-    inner join nexusmutual_ethereum.StakingPool_call_manager m on sp.call_tx_hash = m.call_tx_hash and sp.call_block_number = m.call_block_number
+  from {{ source('nexusmutual_ethereum', 'StakingProducts_evt_ProductUpdated') }} pu
+    inner join {{ source('nexusmutual_ethereum', 'StakingProducts_call_setProducts') }} sp on pu.evt_tx_hash = call_tx_hash and pu.evt_block_number = sp.call_block_number
+    inner join {{ source('nexusmutual_ethereum', 'StakingPool_call_manager') }} m on sp.call_tx_hash = m.call_tx_hash and sp.call_block_number = m.call_block_number
   where sp.call_success
     and m.call_success
 ),
@@ -155,7 +155,7 @@ staking_pool_fee_updates as (
         newFee as new_fee,
         evt_tx_hash as tx_hash,
         row_number() over (partition by contract_address order by evt_block_time desc, evt_index desc) as rn
-      from nexusmutual_ethereum.StakingPool_evt_PoolFeeChanged
+      from {{ source('nexusmutual_ethereum', 'StakingPool_evt_PoolFeeChanged') }}
     ) t
     inner join staking_pools_created sp on t.pool_address = sp.pool_address
   where t.rn = 1

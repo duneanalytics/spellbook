@@ -13,3 +13,4 @@ sources:
       - name: TokenController_call_assignStakingPoolManager
       - name: StakingProducts_evt_ProductUpdated
       - name: StakingPool_call_manager
+      - name: StakingPool_evt_PoolFeeChanged
