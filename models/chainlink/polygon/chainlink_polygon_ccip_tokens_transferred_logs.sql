@@ -7,7 +7,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'polygon' as blockchain,
@@ -31,7 +30,7 @@ WHERE
   topic0 = 0x9f1ec8c880f76798e7b793325d625e9b60e4082a553c98f42b6cda368dd60008 -- Locked
   AND block_time >= CAST('2023-07-06' AS date)
   {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('block_time') }}
   {% endif %}
 UNION ALL
 SELECT
@@ -56,5 +55,5 @@ WHERE
   topic0 = 0x696de425f79f4a40bc6d2122ca50507f0efbeabbff86a84871b7196ab8ea8df7 -- Burned(address,uint256)
   AND block_time >= CAST('2023-07-06' AS date)
   {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('block_time') }}
   {% endif %}
