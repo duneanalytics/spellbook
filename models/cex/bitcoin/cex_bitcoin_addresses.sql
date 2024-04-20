@@ -20,7 +20,6 @@ FROM (VALUES
     , ('bitcoin', 'bc1qss5ejcqfrmjm9lfydshanhjkc7wnlhk4khlsj8', 'Coinbase', 'Coinbase 10', 'hildobby', date '2023-04-06')
     , ('bitcoin', '3N7BbBNKnE1uNpvSSfXaXfYbbP3KeYGZwF', 'Coinbase', 'Coinbase 11', 'hildobby', date '2023-04-06')
     , ('bitcoin', '145tSHbcj1s3CJVMFrGLQZmPyjYQVKWcch', 'Coinbase', 'Coinbase 12', 'hildobby', date '2023-04-06')
-    
     , ('bitcoin', '1CAhFPhKkTLWLinCcXNDHNjPDwikwatktx', 'Coinbase', 'Coinbase 13', 'hildobby', date '2023-04-06')
     
     , ('bitcoin', '1PJiGp2yDLvUgqeBsuZVCBADArNsk6XEiw', 'Binance', 'Binance 1', 'hildobby', date '2024-04-20')
