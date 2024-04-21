@@ -1,14 +1,14 @@
 version: 2
 
 models:
-  - name: cex_zora_addresses
+  - name: cex_ethereum_addresses
     meta:
-      blockchain: zora
+      blockchain: ethereum
       sector: cex
       contributors: hildobby
     config:
-      tags: ['cex','addresses', 'deposits', 'withdrawals', 'zora']
-    description: "All CEX-tied addresses identified on Zora Network"
+      tags: ['cex','addresses', 'deposits', 'withdrawals', 'ethereum']
+    description: "All CEX-tied addresses identified on Ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
