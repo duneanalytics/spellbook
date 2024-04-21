@@ -1,4 +1,4 @@
-{% set blockchain = 'polygon_zkevm' %}
+{% set blockchain = 'linea' %}
 
 {{config(
         schema = 'cex_' + blockchain,
