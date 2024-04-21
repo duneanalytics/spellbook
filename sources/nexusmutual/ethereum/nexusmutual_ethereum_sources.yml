@@ -11,6 +11,7 @@ sources:
       - name: Cover_call_createStakingPool
       - name: StakingProducts_call_setProducts
       - name: TokenController_call_assignStakingPoolManager
+      - name: TokenController2_call_assignStakingPoolManager
       - name: StakingProducts_evt_ProductUpdated
       - name: StakingPool_call_manager
       - name: StakingPool_evt_PoolFeeChanged

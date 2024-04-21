@@ -1,11 +1,15 @@
 {{
   config(
     schema = 'nexusmutual_ethereum',
-    alias = 'staking_pools_history',
+    alias = 'staking_events',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['flow_type', 'block_time', 'evt_index', 'tx_hash'],
+    post_hook = '{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "nexusmutual",
+                                \'["tomfutago"]\') }}'
   )
 }}
 
