@@ -156,8 +156,3 @@ models:
       - &method
         name: method
         description: "Function method"
-      - &unique_key
-        name: unique_key
-        description: unique row identifier
-        tests:
-          - unique
