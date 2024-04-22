@@ -37,7 +37,10 @@ WITH whitelist_token as (
     (0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 'DAI', 'polygon'),
     (0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 'USDT', 'polygon'),
     (0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270, 'WMATIC', 'polygon'),
-    (0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 'polygon')
+    (0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 'polygon'),
+    (0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5, 'USDC', 'zkevm'),
+    (0x744c5860ba161b5316f7e80d9ec415e2727e5bd5, 'DAI', 'zkevm'),
+    (0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9, 'WETH', 'zkevm')
     )
         as t (address, name, chain))
     
