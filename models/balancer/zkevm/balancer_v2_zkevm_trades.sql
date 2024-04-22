@@ -92,6 +92,7 @@ SELECT
     dexs.block_number,
     dexs.block_month,
     dexs.block_time,
+    dexs.block_number,
     dexs.token_bought_symbol,
     dexs.token_sold_symbol,
     dexs.token_pair,
