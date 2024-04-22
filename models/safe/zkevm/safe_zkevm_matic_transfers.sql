@@ -44,7 +44,7 @@ from (
     {% endif %}
     {% if is_incremental() %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
-    where {{ incremental_predicate('et.block_time') }}
+    where et.block_time > date_trunc('day', now() - interval '10' day)
     {% endif %}
 
     union all
