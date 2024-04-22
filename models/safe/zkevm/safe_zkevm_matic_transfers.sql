@@ -75,5 +75,8 @@ from (
 ) t
 
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
+    {% if is_incremental() %}
+    and {{ incremental_predicate('p.minute') }}
+    {% endif %}
     and p.symbol = t.symbol
     and p.minute = date_trunc('minute', t.block_time)
