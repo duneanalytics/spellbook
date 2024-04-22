@@ -160,3 +160,8 @@ models:
       - &trace_tx_hash
         name: trace_tx_hash
         description: "Tx hash to retrieve traces"
+      - &unique_key
+        name: unique_key
+        description: unique row identifier
+        tests:
+          - unique
