@@ -8,7 +8,7 @@
 
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
-    , ('polkadot', '13VagdYbCRMSBSbmz4UivPpS9SwmTTRiPtMkjoEHRm8vAkqv', 'Binance', 'Binance 1', 'hildobby', date '2024-04-20')
+    ('polkadot', '13VagdYbCRMSBSbmz4UivPpS9SwmTTRiPtMkjoEHRm8vAkqv', 'Binance', 'Binance 1', 'hildobby', date '2024-04-20')
     , ('polkadot', '16ZL8yLyXv3V3L3z9ofR1ovFLziyXaN1DPq4yffMAZ9czzBD', 'Binance', 'Binance 2', 'hildobby', date '2024-04-20')
     , ('polkadot', '1743nDTMZisPgBCYSAgkUn1kVG7MePc9rvMEjoRNf4ipVkF', 'Binance', 'Binance 3', 'hildobby', date '2024-04-20')
     , ('polkadot', '1P6bgxZi42kYYV545c3RSp7NJLUgASDpMP1ifXJazVR1e2N', 'Binance', 'Binance 4', 'hildobby', date '2024-04-20')
