@@ -896,6 +896,18 @@ sources:
           - name: recipient
           - name: relativeWeightCap
 
+      - name: PolygonZkEVMRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap          
+
   - name: balancer_polygon
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
