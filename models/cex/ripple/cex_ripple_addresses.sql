@@ -384,5 +384,5 @@ FROM (VALUES
 	, ('ripple', 'r1qx2tzwkx4fjg8cg0htw27cje4029cmf2p', 'Swissborg', 'Swissborg 8', 'hildobby', date '2024-04-20')
 	, ('ripple', 'rzd25840eesfu6q33tzaqxtrqarfuqe9wps', 'Swissborg', 'Swissborg 9', 'hildobby', date '2024-04-20')
 	, ('ripple', 'rra143zgtv9ntwcfkslrjfp6c5nvdtl8lqm', 'WOOX', 'WOOX 1', 'hildobby', date '2024-04-20')
-	, ('ripple', 'rra1t2gpws06d6yjauwhqy0cqtu2g5gwtgh', 'WOOX', 'WOOX 2')
+	, ('ripple', 'rra1t2gpws06d6yjauwhqy0cqtu2g5gwtgh', 'WOOX', 'WOOX 2', 'hildobby', date '2024-04-20')
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
