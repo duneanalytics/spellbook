@@ -1326,7 +1326,7 @@ sources:
           - *symbol
           - *tokens
 
-        - name: Gyro2CLPPoolFactory_call_create
+      - name: Gyro2CLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
         loaded_at_field: call_block_time
