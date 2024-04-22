@@ -15,6 +15,8 @@
     )
 }}
 
+{% set project_start_date = '2023-09-01' %}
+
 select
     'zkevm' as blockchain,
     try_cast(date_trunc('day', tr.block_time) as date) as block_date,
@@ -57,7 +59,7 @@ where bytearray_substring(tr.input, 1, 4) in (
     )
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
-    and tr.block_time > TIMESTAMP '2023-09-01' -- for initial query optimisation
+    and tr.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     and tr.block_time > date_trunc('day', now() - interval '7' day)
