@@ -1,10 +1,11 @@
 {{ config(
 	    schema = 'yield_yak',
         alias = 'withdraws',
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
-                                "project",
-                                "yield_yak",
-                                \'["angus_1"]\') }}'
+        post_hook='{{ expose_spells(
+                      blockchains = \'["arbitrum", "avalanche_c"]\',
+                      spell_type = "project",
+                      spell_name = "yield_yak",
+                      contributors = \'["angus_1"]\') }}'
         )
 }}
 
