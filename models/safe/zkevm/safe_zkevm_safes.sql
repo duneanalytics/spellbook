@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-
+        schema = 'safe_zkevm',
         alias= 'safes',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address'],

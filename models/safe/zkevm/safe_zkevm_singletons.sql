@@ -2,6 +2,7 @@
     config(
         materialized='table',
 
+        schema = 'safe_zkevm',
         alias= 'singletons',
         post_hook='{{ expose_spells(\'["zkevm"]\',
                                     "project",
