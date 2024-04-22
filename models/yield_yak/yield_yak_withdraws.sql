@@ -1,5 +1,5 @@
 {{ config(
-	    schema = 'yield_yak',
+	schema = 'yield_yak',
         alias = 'withdraws',
         post_hook='{{ expose_spells(
                       blockchains = \'["arbitrum", "avalanche_c"]\',
