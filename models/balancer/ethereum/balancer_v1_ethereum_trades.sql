@@ -41,7 +41,8 @@ v1 AS (
         (swapFee / 1e18) AS swap_fee_percentage,
         swaps.evt_block_time,
         swaps.evt_tx_hash,
-        swaps.evt_index
+        swaps.evt_index,
+        swaps.evt_block_number
     FROM {{ source('balancer_v1_ethereum', 'BPool_evt_LOG_SWAP') }} swaps
         LEFT JOIN swap_fees fees
             ON fees.evt_tx_hash = swaps.evt_tx_hash
@@ -76,6 +77,7 @@ SELECT
     DATE_TRUNC('DAY', evt_block_time) AS block_date,
     TRY_CAST(DATE_TRUNC('MONTH', evt_block_time) AS date) AS block_month,
     evt_block_time AS block_time,
+    trades.evt_block_number AS block_number,
     erc20a.symbol AS token_bought_symbol,
     erc20b.symbol AS token_sold_symbol,
     CASE

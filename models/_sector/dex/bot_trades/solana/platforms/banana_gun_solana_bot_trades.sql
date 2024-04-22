@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'sol_trading_bot_solana',
+    schema = 'banana_gun_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,9 +9,14 @@
    )
 }}
 
-{% set project_start_date = '2023-11-10' %}
-{% set buy_fee_receiver = 'HEPL5rTb6n1Ax6jt9z2XMPFJcDe9bSWvWQpsK7AMcbZg' %}
-{% set sell_fee_receiver = 'K1LRSA1DSoKBtC5DkcvnermRQ62YxogWSCZZPWQrdG5' %}
+{% set project_start_date = '2024-01-08' %}
+{% set fee_receiver_1 = '8r2hZoDfk5hDWJ1sDujAi2Qr45ZyZw5EQxAXiMZWLKh2' %}
+{% set fee_receiver_2 = 'Cj297UauzMX64FU9dKJZRUBWszJ7tEWpVheasq4CfATV' %}
+{% set fee_receiver_3 = 'HKMh8nV3ysSofRi23LsfVGLGQKB415QAEfZT96kCcVj4' %}
+{% set fee_receiver_4 = '7tQiiBdKoScWQkB1RmVuML7DBGnR31cuKPEtMM7Vy5SA' %}
+{% set fee_receiver_5 = '4BBNEVRgrxVKv9f7pMNE788XM1tt379X9vNjpDH2KCL7' %}
+{% set fee_receiver_6 = '47hEzz83VFR23rLTEeVm9A7eFzjJwjvdupPPmX3cePqF' %}
+{% set fee_receiver_7 = 'EMbqD9Y9jLXEa3RbCR8AsEW1kVa3EiJgDLVgvKh4qNFP' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -32,9 +37,15 @@ WITH
       AND tx_success
       AND balance_change > 0
       AND (
-        address = '{{buy_fee_receiver}}'
-        OR address = '{{sell_fee_receiver}}'
+        address = '{{fee_receiver_1}}'
+        OR address = '{{fee_receiver_2}}'
+        OR address = '{{fee_receiver_3}}'
+        OR address = '{{fee_receiver_4}}'
+        OR address = '{{fee_receiver_5}}'
+        OR address = '{{fee_receiver_6}}'
+        OR address = '{{fee_receiver_7}}'
       )
+      AND tx_id != 'AT915GhHaLdGsdFkywx2uE6jqSXeyTauveYH2BQqWMyptGhUtjE6dcdr74ErELg79VY9apZ9Egiyc1VtA6Ddykb' -- Edge case that sent fees to multiple fee wallets
   ),
   botTrades AS (
     SELECT
@@ -89,10 +100,20 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{buy_fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND trades.trader_id != '{{sell_fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{buy_fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{sell_fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_3}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_4}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_5}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_6}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_7}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_3}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_4}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_5}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_6}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_7}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}

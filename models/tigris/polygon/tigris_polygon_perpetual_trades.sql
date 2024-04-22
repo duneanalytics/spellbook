@@ -1,5 +1,5 @@
 {{ config(
-    
+    tags=['prod_exclude'],
     alias = 'perpetual_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
