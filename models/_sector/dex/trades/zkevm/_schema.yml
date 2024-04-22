@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dex_polygon_base_trades
+  - name: dex_zkevm_base_trades
     tests:
       - check_dex_info_relationship
 
