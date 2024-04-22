@@ -89,7 +89,6 @@ SELECT
     dexs.project,
     dexs.version,
     dexs.block_date,
-    dexs.block_number,
     dexs.block_month,
     dexs.block_time,
     dexs.block_number,
