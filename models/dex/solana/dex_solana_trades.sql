@@ -1,6 +1,6 @@
- {{
+{{
   config(
-        
+
         schema = 'dex_solana',
         alias = 'trades',
         materialized = 'view',

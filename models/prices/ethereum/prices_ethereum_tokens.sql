@@ -1716,7 +1716,7 @@ FROM
     ('pooh-pooh', 'ethereum', 'POOH',0xb69753c06bb5c366be51e73bfc0cc2e3dc07e371,18),
     ('mumu-mumu', 'ethereum', 'MUMU',0x2f573070e6090b3264fe707e2c9f201716f123c7,18),
     ('wrld-nft-worlds', 'ethereum', 'WRLD',0xd5d86fc8d5c0ea1ac1ac5dfab6e529c9967a45e9,18),
-    ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,18),
+    ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,9),
     ('deai-zero1-token', 'ethereum', 'DEAI',0x1495bc9e44af1f8bcb62278d2bec4540cf0c05ea,18),
     ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18),
     ('ethfi-etherfi', 'ethereum', 'ETHFI',0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb,18),
