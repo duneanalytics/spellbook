@@ -1,4 +1,4 @@
-{% set blockchain = 'zksync' %}
+{% set blockchain = 'zkevm' %}
 
 {{ config(
         
