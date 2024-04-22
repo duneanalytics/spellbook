@@ -52,7 +52,7 @@ join {{ ref('safe_zkevm_singletons') }} ss
 join {{ source('zkevm', 'transactions') }} et
     on tr.tx_hash = et.hash
     {% if is_incremental() %}
-    and {{ incremental_predicate('tr.blocktime') }}
+    and {{ incremental_predicate('tr.block_time') }}
     {% endif %}
     and tr.block_number = et.block_number
 where bytearray_substring(tr.input, 1, 4) in (
