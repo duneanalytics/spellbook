@@ -1,9 +1,9 @@
 {{config(
-        tags = ['static']', '
-        alias = 'addresses'', '
-        post_hook='{{ expose_spells(\'["litecoin"]\'', '
-                                    "sector"', '
-                                    "cex"', '
+        tags = ['static'],
+        alias = 'addresses',
+        post_hook='{{ expose_spells(\'["litecoin"]\',
+                                    "sector",
+                                    "cex",
                                     \'["hildobby"]\') }}')}}
 
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
