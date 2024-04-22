@@ -21,8 +21,6 @@ FROM (VALUES
     , ('solana', '6FEVkH17P9y8Q9aCkDdPcMDjvj7SVxrTETaYEm8f51Jy', 'Crypto.com', 'Crypto.com 1', 'hildobby', date '2024-04-19')
     , ('solana', 'AobVSwdW9BbpMdJvTqeCN4hPAmh4rHm7vwLnQ5ATSyrS', 'Crypto.com', 'Crypto.com 2', 'hildobby', date '2024-04-19')
 
-    , ('solana', '88xTWZMeKfiTgbfEmPLdsUCQcZinwUfk25EBQZ21XMAZ', 'Huobi', 'Huobi 1', 'hildobby', date '2024-04-19')
-
     , ('solana', 'FWznbcNXWQuHTawe9RxvQ2LdCENssh12dsznf4RiouN5', 'Kraken', 'Kraken 1', 'hildobby', date '2024-04-19')
     , ('solana', 'krakeNd6ednDPEXxHAmoBs1qKVM8kLg79PvWF2mhXV1', 'Kraken', 'Kraken 2', 'hildobby', date '2024-04-19')
     , ('solana', 'bc1q75tsfq2c5cqp2ss32qksmnzd9yea2mjsjktdmrz9', 'Kraken', 'Kraken 3', 'hildobby', date '2024-04-19')
@@ -40,9 +38,6 @@ FROM (VALUES
     , ('solana', 'HVh6wHNBAsG3pq1Bj5oCzRjoWKVogEDHwUHkRz3ekFgt', 'KuCoin', 'KuCoin 3', 'hildobby', date '2024-04-19')
     , ('solana', '5LT2BQ7FFYBXW2PEDVB6KBX2F3C77WXBJ2FPVERBXXBU', 'KuCoin', 'KuCoin 4', 'hildobby', date '2024-04-19')
     , ('solana', 'EkUy8BB574iEVAQE9dywEiMhp9f2mFBuFu6TBKAkQxFY', 'KuCoin', 'KuCoin 5', 'hildobby', date '2024-04-19')
-
-    , ('solana', 'AC5RDfQFmDS1deWZos921JfqscXdByf8BKHs5ACWjtW2', 'ByBit', 'ByBit 1', 'hildobby', date '2024-04-19')
-    , ('solana', '42brAgAVNzMBP7aaktPvAmBSPEkehnFQejiZc53EpJFd', 'ByBit', 'ByBit 2', 'hildobby', date '2024-04-19')
 
     , ('solana', '6b4aypBhH337qSzzkbeoHWzTLt4DjG2aG8GkrrTQJfQA', 'FTX', 'FTX 1', 'hildobby', date '2024-04-19')
     , ('solana', '6wEMcwrcF5AP9jpHWQcPxHXciWA2g217Qq81CTWjbgBw', 'FTX', 'FTX 2', 'hildobby', date '2024-04-19')
