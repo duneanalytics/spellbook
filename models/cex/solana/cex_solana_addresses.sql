@@ -8,7 +8,7 @@
 
 SELECT blockchain, address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
-    ('solana', '5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9,Binance', 'Binance 1', 'hildobby', date '2024-04-19')
+    ('solana', '5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9', 'Binance', 'Binance 1', 'hildobby', date '2024-04-19')
     , ('solana', '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM', 'Binance', 'Binance 2', 'hildobby', date '2024-04-19')
     , ('solana', 'Amf2mf2Ciap5wYAEKDtGoQHfHPWaKbyFYhutMK46hTRF', 'Binance', 'Binance 3', 'hildobby', date '2024-04-19')
     , ('solana', '2ojv9BAiHUrvsm9gxDe7fJSzbNZSJcxZvf8dqmWGHG8S', 'Binance', 'Binance 4', 'hildobby', date '2024-04-19')
