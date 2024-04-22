@@ -11,7 +11,7 @@
         post_hook = '{{ expose_spells(
                         blockchains = \'["zkevm"]\',
                         spell_type = "project",
-                        spell_name = "safe_matic_transfers",
+                        spell_name = "safe",
                         contributors = \'["danielpartida"]\') }}'
     )
 }}
