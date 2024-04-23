@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_polkadot',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["polkadot"]\',
                                     "sector",

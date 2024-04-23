@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_cardano',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["cardano"]\',
                                     "sector",

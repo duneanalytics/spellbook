@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_elrond',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["elrond"]\',
                                     "sector",

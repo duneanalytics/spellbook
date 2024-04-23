@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_algorand',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["algorand"]\',
                                     "sector",

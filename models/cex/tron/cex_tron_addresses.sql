@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_tron',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["tron"]\',
                                     "sector",

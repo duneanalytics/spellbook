@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_ripple',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["ripple"]\',
                                     "sector",

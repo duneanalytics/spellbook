@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_zilliqa',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["zilliqa"]\',
                                     "sector",

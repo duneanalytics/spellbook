@@ -1,5 +1,6 @@
 {{config(
         tags = ['static'],
+        schema = 'cex_cosmos',
         alias = 'addresses',
         post_hook='{{ expose_spells(\'["cosmos"]\',
                                     "sector",
