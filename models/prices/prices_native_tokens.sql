@@ -65,6 +65,13 @@ FROM
     ('zec-zcash', null, 'ZEC', null, null),
     ('astr-astar', null, 'ASTR', null, null),
     ('dym-dymension-iou', null, 'DYM', null, null),
-    ('manta-manta-network', null, 'MANTA', null, null)
+    ('manta-manta-network', null, 'MANTA', null, null),
+    ('rose-oasis-network', null, 'ROSE', null, null),
+    ('saga-saga', null, 'SAGA', null, null),
+    ('kas-kaspa', null, 'KAS', null, null),
+    ('egld-elrond', null, 'EGLD', null, null),
+    ('ntrn1-neutron', null, 'NTRN', null, null),
+    ('flr-flare-network', null, 'FLR', null, null),
+    ('ar-arweave', null, 'AR', null, null)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
