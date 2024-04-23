@@ -174,7 +174,7 @@ with tx_batch_appends as (
     {% endif %}
   WHERE (
       t.to = 0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4 -- StateUpdate proxy contract
-      AND bytearray_substring(t.data, 1, 4) = 0x77552641 -- updateState
+      AND bytearray_substring(t.data, 1, 4) IN (0x77552641, 0xb72d42a1) -- updateState, updateStateKzgDA
     )
     AND t.block_time >= timestamp '2022-01-01'
     {% if is_incremental() %}

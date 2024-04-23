@@ -477,4 +477,68 @@ models:
       - *full_inscription
       - *vin
       - *vout
+
+  - name: inscription_linea_mints
+    meta: 
+      blockchain: linea
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'linea']
+    description: >
+      Inscription mints on Linea
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
+
+  - name: inscription_zkevm_mints
+    meta: 
+      blockchain: zkevm
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'mints', 'zkevm']
+    description: >
+      Inscription mints on Polygon zkEVM
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *amount
+      - *full_inscription
+      - *vin
+      - *vout
       
