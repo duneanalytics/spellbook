@@ -1,11 +1,11 @@
 {% macro cex_evms(cex_addresses, blockchain, traces) %}
 
 SELECT '{{blockchain}}' AS blockchain
-, address
-, cex_name
-, distinct_name
-, added_by
-, added_date
+, a.address
+, a.cex_name
+, a.distinct_name
+, a.added_by
+, a.added_date
 , MIN(t.block_time) AS first_used
 FROM {{traces}} t
 INNER JOIN {{cex_addresses}} a ON a.address = t.to
