@@ -7,6 +7,8 @@
 
 {% set base_models = [
     ref('balancer_v2_zkevm_base_trades')
+    , ref('pancakeswap_v2_zkevm_base_trades')
+    , ref('pancakeswap_v3_zkevm_base_trades')
 ] %}
 
 WITH base_union AS (
