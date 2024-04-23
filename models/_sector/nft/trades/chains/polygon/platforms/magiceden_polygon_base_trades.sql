@@ -5,7 +5,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
-    tags=["prod_exclude"],
     )
 }}
 
@@ -45,6 +44,11 @@ WITH erc721_trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
+        /*
+            below tx contains duplicates at the source, according to unique keys assigned to this model 
+            todo: investigate if fix is needed, remove filter if fixed
+        */
+        AND evt_tx_hash != 0xf70a24c003e88feebf58da309198cd8b83648734a0700794a4475818cd08c253
 )
 , erc1155_trades as (
 
@@ -76,6 +80,11 @@ WITH erc721_trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
+        /*
+            below tx contains duplicates at the source, according to unique keys assigned to this model 
+            todo: investigate if fix is needed, remove filter if fixed
+        */
+        AND evt_tx_hash != 0xf70a24c003e88feebf58da309198cd8b83648734a0700794a4475818cd08c253
 )
 
 ,erc721_fees as (
