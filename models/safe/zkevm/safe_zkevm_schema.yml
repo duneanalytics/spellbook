@@ -52,9 +52,9 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
+            - address
             - tx_hash
             - trace_address
-            - amount_raw
     columns:
       - *blockchain
       - &symbol
@@ -93,6 +93,11 @@ models:
         tests:
           - unique
           - not_null
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - block_date
+                - tx_hash
+                - trace_address
 
   - name: safe_zkevm_transactions
     meta:
