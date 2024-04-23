@@ -8,7 +8,7 @@ SELECT '{{blockchain}}' AS blockchain
 , added_date
 , MIN(t.block_time) AS first_used
 FROM {{traces}} t
-INNER JOIN {{addresses}} a ON a.address = t.to
+INNER JOIN {{cex_addresses}} a ON a.address = t.to
 {% if is_incremental() %}
 LEFT JOIN {{this}} b ON a.address = b.address
     AND b.address IS NULL
