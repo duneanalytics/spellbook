@@ -14,5 +14,6 @@ LEFT JOIN {{this}} b ON a.address = b.address
     AND b.address IS NULL
 WHERE {{incremental_predicate('t.block_time')}}
 {% endif %}
+GROUP BY a.address, a.cex_name, a.distinct_name, a.added_by, a.added_date
 
 {% endmacro %}
