@@ -25,6 +25,7 @@ FROM (
         , evt_index
         , tx_index
         , block_time
+        , block_date
         , block_number
         , reinvest_by_address
         , new_total_deposits

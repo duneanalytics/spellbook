@@ -25,6 +25,7 @@ FROM (
         , evt_index
         , tx_index
         , block_time
+        , block_date
         , block_number
         , user_address
         , deposit_amount

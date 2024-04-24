@@ -26,6 +26,7 @@ combined AS (
             , s.evt_tx_hash AS tx_hash
             , s.evt_index
             , s.evt_block_time AS block_time
+            , CAST(date_trunc('day', s.evt_block_time) AS date) AS block_date
             , s.evt_block_number AS block_number
             , s.account AS user_address
             , s.amount AS {{ event_name.lower() }}_amount
@@ -52,12 +53,15 @@ SELECT
     , c.evt_index
     , t.index AS tx_index
     , c.block_time
+    , c.block_date
     , c.block_number
     , c.user_address
     , c.{{ event_name.lower() }}_amount
 FROM combined c
-LEFT JOIN
+INNER JOIN
 {{ source(blockchain, 'transactions') }} t
     ON t.hash = c.tx_hash
+    AND t.block_number = c.block_number
+    AND t.block_date = c.block_date
 
 {%- endmacro -%}

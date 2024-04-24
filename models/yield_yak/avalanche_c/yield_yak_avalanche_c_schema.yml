@@ -34,8 +34,7 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_date
-        name: block_date
+      - name: block_date
         description: "UTC event block date of each DEX trade"
       - name: block_time
         description: "UTC event block time of each DEX trade"
@@ -127,6 +126,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC time of the deposit/withdraw/reinvest"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of the deposit/withdraw/reinvest"
       - &block_number
         name: block_number
         description: "Block number of the deposit/withdraw/reinvest"
@@ -158,6 +160,7 @@ models:
       - *evt_index
       - *tx_index
       - *block_time
+      - *block_date
       - *block_number
       - *user_address
       - &withdraw_amount
@@ -185,6 +188,7 @@ models:
       - *evt_index
       - *tx_index
       - *block_time
+      - *block_date
       - *block_number
       - &reinvest_by_address
         name: reinvest_by_address

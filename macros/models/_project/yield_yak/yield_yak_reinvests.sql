@@ -28,6 +28,7 @@ combined AS (
             , s.evt_tx_hash AS tx_hash
             , s.evt_index
             , s.evt_block_time AS block_time
+            , CAST(date_trunc('day', s.evt_block_time) AS date) AS block_date
             , s.evt_block_number AS block_number
             , s.newTotalDeposits AS new_total_deposits
             , s.newTotalSupply AS new_total_supply
@@ -59,9 +60,11 @@ add_tx_index AS (
         , t.index AS tx_index
         , t."from" AS reinvest_by_address
     FROM combined c
-    LEFT JOIN
+    INNER JOIN
     {{ source(blockchain, 'transactions') }} t
         ON t.hash = c.tx_hash
+        AND t.block_number = c.block_number
+        AND t.block_date = c.block_date
 ),
 
 add_ratio_growth AS (
@@ -99,6 +102,7 @@ SELECT
     , evt_index
     , tx_index
     , block_time
+    , block_date
     , block_number
     , reinvest_by_address
     , new_total_deposits
