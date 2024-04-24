@@ -1,4 +1,4 @@
-{% set blockchain = 'fantom' %}
+{% set blockchain = 'zkevm' %}
 
 {{config(
         schema = 'cex_' + blockchain,
