@@ -103,8 +103,6 @@ models:
       tags: ['safe', 'zkevm']
     description: "Safe transactions"
     tests:
-      - unique
-      - not_null
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
