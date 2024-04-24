@@ -1,6 +1,7 @@
 {% macro 
-    oneinch_epms(
+    oneinch_project_swaps_macro(
         blockchain
+        , date_from
     ) 
 %}
 
@@ -37,10 +38,13 @@ methods as (
             , cardinality(trace_address) = 0 as direct
             , substr(input, 1, 4) as selector
         from {{ source(blockchain, 'traces') }}
-        where
-            {% if is_incremental() %}
-                {{ incremental_predicate('block_time') }}
-            {% endif %}
+        {% if is_incremental() %}
+            where {{ incremental_predicate('block_time') }}
+        {% else %}
+            where block_time >= timestamp '{{date_from}}'
+        {% endif %}
+            and (tx_success or tx_success is null)
+            and success
     )
     join methods using(call_to, selector)
     join (
@@ -49,10 +53,13 @@ methods as (
             , hash as tx_hash
             , "from" as tx_from
         from {{ source(blockchain, 'transactions') }}
-        where
-            {% if is_incremental() %}
-                {{ incremental_predicate('block_time') }}
-            {% endif %}
+        {% if is_incremental() %}
+            where {{ incremental_predicate('block_time') }}
+        {% else %}
+            where block_time >= timestamp '{{date_from}}'
+        {% endif %}
+            and (success or success is null)
+            
     ) using(block_number, tx_hash)
 )
 
@@ -69,6 +76,8 @@ methods as (
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
             and {{ incremental_predicate('minute') }}
+        {% else %}
+            and minute >= timestamp '{{date_from}}'
         {% endif %}
 )
 
@@ -105,9 +114,11 @@ methods as (
     from calls
     join (
         select *
-        from {{ oneinch_parsed_transfers_from_calls_macro(blockchain) }}
+        from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
         {% if is_incremental() %}
             where {{ incremental_predicate('block_time') }}
+        {% else %}
+            where block_time >= timestamp '{{date_from}}'
         {% endif %}
     ) as transfers on
         calls.block_number = transfers.block_number
@@ -141,7 +152,10 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    , call_transfer_addresses
+    -- , coalesce(call_transfer_addresses, array[]) as call_transfer_addresses
+    , flatten(call_transfer_addresses) as call_transfer_addresses
+    -- , {{dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, ',')"])}} as unique_key
+    , date(date_trunc('month', block_time)) as block_month
 from amounts
 
 {% endmacro %}
