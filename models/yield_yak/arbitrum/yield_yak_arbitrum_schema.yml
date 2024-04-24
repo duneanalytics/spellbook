@@ -103,15 +103,13 @@ models:
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
-        yield yak deposits
+        yield yak deposits on arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
-            - evt_index
-            - tx_index
             - block_number
+            - tx_index
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -146,15 +144,13 @@ models:
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
-        yield yak withdraws
+        yield yak withdraws on arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
-            - evt_index
-            - tx_index
             - block_number
+            - tx_index
+            - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -175,15 +171,13 @@ models:
     config:
       tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
-        yield yak reinvests
+        yield yak reinvests on arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
-            - evt_index
-            - tx_index
             - block_number
+            - tx_index
+            - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -222,7 +216,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - contract_address
             - from_time
     columns:

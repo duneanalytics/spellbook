@@ -103,15 +103,13 @@ models:
     config:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
-        yield yak deposits
+        yield yak deposits on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
-            - evt_index
-            - tx_index
             - block_number
+            - tx_index
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -146,15 +144,13 @@ models:
     config:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
-        yield yak withdraws
+        yield yak withdraws on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
-            - evt_index
-            - tx_index
             - block_number
+            - tx_index
+            - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -175,15 +171,13 @@ models:
     config:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
-        yield yak reinvests
+        yield yak reinvests on avalanche_c
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
-            - evt_index
-            - tx_index
             - block_number
+            - tx_index
+            - evt_index
     columns:
       - *blockchain
       - *contract_address
@@ -218,11 +212,10 @@ models:
     config:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
-        yield yak vault/farm/pool balances on arbitrum as a temporal table
+        yield yak vault/farm/pool balances on avalanche_c as a temporal table
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - contract_address
             - from_time
     columns:
