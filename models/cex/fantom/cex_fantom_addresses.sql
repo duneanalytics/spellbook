@@ -1,12 +1,7 @@
-{% set blockchain = 'fantom' %}
-
 {{config(
-        schema = 'cex_' + blockchain,
+        schema = 'cex_fantom',
         alias = 'addresses'
         )}}
 
-{{cex_evms(
-        cex_addresses = ref('cex_evms_addresses')
-        , blockchain = blockchain
-        , traces = source(blockchain, 'traces')
-        )}}
+SELECT 'fantom' AS blockchain, address, cex_name, distinct_name, added_by, added_date
+FROM {{ ref('cex_evms_addresses')}}
