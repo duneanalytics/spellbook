@@ -20,7 +20,7 @@ select
     ,min_by(tx_hash, block_time) as first_tx_hash
     ,max_by(tx_hash, block_time) as last_tx_hash
 from {{ref('tokens_transfers')}} t
-left join {{source('labels','owner_addresses')}} l
+inner join {{source('labels','owner_addresses')}} l
 on t.blockchain = l.blockchain
  and ("from" = from_hex(l.address) or "to" = from_hex(l.address))
 group by 1,2,3,4
