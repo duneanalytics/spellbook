@@ -1,17 +1,19 @@
 {{ config(
         schema = 'tokens'
-        alias = 'transfers'
+        ,alias = 'transfers'
         )
 }}
 
 {% set chains = [
      'ethereum'
+    ,'optimism'
+] %}
+
 --     ,'polygon'
 --     ,'bnb'
 --     ,'avalanche_c'
 --     ,'gnosis'
 --     ,'fantom'
-     ,'optimism'
 --     ,'arbitrum'
 --     ,'celo'
 --     ,'base'
@@ -19,7 +21,6 @@
 --     ,'zksync'
 --     ,'zora'
 --     ,'scroll'
-] %}
 
 SELECT *
 FROM (

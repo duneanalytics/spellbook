@@ -2,7 +2,7 @@
         schema = 'labels',
         alias = 'transfer_summary',
         partition_by = ['blockchain'],
-        materialized = table
+        materialized = 'table'
         )
 }}
 
