@@ -1,7 +1,7 @@
 {{
   config(
     
-    alias='ccip_tokens_locked_logs',
+    alias='ccip_tokens_transferred_logs',
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
                             "project",
                             "chainlink",
@@ -10,13 +10,13 @@
 }}
 
 {% set models = [
-  'chainlink_arbitrum_ccip_tokens_locked_logs',
-  'chainlink_avalanche_c_ccip_tokens_locked_logs',
-  'chainlink_base_ccip_tokens_locked_logs',
-  'chainlink_bnb_ccip_tokens_locked_logs',
-  'chainlink_ethereum_ccip_tokens_locked_logs',
-  'chainlink_optimism_ccip_tokens_locked_logs',
-  'chainlink_polygon_ccip_tokens_locked_logs'
+  'chainlink_arbitrum_ccip_tokens_transferred_logs',
+  'chainlink_avalanche_c_ccip_tokens_transferred_logs',
+  'chainlink_base_ccip_tokens_transferred_logs',
+  'chainlink_bnb_ccip_tokens_transferred_logs',
+  'chainlink_ethereum_ccip_tokens_transferred_logs',
+  'chainlink_optimism_ccip_tokens_transferred_logs',
+  'chainlink_polygon_ccip_tokens_transferred_logs'
 ] %}
 
 SELECT *
