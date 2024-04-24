@@ -44,7 +44,7 @@ static as (
             , max_by(namespace, created_at) as namespace
             , max_by(name, created_at) as name
         from {{ source(blockchain, 'contracts') }}
-        join {{ ref('oneinch_mapped_contracts') }} using(blockchain, address)
+        join (select * from {{ ref('oneinch_mapped_contracts') }} where blockchain = '{{blockchain}}') using(address)
         where flags['user']
         group by 1, 2
     {% if not loop.last %} union all {% endif %}
@@ -66,6 +66,7 @@ static as (
         , name
         , tag
         , flags
+        , last_created_at
     from contracts, unnest(abi) as abi(entity)
     where
         json_value(entity, 'lax $.type') = 'function'
@@ -112,7 +113,7 @@ static as (
 -- output --
 
 select
-    map_concat(flags, map_from_entries(array[('swap', swap), ('limits', _limits), ('intents', contains(intents, selector)), ('multi', multi), ('top', contains(top, project))])) as flags
+    map_concat(flags, map_from_entries(array[('swap', swap), ('limits', _limits), ('intents', contains(intents, selector)), ('multi', flags['multi']), ('top', contains(top, project))])) as flags
     , blockchain
     , address
     , last_created_at
