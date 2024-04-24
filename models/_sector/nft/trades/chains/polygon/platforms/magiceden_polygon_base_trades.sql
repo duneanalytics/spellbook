@@ -5,7 +5,6 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
-    tags=["prod_exclude"],
     )
 }}
 
@@ -179,6 +178,7 @@ WITH erc721_trades AS (
     on t2.evt_tx_hash = f2.call_tx_hash
         and t2.nft_contract_address = f2.erc1155Token
         and t2.nft_token_id = f2.erc1155TokenId
+        and (t2.buyer = f2.maker or t2.seller = f2.maker)
 )
 , base_trades as (
 SELECT

@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: solana
       sector: dex
-      contributors: [ "whale_hunter", "hosuke" ]
+      contributors: ["whale_hunter", "hosuke"]
     config:
-      tags: [ "solana", "dex", "bot", "trades" ]
+      tags: ["solana", "dex", "bot", "trades"]
       description: >
         Trades by trading bots on Solana
       columns:
@@ -97,7 +97,7 @@ models:
       project: bonkbot
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "bonkbot", "trades" ]
+      tags: ["solana", "dex", "bonkbot", "trades"]
     description: >
       Bonkbot trades on Solana
     tests:
@@ -119,7 +119,7 @@ models:
       project: trojan
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "bot", "trojan", "trades" ]
+      tags: ["solana", "dex", "bot", "trojan", "trades"]
     description: >
       Trojan trades on Solana
     tests:
@@ -141,7 +141,7 @@ models:
       project: banana_gun
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "banana_gun", "trades" ]
+      tags: ["solana", "dex", "banana_gun", "trades"]
     description: >
       Banana Gun trades on Solana
     tests:
@@ -163,7 +163,7 @@ models:
       project: sol_trading_bot
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "soltradingbot", "trades" ]
+      tags: ["solana", "dex", "soltradingbot", "trades"]
     description: >
       Sol Trading Bot trades on Solana
     tests:
@@ -185,7 +185,7 @@ models:
       project: pepe_boost
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "pepeboost", "trades" ]
+      tags: ["solana", "dex", "pepeboost", "trades"]
     description: >
       Pepe Boost trades on Solana
     tests:
@@ -207,7 +207,7 @@ models:
       project: maestro
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "maestro", "trades" ]
+      tags: ["solana", "dex", "maestro", "trades"]
     description: >
       Maestro trades on Solana
     tests:
@@ -229,7 +229,7 @@ models:
       project: shuriken
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "shuriken", "trades" ]
+      tags: ["solana", "dex", "shuriken", "trades"]
     description: >
       Shuriken trades on Solana
     tests:
@@ -251,7 +251,7 @@ models:
       project: magnum
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "magnum", "trades" ]
+      tags: ["solana", "dex", "magnum", "trades"]
     description: >
       Magnum trades on Solana
     tests:
@@ -273,7 +273,7 @@ models:
       project: readyswap
       contributors: whale_hunter
     config:
-      tags: [ "solana", "dex", "readyswap", "trades" ]
+      tags: ["solana", "dex", "readyswap", "trades"]
     description: >
       Readyswap trades on Solana
     tests:
@@ -286,4 +286,26 @@ models:
             - inner_instruction_index
       - check_bot_trades_seed:
           seed_file: ref('readyswap_solana_trades_seed')
+          blockchain: solana
+
+  - name: sol_gun_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: sol_gun
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "solgun", "trades"]
+    description: >
+      SolGun trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('sol_gun_solana_trades_seed')
           blockchain: solana

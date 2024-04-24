@@ -368,4 +368,54 @@ models:
       - *tx_from
       - *tx_to
       - *full_inscription
+
+  - name: inscription_linea_all
+    meta: 
+      blockchain: linea
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'all', 'linea']
+    description: >
+      All inscriptions on Linea
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *full_inscription
+
+  - name: inscription_zkevm_all
+    meta: 
+      blockchain: zkevm
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'all', 'zkevm']
+    description: >
+      All inscriptions on Polygon zkEVM
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *full_inscription
       

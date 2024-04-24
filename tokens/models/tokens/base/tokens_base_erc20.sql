@@ -232,4 +232,5 @@ FROM (VALUES
     , (0x54330d28ca3357F294334BDC454a032e7f353416, 'OLAS', 18)  
     , (0x2dc5dd89a3662567b78fc3a78e1e2c81d9e4d419, 'BANANIA', 18)  
     , (0x99ac4484e8a1dbd6a185380b3a811913ac884d87, 'sDAI', 18)  
+    , (0x4498cd8ba045e00673402353f5a4347562707e7d, 'RDAT', 18)  
 ) AS temp_table (contract_address, symbol, decimals)
