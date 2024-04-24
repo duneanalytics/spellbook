@@ -18,6 +18,7 @@
 
 WITH
 
+
 FPMMFundingAdded AS (
     SELECT
         block_time,
