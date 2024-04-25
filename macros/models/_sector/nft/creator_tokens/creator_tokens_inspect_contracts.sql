@@ -25,7 +25,7 @@ WITH clones AS (
         code, 
         code as implementation_code 
     FROM 
-        ethereum.traces 
+        {{ source(blockchain, 'traces') }}
     WHERE 
         varbinary_length(code) > 0 
         AND block_time > TIMESTAMP '2023-05-01' 
