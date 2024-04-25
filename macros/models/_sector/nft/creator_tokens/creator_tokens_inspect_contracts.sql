@@ -6,7 +6,9 @@ WITH clones AS (
         block_time as creation_time, 
         address, 
         varbinary_substring(code, varbinary_position(code, 0x363d3d373d3d3d363d73) + 10, 20) as implementation_address, 
-        code 
+        code,
+        CAST(date_trunc('day', creation_time) as date)  as block_date,
+        CAST(date_trunc('month', creation_time) as date)  as block_month
     FROM 
         {{ source(blockchain, 'traces') }}
     WHERE 
@@ -23,7 +25,9 @@ WITH clones AS (
         address, 
         0x0000000000000000000000000000000000000000 as implementation_address, 
         code, 
-        code as implementation_code 
+        code as implementation_code,
+        CAST(date_trunc('day', creation_time) as date)  as block_date,
+        CAST(date_trunc('month', creation_time) as date)  as block_month
     FROM 
         {{ source(blockchain, 'traces') }}
     WHERE 
@@ -39,7 +43,9 @@ WITH clones AS (
         t1.creation_time, 
         t1.address, 
         t1.implementation_address, 
-        t2.code as implementation_code 
+        t2.code as implementation_code,
+        t1.block_date,
+        t1.block_month
     FROM 
         clones t1 
         INNER JOIN deploys t2 ON t2.address = t1.implementation_address
@@ -50,6 +56,8 @@ WITH clones AS (
         address, 
         implementation_address, 
         code as implementation_code 
+        block_date,
+        block_month
     FROM 
         deploys
 ), contracts AS (
@@ -65,7 +73,9 @@ WITH clones AS (
         721 as token_type, 
         creation_time, 
         address, 
-        is_clone
+        is_clone,
+        block_date,
+        block_month
     FROM 
         contracts
     WHERE 
@@ -79,7 +89,9 @@ WITH clones AS (
         1155 as token_type, 
         creation_time, 
         address, 
-        is_clone
+        is_clone,
+        block_date,
+        block_month
     FROM 
         contracts
     WHERE 

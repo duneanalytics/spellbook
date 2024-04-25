@@ -34,8 +34,8 @@ WITH creator_tokens_union as
         creation_time, 
         address, 
         is_clone,
-        CAST(date_trunc('day', creation_time) as date)  as block_date,
-        CAST(date_trunc('month', creation_time) as date)  as block_month
+        block_date,
+        block_month
     FROM {{ chain_creator_token }}
     {% if is_incremental() %}
     AND creation_time >= date_trunc('day', now() - interval '7' Day)
