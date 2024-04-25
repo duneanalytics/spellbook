@@ -34,3 +34,7 @@ models:
       - &is_clone
         name: is_clone
         description: "Boolean flag if the contract is identified as a ERC1167 minimal proxy clone."
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"

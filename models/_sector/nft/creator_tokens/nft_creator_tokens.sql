@@ -28,7 +28,14 @@ WITH creator_tokens_union as
 (
     {% for chain_creator_token in chain_creator_tokens %}
     SELECT
-        *
+        blockchain, 
+        is_creator_token, 
+        token_type, 
+        creation_time, 
+        address, 
+        is_clone,
+        CAST(date_trunc('day', creation_time) as date)  as block_date,
+        CAST(date_trunc('month', creation_time) as date)  as block_month
     FROM {{ chain_creator_token }}
     {% if is_incremental() %}
     AND creation_time >= date_trunc('day', now() - interval '7' Day)
