@@ -62,6 +62,8 @@ In order to prepare for scaling Spellbook, the repo has started to pilot sub-pro
 
 Want to get right to work? Follow the guide [here](https://dune.com/docs/spellbook/?h=7+steps+adding+a+spell) to get started.
 
+The link does not work
+
 ### Testing your spell
 
 You don't need a complex local setup to test spells against Dune's engine. Once you send a PR, our CI pipeline will run and test it, and, if the job finishes successfully, you'll be able to query the data your PR created directly from dune.com.
