@@ -128,7 +128,7 @@ LEFT JOIN {{ ref('nft_aggregators') }} agg2
     AND tx_to = agg2.contract_address
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_mark
     ON bytearray_starts_with(bytearray_reverse(base.tx_data_marker), bytearray_reverse(agg_mark.hash_marker)) -- eq to end_with()
-LEFT JOIN ref('nft_creator_tokens') ctokens 
+LEFT JOIN {{ ref('nft_creator_tokens') }} ctokens 
     ON base.nft_contract_address = ctokens.address
     AND lower(base.blockchain) = lower(ctokens.chain)
 

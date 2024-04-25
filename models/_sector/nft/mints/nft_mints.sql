@@ -165,7 +165,7 @@ WITH project_mints as
         SELECT *
         FROM native_mints
     ) base_mints
-    LEFT JOIN ref('nft_creator_tokens') ctokens
+    LEFT JOIN {{ ref('nft_creator_tokens') }} ctokens
         ON base_mints.nft_contract_address = ctokens.address
         AND lower(base_mints.blockchain) = lower(ctokens.chain)
 )
