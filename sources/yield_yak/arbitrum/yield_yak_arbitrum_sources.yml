@@ -5,7 +5,7 @@ sources:
     freshness:
           warn_after: { count: 12, period: hour }
     description: >
-      Decoded event table for swaps on yield yak
+      Decoded event tables for swaps, deposits, withdraws and reinvests on yield yak
     tables:
       - name: YakRouter_evt_YakSwap
         loaded_at_field: evt_block_time
@@ -19,3 +19,82 @@ sources:
         loaded_at_field: call_block_time
       - name: YakRouter_call_swapNoSplitToAVAX
         loaded_at_field: call_block_time
+      # Now the strategies
+      - name: AutoPoolStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: AutoPoolStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: AutoPoolStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: BalancerDirectJoinStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BalancerDirectJoinStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BalancerDirectJoinStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: CompoundingBets_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: CompoundingBets_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: CompoundingBets_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: CompoundingJoe_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: CompoundingJoe_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: CompoundingJoe_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: CompoundingYYStaking_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: CompoundingYYStaking_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: CompoundingYYStaking_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: DeltaPrimeDepositorStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: DeltaPrimeDepositorStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: DeltaPrimeDepositorStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: GmxStrategyForGLPArbitrum_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: GmxStrategyForGLPArbitrum_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: GmxStrategyForGLPArbitrum_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: LevelStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: LevelStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: LevelStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: SiloStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: SiloStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: SiloStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: SushiStrategyForLP_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: SushiStrategyForLP_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: SushiStrategyForLP_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: SynapseStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: SynapseStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: SynapseStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: SynapseStrategyV2_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: SynapseStrategyV2_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: SynapseStrategyV2_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: WombexStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: WombexStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: WombexStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
