@@ -50,8 +50,8 @@ group by 1,2
 )
 
 select
-    l.blockchain
-    ,l.address
+    blockchain
+    ,address
     ,l.custody_owner
     ,l.account_owner
     ,transfers_in
