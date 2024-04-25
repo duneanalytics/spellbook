@@ -12,8 +12,6 @@ select
     ,l.address
     ,count(*) as transfers_in
     ,sum(amount_usd) as usd_in
-    ,min_by(tx_hash, block_time) as first_tx_hash
-    ,max_by(tx_hash, block_time) as last_tx_hash
 from {{source('labels','owner_addresses')}} l
 left join {{ref('tokens_ethereum_transfers')}} t
 on t.blockchain = l.blockchain
@@ -27,8 +25,6 @@ select
     ,l.address
     ,count(*) as transfers_out
     ,sum(amount_usd)  as usd_out
-    ,min_by(tx_hash, block_time) as first_tx_hash
-    ,max_by(tx_hash, block_time) as last_tx_hash
 from {{source('labels','owner_addresses')}} l
 left join {{ref('tokens_ethereum_transfers')}} t
 on t.blockchain = l.blockchain
