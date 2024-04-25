@@ -267,6 +267,7 @@ contracts as (
         , (0xdef189deaef76e379df891899eb5a00a94cbc250, true, 'ZeroEx'               , 'ExchangeProxy'           , array['fantom'])
         , (0xdef1abe32c034e558cdd535791643c58a13acc10, true, 'ZeroEx'               , 'ExchangeProxy'           , array['optimism'])
         , (0xdef1c0ded9bec7f1a1670819833240f027b25eff, true, 'ZeroEx'               , 'ExchangeProxy'           , array['ethereum','bnb','polygon','arbitrum'])
+        , (0x080bf510fcbf18b91105470639e9561022937712, true, 'ZeroEx'               , 'Exchange'                , array['ethereum'])
         , (0xe66b31678d6c16e9ebf358268a790b763c133750, true, 'ZeroEx'               , 'ExchangeProxy'           , array['ethereum'])
         , (0x61935cbdd02287b511119ddb11aeb42f1593b7ef, true, 'ZeroEx'               , 'ExchangeV3'              , array['ethereum'])
         , (0x18381c0f738146fb694de18d1106bde2be040fa4, true, 'ZkSwap'               , 'Router'                  , array['zksync'])   
