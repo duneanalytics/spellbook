@@ -1,12 +1,7 @@
 {{ config(
     schema = 'aerodrome_base',
     alias = 'trades',
-    
-    partition_by = ['block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_month', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    materialized = 'view',
     post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                 spell_type = "project",
                                 spell_name = "aerodrome",
@@ -40,6 +35,6 @@ SELECT  blockchain,
         tx_from,
         tx_to,
         evt_index
-FROM dex.trades
+FROM ref('dex_trades')
 WHERE project = 'aerodrome'
   AND blockchain = 'base'
