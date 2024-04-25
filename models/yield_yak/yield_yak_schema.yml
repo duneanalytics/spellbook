@@ -1,30 +1,16 @@
 version: 2
 
 models:
-  - name: yield_yak_arbitrum_trades
+  - name: yield_yak_trades
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       sector: dex
       project: yield_yak
-      contributors: angus_1
+      contributors: Henrystats, angus_1
     config:
-      tags: ['arbitrum','trades', 'aggregator', 'yield_yak','dex']
+      tags: ['avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum']
     description: >
-        yield yak aggregator trades on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: arbitrum
-          project: yield_yak
-          version: 1
+        yield yak aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"
@@ -33,7 +19,7 @@ models:
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the contract built and deployed by the DEX project"  
       - name: block_date
         description: "UTC event block date of each DEX trade"
       - name: block_time
@@ -87,25 +73,23 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: ""
+        description: "Address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "The position of this event log within this transaction"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
-  - name: yield_yak_arbitrum_deposits
+  - name: yield_yak_deposits
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
+      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
-        yield yak deposits on arbitrum
+        yield yak deposits
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -113,7 +97,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain on which the YRT contract is deployed"
-      - &contract_address
+      - &contract_address 
         name: contract_address
         description: "Address of the YRT smart contract / strategy"  
       - &tx_hash
@@ -138,18 +122,19 @@ models:
       - &deposit_amount
         name: deposit_amount
         description: "Amount of deposit tokens deposited into the strategy"
-  - name: yield_yak_arbitrum_withdraws
+  - name: yield_yak_withdraws
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
+      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
-        yield yak withdraws on arbitrum
+        yield yak withdraws
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -166,18 +151,19 @@ models:
       - &withdraw_amount
         name: withdraw_amount
         description: "Amount of deposit tokens withdrawn from the strategy"
-  - name: yield_yak_arbitrum_reinvests
+  - name: yield_yak_reinvests
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
+      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
-        yield yak reinvests on arbitrum
+        yield yak reinvests
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -208,18 +194,19 @@ models:
       - &recent_reinvest_info
         name: recent_reinvest_info
         description: "An array of the ratio growth and time between reinvests for the last 25 Reinvest events"
-  - name: yield_yak_arbitrum_balances
+  - name: yield_yak_balances
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c, arbitrum
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
-        yield yak vault/farm/pool balances on arbitrum as a temporal table
+        yield yak vault/farm/pool balances as a temporal table
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - contract_address
             - from_time
     columns:
