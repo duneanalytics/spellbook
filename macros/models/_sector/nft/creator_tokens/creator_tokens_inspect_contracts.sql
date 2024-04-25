@@ -7,8 +7,8 @@ WITH clones AS (
         address, 
         varbinary_substring(code, varbinary_position(code, 0x363d3d373d3d3d363d73) + 10, 20) as implementation_address, 
         code,
-        CAST(date_trunc('day', creation_time) as date)  as block_date,
-        CAST(date_trunc('month', creation_time) as date)  as block_month
+        CAST(date_trunc('day', block_time) as date)  as block_date,
+        CAST(date_trunc('month', block_time) as date)  as block_month
     FROM 
         {{ source(blockchain, 'traces') }}
     WHERE 
@@ -26,8 +26,8 @@ WITH clones AS (
         0x0000000000000000000000000000000000000000 as implementation_address, 
         code, 
         code as implementation_code,
-        CAST(date_trunc('day', creation_time) as date)  as block_date,
-        CAST(date_trunc('month', creation_time) as date)  as block_month
+        CAST(date_trunc('day', block_time) as date)  as block_date,
+        CAST(date_trunc('month', block_time) as date)  as block_month
     FROM 
         {{ source(blockchain, 'traces') }}
     WHERE 
@@ -55,7 +55,7 @@ WITH clones AS (
         creation_time, 
         address, 
         implementation_address, 
-        code as implementation_code 
+        code as implementation_code,
         block_date,
         block_month
     FROM 
@@ -68,7 +68,6 @@ WITH clones AS (
     FROM deploys_with_implementation_code
 ), labelled_contracts_721 AS (
     SELECT 
-        '{{blockchain}}' as blockchain, 
         CASE WHEN varbinary_position(implementation_code, 0x8063a9fc664e14) > 0 THEN true ELSE false END AS is_creator_token, 
         721 as token_type, 
         creation_time, 
@@ -84,7 +83,6 @@ WITH clones AS (
         AND varbinary_position(implementation_code, 0x8063b88d4fde14) > 0
 ), labelled_contracts_1155 AS (
     SELECT 
-        '{{blockchain}}' as blockchain, 
         CASE WHEN varbinary_position(implementation_code, 0x8063a9fc664e14) > 0 THEN true ELSE false END AS is_creator_token, 
         1155 as token_type, 
         creation_time, 
@@ -99,8 +97,22 @@ WITH clones AS (
         AND varbinary_position(implementation_code, 0x80632eb2c2d614) > 0
 )
 
-SELECT * FROM labelled_contracts_721
-UNION
-SELECT * FROM labelled_contracts_1155
+-- Ensure output table is limited to one record per address
+SELECT 
+    '{{blockchain}}' as blockchain, 
+    any_value(is_creator_token) as is_creator_token,
+    any_value(token_type) as token_type,
+    min(creation_time) as creation_time,
+    address,
+    any_value(is_clone) as is_clone,
+    min(block_date) as block_date,
+    min(block_month) as block_month
+FROM
+    (
+        SELECT * FROM labelled_contracts_721
+        UNION
+        SELECT * FROM labelled_contracts_1155
+    )
+GROUP BY address
 
 {% endmacro %}
