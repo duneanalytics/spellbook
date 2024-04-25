@@ -102,10 +102,11 @@ SELECT
     {% if aggregator_markers != null %}
     CASE WHEN coalesce(agg_mark.aggregator_name, agg1.name, agg2.name)='Gem' AND base.block_number >= 16971894 THEN 'OpenSea Pro' -- 16971894 is the first block of 2023-04-04 which is when Gem rebranded to OpenSea Pro
         ELSE coalesce(agg_mark.aggregator_name, agg1.name, agg2.name)
-        END as aggregator_name
+        END as aggregator_name,
     {% else %}
-    coalesce(agg1.name,agg2.name) as aggregator_name
+    coalesce(agg1.name,agg2.name) as aggregator_name,
     {% endif %}
+    coalesce(ctokens.is_creator, false) as is_creator_token
 FROM {{base_trades}} base
 LEFT JOIN {{ref('tokens_nft')}} nft
     ON nft.blockchain = base.blockchain
@@ -127,6 +128,9 @@ LEFT JOIN {{ ref('nft_aggregators') }} agg2
     AND tx_to = agg2.contract_address
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_mark
     ON bytearray_starts_with(bytearray_reverse(base.tx_data_marker), bytearray_reverse(agg_mark.hash_marker)) -- eq to end_with()
+LEFT JOIN ref('nft_creator_tokens') ctokens 
+    ON base.nft_contract_address = ctokens.address
+    AND lower(base.blockchain) = lower(ctokens.chain)
 
 {% if is_incremental() %}
 WHERE {{incremental_predicate('base.block_time')}}
