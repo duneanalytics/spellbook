@@ -9,12 +9,8 @@
 WITH stats_in as (
 select
     l.blockchain
-    ,from_hex(l.address) as address
-    ,l.custody_owner
-    ,l.account_owner
---    ,count(*) filter (where "from" = from_hex(l.address)) as transfers_out
+    ,l.address
     ,count(*) as transfers_in
---    ,sum(amount_usd) filter (where "from" = from_hex(l.address)) as usd_out
     ,sum(amount_usd) as usd_in
     ,min_by(tx_hash, block_time) as first_tx_hash
     ,max_by(tx_hash, block_time) as last_tx_hash
@@ -22,8 +18,49 @@ from {{source('labels','owner_addresses')}} l
 left join {{ref('tokens_ethereum_transfers')}} t
 on t.blockchain = l.blockchain
  and "to" = from_hex(l.address)
-group by 1,2,3,4
+group by 1,2
 )
 
-select * from stats_in
+stats_out as (
+select
+    l.blockchain
+    ,l.address
+    ,count(*) as transfers_out
+    ,sum(amount_usd)  as usd_out
+    ,min_by(tx_hash, block_time) as first_tx_hash
+    ,max_by(tx_hash, block_time) as last_tx_hash
+from {{source('labels','owner_addresses')}} l
+left join {{ref('tokens_ethereum_transfers')}} t
+on t.blockchain = l.blockchain
+ and "to" = from_hex(l.address)
+group by 1,2
+)
 
+stats_other as (
+select
+    l.blockchain
+    ,l.address
+    ,min_by(tx_hash, block_time) as first_tx_hash
+    ,max_by(tx_hash, block_time) as last_tx_hash
+from {{source('labels','owner_addresses')}} l
+left join {{ref('tokens_ethereum_transfers')}} t
+on t.blockchain = l.blockchain
+ and ("to" = from_hex(l.address) or "from" = from_hex(l.address))
+group by 1,2
+)
+
+select
+    l.blockchain
+    ,l.address
+    ,l.custody_owner
+    ,l.account_owner
+    ,transfers_in
+    ,transfers_out
+    ,usd_in
+    ,usd_out
+    ,first_tx_hash
+    ,last_tx_hash
+from {{source('labels','owner_addresses')}} l
+left join stats_in using (blockchain, address)
+left join stats_out using (blockchain, address)
+left join stats_other using (blockchain, address)
