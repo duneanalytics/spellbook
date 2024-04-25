@@ -1,82 +1,87 @@
 {{ config(
-    schema='lido_liquidity_zksync',
+    schema='lido_liquidity_linea',
     alias = 'syncswap_pools',
     tags=['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["zksync"]\',
-                                "project" ,
+    post_hook='{{ expose_spells(\'["linea"]\',
+                                "project",
                                 "lido_liquidity",
                                 \'["pipistrella"]\') }}'
     )
 }}
 
-{% set project_start_date = '2024-02-10' %}
+{% set project_start_date = '2023-11-01' %}
 
 with  pools as (
 select pool AS address,
-      'zksync' AS blockchain,
+      'linea' AS blockchain,
       'syncswap' AS project,
       *
-from {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}}
-where (token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
-      OR token1 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867)
+from {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
+where (token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
+      OR token1 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F)
 )      
 
 , tokens as (
- select distinct token
+ select distinct token,
+         case when token = 0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f then 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
+             when token = 0x176211869ca2b568f2a7d4ee941e073a821ee1ff then 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
+             when token = 0xa219439258ca9da29e9cc4ce5596924745e12b93 then 0xdac17f958d2ee523a2206206994597c13d831ec7
+             when token = 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+        end as token_eth     
  from (
  select token0 as token
- from {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}}
- where token1 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
+ from {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
+ where token1 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
  union all
  select token1
- from {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}}
- where token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
+ from {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
+ where token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
  union all
- select 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
+ select 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
  ) t
  )
 
  , tokens_prices_daily as (     
 select distinct 
       DATE_TRUNC('day', minute) AS time,
-      contract_address AS token,
+      t.token AS token,
       symbol,
       decimals,
       AVG(price) AS price
 FROM {{source('prices','usd')}} p
+  JOIN tokens t on p.contract_address = t.token_eth
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
 {% else %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
 {% endif %}
-
      and date_trunc('day', minute) < current_date
-     and blockchain = 'zksync'
-  and contract_address IN (select token from tokens)
+     and blockchain = 'ethereum'
+  and contract_address IN (select token_eth from tokens)
 group by 1,2,3,4
 union all
 select distinct
       DATE_TRUNC('day', minute),
-      contract_address AS token,
+      t.token AS token,
       symbol,
       decimals,      
       LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('day', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
-    FROM
-      {{source('prices','usd')}}
+    FROM {{source('prices','usd')}} p
+      JOIN tokens t on p.contract_address = t.token_eth
     WHERE
       DATE_TRUNC('day', minute) = current_date
-      and blockchain = 'zksync'
-  and contract_address IN (select token from tokens) 
+      and blockchain = 'ethereum'
+  and contract_address IN (select token_eth from tokens) 
  )
 
  , wsteth_prices_hourly AS (
     SELECT distinct
         DATE_TRUNC('hour', minute) time, 
-        contract_address as token,
+        0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F as token,
         symbol,
         decimals,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
@@ -86,8 +91,8 @@ select distinct
     {% else %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
     {% endif %}
-
-      and blockchain = 'zksync' and contract_address = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
+      and blockchain = 'ethereum' and contract_address = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
+      
     
 ) 
 
@@ -105,8 +110,8 @@ from wsteth_prices_hourly
       cr.token1,
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
- from {{source('syncswap_zksync','AquaPool_evt_Mint')}} m
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on m.contract_address = cr.pool 
+ from {{source('syncswap_linea','SyncSwapClassicPool_evt_Mint')}} m
+ left join {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on m.contract_address = cr.pool 
  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -125,8 +130,8 @@ from wsteth_prices_hourly
       cr.token1,
       (-1)*SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       (-1)*SUM(CAST(amount1 AS DOUBLE)) AS amount1
- from {{source('syncswap_zksync','AquaPool_evt_Burn')}} b
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on b.contract_address = cr.pool 
+ from {{source('syncswap_linea','SyncSwapClassicPool_evt_Burn')}} b
+ left join {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on b.contract_address = cr.pool 
  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -146,8 +151,8 @@ from wsteth_prices_hourly
       cr.token1,
       SUM(CAST(amount0In AS DOUBLE) - CAST(amount0Out AS DOUBLE)) AS amount0,
       SUM(CAST(amount1In AS DOUBLE) - CAST(amount1Out AS DOUBLE)) AS amount1
- from {{source('syncswap_zksync','AquaPool_evt_Swap')}} s
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on s.contract_address = cr.pool
+ from {{source('syncswap_linea','SyncSwapClassicPool_evt_Swap')}} s
+ left join {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on s.contract_address = cr.pool
  
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -201,10 +206,10 @@ GROUP BY 1,2,3,4
 , swap_events_hourly as (
  select DATE_TRUNC('hour', s.evt_block_time) AS time,
       s.contract_address AS pool,
-      sum(case when cr.token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then CAST(amount0In AS DOUBLE) + CAST(amount0Out AS DOUBLE)
+      sum(case when cr.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F then CAST(amount0In AS DOUBLE) + CAST(amount0Out AS DOUBLE)
       else CAST(amount1In AS DOUBLE) + CAST(amount1Out AS DOUBLE) end) as wsteth_amount
- from {{source('syncswap_zksync','AquaPool_evt_Swap')}} s
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on s.contract_address = cr.pool
+ from {{source('syncswap_linea','SyncSwapClassicPool_evt_Swap')}} s
+ left join {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on s.contract_address = cr.pool
 
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -246,14 +251,14 @@ group by 1,2
       0.0 as fee,
       '' as pool_type,
       cast(l.time as date) as time,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN l.token0 ELSE l.token1 END AS main_token,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN p0.symbol ELSE p1.symbol END AS main_token_symbol,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN l.token1 ELSE l.token0 END AS paired_token,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN p1.symbol ELSE p0.symbol END AS paired_token_symbol,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN  amount0/CAST(POWER(10,p0.decimals) as double) ELSE amount1/CAST(POWER(10,p1.decimals) as double) END AS main_token_reserve,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN amount1/CAST(POWER(10, p1.decimals) as double) ELSE amount0/CAST(POWER(10, p0.decimals) as double) END AS paired_token_reserve,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN p0.price ELSE p1.price END AS main_token_usd_price,
-      CASE WHEN l.token0 = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb THEN p1.price ELSE p0.price END AS paired_token_usd_price,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN l.token0 ELSE l.token1 END AS main_token,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN p0.symbol ELSE p1.symbol END AS main_token_symbol,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN l.token1 ELSE l.token0 END AS paired_token,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN p1.symbol ELSE p0.symbol END AS paired_token_symbol,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN  amount0/CAST(POWER(10,p0.decimals) as double) ELSE amount1/CAST(POWER(10,p1.decimals) as double) END AS main_token_reserve,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN amount1/CAST(POWER(10, p1.decimals) as double) ELSE amount0/CAST(POWER(10, p0.decimals) as double) END AS paired_token_reserve,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN p0.price ELSE p1.price END AS main_token_usd_price,
+      CASE WHEN l.token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F THEN p1.price ELSE p0.price END AS paired_token_usd_price,
       coalesce(volume,0) AS trading_volume
     FROM
       pool_liquidity AS l
@@ -268,7 +273,7 @@ group by 1,2
       AND l.pool = tv.pool
  )
  
- 
+
 select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', pool_type, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,
         pool,
         blockchain,

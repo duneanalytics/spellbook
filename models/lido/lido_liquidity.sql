@@ -44,7 +44,7 @@
  ref('lido_liquidity_base_kyberswap_pools'),
  ref('lido_liquidity_base_aerodrome_pools'),
  ref('lido_liquidity_base_uniswap_v3_pools'),
- ref('lido_liquidity_zksync_syncswap_pools'),
+ ref('lido_liquidity_zksync_syncswap_pools')
 ] %}
 
 {% set project_start_date =  '2020-12-15'%} 
