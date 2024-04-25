@@ -461,4 +461,68 @@ models:
       - *mint_limit
       - *max_supply
       - *full_inscription
+
+  - name: inscription_linea_deploys
+    meta: 
+      blockchain: linea
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'linea']
+    description: >
+      Inscription deploys on Linea
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+      
+
+  - name: inscription_zkevm_deploys
+    meta: 
+      blockchain: zkevm
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'zkevm']
+    description: >
+      Inscription deploys on Polygon zkEVM
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+      
       

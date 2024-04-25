@@ -42,7 +42,6 @@ FROM
     ('geist-geist-finance', 'fantom', 'GEIST', 0xd8321AA83Fb0a4ECd6348D4577431310A6E0814d, 18),
     ('treeb-treeb', 'fantom', 'TREEB', 0xc60D7067dfBc6f2caf30523a064f416A5Af52963, 18),
     ('bsgg-betswapgg', 'fantom', 'BSGG', 0x5A33869045db8A6a16c9f351293501CFD92cf7ed, 18),
-    ('sex-solidex', 'fantom', 'SEX', 0xD31Fcd1f7Ba190dBc75354046F6024A9b86014d7, 18),
     ('tomb-tomb', 'fantom', 'TOMB', 0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7, 18),
     ('tor-tor-ftm-token', 'fantom', 'TOR', 0x74E23dF9110Aa9eA0b6ff2fAEE01e740CA1c642e, 18),
     ('tshare-tomb-shares', 'fantom', 'TSHARE', 0x4cdF39285D7Ca8eB3f090fDA0C069ba5F4145B37, 18),
@@ -86,3 +85,7 @@ FROM
     ('usdc-usdc-stargate-bridge', 'fantom', 'USDC', 0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf, 6),
     ('fusdt-frapped-usdt', 'fantom', 'FUSDT', 0x049d68029688eabf473097a2fc38ef61633a3c7a, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
+where contract_address not in (
+    -- bad price feeds
+    0xD31Fcd1f7Ba190dBc75354046F6024A9b86014d7    -- SEX
+)
