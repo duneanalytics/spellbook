@@ -18,7 +18,7 @@
  ref('uniswap_trades')
 ,ref('sushiswap_trades')
 ,ref('fraxswap_trades')
-,ref('airswap_ethereum_trades')
+{# ,ref('airswap_ethereum_trades') #}
 ,ref('clipper_trades')
 ,ref('shibaswap_ethereum_trades')
 ,ref('swapr_ethereum_trades')
@@ -67,7 +67,7 @@
 ,ref('dodo_trades')
 ,ref('curvefi_trades')
 ,ref('ellipsis_finance_trades')
-,ref('aerodrome_base_trades')
+{# ,ref('aerodrome_base_trades') #}
 ,ref('carbon_defi_ethereum_trades')
 ,ref('ubeswap_celo_trades')
 ,ref('opx_finance_optimism_trades')
