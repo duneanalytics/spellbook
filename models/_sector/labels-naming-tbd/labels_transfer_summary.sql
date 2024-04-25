@@ -21,7 +21,7 @@ on t.blockchain = l.blockchain
 group by 1,2
 )
 
-stats_out as (
+,stats_out as (
 select
     l.blockchain
     ,l.address
@@ -36,7 +36,7 @@ on t.blockchain = l.blockchain
 group by 1,2
 )
 
-stats_other as (
+,stats_other as (
 select
     l.blockchain
     ,l.address
