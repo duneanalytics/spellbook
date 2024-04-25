@@ -43,6 +43,8 @@ methods as (
         {% else %}
             where block_time >= timestamp '{{date_from}}'
         {% endif %}
+            and (tx_success or tx_success is null)
+            and success
     )
     join methods using(call_to, selector)
     join (
@@ -56,6 +58,8 @@ methods as (
         {% else %}
             where block_time >= timestamp '{{date_from}}'
         {% endif %}
+            and (success or success is null)
+            
     ) using(block_number, tx_hash)
 )
 
@@ -148,8 +152,9 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    , call_transfer_addresses
-    , {{dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, ',')"])}} as unique_key
+    -- , coalesce(call_transfer_addresses, array[]) as call_transfer_addresses
+    , flatten(call_transfer_addresses) as call_transfer_addresses
+    -- , {{dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, ',')"])}} as unique_key
     , date(date_trunc('month', block_time)) as block_month
 from amounts
 
