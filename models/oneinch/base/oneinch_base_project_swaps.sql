@@ -19,5 +19,8 @@ select
     'sss' as blockchain
     , 'aaa' as tx_hash
     , 'bbb' as call_trace_address
-    , array[(0x0000000000000000000000000000000000000000, true), (0xe4b5b3b8b5f6b7b1e4b5b3b8b5f6b7b1, false)] as call_transfer_addresses
+    , array[
+        cast(row(0x0000000000000000000000000000000000000000, true) as row (address varbinary, success boolean)), 
+        cast(row(0xe4b5b3b8b5f6b7b1e4b5b3b8b5f6b7b1, false) as row (address varbinary, success boolean))
+    ] AS call_transfer_addresses
     , date('2024-04-01') as block_month
