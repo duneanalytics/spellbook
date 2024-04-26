@@ -26,8 +26,7 @@ models:
           project: yield_yak
           version: 1
     columns:
-      - &blockchain
-        name: blockchain
+      - name: blockchain
         description: "Blockchain which the DEX is deployed"
       - &project 
         name: project
@@ -35,11 +34,9 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
-      - &block_date
-        name: block_date
+      - name: block_date
         description: "UTC event block date of each DEX trade"
-      - &block_time
-        name: block_time
+      - name: block_time
         description: "UTC event block time of each DEX trade"
       - &token_bought_symbol
         name: token_bought_symbol
@@ -80,8 +77,7 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
-      - &tx_hash
-        name: tx_hash
+      - name: tx_hash
         description: "Unique transaction hash value tied to each transaction on the DEX"
       - &tx_from
         name: tx_from
@@ -94,7 +90,147 @@ models:
         description: ""
       - &evt_index
         name: evt_index
-        description: ""
+        description: "The position of this event log within this transaction"
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
+  - name: yield_yak_avalanche_c_deposits
+    meta:
+      blockchain: avalanche_c
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
+    description: >
+        yield yak deposits on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the YRT contract is deployed"
+      - &contract_address
+        name: contract_address
+        description: "Address of the YRT smart contract / strategy"  
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the deposit/withdraw/reinvest"
+      - *evt_index
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction within the block"
+      - &block_time
+        name: block_time
+        description: "UTC time of the deposit/withdraw/reinvest"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of the deposit/withdraw/reinvest"
+      - &block_number
+        name: block_number
+        description: "Block number of the deposit/withdraw/reinvest"
+      - &user_address
+        name: user_address
+        description: "Address of the wallet which made the deposit"
+      - &deposit_amount
+        name: deposit_amount
+        description: "Amount of deposit tokens deposited into the strategy"
+  - name: yield_yak_avalanche_c_withdraws
+    meta:
+      blockchain: avalanche_c
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
+    description: >
+        yield yak withdraws on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *tx_hash
+      - *evt_index
+      - *tx_index
+      - *block_time
+      - *block_date
+      - *block_number
+      - *user_address
+      - &withdraw_amount
+        name: withdraw_amount
+        description: "Amount of deposit tokens withdrawn from the strategy"
+  - name: yield_yak_avalanche_c_reinvests
+    meta:
+      blockchain: avalanche_c
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
+    description: >
+        yield yak reinvests on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *tx_hash
+      - *evt_index
+      - *tx_index
+      - *block_time
+      - *block_date
+      - *block_number
+      - &reinvest_by_address
+        name: reinvest_by_address
+        description: "Address which triggered the transaction containing this Reinvest event"
+      - &new_total_deposits
+        name: new_total_deposits
+        description: "The total amount of deposit token in the strategy following the Reinvest event"
+      - &new_total_supply
+        name: new_total_supply
+        description: "The total supply of YRT following the Reinvest event"
+      - &apy
+        name: apy
+        description: "Annual Percentage Yield. Calculated using a weighted combination of recent Reinvest events"
+      - &ratio
+        name: ratio
+        description: "new_total_deposits / new_total_supply"
+      - &recent_reinvest_info
+        name: recent_reinvest_info
+        description: "An array of the ratio growth and time between reinvests for the last 25 Reinvest events"
+  - name: yield_yak_avalanche_c_balances
+    meta:
+      blockchain: avalanche_c
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+    description: >
+        yield yak vault/farm/pool balances on avalanche_c as a temporal table
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+            - from_time
+    columns:
+      - *blockchain
+      - *contract_address
+      - &from_time
+        name: from_time
+        description: "UTC time from which the contract held this balance in its respective deposit token"
+      - &to_time
+        name: to_time
+        description: "UTC time until which the contract held this balance in its respective deposit token"
+      - &deposit_token_balance
+        name: deposit_token_balance
+        description: "Balance of deposit tokens held in the contract in the time window specified"
