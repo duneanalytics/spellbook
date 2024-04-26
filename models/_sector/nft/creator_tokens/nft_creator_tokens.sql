@@ -38,7 +38,7 @@ WITH creator_tokens_union as
         block_month
     FROM {{ chain_creator_token }}
     {% if is_incremental() %}
-    AND creation_time >= date_trunc('day', now() - interval '7' Day)
+    WHERE {{incremental_predicate('creation_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
