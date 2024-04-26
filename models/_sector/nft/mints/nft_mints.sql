@@ -157,7 +157,7 @@ WITH project_mints as
         tx_from,
         tx_to,
         evt_index,
-        coalesce(ctoken.is_creator, false) as is_creator_token
+        coalesce(ctokens.is_creator_token, false) as is_creator_token
     FROM (
         SELECT *
         FROM project_mints
@@ -167,7 +167,7 @@ WITH project_mints as
     ) base_mints
     LEFT JOIN {{ ref('nft_creator_tokens') }} ctokens
         ON base_mints.nft_contract_address = ctokens.address
-        AND lower(base_mints.blockchain) = lower(ctokens.chain)
+        AND base_mints.blockchain = ctokens.blockchain
 )
 
 select * from base_union
