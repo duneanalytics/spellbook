@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: dex_linea_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: sushiswap_v2_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'sushiswap' ]
+    description: "Sushiswap v2 Linea base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_linea_base_trades_seed')
