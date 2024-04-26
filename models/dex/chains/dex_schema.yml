@@ -512,6 +512,90 @@ models:
       - *token_bought_amount
       - *amount_usd
       - *evt_index
+
+  - name: dex_scroll_sandwiches
+    meta: 
+      blockchain: scroll
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'scroll']
+    description: >
+      DEX MEV Sandwich Trades on Scroll
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_zora_sandwiches
+    meta: 
+      blockchain: zora
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'zora']
+    description: >
+      DEX MEV Sandwich Trades on Zora Network
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
   
   - name: dex_ethereum_sandwiched
     meta: 
@@ -944,6 +1028,90 @@ models:
       tags: ['dex', 'mev', 'sandwiched', 'zksync']
     description: >
       DEX MEV Sandwiched Trades on zkSync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_scroll_sandwiched
+    meta: 
+      blockchain: scroll
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiched', 'scroll']
+    description: >
+      DEX MEV Sandwiched Trades on Scroll
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_zora_sandwiched
+    meta: 
+      blockchain: zora
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'sandwiched', 'zora']
+    description: >
+      DEX MEV Sandwiched Trades on Zora Network
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -1449,3 +1617,91 @@ models:
       - *token_bought_amount
       - *amount_usd
       - *evt_index
+
+  - name: dex_scroll_atomic_arbitrages
+    meta: 
+      blockchain: scroll
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'scroll']
+    description: >
+      DEX MEV Arbitrage Trades on zkSScrollync
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+
+  - name: dex_zora_atomic_arbitrages
+    meta: 
+      blockchain: zora
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'zora']
+    description: >
+      DEX MEV Arbitrage Trades on Zora Network
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
