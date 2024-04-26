@@ -33,4 +33,4 @@ select *
 from trades
 where (    fee_wallet_name = 'opensea'
            or right_hash = 0x360c6ebe
-         )
+         ) and tx_hash != 0xb15cce9d7fdf83f503a89ed142ad1d8c5cf7e6e8f6ef3d663a0eda2b21b07150
