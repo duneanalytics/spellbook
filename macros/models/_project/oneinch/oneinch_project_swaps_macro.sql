@@ -155,7 +155,7 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    , call_trace_addresses
+    , call_transfer_addresses
     , date(date_trunc('month', block_time)) as block_month
 from amounts
 
