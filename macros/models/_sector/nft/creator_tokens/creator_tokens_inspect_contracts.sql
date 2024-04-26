@@ -100,11 +100,11 @@ WITH clones AS (
 -- Ensure output table is limited to one record per address
 SELECT 
     '{{blockchain}}' as blockchain, 
-    any_value(is_creator_token) as is_creator_token,
-    any_value(token_type) as token_type,
+    min_by(is_creator_token, creation_time) as is_creator_token,
+    min_by(token_type, creation_time) as token_type,
     min(creation_time) as creation_time,
     address,
-    any_value(is_clone) as is_clone,
+    min_by(is_clone, creation_time) as is_clone,
     min(block_date) as block_date,
     min(block_month) as block_month
 FROM
