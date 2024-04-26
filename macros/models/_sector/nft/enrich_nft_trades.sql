@@ -129,8 +129,8 @@ LEFT JOIN {{ ref('nft_aggregators') }} agg2
 LEFT JOIN {{ ref('nft_ethereum_aggregators_markers') }} agg_mark
     ON bytearray_starts_with(bytearray_reverse(base.tx_data_marker), bytearray_reverse(agg_mark.hash_marker)) -- eq to end_with()
 LEFT JOIN {{ ref('nft_creator_tokens') }} ctokens
-    ON base_mints.nft_contract_address = ctokens.address
-    AND base_mints.blockchain = ctokens.blockchain
+    ON base.nft_contract_address = ctokens.address
+    AND base.blockchain = ctokens.blockchain
 
 {% if is_incremental() %}
 WHERE {{incremental_predicate('base.block_time')}}
