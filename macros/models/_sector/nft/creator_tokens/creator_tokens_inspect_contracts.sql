@@ -113,6 +113,7 @@ FROM
         UNION
         SELECT * FROM labelled_contracts_1155
     )
+WHERE address IS NOT NULL
 GROUP BY address
 
 {% endmacro %}
