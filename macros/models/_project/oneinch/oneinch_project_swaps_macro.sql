@@ -110,7 +110,10 @@ methods as (
         , max(amount * price / pow(10, decimals)) as amount_usd
         , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
         , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
-        , array_agg(array[(transfer_from, creations_from.block_number is null), (transfer_to, creations_to.block_number is null)]) as call_transfer_addresses
+        , array_agg(array[
+            cast(row(transfer_from, creations_from.block_number is null) as row (address varbinary, success boolean)),
+            cast(row(transfer_to, creations_to.block_number is null) as row (address varbinary, success boolean))
+        ]) as call_transfer_addresses       
     from calls
     join (
         select *
@@ -152,9 +155,7 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    -- , coalesce(call_transfer_addresses, array[]) as call_transfer_addresses
-    , flatten(call_transfer_addresses) as call_transfer_addresses
-    -- , {{dbt_utils.generate_surrogate_key(["blockchain", "tx_hash", "array_join(call_trace_address, ',')"])}} as unique_key
+    , call_trace_addresses
     , date(date_trunc('month', block_time)) as block_month
 from amounts
 
