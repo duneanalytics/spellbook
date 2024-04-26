@@ -19,6 +19,7 @@
 
 WITH
 
+
 trades AS (
     SELECT
         block_time
