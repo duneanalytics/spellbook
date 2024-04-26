@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from
+        , date_from = '2024-01-01'
     ) 
 %}
 
@@ -111,8 +111,8 @@ methods as (
         , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
         , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
         , array_agg(array[
-            cast(row(transfer_from, creations_from.block_number is null) as row (address varbinary, success boolean)),
-            cast(row(transfer_to, creations_to.block_number is null) as row (address varbinary, success boolean))
+            cast(row(transfer_from, creations_from.block_number is null) as row(address varbinary, success boolean)),
+            cast(row(transfer_to, creations_to.block_number is null) as row(address varbinary, success boolean))
         ]) as call_transfer_addresses       
     from calls
     join (
