@@ -69,7 +69,7 @@ WITH clones AS (
 ), labelled_contracts_721 AS (
     SELECT 
         CASE WHEN varbinary_position(implementation_code, 0x8063a9fc664e14) > 0 THEN true ELSE false END AS is_creator_token, 
-        721 as token_type, 
+        'erc721' as token_type, 
         creation_time, 
         address, 
         is_clone,
@@ -84,7 +84,7 @@ WITH clones AS (
 ), labelled_contracts_1155 AS (
     SELECT 
         CASE WHEN varbinary_position(implementation_code, 0x8063a9fc664e14) > 0 THEN true ELSE false END AS is_creator_token, 
-        1155 as token_type, 
+        'erc1155' as token_type, 
         creation_time, 
         address, 
         is_clone,
