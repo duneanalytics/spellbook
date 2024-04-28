@@ -99,24 +99,36 @@ with
         from v2_pairs_with_initial_fee_rates as pairs
         cross join time_series
         where time_series.minute >= pairs.minute
-    ),
-    pairs_by_minute_with_fee_rates as (
-        select
-            pairs.minute,
-            pairs.pair,
-            pairs.version,
-            pairs.token0,
-            token0_fee_rate,
-            pairs.token1,
-            token1_fee_rate
-        from pairs_by_minute as pairs
-        left join
-            v2_fee_rates_updates
-            on (
-                pairs.minute = v2_fee_rates_updates.minute
-                and pairs.pair = v2_fee_rates_updates.pair
-            )
     )
-select '{{blockchain}}' as blockchain, *
-from pairs_by_minute_with_fee_rates
+
+select
+    '{{blockchain}}' as blockchain,
+    pairs.minute,
+    pairs.pair,
+    pairs.version,
+    pairs.token0,
+    coalesce(
+        token0_fee_rate,
+        last_value(token0_fee_rate) ignore nulls over (
+            partition by pairs.pair
+            order by pairs.minute
+            rows between unbounded preceding and current row
+        )
+    ) as token0_fee_rate,
+    pairs.token1,
+    coalesce(
+        token1_fee_rate,
+        last_value(token1_fee_rate) ignore nulls over (
+            partition by pairs.pair
+            order by pairs.minute
+            rows between unbounded preceding and current row
+        )
+    ) as token1_fee_rate
+from pairs_by_minute as pairs
+left join
+    v2_fee_rates_updates
+    on (
+        pairs.minute = v2_fee_rates_updates.minute
+        and pairs.pair = v2_fee_rates_updates.pair
+    )
 order by minute desc, pair asc
