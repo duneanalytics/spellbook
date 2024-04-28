@@ -19,7 +19,7 @@ contracts as (
         , project
         , user
         , contains(array[
-            '1inch'
+              '1inch'
             , 'BabySwap'
             , 'BoggedFinance'
             , 'Dzap'
@@ -33,6 +33,14 @@ contracts as (
             , 'TransitSwap'
             , 'ZeroEx'
         ], project) as multi
+        , contains(array[
+              '1inch'
+            , 'ZeroEx'
+            , 'Clipper'
+            , 'Hashflow'
+            , 'Native'
+            , 'Swaap'
+        ], project) as lops
         , tag
     from (values
           (0xc586bef4a0992c495cf22e1aeee4e446cecdee0e, true, '1inch'                , 'OneSplit'                , array['ethereum'])
@@ -84,7 +92,7 @@ contracts as (
         , (0xcf0febd3f17cef5b47b0cd257acf6025c5bff3b7, true, 'ApeSwap'              , 'UNDEFINED'               , array['bnb'])
         , (0x6947a425453d04305520e612f0cb2952e4d07d62, true, 'Arbswap'              , 'ArbswapSmartRouter'      , array['arbitrum'])
         , (0x8317c460c22a9958c27b4b6403b98d2ef4e2ad32, true, 'BabySwap'             , 'UNDEFINED'               , array['bnb'])
-        , (0xba12222222228d8ba445958a75a0704d566bf2c8, true, 'Balancer'             , 'Vault'                   , array['ethereum'])
+        , (0xba12222222228d8ba445958a75a0704d566bf2c8, true, 'Balancer'             , 'Vault'                   , array['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'base'])
         , (0x6093aebac87d62b1a5a4ceec91204e35020e38be, true, 'Baoswap'              , 'UniswapV2Router02'       , array['gnosis'])
         , (0x3a6d8ca21d1cf76f653a67577fa0d27453350dd8, true, 'BiSwap'               , 'UNDEFINED'               , array['bnb'])
         , (0x6f5ac65ca70f2a44d73c8f711cb2bdf425d9f304, true, 'BitKeep'              , 'UNDEFINED'               , array['bnb'])
@@ -93,7 +101,6 @@ contracts as (
         , (0xb099ed146fad4d0daa31e3810591fc0554af62bb, true, 'BoggedFinance'        , 'BogSwap'                 , array['bnb','avalanche_c','fantom'])
         , (0xc873fecbd354f5a56e00e710b90ef4201db2448d, true, 'Camelot'              , 'CamelotRouter'           , array['arbitrum'])
         , (0x1f721e2e82f6676fce4ea07a5958cf098d339e18, true, 'Camelot'              , 'SwapRouter'              , array['arbitrum'])
-        , (0x5130f6ce257b8f9bf7fac0a0b519bd588120ed40, true, 'Clipper'              , 'PackedVerifiedExchange'  , array['optimism'])
         , (0xbf1fc29668e5f5eaa819948599c9ac1b1e03e75f, true, 'Cone'                 , 'ConeRouter01'            , array['bnb'])
         , (0x11984dc4465481512eb5b777e44061c158cf2259, true, 'Connext'              , 'ConnextDiamond'          , array['polygon'])
         , (0xee9dec2712cce65174b561151701bf54b99c24c8, true, 'Connext'              , 'ConnextDiamond'          , array['arbitrum'])
@@ -263,14 +270,63 @@ contracts as (
         , (0xdf37f7a85d4563f39a78494568824b4df8669b7a, true, 'WooFi'                , 'WooCrossChainRouter'     , array['avalanche_c'])
         , (0xeaf1ac8e89ea0ae13e0f03634a4ff23502527024, true, 'WooFi'                , 'WooRouter'               , array['optimism'])
         , (0xc4729e56b831d74bbc18797e0e17a295fa77488c, true, 'Yield'                , 'YakRouter'               , array['avalanche_c'])
-        , (0x3f93c3d9304a70c9104642ab8cd37b1e2a7c203a, true, 'ZeroEx'               , 'Exchange'                , array['bnb'])
+        , (0xdef1c0ded9bec7f1a1670819833240f027b25eff, true, 'ZeroEx'               , 'ExchangeProxy'           , array['ethereum','bnb','polygon','arbitrum'])
+        , (0xe66b31678d6c16e9ebf358268a790b763c133750, true, 'ZeroEx'               , 'ExchangeProxy'           , array['ethereum'])
         , (0xdef189deaef76e379df891899eb5a00a94cbc250, true, 'ZeroEx'               , 'ExchangeProxy'           , array['fantom'])
         , (0xdef1abe32c034e558cdd535791643c58a13acc10, true, 'ZeroEx'               , 'ExchangeProxy'           , array['optimism'])
-        , (0xdef1c0ded9bec7f1a1670819833240f027b25eff, true, 'ZeroEx'               , 'ExchangeProxy'           , array['ethereum','bnb','polygon','arbitrum'])
-        , (0x080bf510fcbf18b91105470639e9561022937712, true, 'ZeroEx'               , 'Exchange'                , array['ethereum'])
-        , (0xe66b31678d6c16e9ebf358268a790b763c133750, true, 'ZeroEx'               , 'ExchangeProxy'           , array['ethereum'])
+        , (0x080bf510fcbf18b91105470639e9561022937712, true, 'ZeroEx'               , 'ExchangeV2'              , array['ethereum'])
+        , (0x3f93c3d9304a70c9104642ab8cd37b1e2a7c203a, true, 'ZeroEx'               , 'ExchangeV2'              , array['bnb'])
+        , (0x145f83ad6108391cbf9ed554e5ce1dbd984437f8, true, 'ZeroEx'               , 'ExchangeV2'              , array['bnb', 'polygon'])
         , (0x61935cbdd02287b511119ddb11aeb42f1593b7ef, true, 'ZeroEx'               , 'ExchangeV3'              , array['ethereum'])
-        , (0x18381c0f738146fb694de18d1106bde2be040fa4, true, 'ZkSwap'               , 'Router'                  , array['zksync'])   
+        , (0x18381c0f738146fb694de18d1106bde2be040fa4, true, 'ZkSwap'               , 'Router'                  , array['zksync'])
+        , (0xe7b0ce0526fbe3969035a145c9e9691d4d9d216c, false, 'Clipper'             , 'Clipper'                 , array['ethereum', 'arbitrum'])
+        , (0x655edce464cc797526600a462a8154650eee4b77, false, 'Clipper'             , 'Clipper'                 , array['ethereum'])
+        , (0xcc12532e95c2a6a4c53af153b9b739a3cc9218a7, false, 'Clipper'             , 'Clipper'                 , array['ethereum'])
+        , (0x6bfce69d1df30fd2b2c8e478edec9daa643ae3b8, false, 'Clipper'             , 'Clipper'                 , array['polygon'])
+        , (0xd01e3549160c62acabc4d0eb89f67aafa3de8eed, false, 'Clipper'             , 'Clipper'                 , array['polygon'])
+        , (0x69107c1fc1dbf486ea64ad4fe6f9be81b8265f92, false, 'Clipper'             , 'Clipper'                 , array['polygon'])
+        , (0x769728b5298445ba2828c0f3f5384227fbf590c5, false, 'Clipper'             , 'Clipper'                 , array['arbitrum'])
+        , (0x5130f6ce257b8f9bf7fac0a0b519bd588120ed40, false, 'Clipper'             , 'Clipper'                 , array['optimism'])
+        , (0xdbd4ffc32b34f630dd8ac18d37162ec8462db7db, false, 'Clipper'             , 'Clipper'                 , array['optimism'])
+        , (0xb32d856cad3d2ef07c94867a800035e37241247c, false, 'Clipper'             , 'Clipper'                 , array['base'])
+        , (0x32c85e56a82d66fa3c13e7df900682d63fcbaf89, false, 'Hashflow'            , 'HashflowRouterV1'        , array['ethereum', 'arbitrum'])
+        , (0xe2e3441004e7d377a2d97142e75d465e0dd36af9, false, 'Hashflow'            , 'HashflowRouterV1'        , array['ethereum'])
+        , (0x79cdfd7bc46d577b95ed92bcdc8ababa1844af0c, false, 'Hashflow'            , 'HashflowRouterV1'        , array['ethereum'])
+        , (0xedc827442114f038d009417a88942a619b8cfe17, false, 'Hashflow'            , 'HashflowRouterV1'        , array['polygon'])
+        , (0x5e8297efe1a5d9064f5dd3bb525d84807440a90d, false, 'Hashflow'            , 'HashflowRouterV1'        , array['bnb'])
+        , (0x3fff9a58676584ba28e8780366d7d9cef0eb78ce, false, 'Hashflow'            , 'HashflowRouterV1'        , array['bnb'])
+        , (0x375e05f6e12028e933ce598ad1bed7f1194ab071, false, 'Hashflow'            , 'HashflowRouterV1'        , array['bnb'])
+        , (0xacfaaa9da11e66a8cc8af8e3d844673968fff63f, false, 'Hashflow'            , 'HashflowRouterV1'        , array['polygon'])
+        , (0x8ee11bbd4139989e5f8bb92e8a9e01bc08df3011, false, 'Hashflow'            , 'HashflowRouterV1'        , array['polygon'])
+        , (0xab68b6213b091de92680ec57e879a20bbf12afda, false, 'Hashflow'            , 'HashflowRouterV1'        , array['arbitrum'])
+        , (0x6fce1a7c3347e78d22c278eb3a5c72ec8fcea294, false, 'Hashflow'            , 'HashflowRouterV1'        , array['arbitrum'])
+        , (0x36c543b8bb76b330ecb66a13c1c1377f889f1919, false, 'Hashflow'            , 'HashflowRouterV1'        , array['arbitrum'])
+        , (0x39b558bfc3c65230a5fa5170dbf7a44158a340f6, false, 'Hashflow'            , 'HashflowRouterV1'        , array['avalanche_c'])
+        , (0x43b4bf8758cae65e6b8242d2669e0e5e20ff693a, false, 'Hashflow'            , 'HashflowRouterV1'        , array['avalanche_c'])
+        , (0x45e817d12758ac37bc8dd3c71143c1be75e3ed6f, false, 'Hashflow'            , 'HashflowRouterV1'        , array['avalanche_c'])
+        , (0x54a06197130e02aa0244c4a413f70c52348c3610, false, 'Hashflow'            , 'HashflowRouterV1'        , array['optimism'])
+        , (0xfb1b9a97f1836173390d8bdeaf9004727311a8e1, false, 'Hashflow'            , 'HashflowRouterV1'        , array['optimism'])
+        , (0xf6a94dfd0e6ea9ddfdffe4762ad4236576136613, false, 'Hashflow'            , 'HashflowRouterV2'        , array['ethereum'])
+        , (0x0acffb0fb2cddd9bd35d03d359f3d899e32facc9, false, 'Hashflow'            , 'HashflowRouterV2'        , array['bnb'])
+        , (0x72550597dc0b2e0bec24e116add353599eff2e35, false, 'Hashflow'            , 'HashflowRouterV2'        , array['polygon'])
+        , (0x1f772fa3bc263160ea09bb16ce1a6b8fc0fab36a, false, 'Hashflow'            , 'HashflowRouterV2'        , array['arbitrum'])
+        , (0x64d2f9f44fe26c157d552ae7eaa613ca6587b59e, false, 'Hashflow'            , 'HashflowRouterV2'        , array['avalanche_c'])
+        , (0xb3999f658c0391d94a37f7ff328f3fec942bcadc, false, 'Hashflow'            , 'HashflowRouterV2'        , array['optimism'])
+        , (0x55084ee0fef03f14a305cd24286359a35d735151, false, 'Hashflow'            , 'HashflowRouterV3'        , array['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c'])
+        , (0xca310b1b942a30ff4b40a5e1b69ab4607ec79bc1, false, 'Hashflow'            , 'HashflowRouterV3'        , array['optimism'])
+        , (0x3d130bf4686b3d4b6eb91a8e26ac629c5bea6082, false, 'Native'              , 'Native'                  , array['ethereum', 'bnb', 'arbitrum', 'avalanche_c'])
+        , (0xf39276d0eedfd604b55a0bd23c7ab2145ace4ab0, false, 'Native'              , 'Native'                  , array['ethereum', 'bnb'])
+        , (0x816ecda969e24583e79b71645f1202dabd7fe90e, false, 'Native'              , 'Native'                  , array['ethereum', 'arbitrum'])
+        , (0x5b0711eee0c6366aa35a98b14fd8b4b4c6d1d04c, false, 'Native'              , 'Native'                  , array['ethereum'])
+        , (0xf6b94770608ebf8b9b7621378cde5bc04b431cc8, false, 'Native'              , 'Native'                  , array['bnb', 'arbitrum'])
+        , (0xbd0180f7365a354b3b857c0ab16377c7bcdd2ec9, false, 'Native'              , 'Native'                  , array['bnb', 'avalanche_c'])
+        , (0x56385da1f6d17185402fe21795e0593837c8e991, false, 'Native'              , 'Native'                  , array['bnb'])
+        , (0x52a19f554882743b9e30968aafa48740979b141e, false, 'Native'              , 'Native'                  , array['bnb'])
+        , (0x63cb5b1d61e15dc31c80c787fe791baf1c81aec7, false, 'Native'              , 'Native'                  , array['bnb'])
+        , (0xd5473f6fb73422f416f01e096eefcc5af9894b71, false, 'Native'              , 'Native'                  , array['polygon'])
+        , (0x45b69fd499f068b7306d743d2f8b2ad5c54d99a0, false, 'Native'              , 'Native'                  , array['polygon'])
+        , (0x3151263101e0361b39cd6c530e45b28c33cbaf46, false, 'Native'              , 'Native'                  , array['polygon'])
+        , (0xd315a9c38ec871068fec378e4ce78af528c76293, false, 'Swaap'               , 'Vault'                   , array['ethereum', 'polygon', 'arbitrum'])
         , (0xa57bd00134b2850b2a1c55860c9e9ea100fdd6cf, false, 'MEVBot'              , 'MEVBot'                  , array['ethereum'])
         , (0xa69babef1ca67a37ffaf7a485dfff3382056e78c, false, 'MEVBot'              , 'MEVBot'                  , array['ethereum'])
         , (0x00000000003b3cc22af3ae1eac0440bcee416b40, false, 'MEVBot'              , 'MEVBot'                  , array['ethereum'])
@@ -316,7 +372,7 @@ select
     , address
     , project
     , tag
-    , map_from_entries(array[('user', user), ('multi', multi)]) as flags
+    , map_from_entries(array[('user', user), ('multi', multi), ('lops', lops)]) as flags
     , last_created_at
     , last_creator
     , last_creation_tx_hash

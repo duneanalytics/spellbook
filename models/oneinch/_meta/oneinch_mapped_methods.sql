@@ -14,10 +14,10 @@ with
     
 static as (
     select
-        array['swap', 'settle', 'exchange', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'multicall', 'execute', 'wrap'] as suitable
-        , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction'] as exceptions
+          array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'multicall', 'execute', 'wrap', 'transform'] as suitable
+        , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create'] as exceptions
         , array['fill', 'order'] as limits
-        , array['1inch', 'CoWSwap', 'MetaMask', 'Odos', 'OpenOcean', 'Paraswap', 'SlingshotFinance', 'Uniswap', 'ZeroEx'] as top
+        , array['1inch', 'CoWSwap', 'MetaMask', 'Odos', 'OpenOcean', 'Paraswap', 'SlingshotFinance', 'Uniswap', 'ZeroEx'] as main
         , array['Rainbow'] as notlimits
         , array[
             0x13d79a0b -- CoW settle
@@ -78,7 +78,7 @@ static as (
         *
         , substr(keccak(to_utf8(signature)), 1, 4) as selector
         , reduce(suitable, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) and not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as swap
-        , reduce(limits, false, (r, x) -> if(not contains(notlimits, project) and position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) and not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as _limits
+        , reduce(limits, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) and not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r) and not contains(notlimits, project), r -> r) as _limits
     from (
         select
             *
@@ -113,7 +113,7 @@ static as (
 -- output --
 
 select
-    map_concat(flags, map_from_entries(array[('swap', swap), ('limits', _limits), ('intents', contains(intents, selector)), ('multi', flags['multi']), ('top', contains(top, project))])) as flags
+    map_concat(flags, map_from_entries(array[('swap', swap), ('limits', _limits), ('intents', contains(intents, selector)), ('multi', flags['multi']), ('main', contains(main, project))])) as flags
     , blockchain
     , address
     , last_created_at
