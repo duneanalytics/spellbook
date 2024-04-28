@@ -1,5 +1,5 @@
 {{ config(
-  schema = 'camelot_arbitrum', -- v2 + v3
+    schema = 'camelot_arbitrum',
     alias = 'pair_fee_rates',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -7,7 +7,6 @@
     incremental_strategy = 'merge',
     unique_key = ['minute' 'blockchain', 'pair', 'version', 'token0_fee_percentage', 'token1_fee_percentage'])
 }}
-
 
 {% set blockchain = "arbitrum" %}
 {% set project_start_date = "2022-06-14" %}
