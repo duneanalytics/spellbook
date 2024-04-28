@@ -14,7 +14,7 @@
         blockchain = 'zora'
         , project = 'uniswap'
         , version = '3'
-        , Pair_evt_Swap = source('uniswap_v3_zora', 'Pair_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_v3_zora', 'Factory_evt_PoolCreated')
+        , Pair_evt_Swap = source('uniswap_v3_zora', 'UniswapV3Pool_evt_Swap')
+        , Factory_evt_PoolCreated = source('uniswap_v3_zora', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
