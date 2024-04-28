@@ -25,6 +25,7 @@ FROM (VALUES
     , (0x6807ed4369d9399847f306d7d835538915fa749d, 'bDAI', 18)
     , (0x913c61ec3573e5e4ee6488552535fb1be84ff2ac, 'XAV', 18)
     , (0x420fca0121dc28039145009570975747295f2329, 'COQ', 18)
+    , (0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB, 'WETH.e', 18)
     , (0x298c5c64eba94b8dd425582e4266a882db6d9848, 'SaAVAXb', 18)
     , (0x9767203e89dcd34851240b3919d4900d3e5069f1, 'A4', 6)
 ) AS temp_table (contract_address, symbol, decimals)
