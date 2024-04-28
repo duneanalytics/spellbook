@@ -59,13 +59,54 @@ with
             on fee_updates.contract_address = pairs.pair
         group by date_trunc('minute', evt_block_time), pair, version, token0, token1
     ),
-    -- TODO: add v3 fee rate updates
-    v2_fee_rates_updates as (
+    v3_pairs_with_initial_fee_rates as (
+        select
+            date_trunc('minute', evt_block_time) as minute,
+            pool as pair,
+            '3' as version,
+            token0,
+            {{ v3_default_fee }} / {{ v3_fee_precision }} as token0_fee_rate,
+            token1,
+            {{ v3_default_fee }} / {{ v3_fee_precision }} as token1_fee_rate
+        from {{ source("camelot_v3_arbitrum", "AlgebraFactory_evt_Pool") }}
+        {% if not is_incremental() %}
+            where evt_block_time >= timestamp '{{project_start_date}}'
+        {% endif %}
+        {% if is_incremental() %}
+            where evt_block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
+    ),
+    v3_directional_fee_rate_updates as (
+        select
+            date_trunc('minute', evt_block_time) as minute,
+            pair,
+            version,
+            token0,
+            avg(feezto) / {{ v3_fee_precision }} as token0_fee_rate,  -- Handle edge case where pair fees gets changed multiple times per minute
+            token1,
+            avg(feeotz) / {{ v3_fee_precision }} as token1_fee_rate  -- Handle edge case where pair fees gets changed multiple times per minute
+        from {{ source("camelot_v3_arbitrum", "AlgebraPool_evt_Fee") }} as fee_updates
+        join
+            v3_pairs_with_initial_fee_rates as pairs
+            on fee_updates.contract_address = pairs.pair
+        group by date_trunc('minute', evt_block_time), pair, version, token0, token1
+    ),
+    pairs as (
         select *
         from v2_pairs_with_initial_fee_rates
         union all
         select *
+        from v3_pairs_with_initial_fee_rates
+    ),
+    fee_rate_updates as (
+        select *
+        from pairs
+        union all
+        select *
         from v2_directional_fee_rate_updates
+        union all
+        select *
+        from v3_directional_fee_rate_updates
     ),
     -- This approach does not work: Result of sequence function must not have more
     -- than 10000 entries
@@ -88,12 +129,6 @@ with
         where block_time >= timestamp '{{project_start_date}}'
     ),
     -- Prepare data structure (1 row for every minute since each pair was created)
-    time_series_with_pair as (
-        select time_series.minute, pair
-        from v2_pairs_with_initial_fee_rates as pairs
-        cross join time_series
-        where time_series.minute >= pairs.minute
-    ),
     pairs_by_minute as (
         select time_series.minute, pair, version, token0, token1
         from v2_pairs_with_initial_fee_rates as pairs
@@ -126,9 +161,9 @@ select
     ) as token1_fee_rate
 from pairs_by_minute as pairs
 left join
-    v2_fee_rates_updates
+    fee_rate_updates
     on (
-        pairs.minute = v2_fee_rates_updates.minute
-        and pairs.pair = v2_fee_rates_updates.pair
+        pairs.minute = fee_rate_updates.minute
+        and pairs.pair = fee_rate_updates.pair
     )
 order by minute desc, pair asc
