@@ -4,8 +4,6 @@ sources:
   - name: camelot_arbitrum
     tables:
       - name: CamelotPair_evt_FeePercentUpdated
-      - name: CamelotFactory_evt_PairCreated
   - name: camelot_v3_arbitrum
     tables:
       - name: AlgebraPool_evt_Fee
-      - name: AlgebraFactory_evt_Pool
