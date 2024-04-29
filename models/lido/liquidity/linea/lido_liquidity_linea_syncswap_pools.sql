@@ -88,7 +88,7 @@ select distinct
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+        WHERE {{incremental_predicate('p.minute')}}
     {% endif %}
       and blockchain = 'ethereum' and contract_address = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
       
@@ -115,7 +115,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+  WHERE {{incremental_predicate('p.minute')}}
  {% endif %}
  
  and m.contract_address in (select address from pools)
