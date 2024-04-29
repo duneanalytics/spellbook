@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_trades
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea
       sector: dex
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
@@ -99,7 +99,7 @@ models:
 
   - name: dex_base_trades
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea
       sector: dex
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
