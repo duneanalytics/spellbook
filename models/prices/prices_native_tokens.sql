@@ -72,6 +72,8 @@ FROM
     ('egld-elrond', null, 'EGLD', null, null),
     ('ntrn1-neutron', null, 'NTRN', null, null),
     ('flr-flare-network', null, 'FLR', null, null),
-    ('ar-arweave', null, 'AR', null, null)
+    ('ar-arweave', null, 'AR', null, null),
+    ('glmr-moonbeam', null, 'GLMR', null, null),
+    ('klay-klaytn', null, 'KLAY', null, null)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
