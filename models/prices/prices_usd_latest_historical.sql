@@ -20,5 +20,6 @@ SELECT
 FROM {{ source('prices', 'usd') }} pu
 {% if is_incremental() %}
     WHERE minute >= date_trunc('day', now() - interval '2' day)
+    AND pu.contract_address != 0xd31fcd1f7ba190dbc75354046f6024a9b86014d7 -- remove bad price feed
 {% endif %}
 GROUP BY 1,2,3,4,5
