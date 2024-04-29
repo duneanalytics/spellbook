@@ -273,7 +273,8 @@ group by 1,2
  )
  
 
-select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', pool_type, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,
+SELECT 
+    blockchain || ' ' || project || ' ' || COALESCE(paired_token_symbol, 'unknown') || ':' || main_token_symbol || ' ' || pool_type || ' ' || FORMAT('%,.3f', ROUND(COALESCE(fee, 0), 4)) AS pool_name,
         pool,
         blockchain,
         project,
