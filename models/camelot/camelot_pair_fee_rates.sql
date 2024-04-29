@@ -2,7 +2,7 @@
     config(
         schema="camelot_arbitrum",
         alias="pair_fee_rates",
-        partition_by=["minute"],
+        partition_by=["blockchain"],
         materialized="incremental",
         file_format="delta",
         incremental_strategy="merge",
