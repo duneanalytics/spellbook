@@ -5,10 +5,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["linea"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["pipistrella"]\') }}'
+    post_hook='{{ expose_spells(blockchains  = \'["linea"]\',
+                                spell_type   = "project",
+                                spell_name   = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
     )
 }}
 
