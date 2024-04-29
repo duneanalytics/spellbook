@@ -33,7 +33,7 @@ with event_data AS (
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index,
-        array[-1] as trace_address
+        CAST(ARRAY[-1] as array<bigint>) as trace_address
     FROM
     {{ source('odos_v2_optimism', 'OdosRouterV2_evt_Swap') }}
         {% if is_incremental() %}
