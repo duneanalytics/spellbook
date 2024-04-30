@@ -47,8 +47,6 @@ trades AS (
         )
         {% if is_incremental() %}
         AND 
-        block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
         {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_time >= TIMESTAMP '{{project_start_date}}'
@@ -106,4 +104,20 @@ final AS (
         trades_slot
 )
 
-SELECT * FROM final
+SELECT  
+    block_time
+    ,block_day
+    ,tx_from 
+    ,tx_to 
+    ,tx_hash 
+    ,evt_index
+    ,fixedProductMarketMaker
+    ,address
+    ,outcomeIndex
+    ,outcomeSlot
+    ,amount
+    ,feeAmount
+    ,outcomeTokens_amount
+    ,action
+    ,reserves_delta
+FROM final
