@@ -39,7 +39,7 @@ select
     ,l.address
     ,l.custody_owner
     ,l.account_owner
-    ,coalesce(stats_in.block_date,stats_out.block_date)
+    ,coalesce(stats_in.block_date,stats_out.block_date) as block_date
     ,transfers_in
     ,transfers_out
     ,usd_in
