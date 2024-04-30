@@ -116,7 +116,7 @@ LEFT JOIN prices_patch p
 LEFT JOIN {{ ref('nft_aggregators') }} agg1
     ON agg1.blockchain = base.blockchain
     AND (base.buyer = agg1.contract_address
-        OR base.seller = agg1.contract_address
+        OR base.seller = agg1.contract_address)
 LEFT JOIN {{ ref('nft_aggregators') }} agg2
     ON agg1.contract_address is null -- this prevents duplicates
     AND agg2.blockchain = base.blockchain
