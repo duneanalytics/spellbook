@@ -41,4 +41,5 @@ FROM (VALUES
     , (0xb86af5eb59a8e871bfa573fa656123ea86f47c3a, 'CWETHLP', 18)
     , (0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 'sUSDe', 18)
     , (0xC3F47f3627305213ADaa021CcCCb61D5987EAa97, 'HRK' , 18)
+    , (0x83e1d2310ade410676b1733d16e89f91822fd5c3, 'JitoSOL' , 9)    
 ) AS temp_table (contract_address, symbol, decimals)
