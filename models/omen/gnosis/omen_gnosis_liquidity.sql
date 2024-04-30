@@ -44,9 +44,7 @@ FPMMFundingAdded AS (
         --FPMMDeterministicFactory_evt_FPMMFundingAdded
         topic0 = 0xec2dc3e5a3bb9aa0a1deb905d2bd23640d07f107e6ceb484024501aad964a951 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
-        {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
