@@ -126,7 +126,11 @@ with
     time_series as (
         select distinct date_trunc('minute', block_time) as minute
         from dex.trades
-        where block_time >= timestamp '{{project_start_date}}'
+        where
+            block_time >= timestamp '{{project_start_date}}'
+            and blockchain = '{{blockchain}}'
+            and project = 'camelot'
+
     ),
     -- Prepare data structure (1 row for every minute since each pair was created)
     pairs_by_minute as (
@@ -162,8 +166,5 @@ select
 from pairs_by_minute as pairs
 left join
     fee_rate_updates
-    on (
-        pairs.minute = fee_rate_updates.minute
-        and pairs.pair = fee_rate_updates.pair
-    )
+    on (pairs.minute = fee_rate_updates.minute and pairs.pair = fee_rate_updates.pair)
 order by minute desc, pair asc
