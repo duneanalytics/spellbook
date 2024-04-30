@@ -132,4 +132,19 @@ final AS (
     SELECT * FROM remove_liquidity
 )
 
-SELECt * FROM final
+SELECT
+    block_time,
+    block_day,
+    tx_from,
+    tx_to,
+    tx_hash,
+    evt_index,
+    fixedProductMarketMaker,
+    funder,
+    shares,
+    collateralRemovedFromFeePool,
+    outcomeIndex,
+    outcomeTokens_amount,
+    action,
+    reserves_delta
+FROM final

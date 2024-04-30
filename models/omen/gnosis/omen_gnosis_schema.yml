@@ -61,6 +61,9 @@ models:
       - &action
         name: action
         description: "Action executed by the trader or market maker, 'Buy', 'Sell', 'Add' and 'Remove' "
+      - &reserves_delta
+        name: reserves_delta
+        description: "Change in output token reserves"
 
   - name: omen_gnosis_liquidity
     meta:
@@ -99,3 +102,4 @@ models:
       - *outcomeTokens_amount
       - *amount
       - *action
+      - *reserves_delta
