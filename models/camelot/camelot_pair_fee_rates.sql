@@ -18,11 +18,11 @@
 }}
 
 {% set blockchain = "arbitrum" %}
-{% set project_start_date = "2022-06-14" %}
+{% set project_start_date = "2022-11-03" %}
 {% set v2_fee_precision = "1e5" %}
 {% set v2_default_fee = "300" %}  -- 0.3%
-{% set v3_fee_precision = "1e6" %}
-{% set v3_default_fee = "100" %}  -- 0.01%
+/*{% set v3_fee_precision = "1e6" %}
+{% set v3_default_fee = "100" %}  -- 0.01%*/
 
 with
     v2_pairs_with_initial_fee_rates as (
@@ -59,7 +59,7 @@ with
             on fee_updates.contract_address = pairs.pair
         group by date_trunc('minute', evt_block_time), pair, version, token0, token1
     ),
-    v3_pairs_with_initial_fee_rates as (
+    /*v3_pairs_with_initial_fee_rates as (
         select
             date_trunc('minute', evt_block_time) as minute,
             pool as pair,
@@ -97,16 +97,16 @@ with
         union all
         select *
         from v3_pairs_with_initial_fee_rates
-    ),
+    ),*/
     fee_rate_updates as (
         select *
-        from pairs
+        from v2_pairs_with_initial_fee_rates
         union all
         select *
         from v2_directional_fee_rate_updates
-        union all
+        /*union all
         select *
-        from v3_directional_fee_rate_updates
+        from v3_directional_fee_rate_updates*/
     ),
     -- This approach does not work: Result of sequence function must not have more
     -- than 10000 entries
@@ -131,7 +131,7 @@ with
     -- Prepare data structure (1 row for every minute since each pair was created)
     pairs_by_minute as (
         select time_series.minute, pair, version, token0, token1
-        from pairs
+        from v2_pairs_with_initial_fee_rates
         cross join time_series
         where time_series.minute >= pairs.minute
     )
