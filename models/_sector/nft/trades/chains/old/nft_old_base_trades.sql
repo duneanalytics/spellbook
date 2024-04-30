@@ -27,6 +27,8 @@ ref('element_avalanche_c_events')
 ,ref('opensea_v4_zora_events')
 ,ref('opensea_solana_events')
 ,ref('quix_seaport_optimism_events')
+,ref('opensea_v3_avalanche_c_events')
+,ref('opensea_v4_avalanche_c_events')
 ] %}
 
 
