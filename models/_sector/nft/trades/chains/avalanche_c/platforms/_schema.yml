@@ -26,7 +26,7 @@ models:
             - nft_contract_address
             - nft_token_id
             - price_raw
-            
+
   - name: campfire_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
@@ -52,7 +52,7 @@ models:
             - nft_contract_address
             - nft_token_id
             - price_raw
-            
+
   - name: hyperspace_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
@@ -78,3 +78,30 @@ models:
             - nft_contract_address
             - nft_token_id
             - price_raw
+
+  - name: joepegs_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: joepegs
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'joepegs']
+    description: "Joepegs base trades"
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('joepegs_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - royalty_fee_amount_raw
