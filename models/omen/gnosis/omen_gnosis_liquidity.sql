@@ -99,10 +99,7 @@ FPMMFundingRemoved AS (
         --FPMMDeterministicFactory_evt_FPMMFundingRemoved
         topic0 = 0x8b4b2c8ebd04c47fc8bce136a85df9b93fcb1f47c8aa296457d4391519d190e7
         {% if is_incremental() %}
-        AND 
-        block_time >= date_trunc('day', now() - interval '7' day)
-        AND 
-        {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('block_time') }}
         {% else %}
         AND 
         block_time >= TIMESTAMP '{{project_start_date}}'
