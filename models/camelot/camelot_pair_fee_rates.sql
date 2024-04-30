@@ -131,7 +131,7 @@ with
     -- Prepare data structure (1 row for every minute since each pair was created)
     pairs_by_minute as (
         select time_series.minute, pair, version, token0, token1
-        from v2_pairs_with_initial_fee_rates
+        from v2_pairs_with_initial_fee_rates as pairs
         cross join time_series
         where time_series.minute >= pairs.minute
     )
