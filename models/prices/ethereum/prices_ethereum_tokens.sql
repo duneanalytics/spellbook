@@ -1735,7 +1735,9 @@ FROM
     ('rsweth-restaked-swell-eth', 'ethereum', 'RSWETH', 0xfae103dc9cf190ed75350761e95403b7b8afa6c0, 18),
     ('safe-safe', 'ethereum', 'SAFE', 0x5afe3855358e112b5647b952709e6165e1c1eeee, 18),
     ('omni-omni-network', 'ethereum', 'OMNI', 0x36e66fbbce51e4cd5bd3c62b637eb411b18949d4, 18),
-    ('stone-stakestone-ether', 'ethereum', 'STONE', 0x7122985656e38BDC0302Db86685bb972b145bD3C, 18)
+    ('stone-stakestone-ether', 'ethereum', 'STONE', 0x7122985656e38BDC0302Db86685bb972b145bD3C, 18),
+    ('rez-renzo', 'ethereum', 'REZ', 0x3b50805453023a91a8bf641e279401a0b23fa6f9, 18),
+    ('pepe-pepebomb', 'ethereum', 'REZ', 0x8dba4bc68126bd186fbb62c976539d1558c9fe73, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
