@@ -68,6 +68,15 @@ jobs:
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
+      - name: dbt test dex trades specific model(s)
+        run: |
+          if git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.sha }} | grep -q "models/_sector/dex/trades/"; then
+            dbt run --models dex_base_trades
+            dbt run --models dex_trades
+            dbt test --models test_check_null_amount_usd
+          fi
+        working-directory: ${{env.PROJECT_DIR}}
+
       - name: Set environment variable for incremental model count
         run: |
           echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  --project-dir ${PROJECT_DIR} | wc -l)" >> $GITHUB_ENV
