@@ -1309,6 +1309,7 @@ models:
       - &destination_chain_selector
         name: destination_chain_selector
         description: "Destination Chain Selector"
+      - *tx_hash
 
   - name: chainlink_ethereum_ccip_send_requested_daily
     meta:
@@ -1372,15 +1373,21 @@ models:
         name: trace_address
         description: "Trace Address"
 
-  - name: chainlink_ethereum_ccip_tokens_locked_logs
+  - name: chainlink_ethereum_ccip_tokens_transferred_logs
     meta:
       blockchain: "ethereum"
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "ccip", "tokens", "locked", "logs", "ethereum"]
+      tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "ethereum"]
     description: >
-      Chainlink CCIP Tokens Locked Logs
+      Chainlink CCIP Tokens Transferred Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_hash

@@ -47,7 +47,7 @@ join {{ ref('safe_celo_safes') }} s
     on s.address = tr."from"
 join {{ ref('safe_celo_singletons') }} ss
     on tr.to = ss.address
-join {{ source('ethereum', 'transactions') }} et
+join {{ source('celo', 'transactions') }} et
     on tr.tx_hash = et.hash
     and tr.block_number = et.block_number
 where bytearray_substring(tr.input, 1, 4) in (
