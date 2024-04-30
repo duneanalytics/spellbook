@@ -10,7 +10,7 @@ models:
     config:
       tags: ['gnosis', 'trades', 'omen', 'dex']
     description: >
-      A table containing all trades of omen on Gnosis
+      A table containing all trades of Omen on Gnosis
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -60,7 +60,7 @@ models:
         description: "Amount of conditional tokens that were minted or burnt by the Fixed Product Market Maker"
       - &action
         name: action
-        description: "Action executed by the trader, 'Buy' or 'Sell'"
+        description: "Action executed by the trader or market maker, 'Buy', 'Sell', 'Add' and 'Remove' "
 
   - name: omen_gnosis_liquidity
     meta:
@@ -71,7 +71,7 @@ models:
     config:
       tags: ['gnosis', 'liquidity', 'omen', 'dex']
     description: >
-      A table containing all omen liquidity management on Gnosis
+      A table containing all Omen liquidity management on Gnosis
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
