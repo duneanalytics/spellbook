@@ -18,5 +18,6 @@ select
 from {{source('labels','owner_addresses')}} l
 left join {{ref('tokens_ethereum_transfers')}} t
 on t.blockchain = l.blockchain
- and ("to" = from_hex(l.address) OR "from" = from_hex(l.address))
+-- and ("to" = from_hex(l.address) OR "from" = from_hex(l.address))
+ and "to" = from_hex(l.address)
 group by 1,2,3,4
