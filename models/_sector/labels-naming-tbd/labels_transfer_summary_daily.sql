@@ -51,4 +51,4 @@ on l.blockchain = stats_in.blockchain
 left join stats_out
 on l.blockchain = stats_out.blockchain
     and l.address = stats_out.address
-    and (stat_in.block_date is null or stats_in.block_date = stats_out.block_date)
+    and (stats_in.block_date is null or stats_in.block_date = stats_out.block_date)
