@@ -16,9 +16,7 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_null_amount_usd:
-          description: "Check for null values in amount_usd column"
-          severity: error
+      - check_dex_null_amount_usd
     columns:
       - &blockchain
         name: blockchain
