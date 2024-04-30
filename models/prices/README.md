@@ -44,3 +44,6 @@ Any time! Dune team will do their best to merge as quickly as possible to get li
     - The `token_id` value provided either can't be found (i.e. incorrect ID) or is no longer active
   - Sometimes, we are able to continue on even with a failure in CI pipelines attached to PR
     - If a token is cross-chain with the same address, but a blockchain isn't supported, the data can be pulled from the other blockchain -- be sure to keep blockchain consistent with the spell it's in, even if pulling from different one on the API
+- What if my token can't be found on Coinpaprika?
+  - Please follow their process to add tokens [here](https://coinpaprika.com/add/)
+  - If request is urgent, Dune team may be able to expedite request once it's made in above link
