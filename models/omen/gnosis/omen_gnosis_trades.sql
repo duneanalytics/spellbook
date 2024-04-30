@@ -16,7 +16,6 @@
 
 {% set project_start_date = '2020-12-01' %}
 
-
 WITH
 
 trades AS (
