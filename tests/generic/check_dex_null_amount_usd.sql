@@ -9,14 +9,19 @@
         FROM {{ model }}
     )
 
-    SELECT
-        CASE
-            WHEN null_rows * 1.0 / total_rows > {{ threshold }} THEN
-                'Fail: The percentage of rows with null amount_usd is above the threshold'
-            ELSE
-                NULL
-        END AS result
-    FROM base
+    result AS (
+        SELECT
+            CASE
+                WHEN null_rows * 1.0 / total_rows > {{ threshold }} THEN
+                    'Fail: The percentage of rows with null amount_usd is above the threshold'
+                ELSE
+                    NULL
+            END AS result
+        FROM base
+    )
+
+    SELECT result
+    FROM result
     WHERE result IS NOT NULL
 
 {% endtest %}
