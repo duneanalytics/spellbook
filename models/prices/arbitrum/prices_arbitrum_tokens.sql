@@ -146,5 +146,7 @@ FROM
     ('gswift-gameswift','arbitrum','GSWIFT',0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18),
     ('ezeth-renzo-restaked-eth','arbitrum','EZETH',0x2416092f143378750bb29b79ed961ab195cceea5, 18),
     ('aura-aura-finance','arbitrum','AURA',0x1509706a6c66CA549ff0cB464de88231DDBe213B, 18),
-    ('aurabal-aura-bal','arbitrum','AURABAL',0x223738a747383d6F9f827d95964e4d8E8AC754cE, 18)
+    ('aurabal-aura-bal','arbitrum','AURABAL',0x223738a747383d6F9f827d95964e4d8E8AC754cE, 18),
+    ('sol-solana','arbitrum','SOL',0x2bcc6d6cdbbdc0a4071e48bb3b969b06b3330c07, 9),
+    ('jitosol-jito-staked-sol','arbitrum','JITOSOL',0x83e1d2310ade410676b1733d16e89f91822fd5c3, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
