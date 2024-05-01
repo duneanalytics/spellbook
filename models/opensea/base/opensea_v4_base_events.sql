@@ -2,7 +2,6 @@
     schema = 'opensea_v4_base',
     alias = 'events',
     materialized = 'incremental',
-    tags = ['prod_exclude'],
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
