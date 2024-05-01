@@ -10,9 +10,7 @@
             "minute",
             "blockchain",
             "pair",
-            "version",
-            "token0_fee_rate",
-            "token1_fee_rate",
+            "version"
         ],
     )
 }}
