@@ -19,7 +19,8 @@
 with
     raw as (
         select *
-        FROM orca_whirlpool.trades
+        FROM
+            {{ ref('orca_whirlpool_trades') }}
         WHERE 1 = 1 { % if is_incremental() % }
             AND { { incremental_predicate('minute') } } { %
             else % }
