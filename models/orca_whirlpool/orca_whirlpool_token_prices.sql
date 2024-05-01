@@ -17,28 +17,33 @@
 
 { % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 with
-    raw as (
-        select *
+    raw_data as (
+        SELECT
+            *
         FROM
             {{ ref('orca_whirlpool_trades') }}
-        WHERE 1 = 1 { % if is_incremental() % }
-            AND { { incremental_predicate('minute') } } { %
-            else % }
-            AND block_time >= DATE('{{project_start_date}}') { % endif % }
+        WHERE 1 = 1
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('minute') }}
+            {% else %}
+            AND block_time >= DATE('{{project_start_date}}')
+            {% endif %}
     ),
     bought_price as (
-        SELECT token_bought_mint_address as token_mint,
+        SELECT
+            token_bought_mint_address as token_mint,
             DATE_TRUNC('minute', block_time) AS minute,
             SUM(amount_usd) / SUM(token_bought_amount) AS price
-        FROM raw
-        GROUP BY 1,
+        FROM raw_data
+        GROUP BY
+            1,
             2
     ),
     sold_price as (
         SELECT token_sold_mint_address as token_mint,
             DATE_TRUNC('minute', block_time) AS minute,
             SUM(amount_usd) / SUM(token_sold_amount) AS price
-        FROM raw
+        FROM raw_data
         GROUP BY 1,
             2
     ),
