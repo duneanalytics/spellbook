@@ -146,23 +146,25 @@ select
     pairs.pair,
     pairs.version,
     pairs.token0,
-    coalesce(
+    {# coalesce(
         token0_fee_rate,
         last_value(token0_fee_rate) ignore nulls over (
             partition by pairs.pair
             order by pairs.minute
             rows between unbounded preceding and current row
         )
-    ) as token0_fee_rate,
+    ) as token0_fee_rate, #}
+    token0_fee_rate
     pairs.token1,
-    coalesce(
+    {# coalesce(
         token1_fee_rate,
         last_value(token1_fee_rate) ignore nulls over (
             partition by pairs.pair
             order by pairs.minute
             rows between unbounded preceding and current row
         )
-    ) as token1_fee_rate
+    ) as token1_fee_rate #}
+    token1_fee_rate
 from pairs_by_minute as pairs
 left join
     fee_rate_updates
