@@ -48,16 +48,15 @@ with
             pair,
             version,
             token0,
-            avg(token0feepercent) / {{ v2_fee_precision }} as token0_fee_rate,  -- Handle multiple updates per minute
+            token0feepercent / {{ v2_fee_precision }} as token0_fee_rate,  -- Handle multiple updates per minute
             token1,
-            avg(token1feepercent) / {{ v2_fee_precision }} as token1_fee_rate  -- Handle multiple updates per minute
+            token1feepercent / {{ v2_fee_precision }} as token1_fee_rate  -- Handle multiple updates per minute
         from
             {{ source("camelot_arbitrum", "CamelotPair_evt_FeePercentUpdated") }}
             as fee_updates
         join
             v2_pairs_with_initial_fee_rates as pairs
             on fee_updates.contract_address = pairs.pair
-        group by date_trunc('minute', evt_block_time), pair, version, token0, token1
     ),
     v3_pairs_with_initial_fee_rates as (
         select
@@ -82,14 +81,13 @@ with
             pair,
             version,
             token0,
-            avg(feezto) / {{ v3_fee_precision }} as token0_fee_rate,  -- Handle edge case where pair fees gets changed multiple times per minute
+            feezto / {{ v3_fee_precision }} as token0_fee_rate,  -- Handle edge case where pair fees gets changed multiple times per minute
             token1,
-            avg(feeotz) / {{ v3_fee_precision }} as token1_fee_rate  -- Handle edge case where pair fees gets changed multiple times per minute
+            feeotz / {{ v3_fee_precision }} as token1_fee_rate  -- Handle edge case where pair fees gets changed multiple times per minute
         from {{ source("camelot_v3_arbitrum", "AlgebraPool_evt_Fee") }} as fee_updates
         join
             v3_pairs_with_initial_fee_rates as pairs
             on fee_updates.contract_address = pairs.pair
-        group by date_trunc('minute', evt_block_time), pair, version, token0, token1
     ),
     pairs as (
         select *
@@ -99,14 +97,26 @@ with
         from v3_pairs_with_initial_fee_rates
     ),
     fee_rate_updates as (
-        select *
-        from pairs
-        union all
-        select *
-        from v2_directional_fee_rate_updates
-        union all
-        select *
-        from v3_directional_fee_rate_updates
+        select
+            minute,
+            pair,
+            version,
+            token0,
+            avg(token0_fee_rate) as token0_fee_rate,  -- Handle edge case where pair fees gets changed multiple times per minute
+            token1,
+            avg(token1_fee_rate) as token1_fee_rate  -- Handle edge case where pair fees gets changed multiple times per minute
+        from
+            (
+                select *
+                from pairs
+                union all
+                select *
+                from v2_directional_fee_rate_updates
+                union all
+                select *
+                from v3_directional_fee_rate_updates
+            )
+        group by minute, pair, version, token0, token1
     ),
     camelot_pair_trades_by_minute as (
         select distinct
