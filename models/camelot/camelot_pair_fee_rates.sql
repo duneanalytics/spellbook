@@ -108,36 +108,33 @@ with
         select *
         from v3_directional_fee_rate_updates
     ),
-    -- This approach does not work: Result of sequence function must not have more
-    -- than 10000 entries
-    /*time_series as (
-        select date_trunc('minute', block_time) as minute
-        from
-            (
-                select
-                    sequence(
-                        timestamp '{{project_start_date}}'
-                        cast(current_timestamp as timestamp),
-                        interval '1' minute
-                    ) as timestamp_array
-            )
-        cross join unnest(timestamp_array) as t(block_time)
-    ),*/
-    time_series as (
-        select distinct date_trunc('minute', block_time) as minute
+    camelot_pair_trades_by_minute as (
+        select distinct
+            date_trunc('minute', block_time) as minute, project_contract_address as pair
         from dex.trades
         where
             block_time >= timestamp '{{project_start_date}}'
             and blockchain = '{{blockchain}}'
             and project = 'camelot'
-
     ),
-    -- Prepare data structure (1 row for every minute since each pair was created)
+    -- Prepare data structure (1 row for every minute where pair trades happened
+    -- and/or fee rates got updated)
     pairs_by_minute as (
-        select time_series.minute, pair, version, token0, token1
-        from pairs
-        cross join time_series
-        where time_series.minute >= pairs.minute
+        select distinct minute, pair
+        from
+            (
+                select minute, pair
+                from camelot_pair_trades_by_minute
+                union all
+                select minute, pair
+                from fee_rate_updates
+            )
+    ),
+    -- Add version, token0, token1 columns
+    pairs_by_minute_with_metadata as (
+        select pairs_by_minute.minute, pairs_by_minute.pair, version, token0, token1
+        from pairs_by_minute
+        left join pairs on pairs_by_minute.pair = pairs.pair
     )
 
 select
@@ -163,7 +160,7 @@ select
             rows between unbounded preceding and current row
         )
     ) as token1_fee_rate
-from pairs_by_minute as pairs
+from pairs_by_minute_with_metadata as pairs
 left join
     fee_rate_updates
     on (pairs.minute = fee_rate_updates.minute and pairs.pair = fee_rate_updates.pair)
