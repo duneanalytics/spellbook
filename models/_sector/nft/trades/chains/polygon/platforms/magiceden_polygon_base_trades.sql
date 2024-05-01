@@ -44,11 +44,6 @@ WITH erc721_trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        /*
-            below tx contains duplicates at the source, according to unique keys assigned to this model 
-            todo: investigate if fix is needed, remove filter if fixed
-        */
-        AND evt_tx_hash != 0xf70a24c003e88feebf58da309198cd8b83648734a0700794a4475818cd08c253
 )
 , erc1155_trades as (
 
@@ -80,11 +75,6 @@ WITH erc721_trades AS (
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
-        /*
-            below tx contains duplicates at the source, according to unique keys assigned to this model 
-            todo: investigate if fix is needed, remove filter if fixed
-        */
-        AND evt_tx_hash != 0xf70a24c003e88feebf58da309198cd8b83648734a0700794a4475818cd08c253
 )
 
 ,erc721_fees as (
@@ -188,6 +178,7 @@ WITH erc721_trades AS (
     on t2.evt_tx_hash = f2.call_tx_hash
         and t2.nft_contract_address = f2.erc1155Token
         and t2.nft_token_id = f2.erc1155TokenId
+        and (t2.buyer = f2.maker or t2.seller = f2.maker)
 )
 , base_trades as (
 SELECT

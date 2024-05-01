@@ -229,7 +229,7 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
-          
+
       - name: creation_traces
         loaded_at_field: block_time
         description: "polygon zkEVM creation traces"
