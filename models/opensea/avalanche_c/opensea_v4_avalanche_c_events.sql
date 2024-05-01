@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v4_avalanche_c',
     alias = 'events',
-    
+    tags = ["prod_exclude"],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
