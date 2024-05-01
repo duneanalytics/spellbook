@@ -440,6 +440,7 @@ WITH raw_token_list AS (
     ,(0x4dd03dfd36548c840b563745e3fbec320f37ba7e, 'stataOptUSDCn', 6, 'underlying')
     ,(0x035c93db04E5aAea54E6cd0261C492a3e0638b37, 'stataOptUSDT', 6, 'underlying')
     ,(0xfc2e6e6bcbd49ccf3a5f029c79984372dcbfe527, 'OLAS', 18, 'underlying')    
+    ,(0x346e03F8Cce9fE01dCB3d0Da3e9D00dC2c0E08f0, 'weETH', 18, 'underlying')        
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT

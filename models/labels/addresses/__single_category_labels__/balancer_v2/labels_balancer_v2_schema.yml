@@ -257,7 +257,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v2
-      contributors: jacektrocinski
+      contributors: jacektrocinski, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'gauges']
     description: 'Balancer v2 gauge labels.'

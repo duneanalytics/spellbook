@@ -444,7 +444,7 @@ models:
 
   - name: dex_sandwiches
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
       sector: dex
       contributors: hildobby
     config:
@@ -489,7 +489,7 @@ models:
 
   - name: dex_sandwiched
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
       sector: dex
       contributors: hildobby
     config:
@@ -573,7 +573,7 @@ models:
 
   - name: dex_atomic_arbitrages
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora
       sector: dex
       contributors: hildobby
     config:
