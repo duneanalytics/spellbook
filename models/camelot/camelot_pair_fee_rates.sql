@@ -6,12 +6,7 @@
         materialized="incremental",
         file_format="delta",
         incremental_strategy="merge",
-        unique_key=[
-            "minute",
-            "blockchain",
-            "pair",
-            "version"
-        ],
+        unique_key=["minute", "blockchain", "pair", "version"],
     )
 }}
 
@@ -33,12 +28,7 @@ with
             token1,
             {{ v2_default_fee }} / {{ v2_fee_precision }} as token1_fee_rate
         from {{ source("camelot_arbitrum", "CamelotFactory_evt_PairCreated") }}
-        {% if not is_incremental() %}
-            where evt_block_time >= timestamp '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-            where evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
+
     ),
     v2_directional_fee_rate_updates as (
         select
@@ -46,9 +36,9 @@ with
             pair,
             version,
             token0,
-            token0feepercent / {{ v2_fee_precision }} as token0_fee_rate,  -- Handle multiple updates per minute
+            token0feepercent / {{ v2_fee_precision }} as token0_fee_rate,
             token1,
-            token1feepercent / {{ v2_fee_precision }} as token1_fee_rate  -- Handle multiple updates per minute
+            token1feepercent / {{ v2_fee_precision }} as token1_fee_rate
         from
             {{ source("camelot_arbitrum", "CamelotPair_evt_FeePercentUpdated") }}
             as fee_updates
@@ -66,12 +56,6 @@ with
             token1,
             {{ v3_default_fee }} / {{ v3_fee_precision }} as token1_fee_rate
         from {{ source("camelot_v3_arbitrum", "AlgebraFactory_evt_Pool") }}
-        {% if not is_incremental() %}
-            where evt_block_time >= timestamp '{{project_start_date}}'
-        {% endif %}
-        {% if is_incremental() %}
-            where evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
     ),
     v3_directional_fee_rate_updates as (
         select
@@ -79,9 +63,9 @@ with
             pair,
             version,
             token0,
-            feezto / {{ v3_fee_precision }} as token0_fee_rate,  -- Handle edge case where pair fees gets changed multiple times per minute
+            feezto / {{ v3_fee_precision }} as token0_fee_rate,
             token1,
-            feeotz / {{ v3_fee_precision }} as token1_fee_rate  -- Handle edge case where pair fees gets changed multiple times per minute
+            feeotz / {{ v3_fee_precision }} as token1_fee_rate
         from {{ source("camelot_v3_arbitrum", "AlgebraPool_evt_Fee") }} as fee_updates
         join
             v3_pairs_with_initial_fee_rates as pairs
@@ -121,9 +105,13 @@ with
             date_trunc('minute', block_time) as minute, project_contract_address as pair
         from dex.trades
         where
-            block_time >= timestamp '{{project_start_date}}'
-            and blockchain = '{{blockchain}}'
-            and project = 'camelot'
+            blockchain = '{{blockchain}}' and project = 'camelot'
+            {% if not is_incremental() %}
+                and block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+            {% if is_incremental() %}
+                and block_time >= date_trunc('day', now() - interval '7' day)
+            {% endif %}
     ),
     -- Prepare data structure (1 row for every minute where pair trades happened
     -- and/or fee rates got updated)
