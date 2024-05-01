@@ -69,6 +69,7 @@ jobs:
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: dbt test dex trades specific model(s)
+        shell: bash
         run: |
           if git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} models/_sector/dex/trades/ | grep -q "models/_sector/dex/trades/"; then
             dbt run --models dex_base_trades
