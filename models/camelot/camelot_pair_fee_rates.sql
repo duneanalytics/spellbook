@@ -11,8 +11,8 @@
             "blockchain",
             "pair",
             "version",
-            "token0_fee_percentage",
-            "token1_fee_percentage",
+            "token0_fee_rate",
+            "token1_fee_rate",
         ],
     )
 }}
