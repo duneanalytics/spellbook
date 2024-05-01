@@ -43,7 +43,7 @@ SELECT *
 FROM (
     {% for chain in chains %}
     SELECT blockchain
-    , CAST(address AS varchar) address
+    , CASE WHEN typeof(address) != 'varbinary' THEN from_hex(address) ELSE address END AS address
     , cex_name
     , distinct_name
     , added_by
