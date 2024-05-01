@@ -24,7 +24,7 @@
         FROM base
     )
 
-    SELECT result
+    SELECT *
     FROM result
     WHERE result IS NOT NULL
 
