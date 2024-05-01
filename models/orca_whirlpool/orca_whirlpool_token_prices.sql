@@ -1,5 +1,5 @@
 {{
-    config(
+  config(   
         schema = 'orca_whirlpool',
         alias = 'token_prices',
         partition_by = ['block_month'],
@@ -7,15 +7,14 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'contract_address', 'minute'],
-        pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}',
-            post_hook='{{ expose_spells(\'["solana"]\',
-                                        "project",
-                                        "orca_whirlpool",
-                                        \'["get_nimbus"]\') }}')
-
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
+        post_hook='{{ expose_spells(\'["solana"]\',
+                                    "project",
+                                    "orca_whirlpool",
+                                    \'["get_nimbus"]\') }}')
 }}
 
-{ % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap
+{# { % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap #}
 with
     raw_data as (
         SELECT
@@ -26,7 +25,7 @@ with
             {% if is_incremental() %}
             AND {{ incremental_predicate('minute') }}
             {% else %}
-            AND block_time >= DATE('{{project_start_date}}')
+            AND block_time >= DATE('2022-03-10')
             {% endif %}
     ),
     bought_price as (
