@@ -1,19 +1,23 @@
-{ { config(
-    schema = 'orca_whirlpool',
-    alias = 'token_prices',
-    partition_by = ['block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'contract_address', 'minute'],
-    pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}',
-    post_hook = '{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "orca_whirlpool",
-                                    \'["get_nimbus"]\') }}'
-) } } { %
-set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap
-    with raw as (
+{{
+    config(
+        schema = 'orca_whirlpool',
+        alias = 'token_prices',
+        partition_by = ['block_month'],
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'contract_address', 'minute'],
+        pre_hook = '{{ enforce_join_distribution("PARTITIONED") }}',
+            post_hook='{{ expose_spells(\'["solana"]\',
+                                        "project",
+                                        "orca_whirlpool",
+                                        \'["get_nimbus"]\') }}')
+
+}}
+
+{ % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap
+with
+    raw as (
         select *
         FROM orca_whirlpool.trades
         WHERE 1 = 1 { % if is_incremental() % }
