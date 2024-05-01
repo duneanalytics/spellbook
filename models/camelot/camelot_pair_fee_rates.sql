@@ -154,7 +154,7 @@ select
             rows between unbounded preceding and current row
         )
     ) as token0_fee_rate, #}
-    token0_fee_rate
+    token0_fee_rate,
     pairs.token1,
     {# coalesce(
         token1_fee_rate,
