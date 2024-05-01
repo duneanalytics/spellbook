@@ -29,6 +29,7 @@ ref('prices_native_tokens')
 ,ref('prices_zksync_tokens')
 ,ref('prices_zora_tokens')
 ,ref('prices_scroll_tokens')
+,ref('prices_linea_tokens')
 ,ref('prices_zkevm_tokens')
 ] %}
 
