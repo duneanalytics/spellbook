@@ -9,8 +9,8 @@
 
 {% set chains = [
  ref('cex_algorand_addresses')
- ref('cex_aptos_addresses')
- ref('cex_arbitrum_addresses')
+ , ref('cex_aptos_addresses')
+ , ref('cex_arbitrum_addresses')
  , ref('cex_avalanche_c_addresses')
  , ref('cex_base_addresses')
  , ref('cex_bitcoin_addresses')
