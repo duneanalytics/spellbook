@@ -14,9 +14,9 @@
     result AS (
         SELECT
             {{ group_by }},
-            null_rows * 1.0 / total_rows AS null_amount_usd_percentage,
+            null_rows * 1.000 / total_rows AS null_amount_usd_percentage,
             CASE
-                WHEN null_rows * 1.0 / total_rows > {{ threshold }} THEN
+                WHEN null_rows * 1.000 / total_rows > {{ threshold }} THEN
                     'Fail: The percentage of rows with null amount_usd is above the threshold'
                 ELSE
                     NULL
