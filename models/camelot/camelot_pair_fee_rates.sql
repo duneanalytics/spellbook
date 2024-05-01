@@ -23,7 +23,6 @@
 {% set v2_default_fee = "300" %}  -- 0.3%
 /*{% set v3_fee_precision = "1e6" %}
 {% set v3_default_fee = "100" %}  -- 0.01%*/
-
 with
     v2_pairs_with_initial_fee_rates as (
         select
@@ -104,7 +103,7 @@ with
         union all
         select *
         from v2_directional_fee_rate_updates
-        /*union all
+    /*union all
         select *
         from v3_directional_fee_rate_updates*/
     ),
@@ -126,7 +125,11 @@ with
     time_series as (
         select distinct date_trunc('minute', block_time) as minute
         from dex.trades
-        where block_time >= timestamp '{{project_start_date}}'
+        where
+            block_time >= timestamp '{{project_start_date}}'
+            and blockchain = '{{blockchain}}'
+            and project = 'camelot'
+            and version = '2'
     ),
     -- Prepare data structure (1 row for every minute since each pair was created)
     pairs_by_minute as (
@@ -162,8 +165,5 @@ select
 from pairs_by_minute as pairs
 left join
     fee_rate_updates
-    on (
-        pairs.minute = fee_rate_updates.minute
-        and pairs.pair = fee_rate_updates.pair
-    )
+    on (pairs.minute = fee_rate_updates.minute and pairs.pair = fee_rate_updates.pair)
 order by minute desc, pair asc
