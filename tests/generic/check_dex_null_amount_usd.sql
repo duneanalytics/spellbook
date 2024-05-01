@@ -7,7 +7,7 @@
             COUNT(*) AS total_rows,
             COUNT(CASE WHEN amount_usd IS NULL THEN 1 END) AS null_rows
         FROM {{ model }}
-    )
+    ),
 
     result AS (
         SELECT
