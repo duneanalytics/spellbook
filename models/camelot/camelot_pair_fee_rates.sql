@@ -126,10 +126,7 @@ with
     time_series as (
         select distinct date_trunc('minute', block_time) as minute
         from dex.trades
-        where
-            block_time >= timestamp '{{project_start_date}}'
-            and blockchain = '{{blockchain}}'
-            and project = 'camelot'
+        where block_time >= timestamp '{{project_start_date}}'
 
     ),
     -- Prepare data structure (1 row for every minute since each pair was created)
