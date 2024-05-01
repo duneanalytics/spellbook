@@ -70,7 +70,7 @@ jobs:
 
       - name: dbt test dex trades specific model(s)
         run: |
-          if git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.sha }} | grep -q "models/_sector/dex/trades/"; then
+          if git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} | grep -q "models/_sector/dex/trades/"; then
             dbt run --models dex_base_trades
             dbt run --models dex_trades
             dbt test --models test_check_null_amount_usd
