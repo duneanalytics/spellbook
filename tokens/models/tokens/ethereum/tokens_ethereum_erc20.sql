@@ -4557,4 +4557,6 @@ FROM (VALUES
     , ( 0x2DABcea55a12d73191AeCe59F508b191Fb68AdaC, 'KweETH', 18)
     , ( 0xa3726beDFD1a8AA696b9B4581277240028c4314b, 'KwstETH', 18)
     , ( 0xbD32b8aA6ff34BEDc447e503195Fb2524c72658f, 'KcbETH', 18)
+    , ( 0xfc87753df5ef5c368b5fba8d4c5043b77e8c5b39, 'aETH', 18)
+    , ( 0xf1617882a71467534d14eee865922de1395c9e89, 'saETH', 18)
 ) AS temp_table (contract_address, symbol, decimals)
