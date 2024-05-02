@@ -108,7 +108,7 @@ with
                 and block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             {% if is_incremental() %}
-                and block_time >= date_trunc('day', now() - interval '7' day)
+                and {{ incremental_predicate("block_time") }}
             {% endif %}
     ),
     -- Prepare data structure (1 row for every minute where pair trades happened
