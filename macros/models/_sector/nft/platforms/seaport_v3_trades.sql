@@ -6,6 +6,7 @@
      ,Seaport_call_matchOrders
      ,fee_wallet_list_cte
      ,start_date = '2023-02-01'
+     ,native_currency_contract = '0x0000000000000000000000000000000000000000'
 ) %}
 
 with source_ethereum_transactions as (
@@ -593,7 +594,8 @@ select
 
         -- price info
         ,price_amount_raw as amount_raw
-        ,token_contract_address as currency_contract
+        ,case when token_contract_address = 0x0000000000000000000000000000000000000000 then {{native_currency_contract}}
+         else token_contract_address end as currency_contract
 
         -- project info (platform or exchange)
         ,platform_contract_address as project_contract_address

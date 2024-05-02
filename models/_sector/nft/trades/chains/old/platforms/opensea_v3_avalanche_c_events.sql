@@ -23,6 +23,7 @@ WITH fee_wallets as (
      ,Seaport_call_matchOrders = source('seaport_avalanche_c','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,start_date = '2022-09-06'
+     ,native_currency_contract = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
     )
   }}
 )

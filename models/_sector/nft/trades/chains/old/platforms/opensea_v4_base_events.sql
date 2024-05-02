@@ -23,6 +23,7 @@ WITH fee_wallets as (
      ,Seaport_evt_OrdersMatched = source('seaport_base','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,start_date = '2023-07-19'
+     ,native_currency_contract = '0x4200000000000000000000000000000000000006'
     )
   }}
 )

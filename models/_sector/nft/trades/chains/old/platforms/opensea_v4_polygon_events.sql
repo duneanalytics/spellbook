@@ -20,6 +20,7 @@ WITH fee_wallets as (
      ,Seaport_evt_OrdersMatched = source('seaport_polygon','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
      ,start_date = '2023-02-01'
+     ,native_currency_contract = '0x0000000000000000000000000000000000001010'
     )
   }}
 )
