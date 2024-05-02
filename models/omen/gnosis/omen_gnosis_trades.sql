@@ -20,7 +20,7 @@ WITH
 trades AS (
     SELECT
         block_time
-        ,DATE_TRUNC('day', block_time) AS block_day
+        ,CAST(block_time AS DATE) AS block_day
         ,tx_from 
         ,tx_to 
         ,tx_hash 
