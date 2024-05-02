@@ -218,7 +218,8 @@ with source_ethereum_transactions as (
     select a.block_time
             ,a.block_number
             ,a.tx_hash
-            ,coalesce(a.om_evt_index, 0 ) + a.evt_index as evt_index  -- when orders_matched exists, add the evt_indexes to prevent duplication
+--            ,coalesce(a.om_evt_index, 0 ) + a.evt_index as evt_index  -- when orders_matched exists, add the evt_indexes to prevent duplication
+            ,coalesce(a.om_evt_index, a.evt_index) as evt_index
             ,a.sub_type
             ,a.sub_idx
             ,a.offer_first_item_type
