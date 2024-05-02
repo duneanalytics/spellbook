@@ -34,8 +34,10 @@ WITH base_union AS (
             , volume_share
             , swap_volume_usd
             , volume0
+            , swap_volume0
             , token0_symbol
             , volume1
+            , swap_volume1
             , token1_symbol
             , volume0_raw
             , volume1_raw
