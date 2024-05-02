@@ -4,9 +4,6 @@
      ,Seaport_evt_OrderFulfilled
      ,Seaport_evt_OrdersMatched
      ,fee_wallet_list_cte
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x0000000000000000000000000000000000000000'
-     ,native_token_symbol = 'ETH'
      ,start_date = '2023-02-01'
 ) %}
 
@@ -473,8 +470,6 @@ select
         ,sub_idx
         ,sub_type
         ,fee_wallet_name
-        ,case when price_amount_raw > uint256 '0' then CAST ((platform_fee_amount_raw / price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
-        ,case when price_amount_raw > uint256 '0' then CAST((creator_fee_amount_raw/ price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
         ,'seaport-' || CAST(tx_hash AS varchar) || '-' || cast(evt_index as varchar) || '-' || CAST(nft_contract_address AS varchar) || '-' || cast(nft_token_id as varchar) || '-' || cast(sub_type as varchar) || '-' || cast(sub_idx as varchar) as unique_trade_id
   from   iv_trades
 -- where  ( zone in (0xf397619df7bfd4d1657ea9bdd9df7ff888731a11

@@ -21,9 +21,6 @@ WITH fee_wallets as (
      ,Seaport_evt_OrderFulfilled = source('seaport_base','Seaport_evt_OrderFulfilled')
      ,Seaport_evt_OrdersMatched = source('seaport_base','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x4200000000000000000000000000000000000006'
-     ,native_token_symbol = 'ETH'
      ,start_date = '2023-07-19'
     )
   }}

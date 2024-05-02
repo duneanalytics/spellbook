@@ -1,7 +1,6 @@
 {{ config(
     schema = 'opensea_v4_arbitrum',
     alias = 'events',
-    tags = ["prod_exclude"],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -21,9 +20,6 @@ WITH fee_wallets as (
      ,Seaport_evt_OrderFulfilled = source('seaport_arbitrum','Seaport_evt_OrderFulfilled')
      ,Seaport_evt_OrdersMatched = source('seaport_arbitrum','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
-     ,native_token_symbol = 'ETH'
      ,start_date = '2023-02-01'
     )
   }}

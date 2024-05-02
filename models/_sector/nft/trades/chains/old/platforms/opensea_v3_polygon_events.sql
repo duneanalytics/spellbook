@@ -20,9 +20,6 @@ WITH fee_wallets as (
      ,Seaport_call_matchAdvancedOrders = source('seaport_polygon','Seaport_call_matchAdvancedOrders')
      ,Seaport_call_matchOrders = source('seaport_polygon','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x0000000000000000000000000000000000001010'
-     ,native_token_symbol = 'MATIC'
      ,start_date = '2022-07-01'
     )
   }}

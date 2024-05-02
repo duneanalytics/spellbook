@@ -1,7 +1,6 @@
 {{ config(
     schema = 'opensea_v4_polygon',
     alias = 'events',
-    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -20,9 +19,6 @@ WITH fee_wallets as (
      ,Seaport_evt_OrderFulfilled = source('seaport_polygon','Seaport_evt_OrderFulfilled')
      ,Seaport_evt_OrdersMatched = source('seaport_polygon','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x0000000000000000000000000000000000001010'
-     ,native_token_symbol = 'MATIC'
      ,start_date = '2023-02-01'
     )
   }}

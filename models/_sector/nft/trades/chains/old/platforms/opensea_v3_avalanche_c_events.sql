@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v3_avalanche_c',
     alias = 'events',
-    
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -22,12 +22,9 @@ WITH fee_wallets as (
      ,Seaport_call_matchAdvancedOrders = source('seaport_avalanche_c','Seaport_call_matchAdvancedOrders')
      ,Seaport_call_matchOrders = source('seaport_avalanche_c','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
-     ,native_token_symbol = 'AVAX'
      ,start_date = '2022-09-06'
     )
-  }} 
+  }}
 )
 
 select *
