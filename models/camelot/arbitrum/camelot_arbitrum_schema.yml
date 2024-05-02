@@ -187,6 +187,13 @@ models:
       tags: ["arbitrum", "camelot", "whale_hunter"]
     description: >
       Camelot fee rates over time across all pairs and versions on Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - minute
+            - blockchain
+            - pair
+            - version
     columns:
       - &blockchain
         name: blockchain
