@@ -148,5 +148,6 @@ FROM
     ('aura-aura-finance','arbitrum','AURA',0x1509706a6c66CA549ff0cB464de88231DDBe213B, 18),
     ('aurabal-aura-bal','arbitrum','AURABAL',0x223738a747383d6F9f827d95964e4d8E8AC754cE, 18),
     ('sol-solana','arbitrum','SOL',0x2bcc6d6cdbbdc0a4071e48bb3b969b06b3330c07, 9),
-    ('jitosol-jito-staked-sol','arbitrum','JITOSOL',0x83e1d2310ade410676b1733d16e89f91822fd5c3, 9)
+    ('jitosol-jito-staked-sol','arbitrum','JITOSOL',0x83e1d2310ade410676b1733d16e89f91822fd5c3, 9),
+    ('sparta-spartadex', 'arbitrum', 'SPARTA', 0x11F98c7E42A367DaB4f200d2fdc460fb445CE9a8, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
