@@ -23,6 +23,8 @@
 , ref('addresses_events_zora_first_activity')
 , ref('addresses_events_base_first_activity')
 , ref('addresses_events_scroll_first_activity')
+, ref('addresses_events_zkevm_first_activity')
+, ref('addresses_events_linea_first_activity')
 ] %}
 
 SELECT *
