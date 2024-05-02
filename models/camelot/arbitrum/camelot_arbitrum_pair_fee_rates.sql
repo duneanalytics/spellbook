@@ -114,15 +114,11 @@ with
     -- Prepare data structure (1 row for every minute where pair trades happened
     -- and/or fee rates got updated)
     pairs_by_minute as (
-        select distinct minute, pair
-        from
-            (
-                select minute, pair
-                from camelot_pair_trades_by_minute
-                union all
-                select minute, pair
-                from fee_rate_updates
-            )
+        select minute, pair
+        from camelot_pair_trades_by_minute
+        union distinct
+        select minute, pair
+        from fee_rate_updates
     ),
     -- Add version, token0, token1 columns
     pairs_by_minute_with_metadata as (
