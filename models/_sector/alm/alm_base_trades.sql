@@ -27,11 +27,16 @@ WITH base_union AS (
             , block_number
             , pool_address
             , vault_address
+            , token_pair
             , token0_address
             , token1_address
             , volume_usd
+            , volume_share
+            , swap_volume_usd
             , volume0
+            , token0_symbol
             , volume1
+            , token1_symbol
             , volume0_raw
             , volume1_raw
             , tx_hash

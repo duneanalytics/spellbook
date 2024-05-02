@@ -250,6 +250,7 @@ select distinct '{{ blockchain }}' AS blockchain
     , v.evt_index
     , a.pool_address
     , a.vault_address
+    , concat(t0.symbol, '-', t1.symbol) as token_pair
     , a.token0_address
     , a.token1_address
     , v.volume1 / p.price AS volume0_raw
@@ -262,7 +263,9 @@ select distinct '{{ blockchain }}' AS blockchain
     , t1.symbol AS token1_symbol
     , p.price
     , p.price_usd
-    , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) * p.price_usd AS volume_usd
+    , v.volume1 / (p.price * power(10, coalesce(t1.decimals, 18))) * p.price_usd AS volume_usd
+    , v.swap_volume1 / power(10, coalesce(t1.decimals, 18)) * p.price_usd AS swap_volume_usd
+    , v.volume1 / v.swap_volume1 AS volume_share
 from (
     select block_time
         , block_number
