@@ -41,4 +41,6 @@ FROM (VALUES
     , (0x87A1fdc4C726c459f597282be639a045062c0E46, 'stataPolUSDT', 6)
     , (0x2dCa80061632f3F87c9cA28364d1d0c30cD79a19, 'stataPolUSDCn', 6)
     , (0x27f485b62C4A7E635F561A87560Adf5090239E93, 'DFX', 18)
+    , (0x416101d98df2187ddc0ff29b787ded19dd8c9740, 'MRK', 18)
+    , (0x5d0270967bab81d0822e500b986cb6652186eaa9, 'AUC02', 18)
 ) AS temp_table (contract_address, symbol, decimals)
