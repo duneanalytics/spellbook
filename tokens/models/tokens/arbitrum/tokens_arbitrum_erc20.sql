@@ -42,4 +42,7 @@ FROM (VALUES
     , (0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 'sUSDe', 18)
     , (0xC3F47f3627305213ADaa021CcCCb61D5987EAa97, 'HRK' , 18)
     , (0x83e1d2310ade410676b1733d16e89f91822fd5c3, 'JitoSOL' , 9)    
+    , (0x81b58ae322e933f8238505538a73fe81ad4f2b1e, 'BT' , 18)
+    , (0xe405f6384bcd8d44981879599983d92bd9776586, 'UEE' , 9)
+    , (0x5e0543f61f94b40c9a5265b5b3a7b35aa8dc6b49, 'AT' , 18)
 ) AS temp_table (contract_address, symbol, decimals)
