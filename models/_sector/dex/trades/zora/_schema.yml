@@ -23,3 +23,22 @@ models:
           seed_file: ref('uniswap_zora_base_trades_seed')
           filter:
             version: 2
+
+  - name: uniswap_v3_zora_base_trades
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: ilemi
+    config:
+      tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap zora v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_zora_base_trades_seed')
+          filter:
+            version: 3
