@@ -35,5 +35,6 @@ FROM
     ('sdai-savings-dai', 'gnosis', 'SDAI',0xaf204776c7245bF4147c2612BF6e5972Ee483701,18),
     ('eure-monerium-eur-emoney', 'gnosis', 'EURe', 0xcB444e90D8198415266c6a2724b7900fb12FC56E, 18),
     ('olas-autonolas', 'gnosis', 'OLAS', 0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f, 18),
-    ('steth-lido-staked-ether', 'gnosis', 'stETH', 0x3C037849a8ffcf19886e2f5B04f293B7847D0377, 18)
+    ('steth-lido-staked-ether', 'gnosis', 'stETH', 0x3C037849a8ffcf19886e2f5B04f293B7847D0377, 18),
+    ('crvusd-curvefi-usd-stablecoin', 'gnosis', 'CRVUSD', 0xaBEf652195F98A91E490f047A5006B71c85f058d, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
