@@ -32,11 +32,17 @@ WITH trusted_tokens AS (
 SELECT
     pp.*
     , COALESCE(
-        CASE WHEN tt0.contract_address IS NOT NULL THEN 1 / (pp.price * p0.price) END,
-        CASE WHEN tt1.contract_address IS NOT NULL THEN p1.price / pp.price END,
-        1 / (pp.price * p0.price),
-        p1.price / pp.price
+        CASE WHEN tt0.contract_address IS NOT NULL THEN pp.price / p0.price END,
+        CASE WHEN tt1.contract_address IS NOT NULL THEN p1.price * pp.price END,
+        pp.price / p0.price,
+        p1.price * pp.price
     ) AS price_usd
+    , COALESCE(
+        CASE WHEN tt0.contract_address IS NOT NULL THEN pp.price * p0.price END,
+        CASE WHEN tt1.contract_address IS NOT NULL THEN p1.price / pp.price END,
+        pp.price * p0.price,
+        p1.price / pp.price
+    ) AS price_usd_2
 FROM
     {{ pool_prices_cte }} pp
 LEFT JOIN prices p0
