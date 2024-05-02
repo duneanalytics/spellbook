@@ -28,7 +28,6 @@ with
             token1,
             {{ v2_default_fee }} / {{ v2_fee_precision }} as token1_fee_rate
         from {{ source("camelot_arbitrum", "CamelotFactory_evt_PairCreated") }}
-
     ),
     v2_directional_fee_rate_updates as (
         select
