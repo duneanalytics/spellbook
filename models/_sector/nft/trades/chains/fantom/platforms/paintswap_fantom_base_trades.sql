@@ -16,8 +16,8 @@ SELECT 'fantom' as blockchain
 , 'v1' as project_version
 , ps.evt_block_time AS block_time
 , ps.evt_block_number AS block_number
-, ps.nfts AS nft_contract_address
-, ps.tokenIds AS nft_token_id
+, ps.nfts[1] AS nft_contract_address
+, ps.tokenIds[1] AS nft_token_id
 , ps.amount AS nft_amount
 , ps.seller AS seller
 , ps.buyer AS buyer
