@@ -592,7 +592,7 @@ select
         ,nft_token_standard as token_standard
 
         -- price info
-        ,price_amount as amount_original
+        ,price_amount_raw as amount_raw
         ,token_contract_address as currency_contract
 
         -- project info (platform or exchange)
