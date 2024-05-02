@@ -2,11 +2,10 @@
     schema = 'omen_gnosis',
     alias = 'trades',
     
-    partition_by = ['block_day'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_day', 'tx_hash', 'evt_index','outcomeSlot'],
+    unique_key = ['block_day', 'tx_hash', 'evt_index','outcomeslot'],
     post_hook='{{ expose_spells(blockchains  = \'["gnosis"]\',
                                 spell_type   = "project",
                                 spell_name   = "omen",
@@ -26,12 +25,12 @@ trades AS (
         ,tx_to 
         ,tx_hash 
         ,index AS evt_index
-        ,contract_address AS fixedProductMarketMaker
+        ,contract_address AS fixedproductmarketmaker
         ,varbinary_substring(topic1,13,20)  AS address
-        ,varbinary_to_uint256(varbinary_ltrim(topic2)) AS outcomeIndex
+        ,varbinary_to_uint256(varbinary_ltrim(topic2)) AS outcomeindex
         ,varbinary_to_uint256(varbinary_ltrim(varbinary_substring(data,1,32)))AS amount
-        ,varbinary_to_uint256(varbinary_ltrim(varbinary_substring(data,33,32))) AS feeAmount
-        ,varbinary_to_uint256(varbinary_ltrim(varbinary_substring(data,65,32))) AS outcomeTokens
+        ,varbinary_to_uint256(varbinary_ltrim(varbinary_substring(data,33,32))) AS feeamount
+        ,varbinary_to_uint256(varbinary_ltrim(varbinary_substring(data,65,32))) AS outcometokens
         ,CASE 
             WHEN topic0 = 0x4f62630f51608fc8a7603a9391a5101e58bd7c276139366fc107dc3b67c3dcf8 
                 THEN 'Buy'
@@ -62,13 +61,13 @@ trades_slot AS (
         ,t1.tx_to 
         ,t1.tx_hash 
         ,t1.evt_index
-        ,t1.fixedProductMarketMaker
+        ,t1.fixedproductmarketmaker
         ,t1.address
-        ,t1.outcomeIndex
-        ,SEQUENCE(0,COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ) AS outcomeSlot
+        ,t1.outcomeindex
+        ,SEQUENCE(0,COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ) AS outcomeslot
         ,t1.amount
-        ,t1.feeAmount
-        ,TRANSFORM(SEQUENCE(0, COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ), x -> IF(x = t1.outcomeIndex, t1.outcomeTokens, 0)) AS outcomeTokens_amount
+        ,t1.feeamount
+        ,TRANSFORM(SEQUENCE(0, COALESCE(CARDINALITY(t2.partition),CARDINALITY(t3.partition)) - 1 ), x -> IF(x = t1.outcomeindex, t1.outcometokens, 0)) AS outcometokens_amount
         ,t1.action
     FROM
         trades  t1
@@ -79,7 +78,7 @@ trades_slot AS (
         AND
         t2.evt_index < t1.evt_index
         AND
-        t2.amount = CAST(t1.amount AS UINT256) + CAST(t1.feeAmount AS UINT256)
+        t2.amount = CAST(t1.amount AS UINT256) + CAST(t1.feeamount AS UINT256)
     LEFT JOIN 
         {{source('omen_gnosis','ConditionalTokens_evt_PositionSplit') }} t3
         ON
@@ -87,17 +86,17 @@ trades_slot AS (
         AND
         t3.evt_index < t1.evt_index
         AND
-        t3.amount = CAST(t1.amount AS UINT256) - CAST(t1.feeAmount AS UINT256)
+        t3.amount = CAST(t1.amount AS UINT256) - CAST(t1.feeamount AS UINT256)
 ),
 
 final AS (
     SELECT 
         *
         ,TRANSFORM(
-            outcomeTokens_amount, 
+            outcometokens_amount, 
             x -> CASE
-                    WHEN action = 'Buy' THEN CAST(amount AS INT256) - CAST(feeAmount + x AS INT256)
-                    WHEN action = 'Sell' THEN CAST(x AS INT256) - CAST(amount + feeAmount AS INT256)
+                    WHEN action = 'Buy' THEN CAST(amount AS INT256) - CAST(feeamount + x AS INT256)
+                    WHEN action = 'Sell' THEN CAST(x AS INT256) - CAST(amount + feeamount AS INT256)
                 END
         ) AS reserves_delta
     FROM    
@@ -111,13 +110,13 @@ SELECT
     ,tx_to 
     ,tx_hash 
     ,evt_index
-    ,fixedProductMarketMaker
+    ,fixedproductmarketmaker
     ,address
-    ,outcomeIndex
-    ,outcomeSlot
+    ,outcomeindex
+    ,outcomeslot
     ,amount
-    ,feeAmount
-    ,outcomeTokens_amount
+    ,feeamount
+    ,outcometokens_amount
     ,action
     ,reserves_delta
 FROM final

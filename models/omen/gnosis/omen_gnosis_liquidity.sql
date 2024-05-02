@@ -2,7 +2,6 @@
     schema = 'omen_gnosis',
     alias = 'liquidity',
     
-    partition_by = ['block_day'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -27,9 +26,9 @@ FPMMFundingAdded AS (
         index AS evt_index,
         contract_address AS evt_contract_address,
         VARBINARY_SUBSTRING(topic1, 13, 20) AS funder,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 33, 32))) AS sharesMinted,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS amountsAdded_size,
-        SEQUENCE(0, TRY_CAST(VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS INTEGER) - 1) AS outcomeIndex,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 33, 32))) AS sharesminted,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS amountsadded_size,
+        SEQUENCE(0, TRY_CAST(VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS INTEGER) - 1) AS outcomeindex,
         TRANSFORM(
             SEQUENCE(1, TRY_CAST(VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS INTEGER) )
             , x -> VARBINARY_TO_UINT256(
@@ -37,7 +36,7 @@ FPMMFundingAdded AS (
                     VARBINARY_SUBSTRING(data, 65 + 32 * x, 32)
                 )
             )
-        ) AS outcomeTokens_amount
+        ) AS outcometokens_amount
     FROM 
         {{source('gnosis','logs') }}
     WHERE
@@ -54,19 +53,19 @@ FPMMFundingAdded AS (
 add_liquidity AS (
     SELECT 
         block_time,
-        DATE_TRUNC('day', block_time) AS block_day,
+        CAST(block_time AS DATE) AS block_day,
         tx_from,
         tx_to,
         tx_hash,
         evt_index,
-        evt_contract_address AS fixedProductMarketMaker,
+        evt_contract_address AS fixedproductmarketmaker,
         funder,
-        sharesMinted AS shares,
-        NULL AS collateralRemovedFromFeePool,
-        outcomeIndex,
-        outcomeTokens_amount,
+        sharesminted AS shares,
+        NULL AS collateralremovedfromfeepool,
+        outcomeindex,
+        outcometokens_amount,
         'Add' AS action,
-        TRANSFORM(outcomeTokens_amount, x -> CAST(x AS INT256)) AS reserves_delta
+        TRANSFORM(outcometokens_amount, x -> CAST(x AS INT256)) AS reserves_delta
     FROM
         FPMMFundingAdded
 ),
@@ -81,10 +80,10 @@ FPMMFundingRemoved AS (
         index AS evt_index,
         contract_address AS evt_contract_address,
         VARBINARY_SUBSTRING(topic1, 13, 20) AS funder,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 33, 32))) AS collateralRemovedFromFeePool,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS sharesBurnt,
-        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 97, 32))) AS amountsRemoved_size,
-        SEQUENCE(0, TRY_CAST(VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 97, 32))) AS INTEGER) - 1) AS outcomeIndex,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 33, 32))) AS collateralremovedfromfeepool,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 65, 32))) AS sharesburnt,
+        VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 97, 32))) AS amountsremoved_size,
+        SEQUENCE(0, TRY_CAST(VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 97, 32))) AS INTEGER) - 1) AS outcomeindex,
         TRANSFORM(
             SEQUENCE(1, TRY_CAST(VARBINARY_TO_UINT256(VARBINARY_LTRIM(VARBINARY_SUBSTRING(data, 97, 32))) AS INTEGER) )
             , x -> VARBINARY_TO_UINT256(
@@ -92,7 +91,7 @@ FPMMFundingRemoved AS (
                     VARBINARY_SUBSTRING(data, 97 + 32 * x, 32)
                 )
             )
-        ) AS outcomeTokens_amount
+        ) AS outcometokens_amount
     FROM 
         {{source('gnosis','logs') }}
     WHERE
@@ -109,19 +108,19 @@ FPMMFundingRemoved AS (
 remove_liquidity AS (
     SELECT 
         block_time,
-        DATE_TRUNC('day', block_time) AS block_day,
+        CAST(block_time AS DATE) AS block_day,
         tx_from,
         tx_to,
         tx_hash,
         evt_index,
-        evt_contract_address AS fixedProductMarketMaker,
+        evt_contract_address AS fixedproductmarketmaker,
         funder,
-        sharesBurnt AS shares,
-        collateralRemovedFromFeePool,
-        outcomeIndex,
-        outcomeTokens_amount,
+        sharesburnt AS shares,
+        collateralremovedfromfeepool,
+        outcomeindex,
+        outcometokens_amount,
         'Remove' AS action,
-        TRANSFORM(outcomeTokens_amount, x -> CAST(-x AS INT256)) AS reserves_delta
+        TRANSFORM(outcometokens_amount, x -> CAST(-x AS INT256)) AS reserves_delta
     FROM
         FPMMFundingRemoved 
 ),
@@ -139,12 +138,12 @@ SELECT
     tx_to,
     tx_hash,
     evt_index,
-    fixedProductMarketMaker,
+    fixedproductmarketmaker,
     funder,
     shares,
-    collateralRemovedFromFeePool,
-    outcomeIndex,
-    outcomeTokens_amount,
+    collateralremovedfromfeepool,
+    outcomeindex,
+    outcometokens_amount,
     action,
     reserves_delta
 FROM final

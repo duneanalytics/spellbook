@@ -17,7 +17,7 @@ models:
             - block_day
             - tx_hash
             - evt_index
-            - outcomeSlot
+            - outcomeslot
     columns:
       - &block_time
         name: block_time
@@ -37,26 +37,26 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the log event in the block"
-      - &fixedProductMarketMaker
-        name: fixedProductMarketMaker
+      - &fixedproductmarketmaker
+        name: fixedproductmarketmaker
         description: "Address of the Fixed Product Market Maker"
       - &address
         name: address
         description: "Address of buyer or seller"
-      - &outcomeSlot
-        name: outcomeSlot
+      - &outcomeslot
+        name: outcomeslot
         description: "Outcome slot for the specific Fixed Product Market Maker"
-      - &outcomeIndex
-        name: outcomeIndex
+      - &outcomeindex
+        name: outcomeindex
         description: "Index of the outcome chosen"
       - &amount
         name: amount
         description: "Amount in native currency that was bought or sold"
-      - &feeAmount
-        name: feeAmount
+      - &feeamount
+        name: feeamount
         description: "Fee amount in native currency that was charged"
-      - &outcomeTokens_amount
-        name: outcomeTokens_amount
+      - &outcometokens_amount
+        name: outcometokens_amount
         description: "Amount of conditional tokens that were minted or burnt by the Fixed Product Market Maker"
       - &action
         name: action
@@ -88,18 +88,18 @@ models:
       - *tx_to
       - *tx_hash
       - *evt_index
-      - *fixedProductMarketMaker
+      - *fixedproductmarketmaker
       - &funder
         name: funder
         description: "Address of the wallet adding or removing liquidity"
       - &shares
         name: shares
         description: "Amount of shares involved in liquidity transactions"
-      - &collateralRemovedFromFeePool
-        name: collateralRemovedFromFeePool
+      - &collateralremovedfromfeepool
+        name: collateralremovedfromfeepool
         description: "Collateral removed from the fee pool"
-      - *outcomeIndex
-      - *outcomeTokens_amount
+      - *outcomeindex
+      - *outcometokens_amount
       - *amount
       - *action
       - *reserves_delta
