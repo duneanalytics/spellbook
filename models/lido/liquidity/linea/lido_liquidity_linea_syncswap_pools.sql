@@ -25,12 +25,7 @@ where (token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
 )      
 
 , tokens as (
- select distinct token,
-         case when token = 0xb5bedd42000b71fdde22d3ee8a79bd49a568fc8f then 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
-             when token = 0x176211869ca2b568f2a7d4ee941e073a821ee1ff then 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
-             when token = 0xa219439258ca9da29e9cc4ce5596924745e12b93 then 0xdac17f958d2ee523a2206206994597c13d831ec7
-             when token = 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f then 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        end as token_eth     
+ select distinct token
  from (
  select token0 as token
  from {{source('syncswap_linea','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
@@ -47,40 +42,38 @@ where (token0 = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
  , tokens_prices_daily as (     
 select distinct 
       DATE_TRUNC('day', minute) AS time,
-      t.token AS token,
+      contract_address AS token,
       symbol,
       decimals,
       AVG(price) AS price
 FROM {{source('prices','usd')}} p
-  JOIN tokens t on p.contract_address = t.token_eth
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
 {% else %}
 WHERE {{incremental_predicate('p.minute')}}
 {% endif %}
      and date_trunc('day', minute) < current_date
-     and blockchain = 'ethereum'
-  and contract_address IN (select token_eth from tokens)
+     and blockchain = 'linea'
+  and contract_address IN (select token from tokens)
 group by 1,2,3,4
 union all
 select distinct
       DATE_TRUNC('day', minute),
-      t.token AS token,
+      contract_address AS token,
       symbol,
       decimals,      
       LAST_VALUE(price) OVER (PARTITION BY DATE_TRUNC('day', minute),contract_address  ORDER BY minute NULLS FIRST range BETWEEN UNBOUNDED preceding AND UNBOUNDED following) AS price
     FROM {{source('prices','usd')}} p
-      JOIN tokens t on p.contract_address = t.token_eth
     WHERE
       DATE_TRUNC('day', minute) = current_date
-      and blockchain = 'ethereum'
-  and contract_address IN (select token_eth from tokens) 
+      and blockchain = 'linea'
+  and contract_address IN (select token from tokens) 
  )
 
  , wsteth_prices_hourly AS (
     SELECT distinct
         DATE_TRUNC('hour', minute) time, 
-        0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F as token,
+        contract_address as token,
         symbol,
         decimals,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
@@ -90,7 +83,7 @@ select distinct
     {% else %}
         WHERE {{incremental_predicate('p.minute')}}
     {% endif %}
-      and blockchain = 'ethereum' and contract_address = 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0
+      and blockchain = 'linea' and contract_address = 0xB5beDd42000b71FddE22D3eE8a79Bd49A568fC8F
       
     
 ) 
