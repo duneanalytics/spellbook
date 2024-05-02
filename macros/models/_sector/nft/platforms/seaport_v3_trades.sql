@@ -593,7 +593,7 @@ select
 
         -- price info
         ,price_amount as amount_original
-        ,currency_contract as currency_contract
+        ,token_contract_address as currency_contract
 
         -- project info (platform or exchange)
         ,platform_contract_address as project_contract_address
