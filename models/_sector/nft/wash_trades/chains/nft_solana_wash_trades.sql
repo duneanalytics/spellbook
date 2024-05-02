@@ -100,10 +100,10 @@ WITH filter_1 AS (
     FROM {{ ref('nft_solana_trades') }} nftt
     INNER JOIN {{ ref('addresses_events_solana_first_funded_by') }} filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
-        --AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM cex_solana.addresses)
+        AND filter_funding_buyer.first_funded_by NOT IN (SELECT address FROM cex_solana.addresses)
     INNER JOIN {{ ref('addresses_events_solana_first_funded_by') }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
-        --AND filter_funding_seller.first_funded_by NOT IN (SELECT address FROM cex_solana.addresses)
+        AND filter_funding_seller.first_funded_by NOT IN (SELECT address FROM cex_solana.addresses)
         AND (nftt.tx_id, nftt.inner_instruction_index, nftt.outer_instruction_index) IS NOT NULL
         AND nftt.buyer IS NOT NULL
         AND nftt.seller IS NOT NULL
