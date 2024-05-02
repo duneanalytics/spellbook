@@ -1,7 +1,6 @@
 {{ config(
     schema = 'omen_gnosis',
     alias = 'liquidity',
-    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
