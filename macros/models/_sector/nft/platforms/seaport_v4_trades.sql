@@ -447,7 +447,6 @@ select
         -- royalty info
         ,creator_fee_receiver_1 as royalty_fee_receive_address
         ,creator_fee_amount_raw as royalty_fee_amount_raw
-        ,creator_fee_amount_usd as royalty_fee_amount_usd
         ,creator_fee_receiver_1 as royalty_fee_receive_address_1
         ,creator_fee_receiver_2 as royalty_fee_receive_address_2
         ,creator_fee_receiver_3 as royalty_fee_receive_address_3
