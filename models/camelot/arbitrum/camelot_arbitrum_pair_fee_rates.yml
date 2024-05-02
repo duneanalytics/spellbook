@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: camelot_pair_fee_rates
+  - name: camelot_arbitrum_pair_fee_rates
     meta:
       blockchain: arbitrum
       sector: dex
