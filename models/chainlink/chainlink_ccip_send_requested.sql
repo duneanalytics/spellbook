@@ -29,7 +29,8 @@ FROM (
       token,
       fee_token,
       destination_selector,
-      destination_blockchain       
+      destination_blockchain,
+      tx_hash      
     FROM {{ ref(model) }}
     {% if not loop.last %}
     UNION ALL

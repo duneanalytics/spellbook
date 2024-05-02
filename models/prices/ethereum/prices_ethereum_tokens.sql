@@ -1716,7 +1716,7 @@ FROM
     ('pooh-pooh', 'ethereum', 'POOH',0xb69753c06bb5c366be51e73bfc0cc2e3dc07e371,18),
     ('mumu-mumu', 'ethereum', 'MUMU',0x2f573070e6090b3264fe707e2c9f201716f123c7,18),
     ('wrld-nft-worlds', 'ethereum', 'WRLD',0xd5d86fc8d5c0ea1ac1ac5dfab6e529c9967a45e9,18),
-    ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,18),
+    ('grok-grok-eth', 'ethereum', 'GROK',0x8390a1da07e376ef7add4be859ba74fb83aa02d5,9),
     ('deai-zero1-token', 'ethereum', 'DEAI',0x1495bc9e44af1f8bcb62278d2bec4540cf0c05ea,18),
     ('dsync-destra-network', 'ethereum', 'DSYNC',0xf94e7d0710709388bce3161c32b4eea56d3f91cc,18),
     ('ethfi-etherfi', 'ethereum', 'ETHFI',0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb,18),
@@ -1731,7 +1731,16 @@ FROM
     ('sect-sect-bot', 'ethereum', 'SECT', 0x24edded3f03abb2e9d047464294133378bddb596, 18),
     ('ena-ethena', 'ethereum', 'ENA', 0x57e114B691Db790C35207b2e685D4A43181e6061, 18),
     ('next-connext-eth', 'ethereum', 'NEXT', 0xFE67A4450907459c3e1FFf623aA927dD4e28c67a, 18),
-    ('trump-maga', 'ethereum', 'TRUMP', 0x576e2BeD8F7b46D34016198911Cdf9886f78bea7, 9)
+    ('trump-maga', 'ethereum', 'TRUMP', 0x576e2BeD8F7b46D34016198911Cdf9886f78bea7, 9),
+    ('rsweth-restaked-swell-eth', 'ethereum', 'RSWETH', 0xfae103dc9cf190ed75350761e95403b7b8afa6c0, 18),
+    ('safe-safe', 'ethereum', 'SAFE', 0x5afe3855358e112b5647b952709e6165e1c1eeee, 18),
+    ('omni-omni-network', 'ethereum', 'OMNI', 0x36e66fbbce51e4cd5bd3c62b637eb411b18949d4, 18),
+    ('stone-stakestone-ether', 'ethereum', 'STONE', 0x7122985656e38BDC0302Db86685bb972b145bD3C, 18),
+    ('rez-renzo', 'ethereum', 'REZ', 0x3b50805453023a91a8bf641e279401a0b23fa6f9, 18),
+    ('pepe-pepebomb', 'ethereum', 'PEPE', 0x8dba4bc68126bd186fbb62c976539d1558c9fe73, 18),
+    ('booe-book-of-ethereum', 'ethereum', 'BOOE', 0x289ff00235d2b98b0145ff5d4435d3e92f9540a6, 18),
+    ('zero-zero-tech', 'ethereum', 'ZERO', 0x0ec78ed49c2d27b315d462d43b5bab94d2c79bf8, 18),
+    ('wolf-landwolf', 'ethereum', 'WOLF', 0x67466be17df832165f8c80a5a120ccc652bd7e69, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

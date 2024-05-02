@@ -2187,6 +2187,7 @@ models:
       - &destination_selector
         name: destination_selector
         description: "Destination Selector"
+      - *tx_hash
 
   - name: chainlink_ccip_send_requested_daily
     meta:
@@ -2299,7 +2300,7 @@ models:
         name: trace_address
         description: "Trace Address"
 
-  - name: chainlink_ccip_tokens_locked_logs
+  - name: chainlink_ccip_tokens_transferred_logs
     meta:
       blockchain:
         [
@@ -2320,7 +2321,7 @@ models:
           "chainlink",
           "ccip",
           "tokens",
-          "locked",
+          "transferred",
           "logs",
           "arbitrum",
           "avalanche_c",
@@ -2331,7 +2332,13 @@ models:
           "polygon",
         ]
     description: >
-      Chainlink CCIP Tokens Locked Logs
+      Chainlink CCIP Tokens Transferred Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_hash
