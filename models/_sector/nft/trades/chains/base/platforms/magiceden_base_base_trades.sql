@@ -156,30 +156,35 @@ WITH trades AS (
     GROUP BY 1, 2, 3
     )
 
-SELECT 'base' as blockchain
-, 'magiceden' as project
-, 'v1' as project_version
-, t.block_time
-, CAST(date_trunc('day', t.block_time) AS date) AS block_date
-, CAST(date_trunc('month', t.block_time) as date) as block_month
-, t.block_number
-, t.tx_hash
-, t.project_contract_address
-, t.buyer
-, t.seller
-, t.nft_contract_address
-, t.nft_token_id
-, t.nft_amount
-, 'secondary' AS trade_type
-, t.trade_category
-, t.currency_contract
-, t.price_raw
-, f.platform_fee_amount_raw
-, f.royalty_fee_amount_raw
-, CASE WHEN platform_fee_amount_raw > 0 THEN f.platform_fee_address END AS platform_fee_address
-, f.royalty_fee_address
-, t.sub_tx_trade_id
-FROM whitelisted_trades t
-LEFT JOIN fees f ON t.block_number=f.block_number
-    AND t.tx_hash=f.tx_hash
-    AND (f.contract_address=t.currency_contract OR (f.contract_address=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AND t.currency_contract=0x0000000000000000000000000000000000000000))
+, base_trades AS (
+        SELECT 'base' as blockchain
+    , 'magiceden' as project
+    , 'v1' as project_version
+    , t.block_time
+    , CAST(date_trunc('day', t.block_time) AS date) AS block_date
+    , CAST(date_trunc('month', t.block_time) as date) as block_month
+    , t.block_number
+    , t.tx_hash
+    , t.project_contract_address
+    , t.buyer
+    , t.seller
+    , t.nft_contract_address
+    , t.nft_token_id
+    , t.nft_amount
+    , 'secondary' AS trade_type
+    , t.trade_category
+    , t.currency_contract
+    , t.price_raw
+    , f.platform_fee_amount_raw
+    , f.royalty_fee_amount_raw
+    , CASE WHEN platform_fee_amount_raw > 0 THEN f.platform_fee_address END AS platform_fee_address
+    , f.royalty_fee_address
+    , t.sub_tx_trade_id
+    FROM whitelisted_trades t
+    LEFT JOIN fees f ON t.block_number=f.block_number
+        AND t.tx_hash=f.tx_hash
+        AND (f.contract_address=t.currency_contract OR (f.contract_address=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AND t.currency_contract=0x0000000000000000000000000000000000000000))
+    )
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_trades', 'base') }}
