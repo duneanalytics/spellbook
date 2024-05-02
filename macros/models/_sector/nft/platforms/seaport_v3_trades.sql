@@ -587,14 +587,13 @@ select
 
         -- nft token info
         ,nft_contract_address
-        ,nft_token_name as collection
         ,nft_token_id as token_id
         ,nft_token_amount as number_of_items
         ,nft_token_standard as token_standard
 
         -- price info
         ,price_amount as amount_original
-        ,token_alternative_symbol as currency_contract
+        ,currency_contract as currency_contract
 
         -- project info (platform or exchange)
         ,platform_contract_address as project_contract_address
