@@ -262,11 +262,11 @@ select distinct '{{ blockchain }}' AS blockchain
     , t1.symbol AS token1_symbol
     , p.price
     , p.price_usd
-    , p.price_usd2
+    , p.price_usd_2
     , v.volume1 / power(10, coalesce(t1.decimals, 18)) * p.price_usd AS volume_usd_1A
     , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) * p.price_usd AS volume_usd_1B
-    , v.volume1 / power(10, coalesce(t1.decimals, 18)) * p.price_usd AS volume_usd_2A
-    , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) * p.price_usd AS volume_usd_2B
+    , v.volume1 / power(10, coalesce(t1.decimals, 18)) * p.price_usd_2 AS volume_usd_2A
+    , v.volume1 / (p.price * power(10, coalesce(t0.decimals, 18))) * p.price_usd_2 AS volume_usd_2B
 from (
     select block_time
         , block_number
