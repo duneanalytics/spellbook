@@ -1,7 +1,7 @@
 {{ config(
-    schema = 'opensea_v3_arbitrum',
+    schema = 'opensea_v3_avalanche_c',
     alias = 'events',
-    
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -16,16 +16,14 @@ WITH fee_wallets as (
 )
 , trades as (
     {{ seaport_v3_trades(
-     blockchain = 'arbitrum'
-     ,source_transactions = source('arbitrum','transactions')
-     ,Seaport_evt_OrderFulfilled = source('seaport_arbitrum','Seaport_evt_OrderFulfilled')
-     ,Seaport_call_matchAdvancedOrders = source('seaport_arbitrum','Seaport_call_matchAdvancedOrders')
-     ,Seaport_call_matchOrders = source('seaport_arbitrum','Seaport_call_matchOrders')
+     blockchain = 'avalanche_c'
+     ,source_transactions = source('avalanche_c','transactions')
+     ,Seaport_evt_OrderFulfilled = source('seaport_avalanche_c','Seaport_evt_OrderFulfilled')
+     ,Seaport_call_matchAdvancedOrders = source('seaport_avalanche_c','Seaport_call_matchAdvancedOrders')
+     ,Seaport_call_matchOrders = source('seaport_avalanche_c','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
-     ,native_token_symbol = 'ETH'
      ,start_date = '2022-09-06'
+     ,native_currency_contract = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
     )
   }}
 )
