@@ -23,7 +23,7 @@ with
             {{ ref('orca_whirlpool_trades') }}
         WHERE 1 = 1
             {% if is_incremental() %}
-            AND {{ incremental_predicate('minute') }}
+            AND {{ incremental_predicate('block_time') }}
             {% else %}
             AND block_time >= DATE('2022-03-10')
             {% endif %}
@@ -47,22 +47,23 @@ with
             2
     ),
     all_trades as (
-        select *
-        from bought_price
+        SELECT *
+        FROM bought_price
         UNION ALL
-        select *
-        from sold_price
+        SELECT *
+        FROM sold_price
     )
-select t1.token_mint as contract_address,
+SELECT t1.token_mint as contract_address,
     t1.minute as minute,
     t2.symbol,
     t2.decimals,
     'solana' as blockchain,
     avg(t1.price) as price,
     DATE_TRUNC('month', t1.minute) as block_month
-from all_trades t1
-    join tokens_solana.fungible t2 ON t1.token_mint = t2.token_mint_address
-group by 1,
+FROM all_trades t1
+    JOIN
+        {{ ref('tokens_solana_fungible') }}  t2 ON t1.token_mint = t2.token_mint_address
+GROUP BY 1,
     2,
     3,
     4
