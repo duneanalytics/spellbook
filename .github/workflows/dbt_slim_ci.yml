@@ -78,11 +78,11 @@ jobs:
 
       - name: Run dex_trades if new blockchain added
         if: steps.file_changes.outputs.dex_base_trades == 'true'
-        run: "dbt -x run $PROFILE --select dex_trades --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt -x run $PROFILE --select dex_trades --project-dir ${PROJECT_DIR}"
 
       - name: Run prices validation dbt test if new blockchain added
         if: steps.file_changes.outputs.dex_base_trades == 'true'
-        run: "dbt test $PROFILE --select test_check_null_amount_usd --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt test $PROFILE --select test_check_null_amount_usd --project-dir ${PROJECT_DIR}"
 
       - name: Set environment variable for incremental model count
         run: |
