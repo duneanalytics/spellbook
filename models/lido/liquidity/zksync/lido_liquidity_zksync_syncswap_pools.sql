@@ -1,7 +1,6 @@
 {{ config(
     schema='lido_liquidity_zksync',
     alias = 'syncswap_pools',
-    tags=['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -18,9 +17,9 @@
 with  pools as (
 select pool AS address,
       'zksync' AS blockchain,
-      'synkswap' AS project,
+      'syncswap' AS project,
       *
-from {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}}
+from {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
 where (token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
       OR token1 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867)
 )      
@@ -29,11 +28,11 @@ where (token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
  select distinct token
  from (
  select token0 as token
- from {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}}
+ from {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
  where token1 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
  union all
  select token1
- from {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}}
+ from {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}}
  where token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
  union all
  select 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
@@ -105,8 +104,8 @@ from wsteth_prices_hourly
       cr.token1,
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
- from {{source('syncswap_zksync','AquaPool_evt_Mint')}} m
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on m.contract_address = cr.pool 
+ from {{source('syncswap_zksync','SyncSwapClassicPool_evt_Mint')}} m
+ left join {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on m.contract_address = cr.pool 
  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -125,8 +124,8 @@ from wsteth_prices_hourly
       cr.token1,
       (-1)*SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       (-1)*SUM(CAST(amount1 AS DOUBLE)) AS amount1
- from {{source('syncswap_zksync','AquaPool_evt_Burn')}} b
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on b.contract_address = cr.pool 
+ from {{source('syncswap_zksync','SyncSwapClassicPool_evt_Burn')}} b
+ left join {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on b.contract_address = cr.pool 
  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -146,8 +145,8 @@ from wsteth_prices_hourly
       cr.token1,
       SUM(CAST(amount0In AS DOUBLE) - CAST(amount0Out AS DOUBLE)) AS amount0,
       SUM(CAST(amount1In AS DOUBLE) - CAST(amount1Out AS DOUBLE)) AS amount1
- from {{source('syncswap_zksync','AquaPool_evt_Swap')}} s
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on s.contract_address = cr.pool
+ from {{source('syncswap_zksync','SyncSwapClassicPool_evt_Swap')}} s
+ left join {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on s.contract_address = cr.pool
  
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
@@ -203,8 +202,8 @@ GROUP BY 1,2,3,4
       s.contract_address AS pool,
       sum(case when cr.token0 = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then CAST(amount0In AS DOUBLE) + CAST(amount0Out AS DOUBLE)
       else CAST(amount1In AS DOUBLE) + CAST(amount1Out AS DOUBLE) end) as wsteth_amount
- from {{source('syncswap_zksync','AquaPool_evt_Swap')}} s
- left join {{source('syncswap_zksync','SyncSwapAquaPoolFactory_v2_evt_PoolCreated')}} cr on s.contract_address = cr.pool
+ from {{source('syncswap_zksync','SyncSwapClassicPool_evt_Swap')}} s
+ left join {{source('syncswap_zksync','SyncSwapClassicPoolFactory_evt_PoolCreated')}} cr on s.contract_address = cr.pool
 
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
