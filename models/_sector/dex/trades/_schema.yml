@@ -16,7 +16,6 @@ models:
             - version
             - tx_hash
             - evt_index
-      - check_dex_null_amount_usd
     columns:
       - &blockchain
         name: blockchain
