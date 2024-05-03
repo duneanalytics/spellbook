@@ -34,7 +34,7 @@ with base_union as (
     (
         {% for model in models %}
         SELECT
-            blockchain
+            blockchain --force change to indclude this model in PR, mimicing someone adding a chain to above variable
             , project
             , version
             , block_month
