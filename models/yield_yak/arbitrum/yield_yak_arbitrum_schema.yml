@@ -234,3 +234,37 @@ models:
       - &deposit_token_balance
         name: deposit_token_balance
         description: "Balance of deposit tokens held in the contract in the time window specified"
+  - name: yield_yak_arbitrum_yield_strategies
+    meta:
+      blockchain: arbitrum
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+    description: >
+        yield yak yield strategies on arbitrum with information on the name, deposit token and reward token
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+    columns:
+      - *blockchain
+      - *contract_address
+      - &contract_name
+        name: contract_name
+        description: "The name of the contract as given by block explorers"
+      - &created_block_time
+        name: created_block_time
+        description: "UTC time at which this contract was created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block number at which this contract was created"
+      - &name
+        name: name
+        description: "The name of the yield strategy as defined by the contract"
+      - &deposit_token_address
+        name: deposit_token_address
+        description: "Address of the token used to deposit into this strategy"
+      - &reward_token_address
+        name: reward_token_address
+        description: "Address of the token used as a reward for this strategy which is paid during Reinvest events as fees and also sold/swapped for more of the deposit token"

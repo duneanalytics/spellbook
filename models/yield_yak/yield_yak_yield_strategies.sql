@@ -1,0 +1,35 @@
+{{ config(
+	    schema = 'yield_yak',
+        alias = 'yield_strategies',
+        post_hook='{{ expose_spells(
+                      blockchains = \'["arbitrum", "avalanche_c"]\',
+                      spell_type = "project",
+                      spell_name = "yield_yak",
+                      contributors = \'["angus_1"]\') }}'
+        )
+}}
+
+{%- set yield_yak_models = [
+ref('yield_yak_avalanche_c_yield_strategies')
+,ref('yield_yak_arbitrum_yield_strategies')
+] -%}
+
+
+SELECT *
+FROM (
+    {%- for strategy_model in yield_yak_models %}
+    SELECT
+        blockchain
+        , contract_address
+        , contract_name
+        , created_block_time
+        , created_block_number
+        , name
+        , deposit_token_address
+        , reward_token_address
+    FROM {{ strategy_model }}
+    {% if not loop.last -%}
+    UNION ALL
+    {%- endif -%}
+    {%- endfor %}
+)
