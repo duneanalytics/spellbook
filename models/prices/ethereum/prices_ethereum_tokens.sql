@@ -1740,7 +1740,8 @@ FROM
     ('pepe-pepebomb', 'ethereum', 'PEPE', 0x8dba4bc68126bd186fbb62c976539d1558c9fe73, 18),
     ('booe-book-of-ethereum', 'ethereum', 'BOOE', 0x289ff00235d2b98b0145ff5d4435d3e92f9540a6, 18),
     ('zero-zero-tech', 'ethereum', 'ZERO', 0x0ec78ed49c2d27b315d462d43b5bab94d2c79bf8, 18),
-    ('wolf-landwolf', 'ethereum', 'WOLF', 0x67466be17df832165f8c80a5a120ccc652bd7e69, 18)
+    ('wolf-landwolf', 'ethereum', 'WOLF', 0x67466be17df832165f8c80a5a120ccc652bd7e69, 18),
+    ('susde-ethena-staked-usde', 'ethereum', 'SUSDE', 0x9d39a5de30e57443bff2a8307a4256c8797a3497, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
