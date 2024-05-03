@@ -22,6 +22,8 @@ WITH base_union AS (
             blockchain
             , project
             , version
+            , dex
+            , dex_version
             , block_time
             , block_month
             , block_number

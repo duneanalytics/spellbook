@@ -1,16 +1,19 @@
 /* 
-    In order to compute the volume traded through the liquidity owned by a given LP,
+    In order to compute the aggregated volume traded through the liquidity owned by a given vault,
     first we need to compute:
-     - The liquidity of each LP at each block time              (liquidity_ts)
-     - The price of each pool at each block time                (pool_price_ts)
-     - The price of each pool in USD at each block time         (pool_price_usd_ts)
-     - The volume traded through each LP at each block time
+     - All the arrakis vaults created by the factory            (arrakis_vaults)
+     - The liquidity of each vault at every swap                (liquidity_ts)
+     - The price of each pool at every swap                     (pool_price_ts)
+     - The price of each pool in USD at every swap              (pool_price_usd_ts)
+     - The volume traded through each vault at every swap       (vault_swaps)
 */
 
 {% macro arrakis_compatible_v2_trades(
     blockchain = null
     , project = null
     , version = null
+    , dex = null
+    , dex_version = null
     , Pair_evt_Mint = null
     , Pair_evt_Burn = null
     , Pair_evt_Swap = null
@@ -238,11 +241,13 @@ WITH arrakis_vaults AS
     -- overlapping ranges only
     where sqrt(lp.pa) <= (case when s.sqrt_price > s.prev_sqrt_price then s.sqrt_price else s.prev_sqrt_price end)
         and (case when s.prev_sqrt_price < s.sqrt_price then s.prev_sqrt_price else s.sqrt_price end) <= sqrt(lp.pb)
-) --select * from vault_swaps
+)
 
 select distinct '{{ blockchain }}' AS blockchain
     , '{{ project }}' AS project
     , '{{ version }}' AS version
+    , '{{ dex }}' AS dex
+    , '{{ dex_version }}' AS dex_version
     , v.block_time
     , date_trunc('MONTH',v.block_time) AS block_month
     , v.block_number

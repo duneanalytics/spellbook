@@ -14,6 +14,8 @@
         blockchain = 'ethereum'
         , project = 'arrakis'
         , version = '2'
+        , dex = 'uniswap'
+        , dex_version = '3'
         , Pair_evt_Mint = source('uniswap_v3_ethereum', 'Pair_evt_Mint')
         , Pair_evt_Burn = source('uniswap_v3_ethereum', 'Pair_evt_Burn')
         , Pair_evt_Swap = source('uniswap_v3_ethereum', 'Pair_evt_Swap')
