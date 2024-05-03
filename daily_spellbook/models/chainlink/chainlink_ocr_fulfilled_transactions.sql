@@ -2,7 +2,7 @@
   config(
     
     alias='ocr_fulfilled_transactions',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",
                             \'["linkpool_ryan"]\') }}'
@@ -12,6 +12,7 @@
 {% set models = [
   'chainlink_arbitrum_ocr_fulfilled_transactions',
   'chainlink_avalanche_c_ocr_fulfilled_transactions',
+  'chainlink_base_ocr_fulfilled_transactions',
   'chainlink_bnb_ocr_fulfilled_transactions',
   'chainlink_ethereum_ocr_fulfilled_transactions',
   'chainlink_fantom_ocr_fulfilled_transactions',

@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='price_feeds_oracle_addresses',
     post_hook='{{ expose_spells(\'["bnb"]\',
                                 "project",
@@ -12,30 +11,24 @@
 {% set _1inch_usd = '1INCH / USD' %}
 {% set aapl_usd = 'AAPL / USD' %}
 {% set aave_usd = 'AAVE / USD' %}
+{% set aave_network_emergency_count_bnb_chain_ = 'AAVE Network Emergency Count (BNB Chain)' %}
 {% set ada_bnb = 'ADA / BNB' %}
 {% set ada_usd = 'ADA / USD' %}
 {% set alpaca_usd = 'ALPACA / USD' %}
 {% set alpha_bnb = 'ALPHA / BNB' %}
 {% set amzn_usd = 'AMZN / USD' %}
-{% set arkk_usd = 'ARKK / USD' %}
-{% set arpa_usd = 'ARPA / USD' %}
 {% set atom_usd = 'ATOM / USD' %}
 {% set aud_usd = 'AUD / USD' %}
 {% set auto_usd = 'AUTO / USD' %}
 {% set avax_usd = 'AVAX / USD' %}
 {% set axs_usd = 'AXS / USD' %}
-{% set bac_usd = 'BAC / USD' %}
 {% set band_bnb = 'BAND / BNB' %}
 {% set band_usd = 'BAND / USD' %}
 {% set bch_bnb = 'BCH / BNB' %}
 {% set bch_usd = 'BCH / USD' %}
 {% set beth_usd = 'BETH / USD' %}
-{% set bidu_usd = 'BIDU / USD' %}
-{% set bifi_bnb = 'BIFI / BNB' %}
 {% set bifi_usd = 'BIFI / USD' %}
 {% set bnb_usd = 'BNB / USD' %}
-{% set boring_bnb = 'BORING / BNB' %}
-{% set brk_b_usd = 'BRK.B / USD' %}
 {% set brl_usd = 'BRL / USD' %}
 {% set bsw_usd = 'BSW / USD' %}
 {% set btc_bnb = 'BTC / BNB' %}
@@ -51,15 +44,11 @@
 {% set chr_usd = 'CHR / USD' %}
 {% set coin_usd = 'COIN / USD' %}
 {% set comp_usd = 'COMP / USD' %}
-{% set cream_bnb = 'CREAM / BNB' %}
 {% set crv_usd = 'CRV / USD' %}
 {% set calculated_bnbx_usd = 'Calculated BNBx / USD' %}
 {% set calculated_savax_usd = 'Calculated SAVAX / USD' %}
 {% set dai_bnb = 'DAI / BNB' %}
 {% set dai_usd = 'DAI / USD' %}
-{% set dego_usd = 'DEGO / USD' %}
-{% set df_usd = 'DF / USD' %}
-{% set dodo_bnb = 'DODO / BNB' %}
 {% set dodo_usd = 'DODO / USD' %}
 {% set doge_usd = 'DOGE / USD' %}
 {% set dot_bnb = 'DOT / BNB' %}
@@ -70,11 +59,11 @@
 {% set eth_usd = 'ETH / USD' %}
 {% set eur_usd = 'EUR / USD' %}
 {% set fb_usd = 'FB / USD' %}
+{% set fdusd_usd = 'FDUSD / USD' %}
 {% set fet_usd = 'FET / USD' %}
 {% set fil_usd = 'FIL / USD' %}
 {% set frax_usd = 'FRAX / USD' %}
 {% set ftm_usd = 'FTM / USD' %}
-{% set ftt_usd = 'FTT / USD' %}
 {% set fxs_usd = 'FXS / USD' %}
 {% set gbp_usd = 'GBP / USD' %}
 {% set gme_usd = 'GME / USD' %}
@@ -97,9 +86,6 @@
 {% set ltc_usd = 'LTC / USD' %}
 {% set mask_usd = 'MASK / USD' %}
 {% set matic_usd = 'MATIC / USD' %}
-{% set mbox_usd = 'MBOX / USD' %}
-{% set mdx_usd = 'MDX / USD' %}
-{% set mim_usd = 'MIM / USD' %}
 {% set mrna_usd = 'MRNA / USD' %}
 {% set ms_usd = 'MS / USD' %}
 {% set msft_usd = 'MSFT / USD' %}
@@ -110,7 +96,6 @@
 {% set nvda_usd = 'NVDA / USD' %}
 {% set ong_usd = 'ONG / USD' %}
 {% set ont_usd = 'ONT / USD' %}
-{% set pacb_usd = 'PACB / USD' %}
 {% set paxg_usd = 'PAXG / USD' %}
 {% set pfe_usd = 'PFE / USD' %}
 {% set php_usd = 'PHP / USD' %}
@@ -120,7 +105,6 @@
 {% set sgd_usd = 'SGD / USD' %}
 {% set shib_usd = 'SHIB / USD' %}
 {% set sol_usd = 'SOL / USD' %}
-{% set spce_usd = 'SPCE / USD' %}
 {% set spell_usd = 'SPELL / USD' %}
 {% set spy_usd = 'SPY / USD' %}
 {% set sushi_usd = 'SUSHI / USD' %}
@@ -128,11 +112,9 @@
 {% set thb_usd = 'THB / USD' %}
 {% set trx_usd = 'TRX / USD' %}
 {% set tsla_usd = 'TSLA / USD' %}
-{% set tsm_usd = 'TSM / USD' %}
 {% set tusd_usd = 'TUSD / USD' %}
 {% set twt_bnb = 'TWT / BNB' %}
 {% set total_marketcap_usd = 'Total Marketcap USD' %}
-{% set unh_usd = 'UNH / USD' %}
 {% set uni_bnb = 'UNI / BNB' %}
 {% set uni_usd = 'UNI / USD' %}
 {% set usdc_bnb = 'USDC / BNB' %}
@@ -142,7 +124,6 @@
 {% set usdt_usd = 'USDT / USD' %}
 {% set vai_usd = 'VAI / USD' %}
 {% set vet_usd = 'VET / USD' %}
-{% set vt_usd = 'VT / USD' %}
 {% set win_usd = 'WIN / USD' %}
 {% set wing_usd = 'WING / USD' %}
 {% set woo_usd = 'WOO / USD' %}
@@ -158,9 +139,7 @@
 {% set xvs_usd = 'XVS / USD' %}
 {% set yfi_bnb = 'YFI / BNB' %}
 {% set yfi_usd = 'YFI / USD' %}
-{% set yfii_usd = 'YFII / USD' %}
 {% set zar_usd = 'ZAR / USD' %}
-{% set zil_usd = 'ZIL / USD' %}
 
 SELECT
    'bnb' as blockchain,
@@ -172,33 +151,26 @@ FROM (values
   ('{{_1inch_usd}}', 8, 0x9a177Bb9f5b6083E962f9e62bD21d4b5660Aeb03, 0xd690b2CF0D2bcBce51c4cE2dc46E02C508465c5c),
   ('{{aapl_usd}}', 8, 0xb7Ed5bE7977d61E83534230f3256C021e0fae0B6, 0x09e6B30909AdD72E1E6285F8d7609B882940e3b4),
   ('{{aave_usd}}', 8, 0xA8357BF572460fC40f4B0aCacbB2a6A61c89f475, 0x7457f14cE4773EBEb1352D2774Ec384a54c2F665),
+  ('{{aave_network_emergency_count_bnb_chain_}}', 0, 0xcabb46FfB38c93348Df16558DF156e9f68F9F7F1, 0xEdda72CaFf86166530cE6522ACdc810C970EB527),
   ('{{ada_bnb}}', 18, 0x2d5Fc41d1365fFe13d03d91E82e04Ca878D69f4B, 0x50204D36C231CD4F0De67545Cd1E36C01336e46b),
   ('{{ada_usd}}', 8, 0xa767f745331D267c7751297D982b050c93985627, 0x2028b4a27c14263Ba00C75c42cfe524E705031F4),
   ('{{alpaca_usd}}', 8, 0xe0073b60833249ffd1bb2af809112c2fbf221DF6, 0x481E278Bf87281CF12342A4302e799Bf8515b985),
   ('{{alpaca_usd}}', 8, 0xe0073b60833249ffd1bb2af809112c2fbf221DF6, 0x32A3dcb7f09B46b32b664c59AB0E78aAa852484e),
   ('{{alpha_bnb}}', 18, 0x7bC032A7C19B1BdCb981D892854d090cfB0f238E, 0x9c0Ab19514D52196B09B04294937ECEC2Dc69950),
   ('{{amzn_usd}}', 8, 0x51d08ca89d3e8c12535BA8AEd33cDf2557ab5b2a, 0x87cbA2Da16C453B02BBc70565f8F8a89722DF300),
-  ('{{arkk_usd}}', 8, 0x234c7a1da64Bdf44E1B8A25C94af53ff2A199dE0, 0xAD249Db435A301dD9559730b85028D40c933dE63),
-  ('{{arpa_usd}}', 8, 0x31E0110f8c1376a699C8e3E65b5110e0525A811d, 0x4849167844B7c8074B3Da31332AA547a17877b63),
-  ('{{arpa_usd}}', 8, 0x31E0110f8c1376a699C8e3E65b5110e0525A811d, 0x09b74482322CEdd89Ca3d8C63C786B12140F687F),
   ('{{atom_usd}}', 8, 0xb056B7C804297279A9a673289264c17E6Dc6055d, 0x2e9c2B44D3f5702D2654c20260E8e010656D9777),
   ('{{aud_usd}}', 8, 0x498F912B09B5dF618c77fcC9E8DA503304Df92bF, 0x5C8c6c45dcF57aEae4D7Ba4F613B6FC38EF7d18B),
   ('{{auto_usd}}', 8, 0x88E71E6520E5aC75f5338F5F0c9DeD9d4f692cDA, 0x5Ff27E78AE8fc4C329De7064ebe7FEbdE859af0A),
   ('{{avax_usd}}', 8, 0x5974855ce31EE8E1fff2e76591CbF83D7110F151, 0xB4C0F8F07a5e5d870bC02457213809B9cb5F56C4),
   ('{{axs_usd}}', 8, 0x7B49524ee5740c99435f52d731dFC94082fE61Ab, 0xc0850B8587cffA166985fa397e8391fecA959f3f),
   ('{{axs_usd}}', 8, 0x7B49524ee5740c99435f52d731dFC94082fE61Ab, 0x8411e118295d9ab122dD69ea9410aD866Bf9d829),
-  ('{{bac_usd}}', 8, 0x368b7ab0a0Ff94E23fF5e4A7F04327dF7079E174, 0x12D42e13E69A28e95DbB3F2644eeCDBcFB7cA8C3),
   ('{{band_bnb}}', 18, 0x3334bF7ec892Ca03D1378B51769b7782EAF318C4, 0x3331b2d33E9a472f6b34C150D47017d75b4CD088),
   ('{{band_usd}}', 8, 0xC78b99Ae87fF43535b0C782128DB3cB49c74A4d3, 0x8A73214adB7a23334371Cb7C0c6165973F45Cd42),
   ('{{bch_bnb}}', 18, 0x2a548935a323Bb7329a5E3F1667B979f16Bc890b, 0x38d0f1dfE37Aac059aD06B2d30Ef60AA537f0b05),
   ('{{bch_usd}}', 8, 0x43d80f616DAf0b0B42a928EeD32147dC59027D41, 0xF78feB6c096117Bfb9283aa1eAc304449E04d374),
   ('{{beth_usd}}', 8, 0x2A3796273d47c4eD363b361D3AEFb7F7E2A13782, 0x4c935c5C9a6BADC0855AD3B5867BCFf90c8bD5eC),
-  ('{{bidu_usd}}', 8, 0xb9344e4Ffa6d5885B2C5830adc27ddF3FdBF883c, 0xa78f89fa9A028100998D7207A573B12295342e03),
-  ('{{bifi_bnb}}', 18, 0xE6A9106Fca5d6552f3f1a3B3B33b62eb2F6F5347, 0x8d06D8b3a37D9A1BCA3df055bDdD07f1639af4E6),
   ('{{bifi_usd}}', 8, 0xaB827b69daCd586A37E80A7d552a4395d576e645, 0x43c70DB4018857eB6c4D6aA40880f144033AEAf5),
   ('{{bnb_usd}}', 8, 0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE, 0x137924D7C36816E0DcAF016eB617Cc2C92C05782),
-  ('{{boring_bnb}}', 18, 0xeAC5322C6b841FE1466D42D9Cfa1cE75c51d6ae3, 0x7A23675a974F6AEf321dBfA442B4231Bf512391F),
-  ('{{brk_b_usd}}', 8, 0x5289A08b6d5D2f8fAd4cC169c65177f68C0f0A99, 0x69fC6A49C914500ba323Ea68C60f979908Cc71FA),
   ('{{brl_usd}}', 8, 0x5cb1Cb3eA5FB46de1CE1D0F3BaDB3212e8d8eF48, 0x2f92dc0711AdA3dc255e2197e7c15C8aDC6b6537),
   ('{{bsw_usd}}', 8, 0x08E70777b982a58D23D05E3D7714f44837c06A21, 0xC430481d7f5b670623c70420643AC5EfA0D7c95d),
   ('{{btc_bnb}}', 18, 0x116EeB23384451C78ed366D4f67D5AD44eE771A0, 0x7E90d60D3207A96FAaBB895C9c7DeE2E2CaBa0Fd),
@@ -214,15 +186,11 @@ FROM (values
   ('{{chr_usd}}', 8, 0x1f771B2b1F3c3Db6C7A1d5F38961a49CEcD116dA, 0x9eBB8330dff88F3D9E743E8240177cdCD3292103),
   ('{{coin_usd}}', 8, 0x2d1AB79D059e21aE519d88F978cAF39d74E31AEB, 0x4402EE0a557703071bf15F3C2F1743dec9a1600c),
   ('{{comp_usd}}', 8, 0x0Db8945f9aEf5651fa5bd52314C5aAe78DfDe540, 0x94069ff23E3a962646638b2Bb44d4d7F664DCCbD),
-  ('{{cream_bnb}}', 18, 0x6f55DFAf098a813d87BB4e6392275b502360Bb9D, 0x4a2A603d64C807C6532053EF808117048ac9990a),
   ('{{crv_usd}}', 8, 0x2e1C3b6Fcae47b20Dd343D9354F7B1140a1E6B27, 0x3f57d674804DfC9F5CA927531969012C5C9095bd),
   ('{{calculated_bnbx_usd}}', 8, 0xc4429B539397a3166eF3ef132c29e34715a3ABb4, 0xf230822f96bc8819e037db85695fc093d2C68Ccd),
   ('{{calculated_savax_usd}}', 18, 0x3b37C6f1e3207DE5a4664E837072Bd9A25269B39, 0x338b40CaAef0267191a1869aC5ef9E7945949aeA),
   ('{{dai_bnb}}', 18, 0x8EC213E7191488C7873cEC6daC8e97cdbAdb7B35, 0x000f46946d47647c04A5f10269e9084FB8c8637A),
   ('{{dai_usd}}', 8, 0x132d3C0B1D2cEa0BC552588063bdBb210FDeecfA, 0x09A183232a9184ae07CEee3c0401f7435D42efdF),
-  ('{{dego_usd}}', 8, 0x39F1275366D130eB677D4F47D40F9296B62D877A, 0xF9e6F8660649f9762E0a721D666B8B5931EBB994),
-  ('{{df_usd}}', 8, 0x1b816F5E122eFa230300126F97C018716c4e47F5, 0xf0EcE271b1c02128e30C5797C0D76b2c9c36ec17),
-  ('{{dodo_bnb}}', 18, 0x120ae15CB86060527BFD431Abd3FF51890D2032C, 0x5D22062a0f28C476091D7023E7D2a240bA7e6b96),
   ('{{dodo_usd}}', 8, 0x87701B15C08687341c2a847ca44eCfBc8d7873E1, 0x0Ad45915fC60a08dEcD39D27ad69AC10966C82C0),
   ('{{dodo_usd}}', 8, 0x87701B15C08687341c2a847ca44eCfBc8d7873E1, 0x512D05a6fe786CD9174Dff990CbF5Be26F713Be1),
   ('{{doge_usd}}', 8, 0x3AB0A0d137D4F946fBB19eecc6e92E64660231C8, 0xd0A597FfC7075E1449eCE7fEaA9880488dDB34FD),
@@ -234,12 +202,11 @@ FROM (values
   ('{{eth_usd}}', 8, 0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e, 0xfC3069296a691250fFDf21fe51340fdD415a76ed),
   ('{{eur_usd}}', 8, 0x0bf79F617988C472DcA68ff41eFe1338955b9A80, 0xD2528B74ca91Bb07B9bd9685ce533367C6fa657C),
   ('{{fb_usd}}', 8, 0xfc76E9445952A3C31369dFd26edfdfb9713DF5Bb, 0xF57A06A342D851E8cE2c9512b20D08331eEc43Ab),
+  ('{{fdusd_usd}}', 8, 0x390180e80058A8499930F0c13963AD3E0d86Bfc9, 0xD4a98fE6EB2661729aBDcCbf8109f5306E5404d0),
   ('{{fet_usd}}', 8, 0x657e700c66C48c135c4A29c4292908DbdA7aa280, 0xb2B7c2d554F52dAeC37974b2E335c98cdA8cEB3A),
   ('{{fil_usd}}', 8, 0xE5dbFD9003bFf9dF5feB2f4F445Ca00fb121fb83, 0x8f8289E5CA9a4C867ec7A257b0E9Dd1132093E23),
   ('{{frax_usd}}', 8, 0x13A9c98b07F098c5319f4FF786eB16E22DC738e1, 0x673DA2F5eaE6860F7b1249e2CbCca433834a1EB3),
   ('{{ftm_usd}}', 8, 0xe2A47e87C0f4134c8D06A41975F6860468b2F925, 0xf5C16d009af1F1d3395883d9d7e626472D2dd6B8),
-  ('{{ftt_usd}}', 8, 0x38E05754Eb00171cBE72bA1eE792933d6e8d2891, 0x122400b06aAC5ba901492035aFC99d3a5C262330),
-  ('{{ftt_usd}}', 8, 0x38E05754Eb00171cBE72bA1eE792933d6e8d2891, 0x04c433e64257a34aC9a547C6887B496D5B8692Be),
   ('{{fxs_usd}}', 8, 0x0E9D55932893Fb1308882C7857285B2B0bcc4f4a, 0x36Eb75b819dF05FB868b16074dF1A9c4354082c0),
   ('{{gbp_usd}}', 8, 0x8FAf16F710003E538189334541F5D4a391Da46a0, 0xE0A34B8FC5e80C877fd568bd22b49E1BCa977B6F),
   ('{{gme_usd}}', 8, 0x66cD2975d02f5F5cdEF2E05cBca12549B1a5022D, 0xEF447188e7bd5a7a4E4ceD711ee9de1aF1B11bC3),
@@ -262,9 +229,6 @@ FROM (values
   ('{{ltc_usd}}', 8, 0x74E72F37A8c415c8f1a98Ed42E78Ff997435791D, 0xB92B265908775B59517eC1fC6C6635f7E1D60f1D),
   ('{{mask_usd}}', 8, 0x4978c0abE6899178c1A74838Ee0062280888E2Cf, 0xF1eed6F4A9006B3Cf8f547B36d055b97EF50DE8b),
   ('{{matic_usd}}', 8, 0x7CA57b0cA6367191c94C8914d7Df09A57655905f, 0xeC1Ca9c5Dd897F832CDe3D43BB041f5e01380757),
-  ('{{mbox_usd}}', 8, 0x1AAE42AA46483370Be23274Abb29Bcc40f808a4c, 0xCE75B866Ec86Ac261Ea191F0BC7820FB296C2477),
-  ('{{mdx_usd}}', 8, 0x9165366bf450a6906D25549f0E0f8E6586Fc93E2, 0xf23C2aa8c9e8E2e6E48257c495E624CA87Bb14BC),
-  ('{{mim_usd}}', 8, 0xc9D267542B23B41fB93397a93e5a1D7B80Ea5A01, 0x87a69a2988b33ea745008A47486890232630AABf),
   ('{{mrna_usd}}', 8, 0x6101F4DFBb24Cac3D64e28A815255B428b93639f, 0xD026fB17CC40923D4c155486970A0502C85Cb8E5),
   ('{{ms_usd}}', 8, 0x6b25F7f189c3f26d3caC43b754578b67Fc8d952A, 0x3820576866B5cAb5aDD3686c91fD27747b05E616),
   ('{{msft_usd}}', 8, 0x5D209cE1fBABeAA8E6f9De4514A74FFB4b34560F, 0xE4A4ceE270f5113FF17CB5c7798f83780C1e55A6),
@@ -275,7 +239,6 @@ FROM (values
   ('{{nvda_usd}}', 8, 0xea5c2Cbb5cD57daC24E26180b19a929F3E9699B8, 0xAAADa315B51E29901566664135C228f2CF287F33),
   ('{{ong_usd}}', 8, 0xcF95796f3016801A1dA5C518Fc7A59C51dcEf793, 0xCB2ac1D2e2582dE7b5EFbB174f04B1D8Ecd2d043),
   ('{{ont_usd}}', 8, 0x887f177CBED2cf555a64e7bF125E1825EB69dB82, 0x586E5572217D68643E1de6a0d40Cb37B0961A11a),
-  ('{{pacb_usd}}', 8, 0xe9bEC24f14AB49b0a81a482a4224e7505d2d29e9, 0xf61634861D8EbfD65C6974F1E51477988fE2DAC3),
   ('{{paxg_usd}}', 8, 0x7F8caD4690A38aC28BDA3D132eF83DB1C17557Df, 0x6FfA7c72cCd821A4dB68FD75Ee465dd09AA8C088),
   ('{{pfe_usd}}', 8, 0xe96fFdE2ba50E0e869520475ee1bC73cA2dEE326, 0xe12938e680c7b82361fe7482bD80C23A7dF5cbBe),
   ('{{php_usd}}', 8, 0x1CcaD765D39Aa2060eB4f6dD94e5874db786C16f, 0x3D524E10b4C798b94c0d3353C7235f2bA14A5892),
@@ -285,7 +248,6 @@ FROM (values
   ('{{sgd_usd}}', 8, 0x3065b2369820f76C829b9BBCAF4B90F9f47d6314, 0x621319Ec1f6AFcb4a9dd91DAB135a1C7E22F46a5),
   ('{{shib_usd}}', 8, 0xA615Be6cb0f3F36A641858dB6F30B9242d0ABeD8, 0x19Ec74fd763db58B77E6EC6b556B9c594ca67ABB),
   ('{{sol_usd}}', 8, 0x0E8a53DD9c13589df6382F13dA6B3Ec8F919B323, 0x14E9D15c1EcD428606c443Ed715631b5C444a49e),
-  ('{{spce_usd}}', 8, 0xC861a351b2b50985b9061a5b68EBF9018e7FfB7b, 0x94ef051e42F4462fB7AE00BbA66E643D1b93dA60),
   ('{{spell_usd}}', 8, 0x47e01580C537Cd47dA339eA3a4aFb5998CCf037C, 0x76c8Ab236643e68539766CE00eac8Fb582199183),
   ('{{spell_usd}}', 8, 0x47e01580C537Cd47dA339eA3a4aFb5998CCf037C, 0xD49253AA71F5d5BEe98B00C15DDfA47850faF5a0),
   ('{{spy_usd}}', 8, 0xb24D1DeE5F9a3f761D286B56d2bC44CE1D02DF7e, 0x39F96B0B24E8b2D859850c9bfA1CF95c0144592E),
@@ -295,11 +257,9 @@ FROM (values
   ('{{thb_usd}}', 8, 0x00EdEa5d03E6Cb155662dBF1B00dea5693Be874A, 0x3ED241a1877D213F70d7DDcaeF5c4995b63ED88D),
   ('{{trx_usd}}', 8, 0xF4C5e535756D11994fCBB12Ba8adD0192D9b88be, 0xb7EE93d3E0586571D481F9d967d82383BB460B38),
   ('{{tsla_usd}}', 8, 0xEEA2ae9c074E87596A85ABE698B2Afebc9B57893, 0x2719B94Df5a59267D2165c42c59bCa35bf657351),
-  ('{{tsm_usd}}', 8, 0x685fC5acB74CE3d5DF03543c9813C73DFCe50de8, 0x3D74545EF2A93a5C71c9c3CbD4a14dFC2BEfDd6E),
   ('{{tusd_usd}}', 8, 0xa3334A9762090E827413A7495AfeCE76F41dFc06, 0x916aaDaCeb786351c7e810C6a4E8071cf00CEeC8),
   ('{{twt_bnb}}', 18, 0x7E728dFA6bCa9023d9aBeE759fDF56BEAb8aC7aD, 0x8dbb48f934b02E891e19Ec09f76B54f3ED5f01Ee),
   ('{{total_marketcap_usd}}', 8, 0xA7dd120a00aCf4161FdA187b864b73bdc8283D77, 0x1973C429B5f7451d83337061A85ef9cEe2637B24),
-  ('{{unh_usd}}', 8, 0xC18c5A32c84CbbAc7D0F06Dd370198DA711c73C9, 0x8d35254334e55248eE4D6D65F9CefB924d8D9f3d),
   ('{{uni_bnb}}', 18, 0x25298F020c3CA1392da76Eb7Ac844813b218ccf7, 0x0Cee6620d87FD023800795D565A71fE214777aeb),
   ('{{uni_usd}}', 8, 0xb57f259E7C24e56a1dA00F66b55A5640d9f9E7e4, 0x52Bd76d61D59a4F4B740FD31B97aFaD6217F960D),
   ('{{usdc_bnb}}', 18, 0x45f86CA2A8BC9EBD757225B19a1A0D7051bE46Db, 0xc98fb42526666963d2b43a1ca5C3dc04fe744cdb),
@@ -309,7 +269,6 @@ FROM (values
   ('{{usdt_usd}}', 8, 0xB97Ad0E74fa7d920791E90258A6E2085088b4320, 0x2dc202b56A03667cC240B290c2BE2b8453E89eA1),
   ('{{vai_usd}}', 8, 0x058316f8Bb13aCD442ee7A216C7b60CFB4Ea1B53, 0xC04121E448DAC0BA66c0C76b28b5512Cf08bD41A),
   ('{{vet_usd}}', 8, 0x9f1fD2cEf7b226D555A747DA0411F93c5fe74e13, 0x6297c4cd4002F8c1ECe816dF53D5cdeeead10C25),
-  ('{{vt_usd}}', 8, 0xa3D5BB7e8ccc2Dc7492537cc2Ec4e4E7BBA32fa0, 0xA37567606729CB03F16BAF1611335b6635E4FDDE),
   ('{{win_usd}}', 8, 0x9e7377E194E41d63795907c92c3EB351a2eb0233, 0x2BCBF9e068E889A613A8E4366c88412977869C0A),
   ('{{wing_usd}}', 8, 0xf7E7c0ffCB11dAC6eCA1434C67faB9aE000e10a7, 0xf8Aa2505865E12b606438312FF572Bf8119E4A65),
   ('{{woo_usd}}', 8, 0x02Bfe714e78E2Ad1bb1C2beE93eC8dc5423B66d4, 0xFBd2fED777DaaB126041b193006DE529118Eaf95),
@@ -325,7 +284,5 @@ FROM (values
   ('{{xvs_usd}}', 8, 0xBF63F430A79D4036A5900C19818aFf1fa710f206, 0xD051e4050dAd55285EEDbC186095C0Ccb7054944),
   ('{{yfi_bnb}}', 18, 0xF841761481DF19831cCC851A54D8350aE6022583, 0xD2a2976cdf5098971DaA56878212Cdb24Ecb0CbB),
   ('{{yfi_usd}}', 8, 0xD7eAa5Bf3013A96e3d515c055Dbd98DbdC8c620D, 0xd29cFB96e80fCBA432713B7aE5086a6718d4E046),
-  ('{{yfii_usd}}', 8, 0xC94580FAaF145B2FD0ab5215031833c98D3B77E4, 0xAB05DFc2e4aF7fb1b512306e3E0a3617992BB6E2),
-  ('{{zar_usd}}', 8, 0xDE1952A1bF53f8E558cc761ad2564884E55B2c6F, 0x86EB1bb8c66F365Ea3df12a565a46cEA204f6283),
-  ('{{zil_usd}}', 8, 0x3e3aA4FC329529C8Ab921c810850626021dbA7e6, 0x0D14D66DcB20b9EC4e9679AC8E4775a314D2E298)
+  ('{{zar_usd}}', 8, 0xDE1952A1bF53f8E558cc761ad2564884E55B2c6F, 0x86EB1bb8c66F365Ea3df12a565a46cEA204f6283)
 ) a (feed_name, decimals, proxy_address, aggregator_address)

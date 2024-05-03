@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_node_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["polygon"]\',
@@ -13,8 +12,9 @@
 {% set a01node = '01Node' %}
 {% set alphachain = 'Alphachain' %}
 {% set bharvest = 'B Harvest' %}
-{% set blocksizecapital = 'BlocksizeCapital' %}
+{% set blocksizecapital = 'Blocksize' %}
 {% set chainlayer = 'Chainlayer' %}
+{% set chainlink = 'Chainlink' %}
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
 {% set dmakers = 'dMakers' %}
 {% set dextrac = 'DexTrac' %}
@@ -33,9 +33,9 @@
 {% set ztake = 'Ztake.org' %}
 
 SELECT node_address, operator_name FROM (VALUES
+  (0xC2a5c4518849E85C424993f16AbA347165b734B7, '{{a01node}}'),
   (0xe0Ed2A6CAd84df5191Fe337e7Dc9685d03bA3eD0, '{{a01node}}'),
   (0x8867ca28d5dD0E3eD9bc86f889322395715b5A27, '{{a01node}}'),
-  (0xC2a5c4518849E85C424993f16AbA347165b734B7, '{{a01node}}'),
   (0x777225197088C54997Ff8904eBF01382825def85, '{{a01node}}'),
   (0xffe2613a53c1222C295C6Df941afa3eC63311B0D, '{{a01node}}'),
   (0xED5cBf90D90eCcF2a846a1DA6D966A4B7E0A3269, '{{alphachain}}'),
@@ -46,8 +46,8 @@ SELECT node_address, operator_name FROM (VALUES
   (0xb1A9Fe770D7bD542feD4Ef9b5eA7B936D7786D0E, '{{chainlayer}}'),
   (0x23FF32EE34c4b43daf478cF6205FF3d342b0719b, '{{chainlayer}}'),
   (0xE6c27255Fbb9d3a9718Fb5E2DC313Cd6EbA10b78, '{{cryptomanufaktur}}'),
-  (0x51FD7E0b225095A8826686aBf6C45fB739d2Bb7E, '{{cryptomanufaktur}}'),
   (0x1516288E09975CC53c04505380dc81B13142C91d, '{{cryptomanufaktur}}'),
+  (0x51FD7E0b225095A8826686aBf6C45fB739d2Bb7E, '{{cryptomanufaktur}}'),
   (0x229306CB192f2cf1edC712eAA16006fBd5F9B008, '{{cryptomanufaktur}}'),
   (0x21148F81D302442c34D39cB65B82f5e7138F9bE6, '{{dmakers}}'),
   (0xd588b2470D0E78A170383148ae83327338e3c61A, '{{dmakers}}'),
@@ -64,11 +64,11 @@ SELECT node_address, operator_name FROM (VALUES
   (0xd9f89292a21941826b62460009d9c634c4fA0069, '{{linkforest}}'),
   (0x2D4799D475c9da5Da53013cC284F34D2424A8a28, '{{linkforest}}'),
   (0xa1ab1c841898Fe94900d00d9312ba954e4F81501, '{{linkpool}}'),
-  (0x9F9922d4bBa463EfBBcF8563282723d98587f7eb, '{{linkpool}}'),
   (0xf03b7095B089A4e601fB13F2BF6af518eb199a0b, '{{linkpool}}'),
+  (0x9F9922d4bBa463EfBBcF8563282723d98587f7eb, '{{linkpool}}'),
   (0x8eD47843e5030b6F06e6F204Fcf2725378BB837a, '{{linkriver}}'),
-  (0xf5EEc17396c5e8A0047ee169d74D3c1066e6908B, '{{linkriver}}'),
   (0x0517395146AB8b43Fa3f8940A57d03177710E278, '{{linkriver}}'),
+  (0xf5EEc17396c5e8A0047ee169d74D3c1066e6908B, '{{linkriver}}'),
   (0xd0fF3C55A27c930069Cb4EFA32921B89792CA8CC, '{{linkriver}}'),
   (0x5543FF441d3B0fCce59Aa08eb52f15d27294AF21, '{{matrixedlink}}'),
   (0x983D0e1d23D3109D15e833fB800A51ba154DEfD3, '{{newroad}}'),
@@ -85,6 +85,6 @@ SELECT node_address, operator_name FROM (VALUES
   (0x4e791FEC7329738Fb7D3a8caEf80D1201Bb12C14, '{{stakingfacilities}}'),
   (0x3Dd12EB5aE0F1A106fB358C8B99830ab5690a7a2, '{{vulcan}}'),
   (0xC1aaF3D6e0189C4f6D5CF35514328e6F747a2472, '{{vulcan}}'),
-  (0xcDee224d35860622A61F59D06daFe76d93f8db7c, '{{ztake}}'),
-  (0x36C3891112B381538b2B7Cb5650da6C89bB48FFF, '{{ztake}}')
+  (0x36C3891112B381538b2B7Cb5650da6C89bB48FFF, '{{ztake}}'),
+  (0xcDee224d35860622A61F59D06daFe76d93f8db7c, '{{ztake}}')
 ) AS tmp_node_meta(node_address, operator_name)

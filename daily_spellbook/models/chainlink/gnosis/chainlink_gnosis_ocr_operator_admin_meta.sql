@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_admin_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["gnosis"]\',
@@ -31,9 +30,10 @@ SELECT admin_address, operator_name FROM (VALUES
   (0xEaF7dC88d11E81Bb60e3bC5272558041227D16FA, '{{dmakers}}'),
   (0x9efa0A617C0552F1558c95993aA8b8A68b3e709C, '{{dextrac}}'),
   (0x15918ff7f6C44592C81d999B442956B07D26CC44, '{{fiews}}'),
+  (0xdD831352762e9de7ad5a264990e1bB9F87A6Fc21, '{{inotel}}'),
   (0xB8C6E43f37E04A2411562a13c1C48B3ad5975cf4, '{{inotel}}'),
-  (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
+  (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{piertwo}}'),
   (0x4fBefaf1BFf0130945C61603B97D38DD6e21f5Cf, '{{simplyvc}}'),
   (0x9cCbFD17FA284f36c2ff503546160B256d1CD3D1, '{{snzpool}}'),

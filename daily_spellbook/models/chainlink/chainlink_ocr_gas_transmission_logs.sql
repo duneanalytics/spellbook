@@ -2,16 +2,17 @@
   config(
     
     alias='ocr_gas_transmission_logs',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",
-                            \'["linkpool_ryan"]\') }}'
+                            \'["linkpool_ryan","linkpool_jon"]\') }}'
   )
 }}
 
 {% set models = [
   'chainlink_arbitrum_ocr_gas_transmission_logs',
   'chainlink_avalanche_c_ocr_gas_transmission_logs',
+  'chainlink_base_ocr_gas_transmission_logs',
   'chainlink_bnb_ocr_gas_transmission_logs',
   'chainlink_ethereum_ocr_gas_transmission_logs',
   'chainlink_fantom_ocr_gas_transmission_logs',

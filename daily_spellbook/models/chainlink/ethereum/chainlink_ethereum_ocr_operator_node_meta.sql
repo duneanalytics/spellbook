@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_node_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -16,7 +15,7 @@
 {% set artifact = 'Artifact' %}
 {% set bharvest = 'B Harvest' %}
 {% set blockdaemon = 'Blockdaemon' %}
-{% set blocksizecapital = 'Blocksize Capital' %}
+{% set blocksizecapital = 'Blocksize' %}
 {% set certusone = 'Certus One' %}
 {% set chainlayer = 'Chainlayer' %}
 {% set chainlink = 'Chainlink' %}
@@ -80,8 +79,8 @@ SELECT node_address, operator_name FROM (VALUES
   (0xCF4Be57aA078Dc7568C631BE7A73adc1cdA992F8, '{{a01node}}'),
   (0x7147333c6d821612577481458E512560bfA12ebD, '{{a01node}}'),
   (0xddEB598fe902A13Cc523aaff5240e9988eDCE170, '{{tsystems}}'),
-  (0xA2C13eafA8417d5eE8f1B5D50b99D42CbFe910bA, '{{alphachain}}'),
   (0x5a8216a9c47ee2E8Df1c874252fDEe467215C25b, '{{alphachain}}'),
+  (0xA2C13eafA8417d5eE8f1B5D50b99D42CbFe910bA, '{{alphachain}}'),
   (0x165Ff6730D449Af03B4eE1E48122227a3328A1fc, '{{alphachain}}'),
   (0xF585A4aE338bC165D96E8126e8BBcAcAE725d79E, '{{artifact}}'),
   (0xc61a7e5a04A5d32ffe8e01f77Cb39253bf21D2aC, '{{bharvest}}'),
@@ -112,8 +111,8 @@ SELECT node_address, operator_name FROM (VALUES
   (0xe4327d547F8C02e57451b2472B8f9a853D855839, '{{huobi}}'),
   (0x982fa4d5F5C8C0063493AbE58967cA3B7639F10F, '{{infinitystones}}'),
   (0x8C4BC738c709BE322Fe4C078032850Cd10ab0032, '{{infura}}'),
-  (0xddA14A7c503341Fc6Fe9C002CA7524bF74ec8918, '{{inotel}}'),
   (0xDbfea8D5822141c13f92CaA06EB94d0F3d67C243, '{{inotel}}'),
+  (0xddA14A7c503341Fc6Fe9C002CA7524bF74ec8918, '{{inotel}}'),
   (0x9850E11D2c33B43AB80d478CCC69042b46ab3857, '{{kaiko}}'),
   (0xF42336e35D5C1D1D0DB3140E174BcFc3945f6822, '{{kyber}}'),
   (0xf16e77a989529AA4C58318acEe8A1548Df3fcCc1, '{{kytzu}}'),

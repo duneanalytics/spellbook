@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_admin_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -16,7 +15,7 @@
 {% set artifact = 'Artifact' %}
 {% set bharvest = 'B Harvest' %}
 {% set blockdaemon = 'Blockdaemon' %}
-{% set blocksizecapital = 'Blocksize Capital' %}
+{% set blocksizecapital = 'Blocksize' %}
 {% set certusone = 'Certus One' %}
 {% set chainlayer = 'Chainlayer' %}
 {% set chainlink = 'Chainlink' %}
@@ -78,8 +77,8 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x7A30E4B6307c0Db7AeF247A656b44d888B23a2DC, '{{a01node}}'),
   (0xD9459cc85E78e0336aDb349EAbF257Dbaf9d5a2B, '{{a01node}}'),
   (0x89177B9c203bA0A9294aecf2f3806d98907bec6f, '{{tsystems}}'),
-  (0xa5D0084A766203b463b3164DFc49D91509C12daB, '{{alphachain}}'),
   (0xfA3430d84324ABC9ac8AAf30B2D26260F5172ad0, '{{alphachain}}'),
+  (0xa5D0084A766203b463b3164DFc49D91509C12daB, '{{alphachain}}'),
   (0xba8Bcb4EB9a90D5A0eAe0098496703b49f909cB2, '{{artifact}}'),
   (0x6cDC3Efa3bAa392fAF3E5c1Ca802E15B6185E0e8, '{{bharvest}}'),
   (0x3615Fa045f00ae0eD60Dc0141911757c2AdC5E03, '{{blockdaemon}}'),
@@ -95,6 +94,7 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x59eCf48345A221E0731E785ED79eD40d0A94E2A5, '{{cryptomanufaktur}}'),
   (0x3b74c27115965ba74D695E3AEdb615F991F3f310, '{{dmakers}}'),
   (0x9efa0A617C0552F1558c95993aA8b8A68b3e709C, '{{dextrac}}'),
+  (0xfAf014362e72a0E80718dD094D889299C37695ab, '{{dxfeed}}'),
   (0xb284a468522663F6219f2912ca10145B52b13503, '{{dxfeed}}'),
   (0x991812566f6E14897Fc1e401D24de19845c0442f, '{{dxfeed}}'),
   (0xFdC770353dC0bFCE80a17Ab8a6a2E7d80590f1Ba, '{{easy2stake}}'),
@@ -117,9 +117,9 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x4564A9c6061f6f1F2Eadb954B1b3C241D2DC984e, '{{linkforest}}'),
   (0x69f0fB5f300C45AfEbBBCd85E930EDBB142c0D48, '{{linkforest}}'),
   (0xD48fc6E2B73C2988fA50C994181C0CdCa850D62a, '{{linkforest}}'),
+  (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
   (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0xCa878CF4a27690637c07B39ae06D26f7679Be4FC, '{{linkpool}}'),
-  (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
   (0xe9E11963f61322299f9919ff1dda01a825E82dBC, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x4dc81f63CB356c1420D4620414f366794072A3a8, '{{matrixedlink}}'),
@@ -131,6 +131,7 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x35DaC078fC9E6e45d89a6CBc78A776BA719b485D, '{{onchaintech}}'),
   (0xE2063AA95B35f8121A5E2f58BfE6a985270ABA77, '{{orionmoney}}'),
   (0xa0181758B14EfB2DAdfec66d58251Ae631e2B942, '{{orionmoney}}'),
+  (0xa06B89B08F038Aff4F81ce0A45c5aCb040477c3b, '{{p2porg}}'),
   (0xCDa423ee5A7A886eF113b181469581306fC8B607, '{{p2porg}}'),
   (0xB45A43e998286ab3Be4106b4c381f01dccE772a4, '{{p2porg}}'),
   (0xfb390441fF968F7569cd6F3CF01cb7214DFeed31, '{{paradigm}}'),
