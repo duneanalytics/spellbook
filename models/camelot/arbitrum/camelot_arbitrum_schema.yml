@@ -195,27 +195,19 @@ models:
             - pair
             - version
     columns:
-      - blockchain
-        name: blockchain
+      - name: blockchain
         description: "Blockchain on which the pair is deployed"
-      - minute
-        name: minute
+      - name: minute
         description: "UTC event block time truncated to the minute mark"
-      - pair
-        name: pair
+      - name: pair
         description: "Pair address"
-      - version
-        name: version
+      - name: version
         description: "Version of the pair built and deployed by the DEX project"
-      - token0
-        name: token0
+      - name: token0
         description: "Address of token0"
-      - token0_fee_rate
-        name: token0_fee_rate
+      - name: token0_fee_rate
         description: "Fee rate as a fraction of 1, applied if token0 gets swapped to token1"
-      - token1
-        name: token1
+      - name: token1
         description: "Address of token1"
-      - token1_fee_rate
-        name: token1_fee_rate
+      - name: token1_fee_rate
         description: "Fee rate as a fraction of 1, applied if token1 gets swapped to token0"
