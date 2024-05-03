@@ -71,7 +71,9 @@ FROM {{ erc721_buy_order_filled }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
+{% endif %}
 
+{% if erc721_buy_order_filled is not none and erc1155_buy_order_filled is not none %}
 UNION ALL
 {% endif %}
 
