@@ -59,16 +59,6 @@ jobs:
           test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir ${PROJECT_DIR})
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
-      - name: dbt test dex trades specific model(s)
-        shell: bash
-        run: |
-          if git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} models/_sector/dex/trades/ | grep -q "models/_sector/dex/trades/"; then
-            dbt run --models dex_base_trades
-            dbt run --models dex_trades
-            dbt test --models test_check_null_amount_usd
-          fi
-        working-directory: ${{env.PROJECT_DIR}}
-
       - name: dbt seed
         run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
 
@@ -77,6 +67,22 @@ jobs:
 
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: Check for new blockchain additions to dex_trades
+        id: file_changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            dex_base_trades:
+              - 'models/_sector/dex/trades/dex_base_trades.sql'
+
+      - name: Run dex_trades if new blockchain added
+        if: steps.file_changes.outputs.dex_base_trades == 'true'
+        run: "dbt -x run $PROFILE --select dex_trades --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: Run prices validation dbt test if new blockchain added
+        if: steps.file_changes.outputs.dex_base_trades == 'true'
+        run: "dbt test $PROFILE --select test_check_null_amount_usd --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Set environment variable for incremental model count
         run: |
