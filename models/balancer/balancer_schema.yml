@@ -3,9 +3,9 @@ version: 2
 models:
   - name: balancer_trades
     meta:
-      blockchain: arbitrum, ethereum, optimism, polygon, gnosis
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: dex
-      contributors: bizzyvinci, thetroyharris
+      contributors: bizzyvinci, thetroyharris, viniabussafi
     config:
       tags: ['balancer', 'amm', 'trades', 'dex']
     description: >
@@ -126,11 +126,11 @@ models:
 
   - name: balancer_flashloans
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: lending
-      contributors: hildobby
+      contributors: hildobby, viniabussafi
     config:
-      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'flashloans']
+      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'zkevm', 'flashloans']
     description: >
       All Balancer flashloans
     tests:
@@ -159,11 +159,11 @@ models:
 
   - name: balancer_bpt_prices
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: dex
       contributors: thetroyharris, victorstefenon, viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base']
+      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base', 'zkevm']
     description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -183,11 +183,11 @@ models:
 
   - name: balancer_liquidity
     meta:
-      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base']
+      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base', 'zkevm']
     description: >
       Liquidity by token on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -229,10 +229,10 @@ models:
 
   - name: balancer_transfers_bpt
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevmn
       contributors: victorstefenon, thetroyharris, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -262,10 +262,10 @@ models:
 
   - name: balancer_pools_fees
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'pools', 'fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
     tests:
@@ -288,11 +288,11 @@ models:
 
   - name: balancer_protocol_fee
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'revenue', 'fees']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'fees']
     description: >
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -324,10 +324,10 @@ models:
 
   - name: balancer_bpt_supply
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       contributors: thetroyharris, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm',  'bpt']
     description: >
       The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
     tests:
@@ -346,10 +346,10 @@ models:
 
   - name: balancer_token_whitelist
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'zkevm']
     description: >
       These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
     tests:
@@ -365,10 +365,10 @@ models:
 
   - name: balancer_pools_tokens_weights
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
       contributors: jacektrocinski, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
     description: >
       Token weights in Balancer pools.
     tests:

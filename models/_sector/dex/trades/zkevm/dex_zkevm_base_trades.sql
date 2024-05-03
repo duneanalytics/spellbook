@@ -6,7 +6,8 @@
 }}
 
 {% set base_models = [
-    ref('pancakeswap_v2_zkevm_base_trades')
+    ref('balancer_v2_zkevm_base_trades')
+    , ref('pancakeswap_v2_zkevm_base_trades')
     , ref('pancakeswap_v3_zkevm_base_trades')
 ] %}
 
@@ -31,7 +32,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM 
+        FROM
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL

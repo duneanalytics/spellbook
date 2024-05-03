@@ -1,25 +1,13 @@
 {{ config(
-    schema = 'balancer',
-    alias = 'trades',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-                                "project",
-                                "balancer",
-                                \'["bizzyvinci", "thetroyharris", "viniabussafi"]\') }}'
+    schema = 'balancer_zkevm',
+    alias = 'trades'
     )
 }}
 
 
 {% set balancer_models = [
-    ref('balancer_arbitrum_trades'),
-    ref('balancer_avalanche_c_trades'),
-    ref('balancer_base_trades'),
-    ref('balancer_ethereum_trades'),
-    ref('balancer_gnosis_trades'),
-    ref('balancer_optimism_trades'),
-    ref('balancer_polygon_trades'),
-    ref('balancer_zkevm_trades')
+    ref('balancer_v2_zkevm_trades')
 ] %}
-
 
 SELECT *
 FROM (
