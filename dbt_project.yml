@@ -812,6 +812,8 @@ models:
         +schema: clipper_polygon
       optimism:
         +schema: clipper_optimism
+      base:
+        +schema: clipper_base
 
     reaper:
       +schema: reaper

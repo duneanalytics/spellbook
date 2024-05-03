@@ -1,24 +1,19 @@
 {{
     config(
     alias = 'trades',
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum"]\',
+    post_hook='{{ expose_spells(\'["base"]\',
         "project",
         "clipper",
-        \'["0xRob", "amalashkevich"]\') }}'
+        \'["amalashkevich"]\') }}'
     )
 }}
 
 {% set clipper_models = [
-    ref('clipper_ethereum_trades'),
-    ref('clipper_arbitrum_trades'),
-    ref('clipper_polygon_trades'),
-    ref('clipper_optimism_trades'),
-    ref('clipper_base_trades'),
+    ref('clipper_v1_base_trades')
 ] %}
 
 
 SELECT *
-
 FROM (
     {% for dex_model in clipper_models %}
     SELECT
