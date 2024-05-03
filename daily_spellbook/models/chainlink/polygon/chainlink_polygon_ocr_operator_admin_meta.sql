@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_admin_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["polygon"]\',
@@ -13,8 +12,9 @@
 {% set a01node = '01Node' %}
 {% set alphachain = 'Alphachain' %}
 {% set bharvest = 'B Harvest' %}
-{% set blocksizecapital = 'BlocksizeCapital' %}
+{% set blocksizecapital = 'Blocksize' %}
 {% set chainlayer = 'Chainlayer' %}
+{% set chainlink = 'Chainlink' %}
 {% set cryptomanufaktur = 'CryptoManufaktur' %}
 {% set dmakers = 'dMakers' %}
 {% set dextrac = 'DexTrac' %}
@@ -39,17 +39,19 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x6cDC3Efa3bAa392fAF3E5c1Ca802E15B6185E0e8, '{{bharvest}}'),
   (0x7CC60c9C24E9A290Db55b1017AF477E5c87a7550, '{{blocksizecapital}}'),
   (0x4a3dF8cAe46765d33c2551ff5438a5C5FC44347c, '{{chainlayer}}'),
+  (0xE4dDb4233513498b5aa79B98bEA473b01b101a67, '{{chainlink}}'),
   (0x59eCf48345A221E0731E785ED79eD40d0A94E2A5, '{{cryptomanufaktur}}'),
   (0xB9e62F6a14aC8BabB7f99993bdc3182a1976c22E, '{{dmakers}}'),
   (0x9efa0A617C0552F1558c95993aA8b8A68b3e709C, '{{dextrac}}'),
   (0x15918ff7f6C44592C81d999B442956B07D26CC44, '{{fiews}}'),
   (0xB97a32D95A31a504C3dB28dDd574F21c700EDbee, '{{fiews}}'),
+  (0xdD831352762e9de7ad5a264990e1bB9F87A6Fc21, '{{inotel}}'),
   (0xB8C6E43f37E04A2411562a13c1C48B3ad5975cf4, '{{inotel}}'),
   (0x4564A9c6061f6f1F2Eadb954B1b3C241D2DC984e, '{{linkforest}}'),
   (0xD56FBFF05D2e1cdbeb5CB50e8055dAD0cf864792, '{{linkforest}}'),
   (0xD48fc6E2B73C2988fA50C994181C0CdCa850D62a, '{{linkforest}}'),
-  (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
+  (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x4dc81f63CB356c1420D4620414f366794072A3a8, '{{matrixedlink}}'),
   (0xAB35418fB9f8B13E3e6857c36A0769b9F94a87EC, '{{newroad}}'),

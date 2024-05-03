@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='price_feeds_oracle_addresses',
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                 "project",
@@ -11,26 +10,24 @@
 
 {% set _1inch_usd = '1INCH / USD' %}
 {% set aave_usd = 'AAVE / USD' %}
-{% set alpha_usd = 'ALPHA / USD' %}
+{% set aave_network_emergency_count_gnosis_chain_ = 'AAVE Network Emergency Count (Gnosis Chain)' %}
 {% set avax_usd = 'AVAX / USD' %}
 {% set bal_usd = 'BAL / USD' %}
 {% set bnb_usd = 'BNB / USD' %}
 {% set btc_usd = 'BTC / USD' %}
 {% set chf_usd = 'CHF / USD' %}
 {% set comp_usd = 'COMP / USD' %}
-{% set cream_usd = 'CREAM / USD' %}
 {% set crv_usd = 'CRV / USD' %}
 {% set dai_usd = 'DAI / USD' %}
 {% set doge_usd = 'DOGE / USD' %}
 {% set dot_usd = 'DOT / USD' %}
-{% set dpi_usd = 'DPI / USD' %}
 {% set eth_usd = 'ETH / USD' %}
 {% set eur_usd = 'EUR / USD' %}
-{% set fox_usd = 'FOX / USD' %}
 {% set ftt_usd = 'FTT / USD' %}
 {% set gno_usd = 'GNO / USD' %}
 {% set grt_usd = 'GRT / USD' %}
 {% set jpy_usd = 'JPY / USD' %}
+{% set link_dai = 'LINK / DAI' %}
 {% set link_usd = 'LINK / USD' %}
 {% set mkr_usd = 'MKR / USD' %}
 {% set mxn_usd = 'MXN / USD' %}
@@ -59,8 +56,7 @@ SELECT
 FROM (values
   ('{{_1inch_usd}}', 8, 0xFDF9EB5fafc11Efa65f6FD144898da39a7920Ae8, 0xf50a71387D9D01ED3873E32f1044497327AF1044),
   ('{{aave_usd}}', 8, 0x2b481Dc923Aa050E009113Dca8dcb0daB4B68cDF, 0xD2CCCa5Bb84CB2F6b72B98Ee82c61F67c82DD40B),
-  ('{{alpha_usd}}', 8, 0x7969b8018928F3d9faaE9AC71744ed2C1486536F, 0x200F30e782490976EF16D903fc267Af30Eee5182),
-  ('{{alpha_usd}}', 8, 0x7969b8018928F3d9faaE9AC71744ed2C1486536F, 0xf5FD312d0435C24f5c9bB8411bFc3D79c23EB0Bd),
+  ('{{aave_network_emergency_count_gnosis_chain_}}', 0, 0xF937ffAeA1363e4Fa260760bDFA2aA8Fc911F84D, 0x7D2c97DdB451259A3a850F67db8C803d3fB10Bf9),
   ('{{avax_usd}}', 8, 0x911e08A32A6b7671A80387F93147Ab29063DE9A2, 0xB840C9dBC0964bcD89d6410f34091b2cb6733ADb),
   ('{{bal_usd}}', 8, 0x1b723C855F7D2c2785F99486973271355e782d77, 0x3F2BA1E94112120d11F1a525913134fBE510bF37),
   ('{{bnb_usd}}', 8, 0x6D42cc26756C34F26BEcDD9b30a279cE9Ea8296E, 0x9Af55762115066D3e99AD4d237586344C4ABEAdD),
@@ -68,16 +64,12 @@ FROM (values
   ('{{chf_usd}}', 8, 0xFb00261Af80ADb1629D3869E377ae1EEC7bE659F, 0x6E2482E011EC31a1960a938791B6B4Ff5BAa3217),
   ('{{chf_usd}}', 8, 0xFb00261Af80ADb1629D3869E377ae1EEC7bE659F, 0xbe18b8F41760878ba6D3b1E9475c4CcAD3D9aA8f),
   ('{{comp_usd}}', 8, 0xBa95Bc8418Ebcdf8a690924E1d4aD5292139F2EA, 0x7cfEA3C34FBEf2e9A53c188a75494aeDC3A743ff),
-  ('{{cream_usd}}', 8, 0x3b681e9BF56eFe4b2a14196826230A5843fFF758, 0x9a8cdEA210623550befE64fAf2c8cE6f35bF9d82),
-  ('{{cream_usd}}', 8, 0x3b681e9BF56eFe4b2a14196826230A5843fFF758, 0x991bc14CF115d9b6eA518C412c9f4eA234d70C0a),
   ('{{crv_usd}}', 8, 0xC77B83ac3Dd2a761073bD0f281f7b880B2DDDe18, 0x88C76CccaA469614EAad7CED362050062DC2CCeB),
   ('{{dai_usd}}', 8, 0x678df3415fc31947dA4324eC63212874be5a82f8, 0xb65566283CAcE6b281308308da0f0783a613c416),
   ('{{doge_usd}}', 8, 0x824b4A1A0443609A2ADd94a700b770FA5bE31287, 0x817A6F75fA1840847382ab23203EA38eDB7158f6),
   ('{{dot_usd}}', 8, 0x3c30c5c415B2410326297F0f65f5Cbb32f3aefCc, 0x5128beD0c719537b179aF0aF01386caf9B22Baf1),
-  ('{{dpi_usd}}', 8, 0x53B1b13E7a5C0DE9A2BeFa1085Ec364BB27e439f, 0x57E62eB3E84a2D12Cc40ACBa84D10b79dA9E7c2E),
   ('{{eth_usd}}', 8, 0xa767f745331D267c7751297D982b050c93985627, 0x059e7Bd8157e0d302dF3626E162B6C835340b311),
   ('{{eur_usd}}', 8, 0xab70BCB260073d036d1660201e9d5405F5829b7a, 0x759be90a34E426042ed7d17916B78a5cD2567dd1),
-  ('{{fox_usd}}', 8, 0x3190f6D277Fea03A082Eba20B136f95f0DCCb3dD, 0x1AF770B72Da45e4278cA190370902aDea889EbA3),
   ('{{ftt_usd}}', 8, 0x0CaE8f5c10931f0Ce87Ed9BbB71391C6E93C2C26, 0x7FeD35C1e4C303F272E4fcdF19865E85DfA44f72),
   ('{{ftt_usd}}', 8, 0x0CaE8f5c10931f0Ce87Ed9BbB71391C6E93C2C26, 0x932ab70A49F0C678c9368040068E98f1a5a6A27a),
   ('{{gno_usd}}', 8, 0x22441d81416430A54336aB28765abd31a792Ad37, 0xcA16Ed36A7d1Ae2DC68873D62bce4f9BdCc2d378),
@@ -85,6 +77,7 @@ FROM (values
   ('{{grt_usd}}', 8, 0xeBbd67a84e33791F1bcFde74CDc22a71e332e2F1, 0x18064eA9430Dd74E854162Aff10E34aC6Df3838B),
   ('{{grt_usd}}', 8, 0xeBbd67a84e33791F1bcFde74CDc22a71e332e2F1, 0xCff7b6aaF94513566A5821fF77bcC075F5d2273D),
   ('{{jpy_usd}}', 8, 0x2AfB993C670C01e9dA1550c58e8039C1D8b8A317, 0xa5f05b6C586f21b7E6200b6A6a4ADE55eCAB0103),
+  ('{{link_dai}}', 18, 0xc89077976e03d19057eb296215C15afAe4A7464B, 0xf0c7f73764502Ad0A2728200B0Ad11CC244b7276),
   ('{{link_usd}}', 8, 0xed322A5ac55BAE091190dFf9066760b86751947B, 0x813a79EfDfd6a4352b7C583d8d38B2B5d1151d7E),
   ('{{mkr_usd}}', 8, 0x51e4024255d0cBd1F4C79AEe6BDB6565Df2C5d1b, 0x88403402B966Dee25724d24Adf56d398D1d7334e),
   ('{{mxn_usd}}', 8, 0xe9cea51a7b1b9B32E057ff62762a2066dA933cD2, 0xD8aE5c2AEec843531Df1e523D775d870f877103C),

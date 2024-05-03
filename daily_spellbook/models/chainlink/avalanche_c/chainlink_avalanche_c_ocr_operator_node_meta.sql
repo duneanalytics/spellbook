@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_node_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
@@ -13,7 +12,7 @@
 {% set a01node = '01Node' %}
 {% set alphachain = 'Alpha Chain' %}
 {% set blockdaemon = 'Blockdaemon' %}
-{% set blocksizecapital = 'Blocksize Capital' %}
+{% set blocksizecapital = 'Blocksize' %}
 {% set chainlayer = 'Chainlayer' %}
 {% set dextrac = 'DexTrac' %}
 {% set fiews = 'Fiews' %}

@@ -1,6 +1,5 @@
 {{
   config(
-    
     alias='ocr_operator_admin_meta',
     materialized = 'view',
     post_hook='{{ expose_spells(\'["bnb"]\',
@@ -46,18 +45,20 @@ SELECT admin_address, operator_name FROM (VALUES
   (0x59eCf48345A221E0731E785ED79eD40d0A94E2A5, '{{cryptomanufaktur}}'),
   (0xB98DA55e3E72BabF18c4f421Ea5B653519e79f2B, '{{dmakers}}'),
   (0x9efa0A617C0552F1558c95993aA8b8A68b3e709C, '{{dextrac}}'),
+  (0xfAf014362e72a0E80718dD094D889299C37695ab, '{{dxfeed}}'),
   (0xb284a468522663F6219f2912ca10145B52b13503, '{{dxfeed}}'),
   (0x991812566f6E14897Fc1e401D24de19845c0442f, '{{dxfeed}}'),
   (0xFdC770353dC0bFCE80a17Ab8a6a2E7d80590f1Ba, '{{easy2stake}}'),
   (0x38a75E2A093d8F9b815AAE9cA6A5Eb0c2901329b, '{{fiews}}'),
   (0x15918ff7f6C44592C81d999B442956B07D26CC44, '{{fiews}}'),
   (0x6eF38c3d1D85B710A9e160aD41B912Cb8CAc2589, '{{frameworkventures}}'),
+  (0xdD831352762e9de7ad5a264990e1bB9F87A6Fc21, '{{inotel}}'),
   (0xB8C6E43f37E04A2411562a13c1C48B3ad5975cf4, '{{inotel}}'),
   (0x4564A9c6061f6f1F2Eadb954B1b3C241D2DC984e, '{{linkforest}}'),
   (0xD48fc6E2B73C2988fA50C994181C0CdCa850D62a, '{{linkforest}}'),
+  (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
   (0x797de2909991C66C66D8e730C8385bbab8D18eA6, '{{linkpool}}'),
   (0x97b7CF748f1eb0B451f4464B4Aebc639d18Ddb48, '{{linkpool}}'),
-  (0xDF812B91D8bf6DF698BFD1D8047839479Ba63420, '{{linkpool}}'),
   (0x14f94049397C3F1807c45B6f854Cb5F36bC4393B, '{{linkriver}}'),
   (0x35DaC078fC9E6e45d89a6CBc78A776BA719b485D, '{{onchaintech}}'),
   (0x3FB4600736d306Ee2A89EdF0356D4272fb095768, '{{piertwo}}'),

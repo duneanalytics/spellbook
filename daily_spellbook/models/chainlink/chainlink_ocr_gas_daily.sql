@@ -2,7 +2,7 @@
   config(
     
     alias='ocr_gas_daily',
-    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","ethereum","fantom","gnosis","optimism","polygon"]\',
                             "project",
                             "chainlink",
                             \'["linkpool_ryan"]\') }}'
@@ -12,6 +12,7 @@
 {% set models = [
   'chainlink_arbitrum_ocr_gas_daily',
   'chainlink_avalanche_c_ocr_gas_daily',
+  'chainlink_base_ocr_gas_daily',
   'chainlink_bnb_ocr_gas_daily',
   'chainlink_ethereum_ocr_gas_daily',
   'chainlink_fantom_ocr_gas_daily',
