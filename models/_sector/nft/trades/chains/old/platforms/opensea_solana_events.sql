@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_solana',
     alias = 'events',
-    
+    tags =['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

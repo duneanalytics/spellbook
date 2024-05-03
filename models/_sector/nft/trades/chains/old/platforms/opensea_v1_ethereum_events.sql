@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v1_ethereum',
     alias = 'events',
-    
+    tags =['prod_exclude'],
     materialized = 'table',
     file_format = 'delta'
     )

@@ -363,17 +363,6 @@ models:
       bnb:
         +schema: babyswap_bnb
 
-    opensea:
-      +schema: opensea
-      ethereum:
-        +schema: opensea_ethereum
-      polygon:
-        +schema: opensea_polygon
-      solana:
-        +schema: opensea_solana
-      optimism:
-        +schema: opensea_optimism
-
     abi:
       +schema: abi
 
