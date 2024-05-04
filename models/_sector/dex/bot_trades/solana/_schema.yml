@@ -331,3 +331,25 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('looter_solana_trades_seed')
           blockchain: solana
+
+  - name: wifbot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: wifbot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "wifbot", "trades"]
+    description: >
+      Wifbot trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('wifbot_solana_trades_seed')
+          blockchain: solana
