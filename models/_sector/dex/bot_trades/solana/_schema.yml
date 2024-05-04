@@ -309,3 +309,25 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('sol_gun_solana_trades_seed')
           blockchain: solana
+
+  - name: consortium_key_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: consortium_key
+      contributors: clizzard
+    config:
+      tags: ["solana", "dex", "consortium_key", "trades"]
+    description: >
+      Consortium Key trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('consortium_key_solana_trades_seed')
+          blockchain: solana 
