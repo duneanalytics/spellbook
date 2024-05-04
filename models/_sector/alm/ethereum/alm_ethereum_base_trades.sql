@@ -1,7 +1,7 @@
 {{ config(
     schema = 'alm_ethereum'
     , alias = 'base_trades'
-    , materialized = 'view'
+    , materialized = 'incremental'
     )
 }}
 
