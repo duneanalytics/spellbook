@@ -767,6 +767,16 @@ sources:
           - name: gauge
           - name: recipient
 
+      - name: PolygonZkEVMRootGaugeFactory_evt_PolygonRootGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: recipient          
+
       - name: CappedPolygonRootGaugeFactory_evt_GaugeCreated
         columns:
           - name: contract_address
@@ -886,9 +896,47 @@ sources:
           - name: recipient
           - name: relativeWeightCap
 
+      - name: PolygonZkEVMRootGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - *call_success
+          - *call_tx_hash
+          - *call_trace_address
+          - *call_block_time
+          - *call_block_number
+          - *output_0
+          - name: recipient
+          - name: relativeWeightCap          
+
   - name: balancer_polygon
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
+    tables:
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: pool
+          - name: streamer
+
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0    
+
+  - name: balancer_zkevm
+    description: >
+      Decoded tables related to Balancer, an automated portfolio manager and trading platform, on ZKEVM.
     tables:
       - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
         columns:
@@ -1558,5 +1606,220 @@ sources:
           - name: output_0
           - name: vault          
 
+  - name: balancer_v2_zkevm
+    tables:
+      - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the NoProtocolFeeLiquidityBootstrappingPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *swapEnabledOnStart
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+          - *tokens
+          - *weights
 
-          
+      - name: ComposableStablePoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the ComposableStablePoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: AaveLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: "Address of the AaveLinearPoolFactory contract"
+          - name: name
+            description: "Name of the created pool"
+          - *mainToken
+          - *wrappedToken
+          - *upperTarget
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *symbol
+
+      - name: ERC4626LinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the ERC4626LinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: YearnLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer YearnLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the YearnLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: GearboxLinearPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Balancer GearboxLinearPoolFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: contract_address
+            description: 'Address of the GearboxLinearPoolFactory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - *tokenRateCacheDurations
+          - *exemptFromYieldProtocolFeeFlags
+          - *output_0
+          - *owner
+          - *swapFeePercentage
+          - *amplificationParameter
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+      - name: ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: gauge
+          - name: pool
+          - name: streamer
+
+      - name: ChildChainGaugeFactory_call_create
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: pool
+          - name: output_0    
+
+  - name: gyroscope_zkevm
+    tables:
+      - name: GyroECLPPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Gyroscope ECLP contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: capManager
+          - name: capParams                 
+          - name: contract_address
+          - name: derivedECLPParams
+          - name: eclpParams
+          - name: name
+          - *output_0
+          - *owner
+          - name: pauseManager
+          - name: pauseParams
+          - *swapFeePercentage
+          - *rateProviders
+          - *symbol
+          - *tokens
+
+  - name: gyroscope_zkevm
+    tables:
+      - name: Gyro2CLPPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Gyroscope 2CLP contract.
+        loaded_at_field: call_block_time
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: capManager
+          - name: capParams                 
+          - name: contract_address
+          - name: derivedECLPParams
+          - name: eclpParams
+          - name: name
+          - *output_0
+          - *owner
+          - name: pauseManager
+          - name: pauseParams
+          - *swapFeePercentage
+          - *rateProviders
+          - *symbol
+          - *tokens

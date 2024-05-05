@@ -45,8 +45,6 @@
         'platform_fee_amount_raw':'uint256',
         'royalty_fee_amount_raw':'uint256',
         'royalty_fee_receive_address':'varbinary',
-        'royalty_fee_currency_symbol':'varchar',
-        'royalty_fee_percentage':'double',
         'unique_trade_id':'varchar'
     } -%}
    {{ check_column_types_macro(model,column_types) }}

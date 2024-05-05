@@ -151,7 +151,9 @@ SELECT
   bxs.time as block_time,
   txs.proof_size_mb,
   gas_spent,
-  gas_spent_usd
+  gas_spent_usd,
+  gas_used,
+  calldata_gas_used
 FROM verify_txns txs
 INNER JOIN block_basefees bxs
   ON txs.block_number = bxs.block_number
