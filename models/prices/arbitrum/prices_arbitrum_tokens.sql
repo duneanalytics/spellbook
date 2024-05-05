@@ -183,7 +183,6 @@ FROM
     ('lvl-level','arbitrum','LVL',0xb64e280e9d1b5dbec4accedb2257a87b400db149, 18),
     ('plx-parallax','arbitrum','PLX',0xc8ccbd97b96834b976c995a67bf46e5754e2c48e, 18),
     ('osak-osaka-protocol','arbitrum','OSAK',0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 18),
-    ('bpet-xpettech-bpet','arbitrum','BPET',0x6daf586b7370b14163171544fca24abcc0862ac5, 18),
     ('sis-symbiosis-finance','arbitrum','SIS',0x9e758b8a98a42d612b3d38b66a22074dc03d7370, 18),
     ('equ-equation','arbitrum','EQU',0x87aaffdf26c6885f6010219208d5b161ec7609c0, 18),
     ('lndx-landx-governance-token','arbitrum','LNDX',0xe10d4a4255d2d35c9e23e2c4790e073046fbaf5c, 6),
