@@ -41,6 +41,7 @@ FROM
     , (0x7b915c27a0ed48e2ce726ee40f20b2bf8a88a1b3, 'KuCoin', 'KuCoin 3', 'CEX')
     , (0xf8da05c625a6e601281110cba52b156e714e1dc2, 'KuCoin', 'KuCoin 4', 'CEX')
     , (0xb25fe78faaefadb7249b4940ee485856df150bbe, 'Kelp DAO', 'Kelp DAO 1', 'Liquid Restaking')
+    , (0xa91dff6c41af892a89fc5c0bf5c32b5cc89d13ac, 'Kelp DAO', 'Kelp DAO 2', 'Liquid Restaking')
     , (0x093f6c270ac22ec240f0c6fd7414ea774ca8d3e5, 'Renzo', 'Renzo 1', 'Liquid Restaking')
     , (0x2641c2ded63a0c640629f5edf1189e0f53c06561, 'Renzo', 'Renzo 2', 'Liquid Restaking')
     , (0xe3cbd06d7dadb3f4e6557bab7edd924cd1489e8f, 'Mantle', 'Mantle 1', 'Staking Pool')
