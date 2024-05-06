@@ -121,7 +121,7 @@ pool_labels AS (
         name AS pool_symbol,
         pool_type
     FROM {{ ref('labels_balancer_v2_pools') }}
-)
+),
 
 dexs AS (
     SELECT
