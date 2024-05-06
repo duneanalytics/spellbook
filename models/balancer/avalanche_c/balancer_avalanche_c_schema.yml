@@ -88,6 +88,8 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
+      - name: pool_symbol
+      - name: pool_type
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
@@ -180,6 +182,8 @@ models:
       - *taker
       - *maker
       - *project_contract_address
+      - name: pool_symbol
+      - name: pool_type
       - *pool_id
       - *swap_fee
       - *tx_hash

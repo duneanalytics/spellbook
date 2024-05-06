@@ -36,6 +36,8 @@ FROM (
         pool_id,
         swap_fee,
         project_contract_address,
+        pool_symbol,
+        pool_type,
         tx_hash,
         tx_from,
         tx_to,
