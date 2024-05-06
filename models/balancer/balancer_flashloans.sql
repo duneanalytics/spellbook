@@ -1,10 +1,10 @@
 {{ config(
     
         alias = 'flashloans',
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base"]\',
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base", "zkevm"]\',
                                 "project",
                                 "balancer",
-                                \'["hildobby"]\') }}'
+                                \'["hildobby", "viniabussafi"]\') }}'
         )
 }}
 
@@ -16,6 +16,7 @@ ref('balancer_v2_ethereum_flashloans')
 , ref('balancer_v2_gnosis_flashloans')
 , ref('balancer_v2_avalanche_c_flashloans')
 , ref('balancer_v2_base_flashloans')
+, ref('balancer_v2_zkevm_flashloans')
 ] %}
 
 

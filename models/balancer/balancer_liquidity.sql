@@ -2,7 +2,7 @@
         schema = 'balancer',
         alias = 'liquidity', 
         
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base" 
+        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base", "zkevm" 
         ]\',
                                 "project",
                                 "balancer",
@@ -19,6 +19,7 @@ ref('balancer_v1_ethereum_liquidity')
 , ref('balancer_v2_gnosis_liquidity')
 , ref('balancer_v2_avalanche_c_liquidity')
 , ref('balancer_v2_base_liquidity')
+, ref('balancer_v2_zkevm_liquidity')
 ] %}
 
 
