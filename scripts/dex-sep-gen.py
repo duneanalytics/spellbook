@@ -1,4 +1,4 @@
-# 已知的区块链名称
+# known blockchains
 blockchains = ['ethereum', 'bnb', 'optimism', 'fantom', 'avalanche_c', 'polygon', 'celo', 'base']
 
 model_names = [
@@ -25,13 +25,12 @@ model_names = [
     'mummy_finance_optimism_trades', 'hashflow_optimism_trades'
 ]
 
-# 初始化两个列表
+# Initialize lists to store model names
 with_blockchain = []
 without_blockchain = []
 
-# 遍历 model_names 列表
+# Iterate model_names and classify
 for model_name in model_names:
-    # 检查模型名称是否包含已知的区块链名称
     if any(blockchain in model_name for blockchain in blockchains):
         with_blockchain.append(model_name)
     else:
