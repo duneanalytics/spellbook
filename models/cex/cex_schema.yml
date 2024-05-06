@@ -29,7 +29,7 @@ models:
 
   - name: cex_addresses
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, bitcoin, fantom
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, bitcoin, fantom, aptos, celo, zora, zksync, zkevm, linea, solana, scroll, tron, base
       sector: cex
       contributors: hildobby
     config:

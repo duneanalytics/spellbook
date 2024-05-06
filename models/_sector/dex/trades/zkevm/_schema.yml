@@ -4,6 +4,21 @@ models:
   - name: dex_zkevm_base_trades
     tests:
       - check_dex_info_relationship
+
+  - name: balancer_v2_zkevm_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: balancer
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
+    config:
+      tags: [ 'zkevm', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v2 zkevm base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
       
   - name: pancakeswap_v2_zkevm_base_trades
     meta:
@@ -23,7 +38,6 @@ models:
           seed_file: ref('pancakeswap_zkevm_base_trades_seed')
           filter:
             version: 2
-            
 
   - name: pancakeswap_v3_zkevm_base_trades
     meta:
