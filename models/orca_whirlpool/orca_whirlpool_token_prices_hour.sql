@@ -1,7 +1,7 @@
 {{
   config(   
         schema = 'orca_whirlpool',
-        alias = 'token_prices',
+        alias = 'token_prices_hour',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
