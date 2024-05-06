@@ -7,6 +7,18 @@
 {% set chains = [
      'ethereum'
     ,'optimism'
+    ,'polygon'
+    ,'bnb'
+    ,'avalanche_c'
+    ,'gnosis'
+    ,'fantom'
+    ,'arbitrum'
+    ,'celo'
+    ,'base'
+    ,'goerli'
+    ,'zksync'
+    ,'zora'
+    ,'scroll'
 ] %}
 
 --     ,'polygon'
