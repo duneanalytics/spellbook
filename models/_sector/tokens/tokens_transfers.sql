@@ -15,12 +15,12 @@
     ,'arbitrum'
     ,'celo'
     ,'base'
-    ,'goerli'
     ,'zksync'
     ,'zora'
     ,'scroll'
 ] %}
-
+--     'ethereum'
+--     ,'optimism'
 --     ,'polygon'
 --     ,'bnb'
 --     ,'avalanche_c'
@@ -29,7 +29,6 @@
 --     ,'arbitrum'
 --     ,'celo'
 --     ,'base'
---     ,'goerli'
 --     ,'zksync'
 --     ,'zora'
 --     ,'scroll'
