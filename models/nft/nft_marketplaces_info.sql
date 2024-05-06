@@ -72,4 +72,5 @@ FROM (VALUES
     , ('campfire', 'Campfire', 'Direct', '0xCampfire')
     , ('joepegs', 'Joepegs', 'Direct', 'joepegsnft')
     , ('alienswap', 'AlienSwap', 'Direct & Aggregator', 'AlienSwap_NFT')
+    , ('mintsquare', 'Mint Square', 'Direct', 'MintSquareNFT')
     ) AS temp_table (project, name, marketplace_type, x_username)

@@ -12,6 +12,7 @@ WITH whitelist_token as (
     (0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1, 'DAI', 'arbitrum'),
     (0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9, 'USDT', 'arbitrum'),
     (0x82aF49447D8a07e3bd95BD0d56f35241523fBab1, 'WETH', 'arbitrum'),
+    (0x0fBcbaEA96Ce0cF7Ee00A8c19c3ab6f5Dc8E1921, 'WSTETH', 'arbitrum'),
     (0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E, 'USDC', 'avalanche_c'),
     (0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7, 'USDT', 'avalanche_c'),
     (0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB, 'WETH', 'avalanche_c'),
@@ -23,7 +24,7 @@ WITH whitelist_token as (
     (0xddafbb505ad214d7b80b1f830fccc89b60fb7a83, 'USDC', 'gnosis'),
     (0x4ecaba5870353805a9f068101a40e0f32ed605c6, 'USDT', 'gnosis'),
     (0xe91d153e0b41518a2ce8dd3d7944fa863463a97d, 'WXDAI', 'gnosis'),
-    (0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1, 'WETH', 'gnosis'),
+    (0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1, 'WETH', 'gnosis'),    
     (0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 'WSTETH', 'gnosis'),
     (0xdAC17F958D2ee523a2206206994597C13D831ec7, 'USDT', 'ethereum'),
     (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 'USDC', 'ethereum'),
@@ -37,7 +38,10 @@ WITH whitelist_token as (
     (0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 'DAI', 'polygon'),
     (0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 'USDT', 'polygon'),
     (0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270, 'WMATIC', 'polygon'),
-    (0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 'polygon')
+    (0x7ceb23fd6bc0add59e62ac25578270cff1b9f619, 'WETH', 'polygon'),
+    (0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5, 'USDC', 'zkevm'),
+    (0x744c5860ba161b5316f7e80d9ec415e2727e5bd5, 'DAI', 'zkevm'),
+    (0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9, 'WETH', 'zkevm')
     )
         as t (address, name, chain))
     
