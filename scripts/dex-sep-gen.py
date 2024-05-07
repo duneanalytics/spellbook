@@ -52,14 +52,14 @@ for model_name in with_blockchain:
     project_name = '_'.join(parts[:-2])
     blockchain = parts[-2]
 
-    directory = f"{path_prefix}{project_name}/{blockchain}/"
-    file_name = f"{project_name}_{blockchain}_trades.sql"
+    directory = f"{path_prefix}{project_name}/"
+    file_name = f"{project_name}_trades.sql"
     file_path = os.path.join(directory, file_name)
 
     os.makedirs(directory, exist_ok=True)
 
     content = f"""{{{{ config(
-    schema = '{project_name}_{blockchain}',
+    schema = '{project_name}',
     alias = 'trades',
     materialized = 'view',
     post_hook='{{{{ expose_spells(blockchains = \'["{blockchain}"]\', 
@@ -95,7 +95,7 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM ref('dex_trades')
-WHERE project = '{project_name}' AND blockchain = '{blockchain}'"""
+WHERE project = '{project_name}'"""
 
     with open(file_path, 'w') as f:
         f.write(content)
