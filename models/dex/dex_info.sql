@@ -154,4 +154,8 @@ FROM (VALUES
     , ('vesync', 'veSync', 'Direct', 'veSync')
     , ('dracula_finance', 'Dracula Finance', 'Direct', 'Dracula_Finance')
     , ('velocore', 'Velocore', 'Direct', 'Velocore')
+    , ('secta', 'Secta', 'Direct', 'Secta')
+    , ('echodex', 'EchoDex', 'Direct', 'EchoDex')
+    , ('lynex', 'Lynex', 'Direct', 'Lynex')
+    , ('nile', 'Nile', 'Direct', 'Nile')
     ) AS temp_table (project, name, marketplace_type, x_username)
