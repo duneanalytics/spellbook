@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(blockchains = '["ethereum"]', 
                                   spell_type = "project", 
                                   spell_name = "carbon_defi", 
-                                  contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                  contributors = '["tiagofilipenunes"]') }}'
     )
 }}
 

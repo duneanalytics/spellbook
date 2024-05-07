@@ -8,3 +8,7 @@ models:
   - name: balancer_trades
   - name: bancor_trades
   - name: biswap_trades
+  - name: camelot_trades
+  - name: carbon_defi_trades
+  - name: clipper_trades
+  - name: curvefi_trades

@@ -2,10 +2,10 @@
         schema = 'clipper',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = '[]', 
+        post_hook='{{ expose_spells(blockchains = '["arbitrum", "ethereum", "polygon", "optimism"]',
                                       spell_type = "project", 
                                       spell_name = "clipper", 
-                                      contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                      contributors = '["0xRob", "amalashkevich"]') }}'
         )
 }}
 
