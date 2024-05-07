@@ -133,6 +133,8 @@ with verify_txns as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
+    UNION ALL 
+
   SELECT
     'linea' AS chain,
     t.block_number,
