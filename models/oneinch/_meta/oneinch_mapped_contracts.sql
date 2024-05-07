@@ -40,7 +40,7 @@ contracts as (
             , 'Hashflow'
             , 'Native'
             , 'Swaap'
-        ], project) as lops
+        ], project) as lop
         , tag
     from (values
           (0xc586bef4a0992c495cf22e1aeee4e446cecdee0e, true, '1inch'                , 'OneSplit'                , array['ethereum'])
@@ -372,7 +372,7 @@ select
     , address
     , project
     , tag
-    , map_from_entries(array[('user', user), ('multi', multi), ('lops', lops)]) as flags
+    , map_from_entries(array[('user', user), ('multi', multi), ('lop', lop)]) as flags
     , last_created_at
     , last_creator
     , last_creation_tx_hash
