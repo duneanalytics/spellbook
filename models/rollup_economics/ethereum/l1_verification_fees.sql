@@ -125,7 +125,7 @@ with verify_txns as (
     {% endif %}
   WHERE t.to = 0xa13BAF47339d63B743e7Da8741db5456DAc1E556
     AND bytearray_substring(t.data, 1, 4) IN (
-    0x31fa742d -- finalizeBatchWithProof,
+    0x31fa742d, -- finalizeBatchWithProof,
     0x00b0f4d7 -- finalizeBatchWithProof4844
     )
     AND t.block_time >= timestamp '2023-10-07'
