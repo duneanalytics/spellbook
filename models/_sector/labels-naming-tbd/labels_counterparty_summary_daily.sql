@@ -16,10 +16,10 @@ select
     ,sum(amount_usd) as usd_in
 from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
-on t.blockchain = l.blockchain
+ on t.blockchain = l.blockchain
  and "to" = from_hex(l.address)
- inner join {{source('labels','owner_addresses')}} cp
-on t.blockchain = cp.blockchain
+inner join {{source('labels','owner_addresses')}} cp
+ on t.blockchain = cp.blockchain
  and "from" = from_hex(cp.address)
 group by 1,2,3,4
 )
@@ -34,10 +34,10 @@ select
     ,sum(amount_usd)  as usd_out
 from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
-on t.blockchain = l.blockchain
+ on t.blockchain = l.blockchain
  and "from" = from_hex(l.address)
 inner join {{source('labels','owner_addresses')}} cp
-on t.blockchain = cp.blockchain
+ on t.blockchain = cp.blockchain
  and "to" = from_hex(cp.address)
 group by 1,2,3,4
 )
