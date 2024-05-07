@@ -149,6 +149,7 @@ FROM
     ('aurabal-aura-bal','arbitrum','AURABAL',0x223738a747383d6F9f827d95964e4d8E8AC754cE, 18),
     ('sol-solana','arbitrum','SOL',0x2bcc6d6cdbbdc0a4071e48bb3b969b06b3330c07, 9),
     ('jitosol-jito-staked-sol','arbitrum','JITOSOL',0x83e1d2310ade410676b1733d16e89f91822fd5c3, 9),
+    ('sparta-spartadex', 'arbitrum', 'SPARTA', 0x11F98c7E42A367DaB4f200d2fdc460fb445CE9a8, 18),
     ('pry-perpy-finance','arbitrum','PRY',0x1824a51c106efc27d35a74efb56d9bf54ddb22d4, 18),
     ('next-connext-eth','arbitrum','NEXT',0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
     ('lilai-lilai','arbitrum','LILAI',0x655a6beebf2361a19549a99486ff65f709bd2646, 18),

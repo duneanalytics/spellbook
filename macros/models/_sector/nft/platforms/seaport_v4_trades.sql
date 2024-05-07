@@ -186,8 +186,8 @@ with source_ethereum_transactions as (
     select a.block_time
             ,a.block_number
             ,a.tx_hash
---            ,coalesce(a.om_evt_index, 0 ) + a.evt_index as evt_index  -- when orders_matched exists, add the evt_indexes to prevent duplication
-            ,coalesce(a.om_evt_index, a.evt_index) as evt_index
+            ,coalesce(a.om_evt_index, 0 ) + a.evt_index as evt_index  -- when orders_matched exists, add it to the evt_index to prevent duplication
+--            ,coalesce(a.om_evt_index, a.evt_index) as evt_index
             ,a.sub_type
             ,a.sub_idx
             ,a.offer_first_item_type
@@ -238,7 +238,7 @@ with source_ethereum_transactions as (
                     when offer_first_item_type = 'erc20' and sub_type = 'consideration' and eth_erc_idx > 0 then 1
                     when offer_first_item_type in ('erc721','erc1155') and sub_type = 'consideration' and eth_erc_idx > 1 then 1
                     when om_order_id % 2 = 0 and item_type = 'erc20' then 1
-                end) over (partition by tx_hash, coalesce(om_evt_index, evt_index) order by evt_index, eth_erc_idx) as creator_fee_idx
+                end) over (partition by tx_hash, coalesce(om_evt_index,evt_index) order by evt_index, eth_erc_idx) as creator_fee_idx
             ,case when offer_first_item_type = 'erc20' and sub_type = 'consideration' and item_type in ('erc721','erc1155') then true
                 when offer_first_item_type in ('erc721','erc1155') and sub_type = 'offer' and item_type in ('erc721','erc1155') then true
                 else false
