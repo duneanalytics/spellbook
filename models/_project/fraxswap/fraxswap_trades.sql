@@ -2,10 +2,10 @@
         schema = 'fraxswap',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = '[]', 
+        post_hook='{{ expose_spells(blockchains = '["avalanche_c", "bnb", "polygon", "ethereum"]',
                                       spell_type = "project", 
                                       spell_name = "fraxswap", 
-                                      contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                      contributors = '["zhongyiio", "kndlexi", "hosuke"]') }}'
         )
 }}
 

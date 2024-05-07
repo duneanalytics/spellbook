@@ -17,3 +17,4 @@ models:
   - name: dodo_trades
   - name: ellipsis_finance_trades
   - name: equalizer_trades
+  - name: fraxswap_trades
