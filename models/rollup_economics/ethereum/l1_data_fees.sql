@@ -310,7 +310,8 @@ with tx_batch_appends as (
     )
     AND bytearray_substring(t.data, 1, 4) IN (
       0x5e9145c9, -- sequenceBatches
-      0xecef3f99 -- sequenceBatches (as of block 19218878)
+      0xecef3f99, -- sequenceBatches (as of block 19218878)
+      0xdef57e54 -- sequenceBatches
       )
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
@@ -338,9 +339,8 @@ with tx_batch_appends as (
     {% endif %}
   WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
     AND bytearray_substring(t.data, 1, 4) IN (
-      0x4165d6dd, -- Finalize Blocks (proof verified immediately)
-      0xd630280f, -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
-      0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
+      0x7a776315, -- submitData (Aplha v2 Release at block. 19222438)
+      0x2d3c12e5 -- submitBlobData
       )
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}

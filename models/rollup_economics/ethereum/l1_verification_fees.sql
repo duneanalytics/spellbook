@@ -124,8 +124,41 @@ with verify_txns as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
   WHERE t.to = 0xa13BAF47339d63B743e7Da8741db5456DAc1E556
-    AND bytearray_substring(t.data, 1, 4) = 0x31fa742d -- finalizeBatchWithProof
+    AND bytearray_substring(t.data, 1, 4) IN (
+    0x31fa742d, -- finalizeBatchWithProof,
+    0x00b0f4d7 -- finalizeBatchWithProof4844
+    )
     AND t.block_time >= timestamp '2023-10-07'
+    {% if is_incremental() %}
+    AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+
+    UNION ALL 
+
+  SELECT
+    'linea' AS chain,
+    t.block_number,
+    t.hash,
+    (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent,
+    p.price * (cast(gas_used as double) * (cast(gas_price as double) / 1e18)) as gas_spent_usd,
+    0.001 AS proof_size_mb,
+    t.gas_used,
+    {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
+  FROM {{ source('ethereum','transactions') }} AS t
+  INNER JOIN {{ source('prices','usd') }} p
+    ON p.minute = date_trunc('minute', t.block_time)
+    AND p.blockchain is null
+    AND p.symbol = 'ETH'
+    {% if is_incremental() %}
+    AND p.minute >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+    AND t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+    AND bytearray_substring(t.data, 1, 4) IN 
+    (
+    0x4165d6dd, -- Finalize Blocks (proof verified immediately)
+    0xd630280f -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
+    )
+    AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
