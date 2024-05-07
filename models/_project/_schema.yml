@@ -15,3 +15,5 @@ models:
   - name: defiswap_trades
   - name: dfx_trades
   - name: dodo_trades
+  - name: ellipsis_finance_trades
+  - name: equalizer_trades

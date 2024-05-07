@@ -2,10 +2,10 @@
         schema = 'ellipsis_finance',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = '[]', 
+        post_hook='{{ expose_spells(blockchains = '["bnb"]',
                                       spell_type = "project", 
                                       spell_name = "ellipsis_finance", 
-                                      contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                      contributors = '["Henrystats", "0xRob"]') }}'
         )
 }}
 
