@@ -1,10 +1,10 @@
 version: 1
 
 models:
- - name: nft_creator_tokens
+ - name: limitbreak_creator_tokens
    meta:
      blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb
-     sector: nft
+     sector: limitbreak
      contributors: limitbreak
    config:
      tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]

@@ -126,48 +126,10 @@ WITH project_mints as
         {% endif %}
         {% endfor %}
     )
-), base_union AS (
-    SELECT 
-        base_mints.blockchain,
-        base_mints.project,
-        base_mints.version,
-        CAST(date_trunc('day', base_mints.block_time) as date)  as block_date,
-        CAST(date_trunc('month', base_mints.block_time) as date)  as block_month,
-        base_mints.block_time,
-        base_mints.token_id,
-        base_mints.collection,
-        base_mints.amount_usd,
-        base_mints.token_standard,
-        base_mints.trade_type,
-        base_mints.number_of_items,
-        base_mints.trade_category,
-        base_mints.evt_type,
-        base_mints.seller,
-        base_mints.buyer,
-        base_mints.amount_original,
-        base_mints.amount_raw,
-        base_mints.currency_symbol,
-        base_mints.currency_contract,
-        base_mints.nft_contract_address,
-        base_mints.project_contract_address,
-        base_mints.aggregator_name,
-        base_mints.aggregator_address,
-        base_mints.tx_hash,
-        block_number,
-        base_mints.tx_from,
-        base_mints.tx_to,
-        base_mints.evt_index,
-        coalesce(ctokens.is_creator_token, false) as is_creator_token
-    FROM (
-        SELECT *
-        FROM project_mints
-        UNION ALL
-        SELECT *
-        FROM native_mints
-    ) base_mints
-    LEFT JOIN {{ ref('nft_creator_tokens') }} ctokens
-        ON base_mints.nft_contract_address = ctokens.address
-        AND base_mints.blockchain = ctokens.blockchain
 )
 
-select * from base_union
+SELECT *
+FROM project_mints
+UNION ALL
+SELECT *
+FROM native_mints

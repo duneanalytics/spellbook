@@ -1,6 +1,6 @@
 {{ config(
         
-        schema = 'nft_base',
+        schema = 'limitbreak_base',
         alias = 'creator_tokens',
         partition_by = ['block_month'],
 		file_format = 'delta',

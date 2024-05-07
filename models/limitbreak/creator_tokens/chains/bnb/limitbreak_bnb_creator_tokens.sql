@@ -1,6 +1,6 @@
 {{ config(
         
-        schema = 'nft_optimism',
+        schema = 'limitbreak_bnb',
         alias = 'creator_tokens',
         partition_by = ['block_month'],
 		file_format = 'delta',
@@ -11,5 +11,5 @@
 }}
 
 {{creator_tokens_inspect_contracts(
-    blockchain='optimism'
+    blockchain='bnb'
 )}}
