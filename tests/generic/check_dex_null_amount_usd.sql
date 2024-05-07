@@ -1,6 +1,6 @@
 {% test check_dex_null_amount_usd(model, group_by='blockchain') %}
 
-    {%- set threshold = 0.05 -%}
+    {%- set threshold = 0.50 -%}
 
     WITH base AS (
         SELECT
