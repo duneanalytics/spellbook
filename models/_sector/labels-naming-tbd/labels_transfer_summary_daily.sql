@@ -14,7 +14,7 @@ select
     ,count(*) as transfers_in
     ,sum(amount_usd) as usd_in
 from {{source('labels','owner_addresses')}} l
-left join {{ref('tokens_ethereum_transfers')}} t
+left join {{ref('tokens_transfers')}} t
 on t.blockchain = l.blockchain
  and "to" = from_hex(l.address)
 group by 1,2,3
@@ -28,7 +28,7 @@ select
     ,count(*) as transfers_out
     ,sum(amount_usd)  as usd_out
 from {{source('labels','owner_addresses')}} l
-left join {{ref('tokens_ethereum_transfers')}} t
+left join {{ref('tokens_transfers')}} t
 on t.blockchain = l.blockchain
  and "from" = from_hex(l.address)
 group by 1,2,3
