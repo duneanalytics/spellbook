@@ -2,7 +2,7 @@
         schema = 'maverick',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\'
+        post_hook='{{ expose_spells(blockchains = \'[]\',
                                       spell_type = "project", 
                                       spell_name = "maverick", 
                                       contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'

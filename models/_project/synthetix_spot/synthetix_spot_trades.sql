@@ -2,7 +2,7 @@
         schema = 'synthetix_spot',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\'
+        post_hook='{{ expose_spells(blockchains = \'[]\',
                                       spell_type = "project", 
                                       spell_name = "synthetix_spot", 
                                       contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
