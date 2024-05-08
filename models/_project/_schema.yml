@@ -3,6 +3,7 @@ version: 2
 models:
   - name: aerodrome_trades
   - name: airswap_trades
+  - name: apeswap_trades
   - name: arbswap_trades
   - name: babyswap_trades
   - name: balancer_trades
