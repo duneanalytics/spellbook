@@ -25,7 +25,7 @@ WITH event_data as (
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index
-    FROM  {{ source('clipper_v2_base', 'ClipperPackedVerifiedExchange_evt_Swapped') }}
+    FROM  {{ source('clipper_base', 'ClipperPackedVerifiedExchange_evt_Swapped') }}
     WHERE 1=1
     {% if not is_incremental() %}
     AND evt_block_time >= TIMESTAMP '{{project_start_date}}'
