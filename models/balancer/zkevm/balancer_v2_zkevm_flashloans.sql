@@ -1,6 +1,5 @@
 {{ config(
      partition_by = ['block_month']
-      , tags = ['prod_exclude']
       , schema = 'balancer_v2_zkevm'
       , alias = 'flashloans'
       , materialized = 'incremental'
