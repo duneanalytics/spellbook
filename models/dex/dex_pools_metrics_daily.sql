@@ -14,7 +14,7 @@
 }}
 
 {% set dex_pool_metrics_models = [
- ref('balancer_pools_metrics')
+ ref('balancer_pools_metrics_daily')
 ] %}
 
 
