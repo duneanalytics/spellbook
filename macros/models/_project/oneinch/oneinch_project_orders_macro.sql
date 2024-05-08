@@ -348,6 +348,7 @@
                 "maker_asset":      ("input"    , 4 + 32*10 + 12    , 20, 'b'),
                 "taker_asset":      ("input"    , 4 + 32*9 + 12     , 20, 'b'),
                 "taker_max_amount": ("input"    , 4 + 32*11         , 32, 'u'),
+                "making_amount":    ("output"   , 32*0              , 32, 'u'),
             },
         },
     }
@@ -416,6 +417,7 @@ contracts as (
         , topic2
         , topic3
         , data
+        , row_number() over(partition by block_number, tx_hash order by index) as log_counter
     from (
         select
             block_number
@@ -426,6 +428,7 @@ contracts as (
             , topic2
             , topic3
             , data
+            , index
         from {{ source(blockchain, 'logs') }}
         where
             {% if is_incremental() %}
@@ -496,6 +499,7 @@ contracts as (
         , try({{ binary('call', 'order_hash') }}) as call_order_hash
         , input
         , output
+        , row_number() over(partition by block_number, tx_hash order by call_trace_address) as call_counter
     from (
         select
             block_number
@@ -519,6 +523,28 @@ contracts as (
     )
     join contracts using(address)
     join selectors using(project, selector)
+)
+
+, joined as (
+    select
+        *
+        , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address) as rows
+    from calls
+    left join logs using(block_number, tx_hash, event)
+    join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
+    where
+        (call_maker = log_maker or call_maker is null or log_maker is null)
+        and (call_taker = log_taker or call_taker is null or log_taker is null)
+        and (call_receiver = log_receiver or call_receiver is null or log_receiver is null)
+        and (call_maker_asset = log_maker_asset or call_maker_asset is null or log_maker_asset is null or cardinality(array_intersect({{wrapping}}, array[call_maker_asset, log_maker_asset])) = 2)
+        and (call_taker_asset = log_taker_asset or call_taker_asset is null or log_taker_asset is null or cardinality(array_intersect({{wrapping}}, array[call_taker_asset, log_taker_asset])) = 2)
+        and (call_maker_max_amount = log_maker_max_amount or call_maker_max_amount is null or log_maker_max_amount is null)
+        and (call_taker_max_amount = log_taker_max_amount or call_taker_max_amount is null or log_taker_max_amount is null)
+        and (call_making_amount = log_making_amount or call_making_amount is null or log_making_amount is null)
+        and (call_taking_amount = log_taking_amount or call_taking_amount is null or log_taking_amount is null)
+        and (call_maker_fee_amount = log_maker_fee_amount or call_maker_fee_amount is null or log_maker_fee_amount is null)
+        and (call_taker_fee_amount = log_taker_fee_amount or call_taker_fee_amount is null or log_taker_fee_amount is null)
+        and (call_order_hash = log_order_hash or call_order_hash is null or log_order_hash is null)
 )
 
 -- output --
@@ -557,21 +583,9 @@ select
     , topic3 as event_topic3
     , array[data] as event_data
     , date(date_trunc('month', block_time)) as block_month
-from calls
-left join logs using(block_number, tx_hash, event)
-join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
+from joined
 where
-    (call_maker = log_maker or call_maker is null or log_maker is null)
-    and (call_taker = log_taker or call_taker is null or log_taker is null)
-    and (call_receiver = log_receiver or call_receiver is null or log_receiver is null)
-    and (call_maker_asset = log_maker_asset or call_maker_asset is null or log_maker_asset is null or cardinality(array_intersect({{wrapping}}, array[call_maker_asset, log_maker_asset])) = 2)
-    and (call_taker_asset = log_taker_asset or call_taker_asset is null or log_taker_asset is null or cardinality(array_intersect({{wrapping}}, array[call_taker_asset, log_taker_asset])) = 2)
-    and (call_maker_max_amount = log_maker_max_amount or call_maker_max_amount is null or log_maker_max_amount is null)
-    and (call_taker_max_amount = log_taker_max_amount or call_taker_max_amount is null or log_taker_max_amount is null)
-    and (call_making_amount = log_making_amount or call_making_amount is null or log_making_amount is null)
-    and (call_taking_amount = log_taking_amount or call_taking_amount is null or log_taking_amount is null)
-    and (call_maker_fee_amount = log_maker_fee_amount or call_maker_fee_amount is null or log_maker_fee_amount is null)
-    and (call_taker_fee_amount = log_taker_fee_amount or call_taker_fee_amount is null or log_taker_fee_amount is null)
-    and (call_order_hash = log_order_hash or call_order_hash is null or log_order_hash is null)
+    rows = 1
+    or call_counter = log_counter
 
 {% endmacro %}
