@@ -225,6 +225,8 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
+      - name: pool_symbol
+      - name: pool_type
       - name: tx_hash
       - &tx_from
         name: tx_from
@@ -361,6 +363,8 @@ models:
       - name: taker
       - name: maker
       - name: project_contract_address
+      - name: pool_symbol
+      - name: pool_type
       - name: pool_id
       - name: swap_fee
       - name: tx_hash

@@ -32,6 +32,12 @@ sources:
         loaded_at_field: evt_block_time
       - name: BalancerDirectJoinStrategy_evt_Reinvest
         loaded_at_field: evt_block_time
+      - name: BoostedPendleStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BoostedPendleStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BoostedPendleStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
       - name: CompoundingBets_evt_Deposit
         loaded_at_field: evt_block_time
       - name: CompoundingBets_evt_Withdraw
@@ -67,6 +73,12 @@ sources:
       - name: LevelStrategy_evt_Withdraw
         loaded_at_field: evt_block_time
       - name: LevelStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: PendleStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: PendleStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: PendleStrategy_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: SiloStrategy_evt_Deposit
         loaded_at_field: evt_block_time
