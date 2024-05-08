@@ -496,36 +496,6 @@ models:
       - name: farm_last_distributor
       - name: farm_last_distributor_set_up_at
 
-  - name: oneinch_exchange_contracts
-    meta:
-      blockchain: ['ethereum', 'optimism', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'bnb', 'fantom', 'base', 'zksync']
-      sector: oneinch
-      contributors: ['max-morrow', 'grkhr']
-    config:
-      tags: ['contracts', 'metadata']
-    description: >
-        exchange contracts
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - contract_address
-            - blockchain
-    columns:
-      - name: project
-      - name: contract_address
-      - name: contract_id
-      - name: contract_name
-      - name: blockchain
-        tests:
-          - not_null
-      - name: created_at
-      - name: creator
-      - name: creation_tx_hash
-      - name: abi
-      - name: params
-      - name: namespaces
-      - name: names
-
   - name: oneinch_fusion_accounts
     meta:
       blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']

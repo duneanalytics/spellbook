@@ -17,7 +17,7 @@ methods as (
         , method
         , selector
         , flags
-    from {{ oneinch_mapped_methods_macro(blockchain) }}
+    from ({{ oneinch_mapped_methods_macro(blockchain) }})
     where flags['swap']
 )
 
