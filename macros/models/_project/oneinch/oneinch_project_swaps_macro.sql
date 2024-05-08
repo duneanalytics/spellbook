@@ -17,7 +17,7 @@ methods as (
         , method
         , selector
         , flags
-    from ({{ oneinch_mapped_methods_macro(blockchain) }})
+    from ({{ ref('oneinch_' + blockchain + '_mapped_methods') }})
     where flags['swap']
 )
 
