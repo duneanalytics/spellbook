@@ -100,5 +100,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('p_bought.minute') }}
+    AND {{ incremental_predicate('p_sold.minute') }}
     {% endif %}
