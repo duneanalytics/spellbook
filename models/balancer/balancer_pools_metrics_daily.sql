@@ -21,7 +21,7 @@ trades AS(
         version,
         blockchain,
         project_contract_address,
-        sum(amount_usd) AS swap_amount_usd_usd
+        sum(amount_usd) AS swap_amount_usd
     FROM {{ ref('balancer_trades') }}
     {% if is_incremental() %}
     WHERE block_date >= date_trunc('day', now() - interval '7' day)
