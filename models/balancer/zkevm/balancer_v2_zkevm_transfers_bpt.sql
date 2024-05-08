@@ -2,7 +2,6 @@
 
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'balancer_v2_zkevm',
         alias = 'transfers_bpt',
         partition_by = ['block_month'],
