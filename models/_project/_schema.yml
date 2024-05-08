@@ -20,3 +20,5 @@ models:
   - name: fraxswap_trades
   - name: glacier_trades
   - name: gmx_trades
+  - name: hashflow_trades
+  - name: honeyswap_trades
