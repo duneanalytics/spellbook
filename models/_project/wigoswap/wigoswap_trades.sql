@@ -2,10 +2,10 @@
     schema = 'wigoswap',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = '["fantom"]', 
+    post_hook='{{ expose_spells(blockchains = \'["fantom"]\'
                                   spell_type = "project", 
                                   spell_name = "wigoswap", 
-                                  contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                  contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
     )
 }}
 

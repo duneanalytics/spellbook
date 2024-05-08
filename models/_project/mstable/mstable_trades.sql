@@ -2,10 +2,10 @@
     schema = 'mstable',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = '["ethereum"]', 
+    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\'
                                   spell_type = "project", 
                                   spell_name = "mstable", 
-                                  contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                  contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
     )
 }}
 

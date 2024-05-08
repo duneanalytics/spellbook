@@ -2,10 +2,10 @@
         schema = 'beethoven_x',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = '["fantom"]',
+        post_hook='{{ expose_spells(blockchains = \'["fantom"]\'
                                       spell_type = "project", 
                                       spell_name = "beethoven_x", 
-                                      contributors = '["msilb7", "tomfutago"]') }}'
+                                      contributors = \'["msilb7", "tomfutago"]\') }}'
         )
 }}
 

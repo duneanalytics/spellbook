@@ -2,10 +2,10 @@
         schema = 'balancer',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = '["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]',
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\'
                                       spell_type = "project", 
                                       spell_name = "balancer", 
-                                      contributors = '["bizzyvinci", "thetroyharris"]') }}'
+                                      contributors = \'["bizzyvinci", "thetroyharris"]\') }}'
         )
 }}
 
