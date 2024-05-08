@@ -6,7 +6,7 @@
 {% macro
     oneinch_project_orders_macro(
         blockchain
-        , date_from = '2019-01-01'
+        , date_from = '2024-04-01'
     ) 
 %}
 
@@ -365,10 +365,9 @@ contracts as (
         , project
         , tag
         , flags
-    from {{ ref('oneinch_mapped_contracts') }}
+    from ({{ oneinch_mapped_contracts_macro(blockchain) }})
     where
-        blockchain = '{{blockchain}}'
-        and flags['lop']
+        flags['lop']
         and project <> '1inch'
 )
 

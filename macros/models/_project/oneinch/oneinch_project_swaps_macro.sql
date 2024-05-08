@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from = '2023-01-01'
+        , date_from = '2024-04-01'
     ) 
 %}
 
@@ -17,10 +17,8 @@ methods as (
         , method
         , selector
         , flags
-    from {{ ref('oneinch_mapped_methods') }}
-    where
-        blockchain = '{{blockchain}}'
-        and flags['swap']
+    from {{ oneinch_mapped_methods_macro(blockchain) }}
+    where flags['swap']
 )
 
 , calls as (
