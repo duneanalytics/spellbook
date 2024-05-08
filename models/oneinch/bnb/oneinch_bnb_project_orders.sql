@@ -1,11 +1,11 @@
-{% set blockchain = 'zksync' %}
+{% set blockchain = 'bnb' %}
 
 
 
 {{ 
     config( 
         schema = 'oneinch_' + blockchain,
-        alias = 'project_swaps',
+        alias = 'project_orders',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -16,8 +16,8 @@
 
 
 
-{{
-    oneinch_project_swaps_macro(
+{{ 
+    oneinch_project_orders_macro(
         blockchain = blockchain
     )
 }}
