@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'balancer_v2_zkevm',
         alias = 'base_trades',
         materialized = 'incremental',
