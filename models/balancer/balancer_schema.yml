@@ -407,7 +407,7 @@ models:
       - name: project
       - name: blockchain
 
-  - name: balancer_pools_stats
+  - name: balancer_pools_metrics_daily
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       contributors: viniabussafi
@@ -422,13 +422,13 @@ models:
             - blockchain
             - project_contract_address
     columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *project_contract_address
-      - *pool_symbol
-      - *pool_type
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: project_contract_address
+      - name: pool_symbol
+      - name: pool_type
       - name: swap_amount_usd
         description: "Daily swap volume on a pool, in USD"
       - name: tvl_usd

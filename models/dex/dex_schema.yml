@@ -614,7 +614,7 @@ models:
       - *amount_usd
       - *evt_index
 
-  - name: dex_pools_stats
+  - name: dex_pools_metrics_daily
     meta: 
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
       sector: dex
