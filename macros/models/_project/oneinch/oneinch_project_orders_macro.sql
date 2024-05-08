@@ -365,7 +365,7 @@ contracts as (
         , project
         , tag
         , flags
-    from ({{ ref('oneinch_' + blockchain + '_mapped_contracts') }})
+    from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
     where
         flags['lop']
         and project <> '1inch'
