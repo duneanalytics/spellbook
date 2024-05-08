@@ -613,3 +613,35 @@ models:
       - *token_bought_amount
       - *amount_usd
       - *evt_index
+
+  - name: dex_pools_stats
+    meta: 
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      sector: dex
+      contributors: viniabussafi
+    config:
+      tags: ['dex', 'pools', 'volume', 'fee', 'tvl']
+   description: >
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project_contract_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *project_contract_address
+      - *pool_symbol
+      - *pool_type
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+      - name: tvl_usd
+        description: "Total Value Locked on a pool, in USD"
+      - name: tvl_eth
+        description: "Total Value Locked on a pool, in eth"
+      - name: fee_amount_usd
+        description: "Daily fees collected on a pool, in USD"
