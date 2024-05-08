@@ -10,6 +10,7 @@ models:
           combination_of_columns:
             - blockchain
             - address
+
   - name: labels_transfer_summary_daily
     config:
       tags: [ 'labels', 'transfer', 'summary', 'daily']

@@ -2,7 +2,15 @@
         schema = 'labels',
         alias = 'counterparty_summary_daily',
         partition_by = ['blockchain'],
-        materialized = 'table'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['blockchain', 'address', 'block_date'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
+        post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
+                                    "sector",
+                                    "labels",
+                                    \'["0xRob"]\') }}'
         )
 }}
 
@@ -18,6 +26,9 @@ from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
  on t.blockchain = l.blockchain
  and "to" = from_hex(l.address)
+ {% if is_incremental() %}
+ and {{ incremental_predicate('block_time') }}
+ {% endif %}
 inner join {{source('labels','owner_addresses')}} cp
  on t.blockchain = cp.blockchain
  and "from" = from_hex(cp.address)
@@ -36,6 +47,9 @@ from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
  on t.blockchain = l.blockchain
  and "from" = from_hex(l.address)
+ {% if is_incremental() %}
+ and {{ incremental_predicate('block_time') }}
+ {% endif %}
 inner join {{source('labels','owner_addresses')}} cp
  on t.blockchain = cp.blockchain
  and "to" = from_hex(cp.address)
