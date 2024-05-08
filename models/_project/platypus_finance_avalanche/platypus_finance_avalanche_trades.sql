@@ -2,7 +2,7 @@
     schema = 'platypus_finance_avalanche',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["c"]\'
+    post_hook='{{ expose_spells(blockchains = \'["c"]\',
                                   spell_type = "project", 
                                   spell_name = "platypus_finance_avalanche", 
                                   contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'

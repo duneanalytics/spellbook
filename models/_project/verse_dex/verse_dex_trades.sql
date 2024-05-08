@@ -2,7 +2,7 @@
     schema = 'verse_dex',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\'
+    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
                                   spell_type = "project", 
                                   spell_name = "verse_dex", 
                                   contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'

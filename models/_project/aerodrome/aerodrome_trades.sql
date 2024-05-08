@@ -2,7 +2,7 @@
     schema = 'aerodrome',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["base"]\'
+    post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                   spell_type = "project", 
                                   spell_name = "aerodrome", 
                                   contributors = \'["msilb7"]\') }}'

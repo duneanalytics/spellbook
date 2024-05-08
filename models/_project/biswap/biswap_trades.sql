@@ -2,7 +2,7 @@
     schema = 'biswap',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["bnb"]\'
+    post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
                                   spell_type = "project", 
                                   spell_name = "biswap", 
                                   contributors = \'["codingsh", "chef_seaweed"]\') }}'

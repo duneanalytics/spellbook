@@ -2,7 +2,7 @@
         schema = 'curvefi',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum","avalanche_c","optimism","fantom","celo"]\'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum","avalanche_c","optimism","fantom","celo"]\',
                                       spell_type = "project", 
                                       spell_name = "curvefi", 
                                       contributors = \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste","tomfutago"]\') }}'

@@ -2,7 +2,7 @@
     schema = 'mdex',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["bnb"]\'
+    post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
                                   spell_type = "project", 
                                   spell_name = "mdex", 
                                   contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'

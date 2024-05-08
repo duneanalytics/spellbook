@@ -2,7 +2,7 @@
     schema = 'equalizer',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["fantom"]\'
+    post_hook='{{ expose_spells(blockchains = \'["fantom"]\',
                                   spell_type = "project", 
                                   spell_name = "equalizer", 
                                   contributors = \'["Henrystats"]\') }}'

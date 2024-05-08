@@ -2,7 +2,7 @@
     schema = 'glacier',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\'
+    post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\',
                                   spell_type = "project", 
                                   spell_name = "glacier",
                                   contributors = \'["discochuck"]\') }}'

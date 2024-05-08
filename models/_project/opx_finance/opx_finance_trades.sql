@@ -2,7 +2,7 @@
     schema = 'opx_finance',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\'
+    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                   spell_type = "project", 
                                   spell_name = "opx_finance", 
                                   contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
