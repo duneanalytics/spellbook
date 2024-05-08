@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'pancakeswap_v3_zkevm',
         alias = 'base_trades',
         materialized = 'incremental',
