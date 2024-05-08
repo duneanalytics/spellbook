@@ -98,7 +98,7 @@ methods as (
         -- , array_agg(
         --     cast(row(project, call_trace_address, coalesce(user_amount_usd, amount_usd)) as row(varchar, array(bigint), double))
         -- ) over(partition by block_number, tx_hash) as amounts
-        -- , coalesce(if(direct, user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
+        , coalesce(if(direct, user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
     from (
         select
             calls.blockchain
@@ -162,7 +162,7 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    -- , result_amount_usd
+    , result_amount_usd
     -- , amounts
     , users
     , date(date_trunc('month', block_time)) as block_month
