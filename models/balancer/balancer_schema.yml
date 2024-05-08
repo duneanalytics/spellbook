@@ -410,7 +410,7 @@ models:
   - name: balancer_pools_metrics_daily
     meta:
       blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      contributors: viniabussafi
+      contributors: viniabussafi, metacrypto
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >

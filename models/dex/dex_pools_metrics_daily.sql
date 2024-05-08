@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                                 "sector",
                                 "dex",
-                                \'["viniabussafi"]\') }}'
+                                \'["viniabussafi", "metacrypto"]\') }}'
         )
 }}
 

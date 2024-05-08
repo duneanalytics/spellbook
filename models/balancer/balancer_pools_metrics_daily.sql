@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                             "project",
                             "balancer",
-                            \'["viniabussafi"]\') }}'
+                            \'["viniabussafi", "metacrypto"]\') }}'
     )
 }}
 
@@ -78,4 +78,3 @@ LEFT JOIN fees f ON l.block_date = f.day
 AND l.project_contract_address = f.pool_address 
 AND l.blockchain = f.blockchain
 ORDER BY 1 DESC, 7 DESC
-;
