@@ -11,9 +11,15 @@ models:
     description: >
       Gauge to Pool mappings for curve on all chains
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the project"
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"
@@ -35,4 +41,6 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
-      - *evt_index
+      - &evt_index
+        name: evt_index
+        description: "Event index"
