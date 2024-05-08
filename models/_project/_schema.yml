@@ -18,3 +18,5 @@ models:
   - name: ellipsis_finance_trades
   - name: equalizer_trades
   - name: fraxswap_trades
+  - name: glacier_trades
+  - name: gmx_trades

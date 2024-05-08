@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'glacier_avalanche',
+    schema = 'glacier',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = '["c"]', 
+    post_hook='{{ expose_spells(blockchains = '["avalanche_c"]',
                                   spell_type = "project", 
-                                  spell_name = "glacier_avalanche", 
-                                  contributors = '["jeff-dude", "hosuke", "soispoke"]') }}'
+                                  spell_name = "glacier",
+                                  contributors = '["discochuck"]') }}'
     )
 }}
 
@@ -35,4 +35,4 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM ref('dex_trades')
-WHERE project = 'glacier_avalanche'
+WHERE project = 'glacier'
