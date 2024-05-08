@@ -21,33 +21,35 @@ trades AS(
         version,
         blockchain,
         project_contract_address,
-        pool_type,
-        pool_symbol,
         sum(amount_usd) AS swap_amount_usd_usd
     FROM {{ ref('balancer_trades') }}
     {% if is_incremental() %}
     WHERE block_date >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-    GROUP BY 1, 2, 3, 4, 5, 6
+    GROUP BY 1, 2, 3, 4
 ),
 
 liquidity AS(
     SELECT
         day AS block_date,
         blockchain,
+        version,
         pool_address AS project_contract_address,
+        pool_type,
+        pool_symbol,
         sum(pool_liquidity_usd) AS tvl_usd,
         sum(pool_liquidity_eth) AS tvl_eth
     FROM {{ ref('balancer_liquidity') }}
     {% if is_incremental() %}
     WHERE day >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4, 5, 6
 ),
 
 fees AS(
     SELECT
         day,
+        version,
         blockchain,
         pool_address,
         sum(protocol_fee_collected_usd) AS fee_amount_usd
@@ -55,7 +57,7 @@ fees AS(
     {% if is_incremental() %}
     WHERE day >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-    GROUP BY 1, 2, 3 
+    GROUP BY 1, 2, 3, 4
 )
 
 SELECT
