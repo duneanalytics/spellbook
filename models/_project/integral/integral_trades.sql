@@ -2,10 +2,10 @@
         schema = 'integral',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum","ethereum"]\',
                                       spell_type = "project", 
                                       spell_name = "integral", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["integralhq"]\') }}'
         )
 }}
 

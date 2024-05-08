@@ -23,3 +23,5 @@ models:
   - name: gmx_trades
   - name: hashflow_trades
   - name: honeyswap_trades
+  - name: integral_trades
+  - name: iziswap_trades
