@@ -557,6 +557,7 @@ select
     , topic2 as event_topic2
     , topic3 as event_topic3
     , array[data] as event_data
+    , date(date_trunc('month', block_time)) as block_month
 from calls
 left join logs using(block_number, tx_hash, event)
 join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
