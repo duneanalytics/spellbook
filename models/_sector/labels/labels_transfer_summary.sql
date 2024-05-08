@@ -2,7 +2,7 @@
         schema = 'labels',
         alias = 'transfer_summary',
         partition_by = ['blockchain'],
-        materialized = 'table'
+        materialized = 'table',
         file_format = 'delta',
         post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                     "sector",
