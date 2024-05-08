@@ -621,7 +621,7 @@ models:
       contributors: viniabussafi
     config:
       tags: ['dex', 'pools', 'volume', 'fee', 'tvl']
-   description: >
+    description: >
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
     tests:
       - dbt_utils.unique_combination_of_columns:
