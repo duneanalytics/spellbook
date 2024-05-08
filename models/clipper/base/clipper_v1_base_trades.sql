@@ -74,7 +74,7 @@ INNER JOIN {{ source('base', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('p_bought.minute') }}
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} t_bought
     ON t_bought.contract_address = e.token_bought_address
