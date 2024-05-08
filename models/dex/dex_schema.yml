@@ -635,8 +635,8 @@ models:
       - *version
       - *block_date
       - *project_contract_address
-      - *pool_symbol
-      - *pool_type
+      - name: pool_symbol
+      - name: pool_type
       - name: swap_amount_usd
         description: "Daily swap volume on a pool, in USD"
       - name: tvl_usd
