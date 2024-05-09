@@ -15,8 +15,7 @@ latest_balances AS (
         , t.contract_address
         , t.from_time
         , t.yrt_balance
-    FROM
-    {{ this }} t
+    FROM {{ this }} t
     WHERE
         t.to_time = TIMESTAMP '{{ future_date }}'
 ),
@@ -24,7 +23,9 @@ existing_contracts AS (
     SELECT
         contract_address
         , MAX(from_time) AS max_from_time
-    FROM latest_balances
+    FROM  {{ this }} t
+    WHERE
+        t.to_time = TIMESTAMP '{{ future_date }}'
     GROUP BY contract_address
 ),
 {% endif -%}
