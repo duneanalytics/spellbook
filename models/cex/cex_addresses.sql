@@ -1,6 +1,8 @@
 {{ config(
         tags = ['static'],
+        schema = 'cex',
         alias = 'addresses',
+        materialized = 'table',
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "optimism", "arbitrum", "polygon", "bitcoin", "fantom", "aptos", "celo", "zora", "zksync", "zkevm", "linea", "solana", "scroll", "tron", "base"]\',
                                     "sector",
                                     "cex",
