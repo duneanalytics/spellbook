@@ -141,7 +141,7 @@ WITH trades AS (
     , MAX_BY(tr.to, tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_address
     , SUM(tr.amount_raw) FILTER (WHERE to = 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS platform_fee_amount_raw
     , SUM(tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_amount_raw
-    FROM tokens_base.transfers tr
+    FROM {{ ref('tokens_base_transfers') }} tr
     INNER JOIN bundled_whitelisted_trades wt ON tr.block_number=wt.block_number
         AND tr.tx_hash=wt.tx_hash
         AND tr.amount_raw > 0
