@@ -36,12 +36,12 @@ new_transfers AS (
             s.contract_address
             , s.evt_block_time AS block_time
             , s.evt_block_number AS block_number
-            , s."from" AS user_address
-            , -1 * CAST(s.value AS INT256) AS net_transfer_amount
+            , u.user_address
+            , SUM(u.net_transfer_amount) AS net_transfer_amount
         FROM {{ source(namespace_blockchain, strategy + '_evt_Transfer') }} s
+        CROSS JOIN UNNEST(ARRAY[s."from", s.to], ARRAY[-1 * CAST(s.value AS INT256), CAST(s.value AS INT256)]) AS u(user_address, net_transfer_amount)
         {%- if is_incremental() %}
-        LEFT JOIN
-        existing_contracts c
+        LEFT JOIN existing_contracts c
             ON c.contract_address = s.contract_address
         WHERE
             (({{ incremental_predicate('s.evt_block_time') }}
@@ -53,28 +53,12 @@ new_transfers AS (
         WHERE
             s."from" != s."to"
         {%- endif %}
-        UNION ALL
-        SELECT
+        GROUP BY
             s.contract_address
-            , s.evt_block_time AS block_time
-            , s.evt_block_number AS block_number
-            , s."to" AS user_address
-            , CAST(s.value AS INT256) AS net_transfer_amount
-        FROM {{ source(namespace_blockchain, strategy + '_evt_Transfer') }} s
-        {%- if is_incremental() %}
-        LEFT JOIN
-        existing_contracts c
-            ON c.contract_address = s.contract_address
-        WHERE
-            (({{ incremental_predicate('s.evt_block_time') }}
-            AND s.evt_block_time > c.max_from_time)
-            OR c.contract_address IS NULL) -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
-            AND s."from" != s."to"
-        {%- endif %}
-        {%- if not is_incremental() %}
-        WHERE
-            s."from" != s."to"
-        {%- endif %}
+            , s.evt_block_time
+            , s.evt_block_number
+            , u.user_address
+        HAVING SUM(u.net_transfer_amount) != 0  -- Not interested in anything which results in a net transfer of 0 within a single block.
         {% if not loop.last -%}
         UNION ALL
         {%- endif -%}
@@ -83,18 +67,8 @@ new_transfers AS (
 
 combined_table AS (
     SELECT
-        nt.contract_address
-        , nt.block_time
-        , nt.block_number
-        , nt.user_address
-        , SUM(nt.net_transfer_amount) AS net_transfer_amount
-    FROM new_transfers nt
-    GROUP BY
-        nt.contract_address
-        , nt.block_time
-        , nt.block_number
-        , nt.user_address
-    HAVING SUM(nt.net_transfer_amount) != 0  -- Not interested in anything which results in a net transfer of 0 within a single block.
+        nt.*
+    FROM new_transfers nt 
     {%- if is_incremental() %}
     -- In this we add the current balances in as if they were a single Transfer event taking place at "from_time"
     UNION ALL
