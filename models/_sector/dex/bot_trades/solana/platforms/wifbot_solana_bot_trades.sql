@@ -27,9 +27,10 @@ with
             'SOL' as feetokentype,
             balance_change / 1e9 as fee_token_amount,
             '{{wsol_token}}' as fee_token_mint_address
-        from {{ source("solana", "account_activity") }}
+        from {{ source('solana', 'account_activity') }}
         where
-            {% if is_incremental() %} {{ incremental_predicate("block_time") }}
+            {% if is_incremental() %} 
+            {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             and tx_success
