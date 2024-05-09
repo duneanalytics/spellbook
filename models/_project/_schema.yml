@@ -31,3 +31,4 @@ models:
   - name: mdex_trades
   - name: mstable_trades
   - name: mummy_finace_trades
+  - name: nomiswap_trades
