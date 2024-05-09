@@ -225,7 +225,9 @@ pools_list as (
         pool as pool_address
         , tokens
     from {{ ref('dex_raw_pools') }}
-    where type in ('uniswap_compatible', 'curve_compatible')
+    where 
+        type in ('uniswap_compatible', 'curve_compatible')
+        and blockchain = '{{ blockchain }}'
     group by 1, 2
 )
 

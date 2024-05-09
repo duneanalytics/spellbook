@@ -15,14 +15,9 @@
 }}
 
 
-with ar as (
-    {{ 
-        oneinch_ar_macro(
-            blockchain = blockchain
-        )
-    }}
-)
 
-select *
-from ar
-where tx_hash != 0x6d36e922c7885c9d2d2cd57ef1cc9d47f0aefad9331c7d2493c43971d0e06816
+{{ 
+    oneinch_ar_macro(
+        blockchain = blockchain
+    )
+}}
