@@ -26,3 +26,8 @@ models:
   - name: integral_trades
   - name: iziswap_trades
   - name: kyberswap_trades
+  - name: mauve_trades
+  - name: maverick_trades
+  - name: mdex_trades
+  - name: mstable_trades
+  - name: mummy_finace_trades
