@@ -136,6 +136,7 @@ FROM (VALUES
     , (0xbaed383ede0e5d9d72430661f3285daa77e9439f, 'Bybit', 'Bybit 6', 'hildobby', date '2023-11-15')
     , (0xf5f3436a05b5ced2490dae07b86eb5bbd02782aa, 'Bybit', 'Bybit 7', 'hildobby', date '2023-11-15')
     , (0x4230c402c08cb66dcf3820649a115e54661fce9d, 'Bybit', 'Bybit 8', 'hildobby', date '2023-11-15')
+    , (0x3d5202a0564de9b05ecd07c955bcca964585ea03, 'Bybit', 'Bybit 9', 'hildobby', date '2024-05-09')
     , (0xab97925eb84fe0260779f58b7cb08d77dcb1ee2b, 'Bybit', 'Bybit Deposit Funder 1', 'hildobby', date '2023-11-15')
     , (0xa95b83af96d0b8a90bd507f2bd82ad8f3dbb86bc, 'Bybit', 'Bybit Deposit Funder 2', 'hildobby', date '2023-11-20')
     , (0xf65d698d18bc37bf36e4c8d4fe4f051ef570e2b6, 'Bybit', 'Bybit Deposit Funder 3', 'hildobby', date '2023-11-23')
