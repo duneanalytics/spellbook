@@ -240,7 +240,7 @@ select
                 , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
                 , array[bigint '0']
             )
-            , array[order_remains]
+            , array[bytearray_to_bigint(order_remains)]
         )
     ) as remains
     , date_trunc('minute', block_time) as minute
