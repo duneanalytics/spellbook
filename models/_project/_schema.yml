@@ -25,3 +25,4 @@ models:
   - name: honeyswap_trades
   - name: integral_trades
   - name: iziswap_trades
+  - name: kyberswap_trades

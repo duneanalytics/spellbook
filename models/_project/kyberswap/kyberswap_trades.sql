@@ -2,10 +2,10 @@
         schema = 'kyberswap',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["avalanche_c","optimism","ethereum","arbitrum","bnb","polygon"]\',
                                       spell_type = "project", 
                                       spell_name = "kyberswap", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["zhongyiio", "hosuke", "ppclunghe", "gregshestakovlido", "nhd98z"]\') }}'
         )
 }}
 
