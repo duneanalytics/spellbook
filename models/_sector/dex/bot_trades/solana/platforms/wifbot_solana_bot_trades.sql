@@ -77,7 +77,7 @@ with
                 {% endif %}
             )
         join
-            {{ source("solana", "transactions") }} as transactions
+            {{ source('solana', 'transactions') }} as transactions
             on (
                 trades.tx_id = id
                 {% if is_incremental() %}
