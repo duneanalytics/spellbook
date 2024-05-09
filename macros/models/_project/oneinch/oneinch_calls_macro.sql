@@ -32,7 +32,6 @@
     'call_error',
     'call_type',
     'remains',
-    'flags',
 ] %}
 {% set columns = columns | join(', ') %}
 
@@ -40,15 +39,7 @@
 
 with
 
-settlements as (
-    select
-        fusion_settlement_address as call_from
-        , true as fusion
-    from ({{ oneinch_blockchain_macro(blockchain) }}), unnest(fusion_settlement_addresses) as t(fusion_settlement_address)
-)
-
-, calls as (
-
+calls as (
     select *
     from (
         select
@@ -60,7 +51,7 @@ settlements as (
             , dst_token_address
             , dst_token_amount
             , cast(null as varbinary) as order_hash
-            , false as fusion
+            , map_concat(flags, map_from_entries(array[('fusion', false)])) as flags
         from {{ ref('oneinch_' + blockchain + '_ar') }}
 
         union all
@@ -74,10 +65,8 @@ settlements as (
             , taker_asset as dst_token_address
             , taking_amount as dst_token_amount
             , order_hash
-            , coalesce(fusion, false) as fusion
+            , flags
         from {{ ref('oneinch_' + blockchain + '_lop') }}
-        left join settlements using(call_from)
-        
     )
 )
 
@@ -116,7 +105,7 @@ select
     , dst_token_address
     , dst_token_amount
     , order_hash
-    , map_concat(flags, map_from_entries(array[('fusion', fusion)])) as flags
+    , flags
 from calls
 
 {% endmacro %}
