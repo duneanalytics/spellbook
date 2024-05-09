@@ -19,19 +19,6 @@
     ,'zora'
     ,'scroll'
 ] %}
---     'ethereum'
---     ,'optimism'
---     ,'polygon'
---     ,'bnb'
---     ,'avalanche_c'
---     ,'gnosis'
---     ,'fantom'
---     ,'arbitrum'
---     ,'celo'
---     ,'base'
---     ,'zksync'
---     ,'zora'
---     ,'scroll'
 
 SELECT *
 FROM (

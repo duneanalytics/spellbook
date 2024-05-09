@@ -1,6 +1,6 @@
 {{ config(
         schema = 'labels',
-        alias = 'counterparty_summary_daily',
+        alias = 'counterparty_activity_daily',
         partition_by = ['blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -25,13 +25,13 @@ select
 from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
  on t.blockchain = l.blockchain
- and "to" = from_hex(l.address)
+ and "to" = l.address
  {% if is_incremental() %}
  and {{ incremental_predicate('block_time') }}
  {% endif %}
 inner join {{source('labels','owner_addresses')}} cp
  on t.blockchain = cp.blockchain
- and "from" = from_hex(cp.address)
+ and "from" = cp.address
 group by 1,2,3,4
 )
 
@@ -46,13 +46,13 @@ select
 from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
  on t.blockchain = l.blockchain
- and "from" = from_hex(l.address)
+ and "from" = l.address
  {% if is_incremental() %}
  and {{ incremental_predicate('block_time') }}
  {% endif %}
 inner join {{source('labels','owner_addresses')}} cp
  on t.blockchain = cp.blockchain
- and "to" = from_hex(cp.address)
+ and "to" = cp.address
 group by 1,2,3,4
 )
 

@@ -22,10 +22,10 @@ models:
             - address
             - block_date
 
-  - name: labels_counterparty_summary_daily
+  - name: labels_counterparty_activity_daily
     config:
-      tags: [ 'labels', 'counterparty', 'summary', 'daily']
-    description: "a daily summary of the counterparties of labeled addresses"
+      tags: [ 'labels', 'counterparty', 'activity', 'daily']
+    description: "a daily activity of the counterparties of labeled addresses"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

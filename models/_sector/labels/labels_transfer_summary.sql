@@ -24,7 +24,7 @@ select
 from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
 on t.blockchain = l.blockchain
- and "to" = from_hex(l.address)
+ and "to" = l.address
 group by 1,2
 )
 
@@ -41,7 +41,7 @@ select
 from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
 on t.blockchain = l.blockchain
- and "from" = from_hex(l.address)
+ and "from" = l.address
 group by 1,2
 )
 
