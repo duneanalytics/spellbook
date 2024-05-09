@@ -127,7 +127,8 @@ orders as (
     {% for contract, contract_data in cfg.items() if blockchain in contract_data['blockchains'] %}
         select * from ({% for method, method_data in contract_data.methods.items() %}
             select
-                call_block_number as block_number
+                blockchain
+                , call_block_number as block_number
                 , call_block_time as block_time
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
@@ -161,8 +162,8 @@ orders as (
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
-                {% if is_incremental() %} 
+                join ({{ oneinch_blockchain_macro(blockchain) }}) on true
+                {% if is_incremental() %}
                     where {{ incremental_predicate('call_block_time') }}
                 {% endif %}
             )
@@ -195,7 +196,7 @@ orders as (
 -- output --
 
 select
-    '{{ blockchain }}' as blockchain
+    blockchain
     , block_number
     , block_time
     , tx_hash
