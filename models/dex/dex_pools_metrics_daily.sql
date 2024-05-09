@@ -35,7 +35,7 @@ FROM (
         fee_amount_usd
     FROM {{ dex_model }}
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('day')}}
+    WHERE {{incremental_predicate('block_date')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
