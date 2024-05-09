@@ -32,3 +32,7 @@ models:
   - name: mstable_trades
   - name: mummy_finace_trades
   - name: nomiswap_trades
+  - name: onepunchswap_trades
+  - name: openocean_trades
+  - name: openxswap_trades
+  - name: opx_finance_trades

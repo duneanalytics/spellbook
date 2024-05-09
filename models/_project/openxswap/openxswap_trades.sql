@@ -5,7 +5,7 @@
     post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                   spell_type = "project", 
                                   spell_name = "openxswap", 
-                                  contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                  contributors = \'["ARDev097"]\') }}'
     )
 }}
 
