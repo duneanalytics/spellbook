@@ -6,10 +6,10 @@
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'project_contract_address'],
         incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-                                "sector",
-                                "dex",
-                                \'["viniabussafi", "metacrypto"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+                                spell_type = "sector",
+                                spell_name = "dex",
+                                contributors = \'["viniabussafi", "metacrypto"]\') }}'
         )
 }}
 
@@ -35,7 +35,7 @@ FROM (
         fee_amount_usd
     FROM {{ dex_model }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('day')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL

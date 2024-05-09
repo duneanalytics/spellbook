@@ -6,10 +6,10 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'project_contract_address'],
     incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-                            "project",
-                            "balancer",
-                            \'["viniabussafi", "metacrypto"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+                            spell_type = "project",
+                            spell_name = "balancer",
+                            contributors = \'["viniabussafi", "metacrypto"]\') }}'
     )
 }}
 
@@ -24,7 +24,7 @@ trades AS(
         sum(amount_usd) AS swap_amount_usd
     FROM {{ ref('balancer_trades') }}
     {% if is_incremental() %}
-    WHERE block_date >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('day')}}
     {% endif %}
     GROUP BY 1, 2, 3, 4
 ),
@@ -41,7 +41,7 @@ liquidity AS(
         sum(pool_liquidity_eth) AS tvl_eth
     FROM {{ ref('balancer_liquidity') }}
     {% if is_incremental() %}
-    WHERE day >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('day')}}
     {% endif %}
     GROUP BY 1, 2, 3, 4, 5, 6
 ),
@@ -55,7 +55,7 @@ fees AS(
         sum(protocol_fee_collected_usd) AS fee_amount_usd
     FROM {{ ref('balancer_protocol_fee') }}
     {% if is_incremental() %}
-    WHERE day >= date_trunc('day', now() - interval '7' day)
+    WHERE {{incremental_predicate('day')}}
     {% endif %}
     GROUP BY 1, 2, 3, 4
 )
