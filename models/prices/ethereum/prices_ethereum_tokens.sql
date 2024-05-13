@@ -1708,7 +1708,7 @@ FROM
     ('strk-starknet', 'ethereum', 'STRK',0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766,18),
     ('ela-elastos', 'ethereum', 'ELA', 0xe6fd75ff38adca4b97fbcd938c86b98772431867,18),
     ('frxeth-frax-ether', 'ethereum', 'FRXETH',0x5e8422345238f34275888049021821e8e08caa1f,18),  
-    --('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18), --not in API 
+    ('cgpt-chaingpt', 'ethereum', 'CGPT',0x25931894a86d47441213199621f1f2994e1c39aa,18), 
     ('cswap-chainswap', 'ethereum', 'CSWAP',0xae41b275aaaf484b541a5881a2dded9515184cca,18),
     ('bobo-bobo-coin', 'ethereum', 'BOBO',0xb90b2a35c65dbc466b04240097ca756ad2005295,18),
     ('bvm-bvm', 'ethereum', 'BVM',0x069d89974f4edabde69450f9cf5cf7d8cbd2568d,18),
@@ -1743,7 +1743,21 @@ FROM
     ('wolf-landwolf', 'ethereum', 'WOLF', 0x67466be17df832165f8c80a5a120ccc652bd7e69, 18),
     ('deal-stealth-deals', 'ethereum', 'DEAL', 0x7a771a90b8f2a10afd9a75b8e49d646d1139bb98, 18),
     ('susde-ethena-staked-usde', 'ethereum', 'SUSDE', 0x9d39a5de30e57443bff2a8307a4256c8797a3497, 18),
-    ('prisma-prisma-governance-token', 'ethereum', 'PRISMA', 0xda47862a83dac0c112ba89c6abc2159b95afd71c, 18)
+    ('prisma-prisma-governance-token', 'ethereum', 'PRISMA', 0xda47862a83dac0c112ba89c6abc2159b95afd71c, 18),
+    ('bonk-bonk-on-eth', 'ethereum', 'BONK', 0x4fbaf51b95b024d0d7cab575be2a1f0afedc9b64, 18),
+    ('zyn-zyncoin', 'ethereum', 'ZYN', 0x58cb30368ceb2d194740b144eab4c2da8a917dcb, 18),
+    ('nut6-nutcoin', 'ethereum', 'NUT', 0x473f4068073cd5b2ab0e4cc8e146f9edc6fb52cc, 18),
+    ('gswift-gameswift', 'ethereum', 'GSWIFT', 0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18),
+    ('nmt-netmind-token', 'ethereum', 'NMT', 0x03aa6298f1370642642415edc0db8b957783e8d6, 9),
+    ('turbo-turbo', 'ethereum', 'TURBO', 0xa35923162c49cf95e6bf26623385eb431ad920d3, 18),
+    ('simpson-homer', 'ethereum', 'SIMPSON', 0xa35923162c49cf95e6bf26623385eb431ad920d3, 9),
+    ('pongo-pongo', 'ethereum', 'PONGO', 0x7c68e725b0b2ffcba8947fded4198c3d1db041e6, 9),
+    ('truf-truflation', 'ethereum', 'TRUF', 0x38c2a4a7330b22788374b8ff70bba513c8d848ca, 18 ),
+    ('apu-apu-apustaja', 'ethereum', 'APU', 0x594daad7d77592a2b97b725a7ad59d7e188b5bfa, 18 ),
+    ('pepecoin-pepecoin', 'ethereum', 'PEPECOIN', 0xa9e8acf069c58aec8825542845fd754e41a9489a, 18 ),
+    ('gpu-node-ai', 'ethereum', 'GPU', 0x1258d60b224c0c5cd888d37bbf31aa5fcfb7e870, 18 ),
+    ('doge20-dogecoin20', 'ethereum', 'DOGE20', 0x2541a36be4cd39286ed61a3e6afc2307602489d6, 18 ),
+    ('chad-chad-frog', 'ethereum', 'CHAD', 0x9e22b4f836a461ddc7765e5fad693688e76e6069, 9 )
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
