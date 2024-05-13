@@ -34,9 +34,6 @@ WITH clones AS (
         varbinary_length(code) > 0 
         AND block_time > TIMESTAMP '2023-05-01' 
         AND varbinary_position(code, 0x363d3d373d3d3d363d73) = 0
-        {% if is_incremental() %}
-        AND {{incremental_predicate('block_time')}}
-        {% endif %}
 ), clones_with_implementation_code AS (
     SELECT 
         t1.is_clone, 
@@ -60,6 +57,9 @@ WITH clones AS (
         block_month
     FROM 
         deploys
+    {% if is_incremental() %}
+    WHERE {{incremental_predicate('creation_time')}}
+    {% endif %}
 ), contracts AS (
     SELECT * 
     FROM clones_with_implementation_code 
