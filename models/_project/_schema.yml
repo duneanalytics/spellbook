@@ -30,7 +30,7 @@ models:
   - name: maverick_trades
   - name: mdex_trades
   - name: mstable_trades
-  - name: mummy_finace_trades
+  - name: mummy_finance_trades
   - name: nomiswap_trades
   - name: onepunchswap_trades
   - name: openocean_trades
