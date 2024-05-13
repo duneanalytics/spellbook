@@ -2,10 +2,10 @@
         schema = 'pancakeswap',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["bnb","ethereum","arbitrum","base"]\',
                                       spell_type = "project", 
                                       spell_name = "pancakeswap", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["hosuke", "chef_seaweed"]\') }}'
         )
 }}
 

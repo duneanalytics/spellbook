@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'platypus_finance_avalanche',
+    schema = 'platypus_finance',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(blockchains = \'["c"]\',
+    post_hook='{{ expose_spells(blockchains = \'["avalanche_c"]\',
                                   spell_type = "project", 
-                                  spell_name = "platypus_finance_avalanche", 
-                                  contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                  spell_name = "platypus_finance",
+                                  contributors = \'["umer_h_adil"]\') }}'
     )
 }}
 
@@ -35,4 +35,4 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM ref('dex_trades')
-WHERE project = 'platypus_finance_avalanche'
+WHERE project = 'platypus_finance'

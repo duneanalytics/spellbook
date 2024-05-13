@@ -36,3 +36,5 @@ models:
   - name: openocean_trades
   - name: openxswap_trades
   - name: opx_finance_trades
+  - name: pancakeswap_trades
+  - name: platypus_finance_trades
