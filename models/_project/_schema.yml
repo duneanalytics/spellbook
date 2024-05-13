@@ -51,3 +51,5 @@ models:
   - name: trader_joe_trades
   - name: ubeswap_trades
   - name: uniswap_trades
+  - name: velodrome_trades
+  - name: verse_dex_trades
