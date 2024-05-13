@@ -57,3 +57,6 @@ models:
   - name: wigoswap_trades
   - name: wombat_trades
   - name: woofi_trades
+  - name: xchange_trades
+  - name: zigzag_trades
+  - name: zipswap_trades
