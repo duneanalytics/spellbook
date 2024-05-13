@@ -420,6 +420,8 @@ models:
           combination_of_columns:
             - block_date
             - blockchain
+            - project
+            - version
             - project_contract_address
     columns:
       - name: blockchain
