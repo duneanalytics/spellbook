@@ -40,3 +40,10 @@ models:
   - name: platypus_finance_trades
   - name: quickswap_trades
   - name: rubicon_trades
+  - name: shibaswap_trades
+  - name: spartacus_exchange_trades
+  - name: spiritswap_trades
+  - name: spookyswap_trades
+  - name: sushiswap_trades
+  - name: swapr_trades
+  - name: synthetix_trades

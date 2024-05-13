@@ -1,11 +1,11 @@
 {{ config(
-        schema = 'synthetix_spot',
+        schema = 'synthetix',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                       spell_type = "project", 
-                                      spell_name = "synthetix_spot", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      spell_name = "synthetix",
+                                      contributors = \'["msilb7"]\') }}'
         )
 }}
 
@@ -35,4 +35,4 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM ref('dex_trades')
-WHERE project = 'synthetix_spot'
+WHERE project = 'synthetix'
