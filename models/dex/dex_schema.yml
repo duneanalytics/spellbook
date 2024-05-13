@@ -109,7 +109,9 @@ models:
             - blockchain
             - contract_address
     columns:
-      - *block_month
+      - &block_month
+        name: block_month
+        description: "Month corresponding to the prices data"
       - &hour
         name: hour
         description: "hour corresponding to the prices data"
