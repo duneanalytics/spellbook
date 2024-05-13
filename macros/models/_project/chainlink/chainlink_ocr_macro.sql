@@ -388,9 +388,16 @@ SELECT
   MAX(reward_evt_transfer.evt_block_time) as evt_block_time,
   MAX(cast(reward_evt_transfer.value as double) / 1e18) as token_value
 FROM
-  {{ source('erc20_' ~ blockchain, 'evt_transfer') }} reward_evt_transfer
-  RIGHT JOIN {{ ref('chainlink_' ~ blockchain ~ '_ocr_reward_transmission_logs') }} ocr_reward_transmission_logs ON ocr_reward_transmission_logs.contract_address = reward_evt_transfer."from"
-  LEFT JOIN {{ ref('chainlink_' ~ blockchain ~ '_ocr_operator_admin_meta') }} ocr_operator_admin_meta ON ocr_operator_admin_meta.admin_address = reward_evt_transfer.to
+  {{ ref('chainlink_' ~ blockchain ~ '_ocr_reward_transmission_logs') }} ocr_reward_transmission_logs 
+  RIGHT JOIN {{ source('erc20_' ~ blockchain, 'evt_transfer') }} reward_evt_transfer
+    ON ocr_reward_transmission_logs.contract_address = reward_evt_transfer."from"
+    AND reward_evt_transfer.evt_tx_hash = ocr_reward_transmission_logs.tx_hash
+    AND reward_evt_transfer.evt_block_time = ocr_reward_transmission_logs.block_time
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('reward_evt_transfer.evt_block_time') }}
+    {% endif %}
+  LEFT JOIN {{ ref('chainlink_' ~ blockchain ~ '_ocr_operator_admin_meta') }} ocr_operator_admin_meta 
+    ON ocr_operator_admin_meta.admin_address = reward_evt_transfer.to
 WHERE
   reward_evt_transfer."from" IN (ocr_reward_transmission_logs.contract_address)
 GROUP BY
