@@ -34,5 +34,5 @@ SELECT  blockchain
         , tx_from
         , tx_to
         , evt_index
-FROM ref('dex_trades')
+FROM {{ ref('dex_trades') }}
 WHERE project = 'xchange'
