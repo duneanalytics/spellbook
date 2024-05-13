@@ -118,6 +118,6 @@ FROM
     ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6),
     ('tbtc-tbtc', 'TBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40, 18),
     ('axlusdc-axelar-wrapped-usdc', 'AXLUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6),
-    ('beets-beethoven-x', 'BEETS', 0xb4bc46bc6cb217b59ea8f4530bae26bf69f677f0, 18)
-
+    ('beets-beethoven-x', 'BEETS', 0xb4bc46bc6cb217b59ea8f4530bae26bf69f677f0, 18),
+    ('aeth-ankreth', 'ankrETH', 0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
