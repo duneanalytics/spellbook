@@ -235,4 +235,6 @@ FROM (VALUES
     , (0x4498cd8ba045e00673402353f5a4347562707e7d, 'RDAT', 18)  
     , (0x4ea71a20e655794051d1ee8b6e4a3269b13ccacc, 'stataBasUSDC', 6)  
     , (0xd3c66029f050b2c220d3b8566e50d0e8b3f83302, 'FLOW', 18)    
+    , (0xafb89a09d82fbde58f18ac6437b3fc81724e4df6, 'DOG', 18)  
+    , (0x7ab8ea5ef610f979e1c59fbd9da9284672e5a136, 'KABOSU', 18)  
 ) AS temp_table (contract_address, symbol, decimals)

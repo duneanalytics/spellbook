@@ -28,4 +28,5 @@ FROM (VALUES
     , (0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB, 'WETH.e', 18)
     , (0x298c5c64eba94b8dd425582e4266a882db6d9848, 'SaAVAXb', 18)
     , (0x9767203e89dcd34851240b3919d4900d3e5069f1, 'A4', 6)
+    , (0x9fb1d52596c44603198fb0aee434fac3a679f702, 'jEUR', 18)
 ) AS temp_table (contract_address, symbol, decimals)
