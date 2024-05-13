@@ -53,3 +53,7 @@ models:
   - name: uniswap_trades
   - name: velodrome_trades
   - name: verse_dex_trades
+  - name: wardenswap_trades
+  - name: wigoswap_trades
+  - name: wombat_trades
+  - name: woofi_trades

@@ -2,10 +2,10 @@
         schema = 'woofi',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["avalanche_c", "bnb", "optimism"]\',
                                       spell_type = "project", 
                                       spell_name = "woofi", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["scoffie", "ARDev097", "tomfutago"]\') }}'
         )
 }}
 
