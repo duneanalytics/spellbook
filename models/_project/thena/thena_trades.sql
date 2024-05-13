@@ -2,10 +2,10 @@
         schema = 'thena',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["bnb"]\',
                                       spell_type = "project", 
                                       spell_name = "thena", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["hsrvc"]\') }}'
         )
 }}
 
