@@ -2,10 +2,10 @@
         schema = 'uniswap',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["ethereum", "arbitrum", "optimism", "polygon", "bnb", "base", "celo", "avalanche_c"]\',
                                       spell_type = "project", 
                                       spell_name = "uniswap", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["jeff-dude", "mtitus6", "Henrystats", "chrispearcx", "wuligy", "tomfutago", "phu"]\') }}'
         )
 }}
 
