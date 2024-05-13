@@ -95,7 +95,9 @@ models:
       - &buy_token_address
         name: buy_token_address
         description: "the address of the token the offer is buying"
-      - *token_pair
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the transaction"
       - &sell_amount
         name: sell_amount
         description: "the amount of the token that the maker is selling"
