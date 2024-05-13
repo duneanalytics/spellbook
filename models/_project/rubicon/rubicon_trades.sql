@@ -2,10 +2,10 @@
         schema = 'rubicon',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "base", "optimism"]\',
                                       spell_type = "project", 
                                       spell_name = "rubicon", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["msilb7, denver"]\') }}'
         )
 }}
 

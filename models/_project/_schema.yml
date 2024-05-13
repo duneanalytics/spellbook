@@ -38,3 +38,5 @@ models:
   - name: opx_finance_trades
   - name: pancakeswap_trades
   - name: platypus_finance_trades
+  - name: quickswap_trades
+  - name: rubicon_trades
