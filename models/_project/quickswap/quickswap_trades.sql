@@ -2,10 +2,10 @@
         schema = 'quickswap',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'[]\',
+        post_hook='{{ expose_spells(blockchains = \'["polygon"]\',
                                       spell_type = "project", 
                                       spell_name = "quickswap", 
-                                      contributors = \'["jeff-dude", "hosuke", "soispoke"]\') }}'
+                                      contributors = \'["sameepsi", "tarusinghania123", "maybeYonas"]\') }}'
         )
 }}
 
