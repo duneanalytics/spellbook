@@ -148,16 +148,16 @@ orders as (
                 , fusion_settlement_addresses as _settlements
                 , reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position({{ method_data.get("args", "null")}}, x), 0) > 0, r -> r) as _with_settlement
                 , {% if 'partial_bit' in method_data %}
-                    try(bit_count(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
+                    try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
                         , cast(pow(2, {{ method_data.partial_bit }} - {{ method_data.partial_bit }} / 8 * 8) as bigint) -- 2 ^ (partial_bit - partial_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-                    ), 8) = 0) -- if set, the order does not allow partial fills
+                    ) = 0) -- if set, the order does not allow partial fills
                 {% else %} null {% endif %} as _partial
                 , {% if 'multiple_bit' in method_data %}
-                    try(bit_count(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
+                    try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.multiple_bit }} / 8 + 1, 1)) -- current byte: multiple_bit / 8 + 1 -- integer division
                         , cast(pow(2, {{ method_data.multiple_bit }} - {{ method_data.multiple_bit }} / 8 * 8) as bigint) -- 2 ^ (multiple_bit - multiple_bit / 8 * 8) -- bit_weights = array[128, 64, 32, 16, 8, 4, 2, 1]
-                    ), 8) = 1) -- if set, the order permits multiple fills
+                    ) > 0) -- if set, the order permits multiple fills
                 {% else %} null {% endif %} as _multiple
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
