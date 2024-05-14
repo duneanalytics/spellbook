@@ -124,19 +124,19 @@ select
     token_pair,
     project_contract_address,
     user,
-    bottrades.tx_id,
+    bot_trades.tx_id,
     tx_index,
-    bottrades.outer_instruction_index,
+    bot_trades.outer_instruction_index,
     coalesce(inner_instruction_index, 0) as inner_instruction_index,
     if(
         inner_instruction_index = highest_inner_instruction_index, true, false
     ) as is_last_trade_in_transaction
-from bottrades
+from bot_trades
 join
     highest_inner_instruction_index_for_each_trade
     on (
-        bottrades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
-        and bottrades.outer_instruction_index
+        bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
+        and bot_trades.outer_instruction_index
         = highest_inner_instruction_index_for_each_trade.outer_instruction_index
     )
 order by
