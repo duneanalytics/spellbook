@@ -23,14 +23,15 @@
 with
     all_fee_payments as (
         select distinct
-            signer AS user
-        from {{ source('solana', 'account_activity') }}
+            signer as user
+        from {{ source('solana', 'account_activity') }} as activity
         join {{ source("solana", "transactions") }} as transactions on tx_id = id
         where
             {% if is_incremental() %} 
-            {{ incremental_predicate('block_time') }}
-            {% else %} block_time >= timestamp '{{project_start_date}}'
+            {{ incremental_predicate('activity.block_time') }}
+            {% else %} activity.block_time >= timestamp '{{project_start_date}}'
             {% endif %}
+            and transactions.block_time >= timestamp '{{project_start_date}}'
             and tx_success
             and balance_change > 0
             and address = '{{fee_receiver}}'
