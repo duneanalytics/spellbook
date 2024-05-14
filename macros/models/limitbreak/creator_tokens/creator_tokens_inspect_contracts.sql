@@ -45,7 +45,7 @@ WITH clones AS (
         t1.block_month
     FROM 
         clones t1 
-        INNER JOIN deploys t2 ON t2.address = t1.implementation_address
+        INNER JOIN deploys t2 ON t1.creation_time >= t2.creation_time and t2.address = t1.implementation_address
 ), deploys_with_implementation_code AS (
     SELECT 
         is_clone, 
