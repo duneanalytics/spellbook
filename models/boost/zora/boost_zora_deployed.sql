@@ -36,11 +36,11 @@ select
     {% endif %}
     {% endfor %}
     projectName as project_name,
-    coalesce(contractType, questType) as boost_type,
+    questType as boost_type,
     startTime as start_time,
     endTime as end_time,
     rewardAmountOrTokenId as reward_amount_raw,
-    coalesce(rewardTokenAddress, rewardToken) as reward_token_address,
+    rewardToken as reward_token_address,
     totalParticipants as max_participants,
     evt_block_time as creation_time,
     creator
