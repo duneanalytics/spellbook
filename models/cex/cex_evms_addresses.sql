@@ -2042,7 +2042,7 @@ FROM (VALUES
     -- Vinex
     , (0xb436c96c6de1f50a160ed307317c275424dbe4f2, 'Vinex', 'Vinex 1', 'hildobby', date '2023-04-06')
     -- Ultimate Champions
-    , (0x18b7517cf34a3277f3db3381c3b2679cc3dc1116, 'Ultimate Champions', 'Ultimate Champions 1', 'hildobby', date '2024-05-004')
+    , (0x18b7517cf34a3277f3db3381c3b2679cc3dc1116, 'Ultimate Champions', 'Ultimate Champions 1', 'hildobby', date '2024-05-04')
     -- ZB.com
     , (0x60d0cc2ae15859f69bf74dadb8ae3bd58434976b, 'ZB.com', 'ZB.com 1', 'hildobby', date '2023-04-06')
     , (0x0e394d3facf0ce3bd5fcce584e16e0cbac164346, 'ZB.com', 'ZB.com 2', 'hildobby', date '2024-05-04')
