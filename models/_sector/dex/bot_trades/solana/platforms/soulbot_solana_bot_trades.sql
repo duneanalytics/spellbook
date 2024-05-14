@@ -25,6 +25,7 @@ with
         select distinct
             signer AS user
         from {{ source('solana', 'account_activity') }}
+        join {{ source("solana", "transactions") }} as transactions on tx_id = id
         where
             {% if is_incremental() %} 
             {{ incremental_predicate('block_time') }}
