@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: eigenlayer_ethereum
+    description: "Decoded contracts for EigenLayer on Ethereum"
+
+    tables:
+      - name: EigenPodManager_evt_PodDeployed
+        loaded_at_field: evt_block_time
