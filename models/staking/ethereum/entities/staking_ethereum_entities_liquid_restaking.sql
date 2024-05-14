@@ -8,7 +8,7 @@
 SELECT depositor_address, entity, entity_unique_name, category
 FROM
 (VALUES
-    , (0xb25fe78faaefadb7249b4940ee485856df150bbe, 'Kelp DAO', 'Kelp DAO 1', 'Liquid Restaking')
+    (0xb25fe78faaefadb7249b4940ee485856df150bbe, 'Kelp DAO', 'Kelp DAO 1', 'Liquid Restaking')
     , (0x093f6c270ac22ec240f0c6fd7414ea774ca8d3e5, 'Renzo', 'Renzo 1', 'Liquid Restaking')
     , (0x2641c2ded63a0c640629f5edf1189e0f53c06561, 'Renzo', 'Renzo 2', 'Liquid Restaking')
     , (0xe0c8df4270f4342132ec333f6048cb703e7a9c77, 'Swell', 'Swell 1', 'Liquid Restaking')
