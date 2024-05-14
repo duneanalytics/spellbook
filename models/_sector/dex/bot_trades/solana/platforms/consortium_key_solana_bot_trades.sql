@@ -99,8 +99,6 @@ select
     bottrades.tx_id,
     tx_index,
     bottrades.outer_instruction_index,
-    CAST(NULL AS DOUBLE) as fee_usd,
-    CAST(NULL AS DOUBLE) as fee_token_amount,
     coalesce(inner_instruction_index, 0) as inner_instruction_index,
     if(
         inner_instruction_index = highestinnerinstructionindex, true, false
