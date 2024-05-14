@@ -125,7 +125,7 @@ FROM (VALUES
     , (0xf60c2ea62edbfe808163751dd0d8693dcb30019c, 'Binance US', 'Binance US 3', 'hildobby', date '2023-04-06')
     , (0x43c5b1c2be8ef194a509cf93eb1ab3dbd07b97ed, 'Binance US', 'Binance US 4', 'hildobby', date '2023-11-22')
     , (0x21d45650db732ce5df77685d6021d7d5d1da807f, 'Binance US', 'Binance US 5', 'hildobby', date '2023-11-22')
-    , (0x211ee0129a67e7d44514152eb43d9f31103ac46b, 'Binance US', 'Binance US 5', 'hildobby', date '2024-05-04')
+    , (0x211ee0129a67e7d44514152eb43d9f31103ac46b, 'Binance US', 'Binance US 6', 'hildobby', date '2024-05-04')
     , (0xb14a67c63bda5024d2effd53aa16a00bb7f9a30a, 'Binance US', 'Binance US Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Bybit
     , (0x1db92e2eebc8e0c075a02bea49a2935bcd2dfcf4, 'Bybit', 'Bybit 1', 'hildobby', date '2023-04-06')
@@ -1020,7 +1020,7 @@ FROM (VALUES
     -- Bitso
     , (0x58b704065b7aff3ed351052f8560019e05925023, 'Bitso', 'Bitso 1', 'hildobby', date '2023-09-12')
     , (0x29d5527caa78f1946a409fa6acaf14a0a4a0274b, 'Bitso', 'Bitso 2', 'hildobby', date '2023-09-12')
-    , (0x20beea119e70255a8c36e4009c94aedb1f8b8eea, 'Bitso', 'Bitso 2', 'hildobby', date '2024-05-04')
+    , (0x20beea119e70255a8c36e4009c94aedb1f8b8eea, 'Bitso', 'Bitso 3', 'hildobby', date '2024-05-04')
     -- Stake.com
     , (0xdebfbe80c8aeba98a32968278463ccb639c6c4e3, 'Stake.com', 'Stake.com 1', 'hildobby', date '2023-11-15')
     , (0x974caa59e49682cda0ad2bbe82983419a2ecc400, 'Stake.com', 'Stake.com 2', 'hildobby', date '2023-11-15')
@@ -1061,7 +1061,7 @@ FROM (VALUES
     , (0xbac051bbf79c5321c0f825ea9bca71f992144029, 'ChangeNOW', 'ChangeNOW 11', 'hildobby', date '2023-11-20')
     , (0x7a3bea333246efcd74ebf5835987a5398eac10fe, 'ChangeNOW', 'ChangeNOW 12', 'hildobby', date '2023-11-20')
     , (0xd5b73fc035d4d679234323e0d891cab4a4f5a1ab, 'ChangeNOW', 'ChangeNOW 13', 'hildobby', date '2023-11-23')
-    , (0x8f54972f4ca40bd3ffc8b085f6ece1739c40c65f, 'ChangeNOW', 'ChangeNOW 13', 'hildobby', date '2024-05-04')
+    , (0x8f54972f4ca40bd3ffc8b085f6ece1739c40c65f, 'ChangeNOW', 'ChangeNOW 14', 'hildobby', date '2024-05-04')
     , (0xa4e5961b58dbe487639929643dcb1dc3848daf5e, 'ChangeNOW', 'ChangeNOW Deposit Funder 1', 'hildobby', date '2023-11-15')
     , (0x4657f866a0d9b46f288893fff466e8d87c556b1a, 'ChangeNOW', 'ChangeNOW Deposit Funder 2', 'hildobby', date '2023-11-20')
     , (0x637c86b5f2c8399716964c702bcaeabc69b900df, 'ChangeNOW', 'ChangeNOW Deposit Funder 3', 'hildobby', date '2023-11-20')
@@ -1676,7 +1676,7 @@ FROM (VALUES
     , (0x9cbadd5ce7e14742f70414a6dcbd4e7bb8712719, 'Indodax', 'Indodax 2', 'hildobby', date '2022-08-28')
     , (0x8ab399cbb9fdb9a36518a7e7eddf89158e56c595, 'Indodax', 'Indodax 3', 'hildobby', date '2023-11-23')
     , (0x9554efa1669014c25070bc23c2df262825704228, 'Indodax', 'Indodax 4', 'hildobby', date '2024-01-10')
-    , (0x3c02290922a3618a4646e3bbca65853ea45fe7c6, 'Indodax', 'Indodax 4', 'hildobby', date '2024-05-04')
+    , (0x3c02290922a3618a4646e3bbca65853ea45fe7c6, 'Indodax', 'Indodax 5', 'hildobby', date '2024-05-04')
     -- MaiCoin
     , (0x477b8d5ef7c2c42db84deb555419cd817c336b6f, 'MaiCoin', 'MaiCoin 1', 'hildobby', date '2022-08-28')
     -- ProBit
@@ -2087,7 +2087,7 @@ FROM (VALUES
     , (0x4fed1fc4144c223ae3c1553be203cdfcbd38c581, 'Cryptonator', 'Cryptonator 1', 'hildobby', date '2023-09-09')
     , (0x687c8ecbc10ed1ff6b1d700037fc4b873cf7e424, 'Cryptonator', 'Cryptonator 2', 'hildobby', date '2023-11-24')
     , (0x4b407c966c2cacd502a73e46bd0b97aaf78929ee, 'Cryptonator', 'Cryptonator 3', 'hildobby', date '2023-11-24')
-    , (0x0975ca9f986eee35f5cbba2d672ad9bc8d2a0844, 'Cryptonator', 'Cryptonator 3', 'hildobby', date '2024-05-04')
+    , (0x0975ca9f986eee35f5cbba2d672ad9bc8d2a0844, 'Cryptonator', 'Cryptonator 4', 'hildobby', date '2024-05-04')
     -- Freewallet
     , (0x7ed1e469fcb3ee19c0366d829e291451be638e59, 'Freewallet', 'Freewallet 1', 'hildobby', date '2023-09-09')
     -- Phemex
@@ -2369,8 +2369,6 @@ FROM (VALUES
     , (0xc0c704bfc375b3fc657bc378b1cfee009194e2b3, 'LCX', 'LCX 3', 'hildobby', date '2024-01-04')
     , (0xc90970dd648415756681163f69eaeb7eb9c28a9c, 'LCX', 'LCX Company Reserve 1', 'hildobby', date '2024-01-04')
     , (0x037a54aab062628c9bbae1fdb1583c195585fe41, 'LCX', 'LCX LCX Token', 'hildobby', date '2024-01-04')
-    -- BloFin Exchange
-    , (0x0e747eb2ff0f26fb77c3a1ea67ee07fac2dbb783, 'BloFin Exchange', 'BloFin Exchange 1', 'hildobby', date '2024-01-04')
     -- Orionx
     , (0xafda8eba0ac933661f45b41a438840dc07df1761, 'Orionx', 'Orionx 1', 'hildobby', date '2024-01-04')
     -- MultiBank Group
@@ -2511,8 +2509,8 @@ FROM (VALUES
     , (0x8979d1e0ecab3cf5ae8a5a7b2d792aa119f34be1, 'Bitpie', 'Bitpie 3', 'hildobby', date '2024-05-04')
     , (0x346b46826be175c943a45cdbec2e9d95dc52fb38, 'Bitpie', 'Bitpie 4', 'hildobby', date '2024-05-04')
     , (0xb685d0daea607fe75e02c1a7679261eac661b9bc, 'Bitpie', 'Bitpie 5', 'hildobby', date '2024-05-04')
-    , (0xadef6b2c5e848a4f04145ee88f20ac079f17beab, 'Bitpie', 'Bitpie 5', 'hildobby', date '2024-05-04')
-    , (0x19e460ac0a23706f156909b545de9d5072802065, 'Bitpie', 'Bitpie 5', 'hildobby', date '2024-05-04')
+    , (0xadef6b2c5e848a4f04145ee88f20ac079f17beab, 'Bitpie', 'Bitpie 6', 'hildobby', date '2024-05-04')
+    , (0x19e460ac0a23706f156909b545de9d5072802065, 'Bitpie', 'Bitpie 7', 'hildobby', date '2024-05-04')
     , (0x7b138cc83ecccd6331cd7651c75ee3eb2ec6682e, 'Bitpie', 'Bitpie Batch Sender 1', 'hildobby', date '2024-05-04')
     , (0x3b7e71a9f15eebb541c82f88ef020ae7040484f1, 'Bitpie', 'Bitpie Batch Sender 2', 'hildobby', date '2024-05-04')
     , (0x48fc0b223b818b55f2a6feb3ab329ff816edd2bc, 'Bitpie', 'Bitpie Deployer 1', 'hildobby', date '2024-05-04')
