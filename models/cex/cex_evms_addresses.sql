@@ -236,6 +236,7 @@ FROM (VALUES
     , (0x4d8336bda6c11bd2a805c291ec719baedd10acb9, 'Coinbase', 'Coinbase 52', 'hildobby', date '2024-04-04')
     , (0xb0fa34c866e1e1e7030820b4f846bb58d6f75b04, 'Coinbase', 'Coinbase 53', 'hildobby', date '2024-04-04')
     , (0x2a410f11a6f520398447bf423dcedd25dfd3a568, 'Coinbase', 'Coinbase 54', 'hildobby', date '2024-04-04')
+    , (0x40ebc1ac8d4fedd2e144b75fe9c0420be82750c6, 'Coinbase', 'Coinbase 55', 'hildobby', date '2024-05-14')
     , (0xa090e606e30bd747d4e6245a1517ebe430f0057e, 'Coinbase', 'Coinbase Miscellaneous', 'hildobby', date '2022-08-28')
     , (0xf6874c88757721a02f47592140905c4336dfbc61, 'Coinbase', 'Coinbase Commerce', 'hildobby', date '2022-08-28')
     , (0x881d4032abe4188e2237efcd27ab435e81fc6bb1, 'Coinbase', 'Coinbase Commerce 2', 'hildobby', date '2022-08-28')
