@@ -16,3 +16,4 @@ WHERE eigenPod NOT IN (SELECT depositor_address FROM {{ ref('staking_ethereum_en
 {% if is_incremental() %}
 AND {{ incremental_predicate('evt_block_time') }}
 {% endif %}
+GROUP BY eigenPod
