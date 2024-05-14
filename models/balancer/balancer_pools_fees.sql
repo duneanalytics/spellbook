@@ -2,10 +2,10 @@
     schema = 'balancer',
     
     alias = 'pools_fees',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                                 "project",
                                 "balancer",
-                                \'["thetroyharris"]\') }}'
+                                \'["thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
@@ -16,7 +16,8 @@
     ref('balancer_v2_ethereum_pools_fees'),
     ref('balancer_v2_gnosis_pools_fees'),
     ref('balancer_v2_optimism_pools_fees'),
-    ref('balancer_v2_polygon_pools_fees')
+    ref('balancer_v2_polygon_pools_fees'),
+    ref('balancer_v2_zkevm_pools_fees')
 ] %}
 
 

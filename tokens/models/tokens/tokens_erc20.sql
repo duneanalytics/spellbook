@@ -3,10 +3,10 @@
         schema = 'tokens'
         ,alias = 'erc20'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","scroll","zksync","zora"]\',
+        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","scroll","zkevm","zksync","zora"]\',
                         "sector",
                         "tokens",
-                        \'["bh2smith", "0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude"]\') }}'
+                        \'["bh2smith", "0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude", "viniabussafi"]\') }}'
     )
 }}
 
@@ -28,6 +28,7 @@
     ,'tokens_optimism': {'blockchain': 'optimism', 'model': ref('tokens_optimism_erc20')}
     ,'tokens_polygon': {'blockchain': 'polygon', 'model': ref('tokens_polygon_erc20')}
     ,'tokens_scroll': {'blockchain': 'scroll', 'model': ref('tokens_scroll_erc20')}
+    ,'tokens_zkevm': {'blockchain': 'zkevm', 'model': ref('tokens_zkevm_erc20')}
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')}
     ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
 } %}

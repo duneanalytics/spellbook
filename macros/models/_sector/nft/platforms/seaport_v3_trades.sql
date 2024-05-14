@@ -5,10 +5,8 @@
      ,Seaport_call_matchAdvancedOrders
      ,Seaport_call_matchOrders
      ,fee_wallet_list_cte
-     ,native_token_address = '0x0000000000000000000000000000000000000000'
-     ,alternative_token_address = '0x0000000000000000000000000000000000000000'
-     ,native_token_symbol = 'ETH'
      ,start_date = '2023-02-01'
+     ,native_currency_contract = '0x0000000000000000000000000000000000000000'
 ) %}
 
 with source_ethereum_transactions as (
@@ -19,36 +17,6 @@ with source_ethereum_transactions as (
     {% endif %}
     {% if is_incremental() %}
     where block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-)
-,ref_tokens_nft as (
-    select *
-    from {{ ref('tokens_nft') }}
-    where blockchain = '{{ blockchain }}'
-)
-,ref_tokens_erc20 as (
-    select *
-    from {{ source('tokens', 'erc20') }}
-    where blockchain = '{{ blockchain }}'
-)
-,ref_nft_aggregators as (
-    select *
-    from {{ ref('nft_aggregators') }}
-    where blockchain = '{{ blockchain }}'
-)
-,ref_nft_aggregators_marks as (
-    select *
-    from {{ ref('nft_ethereum_aggregators_markers') }}
-)
-,source_prices_usd as (
-    select *
-    from {{ source('prices', 'usd') }}
-    where blockchain = '{{ blockchain }}'
-    {% if not is_incremental() %}
-      and minute >= TIMESTAMP '{{start_date}}'  -- seaport first txn
-    {% endif %}
-    {% if is_incremental() %}
-      and minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 ,fee_wallet_list as (
@@ -594,38 +562,12 @@ with source_ethereum_transactions as (
           ,a.is_private
           ,a.sub_type
           ,a.sub_idx
-          ,n.name AS nft_token_name
           ,t."from" as tx_from
           ,t.to as tx_to
           ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
-          ,case when a.token_contract_address = {{native_token_address}} then '{{native_token_symbol}}'
-                else e.symbol
-           end as token_symbol
-          ,case when a.token_contract_address = {{native_token_address}} then {{alternative_token_address}}
-                else a.token_contract_address
-           end as token_alternative_symbol
-          ,e.decimals as price_token_decimals
-          ,a.price_amount_raw / power(10, e.decimals) as price_amount
-          ,a.price_amount_raw / power(10, e.decimals) * p.price as price_amount_usd
-          ,a.platform_fee_amount_raw / power(10, e.decimals) as platform_fee_amount
-          ,a.platform_fee_amount_raw / power(10, e.decimals) * p.price as platform_fee_amount_usd
-          ,a.creator_fee_amount_raw / power(10, e.decimals) as creator_fee_amount
-          ,a.creator_fee_amount_raw / power(10, e.decimals) * p.price as creator_fee_amount_usd
-          ,coalesce(agg_m.aggregator_name, agg.name) as aggregator_name
-          ,agg.contract_address AS aggregator_address
           ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
-  left join ref_tokens_nft n on n.contract_address = nft_contract_address
-  left join ref_tokens_erc20 e on e.contract_address = case when a.token_contract_address = {{native_token_address}} then {{alternative_token_address}}
-                                                            else a.token_contract_address
-                                                      end
-  left join source_prices_usd p on p.contract_address = case when a.token_contract_address = {{native_token_address}} then {{alternative_token_address}}
-                                                            else a.token_contract_address
-                                                        end
-    and p.minute = date_trunc('minute', a.block_time)
-  left join ref_nft_aggregators agg on agg.contract_address = t.to
-  left join ref_nft_aggregators_marks agg_m on bytearray_starts_with(bytearray_reverse(t.data), bytearray_reverse(agg_m.hash_marker))
 )
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
@@ -646,32 +588,23 @@ select
 
         -- nft token info
         ,nft_contract_address
-        ,nft_token_name as collection
         ,nft_token_id as token_id
         ,nft_token_amount as number_of_items
         ,nft_token_standard as token_standard
 
         -- price info
-        ,price_amount as amount_original
         ,price_amount_raw as amount_raw
-        ,price_amount_usd as amount_usd
-        ,token_symbol as currency_symbol
-        ,token_alternative_symbol as currency_contract
-        ,token_contract_address as original_currency_contract
-        ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
+        ,case when token_contract_address = 0x0000000000000000000000000000000000000000 then {{native_currency_contract}}
+         else token_contract_address end as currency_contract
 
         -- project info (platform or exchange)
         ,platform_contract_address as project_contract_address
         ,platform_fee_receiver as platform_fee_receive_address
         ,platform_fee_amount_raw
-        ,platform_fee_amount
-        ,platform_fee_amount_usd
 
         -- royalty info
         ,creator_fee_receiver_1 as royalty_fee_receive_address
         ,creator_fee_amount_raw as royalty_fee_amount_raw
-        ,creator_fee_amount as royalty_fee_amount
-        ,creator_fee_amount_usd as royalty_fee_amount_usd
         ,creator_fee_receiver_1 as royalty_fee_receive_address_1
         ,creator_fee_receiver_2 as royalty_fee_receive_address_2
         ,creator_fee_receiver_3 as royalty_fee_receive_address_3
@@ -682,10 +615,6 @@ select
         ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
         ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
         ,creator_fee_amount_raw_5 as royalty_fee_amount_raw_5
-
-        -- aggregator
-        ,aggregator_name
-        ,aggregator_address
 
         -- tx
         ,block_number
@@ -702,9 +631,6 @@ select
         ,sub_idx
         ,sub_type
         ,fee_wallet_name
-        ,token_symbol as royalty_fee_currency_symbol
-        ,case when price_amount_raw > uint256 '0' then CAST ((platform_fee_amount_raw / price_amount_raw * 100) AS DOUBLE) end platform_fee_percentage
-        ,case when price_amount_raw > uint256 '0' then CAST((creator_fee_amount_raw/ price_amount_raw * 100) AS DOUBLE) end royalty_fee_percentage
         ,'seaport-' || CAST(tx_hash AS varchar) || '-' || cast(evt_index as varchar) || '-' || CAST(nft_contract_address AS varchar) || '-' || cast(nft_token_id as varchar) || '-' || cast(sub_type as varchar) || '-' || cast(sub_idx as varchar) as unique_trade_id
   from   iv_trades
 -- where  ( zone in (0xf397619df7bfd4d1657ea9bdd9df7ff888731a11
