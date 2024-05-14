@@ -110,7 +110,7 @@ tokens as (
         , false as second_side
         , protocol = 'LOP' and (
             position('RFQ' in method) > 0
-            or coalesce(not element_at(flags, 'multiple') and element_at(flags, 'partial'), false)
+            or coalesce(element_at(flags, 'partial') and not element_at(flags, 'multiple'), false)
         ) as contracts_only
     from calls
 
