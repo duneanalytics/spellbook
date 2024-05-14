@@ -67,7 +67,7 @@ erc1155_claims as (
         cast(1 as uint256) as reward_amount_raw,
         rewardToken as reward_token_address,
         evt_tx_hash as claim_tx_hash,
-        evt_block_time as block_time
+        evt_block_time as block_time,
         q.creator as creator_address
     from {{ source(schema_name, 'QuestFactory_evt_Quest1155Claimed') }} c   
     join {{ deployed_model }} q
