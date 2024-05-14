@@ -134,7 +134,7 @@ models:
         description: "Block number of the deposit/withdraw/reinvest"
       - &user_address
         name: user_address
-        description: "Address of the wallet which made the deposit"
+        description: "Address of the wallet which made the deposit/withdraw/reinvest"
       - &deposit_amount
         name: deposit_amount
         description: "Amount of deposit tokens deposited into the strategy"
@@ -234,3 +234,30 @@ models:
       - &deposit_token_balance
         name: deposit_token_balance
         description: "Balance of deposit tokens held in the contract in the time window specified"
+  - name: yield_yak_avalanche_c_user_yrt_balances
+    meta:
+      blockchain: avalanche_c
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+    description: >
+        yield yak user-level YRT balances on avalanche_c as a temporal table
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_address
+            - contract_address
+            - from_time
+    columns:
+      - *blockchain
+      - name: user_address
+        description: Address which holds the YRT
+      - *contract_address
+      - name: from_time
+        description: "UTC time from which the user held this balance of the contract_address YRT"
+      - name: to_time
+        description: "UTC time until which the user held this balance of the contract_address YRT"
+      - &yrt_balance
+        name: yrt_balance
+        description: "Balance of YRT tokens held by the user_address in the time window specified"

@@ -24,6 +24,7 @@
             "making_amount": "output_0",
             "taking_amount": "output_1",
             "order_hash":    "output_2",
+            "order_remains": "varbinary_concat(0x01, substr(cast(cast(order_map['salt'] as uint256) as varbinary), 1, 4))",
             "maker_traits":  "cast(cast(order_map['makerTraits'] as uint256) as varbinary)",
             "partial_bit":   "1",
             "multiple_bit":  "2",
@@ -110,7 +111,7 @@
             "start": "2024-02-12",
             "methods": {
                 "fillOrder":             samples["v4"],
-                "fillOrderArgs":         samples["v4"],
+                "fillOrderArgs":         dict(samples["v4"], args="args"),
                 "fillContractOrder":     samples["v4"],
                 "fillContractOrderArgs": samples["v4"],
             },
@@ -126,7 +127,8 @@ orders as (
     {% for contract, contract_data in cfg.items() if blockchain in contract_data['blockchains'] %}
         select * from ({% for method, method_data in contract_data.methods.items() %}
             select
-                call_block_number as block_number
+                blockchain
+                , call_block_number as block_number
                 , call_block_time as block_time
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
@@ -142,6 +144,9 @@ orders as (
                 , {{ method_data.get("making_amount", "null") }} as making_amount
                 , {{ method_data.get("taking_amount", "null") }} as taking_amount
                 , {{ method_data.get("order_hash", "null") }} as order_hash
+                , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
+                , fusion_settlement_addresses as _settlements
+                , reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position({{ method_data.get("args", "null")}}, x), 0) > 0, r -> r) as _with_settlement
                 , {% if 'partial_bit' in method_data %}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
@@ -157,7 +162,8 @@ orders as (
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                {% if is_incremental() %} 
+                join ({{ oneinch_blockchain_macro(blockchain) }}) on true
+                {% if is_incremental() %}
                     where {{ incremental_predicate('call_block_time') }}
                 {% endif %}
             )
@@ -190,7 +196,7 @@ orders as (
 -- output --
 
 select
-    '{{ blockchain }}' as blockchain
+    blockchain
     , block_number
     , block_time
     , tx_hash
@@ -224,12 +230,19 @@ select
     , map_from_entries(array[
         ('partial', _partial)
         , ('multiple', _multiple)
+        , ('fusion', _with_settlement or array_position(_settlements, call_from) > 0)
         , ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
     ]) as flags
-    , concat(cast(length(remains) as bigint), if(length(remains) > 0
-        , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
-        , array[bigint '0']
-    )) as remains
+    , concat(
+        cast(length(remains) + length(order_remains) as bigint)
+        , concat(
+            if(length(remains) > 0
+                , transform(sequence(1, length(remains), 4), x -> bytearray_to_bigint(reverse(substr(reverse(remains), x, 4))))
+                , array[bigint '0']
+            )
+            , array[bytearray_to_bigint(order_remains)]
+        )
+    ) as remains
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
 from (

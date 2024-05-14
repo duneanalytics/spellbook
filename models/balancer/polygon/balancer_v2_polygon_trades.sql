@@ -16,7 +16,9 @@ WITH
             tx_hash,
             evt_index,
             pool_id,
-            swap_fee
+            swap_fee,
+            pool_symbol,
+            pool_type
         FROM {{ ref('balancer_v2_polygon_base_trades') }}
     ),
     dexs AS (
@@ -46,7 +48,9 @@ WITH
             dexs.tx_to,
             dexs.evt_index,
             dexs_base.pool_id,
-            dexs_base.swap_fee
+            dexs_base.swap_fee,
+            dexs_base.pool_symbol,
+            dexs_base.pool_type
         FROM {{ ref('dex_trades') }} dexs
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
@@ -111,6 +115,8 @@ SELECT
     dexs.project_contract_address,
     dexs.pool_id,
     dexs.swap_fee,
+    dexs.pool_symbol,
+    dexs.pool_type,
     dexs.tx_hash,
     dexs.tx_from,
     dexs.tx_to,
