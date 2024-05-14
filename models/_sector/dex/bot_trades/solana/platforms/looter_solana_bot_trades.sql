@@ -1,24 +1,24 @@
 {{
     config(
-        alias="bot_trades",
-        schema="looter_solana",
-        partition_by=["block_month"],
-        materialized="incremental",
-        file_format="delta",
-        incremental_strategy="merge",
+        alias='bot_trades',
+        schema='looter_solana',
+        partition_by=['block_month'],
+        materialized='incremental',
+        file_format='delta',
+        incremental_strategy='merge',
         unique_key=[
-            "blockchain",
-            "tx_id",
-            "tx_index",
-            "outer_instruction_index",
-            "inner_instruction_index",
+            'blockchain',
+            'tx_id',
+            'tx_index',
+            'outer_instruction_index',
+            'inner_instruction_index',
         ],
     )
 }}
 
-{% set project_start_date = "2023-12-26" %}
-{% set fee_receiver = "3Pu1V4duyLyVpAJue1kLAfr74nGjQ3JDzj3aJjnoEXuL" %}
-{% set wsol_token = "So11111111111111111111111111111111111111112" %}
+{% set project_start_date = '2023-12-26' %}
+{% set fee_receiver = '3Pu1V4duyLyVpAJue1kLAfr74nGjQ3JDzj3aJjnoEXuL' %}
+{% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with
     all_fee_payments as (
@@ -29,7 +29,7 @@ with
             '{{wsol_token}}' as fee_token_mint_address
         from {{ source('solana', 'account_activity') }}
         where
-            {% if is_incremental() %} {{ incremental_predicate("block_time") }}
+            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %}
             and tx_success
@@ -63,24 +63,24 @@ with
             tx_index,
             outer_instruction_index,
             inner_instruction_index
-        from {{ ref("dex_solana_trades") }} as trades
+        from {{ ref('dex_solana_trades') }} as trades
         join all_fee_payments on trades.tx_id = all_fee_payments.tx_id
         left join
-            {{ source("prices", "usd") }} as feetokenprices
+            {{ source('prices', 'usd') }} as feetokenprices
             on (
                 feetokenprices.blockchain = 'solana'
                 and fee_token_mint_address = tobase58(feetokenprices.contract_address)
                 and date_trunc('minute', block_time) = minute
-                {% if is_incremental() %} and {{ incremental_predicate("minute") }}
+                {% if is_incremental() %} and {{ incremental_predicate('minute') }}
                 {% else %} and minute >= timestamp '{{project_start_date}}'
                 {% endif %}
             )
         join
-            {{ source("solana", "transactions") }} as transactions
+            {{ source('solana', 'transactions') }} as transactions
             on (
                 trades.tx_id = id
                 {% if is_incremental() %}
-                    and {{ incremental_predicate("transactions.block_time") }}
+                    and {{ incremental_predicate('transactions.block_time') }}
                 {% else %}
                     and transactions.block_time >= timestamp '{{project_start_date}}'
                 {% endif %}
@@ -89,7 +89,7 @@ with
             trades.trader_id != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
             and transactions.signer != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
             {% if is_incremental() %}
-                and {{ incremental_predicate("trades.block_time") }}
+                and {{ incremental_predicate('trades.block_time') }}
             {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),
@@ -123,19 +123,19 @@ select
     token_pair,
     project_contract_address,
     user,
-    bottrades.tx_id,
+    bot_trades.tx_id,
     tx_index,
-    bottrades.outer_instruction_index,
+    bot_trades.outer_instruction_index,
     coalesce(inner_instruction_index, 0) as inner_instruction_index,
     if(
         inner_instruction_index = highest_inner_instruction_index, true, false
     ) as is_last_trade_in_transaction
-from bottrades
+from bot_trades
 join
     highest_inner_instruction_index_for_each_trade
     on (
-        bottrades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
-        and bottrades.outer_instruction_index
+        bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
+        and bot_trades.outer_instruction_index
         = highest_inner_instruction_index_for_each_trade.outer_instruction_index
     )
 order by

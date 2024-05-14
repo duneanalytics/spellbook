@@ -1,24 +1,24 @@
 {{
     config(
-        alias="bot_trades",
-        schema="wifbot_solana",
-        partition_by=["block_month"],
-        materialized="incremental",
-        file_format="delta",
-        incremental_strategy="merge",
+        alias='bot_trades',
+        schema='wifbot_solana',
+        partition_by=['block_month'],
+        materialized='incremental',
+        file_format='delta',
+        incremental_strategy='merge',
         unique_key=[
-            "blockchain",
-            "tx_id",
-            "tx_index",
-            "outer_instruction_index",
-            "inner_instruction_index",
+            'blockchain',
+            'tx_id',
+            'tx_index',
+            'outer_instruction_index',
+            'inner_instruction_index',
         ],
     )
 }}
 
-{% set project_start_date = "2024-03-19" %}
-{% set fee_receiver = "W1FCMFH3D7QeQcsNSTCMTpJ9BxQdk6VzeQMLJp2dNro" %}
-{% set wsol_token = "So11111111111111111111111111111111111111112" %}
+{% set project_start_date = '2024-03-19' %}
+{% set fee_receiver = 'W1FCMFH3D7QeQcsNSTCMTpJ9BxQdk6VzeQMLJp2dNro' %}
+{% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 with
     all_fee_payments as (
@@ -64,15 +64,15 @@ with
             tx_index,
             outer_instruction_index,
             inner_instruction_index
-        from {{ ref("dex_solana_trades") }} as trades
+        from {{ ref('dex_solana_trades') }} as trades
         join all_fee_payments on trades.tx_id = all_fee_payments.tx_id
         left join
-            {{ source("prices", "usd") }} as feetokenprices
+            {{ source('prices', 'usd') }} as feetokenprices
             on (
                 feetokenprices.blockchain = 'solana'
                 and fee_token_mint_address = tobase58(feetokenprices.contract_address)
                 and date_trunc('minute', block_time) = minute
-                {% if is_incremental() %} and {{ incremental_predicate("minute") }}
+                {% if is_incremental() %} and {{ incremental_predicate('minute') }}
                 {% else %} and minute >= timestamp '{{project_start_date}}'
                 {% endif %}
             )
@@ -81,7 +81,7 @@ with
             on (
                 trades.tx_id = id
                 {% if is_incremental() %}
-                    and {{ incremental_predicate("transactions.block_time") }}
+                    and {{ incremental_predicate('transactions.block_time') }}
                 {% else %}
                     and transactions.block_time >= timestamp '{{project_start_date}}'
                 {% endif %}
@@ -90,7 +90,7 @@ with
             trades.trader_id != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
             and transactions.signer != '{{fee_receiver}}'  -- Exclude trades signed by FeeWallet
             {% if is_incremental() %}
-                and {{ incremental_predicate("trades.block_time") }}
+                and {{ incremental_predicate('trades.block_time') }}
             {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),
