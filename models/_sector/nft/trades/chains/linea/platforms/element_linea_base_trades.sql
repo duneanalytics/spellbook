@@ -9,8 +9,8 @@
     )
 }}
 
-SELECT
-  '{{blockchain}}' as blockchain,
+WITH base_trades AS (
+    SELECT '{{blockchain}}' as blockchain,
   'element' as project,
   'v1' as project_version,
   evt_block_time AS block_time,
@@ -80,3 +80,6 @@ FROM {{ source('element_ex_linea','ERC1155OrdersFeature_evt_ERC1155SellOrderFill
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
+)
+
+{{ add_nft_tx_data('base_trades', 'linea') }}
