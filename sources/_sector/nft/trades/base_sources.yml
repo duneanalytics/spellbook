@@ -35,3 +35,11 @@ sources:
       - name: XykCurve_call_getBuyInfo
       - name: GDACurve_call_getBuyInfo
       - name: RoyaltyEngine_call_getRoyalty
+
+  - name: limitbreak_base
+    tables:
+      - name: PaymentProcessor_evt_BuyListingERC721
+      - name: PaymentProcessor_evt_BuyListingERC1155
+      - name: PaymentProcessor_evt_AcceptOfferERC721
+      - name: PaymentProcessor_evt_AcceptOfferERC1155
+      - name: TrustedForwarder_call_forwardCall
