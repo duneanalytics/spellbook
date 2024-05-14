@@ -218,3 +218,51 @@ WHERE
   AND t.block_time >= timestamp '2023-10-10' --when scroll launched
   {% endif %}
 GROUP BY 1,2
+
+UNION ALL
+
+SELECT
+  date_trunc('day', t.block_time) AS day
+  , 'linea' AS name
+  , SUM((t.gas_used * t.gas_price)/POWER(10,18)) AS l2_rev
+  , SUM(p.price * (t.gas_used * t.gas_price)/POWER(10,18)) AS l2_rev_usd
+FROM {{ source('linea','transactions') }} t
+INNER JOIN {{ source('prices','usd') }} p
+  ON p.minute = date_trunc('minute', t.block_time)
+  AND p.blockchain is null
+  AND p.symbol = 'ETH'
+  {% if is_incremental() %}
+  AND {{incremental_predicate('p.minute')}}
+  {% endif %}
+WHERE
+  1 = 1
+  {% if is_incremental() %}
+  AND {{incremental_predicate('t.block_time')}}
+  {% else %}
+  AND t.block_time >= timestamp '2023-07-06' --when linea launched
+  {% endif %}
+GROUP BY 1,2
+
+UNION ALL
+
+SELECT
+  date_trunc('day', t.block_time) AS day
+  , 'polygon zkevm' AS name
+  , SUM((t.gas_used * t.gas_price)/POWER(10,18)) AS l2_rev
+  , SUM(p.price * (t.gas_used * t.gas_price)/POWER(10,18)) AS l2_rev_usd
+FROM {{ source('zkevm','transactions') }} t
+INNER JOIN {{ source('prices','usd') }} p
+  ON p.minute = date_trunc('minute', t.block_time)
+  AND p.blockchain is null
+  AND p.symbol = 'ETH'
+  {% if is_incremental() %}
+  AND {{incremental_predicate('p.minute')}}
+  {% endif %}
+WHERE
+  1 = 1
+  {% if is_incremental() %}
+  AND {{incremental_predicate('t.block_time')}}
+  {% else %}
+  AND t.block_time >= timestamp '2023-03-24' --when polygon zkevm launched
+  {% endif %}
+GROUP BY 1,2

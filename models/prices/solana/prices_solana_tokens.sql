@@ -667,5 +667,6 @@ FROM
         ('solr-solrazr','solana','SOLR','7j7H7sgsnNDeCngAPjpaCN4aaaru4HS7NAFYSEUyzJ3k',6),
         ('ftt-ftx-token','solana','FTT','AGFEad2et2ZJif9jaGpdMixQqvW5i81aBdvKe7PHNfz3',6),
         ('w-wormhole', 'solana', 'W', '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', 6),
-        ('trump-maga', 'solana', 'TRUMP', 'HaP8r3ksG76PhQLTqR8FYBeNiQpejcFbQmiHbg787Ut1', 8)
+        ('trump-maga', 'solana', 'TRUMP', 'HaP8r3ksG76PhQLTqR8FYBeNiQpejcFbQmiHbg787Ut1', 8),
+        ('popcat-popcat', 'solana', 'POPCAT', '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
