@@ -12,7 +12,7 @@ SELECT eigenPod AS depositor_address
 , CONCAT('EigenLayer ', CAST(ROW_NUMBER() OVER (ORDER BY MIN(evt_block_time)) AS VARCHAR)) AS entity_unique_name
 , 'Restaking' AS category
 FROM {{ source('eigenlayer_ethereum', 'EigenPodManager_evt_PodDeployed') }}
-WHERE eigenPod NOT IN (SELECT depositor_address FROM {{ ref('staking_ethereum_entities_depositor_addresses') }})
+WHERE eigenPod NOT IN (SELECT depositor_address FROM {{ ref('staking_ethereum_entities_liquid_restaking') }})
 {% if is_incremental() %}
 AND {{ incremental_predicate('evt_block_time') }}
 {% endif %}
