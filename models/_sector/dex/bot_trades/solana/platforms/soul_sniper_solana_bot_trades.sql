@@ -1,7 +1,7 @@
 {{
     config(
         alias='bot_trades',
-        schema='soulbot_solana',
+        schema='soul_sniper_solana',
         partition_by=['block_month'],
         materialized='incremental',
         file_format='delta',

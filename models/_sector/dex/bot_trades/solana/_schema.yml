@@ -354,16 +354,16 @@ models:
           seed_file: ref('wifbot_solana_trades_seed')
           blockchain: solana
 
-  - name: soulbot_solana_bot_trades
+  - name: soul_sniper_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
-      project: soulbot
+      project: soul_sniper
       contributors: whale_hunter
     config:
-      tags: ["solana", "dex", "soulbot", "trades"]
+      tags: ["solana", "dex", "soul_sniper", "trades"]
     description: >
-      Soulbot trades on Solana
+      Soul Sniper trades on Solana
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -373,5 +373,5 @@ models:
             - outer_instruction_index
             - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('soulbot_solana_trades_seed')
+          seed_file: ref('soul_sniper_solana_trades_seed')
           blockchain: solana
