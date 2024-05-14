@@ -336,10 +336,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - depositor_address
+            - withdrawal_credentials
     columns:
-      - name: depositor_address
-        description: "Address of identified depositor entity"
+      - name: withdrawal_credentials
+        description: "Withdrawal Credentials of identified depositor entity"
         tests:
           - unique
       - name: entity

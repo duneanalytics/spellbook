@@ -16,7 +16,7 @@
      , ('tx_from', ref('staking_ethereum_entities_batch_contracts_tx_from'), 'sub')
      , ('pubkey', ref('staking_ethereum_entities_batch_contracts_pubkey'), 'sub')
 
-     , ('depositor_address', ref('staking_ethereum_entities_restaking'), 'main')
+     , ('withdrawal_credentials', ref('staking_ethereum_entities_restaking'), 'main')
      , ('depositor_address', ref('staking_ethereum_entities_liquid_restaking'), 'sub')
 
      , ('depositor_address', ref('staking_ethereum_entities_coinbase'), 'main')
