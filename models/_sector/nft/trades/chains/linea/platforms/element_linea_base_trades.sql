@@ -37,7 +37,7 @@ SELECT
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
-FROM {{ source('element_ex_linea','ElementEx_evt_ERC1155BuyOrderFilled') }}
+FROM {{ source('element_ex_linea','ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
@@ -72,7 +72,7 @@ SELECT
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
-FROM {{ source('element_ex_linea','ElementEx_evt_ERC1155SellOrderFilled') }}
+FROM {{ source('element_ex_linea','ERC1155OrdersFeature_evt_ERC1155SellOrderFilled') }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}

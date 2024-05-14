@@ -3,7 +3,5 @@ version: 2
 sources:
   - name: element_ex_linea
     tables:
-        - name: ElementEx_evt_ERC721SellOrderFilled
-        - name: ElementEx_evt_ERC721BuyOrderFilled
-        - name: ElementEx_evt_ERC1155SellOrderFilled
-        - name: ElementEx_evt_ERC1155BuyOrderFilled
+        - name: ERC1155OrdersFeature_evt_ERC1155SellOrderFilled
+        - name: ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled
