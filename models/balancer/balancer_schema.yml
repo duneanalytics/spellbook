@@ -406,3 +406,36 @@ models:
       - name: pool_id
       - name: project
       - name: blockchain
+
+  - name: balancer_pools_metrics_daily
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      contributors: viniabussafi, metacrypto
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
+    description: >
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - project_contract_address
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: project_contract_address
+      - name: pool_symbol
+      - name: pool_type
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+      - name: tvl_usd
+        description: "Total Value Locked on a pool, in USD"
+      - name: tvl_eth
+        description: "Total Value Locked on a pool, in eth"
+      - name: fee_amount_usd
+        description: "Daily fees collected on a pool, in USD"
