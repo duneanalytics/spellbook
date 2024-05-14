@@ -1121,7 +1121,6 @@ FROM (VALUES
     , (0x397be73c6160e5e66408924da4ad32ea5e9ea9db, 'Aeroswap', 'Aeroswap Deposit Funder 1', 'hildobby', date '2024-04-04')
     , (0x7d411c4279a96069fe32de0c0eab4a964e8ed9c4, 'Aeroswap', 'Aeroswap Deposit Funder 2', 'hildobby', date '2024-05-04')
     , (0x0e8d02ae96b229f112f37502c2a26d66bdbcff1f, 'Aeroswap', 'Aeroswap Binance Deposit 1', 'hildobby', date '2023-11-23')
-    0x7d411c4279a96069fe32de0c0eab4a964e8ed9c4
     -- BitMEX
     , (0xeea81c4416d71cef071224611359f6f99a4c4294, 'BitMEX', 'BitMEX 1', 'hildobby', date '2022-08-28')
     , (0xfb8131c260749c7835a08ccbdb64728de432858e, 'BitMEX', 'BitMEX 2', 'hildobby', date '2022-08-28')
