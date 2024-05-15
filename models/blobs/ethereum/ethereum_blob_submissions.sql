@@ -63,5 +63,5 @@ INNER JOIN {{ source('beacon', 'blocks') }} beacon
 -- this lookup relies on the invariant that the excess blob gas is updated with fixed increment and thus only ever holds a limited set of values.
 LEFT JOIN  {{ source("resident_wizards", "dataset_blob_base_fees_lookup", database="dune") }} fee
     ON l.excess_blob_gas = block.excess_blob_gas
-LEFT JOIN {{ref('blob_submitters')}} l
+LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address
