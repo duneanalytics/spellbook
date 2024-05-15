@@ -32,4 +32,3 @@ SELECT address
         , (0xcf2898225ed05be911d3709d9417e86e0b4cfc8f, 'Scroll')
         , (0xa6ea2f3299b63c53143c993d2d5e60a69cd6fe24, 'Lisk')
         ) AS x(address, entity)
-)
