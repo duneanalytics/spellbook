@@ -66,7 +66,7 @@ WITH pool_labels AS (
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd
         FROM cumulative_balance b
-        LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = b.token
+        LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = b.token AND t.blockchain = 'ethereum'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
     ),
@@ -106,6 +106,6 @@ WITH pool_labels AS (
         INNER JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
         AND w.token_address = c.token 
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
-        LEFT JOIN {{ source('tokens', 'erc20') }} t  t ON t.contract_address = w.token_address AND t.blockchain = 'ethereum'
+        LEFT JOIN {{ source('tokens', 'erc20') }} t ON t.contract_address = w.token_address AND t.blockchain = 'ethereum'
         LEFT JOIN pool_labels p ON p.address = w.pool_id
         LEFT JOIN eth_prices e ON e.day = b.day
