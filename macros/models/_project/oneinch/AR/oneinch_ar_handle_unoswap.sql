@@ -7,7 +7,6 @@
         blockchain,
         traces_cte,
         pools_list,
-        native,
         start_date
     )
 %}
@@ -35,7 +34,6 @@ select
     , coalesce(
         dst_token_address -- dst_token_address from params
         , try(case -- try to get dst_token_address from last pool: reverse(pools)[1]
-            when reverse(pools)[1]['unwrap'] = 1 then {{native}} -- when flaf 'unwrap' is set, than set dst token address to native address
             when reverse(pools)[1]['pool_type'] = 2 then last_pool_tokens[cast(reverse(pools)[1]['dst_token_index'] as int) + 1] -- when pool type = 2, i.e Curve pool, than get dst token address from last_pool_tokens by dst token index
             else last_pool_tokens[cast(bitwise_xor(reverse(pools)[1]['direction'], 1) as int) + 1] -- when other cases, i.e. Uniswap compatible pool, than get dst token address from last_pool_tokens by direction
     end)) as dst_token_address
@@ -47,11 +45,13 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_value
     , call_type
     , ordinary
     , transform(pools, x -> map_from_entries(array[
         ('type', substr(cast(x['pool_type'] as varbinary), 1, 1))
         , ('info', substr(cast(x['pool'] as varbinary), 1, 12))
+        , ('unwrap', substr(reverse(cast(x['unwrap'] as varbinary)), 1, 1))
         , ('address', substr(cast(x['pool'] as varbinary), 13))
     ])) as pools
     , remains
@@ -76,6 +76,7 @@ from (
         , call_gas_used
         , call_output
         , call_error
+        , call_value
         , call_type
         , ordinary
         , substr(cast(call_pools[1] as varbinary), 13) as first_pool
@@ -108,7 +109,5 @@ from (
 )
 left join (select pool_address as first_pool, tokens as first_pool_tokens from pools_list) using(first_pool)
 left join (select pool_address as last_pool, tokens as last_pool_tokens from pools_list) using(last_pool)
-
-
 
 {% endmacro %}

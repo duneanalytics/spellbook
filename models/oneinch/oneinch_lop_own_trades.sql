@@ -37,5 +37,5 @@ select
 from {{ ref('oneinch_swaps') }}
 where
     protocol = 'LOP'
-    and not fusion
-    and not second_side
+    and not flags['fusion']
+    and not flags['second_side']
