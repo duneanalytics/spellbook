@@ -143,8 +143,6 @@ WITH pools AS (
         CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR)),
         CAST(json_extract(settingsParams, '$.normalizedWeights') AS ARRAY(BIGINT))
     ) AS t (tokens, weights)
-
-  UNION ALL  
 ),
 
 settings AS (
