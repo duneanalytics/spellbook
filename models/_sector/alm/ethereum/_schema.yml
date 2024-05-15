@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: arrakis_finance_ethereum_base_trades
+  - name: alm_ethereum_base_trades
     meta:
       blockchain: ethereum
       sector: alm

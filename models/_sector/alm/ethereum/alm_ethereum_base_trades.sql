@@ -2,6 +2,8 @@
     schema = 'alm_ethereum'
     , alias = 'base_trades'
     , materialized = 'incremental'
+    , incremental_strategy = 'merge'
+    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'vault_address']
     )
 }}
 
