@@ -25,8 +25,8 @@ SELECT
   END AS currency_contract,
   CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
   CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
-  IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL) AS platform_fee_address,
-  IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL) AS royalty_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -60,8 +60,8 @@ SELECT
   END AS currency_contract,
   CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
   CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
-  IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL) AS platform_fee_address,
-  IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL) AS royalty_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -95,8 +95,8 @@ SELECT
   END AS currency_contract,
   CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
   CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
-  IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL) AS platform_fee_address,
-  IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL) AS royalty_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -130,8 +130,8 @@ SELECT
   END AS currency_contract,
   CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
   CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
-  IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL) AS platform_fee_address,
-  IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL) AS royalty_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
