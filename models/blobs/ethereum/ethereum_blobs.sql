@@ -18,7 +18,6 @@ SELECT
     , b.block_slot AS beacon_slot_number
     , b.block_time as beacon_slot_time
     , b.parent_root as beacon_parent_root
-    , block.number as block_number
     , b.index AS blob_index
     , b.proposer_index AS beacon_proposer_index
     , b.kzg_commitment AS blob_kzg_commitment
