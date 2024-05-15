@@ -140,8 +140,8 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_pool
   CROSS JOIN UNNEST(
-        CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR)))
-    ) AS t (tokens, weights)
+        CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR))
+    ) AS t (tokens)
 ),
 
 settings AS (
