@@ -46,7 +46,7 @@ SELECT
     , CARDINALITY(t.blob_versioned_hashes) * pow(2,17) as blob_gas_used -- within this tx
     , fee.blob_base_fee as blob_base_fee
     , t.max_fee_per_blob_gas
-    , coalesce(("LEFT"(from_utf8(tx.data), 5)='data:'), false) as is_blobscription
+    , coalesce(("LEFT"(from_utf8(t.data), 5)='data:'), false) as is_blobscription
 FROM blob_transactions t
 INNER JOIN {{ source('ethereum', 'blocks')}} block
     ON t.block_number = block.number
