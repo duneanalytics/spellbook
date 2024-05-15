@@ -27,6 +27,9 @@ WITH pool_labels AS (
         FROM  {{ ref('balancer_transfers_bpt') }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('block_date') }}
+        {% endif %}
         GROUP BY 1, 2
     ),
 
@@ -88,6 +91,9 @@ WITH pool_labels AS (
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)       
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
         GROUP BY 1, 2, 3
     ),
 
@@ -102,7 +108,10 @@ WITH pool_labels AS (
             END AS amount
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)        
+        WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)   
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}     
         GROUP BY 1, 2, 3
     ),
 

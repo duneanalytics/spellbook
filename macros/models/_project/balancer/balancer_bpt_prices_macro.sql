@@ -23,6 +23,9 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% endif %}
         GROUP BY 1, 2, 3
     ),
 
@@ -49,6 +52,9 @@ WITH pool_labels AS (
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
                 FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }}
+                {% if is_incremental() %}
+                WHERE {{ incremental_predicate('evt_block_time') }}
+                {% endif %}
 
                 UNION ALL
 
@@ -58,6 +64,9 @@ WITH pool_labels AS (
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
                 FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }}
+                {% if is_incremental() %}
+                WHERE {{ incremental_predicate('evt_block_time') }}
+                {% endif %}
             ) swaps
         GROUP BY 1, 2, 3
     ),
@@ -75,6 +84,9 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
         WHERE t.i = d.i 
         AND d.i = p.i
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
         ORDER BY 1,2,3
     ),
 
@@ -95,6 +107,9 @@ WITH pool_labels AS (
             token,
             cashDelta + managedDelta AS delta
         FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_PoolBalanceManaged') }}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
     ),
 
     daily_delta_balance AS (
@@ -224,6 +239,9 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
         WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
         AND l.pool_type = 'linear'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
     ), 
 
     all_trades_info AS (

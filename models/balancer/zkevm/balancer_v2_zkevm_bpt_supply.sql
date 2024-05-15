@@ -4,8 +4,11 @@
     config(
         schema = 'balancer_v2_zkevm',
         alias = 'bpt_supply',
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'blockchain', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
 

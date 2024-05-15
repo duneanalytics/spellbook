@@ -4,8 +4,11 @@
     config(
         schema = 'balancer_v2_arbitrum',
         alias = 'bpt_prices',        
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'blockchain', 'contract_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
 

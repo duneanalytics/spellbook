@@ -245,6 +245,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
+            - blockchain
             - pool_id
             - token_address
     columns:
@@ -287,9 +288,11 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - day
+            - blockchain
             - contract_address
+            - pool_id
+            - token_address
     columns:
       - name: blockchain
       - name: day
@@ -408,6 +411,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
+            - blockchain
             - pool_id
             - token_address
     columns:

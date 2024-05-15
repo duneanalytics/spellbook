@@ -3,9 +3,12 @@
 {{
     config(
         schema = 'balancer_v2_base',
-        alias = 'protocol_fee', 
-        materialized = 'table',
-        file_format = 'delta'
+        alias = 'protocol_fee',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'blockchain', 'pool_id', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
     )
 }}
 

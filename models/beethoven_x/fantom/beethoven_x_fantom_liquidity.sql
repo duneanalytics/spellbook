@@ -2,8 +2,11 @@
     config(
         schema='beethoven_x_fantom',
         alias = 'liquidity',
-        materialized = 'table',
+        materialized = 'incremental',
         file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'blockchain', 'pool_id', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
         post_hook='{{ expose_spells(\'["fantom"]\',
                         "project",
                         "beethoven_x",
