@@ -106,6 +106,6 @@ WITH pool_labels AS (
         INNER JOIN {{ ref('balancer_v1_ethereum_pools_tokens_weights') }} w ON b.pool = w.pool_id
         AND w.token_address = c.token 
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
-        LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON t.contract_address = w.token_address
+        LEFT JOIN {{ source('tokens', 'erc20') }} t  t ON t.contract_address = w.token_address AND t.blockchain = 'ethereum'
         LEFT JOIN pool_labels p ON p.address = w.pool_id
         LEFT JOIN eth_prices e ON e.day = b.day
