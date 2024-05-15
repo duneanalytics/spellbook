@@ -57,4 +57,5 @@ SELECT
     , evt_tx_hash AS tx_hash
     , evt_index
 FROM base
-LEFT JOIN pools ON pool = contract_address 
+LEFT JOIN pools 
+ON pool = contract_address 
