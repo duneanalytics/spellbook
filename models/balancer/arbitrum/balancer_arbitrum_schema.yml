@@ -366,8 +366,6 @@ models:
             - day
             - blockchain
             - contract_address
-            - pool_id
-            - token_address
     columns:
       - name: blockchain
       - name: day

@@ -10,10 +10,6 @@
         incremental_strategy = 'merge',
         unique_key = ['day', 'blockchain', 'pool_id', 'token_address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-        post_hook="{{ expose_spells('[\"" + blockchain + '"]' + '\',
-                        "project",
-                        "balancer_v2",
-                        \'["stefenon", "viniabussafi"]\') }}'
     )
 }}
 

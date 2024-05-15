@@ -2,12 +2,11 @@
     config(
         schema='balancer_v1_ethereum',
         alias = 'liquidity',       
-        materialized = 'table',
+        materialized = 'incremental',
         file_format = 'delta',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "balancer_v1",
-                                    \'["stefenon", "viniabussafi"]\') }}'
+        incremental_strategy = 'merge',
+        unique_key = ['day', 'blockchain','pool_id', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],        
     )
 }}
 
@@ -26,6 +25,9 @@ WITH pool_labels AS (
             AVG(price) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('minute') }}
+        {% endif %}
         GROUP BY 1, 2, 3
     ),
 
@@ -36,6 +38,9 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
         AND symbol = 'ETH'
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('minute') }}
+        {% endif %}
         GROUP BY 1
     ),
 
@@ -46,6 +51,9 @@ WITH pool_labels AS (
             token,
             cumulative_amount
         FROM {{ ref('balancer_ethereum_balances') }} b
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('day') }}
+        {% endif %}
     ),
     
    cumulative_usd_balance AS (
@@ -58,7 +66,7 @@ WITH pool_labels AS (
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) AS token_balance,
             cumulative_amount / POWER(10, COALESCE(t.decimals, p1.decimals)) * COALESCE(p1.price, 0) AS protocol_liquidity_usd
         FROM cumulative_balance b
-        LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON t.contract_address = b.token
+        LEFT JOIN {{ ref('tokens_ethereum_erc20') }} t ON t.contract_address = b.token
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
     ),
@@ -75,7 +83,7 @@ WITH pool_labels AS (
         AND CAST (w.normalized_weight as DOUBLE) > CAST (0 as DOUBLE)
         GROUP BY 1, 2
     )
-    
+
         SELECT
             b.day,
             w.pool_id,
