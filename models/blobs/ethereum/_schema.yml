@@ -77,7 +77,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - beacon_slot_number
-            - blob_versioned_hashes
+            - blob_indexes
     columns:
       - name: block_number
         description: "Block number of the transaction"
