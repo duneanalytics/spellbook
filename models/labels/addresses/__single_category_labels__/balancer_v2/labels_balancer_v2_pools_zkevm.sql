@@ -132,7 +132,7 @@ WITH pools AS (
   SELECT
     c.poolId AS pool_id,
     from_hex(t.tokens) AS token_address,
-    t.weights AS normalized_weight,
+    0 AS normalized_weight,
     json_extract_scalar(params, '$.symbol') AS symbol,
     'managed' AS pool_type
   FROM {{ source('balancer_v2_zkevm', 'Vault_evt_PoolRegistered') }} c
@@ -140,8 +140,7 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_pool
   CROSS JOIN UNNEST(
-        CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR)),
-        CAST(json_extract(settingsParams, '$.normalizedWeights') AS ARRAY(BIGINT))
+        CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR)))
     ) AS t (tokens, weights)
 ),
 
