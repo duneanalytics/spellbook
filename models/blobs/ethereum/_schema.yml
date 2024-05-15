@@ -74,6 +74,10 @@ models:
           combination_of_columns:
             - block_number
             - tx_index
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - beacon_slot_number
+            - blob_versioned_hashes
     columns:
       - name: block_number
         description: "Block number of the transaction"

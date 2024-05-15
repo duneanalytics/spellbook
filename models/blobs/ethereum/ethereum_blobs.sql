@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['beacon_slot','blob_index'],
+    unique_key = ['beacon_slot_number','blob_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "blobs",
@@ -56,6 +56,7 @@ FROM blobs b
 INNER JOIN {{ ref('ethereum_blob_submissions')}} b_tx
     ON b_tx.beacon_slot_number = b.beacon_slot_number
     AND contains(b_tx.blob_versioned_hashes, b.blob_versioned_hash)
+    AND contains(b_tx.blob_indexes, b.blob_index)
     {% if is_incremental() %}
     AND {{ incremental_predicate('b_tx.block_time') }}
     {% endif %}
