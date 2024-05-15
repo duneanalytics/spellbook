@@ -28,7 +28,7 @@ WITH pool_labels AS (
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_date') }}
+        AND {{ incremental_predicate('block_date') }}
         {% endif %}
         GROUP BY 1, 2
     ),
