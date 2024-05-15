@@ -1,6 +1,6 @@
  {{
     config(
-        schema='boost_ethereum',
+        schema='boost_zora',
         alias='deployed',
         materialized='incremental',
         file_format='delta',
@@ -23,7 +23,7 @@
 } %}
 
 select
-    'base' as reward_network,
+    'zora' as reward_network,
     contractAddress as boost_address,
     questId as boost_id,
     questName as boost_name,
@@ -44,8 +44,9 @@ select
     totalParticipants as max_participants,
     evt_block_time as creation_time,
     creator
-from {{source('boost_ethereum', 'QuestFactory_evt_QuestCreated')}}
+from {{source('boost_zora', 'QuestFactory_evt_QuestCreated')}}
+where questId <> 'd070f682-e513-4585-9dc8-e973c8ff6a7c'
 {% if is_incremental() %}
-where
+and
     {{ incremental_predicate('evt_block_time') }}
 {% endif %}
