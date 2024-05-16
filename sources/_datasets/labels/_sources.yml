@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: labels
+    tables:
+      - name: owner_addresses
+      - name: owner_details

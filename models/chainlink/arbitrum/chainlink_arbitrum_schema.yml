@@ -1202,6 +1202,35 @@ models:
         name: total_tokens
         description: "Total Tokens"
 
+  - name: chainlink_arbitrum_ccip_tokens_transferred
+    meta:
+      blockchain: "arbitrum"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "tokens", "transferred", "arbitrum"]
+    description: >
+      Chainlink CCIP Tokens Transferred
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - total_tokens
+            - token_symbol
+    columns:
+      - *blockchain
+      - *block_time
+      - *total_tokens
+      - *destination_blockchain
+      - *token
+      - &token_symbol
+        name: token_symbol
+        description: "Token Symbol"
+      - &token_price
+        name: token_price
+        description: "Token Price"
+
   - name: chainlink_arbitrum_ccip_transmitted_fulfilled
     meta:
       blockchain: "arbitrum"

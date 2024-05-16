@@ -155,4 +155,7 @@ FROM (VALUES
     , ('tron', 'TQ7wK19fhZZqLdj2Xcw2e6Ejs3cTZbfBbF', 'OKCoin', 'OKCoin 1', 'hildobby', date '2024-04-19')
     , ('tron', 'TDZeVyGHgN5bErmWumuYRtXCrYMoUzKF7L', 'WOO X', 'WOO X 1', 'hildobby', date '2024-04-19')
     , ('tron', 'TSC2VZai39isPj5DzByYgaBtjpBHbDcTgd', 'WOO X', 'WOO X 2', 'hildobby', date '2024-04-19')
+    , ('tron', 'TDjiAAzZGzTkDtEvEvoStN3JvriADT1qXr', 'B2BinPay', 'B2BinPay 1', 'hildobby', date '2024-05-04')
+    , ('tron', 'TSjD7g8ZC29HQCLvKg5TLQMeXaxhNS8KLk', 'Bitpanda', 'Bitpanda 1', 'hildobby', date '2024-05-04')
+    , ('tron', 'TWT3L694985N2sF8aCQpMbtpxCUgRPsfME', 'XT.com', 'XT.com 1', 'hildobby', date '2024-05-04')
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
