@@ -14,9 +14,11 @@
     '1': 'ethereum',
     '10': 'optimism',
     '137': 'polygon',
+    '324': 'zksync',
     '5000': 'mantle',
     '8453': 'base',
     '42161': 'arbitrum',
+    '81457': 'blast',
     '7777777': 'zora'
 } %}
 

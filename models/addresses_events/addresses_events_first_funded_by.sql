@@ -23,6 +23,8 @@ ref('addresses_events_arbitrum_first_funded_by')
 , ref('addresses_events_zora_first_funded_by')
 , ref('addresses_events_base_first_funded_by')
 , ref('addresses_events_scroll_first_funded_by')
+, ref('addresses_events_zkevm_first_funded_by')
+, ref('addresses_events_linea_first_funded_by')
 ] %}
 
 SELECT *
