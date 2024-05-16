@@ -17,3 +17,9 @@ sources:
     tables:
       - name: Factory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: syncswap_scroll
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Swap
+      - name: SyncSwapStablePoolFactory_evt_PoolCreated
+      - name: SyncSwapStablePool_evt_Swap
