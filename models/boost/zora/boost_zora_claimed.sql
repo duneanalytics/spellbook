@@ -1,6 +1,6 @@
  {{
     config(
-        schema='boost_optimism',
+        schema='boost_zora',
         alias='claimed',
         materialized='incremental',
         file_format='delta',
@@ -23,7 +23,7 @@
 } %}
 
 select
-    'optimism' as reward_network,
+    'zora' as reward_network,
     questAddress as boost_address,
     json_extract_scalar(extraData, '$.questId') as boost_id,
     json_extract_scalar(extraData, '$.questName') as boost_name,
@@ -50,7 +50,7 @@ select
     end as action_network
     {% endif %}
     {% endfor %}
-from {{source('boost_optimism', 'QuestFactory_evt_QuestClaimedData')}}
+from {{source('boost_zora', 'QuestFactory_evt_QuestClaimedData')}}
 {% if is_incremental() %}
 where
     {{ incremental_predicate('evt_block_time') }}
