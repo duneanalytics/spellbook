@@ -38,7 +38,7 @@ models:
         description: "Transaction hash"
       - &evt_index
         name: evt_index
-        description: Event index"
+        description: "Event index"
       - &rebase_rate
         name: rebase_rate
         description: "Rebase rate"
