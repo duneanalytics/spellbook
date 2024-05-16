@@ -18,6 +18,10 @@
          when 'celo' = chain_ then 'https://celoscan.io'
          when 'goerli' = chain_ then 'https://goerli.basescan.org'
          when 'zksync' = chain_ then 'https://explorer.zksync.io'
+         when 'linea' = chain_ then 'https://lineascan.build'
+         when 'zkevm' = chain_ then 'https://zkevm.polygonscan.com'
+         when 'scroll' = chain_ then 'https://scrollscan.com'
+         when 'zora' = chain_ then 'https://zora.superscan.network'
          else 'https://etherscan.io'
       end as explorer_url;
 {% endmacro %}

@@ -89,6 +89,7 @@ models:
       - name: action_type
       - name: action_tx_hash
       - name: action_network
+      - name: creator_address
 
   - name: boost_claimed_legacy
     meta:
@@ -112,6 +113,7 @@ models:
       - name: claim_fee_eth
       - name: action_type
       - name: action_tx_hash
+      - name: action_network
       - name: action_network
 
   - name: boost_completors
