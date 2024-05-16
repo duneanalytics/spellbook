@@ -39,7 +39,7 @@ WITH pool_labels AS (
         WHERE blockchain = 'ethereum'
         AND symbol = 'ETH'
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('minute') }}
+        AND {{ incremental_predicate('minute') }}
         {% endif %}
         GROUP BY 1
     ),
