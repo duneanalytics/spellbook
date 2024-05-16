@@ -26,7 +26,7 @@ WITH pool_labels AS (
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = 'ethereum'
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('minute') }}
+        AND {{ incremental_predicate('minute') }}
         {% endif %}
         GROUP BY 1, 2, 3
     ),

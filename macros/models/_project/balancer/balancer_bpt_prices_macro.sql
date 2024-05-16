@@ -264,8 +264,14 @@ WITH pool_labels AS (
         FROM bpt_trades a
         LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = '{{blockchain}}'
         AND  p1.minute = date_trunc('minute', a.evt_block_time)
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('p1.minute') }}
+        {% endif %}
         LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = '{{blockchain}}'
         AND  p2.minute = date_trunc('minute', a.evt_block_time)
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('p2.minute') }}
+        {% endif %}        
         LEFT JOIN {{ source('tokens', 'erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = '{{blockchain}}'
         LEFT JOIN {{ source('tokens', 'erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = '{{blockchain}}'
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
@@ -406,6 +412,9 @@ WITH pool_labels AS (
         END AS bpt_price
     FROM tvl l
     LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON l.pool_address = s.token_address
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('s.day') }}
+    {% endif %}
     AND l.blockchain = s.blockchain
     AND l.version = s.version  
     AND l.day = s.day

@@ -80,6 +80,9 @@ WITH pool_labels AS (
             AVG(price) as eth_price
         FROM {{ source('prices', 'usd') }}
         WHERE symbol = 'ETH'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% endif %}
         GROUP BY 1
     ),
 
