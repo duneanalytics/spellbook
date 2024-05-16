@@ -31,6 +31,13 @@ swap_fees AS (
         WHERE row_num = 1
 ),
 
+pool_labels AS (
+    SELECT
+        address,
+        name
+    FROM {{ ref('labels_balancer_v1_pools_ethereum') }}
+),
+
 v1 AS (
     SELECT
         tokenOut AS token_bought_address,
@@ -38,6 +45,7 @@ v1 AS (
         tokenIn AS token_sold_address,
         tokenAmountIn AS token_sold_amount_raw,
         swaps.contract_address AS project_contract_address,
+        l.name AS pool_symbol,
         (swapFee / 1e18) AS swap_fee_percentage,
         swaps.evt_block_time,
         swaps.evt_tx_hash,
@@ -49,6 +57,8 @@ v1 AS (
             AND fees.evt_block_number = swaps.evt_block_number
             AND fees.contract_address = swaps.contract_address
             AND fees.evt_index = swaps.evt_index
+        LEFT JOIN pool_labels l
+            ON l.address = swaps.contract_address
     {% if not is_incremental() %}
         WHERE swaps.evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
@@ -98,6 +108,8 @@ SELECT
     CAST(NULL AS VARBINARY) AS maker,
     project_contract_address,
     CAST(NULL AS VARBINARY) AS pool_id,
+    pool_symbol,
+    'v1' AS pool_type,
     CAST(trades.swap_fee_percentage AS DOUBLE) AS swap_fee,
     evt_tx_hash AS tx_hash,
     tx."from" AS tx_from,

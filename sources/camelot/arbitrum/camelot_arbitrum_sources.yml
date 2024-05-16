@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: camelot_arbitrum
+    tables:
+      - name: CamelotPair_evt_FeePercentUpdated
+  - name: camelot_v3_arbitrum
+    tables:
+      - name: AlgebraPool_evt_Fee
