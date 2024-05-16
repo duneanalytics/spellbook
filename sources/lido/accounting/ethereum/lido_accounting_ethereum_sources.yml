@@ -22,4 +22,5 @@ sources:
       - name: steth_evt_ELRewardsReceived
       - name: steth_evt_WithdrawalsReceived
       - name: WithdrawalQueueERC721_evt_WithdrawalsFinalized
+      - name: steth_evt_TokenRebased
       
