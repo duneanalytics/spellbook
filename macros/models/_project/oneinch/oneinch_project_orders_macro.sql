@@ -7,7 +7,7 @@
     oneinch_project_orders_macro(
         blockchain
         , date_from = '2019-01-01'
-    ) 
+    )
 %}
 
 -- EVENTS CONFIG
@@ -21,6 +21,16 @@
             "taker_asset":      ("data"     , 32*12 + 4 + 12, 20, 'b'),
             "making_amount":    ("data"     , 32*2          , 32, 'u'),
             "taking_amount":    ("data"     , 32*3          , 32, 'u'),
+            "order_hash":       ("topic3"   , 0             , 32, 'b'),
+        },
+        "0x6869791f0a34781b29882982cc39e882768cf2c96995c2a110c577c53bc932d5": {
+            "name": "Fill",
+            "maker":            ("topic1"   , 12            , 20, 'b'),
+            "taker":            ("data"     , 32*4 + 12     , 20, 'b'),
+            "maker_asset":      ("data"     , 32*12 + 4 + 12, 20, 'b'),
+            "taker_asset":      ("data"     , 32*15 + 4 + 12, 20, 'b'),
+            "making_amount":    ("data"     , 32*6          , 32, 'u'),
+            "taking_amount":    ("data"     , 32*7          , 32, 'u'),
             "order_hash":       ("topic3"   , 0             , 32, 'b'),
         },
         "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124": {
@@ -259,6 +269,28 @@
                 "taker_max_amount": ("input"    , 4 + 32*3          , 32, 'u'),
                 "making_amount":    ("output"   , 32*0              , 32, 'u'),
             },
+            "0x3e228bae": {
+                "name": "fillOrderNoThrow",
+                "event": "0x0bcc4c97732e47d9946f229edb95f5b6323f601300e4690de719993f3c371129",
+                "maker":            ("input"    , 4 + 32*3 + 12     , 20, 'b'),
+                "maker_asset":      ("input"    , 4 + 32*16 + 4 + 12, 20, 'b'),
+                "taker_asset":      ("input"    , 4 + 32*19 + 4 + 12, 20, 'b'),
+                "maker_max_amount": ("input"    , 4 + 32*7          , 32, 'u'),
+                "taker_max_amount": ("input"    , 4 + 32*8          , 32, 'u'),
+                "making_amount":    ("output"   , 32*0              , 32, 'u'),
+                "making_amount":    ("output"   , 32*1              , 32, 'u'),
+            },
+            "0x9b44d556": {
+                "name": "fillOrder",
+                "event": "0x6869791f0a34781b29882982cc39e882768cf2c96995c2a110c577c53bc932d5",
+                "maker":            ("input"    , 4 + 32*3 + 12     , 20, 'b'),
+                "maker_asset":      ("input"    , 4 + 32*18 + 4 + 12, 20, 'b'),
+                "taker_asset":      ("input"    , 4 + 32*21 + 4 + 12, 20, 'b'),
+                "maker_max_amount": ("input"    , 4 + 32*7          , 32, 'u'),
+                "taker_max_amount": ("input"    , 4 + 32*8          , 32, 'u'),
+                "making_amount":    ("output"   , 32*0              , 32, 'u'),
+                "making_amount":    ("output"   , 32*1              , 32, 'u'),
+            },
         },
         "Hashflow": {
             "0x1e9a2e92": {
@@ -362,7 +394,7 @@ with
 contracts as (
     select
         blockchain
-        , address
+        , address as call_to
         , project
         , tag
         , flags
@@ -372,7 +404,7 @@ contracts as (
         and project <> '1inch'
 )
 
-, events(event, name, params) as (values
+, events(topic0, name, params) as (values
     {% for event, event_data in events.items() %}
         {% if not loop.first %}, {% endif %} (
               {{event}}
@@ -399,8 +431,13 @@ contracts as (
     select
         block_number
         , tx_hash
-        , log_contract_address
-        , event
+        , index
+        , contract_address
+        , topic0
+        , topic1
+        , topic2
+        , topic3
+        , data
         , try({{ binary('event', 'maker') }}) as log_maker
         , try({{ binary('event', 'taker') }}) as log_taker
         , try({{ binary('event', 'receiver') }}) as log_receiver
@@ -413,22 +450,18 @@ contracts as (
         , try({{ amount('event', 'maker_fee_amount') }}) as log_maker_fee_amount
         , try({{ amount('event', 'taker_fee_amount') }}) as log_taker_fee_amount
         , try({{ binary('event', 'order_hash') }}) as log_order_hash
-        , topic1
-        , topic2
-        , topic3
-        , data
         , row_number() over(partition by block_number, tx_hash order by index) as log_counter
     from (
         select
             block_number
             , tx_hash
-            , contract_address as log_contract_address
-            , topic0 as event
+            , index
+            , contract_address
+            , topic0
             , topic1
             , topic2
             , topic3
             , data
-            , index
         from {{ source(blockchain, 'logs') }}
         where
             {% if is_incremental() %}
@@ -437,10 +470,10 @@ contracts as (
                 block_time >= timestamp '{{date_from}}'
             {% endif %}
     )
-    join events using(event)
+    join events using(topic0)
 )
 
-, selectors(project, selector, method, event, params) as (values
+, selectors(project, call_selector, method, topic0, params) as (values
     {% for project, selectors in cfg.items() %}
             {% if not loop.first %}, {% endif %}
         {% for selector, method_data in selectors.items() %}
@@ -471,7 +504,6 @@ contracts as (
 , calls as (
     select
         blockchain
-        , address
         , project
         , tag
         , flags
@@ -480,11 +512,15 @@ contracts as (
         , tx_hash
         , tx_success
         , call_from
+        , call_to
         , call_trace_address
         , call_success
-        , selector as call_selector
+        , call_selector
+        , call_gas_used
+        , call_type
+        , call_error
         , method
-        , event
+        , topic0
         , try({{ binary('call', 'maker') }}) as call_maker
         , try({{ binary('call', 'taker') }}) as call_taker
         , try({{ binary('call', 'receiver') }}) as call_receiver
@@ -507,10 +543,13 @@ contracts as (
             , tx_hash
             , tx_success
             , "from" as call_from
-            , "to" as address
+            , "to" as call_to
             , trace_address as call_trace_address
             , success as call_success
-            , substr(input, 1, 4) as selector
+            , substr(input, 1, 4) as call_selector
+            , gas_used as call_gas_used
+            , call_type
+            , error as call_error
             , input
             , output
         from {{ source(blockchain, 'traces') }}
@@ -521,8 +560,8 @@ contracts as (
                 block_time >= timestamp '{{date_from}}'
             {% endif %}
     )
-    join contracts using(address)
-    join selectors using(project, selector)
+    join contracts using(call_to)
+    join selectors using(project, call_selector)
 )
 
 , joined as (
@@ -530,7 +569,7 @@ contracts as (
         *
         , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address) as rows
     from calls
-    left join logs using(block_number, tx_hash, event)
+    full join logs using(block_number, tx_hash, topic0)
     join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
     where
         (call_maker = log_maker or call_maker is null or log_maker is null)
@@ -551,8 +590,6 @@ contracts as (
 
 select
     blockchain
-    , address
-    , log_contract_address
     , project
     , tag
     , flags
@@ -561,10 +598,15 @@ select
     , tx_hash
     , tx_success
     , call_from
+    , call_to
     , call_trace_address
     , call_success
     , call_selector
-    , coalesce(coalesce(call_maker, log_maker), address) as maker
+    , call_gas_used
+    , call_type
+    , call_error
+    , method
+    , coalesce(coalesce(call_maker, log_maker), call_to) as maker
     , coalesce(call_taker, log_taker) as taker
     , coalesce(call_receiver, log_receiver) as receiver
     , coalesce(call_maker_asset, log_maker_asset) as maker_asset
@@ -578,11 +620,14 @@ select
     , coalesce(call_order_hash, log_order_hash) as order_hash
     , array[input] as call_input
     , array[output] as call_output
+    , index as event_index
+    , contract_address as event_contract_address
     , topic1 as event_topic1
     , topic2 as event_topic2
     , topic3 as event_topic3
     , array[data] as event_data
     , date(date_trunc('month', block_time)) as block_month
+    , cast(1 as varbinary) as error -- temp special error
 from joined
 where
     rows = 1
