@@ -24,9 +24,6 @@ models:
       - &block_number
         name: block_number
         description: "Block number in which the transaction was executed"
-      - &evt_index
-        name: evt_index
-        description: "Event index"
       - &token_address
         name: token_address
         description: "Rebasing ERC20 token address"
