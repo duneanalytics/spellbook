@@ -23,10 +23,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
+  CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -58,10 +58,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
+  CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -93,10 +93,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
+  CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
@@ -128,10 +128,10 @@ SELECT
     WHEN erc20Token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x0000000000000000000000000000000000000000
     ELSE erc20Token
   END AS currency_contract,
-  UINT256 '0' AS platform_fee_amount_raw,
-  UINT256 '0' AS royalty_fee_amount_raw,
-  cast(NULL AS VARBINARY) AS platform_fee_address,
-  cast(NULL AS VARBINARY) AS royalty_fee_address,
+  CAST(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.amount'), '0') AS UINT256) AS platform_fee_amount_raw,
+  CAST(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.amount'), '0') AS UINT256) royalty_fee_amount_raw,
+  from_hex(IF(CARDINALITY(fees) >= 1, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[1]), '$.recipient'), NULL)) AS platform_fee_address,
+  from_hex(IF(CARDINALITY(fees) >= 2, JSON_EXTRACT_SCALAR(JSON_PARSE(fees[2]), '$.recipient'), NULL)) AS royalty_fee_address,
   contract_address AS project_contract_address,
   evt_tx_hash AS tx_hash,
   evt_index AS sub_tx_trade_id
