@@ -190,5 +190,6 @@ FROM
     ('wom-wombat-exchange','arbitrum','WOM',0x7b5eb3940021ec0e8e463d5dbb4b7b09a89ddf96, 18),
     ('ankr-ankr-network','arbitrum','ANKR',0x46f74778b265df3a15ec9695ccd2fd3869ca848c, 18),
     ('forex-handlefi','arbitrum','FOREX',0xdb298285fe4c5410b05390ca80e8fbe9de1f259b, 18),
-    ('susde-ethena-staked-usde','arbitrum','SUSDE',0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 18)
+    ('susde-ethena-staked-usde','arbitrum','SUSDE',0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 18),
+    ('yak-yield-yak','arbitrum','YAK',0x7f4db37d7beb31f445307782bc3da0f18df13696,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
