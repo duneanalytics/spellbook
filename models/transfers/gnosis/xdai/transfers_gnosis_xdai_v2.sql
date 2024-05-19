@@ -86,7 +86,7 @@ block_reward AS (
     FROM 
         {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
     {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 )
 
@@ -95,8 +95,8 @@ SELECT
     transfer_type,
     tx_hash, 
     trace_address,
-    block_time,
-    CAST(date_trunc('month', block_time) as date) as block_month,
+    evt_block_time AS block_time,
+    CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
     token_address, 
     amount_raw
