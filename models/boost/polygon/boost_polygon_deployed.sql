@@ -18,9 +18,9 @@
     '5000': 'mantle',
     '8453': 'base',
     '42161': 'arbitrum',
+    '81457': 'blast',
     '7777777': 'zora'
 } %}
-
 select
     'polygon' as reward_network,
     contractAddress as boost_address,
