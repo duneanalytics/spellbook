@@ -102,6 +102,7 @@ select
   cast(date_trunc('month', base_supply.evt_block_time) as date) as block_month,
   base_supply.evt_block_time as block_time,
   base_supply.evt_block_number as block_number,
+  base_supply.ctoken_address as project_contract_address,
   base_supply.evt_tx_hash as tx_hash,
   base_supply.evt_index
 from base_supply
@@ -170,6 +171,7 @@ base_supply as (
     cast(null as varbinary) as withdrawn_to,
     cast(null as varbinary) as liquidator,
     cast(amount as double) as amount,
+    contract_address,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -183,6 +185,7 @@ base_supply as (
     to as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(amount as double) as amount,
+    contract_address,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -196,6 +199,7 @@ base_supply as (
     absorber as withdrawn_to,
     absorber as liquidator,
     -1 * cast(collateralAbsorbed as double) as amount,
+    contract_address,
     evt_tx_hash,
     evt_index,
     evt_block_time,
@@ -217,6 +221,7 @@ select
   cast(date_trunc('month', base_supply.evt_block_time) as date) as block_month,
   base_supply.evt_block_time as block_time,
   base_supply.evt_block_number as block_number,
+  base_supply.contract_address as project_contract_address,
   base_supply.evt_tx_hash as tx_hash,
   base_supply.evt_index
 from base_supply

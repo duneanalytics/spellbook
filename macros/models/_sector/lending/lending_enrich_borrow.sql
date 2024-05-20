@@ -16,6 +16,7 @@ select
   borrow.block_month,
   borrow.block_time,
   borrow.block_number,
+  borrow.project_contract_address,
   borrow.tx_hash,
   borrow.evt_index
 from {{ model }} borrow

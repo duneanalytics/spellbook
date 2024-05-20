@@ -68,6 +68,11 @@ models:
         description: "Event block number"
         tests:
           - not_null
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
+        tests:
+          - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
@@ -110,6 +115,7 @@ models:
       - *block_month
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index
 
@@ -144,5 +150,6 @@ models:
       - *block_month
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index

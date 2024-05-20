@@ -28,6 +28,7 @@ select
   block_month,
   block_time,
   block_number,
+  project_contract_address,
   tx_hash,
   evt_index
 from {{ model }}

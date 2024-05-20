@@ -77,6 +77,10 @@ models:
         description: "Event block number"
         tests:
           - not_null
+      - &project_contract_address
+        name: project_contract_address
+        tests:
+          - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"

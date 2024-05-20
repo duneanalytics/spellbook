@@ -15,6 +15,7 @@ select
   supply.block_month,
   supply.block_time,
   supply.block_number,
+  supply.project_contract_address,
   supply.tx_hash,
   supply.evt_index
 from {{ model }} supply

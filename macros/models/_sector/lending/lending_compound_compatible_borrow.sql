@@ -143,6 +143,7 @@ select
   cast(date_trunc('month', base_borrow.evt_block_time) as date) as block_month,
   base_borrow.evt_block_time as block_time,
   base_borrow.evt_block_number as block_number,
+  base_borrow.ctoken_address as project_contract_address,
   base_borrow.evt_tx_hash as tx_hash,
   base_borrow.evt_index
 from base_borrow
@@ -272,6 +273,7 @@ select
   cast(date_trunc('month', base_borrow.evt_block_time) as date) as block_month,
   base_borrow.evt_block_time as block_time,
   base_borrow.evt_block_number as block_number,
+  base_borrow.comet_contract_address as project_contract_address,
   base_borrow.evt_tx_hash as tx_hash,
   base_borrow.evt_index
 from base_borrow
