@@ -942,7 +942,7 @@ FROM
     ('hid-hypersign-identity-token', 'ethereum', 'HID', 0xb14ebf566511b9e6002bb286016ab2497b9b9c9d, 18),
     ('chi-chi-gastoken', 'ethereum', 'CHI', 0x0000000000004946c0e9f43f4dee607b0ef1fa1c, 0),
     ('dmt-dark-matter', 'ethereum', 'DMT', 0x79126d32a86e6663f3aaac4527732d0701c1ae6c, 18),
-    ('dog-the-golden-dog', 'ethereum', 'DOG', 0x47d920a911cb9a0ad4618698ba3fef800abc868d, 18), 
+    -- ('dog-the-golden-dog', 'ethereum', 'DOG', 0x47d920a911cb9a0ad4618698ba3fef800abc868d, 18), -- inactive token
     ('shopx-splyt', 'ethereum', 'SHOPX', 0x7bef710a5759d197ec0bf621c3df802c2d60d848, 18),
     ('cat-cat-token', 'ethereum', 'CAT', 0x56015bbe3c01fe05bc30a8a9a9fd9a88917e7db3, 18),
     ('doe-dogs-of-elon', 'ethereum', 'DOE', 0xf8e9f10c22840b613cda05a0c5fdb59a4d6cd7ef, 18),
