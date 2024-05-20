@@ -34,6 +34,7 @@ select
     , call_gas_used
     , call_output
     , call_error
+    , call_value
     , call_type
     , null as ordinary
     , null as pools
@@ -49,7 +50,5 @@ from (
     {% endif %}
 )
 join traces_cte using(call_block_number, call_tx_hash, call_trace_address)
-
-
 
 {% endmacro %}
