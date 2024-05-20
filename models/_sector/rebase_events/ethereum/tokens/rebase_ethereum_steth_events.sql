@@ -8,7 +8,7 @@
 }}
 
 SELECT 'ethereum' AS blockchain
-, contract_address AS token_address
+, 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 AS token_address
 , 'stETH' AS token_symbol
 , evt_block_time AS block_time
 , evt_block_number AS block_number
@@ -21,7 +21,7 @@ WHERE evt_block_time <= date('2023-05-16')
 UNION ALL
 
 SELECT 'ethereum' AS blockchain
-, contract_address AS token_address
+, 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 AS token_address
 , 'stETH' AS token_symbol
 , evt_block_time AS block_time
 , evt_block_number AS block_number
