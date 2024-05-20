@@ -115,7 +115,7 @@ WITH mintsquare_trades AS (
         , m.price_raw
         , CAST(COALESCE((pf.fee_percentage/100) * CAST(m.price_raw AS uint256),  DOUBLE '0') AS UINT256) AS platform_fee_amount_raw
         , COALESCE(roy.amount, uint256 '0') AS royalty_fee_amount_raw
-        , CAST(null AS varbinary) AS platform_fee_address
+        , from_hex('0xdeedc46dd3136962c74031e50990ad3319a09d0b') AS platform_fee_address
         , roy.royaltyRecipient AS royalty_fee_address
         , m.evt_index AS sub_tx_trade_id
     FROM mintsquare_trades m
