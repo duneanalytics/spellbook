@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: element_ex_linea
+    tables:
+        - name: ERC1155OrdersFeature_evt_ERC1155SellOrderFilled
+        - name: ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled
