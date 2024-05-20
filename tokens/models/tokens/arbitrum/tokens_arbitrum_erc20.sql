@@ -60,4 +60,6 @@ FROM (VALUES
     , (0x8bc65eed474d1a00555825c91feab6a8255c2107, 'DOLA/USDC BPT', 18)
     , (0x3fd4954a851ead144c2ff72b1f5a38ea5976bd54, 'ankrETH/wstETH-BPT', 18)
     , (0x5402b5f40310bded796c7d0f3ff6683f5c0cffdf, 'sGLP', 18)
+    , (0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 'GYD', 18)
+    , (0xed65c5085a18fa160af0313e60dcc7905e944dc7, 'ETHx', 18)
 ) AS temp_table (contract_address, symbol, decimals)

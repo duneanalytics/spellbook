@@ -105,3 +105,17 @@ models:
             - nft_token_id
             - price_raw
             - royalty_fee_amount_raw
+
+  - name: element_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      project: element
+      contributors: 0xRob
+    config:
+      tags: [ 'avalanche_c','element','trades' ]
+    description: >
+      Element events on Avalanche
+    tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

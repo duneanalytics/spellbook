@@ -942,7 +942,7 @@ FROM
     ('hid-hypersign-identity-token', 'ethereum', 'HID', 0xb14ebf566511b9e6002bb286016ab2497b9b9c9d, 18),
     ('chi-chi-gastoken', 'ethereum', 'CHI', 0x0000000000004946c0e9f43f4dee607b0ef1fa1c, 0),
     ('dmt-dark-matter', 'ethereum', 'DMT', 0x79126d32a86e6663f3aaac4527732d0701c1ae6c, 18),
-    ('dog-the-golden-dog', 'ethereum', 'DOG', 0x47d920a911cb9a0ad4618698ba3fef800abc868d, 18),
+    -- ('dog-the-golden-dog', 'ethereum', 'DOG', 0x47d920a911cb9a0ad4618698ba3fef800abc868d, 18), -- inactive token
     ('shopx-splyt', 'ethereum', 'SHOPX', 0x7bef710a5759d197ec0bf621c3df802c2d60d848, 18),
     ('cat-cat-token', 'ethereum', 'CAT', 0x56015bbe3c01fe05bc30a8a9a9fd9a88917e7db3, 18),
     ('doe-dogs-of-elon', 'ethereum', 'DOE', 0xf8e9f10c22840b613cda05a0c5fdb59a4d6cd7ef, 18),
@@ -1744,7 +1744,14 @@ FROM
     ('deal-stealth-deals', 'ethereum', 'DEAL', 0x7a771a90b8f2a10afd9a75b8e49d646d1139bb98, 18),
     ('susde-ethena-staked-usde', 'ethereum', 'SUSDE', 0x9d39a5de30e57443bff2a8307a4256c8797a3497, 18),
     ('prisma-prisma-governance-token', 'ethereum', 'PRISMA', 0xda47862a83dac0c112ba89c6abc2159b95afd71c, 18),
-    ('rivus-rivusdao', 'ethereum', 'RIVUS', 0x60e254e35dd712394b3aba7a1d19114732e143dd, 18)
+    ('rivus-rivusdao', 'ethereum', 'RIVUS', 0x60e254e35dd712394b3aba7a1d19114732e143dd, 18),
+    ('dog-the-doge-nft', 'ethereum', 'DOG', 0xbaac2b4491727d78d2b78815144570b9f2fe8899, 18),
+    ('tru-truefi', 'ethereum', 'TRU', 0x4c19596f5aaff459fa38b0f7ed92f11ae6543784, 8),
+    ('trade-polytrade', 'ethereum', 'TRADE', 0x6e5970dbd6fc7eb1f29c6d2edf2bc4c36124c0c1,18),
+    ('chex-chex-token', 'ethereum', 'CHEX', 0x9ce84f6a69986a83d92c324df10bc8e64771030f, 18),
+    ('nxra-allianceblock-nexera', 'ethereum', 'NXRA', 0x644192291cc835a93d6330b24ea5f5fedd0eef9e, 18),
+    ('lndx-landx-governance-token', 'ethereum', 'LNDX', 0x08a1c30bbb26425c1031ee9e43fa0b9960742539, 6),
+    ('cpool-clearpool', 'ethereum', 'CPOOL', 0x66761fa41377003622aee3c7675fc7b5c1c2fac5, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
