@@ -1,10 +1,10 @@
 {{ config(
         
-        alias = 'matic_latest',
-        post_hook='{{ expose_spells(\'["polygon"]\',
+        alias = 'xdai_latest',
+        post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "balances",
-                                    \'["Henrystats"]\') }}'
+                                    \'["hdser"]\') }}'
         )
 }}
 
@@ -17,10 +17,10 @@ SELECT
     rh.symbol,
     rh.last_updated
 FROM 
-{{ ref('transfers_polygon_matic_rolling_hour') }} rh
+{{ ref('transfers_gnosis_xdai_rolling_hour') }} rh
 LEFT JOIN 
 {{ source('prices', 'usd') }} p
     ON p.contract_address = rh.token_address
     AND p.minute = date_trunc('minute', rh.last_updated) - Interval '10' Minute
-    AND p.blockchain = 'polygon'
+    AND p.blockchain = 'gnosis'
 WHERE rh.recency_index = 1

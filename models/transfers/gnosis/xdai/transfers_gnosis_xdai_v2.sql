@@ -117,3 +117,18 @@ SELECT
     amount_raw
 FROM 
 gas_fee
+
+UNION ALL 
+
+SELECT 
+    'gnosis' as blockchain, 
+    transfer_type,
+    tx_hash, 
+    trace_address,
+    block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+block_reward
