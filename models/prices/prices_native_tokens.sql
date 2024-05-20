@@ -74,6 +74,7 @@ FROM
     ('flr-flare-network', null, 'FLR', null, null),
     ('ar-arweave', null, 'AR', null, null),
     ('glmr-moonbeam', null, 'GLMR', null, null),
-    ('klay-klaytn', null, 'KLAY', null, null)
+    ('klay-klaytn', null, 'KLAY', null, null),
+    ('fuse-fuse-network', null, 'FUSE', null, null)    
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
