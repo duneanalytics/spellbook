@@ -7,10 +7,10 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "rebase",
-                                    \'["hildobby"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "sector",
+                                    spell_name = "rebase",
+                                    contributors = \'["hildobby"]\') }}'
 )
 }}
 
