@@ -9,7 +9,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
-      
+
 jobs:
   commit_manifest:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
@@ -27,7 +27,7 @@ jobs:
 
     - name: Add git_sha to schema
       run: "/runner/change_schema.sh wizard"
-    
+
     - name: Setup variables
       run: |
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
@@ -43,10 +43,10 @@ jobs:
     - name: dbt dependencies
       working-directory: ${{env.PROJECT_DIR}}
       run: "dbt deps"
-    
+
     - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
       run: "./scripts/ensure_cluster.sh"
-          
+
     - name: dbt compile to create prod manifest from main
       run: "dbt compile --target-path . $PROFILE --project-dir ${PROJECT_DIR}"
 
@@ -58,3 +58,6 @@ jobs:
 
     - name: upload manifest
       run: "aws s3 cp $PROJECT_DIR/manifest.json $S3_LOCATION/manifest.json"
+
+    - name: upload partial parse
+      run: "aws s3 cp $PROJECT_DIR/partial_parse.msgpack $S3_LOCATION/partial_parse.msgpack"
