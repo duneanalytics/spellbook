@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
  - name: limitbreak_creator_tokens
