@@ -1,17 +1,12 @@
 {{ config(
-    schema = 'nft_base',
+    schema = 'nft_linea',
     alias = 'base_trades',
     materialized = 'view'
     )
 }}
-
-
+-- (project, project_version, model)
 {% set nft_models = [
- ref('alienswap_base_base_trades')
- ,ref('element_base_base_trades')
- ,ref('zonic_base_base_trades')
- ,ref('sudoswap_v2_base_base_trades')
- ,ref('magiceden_base_base_trades')
+     ref('element_linea_base_trades')
 ] %}
 
 with base_union as (

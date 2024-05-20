@@ -96,6 +96,22 @@ WITH pools AS (
   FROM {{ source('xavefinance_avalanche_c', 'FXPoolFactory_call_newFXPool') }} cc
   CROSS JOIN UNNEST(_assetsToRegister) AS t (token)
   WHERE call_success
+
+  UNION ALL
+
+  SELECT
+    c.poolId AS pool_id,
+    from_hex(t.tokens) AS token_address,
+    0 AS normalized_weight,
+    json_extract_scalar(params, '$.symbol') AS symbol,
+    'managed' AS pool_type
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_avalanche_c', 'ManagedPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_pool
+  CROSS JOIN UNNEST(
+        CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR))
+    ) AS t (tokens)
 ),
 
 settings AS (
@@ -112,7 +128,7 @@ settings AS (
 SELECT 
   'avalanche_c' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'FX') 
+  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'FX', 'managed') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
