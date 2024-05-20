@@ -1,6 +1,7 @@
 -- Element NFT trades (re-usable macro for all chains)
 {% macro element_v1_base_trades(blockchain, erc721_sell_order_filled, erc721_buy_order_filled, erc1155_sell_order_filled, erc1155_buy_order_filled) %}
 
+{% if erc721_sell_order_filled != None %}
 SELECT
   '{{blockchain}}' as blockchain,
   'element' as project,
@@ -68,9 +69,13 @@ FROM {{ erc721_buy_order_filled }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
+{% endif %}
 
+{% if erc721_sell_order_filled != None and erc1155_sell_order_filled != None %}
 UNION ALL
+{% endif %}
 
+{% if erc1155_sell_order_filled != None %}
 SELECT
   '{{blockchain}}' as blockchain,
   'element' as project,
@@ -137,6 +142,7 @@ SELECT
 FROM {{ erc1155_sell_order_filled }}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('evt_block_time')}}
+{% endif %}
 {% endif %}
 
 {% endmacro %}
