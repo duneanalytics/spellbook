@@ -71,7 +71,7 @@ WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
 {% endif %}
 
-{% if erc721_sell_order_filled != None && erc1155_sell_order_filled != None %}
+{% if erc721_sell_order_filled != None and erc1155_sell_order_filled != None %}
 UNION ALL
 {% endif %}
 
