@@ -30,8 +30,8 @@ WITH
             b.pool_type,
             b.pool_symbol,
             b.token_address,
-            b.daily_delta
+            b.daily_amount AS daily_delta
         FROM calendar c
-        LEFT JOIN cumulative_balance b ON b.block_date <= c.day
+        LEFT JOIN daily_balance b ON b.block_date <= c.day
         WHERE b.token_address IS NOT NULL
     {% endmacro %}

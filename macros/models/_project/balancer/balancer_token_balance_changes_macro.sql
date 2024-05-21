@@ -27,6 +27,7 @@ WITH pool_labels AS (
                     evt_block_time,
                     evt_block_number,
                     evt_tx_hash,
+                    evt_index,
                     poolId AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
@@ -41,6 +42,7 @@ WITH pool_labels AS (
                     evt_block_time,
                     evt_block_number,
                     evt_tx_hash,
+                    evt_index,
                     poolId AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
@@ -49,7 +51,7 @@ WITH pool_labels AS (
                 WHERE {{ incremental_predicate('evt_block_time') }}
                 {% endif %}
             ) swaps
-        GROUP BY 1, 2, 3, 4, 5
+        GROUP BY 1, 2, 3, 4, 5, 6
     ),
 
     zipped_balance_changes AS (
@@ -126,11 +128,11 @@ WITH pool_labels AS (
                     evt_block_time,
                     evt_block_number,
                     evt_tx_hash,
+                    evt_index,
                     pool_id,
                     token,
-                    SUM(COALESCE(delta, INT256 '0')) AS amount
+                    COALESCE(delta, INT256 '0') AS amount
                 FROM balances_changes
-                GROUP BY 1, 2, 3, 4, 5
 
                 UNION ALL
 
@@ -138,6 +140,7 @@ WITH pool_labels AS (
                     evt_block_time,
                     evt_block_number,
                     evt_tx_hash,
+                    evt_index,
                     pool_id,
                     token,
                     delta AS amount
@@ -150,6 +153,7 @@ WITH pool_labels AS (
                     evt_block_time,
                     evt_block_number,
                     evt_tx_hash,
+                    evt_index,
                     pool_id,
                     token,
                     CAST(delta AS int256) AS amount
