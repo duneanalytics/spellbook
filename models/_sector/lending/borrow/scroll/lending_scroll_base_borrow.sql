@@ -22,6 +22,7 @@ select
   loan_type,
   token_address,
   borrower,
+  on_behalf_of,
   repayer,
   liquidator,
   amount,

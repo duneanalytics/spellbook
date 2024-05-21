@@ -36,6 +36,7 @@ select
   transaction_type,
   token_address,
   depositor,
+  on_behalf_of,
   withdrawn_to,
   liquidator,
   amount,
