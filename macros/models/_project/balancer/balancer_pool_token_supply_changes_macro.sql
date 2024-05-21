@@ -37,7 +37,6 @@ WITH pool_labels AS (
                 END AS amount
         FROM {{ ref('balancer_transfers_bpt') }} t
         LEFT JOIN pool_labels l ON t.contract_address = l.address
-        AND l.blockchain = t.blockchain 
         WHERE t.blockchain = '{{blockchain}}'
         AND t.version = '{{version}}'
         {% if is_incremental() %}
