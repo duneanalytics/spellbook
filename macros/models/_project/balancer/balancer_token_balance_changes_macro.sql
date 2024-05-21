@@ -71,7 +71,6 @@ WITH pool_labels AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
         {% endif %}
-        ORDER BY 1, 2, 3
     ),
 
     balances_changes AS (
@@ -84,7 +83,6 @@ WITH pool_labels AS (
             tokens AS token,
             deltas - CAST(protocolFeeAmounts as int256) AS delta
         FROM zipped_balance_changes
-        ORDER BY 1, 2, 3, 4, 5
     ),
 
     managed_changes AS (

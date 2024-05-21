@@ -83,7 +83,6 @@ WITH pool_labels AS (
             THEN 0
             ELSE - s.amountIn
             END AS amount
-        FROM balancer_v2_ethereum.Vault_evt_Swap s
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} s
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
