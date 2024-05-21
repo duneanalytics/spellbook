@@ -24,8 +24,7 @@
 
 
 {% set project_mints = [
- ref('opensea_v1_ethereum_events')
-,ref('magiceden_solana_events')
+ ref('zora_mints')
 ] %}
 
 WITH project_mints as
