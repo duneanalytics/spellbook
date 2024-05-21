@@ -96,7 +96,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_' + blockchain, 'PoolBalanceManaged') }}
+        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
