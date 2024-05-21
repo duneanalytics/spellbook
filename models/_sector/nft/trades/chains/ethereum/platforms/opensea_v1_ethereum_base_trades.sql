@@ -161,5 +161,5 @@ SELECT
   cast(royalty_fee * (t.amount_raw/t.price_correction) as uint256) AS royalty_fee_amount_raw,
   t.fee_recipient as royalty_fee_address,
   cast(null as varbinary) as platform_fee_address,
-  coalesce(t.nft_evt_index, t.order_evt_index) as sub_tx_trade_id -- using this downstream in nft mints
+  row_number() over (partition by tx_hash order by nft_evt_index) as sub_tx_trade_id -- using this downstream in nft mints
 FROM enhanced_trades t
