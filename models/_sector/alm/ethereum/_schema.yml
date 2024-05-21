@@ -5,6 +5,14 @@ models:
     meta:
       blockchain: ethereum
       sector: alm
+      contributors: 0xrusowsky
+    config:
+      tags: [ 'ethereum', 'alm', 'trades' ]
+
+  - name: arrakis_finance_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: alm
       project: arrakis_finance
       contributors: 0xrusowsky
     config:
