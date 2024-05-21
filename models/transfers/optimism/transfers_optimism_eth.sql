@@ -25,7 +25,7 @@ with eth_transfers as (
         ,r.block_time as tx_block_time
         ,r.block_number as tx_block_number
         ,substring(to_hex(t.data), 1, 10) as tx_method_id
-        ,cast(r.tx_hash as varchar) || '-' || array_join(r.trace_address,',') as unique_transfer_id
+        ,cast(r.tx_hash as varchar) || '-' || COALESCE( NULLIF(array_join(r.trace_address,','),''), '_') as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
     from {{ source('optimism', 'traces') }} as r

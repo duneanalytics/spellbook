@@ -6,7 +6,7 @@
         file_format ='delta',
         incremental_strategy='merge',
         unique_key='unique_transfer_id',
-        post_hook='{{ expose_spells(\'["zora"]\',
+        post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
                                     \'["msilb7", "chuxin"]\') }}'
@@ -28,8 +28,8 @@ with eth_transfers as (
         ,cast(r.tx_hash as varchar) || '-' || COALESCE( NULLIF(array_join(r.trace_address,','),''), '_') as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
-    from {{ source('zora', 'traces') }} as r
-    join {{ source('zora', 'transactions') }} as t
+    from {{ source('base', 'traces') }} as r
+    join {{ source('base', 'transactions') }} as t
         on r.tx_hash = t.hash
         and r.block_number = t.block_number
     where
@@ -60,8 +60,8 @@ with eth_transfers as (
         ,cast(r.evt_tx_hash as varchar) || '-' || cast(r.evt_index as varchar) as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
-    from {{ source('erc20_zora', 'evt_transfer') }} as r
-    join {{ source('zora', 'transactions') }} as t
+    from {{ source('erc20_base', 'evt_transfer') }} as r
+    join {{ source('base', 'transactions') }} as t
         on r.evt_tx_hash = t.hash
         and r.evt_block_number = t.block_number
     where
