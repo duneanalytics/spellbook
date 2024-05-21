@@ -80,7 +80,4 @@ WITH native_mints AS
 )
 
 SELECT *
-FROM project_mints
-UNION ALL
-SELECT *
 FROM native_mints
