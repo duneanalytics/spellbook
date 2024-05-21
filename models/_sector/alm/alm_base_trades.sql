@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'dex'
+    schema = 'alm'
     , alias = 'base_lps'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
