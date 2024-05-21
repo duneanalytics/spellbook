@@ -1,5 +1,4 @@
 {{ config(
-
     alias = 'mints',
     schema = 'nft',
     partition_by = ['block_month'],
@@ -59,19 +58,9 @@ WITH native_mints AS
             tx_to,
             evt_index
         FROM {{ native_mint }} as n
-        LEFT JOIN
-            (
-                select distinct
-                    block_number as p_block_number
-                    , tx_hash as p_tx_hash
-                from project_mints
-            ) p
-            ON n.block_number = p.p_block_number
-            AND n.tx_hash = p.p_tx_hash
-        WHERE p.p_tx_hash is null
-            {% if is_incremental() %}
-            AND n.block_time >= date_trunc('day', now() - interval '7' Day)
-            {% endif %}
+        {% if is_incremental() %}
+        WHERE n.block_time >= date_trunc('day', now() - interval '7' Day)
+        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
