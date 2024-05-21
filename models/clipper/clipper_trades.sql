@@ -12,7 +12,7 @@
     ref('clipper_ethereum_trades'),
     ref('clipper_arbitrum_trades'),
     ref('clipper_polygon_trades'),
-    ref('clipper_optimism_trades'),
+    ref('clipper_optimism_trades')
 ] %}
 
 
