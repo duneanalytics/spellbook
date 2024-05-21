@@ -5,7 +5,7 @@
 %}
 WITH pool_labels AS (
         SELECT
-            address AS pool_id,
+            address,
             name AS pool_symbol,
             pool_type
         FROM {{ ref('labels_balancer_v2_pools') }}
