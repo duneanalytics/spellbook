@@ -459,11 +459,11 @@ models:
         
   - name: balancer_v2_arbitrum_bpt_supply
     meta:
-      blockchain: arbiturm
+      blockchain: arbitrum
       project: balancer_v2
       contributors: thetroyharris, viniabussafi
     config:
-      tags: ['arbiturm', 'bpt', 'supply']
+      tags: ['arbitrum', 'bpt', 'supply']
     description: >
       Balancer Pool Token (BPT) supply for ComposableStablePools versions 4 and 5.
     tests:
@@ -482,7 +482,7 @@ models:
 
   - name: balancer_v2_arbitrum_bpt_supply_changes
     meta:
-      blockchain: arbiturm
+      blockchain: arbitrum
       project: balancer_v2
       contributors: viniabussafi
     config:
@@ -495,6 +495,7 @@ models:
             - block_date
             - evt_tx_hash
             - evt_index
+            - label
     columns:
       - name: block_date
       - name: evt_block_time
@@ -512,19 +513,19 @@ models:
 
   - name: balancer_v2_arbitrum_bpt_supply_changes_daily
     meta:
-      blockchain: arbiturm
+      blockchain: arbitrum
       project: balancer_v2
       contributors: viniabussafi
     config:
       tags: ['arbitrum', 'bpt', 'supply', 'changes']
     description: >
-      Balancer Pool Token (BPT) supply change events.
+      Balancer Pool Token (BPT) supply change events. grouped by day
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - evt_tx_hash
-            - evt_index
+            - blockchain
+            - token_address
     columns:
       - name: block_date
       - name: blockchain
@@ -536,19 +537,20 @@ models:
 
   - name: balancer_v2_arbitrum_token_balance_changes
     meta:
-      blockchain: arbiturm
+      blockchain: arbitrum
       project: balancer_v2
       contributors: viniabussafi
     config:
       tags: ['arbitrum', 'bpt', 'supply', 'changes']
     description: >
-      Balancer Pool Token (BPT) supply change events.
+      Token Balance Changes on Balancer Pools.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
             - evt_tx_hash
             - evt_index
+            - token_address
     columns:
       - name: block_date
       - name: evt_block_time
@@ -568,19 +570,19 @@ models:
 
   - name: balancer_v2_arbitrum_token_balance_changes_daily
     meta:
-      blockchain: arbiturm
+      blockchain: arbitrum
       project: balancer_v2
       contributors: viniabussafi
     config:
       tags: ['arbitrum', 'bpt', 'supply', 'changes']
     description: >
-      Balancer Pool Token (BPT) supply change events.
+      Token Balance Changes on Balancer Pools, grouped by day.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
-            - evt_tx_hash
-            - evt_index
+            - pool_id
+            - token_address
     columns:
       - name: block_date
       - name: pool_id
