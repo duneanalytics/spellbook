@@ -96,7 +96,7 @@ WITH
             token_symbol,
             LEAD(block_date, 1, NOW()) OVER (PARTITION BY token_address, pool_id ORDER BY block_date) AS day_of_next_change,
             SUM(delta_amount) AS daily_amount
-        FROM {{ ref('balancer_tokens_transfers') }}
+        FROM {{ ref('balancer_v2_arbitrum_token_balance_changes') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5, 6
     ),
