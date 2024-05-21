@@ -1,10 +1,10 @@
 {{ config(
     schema = 'balancer',
     alias = 'trades',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                                 "project",
                                 "balancer",
-                                \'["bizzyvinci", "thetroyharris"]\') }}'
+                                \'["bizzyvinci", "thetroyharris", "viniabussafi"]\') }}'
     )
 }}
 
@@ -16,7 +16,8 @@
     ref('balancer_ethereum_trades'),
     ref('balancer_gnosis_trades'),
     ref('balancer_optimism_trades'),
-    ref('balancer_polygon_trades')
+    ref('balancer_polygon_trades'),
+    ref('balancer_zkevm_trades')
 ] %}
 
 
@@ -30,6 +31,7 @@ FROM (
         block_month,
         block_date,
         block_time,
+        block_number,
         token_bought_symbol,
         token_sold_symbol,
         token_pair,
@@ -45,6 +47,8 @@ FROM (
         pool_id,
         swap_fee,
         project_contract_address,
+        pool_symbol,
+        pool_type,
         tx_hash,
         tx_from,
         tx_to,

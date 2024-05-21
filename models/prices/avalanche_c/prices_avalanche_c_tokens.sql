@@ -80,6 +80,7 @@ FROM
     ('vchf-vnx-swiss-franc','avalanche_c','VCHF',0x228a48df6819ccc2eca01e2192ebafffdad56c19,18),
     ('veur-vnx-euro','avalanche_c','VEUR',0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b,18),
     -- ('yyavax-yieldyak-gavax','avalanche_c','YYAVAX',0xf7d9281e8e363584973f946201b82ba72c965d27,18), -- inactive
+    ('yak-yield-yak','avalanche_c','YAK',0x59414b3089ce2af0010e7523dea7e2b35d776ec7,18),
     ('kimbo-kimbo','avalanche_c','KIMBO',0x184ff13b3ebcb25be44e860163a5d8391dd568c1,18),
     ('gec-gecko-inu','avalanche_c','GEC',0xe8385cecb013561b69beb63ff59f4d10734881f3,18),
     ('hec-heroeschained','avalanche_c','HEC',0xc7f4debc8072e23fe9259a5c0398326d8efb7f5c,18),

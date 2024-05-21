@@ -18,6 +18,7 @@ WITH hardcoded AS (
     , (0xec70e3c8afe212039c3f6a2df1c798003bf7cfe9, '2020-11-21')
     , (0xc2288b408dc872a1546f13e6ebfa9c94998316a2, '2020-11-25')
     , (0x4ebf51689228236ec55bcafef9d79663992a7fb6, '2023-08-24')
+    , (0xc3ecba28af450e2ed469164766751130d93ecc36, '2024-04-14')
     )
     x (depositor_address, first_tx)
     )

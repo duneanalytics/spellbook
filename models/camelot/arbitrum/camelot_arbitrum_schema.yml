@@ -8,7 +8,7 @@ models:
       project: camelot_v2
       contributors: ytoast
     config:
-      tags: [ 'arbitrum','dex','trades', 'camelot', 'ytoast']
+      tags: ["arbitrum", "dex", "trades", "camelot", "ytoast"]
     description: >
       Camelot trades on Arbitrum on a specific contract/version.
     tests:
@@ -102,7 +102,7 @@ models:
       project: camelot_v3
       contributors: whale_hunter
     config:
-      tags: [ 'arbitrum','dex','trades', 'camelot', 'whale_hunter']
+      tags: ["arbitrum", "dex", "trades", "camelot", "whale_hunter"]
     description: >
       Camelot V3 trades on Arbitrum
     tests:
@@ -150,9 +150,9 @@ models:
       project: camelot
       contributors: ytoast, whale_hunter
     config:
-      tags: ['arbitrum','camelot','trades','dex','ytoast', 'whale_hunter']
+      tags: ["arbitrum", "camelot", "trades", "dex", "ytoast", "whale_hunter"]
     description: >
-        Camelot trades on Arbitrum
+      Camelot trades on Arbitrum
     columns:
       - *blockchain
       - *project
@@ -176,3 +176,38 @@ models:
       - *tx_from
       - *tx_to
       - *evt_index
+
+  - name: camelot_arbitrum_pair_fee_rates
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: camelot
+      contributors: whale_hunter
+    config:
+      tags: ["arbitrum", "camelot", "whale_hunter"]
+    description: >
+      Camelot fee rates over time across all pairs and versions on Arbitrum.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - minute
+            - blockchain
+            - pair
+            - version
+    columns:
+      - name: blockchain
+        description: "Blockchain on which the pair is deployed"
+      - name: minute
+        description: "UTC event block time truncated to the minute mark"
+      - name: pair
+        description: "Pair address"
+      - name: version
+        description: "Version of the pair built and deployed by the DEX project"
+      - name: token0
+        description: "Address of token0"
+      - name: token0_fee_rate
+        description: "Fee rate as a fraction of 1, applied if token0 gets swapped to token1"
+      - name: token1
+        description: "Address of token1"
+      - name: token1_fee_rate
+        description: "Fee rate as a fraction of 1, applied if token1 gets swapped to token0"
