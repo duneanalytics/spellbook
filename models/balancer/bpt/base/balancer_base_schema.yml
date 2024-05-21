@@ -1,0 +1,101 @@
+version: 2
+
+models:
+  - name: balancer_v2_base_transfers_bpt
+    meta:
+      blockchain: base
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris, viniabussafi
+    config:
+      tags: ['base', 'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on base.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+      - &contract_address
+        name: contract_address
+        description: 'base address for the liquidity pool used in transaction'
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
+
+  - name: balancer_v2_base_bpt_prices
+    meta:
+      blockchain: base
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris, viniabussafi
+    config:
+      tags: ['base', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) daily price by pool on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - day
+            - contract_address
+    columns:
+      - name: blockchain
+      - name: day
+      - name: version
+      - name: decimals
+      - name: contract_address
+      - name: bpt_price
+
+  - name: balancer_v2_base_bpt_supply
+    meta:
+      blockchain: arbiturm
+      project: balancer_v2
+      contributors: thetroyharris, viniabussafi
+    config:
+      tags: ['arbiturm', 'bpt', 'supply']
+    description: >
+      Balancer Pool Token (BPT) supply for ComposableStablePools versions 4 and 5.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - name: day
+      - name: pool_type
+      - name: version
+      - name: blockchain
+      - name: token_address
+      - name: supply
