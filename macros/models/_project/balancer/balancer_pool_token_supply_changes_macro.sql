@@ -6,7 +6,7 @@
 WITH pool_labels AS (
         SELECT
             address,
-            name AS pool_symbol,
+            name,
             pool_type
         FROM {{ ref('labels_balancer_v2_pools') }}
         WHERE blockchain = '{{blockchain}}'
