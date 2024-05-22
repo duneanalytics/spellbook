@@ -21,7 +21,7 @@ xdai_transfers  as (
             block_time,
             to as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            CAST(value as double) as amount_raw
+            CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
@@ -42,12 +42,12 @@ xdai_transfers  as (
             block_time,
             "from" as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            -CAST(value as double) as amount_raw
+            -CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
-        AND CAST(value as double) > 0
+        AND CAST(value as INT256) > 0
         AND "from" IS NOT NULL 
         AND "from" != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
         {% if is_incremental() %}
@@ -82,7 +82,7 @@ block_reward AS (
         evt_block_time AS block_time, 
         receiver as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        CAST(amount as double) as amount_raw
+        CAST(amount as INT256) as amount_raw
     FROM 
         {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
     {% if is_incremental() %}
