@@ -7,8 +7,8 @@ models:
       project: nexusmutual
       contributors: tomfutago
     config:
-      tags: ["ethereum","nexusmutual","capital_pool"]
-    description: "Capital Pool token transfers for Nexus Mutual Protocol on Ethereum"
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Token transfers in the Nexus Mutual Capital Pool"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,18 +20,28 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each transfer"
+        tests:
+          - not_null
       - &block_number
         name: block_number
         description: "Block number of each transfer"
+        tests:
+          - not_null
       - &block_date
         name: block_date
         description: "UTC event block date of each transfer"
+        tests:
+          - not_null
       - &transfer_type
         name: transfer_type
         description: "Transfer type: in/out (inflow/outflow)"
+        tests:
+          - not_null
       - &symbol
         name: symbol
         description: "Token symbol for transferred token"
+        tests:
+          - not_null
       - &amount
         name: amount
         description: "Token amount for transferred token"
@@ -41,6 +51,41 @@ models:
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value tied to each token transfer"
+        tests:
+          - not_null
+
+  - name: nexusmutual_ethereum_capital_pool_totals
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Daily running totals for core tokens in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - name: avg_capital_pool_eth_total
+      - name: avg_capital_pool_usd_total
+      - name: eth_total
+      - name: avg_eth_usd_total
+      - name: dai_total
+      - name: avg_dai_usd_total
+      - name: avg_dai_eth_total
+      - name: nxmty_total
+      - name: nxmty_eth_total
+      - name: avg_nxmty_usd_total
+      - name: steth_total
+      - name: avg_steth_usd_total
+      - name: reth_total
+      - name: avg_reth_usd_total
+      - name: avg_reth_eth_total
+      - name: usdc_total
+      - name: avg_usdc_usd_total
+      - name: avg_usdc_eth_total
 
   # to be deprecated:
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
