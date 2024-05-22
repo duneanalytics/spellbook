@@ -23,7 +23,7 @@ SELECT *
 FROM (
     {% for model in balancer_models %}
     SELECT
-      ,block_date
+       block_date
       ,evt_block_time
       ,evt_block_number
       ,blockchain
