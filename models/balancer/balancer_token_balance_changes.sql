@@ -24,20 +24,20 @@ FROM (
     {% for model in balancer_models %}
     SELECT
        block_date
-      ,evt_block_time
-      ,evt_block_number
-      ,blockchain
-      ,evt_tx_hash
-      ,evt_index
-      ,pool_id
-      ,pool_address
-      ,pool_symbol
-      ,pool_type 
-      ,version 
-      ,token_address
-      ,token_symbol,
-      ,delta_amount_raw
-      ,delta_amount
+      , evt_block_time
+      , evt_block_number
+      , blockchain
+      , evt_tx_hash
+      , evt_index
+      , pool_id
+      , pool_address
+      , pool_symbol
+      , pool_type 
+      , version 
+      , token_address
+      , token_symbol
+      , delta_amount_raw
+      , delta_amount
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
