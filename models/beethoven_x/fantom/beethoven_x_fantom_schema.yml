@@ -194,7 +194,7 @@ models:
   - name: beethoven_x_fantom_protocol_fee
     meta:
       blockchain: fantom
-      project: balancer_v2
+      project: beethoven_x
       contributors: viniabussafi
     config:
       tags: ['fantom', 'revenue', 'fees']
@@ -229,7 +229,7 @@ models:
   - name: beethoven_x_fantom_bpt_supply
     meta:
       blockchain: fantom
-      project: balancer_v2
+      project: beethoven_x
       contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'supply']
@@ -252,7 +252,7 @@ models:
   - name: beethoven_x_fantom_bpt_prices
     meta:
       blockchain: fantom
-      project: balancer_v2
+      project: beethoven_x
       contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'prices']
@@ -275,7 +275,7 @@ models:
   - name: beethoven_x_fantom_transfers_bpt
     meta:
       blockchain: fantom
-      project: balancer_v2
+      project: beethoven_x
       contributors: viniabussafi
     config:
       tags: ['fantom', 'bpt', 'transfers']
