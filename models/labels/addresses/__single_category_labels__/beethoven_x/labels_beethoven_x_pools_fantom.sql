@@ -19,7 +19,8 @@ WITH pools AS (
       t.tokens,
       w.weights,
       cc.symbol,
-      'weighted' AS pool_type
+      'weighted' AS pool_type,
+    cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -43,7 +44,8 @@ WITH pools AS (
       t.tokens,
       w.weights,
       cc.symbol,
-      'weighted' AS pool_type
+      'weighted' AS pool_type,
+    cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPool2TokensFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -67,7 +69,8 @@ WITH pools AS (
       t.tokens,
       w.weights,
       cc.symbol,
-      'weighted' AS pool_type
+      'weighted' AS pool_type,
+    cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPoolV2Factory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -84,7 +87,8 @@ WITH pools AS (
     t.tokens,
     0 AS weights,
     cc.symbol,
-    'stable' AS pool_type
+    'stable' AS pool_type,
+    cc.name AS pool_name
   FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('beethoven_x_fantom', 'StablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -98,7 +102,8 @@ WITH pools AS (
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'stable' AS pool_type
+    'stable' AS pool_type,
+    cc.name AS pool_name
   FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('beethoven_x_fantom', 'MetaStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -112,7 +117,8 @@ WITH pools AS (
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'stable' AS pool_type
+    'stable' AS pool_type,
+    cc.name AS pool_name
   FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('beethoven_x_fantom', 'StablePhantomPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -126,7 +132,8 @@ WITH pools AS (
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'LBP' AS pool_type
+    'LBP' AS pool_type,
+    cc.name AS pool_name
   FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('beethoven_x_fantom', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -140,7 +147,8 @@ WITH pools AS (
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'stable' AS pool_type
+    'stable' AS pool_type,
+    cc.name AS pool_name
   FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('beethoven_x_fantom', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -154,7 +162,8 @@ WITH pools AS (
     element AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'linear' AS pool_type
+    'linear' AS pool_type,
+    cc.name AS pool_name
   FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('beethoven_x_fantom', 'YearnLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
@@ -181,6 +190,7 @@ SELECT
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
   END AS name,
+  pool_name AS poolname,
   pool_type,
   'beethoven_x' AS category,
   'balancerlabs' AS contributor,
@@ -195,7 +205,7 @@ FROM (
     token_symbol,
     pool_symbol,
     cast(100 * normalized_weight AS integer) AS norm_weight,
-    pool_type
+    pool_type,
   FROM settings s1
   GROUP BY s1.pool_id, token_symbol, pool_symbol, normalized_weight, pool_type
 ) s
