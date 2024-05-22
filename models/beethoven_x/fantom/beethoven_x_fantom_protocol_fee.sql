@@ -149,8 +149,6 @@ WITH pool_labels AS (
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd
     FROM decorated_protocol_fee f
-    INNER JOIN revenue_share r 
-        ON r.day = f.day
     LEFT JOIN pool_labels l
         ON BYTEARRAY_SUBSTRING(f.pool_id,1,20) = l.address
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
