@@ -39,7 +39,7 @@ FROM (
       , currency_contract
       , currency_symbol
       , recipient
-      , contract_address
+      , project_contract_address
     FROM {{ aave_model }}
     {% if is_incremental() %}
     WHERE block_time >= date_trunc('day', now() - interval '7' Day)
