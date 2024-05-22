@@ -249,7 +249,7 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
-          
+
       - name: creation_traces
         description: "Ethereum creation traces"
         freshness:
