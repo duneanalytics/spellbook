@@ -134,5 +134,5 @@ WITH pool_labels AS (
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
     WHERE l.pool_type IN ('weighted', 'LBP', 'investment', 'stable', 'linear', 'ECLP', 'managed', 'FX')
-    GROUP BY 1, 2, 3, 4, 5
+    GROUP BY 1, 2, 3, 4
     HAVING SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)) >= 0  --simple filter to remove outliers

@@ -211,7 +211,6 @@ models:
       - name: pool_id
       - name: pool_address
       - name: pool_symbol
-      - name: version
       - name: blockchain
       - name: token_address
       - name: token_symbol
@@ -221,10 +220,6 @@ models:
         description: "Amount of revenues of the token in the pool"
       - name: protocol_fee_collected_usd
         description: "Fee collected in the pool in USD"
-      - name: treasury_share
-        description: "Share of total revenue that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
-      - name: treasury_revenue_usd
-        description: "Total revenue directed to Balancer DAO's treasury"
         
   - name: beethoven_x_fantom_bpt_supply
     meta:
@@ -244,7 +239,6 @@ models:
     columns:
       - name: day
       - name: pool_type
-      - name: version
       - name: blockchain
       - name: token_address
       - name: supply
@@ -267,7 +261,6 @@ models:
     columns:
       - name: blockchain
       - name: day
-      - name: version
       - name: decimals
       - name: contract_address
       - name: bpt_price      
@@ -289,7 +282,6 @@ models:
             - block_date
     columns:
       - name: blockchain
-      - name: version
       - name: contract_address
       - name: block_date
       - name: block_month

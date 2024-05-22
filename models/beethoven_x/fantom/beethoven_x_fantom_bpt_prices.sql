@@ -70,7 +70,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
         WHERE t.i = d.i 
         AND d.i = p.i
-        ORDER BY 1,2,3
+        ORDER BY 1, 2, 3
     ),
 
     balances_changes AS (
@@ -204,7 +204,7 @@ WITH pool_labels AS (
     AND w.blockchain = 'fantom'
     AND w.token_address = c.token
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
-    GROUP BY 1, 2, 3, 4
+    GROUP BY 1, 2, 3
     ),
 
 -- trade based formulation, for Linear Pools (former BPT prices spell)
