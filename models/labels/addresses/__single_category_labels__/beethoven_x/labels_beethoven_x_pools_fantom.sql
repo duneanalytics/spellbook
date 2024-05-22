@@ -141,8 +141,8 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'stable' AS pool_type
-  FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_optimism', 'ComposableStablePoolFactory_call_create') }} cc
+  FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('beethoven_x_fantom', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
