@@ -439,3 +439,120 @@ models:
         description: "Total Value Locked on a pool, in eth"
       - name: fee_amount_usd
         description: "Daily fees collected on a pool, in USD"
+
+  - name: balancer_bpt_supply_changes
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - label
+    columns:
+      - name: block_date
+      - name: evt_block_time
+      - name: evt_block_number
+      - name: blockchain
+      - name: evt_tx_hash
+      - name: evt_index
+      - name: pool_type
+      - name: pool_symbol   
+      - name: version 
+      - name: label
+      - name: token_address
+      - name: delta_amount_raw
+      - name: delta_amount
+
+  - name: balancer_bpt_supply_changes_daily
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events. grouped by day
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - token_address
+    columns:
+      - name: block_date
+      - name: blockchain
+      - name: pool_type
+      - name: pool_symbol   
+      - name: version 
+      - name: token_address
+      - name: daily_delta      
+
+  - name: balancer_token_balance_changes
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
+    description: >
+      Token Balance Changes on Balancer Pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - token_address
+    columns:
+      - name: block_date
+      - name: evt_block_time
+      - name: evt_block_number
+      - name: blockchain
+      - name: evt_tx_hash
+      - name: evt_index
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: pool_type 
+      - name: version 
+      - name: token_address
+      - name: token_symbol,
+      - name: delta_amount_raw
+      - name: delta_amount
+
+  - name: balancer_token_balance_changes_daily
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
+    description: >
+      Token Balance Changes on Balancer Pools, grouped by day.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_address
+    columns:
+      - name: block_date
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol   
+      - name: version
+      - name: blockchain
+      - name: pool_type
+      - name: token_address
+      - name: token_symbol
+      - name: daily_delta          
+      - name: daily_delta_usd
+      - name: daily_delta_eth          
