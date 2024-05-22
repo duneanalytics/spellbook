@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_capital_pool_transfers
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum","nexusmutual","capital_pool"]
+    description: "Capital Pool token transfers for Nexus Mutual Protocol on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - transfer_type
+            - symbol
+            - tx_hash
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each transfer"
+      - &block_number
+        name: block_number
+        description: "Block number of each transfer"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each transfer"
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type: in/out (inflow/outflow)"
+      - &symbol
+        name: symbol
+        description: "Token symbol for transferred token"
+      - &amount
+        name: amount
+        description: "Token amount for transferred token"
+      - &contract_address
+        name: contract_address
+        description: "Contract address of the transferred token"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value tied to each token transfer"
+
+  # to be deprecated:
+  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [guyhow]
+    config:
+      tags: ["ethereum","nexusmutual","trades"]
+    description: >
+        Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
+    columns:
+      - &day
+        name: day
+        description: "Table primary key: day of summarised transctions"
+        tests:
+          - unique
+      - &eth_ingress
+        name: ingress ethereum
+        description: "Sum of incoming transctions over the time covered by day"
+      - &eth_egress
+        name: egress ethereum
+        description: "Sum of outgoing transctions over the time covered by day"
