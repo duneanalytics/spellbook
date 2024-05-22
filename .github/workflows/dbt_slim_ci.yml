@@ -39,7 +39,7 @@ jobs:
             echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
           fi
       - name: Add git_sha to schema
-        run: "/runner/change_schema.sh wizard
+        run: "/runner/change_schema.sh wizard"
 
       - name: Get latest manifest
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
