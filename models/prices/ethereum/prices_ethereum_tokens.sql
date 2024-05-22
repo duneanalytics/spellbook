@@ -1751,7 +1751,16 @@ FROM
     ('chex-chex-token', 'ethereum', 'CHEX', 0x9ce84f6a69986a83d92c324df10bc8e64771030f, 18),
     ('nxra-allianceblock-nexera', 'ethereum', 'NXRA', 0x644192291cc835a93d6330b24ea5f5fedd0eef9e, 18),
     ('lndx-landx-governance-token', 'ethereum', 'LNDX', 0x08a1c30bbb26425c1031ee9e43fa0b9960742539, 6),
-    ('cpool-clearpool', 'ethereum', 'CPOOL', 0x66761fa41377003622aee3c7675fc7b5c1c2fac5, 18)
+    ('cpool-clearpool', 'ethereum', 'CPOOL', 0x66761fa41377003622aee3c7675fc7b5c1c2fac5, 18),
+    ('savm-satoshivm', 'ethereum', 'SAVM', 0x15e6e0d4ebeac120f9a97e71faa6a0235b85ed12, 18),
+    ('hemule-hemule', 'ethereum', 'HEMULE', 0xeAA63125dd63f10874F99CdBbb18410e7Fc79dD3, 18),
+    ('election-real-smurf-cat', 'ethereum', 'SMURFCAT', 0xfF836A5821E69066c87E268bC51b849FaB94240C, 18),
+    ('eth-zoomer', 'ethereum', 'ZOOMER', 0x0d505c03d30e65f6e9b4ef88855a47a89e4b7676, 18),
+    ('shia-shia1', 'ethereum', 'SHIA', 0x43D7E65B8fF49698D9550a7F315c87E67344FB59, 18),
+    ('qanx-qanx-token', 'ethereum', 'QANX', 0xaaa9214f675316182eaa21c85f0ca99160cc3aaa, 18),
+    ('hft1-hashflow', 'ethereum', 'HFT', 0xb3999f658c0391d94a37f7ff328f3fec942bcadc, 18),
+    ('flip-chainflip', 'ethereum', 'FLIP', 0x826180541412d574cf1336d22c0c0a287822678a, 18),
+    ('sync-syncus', 'ethereum', 'SYNC', 0xa41d2f8Ee4F47D3B860A149765A7dF8c3287b7F0, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
