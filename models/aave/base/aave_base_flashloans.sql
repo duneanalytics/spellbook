@@ -20,7 +20,7 @@ select
   fee,
   symbol as currency_symbol,
   token_address as currency_contract,
-  project_contract_address,
+  project_contract_address as contract_address,
   block_month,
   block_time,
   block_number,
