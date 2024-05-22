@@ -23,10 +23,6 @@ sources:
         loaded_at_field: evt_block_time
       - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
-      - name: crvUSD_StableswapFactory_call_deploy_plain_pool
-        loaded_at_field: call_block_time
-      - name: crvUSD_StableswapFactory_call_deploy_metapool
-        loaded_at_field: call_block_time
       - name: crvUSD_StableswapFactory_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
       - name: susd_swap_evt_TokenExchange
