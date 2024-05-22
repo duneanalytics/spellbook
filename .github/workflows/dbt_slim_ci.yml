@@ -45,7 +45,7 @@ jobs:
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
 
       - name: Get latest partial parse
-        run: "aws s3 cp $S3_LOCATION/partial_parse.msgpack $PROJECT_DIR/partial_parse.msgpack"
+        run: "aws s3 cp $S3_LOCATION/partial_parse.msgpack $PROJECT_DIR/target/partial_parse.msgpack"
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
