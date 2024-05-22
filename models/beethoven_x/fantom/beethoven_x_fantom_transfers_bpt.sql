@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'beethoven_x',
+        schema = 'beethoven_x_fantom',
         alias = 'transfers_bpt',
         partition_by = ['block_month'],
         materialized = 'incremental',

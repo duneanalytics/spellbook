@@ -67,8 +67,8 @@ WITH pool_labels AS (
             s.token_address AS token,
             18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
-        FROM {{ ref('beethoven_x_liquidity') }} l
-        LEFT JOIN {{ ref('beethoven_x_bpt_supply') }} s ON s.token_address = l.pool_address 
+        FROM {{ ref('beethoven_x_fantom_liquidity') }} l
+        LEFT JOIN {{ ref('beethoven_x_fantom_bpt_supply') }} s ON s.token_address = l.pool_address 
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
         WHERE l.blockchain = 'fantom'
         GROUP BY 1, 2, 3
