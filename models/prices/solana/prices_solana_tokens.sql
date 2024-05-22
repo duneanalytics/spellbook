@@ -670,5 +670,5 @@ FROM
         ('trump-maga', 'solana', 'TRUMP', 'HaP8r3ksG76PhQLTqR8FYBeNiQpejcFbQmiHbg787Ut1', 8),
         ('popcat-popcat', 'solana', 'POPCAT', '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr', 9),
         ('jupsol-jupiter-staked-sol', 'solana', 'JUPSOL', 'jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v', 9),
-        ('scnsol-socean-staked-sol', 'solana', 'INF', '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', 9)
+        ('scnsol-socean-staked-sol', 'solana', 'SCNSOL', '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
