@@ -59,7 +59,7 @@ SELECT t1.token_mint as contract_address,
     t2.decimals,
     'solana' as blockchain,
     avg(t1.price) as price,
-    DATE_TRUNC('month', t1.minute) as block_month
+    CAST(DATE_TRUNC('month', t1.minute) as date) as block_month
 FROM all_trades t1
     JOIN
         {{ ref('tokens_solana_fungible') }}  t2 ON t1.token_mint = t2.token_mint_address

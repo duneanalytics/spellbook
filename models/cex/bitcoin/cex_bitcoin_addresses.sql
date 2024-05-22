@@ -699,4 +699,6 @@ FROM (VALUES
     , ('bitcoin', 'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2', 'Robinhood', 'Robinhood 1', 'hildobby', date '2024-04-20')
     , ('bitcoin', 'bc1qmxcagqze2n4hr5rwflyfu35q90y22raxdgcp4p', 'Robinhood', 'Robinhood 2', 'hildobby', date '2024-04-20')
     , ('bitcoin', 'bc1qprdf80adfz7aekh5nejjfrp3jksc8r929svpxk', 'Robinhood', 'Robinhood 3', 'hildobby', date '2024-04-20')
+
+    , ('bitcoin', 'bc1qznd382dqapcp0j2xf5jyu548g55743jy3ywwqc', 'XT.com', 'XT.com 1', 'hildobby', date '2024-05-04')
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
