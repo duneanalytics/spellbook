@@ -1,7 +1,7 @@
 {{ config(
     schema = 'opensea_v1_ethereum',
-    alias = 'events',
-    tags =['prod_exclude'],
+    alias = 'base_trades',
+    tags =['static'],
     materialized = 'table',
     file_format = 'delta'
     )
@@ -129,10 +129,7 @@ enhanced_trades as (
     nft.to as nft_to,
     nft."from" as nft_from,
     cast(total_amount_raw*amount/(sum(nft.amount) over (partition by o.block_number, o.tx_hash, o.order_evt_index)) as uint256) as amount_raw,
-    case when count(nft.evt_index) over (partition by o.block_number, o.tx_hash, o.order_evt_index) > 1
-        then concat('Bundle trade: ',sale_type)
-        else concat('Single Item Trade: ',sale_type)
-    END as trade_type,
+    'secondary' as trade_type,
     nft.evt_index as nft_evt_index
     from enhanced_orders o
     inner join nft_transfers nft
@@ -142,54 +139,27 @@ enhanced_trades as (
         AND nft.evt_index <= o.order_evt_index and (prev_order_evt_index is null OR nft.evt_index > o.prev_order_evt_index )
 )
 
-
 SELECT
   'ethereum' as blockchain,
   'opensea' as project,
-  'v1' as version,
+  'v1' as project_version,
   project_contract_address,
   t.block_time,
   t.block_number,
   t.tx_hash,
   t.nft_contract_address,
-  t.token_standard,
-  nft.name AS collection,
-  t.token_id,
-  t.amount_raw,
-  t.amount_raw / power(10,erc20.decimals) as amount_original,
-  t.amount_raw / power(10,erc20.decimals) * p.price AS amount_usd,
+  t.token_id as nft_token_id,
+  t.amount_raw as price_raw,
   t.trade_category,
   t.trade_type,
-  t.number_of_items,
+  t.number_of_items as nft_amount,
   coalesce(t.nft_from, t.seller) AS seller,
   coalesce(t.nft_to, t.buyer) as buyer,
-  t.evt_type,
-  CASE WHEN t.native_eth THEN 'ETH' ELSE erc20.symbol END AS currency_symbol,
   t.currency_contract,
-  agg.name as aggregator_name,
-  agg.contract_address as aggregator_address,
-  tx."from" as tx_from,
-  tx.to as tx_to,
   -- some complex price calculations, (t.amount_raw/t.price_correction) is the original base price for fees.
-  CAST(round((100 * platform_fee),4) AS DOUBLE) AS platform_fee_percentage,
   cast(platform_fee * (t.amount_raw/t.price_correction) as uint256) AS platform_fee_amount_raw,
-  platform_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) AS platform_fee_amount,
-  platform_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS platform_fee_amount_usd,
-  CAST(round((100 * royalty_fee),4) AS DOUBLE) as royalty_fee_percentage,
   cast(royalty_fee * (t.amount_raw/t.price_correction) as uint256) AS royalty_fee_amount_raw,
-  royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) AS royalty_fee_amount,
-  royalty_fee * (t.amount_raw/t.price_correction) / power(10,erc20.decimals) * p.price AS royalty_fee_amount_usd,
-  t.fee_recipient as royalty_fee_receive_address,
-  CASE WHEN t.native_eth THEN 'ETH' ELSE erc20.symbol END AS royalty_fee_currency_symbol,
-  cast(cast(t.order_evt_index as varchar) || cast(t.nft_evt_index as varchar) as bigint) as evt_index, -- using this downstream in nft mints
-  'wyvern-opensea' || '-' || cast(t.tx_hash as varchar) || '-' || cast(t.order_evt_index as varchar)|| '-' || cast(t.nft_evt_index as varchar) || '-' || cast(token_id as varchar) as unique_trade_id
+  t.fee_recipient as royalty_fee_address,
+  cast(null as varbinary) as platform_fee_address,
+  row_number() over (partition by tx_hash order by nft_evt_index) as sub_tx_trade_id -- using this downstream in nft mints
 FROM enhanced_trades t
-INNER JOIN {{ source('ethereum','transactions') }} tx ON t.block_number = tx.block_number AND t.tx_hash = tx.hash
-    AND tx.block_time >= TIMESTAMP '{{START_DATE}}' AND tx.block_time <= TIMESTAMP '{{END_DATE}}'
-LEFT JOIN {{ ref('tokens_nft') }} nft ON nft.contract_address = t.nft_contract_address and nft.blockchain = 'ethereum'
-LEFT JOIN {{ ref('nft_aggregators') }} agg ON agg.contract_address = tx.to AND agg.blockchain = 'ethereum'
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', t.block_time)
-    AND p.contract_address = t.currency_contract
-    AND p.blockchain ='ethereum'
-    AND minute >= TIMESTAMP '{{START_DATE}}' AND minute <= TIMESTAMP '{{END_DATE}}'
-LEFT JOIN {{ source('tokens', 'erc20') }} erc20 ON erc20.contract_address = t.currency_contract and erc20.blockchain = 'ethereum'
