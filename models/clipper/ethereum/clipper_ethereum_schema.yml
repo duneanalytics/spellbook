@@ -96,7 +96,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: clipper_v2
+      project: clipper
       contributors: 0xRob
     config:
       tags: [ 'ethereum','dex','trades', 'clipper', '0xRob' ]
