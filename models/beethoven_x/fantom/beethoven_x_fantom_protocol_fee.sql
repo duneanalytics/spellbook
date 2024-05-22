@@ -147,7 +147,7 @@ WITH pool_labels AS (
         f.token_symbol,
         SUM(f.token_amount_raw) as token_amount_raw,
         SUM(f.token_amount) as token_amount,
-        SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
+        SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd
     FROM decorated_protocol_fee f
     INNER JOIN revenue_share r 
         ON r.day = f.day
