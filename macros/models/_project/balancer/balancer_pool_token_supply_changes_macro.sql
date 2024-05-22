@@ -61,7 +61,7 @@ WITH pool_labels AS (
             END AS amount
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} s
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
+        WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('s. evt_block_time') }}
         {% endif %} 
