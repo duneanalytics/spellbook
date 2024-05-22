@@ -351,6 +351,7 @@ FROM
     ('tel-telcoin', 'ethereum', 'TEL', 0x467bccd9d29f223bce8043b84e8c8b282827790f, 2),
     ('temp-tempus', 'ethereum', 'TEMP', 0xa36fdbbae3c9d55a1d67ee5821d53b50b63a1ab9, 18),
     ('theta-theta-token', 'ethereum', 'THETA', 0x3883f5e181fccaf8410fa61e12b59bad963fb645, 18),
+    ('thor-thorswap', 'ethereum', 'THOR', 0xa5f2211B9b8170F694421f2046281775E8468044, 18),
     ('thx-thorenext', 'ethereum', 'THX', 0xf08c68bd5f4194d994fd70726746bf529ee5a617, 0),
     ('tkn-monolith', 'ethereum', 'TKN', 0xaaaf91d9b90df800df4f55c205fd6989c977e73a, 8),
     ('tlm-alien-worlds', 'ethereum', 'TLM', 0x888888848b652b3e3a0f34c96e00eec0f3a23f72, 4),
