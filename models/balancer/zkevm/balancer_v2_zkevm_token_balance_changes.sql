@@ -1,8 +1,8 @@
-{% set blockchain = 'arbitrum' %}
+{% set blockchain = 'zkevm' %}
 
 {{
     config(
-        schema = 'balancer_v2_arbitrum',
+        schema = 'balancer_v2_zkevm',
         alias = 'token_balance_changes', 
         materialized = 'incremental',
         file_format = 'delta',

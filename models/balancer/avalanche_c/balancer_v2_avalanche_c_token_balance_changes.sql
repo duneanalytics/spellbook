@@ -1,8 +1,8 @@
-{% set blockchain = 'arbitrum' %}
+{% set blockchain = 'avalanche_c' %}
 
 {{
     config(
-        schema = 'balancer_v2_arbitrum',
+        schema = 'balancer_v2_avalanche_c',
         alias = 'token_balance_changes', 
         materialized = 'incremental',
         file_format = 'delta',
