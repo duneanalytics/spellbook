@@ -29,5 +29,7 @@ FROM
     --('ube-ubeswap', 'celo', 'UBE', 0x00Be915B9dCf56a3CBE739D9B9c202ca692409EC, 18) --low volume
     ('wftm-wrapped-fantom', 'celo', 'WFTM', 0x218c3c3d49d0e7b37aff0d8bb079de36ae61a4c0, 18),
     ('sushi-sushi', 'celo', 'SUSHI', 0xd15ec721c2a896512ad29c671997dd68f9593226, 18),
-    ('pact-impactmarket', 'celo', 'PACT', 0x46c9757c5497c5b1f2eb73ae79b6b67d119b0b58, 18)
+    ('pact-impactmarket', 'celo', 'PACT', 0x46c9757c5497c5b1f2eb73ae79b6b67d119b0b58, 18),
+    ('usdc-usd-coin', 'celo', 'USDC', 0xceba9300f2b948710d2653dd7b07f33a8b32118c, 6),
+    ('usdt-tether', 'celo', 'USDT', 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
