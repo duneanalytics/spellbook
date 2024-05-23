@@ -90,5 +90,6 @@ FROM
     ('spell-spell-token','avalanche_c','SPELL',0xce1bffbd5374dac86a2893119683f4911a2f7814,18),
     ('gurs-gursonavax','avalanche_c','GURS',0x223a368ad0e7396165fc629976d77596a51f155c,18),
     ('hon-heroes-of-nft','avalanche_c','HON',0xed2b42d3c9c6e97e11755bb37df29b6375ede3eb,18),
-    ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18)
+    ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18),
+    ('shrap-shrapnel', 'avalanche_c', 'SHRAP', 0xd402298a793948698b9a63311404fbbee944eafd, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
