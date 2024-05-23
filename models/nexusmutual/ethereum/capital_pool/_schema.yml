@@ -15,6 +15,7 @@ models:
             - block_time
             - transfer_type
             - symbol
+            - evt_index
             - tx_hash
     columns:
       - &block_time
@@ -48,6 +49,9 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address of the transferred token"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding transfer event"
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value tied to each token transfer"
