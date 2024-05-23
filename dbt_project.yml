@@ -665,8 +665,6 @@ models:
         +schema: curvefi_ethereum
       optimism:
         +schema: curvefi_optimism
-      avalanche_c:
-        +schema: curvefi_avalanche_c
       fantom:
         +schema: curvefi_fantom
 
