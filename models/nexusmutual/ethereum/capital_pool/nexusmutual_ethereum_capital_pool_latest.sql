@@ -41,7 +41,7 @@ daily_running_totals as (
     avg_usdc_usd_total,
     avg_usdc_eth_total,
     row_number() over (order by block_date desc) as rn
-  from daily_running_totals_enriched
+  from {{ ref('nexusmutual_ethereum_capital_pool_totals') }}
 )
 
 select
