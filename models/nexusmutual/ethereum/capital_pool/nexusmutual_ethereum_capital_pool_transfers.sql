@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'transfer_type', 'symbol', 'evt_index', 'tx_hash'],
+    unique_key = ['block_time', 'transfer_type', 'symbol', 'unique_key', 'tx_hash'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -37,7 +37,7 @@ transfer_in as (
     symbol,
     amount,
     contract_address,
-    evt_index,
+    unique_key,
     tx_hash
   from {{ ref('tokens_ethereum_transfers') }}
   where block_time >= timestamp '2019-05-01'
@@ -57,7 +57,7 @@ transfer_out as (
     symbol,
     -1 * amount as amount,
     contract_address,
-    evt_index,
+    unique_key,
     tx_hash
   from {{ ref('tokens_ethereum_transfers') }}
   where block_time >= timestamp '2019-05-01'
@@ -77,7 +77,7 @@ transfer_nxmty_in as (
     'NXMTY' as symbol,
     cast(amount_raw as double) / 1e18 as amount,
     contract_address,
-    evt_index,
+    unique_key,
     tx_hash
   from {{ ref('tokens_ethereum_transfers') }}
   where block_time >= timestamp '2022-05-27'
@@ -97,7 +97,7 @@ transfer_nxmty_out as (
     'NXMTY' as symbol,
     -1 * cast(amount_raw as double) / 1e18 as amount,
     contract_address,
-    evt_index,
+    unique_key,
     tx_hash
   from {{ ref('tokens_ethereum_transfers') }}
   where block_time >= timestamp '2022-05-27'
@@ -108,14 +108,14 @@ transfer_nxmty_out as (
     {% endif %}
 )
 
-select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, evt_index, tx_hash
+select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_in
 union all
-select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, evt_index, tx_hash
+select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_out
 union all
-select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, evt_index, tx_hash
+select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_nxmty_in
 union all
-select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, evt_index, tx_hash
+select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_nxmty_out
