@@ -68,24 +68,95 @@ models:
             - block_date
     columns:
       - *block_date
-      - name: avg_capital_pool_eth_total
-      - name: avg_capital_pool_usd_total
-      - name: eth_total
-      - name: avg_eth_usd_total
-      - name: dai_total
-      - name: avg_dai_usd_total
-      - name: avg_dai_eth_total
-      - name: nxmty_total
-      - name: nxmty_eth_total
-      - name: avg_nxmty_usd_total
-      - name: steth_total
-      - name: avg_steth_usd_total
-      - name: reth_total
-      - name: avg_reth_usd_total
-      - name: avg_reth_eth_total
-      - name: usdc_total
-      - name: avg_usdc_usd_total
-      - name: avg_usdc_eth_total
+      - &avg_capital_pool_eth_total
+        name: avg_capital_pool_eth_total
+        description: "Daily average Capital Pool total expressed in ETH"
+      - &avg_capital_pool_usd_total
+        name: avg_capital_pool_usd_total
+        description: "Daily average Capital Pool total expressed in USD"
+      - &eth_total
+        name: eth_total
+        description: "Daily ETH total in the Capital Pool"
+      - &avg_eth_usd_total
+        name: avg_eth_usd_total
+        description: "Daily average ETH total in the Capital Pool expressed in USD"
+      - &dai_total
+        name: dai_total
+        description: "Daily DAI total in the Capital Pool"
+      - &avg_dai_usd_total
+        name: avg_dai_usd_total
+        description: "Daily average DAI total in the Capital Pool expressed in USD"
+      - &avg_dai_eth_total
+        name: avg_dai_eth_total
+        description: "Daily average DAI total in the Capital Pool expressed in ETH"
+      - &nxmty_total
+        name: nxmty_total
+        description: "Daily NXMTY total in the Capital Pool"
+      - &nxmty_eth_total
+        name: nxmty_eth_total
+        description: "Daily average NXMTY total in the Capital Pool expressed in ETH"
+      - &avg_nxmty_usd_total
+        name: avg_nxmty_usd_total
+        description: "Daily average NXMTY total in the Capital Pool expressed in USD"
+      - &steth_total
+        name: steth_total
+        description: "Daily stETH total in the Capital Pool"
+      - &avg_steth_usd_total
+        name: avg_steth_usd_total
+        description: "Daily average stETH total in the Capital Pool expressed in USD"
+      - &reth_total
+        name: reth_total
+        description: "Daily rETH total in the Capital Pool"
+      - &avg_reth_usd_total
+        name: avg_reth_usd_total
+        description: "Daily average rETH total in the Capital Pool expressed in USD"
+      - &avg_reth_eth_total
+        name: avg_reth_eth_total
+        description: "Daily average rETH total in the Capital Pool expressed in ETH"
+      - &usdc_total
+        name: usdc_total
+        description: "Daily USDC total in the Capital Pool"
+      - &avg_usdc_usd_total
+        name: avg_usdc_usd_total
+        description: "Daily average USDC total in the Capital Pool expressed in USD"
+      - &avg_usdc_eth_total
+        name: avg_usdc_eth_total
+        description: "Daily average USDC total in the Capital Pool expressed in ETH"
+
+  - name: nexusmutual_ethereum_capital_pool_latest
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Latest totals for core tokens in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - *avg_capital_pool_eth_total
+      - *avg_capital_pool_usd_total
+      - *eth_total
+      - *avg_eth_usd_total
+      - *dai_total
+      - *avg_dai_usd_total
+      - *avg_dai_eth_total
+      - *nxmty_total
+      - *nxmty_eth_total
+      - *avg_nxmty_usd_total
+      - *steth_total
+      - *avg_steth_usd_total
+      - *reth_total
+      - *avg_reth_usd_total
+      - *avg_reth_eth_total
+      - *usdc_total
+      - *avg_usdc_usd_total
+      - *avg_usdc_eth_total
+
+
 
   # to be deprecated:
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
