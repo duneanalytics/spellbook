@@ -310,6 +310,28 @@ models:
           seed_file: ref('sol_gun_solana_trades_seed')
           blockchain: solana
 
+  - name: looter_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: looter
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "looter", "trades"]
+    description: >
+      Looter trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('looter_solana_trades_seed')
+          blockchain: solana
+          
   - name: consortium_key_solana_bot_trades
     meta:
       blockchain: solana
@@ -331,3 +353,47 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('consortium_key_solana_trades_seed')
           blockchain: solana 
+
+  - name: wifbot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: wifbot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "wifbot", "trades"]
+    description: >
+      Wifbot trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('wifbot_solana_trades_seed')
+          blockchain: solana
+
+  - name: soul_sniper_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: soul_sniper
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "soul_sniper", "trades"]
+    description: >
+      Soul Sniper trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('soul_sniper_solana_trades_seed')
+          blockchain: solana
