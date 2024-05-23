@@ -23,7 +23,7 @@ select
   amount,
   fee,
   token_address,
-  contract_address,
+  project_contract_address,
   block_month,
   block_time,
   block_number,
