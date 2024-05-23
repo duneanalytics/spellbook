@@ -238,4 +238,5 @@ FROM (VALUES
     , (0xafb89a09d82fbde58f18ac6437b3fc81724e4df6, 'DOG', 18)  
     , (0x96419929d7949D6A801A6909c145C8EEf6A40431, 'SPEC', 18)  
     , (0x7ab8ea5ef610f979e1c59fbd9da9284672e5a136, 'KABOSU', 18)  
+    , (0xd722e55c1d9d9fa0021a5215cbb904b92b3dc5d4, 'RDNT', 18)  
 ) AS temp_table (contract_address, symbol, decimals)
