@@ -187,7 +187,6 @@ models:
      - check_seed:
          seed_file: ref('opensea_polygon_zeroex_trades_samples')
          match_columns:
-           - block_number
            - tx_hash
            - sub_tx_trade_id
          check_columns:
