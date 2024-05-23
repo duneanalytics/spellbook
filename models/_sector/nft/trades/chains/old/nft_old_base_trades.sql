@@ -8,8 +8,7 @@
 
 -- while we refactor more marketplace models, they should be removed here and added to the chain specific base_trades unions.
 {% set nft_models = [
-ref('magiceden_solana_events')
-,ref('nftearth_optimism_events')
+ref('nftearth_optimism_events')
 ,ref('mooar_polygon_events')
 ,ref('oneplanet_polygon_events')
 ,ref('opensea_v3_arbitrum_events')
@@ -23,7 +22,6 @@ ref('magiceden_solana_events')
 ,ref('opensea_v4_polygon_events')
 ,ref('opensea_v4_base_events')
 ,ref('opensea_v4_zora_events')
-,ref('opensea_solana_events')
 ,ref('quix_seaport_optimism_events')
 ,ref('opensea_v3_avalanche_c_events')
 ,ref('opensea_v4_avalanche_c_events')
