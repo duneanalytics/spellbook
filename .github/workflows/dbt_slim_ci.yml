@@ -21,7 +21,10 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3 
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 2 
       - id: set-matrix
         # run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
         run: echo "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
