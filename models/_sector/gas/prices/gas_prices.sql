@@ -36,7 +36,7 @@ SELECT *
 FROM (
         {% for all_model in all_models %}
         SELECT blockchain
-        , time
+        , minute
         , median_gas
         , tenth_percentile_gas
         , ninetieth_percentile_gas
