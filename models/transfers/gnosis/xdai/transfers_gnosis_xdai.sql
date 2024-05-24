@@ -75,19 +75,22 @@ gas_fee as (
 ),
 
 block_reward AS (
-    SELECT
+    SELECT 
         'block_reward' as transfer_type,
-        evt_tx_hash as tx_hash, 
-        array[evt_index] as trace_address, 
-        evt_block_time AS block_time, 
-        receiver as wallet_address, 
+        tx_hash, 
+        array[index] as trace_address, 
+        block_time, 
+        VARBINARY_LTRIM(topic1) AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        TRY_CAST(amount as INT256) as amount_raw
+        TRY_CAST(varbinary_to_uint256(varbinary_ltrim(data)) as INT256) as amount_raw
     FROM 
-        {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
+        {{ source('gnosis', 'logs') }}
+    WHERE 
+        topic0 = 0x3c798bbcf33115b42c728b8504cff11dd58736e9fa789f1cda2738db7d696b2a
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+        AND block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
+
 )
 
 SELECT
