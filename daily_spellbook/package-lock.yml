@@ -1,0 +1,8 @@
+packages:
+- package: dbt-labs/dbt_utils
+  version: 1.1.1
+- package: dbt-labs/codegen
+  version: 0.12.1
+- package: starburstdata/trino_utils
+  version: 0.6.0
+sha1_hash: d69e0f3c2585c08a713303dfd8086eb7ba5c4021
