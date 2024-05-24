@@ -72,7 +72,7 @@ WITH pools AS (
       'weighted' AS pool_type,
     cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPoolV2Factory_call_create') }} cc
+    INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPoolFactoryV2_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
       AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
