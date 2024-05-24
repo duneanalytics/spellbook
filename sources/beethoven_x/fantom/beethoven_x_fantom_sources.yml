@@ -79,7 +79,6 @@ sources:
           - name: weights
             description: 'Array with the weight of each token in the created pool'
 
-
       - name: WeightedPoolFactoryV2_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
