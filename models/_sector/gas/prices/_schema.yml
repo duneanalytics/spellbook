@@ -19,9 +19,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - &time
-        name: time
-        description: "UTC minute time"
+      - &minute
+        name: minute
+        description: "UTC minute"
       - &median_gas
         name: median_gas
         description: "Median gas price"

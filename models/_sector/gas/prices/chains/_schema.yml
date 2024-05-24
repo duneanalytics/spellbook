@@ -19,9 +19,9 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-      - &time
-        name: time
-        description: "UTC minute time"
+      - &minute
+        name: minute
+        description: "UTC minute"
       - &median_gas
         name: median_gas
         description: "Median gas price"
@@ -57,7 +57,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -81,7 +81,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -105,7 +105,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -129,7 +129,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -153,7 +153,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -177,7 +177,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -201,7 +201,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -225,7 +225,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -249,7 +249,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -273,7 +273,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -297,7 +297,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -321,7 +321,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -345,7 +345,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -369,7 +369,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
@@ -393,7 +393,7 @@ models:
             - minute
     columns: 
       - *blockchain
-      - *time
+      - *minute
       - *median_gas
       - *tenth_percentile_gas
       - *ninetieth_percentile_gas
