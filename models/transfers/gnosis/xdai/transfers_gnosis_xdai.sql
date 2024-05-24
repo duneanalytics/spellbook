@@ -167,6 +167,7 @@ SELECT
 FROM 
 block_reward
 
+/*
 UNION ALL 
 
 SELECT 
@@ -181,3 +182,4 @@ SELECT
     amount_raw
 FROM 
 bridged
+*/
