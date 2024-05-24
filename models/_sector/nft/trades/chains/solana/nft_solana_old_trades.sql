@@ -33,7 +33,7 @@ SELECT * FROM  (
         amount_original,
         amount_usd,
         currency_symbol,
-        currency_address,
+        currency_contract,
         null as account_merkle_tree,
         null as leaf_id,
         null as account_mint,

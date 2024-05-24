@@ -29,7 +29,7 @@ SELECT
     cast(null as varbinary) as nft_token_id,
     number_of_items as nft_amount,
     amount_raw as price_raw,
-    case when currency_symbol = 'SOL' then 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 else null end as currency_address,
+    case when currency_symbol = 'SOL' then 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 else null end as currency_contract,
     taker_fee_amount_raw + maker_fee_amount_raw as platform_fee_amount_raw,
     royalty_fee_amount_raw,
     cast(null as varbinary) as platform_fee_address,
