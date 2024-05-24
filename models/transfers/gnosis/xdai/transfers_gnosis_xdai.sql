@@ -72,7 +72,7 @@ gas_fee as (
     {% endif %}
 ),
 
-gas_fee_reward as (
+gas_fee_rewards as (
     SELECT 
         'gas_fee_reward' as transfer_type,
         t1.hash as tx_hash, 
@@ -88,7 +88,7 @@ gas_fee_reward as (
         ON
         t2.time = t1.block_time
     {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+        WHERE t1.block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 ),
 
