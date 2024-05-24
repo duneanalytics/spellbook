@@ -99,7 +99,7 @@ bridged AS (
         evt_block_time AS block_time, 
         recipient AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        TRY_CAST(amount as INT256) as amount_raw
+        TRY_CAST(value as INT256) as amount_raw
     FROM 
         {{ source('xdai_bridge_gnosis', 'HomeBridgeErcToNative_evt_UserRequestForSignature') }}
     {% if is_incremental() %}
