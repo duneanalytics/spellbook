@@ -3,7 +3,7 @@ version: 2
 models:
   - name: gas_prices
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli, linea, zkevm
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli, linea, zkevm, goerli
       sector: gas
       contributors: hildobby
     config:

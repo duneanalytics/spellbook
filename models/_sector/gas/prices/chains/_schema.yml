@@ -376,3 +376,27 @@ models:
       - *avg_gas
       - *min_gas
       - *max_gas
+        
+  - name: gas_goerli_prices
+    meta: 
+      blockchain: goerli
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on goerli
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *time
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
