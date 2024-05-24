@@ -13,5 +13,5 @@
 
 {{gas_prices(
         blockchain = blockchain
-        , transactions = {{ source(blockchain, 'transactions') }}
+        , transactions = source(blockchain, 'transactions')
 )}}
