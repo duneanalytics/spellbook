@@ -19,12 +19,12 @@ xdai_transfers  as (
             tx_hash,
             trace_address, 
             block_time,
-            COALESCE(to,address)as wallet_address, 
+            COALESCE(to,address) as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
             TRY_CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
-        WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
+        WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR type = 'create' OR (call_type IS NULL AND type != 'create'))
         AND success
         AND TRY_CAST(value as INT256) > 0
        -- AND to IS NOT NULL 
