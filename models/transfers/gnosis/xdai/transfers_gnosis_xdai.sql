@@ -21,12 +21,12 @@ xdai_transfers  as (
             block_time,
             to as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            CAST(value as INT256) as amount_raw
+            TRY_CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
-        AND CAST(value as double) > 0
+        AND TRY_CAST(value as INT256) > 0
         AND to IS NOT NULL 
         AND to != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
         {% if is_incremental() %}
@@ -42,12 +42,12 @@ xdai_transfers  as (
             block_time,
             "from" as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            -CAST(value as INT256) as amount_raw
+            -TRY_CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
-        AND CAST(value as INT256) > 0
+        AND TRY_CAST(value as INT256) > 0
         AND "from" IS NOT NULL 
         AND "from" != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
         {% if is_incremental() %}
@@ -64,8 +64,8 @@ gas_fee as (
         "from" as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         -(CASE 
-            WHEN CAST(gas_price  as double) = 0 THEN 0
-            ELSE (CAST(gas_used as DOUBLE) * CAST(gas_price as DOUBLE))
+            WHEN TRY_CAST(gas_price as INT256) = 0 THEN 0
+            ELSE (TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256))
         END) as amount_raw
     FROM 
     {{ source('gnosis', 'transactions') }}
@@ -82,7 +82,7 @@ block_reward AS (
         evt_block_time AS block_time, 
         receiver as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        CAST(amount as INT256) as amount_raw
+        TRY_CAST(amount as INT256) as amount_raw
     FROM 
         {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
     {% if is_incremental() %}
