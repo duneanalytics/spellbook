@@ -45,7 +45,7 @@ FROM (
         , max_gas
         FROM {{ all_model }}
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('minute') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
