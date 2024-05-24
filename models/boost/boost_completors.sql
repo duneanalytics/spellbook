@@ -12,6 +12,7 @@
     'ethereum': 'sum(gas_used / 1e18 * gas_price) ethereum_fee_eth',
     'optimism': 'sum((gas_used * gas_price + l1_fee) / 1e18) optimism_fee_eth',
     'polygon': 'sum(gas_used / 1e18 * gas_price) polygon_fee_matic',
+    'zora': 'sum(gas_used * gas_price) / 1e18 zora_fee_eth',
 } %}
 
 with boost_completors as (
