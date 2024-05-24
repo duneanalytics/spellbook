@@ -73,4 +73,3 @@ running_cumulative_balance_by_token AS (
 )
 
 SELECT * FROM running_cumulative_balance_by_token
-
