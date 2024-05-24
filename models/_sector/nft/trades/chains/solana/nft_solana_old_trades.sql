@@ -33,7 +33,7 @@ SELECT * FROM  (
         amount_original,
         amount_usd,
         currency_symbol,
-        currency_contract,
+        currency_contract as currency_address,
         cast(null as varchar) as account_merkle_tree,
         cast(null as uint256) as leaf_id,
         cast(null as varchar) as account_mint,
