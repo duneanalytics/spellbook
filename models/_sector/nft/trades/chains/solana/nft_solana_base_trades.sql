@@ -37,5 +37,5 @@ SELECT
     cast(null as varbinary) as tx_from,
     cast(null as varbinary) as tx_to,
     cast(null as varbinary) as tx_data_marker,                                                  -- forwarc compatibility with aggregator marker matching
-    row_number() over (partition by tx_id order by leaf_id) as sub_tx_trade_id,       -- intermediate fix to fill this column
+    row_number() over (partition by tx_id order by leaf_id) as sub_tx_trade_id       -- intermediate fix to fill this column
 FROM {{ ref('nft_solana_trades') }}
