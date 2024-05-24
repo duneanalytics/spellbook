@@ -1,8 +1,7 @@
 {{ config(
     schema = 'alm_ethereum'
     , alias = 'base_trades'
-    , materialized = 'incremental'
-    , incremental_strategy = 'merge'
+    , materialized = 'view'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'vault_address']
     )
 }}
