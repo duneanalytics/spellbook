@@ -77,9 +77,9 @@ gas_fee as (
 block_reward AS (
     SELECT 
         'block_reward' as transfer_type,
-        tx_hash, 
+        evt_tx_hash AS tx_hash, 
         array[index] as trace_address, 
-        block_time, 
+        evt_block_time AS block_time, 
         receiver AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
@@ -94,9 +94,9 @@ block_reward AS (
 bridged AS (
     SELECT 
         'bridged' as transfer_type,
-        tx_hash, 
+        evt_tx_hash AS tx_hash, 
         array[index] as trace_address, 
-        block_time, 
+        evt_block_time AS block_time, 
         recipient AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
