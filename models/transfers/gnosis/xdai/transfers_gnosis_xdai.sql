@@ -86,7 +86,7 @@ block_reward AS (
     FROM 
         {{ source('xdai_gnosis', 'RewardByBlock_evt_AddedReceiver') }}
     {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '3' Day)
+    WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 
     UNION ALL
@@ -102,7 +102,7 @@ block_reward AS (
     FROM 
         {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
     {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '3' Day)
+    WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 
 ),
