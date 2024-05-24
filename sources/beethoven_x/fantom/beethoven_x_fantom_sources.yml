@@ -84,22 +84,32 @@ sources:
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
         loaded_at_field: call_block_time
         columns:
-          - *call_block_number
-          - *call_block_time
-          - *call_success
-          - *call_trace_address
-          - *call_tx_hash
+          - name: call_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - name: call_block_time
+            description: 'Timestamp for block time in which the call occurred in UTC'
+          - name: call_success
+            description: 'Boolean indicating if call was successfully processed'
+          - name: call_trace_address
+            description: ''
+          - name: call_tx_hash
+            description: 'Primary key of the transaction'
           - name: contract_address
             description: 'Address of the WeightedPoolV2Factory contract'
           - name: name
             description: 'Name of the created pool'
           - name: normalizedWeights
             description: 'Array with the normalized weight of each token in the created pool'
-          - *output_0
-          - *owner
-          - *swapFeePercentage
-          - *symbol
-          - *tokens
+          - name: output_0
+            description: 'Contract address of the created pool'
+          - name: owner
+            description: 'Contract of the pool owner'
+          - name: swapFeePercentage
+            description: 'Pool swap fee in percentage'
+          - name: symbol
+            description: 'Symbol of the created pool'
+          - name: tokens
+            description: 'Array with the address of the created pool tokens'
 
       - name: WeightedPool2TokensFactory_call_create
         description: >
