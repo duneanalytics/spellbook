@@ -48,6 +48,7 @@ xdai_transfers  as (
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
         AND TRY_CAST(value as INT256) > 0
+        AND tx_hash IS NOT NULL
        -- AND "from" IS NOT NULL 
        -- AND "from" != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
         {% if is_incremental() %}
