@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
-    alias = 'xdai',
+    alias = 'xdai_v2',
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "transfers",
@@ -21,7 +21,7 @@ xdai_transfers  as (
             block_time,
             to as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            CAST(value as double) as amount_raw
+            CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
@@ -42,12 +42,12 @@ xdai_transfers  as (
             block_time,
             "from" as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            -CAST(value as double) as amount_raw
+            -CAST(value as INT256) as amount_raw
         FROM 
         {{ source('gnosis', 'traces') }}
         WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
         AND success
-        AND CAST(value as double) > 0
+        AND CAST(value as INT256) > 0
         AND "from" IS NOT NULL 
         AND "from" != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
         {% if is_incremental() %}
@@ -71,6 +71,22 @@ gas_fee as (
     {{ source('gnosis', 'transactions') }}
     {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+),
+
+block_reward AS (
+    SELECT
+        'block_reward' as transfer_type,
+        evt_tx_hash as tx_hash, 
+        array[evt_index] as trace_address, 
+        evt_block_time AS block_time, 
+        receiver as wallet_address, 
+        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
+        CAST(amount as INT256) as amount_raw
+    FROM 
+        {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
+    {% if is_incremental() %}
+        WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 )
 
@@ -101,3 +117,18 @@ SELECT
     amount_raw
 FROM 
 gas_fee
+
+UNION ALL 
+
+SELECT 
+    'gnosis' as blockchain, 
+    transfer_type,
+    tx_hash, 
+    trace_address,
+    block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+block_reward
