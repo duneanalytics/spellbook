@@ -70,7 +70,7 @@ erc20_transfers  as (
             contract_address as token_address, 
             -TRY_CAST(wad as INT256) as amount_raw
         FROM 
-        {{ source('wxdai_gnosis', 'WXDAI_evt_Deposit') }}
+        {{ source('wxdai_gnosis', 'WXDAI_evt_Withdrawal') }}
         
 )
 
