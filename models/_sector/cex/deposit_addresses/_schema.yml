@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: cex_arbitrum_deposit_addresses
+    meta:
+      blockchain: arbitrum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &address
+        name: block_month
+        description: "Block month"
+      - &cex_name
+        name: cex_name
+        description: "CEX name"
+      - &creation_block_time
+        name: creation_block_time
+        description: "Name of centralised exchange"
+      - &creation_block_number
+        name: creation_block_number
+        description: "Distinct name of centralised exchange address"
+      - &funded_by_same_cex
+        name: funded_by_same_cex
+        description: "Is it funded by an address identified as belonging to the same CEX"
