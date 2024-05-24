@@ -64,12 +64,29 @@ gas_fee as (
         block_time, 
         "from" as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        -(CASE 
-            WHEN TRY_CAST(gas_price as INT256) = 0 THEN 0
-            ELSE (TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256))
-        END) as amount_raw
+        - TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256) as amount_raw
     FROM 
     {{ source('gnosis', 'transactions') }}
+    {% if is_incremental() %}
+        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+),
+
+gas_fee_reward as (
+    SELECT 
+        'gas_fee' as transfer_type,
+        t1.hash as tx_hash, 
+        array[t1.index] as trace_address, 
+        t1.block_time, 
+        t2.miner as wallet_address, 
+        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
+        (TRY_CAST(t1.gas_used as INT256) - TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256))* TRY_CAST(t1.gas_price as INT256) as amount_raw
+    FROM 
+        {{ source('gnosis', 'transactions') }} t1
+    INNER JOIN
+        {{ source('gnosis', 'blocks') }} t2
+        ON
+        t2.time = t1.block_time
     {% if is_incremental() %}
         WHERE block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
@@ -152,6 +169,21 @@ SELECT
     amount_raw
 FROM 
 gas_fee
+
+UNION ALL 
+
+SELECT 
+    'gnosis' as blockchain, 
+    transfer_type,
+    tx_hash, 
+    trace_address,
+    block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+gas_fee_rewards
 
 UNION ALL 
 
