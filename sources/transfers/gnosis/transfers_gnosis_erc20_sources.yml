@@ -45,4 +45,30 @@ sources:
           - *evt_tx_hash
           - *wad
 
+  - name: xdai_bridge_gnosis
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: HomeBridgeErcToNative_evt_UserRequestForSignature
+        loaded_at_field: evt_block_time
+        description: "HomeBridgeErcToNative"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &evt_tx_from
+            name: evt_tx_from
+            description: "Address of sender of transaction"
+          - &evt_tx_to
+            name: evt_tx_to
+            description: "Address of transaction receiver"
+          - &recipient
+            name: recipient
+            description: "Recipient"
+          - &value
+            name: value
+            description: "value"
+            
 

@@ -80,13 +80,28 @@ block_reward AS (
         tx_hash, 
         array[index] as trace_address, 
         block_time, 
-        VARBINARY_LTRIM(topic1) AS wallet_address,
+        receiver AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        TRY_CAST(varbinary_to_uint256(varbinary_ltrim(data)) as INT256) as amount_raw
+        TRY_CAST(amount as INT256) as amount_raw
     FROM 
-        {{ source('gnosis', 'logs') }}
-    WHERE 
-        topic0 = 0x3c798bbcf33115b42c728b8504cff11dd58736e9fa789f1cda2738db7d696b2a
+        {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
+    {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+
+),
+
+bridged AS (
+    SELECT 
+        'bridged' as transfer_type,
+        tx_hash, 
+        array[index] as trace_address, 
+        block_time, 
+        recipient AS wallet_address,
+        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
+        TRY_CAST(amount as INT256) as amount_raw
+    FROM 
+        {{ source('xdai_bridge_gnosis', 'HomeBridgeErcToNative_evt_UserRequestForSignature') }}
     {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
@@ -135,3 +150,18 @@ SELECT
     amount_raw
 FROM 
 block_reward
+
+UNION ALL 
+
+SELECT 
+    'gnosis' as blockchain, 
+    transfer_type,
+    tx_hash, 
+    trace_address,
+    block_time,
+    CAST(date_trunc('month', block_time) as date) as block_month,
+    wallet_address, 
+    token_address, 
+    amount_raw
+FROM 
+bridged
