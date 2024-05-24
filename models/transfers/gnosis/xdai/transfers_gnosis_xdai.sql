@@ -74,7 +74,7 @@ gas_fee as (
 
 gas_fee_reward as (
     SELECT 
-        'gas_fee' as transfer_type,
+        'gas_fee_reward' as transfer_type,
         t1.hash as tx_hash, 
         array[t1.index] as trace_address, 
         t1.block_time, 
