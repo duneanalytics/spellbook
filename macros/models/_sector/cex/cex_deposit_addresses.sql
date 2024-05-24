@@ -73,7 +73,7 @@ WITH potential_addresses AS (
     GROUP BY 1, 2, 3, 4, 5, 6, 7
     )
 
-SELECT blockchain AS blockchain
+SELECT '{{blockchain}}' AS blockchain
 , potential_deposit AS address
 , cex_name
 , creation_block_time
