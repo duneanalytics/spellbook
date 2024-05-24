@@ -24,3 +24,5 @@ where evt_block_time > date_trunc('day', now() - interval '2' day)
 {% endif %}
 group by
     date_trunc('day', evt_block_time), wallet_address, token_address, tokenId, unique_tx_id
+
+-- test test
