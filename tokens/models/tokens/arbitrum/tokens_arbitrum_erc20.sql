@@ -62,4 +62,5 @@ FROM (VALUES
     , (0x5402b5f40310bded796c7d0f3ff6683f5c0cffdf, 'sGLP', 18)
     , (0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 'GYD', 18)
     , (0xed65c5085a18fa160af0313e60dcc7905e944dc7, 'ETHx', 18)
+    , (0x221A0f68770658C15B525d0F89F5da2baAB5f321, 'OD', 18)
 ) AS temp_table (contract_address, symbol, decimals)
