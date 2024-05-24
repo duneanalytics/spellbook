@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: dodo_optimism_trades
+  - name: dodo_aggregator_optimism_trades
     meta:
       blockchain: optimism
       sector: dex
-      project: dodo
+      project: dodo_aggregator
       contributors: owen05
     config:
-      tags: ['optimism','dodo','trades', 'dex']
+      tags: ['optimism', 'dodo', 'aggregator', 'trades', 'dex']
     description: >
-        Dodo trades on Optimism.
+        DODO Aggregation on Optimism.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -20,10 +20,15 @@ models:
             - version
             - tx_hash
             - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: optimism
+          project: DODO X
+          version: 0
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed (specify: optimism)"
+        description: "Blockchain which the DEX is deployed (specify: arbitrum)"
       - &project
         name: project
         description: "Project name of the DEX (specify: DODO)"
@@ -84,111 +89,8 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
+      - name: trace_address
+        description: "address of the trace within the call graph forest"
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-
-  - name: dodo_pools_optimism_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: dodo_pools
-      contributors: owen05
-    config:
-      tags: ['optimism', 'dodo', 'pools', 'trades', 'dex']
-    description: >
-        DodoV1 && DODOV2 pools' trades on Optimism.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-      - check_dex_seed:
-          blockchain: optimism
-          project: dodo
-          version: 1
-      - check_dex_seed:
-          blockchain: optimism
-          project: dodo
-          version: 2_dvm
-      - check_dex_seed:
-          blockchain: optimism
-          project: dodo
-          version: 2_dpp
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
-
-  - name: dodo_aggregator_optimism_trades
-    meta:
-      blockchain: optimism
-      sector: dex
-      project: dodo_aggregator
-      contributors: owen05
-    config:
-      tags: ['optimism', 'dodo', 'aggregator', 'trades', 'dex']
-    description: >
-        DODO Aggregation on Optimism.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-      - check_dex_aggregator_seed:
-          blockchain: optimism
-          project: DODO X
-          version: 0
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - name: trace_address
-        description: "address of the trace within the call graph forest"
-      - *evt_index
