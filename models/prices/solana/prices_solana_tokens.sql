@@ -669,5 +669,9 @@ FROM
         ('w-wormhole', 'solana', 'W', '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', 6),
         ('trump-maga', 'solana', 'TRUMP', 'HaP8r3ksG76PhQLTqR8FYBeNiQpejcFbQmiHbg787Ut1', 8),
         ('popcat-popcat', 'solana', 'POPCAT', '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr', 9),
-        ('jupsol-jupiter-staked-sol', 'solana', 'JUPSOL', 'jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v', 9)
+        ('jupsol-jupiter-staked-sol', 'solana', 'JUPSOL', 'jupSoLaHXQiZZTSfEWMTRRgpnyFm8f6sZdosWBjx93v', 9),
+        ('michi-michicoin', 'solana', '$MICHI', '5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp', 6),
+        ('gme-gme', 'solana', 'GME', '8wXtPeU6557ETkp9WHFY1n1EcU6NxDvbAggHGsMYiHsB', 9),
+        ('usa-american-coin', 'solana', 'USA', '69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs', 6),
+        ('scnsol-socean-staked-sol', 'solana',  'SCNSOL', '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
