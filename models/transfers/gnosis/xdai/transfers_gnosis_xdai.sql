@@ -78,7 +78,7 @@ block_reward AS (
     SELECT 
         'block_reward' as transfer_type,
         evt_tx_hash AS tx_hash, 
-        array[index] as trace_address, 
+        array[evt_index] as trace_address, 
         evt_block_time AS block_time, 
         receiver AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
@@ -95,7 +95,7 @@ bridged AS (
     SELECT 
         'bridged' as transfer_type,
         evt_tx_hash AS tx_hash, 
-        array[index] as trace_address, 
+        array[evt_index] as trace_address, 
         evt_block_time AS block_time, 
         recipient AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
