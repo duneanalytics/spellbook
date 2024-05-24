@@ -19,8 +19,18 @@ models:
         name: blockchain
         description: "Blockchain"
       - &block_month
+      - *cex_name
+      - *distinct_name
         name: block_month
+      - *cex_name
+      - *distinct_name
         description: "Block month"
+      - &cex_name
+        name: cex_name
+        description: "CEX name"
+      - &distinct_name
+        name: distinct_name
+        description: "Distinct CEX name"
       - &block_time
         name: block_time
         description: "Block time"
@@ -95,6 +105,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -131,6 +143,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -167,6 +181,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -203,6 +219,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -239,6 +257,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -275,6 +295,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -311,6 +333,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -347,6 +371,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -383,6 +409,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -419,6 +447,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
@@ -455,6 +485,8 @@ models:
     columns:
       - *blockchain
       - *block_month
+      - *cex_name
+      - *distinct_name
       - *block_time
       - *block_number
       - *cex_name
