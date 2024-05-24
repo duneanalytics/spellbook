@@ -37,21 +37,25 @@ xdai_transfers  as (
 
         SELECT 
             'send' as transfer_type, 
-            tx_hash,
-            trace_address, 
-            block_time,
-            "from" as wallet_address, 
+            t1.tx_hash,
+            t1.trace_address, 
+            t1.block_time,
+            COALESCE(t1."from",t2.address) as wallet_address, 
             0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
-            -TRY_CAST(value as INT256) as amount_raw
+            -TRY_CAST(t1.value as INT256) as amount_raw
         FROM 
-        {{ source('gnosis', 'traces') }}
-        WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
-        AND success
-        AND TRY_CAST(value as INT256) > 0
-        AND "from" IS NOT NULL 
-        AND "from" != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
+            {{ source('gnosis', 'traces') }} t1
+        LEFT JOIN 
+            {{ source('gnosis', 'creation_traces') }} t2 
+            ON
+            t2.tx_hash = t1.tx_hash
+        WHERE (t1.call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL)
+        AND t1.success
+        AND TRY_CAST(t1.value as INT256) > 0
+        AND t1."from" IS NOT NULL 
+        AND t1."from" != 0x0000000000000000000000000000000000000000 -- Issues in tests with tx_hash NULL, exclude address
         {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '3' Day)
+            AND t1.block_time >= date_trunc('day', now() - interval '3' Day)
         {% endif %}
 ),
 
@@ -119,7 +123,7 @@ bridged AS (
     FROM 
         {{ source('xdai_bridge_gnosis', 'HomeBridgeErcToNative_evt_UserRequestForSignature') }}
     {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '3' Day)
+        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 
 )
