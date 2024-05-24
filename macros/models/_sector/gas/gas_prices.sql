@@ -1,6 +1,6 @@
 {% macro gas_prices(blockchain, transactions) %}
 
-SELECT blockchain AS blockchain
+SELECT '{{blockchain}}' AS blockchain
 , date_trunc('minute', block_time) AS time
 , approx_percentile(gas_price, 0.1) AS median_gas
 , approx_percentile(gas_price, 0.5) AS tenth_percentile_gas
