@@ -12,6 +12,6 @@ FROM {{transactions}}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
-GROUP BY 1
+GROUP BY 2
 
 {% endmacro %}
