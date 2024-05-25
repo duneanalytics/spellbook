@@ -16,6 +16,8 @@ WITH transfered_to_similar_addresses AS (
     --, attack.blockchain AS phished_blockchain
     --, normal.blockchain AS original_blockchain
     , attack.tx_hash
+    , attack.tx_index
+    , attack.evt_index
     FROM {{token_transfers}} attack
     INNER JOIN {{token_transfers}} normal ON normal.block_time BETWEEN attack.block_time - interval '1' day AND attack.block_time -- To tweak, ideally 3 days
         AND attack.tx_from=normal.tx_from
@@ -42,6 +44,8 @@ SELECT '{{blockchain}}' AS blockchain
 , ttsa.original_to_address
 , ttsa.phished_to_address
 , ttsa.tx_hash
+, ttsa.tx_index
+, ttsa.evt_index
 FROM transfered_to_similar_addresses ttsa
 LEFT JOIN {{cex_addresses}} ca ON ca.address=ttsa.victim -- Exclude CEXs
     AND ca.address IS NULL

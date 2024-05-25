@@ -2,12 +2,12 @@
 
 {{ config(
         
-        schema = 'cex_' + blockchain,
-        alias = 'flows',
+        schema = 'attacks_' + blockchain,
+        alias = 'address_poisoning',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['flow_type', 'unique_key']
+        unique_key = ['tx_index', 'evt_index']
 )
 }}
 

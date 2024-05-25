@@ -3,7 +3,7 @@ version: 2
 models:
   - name: attacks_address_poisoning
     meta:
-      blockchain: ethereum
+      blockchain: arbitrum
       sector: attacks
       contributors: hildobby
     config:
@@ -12,8 +12,8 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - flow_type
-            - unique_key
+            - tx_index
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -48,5 +48,12 @@ models:
       - &original_to_address
         name: original_to_address
         description: "Flow type"
-      - &phished_tx_hash
-        name: amount_usd
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
