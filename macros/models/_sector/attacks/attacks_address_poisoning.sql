@@ -12,6 +12,7 @@ WITH only_relevant AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('tr.block_time') }}
     {% endif %}
+    GROUP BY 1
     )
 
 , transfered_to_similar_addresses AS (
