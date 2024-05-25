@@ -4,7 +4,7 @@ WITH only_relevant AS (
     SELECT tr.tx_from
     FROM {{token_transfers}} tr
     INNER JOIN {{transactions}} txs ON txs.block_number = tr.block_number
-        AND txs.tx_index = tr.tx_index
+        AND txs.index = tr.tx_index
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% endif %}
