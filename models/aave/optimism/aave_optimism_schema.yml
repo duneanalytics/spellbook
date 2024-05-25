@@ -32,6 +32,9 @@ models:
       - &depositor
         name: depositor
         description: "Depositor wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
       - &withdrawn_to
         name: withdrawn_to
         description: "Withdrawn to wallet address"
@@ -53,6 +56,9 @@ models:
       - &block_number
         name: block_number
         description: "Event block number"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
@@ -127,12 +133,14 @@ models:
       - &borrower
         name: borrower
         description: "Borrower wallet address"
+      - *on_behalf_of
       - &repayer
         name: repayer
         description: "Repayer wallet address"
       - *liquidator
       - *amount
       - *usd_amount
+      - *project_contract_address
       - *tx_hash
       - *evt_index
       - *block_time
