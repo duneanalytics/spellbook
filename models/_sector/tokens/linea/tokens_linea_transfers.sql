@@ -20,7 +20,7 @@
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = ref('evms_info')
-        , transfers_start_date = '2023-02-15'
+        , transfers_start_date = '2023-07-06'
         , blockchain = 'linea'
     )
 }}
