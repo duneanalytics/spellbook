@@ -471,6 +471,7 @@ FROM (VALUES
     , (0x6b2c0c7be2048daa9b5527982c29f48062b34d58, 'OKX', 'OKX 138', 'hildobby', date '2024-05-04')
     , (0x6df7e0f084d46683e811998847da3832c9dc3b35, 'OKX', 'OKX 139', 'hildobby', date '2024-05-25')
     , (0x7afbf56c48d38d732e8b71db229a20a2eaea8532, 'OKX', 'OKX 140', 'hildobby', date '2024-05-25')
+    , (0xf332761c673b59b21ff6dfa8ada44d78c12def09, 'OKX', 'OKX 141', 'hildobby', date '2024-05-25')
     , (0x3b3ae790df4f312e745d270119c6052904fb6790, 'OKX', 'OKX DEX Aggregation Router', 'hildobby', date '2023-08-31')
     , (0xc5a93444cc4da6efb9e6fc6e5d3cb55a53b52396, 'OKX', 'OKX Deposit Funder 1', 'hildobby', date '2023-08-31')
     , (0x24c654f6b143dc5cae3c02fbb527ca63aa555dbc, 'OKX', 'OKX Deposit Funder 2', 'hildobby', date '2023-08-31')
@@ -485,6 +486,7 @@ FROM (VALUES
     , (0xe7f344e7b95c8a19d7d77ea27b86ee2fd6d776cf, 'OKX', 'OKX Deposit Funder 11', 'hildobby', date '2023-11-23')
     , (0x6e0ad348ce07218f772dc4c05e6c747da12d664e, 'OKX', 'OKX Deposit Funder 12', 'hildobby', date '2024-05-25')
     , (0x6e5d525fa1b207b0e42fc3ffdfb9bed507708904, 'OKX', 'OKX Deposit Funder 13', 'hildobby', date '2024-05-25')
+    , (0xcc3947059395a2dfd4ee23dfb1bb586f90d44f2e, 'OKX', 'OKX Deposit Funder 14', 'hildobby', date '2024-05-25')
     -- Cobo
     , (0xa9c7d31bb1879bff8be25ead2f59b310a52b7c5a, 'Cobo', 'Cobo 1', 'hildobby', date '2023-11-16')
     , (0xbf957e1c121fa769580d29bf320ee8bff138ad12, 'Cobo', 'Cobo 2', 'hildobby', date '2023-11-16')
