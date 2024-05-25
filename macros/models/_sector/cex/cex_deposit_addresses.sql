@@ -80,6 +80,10 @@ SELECT '{{blockchain}}' AS blockchain
 , funded_by_same_cex
 FROM sent_and_received
 INNER JOIN unique_addresses_two ua USING (potential_deposit)
+{% if is_incremental() %}
+LEFT JOIN {{this}} eda ON potential_deposit = eda.address 
+    AND eda.address IS NULL
+{% endif %}
 WHERE deposited > 0
 AND sent > 0
 AND (deposited=sent OR
