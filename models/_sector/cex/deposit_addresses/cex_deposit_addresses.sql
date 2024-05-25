@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['blockchain', 'address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "zksync", "scroll", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "zksync", "scroll"]\',
                                     "sector",
                                     "cex",
                                     \'["hildobby"]\') }}'
@@ -24,7 +24,6 @@
     , ref('cex_polygon_deposit_addresses')
     , ref('cex_base_deposit_addresses')
     , ref('cex_zksync_deposit_addresses')
-    , ref('cex_zora_deposit_addresses')
     , ref('cex_celo_deposit_addresses')
     , ref('cex_scroll_deposit_addresses')
     , ref('cex_zora_deposit_addresses')
