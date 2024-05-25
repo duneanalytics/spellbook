@@ -1,6 +1,5 @@
 {{
   config(
-    tags=['prod_exclude'],
     schema = 'lending',
     alias = 'supply',
     partition_by = ['blockchain', 'project', 'block_month'],
