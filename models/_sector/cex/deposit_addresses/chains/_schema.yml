@@ -1,0 +1,314 @@
+version: 2
+
+models:
+  - name: cex_arbitrum_deposit_addresses
+    meta:
+      blockchain: arbitrum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &address
+        name: block_month
+        description: "Block month"
+      - &cex_name
+        name: cex_name
+        description: "CEX name"
+      - &creation_block_time
+        name: creation_block_time
+        description: "Name of centralised exchange"
+      - &creation_block_number
+        name: creation_block_number
+        description: "Distinct name of centralised exchange address"
+      - &funded_by_same_cex
+        name: funded_by_same_cex
+        description: "Is it funded by an address identified as belonging to the same CEX"
+
+  - name: cex_avalanche_c_deposit_addresses
+    meta:
+      blockchain: avalanche_c
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on avalanche_c"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_base_deposit_addresses
+    meta:
+      blockchain: base
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_bnb_deposit_addresses
+    meta:
+      blockchain: bnb
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on bnb"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_celo_deposit_addresses
+    meta:
+      blockchain: celo
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_ethereum_deposit_addresses
+    meta:
+      blockchain: ethereum
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_fantom_deposit_addresses
+    meta:
+      blockchain: fantom
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_gnosis_deposit_addresses
+    meta:
+      blockchain: gnosis
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_linea_deposit_addresses
+    meta:
+      blockchain: linea
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on linea"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_optimism_deposit_addresses
+    meta:
+      blockchain: optimism
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_polygon_deposit_addresses
+    meta:
+      blockchain: polygon
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_scroll_deposit_addresses
+    meta:
+      blockchain: scroll
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on scroll"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_zkevm_deposit_addresses
+    meta:
+      blockchain: zkevm
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on zkevm"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_zksync_deposit_addresses
+    meta:
+      blockchain: zksync
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on zksync"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex
+
+  - name: cex_zora_deposit_addresses
+    meta:
+      blockchain: zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','deposit']
+    description: "All identified CEX deposit addresses on zora"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *cex_name
+      - *creation_block_time
+      - *creation_block_number
+      - *funded_by_same_cex

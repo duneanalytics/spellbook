@@ -1,17 +1,18 @@
 version: 2
 
 models:
-  - name: cex_arbitrum_deposit_addresses
+  - name: cex_deposit_addresses
     meta:
-      blockchain: arbitrum
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, linea, optimism, polygon, scroll, zkevm, zksync, zora
       sector: cex
       contributors: hildobby
     config:
       tags: ['cex','deposit']
-    description: "All identified CEX deposit addresses on arbitrum"
+    description: "All identified CEX deposit addresses across EVM chains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - blockchain
             - address
     columns:
       - &blockchain
