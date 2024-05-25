@@ -1,7 +1,8 @@
 {% macro cex_deposit_addresses(blockchain, token_transfers, cex_addresses, cex_flows, first_funded_by) %}
 
 WITH potential_addresses AS (
-    SELECT DISTINCT f."from" AS potential_deposit
+    SELECT ROW_NUMBER() OVER (PARTITION BY f."from") AS row_number
+    , f."from" AS potential_deposit
     , f.to AS cex_address
     , f.cex_name
     , CASE WHEN f.cex_name=affb.cex_name THEN true ELSE false END AS funded_by_same_cex
@@ -21,10 +22,18 @@ WITH potential_addresses AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('f.block_time')}}
     {% endif %}
+    GROUP BY 1, 2, 3, 4, 5, 6, 7
+    )
+
+, unique_addresses AS (
+    SELECT potential_deposit
+    FROM potential_addresses
+    GROUP BY potential_deposit
+    HAVING COUNT(*) = 1
     )
 
 , sent_tokens AS (
-    SELECT pa.potential_deposit
+    SELECT potential_deposit
     , pa.cex_name
     , pa.funded_by_same_cex
     , tt.contract_address
@@ -33,8 +42,9 @@ WITH potential_addresses AS (
     , pa.creation_block_number
     , SUM(tt.amount) AS sent
     FROM {{token_transfers}} tt
-    INNER JOIN potential_addresses pa ON pa.potential_deposit=tt."from"
+    INNER JOIN potential_addresses pa ON potential_deposit=tt."from"
         AND tt.to=pa.cex_address
+    INNER JOIN unique_addresses ua USING (potential_deposit)
     WHERE tt.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '1' day
     GROUP BY 1, 2, 3, 4, 5, 6, 7
     )
