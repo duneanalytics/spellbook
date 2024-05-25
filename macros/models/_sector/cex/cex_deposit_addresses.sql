@@ -65,6 +65,13 @@ WITH potential_addresses AS (
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 9
     )
 
+, unique_addresses_two AS (
+    SELECT potential_deposit
+    FROM sent_and_received
+    GROUP BY potential_deposit
+    HAVING COUNT(*) = 1
+    )
+
 SELECT '{{blockchain}}' AS blockchain
 , potential_deposit AS address
 , cex_name
@@ -72,10 +79,10 @@ SELECT '{{blockchain}}' AS blockchain
 , creation_block_number
 , funded_by_same_cex
 FROM sent_and_received
+INNER JOIN unique_addresses_two ua USING (potential_deposit)
 WHERE deposited > 0
 AND sent > 0
 AND (deposited=sent OR
     (token_standard='native' AND sent BETWEEN GREATEST(deposited - 0.02, 0) AND deposited)) -- Will lose some to gas if native token
-
 
 {% endmacro %}
