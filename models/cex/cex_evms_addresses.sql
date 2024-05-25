@@ -497,6 +497,7 @@ FROM (VALUES
     , (0xa443320a40fdd0e8b3c21c94ed4363efb7621679, 'Cobo', 'Cobo Deposit Funder 1', 'hildobby', date '2023-11-20')
     , (0xf1300cc9c2cf347f7902742fec4df9dba952fd7b, 'Cobo', 'Cobo Deposit Funder 2', 'hildobby', date '2023-11-20')
     , (0xdac967c10444267ee2e30de4d94ad997ada96be6, 'Cobo', 'Cobo Deposit Funder 3', 'hildobby', date '2023-11-23')
+    , (0x7a843e6ff730cb48ac94fd88235d393a41d23c5b, 'Cobo', 'Cobo Deposit Funder 4', 'hildobby', date '2024-05-25')
     -- HTX (fka Huobi)
     , (0xab5c66752a9e8167967685f1450532fb96d5d24f, 'HTX', 'HTX 1', 'hildobby', date '2022-08-28')
     , (0x6748f50f686bfbca6fe8ad62b22228b87f31ff2b, 'HTX', 'HTX 2', 'hildobby', date '2022-08-28')
