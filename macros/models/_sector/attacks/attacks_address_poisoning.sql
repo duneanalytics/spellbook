@@ -10,7 +10,7 @@ WITH transfered_to_similar_addresses AS (
     , attack.token_standard AS token_standard
     , attack.contract_address AS token_address
     , attack.symbol AS token_symbol
-    , attack.tx_to AS phished_to_address
+    , attack.tx_to AS attacker
     , normal.tx_to AS intended_recipient
     -- Uncomment if to be made a purely crosschain spell to catch crosschain phishing:
     --, attack.blockchain AS phished_blockchain
@@ -42,7 +42,7 @@ SELECT '{{blockchain}}' AS blockchain
 , ttsa.token_address
 , ttsa.token_symbol
 , ttsa.original_to_address
-, ttsa.phished_to_address
+, ttsa.attacker
 , ttsa.tx_hash
 , ttsa.tx_index
 , ttsa.evt_index

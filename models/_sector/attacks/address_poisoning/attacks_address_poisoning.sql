@@ -22,13 +22,19 @@ FROM (
         {% for attack_model in attack_models %}
         SELECT blockchain
         , block_time
-        , block_month
         , block_number
+        , victim
+        , amount_usd
+        , amount
+        , amount_raw
+        , token_standard
+        , token_address
+        , token_symbol
+        , original_to_address
+        , attacker
         , tx_hash
         , tx_index
-        , tx_from
-        , tx_to
-        , full_inscription
+        , evt_index
         FROM {{ attack_model }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
