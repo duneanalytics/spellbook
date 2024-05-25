@@ -1,6 +1,7 @@
 {{ config(
     schema = 'magiceden_solana',
     alias = 'events',
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -121,7 +122,18 @@ SELECT
   DOUBLE '2' as platform_fee_percentage,
   CAST (abs(element_at(post_balances,12) - element_at(pre_balances,12)) + abs(element_at(post_balances,13) - element_at(pre_balances,13))
     + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS uint256) as royalty_fee_amount_raw,
-
+  abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9) + abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
+    + abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9) + abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9) + abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)
+    as royalty_fee_amount,
+  (abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9) + abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
+    + abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9) + abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9) + abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)) *
+    p.price as royalty_fee_amount_usd,
+  ROUND(((abs(element_at(post_balances,11) / 1e9 - element_at(pre_balances,11) / 1e9)
+  +abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9)
+  +abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
+  +abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9)
+  +abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9)
+  +abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)) / ((abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9)-0.00204928)) * 100),2) as royalty_fee_percentage,
   cast(NULL as varbinary) as royalty_fee_receive_address,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
