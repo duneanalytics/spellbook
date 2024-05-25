@@ -73,7 +73,7 @@ WITH potential_addresses AS (
     )
 
 SELECT '{{blockchain}}' AS blockchain
-, sar.potential_deposit AS address
+, potential_deposit AS address
 , sar.cex_name
 , sar.creation_block_time
 , sar.creation_block_number
@@ -87,6 +87,6 @@ LEFT JOIN {{this}} eda ON potential_deposit = eda.address
 WHERE sar.deposited > 0
 AND sar.sent > 0
 AND (sar.deposited=sent OR
-    (sar.token_standard='native' AND sar.sent BETWEEN GREATEST(deposited - 0.02, 0) AND deposited)) -- Will lose some to gas if native token
+    (sar.token_standard='native' AND sar.sent BETWEEN GREATEST(sar.deposited - 0.02, 0) AND sar.deposited)) -- Will lose some to gas if native token
 
 {% endmacro %}
