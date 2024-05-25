@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: attacks_address_poisoning
+    meta:
+      blockchain: ethereum
+      sector: attacks
+      contributors: hildobby
+    config:
+      tags: ['attacks']
+    description: "All identified onchain attacks"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &victim
+        name: victim
+        description: "victim"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of transfered tokens"
+      - &amount
+        name: amount
+        description: "Amount of transfered tokens"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transfered tokens"
+      - &token_standard
+        name: token_standard
+        description: "Token standard of stolen token"
+      - &token_address
+        name: token_address
+        description: "Token address of stolen token"
+      - &token_symbol
+        name: token_symbol
+        description: "Token standard"
+      - &original_to_address
+        name: original_to_address
+        description: "Flow type"
+      - &phished_tx_hash
+        name: amount_usd
