@@ -40,7 +40,7 @@ FROM (
     , funded_by_same_cex
     FROM {{ cex_model }}
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
+    WHERE {{incremental_predicate('creation_block_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
