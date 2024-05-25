@@ -33,7 +33,7 @@ WITH potential_addresses AS (
     , pa.creation_block_number
     , SUM(tt.amount) AS sent
     FROM {{token_transfers}} tt
-    INNER JOIN potential_addresses pa ON pa.potential_deposit=t."from"
+    INNER JOIN potential_addresses pa ON pa.potential_deposit=tt."from"
         AND tt.to=pa.cex_address
     WHERE tt.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '1' day
     GROUP BY 1, 2, 3, 4, 5, 6, 7
@@ -49,9 +49,9 @@ WITH potential_addresses AS (
     , st.creation_block_number
     , SUM(tt.amount) AS deposited
     , st.sent
-    FROM token_transfers tt
+    FROM {{token_transfers}} tt
     INNER JOIN sent_tokens st ON st.potential_deposit=tt."to"
-    WHERE t.block_time BETWEEN pa.creation_block_time - interval '18' hour AND pa.creation_block_time + interval '6' day
+    WHERE tt.block_time BETWEEN st.creation_block_time - interval '18' hour AND st.creation_block_time + interval '6' day
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 9
     )
 
