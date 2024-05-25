@@ -77,4 +77,5 @@ AND sent > 0
 AND (deposited=sent OR
     (token_standard='native' AND sent BETWEEN GREATEST(deposited - 0.02, 0) AND deposited)) -- Will lose some to gas if native token
 
+
 {% endmacro %}
