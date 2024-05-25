@@ -133,26 +133,6 @@ models:
       - *creation_block_number
       - *funded_by_same_cex
 
-  - name: cex_fantom_deposit_addresses
-    meta:
-      blockchain: fantom
-      sector: cex
-      contributors: hildobby
-    config:
-      tags: ['cex','deposit']
-    description: "All identified CEX deposit addresses on fantom"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *blockchain
-      - *address
-      - *cex_name
-      - *creation_block_time
-      - *creation_block_number
-      - *funded_by_same_cex
-
   - name: cex_gnosis_deposit_addresses
     meta:
       blockchain: gnosis
