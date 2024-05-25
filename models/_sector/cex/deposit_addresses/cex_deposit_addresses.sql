@@ -2,7 +2,6 @@
 
         schema = 'cex',
         alias ='deposit_addresses',
-        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
