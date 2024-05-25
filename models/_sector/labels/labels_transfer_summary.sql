@@ -25,6 +25,7 @@ from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
 on t.blockchain = l.blockchain
  and "to" = l.address
+ and amount_usd < pow(10,12)
 group by 1,2
 )
 
@@ -42,6 +43,7 @@ from {{source('labels','owner_addresses')}} l
 inner join {{ref('tokens_transfers')}} t
 on t.blockchain = l.blockchain
  and "from" = l.address
+ and amount_usd < pow(10,12)
 group by 1,2
 )
 

@@ -34,8 +34,8 @@
             "src_token_amount":     "amount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
-            "direction_mask":       "bytearray_to_uint256(0x8000000000000000000000000000000000000000000000000000000000000000)",
-            "unwrap_mask":          "bytearray_to_uint256(0x4000000000000000000000000000000000000000000000000000000000000000)",
+            "direction_mask":       "bytearray_to_uint256(rpad(0x80, 32, 0x00))",
+            "unwrap_mask":          "bytearray_to_uint256(rpad(0x40, 32, 0x00))",
             "router_type":          "unoswap",
         },
         "unoswap v6": {
@@ -43,13 +43,13 @@
             "src_token_amount":     "amount",
             "dst_token_amount":     "output_returnAmount",
             "dst_token_amount_min": "minReturn",
-            "pool_type_mask":       "bytearray_to_uint256(0xe000000000000000000000000000000000000000000000000000000000000000)",
+            "pool_type_mask":       "bytearray_to_uint256(rpad(0xe0000000, 32, 0x00))",
             "pool_type_offset":     "253",
-            "direction_mask":       "bytearray_to_uint256(0x0080000000000000000000000000000000000000000000000000000000000000)",
-            "unwrap_mask":          "bytearray_to_uint256(0x1000000000000000000000000000000000000000000000000000000000000000)",
-            "src_token_mask":       "bytearray_to_uint256(0x000000ff00000000000000000000000000000000000000000000000000000000)",
+            "direction_mask":       "bytearray_to_uint256(rpad(0x00800000, 32, 0x00))",
+            "unwrap_mask":          "bytearray_to_uint256(rpad(0x10000000, 32, 0x00))",
+            "src_token_mask":       "bytearray_to_uint256(rpad(0x000000ff, 32, 0x00))",
             "src_token_offset":     "224",
-            "dst_token_mask":       "bytearray_to_uint256(0x0000ff0000000000000000000000000000000000000000000000000000000000)",
+            "dst_token_mask":       "bytearray_to_uint256(rpad(0x0000ff00, 32, 0x00))",
             "dst_token_offset":     "232",
             "router_type":          "unoswap",
         },
@@ -169,9 +169,9 @@
                 "clipperSwapToWithPermit":   dict(samples["clipper"], src_token_amount="amount", dst_token_amount_min="minReturn", blockchains=["ethereum"], dst_receiver="recipient"),
                 "unoswap":                   dict(samples["unoswap v3-v5"], src_token_address="srcToken", pools="transform(pools, x -> bytearray_to_uint256(x))"),
                 "unoswapWithPermit":         dict(samples["unoswap v3-v5"], src_token_address="srcToken", pools="transform(pools, x -> bytearray_to_uint256(x))"),
-                "uniswapV3Swap":             dict(samples["unoswap v3-v5"]),
-                "uniswapV3SwapTo":           dict(samples["unoswap v3-v5"], dst_receiver="recipient"),
-                "uniswapV3SwapToWithPermit": dict(samples["unoswap v3-v5"], dst_receiver="recipient"),
+                "uniswapV3Swap":             dict(samples["unoswap v3-v5"], unwrap_mask="bytearray_to_uint256(rpad(0x20, 32, 0x00))"),
+                "uniswapV3SwapTo":           dict(samples["unoswap v3-v5"], dst_receiver="recipient", unwrap_mask="bytearray_to_uint256(rpad(0x20, 32, 0x00))"),
+                "uniswapV3SwapToWithPermit": dict(samples["unoswap v3-v5"], dst_receiver="recipient", unwrap_mask="bytearray_to_uint256(rpad(0x20, 32, 0x00))"),
             },
         },
         "AggregationRouterV5": {
@@ -186,9 +186,9 @@
                 "unoswap":                   dict(samples["unoswap v3-v5"], src_token_address="srcToken"),
                 "unoswapTo":                 dict(samples["unoswap v3-v5"], src_token_address="srcToken", dst_receiver="recipient"),
                 "unoswapToWithPermit":       dict(samples["unoswap v3-v5"], src_token_address="srcToken", dst_receiver="recipient"),
-                "uniswapV3Swap":             dict(samples["unoswap v3-v5"]),
-                "uniswapV3SwapTo":           dict(samples["unoswap v3-v5"], dst_receiver="recipient"),
-                "uniswapV3SwapToWithPermit": dict(samples["unoswap v3-v5"], dst_receiver="recipient"),
+                "uniswapV3Swap":             dict(samples["unoswap v3-v5"], unwrap_mask="bytearray_to_uint256(rpad(0x20, 32, 0x00))"),
+                "uniswapV3SwapTo":           dict(samples["unoswap v3-v5"], dst_receiver="recipient", unwrap_mask="bytearray_to_uint256(rpad(0x20, 32, 0x00))"),
+                "uniswapV3SwapToWithPermit": dict(samples["unoswap v3-v5"], dst_receiver="recipient", unwrap_mask="bytearray_to_uint256(rpad(0x20, 32, 0x00))"),
             },
         },
         "AggregationRouterV6": {
@@ -219,7 +219,7 @@
 
 
 with 
--- pools tokens for unoswap/uniswap methods tokens parsing
+-- pools tokens for unoswap lineage tokens parsing
 pools_list as (
     select
         pool as pool_address
@@ -284,7 +284,6 @@ pools_list as (
                         blockchain=blockchain,
                         traces_cte=traces_cte,
                         pools_list=pools_list,
-                        native=native,
                         start_date=contract_data['start'],
                     )
                 }}
@@ -297,7 +296,7 @@ pools_list as (
 )
 
 select
-    '{{ blockchain }}' as blockchain
+    blockchain
     , block_number
     , block_time
     , tx_hash
@@ -323,8 +322,8 @@ select
     , call_type
     , src_receiver
     , dst_receiver
-    , src_token_address
-    , dst_token_address
+    , if(element_at(pools[1], 'unwrap') = 0x01 and src_token_address = wrapped_native_token_address and call_value > uint256 '0', {{native}}, src_token_address) as src_token_address
+    , if(element_at(reverse(pools)[1], 'unwrap') = 0x01 and dst_token_address = wrapped_native_token_address, {{native}}, dst_token_address) as dst_token_address
     , src_token_amount
     , dst_token_amount
     , dst_token_amount_min
@@ -346,5 +345,6 @@ from (
         )
     }}
 )
+join ({{ oneinch_blockchain_macro(blockchain) }}) on true
 
 {% endmacro %}

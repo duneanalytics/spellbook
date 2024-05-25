@@ -10,6 +10,7 @@
     , ref('sushiswap_v2_scroll_base_trades')
     , ref('zebra_scroll_base_trades')
     , ref('scrollswap_scroll_base_trades')
+    , ref('syncswap_v1_scroll_base_trades')
 ] %}
 
 WITH base_union AS (

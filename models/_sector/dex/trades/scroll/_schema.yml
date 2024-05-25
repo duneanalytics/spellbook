@@ -72,3 +72,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('scrollswap_scroll_base_trades_seed')
+
+  - name: syncswap_v1_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: syncswap
+      contributors: niftytable
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'syncswap' ]
+    description: "SyncSwap V1 scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('syncswap_scroll_base_trades_seed')    
