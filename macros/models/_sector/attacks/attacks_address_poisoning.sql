@@ -2,6 +2,8 @@
 
 WITH only_relevant AS (
     SELECT tr.tx_from
+    , tr.block_number
+    , tr.tx_index
     FROM {{token_transfers}} tr
     INNER JOIN {{transactions}} txs ON txs.block_number = tr.block_number
         AND txs.index = tr.tx_index
@@ -12,7 +14,7 @@ WITH only_relevant AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('tr.block_time') }}
     {% endif %}
-    GROUP BY 1
+    GROUP BY 1, 2, 3
     )
 
 , transfered_to_similar_addresses AS (
@@ -35,6 +37,8 @@ WITH only_relevant AS (
     , attack.evt_index
     FROM {{token_transfers}} attack
     INNER JOIN only_relevant ora ON ora.tx_from=attack.tx_from
+        AND ora.block_number=attack.block_number
+        AND ora.tx_index=attack.tx_index
     INNER JOIN {{token_transfers}} normal ON normal.block_time BETWEEN attack.block_time - interval '1' day AND attack.block_time -- To tweak, ideally 3 days
         AND attack.tx_from=normal.tx_from
         AND attack.tx_to!=normal.tx_to
