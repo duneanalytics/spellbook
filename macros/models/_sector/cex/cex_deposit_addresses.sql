@@ -23,54 +23,36 @@ WITH potential_addresses AS (
     {% endif %}
     )
 
-, potential_addresses_fund_movements AS (
-    -- Recieved
+, sent_tokens AS (
     SELECT pa.potential_deposit
     , pa.cex_name
     , pa.funded_by_same_cex
-    , t.contract_address
-    , t.token_standard
+    , tt.contract_address
+    , tt.token_standard
     , pa.creation_block_time
     , pa.creation_block_number
-    , amount AS deposited
-    , 0 AS sent
-    FROM {{token_transfers}} t
-    INNER JOIN potential_addresses pa ON pa.potential_deposit=t."to"
-    -- Exclude received from cex addresses
-    LEFT JOIN {{cex_addresses}} cex ON cex.address=t."from"
-        AND cex.address IS NULL
-    WHERE t.block_time BETWEEN pa.creation_block_time - interval '18' hour AND pa.creation_block_time + interval '6' day
-    
-    UNION ALL
-    
-    -- Sent
-    SELECT pa.potential_deposit
-    , pa.cex_name
-    , pa.funded_by_same_cex
-    , t.contract_address
-    , t.token_standard
-    , pa.creation_block_time
-    , pa.creation_block_number
-    , 0 AS deposited
-    , amount AS sent
-    FROM {{token_transfers}} t
+    , SUM(tt.amount) AS sent
+    FROM {{token_transfers}} tt
     INNER JOIN potential_addresses pa ON pa.potential_deposit=t."from"
-    AND t.to=pa.cex_address
-    WHERE t.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '1' day
+        AND tt.to=pa.cex_address
+    WHERE tt.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '1' day
+    GROUP BY 1, 2, 3, 4, 5, 6, 7
     )
 
-, potential_addresses_fund_movements_aggregated AS (
-    SELECT potential_deposit
-    , cex_name
-    , funded_by_same_cex
-    , contract_address
-    , token_standard
-    , creation_block_time
-    , creation_block_number
-    , SUM(deposited) AS deposited
-    , SUM(sent) AS sent
-    FROM potential_addresses_fund_movements
-    GROUP BY 1, 2, 3, 4, 5, 6, 7
+, sent_and_received AS (
+    SELECT st.potential_deposit
+    , st.cex_name
+    , st.funded_by_same_cex
+    , st.contract_address
+    , st.token_standard
+    , st.creation_block_time
+    , st.creation_block_number
+    , SUM(tt.amount) AS deposited
+    , st.sent
+    FROM token_transfers tt
+    INNER JOIN sent_tokens st ON st.potential_deposit=tt."to"
+    WHERE t.block_time BETWEEN pa.creation_block_time - interval '18' hour AND pa.creation_block_time + interval '6' day
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 9
     )
 
 SELECT '{{blockchain}}' AS blockchain
@@ -79,7 +61,7 @@ SELECT '{{blockchain}}' AS blockchain
 , creation_block_time
 , creation_block_number
 , funded_by_same_cex
-FROM potential_addresses_fund_movements_aggregated
+FROM sent_and_received
 WHERE deposited > 0
 AND sent > 0
 AND (deposited=sent OR
