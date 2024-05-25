@@ -46,7 +46,7 @@ WITH potential_addresses AS (
         AND tt.to=pa.cex_address
     INNER JOIN unique_addresses ua USING (potential_deposit)
     WHERE tt.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '1' day
-    GROUP BY 1, 2, 3, 4, 5, 6, 7
+    GROUP BY 2, 3, 4, 5, 6, 7
     )
 
 , sent_and_received AS (
