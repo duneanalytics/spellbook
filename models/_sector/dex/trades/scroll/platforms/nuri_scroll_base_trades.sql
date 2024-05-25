@@ -16,7 +16,6 @@
         project = 'nuri',
         version = '1',
         Pair_evt_Swap = source('nuri_scroll', 'ClPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('nuri_scroll', 'ClPoolFactory_evt_PoolCreated'),
-        optional_columns = null
+        Factory_evt_PoolCreated = source('nuri_scroll', 'ClPoolFactory_evt_PoolCreated')
     )
 }}
