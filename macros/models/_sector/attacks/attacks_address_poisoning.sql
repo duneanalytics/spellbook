@@ -34,7 +34,7 @@ WITH only_relevant AS (
     , attack.tx_index
     , attack.evt_index
     FROM {{token_transfers}} attack
-    INNER JOIN only_relevant or ON or.tx_from=attack.tx_from
+    INNER JOIN only_relevant ora ON ora.tx_from=attack.tx_from
     INNER JOIN {{token_transfers}} normal ON normal.block_time BETWEEN attack.block_time - interval '1' day AND attack.block_time -- To tweak, ideally 3 days
         AND attack.tx_from=normal.tx_from
         AND attack.tx_to!=normal.tx_to
