@@ -30,7 +30,7 @@ FROM (
         , token_standard
         , token_address
         , token_symbol
-        , original_to_address
+        , intended_recipient
         , attacker
         , tx_hash
         , tx_index

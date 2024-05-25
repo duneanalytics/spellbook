@@ -45,8 +45,8 @@ models:
       - &token_symbol
         name: token_symbol
         description: "Token standard"
-      - &original_to_address
-        name: original_to_address
+      - &intended_recipient
+        name: intended_recipient
         description: "Flow type"
       - &tx_hash
         name: tx_hash

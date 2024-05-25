@@ -41,7 +41,7 @@ SELECT '{{blockchain}}' AS blockchain
 , ttsa.token_standard
 , ttsa.token_address
 , ttsa.token_symbol
-, ttsa.original_to_address
+, ttsa.intended_recipient
 , ttsa.attacker
 , ttsa.tx_hash
 , ttsa.tx_index
