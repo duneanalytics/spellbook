@@ -39,7 +39,7 @@ WITH potential_addresses AS (
     -- Exclude received from cex addresses
     LEFT JOIN {{cex_addresses}} cex ON cex.address=t."from"
         AND cex.address IS NULL
-    WHERE t.block_time BETWEEN pa.creation_block_time - interval '1' day AND pa.creation_block_time + interval '2' day
+    WHERE t.block_time BETWEEN pa.creation_block_time - interval '18' hour AND pa.creation_block_time + interval '6' day
     
     UNION ALL
     
@@ -56,7 +56,7 @@ WITH potential_addresses AS (
     FROM {{token_transfers}} t
     INNER JOIN potential_addresses pa ON pa.potential_deposit=t."from"
     AND t.to=pa.cex_address
-    WHERE t.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '3' day
+    WHERE t.block_time BETWEEN pa.creation_block_time AND pa.creation_block_time + interval '1' day
     )
 
 , potential_addresses_fund_movements_aggregated AS (
