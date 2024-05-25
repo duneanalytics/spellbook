@@ -13,6 +13,7 @@
 
 {{attacks_address_poisoning(
         blockchain = blockchain
+        , transactions = source(blockchain, 'transactions')
         , token_transfers = ref('tokens_' + blockchain + '_transfers')
         , cex_addresses = ref('cex_' + blockchain + '_addresses')
 )}}

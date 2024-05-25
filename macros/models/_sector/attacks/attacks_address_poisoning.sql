@@ -1,6 +1,20 @@
-{% macro attacks_address_poisoning(blockchain, token_transfers, cex_addresses) %}
+{% macro attacks_address_poisoning(blockchain, transactions, token_transfers, cex_addresses) %}
 
-WITH transfered_to_similar_addresses AS (
+WITH only_relevant AS (
+    SELECT tr.tx_from
+    FROM {{token_transfers}} tr
+    INNER JOIN {{transactions}} txs ON txs.block_number = tr.block_number
+        AND txs.tx_index = tr.tx_index
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('txs.block_time') }}
+        {% endif %}
+    WHERE tr."from"=tr.tx_from
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('tr.block_time') }}
+    {% endif %}
+    )
+
+, transfered_to_similar_addresses AS (
     SELECT attack.block_time
     , attack.block_number
     , normal.tx_from AS victim
@@ -19,6 +33,7 @@ WITH transfered_to_similar_addresses AS (
     , attack.tx_index
     , attack.evt_index
     FROM {{token_transfers}} attack
+    INNER JOIN only_relevant or ON or.tx_from=attack.tx_from
     INNER JOIN {{token_transfers}} normal ON normal.block_time BETWEEN attack.block_time - interval '1' day AND attack.block_time -- To tweak, ideally 3 days
         AND attack.tx_from=normal.tx_from
         AND attack.tx_to!=normal.tx_to
