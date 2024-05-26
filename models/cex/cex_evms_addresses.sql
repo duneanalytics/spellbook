@@ -122,6 +122,7 @@ FROM (VALUES
     , (0xf3084ed5596c3ef9fcf53689da3b998e621a34c4, 'Binance', 'Binance Deposit Funder 6', 'hildobby', date '2023-11-23')
     , (0x50460c4cd74094cd591f455cad457e99c4ab8be0, 'Binance', 'Binance Deposit Funder 7', 'hildobby', date '2023-11-23')
     , (0x9cd1ac952951fe63c658589db0dde32fc55b815b, 'Binance', 'Binance Deposit Funder 8', 'hildobby', date '2024-05-25')
+    , (0xfc19e4ce0e0a27b09f2011ef0512669a0f76367a, 'Binance', 'Binance Deployer 1', 'hildobby', date '2024-05-25')
     -- Binance US
     , (0x61189da79177950a7272c88c6058b96d4bcd6be2, 'Binance US', 'Binance US 1', 'hildobby', date '2022-08-28')
     , (0x34ea4138580435b5a521e460035edb19df1938c1, 'Binance US', 'Binance US 2', 'hildobby', date '2023-04-06')
@@ -784,6 +785,10 @@ FROM (VALUES
     , (0x7180eb39a6264938fdb3effd7341c4727c382153, 'Bitfinex', 'Bitfinex Old Address 2', 'hildobby', date '2022-08-28')
     , (0x5754284f345afc66a98fbb0a0afe71e0f007b949, 'Bitfinex', 'Bitfinex Tether Treasury', 'hildobby', date '2022-08-28')
     , (0xf4b51b14b9ee30dc37ec970b50a486f37686e2a8, 'Bitfinex', 'Bitfinex Cold Storage', 'hildobby', date '2023-11-17')
+    , (0x2ee3b2df6534abc759ffe994f7b8dcdfaa02cd31, 'Bitfinex', 'Bitfinex Deployer 1', 'hildobby', date '2024-05-26')
+    , (0xc58b32218a746b70813a057275591966deb5920e, 'Bitfinex', 'Bitfinex Contract 1', 'hildobby', date '2024-05-26')
+    , (0x7727e5113d1d161373623e5f49fd568b4f543a9e, 'Bitfinex', 'Bitfinex Contract 2', 'hildobby', date '2024-05-26')
+    , (0x58ae42a38d6b33a1e31492b60465fa80da595755, 'Bitfinex', 'Bitfinex Contract 3', 'hildobby', date '2024-05-26')
     -- Bitget
     , (0x1ae3739e17d8500f2b2d80086ed092596a116e0b, 'Bitget', 'Bitget 1', 'hildobby', date '2023-04-06')
     , (0x2bf7494111a59bd51f731dcd4873d7d71f8feeec, 'Bitget', 'Bitget 2', 'hildobby', date '2023-04-06')
@@ -1973,11 +1978,12 @@ FROM (VALUES
     -- ChainX
     , (0xfd648cc72f1b4e71cbdda7a0a91fe34d32abd656, 'ChainX', 'ChainX 1', 'hildobby', date '2023-04-06')
     -- Chain Up
-    , (0x10349daae3d75babbc00b4ec70416590dedaa7e8, 'Chain Up', 'Chain Up 1', 'hildobby', date '2024-05-04')
-    , (0xb563c72d3b5514fa098f9a588523915469dcfd88, 'Chain Up', 'Chain Up 2', 'hildobby', date '2024-05-04')
-    , (0x0e747eb2ff0f26fb77c3a1ea67ee07fac2dbb783, 'Chain Up', 'Chain Up 3', 'hildobby', date '2024-05-04')
-    , (0x1f8f16a29251fa399d89e1005e3f95427bf5b1de, 'Chain Up', 'Chain Up Deposit Funder 1', 'hildobby', date '2024-05-04')
-    , (0xe66b1c7ede325133e51346b7ee4814c7831f2542, 'Chain Up', 'Chain Up Binance Deposit 1', 'hildobby', date '2024-05-04')
+    , (0x10349daae3d75babbc00b4ec70416590dedaa7e8, 'ChainUp', 'ChainUp 1', 'hildobby', date '2024-05-04')
+    , (0xb563c72d3b5514fa098f9a588523915469dcfd88, 'ChainUp', 'ChainUp 2', 'hildobby', date '2024-05-04')
+    , (0x0e747eb2ff0f26fb77c3a1ea67ee07fac2dbb783, 'ChainUp', 'ChainUp 3', 'hildobby', date '2024-05-04')
+    , (0x1f8f16a29251fa399d89e1005e3f95427bf5b1de, 'ChainUp', 'ChainUp Deposit Funder 1', 'hildobby', date '2024-05-04')
+    , (0x7f92c0eb5765fd0a97b9f227ed183c7397234fad, 'ChainUp', 'ChainUp Deposit Funder 2', 'hildobby', date '2024-05-25')
+    , (0xe66b1c7ede325133e51346b7ee4814c7831f2542, 'ChainUp', 'ChainUp Binance Deposit 1', 'hildobby', date '2024-05-04')
     -- Changelly
     , (0x96fc4553a00c117c5b0bed950dd625d1c16dc894, 'Changelly', 'Changelly 1', 'hildobby', date '2023-04-06')
     -- BiKi
@@ -2401,13 +2407,6 @@ FROM (VALUES
     , (0x80edadf751946a71a0131a495bb7abbc75f46f6c, 'AAX', 'AAX 1', 'hildobby', date '2024-01-04')
     , (0xc25dc289edce5227cf15d42539824509e826b54d, 'AAX', 'AAX 2', 'hildobby', date '2024-01-04')
     , (0x4dca3852323ae417d4c7d735100a629130d50e90, 'AAX', 'AAX Deposit Funder 1', 'hildobby', date '2024-05-25')
-    -- ChainUp
-    , (0x10349daae3d75babbc00b4ec70416590dedaa7e8, 'ChainUp', 'ChainUp 1', 'hildobby', date '2024-05-25')
-    , (0xb563c72d3b5514fa098f9a588523915469dcfd88, 'ChainUp', 'ChainUp 2', 'hildobby', date '2024-05-25')
-    , (0x0e747eb2ff0f26fb77c3a1ea67ee07fac2dbb783, 'ChainUp', 'ChainUp 3', 'hildobby', date '2024-05-25')
-    , (0xe66b1c7ede325133e51346b7ee4814c7831f2542, 'ChainUp', 'ChainUp Binance Deposit 1', 'hildobby', date '2024-05-25')
-    , (0x7f92c0eb5765fd0a97b9f227ed183c7397234fad, 'ChainUp', 'ChainUp Deposit Funder 1', 'hildobby', date '2024-05-25')
-    , (0x1f8f16a29251fa399d89e1005e3f95427bf5b1de, 'ChainUp', 'ChainUp Deposit Funder 2', 'hildobby', date '2024-05-25')
     -- Abra
     , (0x0e0066aca9ef6b8102d8dbc66ab0091f9370a7cb, 'Abra', 'Abra 1', 'hildobby', date '2024-01-04')
     , (0x1fad1b0f35181b71917409d3841009a2fdb8acc9, 'Abra', 'Abra WBTC Merchant 1', 'hildobby', date '2024-01-04')
