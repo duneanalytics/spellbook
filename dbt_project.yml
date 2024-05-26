@@ -1345,3 +1345,8 @@ models:
       +schema: openxswap
       optimism:
         +schema: openxswap_optimism
+
+    hivemapper:
+      +schema: hivemapper
+      solana:
+        +schema: hivemapper_solana
