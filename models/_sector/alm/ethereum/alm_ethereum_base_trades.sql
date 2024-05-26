@@ -2,7 +2,6 @@
     schema = 'alm_ethereum'
     , alias = 'base_trades'
     , materialized = 'view'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'vault_address']
     )
 }}
 
@@ -44,10 +43,6 @@ WITH base_union AS (
             , row_number() over (partition by tx_hash, evt_index, vault_address order by tx_hash asc, evt_index asc) as duplicates_rank
         FROM 
             {{ base_model }}
-        {% if is_incremental() %}
-        WHERE
-            {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
