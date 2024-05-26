@@ -1051,6 +1051,7 @@ FROM (VALUES
     , (0x019d0706d65c4768ec8081ed7ce41f59eef9b86c, 'Stake.com', 'Stake.com 9', 'hildobby', date '2023-11-23')
     , (0xa29148c2a656e5ddc68acb95626d6b64a1131c06, 'Stake.com', 'Stake.com 10', 'hildobby', date '2023-11-23')
     , (0x787b8840100d9baadd7463f4a73b5ba73b00c6ca, 'Stake.com', 'Stake.com 11', 'hildobby', date '2024-04-04')
+    , (0xbbc43c282b2f829176f4fc3802436d8fad3413f3, 'Stake.com', 'Stake.com 12', 'hildobby', date '2024-05-26')
     -- Rollbit
     , (0xcbd6832ebc203e49e2b771897067fce3c58575ac, 'Rollbit', 'Rollbit 1', 'hildobby', date '2023-11-15')
     , (0xef8801eaf234ff82801821ffe2d78d60a0237f97, 'Rollbit', 'Rollbit 2', 'hildobby', date '2023-11-15')
@@ -1394,6 +1395,7 @@ FROM (VALUES
     , (0xa89a1278ac85367f38bdf6746658ce2b9875526e, 'CoinSpot', 'CoinSpot 16', 'hildobby', date '2023-11-22')
     , (0xdb6fdc30ab61c7cca742d4c13d1b035f3f82019a, 'CoinSpot', 'CoinSpot 17', 'hildobby', date '2023-11-22')
     , (0xeed86b90448c371eab47b7f16e294297c27e4f51, 'CoinSpot', 'CoinSpot 18', 'hildobby', date '2023-11-22')
+    , (0x60f9e80d0d40b2958ac39006635de782096866c3, 'CoinSpot', 'CoinSpot 18', 'hildobby', date '2024-05-26')
     , (0x20312e96b1a0568ac31c6630844a962383cc66c2, 'CoinSpot', 'CoinSpot Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Liquid
     , (0xedbb72e6b3cf66a792bff7faac5ea769fe810517, 'Liquid', 'Liquid 1', 'hildobby', date '2022-08-28')
