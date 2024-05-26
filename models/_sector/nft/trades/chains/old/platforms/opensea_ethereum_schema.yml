@@ -1,40 +1,6 @@
 version: 2
 
 models:
-  - name: opensea_v1_ethereum_events
-    meta:
-      blockchain: ethereum
-      project: opensea
-      contributors: soispoke, umer_h_adil, hildobby, 0xRob
-    config:
-      tags: ['ethereum','opensea','v1','events', 'static']
-    description: >
-        OpenSea v1 trades on Ethereum
-    tests:
-      - check_columns_nft_old_events
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - unique_trade_id
-      - check_seed:
-          seed_file: ref('opensea_wyvern_trades_samples')
-          match_columns:
-            - block_time
-            - tx_hash
-            - token_id
-          check_columns:
-            - amount_original
-            - buyer
-            - seller
-            - platform_fee_amount
-            - royalty_fee_amount
-    columns:
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID"
-        tests:
-          - unique
-
-
   - name: opensea_v3_ethereum_events
     meta:
       blockchain: ethereum
@@ -76,7 +42,11 @@ models:
             - nft_contract_address
             - token_id
     columns:
-      - *unique_trade_id
+      - &unique_trade_id
+        name: unique_trade_id
+        description: "Unique trade ID"
+        tests:
+          - unique
 
   - name: opensea_v4_ethereum_events
     meta:
