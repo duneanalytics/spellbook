@@ -1395,7 +1395,7 @@ FROM (VALUES
     , (0xa89a1278ac85367f38bdf6746658ce2b9875526e, 'CoinSpot', 'CoinSpot 16', 'hildobby', date '2023-11-22')
     , (0xdb6fdc30ab61c7cca742d4c13d1b035f3f82019a, 'CoinSpot', 'CoinSpot 17', 'hildobby', date '2023-11-22')
     , (0xeed86b90448c371eab47b7f16e294297c27e4f51, 'CoinSpot', 'CoinSpot 18', 'hildobby', date '2023-11-22')
-    , (0x60f9e80d0d40b2958ac39006635de782096866c3, 'CoinSpot', 'CoinSpot 18', 'hildobby', date '2024-05-26')
+    , (0x60f9e80d0d40b2958ac39006635de782096866c3, 'CoinSpot', 'CoinSpot 19', 'hildobby', date '2024-05-26')
     , (0x20312e96b1a0568ac31c6630844a962383cc66c2, 'CoinSpot', 'CoinSpot Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Liquid
     , (0xedbb72e6b3cf66a792bff7faac5ea769fe810517, 'Liquid', 'Liquid 1', 'hildobby', date '2022-08-28')
