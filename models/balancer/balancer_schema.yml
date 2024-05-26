@@ -1,94 +1,6 @@
 version: 2
 
 models:
-  - name: balancer_trades
-    meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
-      sector: dex
-      contributors: bizzyvinci, thetroyharris, viniabussafi
-    config:
-      tags: ['balancer', 'amm', 'trades', 'dex']
-    description: >
-      DEX trades on balancer on all chains
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &project
-        name: project
-        description: "Project name (balancer)"
-      - &version
-        name: version
-        description: "Version of the project"
-      - &block_month
-        name: block_month
-        description: "Block month in UTC"
-      - &block_date
-        name: block_date
-        description: "Block date in UTC"
-      - &block_time
-        name: block_time
-        description: 'Block time in UTC'
-      - &token_bought_symbol
-        name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
-      - &token_sold_symbol
-        name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
-      - &token_pair
-        name: token_pair
-        description: "Token symbol pair for each token involved in the trade"
-      - &token_bought_amount
-        name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
-      - &token_sold_amount
-        name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
-      - &token_bought_amount_raw
-        name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
-      - &token_sold_amount_raw
-        name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
-      - &amount_usd
-        name: amount_usd
-        description: "USD value of the trade at time of execution"
-      - &token_bought_address
-        name: token_bought_address
-        description: "Contract address of the token bought"
-      - &token_sold_address
-        name: token_sold_address
-        description: "Contract address of the token sold"
-      - &taker
-        name: taker
-        description: "Address of trader who purchased a token"
-      - &maker
-        name: maker
-        description: "Address of trader who sold a token"
-      - &pool_id
-        name: pool_id
-        description: "Pool id"
-      - &swap_fee
-        name: swap_fee
-        description: 'Swap fee'
-      - &project_contract_address
-        name: project_contract_address
-        description: "Pool address"
-      - name: pool_symbol
-      - name: pool_type
-      - &tx_hash
-        name: tx_hash
-        description: 'Transaction hash'
-      - &tx_from
-        name: tx_from
-        description: "transaction.from"
-      - &tx_to
-        name: tx_to
-        description: "transaction.to"
-      - &evt_index
-        name: evt_index
-        description: 'Event index'
-
   - name: balancer_gauge_mappings
     meta:
       blockchain: optimism
@@ -99,13 +11,21 @@ models:
     description: >
       Gauge to Pool mappings for balancer on all chains
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"
-      - *pool_id
+      - &pool_id
+        name: pool_id
+        description: "Pool id"
       - &incentives_contract
         name: incentives_contract
         description: "Address of the contract where incentives are stored and emitted."
@@ -124,15 +44,17 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
-      - *evt_index
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
 
   - name: balancer_flashloans
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis
       sector: lending
-      contributors: hildobby, viniabussafi
+      contributors: hildobby
     config:
-      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'zkevm', 'flashloans']
+      tags: ['ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis','avalanche_c', 'base', 'flashloans']
     description: >
       All Balancer flashloans
     tests:
@@ -161,11 +83,11 @@ models:
 
   - name: balancer_bpt_prices
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
       sector: dex
       contributors: thetroyharris, victorstefenon, viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base', 'zkevm']
+      tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base']
     description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -185,11 +107,11 @@ models:
 
   - name: balancer_liquidity
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: ethereum, arbitrum, optimism, polygon, gnosis, avalanche_c, base
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base', 'zkevm']
+      tags: ['balancer', 'amm', 'dex', 'liquidity', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'avalanche_c', 'base']
     description: >
       Liquidity by token on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -231,10 +153,10 @@ models:
 
   - name: balancer_transfers_bpt
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevmn
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: victorstefenon, thetroyharris, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -247,7 +169,9 @@ models:
       - *blockchain
       - name: version
       - *contract_address
-      - *block_date
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
       - *evt_tx_hash
       - *evt_index
       - *evt_block_time
@@ -264,10 +188,10 @@ models:
 
   - name: balancer_pools_fees
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: jacektrocinski, thetroyharris, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'pools', 'fees']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
       Balancer v2 swap fees stored at the pool level.
     tests:
@@ -290,11 +214,11 @@ models:
 
   - name: balancer_protocol_fee
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'fees']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'revenue', 'fees']
     description: >
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
     tests:
@@ -326,10 +250,10 @@ models:
 
   - name: balancer_bpt_supply
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: thetroyharris, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm',  'bpt']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
     description: >
       The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
     tests:
@@ -348,10 +272,10 @@ models:
 
   - name: balancer_token_whitelist
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'zkevm']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt']
     description: >
       These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
     tests:
@@ -367,10 +291,10 @@ models:
 
   - name: balancer_pools_tokens_weights
     meta:
-      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon
       contributors: jacektrocinski, viniabussafi
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'bpt', 'transfers']
     description: >
       Token weights in Balancer pools.
     tests:
