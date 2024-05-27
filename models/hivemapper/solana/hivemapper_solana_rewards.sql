@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        -- Add incremental_predicates if needed.
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id'],
         post_hook = '{{ expose_spells(\'["solana"]\',
                                 "project",
