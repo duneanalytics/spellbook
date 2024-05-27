@@ -13,8 +13,8 @@
                                 \'["ilemi", "alexus98"]\') }}')
 }}
 
-{% set honey_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy' %}
-{% set honey_memo_program = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr' %}
+{% set honey_mint_address = "4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy" %}
+{% set honey_memo_program = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr" %}
 
 with 
     honey_transfers as (
