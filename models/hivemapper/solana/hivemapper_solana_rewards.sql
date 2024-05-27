@@ -1,16 +1,16 @@
-{{ config(
-    schema = 'hivemapper_solana',
-    alias = 'rewards',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    -- unique_key = ['block_month', 'evt_type', 'loan_id', 'id'],
-    unique_key = ['tx_id'],
-    post_hook='{{ expose_spells(\'["solana"]\',
-                            "project",
-                            "hivemapper",
-                            \'["ilemi", "alexus98"]\') }}')
-    -- Add incremental_predicates if needed.
+{{ 
+    config(
+        schema = 'hivemapper_solana',
+        alias = 'rewards',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        -- Add incremental_predicates if needed.
+        unique_key = ['tx_id'],
+        post_hook = '{{ expose_spells(\'["solana"]\',
+                                "project",
+                                "hivemapper",
+                                \'["ilemi", "alexus98"]\') }}')
 }}
 
 {% set honey_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy' %}
