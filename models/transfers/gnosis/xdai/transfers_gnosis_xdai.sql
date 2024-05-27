@@ -76,7 +76,7 @@ gas_fee_rewards as (
         t1.block_time, 
         t2.miner as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        (TRY_CAST(t1.gas_used as INT256) - TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256))* TRY_CAST(t1.gas_price as INT256) as amount_raw
+        TRY_CAST(t1.gas_used as INT256) * (TRY_CAST(t1.gas_price as INT256) - TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256)) as amount_raw
     FROM 
         {{ source('gnosis', 'transactions') }} t1
     INNER JOIN
@@ -115,6 +115,22 @@ block_reward AS (
         TRY_CAST(amount as INT256) as amount_raw
     FROM 
         {{ source('xdai_gnosis', 'BlockRewardAuRa_evt_AddedReceiver') }}
+    {% if is_incremental() %}
+    WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+
+    UNION ALL
+
+    SELECT 
+        'block_reward' as transfer_type,
+        evt_tx_hash AS tx_hash, 
+        array[evt_index] as trace_address, 
+        evt_block_time AS block_time, 
+        receiver AS wallet_address,
+        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
+        TRY_CAST(amount as INT256) as amount_raw
+    FROM 
+        {{ source('gnosis', 'blocks') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
