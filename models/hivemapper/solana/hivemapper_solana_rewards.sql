@@ -5,8 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id'],
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_slot'],
         post_hook = '{{ expose_spells(\'["solana"]\',
                                 "project",
                                 "hivemapper",
@@ -36,7 +35,9 @@ with
         JOIN honey_transfers hny ON tx.id = hny.tx_id --assumes only one transfer per tx
         WHERE 1=1 
         and contains(account_keys, 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr') --memo program invoked sometimes not by honey though
-        and tx.block_time >= timestamp '2022-11-01 00:23'
+        {% if is_incremental() %}
+        and tx.block_time >= (select coalesce(max(block_time), timestamp '2022-11-01') from {{ this }})
+        {% endif %}
     )
     
 SELECT
