@@ -1,5 +1,4 @@
 {{ config(
-    
     schema = 'hivemapper_solana',
     alias = 'rewards',
     materialized = 'incremental',
@@ -12,7 +11,6 @@
                             "hivemapper",
                             \'["ilemi", "alexus98"]\') }}')
     -- Add incremental_predicates if needed.
-    )
 }}
 
 {% set honey_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy' %}
