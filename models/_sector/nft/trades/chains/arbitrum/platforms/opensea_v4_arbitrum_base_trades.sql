@@ -1,10 +1,11 @@
 {{ config(
-    schema = 'opensea_v4_zora',
-    alias = 'events',
+    schema = 'opensea_v4_arbitrum',
+    alias = 'base_trades',
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
+    unique_key = ['block_number', 'tx_hash', 'sub_tx_trade_id']
     )
 }}
 
@@ -15,12 +16,12 @@ WITH fee_wallets as (
 )
 , trades as (
     {{ seaport_v4_trades(
-     blockchain = 'zora'
-     ,source_transactions = source('zora','transactions')
-     ,Seaport_evt_OrderFulfilled = source('seaport_zora','Seaport_evt_OrderFulfilled')
-     ,Seaport_evt_OrdersMatched = source('seaport_zora','Seaport_evt_OrdersMatched')
+     blockchain = 'arbitrum'
+     ,source_transactions = source('arbitrum','transactions')
+     ,Seaport_evt_OrderFulfilled = source('seaport_arbitrum','Seaport_evt_OrderFulfilled')
+     ,Seaport_evt_OrdersMatched = source('seaport_arbitrum','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,start_date = '2023-06-21'
+     ,start_date = '2023-02-01'
     )
   }}
 )
