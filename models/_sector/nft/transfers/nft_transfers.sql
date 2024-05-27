@@ -2,7 +2,7 @@
 
         schema = 'nft',
         alias ='transfers',
-        partition_by = ['block_month'],
+        partition_by = ['blockchain','block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
