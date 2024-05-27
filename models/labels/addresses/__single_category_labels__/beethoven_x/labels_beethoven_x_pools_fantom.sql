@@ -177,7 +177,8 @@ settings AS (
     coalesce(t.symbol, '?') AS token_symbol,
     normalized_weight,
     p.symbol AS pool_symbol,
-    p.pool_type
+    p.pool_type,
+    p.pool_name
   FROM pools p
   LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
 )
@@ -206,8 +207,9 @@ FROM (
     pool_symbol,
     cast(100 * normalized_weight AS integer) AS norm_weight,
     pool_type,
+    pool_name
   FROM settings s1
-  GROUP BY s1.pool_id, token_symbol, pool_symbol, normalized_weight, pool_type
+  GROUP BY s1.pool_id, token_symbol, pool_symbol, normalized_weight, pool_type, pool_name
 ) s
-GROUP BY pool_id, pool_symbol, pool_type
+GROUP BY pool_id, pool_symbol, pool_type, pool_name
 ORDER BY 1
