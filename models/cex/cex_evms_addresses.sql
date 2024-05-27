@@ -652,6 +652,14 @@ FROM (VALUES
     , (0xfa9f7a1cbfbcb688729c522b4f0905ccf4d26d25, 'LBank', 'LBank 7', 'hildobby', date '2023-11-20')
     , (0xe0f0aa98b4a4d305ac4a04d830c96a158bda9cd8, 'LBank', 'LBank 8', 'hildobby', date '2023-11-20')
     , (0xb0e5ec2a0bb8b8f3a727787f90b959611e4062b7, 'LBank', 'LBank 9', 'hildobby', date '2023-11-20')
+    , (0x22f83e4b9cb95cb99b88e8f4f15ea598c74c2788, 'LBank', 'LBank 10', 'hildobby', date '2024-05-27')
+    , (0x43cbdc908a0860ae23fa06aa5b20dfee43c196a6, 'LBank', 'LBank 11', 'hildobby', date '2024-05-27')
+    , (0x11b1e83818028a8f44ef84613d5c058734b2d5cf, 'LBank', 'LBank 12', 'hildobby', date '2024-05-27')
+    , (0x7ff77c761e5669d1696059a3b46cda0ae293aae3, 'LBank', 'LBank 13', 'hildobby', date '2024-05-27')
+    , (0xea48643446540fe29a909ad4aa6df182c8b7e997, 'LBank', 'LBank 14', 'hildobby', date '2024-05-27')
+    , (0xec174c25bba7359b56fd672c8899664121e7dbcf, 'LBank', 'LBank 15', 'hildobby', date '2024-05-27')
+    , (0x25b63c988310de90031b84975ae13a6015ca6a16, 'LBank', 'LBank 16', 'hildobby', date '2024-05-27')
+    , (0x0e80abb31ace45ae26f9a2943acaab72e77de9be, 'LBank', 'LBank 17', 'hildobby', date '2024-05-27')
     , (0x9c4fe1c3d5975e5c5e493f24352969aa280b7cfc, 'LBank', 'LBank Deposit Funder 1', 'hildobby', date '2023-11-20')
     -- Robinhood
     , (0x40b38765696e3d5d8d9d834d8aad4bb6e418e489, 'Robinhood', 'Robinhood 1', 'hildobby', date '2023-08-31')
@@ -827,6 +835,7 @@ FROM (VALUES
     , (0xf0bc8fddb1f358cef470d63f96ae65b1d7914953, 'Korbit', 'Korbit 8', 'hildobby', date '2024-04-20')
     , (0x33de12b5cf336692c6b7cfd3aaf779425067f21c, 'Korbit', 'Korbit 9', 'hildobby', date '2024-05-04')
     , (0xf6230e7e98d2bbebf96d14888020e9c3e8c27d69, 'Korbit', 'Korbit 10', 'hildobby', date '2024-05-04')
+    , (0x223674cc4433a50caddf13c65f92151d75996e41, 'Korbit', 'Korbit 11', 'hildobby', date '2024-05-27')
     -- KuCoin
     , (0x2b5634c42055806a59e9107ed44d43c426e58258, 'KuCoin', 'KuCoin 1', 'hildobby', date '2022-08-28')
     , (0x689c56aef474df92d44a1b70850f808488f9769c, 'KuCoin', 'KuCoin 2', 'hildobby', date '2022-08-28')
