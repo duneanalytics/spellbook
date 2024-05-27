@@ -13,12 +13,9 @@
                                 \'["ilemi", "alexus98"]\') }}')
 }}
 
-{% set honey_mint_address = '"4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy"' %}
-{% set honey_memo_program = '"MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"' %}
-
 with 
     honey_transfers as (
-        SELECT * FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = {{honey_mint_address}}
+        SELECT * FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy'
     )
     
     , memo_join as (
@@ -38,7 +35,7 @@ with
         FROM {{ source('solana', 'transactions') }} tx
         JOIN honey_transfers hny ON tx.id = hny.tx_id --assumes only one transfer per tx
         WHERE 1=1 
-        and contains(account_keys, {{honey_memo_program}}) --memo program invoked sometimes not by honey though
+        and contains(account_keys, 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr') --memo program invoked sometimes not by honey though
         and tx.block_time >= timestamp '2022-11-01 00:23'
     )
     
