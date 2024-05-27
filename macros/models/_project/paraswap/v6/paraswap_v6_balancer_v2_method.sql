@@ -7,20 +7,14 @@ WITH
                           *,
                           try_cast(
                             varbinary_to_uint256 (from_hex(s2.sData[s2.assetsOffset])) as integer
-                          ) as assetsSize,
-                          try_cast(
-                            varbinary_to_uint256 (from_hex(s2.sData[s2.limitOffset])) as integer
-                          ) as limitSize
+                          ) as assetsSize
                         FROM
                           (
                             SELECT
                               *,
                               try_cast(
                                 varbinary_to_uint256 (from_hex(s1.sData[3])) as integer
-                              ) / 32 + 1 as assetsOffset,
-                              try_cast(
-                                varbinary_to_uint256 (from_hex(s1.sData[8])) as integer
-                              ) / 32 + 1 as limitOffset
+                              ) / 32 + 1 as assetsOffset
                             FROM
                               (
                                 SELECT
@@ -38,21 +32,15 @@ WITH
                     SELECT
                       *,{% if inOrOut == 'in' %}
                       sData[assetsOffset + 1] as srcToken,
-                      sData[assetsOffset + assetsSize] as destToken,
-                      varbinary_to_uint256 (from_hex(sData[limitOffset + 1])) as fromAmount,
-                      try_cast(
-                        - varbinary_to_int256 (from_hex(sData[limitOffset + limitSize])) as uint256
-                      ) as toAmount,{% elif inOrOut == 'out' %}
+                      sData[assetsOffset + assetsSize] as destToken,{% elif inOrOut == 'out' %}
                       sData[assetsOffset + assetsSize] as srcToken,
-                      sData[assetsOffset + 1] as destToken,
+                      sData[assetsOffset + 1] as destToken,{% endif %}  
                       try_cast(
-                        varbinary_to_int256 (from_hex(sData[limitOffset + limitSize])) as uint256
-                      ) as fromAmount,
+                        JSON_EXTRACT_SCALAR(balancerData, '$.fromAmount') as UINT256
+                      ) AS fromAmount,
                       try_cast(
-                        (
-                          - varbinary_to_int256 (from_hex(sData[limitOffset + 1]))
-                        ) as uint256
-                      ) as toAmount,{% endif %}                                              
+                        JSON_EXTRACT_SCALAR(balancerData, '$.toAmount') as UINT256
+                      ) AS toAmount,                                           
                       to_hex(
                         try_cast(
                           bitwise_and(
