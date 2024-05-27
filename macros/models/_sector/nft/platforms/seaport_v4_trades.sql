@@ -430,7 +430,7 @@ select
         ,nft_token_amount as nft_amount
 
         -- price info
-        ,price_amount_raw as amount_raw
+        ,price_amount_raw as price_raw
         ,case when token_contract_address = 0x0000000000000000000000000000000000000000 then {{native_currency_contract}}
          else token_contract_address end as currency_contract
 
