@@ -157,7 +157,7 @@ models:
           filter:
             blockchain: base
             project: opensea
-            version: v4
+            project_version: v4
           check_columns:
             - buyer
             - seller
