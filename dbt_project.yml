@@ -1113,11 +1113,6 @@ models:
       base:
         +schema: aerodrome_base
 
-    openxswap:
-      +schema: openxswap
-      optimism:
-        +schema: openxswap_optimism
-
     hivemapper:
       +schema: hivemapper
       solana:
