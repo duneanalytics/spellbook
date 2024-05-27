@@ -12,7 +12,8 @@ WITH pools AS (
     zip.tokens AS token_address,
     zip.weights / pow(10, 18) AS normalized_weight,
     symbol,
-    pool_type
+    pool_type,
+    pool_name
   FROM (
     SELECT
       c.poolId AS pool_id,
@@ -20,7 +21,7 @@ WITH pools AS (
       w.weights,
       cc.symbol,
       'weighted' AS pool_type,
-    cc.name AS pool_name
+      cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -37,7 +38,8 @@ WITH pools AS (
     zip.tokens AS token_address,
     zip.weights / pow(10, 18) AS normalized_weight,
     symbol,
-    pool_type
+    pool_type,
+    pool_name
   FROM (
     SELECT
       c.poolId AS pool_id,
@@ -45,7 +47,7 @@ WITH pools AS (
       w.weights,
       cc.symbol,
       'weighted' AS pool_type,
-    cc.name AS pool_name
+      cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPool2TokensFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
@@ -62,7 +64,8 @@ WITH pools AS (
     zip.tokens AS token_address,
     zip.weights / pow(10, 18) AS normalized_weight,
     symbol,
-    pool_type
+    pool_type,
+    pool_name
   FROM (
     SELECT
       c.poolId AS pool_id,
@@ -70,7 +73,7 @@ WITH pools AS (
       w.weights,
       cc.symbol,
       'weighted' AS pool_type,
-    cc.name AS pool_name
+      cc.name AS pool_name
     FROM {{ source('beethoven_x_fantom', 'Vault_evt_PoolRegistered') }} c
     INNER JOIN {{ source('beethoven_x_fantom', 'WeightedPoolFactoryV2_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
