@@ -450,7 +450,7 @@ select
         ,tx_to
 
         -- seaport etc
-        , row_number() over (partition by tx_hash, order by evt_index) as sub_tx_trade_id
+        , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
 
         ,right_hash
         ,fee_wallet_name
