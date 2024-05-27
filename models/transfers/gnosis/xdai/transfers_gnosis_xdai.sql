@@ -118,23 +118,6 @@ block_reward AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
-
-    UNION ALL
-
-    SELECT 
-        'block_reward' as transfer_type,
-        evt_tx_hash AS tx_hash, 
-        array[evt_index] as trace_address, 
-        evt_block_time AS block_time, 
-        receiver AS wallet_address,
-        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        TRY_CAST(amount as INT256) as amount_raw
-    FROM 
-        {{ source('gnosis', 'blocks') }}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
-    {% endif %}
-
 ),
 
 bridged AS (
