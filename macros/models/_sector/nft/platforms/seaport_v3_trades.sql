@@ -580,6 +580,8 @@ select
 
         -- order info
         ,block_time
+        ,cast(date_trunc('day', block_time) as date) as block_date,
+        ,cast(date_trunc('month', block_time) as date) as block_month,
         ,seller
         ,buyer
         ,trade_type
