@@ -18,7 +18,7 @@
 
 with 
     honey_transfers as (
-        SELECT * FROM {{ ref('tokens_solana', 'transfers') }} WHERE token_mint_address = {{honey_mint_address}}
+        SELECT * FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = {{honey_mint_address}}
     )
     
     , memo_join as (
