@@ -640,6 +640,7 @@ FROM (VALUES
     , (0xb633a44c8464c9c625e25c18cf210529a1e4cc99, 'HTX', 'HTX Deposit Funder 14', 'hildobby', date '2024-05-04')
     , (0x12FA4951CBFC51102ccFd5580beb135cA3D74c54, 'HTX', 'HTX Deposit Funder 15', 'hildobby', date '2024-05-25')
     , (0xb5e919c001f752501ac603d0c581e24c77165bb2, 'HTX', 'HTX Deposit Funder 16', 'hildobby', date '2024-05-25')
+    , (0x12fa4951cbfc51102ccfd5580beb135ca3d74c54, 'HTX', 'HTX Deposit Funder 17', 'hildobby', date '2024-05-25')
     , (0xbc53b706b165d2b7e98f254095d9d342e845e5ac, 'HTX', 'HTX Bridge 1', 'hildobby', date '2024-05-25')
     -- LBank
     , (0x356dc48d74f107cfbfd61790b0808cda6a0d364f, 'LBank', 'LBank 1', 'hildobby', date '2023-09-12')
@@ -906,10 +907,14 @@ FROM (VALUES
     , (0x187b2d576ba7ec2141c180a96edd0f202492f36b, 'Crypto.com', 'Crypto.com 17', 'hildobby', date '2023-11-19')
     , (0x9a552417cfc942a5c88ab474756d3d9962f917c0, 'Crypto.com', 'Crypto.com 18', 'hildobby', date '2023-11-19')
     , (0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b, 'Crypto.com', 'Crypto.com 19', 'hildobby', date '2023-11-19')
+    , (0x2c2301fdb0bfa06eaabaa0122cbceb2265337c25, 'Crypto.com', 'Crypto.com 20', 'hildobby', date '2024-05-27')
+    , (0x8a161a996617f130d0f37478483afc8c1914db6d, 'Crypto.com', 'Crypto.com 21', 'hildobby', date '2024-05-27')
     , (0xae45a8240147e6179ec7c9f92c5a18f9a97b3fca, 'Crypto.com', 'Crypto.com Deposit Funder', 'hildobby', date '2023-11-15')
     , (0x3aa370aacf4cb08c7e1e7aa8e8ff9418d73c7e0f, 'Crypto.com', 'Crypto.com USDC-WETH', 'hildobby', date '2024-04-02')
     , (0x9ef7e917fb41cc02f78a5c99b42f497ed8979350, 'Crypto.com', 'Crypto.com CRO-WETH', 'hildobby', date '2024-04-02')
     , (0x35e8777ec43cb99e935588dcd0305268f06c1274, 'Crypto.com', 'Crypto.com CRO-USDC', 'hildobby', date '2024-04-02')
+    , (0x50cf1b844068f7dfe89f078fe6d82a7a4a73b180, 'Crypto.com', 'Crypto.com YFI-WETH', 'hildobby', date '2024-05-27')
+    , (0x4087d0e6e513f260de87408bee9334a5742cfdf4, 'Crypto.com', 'Crypto.com CRO-USDT', 'hildobby', date '2024-05-27')
     -- Wirex
     , (0x2f13d388b85e0ecd32e7c3d7f36d1053354ef104, 'Wirex', 'Wirex 1', 'hildobby', date '2023-11-19')
     , (0xe3f277382419535245a345e923898c2d43f7cbe5, 'Wirex', 'Wirex 2', 'hildobby', date '2023-11-19')
@@ -1879,6 +1884,7 @@ FROM (VALUES
     -- Paxful
     , (0x17f1a51da68d27c94d2a51d92b27b5bd4718b986, 'Paxful', 'Paxful 1', 'hildobby', date '2024-04-04')
     , (0x7a20527ba5a749b3b054a821950bfcc2c01b959f, 'Paxful', 'Paxful 2', 'hildobby', date '2024-04-04')
+    , (0x777d4627e31863b2a49e2985af46525f21a9846c, 'Paxful', 'Paxful 3', 'hildobby', date '2024-05-26')
     -- Beldex
     , (0x258b7b9a1ba92f47f5f4f5e733293477620a82cb, 'Beldex', 'Beldex 1', 'hildobby', date '2022-08-28')
     -- SouthXchange
