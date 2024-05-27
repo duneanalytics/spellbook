@@ -94,7 +94,7 @@ methods as (
 , amounts as (
     select
         *
-        , array_union(transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> x[2]), x -> (x[1])), if(flags['limits'], array[], array[tx_from])) as users
+        , transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> x[2]), x -> (x[1])) as users
         , array_agg(
             cast(row(project, call_trace_address, coalesce(user_amount_usd, amount_usd)) as row(project varchar, call_trace_address array(bigint), amount_usd double))
         ) over(partition by block_number, tx_hash) as amounts
@@ -164,7 +164,7 @@ select
     , caller_amount_usd
     , result_amount_usd
     , amounts
-    , users
+    , if(cardinality(users) = 0 or not flags['limits'], array_union(users, array[tx_from]), users) as users
     , date(date_trunc('month', block_time)) as block_month
 from amounts
 

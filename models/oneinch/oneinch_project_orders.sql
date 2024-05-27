@@ -33,9 +33,9 @@ orders as (
                 , call_gas_used
                 , maker
                 , maker_asset
-                , making_amount
+                , coalesce(making_amount, if(order_start = 0, maker_max_amount, maker_max_amount - (block_unixtime - order_start) / (block_end - order_start) * (maker_max_amount - maker_min_amount))) as making_amount
                 , taker_asset
-                , taking_amount
+                , coalesce(taking_amount, if(order_start = 0, taker_max_amount, taker_max_amount - (block_unixtime - order_start) / (block_end - order_start) * (taker_max_amount - taker_min_amount))) as taking_amount
                 , order_hash
                 , flags
             from {{ ref('oneinch_' + blockchain + '_project_orders') }}

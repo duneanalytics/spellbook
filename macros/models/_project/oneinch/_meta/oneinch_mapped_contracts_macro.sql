@@ -56,6 +56,8 @@
         , ('0x8317c460c22a9958c27b4b6403b98d2ef4e2ad32', 'true', 'BabySwap'             , 'UNDEFINED'               , ['bnb'])
         , ('0xba12222222228d8ba445958a75a0704d566bf2c8', 'true', 'Balancer'             , 'Vault'                   , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','base'])
         , ('0x6093aebac87d62b1a5a4ceec91204e35020e38be', 'true', 'Baoswap'              , 'UniswapV2Router02'       , ['gnosis'])
+        , ('0xbbbbbBB520d69a9775E85b458C58c648259FAD5F', 'true', 'Bebop'                , 'BebopSettlement'         , ['ethereum'])
+        , ('0xf4D3269fACF1FfD633195715e5d1357f0d4489d5', 'true', 'Bebop'                , 'BebopSettlement'         , ['base'])
         , ('0x3a6d8ca21d1cf76f653a67577fa0d27453350dd8', 'true', 'BiSwap'               , 'UNDEFINED'               , ['bnb'])
         , ('0x6f5ac65ca70f2a44d73c8f711cb2bdf425d9f304', 'true', 'BitKeep'              , 'UNDEFINED'               , ['bnb'])
         , ('0xf5bfcbda96de6a55a3a80af5175a1cbb088d5338', 'true', 'BitKeep'              , 'UNDEFINED'               , ['polygon'])
@@ -353,11 +355,18 @@ contracts as (
             , 'Hashflow'
             , 'Native'
             , 'Swaap'
+            , 'Paraswap'
         ], project) as lop
+        , contains(array[
+              '1inch'
+            , 'CoWSwap'
+            , 'Uniswap'
+            , 'Bebop'
+        ], project) as auction
         , tag
     from (values
         {% for row in config if blockchain in row[4] %}
-            ({{ row[0] }}, {{ row[1] }}, '{{ row[2] }}', '{{ row[3] }}'){% if not loop.last %},{% endif %}
+            {% if not loop.first %}, {% endif %}({{ row[0] }}, {{ row[1] }}, '{{ row[2] }}', '{{ row[3] }}')
         {% endfor %}
     ) as c(address, user, project, tag)
 )
@@ -366,6 +375,7 @@ contracts as (
     select
         '{{blockchain}}' as blockchain
         , address
+        , min(block_time) as first_created_at
         , max(block_time) as last_created_at
         , max("from") as last_creator
         , max(tx_hash) as last_creation_tx_hash
@@ -380,7 +390,8 @@ select
     , address
     , project
     , tag
-    , map_from_entries(array[('user', user), ('multi', multi), ('lop', lop)]) as flags
+    , map_from_entries(array[('user', user), ('multi', multi), ('lop', lop), ('auction', auction)]) as flags
+    , first_created_at
     , last_created_at
     , last_creator
     , last_creation_tx_hash
