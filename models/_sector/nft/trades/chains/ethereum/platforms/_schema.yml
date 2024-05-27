@@ -648,7 +648,7 @@ models:
           check_columns:
             - buyer
             - seller
-            - amount_raw
+            - price_raw
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
@@ -681,7 +681,7 @@ models:
           check_columns:
             - buyer
             - seller
-            - amount_raw
+            - price_raw
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
           match_columns:
