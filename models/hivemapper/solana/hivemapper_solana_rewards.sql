@@ -38,6 +38,8 @@ with
         {% if is_incremental() %}
         and tx.block_time >= (select coalesce(max(block_time), timestamp '2022-11-01') from {{ this }})
         {% endif %}
+
+        and tx.block_time >= dateadd(day, -7, current_date) -- delete on merge
     )
     
 SELECT
