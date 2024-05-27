@@ -39,7 +39,7 @@ with
         and tx.block_time >= (select coalesce(max(block_time), timestamp '2022-11-01') from {{ this }})
         {% endif %}
 
-        and tx.block_time >= dateadd(day, -7, current_date) -- delete on merge
+        and tx.block_time >= now() - interval '7' day -- delete on merge
     )
     
 SELECT
