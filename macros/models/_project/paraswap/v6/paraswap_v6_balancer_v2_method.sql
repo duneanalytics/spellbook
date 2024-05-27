@@ -5,36 +5,106 @@ WITH
                       {{tableInner}} AS (
                         SELECT
                           *,
-                          try_cast(
-                            varbinary_to_uint256 (from_hex(s2.sData[s2.assetsOffset])) as integer
-                          ) as assetsSize
+                          substr(try_cast(data as varchar), 1, 10) as balancerV2Selector,
+                          regexp_extract_all(substr(try_cast(data as varchar), 11), '.{64}') as sData
                         FROM
-                          (
-                            SELECT
-                              *,
-                              try_cast(
-                                varbinary_to_uint256 (from_hex(s1.sData[3])) as integer
-                              ) / 32 + 1 as assetsOffset
-                            FROM
-                              (
-                                SELECT
-                                  *,
-                                  substr(try_cast(data as varchar), 11), --dbl ch -eck if need
-                                  regexp_extract_all(substr(try_cast(data as varchar), 11), '.{64}') as sData
-                                FROM
-                                  {{ srcTable }} 
-                                  {% if is_incremental() %}
-                                    WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
-                                  {% endif %}
-                              ) AS s1
-                          ) as s2
+                          {{ srcTable }} 
+                          {% if is_incremental() %}
+                            WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
+                          {% endif %}      
                       )
                     SELECT
                       *,{% if inOrOut == 'in' %}
-                      sData[assetsOffset + 1] as srcToken,
-                      sData[assetsOffset + assetsSize] as destToken,{% elif inOrOut == 'out' %}
-                      sData[assetsOffset + assetsSize] as srcToken,
-                      sData[assetsOffset + 1] as destToken,{% endif %}  
+                      CASE
+                        ----------------------- BalancerV2Vault.swap()
+                        WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 587, 64)
+                        ----------------------- BalancerV2Vault.batchSwap()
+                        WHEN balancerV2Selector = '0x945bcec9' THEN (
+                          --- pick srcToken from data[assetOffset + 1] (+1 since indices start from 1)
+                          sData[
+                            (
+                              try_cast(
+                                varbinary_to_uint256 (from_hex(sData[3])) as integer
+                                ) / 32 + 1
+                            ) + 1
+                          ]
+                        )
+                        ELSE '000000000000000000000000000000000000000000000000000000000000dead' -- placeholder, contract logic prevents hitting this case. Same applies later
+                      END AS srcToken,
+                      CASE
+                        WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 651, 64)
+                        WHEN balancerV2Selector = '0x945bcec9' THEN (
+                          --- pick destToken from data[assetOffset + assetsSize]
+                          sData[
+                            (
+                              try_cast(
+                                varbinary_to_uint256 (from_hex(sData[3])) as integer
+                              ) / 32 + 1
+                            ) 
+                            +
+                            /* start of assetsSize */
+                            try_cast(
+                              varbinary_to_uint256 (
+                                from_hex(
+                                  sData[
+                                    /* start of assetsOffset*/
+                                    try_cast(
+                                      varbinary_to_uint256 (from_hex(sData[3])) as integer
+                                    ) / 32 + 1
+                                    /* end of assetsOfsset */
+                                  ]
+                                )
+                              ) as integer
+                            )
+                            /* end of assetsSize */
+                          ]
+                        )
+                        ELSE '000000000000000000000000000000000000000000000000000000000000dead'
+                      END as destToken,{% elif inOrOut == 'out' %}
+                      CASE
+                        WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 587, 64)
+                        WHEN balancerV2Selector = '0x945bcec9' THEN (
+                          --- pick destToken from data[assetOffset + assetsSize]
+                          sData[
+                            (
+                              try_cast(
+                                varbinary_to_uint256 (from_hex(sData[3])) as integer
+                              ) / 32 + 1
+                            ) 
+                            +
+                            /* start of assetsSize */
+                            try_cast(
+                              varbinary_to_uint256 (
+                                from_hex(
+                                  sData[
+                                    /* start of assetsOffset*/
+                                    try_cast(
+                                      varbinary_to_uint256 (from_hex(sData[3])) as integer
+                                    ) / 32 + 1
+                                    /* end of assetsOfsset */
+                                  ]
+                                )
+                              ) as integer
+                            )
+                            /* end of assetsSize */
+                          ]
+                        )
+                        ELSE '000000000000000000000000000000000000000000000000000000000000dead'
+                      END AS srcToken,
+                      CASE
+                        WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 651, 64)
+                        WHEN balancerV2Selector = '0x945bcec9' THEN (
+                        --- pick srcToken from data[assetOffset + 1]
+                          sData[
+                            (
+                              try_cast(
+                                varbinary_to_uint256 (from_hex(sData[3])) as integer
+                                ) / 32 + 1
+                            ) + 1
+                          ]
+                        )
+                        ELSE '000000000000000000000000000000000000000000000000000000000000dead'
+                      END as destToken,{% endif %}  
                       try_cast(
                         JSON_EXTRACT_SCALAR(balancerData, '$.fromAmount') as UINT256
                       ) AS fromAmount,
