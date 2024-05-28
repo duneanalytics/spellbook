@@ -86,7 +86,7 @@ suicide_balances AS (
         block_month,
         refund_address AS wallet_address,
         token_address, 
-        -amount_raw
+        -amount_raw AS amount_raw
     FROM 
         suicide_contract
 )
