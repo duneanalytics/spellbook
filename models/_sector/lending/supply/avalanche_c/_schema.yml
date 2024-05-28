@@ -46,6 +46,9 @@ models:
       - &depositor
         name: depositor
         description: "Depositor wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
       - &withdrawn_to
         name: withdrawn_to
         description: "Withdrawn to wallet address"
@@ -66,6 +69,11 @@ models:
       - &block_number
         name: block_number
         description: "Event block number"
+        tests:
+          - not_null
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
         tests:
           - not_null
       - &tx_hash
@@ -106,12 +114,14 @@ models:
       - *transaction_type
       - *token_address
       - *depositor
+      - *on_behalf_of
       - *withdrawn_to
       - *liquidator
       - *amount
       - *block_month
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index
 
@@ -142,12 +152,14 @@ models:
       - *transaction_type
       - *token_address
       - *depositor
+      - *on_behalf_of
       - *withdrawn_to
       - *liquidator
       - *amount
       - *block_month
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index
 
@@ -176,12 +188,14 @@ models:
       - *transaction_type
       - *token_address
       - *depositor
+      - *on_behalf_of
       - *withdrawn_to
       - *liquidator
       - *amount
       - *block_month
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index
 
@@ -210,11 +224,13 @@ models:
       - *transaction_type
       - *token_address
       - *depositor
+      - *on_behalf_of
       - *withdrawn_to
       - *liquidator
       - *amount
       - *block_month
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index
