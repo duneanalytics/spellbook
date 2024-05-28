@@ -1,9 +1,9 @@
 version: 2
 
 models:
-   - name: balancer_base_test
+   - name: balancer_arbitrum_test
     meta:
-      blockchain: base
+      blockchain: arbitrum
       sector: dex
       contributors: bizzyvinci
     config:
