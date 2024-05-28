@@ -355,7 +355,7 @@ daily_avg_dai_prices as (
   where symbol = 'DAI'
     and blockchain = 'ethereum'
     and contract_address = 0x6b175474e89094c44da98b954eedeac495271d0f
-    and minute >= timestamp '2019-11-13'
+    and minute >= timestamp '2019-07-12'
   group by 1
 ),
 
@@ -385,17 +385,17 @@ daily_avg_usdc_prices as (
 
 day_sequence as (
   select cast(d.seq_date as timestamp) as block_date
-  from (select sequence(date '2019-05-01', current_date, interval '1' day) as days) as days_s
+  from (select sequence(date '2019-05-23', current_date, interval '1' day) as days) as days_s
     cross join unnest(days) as d(seq_date)
 ),
 
 daily_running_totals as (
   select
     ds.block_date,
-    sum(tt.eth_total) over (order by ds.block_date) as eth_total,
-    sum(tt.dai_total) over (order by ds.block_date) as dai_total,
-    sum(tt.reth_total) over (order by ds.block_date) as reth_total,
-    sum(tt.usdc_total) over (order by ds.block_date) as usdc_total,
+    sum(coalesce(tt.eth_total, 0)) over (order by ds.block_date) as eth_total,
+    sum(coalesce(tt.dai_total, 0)) over (order by ds.block_date) as dai_total,
+    sum(coalesce(tt.reth_total, 0)) over (order by ds.block_date) as reth_total,
+    sum(coalesce(tt.usdc_total, 0)) over (order by ds.block_date) as usdc_total,
     coalesce(steth_rt.steth_total, lag(steth_rt.steth_total) over (order by ds.block_date), 0) as steth_total,
     coalesce(nxmty_rt.nxmty_total, lag(nxmty_rt.nxmty_total) over (order by ds.block_date), 0) as nxmty_total,
     coalesce(nxmty_rt.nxmty_in_eth_total, lag(nxmty_rt.nxmty_in_eth_total) over (order by ds.block_date), 0) as nxmty_eth_total,
@@ -414,39 +414,39 @@ daily_running_totals as (
 daily_running_totals_enriched as (
   select
     drt.block_date,
-    p_avg_eth.price_usd as avg_eth_usd_price,
+    coalesce(p_avg_eth.price_usd, 0) as avg_eth_usd_price,
     -- ETH
-    drt.eth_total,
-    drt.eth_total * p_avg_eth.price_usd as avg_eth_usd_total,
+    coalesce(drt.eth_total, 0) as eth_total,
+    coalesce(drt.eth_total * p_avg_eth.price_usd, 0) as avg_eth_usd_total,
     -- DAI
-    drt.dai_total,
-    drt.dai_total * p_avg_dai.price_usd as avg_dai_usd_total,
-    drt.dai_total * p_avg_dai.price_usd / p_avg_eth.price_usd as avg_dai_eth_total,
+    coalesce(drt.dai_total, 0) as dai_total,
+    coalesce(drt.dai_total * p_avg_dai.price_usd, 0) as avg_dai_usd_total,
+    coalesce(drt.dai_total * p_avg_dai.price_usd / p_avg_eth.price_usd, 0) as avg_dai_eth_total,
     -- NXMTY
-    drt.nxmty_total,
-    drt.nxmty_eth_total,
-    drt.nxmty_eth_total * p_avg_eth.price_usd as avg_nxmty_usd_total,
+    coalesce(drt.nxmty_total, 0) as nxmty_total,
+    coalesce(drt.nxmty_eth_total, 0) as nxmty_eth_total,
+    coalesce(drt.nxmty_eth_total * p_avg_eth.price_usd, 0) as avg_nxmty_usd_total,
     -- stETH
-    drt.steth_total,
-    drt.steth_total * p_avg_eth.price_usd as avg_steth_usd_total,
+    coalesce(drt.steth_total, 0) as steth_total,
+    coalesce(drt.steth_total * p_avg_eth.price_usd, 0) as avg_steth_usd_total,
     -- rETH
-    drt.reth_total,
-    drt.reth_total * p_avg_reth.price_usd as avg_reth_usd_total,
-    drt.reth_total * p_avg_reth.price_usd / p_avg_eth.price_usd as avg_reth_eth_total,
+    coalesce(drt.reth_total, 0) as reth_total,
+    coalesce(drt.reth_total * p_avg_reth.price_usd, 0) as avg_reth_usd_total,
+    coalesce(drt.reth_total * p_avg_reth.price_usd / p_avg_eth.price_usd, 0) as avg_reth_eth_total,
     -- USDC
-    drt.usdc_total,
-    drt.usdc_total * p_avg_usdc.price_usd as avg_usdc_usd_total,
-    drt.usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd as avg_usdc_eth_total,
+    coalesce(drt.usdc_total, 0) as usdc_total,
+    coalesce(drt.usdc_total * p_avg_usdc.price_usd, 0) as avg_usdc_usd_total,
+    coalesce(drt.usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd, 0) as avg_usdc_eth_total,
     -- Cover Re USDC investment
-    drt.cover_re_usdc_total,
-    drt.cover_re_usdc_total * p_avg_usdc.price_usd as avg_cover_re_usdc_usd_total,
-    drt.cover_re_usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd as avg_cover_re_usdc_eth_total,
+    coalesce(drt.cover_re_usdc_total, 0) as cover_re_usdc_total,
+    coalesce(drt.cover_re_usdc_total * p_avg_usdc.price_usd, 0) as avg_cover_re_usdc_usd_total,
+    coalesce(drt.cover_re_usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd, 0) as avg_cover_re_usdc_eth_total,
     -- AAVE positions
-    drt.aave_collateral_weth_total,
-    drt.aave_collateral_weth_total * p_avg_eth.price_usd as avg_aave_collateral_weth_usd_total,
-    drt.aave_debt_usdc_total,
-    drt.aave_debt_usdc_total * p_avg_usdc.price_usd as avg_aave_debt_usdc_usd_total,
-    drt.aave_debt_usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd as avg_aave_debt_usdc_eth_total
+    coalesce(drt.aave_collateral_weth_total, 0) as aave_collateral_weth_total,
+    coalesce(drt.aave_collateral_weth_total * p_avg_eth.price_usd, 0) as avg_aave_collateral_weth_usd_total,
+    coalesce(drt.aave_debt_usdc_total, 0) as aave_debt_usdc_total,
+    coalesce(drt.aave_debt_usdc_total * p_avg_usdc.price_usd, 0) as avg_aave_debt_usdc_usd_total,
+    coalesce(drt.aave_debt_usdc_total * p_avg_usdc.price_usd / p_avg_eth.price_usd, 0) as avg_aave_debt_usdc_eth_total
   from daily_running_totals drt
     inner join daily_avg_eth_prices p_avg_eth on drt.block_date = p_avg_eth.block_date
     left join daily_avg_dai_prices p_avg_dai on drt.block_date = p_avg_dai.block_date
