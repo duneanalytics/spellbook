@@ -8,7 +8,7 @@ WITH identify_first AS (
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
     LEFT JOIN {{this}} t ON t.address=tt.to
-        AND t.unique_key IS NULL
+        AND COALESCE(t.unique_key, 'NULL') = 'NULL'
     WHERE {{ incremental_predicate('tt.block_time') }}
     {% endif %}
     GROUP BY to
