@@ -402,7 +402,7 @@ with source_ethereum_transactions as (
           ,t."from" as tx_from
           ,t.to as tx_to
           ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
-          ,bytearray_reverse(bytearray_substring(bytearray_reverse(tx.data),1,32))  as tx_data_marker
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,32))  as tx_data_marker
           ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
