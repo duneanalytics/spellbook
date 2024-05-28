@@ -121,30 +121,10 @@ models:
       gnosis:
         +schema: airdrop_gnosis
 
-    giveth:
-      +schema: giveth
-      gnosis:
-        +schema: giveth_gnosis
-
     ellipsis_finance:
       +schema: ellipsis_finance
       bnb:
         +schema: ellipsis_finance_bnb
-
-    arbitrum:
-      +schema: arbitrum
-      arbitrum:
-        +schema: arbitrum_arbitrum
-
-    pangolin:
-      +schema: pangolin
-      avalanche_c:
-        +schema: pangolin_avalanche_c
-
-    ampleforth:
-      +schema: ampleforth
-      ethereum:
-        +schema: ampleforth_ethereum
 
     velodrome:
       +schema: velodrome
@@ -235,8 +215,6 @@ models:
 
     paraswap:
       +schema: paraswap
-      ethereum:
-        +schema: paraswap_ethereum
       avalanche_c:
         +schema: paraswap_avalanche_c
       fantom:
@@ -895,11 +873,6 @@ models:
       +schema: notional
       ethereum:
         +schema: notional_ethereum
-
-    dydx:
-      +schema: dydx
-      ethereum:
-        +schema: dydx_ethereum
 
     dappradar:
       +schema: dappradar
