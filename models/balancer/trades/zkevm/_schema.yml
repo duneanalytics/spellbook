@@ -33,7 +33,8 @@ models:
       - &version
         name: version
         description: "Version of the project"
-      - name: block_month
+      - &block_month
+        name: block_month
         description: "Block month in UTC"
       - &block_date
         name: block_date
@@ -92,7 +93,9 @@ models:
       - &pool_type
         name: pool_type
         description: "Pool attributes, determined by the pool's factory"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
+        description: "Tx. Hash"
       - &tx_from
         name: tx_from
         description: "transaction.from"
