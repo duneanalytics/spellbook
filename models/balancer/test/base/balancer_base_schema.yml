@@ -1,7 +1,6 @@
 version: 2
 
 models:
-
   - name: balancer_base_test
     meta:
       blockchain: base
