@@ -68,3 +68,24 @@ models:
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
+
+    chainlink:
+      +schema: chainlink
+      arbitrum:
+        +schema: chainlink_arbitrum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
+      base:
+        +schema: chainlink_base
+      bnb:
+        +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      fantom:
+        +schema: chainlink_fantom
+      gnosis:
+        +schema: chainlink_gnosis
+      optimism:
+        +schema: chainlink_optimism
+      polygon:
+        +schema: chainlink_polygon
