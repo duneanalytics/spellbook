@@ -10,7 +10,7 @@ SELECT address
     , entity
     FROM (
         values
-        (0x0d3250c3d5facb74ac15834096397a3ef790ec99, 'zkSync')
+        (0x0d3250c3d5facb74ac15834096397a3ef790ec99, 'zkSync Era')
         , (0x2c169dfe5fbba12957bdd0ba47d9cedbfe260ca7, 'StarkNet')
         , (0x6887246668a3b87f54deb3b94ba47a6f63f32985, 'OP Mainnet')
         , (0x5050f69a9786f081509234f1a7f4684b5e5b76c9, 'Base')
