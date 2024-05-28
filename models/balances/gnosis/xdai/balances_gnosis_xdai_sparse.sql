@@ -31,9 +31,9 @@ suicide_end_balances as (
     FROM (
         SELECT
             t1.blockchain, 
-            t1.block_time,
-            t1.block_number,
-            t1.block_month,
+            t2.block_time,
+            t2.block_number,
+            t2.block_month,
             t1.wallet_address, 
             t2.refund_address,
             t1.token_address, 
