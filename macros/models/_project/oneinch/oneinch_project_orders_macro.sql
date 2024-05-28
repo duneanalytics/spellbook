@@ -853,7 +853,6 @@ select
     , array[data] as event_data
     , to_unixtime(block_time) as block_unixtime
     , date(date_trunc('month', block_time)) as block_month
-    , cast(1 as varbinary) as error -- temp special error
 from joined
 where
     trades = 1
