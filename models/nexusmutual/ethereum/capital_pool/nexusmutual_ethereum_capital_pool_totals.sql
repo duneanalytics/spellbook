@@ -109,7 +109,7 @@ cover_re_usdc_investment as (
   select
     block_time,
     block_date,
-    coalesce(lead(block_date) over (order by block_date), date_add('day', 1, current_date)) as next_block_date,
+    lead(block_date, 1, date_add('day', 1, current_date)) over (order by block_date) as next_block_date,
     amount,
     tx_hash
   from (
