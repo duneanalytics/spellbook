@@ -14,6 +14,7 @@ sparse_balances as (
     SELECT
         blockchain, 
         block_time,
+        block_number,
         block_month,
         wallet_address, 
         token_address, 
@@ -22,6 +23,7 @@ sparse_balances as (
         SELECT
             blockchain, 
             block_time,
+            block_number,
             block_month,
             wallet_address, 
             token_address, 
@@ -36,6 +38,7 @@ sparse_balances as (
 suicide as (
     SELECT
          block_time
+         ,block_number
         ,address
         ,refund_address
     FROM 
@@ -46,6 +49,7 @@ suicide_balances as (
     SELECT 
         blockchain, 
         block_time,
+        block_number,
         block_month,
         wallet_address, 
         token_address, 
@@ -54,8 +58,9 @@ suicide_balances as (
         SELECT
             t1.blockchain, 
             t1.block_time,
+            t1.block_number,
             t1.block_month,
-            t1.wallet_address, 
+            t2.address AS wallet_address, 
             t1.token_address, 
             -t1.amount_raw AS amount_raw
         FROM
@@ -63,15 +68,15 @@ suicide_balances as (
         INNER JOIN
             suicide t2
             ON
-            t2.block_time = t1.block_time
-            AND
-            t2.address = t1.wallet_address
+            t2.block_number = t1.block_number
+            
         
         UNION ALL
 
         SELECT
             t1.blockchain, 
             t1.block_time,
+            t1.block_number,
             t1.block_month,
             t2.refund_address AS wallet_address, 
             t1.token_address, 
@@ -81,9 +86,7 @@ suicide_balances as (
         INNER JOIN
             suicide t2
             ON
-            t2.block_time = t1.block_time
-            AND
-            t2.address = t1.wallet_address
+            t2.block_number = t1.block_number
     )
     GROUP BY 
         1,2,3,4,5
@@ -93,6 +96,7 @@ suicide_balances as (
 SELECT
     blockchain, 
     block_time,
+    block_number,
     block_month,
     wallet_address, 
     token_address, 

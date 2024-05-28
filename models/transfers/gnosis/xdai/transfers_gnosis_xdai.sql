@@ -20,6 +20,7 @@ xdai_transfers  as (
         tx_hash,
         trace_address, 
         block_time,
+        block_number,
         COALESCE(to,address) as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
         TRY_CAST(value as INT256) as amount_raw
@@ -39,6 +40,7 @@ xdai_transfers  as (
         tx_hash,
         trace_address, 
         block_time,
+        block_number,
         "from" as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
         -TRY_CAST(value as INT256) as amount_raw
@@ -60,6 +62,7 @@ gas_fee as (
         hash as tx_hash, 
         array[index] as trace_address, 
         block_time, 
+        block_number,
         "from" as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         - TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256) as amount_raw
@@ -76,6 +79,7 @@ gas_fee_rewards as (
         t1.hash as tx_hash, 
         array[t1.index] as trace_address, 
         t1.block_time, 
+        t1.block_number,
         t2.miner as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(t1.gas_used as INT256) * (TRY_CAST(t1.gas_price as INT256) - TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256)) as amount_raw
@@ -95,7 +99,8 @@ block_reward AS (
         'block_reward' as transfer_type,
         evt_tx_hash AS tx_hash, 
         array[evt_index] as trace_address, 
-        evt_block_time AS block_time, 
+        evt_block_time AS block_time,
+        evt_block_number AS block_number, 
         receiver AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
@@ -111,7 +116,8 @@ block_reward AS (
         'block_reward' as transfer_type,
         evt_tx_hash AS tx_hash, 
         array[evt_index] as trace_address, 
-        evt_block_time AS block_time, 
+        evt_block_time AS block_time,
+        evt_block_number AS block_number, 
         receiver AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
@@ -128,6 +134,7 @@ bridged AS (
         evt_tx_hash AS tx_hash, 
         array[evt_index] as trace_address, 
         evt_block_time AS block_time, 
+        evt_block_number AS block_number,
         recipient AS wallet_address,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(value as INT256) as amount_raw
@@ -161,6 +168,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
@@ -176,6 +184,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
@@ -191,6 +200,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
