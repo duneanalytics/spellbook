@@ -611,14 +611,11 @@ select
         -- tx
         ,block_number
         ,tx_hash
-        ,tx_from
-        ,tx_to
 
         -- seaport etc
         , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
 
         ,right_hash
-        ,right_hash as tx_data_marker
         ,fee_wallet_name
         ,zone as zone_address
   from   iv_trades
