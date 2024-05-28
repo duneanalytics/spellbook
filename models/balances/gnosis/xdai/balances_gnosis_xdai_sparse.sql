@@ -92,7 +92,6 @@ suicide_balances AS (
 )
 
 
-
 SELECT
     blockchain, 
     block_time,
