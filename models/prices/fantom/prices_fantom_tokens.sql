@@ -83,7 +83,12 @@ FROM
     ('unidx-unidex', 'fantom', 'UNIDX', 0x0483a76D80D0aFEC6bd2afd12C1AD865b9DF1471, 18),
     ('bay-moon-bay', 'fantom', 'BAY', 0xd361474bB19C8b98870bb67F5759cDF277Dee7F9, 18),
     ('usdc-usdc-stargate-bridge', 'fantom', 'USDC', 0x28a92dde19D9989F39A49905d7C9C2FAc7799bDf, 6),
-    ('fusdt-frapped-usdt', 'fantom', 'FUSDT', 0x049d68029688eabf473097a2fc38ef61633a3c7a, 6)
+    ('fusdt-frapped-usdt', 'fantom', 'FUSDT', 0x049d68029688eabf473097a2fc38ef61633a3c7a, 6),
+    ('fsonic-fantomsonicinu', 'fantom', 'fSONIC', 0x05e31a691405d06708a355c029599c12d5da8b28, 18),
+    ('polter-polterfinance-protocol-token', 'fantom', 'POLTER', 0x5c725631FD299703D0A74C23F89a55c6B9A0C52F, 18),
+    ('equal-equalizer-dex', 'fantom', 'EQUAL', 0x3fd3a0c85b70754efc07ac9ac0cbbdce664865a6, 18),
+    ('ftails-ftails', 'fantom', 'FTAILS', 0x5cf90b977c86415a53ce3b7be13b26f6abddfee2, 18),
+    ('fbux-fantom-money-market', 'fantom', 'FBUX', 0x1e2ea3f3209d66647f959cf00627107e079b870d, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
