@@ -25,7 +25,7 @@ sparse_balances as (
             block_month,
             wallet_address, 
             token_address, 
-            SUM(amount_raw) OVER (PARTITION BY blockchain, token_address, wallet_address ORDER BY block_time) AS amount_raw
+            SUM(amount_raw) OVER (PARTITION BY blockchain, token_address, wallet_address ORDER BY block_time) AS amount_raw,
             ROW_NUMBER() OVER (PARTITION BY blockchain, token_address, wallet_address, block_time ORDER BY trace_address) AS row_cnt
         FROM 
         {{ ref('transfers_gnosis_xdai') }}
