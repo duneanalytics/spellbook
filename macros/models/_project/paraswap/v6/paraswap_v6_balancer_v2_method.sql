@@ -6,6 +6,7 @@ WITH
                         SELECT
                           *,
                           substr(try_cast(data as varchar), 1, 10) as balancerV2Selector,
+                          /* cutting down balancer data into bytes32 words to RLP decode assetOffset and assetsSize later */
                           regexp_extract_all(substr(try_cast(data as varchar), 11), '.{64}') as sData
                         FROM
                           {{ srcTable }} 
@@ -23,9 +24,11 @@ WITH
                           --- pick srcToken from data[assetOffset + 1] (+1 since indices start from 1)
                           sData[
                             (
+                              /* start of assetsOffset */
                               try_cast(
                                 varbinary_to_uint256 (from_hex(sData[3])) as integer
                                 ) / 32 + 1
+                              /* end of assetsOffset */
                             ) + 1
                           ]
                         )
@@ -37,9 +40,11 @@ WITH
                           --- pick destToken from data[assetOffset + assetsSize]
                           sData[
                             (
+                              /* start of assetsOffset */
                               try_cast(
                                 varbinary_to_uint256 (from_hex(sData[3])) as integer
                               ) / 32 + 1
+                              /* end of assetsOfsset */
                             ) 
                             +
                             /* start of assetsSize */
@@ -47,7 +52,7 @@ WITH
                               varbinary_to_uint256 (
                                 from_hex(
                                   sData[
-                                    /* start of assetsOffset*/
+                                    /* start of assetsOffset */
                                     try_cast(
                                       varbinary_to_uint256 (from_hex(sData[3])) as integer
                                     ) / 32 + 1
@@ -67,9 +72,11 @@ WITH
                           --- pick destToken from data[assetOffset + assetsSize]
                           sData[
                             (
+                              /* start of assetsOffset */
                               try_cast(
                                 varbinary_to_uint256 (from_hex(sData[3])) as integer
                               ) / 32 + 1
+                              /* end of assetsOfsset */
                             ) 
                             +
                             /* start of assetsSize */
@@ -77,7 +84,7 @@ WITH
                               varbinary_to_uint256 (
                                 from_hex(
                                   sData[
-                                    /* start of assetsOffset*/
+                                    /* start of assetsOffset */
                                     try_cast(
                                       varbinary_to_uint256 (from_hex(sData[3])) as integer
                                     ) / 32 + 1
@@ -97,9 +104,11 @@ WITH
                         --- pick srcToken from data[assetOffset + 1]
                           sData[
                             (
+                              /* start of assetsOffset */
                               try_cast(
                                 varbinary_to_uint256 (from_hex(sData[3])) as integer
                                 ) / 32 + 1
+                              /* end of assetsOffset */
                             ) + 1
                           ]
                         )
