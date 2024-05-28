@@ -5,8 +5,9 @@
     , alias = 'first_received'
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'append'
+    , incremental_strategy = 'merge'
     , unique_key = ['address']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
