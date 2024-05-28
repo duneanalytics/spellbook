@@ -565,12 +565,11 @@ with source_ethereum_transactions as (
           ,t."from" as tx_from
           ,t.to as tx_to
           ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(tx.data),1,32))  as tx_data_marker
           ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
 ),
-
-base_trades as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
@@ -611,6 +610,9 @@ select
         -- tx
         ,block_number
         ,tx_hash
+        ,tx_from
+        ,tx_to
+        ,tx_data_marker
 
         -- seaport etc
         , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
@@ -619,7 +621,4 @@ select
         ,fee_wallet_name
         ,zone as zone_address
   from   iv_trades
-  )
-
-  {{add_nft_tx_data('base_trades',blockchain)}}
 {% endmacro %}
