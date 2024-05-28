@@ -89,7 +89,7 @@ suicide_balances as (
             t2.block_number = t1.block_number
     )
     GROUP BY 
-        1,2,3,4,5
+        1,2,3,4,5,6
 )
 
 
@@ -107,6 +107,6 @@ FROM (
     SELECT * FROM suicide_balances
 )
 GROUP BY 
-    1,2,3,4,5
+    1,2,3,4,5,6
 
 
