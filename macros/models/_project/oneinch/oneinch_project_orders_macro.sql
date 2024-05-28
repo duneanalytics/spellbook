@@ -1,4 +1,7 @@
-{% macro oneinch_project_orders_macro(blockchain)%}
+{% macro oneinch_project_orders_macro(
+    blockchain
+    , date_from = '2024-05-01'
+)%}
 
 -- EVENTS CONFIG
 {%
@@ -651,7 +654,11 @@ logs as (
     from {{ source(blockchain, 'logs') }}
     where
         topic0 = {{ event }}
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() %}
+            and {{ incremental_predicate('block_time') }}
+        {% else %}
+            and block_time >= timestamp '{{date_from}}'
+        {% endif %}
     {% if not loop.last %}union all{% endif %}
 {% endfor %}
 )
@@ -762,7 +769,7 @@ logs as (
             ) using("to")
             where
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}
-                {% else %}block_time > first_created_at{% endif %}
+                {% else %}block_time >= greatest(first_created_at, timestamp '{{date_from}}'){% endif %}
                 and substr(input, 1, 4) = {{ selector }}
 
             {% if not loop.last %}union all{% endif %}
