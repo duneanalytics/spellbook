@@ -43,4 +43,5 @@ FROM (VALUES
     , (0x27f485b62C4A7E635F561A87560Adf5090239E93, 'DFX', 18)
     , (0x416101d98df2187ddc0ff29b787ded19dd8c9740, 'MRK', 18)
     , (0x5d0270967bab81d0822e500b986cb6652186eaa9, 'AUC02', 18)
+    , (0xc3323b6e71925b25943fb7369ee6769837e9c676, 'PORIGON', 18)
 ) AS temp_table (contract_address, symbol, decimals)
