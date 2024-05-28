@@ -78,6 +78,8 @@ suicide_balances_diff AS (
         amount_raw
     FROM 
         suicide_end_balances
+    WHERE
+        refund_address != wallet_address
 ),
 
 transfers_gnosis_xdai_full AS (
