@@ -1,6 +1,6 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
-    alias = 'l1_data_fees',    
+    alias = 'l1_blob_fees',    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -34,7 +34,7 @@ AND p.minute >= date_trunc('day', now() - interval '7' day)
 {% endif %}
 AND s.blob_submitter_label IN ('Arbitrum',
 'Linea',
-'zkSync',
+'zkSync Era',
 'Base',
 'Scroll',
 'Zora',
