@@ -568,7 +568,9 @@ with source_ethereum_transactions as (
           ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
-)
+),
+
+base_trades as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
@@ -616,7 +618,11 @@ select
         , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
 
         ,right_hash
+        ,right_hash as tx_data_marker
         ,fee_wallet_name
         ,zone as zone_address
   from   iv_trades
+  )
+
+  {{add_nft_tx_data('base_trades','{{blockchain}}')}}
 {% endmacro %}

@@ -408,6 +408,8 @@ with source_ethereum_transactions as (
   where t."from" != 0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd -- this is a special address which transact English Auction, will handle later.
 
 )
+
+, base_trades as (
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
@@ -448,8 +450,6 @@ select
         -- tx
         ,block_number
         ,tx_hash
-        ,tx_from
-        ,tx_to
 
         -- seaport etc
         , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
@@ -458,4 +458,8 @@ select
         ,fee_wallet_name
         ,zone as zone_address
   from   iv_trades
+  )
+
+{{add_nft_tx_data('base_trades','{{blockchain}}')}}
+
 {% endmacro %}
