@@ -569,7 +569,7 @@ with source_ethereum_transactions as (
           ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
-),
+)
   -- Rename column to align other *.trades tables
   -- But the columns ordering is according to convenience.
   -- initcap the code value if needed
