@@ -42,6 +42,9 @@ models:
       - &block_time
         name: block_time
         description: 'Block time in UTC'
+      - &block_number
+        name: block_number
+        description: 'Block number'
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
