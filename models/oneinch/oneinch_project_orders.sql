@@ -29,7 +29,7 @@ orders as (
                 , call_selector
                 , call_trace_address
                 , call_from
-                , address as call_to
+                , call_to
                 , call_gas_used
                 , maker
                 , maker_asset
