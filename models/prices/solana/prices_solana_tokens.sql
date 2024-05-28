@@ -673,5 +673,7 @@ FROM
         ('michi-michicoin', 'solana', '$MICHI', '5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp', 6),
         ('gme-gme', 'solana', 'GME', '8wXtPeU6557ETkp9WHFY1n1EcU6NxDvbAggHGsMYiHsB', 9),
         ('usa-american-coin', 'solana', 'USA', '69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs', 6),
-        ('scnsol-socean-staked-sol', 'solana',  'SCNSOL', '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', 9)
+        ('scnsol-socean-staked-sol', 'solana',  'SCNSOL', '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', 9),
+        ('cwif-catwifhat', 'solana', 'CWIF', '7atgF8KQo4wJrD5ATGX7t1V2zVvykPJbFfNeVf1icFv1', 2),
+        ('sc-shark-cat', 'solana', 'SC', '6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

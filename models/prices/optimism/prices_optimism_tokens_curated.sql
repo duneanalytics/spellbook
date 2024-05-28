@@ -120,5 +120,6 @@ FROM
     ('axlusdc-axelar-wrapped-usdc', 'AXLUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6),
     ('beets-beethoven-x', 'BEETS', 0xb4bc46bc6cb217b59ea8f4530bae26bf69f677f0, 18),
     ('aeth-ankreth', 'ankrETH', 0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18),
-    ('tux-magicaltux', 'TUX',  0x17aabf6838a6303fc6e9c5a227dc1eb6d95c829a, 18)
+    ('tux-magicaltux', 'TUX',  0x17aabf6838a6303fc6e9c5a227dc1eb6d95c829a, 18),
+    ('sonne-sonne-finance', 'SONNE', 0x1db2466d9f5e10d7090e7152b68d62703a2245f0, 18)    
 ) as temp (token_id, symbol, contract_address, decimals)
