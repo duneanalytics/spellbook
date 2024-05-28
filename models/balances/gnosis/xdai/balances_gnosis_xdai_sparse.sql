@@ -46,7 +46,7 @@ suicide as (
 ),
 
 suicide_contract AS (
-    SELECT
+    SELECT DISTINCT
         t1.blockchain, 
         t1.block_time,
         t1.block_number,
