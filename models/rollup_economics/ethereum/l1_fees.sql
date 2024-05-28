@@ -51,8 +51,8 @@ l1_blobs AS (
 )
 
 SELECT
-day,
-name,
+d.day,
+d.name,
 l1_data_fee, 
 l1_data_fee_usd,
 l1_verification_fee,
