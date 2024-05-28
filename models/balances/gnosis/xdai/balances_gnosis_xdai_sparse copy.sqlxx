@@ -17,8 +17,17 @@ transfers_gnosis_xdai AS (
         {{ ref('transfers_gnosis_xdai') }}
 ),
 
+suicide as (
+    SELECT
+        block_time
+        ,block_number
+        ,address
+        ,refund_address
+    FROM 
+        {{ ref('suicide_gnosis_xdai') }}
+),
 
-suicide_end_balances as (
+suicide_balances as (
     SELECT
         blockchain, 
         block_time,
@@ -42,7 +51,7 @@ suicide_end_balances as (
         FROM 
             transfers_gnosis_xdai t1
         INNER JOIN  
-            (SELECT * FROM {{ ref('suicide_gnosis_xdai') }}) t2
+            suicide t2
             ON 
             t2.address = t1.wallet_address
         WHERE
@@ -62,7 +71,7 @@ suicide_balances_diff AS (
         token_address, 
         -amount_raw AS amount_raw
     FROM 
-        suicide_end_balances
+        suicide_balances
 
     UNION ALL
 
@@ -75,7 +84,7 @@ suicide_balances_diff AS (
         token_address, 
         amount_raw
     FROM 
-        suicide_end_balances
+        suicide_balances
 ),
 
 transfers_gnosis_xdai_full AS (
@@ -122,7 +131,7 @@ transfers_gnosis_xdai_full AS (
             wallet_address, 
             token_address, 
             SUM(amount_raw) OVER (PARTITION BY blockchain, token_address, wallet_address ORDER BY block_time) AS amount_raw,
-            ROW_NUMBER() OVER (PARTITION BY blockchain, token_address, wallet_address, block_number ) AS row_cnt
+            ROW_NUMBER() OVER (PARTITION BY blockchain, token_address, wallet_address ORDER BY trace_address) AS row_cnt
         FROM 
             transfers_gnosis_xdai_full
     )
