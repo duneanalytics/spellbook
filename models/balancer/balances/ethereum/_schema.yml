@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski
+      contributors: jacektrocinski, metacrypto, viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'balances']
     description: >

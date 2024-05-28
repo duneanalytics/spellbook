@@ -25,9 +25,7 @@ models:
       - name: block_number
       - name: amount
       - name: amount_usd
-      - &tx_hash
-        name: tx_hash
-        description: "Tx. Hash"
+      - name: tx_hash
       - name: evt_index
       - name: fee
       - name: currency_contract

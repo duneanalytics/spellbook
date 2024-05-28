@@ -19,7 +19,6 @@ ref('balancer_v2_ethereum_flashloans')
 , ref('balancer_v2_zkevm_flashloans')
 ] %}
 
-
 SELECT *
 FROM (
     {% for flash_model in balancer_models %}

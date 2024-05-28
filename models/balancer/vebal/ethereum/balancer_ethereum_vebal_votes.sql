@@ -1,6 +1,5 @@
 {{
     config(
-        
         alias = 'vebal_votes',
         materialized = 'table',
         file_format = 'delta',
