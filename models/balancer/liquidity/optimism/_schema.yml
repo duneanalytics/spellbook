@@ -35,7 +35,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain"
-        - &pool_type
+      - &pool_type
         name: pool_type
         description: "Pool attributes, determined by the pool's factory"      
       - &token_address
