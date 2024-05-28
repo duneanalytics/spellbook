@@ -54,15 +54,13 @@ suicide_contract AS (
         t2.address,
         t2.refund_address,
         t1.token_address, 
-        -t1.amount_raw AS amount_raw
+        LAST_VALUE(-t1.amount_raw) IGNORE NULLS OVER (PARTITION BY t2.address ORDER BY t1.block_number) AS amount_raw
     FROM
         sparse_balances t1
     INNER JOIN
         suicide t2
         ON
         t2.block_number = t1.block_number
-        AND
-        t2.address = t1.wallet_address
 ),
 
 suicide_balances AS (
