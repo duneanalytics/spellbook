@@ -638,9 +638,8 @@ FROM (VALUES
     , (0xd4f7c1047e43016434b177222e0706ce71084514, 'HTX', 'HTX Deposit Funder 12', 'hildobby', date '2023-11-24')
     , (0x2bb1881b1dde050fdf756c25e025aa9367b4affc, 'HTX', 'HTX Deposit Funder 13', 'hildobby', date '2024-05-04')
     , (0xb633a44c8464c9c625e25c18cf210529a1e4cc99, 'HTX', 'HTX Deposit Funder 14', 'hildobby', date '2024-05-04')
-    , (0x12FA4951CBFC51102ccFd5580beb135cA3D74c54, 'HTX', 'HTX Deposit Funder 15', 'hildobby', date '2024-05-25')
+    , (0x12fa4951cbfc51102ccfd5580beb135ca3d74c54, 'HTX', 'HTX Deposit Funder 15', 'hildobby', date '2024-05-25')
     , (0xb5e919c001f752501ac603d0c581e24c77165bb2, 'HTX', 'HTX Deposit Funder 16', 'hildobby', date '2024-05-25')
-    , (0x12fa4951cbfc51102ccfd5580beb135ca3d74c54, 'HTX', 'HTX Deposit Funder 17', 'hildobby', date '2024-05-25')
     , (0xbc53b706b165d2b7e98f254095d9d342e845e5ac, 'HTX', 'HTX Bridge 1', 'hildobby', date '2024-05-25')
     -- LBank
     , (0x356dc48d74f107cfbfd61790b0808cda6a0d364f, 'LBank', 'LBank 1', 'hildobby', date '2023-09-12')
