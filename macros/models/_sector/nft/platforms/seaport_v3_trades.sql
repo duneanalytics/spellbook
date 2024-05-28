@@ -624,5 +624,5 @@ select
   from   iv_trades
   )
 
-  {{add_nft_tx_data('base_trades','{{blockchain}}')}}
+  {{add_nft_tx_data('base_trades',blockchain)}}
 {% endmacro %}
