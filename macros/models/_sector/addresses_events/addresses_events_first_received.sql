@@ -6,9 +6,9 @@ WITH identify_first AS (
     , MIN_BY(tx_index, (block_number, tx_index)) AS tx_index
     , MIN_BY(evt_index, (block_number, tx_index, evt_index)) AS evt_index
     FROM {{token_transfers}} tt
+    {% if is_incremental() %}
     LEFT JOIN {{this}} t ON t.address=tt.to
         AND t.address IS NULL
-    {% if is_incremental() %}
     WHERE {{ incremental_predicate('tt.block_time') }}
     {% endif %}
     GROUP BY to
