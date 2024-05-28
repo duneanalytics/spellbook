@@ -39,7 +39,7 @@ suicide as (
         ,address
         ,refund_address
     FROM 
-    {{ ref('transfers_gnosis_xdai') }}
+    {{ ref('suicide_gnosis_xdai') }}
 ),
 
 suicide_balances as (
