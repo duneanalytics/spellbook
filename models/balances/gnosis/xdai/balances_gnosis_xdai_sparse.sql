@@ -27,7 +27,9 @@ suicide_end_balances as (
         wallet_address, 
         refund_address,
         token_address, 
-        amount_raw
+        amount_raw 
+            - 
+        COALESCE(LAG(amount_raw) OVER (PARTITION BY blockchain, token_address, wallet_address ORDER BY block_time),0) AS amount_raw
     FROM (
         SELECT
             t1.blockchain, 
@@ -37,8 +39,8 @@ suicide_end_balances as (
             t1.wallet_address, 
             t2.refund_address,
             t1.token_address, 
-            SUM(t1.amount_raw) OVER (PARTITION BY t1.blockchain, t1.token_address, t1.wallet_address ORDER BY t1.block_time) AS amount_raw,
-            ROW_NUMBER() OVER (PARTITION BY t1.blockchain, t1.token_address, t1.wallet_address ORDER BY t1.block_time DESC) AS row_cnt
+            SUM(t1.amount_raw) OVER (PARTITION BY t1.blockchain, t1.token_address, t1.wallet_address, t2.tx_hash ORDER BY t1.block_time) AS amount_raw,
+            ROW_NUMBER() OVER (PARTITION BY t1.blockchain, t1.token_address, t1.wallet_address, t2.tx_hash ORDER BY t1.block_time DESC) AS row_cnt
         FROM 
             transfers_gnosis_xdai t1
         INNER JOIN  
