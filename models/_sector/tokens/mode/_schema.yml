@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: mode
       sector: tokens
-      contributors: aalan3, jeff-dude
+      contributors: aalan3, jeff-dude, hildobby
     config:
       tags: ['tokens','transfers', 'mode']
     description: >
@@ -53,7 +53,7 @@ models:
     meta:
       blockchain: mode
       sector: tokens
-      contributors: aalan3, jeff-dude
+      contributors: aalan3, jeff-dude, hildobby
     config:
       tags: ['tokens','transfers', 'mode']
     description: >
