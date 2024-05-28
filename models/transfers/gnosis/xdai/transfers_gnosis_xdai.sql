@@ -152,6 +152,7 @@ SELECT
     tx_hash, 
     trace_address,
     block_time,
+    block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
     token_address, 
