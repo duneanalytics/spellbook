@@ -773,5 +773,16 @@ FROM (VALUES
     , ('bitcoin', 'bc1qqxf98drymkq5awwtt685l6463tmtumlrvqfxv2', 'Genesis', 'Genesis 1', 'hildobby', date '2024-05-27')
 
     , ('bitcoin', '3FDWNdFxrJxXoF4hWXF4dkc1FFxsNyKAHh', 'Upbit', 'Upbit 1', 'hildobby', date '2024-05-27')
+
+    , ('bitcoin', 'TNrPUjc47JU1fgaQZPa1odQnD5RTdH3NSu', 'BigONE', 'BigONE 1', 'hildobby', date '2024-05-27')
+    , ('bitcoin', 'TE4CRGTXpLR3eRsn2mNKwsJWBFT7ojtvnU', 'BigONE', 'BigONE 2', 'hildobby', date '2024-05-27')
+
+    , ('bitcoin', '38ACxfQHasxq7ZSMX8CSmZJxtZt1FWjiVw', 'Bitcoin Suisse', 'Bitcoin Suisse 1', 'hildobby', date '2024-05-27')
+    , ('bitcoin', '3MKePai3WFRC2MuZyGEz8zboyu5CktzXCs', 'Bitcoin Suisse', 'Bitcoin Suisse 2', 'hildobby', date '2024-05-27')
+    , ('bitcoin', '3F1c6GtSQkLgREABJDfL4qnSz4aVqZATqH', 'Bitcoin Suisse', 'Bitcoin Suisse 3', 'hildobby', date '2024-05-27')
+    , ('bitcoin', '384D2dL5zgCeqbNGMgFRXDsKEoFvjzDBWS', 'Bitcoin Suisse', 'Bitcoin Suisse 4', 'hildobby', date '2024-05-27')
+    , ('bitcoin', '3HzZ4ybqvTJAGrPXVyxQysUiiaJC9LngBZ', 'Bitcoin Suisse', 'Bitcoin Suisse 5', 'hildobby', date '2024-05-27')
+    , ('bitcoin', '3KYL5Rz4hdcgiuwfwrikfY3NEGikoPhbhd', 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'hildobby', date '2024-05-27')
+    , ('bitcoin', '3CjxgnmNsu3kaFadzVea2FgECuHN7y2ENz', 'Bitcoin Suisse', 'Bitcoin Suisse 7', 'hildobby', date '2024-05-27')
     
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

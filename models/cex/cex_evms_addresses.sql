@@ -1541,6 +1541,8 @@ FROM (VALUES
     , (0x027beefcbad782faf69fad12dee97ed894c68549, 'QuadrigaCX', 'QuadrigaCX 1', 'hildobby', date '2023-09-09')
     , (0xb6aac3b56ff818496b747ea57fcbe42a9aae6218, 'QuadrigaCX', 'QuadrigaCX 2', 'hildobby', date '2023-09-09')
     , (0x0ee4e2d09aec35bdf08083b649033ac0a41aa75e, 'QuadrigaCX', 'QuadrigaCX 3', 'hildobby', date '2023-09-09')
+    , (0x5b5b69f4e0add2df5d2176d7dbd20b4897bc7ec4, 'QuadrigaCX', 'QuadrigaCX 4', 'hildobby', date '2024-05-27')
+    , (0x1e143b2588705dfea63a17f2032ca123df995ce0, 'QuadrigaCX', 'QuadrigaCX 5', 'hildobby', date '2024-05-27')
     -- BtcTurk
     , (0x832f166799a407275500430b61b622f0058f15d6, 'BtcTurk', 'BtcTurk 1', 'hildobby', date '2023-11-23')
     , (0xb02f1329d6a6acef07a763258f8509c2847a0a3e, 'BtcTurk', 'BtcTurk 2', 'hildobby', date '2023-11-23')
@@ -1579,6 +1581,7 @@ FROM (VALUES
     , (0xa399bf13e39eca44a943ac02da76913fe7ae0043, 'Bit-Z', 'Bit-Z Deposit Funder 2', 'hildobby', date '2023-11-23')
     -- Bitzlato
     , (0x00cdc153aa8894d08207719fe921fff964f28ba3, 'Bitzlato', 'Bitzlato 1', 'hildobby', date '2022-08-28')
+    , (0xd1b7cca582578bff37faab547a4d50ff6342c6d0, 'Bitzlato', 'Bitzlato 2', 'hildobby', date '2024-05-27')
     -- Cobinhood
     , (0x8958618332df62af93053cb9c535e26462c959b0, 'Cobinhood', 'Cobinhood 1', 'hildobby', date '2022-08-28')
     , (0xb726da4fbdc3e4dbda97bb20998cf899b0e727e0, 'Cobinhood', 'Cobinhood 2', 'hildobby', date '2022-08-28')
@@ -1594,11 +1597,15 @@ FROM (VALUES
     , (0x1f973b233f5ebb1e5d7cfe51b9ae4a32415a3a08, 'CEX.IO', 'CEX.IO 2', 'hildobby', date '2023-11-19')
     -- Bibox
     , (0xf73c3c65bde10bf26c2e1763104e609a41702efe, 'Bibox', 'Bibox 1', 'hildobby', date '2022-08-28')
+    , (0xb0d3c2d9f7d3c65d83a3af84a8584c2ad6bee3e4, 'Bibox', 'Bibox 2', 'hildobby', date '2024-05-27')
+    , (0xea7b33d264f4b7e6fd283a8250a572f2ceefacd4, 'Bibox', 'Bibox 3', 'hildobby', date '2024-05-27')
     , (0x76bd39dbc1cc977c03d38dc8a70ecbf21177c0df, 'Bibox', 'Bibox Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Coinhako
     , (0xd4bddf5e3d0435d7a6214a0b949c7bb58621f37c, 'Coinhako', 'Coinhako 1', 'hildobby', date '2022-08-28')
     , (0x1d1bd550197c7c0787b9ad0aea9c1cca66ee0e90, 'Coinhako', 'Coinhako 2', 'hildobby', date '2023-09-09')
     , (0xa193c943980a9340f306b3d59deb183dc501b35f, 'Coinhako', 'Coinhako 3', 'hildobby', date '2023-09-09')
+    , (0xbb44e3349c23cc430cae6ebbaf0256c9f2a1872f, 'Coinhako', 'Coinhako 4', 'hildobby', date '2024-05-27')
+    , (0xe66baa0b612003af308d78f066bbdb9a5e00ff6c, 'Coinhako', 'Coinhako 5', 'hildobby', date '2024-05-27')
     , (0xf2d4766ad705e3a5c9ba5b0436b473085f82f82f, 'Coinhako', 'Coinhako Hot Wallet', 'hildobby', date '2022-08-28')
     -- Bitbuy
     , (0xe9bdb4219706914441178bc8357e8551b53d8cbf, 'Bitbuy', 'Bitbuy MultiSig 1', 'hildobby', date '2023-11-24')
@@ -1610,9 +1617,12 @@ FROM (VALUES
     , (0xeb6c4be4b92a52e969f4bf405025d997703d5383, 'Bitbank', 'Bitbank 3', 'hildobby', date '2023-09-12')
     , (0xdbfc4549b325b6f00013a3861b87aab6696fdbee, 'Bitbank', 'Bitbank 4', 'hildobby', date '2023-09-12')
     , (0xf9225f3288f6cb0d0f80a5561e73102565e8bd8c, 'Bitbank', 'Bitbank 5', 'hildobby', date '2023-09-12')
+    , (0x265c27c849b0e1a62636f6007e8a74dc2a2584aa, 'Bitbank', 'Bitbank 6', 'hildobby', date '2024-05-27')
     -- BigONE
     , (0xa30d8157911ef23c46c0eb71889efe6a648a41f7, 'BigONE', 'BigONE 1', 'hildobby', date '2022-08-28')
     , (0x17bc58b788808dab201a9a90817ff3c168bf3d61, 'BigONE', 'BigONE 2', 'hildobby', date '2023-09-09')
+    , (0x8d61120cf18069139220875c745b5a62c39bd024, 'BigONE', 'BigONE 3', 'hildobby', date '2024-05-27')
+    , (0x493144718a78dfbef79f825ae71b29134b5cf60e, 'BigONE', 'BigONE 4', 'hildobby', date '2024-05-27')
     -- AltCoinTrader
     , (0xc58bb74606b73c5043b75d7aa25ebe1d5d4e7c72, 'AltCoinTrader', 'AltCoinTrader 1', 'hildobby', date '2023-11-24')
     , (0xff2e0c46c7673ccd00cb5b59dc1686229a483fc8, 'AltCoinTrader', 'AltCoinTrader 2', 'hildobby', date '2023-11-24')
@@ -1641,11 +1651,16 @@ FROM (VALUES
     -- Bity
     , (0xfb9f7f41319157ac5c5dccae308a63a4337ad5d9, 'Bity', 'Bity 1', 'hildobby', date '2022-08-28')
     -- Biconomy
+    , (0x2a5c2568b10a0e826bfa892cf21ba7218310180b, 'Biconomy', 'Biconomy 1', 'hildobby', date '2024-05-27')
+    , (0x856cb5c3cbbe9e2e21293a644aa1f9363cee11e8, 'Biconomy', 'Biconomy 2', 'hildobby', date '2024-05-27')
+    , (0x94d3e62151b12a12a4976f60edc18459538faf08, 'Biconomy', 'Biconomy 3', 'hildobby', date '2024-05-27')
+    , (0x710841deD0e8Af62bB82480a7e21aB1722221AB0, 'Biconomy', 'Biconomy Staked BICO 1', 'hildobby', date '2024-05-27')
     , (0xc864019047b864b6ab609a968ae2725dfaee808a, 'Biconomy', 'Biconomy BIT Token', 'hildobby', date '2023-11-23')
     -- Bitcoin Meester
     , (0xd57fe94225a8fd8e1a1826de1c6d6b3afc97c062, 'Bitcoin Meester', 'Bitcoin Meester Binance Deposit 1', 'hildobby', date '2023-11-23')
     -- Bitcoin Suisse
     , (0x7b4576d06d0ce1f83f9a9b76bf8077bffd34fcb1, 'Bitcoin Suisse', 'Bitcoin Suisse 1', 'hildobby', date '2023-11-23')
+    , (0x3f262579e4332e1be2722684eaa1c1b111f7a8d8, 'Bitcoin Suisse', 'Bitcoin Suisse 2', 'hildobby', date '2024-05-27')
     , (0x2a7077399b3e90f5392d55a1dc7046ad8d152348, 'Bitcoin Suisse', 'Bitcoin Suisse ETH Staking 1', 'hildobby', date '2023-11-23')
     -- Bitci
     , (0xe954b098b80d43fd66af4a58400c05e62b087b72, 'Bitci', 'Bitci 1', 'hildobby', date '2023-11-23')
