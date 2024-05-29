@@ -1,12 +1,12 @@
 {{ config(
     schema = 'alm_ethereum'
-    , alias = 'base_trades'
+    , alias = 'trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('arrakis_finance_ethereum_base_trades')
+    ref('arrakis_finance_ethereum_trades')
 ] %}
 
 WITH base_union AS (

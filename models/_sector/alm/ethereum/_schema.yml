@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: alm_ethereum_base_trades
+  - name: alm_ethereum_trades
     meta:
       blockchain: ethereum
       sector: alm
@@ -9,7 +9,7 @@ models:
     config:
       tags: [ 'ethereum', 'alm', 'trades' ]
 
-  - name: arrakis_finance_ethereum_base_trades
+  - name: arrakis_finance_ethereum_trades
     meta:
       blockchain: ethereum
       sector: alm

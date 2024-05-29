@@ -1,6 +1,6 @@
 {{ config(
     schema = 'arrakis_finance_ethereum'
-    , alias = 'base_trades'
+    , alias = 'trades'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'

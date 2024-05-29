@@ -11,7 +11,7 @@
 }}
 
 {% set models = [
-    ref('alm_ethereum_base_trades')
+    ref('alm_ethereum_trades')
 ] %}
 
 WITH base_union AS (
