@@ -54,19 +54,19 @@ models:
         description: "UTC event block date of each DEX trade"
       - &evt_block_time
         name: evt_block_time
-        description: 'Block time of transfer event'
+        description: "Block time of transfer event"
       - &evt_block_number
         name: evt_block_number
-        description: 'Block number of transfer event'
+        description: "Block number of transfer event"
       - &blockchain
         name: blockchain
         description: "Blockchain"
       - &evt_tx_hash
         name: evt_tx_hash
-        description: 'Transaction hash of transfer event'
+        description: "Transaction hash of transfer event"
       - &evt_index
         name: evt_index
-        description: 'Event index'
+        description: "Event index"
       - &pool_id
         name: pool_id
         description: "Unique encoded identifier that refers to each pool"
@@ -78,7 +78,7 @@ models:
         description: "Token symbols, followed by their respective weights, if applicable"
       - &pool_type
         name: pool_type
-        description: "Pool attributes, determined by the pool's factory" 
+        description: "Pool attributes, determined by the pool's factory"
       - &version
         name: version
         description: "Version of Balancer where the liquidity pool used in transaction is deployed"
@@ -114,18 +114,18 @@ models:
       - *block_date
       - *pool_id
       - *pool_address
-      - *pool_symbol   
+      - *pool_symbol
       - *version
       - *blockchain
       - *pool_type
       - *token_address
       - *token_symbol
-      - &daily_delta   
+      - &daily_delta
         name: daily_delta
-        description: "Daily total impact on token balance" 
-      - &daily_delta_usd   
+        description: "Daily total impact on token balance"
+      - &daily_delta_usd
         name: daily_delta_usd
         description: "Daily total impact on token balance, in USD"
       - &daily_delta_eth
         name: daily_delta_eth
-        description: "Daily total impact on token balance, in eth"
+        description: "Daily total impact on token balance, in ETH"

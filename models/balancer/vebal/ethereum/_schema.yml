@@ -5,12 +5,12 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contibutors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
+      contributors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
     config:
-      tags: ['balancer', 'ethereum', 'vebal', 'day',]
+      tags: ['balancer', 'ethereum', 'vebal', 'day']
     description: >
-        Daily balances of veBAL per wallet
-        Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+      Daily balances of veBAL per wallet
+      Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -31,12 +31,12 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contibutors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
+      contributors: markusbkoch, mendesfabio, victorstefenon, viniabussafi
     config:
       tags: ['balancer', 'ethereum', 'vebal', 'slope']
     description: >
-        Slope and bias of veBAL per wallet after each balance update
-        Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
+      Slope and bias of veBAL per wallet after each balance update
+      Depends on veBAL_call_create_lock, veBAL_evt_Deposit and veBAL_evt_Withdraw
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -64,12 +64,12 @@ models:
     meta:
       blockchain: ethereum
       project: balancer
-      contibutors: markusbkoch, mendesfabio, stefenon, viniabussafi
+      contributors: markusbkoch, mendesfabio, stefenon, viniabussafi
     config:
-      tags: ['balancer', 'ethereum', 'vebal', 'votes', 'markusbkoch']
+      tags: ['balancer', 'ethereum', 'vebal', 'votes']
     description: >
-        Records of votes for Balancer gauges by provider at each voting round
-        Depends on GaugeController_evt_VoteForGauge and the vebal_slopes spell
+      Records of votes for Balancer gauges by provider at each voting round
+      Depends on GaugeController_evt_VoteForGauge and the vebal_slopes spell
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
